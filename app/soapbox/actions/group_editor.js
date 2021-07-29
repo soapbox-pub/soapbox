@@ -38,6 +38,9 @@ export const create = (slug, title, description, coverImage, routerHistory) => (
   formData.append('display_name', title);
   formData.append('note', description);
 
+  // FIXME: Temporarily set to 'public' for testing
+  formData.append('privacy', 'public');
+
   if (coverImage !== null) {
     formData.append('header', coverImage);
   }
