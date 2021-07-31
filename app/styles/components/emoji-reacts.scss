@@ -68,6 +68,13 @@
   transform: translateY(2px);
 }
 
+.emoji-react-selector-container {
+  &:hover,
+  &:focus {
+    outline: 0;
+  }
+}
+
 .emoji-react-selector {
   position: absolute;
   display: flex;
