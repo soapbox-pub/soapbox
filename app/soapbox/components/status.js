@@ -508,7 +508,17 @@ class Status extends ImmutablePureComponent {
 
             {!group && status.getIn(['pleroma', 'group']) && (
               <div className='status__meta'>
-                Posted in <NavLink to={`/groups/${status.getIn(['pleroma', 'group', 'id'])}`}>{status.getIn(['pleroma', 'group', 'display_name'])}</NavLink>
+                <FormattedMessage
+                  id='status.group_posted_in'
+                  defaultMessage='Posted in {group}'
+                  values={{
+                    group: (
+                      <NavLink to={`/groups/${status.getIn(['pleroma', 'group', 'id'])}`}>
+                        {status.getIn(['pleroma', 'group', 'display_name']) || status.getIn(['pleroma', 'group', 'acct'])}
+                      </NavLink>
+                    ),
+                  }}
+                />
               </div>
             )}
 
