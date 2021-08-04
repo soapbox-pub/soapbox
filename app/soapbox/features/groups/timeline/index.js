@@ -13,13 +13,21 @@ import ComposeFormContainer from '../../../../soapbox/features/compose/container
 import Avatar from '../../../components/avatar';
 import { Map as ImmutableMap } from 'immutable';
 
+const findGroup = (state, param) => {
+  const groups = state.get('groups');
+  return state.getIn(['groups', param]) || groups.find(g => g.get('slug') === param);
+};
+
 const mapStateToProps = (state, props) => {
+  const group = findGroup(state, props.params.id);
+  const id = group ? group.get('id') : '';
+
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-    group: state.getIn(['groups', props.params.id]),
-    relationships: state.getIn(['group_relationships', props.params.id], ImmutableMap()),
-    hasUnread: state.getIn(['timelines', `group:${props.params.id}`, 'unread']) > 0,
+    group,
+    relationships: state.getIn(['group_relationships', id], ImmutableMap()),
+    hasUnread: state.getIn(['timelines', `group:${id}`, 'unread']) > 0,
   };
 };
 
@@ -43,12 +51,14 @@ class GroupTimeline extends React.PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    const { id } = this.props.params;
+    const { dispatch, group } = this.props;
 
-    dispatch(expandGroupTimeline(id));
+    if (group) {
+      dispatch(expandGroupTimeline(group.get('id')));
 
-    this.disconnect = dispatch(connectGroupStream(id));
+      // FIXME: Temporarily disabled
+      this.disconnect = dispatch(connectGroupStream(group.get('id')));
+    }
   }
 
   componentWillUnmount() {
@@ -59,13 +69,15 @@ class GroupTimeline extends React.PureComponent {
   }
 
   handleLoadMore = maxId => {
-    const { id } = this.props.params;
-    this.props.dispatch(expandGroupTimeline(id, { maxId }));
+    const { group } = this.props;
+
+    if (group) {
+      this.props.dispatch(expandGroupTimeline(group.get('id'), { maxId }));
+    }
   }
 
   render() {
     const { columnId, group, relationships, account } = this.props;
-    const { id } = this.props.params;
 
     if (group === undefined || !relationships) {
       return (
@@ -96,7 +108,7 @@ class GroupTimeline extends React.PureComponent {
           <StatusListContainer
             alwaysPrepend
             scrollKey={`group_timeline-${columnId}`}
-            timelineId={`group:${id}`}
+            timelineId={`group:${group.get('id')}`}
             onLoadMore={this.handleLoadMore}
             group={group}
             withGroupAdmin={relationships && relationships.get('admin')}

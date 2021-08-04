@@ -11,10 +11,20 @@ import GroupPanel from '../features/groups/timeline/components/panel';
 import { fetchGroup } from '../actions/groups';
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
-const mapStateToProps = (state, { params: { id } }) => ({
-  group: state.getIn(['groups', id]),
-  relationships: state.getIn(['group_relationships', id]),
-});
+const findGroup = (state, param) => {
+  const groups = state.get('groups');
+  return state.getIn(['groups', param]) || groups.find(g => g.get('slug') === param);
+};
+
+const mapStateToProps = (state, props) => {
+  const group = findGroup(state, props.params.id);
+  const id = group ? group.get('id') : '';
+
+  return {
+    group,
+    relationships: state.getIn(['group_relationships', id]),
+  };
+};
 
 export default @connect(mapStateToProps)
 class GroupPage extends ImmutablePureComponent {
