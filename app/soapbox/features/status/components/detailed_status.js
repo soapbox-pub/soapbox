@@ -180,7 +180,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
           {status.get('group') && (
             <div className='status__meta'>
-              Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
+              Posted in <NavLink to={`/groups/${status.getIn(['group', 'slug'])}`}>{status.getIn(['group', 'title'])}</NavLink>
             </div>
           )}
 

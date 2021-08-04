@@ -508,7 +508,7 @@ class Status extends ImmutablePureComponent {
                   defaultMessage='Posted in {group}'
                   values={{
                     group: (
-                      <NavLink to={`/groups/${status.getIn(['pleroma', 'group', 'id'])}`}>
+                      <NavLink to={`/groups/${status.getIn(['pleroma', 'group', 'slug'])}`}>
                         {status.getIn(['pleroma', 'group', 'display_name']) || status.getIn(['pleroma', 'group', 'acct'])}
                       </NavLink>
                     ),

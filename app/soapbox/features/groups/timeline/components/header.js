@@ -73,8 +73,8 @@ class Header extends ImmutablePureComponent {
           </div>
 
           <div className='group__tabs'>
-            <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('id')}`}>Posts</NavLink>
-            <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('id')}/members`}>Members</NavLink>
+            <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('slug')}`}>Posts</NavLink>
+            <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('slug')}/members`}>Members</NavLink>
             {this.getActionButton()}
             {relationships.get('admin') && this.getAdminMenu()}
           </div>

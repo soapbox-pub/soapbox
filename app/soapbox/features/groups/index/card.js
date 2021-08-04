@@ -42,7 +42,7 @@ class GroupCard extends ImmutablePureComponent {
       const role = this.getRole();
 
       return (
-        <Link to={`/groups/${group.get('id')}`} className='group-card'>
+        <Link to={`/groups/${group.get('slug')}`} className='group-card'>
           <div className='group-card__header'>{coverImageUrl && <img alt='' src={coverImageUrl} />}</div>
           <div className='group-card__content'>
             <div className='group-card__title'>{group.get('title')}</div>
