@@ -277,7 +277,7 @@ export function submitGroupCompose(routerHistory, groupId, force = false) {
       dispatch(submitComposeFail(error));
     });
   };
-};
+}
 
 export function submitComposeRequest() {
   return {
