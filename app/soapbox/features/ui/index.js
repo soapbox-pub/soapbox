@@ -333,7 +333,7 @@ class UI extends React.PureComponent {
     try {
       e.dataTransfer.dropEffect = 'copy';
     } catch (err) {
-
+      // Do nothing
     }
 
     return false;

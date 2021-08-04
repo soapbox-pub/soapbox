@@ -106,7 +106,7 @@ export function fetchGroupRelationships(groupIds) {
       dispatch(fetchGroupRelationshipsFail(error));
     });
   };
-};
+}
 
 export function fetchGroupRelationshipsRequest(ids) {
   return {
@@ -114,7 +114,7 @@ export function fetchGroupRelationshipsRequest(ids) {
     ids,
     skipLoading: true,
   };
-};
+}
 
 export function fetchGroupRelationshipsSuccess(relationships) {
   return {
@@ -122,7 +122,7 @@ export function fetchGroupRelationshipsSuccess(relationships) {
     relationships,
     skipLoading: true,
   };
-};
+}
 
 export function fetchGroupRelationshipsFail(error) {
   return {
@@ -130,7 +130,7 @@ export function fetchGroupRelationshipsFail(error) {
     error,
     skipLoading: true,
   };
-};
+}
 
 export const fetchGroups = (tab) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
@@ -172,7 +172,7 @@ export function joinGroup(id) {
       dispatch(joinGroupFail(id, error));
     });
   };
-};
+}
 
 export function leaveGroup(id) {
   return (dispatch, getState) => {
@@ -186,49 +186,49 @@ export function leaveGroup(id) {
       dispatch(leaveGroupFail(id, error));
     });
   };
-};
+}
 
 export function joinGroupRequest(id) {
   return {
     type: GROUP_JOIN_REQUEST,
     id,
   };
-};
+}
 
 export function joinGroupSuccess(relationship) {
   return {
     type: GROUP_JOIN_SUCCESS,
     relationship,
   };
-};
+}
 
 export function joinGroupFail(error) {
   return {
     type: GROUP_JOIN_FAIL,
     error,
   };
-};
+}
 
 export function leaveGroupRequest(id) {
   return {
     type: GROUP_LEAVE_REQUEST,
     id,
   };
-};
+}
 
 export function leaveGroupSuccess(relationship) {
   return {
     type: GROUP_LEAVE_SUCCESS,
     relationship,
   };
-};
+}
 
 export function leaveGroupFail(error) {
   return {
     type: GROUP_LEAVE_FAIL,
     error,
   };
-};
+}
 
 export function fetchMembers(id) {
   return (dispatch, getState) => {
@@ -246,14 +246,14 @@ export function fetchMembers(id) {
       dispatch(fetchMembersFail(id, error));
     });
   };
-};
+}
 
 export function fetchMembersRequest(id) {
   return {
     type: GROUP_MEMBERS_FETCH_REQUEST,
     id,
   };
-};
+}
 
 export function fetchMembersSuccess(id, accounts, next) {
   return {
@@ -262,7 +262,7 @@ export function fetchMembersSuccess(id, accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function fetchMembersFail(id, error) {
   return {
@@ -270,7 +270,7 @@ export function fetchMembersFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function expandMembers(id) {
   return (dispatch, getState) => {
@@ -294,14 +294,14 @@ export function expandMembers(id) {
       dispatch(expandMembersFail(id, error));
     });
   };
-};
+}
 
 export function expandMembersRequest(id) {
   return {
     type: GROUP_MEMBERS_EXPAND_REQUEST,
     id,
   };
-};
+}
 
 export function expandMembersSuccess(id, accounts, next) {
   return {
@@ -310,7 +310,7 @@ export function expandMembersSuccess(id, accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function expandMembersFail(id, error) {
   return {
@@ -318,7 +318,7 @@ export function expandMembersFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function fetchRemovedAccounts(id) {
   return (dispatch, getState) => {
@@ -336,14 +336,14 @@ export function fetchRemovedAccounts(id) {
       dispatch(fetchRemovedAccountsFail(id, error));
     });
   };
-};
+}
 
 export function fetchRemovedAccountsRequest(id) {
   return {
     type: GROUP_REMOVED_ACCOUNTS_FETCH_REQUEST,
     id,
   };
-};
+}
 
 export function fetchRemovedAccountsSuccess(id, accounts, next) {
   return {
@@ -352,7 +352,7 @@ export function fetchRemovedAccountsSuccess(id, accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function fetchRemovedAccountsFail(id, error) {
   return {
@@ -360,7 +360,7 @@ export function fetchRemovedAccountsFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function expandRemovedAccounts(id) {
   return (dispatch, getState) => {
@@ -384,14 +384,14 @@ export function expandRemovedAccounts(id) {
       dispatch(expandRemovedAccountsFail(id, error));
     });
   };
-};
+}
 
 export function expandRemovedAccountsRequest(id) {
   return {
     type: GROUP_REMOVED_ACCOUNTS_EXPAND_REQUEST,
     id,
   };
-};
+}
 
 export function expandRemovedAccountsSuccess(id, accounts, next) {
   return {
@@ -400,7 +400,7 @@ export function expandRemovedAccountsSuccess(id, accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function expandRemovedAccountsFail(id, error) {
   return {
@@ -408,7 +408,7 @@ export function expandRemovedAccountsFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function removeRemovedAccount(groupId, id) {
   return (dispatch, getState) => {
@@ -422,7 +422,7 @@ export function removeRemovedAccount(groupId, id) {
       dispatch(removeRemovedAccountFail(groupId, id, error));
     });
   };
-};
+}
 
 export function removeRemovedAccountRequest(groupId, id) {
   return {
@@ -430,7 +430,7 @@ export function removeRemovedAccountRequest(groupId, id) {
     groupId,
     id,
   };
-};
+}
 
 export function removeRemovedAccountSuccess(groupId, id) {
   return {
@@ -438,7 +438,7 @@ export function removeRemovedAccountSuccess(groupId, id) {
     groupId,
     id,
   };
-};
+}
 
 export function removeRemovedAccountFail(groupId, id, error) {
   return {
@@ -447,7 +447,7 @@ export function removeRemovedAccountFail(groupId, id, error) {
     id,
     error,
   };
-};
+}
 
 export function createRemovedAccount(groupId, id) {
   return (dispatch, getState) => {
@@ -461,7 +461,7 @@ export function createRemovedAccount(groupId, id) {
       dispatch(createRemovedAccountFail(groupId, id, error));
     });
   };
-};
+}
 
 export function createRemovedAccountRequest(groupId, id) {
   return {
@@ -469,7 +469,7 @@ export function createRemovedAccountRequest(groupId, id) {
     groupId,
     id,
   };
-};
+}
 
 export function createRemovedAccountSuccess(groupId, id) {
   return {
@@ -477,7 +477,7 @@ export function createRemovedAccountSuccess(groupId, id) {
     groupId,
     id,
   };
-};
+}
 
 export function createRemovedAccountFail(groupId, id, error) {
   return {
@@ -486,7 +486,7 @@ export function createRemovedAccountFail(groupId, id, error) {
     id,
     error,
   };
-};
+}
 
 export function groupPostStatus(groupId, params, idempotencyKey) {
   return (dispatch, getState) => {
@@ -516,7 +516,7 @@ export function groupRemoveStatus(groupId, id) {
       dispatch(groupRemoveStatusFail(groupId, id, error));
     });
   };
-};
+}
 
 export function groupRemoveStatusRequest(groupId, id) {
   return {
@@ -524,7 +524,7 @@ export function groupRemoveStatusRequest(groupId, id) {
     groupId,
     id,
   };
-};
+}
 
 export function groupRemoveStatusSuccess(groupId, id) {
   return {
@@ -532,7 +532,7 @@ export function groupRemoveStatusSuccess(groupId, id) {
     groupId,
     id,
   };
-};
+}
 
 export function groupRemoveStatusFail(groupId, id, error) {
   return {
@@ -541,4 +541,4 @@ export function groupRemoveStatusFail(groupId, id, error) {
     id,
     error,
   };
-};
+}

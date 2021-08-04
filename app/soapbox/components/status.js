@@ -16,7 +16,6 @@ import { MediaGallery, Video, Audio } from '../features/ui/util/async-components
 import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
-import PollContainer from 'soapbox/containers/poll_container';
 import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
@@ -293,13 +292,13 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let media = null;
-    let poll = null;
+    const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
 
-    let { status, account, ...other } = this.props;
-
+    // FIXME: why does this need to reassign status and account??
+    let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
 
     if (status === null) {
       return null;
@@ -359,10 +358,6 @@ class Status extends ImmutablePureComponent {
       account = status.get('account');
       reblogContent = status.get('contentHtml');
       status        = status.get('reblog');
-    }
-
-    if (status.get('poll')) {
-      poll = <PollContainer pollId={status.get('poll')} />;
     }
 
     const size = status.get('media_attachments').size;
