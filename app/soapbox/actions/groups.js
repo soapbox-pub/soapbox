@@ -7,6 +7,10 @@ export const GROUP_FETCH_REQUEST = 'GROUP_FETCH_REQUEST';
 export const GROUP_FETCH_SUCCESS = 'GROUP_FETCH_SUCCESS';
 export const GROUP_FETCH_FAIL    = 'GROUP_FETCH_FAIL';
 
+export const GROUP_CREATE_REQUEST = 'GROUP_CREATE_REQUEST';
+export const GROUP_CREATE_SUCCESS = 'GROUP_CREATE_SUCCESS';
+export const GROUP_CREATE_FAIL    = 'GROUP_CREATE_FAIL';
+
 export const GROUP_RELATIONSHIPS_FETCH_REQUEST = 'GROUP_RELATIONSHIPS_FETCH_REQUEST';
 export const GROUP_RELATIONSHIPS_FETCH_SUCCESS = 'GROUP_RELATIONSHIPS_FETCH_SUCCESS';
 export const GROUP_RELATIONSHIPS_FETCH_FAIL    = 'GROUP_RELATIONSHIPS_FETCH_FAIL';
@@ -86,6 +90,19 @@ export const fetchGroupFail = (id, error) => ({
   id,
   error,
 });
+
+export function createGroup(params) {
+  return (dispatch, getState) => {
+    dispatch({ type: GROUP_CREATE_REQUEST, params });
+    return api(getState).post('/api/v1/pleroma/groups', params).then(({ data: group }) => {
+      dispatch({ type: GROUP_CREATE_SUCCESS, group, params });
+      return group;
+    }).catch(error => {
+      dispatch({ type: GROUP_CREATE_FAIL, error, params });
+      return error;
+    });
+  };
+}
 
 export function fetchGroupRelationships(groupIds) {
   return (dispatch, getState) => {

@@ -1,132 +1,136 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeValue, submit, reset } from '../../../actions/group_editor';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
-import classNames from 'classnames';
+import { Map as ImmutableMap } from 'immutable';
+import Column from 'soapbox/features/ui/components/better_column';
+import {
+  SimpleForm,
+  TextInput,
+  SimpleTextarea,
+} from 'soapbox/features/forms';
+import { createGroup } from 'soapbox/actions/groups';
+import { kebabCase } from 'lodash';
 
 const messages = defineMessages({
-  slug: { id: 'groups.form.slug', defaultMessage: 'Enter a new group slug' },
-  title: { id: 'groups.form.title', defaultMessage: 'Enter a new group title' },
-  description: { id: 'groups.form.description', defaultMessage: 'Enter the group description' },
-  coverImage: { id: 'groups.form.coverImage', defaultMessage: 'Upload a banner image' },
-  coverImageChange: { id: 'groups.form.coverImageChange', defaultMessage: 'Banner image selected' },
-  create: { id: 'groups.form.create', defaultMessage: 'Create group' },
+  heading: { id: 'column.group_create', defaultMessage: 'Create a new group' },
+  slugLabel: { id: 'group_create.fields.slug_label', defaultMessage: 'Group slug' },
+  slugPlaceholder: { id: 'group_create.fields.slug_placeholder', defaultMessage: 'my-special-group' },
+  slugHint: { id: 'group_create.fields.slug_hint', defaultMessage: 'Like a username, the group\'s slug will show up in URLs and mentions. It CANNOT be changed later. Only letters, numbers, hyphens, and underscores are allowed.' },
+  displayNameLabel: { id: 'group_create.fields.display_name_label', defaultMessage: 'Group name' },
+  displayNamePlaceholder: { id: 'group_create.fields.display_name_placeholder', defaultMessage: 'My Special Group' },
+  noteLabel: { id: 'group_create.fields.note_label', defaultMessage: 'Description' },
+  notePlaceholder: { id: 'group_create.fields.note_placeholder', defaultMessage: 'In a few sentences, this group is about...' },
+  submit: { id: 'group_create.submit', defaultMessage: 'Create group' },
 });
 
-const mapStateToProps = state => ({
-  slug: state.getIn(['group_editor', 'slug']),
-  title: state.getIn(['group_editor', 'title']),
-  description: state.getIn(['group_editor', 'description']),
-  coverImage: state.getIn(['group_editor', 'coverImage']),
-  disabled: state.getIn(['group_editor', 'isSubmitting']),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onSlugChange: value => dispatch(changeValue('slug', value)),
-  onTitleChange: value => dispatch(changeValue('title', value)),
-  onDescriptionChange: value => dispatch(changeValue('description', value)),
-  onCoverImageChange: value => dispatch(changeValue('coverImage', value)),
-  onSubmit: routerHistory => dispatch(submit(routerHistory)),
-  reset: () => dispatch(reset()),
-});
-
-export default @connect(mapStateToProps, mapDispatchToProps)
+export default @connect()
 @injectIntl
-class Create extends React.PureComponent {
+class Create extends ImmutablePureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
   }
 
   static propTypes = {
-    slug: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    coverImage: PropTypes.object,
-    disabled: PropTypes.bool,
+    dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    onSlugChange: PropTypes.func.isRequired,
-    onTitleChange: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-    onDescriptionChange: PropTypes.func.isRequired,
-    onCoverImageChange: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    props.reset();
+  state = {
+    params: ImmutableMap({
+      slug: '',
+      display_name: '',
+      note: '',
+    }),
+    isSubmitting: false,
   }
 
-  handleSlugChange = e => {
-    this.props.onSlugChange(e.target.value);
+  updateParams = (key, value) => {
+    const { params } = this.state;
+    const newParams = params.set(key, value);
+    this.setState({ params: newParams });
   }
 
-  handleTitleChange = e => {
-    this.props.onTitleChange(e.target.value);
+  handleDisplayNameChange = ({ target }) => {
+    const { params } = this.state;
+    const { display_name, slug } = params.toJS();
+    const slugified = kebabCase(display_name);
+
+    if (!slug || slug === slugified) {
+      const newParams = params.merge({
+        display_name: target.value,
+        slug: kebabCase(target.value),
+      });
+      this.setState({ params: newParams });
+    } else {
+      this.updateParams('display_name', target.value);
+    }
   }
 
-  handleDescriptionChange = e => {
-    this.props.onDescriptionChange(e.target.value);
-  }
-
-  handleCoverImageChange = e => {
-    this.props.onCoverImageChange(e.target.files[0]);
+  handleChange = name => {
+    return ({ target }) => {
+      this.updateParams(name, target.value);
+    };
   }
 
   handleSubmit = e => {
-    e.preventDefault();
-    this.props.onSubmit(this.context.router.history);
+    const { dispatch } = this.props;
+    const { params } = this.state;
+    const routerHistory = this.context.router.history;
+
+    this.setState({ isSubmitting: true });
+
+    dispatch(createGroup(params))
+      .then(group => {
+        routerHistory.push(`/groups/${group.slug}`);
+      })
+      .catch(error => {
+        this.setState({ isSubmitting: false });
+      });
   }
 
   render() {
-    const { slug, title, description, coverImage, disabled, intl } = this.props;
+    const { intl } = this.props;
+    const { isSubmitting, params } = this.state;
+    const { slug, display_name, note } = params.toJS();
+    const disabled = isSubmitting;
 
     return (
-      <form className='group-form' method='post' onSubmit={this.handleSubmit}>
-        <div>
-          <input
-            className='standard'
-            type='text'
+      <Column icon='group' heading={intl.formatMessage(messages.heading)}>
+        <SimpleForm onSubmit={this.handleSubmit}>
+          <TextInput
+            value={display_name}
+            disabled={disabled}
+            onChange={this.handleDisplayNameChange}
+            label={intl.formatMessage(messages.displayNameLabel)}
+            placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
+            required
+          />
+          <TextInput
             value={slug}
             disabled={disabled}
-            onChange={this.handleSlugChange}
-            placeholder={intl.formatMessage(messages.slug)}
+            onChange={this.handleChange('slug')}
+            label={intl.formatMessage(messages.slugLabel)}
+            placeholder={intl.formatMessage(messages.slugPlaceholder)}
+            hint={intl.formatMessage(messages.slugHint)}
+            pattern='[a-z0-9_-]+'
+            required
           />
-          <input
-            className='standard'
-            type='text'
-            value={title}
+          <SimpleTextarea
+            value={note}
             disabled={disabled}
-            onChange={this.handleTitleChange}
-            placeholder={intl.formatMessage(messages.title)}
+            onChange={this.handleChange('note')}
+            label={intl.formatMessage(messages.noteLabel)}
+            placeholder={intl.formatMessage(messages.notePlaceholder)}
           />
-        </div>
-        <div>
-          <textarea
-            className='standard'
-            type='text'
-            value={description}
-            disabled={disabled}
-            onChange={this.handleDescriptionChange}
-            placeholder={intl.formatMessage(messages.description)}
-          />
-        </div>
-        <div>
-          <label htmlFor='group_cover_image' className={classNames('group-form__file-label', { 'group-form__file-label--selected': coverImage !== null })}>
-            {intl.formatMessage(coverImage === null ? messages.coverImage : messages.coverImageChange)}
-          </label>
-          <input
-            type='file'
-            className='group-form__file'
-            id='group_cover_image'
-            disabled={disabled}
-            onChange={this.handleCoverImageChange}
-          />
-          <button className='standard-small'>{intl.formatMessage(messages.create)}</button>
-        </div>
-      </form>
+          <br />
+          <button type='submit'>
+            {intl.formatMessage(messages.submit)}
+          </button>
+        </SimpleForm>
+      </Column>
     );
   }
 
