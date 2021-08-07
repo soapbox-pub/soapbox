@@ -2,13 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { Map as ImmutableMap } from 'immutable';
 import Column from 'soapbox/features/ui/components/better_column';
 import {
   SimpleForm,
+  FieldsGroup,
   TextInput,
   SimpleTextarea,
+  RadioGroup,
+  RadioItem,
 } from 'soapbox/features/forms';
 import { createGroup } from 'soapbox/actions/groups';
 import { kebabCase } from 'lodash';
@@ -27,7 +30,7 @@ const messages = defineMessages({
 
 export default @connect()
 @injectIntl
-class Create extends ImmutablePureComponent {
+class CreateGroup extends ImmutablePureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -43,6 +46,7 @@ class Create extends ImmutablePureComponent {
       slug: '',
       display_name: '',
       note: '',
+      privacy: 'public',
     }),
     isSubmitting: false,
   }
@@ -94,41 +98,63 @@ class Create extends ImmutablePureComponent {
   render() {
     const { intl } = this.props;
     const { isSubmitting, params } = this.state;
-    const { slug, display_name, note } = params.toJS();
+    const { slug, display_name, note, privacy } = params.toJS();
     const disabled = isSubmitting;
 
     return (
       <Column icon='group' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm onSubmit={this.handleSubmit}>
-          <TextInput
-            value={display_name}
-            disabled={disabled}
-            onChange={this.handleDisplayNameChange}
-            label={intl.formatMessage(messages.displayNameLabel)}
-            placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
-            required
-          />
-          <TextInput
-            value={slug}
-            disabled={disabled}
-            onChange={this.handleChange('slug')}
-            label={intl.formatMessage(messages.slugLabel)}
-            placeholder={intl.formatMessage(messages.slugPlaceholder)}
-            hint={intl.formatMessage(messages.slugHint)}
-            pattern='[a-z0-9_-]+'
-            required
-          />
-          <SimpleTextarea
-            value={note}
-            disabled={disabled}
-            onChange={this.handleChange('note')}
-            label={intl.formatMessage(messages.noteLabel)}
-            placeholder={intl.formatMessage(messages.notePlaceholder)}
-          />
-          <br />
-          <button type='submit'>
-            {intl.formatMessage(messages.submit)}
-          </button>
+          <FieldsGroup>
+            <TextInput
+              value={display_name}
+              disabled={disabled}
+              onChange={this.handleDisplayNameChange}
+              label={intl.formatMessage(messages.displayNameLabel)}
+              placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
+              required
+            />
+            <TextInput
+              value={slug}
+              disabled={disabled}
+              onChange={this.handleChange('slug')}
+              label={intl.formatMessage(messages.slugLabel)}
+              placeholder={intl.formatMessage(messages.slugPlaceholder)}
+              hint={intl.formatMessage(messages.slugHint)}
+              pattern='[a-z0-9_-]+'
+              required
+            />
+            <SimpleTextarea
+              value={note}
+              disabled={disabled}
+              onChange={this.handleChange('note')}
+              label={intl.formatMessage(messages.noteLabel)}
+              placeholder={intl.formatMessage(messages.notePlaceholder)}
+            />
+          </FieldsGroup>
+          <FieldsGroup>
+            <RadioGroup
+              label={<FormattedMessage id='group_create.fields.privacy_label' defaultMessage='Privacy' />}
+              onChange={this.handleChange('privacy')}
+            >
+              <RadioItem
+                label={<FormattedMessage id='group_create.fields.privacy.public_label' defaultMessage='Public' />}
+                hint={<FormattedMessage id='group_create.fields.privacy.public_hint' defaultMessage='Posts are world-readable.' />}
+                checked={privacy === 'public'}
+                value='public'
+              />
+              <RadioItem
+                label={<FormattedMessage id='group_create.fields.privacy.members_only_label' defaultMessage='Members only' />}
+                hint={<FormattedMessage id='group_create.fields.privacy.members_only_hint' defaultMessage='Only group members can see posts.' />}
+                checked={privacy === 'members_only'}
+                value='members_only'
+              />
+            </RadioGroup>
+          </FieldsGroup>
+          <FieldsGroup>
+            <button type='submit'>
+              {intl.formatMessage(messages.submit)}
+            </button>
+          </FieldsGroup>
         </SimpleForm>
       </Column>
     );
