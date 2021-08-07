@@ -59,37 +59,17 @@ export const GROUP_REMOVE_STATUS_REQUEST = 'GROUP_REMOVE_STATUS_REQUEST';
 export const GROUP_REMOVE_STATUS_SUCCESS = 'GROUP_REMOVE_STATUS_SUCCESS';
 export const GROUP_REMOVE_STATUS_FAIL    = 'GROUP_REMOVE_STATUS_FAIL';
 
-export const fetchGroup = id => (dispatch, getState) => {
-  if (!isLoggedIn(getState)) return;
-
-  dispatch(fetchGroupRelationships([id]));
-
-  if (getState().getIn(['groups', id])) {
-    return;
-  }
-
-  dispatch(fetchGroupRequest(id));
-
-  api(getState).get(`/api/v1/pleroma/groups/${id}`)
-    .then(({ data }) => dispatch(fetchGroupSuccess(data)))
-    .catch(err => dispatch(fetchGroupFail(id, err)));
-};
-
-export const fetchGroupRequest = id => ({
-  type: GROUP_FETCH_REQUEST,
-  id,
-});
-
-export const fetchGroupSuccess = group => ({
-  type: GROUP_FETCH_SUCCESS,
-  group,
-});
-
-export const fetchGroupFail = (id, error) => ({
-  type: GROUP_FETCH_FAIL,
-  id,
-  error,
-});
+export function fetchGroup(id) {
+  return (dispatch, getState) => {
+    dispatch({ type: GROUP_FETCH_REQUEST, id });
+    api(getState).get(`/api/v1/pleroma/groups/${id}`).then(({ data: group }) => {
+      dispatch({ type: GROUP_FETCH_SUCCESS, id, group });
+      dispatch(fetchGroupRelationships([group.id]));
+    }).catch(error => {
+      dispatch({ type: GROUP_FETCH_FAIL, id, error });
+    });
+  };
+}
 
 export function createGroup(params) {
   return (dispatch, getState) => {
