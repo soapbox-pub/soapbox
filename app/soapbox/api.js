@@ -10,6 +10,12 @@ export const getLinks = response => {
   return LinkHeader.parse(value);
 };
 
+export const getNext = response => {
+  const links = getLinks(response);
+  const link = links.refs.find(link => link.rel === 'next');
+  return link ? link.uri : null;
+};
+
 const getToken = (getState, authType) => {
   const state = getState();
   return authType === 'app' ? getAppToken(state) : getAccessToken(state);

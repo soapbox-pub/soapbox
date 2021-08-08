@@ -1,4 +1,4 @@
-import api, { getLinks } from '../api';
+import api, { getLinks, getNext } from '../api';
 import { importFetchedAccounts } from './importer';
 import { fetchRelationships } from './accounts';
 import { isLoggedIn } from 'soapbox/utils/auth';
@@ -164,41 +164,18 @@ export function fetchMembers(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(fetchMembersRequest(id));
+    dispatch({ type: GROUP_MEMBERS_FETCH_REQUEST, id });
 
     api(getState).get(`/api/v1/pleroma/groups/${id}/members`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const accounts = response.data;
+      const next = getNext(response);
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchMembersSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map(item => item.id)));
+      dispatch(importFetchedAccounts(accounts));
+      dispatch({ type: GROUP_MEMBERS_FETCH_SUCCESS, id, accounts, next });
+      dispatch(fetchRelationships(accounts.map(item => item.id)));
     }).catch(error => {
-      dispatch(fetchMembersFail(id, error));
+      dispatch({ type: GROUP_MEMBERS_FETCH_FAIL, id, error });
     });
-  };
-}
-
-export function fetchMembersRequest(id) {
-  return {
-    type: GROUP_MEMBERS_FETCH_REQUEST,
-    id,
-  };
-}
-
-export function fetchMembersSuccess(id, accounts, next) {
-  return {
-    type: GROUP_MEMBERS_FETCH_SUCCESS,
-    id,
-    accounts,
-    next,
-  };
-}
-
-export function fetchMembersFail(id, error) {
-  return {
-    type: GROUP_MEMBERS_FETCH_FAIL,
-    id,
-    error,
   };
 }
 
@@ -207,46 +184,20 @@ export function expandMembers(id) {
     if (!isLoggedIn(getState)) return;
 
     const url = getState().getIn(['user_lists', 'groups', id, 'next']);
+    if (!url) return;
 
-    if (url === null) {
-      return;
-    }
-
-    dispatch(expandMembersRequest(id));
+    dispatch({ type: GROUP_MEMBERS_EXPAND_REQUEST, id });
 
     api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const accounts = response.data;
+      const next = getNext(response);
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandMembersSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map(item => item.id)));
+      dispatch(importFetchedAccounts(accounts));
+      dispatch({ type: GROUP_MEMBERS_EXPAND_SUCCESS, id, accounts, next });
+      dispatch(fetchRelationships(accounts.map(item => item.id)));
     }).catch(error => {
-      dispatch(expandMembersFail(id, error));
+      dispatch({ type: GROUP_MEMBERS_EXPAND_FAIL, id, error });
     });
-  };
-}
-
-export function expandMembersRequest(id) {
-  return {
-    type: GROUP_MEMBERS_EXPAND_REQUEST,
-    id,
-  };
-}
-
-export function expandMembersSuccess(id, accounts, next) {
-  return {
-    type: GROUP_MEMBERS_EXPAND_SUCCESS,
-    id,
-    accounts,
-    next,
-  };
-}
-
-export function expandMembersFail(id, error) {
-  return {
-    type: GROUP_MEMBERS_EXPAND_FAIL,
-    id,
-    error,
   };
 }
 

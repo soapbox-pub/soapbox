@@ -13,12 +13,18 @@ import { FormattedMessage } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
 import Column from '../../ui/components/column';
 import ScrollableList from '../../../components/scrollable_list';
+import { findGroup } from 'soapbox/utils/groups';
 
-const mapStateToProps = (state, { params: { id } }) => ({
-  group: state.getIn(['groups', id]),
-  accountIds: state.getIn(['user_lists', 'groups', id, 'items']),
-  hasMore: !!state.getIn(['user_lists', 'groups', id, 'next']),
-});
+const mapStateToProps = (state, props) => {
+  const group = findGroup(state, props.params.id);
+  const id = group ? group.get('id') : '';
+
+  return {
+    group,
+    accountIds: state.getIn(['user_lists', 'groups', id, 'items']),
+    hasMore: !!state.getIn(['user_lists', 'groups', id, 'next']),
+  };
+};
 
 export default @connect(mapStateToProps)
 class GroupMembers extends ImmutablePureComponent {
@@ -31,19 +37,25 @@ class GroupMembers extends ImmutablePureComponent {
   };
 
   componentDidMount() {
-    const { params: { id } } = this.props;
+    const { group } = this.props;
 
-    this.props.dispatch(fetchMembers(id));
+    if (group) {
+      this.props.dispatch(fetchMembers(group.get('id')));
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.params.id !== prevProps.params.id) {
-      this.props.dispatch(fetchMembers(this.props.params.id));
+    const { group } = this.props;
+
+    if (group && group !== prevProps.group) {
+      this.props.dispatch(fetchMembers(group.get('id')));
     }
   }
 
   handleLoadMore = debounce(() => {
-    this.props.dispatch(expandMembers(this.props.params.id));
+    const { group } = this.props;
+
+    this.props.dispatch(expandMembers(group.get('id')));
   }, 300, { leading: true });
 
   render() {

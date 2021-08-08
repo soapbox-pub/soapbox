@@ -12,11 +12,7 @@ import LoadingIndicator from '../../../components/loading_indicator';
 import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
 import Avatar from '../../../components/avatar';
 import { Map as ImmutableMap } from 'immutable';
-
-const findGroup = (state, param) => {
-  const groups = state.get('groups');
-  return state.getIn(['groups', param]) || groups.find(g => g.get('slug') === param);
-};
+import { findGroup } from 'soapbox/utils/groups';
 
 const mapStateToProps = (state, props) => {
   const group = findGroup(state, props.params.id);
