@@ -89,43 +89,20 @@ export function fetchGroupRelationships(groupIds) {
     if (!isLoggedIn(getState)) return;
 
     const loadedRelationships = getState().get('group_relationships');
-    const newGroupIds = groupIds.filter(id => loadedRelationships.get(id, null) === null);
+    const ids = groupIds.filter(id => loadedRelationships.get(id, null) === null);
 
-    if (newGroupIds.length === 0) {
+    if (ids.length === 0) {
       return;
     }
 
-    dispatch(fetchGroupRelationshipsRequest(newGroupIds));
+    const query = ids.map(id => `id[]=${id}`).join('&');
 
-    api(getState).get(`/api/v1/pleroma/groups/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
-      dispatch(fetchGroupRelationshipsSuccess(response.data));
+    dispatch({ type: GROUP_RELATIONSHIPS_FETCH_REQUEST, ids, skipLoading: true });
+    api(getState).get(`/api/v1/pleroma/groups/relationships?${query}`).then(({ data: relationships }) => {
+      dispatch({ type: GROUP_RELATIONSHIPS_FETCH_SUCCESS, ids, relationships, skipLoading: true });
     }).catch(error => {
-      dispatch(fetchGroupRelationshipsFail(error));
+      dispatch({ type: GROUP_RELATIONSHIPS_FETCH_FAIL, ids, error, skipLoading: true });
     });
-  };
-}
-
-export function fetchGroupRelationshipsRequest(ids) {
-  return {
-    type: GROUP_RELATIONSHIPS_FETCH_REQUEST,
-    ids,
-    skipLoading: true,
-  };
-}
-
-export function fetchGroupRelationshipsSuccess(relationships) {
-  return {
-    type: GROUP_RELATIONSHIPS_FETCH_SUCCESS,
-    relationships,
-    skipLoading: true,
-  };
-}
-
-export function fetchGroupRelationshipsFail(error) {
-  return {
-    type: GROUP_RELATIONSHIPS_FETCH_FAIL,
-    error,
-    skipLoading: true,
   };
 }
 
