@@ -288,7 +288,7 @@
   "follow_request.authorize": "Caniatau",
   "follow_request.reject": "Gwrthod",
   "getting_started.open_source_notice": "Mae {code_name} yn feddalwedd côd agored. Mae modd cyfrannu neu adrodd materion ar GitLab ar {code_link} (v{code_version}).",
-  "group.members.empty": "This group does not has any members.",
+  "group.members.empty": "This group does not have any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
   "groups.card.members": "Members",

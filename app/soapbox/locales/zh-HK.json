@@ -288,7 +288,7 @@
   "follow_request.authorize": "批准",
   "follow_request.reject": "拒絕",
   "getting_started.open_source_notice": "{code_name}（萬象）是一個開放源碼的軟件。你可以在官方 GitLab ({code_link} (v{code_version})) 貢獻或者回報問題。",
-  "group.members.empty": "This group does not has any members.",
+  "group.members.empty": "This group does not have any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
   "groups.card.members": "Members",

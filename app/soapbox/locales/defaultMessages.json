@@ -2144,7 +2144,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "This group does not has any members.",
+        "defaultMessage": "This group does not have any members.",
         "id": "group.members.empty"
       }
     ],

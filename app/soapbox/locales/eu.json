@@ -288,7 +288,7 @@
   "follow_request.authorize": "Baimendu",
   "follow_request.reject": "Ukatu",
   "getting_started.open_source_notice": "{code_name} software librea da. Ekarpenak egin ditzakezu edo akatsen berri eman GitLab bidez: {code_link} (v{code_version}).",
-  "group.members.empty": "This group does not has any members.",
+  "group.members.empty": "This group does not have any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
   "groups.card.members": "Members",

@@ -288,7 +288,7 @@
   "follow_request.authorize": "అనుమతించు",
   "follow_request.reject": "తిరస్కరించు",
   "getting_started.open_source_notice": "మాస్టొడొన్ ఓపెన్ సోర్స్ సాఫ్ట్వేర్. మీరు {code_link} (v{code_version}) వద్ద GitLab పై సమస్యలను నివేదించవచ్చు లేదా తోడ్పడచ్చు.",
-  "group.members.empty": "This group does not has any members.",
+  "group.members.empty": "This group does not have any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
   "groups.card.members": "Members",

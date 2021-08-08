@@ -288,7 +288,7 @@
   "follow_request.authorize": "Autorizza",
   "follow_request.reject": "Rifiuta",
   "getting_started.open_source_notice": "{code_name} è un software open source. Puoi contribuire o segnalare errori su GitLab all'indirizzo {code_link} (v{code_version}).",
-  "group.members.empty": "This group does not has any members.",
+  "group.members.empty": "This group does not have any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
   "groups.card.members": "Members",

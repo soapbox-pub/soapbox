@@ -288,7 +288,7 @@
   "follow_request.authorize": "অনুমতি দিন",
   "follow_request.reject": "প্রত্যাখ্যান করুন",
   "getting_started.open_source_notice": "{code_name} একটি মুক্ত সফটওয়্যার। তৈরিতে সাহায্য করতে বা কোনো সমস্যা সম্পর্কে জানাতে আমাদের গিটহাবে যেতে পারেন {code_link} (v{code_version})।",
-  "group.members.empty": "This group does not has any members.",
+  "group.members.empty": "This group does not have any members.",
   "group.removed_accounts.empty": "This group does not has any removed accounts.",
   "groups.card.join": "Join",
   "groups.card.members": "Members",

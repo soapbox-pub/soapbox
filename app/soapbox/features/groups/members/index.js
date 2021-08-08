@@ -75,7 +75,7 @@ class GroupMembers extends ImmutablePureComponent {
           scrollKey='members'
           hasMore={hasMore}
           onLoadMore={this.handleLoadMore}
-          emptyMessage={<FormattedMessage id='group.members.empty' defaultMessage='This group does not has any members.' />}
+          emptyMessage={<FormattedMessage id='group.members.empty' defaultMessage='This group does not have any members.' />}
         >
           {accountIds.map(id => <AccountContainer key={id} id={id} withNote={false} />)}
         </ScrollableList>
