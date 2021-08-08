@@ -161,12 +161,11 @@ export function joinGroup(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(joinGroupRequest(id));
-
-    api(getState).post(`/api/v1/pleroma/groups/${id}/join`).then(response => {
-      dispatch(joinGroupSuccess(response.data));
+    dispatch({ type: GROUP_JOIN_REQUEST, id });
+    api(getState).post(`/api/v1/pleroma/groups/${id}/join`).then(({ data: relationship }) => {
+      dispatch({ type: GROUP_JOIN_SUCCESS, id, relationship });
     }).catch(error => {
-      dispatch(joinGroupFail(id, error));
+      dispatch({ type: GROUP_JOIN_FAIL, id, error });
     });
   };
 }
@@ -175,55 +174,12 @@ export function leaveGroup(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(leaveGroupRequest(id));
-
-    api(getState).post(`/api/v1/pleroma/groups/${id}/leave`).then(response => {
-      dispatch(leaveGroupSuccess(response.data));
+    dispatch({ type: GROUP_LEAVE_REQUEST, id });
+    api(getState).post(`/api/v1/pleroma/groups/${id}/leave`).then(({ data: relationship }) => {
+      dispatch({ type: GROUP_LEAVE_SUCCESS, id, relationship });
     }).catch(error => {
-      dispatch(leaveGroupFail(id, error));
+      dispatch({ type: GROUP_LEAVE_FAIL, id, error });
     });
-  };
-}
-
-export function joinGroupRequest(id) {
-  return {
-    type: GROUP_JOIN_REQUEST,
-    id,
-  };
-}
-
-export function joinGroupSuccess(relationship) {
-  return {
-    type: GROUP_JOIN_SUCCESS,
-    relationship,
-  };
-}
-
-export function joinGroupFail(error) {
-  return {
-    type: GROUP_JOIN_FAIL,
-    error,
-  };
-}
-
-export function leaveGroupRequest(id) {
-  return {
-    type: GROUP_LEAVE_REQUEST,
-    id,
-  };
-}
-
-export function leaveGroupSuccess(relationship) {
-  return {
-    type: GROUP_LEAVE_SUCCESS,
-    relationship,
-  };
-}
-
-export function leaveGroupFail(error) {
-  return {
-    type: GROUP_LEAVE_FAIL,
-    error,
   };
 }
 
