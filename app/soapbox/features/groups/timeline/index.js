@@ -51,9 +51,19 @@ class GroupTimeline extends React.PureComponent {
 
     if (group) {
       dispatch(expandGroupTimeline(group.get('id')));
-
-      // FIXME: Temporarily disabled
       this.disconnect = dispatch(connectGroupStream(group.get('id')));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { dispatch, group } = this.props;
+
+    if (group && !prevProps.group) {
+      dispatch(expandGroupTimeline(group.get('id')));
+
+      if (!this.disconnect) {
+        this.disconnect = dispatch(connectGroupStream(group.get('id')));
+      }
     }
   }
 
