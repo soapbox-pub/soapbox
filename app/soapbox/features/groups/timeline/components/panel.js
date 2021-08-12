@@ -9,6 +9,11 @@ const messages = defineMessages({
   group_admin: { id: 'groups.detail.role_admin', defaultMessage: 'You\'re an admin' },
 });
 
+const privacyIconMap = {
+  public: 'globe-w',
+  members_only: 'envelope',
+};
+
 export default @injectIntl
 class GroupPanel extends ImmutablePureComponent {
 
@@ -19,17 +24,21 @@ class GroupPanel extends ImmutablePureComponent {
 
     render() {
       const { group, relationships, intl } = this.props;
+      const privacy = group.getIn(['source', 'privacy']);
+      const icon = privacyIconMap[privacy] || '';
 
       return (
         <div className='group__panel'>
           <h1 className='group__panel__title'>
             {group.get('display_name')}
-            {group.get('archived') && <Icon id='lock' title={intl.formatMessage(messages.group_archived)} />}
           </h1>
 
           {relationships && relationships.get('admin') && <span className='group__panel__label'>{intl.formatMessage(messages.group_admin)}</span>}
 
-          <div className='group__panel__description'>{group.get('note')}</div>
+          <div className='group__panel__description'>
+            <Icon id={icon} />
+            {group.get('note')}
+          </div>
         </div>
       );
     }

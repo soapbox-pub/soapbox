@@ -9,12 +9,8 @@ import PromoPanel from '../features/ui/components/promo_panel';
 import HeaderContainer from '../features/groups/timeline/containers/header_container';
 import GroupPanel from '../features/groups/timeline/components/panel';
 import { fetchGroup } from '../actions/groups';
+import { findGroup } from 'soapbox/utils/groups';
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
-
-const findGroup = (state, param) => {
-  const groups = state.get('groups');
-  return state.getIn(['groups', param]) || groups.find(g => g.get('slug') === param);
-};
 
 const mapStateToProps = (state, props) => {
   const group = findGroup(state, props.params.id);

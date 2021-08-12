@@ -37,25 +37,25 @@ class GroupMembers extends ImmutablePureComponent {
   };
 
   componentDidMount() {
-    const { group } = this.props;
+    const { dispatch, group } = this.props;
 
     if (group) {
-      this.props.dispatch(fetchMembers(group.get('id')));
+      dispatch(fetchMembers(group.get('id')));
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { group } = this.props;
+    const { dispatch, group } = this.props;
 
     if (group && group !== prevProps.group) {
-      this.props.dispatch(fetchMembers(group.get('id')));
+      dispatch(fetchMembers(group.get('id')));
     }
   }
 
   handleLoadMore = debounce(() => {
-    const { group } = this.props;
+    const { dispatch, group } = this.props;
 
-    this.props.dispatch(expandMembers(group.get('id')));
+    dispatch(expandMembers(group.get('id')));
   }, 300, { leading: true });
 
   render() {
