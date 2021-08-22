@@ -6,6 +6,9 @@ import {
 } from 'immutable';
 import { getDomain } from 'soapbox/utils/accounts';
 import ConfigDB from 'soapbox/utils/config_db';
+import { getSettings } from 'soapbox/actions/settings';
+import { shouldFilter } from 'soapbox/utils/timelines';
+import { validId } from 'soapbox/utils/auth';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -205,15 +208,27 @@ export const makeGetReport = () => {
   );
 };
 
+const getAuthUserIds = createSelector([
+  state => state.getIn(['auth', 'users'], ImmutableMap()),
+], authUsers => {
+  return authUsers.reduce((ids, authUser) => {
+    try {
+      const id = authUser.get('id');
+      return validId(id) ? ids.add(id) : ids;
+    } catch {
+      return ids;
+    }
+  }, ImmutableOrderedSet());
+});
+
 export const makeGetOtherAccounts = () => {
   return createSelector([
     state => state.get('accounts'),
-    state => state.getIn(['auth', 'users']),
+    getAuthUserIds,
     state => state.get('me'),
   ],
-  (accounts, authUsers, me) => {
-    return authUsers
-      .keySeq()
+  (accounts, authUserIds, me) => {
+    return authUserIds
       .reduce((list, id) => {
         if (id === me) return list;
         const account = accounts.get(id);
@@ -262,3 +277,16 @@ export const makeGetRemoteInstance = () => {
     });
   });
 };
+
+export const makeGetStatusIds = () => createSelector([
+  (state, { type, prefix }) => getSettings(state).get(prefix || type, ImmutableMap()),
+  (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableOrderedSet()),
+  (state)           => state.get('statuses'),
+  (state)           => state.get('me'),
+], (columnSettings, statusIds, statuses, me) => {
+  return statusIds.filter(id => {
+    const status = statuses.get(id);
+    if (!status) return true;
+    return !shouldFilter(status, columnSettings);
+  });
+});

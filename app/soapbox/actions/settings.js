@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'soapbox/actions/me';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import uuid from '../uuid';
 import { createSelector } from 'reselect';
@@ -127,6 +127,13 @@ export const defaultSettings = ImmutableMap({
     }),
   }),
 
+  account_timeline: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      pinned: true,
+    }),
+  }),
+
   trends: ImmutableMap({
     show: true,
   }),
@@ -136,6 +143,10 @@ export const defaultSettings = ImmutableMap({
     ImmutableMap({ id: 'HOME', uuid: uuid(), params: {} }),
     ImmutableMap({ id: 'NOTIFICATIONS', uuid: uuid(), params: {} }),
   ]),
+
+  remote_timeline: ImmutableMap({
+    pinnedHosts: ImmutableOrderedSet(),
+  }),
 });
 
 export const getSettings = createSelector([

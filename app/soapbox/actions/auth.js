@@ -4,6 +4,10 @@ import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
+import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
+import { createApp } from 'soapbox/actions/apps';
+import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
+import sourceCode from 'soapbox/utils/code';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -32,14 +36,6 @@ export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
 export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
 
-export const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';
-export const FETCH_TOKENS_SUCCESS = 'FETCH_TOKENS_SUCCESS';
-export const FETCH_TOKENS_FAIL    = 'FETCH_TOKENS_FAIL';
-
-export const REVOKE_TOKEN_REQUEST = 'REVOKE_TOKEN_REQUEST';
-export const REVOKE_TOKEN_SUCCESS = 'REVOKE_TOKEN_SUCCESS';
-export const REVOKE_TOKEN_FAIL    = 'REVOKE_TOKEN_FAIL';
-
 const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
@@ -49,25 +45,22 @@ const noOp = () => () => new Promise(f => f());
 
 function createAppAndToken() {
   return (dispatch, getState) => {
-    return dispatch(createApp()).then(() => {
+    return dispatch(createAuthApp()).then(() => {
       return dispatch(createAppToken());
     });
   };
 }
 
-const appName = () => {
-  const timestamp = (new Date()).toISOString();
-  return `SoapboxFE_${timestamp}`; // TODO: Add commit hash
-};
-
-function createApp() {
+function createAuthApp() {
   return (dispatch, getState) => {
-    return api(getState, 'app').post('/api/v1/apps', {
-      client_name:   appName(),
+    const params = {
+      client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
-    }).then(response => {
-      return dispatch(authAppCreated(response.data));
+    };
+
+    return dispatch(createApp(params)).then(app => {
+      return dispatch({ type: AUTH_APP_CREATED, app });
     });
   };
 }
@@ -76,13 +69,15 @@ function createAppToken() {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
 
-    return api(getState, 'app').post('/oauth/token', {
+    const params = {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
-    }).then(response => {
-      return dispatch(authAppAuthorized(response.data));
+    };
+
+    return dispatch(obtainOAuthToken(params)).then(token => {
+      return dispatch({ type: AUTH_APP_AUTHORIZED, app, token });
     });
   };
 }
@@ -90,14 +85,17 @@ function createAppToken() {
 function createUserToken(username, password) {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
-    return api(getState, 'app').post('/oauth/token', {
+
+    const params = {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'password',
       username:      username,
       password:      password,
-    }).then(({ data: token }) => {
+    };
+
+    return dispatch(obtainOAuthToken(params)).then(token => {
       dispatch(authLoggedIn(token));
       return token;
     });
@@ -111,14 +109,16 @@ export function refreshUserToken() {
 
     if (!refreshToken) return dispatch(noOp());
 
-    return api(getState, 'app').post('/oauth/token', {
+    const params = {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
       refresh_token: refreshToken,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'refresh_token',
-    }).then(response => {
-      dispatch(authLoggedIn(response.data));
+    };
+
+    return dispatch(obtainOAuthToken(params)).then(token => {
+      dispatch(authLoggedIn(token));
     });
   };
 }
@@ -140,11 +140,13 @@ export function otpVerify(code, mfa_token) {
   };
 }
 
-export function verifyCredentials(token) {
+export function verifyCredentials(token, accountUrl) {
+  const baseURL = parseBaseURL(accountUrl);
+
   return (dispatch, getState) => {
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
 
-    return baseClient(token).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
+    return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
       if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
@@ -176,21 +178,26 @@ export function logIn(intl, username, password) {
 export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
-    const me = state.get('me');
+    const account = getLoggedInAccount(state);
 
-    return api(getState).post('/oauth/revoke', {
+    const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'users', me, 'access_token']),
-    }).finally(() => {
-      dispatch({ type: AUTH_LOGGED_OUT, accountId: me });
+      token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
+    };
+
+    return dispatch(revokeOAuthToken(params)).finally(() => {
+      dispatch({ type: AUTH_LOGGED_OUT, account });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });
   };
 }
 
 export function switchAccount(accountId, background = false) {
-  return { type: SWITCH_ACCOUNT, accountId, background };
+  return (dispatch, getState) => {
+    const account = getState().getIn(['accounts', accountId]);
+    dispatch({ type: SWITCH_ACCOUNT, account, background });
+  };
 }
 
 export function fetchOwnAccounts() {
@@ -199,7 +206,7 @@ export function fetchOwnAccounts() {
     state.getIn(['auth', 'users']).forEach(user => {
       const account = state.getIn(['accounts', user.get('id')]);
       if (!account) {
-        dispatch(verifyCredentials(user.get('access_token')));
+        dispatch(verifyCredentials(user.get('access_token'), user.get('url')));
       }
     });
   };
@@ -258,13 +265,15 @@ export function changeEmail(email, password) {
 
 export function deleteAccount(intl, password) {
   return (dispatch, getState) => {
+    const account = getLoggedInAccount(getState());
+
     dispatch({ type: DELETE_ACCOUNT_REQUEST });
     return api(getState).post('/api/pleroma/delete_account', {
       password,
     }).then(response => {
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
-      dispatch({ type: AUTH_LOGGED_OUT });
+      dispatch({ type: AUTH_LOGGED_OUT, account });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
@@ -287,42 +296,6 @@ export function changePassword(oldPassword, newPassword, confirmation) {
       dispatch({ type: CHANGE_PASSWORD_FAIL, error, skipAlert: true });
       throw error;
     });
-  };
-}
-
-export function fetchOAuthTokens() {
-  return (dispatch, getState) => {
-    dispatch({ type: FETCH_TOKENS_REQUEST });
-    return api(getState).get('/api/oauth_tokens.json').then(response => {
-      dispatch({ type: FETCH_TOKENS_SUCCESS, tokens: response.data });
-    }).catch(error => {
-      dispatch({ type: FETCH_TOKENS_FAIL });
-    });
-  };
-}
-
-export function revokeOAuthToken(id) {
-  return (dispatch, getState) => {
-    dispatch({ type: REVOKE_TOKEN_REQUEST, id });
-    return api(getState).delete(`/api/oauth_tokens/${id}`).then(response => {
-      dispatch({ type: REVOKE_TOKEN_SUCCESS, id });
-    }).catch(error => {
-      dispatch({ type: REVOKE_TOKEN_FAIL, id });
-    });
-  };
-}
-
-export function authAppCreated(app) {
-  return {
-    type: AUTH_APP_CREATED,
-    app,
-  };
-}
-
-export function authAppAuthorized(app) {
-  return {
-    type: AUTH_APP_AUTHORIZED,
-    app,
   };
 }
 
