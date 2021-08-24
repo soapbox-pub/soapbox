@@ -193,6 +193,12 @@ class Status extends ImmutablePureComponent {
     this.props.onToggleHidden(this._properStatus());
   };
 
+  handleReplyToClick = ({ target }) => {
+    if (target.className === 'status__meta') {
+      this.handleClick();
+    }
+  }
+
   renderLoadingMediaGallery() {
     return <div className='media_gallery' style={{ height: '285px' }} />;
   }
@@ -288,6 +294,29 @@ class Status extends ImmutablePureComponent {
 
   handleRef = c => {
     this.node = c;
+  }
+
+  getInReplyToMessage = () => {
+    const { status } = this.props;
+    const inReplyToId = status.get('in_reply_to_id');
+    const inReplyToAcct = status.getIn(['pleroma', 'in_reply_to_account_acct']);
+
+    if (inReplyToAcct) {
+      return (
+        <FormattedMessage
+          id='status.replying_to'
+          defaultMessage='Replying to {accts}'
+          values={{ accts: <NavLink to={`/@${inReplyToAcct}`}>{`@${inReplyToAcct.split('@')[0]}`}</NavLink> }}
+        />
+      );
+    }
+
+    // Fallback for Mastodon
+    if (inReplyToId) {
+      return <FormattedMessage id='status.replying_to_post' defaultMessage='Replying to a post' />;
+    }
+
+    return null;
   }
 
   render() {
@@ -467,6 +496,7 @@ class Status extends ImmutablePureComponent {
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
+    const inReplyToMessage = this.getInReplyToMessage();
 
     return (
       <HotKeys handlers={handlers}>
@@ -507,6 +537,12 @@ class Status extends ImmutablePureComponent {
               </div>
             )}
 
+            {(showThread && inReplyToMessage) && (
+              <button className='status__meta' onClick={this.handleReplyToClick}>
+                {inReplyToMessage}
+              </button>
+            )}
+
             <StatusContent
               status={status}
               reblogContent={reblogContent}
@@ -518,12 +554,6 @@ class Status extends ImmutablePureComponent {
 
             {media}
             {poll}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             <StatusActionBar
               status={status}

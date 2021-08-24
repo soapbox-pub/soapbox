@@ -95,22 +95,6 @@
   max-height: 20px * 15; // 15 lines is roughly above 500 characters
 }
 
-.status__content__read-more-button {
-  display: block;
-  font-size: 15px;
-  line-height: 20px;
-  color: var(--highlight-text-color);
-  border: 0;
-  background: transparent;
-  padding: 0;
-  padding-top: 8px;
-
-  &:hover,
-  &:active {
-    text-decoration: underline;
-  }
-}
-
 .status__content__spoiler-link {
   display: inline-block;
   border-radius: 2px;
@@ -220,6 +204,10 @@
   &__meta {
     font-size: 14px;
     color: var(--primary-text-color--faint);
+    display: block;
+    border: 0;
+    padding: 0;
+    background: transparent;
 
     a {
       color: var(--brand-color);
