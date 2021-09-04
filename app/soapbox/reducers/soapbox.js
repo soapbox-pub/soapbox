@@ -6,8 +6,9 @@ import {
 import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
+import { soapboxConfig as buildConfig } from 'soapbox/build_config';
 
-const initialState = ImmutableMap();
+const initialState = ImmutableMap(buildConfig);
 
 const fallbackState = ImmutableMap({
   brandColor: '#0482d8', // Azure
@@ -30,10 +31,15 @@ const preloadImport = (state, action) => {
 
   if (feData) {
     const soapbox = feData.soapbox_fe;
-    return soapbox ? fallbackState.mergeDeep(fromJS(soapbox)) : fallbackState;
-  } else {
-    return state;
+
+    if (soapbox) {
+      return fallbackState
+        .mergeDeep(state)
+        .mergeDeep(fromJS(soapbox));
+    }
   }
+
+  return state;
 };
 
 export default function soapbox(state = initialState, action) {

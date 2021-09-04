@@ -62,9 +62,9 @@ export const getSoapboxConfig = createSelector([
 
 export function fetchSoapboxConfig() {
   return (dispatch, getState) => {
-    api(getState).get('/api/pleroma/frontend_configurations').then(response => {
-      if (response.data.soapbox_fe) {
-        dispatch(importSoapboxConfig(response.data.soapbox_fe));
+    api(getState).get('/api/pleroma/frontend_configurations').then(({ data }) => {
+      if (data.soapbox_fe) {
+        dispatch(importSoapboxConfig(data.soapbox_fe));
       } else {
         dispatch(fetchSoapboxJson());
       }

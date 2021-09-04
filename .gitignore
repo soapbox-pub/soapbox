@@ -8,6 +8,9 @@
 /.vs/
 yarn-error.log*
 
+# Build data
+/soapbox.json
+
 /static/
 /static-test/
 /public/

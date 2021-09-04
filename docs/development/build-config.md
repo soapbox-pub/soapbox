@@ -60,3 +60,7 @@ For example, if you want to host the build on `https://gleasonator.com/soapbox`,
 ```sh
 NODE_ENV="production" FE_BASE_PATH="/soapbox" yarn build
 ```
+
+### Soapbox Config
+
+Normally settings are configured in Pleroma's database, but if you include a `soapbox.json` in the root of the repo during build, it will get bundled into the build as the default settings.

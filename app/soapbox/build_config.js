@@ -4,6 +4,7 @@
  * @module soapbox/build_config
  */
 
+const { join } = require('path');
 const { trim } = require('lodash');
 
 const {
@@ -28,6 +29,14 @@ const sanitizePath = path => {
   return trim(path, '/');
 };
 
+const getSoapboxConfig = () => {
+  try {
+    return require(join(__dirname, '..', '..', 'soapbox.json'));
+  } catch {
+    return {};
+  }
+};
+
 // JSON.parse/stringify is to emulate what @preval is doing and avoid any
 // inconsistent behavior in dev mode
 const sanitize = obj => JSON.parse(JSON.stringify(obj));
@@ -36,4 +45,5 @@ module.exports = sanitize({
   BACKEND_URL: sanitizeURL(BACKEND_URL),
   FE_BASE_PATH: sanitizeBasename(FE_BASE_PATH),
   FE_BUILD_DIR: sanitizePath(FE_BUILD_DIR) || 'static',
+  soapboxConfig: getSoapboxConfig(),
 });
