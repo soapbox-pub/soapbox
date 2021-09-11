@@ -19,6 +19,7 @@ module.exports = merge(sharedConfig, {
     // Generates report.html
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
+      reportFilename: 'packs/report.html',
       openAnalyzer: false,
       logLevel: 'silent',
     }),
@@ -53,7 +54,7 @@ module.exports = merge(sharedConfig, {
         '**/*.map',
         '**/*.LICENSE.txt',
         'stats.json',
-        'report.html',
+        'packs/report.html',
         'instance/**/*',
         // any browser that supports ServiceWorker will support woff2
         '**/*.eot',
