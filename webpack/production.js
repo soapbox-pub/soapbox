@@ -86,7 +86,8 @@ module.exports = merge(sharedConfig, {
         minify: true,
       },
       safeToUseOptionalCaches: true,
-      appShell: join(FE_SUBDIRECTORY, '/'),
+      // TODO: re-enable this, but handle backend/API routes
+      // appShell: join(FE_SUBDIRECTORY, '/'),
     }),
   ],
 });
