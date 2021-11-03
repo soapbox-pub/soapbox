@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Sticky from 'react-stickynode';
 import BundleContainer from '../features/ui/containers/bundle_container';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
+import DraftEditor from 'soapbox/features/compose/components/draft_editor';
 import Avatar from '../components/avatar';
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import {
@@ -69,6 +70,8 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__main'>
               <div className='columns-area'>
+                <DraftEditor />
+
                 {me && <div className='timeline-compose-block' ref={this.composeBlock}>
                   <Link className='timeline-compose-block__avatar' to={`/@${acct}`}>
                     <Avatar account={account} size={46} />
