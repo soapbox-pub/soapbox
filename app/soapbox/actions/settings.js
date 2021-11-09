@@ -5,6 +5,7 @@ import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrde
 import { isLoggedIn } from 'soapbox/utils/auth';
 import uuid from '../uuid';
 import { createSelector } from 'reselect';
+import messages from 'soapbox/locales/messages';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -27,7 +28,7 @@ export const defaultSettings = ImmutableMap({
   defaultPrivacy: 'public',
   defaultContentType: 'text/plain',
   themeMode: 'light',
-  locale: navigator.language.split(/[-_]/)[0] || 'en',
+  locale: navigator.language || 'en',
   showExplanationBox: true,
   explanationBox: true,
   otpEnabled: false,
@@ -172,6 +173,12 @@ export function changeSetting(path, value) {
 
     dispatch(saveSettings());
   };
+}
+
+export function getLocale(state) {
+  const locale = getSettings(state).get('locale').replace('_', '-');
+  const locale2 = locale.split('-')[0];
+  return Object.keys(messages).includes(locale) ? locale : Object.keys(messages).includes(locale2) ? locale2 : 'en';
 }
 
 const debouncedSave = debounce((dispatch, getState) => {

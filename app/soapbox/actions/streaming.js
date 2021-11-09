@@ -9,18 +9,11 @@ import {
 import { updateNotificationsQueue, expandNotifications } from './notifications';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
-import { getSettings } from 'soapbox/actions/settings';
+import { getSettings, getLocale } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
 export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 export const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
-
-const validLocale = locale => Object.keys(messages).includes(locale);
-
-const getLocale = state => {
-  const locale = getSettings(state).get('locale');
-  return validLocale(locale) ? locale : 'en';
-};
 
 function updateFollowRelationships(relationships) {
   return (dispatch, getState) => {

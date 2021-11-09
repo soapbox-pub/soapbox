@@ -20,14 +20,12 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
-import { getSettings } from 'soapbox/actions/settings';
+import { getSettings, getLocale } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 import { createGlobals } from 'soapbox/globals';
-
-const validLocale = locale => Object.keys(messages).includes(locale);
 
 const previewMediaState = 'previewMediaModal';
 const previewVideoState = 'previewVideoModal';
@@ -53,7 +51,7 @@ const mapStateToProps = (state) => {
   const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
   const settings = getSettings(state);
   const soapboxConfig = getSoapboxConfig(state);
-  const locale = settings.get('locale');
+  const locale = getLocale(state);
 
   return {
     showIntroduction,
@@ -63,7 +61,7 @@ const mapStateToProps = (state) => {
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
-    locale: validLocale(locale) ? locale : 'en',
+    locale: locale,
     themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
