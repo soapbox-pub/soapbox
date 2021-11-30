@@ -21,6 +21,10 @@ export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAIL    = 'RESET_PASSWORD_FAIL';
 
+export const RESET_PASSWORD_CONFIRM_REQUEST = 'RESET_PASSWORD_CONFIRM_REQUEST';
+export const RESET_PASSWORD_CONFIRM_SUCCESS = 'RESET_PASSWORD_CONFIRM_SUCCESS';
+export const RESET_PASSWORD_CONFIRM_FAIL    = 'RESET_PASSWORD_CONFIRM_FAIL';
+
 export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
 export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
@@ -83,6 +87,20 @@ export function resetPassword(nickNameOrEmail) {
       dispatch({ type: RESET_PASSWORD_SUCCESS });
     }).catch(error => {
       dispatch({ type: RESET_PASSWORD_FAIL, error });
+      throw error;
+    });
+  };
+}
+
+export function resetPasswordConfirm(password, token) {
+  return (dispatch, getState) => {
+    const params = { password, reset_password_token: token };
+    dispatch({ type: RESET_PASSWORD_CONFIRM_REQUEST });
+    // Note: this doesn't work yet
+    return api(getState).post('/auth/password/edit', params).then(() => {
+      dispatch({ type: RESET_PASSWORD_CONFIRM_SUCCESS });
+    }).catch(error => {
+      dispatch({ type: RESET_PASSWORD_CONFIRM_FAIL, error });
       throw error;
     });
   };

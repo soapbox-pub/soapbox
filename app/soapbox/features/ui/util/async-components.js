@@ -258,6 +258,10 @@ export function PasswordReset() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset');
 }
 
+export function PasswordResetConfirm() {
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset_confirm');
+}
+
 export function SecurityForm() {
   return import(/* webpackChunkName: "features/security" */'../../security');
 }

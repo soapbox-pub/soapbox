@@ -91,6 +91,7 @@ import {
   ImportData,
   Backups,
   PasswordReset,
+  PasswordResetConfirm,
   SecurityForm,
   MfaForm,
   ChatIndex,
@@ -221,6 +222,7 @@ class SwitchingColumnsArea extends React.PureComponent {
       <Switch>
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
+        <WrappedRoute path='/auth/edit_password' component={PasswordResetConfirm} publicRoute exact />
         <WrappedRoute path='/auth/external' component={ExternalLogin} publicRoute exact />
         <WrappedRoute path='/auth/edit' page={DefaultPage} component={SecurityForm} exact />
         <WrappedRoute path='/auth/mfa' page={DefaultPage} component={MfaForm} exact />
@@ -261,6 +263,14 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/terms' to='/about' />
         <Redirect from='/home' to='/' />
+
+        {/*
+          Pleroma treats `/auth/password` as a backend API endpoint,
+          so we have to use different paths. But if the frontend
+          ever catches these paths, intercept them.
+        */}
+        <Redirect from='/auth/password/new' to='/auth/reset_password' />
+        <Redirect from='/auth/password/edit' to='/auth/edit_password' />
 
         {/* Soapbox Legacy redirects */}
         <Redirect from='/canary' to='/about/canary' />
