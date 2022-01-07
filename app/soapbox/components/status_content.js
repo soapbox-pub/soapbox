@@ -182,13 +182,15 @@ class StatusContent extends React.PureComponent {
 
   // Strip mentions at the start of text if they match the replying-to data.
   stripMentions = html => {
-    const mentions = this.props.status.get('mentions');
+    const { status } = this.props;
+    const isReply = Boolean(status.get('in_reply_to_id'));
+    const mentions = status.get('mentions');
     const mentionsText = mentions.map(mention => `@${mention.get('username')}`).join(' ');
 
     const div = document.createElement('div');
     div.innerHTML = html;
 
-    if (div.textContent.startsWith(mentionsText)) {
+    if (isReply && div.textContent.startsWith(mentionsText)) {
       const m = div.querySelectorAll('a.mention');
       for (let i = 0; i < mentions.size; i++) {
         m[i].remove();
