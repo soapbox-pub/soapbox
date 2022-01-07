@@ -175,7 +175,27 @@ class StatusContent extends React.PureComponent {
 
   parseHtml = html => {
     const { greentext } = this.props;
-    if (greentext) return addGreentext(html);
+    html = this.stripMentions(html);
+    if (greentext) html = addGreentext(html);
+    return html;
+  }
+
+  // Strip mentions at the start of text if they match the replying-to data.
+  stripMentions = html => {
+    const mentions = this.props.status.get('mentions');
+    const mentionsText = mentions.map(mention => `@${mention.get('username')}`).join(' ');
+
+    const div = document.createElement('div');
+    div.innerHTML = html;
+
+    if (div.textContent.startsWith(mentionsText)) {
+      const m = div.querySelectorAll('a.mention');
+      for (let i = 0; i < mentions.size; i++) {
+        m[i].remove();
+      }
+      return div.innerHTML.trimLeft();
+    }
+
     return html;
   }
 
