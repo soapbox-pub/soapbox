@@ -6,7 +6,7 @@ const { resolve } = require('path');
 // These are processed in reverse-order
 // We use the name 'packs' instead of 'assets' for legacy reasons
 module.exports = [{
-  test: /\.(png|svg)/,
+  test: /\.(png|gif|svg)/,
   type: 'asset/resource',
   include: [
     resolve('app', 'images'),

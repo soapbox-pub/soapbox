@@ -29,12 +29,15 @@ export default class Avatar extends React.PureComponent {
     };
 
     return (
-      <StillImage
-        className={classNames('account__avatar', { 'account__avatar-inline': inline })}
-        style={style}
-        src={account.get('avatar')}
-        alt=''
-      />
+      <div className='account__avatar-wrapper'>
+        <div className='party-hat' />
+        <StillImage
+          className={classNames('account__avatar', { 'account__avatar-inline': inline })}
+          style={style}
+          src={account.get('avatar')}
+          alt=''
+        />
+      </div>
     );
   }
 
