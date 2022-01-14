@@ -59,6 +59,7 @@ export const makeDefaultConfig = features => {
     }),
     aboutPages: ImmutableMap(),
     authenticatedProfile: true,
+    sentryDsn: '',
   });
 };
 

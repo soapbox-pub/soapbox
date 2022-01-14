@@ -1,6 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import * as monitoring from 'soapbox/monitoring';
 import KVStore from 'soapbox/storage/kv_store';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
@@ -46,7 +47,14 @@ const persistSoapboxConfig = (soapboxConfig, host) => {
 };
 
 const importSoapboxConfig = (state, soapboxConfig, host) => {
+  const sentryDsn = soapboxConfig.get('sentryDsn');
+
   persistSoapboxConfig(soapboxConfig, host);
+
+  if (sentryDsn) {
+    monitoring.start(sentryDsn);
+  }
+
   return soapboxConfig;
 };
 

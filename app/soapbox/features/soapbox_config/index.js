@@ -38,6 +38,8 @@ const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
   saved: { id: 'soapbox_config.saved', defaultMessage: 'Soapbox config saved!' },
   copyrightFooterLabel: { id: 'soapbox_config.copyright_footer.meta_fields.label_placeholder', defaultMessage: 'Copyright footer' },
+  sentryDsnLabel: { id: 'soapbox_config.sentry_dsn_label', defaultMessage: 'Sentry DSN' },
+  sentryDsnHint: { id: 'soapbox_config.sentry_dsn_hint', defaultMessage: 'Enable error monitoring with a Sentry-compatible DSN.' },
   promoItemIcon: { id: 'soapbox_config.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
   promoItemLabel: { id: 'soapbox_config.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
   promoItemURL: { id: 'soapbox_config.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
@@ -263,6 +265,14 @@ class SoapboxConfig extends ImmutablePureComponent {
                 placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
                 value={soapbox.get('copyright')}
                 onChange={this.handleChange(['copyright'], (e) => e.target.value)}
+              />
+              <TextInput
+                name='sentryDsn'
+                label={intl.formatMessage(messages.sentryDsnLabel)}
+                placeholder='https://...'
+                hint={intl.formatMessage(messages.sentryDsnHint)}
+                value={soapbox.get('sentryDsn')}
+                onChange={this.handleChange(['sentryDsn'], (e) => e.target.value)}
               />
             </FieldsGroup>
             <FieldsGroup>
