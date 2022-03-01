@@ -21,6 +21,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Column from 'soapbox/components/column';
 import PullToRefresh from 'soapbox/components/pull_to_refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
 import { blockAccount } from '../../actions/accounts';
@@ -612,12 +613,20 @@ class Status extends ImmutablePureComponent {
     let ancestors, descendants;
     const { status, ancestorsIds, descendantsIds, intl, domain } = this.props;
 
-    if (status === null) {
+    if (status === false) {
       return (
         <Column>
           <MissingIndicator />
         </Column>
       );
+    } else if (status === null) {
+      return (
+        <Column>
+          <PlaceholderStatus />
+        </Column>
+      );
+    } else if (!status) {
+      return null;
     }
 
     if (ancestorsIds && ancestorsIds.size > 0) {

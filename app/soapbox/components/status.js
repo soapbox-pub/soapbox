@@ -324,7 +324,7 @@ class Status extends ImmutablePureComponent {
     // FIXME: why does this need to reassign status and account??
     let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
 
-    if (status === null) {
+    if (!status) {
       return null;
     }
 

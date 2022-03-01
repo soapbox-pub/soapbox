@@ -135,13 +135,13 @@ export const makeGetStatus = () => {
 
     (statusBase, statusReblog, accountBase, accountReblog, username, filters, me) => {
       if (!statusBase) {
-        return null;
+        return statusBase;
       }
 
       const accountUsername = accountBase.get('acct');
-      //Must be owner of status if username exists
+      // Must be owner of status if username exists
       if (accountUsername !== username && username !== undefined) {
-        return null;
+        return false;
       }
 
       if (statusReblog) {

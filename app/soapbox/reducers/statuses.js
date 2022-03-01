@@ -21,6 +21,8 @@ import {
   FAVOURITE_FAIL,
 } from '../actions/interactions';
 import {
+  STATUS_FETCH_REQUEST,
+  STATUS_FETCH_FAIL,
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
   STATUS_MUTE_SUCCESS,
@@ -127,10 +129,19 @@ const deletePendingStatus = (state, { in_reply_to_id }) => {
   }
 };
 
+// Set the status to `null` when it's loading, and `false` when loading failed.
+const setLoading = (state, statusId, loading) => {
+  return state.update(statusId, status =>  status || loading);
+};
+
 const initialState = ImmutableMap();
 
 export default function statuses(state = initialState, action) {
   switch(action.type) {
+  case STATUS_FETCH_REQUEST:
+    return setLoading(state, action.id, null);
+  case STATUS_FETCH_FAIL:
+    return setLoading(state, action.id, false);
   case STATUS_IMPORT:
     return importStatus(state, action.status, action.expandSpoilers);
   case STATUSES_IMPORT:
