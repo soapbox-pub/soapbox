@@ -22,7 +22,7 @@ const mapStateToProps = state => {
 
   return {
     supportsBirthdays: features.birthdays,
-    minAge: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_min_age']),
+    minAge: state.get('instance')?.pleroma?.metadata?.birthday_min_age,
   };
 };
 

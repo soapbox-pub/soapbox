@@ -31,7 +31,7 @@ const mapStateToProps = state => {
     timelineId,
     onlyMedia,
     hasUnread: state.getIn(['timelines', `${timelineId}${onlyMedia ? ':media' : ''}`, 'unread']) > 0,
-    siteTitle: state.getIn(['instance', 'title']),
+    siteTitle: state.getIn('instance').title,
     explanationBoxExpanded: settings.get('explanationBox'),
     showExplanationBox: settings.get('showExplanationBox'),
   };

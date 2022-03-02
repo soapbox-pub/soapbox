@@ -1,20 +1,25 @@
 // Detect backend features to conditionally render elements
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
 import gte from 'semver/functions/gte';
 import lt from 'semver/functions/lt';
 
-const any = arr => arr.some(Boolean);
+const any = (arr: Array<Boolean>) => arr.some(Boolean);
+
+interface Backend {
+  software: null | string,
+  version: string,
+  compatVersion: string,
+}
 
 // For uglification
 export const MASTODON = 'Mastodon';
 export const PLEROMA  = 'Pleroma';
 export const MITRA    = 'Mitra';
 
-export const getFeatures = createSelector([instance => instance], instance => {
-  const v = parseVersion(instance.get('version'));
-  const features = instance.getIn(['pleroma', 'metadata', 'features'], ImmutableList());
-  const federation = instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap());
+export const getFeatures = createSelector([instance => instance], (instance: Instance) => {
+  const v: Backend = parseVersion(instance.version);
+  const features = instance?.pleroma?.metadata?.features || [];
+  const federation = instance?.pleroma?.metadata?.federation;
 
   return {
     bookmarks: any([
@@ -57,7 +62,7 @@ export const getFeatures = createSelector([instance => instance], instance => {
     chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
     chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
-    federating: federation.get('enabled', true), // Assume true unless explicitly false
+    federating: federation?.enabled === undefined ? true : federation?.enabled, // Assume true unless explicitly false
     richText: v.software === PLEROMA,
     securityAPI: v.software === PLEROMA,
     settingsStore: v.software === PLEROMA,
@@ -84,7 +89,7 @@ export const getFeatures = createSelector([instance => instance], instance => {
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
     quotePosts: any([
       v.software === PLEROMA && gte(v.version, '2.4.50'),
-      instance.get('feature_quote') === true,
+      instance.feature_quote === true,
     ]),
     birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
     ethereumLogin: v.software === MITRA,
@@ -96,7 +101,7 @@ export const getFeatures = createSelector([instance => instance], instance => {
   };
 });
 
-export const parseVersion = version => {
+export const parseVersion = (version: string): Backend => {
   const regex = /^([\w\.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 

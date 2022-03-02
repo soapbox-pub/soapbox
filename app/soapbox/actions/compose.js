@@ -297,7 +297,7 @@ export function submitComposeFail(error) {
 export function uploadCompose(files) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
-    const attachmentLimit = getState().getIn(['instance', 'configuration', 'statuses', 'max_media_attachments']);
+    const attachmentLimit = getState().get('instance')?.configuration?.statuses?.max_media_attachments;
 
     const media  = getState().getIn(['compose', 'media_attachments']);
     const progress = new Array(files.length).fill(0);

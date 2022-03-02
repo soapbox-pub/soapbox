@@ -144,7 +144,7 @@ const mapStateToProps = state => {
   return {
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
     accessToken: getAccessToken(state),
-    streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
+    streamingUrl: state.get('instance')?.urls?.streaming_api,
     me,
     account,
     features: getFeatures(instance),

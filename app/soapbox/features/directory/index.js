@@ -25,7 +25,7 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   accountIds: state.getIn(['user_lists', 'directory', 'items'], ImmutableList()),
   isLoading: state.getIn(['user_lists', 'directory', 'isLoading'], true),
-  title: state.getIn(['instance', 'title']),
+  title: state.get('instance')?.title,
   features: getFeatures(state.get('instance')),
 });
 

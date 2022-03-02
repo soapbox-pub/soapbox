@@ -7,7 +7,7 @@ import RegistrationForm from 'soapbox/features/auth_login/components/registratio
 
 const mapStateToProps = state => {
   return {
-    siteTitle: state.getIn(['instance', 'title']),
+    siteTitle: state.getIn('instance').title,
   };
 };
 

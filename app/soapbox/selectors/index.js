@@ -278,7 +278,7 @@ export const makeGetOtherAccounts = () => {
 
 const getSimplePolicy = createSelector([
   state => state.getIn(['admin', 'configs'], ImmutableMap()),
-  state => state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap()),
+  state => ImmutableMap(state.get('instance')?.pleroma?.metadata?.federation?.mrf_simple ||{}),
 ], (configs, instancePolicy) => {
   return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
 });

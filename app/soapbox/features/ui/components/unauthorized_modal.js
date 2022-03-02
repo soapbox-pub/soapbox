@@ -25,7 +25,7 @@ const mapStateToProps = (state, props) => {
   if (props.action !== 'FOLLOW') {
     return {
       features,
-      siteTitle: state.getIn(['instance', 'title']),
+      siteTitle: instance.title,
       remoteInteractionsAPI: features.remoteInteractionsAPI,
       singleUserMode: soapboxConfig.get('singleUserMode'),
     };
@@ -35,7 +35,7 @@ const mapStateToProps = (state, props) => {
 
   return {
     features,
-    siteTitle: state.getIn(['instance', 'title']),
+    siteTitle: instance.title,
     userName,
     remoteInteractionsAPI: features.remoteInteractionsAPI,
     singleUserMode: soapboxConfig.get('singleUserMode'),

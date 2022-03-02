@@ -27,7 +27,7 @@ const mapStateToProps = state => {
   return {
     hasUnread: state.getIn(['timelines', 'home', 'unread']) > 0,
     isPartial: state.getIn(['timelines', 'home', 'isPartial']),
-    siteTitle: state.getIn(['instance', 'title']),
+    siteTitle: state.get('instance').title,
     isLoading: state.getIn(['timelines', 'home', 'isLoading'], true),
     loadingFailed: state.getIn(['timelines', 'home', 'loadingFailed'], false),
     isEmpty: state.getIn(['timelines', 'home', 'items'], ImmutableOrderedSet()).isEmpty(),

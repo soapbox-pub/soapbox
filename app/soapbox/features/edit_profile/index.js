@@ -64,7 +64,7 @@ const makeMapStateToProps = () => {
 
     return {
       account,
-      maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
+      maxFields: state.get('instance')?.pleroma?.metadata?.fields_limits?.max_fields || 4,
       verifiedCanEditName: soapbox.get('verifiedCanEditName'),
       supportsEmailList: features.emailList,
       supportsBirthdays: features.birthdays,

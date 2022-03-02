@@ -15,7 +15,7 @@ export const displayFqn = state => {
 };
 
 export const federationRestrictionsDisclosed = state => {
-  return state.hasIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_policies']);
+  return Boolean(state.get('instance')?.pleroma?.metadata?.federation?.mrf_policies);
 };
 
 /**

@@ -22,7 +22,7 @@ const mapStateToProps = state => {
   const settings = getSettings(state);
 
   return {
-    siteTitle: state.getIn(['instance', 'title'], sourceCode.displayName),
+    siteTitle: state.get('instance')?.title || sourceCode.displayName,
     unreadCount: getNotifTotals(state),
     demetricator: settings.get('demetricator'),
   };

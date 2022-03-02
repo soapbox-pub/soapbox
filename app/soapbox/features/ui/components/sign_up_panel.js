@@ -10,7 +10,7 @@ const mapStateToProps = state => {
   const soapboxConfig = getSoapboxConfig(state);
 
   return {
-    siteTitle: state.getIn(['instance', 'title']),
+    siteTitle: state.get('instance').title,
     me: state.get('me'),
     singleUserMode: soapboxConfig.get('singleUserMode'),
   };

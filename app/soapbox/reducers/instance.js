@@ -1,5 +1,3 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { normalizeInstance } from 'soapbox/normalizers/instance';
@@ -13,22 +11,22 @@ import {
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
 
-const initialState = normalizeInstance(ImmutableMap());
+const initialState = normalizeInstance({});
 
 const nodeinfoToInstance = nodeinfo => {
   // Match Pleroma's develop branch
-  return ImmutableMap({
-    pleroma: ImmutableMap({
-      metadata: ImmutableMap({
-        account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
-        features: nodeinfo.getIn(['metadata', 'features']),
-        federation: nodeinfo.getIn(['metadata', 'federation']),
-        fields_limits: ImmutableMap({
-          max_fields: nodeinfo.getIn(['metadata', 'fieldsLimits', 'maxFields']),
-        }),
-      }),
-    }),
-  });
+  return {
+    pleroma: {
+      metadata: {
+        account_activation_required: nodeinfo?.metadata?.accountActivationRequired,
+        features: nodeinfo?.metadata?.features,
+        federation: nodeinfo?.metadata?.federation,
+        fields_limits: {
+          max_fields: nodeinfo?.metadata?.fieldsLimits?.maxFields,
+        },
+      },
+    },
+  };
 };
 
 const importInstance = (state, instance) => {
@@ -41,7 +39,7 @@ const importNodeinfo = (state, nodeinfo) => {
 
 const preloadImport = (state, action, path) => {
   const instance = action.data[path];
-  return instance ? importInstance(state, fromJS(instance)) : state;
+  return instance ? importInstance(state, instance) : state;
 };
 
 const getConfigValue = (instanceConfig, key) => {
@@ -60,7 +58,7 @@ const importConfigs = (state, configs) => {
 
   return state.withMutations(state => {
     if (config) {
-      const value = config.get('value', ImmutableList());
+      const value = config?.value || [];
       const registrationsOpen = getConfigValue(value, ':registrations_open');
       const approvalRequired = getConfigValue(value, ':account_approval_required');
 
@@ -76,10 +74,10 @@ const importConfigs = (state, configs) => {
 
 const handleAuthFetch = state => {
   // Authenticated fetch is enabled, so make the instance appear censored
-  return ImmutableMap({
+  return {
     title: '██████',
     description: '████████████',
-  }).merge(state);
+  }.merge(state);
 };
 
 const getHost = instance => {
@@ -115,17 +113,17 @@ export default function instance(state = initialState, action) {
   case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
   case INSTANCE_REMEMBER_SUCCESS:
-    return importInstance(state, fromJS(action.instance));
+    return importInstance(state, action.instance);
   case INSTANCE_FETCH_SUCCESS:
     persistInstance(action.instance);
-    return importInstance(state, fromJS(action.instance));
+    return importInstance(state, action.instance);
   case INSTANCE_FETCH_FAIL:
     return handleInstanceFetchFail(state, action.error);
   case NODEINFO_FETCH_SUCCESS:
-    return importNodeinfo(state, fromJS(action.nodeinfo));
+    return importNodeinfo(state, action.nodeinfo);
   case ADMIN_CONFIG_UPDATE_REQUEST:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return importConfigs(state, fromJS(action.configs));
+    return importConfigs(state, action.configs);
   default:
     return state;
   }

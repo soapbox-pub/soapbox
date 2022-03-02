@@ -24,7 +24,7 @@ const messages = defineMessages({
 const getHosts = makeGetHosts();
 
 const mapStateToProps = state => ({
-  siteTitle: state.getIn(['instance', 'title']),
+  siteTitle: state.get('instance').title,
   hosts: getHosts(state),
   disclosed: federationRestrictionsDisclosed(state),
 });
