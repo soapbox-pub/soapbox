@@ -4,7 +4,7 @@ import { parseVersion, PLEROMA, MITRA } from './features';
 
 // For solving bugs between API implementations
 export const getQuirks = createSelector([
-  instance => parseVersion(instance.get('version')),
+  instance => parseVersion(instance.version),
 ], (v) => {
   return {
     invertedPagination: v.software === PLEROMA,

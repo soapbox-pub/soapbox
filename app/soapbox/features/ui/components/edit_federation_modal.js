@@ -44,7 +44,7 @@ class EditFederationModal extends ImmutablePureComponent {
 
   hydrateState = () => {
     const { remoteInstance } = this.props;
-    this.setState({ data: remoteInstance.get('federation') });
+    this.setState({ data: remoteinstance.federation });
   }
 
   componentDidMount() {
@@ -107,7 +107,7 @@ class EditFederationModal extends ImmutablePureComponent {
       <div className='modal-root__modal edit-federation-modal'>
         <div>
           <div className='edit-federation-modal__title'>
-            {remoteInstance.get('host')}
+            {remoteinstance.host}
           </div>
           <SimpleForm onSubmit={this.handleSubmit}>
             <Checkbox

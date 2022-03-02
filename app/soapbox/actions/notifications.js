@@ -309,7 +309,7 @@ export function markReadNotifications() {
     const instance = state.get('instance');
     const topNotificationId = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
     const lastReadId = state.getIn(['notifications', 'lastRead']);
-    const v = parseVersion(instance.get('version'));
+    const v = parseVersion(instance.version);
 
     if (!(topNotificationId && topNotificationId > lastReadId)) return;
 

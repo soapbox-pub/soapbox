@@ -77,7 +77,7 @@ const makeMapStateToProps = () => {
       features,
       instance,
       settings: getSettings(state),
-      siteTitle: instance.get('title'),
+      siteTitle: instance.title,
       baseURL: getBaseURL(account),
     };
   };
@@ -242,7 +242,7 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon src={require('@tabler/icons/icons/user.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
-              {instance.get('invites_enabled') && <a className='sidebar-menu-item' href={`${baseURL}/invites`} onClick={this.handleClose}>
+              {instance.invites_enabled && <a className='sidebar-menu-item' href={`${baseURL}/invites`} onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/mailbox.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.invites)}</span>
               </a>}

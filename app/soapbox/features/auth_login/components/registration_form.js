@@ -331,7 +331,7 @@ class RegistrationForm extends ImmutablePureComponent {
                   onChange={this.onBirthdayChange}
                   required
                 />}
-              {instance.get('approval_required') &&
+              {instance.approval_required &&
                 <SimpleTextarea
                   label={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
                   hint={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}

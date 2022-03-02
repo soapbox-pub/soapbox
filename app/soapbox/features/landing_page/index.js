@@ -28,7 +28,7 @@ class LandingPage extends ImmutablePureComponent {
           <FormattedMessage
             id='registration.closed_message'
             defaultMessage='{instance} is not accepting new members'
-            values={{ instance: <strong>{instance.get('title')}</strong> }}
+            values={{ instance: <strong>{instance.title}</strong> }}
           />
         </div>
       </div>
@@ -48,7 +48,7 @@ class LandingPage extends ImmutablePureComponent {
                 <SiteBanner />
               </Link>
               <div className='brand__tagline'>
-                <span>{instance.get('description')}</span>
+                <span>{instance.description}</span>
               </div>
             </div>
           </div>

@@ -32,10 +32,10 @@ class ServerInfo extends ImmutablePureComponent {
         <div className='info_column_area'>
           <div className='info__brand'>
             <div className='brand'>
-              <h1>{instance.get('title')}</h1>
+              <h1>{instance.title}</h1>
             </div>
             <div className='brand__tagline'>
-              <span>{instance.get('description')}</span>
+              <span>{instance.description}</span>
             </div>
           </div>
           <PromoPanel />

@@ -17,7 +17,7 @@ const onlyImages = types => {
 
 const makeMapStateToProps = () => {
   const mapStateToProps = state => ({
-    attachmentTypes: state.getIn(['instance', 'configuration', 'media_attachments', 'supported_mime_types']),
+    attachmentTypes: state.get('instance').configuration?.media_attachments?.supported_mime_types,
   });
 
   return mapStateToProps;
@@ -78,7 +78,7 @@ class UploadButton extends ImmutablePureComponent {
             ref={this.setRef}
             type='file'
             multiple
-            accept={attachmentTypes && attachmentTypes.toArray().join(',')}
+            accept={attachmentTypes && attachmentTypes.join(',')}
             onChange={this.handleChange}
             disabled={disabled}
             style={{ display: 'none' }}

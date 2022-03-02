@@ -42,7 +42,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
       followers_only,
       media_nsfw,
       media_removal,
-    } = remoteInstance.get('federation').toJS();
+    } = remoteinstance.federation.toJS();
 
     const fullMediaRemoval = media_removal && avatar_removal && banner_removal;
     const partialMediaRemoval = media_removal || avatar_removal || banner_removal;
@@ -130,10 +130,10 @@ class InstanceRestrictions extends ImmutablePureComponent {
     const { instance, remoteInstance } = this.props;
     if (!instance || !remoteInstance) return null;
 
-    const host = remoteInstance.get('host');
-    const siteTitle = instance.get('title');
+    const host = remoteinstance.host;
+    const siteTitle = instance.title;
 
-    if (remoteInstance.getIn(['federation', 'reject']) === true) {
+    if (remoteInstance.federation?.reject === true) {
       return (
         <div className='instance-restrictions__message'>
           <Icon id='times' />

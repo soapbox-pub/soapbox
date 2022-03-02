@@ -14,8 +14,8 @@ class SiteLogo extends ImmutablePureComponent {
   render() {
     const { instance, soapbox } = this.props;
     const logos = {
-      imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('logo')} />),
-      textLogo: (<h1>{instance.get('title')}</h1>),
+      imgLogo:  (<img alt={instance.title} src={soapbox.get('logo')} />),
+      textLogo: (<h1>{instance.title}</h1>),
     };
     return soapbox.getIn(['logo']) ? logos.imgLogo : logos.textLogo;
   }

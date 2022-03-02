@@ -1,12 +1,12 @@
-import { Map as ImmutableMap } from 'immutable';
-import { }
+import { defaultsDeep, update } from 'lodash';
 
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
-import { mergeDefined } from 'soapbox/utils/normalizers';
 import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
 const baseInstance: Partial<Instance> = {
+  title: '',
+  short_description: '',
   description_limit: 1500,
   configuration: {
     statuses: {
@@ -20,6 +20,7 @@ const baseInstance: Partial<Instance> = {
       max_expiration: 2629746,
     },
   },
+  uri: '',
   version: '0.0.0',
 };
 
@@ -42,23 +43,24 @@ const pleromaToMastodonConfig = (instance: Immutable<{[key: string]: any}>): Imm
 const getAttachmentLimit = (software: string): number => software === PLEROMA ? Infinity : 4;
 
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
-export const normalizeInstance = (instance: Instance) => {
+export const normalizeInstance = (instance: {[key: string]: any}): {[key: string]: any} => {
   const { software } = parseVersion(instance.version);
   const mastodonConfig = pleromaToMastodonConfig(instance);
 
-  return instance.withMutations(instance => {
-    // Merge configuration
-    instance.update('configuration', ImmutableMap(), configuration => (
-      configuration.mergeDeepWith(mergeDefined, mastodonConfig)
-    ));
+  // Merge configuration
+  instance.configuration = instance.configuration || {};
+  defaultsDeep(instance.configuration, mastodonConfig);
 
-    // If max attachments isn't set, check the backend software
-    instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
-      return isNumber(value) ? value : getAttachmentLimit(software);
-    });
-
-    // Merge defaults & cleanup
-    instance.mergeDeepWith(mergeDefined, baseInstance);
-    instance.deleteAll(['max_toot_chars', 'poll_limits']);
+  // If max attachments isn't set, check the backend software
+  update(instance, 'configuration.statuses.max_media_attachments', value => {
+    return isNumber(value) ? value : getAttachmentLimit(software);
   });
+
+  // Merge defaults & cleanup
+  defaultsDeep(instance, baseInstance);
+
+  delete instance.max_toot_chars;
+  delete instance.poll_limits;
+
+  return instance;
 };

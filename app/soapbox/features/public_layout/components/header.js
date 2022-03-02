@@ -107,13 +107,13 @@ class Header extends ImmutablePureComponent {
           <div className='nav-right'>
             <div className='hidden-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.title })}</Link>
                 : <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />
               }
             </div>
             <div className='visible-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.title })}</Link>
                 : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>{intl.formatMessage(messages.login)}</Link>
               }
             </div>

@@ -35,8 +35,8 @@ const generateConfig = mode => {
 };
 
 const modeFromInstance = instance => {
-  if (instance.get('approval_required') && instance.get('registrations')) return 'approval';
-  return instance.get('registrations') ? 'open' : 'closed';
+  if (instance.approval_required && instance.registrations) return 'approval';
+  return instance.registrations ? 'open' : 'closed';
 };
 
 export default @connect(mapStateToProps)

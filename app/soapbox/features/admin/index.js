@@ -76,9 +76,9 @@ class Dashboard extends ImmutablePureComponent {
 
   render() {
     const { intl, instance, supportsEmailList, account } = this.props;
-    const v = parseVersion(instance.get('version'));
-    const userCount = instance.getIn(['stats', 'user_count']);
-    const mau = instance.getIn(['pleroma', 'stats', 'mau']);
+    const v = parseVersion(instance.version);
+    const userCount = instance.stats?.user_count;
+    const mau = instance.pleroma?.stats?.mau;
     const retention = (userCount && mau) ? Math.round(mau / userCount * 100) : null;
 
     if (!account) return null;
@@ -121,7 +121,7 @@ class Dashboard extends ImmutablePureComponent {
           <div className='dashcounter'>
             <Link to='/timeline/local'>
               <div className='dashcounter__num'>
-                <FormattedNumber value={instance.getIn(['stats', 'status_count'])} />
+                <FormattedNumber value={instance.stats?.status_count} />
               </div>
               <div className='dashcounter__label'>
                 <FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />
@@ -131,7 +131,7 @@ class Dashboard extends ImmutablePureComponent {
           <div className='dashcounter'>
             <div>
               <div className='dashcounter__num'>
-                <FormattedNumber value={instance.getIn(['stats', 'domain_count'])} />
+                <FormattedNumber value={instance.stats?.domain_count} />
               </div>
               <div className='dashcounter__label'>
                 <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />

@@ -77,7 +77,7 @@ function externalAuthorize(instance, baseURL) {
 
 export function externalEthereumLogin(instance, baseURL) {
   return (dispatch, getState) => {
-    const loginMessage = instance.get('login_message');
+    const loginMessage = instance.login_message;
 
     return getWalletAndSign(loginMessage).then(({ wallet, signature }) => {
       return dispatch(createExternalApp(instance, baseURL)).then(app => {

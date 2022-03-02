@@ -71,7 +71,7 @@ class InstanceInfoPanel extends ImmutablePureComponent {
         <div className='wtf-panel-header'>
           <i role='img' alt={icon} className={`fa fa-${icon} wtf-panel-header__icon`} />
           <span className='wtf-panel-header__label'>
-            <span>{remoteInstance.get('host')}</span>
+            <span>{remoteinstance.host}</span>
           </span>
           <div className='wtf-panel__menu'>
             <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />

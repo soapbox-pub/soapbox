@@ -38,13 +38,13 @@ class AdminNav extends React.PureComponent {
               <IconWithCounter src={require('@tabler/icons/icons/gavel.svg')} count={reportsCount} />
               <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
             </NavLink>
-            {((instance.get('registrations') && instance.get('approval_required')) || approvalCount > 0) && (
+            {((instance.registrations && instance.approval_required) || approvalCount > 0) && (
               <NavLink className='promo-panel-item' to='/admin/approval'>
                 <IconWithCounter src={require('@tabler/icons/icons/user.svg')} count={approvalCount} />
                 <FormattedMessage id='admin_nav.awaiting_approval' defaultMessage='Awaiting Approval' />
               </NavLink>
             )}
-            {/* !instance.get('registrations') && (
+            {/* !instance.registrations && (
               <NavLink className='promo-panel-item' to='#'>
                 <Icon id='envelope' className='promo-panel-item__icon' fixedWidth />
                 <FormattedMessage id='admin_nav.invites' defaultMessage='Invites' />

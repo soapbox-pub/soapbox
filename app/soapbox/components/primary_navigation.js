@@ -124,7 +124,7 @@ class PrimaryNavigation extends React.PureComponent {
             </NavLink>
           )}
 
-          {(account && instance.get('invites_enabled')) && (
+          {(account && instance.invites_enabled) && (
             <a href={`${baseURL}/invites`} className='btn grouped'>
               <Icon src={require('@tabler/icons/icons/mailbox.svg')} className='primary-navigation__icon' />
               <FormattedMessage id='navigation.invites' defaultMessage='Invites' />
@@ -149,7 +149,7 @@ class PrimaryNavigation extends React.PureComponent {
                 src={require('@tabler/icons/icons/users.svg')}
                 className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/timeline/local' })}
               />
-              {instance.get('title')}
+              {instance.title}
             </NavLink>
           ) : (
             <NavLink to='/timeline/local' className='btn grouped'>

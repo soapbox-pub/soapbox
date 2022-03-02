@@ -48,7 +48,7 @@ class RestrictedInstance extends ImmutablePureComponent {
             <Icon src={expanded ? require('@tabler/icons/icons/caret-down.svg') : require('@tabler/icons/icons/caret-right.svg')} />
           </div>
           <div className='restricted-instance__host'>
-            {remoteInstance.get('host')}
+            {remoteinstance.host}
           </div>
         </a>
         <div className='restricted-instance__restrictions'>
