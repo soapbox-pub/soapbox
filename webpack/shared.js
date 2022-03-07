@@ -4,9 +4,11 @@ const { join, resolve } = require('path');
 
 const CopyPlugin = require('copy-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const glob = require('glob');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PurgeCSSPlugin = require('purgecss-webpack-plugin');
 const webpack = require('webpack');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
 
@@ -79,6 +81,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'packs/css/[name]-[contenthash:8].css',
       chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
+    }),
+    new PurgeCSSPlugin({
+      paths: glob.sync(`${resolve('app')}/**/*.*(js|jsx|mjs|ts|tsx)`,  { nodir: true }),
     }),
     new AssetsManifestPlugin({
       integrity: false,
