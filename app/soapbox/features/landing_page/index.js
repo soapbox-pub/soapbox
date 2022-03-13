@@ -1,65 +1,73 @@
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import RegistrationForm from '../auth_login/components/registration_form';
-import SiteBanner from '../public_layout/components/site_banner';
+import VerificationBadge from 'soapbox/components/verification_badge';
 
-const mapStateToProps = (state, props) => ({
-  instance: state.get('instance'),
-});
+import { Button, Card, CardBody, Stack, Text } from '../../components/ui';
 
-class LandingPage extends ImmutablePureComponent {
+const LandingPage = () => {
+  const instance = useSelector((state) => state.get('instance'));
+  const isOpen = useSelector(state => state.getIn(['verification', 'instance', 'registrations'], false) === true);
 
-  renderClosed = () => {
-    const { instance } = this.props;
-
+  const renderClosed = () => {
     return (
-      <div className='registrations-closed'>
-        <h2>
+      <Stack space={3}>
+        <Text size='xl' weight='bold' align='center'>
           <FormattedMessage
             id='registration.closed_title'
             defaultMessage='Registrations Closed'
           />
-        </h2>
-        <div className='registrations-closed__message'>
+        </Text>
+        <Text theme='muted' align='center'>
           <FormattedMessage
             id='registration.closed_message'
-            defaultMessage='{instance} is not accepting new members'
-            values={{ instance: <strong>{instance.get('title')}</strong> }}
+            defaultMessage='{instance} is not accepting new members.'
+            values={{ instance: instance.get('title') }}
           />
-        </div>
-      </div>
+        </Text>
+      </Stack>
     );
-  }
+  };
 
-  render() {
-    const { instance } = this.props;
-    const isOpen = instance.get('registrations', false) === true;
-
-    return (
-      <div className='landing'>
-        <div className='landing-columns'>
-          <div className='landing-columns--left'>
-            <div className='landing__brand'>
-              <Link className='brand' to='/'>
-                <SiteBanner />
-              </Link>
-              <div className='brand__tagline'>
-                <span>{instance.get('description')}</span>
-              </div>
+  return (
+    <main className='mt-16 sm:mt-24'>
+      <div className='mx-auto max-w-7xl'>
+        <div className='lg:grid lg:grid-cols-12 lg:gap-8 items-center py-24'>
+          <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:items-center'>
+            <div>
+              <Stack space={3}>
+                <h1 className='text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-600 via-primary-500 to-blue-600 sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
+                  {instance.title}
+                </h1>
+                <Text size='lg'>
+                  {instance.description}
+                </Text>
+              </Stack>
             </div>
           </div>
-          <div className='landing-columns--right'>
-            {isOpen ? <RegistrationForm /> : this.renderClosed()}
+          <div className='hidden lg:block sm:mt-24 lg:mt-0 lg:col-span-6'>
+            <Card size='xl' variant='rounded' className='sm:max-w-md sm:w-full sm:mx-auto'>
+              <CardBody>
+                {isOpen ? (
+                  <Stack space={3}>
+                    <VerificationBadge className='h-16 w-16 mx-auto' />
+
+                    <Stack>
+                      <Text size='2xl' weight='bold' align='center'>Let&apos;s get started!</Text>
+                      <Text theme='muted' align='center'>Social Media Without Discrimination</Text>
+                    </Stack>
+
+                    <Button to='/auth/verify' theme='primary' block>Create an account</Button>
+                  </Stack>
+                ) : renderClosed()}
+              </CardBody>
+            </Card>
           </div>
         </div>
       </div>
-    );
-  }
+    </main>
+  );
+};
 
-}
-
-export default connect(mapStateToProps)(LandingPage);
+export default LandingPage;

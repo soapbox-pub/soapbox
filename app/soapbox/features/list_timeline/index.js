@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import Button from 'soapbox/components/button';
+import { Button } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 
 import { fetchList, deleteList } from '../../actions/lists';
@@ -113,9 +113,7 @@ class ListTimeline extends React.PureComponent {
       );
     } else if (list === false) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

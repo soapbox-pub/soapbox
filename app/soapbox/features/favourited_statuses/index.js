@@ -115,9 +115,7 @@ class Favourites extends ImmutablePureComponent {
 
     if (!isMyAccount && !isAccount && accountId !== -1) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 
@@ -144,7 +142,7 @@ class Favourites extends ImmutablePureComponent {
       : <FormattedMessage id='empty_column.account_favourited_statuses' defaultMessage="This user doesn't have any liked posts yet." />;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} withHeader={false} transparent>
         <StatusList
           statusIds={statusIds}
           scrollKey='favourited_statuses'

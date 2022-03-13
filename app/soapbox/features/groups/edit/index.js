@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 
 import { changeValue, submit, setUp } from '../../../actions/group_editor';
-import Column from '../../../components/column';
 import LoadingIndicator from '../../../components/loading_indicator';
+import { Column } from '../../../components/ui';
 
 const messages = defineMessages({
   title: { id: 'groups.form.title', defaultMessage: 'Title' },
@@ -100,9 +100,7 @@ class Edit extends React.PureComponent {
       );
     } else if (group === false) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

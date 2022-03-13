@@ -33,7 +33,7 @@ export function fetchSuggestionsV1() {
 export function fetchSuggestionsV2() {
   return (dispatch, getState) => {
     dispatch({ type: SUGGESTIONS_V2_FETCH_REQUEST, skipLoading: true });
-    return api(getState).get('/api/v2/suggestions').then(({ data: suggestions }) => {
+    return api(getState).get('/api/v2/suggestions?limit=50').then(({ data: suggestions }) => {
       const accounts = suggestions.map(({ account }) => account);
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: SUGGESTIONS_V2_FETCH_SUCCESS, suggestions, skipLoading: true });

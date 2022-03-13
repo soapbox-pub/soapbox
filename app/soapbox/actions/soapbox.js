@@ -60,6 +60,8 @@ export const makeDefaultConfig = features => {
       limit: 1,
     }),
     aboutPages: ImmutableMap(),
+    betaPages: ImmutableMap(),
+    mobilePages: ImmutableMap(),
     authenticatedProfile: true,
     singleUserMode: false,
     singleUserModeProfile: '',

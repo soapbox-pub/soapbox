@@ -11,9 +11,58 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
-import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { isStaff, getBaseURL } from 'soapbox/utils/accounts';
+import { Text } from 'soapbox/components/ui';
+import ComposeButton from 'soapbox/features/ui/components/compose_button';
+import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+
+const PrimaryNavigationLink = ({ icon, text, to, count }) => {
+  const isActive = location.pathname === to;
+  const withCounter = typeof count !== 'undefined';
+
+  return (
+    <NavLink
+      exact
+      to={to}
+      className={classNames({
+        'flex items-center py-2 text-sm font-semibold space-x-4': true,
+        'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200': !isActive,
+        'text-gray-900 dark:text-white': isActive,
+      })}
+    >
+      <span className={classNames({
+        'relative rounded-lg inline-flex p-3': true,
+        'bg-primary-50 dark:bg-slate-700': !isActive,
+        'bg-primary-600': isActive,
+      })}
+      >
+        {withCounter && count > 0 ? (
+          <span className='absolute -top-2 -right-2 block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
+            {count}
+          </span>
+        ) : null}
+
+        <Icon
+          src={icon}
+          className={classNames({
+            'h-5 w-5': true,
+            'text-primary-700 dark:text-white': !isActive,
+            'text-white': isActive,
+          })}
+        />
+      </span>
+
+      <Text weight='semibold' theme='inherit'>{text}</Text>
+    </NavLink>
+  );
+};
+
+PrimaryNavigationLink.propTypes = {
+  icon: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
+  to: PropTypes.string.isRequired,
+  count: PropTypes.number,
+};
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -57,93 +106,83 @@ class PrimaryNavigation extends React.PureComponent {
   };
 
   render() {
-    const { account, settings, features, notificationCount, chatsCount, dashboardCount, location, instance, baseURL } = this.props;
+    const { account, settings, features, notificationCount, chatsCount, instance, baseURL } = this.props;
 
     return (
-      <div className='column-header__wrapper primary-navigation__wrapper'>
-        <h1 className='column-header primary-navigation'>
-          <NavLink to='/' exact className='btn grouped'>
-            <Icon
-              src={require('icons/home-square.svg')}
-              className={classNames('primary-navigation__icon', 'svg-icon--home', { 'svg-icon--active': location.pathname === '/' })}
-            />
-            <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-          </NavLink>
-
-          <NavLink key='search' className='btn grouped' to='/search'>
-            <Icon
-              src={require('@tabler/icons/icons/search.svg')}
-              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
-            />
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </NavLink>
+      <div>
+        <div className='flex flex-col space-y-2'>
+          <PrimaryNavigationLink
+            to='/'
+            icon={require('icons/feed.svg')}
+            text={<FormattedMessage id='tabs_bar.home' defaultMessage='Feed' />}
+          />
 
           {account && (
-            <NavLink key='notifications' className='btn grouped' to='/notifications' data-preview-title-id='column.notifications'>
-              <IconWithCounter
-                src={require('@tabler/icons/icons/bell.svg')}
-                className={classNames('primary-navigation__icon', {
-                  'svg-icon--active': location.pathname === '/notifications',
-                  'svg-icon--unread': notificationCount > 0,
-                })}
-                count={notificationCount}
+            <>
+              <PrimaryNavigationLink
+                to={`/@${account.get('acct')}`}
+                icon={require('icons/user.svg')}
+                text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
               />
-              <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
-            </NavLink>
+
+              <PrimaryNavigationLink
+                to='/notifications'
+                icon={require('icons/alert.svg')}
+                count={notificationCount}
+                text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Alerts' />}
+              />
+
+              <PrimaryNavigationLink
+                to='/settings'
+                icon={require('icons/cog.svg')}
+                text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
+              />
+            </>
           )}
 
           {account && (
             features.chats ? (
-              <NavLink key='chats' className='btn grouped' to='/chats' data-preview-title-id='column.chats'>
-                <IconWithCounter
-                  src={require('@tabler/icons/icons/messages.svg')}
-                  className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/chats' })}
-                  count={chatsCount}
-                />
-                <FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />
-              </NavLink>
+              <PrimaryNavigationLink
+                to='/chats'
+                icon={require('@tabler/icons/icons/messages.svg')}
+                count={chatsCount}
+                text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
+              />
             ) : (
-              <NavLink to='/messages' className='btn grouped'>
-                <Icon
-                  src={require('@tabler/icons/icons/mail.svg')}
-                  className={classNames('primary-navigation__icon', { 'svg-icon--active': ['/messages', '/conversations'].includes(location.pathname) })}
-                />
-                <FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />
-              </NavLink>
+              <PrimaryNavigationLink
+                to='/messages'
+                icon={require('icons/mail.svg')}
+                text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
+              />
             )
           )}
 
-          {(account && isStaff(account)) && (
-            <NavLink key='dashboard' className='btn grouped' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
-              <IconWithCounter
-                src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
-                className='primary-navigation__icon'
-                count={dashboardCount}
-              />
-              <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />
-            </NavLink>
-          )}
+          {/* (account && isStaff(account)) && (
+            <PrimaryNavigationLink
+              to='/admin'
+              icon={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
+              text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+              count={dashboardCount}
+            />
+          ) */}
 
           {(account && instance.get('invites_enabled')) && (
-            <a href={`${baseURL}/invites`} className='btn grouped'>
-              <Icon src={require('@tabler/icons/icons/mailbox.svg')} className='primary-navigation__icon' />
-              <FormattedMessage id='navigation.invites' defaultMessage='Invites' />
-            </a>
+            <PrimaryNavigationLink
+              to={`${baseURL}/invites`}
+              icon={require('@tabler/icons/icons/mailbox.svg')}
+              text={<FormattedMessage id='navigation.invites' defaultMessage='Invites' />}
+            />
           )}
 
           {(settings.get('isDeveloper')) && (
-            <NavLink key='developers' className='btn grouped' to='/developers'>
-              <Icon
-                src={require('@tabler/icons/icons/code.svg')}
-                className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname.startsWith('/developers') })}
-              />
-              <FormattedMessage id='navigation.developers' defaultMessage='Developers' />
-            </NavLink>
+            <PrimaryNavigationLink
+              to='/developers'
+              icon={require('@tabler/icons/icons/code.svg')}
+              text={<FormattedMessage id='navigation.developers' defaultMessage='Developers' />}
+            />
           )}
 
-          <hr />
-
-          {features.federating ? (
+          {/* {features.federating ? (
             <NavLink to='/timeline/local' className='btn grouped'>
               <Icon
                 src={require('@tabler/icons/icons/users.svg')}
@@ -163,8 +202,12 @@ class PrimaryNavigation extends React.PureComponent {
               <Icon src={require('icons/fediverse.svg')} className='column-header__icon' />
               <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />
             </NavLink>
-          )}
-        </h1>
+          )} */}
+        </div>
+
+        {account && (
+          <ComposeButton />
+        )}
       </div>
     );
   }

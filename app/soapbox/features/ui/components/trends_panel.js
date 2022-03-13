@@ -5,10 +5,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import Icon from 'soapbox/components/icon';
-
 import { fetchTrends } from '../../../actions/trends';
 import Hashtag from '../../../components/hashtag';
+import { Stack, Text } from '../../../components/ui';
 
 class TrendsPanel extends ImmutablePureComponent {
 
@@ -35,26 +34,21 @@ class TrendsPanel extends ImmutablePureComponent {
     }
 
     return (
-      <div className='wtf-panel'>
-        <div className='wtf-panel-header'>
-          <Icon src={require('@tabler/icons/icons/hash.svg')} className='wtf-panel-header__icon' />
-          <span className='wtf-panel-header__label'>
-            <FormattedMessage id='trends.title' defaultMessage='Trends' />
-          </span>
-        </div>
-        <div className='wtf-panel__content'>
-          <div className='wtf-panel__list'>
-            {trends && trends.map(hashtag => (
-              <Hashtag key={hashtag.get('name')} hashtag={hashtag} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <Stack space={2}>
+        <Text size='xl' weight='bold'>
+          <FormattedMessage id='trends.title' defaultMessage='Trends' />
+        </Text>
+
+        <Stack space={3}>
+          {trends && trends.map(hashtag => (
+            <Hashtag key={hashtag.get('name')} hashtag={hashtag} />
+          ))}
+        </Stack>
+      </Stack>
     );
   }
 
 }
-
 
 const mapStateToProps = state => ({
   trends: state.getIn(['trends', 'items']),

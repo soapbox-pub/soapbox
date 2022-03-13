@@ -2,39 +2,38 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
-import IconWithCounter from 'soapbox/components/icon_with_counter';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
-import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { openModal } from '../../../actions/modals';
 import { openSidebar } from '../../../actions/sidebar';
 import Avatar from '../../../components/avatar';
-import ThemeToggle from '../../ui/components/theme_toggle_container';
+import { Button } from '../../../components/ui';
+// import ThemeToggle from '../../ui/components/theme_toggle_container';
 
 import ProfileDropdown from './profile_dropdown';
 
-const messages = defineMessages({
-  post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
-});
+// const messages = defineMessages({
+//   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
+// });
 
 class TabsBar extends React.PureComponent {
 
   static propTypes = {
-    intl: PropTypes.object.isRequired,
+    // intl: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    onOpenCompose: PropTypes.func,
+    // onOpenCompose: PropTypes.func,
     onOpenSidebar: PropTypes.func.isRequired,
     logo: PropTypes.string,
     account: ImmutablePropTypes.map,
-    features: PropTypes.object.isRequired,
+    // features: PropTypes.object.isRequired,
     dashboardCount: PropTypes.number,
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
@@ -58,107 +57,68 @@ class TabsBar extends React.PureComponent {
     return pathname === '/' || pathname.startsWith('/timeline/');
   }
 
-  shouldShowLinks = () => {
-    try {
-      const { pathname } = this.context.router.route.location;
-      return (pathname.startsWith('/@') && !pathname.includes('/posts/')) || pathname.startsWith('/admin');
-    } catch {
-      return false;
-    }
-  }
-
   render() {
-    const { intl, account, logo, onOpenCompose, onOpenSidebar, features, dashboardCount, notificationCount, chatsCount, singleUserMode } = this.props;
-    const { collapsed } = this.state;
-    const showLinks = this.shouldShowLinks();
-
-    const classes = classNames('tabs-bar', {
-      'tabs-bar--collapsed': collapsed,
-    });
+    const { account, logo, onOpenSidebar, singleUserMode } = this.props;
 
     return (
-      <nav className={classes} ref={this.setRef}>
-        <div className='tabs-bar__container'>
-          <div className='tabs-bar__split tabs-bar__split--left'>
-            {logo ? (
-              <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
-                <img alt='Logo' src={logo} />
-                <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
-              </Link>
-            ) : (
-              <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
-                <Icon alt='Logo' src={require('icons/home-square.svg')} />
-                <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
-              </Link>
-            )}
-
-            <div className='tabs-bar__search-container'>
-              <SearchContainer openInRoute autosuggest />
+      <nav className='bg-white shadow z-50 sticky top-0' ref={this.setRef}>
+        <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
+          <div className='relative flex justify-between h-12 lg:h-16'>
+            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden'>
+              <button onClick={onOpenSidebar}>
+                <Avatar account={account} size={34} />
+              </button>
             </div>
-          </div>
-          <div className='tabs-bar__split tabs-bar__split--right'>
-            {account ? (
-              <>
-                {showLinks && (
-                  <>
-                    <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
-                      <IconWithCounter
-                        src={require('@tabler/icons/icons/bell.svg')}
-                        className={classNames('primary-navigation__icon', {
-                          'svg-icon--active': location.pathname === '/notifications',
-                          'svg-icon--unread': notificationCount > 0,
-                        })}
-                        count={notificationCount}
-                      />
-                      <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
-                    </NavLink>
 
-                    {features.chats && (
-                      <NavLink key='chats' className='tabs-bar__link' to='/chats' data-preview-title-id='column.chats'>
-                        <IconWithCounter
-                          src={require('@tabler/icons/icons/messages.svg')}
-                          className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/chats' })}
-                          count={chatsCount}
-                        />
-                        <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
-                      </NavLink>
-                    )}
-
-                    {isStaff(account) && (
-                      <NavLink key='dashboard' className='tabs-bar__link' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
-                        <IconWithCounter
-                          src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
-                          className='primary-navigation__icon'
-                          count={dashboardCount}
-                        />
-                        <span><FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' /></span>
-                      </NavLink>
-                    )}
-                  </>
-                )}
-
-                <ThemeToggle />
-                <div className='tabs-bar__profile'>
-                  <Avatar account={account} />
-                  <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
-                  <ProfileDropdown account={account} size={34} />
-                </div>
-                <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
-                  <span>{intl.formatMessage(messages.post)}</span>
-                </button>
-              </>
-            ) : (
-              <div className='tabs-bar__unauthenticated'>
-                <Link className='tabs-bar__button button' to='/auth/sign_in'>
-                  <FormattedMessage id='account.login' defaultMessage='Log In' />
+            <div
+              className={classNames({
+                'flex-1 flex items-center lg:items-stretch space-x-4': true,
+                'justify-center lg:justify-start': account,
+                'justify-start': !account,
+              })}
+            >
+              {logo ? (
+                <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
+                  <img alt='Logo' src={logo} className='h-5 lg:h-6 w-auto lg:min-w-[160px] cursor-pointer' />
+                  <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
                 </Link>
-                {!singleUserMode && (
-                  <Link className='tabs-bar__button button button-alternative-2' to='/'>
-                    <FormattedMessage id='account.register' defaultMessage='Sign up' />
-                  </Link>
-                )}
-              </div>
-            )}
+              ) : (
+                <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
+                  <Icon alt='Logo' src={require('icons/home-square.svg')} className='h-5 lg:h-6 w-auto text-primary-700' />
+                  <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
+                </Link>
+              )}
+
+              {account && (
+                <div className='flex-1 hidden lg:flex justify-center px-2 lg:ml-6 lg:justify-start items-center'>
+                  <div className='max-w-xl w-full lg:max-w-xs hidden lg:block'>
+                    <SearchContainer openInRoute autosuggest />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>
+              {account ? (
+                <div className='hidden relative lg:flex items-center'>
+                  <ProfileDropdown account={account}>
+                    <Avatar account={account} size={34} />
+                  </ProfileDropdown>
+                </div>
+              ) : (
+                <div className='space-x-1.5'>
+                  <Button theme='secondary' to='/login' size='sm'>
+                    <FormattedMessage id='account.login' defaultMessage='Log In' />
+                  </Button>
+
+                  {!singleUserMode && (
+                    <Button theme='primary' to='/' size='sm'>
+                      <FormattedMessage id='account.register' defaultMessage='Sign up' />
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>

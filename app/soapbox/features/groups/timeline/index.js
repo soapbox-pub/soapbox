@@ -9,9 +9,9 @@ import ComposeFormContainer from '../../../../soapbox/features/compose/container
 import { connectGroupStream } from '../../../actions/streaming';
 import { expandGroupTimeline } from '../../../actions/timelines';
 import Avatar from '../../../components/avatar';
-import Column from '../../../components/column';
 import LoadingIndicator from '../../../components/loading_indicator';
 import MissingIndicator from '../../../components/missing_indicator';
+import { Column } from '../../../components/ui';
 import StatusListContainer from '../../ui/containers/status_list_container';
 
 const mapStateToProps = (state, props) => {
@@ -76,9 +76,7 @@ class GroupTimeline extends React.PureComponent {
       );
     } else if (group === false) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

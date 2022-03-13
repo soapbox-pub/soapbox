@@ -1,40 +1,20 @@
-.loading-indicator {
-  color: var(--primary-text-color--faint);
-  font-size: 12px;
-  font-weight: 400;
-  text-transform: uppercase;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.loading-indicator-wrapper {
+  @apply h-screen w-screen flex justify-center items-center;
+}
 
-  span {
-    display: block;
-    margin-top: 10px;
-    white-space: nowrap;
-  }
+.loading-indicator {
+  @apply text-gray-50 text-xs uppercase flex flex-col items-center justify-center overflow-visible;
 }
 
 .loading-indicator__container {
-  width: 42px;
-  height: 42px;
-  position: relative;
+  @apply w-10 h-10 relative;
 }
 
 .loading-indicator__figure {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 42px;
-  height: 42px;
-  box-sizing: border-box;
-  background-color: transparent;
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-transparent;
   border: 0 solid;
-  border-color: hsla(var(--brand-color_hsl), 0.5);
   border-width: 6px;
-  border-radius: 50%;
+  border-color: #e5e7eb;
 }
 
 .no-reduce-motion .loading-indicator span {
@@ -45,41 +25,30 @@
   animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.app-body--loading .loading-indicator {
-  width: 100vw;
-  height: 100vh;
-  align-items: center;
+.loading-indicator-wrapper .loading-indicator {
+  @apply h-screen w-screen items-center;
 
   &__figure {
-    border-color: #ddd;
+    @apply border-gray-200;
   }
 }
 
 @keyframes loader-figure {
   0% {
-    width: 0;
-    height: 0;
-    background-color: hsla(var(--brand-color_hsl), 0.5);
+    @apply bg-gray-200 w-0 h-0;
   }
 
   29% {
-    background-color: hsla(var(--brand-color_hsl), 0.5);
+    @apply bg-gray-200;
   }
 
   30% {
-    width: 42px;
-    height: 42px;
-    background-color: transparent;
-    border-width: 21px;
-    opacity: 1;
+    @apply w-12 h-12 bg-transparent opacity-100;
+    border-width: 6px;
   }
 
   100% {
-    width: 42px;
-    height: 42px;
-    border-width: 0;
-    opacity: 0;
-    background-color: transparent;
+    @apply w-12 h-12 border-0 opacity-0 bg-transparent;
   }
 }
 

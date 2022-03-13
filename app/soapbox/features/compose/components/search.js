@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import InlineSVG from 'react-inlinesvg';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
-import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
@@ -102,12 +102,14 @@ class Search extends React.PureComponent {
     const Component = autosuggest ? AutosuggestAccountInput : 'input';
 
     return (
-      <div className='search'>
-        <label>
-          <span style={{ display: 'none' }}>{intl.formatMessage(messages.placeholder)}</span>
+      <div className='w-full'>
+        <label htmlFor='search' className='sr-only'>{intl.formatMessage(messages.placeholder)}</label>
+
+        <div className='relative'>
           <Component
-            className='search__input'
+            className='block w-full pl-3 pr-10 py-2 border border-gray-100 rounded-full leading-5 bg-gray-100 placeholder-gray-500 focus:bg-white focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
             type='text'
+            id='search'
             placeholder={intl.formatMessage(messages.placeholder)}
             value={value}
             onChange={this.handleChange}
@@ -119,10 +121,11 @@ class Search extends React.PureComponent {
             autoSelect={false}
             menu={this.makeMenu()}
           />
-        </label>
-        <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>
-          <Icon src={require('@tabler/icons/icons/search.svg')} className={classNames('svg-icon--search', { active: !hasValue })} />
-          <Icon src={require('@tabler/icons/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: hasValue })} aria-label={intl.formatMessage(messages.placeholder)} />
+
+          <div role='button' tabIndex='0' className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer' onClick={this.handleClear}>
+            <InlineSVG src={require('@tabler/icons/icons/search.svg')} className={classNames('h-4 w-4 text-gray-400', { hidden: hasValue })} />
+            <InlineSVG src={require('@tabler/icons/icons/x.svg')} className={classNames('h-4 w-4 text-gray-400', { hidden: !hasValue })} aria-label={intl.formatMessage(messages.placeholder)} />
+          </div>
         </div>
       </div>
     );

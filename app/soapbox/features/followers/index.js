@@ -99,9 +99,7 @@ class Followers extends ImmutablePureComponent {
 
     if (!isAccount && accountId !== -1) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 
@@ -124,13 +122,14 @@ class Followers extends ImmutablePureComponent {
     }
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} withHeader={false} transparent>
         <ScrollableList
           scrollKey='followers'
           hasMore={hasMore}
           diffCount={diffCount}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='account.followers.empty' defaultMessage='No one follows this user yet.' />}
+          className='space-y-4'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withNote={false} />,

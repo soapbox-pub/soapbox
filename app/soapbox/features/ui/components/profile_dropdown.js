@@ -8,12 +8,11 @@ import { connect } from 'react-redux';
 
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
-import { makeGetOtherAccounts } from 'soapbox/selectors';
+import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
+import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 import { isStaff } from 'soapbox/utils/accounts';
 
-import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
+import Account from '../../../components/account';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
@@ -22,14 +21,16 @@ const messages = defineMessages({
 
 const makeMapStateToProps = () => {
   const getOtherAccounts = makeGetOtherAccounts();
+  const getAccount = makeGetAccount();
 
   const mapStateToProps = state => {
     const me = state.get('me');
+    const account = getAccount(state, me);
 
     return {
-      account: state.getIn(['accounts', me]),
+      account,
       otherAccounts: getOtherAccounts(state),
-      isStaff: isStaff(state.getIn(['accounts', me])),
+      isStaff: isStaff(account),
     };
   };
 
@@ -41,10 +42,10 @@ class ProfileDropdown extends React.PureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    size: PropTypes.number,
     account: ImmutablePropTypes.map,
     otherAccounts: ImmutablePropTypes.list,
     isStaff: PropTypes.bool.isRequired,
+    children: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
@@ -90,36 +91,34 @@ class ProfileDropdown extends React.PureComponent {
 
   renderAccount = account => {
     return (
-      <div className='account'>
-        <div className='account__wrapper'>
-          <div className='account__display-name'>
-            <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-            <DisplayName account={account} />
-          </div>
-        </div>
-      </div>
+      <Account account={account} showProfileHoverCard={false} />
     );
   }
 
   render() {
-    const { intl, account, otherAccounts } = this.props;
-    const size = this.props.size || 16;
+    const { intl, children, account, otherAccounts, isStaff } = this.props;
 
     const menu = [];
 
     menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}` });
 
     otherAccounts.forEach(account => {
-      menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account), href: '/', middleClick: this.handleMiddleClick(account) });
+      menu.push({
+        text: this.renderAccount(account),
+        action: this.handleSwitchAccount(account),
+        // middleClick: this.handleMiddleClick(account),
+      });
     });
 
-    menu.push(null);
+    menu.push(<MenuDivider key='divider' />);
 
-    menu.push({
-      text: intl.formatMessage(messages.add),
-      to: '/auth/sign_in',
-      icon: require('@tabler/icons/icons/plus.svg'),
-    });
+    if (isStaff) {
+      menu.push({
+        text: intl.formatMessage(messages.add),
+        to: '/login',
+        icon: require('@tabler/icons/icons/plus.svg'),
+      });
+    }
 
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.get('acct') }),
@@ -129,11 +128,28 @@ class ProfileDropdown extends React.PureComponent {
     });
 
     return (
-      <div className='compose__action-bar' style={{ marginTop: '-6px' }}>
-        <div className='compose__action-bar-dropdown'>
-          <DropdownMenuContainer items={menu} icon='chevron-down' size={size} direction='right' />
-        </div>
-      </div>
+      <Menu>
+        <MenuButton>
+          {children}
+        </MenuButton>
+
+        <MenuList>
+          {menu.map((menuItem, idx) => {
+            if (typeof menuItem.text === 'undefined') {
+              return menuItem;
+            } else {
+              const Comp = menuItem.action ? MenuItem : MenuLink;
+              const itemProps = menuItem.action ? { onSelect: menuItem.action } : { href: menuItem.to };
+
+              return (
+                <Comp key={idx} {...itemProps}>
+                  {menuItem.text}
+                </Comp>
+              );
+            }
+          })}
+        </MenuList>
+      </Menu>
     );
   }
 

@@ -1,143 +1,168 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage } from 'react-intl';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import VerificationBadge from 'soapbox/components/verification_badge';
 import ActionButton from 'soapbox/features/ui/components/action_button';
+import { getAcct } from 'soapbox/utils/accounts';
+import { displayFqn } from 'soapbox/utils/state';
 
-import Avatar from './avatar';
-import DisplayName from './display_name';
-import Icon from './icon';
-import IconButton from './icon_button';
-import Permalink from './permalink';
 import RelativeTimestamp from './relative_timestamp';
+import { Avatar, HStack, IconButton, Text } from './ui';
 
-const mapStateToProps = state => {
-  return {
-    me: state.get('me'),
+const ProfilePopper = ({ condition, wrapper, children }) =>
+  condition ? wrapper(children) : children;
+
+const Account = ({
+  account,
+  action,
+  actionIcon,
+  actionTitle,
+  actionAlignment = 'center',
+  avatarSize = 42,
+  hidden = false,
+  hideActions = false,
+  onActionClick,
+  showProfileHoverCard = true,
+  timestamp,
+  timestampUrl,
+  withRelationship = true,
+}) => {
+  const me = useSelector((state) => state.get('me'));
+  const username = useSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
+
+  const handleAction = () => {
+    onActionClick(account);
   };
-};
 
-export default @connect(mapStateToProps)
-class Account extends ImmutablePureComponent {
-
-  static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
-    onFollow: PropTypes.func.isRequired,
-    onBlock: PropTypes.func.isRequired,
-    onMute: PropTypes.func.isRequired,
-    onMuteNotifications: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
-    hidden: PropTypes.bool,
-    actionIcon: PropTypes.string,
-    actionTitle: PropTypes.string,
-    onActionClick: PropTypes.func,
-    withDate: PropTypes.bool,
-    withRelationship: PropTypes.bool,
-    reaction: PropTypes.string,
-  };
-
-  static defaultProps = {
-    withDate: false,
-    withRelationship: true,
-  }
-
-  handleFollow = () => {
-    this.props.onFollow(this.props.account);
-  }
-
-  handleBlock = () => {
-    this.props.onBlock(this.props.account);
-  }
-
-  handleMute = () => {
-    this.props.onMute(this.props.account);
-  }
-
-  handleMuteNotifications = () => {
-    this.props.onMuteNotifications(this.props.account, true);
-  }
-
-  handleUnmuteNotifications = () => {
-    this.props.onMuteNotifications(this.props.account, false);
-  }
-
-  handleAction = () => {
-    this.props.onActionClick(this.props.account);
-  }
-
-  render() {
-    const { account, hidden, onActionClick, actionIcon, actionTitle, me, withDate, withRelationship, reaction } = this.props;
-
-    if (!account) {
-      return <div />;
+  const renderAction = () => {
+    if (action) {
+      return action;
     }
 
-    if (hidden) {
-      return (
-        <Fragment>
-          {account.get('display_name')}
-          {account.get('username')}
-        </Fragment>
-      );
+    if (hideActions) {
+      return null;
     }
-
-    let buttons;
-    let followedBy;
-    let emoji;
 
     if (onActionClick && actionIcon) {
-      buttons = <IconButton src={actionIcon} title={actionTitle} onClick={this.handleAction} />;
-    } else if (account.get('id') !== me && account.get('relationship', null) !== null) {
-      buttons = <ActionButton account={account} />;
-    }
-
-    if (reaction) {
-      emoji = (
-        <span
-          className='emoji-react__emoji'
-          dangerouslySetInnerHTML={{ __html: emojify(reaction) }}
+      return (
+        <IconButton
+          src={actionIcon}
+          title={actionTitle}
+          onClick={handleAction}
+          className='bg-transparent text-gray-400 hover:text-gray-600'
+          iconClassName='w-4 h-4'
         />
       );
     }
 
-    const createdAt = account.get('created_at');
+    if (account.get('id') !== me && account.get('relationship', null) !== null) {
+      return <ActionButton account={account} />;
+    }
 
-    const joinedAt = createdAt ? (
-      <div className='account__joined-at'>
-        <Icon src={require('@tabler/icons/icons/clock.svg')} />
-        <RelativeTimestamp timestamp={createdAt} />
-      </div>
-    ) : null;
+    return null;
+  };
 
+  if (!account) {
+    return null;
+  }
+
+  if (hidden) {
     return (
-      <div className={classNames('account', { 'account--with-relationship': withRelationship, 'account--with-date': withDate })}>
-        <div className='account__wrapper'>
-          <Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
-            <div className='account__avatar-wrapper'>
-              {emoji}
-              <Avatar account={account} size={36} />
-            </div>
-            <DisplayName account={account} withDate={Boolean(withDate && withRelationship)} />
-          </Permalink>
-
-          {withRelationship ? (<>
-            {followedBy &&
-              <span className='relationship-tag'>
-                <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
-              </span>}
-
-            <div className='account__relationship'>
-              {buttons}
-            </div>
-          </>) : withDate && joinedAt}
-        </div>
-      </div>
+      <>
+        {account.get('display_name')}
+        {account.get('username')}
+      </>
     );
   }
 
-}
+  const LinkEl = showProfileHoverCard ? Link : 'div';
+
+  return (
+    <div className='flex-shrink-0 group block w-full'>
+      <HStack alignItems={actionAlignment} justifyContent='between'>
+        <HStack alignItems='center' space={3}>
+          <ProfilePopper
+            condition={showProfileHoverCard}
+            wrapper={(children) => <HoverRefWrapper accountId={account.get('id')} inline>{children}</HoverRefWrapper>}
+          >
+            <LinkEl
+              to={`/@${account.get('acct')}`}
+              title={account.get('acct')}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <Avatar src={account.get('avatar')} size={avatarSize} />
+            </LinkEl>
+          </ProfilePopper>
+
+          <div>
+            <ProfilePopper
+              condition={showProfileHoverCard}
+              wrapper={(children) => <HoverRefWrapper accountId={account.get('id')} inline>{children}</HoverRefWrapper>}
+            >
+              <LinkEl
+                to={`/@${account.get('acct')}`}
+                title={account.get('acct')}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className='flex items-center space-x-1'>
+                  <div className='max-w-[250px]'>
+                    <Text
+                      size='sm'
+                      weight='semibold'
+                      truncate
+                      dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }}
+                    />
+                  </div>
+
+                  {account.get('verified') && <VerificationBadge />}
+                </div>
+              </LinkEl>
+            </ProfilePopper>
+
+            <HStack alignItems='center' space={1}>
+              <Text theme='muted' size='sm'>@{username}</Text>
+
+              {(timestamp) ? (
+                <>
+                  <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                  {timestampUrl ? (
+                    <Link to={timestampUrl} className='hover:underline'>
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' />
+                    </Link>
+                  ) : (
+                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' />
+                  )}
+                </>
+              ) : null}
+            </HStack>
+          </div>
+        </HStack>
+
+        {withRelationship ? renderAction() : null}
+      </HStack>
+    </div>
+  );
+};
+
+Account.propTypes = {
+  account: ImmutablePropTypes.map.isRequired,
+  action: PropTypes.node,
+  actionAlignment: PropTypes.oneOf(['center', 'top']),
+  actionIcon: PropTypes.string,
+  actionTitle: PropTypes.string,
+  avatarSize: PropTypes.number,
+  hidden: PropTypes.bool,
+  hideActions: PropTypes.bool,
+  onActionClick: PropTypes.func,
+  showProfileHoverCard: PropTypes.bool,
+  timestamp: PropTypes.string,
+  timestampUrl: PropTypes.string,
+  withRelationship: PropTypes.bool,
+};
+
+export default Account;

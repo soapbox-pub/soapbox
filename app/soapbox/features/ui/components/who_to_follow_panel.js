@@ -5,9 +5,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import Icon from 'soapbox/components/icon';
-
 import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
+import { Stack, Text } from '../../../components/ui';
 import AccountContainer from '../../../containers/account_container';
 
 const messages = defineMessages({
@@ -36,27 +35,23 @@ class WhoToFollowPanel extends ImmutablePureComponent {
     }
 
     return (
-      <div className='wtf-panel'>
-        <div className='wtf-panel-header'>
-          <Icon src={require('@tabler/icons/icons/users.svg')} className='wtf-panel-header__icon' />
-          <span className='wtf-panel-header__label'>
-            <FormattedMessage id='who_to_follow.title' defaultMessage='Who To Follow' />
-          </span>
-        </div>
-        <div className='wtf-panel__content'>
-          <div className='wtf-panel__list'>
-            {suggestions && suggestions.map(suggestion => (
-              <AccountContainer
-                key={suggestion.get('account')}
-                id={suggestion.get('account')}
-                actionIcon={require('@tabler/icons/icons/x.svg')}
-                actionTitle={intl.formatMessage(messages.dismissSuggestion)}
-                onActionClick={dismissSuggestion}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      <Stack space={2}>
+        <Text size='xl' weight='bold'>
+          <FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />
+        </Text>
+
+        <Stack space={3}>
+          {suggestions && suggestions.map(suggestion => (
+            <AccountContainer
+              key={suggestion.get('account')}
+              id={suggestion.get('account')}
+              actionIcon={require('@tabler/icons/icons/x.svg')}
+              actionTitle={intl.formatMessage(messages.dismissSuggestion)}
+              onActionClick={dismissSuggestion}
+            />
+          ))}
+        </Stack>
+      </Stack>
     );
   }
 
