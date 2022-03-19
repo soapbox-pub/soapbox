@@ -1,5 +1,3 @@
-import { is as ImmutableIs } from 'immutable';
-import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -10,7 +8,8 @@ import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import { makeGetOtherAccounts } from 'soapbox/selectors';
+import { useAppSelector } from 'soapbox/hooks';
+import { makeGetAccount } from 'soapbox/selectors';
 import { isStaff } from 'soapbox/utils/accounts';
 
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
@@ -20,20 +19,34 @@ const messages = defineMessages({
   logout: { id: 'profile_dropdown.logout', defaultMessage: 'Log out @{acct}' },
 });
 
-const makeMapStateToProps = () => {
-  const getOtherAccounts = makeGetOtherAccounts();
+const mapStateToProps = state => {
+  const me = state.get('me');
 
-  const mapStateToProps = state => {
-    const me = state.get('me');
-
-    return {
-      account: state.getIn(['accounts', me]),
-      otherAccounts: getOtherAccounts(state),
-      isStaff: isStaff(state.getIn(['accounts', me])),
-    };
+  return {
+    account: state.getIn(['accounts', me]),
+    authUsers: state.getIn(['auth', 'users']),
+    isStaff: isStaff(state.getIn(['accounts', me])),
   };
+};
 
-  return mapStateToProps;
+const ProfileDropdownAccount = ({ accountId }) => {
+  const getAccount = makeGetAccount();
+  const account = useAppSelector(state => getAccount(state, accountId));
+
+  return (
+    <div className='account'>
+      <div className='account__wrapper'>
+        <div className='account__display-name'>
+          <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
+          <DisplayName account={account} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+ProfileDropdownAccount.propTypes = {
+  accountId: PropTypes.string.isRequired,
 };
 
 class ProfileDropdown extends React.PureComponent {
@@ -43,7 +56,7 @@ class ProfileDropdown extends React.PureComponent {
     dispatch: PropTypes.func.isRequired,
     size: PropTypes.number,
     account: ImmutablePropTypes.map,
-    otherAccounts: ImmutablePropTypes.list,
+    authUsers: ImmutablePropTypes.map,
     isStaff: PropTypes.bool.isRequired,
   };
 
@@ -71,46 +84,26 @@ class ProfileDropdown extends React.PureComponent {
     };
   }
 
-  fetchOwnAccounts = throttle(() => {
+  fetchOwnAccounts = () => {
     this.props.dispatch(fetchOwnAccounts());
-  }, 2000);
+  };
 
   componentDidMount() {
     this.fetchOwnAccounts();
   }
 
-  componentDidUpdate(prevProps) {
-    const accountChanged = !ImmutableIs(prevProps.account, this.props.account);
-    const otherAccountsChanged = !ImmutableIs(prevProps.otherAccounts, this.props.otherAccounts);
-
-    if (accountChanged || otherAccountsChanged) {
-      this.fetchOwnAccounts();
-    }
-  }
-
-  renderAccount = account => {
-    return (
-      <div className='account'>
-        <div className='account__wrapper'>
-          <div className='account__display-name'>
-            <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-            <DisplayName account={account} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   render() {
-    const { intl, account, otherAccounts } = this.props;
+    const { intl, account, authUsers } = this.props;
     const size = this.props.size || 16;
 
     const menu = [];
 
-    menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}` });
+    menu.push({ text: <ProfileDropdownAccount accountId={account.id} />, to: `/@${account.acct}` });
 
-    otherAccounts.forEach(account => {
-      menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account), href: '/', middleClick: this.handleMiddleClick(account) });
+    authUsers.forEach(authUser => {
+      if (authUser.get('id') !== account.get('id')) {
+        menu.push({ text: <ProfileDropdownAccount accountId={authUser.get('id')} />, action: this.handleSwitchAccount(account), href: '/', middleClick: this.handleMiddleClick(account) });
+      }
     });
 
     menu.push(null);
@@ -139,4 +132,4 @@ class ProfileDropdown extends React.PureComponent {
 
 }
 
-export default injectIntl(connect(makeMapStateToProps)(ProfileDropdown));
+export default injectIntl(connect(mapStateToProps)(ProfileDropdown));

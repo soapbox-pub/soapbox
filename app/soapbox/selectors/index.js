@@ -7,7 +7,6 @@ import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
 import { getDomain } from 'soapbox/utils/accounts';
-import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config_db';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
@@ -245,35 +244,6 @@ export const makeGetReport = () => {
       return report.set('statuses', statuses);
     },
   );
-};
-
-const getAuthUserIds = createSelector([
-  state => state.getIn(['auth', 'users'], ImmutableMap()),
-], authUsers => {
-  return authUsers.reduce((ids, authUser) => {
-    try {
-      const id = authUser.get('id');
-      return validId(id) ? ids.add(id) : ids;
-    } catch {
-      return ids;
-    }
-  }, ImmutableOrderedSet());
-});
-
-export const makeGetOtherAccounts = () => {
-  return createSelector([
-    state => state.get('accounts'),
-    getAuthUserIds,
-    state => state.get('me'),
-  ],
-  (accounts, authUserIds, me) => {
-    return authUserIds
-      .reduce((list, id) => {
-        if (id === me) return list;
-        const account = accounts.get(id);
-        return account ? list.push(account) : list;
-      }, ImmutableList());
-  });
 };
 
 const getSimplePolicy = createSelector([

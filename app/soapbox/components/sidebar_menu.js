@@ -1,23 +1,22 @@
 import classNames from 'classnames';
-import { is as ImmutableIs } from 'immutable';
-import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { closeSidebar } from '../actions/sidebar';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { makeGetAccount } from '../selectors';
 import { isAdmin, getBaseURL } from '../utils/accounts';
 
 import Avatar from './avatar';
@@ -58,7 +57,6 @@ const messages = defineMessages({
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
-  const getOtherAccounts = makeGetOtherAccounts();
 
   const mapStateToProps = state => {
     const me = state.get('me');
@@ -70,10 +68,10 @@ const makeMapStateToProps = () => {
 
     return {
       account: getAccount(state, me),
+      authUsers: state.getIn(['auth', 'users']),
       sidebarOpen: state.get('sidebar').sidebarOpen,
       donateUrl: state.getIn(['patron', 'instance', 'url']),
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
-      otherAccounts: getOtherAccounts(state),
       features,
       instance,
       settings: getSettings(state),
@@ -101,6 +99,34 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
+const SidebarMenuAccount = ({ accountId }) => {
+  const dispatch = useDispatch();
+  const getAccount = makeGetAccount();
+  const account = useAppSelector(state => getAccount(state, accountId));
+
+  const handleSwitchAccount = e => {
+    dispatch(switchAccount(accountId));
+    e.preventDefault();
+  };
+
+  return (
+    <a href='/' className='sidebar-account' onClick={handleSwitchAccount} key={account.id}>
+      <div className='account'>
+        <div className='account__wrapper'>
+          <div className='account__display-name'>
+            <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
+            <DisplayName account={account} />
+          </div>
+        </div>
+      </div>
+    </a>
+  );
+};
+
+SidebarMenuAccount.propTypes = {
+  accountId: PropTypes.string.isRequired,
+};
+
 export default @injectIntl
 @connect(makeMapStateToProps, mapDispatchToProps)
 class SidebarMenu extends ImmutablePureComponent {
@@ -108,7 +134,7 @@ class SidebarMenu extends ImmutablePureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map,
-    otherAccounts: ImmutablePropTypes.list,
+    authUsers: ImmutablePropTypes.map,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
@@ -138,44 +164,22 @@ class SidebarMenu extends ImmutablePureComponent {
     e.preventDefault();
   }
 
-  fetchOwnAccounts = throttle(() => {
+  fetchOwnAccounts = () => {
     this.props.fetchOwnAccounts();
-  }, 2000);
+  };
 
   componentDidMount() {
     this.fetchOwnAccounts();
   }
 
   componentDidUpdate(prevProps) {
-    const accountChanged = !ImmutableIs(prevProps.account, this.props.account);
-    const otherAccountsChanged = !ImmutableIs(prevProps.otherAccounts, this.props.otherAccounts);
-
-    if (accountChanged || otherAccountsChanged) {
-      this.fetchOwnAccounts();
-    }
-
     if (this.props.sidebarOpen && !prevProps.sidebarOpen) {
       document.querySelector('.sidebar-menu__close').focus();
     }
   }
 
-  renderAccount = account => {
-    return (
-      <a href='/' className='sidebar-account' onClick={this.handleSwitchAccount(account)} key={account.get('id')}>
-        <div className='account'>
-          <div className='account__wrapper'>
-            <div className='account__display-name'>
-              <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-              <DisplayName account={account} />
-            </div>
-          </div>
-        </div>
-      </a>
-    );
-  }
-
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, settings, features, instance, siteTitle, baseURL } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, authUsers, hasCrypto, settings, features, instance, siteTitle, baseURL } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -204,7 +208,9 @@ class SidebarMenu extends ImmutablePureComponent {
             </div>
 
             {switcher && <div className='sidebar-menu__section'>
-              {otherAccounts.map(account => this.renderAccount(account))}
+              {authUsers.toList().map(authUser => (
+                authUser.get('id') !== account.id && <SidebarMenuAccount accountId={authUser.get('id')} />
+              ))}
 
               <NavLink className='sidebar-menu-item' to='/auth/sign_in' onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/plus.svg')} />
