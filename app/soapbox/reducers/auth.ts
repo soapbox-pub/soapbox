@@ -1,8 +1,15 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { AxiosError } from 'axios';
+import {
+  Map as ImmutableMap,
+  Record as ImmutableRecord,
+  fromJS,
+} from 'immutable';
 import { trim } from 'lodash';
+import { AnyAction } from 'redux';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
+import { normalizeAccount } from 'soapbox/normalizers';
 import KVStore from 'soapbox/storage/kv_store';
 import { validId, isURL } from 'soapbox/utils/auth';
 
@@ -17,45 +24,82 @@ import {
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
 
-const defaultState = ImmutableMap({
-  app: ImmutableMap(),
-  users: ImmutableMap(),
-  tokens: ImmutableMap(),
-  me: null,
+const AuthUserRecord = ImmutableRecord({
+  access_token: '',
+  id: '',
+  url: '',
 });
 
-const buildKey = parts => parts.join(':');
+const AuthTokenRecord = ImmutableRecord({
+  access_token: '',
+  account: '',
+  created_at: undefined as number | undefined,
+  expires_in: undefined as number | undefined,
+  id: '',
+  refresh_token: '',
+  token_type: 'Bearer',
+  me: '',
+});
+
+// We combine fields from the App and Token
+const AuthAppRecord = ImmutableRecord({
+  id: '',
+  client_id: '',
+  client_secret: '',
+  name: '',
+  redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+  vapid_key: '',
+  website: '',
+});
+
+type AuthUser = ReturnType<typeof AuthUserRecord>;
+type AuthToken = ReturnType<typeof AuthTokenRecord>;
+
+const ReducerRecord = ImmutableRecord({
+  app: AuthAppRecord(),
+  me: '',
+  tokens: ImmutableMap<string, AuthToken>(),
+  users: ImmutableMap<string, AuthUser>(),
+});
+
+type APIEntity = Record<string, any>;
+type State = ReturnType<typeof ReducerRecord>;
+type NormalAccount = ReturnType<typeof normalizeAccount>;
+
+const defaultState: State = ReducerRecord();
+
+const buildKey = (parts: Array<string>): string => parts.join(':');
 
 // For subdirectory support
-const NAMESPACE = trim(FE_SUBDIRECTORY, '/') ? `soapbox@${FE_SUBDIRECTORY}` : 'soapbox';
+const NAMESPACE: string = trim(BuildConfig.FE_SUBDIRECTORY, '/') ? `soapbox@${BuildConfig.FE_SUBDIRECTORY}` : 'soapbox';
 
-const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);
-const SESSION_KEY = buildKey([NAMESPACE, 'auth', 'me']);
+const STORAGE_KEY: string = buildKey([NAMESPACE, 'auth']);
+const SESSION_KEY: string = buildKey([NAMESPACE, 'auth', 'me']);
 
-const getSessionUser = () => {
-  const id = sessionStorage.getItem(SESSION_KEY);
+const getSessionUser = (): string | undefined => {
+  const id: string = sessionStorage.getItem(SESSION_KEY);
   return validId(id) ? id : undefined;
 };
 
 const sessionUser = getSessionUser();
-const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+const localState = ImmutableMap(fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY))));
 
 // Checks if the user has an ID and access token
-const validUser = user => {
+const validUser = (user: AuthUser): boolean => {
   try {
-    return validId(user.get('id')) && validId(user.get('access_token'));
+    return validId(user.id) && validId(user.access_token);
   } catch(e) {
     return false;
   }
 };
 
 // Finds the first valid user in the state
-const firstValidUser = state => state.get('users', ImmutableMap()).find(validUser);
+const firstValidUser = (state: State): AuthUser => state.users.find(validUser);
 
 // For legacy purposes. IDs get upgraded to URLs further down.
-const getUrlOrId = user => {
+const getUrlOrId = (user: AuthUser): string | null => {
   try {
-    const { id, url } = user.toJS();
+    const { id, url } = user;
     return url || id;
   } catch {
     return null;
@@ -63,9 +107,9 @@ const getUrlOrId = user => {
 };
 
 // If `me` doesn't match an existing user, attempt to shift it.
-const maybeShiftMe = state => {
-  const me = state.get('me');
-  const user = state.getIn(['users', me]);
+const maybeShiftMe = (state: State): State => {
+  const { me } = state;
+  const user = state.users.get(me);
 
   if (!validUser(user)) {
     const nextUser = firstValidUser(state);
@@ -76,78 +120,74 @@ const maybeShiftMe = state => {
 };
 
 // Set the user from the session or localStorage, whichever is valid first
-const setSessionUser = state => state.update('me', null, me => {
-  const user = ImmutableList([
-    state.getIn(['users', sessionUser]),
-    state.getIn(['users', me]),
-  ]).find(validUser);
+const setSessionUser = (state: State): State => {
+  return state.update('me', me => {
+    const user = [
+      state.users.get(sessionUser),
+      state.users.get(me),
+    ].find(validUser);
 
-  return getUrlOrId(user);
-});
-
-// Upgrade the initial state
-const migrateLegacy = state => {
-  if (localState) return state;
-  return state.withMutations(state => {
-    const app = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:app')));
-    const user = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:user')));
-    if (!user) return;
-    state.set('me', '_legacy'); // Placeholder account ID
-    state.set('app', app);
-    state.set('tokens', ImmutableMap({
-      [user.get('access_token')]: user.set('account', '_legacy'),
-    }));
-    state.set('users', ImmutableMap({
-      '_legacy': ImmutableMap({
-        id: '_legacy',
-        access_token: user.get('access_token'),
-      }),
-    }));
+    return getUrlOrId(user);
   });
 };
 
-const isUpgradingUrlId = state => {
-  const me = state.get('me');
-  const user = state.getIn(['users', me]);
+// Upgrade the initial state
+const migrateLegacy = (state: State): State => {
+  if (localState) return state;
+  return state.withMutations(state => {
+    const app = AuthAppRecord(JSON.parse(localStorage.getItem('soapbox:auth:app')));
+    const user = AuthUserRecord({ ...JSON.parse(localStorage.getItem('soapbox:auth:user')), id: '_legacy' });
+    const token = AuthTokenRecord({ account: '_legacy' });
+    if (!user.access_token) return;
+    state.set('me', '_legacy'); // Placeholder account ID
+    state.set('app', app);
+    state.setIn(['tokens', user.access_token], token);
+    state.setIn(['users', '_legacy'], user);
+  });
+};
+
+const isUpgradingUrlId = (state: State): boolean => {
+  const { me, users } = state;
+  const user = users.get(me);
   return validId(me) && user && !isURL(me);
 };
 
 // Checks the state and makes it valid
-const sanitizeState = state => {
+const sanitizeState = (state: State): State => {
   // Skip sanitation during ID to URL upgrade
   if (isUpgradingUrlId(state)) return state;
 
   return state.withMutations(state => {
     // Remove invalid users, ensure ID match
-    state.update('users', ImmutableMap(), users => (
+    state.update('users', users => (
       users.filter((user, url) => (
-        validUser(user) && user.get('url') === url
+        validUser(user) && user.url === url
       ))
     ));
     // Remove mismatched tokens
-    state.update('tokens', ImmutableMap(), tokens => (
+    state.update('tokens', tokens => (
       tokens.filter((token, id) => (
-        validId(id) && token.get('access_token') === id
+        validId(id) && token.access_token === id
       ))
     ));
   });
 };
 
-const persistAuth = state => localStorage.setItem(STORAGE_KEY, JSON.stringify(state.toJS()));
+const persistAuth = (state: State): void => localStorage.setItem(STORAGE_KEY, JSON.stringify(state.toJS()));
 
-const persistSession = state => {
-  const me = state.get('me');
+const persistSession = (state: State): void => {
+  const { me } = state;
   if (me && typeof me === 'string') {
     sessionStorage.setItem(SESSION_KEY, me);
   }
 };
 
-const persistState = state => {
+const persistState = (state: State): void => {
   persistAuth(state);
   persistSession(state);
 };
 
-const initialize = state => {
+const initialize = (state: State): State => {
   return state.withMutations(state => {
     maybeShiftMe(state);
     setSessionUser(state);
@@ -157,17 +197,17 @@ const initialize = state => {
   });
 };
 
-const initialState = initialize(defaultState.merge(localState));
+const initialState: State = initialize(defaultState.merge(localState));
 
-const importToken = (state, token) => {
-  return state.setIn(['tokens', token.access_token], fromJS(token));
+const importToken = (state: State, token: APIEntity): State => {
+  return state.setIn(['tokens', token.access_token], AuthTokenRecord(token));
 };
 
 // Upgrade the `_legacy` placeholder ID with a real account
-const upgradeLegacyId = (state, account) => {
+const upgradeLegacyId = (state: State, account: APIEntity): State => {
   if (localState) return state;
   return state.withMutations(state => {
-    state.update('me', null, me => me === '_legacy' ? account.url : me);
+    state.update('me', me => me === '_legacy' ? account.url : me);
     state.deleteIn(['users', '_legacy']);
   });
   // TODO: Delete `soapbox:auth:app` and `soapbox:auth:user` localStorage?
@@ -176,19 +216,19 @@ const upgradeLegacyId = (state, account) => {
 
 // Users are now stored by their ActivityPub ID instead of their
 // primary key to support auth against multiple hosts.
-const upgradeNonUrlId = (state, account) => {
-  const me = state.get('me');
+const upgradeNonUrlId = (state: State, account: APIEntity): State => {
+  const { me } = state;
   if (isURL(me)) return state;
 
   return state.withMutations(state => {
-    state.update('me', null, me => me === account.id ? account.url : me);
+    state.update('me', me => me === account.id ? account.url : me);
     state.deleteIn(['users', account.id]);
   });
 };
 
 // Returns a predicate function for filtering a mismatched user/token
-const userMismatch = (token, account) => {
-  return (user, url) => {
+const userMismatch = (token: string, account: APIEntity) => {
+  return (user: AuthUser, url: string): boolean => {
     const sameToken = user.get('access_token') === token;
     const differentUrl = url !== account.url || user.get('url') !== account.url;
     const differentId = user.get('id') !== account.id;
@@ -197,41 +237,41 @@ const userMismatch = (token, account) => {
   };
 };
 
-const importCredentials = (state, token, account) => {
+const importCredentials = (state: State, token: string, account: APIEntity): State => {
   return state.withMutations(state => {
-    state.setIn(['users', account.url], ImmutableMap({
+    state.setIn(['users', account.url], AuthUserRecord({
       id: account.id,
       access_token: token,
       url: account.url,
     }));
     state.setIn(['tokens', token, 'account'], account.id);
     state.setIn(['tokens', token, 'me'], account.url);
-    state.update('users', ImmutableMap(), users => users.filterNot(userMismatch(token, account)));
-    state.update('me', null, me => me || account.url);
+    state.update('users', users => users.filterNot(userMismatch(token, account)));
+    state.update('me', me => me || account.url);
     upgradeLegacyId(state, account);
     upgradeNonUrlId(state, account);
   });
 };
 
-const deleteToken = (state, token) => {
+const deleteToken = (state: State, token: string) => {
   return state.withMutations(state => {
-    state.update('tokens', ImmutableMap(), tokens => tokens.delete(token));
-    state.update('users', ImmutableMap(), users => users.filterNot(user => user.get('access_token') === token));
+    state.update('tokens', tokens => tokens.delete(token));
+    state.update('users', users => users.filterNot(user => user.get('access_token') === token));
     maybeShiftMe(state);
   });
 };
 
-const deleteUser = (state, account) => {
+const deleteUser = (state: State, account: NormalAccount): State => {
   const accountUrl = account.get('url');
 
   return state.withMutations(state => {
-    state.update('users', ImmutableMap(), users => users.delete(accountUrl));
-    state.update('tokens', ImmutableMap(), tokens => tokens.filterNot(token => token.get('me') === accountUrl));
+    state.update('users', users => users.delete(accountUrl));
+    state.update('tokens', tokens => tokens.filterNot(token => token.get('me') === accountUrl));
     maybeShiftMe(state);
   });
 };
 
-const importMastodonPreload = (state, data) => {
+const importMastodonPreload = (state: State, data: ImmutableMap<string, any>): State => {
   return state.withMutations(state => {
     const accountId   = data.getIn(['meta', 'me']);
     const accountUrl  = data.getIn(['accounts', accountId, 'url']);
@@ -257,13 +297,13 @@ const importMastodonPreload = (state, data) => {
   });
 };
 
-const persistAuthAccount = account => {
+const persistAuthAccount = (account: APIEntity): void => {
   if (account && account.url) {
     KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
   }
 };
 
-const deleteForbiddenToken = (state, error, token) => {
+const deleteForbiddenToken = (state: State, error: AxiosError, token: string): State => {
   if ([401, 403].includes(error.response?.status)) {
     return deleteToken(state, token);
   } else {
@@ -271,12 +311,12 @@ const deleteForbiddenToken = (state, error, token) => {
   }
 };
 
-const reducer = (state, action) => {
+const reducer = (state: State, action: AnyAction): State => {
   switch(action.type) {
   case AUTH_APP_CREATED:
-    return state.set('app', fromJS(action.app));
+    return state.set('app', AuthAppRecord(action.app));
   case AUTH_APP_AUTHORIZED:
-    return state.update('app', ImmutableMap(), app => app.merge(fromJS(action.token)));
+    return state.update('app', app => app.merge(action.token));
   case AUTH_LOGGED_IN:
     return importToken(state, action.token);
   case AUTH_LOGGED_OUT:
@@ -291,24 +331,23 @@ const reducer = (state, action) => {
   case ME_FETCH_SKIP:
     return state.set('me', null);
   case MASTODON_PRELOAD_IMPORT:
-    return importMastodonPreload(state, fromJS(action.data));
+    return importMastodonPreload(state, ImmutableMap(fromJS(action.data)));
   default:
     return state;
   }
 };
 
-const reload = () => location.replace('/');
+const reload = (): void => location.replace('/');
 
 // `me` is a user ID string
-const validMe = state => {
-  const me = state.get('me');
+const validMe = ({ me }: State): boolean => {
   return typeof me === 'string' && me !== '_legacy';
 };
 
 // `me` has changed from one valid ID to another
-const userSwitched = (oldState, state) => {
-  const me = state.get('me');
-  const oldMe = oldState.get('me');
+const userSwitched = (oldState: State, state: State): boolean => {
+  const { me } = state;
+  const { me: oldMe } = oldState;
 
   const stillValid = validMe(oldState) && validMe(state);
   const didChange = oldMe !== me;
@@ -317,16 +356,16 @@ const userSwitched = (oldState, state) => {
   return stillValid && didChange && !userUpgradedUrl;
 };
 
-const maybeReload = (oldState, state, action) => {
+const maybeReload = (oldState: State, state: State, action: AnyAction): void => {
   const loggedOutStandalone = action.type === AUTH_LOGGED_OUT && action.standalone;
   const switched = userSwitched(oldState, state);
 
   if (switched || loggedOutStandalone) {
-    reload(state);
+    reload();
   }
 };
 
-export default function auth(oldState = initialState, action) {
+export default function auth(oldState: State = initialState, action: AnyAction): State {
   const state = reducer(oldState, action);
 
   if (!state.equals(oldState)) {

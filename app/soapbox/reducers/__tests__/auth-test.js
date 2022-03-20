@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import {
   AUTH_APP_CREATED,
@@ -15,12 +15,17 @@ import reducer from '../auth';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      app: ImmutableMap(),
-      users: ImmutableMap(),
-      tokens: ImmutableMap(),
+    const result = reducer(undefined, {});
+
+    const expected = {
+      app: {},
+      users: {},
+      tokens: {},
       me: null,
-    }));
+    };
+
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.toJS()).toEqual(expected);
   });
 
   describe('AUTH_APP_CREATED', () => {
@@ -29,9 +34,9 @@ describe('auth reducer', () => {
       const action = { type: AUTH_APP_CREATED, app: token };
 
       const result = reducer(undefined, action);
-      const expected = fromJS(token);
 
-      expect(result.get('app')).toEqual(expected);
+      expect(ImmutableRecord.isRecord(result.app)).toBe(true);
+      expect(result.app.access_token).toEqual('ABCDEFG');
     });
   });
 
@@ -41,9 +46,9 @@ describe('auth reducer', () => {
       const action = { type: AUTH_LOGGED_IN, token };
 
       const result = reducer(undefined, action);
-      const expected = fromJS({ 'ABCDEFG': token });
 
-      expect(result.get('tokens')).toEqual(expected);
+      expect(ImmutableRecord.isRecord(result.tokens.get('ABCDEFG'))).toBe(true);
+      expect(result.tokens.get('ABCDEFG').access_token).toEqual('ABCDEFG');
     });
 
     it('should merge the token with existing state', () => {
