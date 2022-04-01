@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Virtuoso } from 'react-virtuoso';
+import { FixedSizeList as List } from 'react-window';
 
 import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
@@ -288,13 +291,44 @@ class ScrollableList extends PureComponent {
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
+    const childrenJS = children.toJS();
+
+    const renderItem = (index) => {
+
+      return (<article key={index}>
+        {React.cloneElement(childrenJS[index], {
+          getScrollPosition: this.getScrollPosition,
+          updateScrollBottom: this.updateScrollBottom,
+          cachedMediaWidth: this.state.cachedMediaWidth,
+          cacheMediaWidth: this.cacheMediaWidth,
+        })}
+      </article>);
+    };
 
     const feed = (
       <div ref={this.setRef} onMouseMove={this.handleMouseMove}>
         <div role='feed' className={className}>
           {prepend}
 
-          {React.Children.map(children, (child, index) => (
+          <AutoSizer>
+            {({ height, width }) => (
+              <Virtuoso
+                style={{ height: '600px' }}
+                totalCount={childrenCount}
+                itemContent={renderItem}
+              />
+              // <List
+              //   height={height}
+              //   itemCount={childrenCount}
+              //   itemSize={height}
+              //   width={width}
+              // >
+              //   {}
+              // </List>
+            )}
+          </AutoSizer>
+
+          {/* {React.Children.map(children, (child, index) => (
             <IntersectionObserverArticleContainer
               key={child.key}
               id={child.key}
@@ -310,7 +344,7 @@ class ScrollableList extends PureComponent {
                 cacheMediaWidth: this.cacheMediaWidth,
               })}
             </IntersectionObserverArticleContainer>
-          ))}
+          ))} */}
           {(isLoading && Placeholder) && (
             <Placeholder />
           )}
