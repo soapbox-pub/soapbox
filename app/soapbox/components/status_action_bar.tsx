@@ -2,14 +2,16 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, IntlShape } from 'react-intl';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import { favourite, unfavourite } from 'soapbox/actions/interactions';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import Hoverable from 'soapbox/components/hoverable';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
@@ -67,6 +69,38 @@ const messages = defineMessages({
   reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
+
+interface IFavouriteButton {
+  statusId: string,
+  children: JSX.Element,
+}
+
+const FavouriteButtonWrapper: React.FC<IFavouriteButton> = ({ statusId, children }) => {
+  const dispatch = useDispatch();
+  const ownAccount = useOwnAccount();
+  const status = useAppSelector(state => state.statuses.get(statusId));
+  if (!status) return null;
+
+  const toggleFavourite = () => {
+    if (status.favourited) {
+      dispatch(unfavourite(status));
+    } else {
+      dispatch(favourite(status));
+    }
+  };
+
+  const onClick: React.EventHandler<React.MouseEvent> = (e) => {
+    if (ownAccount) {
+      toggleFavourite();
+    } else {
+      dispatch(openModal('UNAUTHORIZED', { action: 'FAVOURITE' }));
+    }
+
+    e.stopPropagation();
+  };
+
+  return React.cloneElement(children, { onClick });
+};
 
 interface IStatusActionBar extends RouteComponentProps {
   status: Status,
@@ -659,15 +693,16 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
             />
           </Hoverable>
         ): (
-          <StatusActionButton
-            title={intl.formatMessage(messages.favourite)}
-            icon={require('@tabler/icons/icons/heart.svg')}
-            color='accent'
-            filled
-            onClick={this.handleFavouriteClick}
-            active={Boolean(meEmojiReact)}
-            count={favouriteCount}
-          />
+          <FavouriteButtonWrapper statusId={status.id}>
+            <StatusActionButton
+              title={intl.formatMessage(messages.favourite)}
+              icon={require('@tabler/icons/icons/heart.svg')}
+              color='accent'
+              filled
+              active={Boolean(meEmojiReact)}
+              count={favouriteCount}
+            />
+          </FavouriteButtonWrapper>
         )}
 
         {canShare && (
