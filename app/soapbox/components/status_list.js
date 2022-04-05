@@ -113,10 +113,24 @@ export default class StatusList extends ImmutablePureComponent {
     );
   }
 
+  maybeWrap = element => {
+    const { divideType } = this.props;
+
+    if (divideType !== 'border') {
+      return (
+        <div className='pb-3'>
+          {element}
+        </div>
+      );
+    } else {
+      return element;
+    }
+  }
+
   renderStatus(statusId) {
     const { timelineId, withGroupAdmin, group }  = this.props;
 
-    return (
+    return this.maybeWrap(
       <StatusContainer
         key={statusId}
         id={statusId}
@@ -125,7 +139,7 @@ export default class StatusList extends ImmutablePureComponent {
         contextType={timelineId}
         group={group}
         withGroupAdmin={withGroupAdmin}
-      />
+      />,
     );
   }
 
@@ -154,7 +168,7 @@ export default class StatusList extends ImmutablePureComponent {
     const { featuredStatusIds, timelineId }  = this.props;
     if (!featuredStatusIds) return null;
 
-    return featuredStatusIds.map(statusId => (
+    return featuredStatusIds.map(statusId => this.maybeWrap(
       <StatusContainer
         key={`f-${statusId}`}
         id={statusId}
@@ -162,7 +176,7 @@ export default class StatusList extends ImmutablePureComponent {
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType={timelineId}
-      />
+      />,
     ));
   }
 
@@ -226,7 +240,6 @@ export default class StatusList extends ImmutablePureComponent {
         placeholderComponent={PlaceholderStatus}
         placeholderCount={20}
         ref={this.setRef}
-        className={divideType === 'border' ? 'divide-y divide-solid divide-gray-200 dark:divide-gray-800' : 'sm:space-y-3 divide-y divide-solid divide-gray-200 dark:divide-gray-800 sm:divide-none'}
         {...other}
       >
         {this.renderScrollableContent()}
