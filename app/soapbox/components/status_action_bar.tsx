@@ -1,7 +1,7 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, IntlShape } from 'react-intl';
+import { defineMessages, injectIntl, useIntl, IntlShape } from 'react-intl';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -70,12 +70,12 @@ const messages = defineMessages({
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
 
-interface IFavouriteButton {
+interface IFavouriteButtonWrapper {
   statusId: string,
   children: JSX.Element,
 }
 
-const FavouriteButtonWrapper: React.FC<IFavouriteButton> = ({ statusId, children }) => {
+const FavouriteButtonWrapper: React.FC<IFavouriteButtonWrapper> = ({ statusId, children }) => {
   const dispatch = useDispatch();
   const ownAccount = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
@@ -100,6 +100,29 @@ const FavouriteButtonWrapper: React.FC<IFavouriteButton> = ({ statusId, children
   };
 
   return React.cloneElement(children, { onClick });
+};
+
+interface IFavouriteButton {
+  statusId: string,
+}
+
+const FavouriteButton: React.FC<IFavouriteButton> = ({ statusId }): JSX.Element | null => {
+  const intl = useIntl();
+  const status = useAppSelector(state => state.statuses.get(statusId));
+  if (!status) return null;
+
+  return (
+    <FavouriteButtonWrapper statusId={statusId}>
+      <StatusActionButton
+        title={intl.formatMessage(messages.favourite)}
+        icon={require('@tabler/icons/icons/heart.svg')}
+        color='accent'
+        filled
+        active={status.favourited}
+        count={status.favourites_count}
+      />
+    </FavouriteButtonWrapper>
+  );
 };
 
 interface IStatusActionBar extends RouteComponentProps {
@@ -693,16 +716,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
             />
           </Hoverable>
         ): (
-          <FavouriteButtonWrapper statusId={status.id}>
-            <StatusActionButton
-              title={intl.formatMessage(messages.favourite)}
-              icon={require('@tabler/icons/icons/heart.svg')}
-              color='accent'
-              filled
-              active={Boolean(meEmojiReact)}
-              count={favouriteCount}
-            />
-          </FavouriteButtonWrapper>
+          <FavouriteButton statusId={status.id} />
         )}
 
         {canShare && (
