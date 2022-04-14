@@ -1,13 +1,16 @@
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { Virtuoso } from 'react-virtuoso';
 
 import { importFetchedStatuses } from 'soapbox/actions/importer';
 import { expandTimelineSuccess } from 'soapbox/actions/timelines';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import StatusContainer from 'soapbox/containers/status_container';
+import { useAppSelector } from 'soapbox/hooks';
 
 import { Column } from '../../components/ui';
-import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({
   title: { id: 'column.test', defaultMessage: 'Test timeline' },
@@ -26,11 +29,12 @@ const MOCK_STATUSES: any[] = [
 ];
 
 const timelineId = 'test';
-const onlyMedia = false;
+// const onlyMedia = false;
 
 const TestTimeline: React.FC = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
+  const statusIds = useAppSelector((state) => state.timelines.getIn([timelineId, 'items'], ImmutableOrderedSet()));
 
   React.useEffect(() => {
     dispatch(importFetchedStatuses(MOCK_STATUSES));
@@ -40,11 +44,13 @@ const TestTimeline: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.title)} transparent>
       <SubNavigation message={intl.formatMessage(messages.title)} />
-      <StatusListContainer
-        scrollKey={`${timelineId}_timeline`}
-        timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
-        emptyMessage={<FormattedMessage id='empty_column.test' defaultMessage='The test timeline is empty.' />}
-        divideType='space'
+      <Virtuoso
+        useWindowScroll
+        data={statusIds.toArray()}
+        itemContent={(index, statusId) => (
+          // @ts-ignore
+          <StatusContainer id={statusId} />
+        )}
       />
     </Column>
   );
