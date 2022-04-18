@@ -1,18 +1,35 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import {  FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import Icon from '../../../components/icon';
-import Permalink from '../../../components/permalink';
-import { HStack, Text, Emoji } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
-import StatusContainer from '../../../containers/status_container';
+import { mentionCompose } from 'soapbox/actions/compose';
+import {
+  reblog,
+  favourite,
+  unreblog,
+  unfavourite,
+} from 'soapbox/actions/interactions';
+import { openModal } from 'soapbox/actions/modals';
+import {
+  hideStatus,
+  revealStatus,
+} from 'soapbox/actions/statuses';
+import Icon from 'soapbox/components/icon';
+import Permalink from 'soapbox/components/permalink';
+import { HStack, Text, Emoji } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+import StatusContainer from 'soapbox/containers/status_container';
+import { useAppSelector, useSettings } from 'soapbox/hooks';
+import { makeGetNotification } from 'soapbox/selectors';
 
 import type { History } from 'history';
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { NotificationType } from 'soapbox/normalizers/notification';
 import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
+
+const getNotification = makeGetNotification();
 
 const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: string, timestamp: Date) => {
   const output = [message];
@@ -112,10 +129,6 @@ interface INotificaton {
   notification: NotificationEntity,
   onMoveUp: (notificationId: string) => void,
   onMoveDown: (notificationId: string) => void,
-  onMention: (account: Account, history: History) => void,
-  onFavourite: (status: Status) => void,
-  onReblog: (status: Status, e?: KeyboardEvent) => void,
-  onToggleHidden: (status: Status) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
   cacheMediaWidth: () => void,
@@ -124,10 +137,13 @@ interface INotificaton {
 }
 
 const Notification: React.FC<INotificaton> = (props) => {
-  const { hidden = false, notification, onMoveUp, onMoveDown } = props;
+  const { hidden = false, onMoveUp, onMoveDown } = props;
 
-  const history = useHistory();
   const intl = useIntl();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const settings = useSettings();
+  const notification = useAppSelector(state => getNotification(state, props.notification));
 
   const type = notification.type;
   const { account, status } = notification;
@@ -158,29 +174,67 @@ const Notification: React.FC<INotificaton> = (props) => {
     }
   };
 
+  const onMention = (account: Account, router: History) => {
+    dispatch(mentionCompose(account, router));
+  };
+
+  const onModalReblog = (status: Status) => {
+    dispatch(reblog(status));
+  };
+
+  const onReblog = (status: Status, e?: KeyboardEvent) => {
+    const boostModal = settings.get('boostModal');
+
+    if (status.reblogged) {
+      dispatch(unreblog(status));
+    } else {
+      if (e?.shiftKey || !boostModal) {
+        onModalReblog(status);
+      } else {
+        dispatch(openModal('BOOST', { status, onReblog: onModalReblog }));
+      }
+    }
+  };
+
+  const onFavourite = (status: Status) => {
+    if (status.favourited) {
+      dispatch(unfavourite(status));
+    } else {
+      dispatch(favourite(status));
+    }
+  };
+
+  const onToggleHidden = (status: Status) => {
+    if (status.hidden) {
+      dispatch(revealStatus(status.id));
+    } else {
+      dispatch(hideStatus(status.id));
+    }
+  };
+
   const handleMention = (e?: KeyboardEvent) => {
     e?.preventDefault();
 
     if (account && typeof account === 'object') {
-      props.onMention(account, history);
+      onMention(account, history);
     }
   };
 
   const handleHotkeyFavourite = (e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      props.onFavourite(status);
+      onFavourite(status);
     }
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      props.onReblog(status, e);
+      onReblog(status, e);
     }
   };
 
   const handleHotkeyToggleHidden = (e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      props.onToggleHidden(status);
+      onToggleHidden(status);
     }
   };
 

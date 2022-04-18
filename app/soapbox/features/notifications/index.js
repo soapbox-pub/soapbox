@@ -23,8 +23,8 @@ import ScrollableList from '../../components/scrollable_list';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
 import { Column } from '../../components/ui';
 
+import Notification from './components/notification';
 import FilterBarContainer from './containers/filter_bar_container';
-import NotificationContainer from './containers/notification_container';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -180,7 +180,7 @@ class Notifications extends React.PureComponent {
           onClick={this.handleLoadGap}
         />
       ) : (
-        <NotificationContainer
+        <Notification
           key={item.get('id')}
           notification={item}
           onMoveUp={this.handleMoveUp}
