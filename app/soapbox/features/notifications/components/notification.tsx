@@ -131,8 +131,8 @@ interface INotificaton {
   onMoveDown: (notificationId: string) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
-  cacheMediaWidth: () => void,
-  cachedMediaWidth: number,
+  cacheMediaWidth?: () => void,
+  cachedMediaWidth?: number,
   siteTitle?: string,
 }
 
@@ -302,7 +302,9 @@ const Notification: React.FC<INotificaton> = (props) => {
           contextType='notifications'
           getScrollPosition={props.getScrollPosition}
           updateScrollBottom={props.updateScrollBottom}
+          // @ts-ignore
           cachedMediaWidth={props.cachedMediaWidth}
+          // @ts-ignore
           cacheMediaWidth={props.cacheMediaWidth}
         />
       ) : null;
