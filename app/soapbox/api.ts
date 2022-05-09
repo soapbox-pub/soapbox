@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, AxiosRequestHeaders } from 'axios';
 import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 
@@ -50,7 +50,7 @@ const getAuthBaseURL = createSelector([
 
 /** Base client for HTTP requests. */
 export const baseClient = (accessToken: string, baseURL: string = ''): AxiosInstance => {
-  const headers: Record<string, string> = {
+  const headers: AxiosRequestHeaders = {
     accept: 'application/json',
   };
 
