@@ -48,21 +48,21 @@ const getAuthBaseURL = createSelector([
   return baseURL !== window.location.origin ? baseURL : '';
 });
 
-/**
- * Base client for HTTP requests.
- * @param {string} accessToken
- * @param {string} baseURL
- * @returns {object} Axios instance
- */
+/** Base client for HTTP requests. */
 export const baseClient = (accessToken: string, baseURL: string = ''): AxiosInstance => {
+  const headers: Record<string, string> = {
+    accept: 'application/json',
+  };
+
+  if (accessToken) {
+    headers.authorization = `Bearer ${accessToken}`;
+  }
+
   return axios.create({
     // When BACKEND_URL is set, always use it.
     baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,
-    headers: Object.assign(accessToken ? {
-      'Authorization': `Bearer ${accessToken}`,
-    } : {}),
-
     transformResponse: [maybeParseJSON],
+    headers,
   });
 };
 
