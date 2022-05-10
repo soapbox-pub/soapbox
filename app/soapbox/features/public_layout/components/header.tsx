@@ -76,7 +76,9 @@ const Header = () => {
               <Sonar />
             </div>
             <Link to='/' className='z-10'>
-              <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
+              {logo && (
+                <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
+              )}
               <span className='hidden'>{intl.formatMessage(messages.home)}</span>
             </Link>
           </div>
