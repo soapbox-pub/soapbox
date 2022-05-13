@@ -1,59 +1,58 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 image: node:16
-
 variables:
   NODE_ENV: test
-
 cache:
   key:
     files:
-      - yarn.lock
+    - yarn.lock
   paths:
-    - node_modules
-
+  - node_modules
 stages:
-  - lint
-  - test
-  - build
-  - deploy
-
+- lint
+- test
+- build
+- deploy
 before_script:
-  - env
-  - yarn
-
+- env
+- yarn
 lint-js:
   stage: lint
   script: yarn lint:js
   only:
     changes:
-      - "**/*.js"
-      - "**/*.jsx"
-      - "**/*.ts"
-      - "**/*.tsx"
-      - ".eslintignore"
-      - ".eslintrc.js"
-
+    - "**/*.js"
+    - "**/*.jsx"
+    - "**/*.ts"
+    - "**/*.tsx"
+    - ".eslintignore"
+    - ".eslintrc.js"
 lint-sass:
   stage: lint
   script: yarn lint:sass
   only:
     changes:
-      - "**/*.scss"
-      - "**/*.css"
-      - ".stylelintrc.json"
-
+    - "**/*.scss"
+    - "**/*.css"
+    - ".stylelintrc.json"
 jest:
   stage: test
   script: yarn test:coverage
   only:
     changes:
-      - "**/*.js"
-      - "**/*.json"
-      - "app/soapbox/**/*"
-      - "webpack/**/*"
-      - "jest.config.js"
-      - "package.json"
-      - "yarn.lock"
-
+    - "**/*.js"
+    - "**/*.json"
+    - app/soapbox/**/*
+    - webpack/**/*
+    - jest.config.js
+    - package.json
+    - yarn.lock
 build-production:
   stage: build
   script: yarn build
@@ -62,37 +61,23 @@ build-production:
   artifacts:
     paths:
     - static
-
 docs-deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-    - apk add curl
+  - apk add curl
   script:
-    - curl -X POST -F"token=$CI_JOB_TOKEN" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
+  - curl -X POST -F"token=$CI_JOB_TOKEN" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
   only:
     refs:
-      - develop
+    - develop
     changes:
-      - "docs/**/*"
-
-# Supposed to fail when translations are outdated, instead always passes
-#
-# i18n:
-#   stage: build
-#   script: yarn manage:translations
-#   variables:
-#     NODE_ENV: development
-#   before_script:
-#     - yarn
-#     - yarn build
-
+    - docs/**/*
 pages:
   stage: deploy
   before_script: []
   script:
-    # artifacts are kept between jobs
-    - mv static public
+  - mv static public
   variables:
     NODE_ENV: production
   artifacts:
@@ -100,4 +85,6 @@ pages:
     - public
   only:
     refs:
-      - develop
+    - develop
+include:
+- template: Security/Dependency-Scanning.gitlab-ci.yml
