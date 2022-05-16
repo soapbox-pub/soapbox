@@ -1029,7 +1029,7 @@ export function accountLookup(acct, cancelToken) {
       dispatch({ type: ACCOUNT_LOOKUP_SUCCESS, account });
       return account;
     }).catch(error => {
-      dispatch({ type: ACCOUNT_LOOKUP_FAIL });
+      dispatch({ type: ACCOUNT_LOOKUP_FAIL, error });
       throw error;
     });
   };

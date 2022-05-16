@@ -4,12 +4,14 @@ import thunk, { ThunkDispatch } from 'redux-thunk';
 
 import errorsMiddleware from './middleware/errors';
 import soundsMiddleware from './middleware/sounds';
+import unauthorizedMiddleware from './middleware/unauthorized';
 import appReducer from './reducers';
 
 export const store = configureStore({
   reducer: appReducer,
   middleware: [
     thunk,
+    unauthorizedMiddleware(),
     errorsMiddleware(),
     soundsMiddleware(),
   ],
