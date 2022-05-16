@@ -31,7 +31,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       ref={ref}
       onClick={handleClick}
       className={classNames({
-        'flex items-center p-3 text-sm font-semibold space-x-4 rounded-full group hover:bg-primary-200/80 dark:hover:bg-primary-900/60 hover:text-primary-600 dark:hover:text-gray-200': true,
+        'flex items-center p-3.5 space-x-4 rounded-full group hover:bg-primary-200/80 dark:hover:bg-primary-900/60 hover:text-primary-600 dark:hover:text-gray-200': true,
         'text-gray-500 dark:text-gray-400': !isActive,
         'text-primary-600 dark:text-white': isActive,
       })}
@@ -41,13 +41,13 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
           src={icon}
           count={count}
           className={classNames({
-            'h-5 w-5 dark:group-hover:text-primary-500': true,
+            'h-6 w-6 dark:group-hover:text-primary-500': true,
             'dark:text-primary-500': isActive,
           })}
         />
       </span>
 
-      <Text weight='semibold' theme='inherit'>{text}</Text>
+      <Text size='lg' weight='semibold' theme='inherit'>{text}</Text>
     </NavLink>
   );
 });

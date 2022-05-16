@@ -134,7 +134,7 @@ const SidebarNavigation = () => {
 
   return (
     <div>
-      <div className='flex flex-col space-y-2'>
+      <div className='flex flex-col space-y-3'>
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/icons/home.svg')}
