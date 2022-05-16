@@ -22,14 +22,18 @@ const SiteLogo: React.FC<ISiteLogo> = ({ className, ...rest }) => {
     ? require('images/soapbox-logo-white.svg')
     : require('images/soapbox-logo.svg');
 
-  // Use the right logo if provided, then use fallbacks.
+  /** Invisible image. */
+  // https://stackoverflow.com/a/30290529/8811886
+  const empty = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
+
+  /** Use the right logo if provided, then use fallbacks. */
   const getSrc = () => {
     // In demo mode, use the Soapbox logo.
     if (settings.get('demo')) return soapboxLogo;
 
     return (darkMode && logoDarkMode)
       ? logoDarkMode
-      : logo || logoDarkMode || soapboxLogo;
+      : logo || logoDarkMode || empty;
   };
 
   return (
