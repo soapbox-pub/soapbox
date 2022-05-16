@@ -15,6 +15,7 @@ const initialState = ImmutableMap();
 
 const fallbackState = ImmutableMap({
   brandColor: '#0482d8', // Azure
+  logo: require('images/soapbox-logo.svg'),
 });
 
 const updateFromAdmin = (state, configs) => {
