@@ -58,6 +58,7 @@ jest:
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
+  coverage: /All\sfiles.*?\s+(\d+.\d+)/
 
 build-production:
   stage: build
