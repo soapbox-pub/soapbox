@@ -58,7 +58,13 @@ jest:
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
-  coverage: /All\sfiles.*?\s+(\d+.\d+)/
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
 
 build-production:
   stage: build
