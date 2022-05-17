@@ -6,7 +6,7 @@ import KVStore from 'soapbox/storage/kv_store';
 import { removeVS16s } from 'soapbox/utils/emoji';
 import { getFeatures } from 'soapbox/utils/features';
 
-import api, { staticClient } from '../api';
+import api from '../api';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
@@ -88,7 +88,7 @@ export function loadSoapboxConfig() {
 
 export function fetchSoapboxJson(host) {
   return (dispatch, getState) => {
-    return staticClient.get('/instance/soapbox.json').then(({ data }) => {
+    return api(getState).get('/instance/soapbox.json').then(({ data }) => {
       if (!isObject(data)) throw 'soapbox.json failed';
       dispatch(importSoapboxConfig(data, host));
       return data;
