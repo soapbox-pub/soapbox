@@ -22,6 +22,8 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
   const LabelComp = onClick ? 'span' : 'label';
   const linkProps = onClick ? { onClick } : {};
 
+  console.log('test');
+
   const renderChildren = React.useCallback(() =>
     React.Children.map(children, (child) => {
       if (React.isValidElement(child)) {
@@ -32,7 +34,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
 
       return null;
     })
-  , [children, domId]);
+    , [children, domId]);
 
   return (
     <Comp
