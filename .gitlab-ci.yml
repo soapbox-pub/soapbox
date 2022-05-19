@@ -97,8 +97,18 @@ review:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
+    on_stop: review-teardown
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+
+review-teardown:
+  stage: deploy
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  script:
+    - npx -y surge teardown $CI_COMMIT_REF_SLUG.git.soapbox.pub
 
 pages:
   stage: deploy
