@@ -308,7 +308,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   />
                 )}
 
-                {features.importAPI && (
+                {features.import && (
                   <SidebarLink
                     to='/settings/import'
                     icon={require('@tabler/icons/icons/cloud-upload.svg')}
@@ -324,7 +324,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     text={intl.formatMessage(messages.accountMigration)}
                     onClick={onClose}
                   />
-                ) : features.accountAliasesAPI && (
+                ) : features.accountAliases && (
                   <SidebarLink
                     to='/settings/aliases'
                     icon={require('@tabler/icons/icons/briefcase.svg')}

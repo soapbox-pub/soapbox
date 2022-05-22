@@ -67,7 +67,7 @@ const Settings = () => {
           </List>
         </CardBody>
 
-        {features.securityAPI || features.sessionsAPI && (
+        {features.security || features.sessions && (
           <>
             <CardHeader>
               <CardTitle title={intl.formatMessage(messages.security)} />
@@ -75,7 +75,7 @@ const Settings = () => {
 
             <CardBody>
               <List>
-                {features.securityAPI && (
+                {features.security && (
                   <>
                     <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
                     <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
@@ -86,7 +86,7 @@ const Settings = () => {
                     </ListItem>
                   </>
                 )}
-                {features.sessionsAPI && (
+                {features.sessions && (
                   <ListItem label={intl.formatMessage(messages.sessions)} onClick={navigateToSessions} />
                 )}
               </List>
