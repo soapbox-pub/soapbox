@@ -67,24 +67,32 @@ const Settings = () => {
           </List>
         </CardBody>
 
-        <CardHeader>
-          <CardTitle title={intl.formatMessage(messages.security)} />
-        </CardHeader>
+        {features.securityAPI || features.sessionsAPI && (
+          <>
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.security)} />
+            </CardHeader>
 
-        <CardBody>
-          <List>
-            <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
-            <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
-            <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
-              {isMfaEnabled ?
-                intl.formatMessage({ id: 'mfa.enabled', defaultMessage: 'Enabled' }) :
-                intl.formatMessage({ id: 'mfa.disabled', defaultMessage: 'Disabled' })}
-            </ListItem>
-            {features.sessionsAPI && (
-              <ListItem label={intl.formatMessage(messages.sessions)} onClick={navigateToSessions} />
-            )}
-          </List>
-        </CardBody>
+            <CardBody>
+              <List>
+                {features.securityAPI && (
+                  <>
+                    <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
+                    <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
+                    <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
+                      {isMfaEnabled ?
+                        intl.formatMessage({ id: 'mfa.enabled', defaultMessage: 'Enabled' }) :
+                        intl.formatMessage({ id: 'mfa.disabled', defaultMessage: 'Disabled' })}
+                    </ListItem>
+                  </>
+                )}
+                {features.sessionsAPI && (
+                  <ListItem label={intl.formatMessage(messages.sessions)} onClick={navigateToSessions} />
+                )}
+              </List>
+            </CardBody>
+          </>
+        )}
 
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />
