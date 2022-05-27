@@ -28,7 +28,7 @@ const Quotes: React.FC = () => {
   const hasMore = useAppSelector((state) => !!state.status_lists.getIn([`quotes:${statusId}`, 'next']));
 
   React.useEffect(() => {
-    dispatch(expandStatusQuotes(statusId));
+    dispatch(fetchStatusQuotes(statusId));
   }, [statusId]);
 
   const handleRefresh = () => {
