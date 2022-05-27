@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import React from 'react';
-import { FormattedNumber } from 'react-intl';
+import { defineMessages, FormattedNumber, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
@@ -12,12 +13,19 @@ import { HStack, IconButton, Text, Emoji } from '../../../components/ui';
 
 import type { Status } from 'soapbox/types/entities';
 
+const messages = defineMessages({
+  favourites: { id: 'status.interactions.favourites', defaultMessage: 'Favourites' },
+  reblogs: { id: 'status.interactions.reblogs', defaultMessage: 'Reposts' },
+  quotes: { id: 'status.interactions.quotes', defaultMessage: 'Quotes' },
+});
+
 interface IStatusInteractionBar {
   status: Status,
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
-
+  const intl = useIntl();
+  const history = useHistory();
   const me = useAppSelector(({ me }) => me);
   const { allowedEmoji } = useSoapboxConfig();
   const dispatch = useDispatch();
@@ -77,10 +85,35 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             src={require('@tabler/icons/icons/repeat.svg')}
             role='presentation'
             onClick={handleOpenReblogsModal}
+            title={intl.formatMessage(messages.reblogs)}
           />
 
           <Text theme='muted' size='sm'>
             <FormattedNumber value={status.reblogs_count} />
+          </Text>
+        </HStack>
+      );
+    }
+
+    return '';
+  };
+
+  const navigateToQuotesChangeEmail = () => history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
+
+  const getQuotes = () => {
+    if (status.pleroma.get('quotes_count')) {
+      return (
+        <HStack space={0.5} alignItems='center'>
+          <IconButton
+            className='text-accent-500 cursor-pointer'
+            src={require('@tabler/icons/icons/quote.svg')}
+            role='presentation'
+            onClick={navigateToQuotesChangeEmail}
+            title={intl.formatMessage(messages.quotes)}
+          />
+
+          <Text theme='muted' size='sm'>
+            <FormattedNumber value={status.pleroma.get('quotes_count')} />
           </Text>
         </HStack>
       );
@@ -109,6 +142,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             iconClassName='fill-accent-300'
             role='presentation'
             onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
+            title={intl.formatMessage(messages.favourites)}
           />
 
           <Text theme='muted' size='sm'>
@@ -167,6 +201,8 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
 
       {getReposts()}
+
+      {getQuotes()}
     </HStack>
   );
 };

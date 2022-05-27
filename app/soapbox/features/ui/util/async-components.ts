@@ -517,3 +517,7 @@ export function VerifySmsModal() {
 export function FamiliarFollowersModal() {
   return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
 }
+
+export function Quotes() {
+  return import(/*webpackChunkName: "features/quotes" */'../../quotes');
+}

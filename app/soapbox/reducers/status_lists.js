@@ -1,6 +1,15 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 import {
+  STATUS_QUOTES_EXPAND_FAIL,
+  STATUS_QUOTES_EXPAND_REQUEST,
+  STATUS_QUOTES_EXPAND_SUCCESS,
+  STATUS_QUOTES_FETCH_FAIL,
+  STATUS_QUOTES_FETCH_REQUEST,
+  STATUS_QUOTES_FETCH_SUCCESS,
+} from 'soapbox/actions/status_quotes';
+
+import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
   BOOKMARKED_STATUSES_FETCH_SUCCESS,
   BOOKMARKED_STATUSES_FETCH_FAIL,
@@ -155,6 +164,16 @@ export default function statusLists(state = initialState, action) {
     case SCHEDULED_STATUS_CANCEL_REQUEST:
     case SCHEDULED_STATUS_CANCEL_SUCCESS:
       return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.get('id'));
+    case STATUS_QUOTES_FETCH_REQUEST:
+    case STATUS_QUOTES_EXPAND_REQUEST:
+      return setLoading(state, `quotes:${action.statusId}`, true);
+    case STATUS_QUOTES_FETCH_FAIL:
+    case STATUS_QUOTES_EXPAND_FAIL:
+      return setLoading(state, `quotes:${action.statusId}`, false);
+    case STATUS_QUOTES_FETCH_SUCCESS:
+      return normalizeList(state, `quotes:${action.statusId}`, action.statuses, action.next);
+    case STATUS_QUOTES_EXPAND_SUCCESS:
+      return appendToList(state, `quotes:${action.statusId}`, action.statuses, action.next);
     default:
       return state;
   }
