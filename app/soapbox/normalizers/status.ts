@@ -45,6 +45,7 @@ export const StatusRecord = ImmutableRecord({
   pleroma: ImmutableMap<string, any>(),
   poll: null as EmbeddedEntity<Poll>,
   quote: null as EmbeddedEntity<any>,
+  quotes_count: 0,
   reblog: null as EmbeddedEntity<any>,
   reblogged: false,
   reblogs_count: 0,
@@ -141,6 +142,8 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   return status.withMutations(status => {
     status.update('quote', quote => quote || status.getIn(['pleroma', 'quote']) || null);
     status.deleteIn(['pleroma', 'quote']);
+    status.update('quotes_count', quotes_count => quotes_count || status.getIn(['pleroma', 'quotes_count'], 0));
+    status.deleteIn(['pleroma', 'quotes_count']);
   });
 };
 

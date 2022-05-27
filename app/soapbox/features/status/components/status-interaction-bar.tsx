@@ -101,7 +101,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const navigateToQuotesChangeEmail = () => history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
 
   const getQuotes = () => {
-    if (status.pleroma.get('quotes_count')) {
+    if (status.quotes_count) {
       return (
         <HStack space={0.5} alignItems='center'>
           <IconButton
@@ -113,7 +113,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
           />
 
           <Text theme='muted' size='sm'>
-            <FormattedNumber value={status.pleroma.get('quotes_count')} />
+            <FormattedNumber value={status.quotes_count} />
           </Text>
         </HStack>
       );
