@@ -108,6 +108,8 @@ review:
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
+  rules:
+    - if: $SURGE_LOGIN && $SURGE_TOKEN
 
 pages:
   stage: deploy
