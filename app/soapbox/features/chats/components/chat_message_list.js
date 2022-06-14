@@ -262,9 +262,14 @@ class ChatMessageList extends ImmutablePureComponent {
   }
 
   renderEncryptedMessage = (chatMessage) => {
+    const { me } = this.props;
+
     return (
       <div
-        className='chat-message'
+        className={classNames('chat-message', {
+          'chat-message--me': chatMessage.get('account_id') === me,
+          'chat-message--pending': chatMessage.get('pending', false) === true,
+        })}
         key={chatMessage.get('id')}
       >
         <div
