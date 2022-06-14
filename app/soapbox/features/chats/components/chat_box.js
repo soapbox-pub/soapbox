@@ -15,6 +15,7 @@ import { Stack, HStack, IconButton } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/features/compose/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { truncateFilename } from 'soapbox/utils/media';
+import { initPgpKey } from 'soapbox/utils/pgp';
 
 import ChatMessageList from './chat_message_list';
 
@@ -25,6 +26,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, { chatId }) => ({
   me: state.get('me'),
+  account: state.getIn(['accounts', state.me]),
   chat: state.getIn(['chats', 'items', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
 });
@@ -169,13 +171,24 @@ class ChatBox extends ImmutablePureComponent {
     );
   }
 
+  sendPublicKey = async() => {
+    const { dispatch, chatId, account } = this.props;
+    const { publicKey } = await initPgpKey(account.fqn);
+
+    const params = {
+      content: publicKey,
+    };
+
+    dispatch(sendChatMessage(chatId, params));
+  }
+
   renderEncryptionButton = () => {
     return (
       <IconButton
         className='text-gray-400 hover:text-gray-600'
         iconClassName='h-5 w-5'
         src={require('@tabler/icons/icons/lock-open.svg')}
-        onClick={() => {}}
+        onClick={this.sendPublicKey}
         transparent
       />
     );
