@@ -1,4 +1,4 @@
-import { generateKey } from 'openpgp/lightweight';
+import { generateKey } from 'openpgp';
 
 import KVStore from 'soapbox/storage/kv_store';
 
