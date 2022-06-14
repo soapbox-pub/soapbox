@@ -10,6 +10,11 @@ const isPgpMessage = (message: string): boolean => {
   return /^-----BEGIN PGP [A-Z ]+-----/.test(message);
 };
 
+/** Check whether a message contains a PGP public key. */
+const isPgpPublicKeyMessage = (message: string): boolean => {
+  return /^-----BEGIN PGP PUBLIC KEY BLOCK-----/.test(message);
+};
+
 /** Generate a key and store it in the browser, if one doesn't already exist. */
 const initPgpKey = async(fqn: string) => {
   const item = await KVStore.getItem(`pgp:${fqn}`);
@@ -22,7 +27,14 @@ const initPgpKey = async(fqn: string) => {
   }
 };
 
+/** Store the public key of another user. */
+const savePgpKey = async(fqn: string, publicKey: string) => {
+  return await KVStore.setItem(`pgp:${fqn}`, { publicKey });
+};
+
 export {
   isPgpMessage,
+  isPgpPublicKeyMessage,
   initPgpKey,
+  savePgpKey,
 };

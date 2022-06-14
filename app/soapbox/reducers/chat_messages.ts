@@ -11,6 +11,7 @@ import {
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import { isPgpPublicKeyMessage, savePgpKey } from 'soapbox/utils/pgp';
 
 import type { AnyAction } from 'redux';
 
@@ -21,7 +22,14 @@ type APIEntities = Array<APIEntity>;
 type State = ImmutableMap<string, ChatMessageRecord>;
 
 const importMessage = (state: State, message: APIEntity) => {
-  return state.set(message.id, normalizeChatMessage(message));
+  const normalMessage = normalizeChatMessage(message);
+
+  if (isPgpPublicKeyMessage(normalMessage.content)) {
+    // FIXME: use account fqn instead of account_id
+    savePgpKey(normalMessage.account_id, normalMessage.content);
+  }
+
+  return state.set(normalMessage.id, normalMessage);
 };
 
 const importMessages = (state: State, messages: APIEntities) =>
