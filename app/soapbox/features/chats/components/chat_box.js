@@ -53,6 +53,7 @@ class ChatBox extends ImmutablePureComponent {
     isUploading: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
+    encrypted: false,
   })
 
   state = this.initialState()
@@ -182,13 +183,20 @@ class ChatBox extends ImmutablePureComponent {
     dispatch(sendChatMessage(chatId, params));
   }
 
+  handleEncryptionButtonClick = () => {
+    this.setState({ encrypted: true });
+    this.sendPublicKey();
+  }
+
   renderEncryptionButton = () => {
+    const { encrypted } = this.state;
+
     return (
       <IconButton
         className='text-gray-400 hover:text-gray-600'
         iconClassName='h-5 w-5'
-        src={require('@tabler/icons/icons/lock-open.svg')}
-        onClick={this.sendPublicKey}
+        src={encrypted ? require('@tabler/icons/icons/lock.svg') : require('@tabler/icons/icons/lock-open.svg')}
+        onClick={this.handleEncryptionButtonClick}
         transparent
       />
     );
