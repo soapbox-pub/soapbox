@@ -34,6 +34,7 @@ import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
+import { initPgpKey } from 'soapbox/utils/pgp';
 import { cacheCurrentUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
@@ -441,6 +442,8 @@ const UI: React.FC = ({ children }) => {
   /** Load initial data when a user is logged in */
   const loadAccountData = () => {
     if (!account) return;
+
+    initPgpKey(account.fqn);
 
     dispatch(expandHomeTimeline());
 
