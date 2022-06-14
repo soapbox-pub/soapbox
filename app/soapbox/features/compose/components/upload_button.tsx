@@ -20,6 +20,8 @@ interface IUploadButton {
   onSelectFile: (files: FileList) => void,
   style: React.CSSProperties,
   resetFileKey: number,
+  /** Class name for the <svg> icon. */
+  iconClassName?: string,
 }
 
 const UploadButton: React.FC<IUploadButton> = ({
@@ -27,6 +29,7 @@ const UploadButton: React.FC<IUploadButton> = ({
   unavailable,
   onSelectFile,
   resetFileKey,
+  iconClassName,
 }) => {
   const intl = useIntl();
 
@@ -56,6 +59,7 @@ const UploadButton: React.FC<IUploadButton> = ({
       <IconButton
         src={src}
         className='text-gray-400 hover:text-gray-600'
+        iconClassName={iconClassName}
         title={intl.formatMessage(messages.upload)}
         disabled={disabled}
         onClick={handleClick}

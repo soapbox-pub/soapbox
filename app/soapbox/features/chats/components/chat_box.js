@@ -11,7 +11,7 @@ import {
   markChatRead,
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
-import IconButton from 'soapbox/components/icon_button';
+import { Stack, HStack, IconButton } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/features/compose/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { truncateFilename } from 'soapbox/utils/media';
@@ -169,18 +169,37 @@ class ChatBox extends ImmutablePureComponent {
     );
   }
 
+  renderEncryptionButton = () => {
+    return (
+      <IconButton
+        className='text-gray-400 hover:text-gray-600'
+        iconClassName='h-5 w-5'
+        src={require('@tabler/icons/icons/lock-open.svg')}
+        onClick={() => {}}
+        transparent
+      />
+    );
+  }
+
   renderActionButton = () => {
     const { intl } = this.props;
     const { resetFileKey } = this.state;
 
     return this.canSubmit() ? (
       <IconButton
+        className='text-gray-400 hover:text-gray-600'
+        iconClassName='h-5 w-5'
         src={require('@tabler/icons/icons/send.svg')}
         title={intl.formatMessage(messages.send)}
         onClick={this.sendMessage}
+        transparent
       />
     ) : (
-      <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
+      <UploadButton
+        iconClassName='h-5 w-5'
+        onSelectFile={this.handleFiles}
+        resetFileKey={resetFileKey}
+      />
     );
   }
 
@@ -195,9 +214,12 @@ class ChatBox extends ImmutablePureComponent {
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress * 100} />
         <div className='chat-box__actions simple_form'>
-          <div className='chat-box__send'>
-            {this.renderActionButton()}
-          </div>
+          <Stack justifyContent='center' className='absolute right-2.5 inset-y-0'>
+            <HStack>
+              {this.renderEncryptionButton()}
+              {this.renderActionButton()}
+            </HStack>
+          </Stack>
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}
