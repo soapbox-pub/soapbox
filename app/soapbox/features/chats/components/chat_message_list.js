@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { escape, throttle } from 'lodash';
+import { readMessage, decrypt, readKey } from 'openpgp';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -17,7 +18,8 @@ import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import emojify from 'soapbox/features/emoji/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { isPgpMessage } from 'soapbox/utils/pgp';
+import { unescapeHTML } from 'soapbox/utils/html';
+import { isPgpMessage, isPgpEncryptedMessage, getPgpKey } from 'soapbox/utils/pgp';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 const BIG_EMOJI_LIMIT = 1;
@@ -65,6 +67,7 @@ const makeMapStateToProps = () => {
 
     return {
       me: state.get('me'),
+      account: state.accounts.get(state.me),
       chatMessages: getChatMessages(chatMessages, chatMessageIds),
     };
   };
@@ -92,6 +95,7 @@ class ChatMessageList extends ImmutablePureComponent {
   state = {
     initialLoad: true,
     isLoading: false,
+    decryptedMessages: {},
   }
 
   scrollToBottom = () => {
@@ -261,8 +265,43 @@ class ChatMessageList extends ImmutablePureComponent {
     };
   }
 
+  decryptMessage = async(chatMessage) => {
+    const { account } = this.props;
+    const content = unescapeHTML(chatMessage.content);
+
+    const keys = await getPgpKey(account.fqn);
+    const recipientKeys = await getPgpKey(chatMessage.account_id);
+
+    const publicKey = await readKey({ armoredKey: recipientKeys.publicKey });
+    const privateKey = await readKey({ armoredKey: keys.privateKey });
+    const message = await readMessage({ armoredMessage: content });
+
+    const { data: decrypted } = await decrypt({
+      message,
+      verificationKeys: publicKey,
+      decryptionKeys: privateKey,
+    });
+
+    this.setState({ decryptedMessages: { ...this.state.decryptedMessages, [chatMessage.id]: decrypted } });
+  }
+
+  renderDecryptedMessage = (chatMessage) => {
+    const decryptedContent = this.state.decryptedMessages[chatMessage.id];
+
+    if (!decryptedContent) {
+      this.decryptMessage(chatMessage);
+    }
+
+    const newMessage = chatMessage.set('content', decryptedContent || '...');
+    return this.renderMessage(newMessage, true);
+  }
+
   renderEncryptedMessage = (chatMessage) => {
     const { me } = this.props;
+
+    if (isPgpEncryptedMessage(unescapeHTML(chatMessage.content))) {
+      return this.renderDecryptedMessage(chatMessage);
+    }
 
     return (
       <div
@@ -289,7 +328,7 @@ class ChatMessageList extends ImmutablePureComponent {
     );
   }
 
-  renderMessage = (chatMessage) => {
+  renderMessage = (chatMessage, encrypted = false) => {
     const { me, intl } = this.props;
     const menu = [
       {
@@ -323,7 +362,13 @@ class ChatMessageList extends ImmutablePureComponent {
           tabIndex={0}
         >
           {this.maybeRenderMedia(chatMessage)}
+
           <Text size='sm' dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }} />
+
+          {encrypted && (
+            <Icon size={14} src={require('@tabler/icons/icons/lock.svg')} />
+          )}
+
           <div className='chat-message__menu'>
             <DropdownMenuContainer
               items={menu}
