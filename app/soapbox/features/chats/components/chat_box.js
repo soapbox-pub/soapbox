@@ -60,7 +60,8 @@ class ChatBox extends ImmutablePureComponent {
   state = this.initialState()
 
   clearState = () => {
-    this.setState(this.initialState());
+    const { encrypted } = this.state;
+    this.setState({ ...this.initialState(), encrypted });
   }
 
   encryptMessage = async() => {
