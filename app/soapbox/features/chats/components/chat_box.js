@@ -70,13 +70,17 @@ class ChatBox extends ImmutablePureComponent {
     const keys = await getPgpKey(account.fqn);
     const recipientKeys = await getPgpKey(chat.account);
 
-    const publicKey = await readKey({ armoredKey: recipientKeys.publicKey });
+    const publicKeys = await Promise.all([
+      readKey({ armoredKey: keys.publicKey }),
+      readKey({ armoredKey: recipientKeys.publicKey }),
+    ]);
+
     const privateKey = await readKey({ armoredKey: keys.privateKey });
     const message = await createMessage({ text: content });
 
     return await encrypt({
       message,
-      encryptionKeys: publicKey,
+      encryptionKeys: publicKeys,
       signingKeys: privateKey,
     });
   }
