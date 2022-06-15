@@ -1,6 +1,11 @@
-import { generateKey } from 'openpgp';
+import { generateKey, config } from 'openpgp';
 
 import KVStore from 'soapbox/storage/kv_store';
+
+// Configure OpenPGP.js
+// https://docs.openpgpjs.org/module-config.html
+config.commentString = 'https://soapbox.pub/#pgp';
+config.showComment = true;
 
 /**
  * Detect whether a message contains valid PGP headers.
