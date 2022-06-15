@@ -1,4 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { encrypt, createMessage, readKey } from 'openpgp';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -15,7 +16,7 @@ import { Stack, HStack, IconButton } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/features/compose/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { truncateFilename } from 'soapbox/utils/media';
-import { initPgpKey } from 'soapbox/utils/pgp';
+import { initPgpKey, getPgpKey } from 'soapbox/utils/pgp';
 
 import ChatMessageList from './chat_message_list';
 
@@ -62,11 +63,29 @@ class ChatBox extends ImmutablePureComponent {
     this.setState(this.initialState());
   }
 
-  getParams = () => {
-    const { content, attachment } = this.state;
+  encryptMessage = async() => {
+    const { chat, account } = this.props;
+    const { content } = this.state;
+
+    const keys = await getPgpKey(account.fqn);
+    const recipientKeys = await getPgpKey(chat.account);
+
+    const publicKey = await readKey({ armoredKey: recipientKeys.publicKey });
+    const privateKey = await readKey({ armoredKey: keys.privateKey });
+    const message = await createMessage({ text: content });
+
+    return await encrypt({
+      message,
+      encryptionKeys: publicKey,
+      signingKeys: privateKey,
+    });
+  }
+
+  getParams = async() => {
+    const { content, attachment, encrypted } = this.state;
 
     return {
-      content,
+      content: encrypted ? await this.encryptMessage() : content,
       media_id: attachment && attachment.id,
     };
   }
@@ -82,12 +101,12 @@ class ChatBox extends ImmutablePureComponent {
     return conds.some(c => c);
   }
 
-  sendMessage = () => {
+  sendMessage = async() => {
     const { dispatch, chatId } = this.props;
     const { isUploading } = this.state;
 
     if (this.canSubmit() && !isUploading) {
-      const params = this.getParams();
+      const params = await this.getParams();
 
       dispatch(sendChatMessage(chatId, params));
       this.clearState();

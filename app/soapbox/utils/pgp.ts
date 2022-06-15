@@ -32,9 +32,15 @@ const savePgpKey = async(fqn: string, publicKey: string) => {
   return await KVStore.setItem(`pgp:${fqn}`, { publicKey });
 };
 
+/** Get PGP keys for the given account. */
+const getPgpKey = async(fqn: string) => {
+  return await KVStore.getItem(`pgp:${fqn}`);
+};
+
 export {
   isPgpMessage,
   isPgpPublicKeyMessage,
   initPgpKey,
   savePgpKey,
+  getPgpKey,
 };
