@@ -320,7 +320,7 @@ class ChatMessageList extends ImmutablePureComponent {
           <HStack space={1} alignItems='center'>
             <Icon size={14} src={require('@tabler/icons/icons/info-circle.svg')} />
             <Text size='xs' className='italic'>
-              Encrypted message
+              Encryption key
             </Text>
           </HStack>
         </div>
