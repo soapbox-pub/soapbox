@@ -1,3 +1,4 @@
+import { Gitlab } from '@gitbeaker/node';
 import { danger, warn, message } from 'danger';
 
 const docs = danger.git.fileMatch('docs/**/*.md');
@@ -13,17 +14,25 @@ if (app.modified && !tests.modified) {
 }
 
 if (danger.gitlab.metadata.repoSlug === 'soapbox-pub/soapbox-fe') {
+  const {
+    CI_PROJECT_ID,
+    CI_MERGE_REQUEST_IID,
+    DANGER_GITLAB_API_TOKEN,
+  } = process.env;
+
   const maintainers = {
     alexgleason: 737172,
     mkljczk: 1864889,
     maliboomboom: 867411,
   };
 
-  const assignReviewers = (ids: number[]) => {
-    const { CI_PROJECT_ID, CI_MERGE_REQUEST_IID } = process.env;
+  const gitlab = new Gitlab({
+    token: DANGER_GITLAB_API_TOKEN,
+  });
 
-    if (CI_PROJECT_ID && CI_MERGE_REQUEST_IID) {
-      danger.gitlab.api.MergeRequests.edit(CI_PROJECT_ID, Number(CI_MERGE_REQUEST_IID), { reviewer_ids: ids });
+  const assignReviewers = (ids: number[]) => {
+    if (DANGER_GITLAB_API_TOKEN && CI_PROJECT_ID && CI_MERGE_REQUEST_IID) {
+      gitlab.MergeRequests.edit(CI_PROJECT_ID, Number(CI_MERGE_REQUEST_IID), { reviewer_ids: ids });
     }
   };
 
