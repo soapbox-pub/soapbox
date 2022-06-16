@@ -24,7 +24,7 @@ deps:
 
 danger:
   stage: test
-  script: yarn danger ci
+  script: npx danger ci
   only:
     - merge_requests
 
