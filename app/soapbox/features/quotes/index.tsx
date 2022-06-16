@@ -23,16 +23,16 @@ const Quotes: React.FC = () => {
   const intl = useIntl();
   const { statusId } = useParams<{ statusId: string }>();
 
-  const statusIds = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'items'], ImmutableOrderedSet()));
-  const isLoading = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'isLoading'], true));
-  const hasMore = useAppSelector((state) => !!state.status_lists.getIn([`quotes:${statusId}`, 'next']));
+  const statusIds = useAppSelector((state) => state.status_lists.get(`quotes:${statusId}`)?.items || ImmutableOrderedSet<string>());
+  const isLoading = useAppSelector((state) => state.status_lists.get(`quotes:${statusId}`)?.isLoading || true);
+  const hasMore = useAppSelector((state) => !!state.status_lists.get(`quotes:${statusId}`)?.next);
 
   React.useEffect(() => {
     dispatch(fetchStatusQuotes(statusId));
   }, [statusId]);
 
-  const handleRefresh = () => {
-    return dispatch(fetchStatusQuotes(statusId));
+  const handleRefresh = async() => {
+    await dispatch(fetchStatusQuotes(statusId));
   };
 
   const emptyMessage = <FormattedMessage id='empty_column.quotes' defaultMessage='This post has not been quoted yet.' />;

@@ -29,7 +29,7 @@ export type StatusQuotesAction = {
 
 const noOp = () => new Promise(f => f(null));
 
-export const fetchStatusQuotes = (statusId: string) => 
+export const fetchStatusQuotes = (statusId: string) =>
   (dispatch: React.Dispatch<StatusQuotesAction>, getState: () => RootState) => {
     if (getState().status_lists.getIn([`quotes:${statusId}`, 'isLoading'])) {
       return dispatch(noOp);
@@ -43,7 +43,7 @@ export const fetchStatusQuotes = (statusId: string) =>
     return api(getState).get(`/api/v1/pleroma/statuses/${statusId}/quotes`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      dispatch({
+      return dispatch({
         type: STATUS_QUOTES_FETCH_SUCCESS,
         statusId,
         statuses: response.data,
@@ -60,7 +60,7 @@ export const fetchStatusQuotes = (statusId: string) =>
 
 export const expandStatusQuotes = (statusId: string) =>
   (dispatch: React.Dispatch<StatusQuotesAction>, getState: () => RootState) => {
-    const url = getState().status_lists.getIn([`quotes:${statusId}`, 'next'], null);
+    const url = getState().status_lists.getIn([`quotes:${statusId}`, 'next'], null) as string;
 
     if (url === null || getState().status_lists.getIn([`quotes:${statusId}`, 'isLoading'])) {
       return dispatch(noOp);
