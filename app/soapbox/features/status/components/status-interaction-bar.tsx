@@ -6,10 +6,9 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import { HStack, IconButton, Text, Emoji } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
-
-import { HStack, IconButton, Text, Emoji } from '../../../components/ui';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -62,7 +61,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
   const getNormalizedReacts = () => {
     return reduceEmoji(
-      ImmutableList(status.getIn(['pleroma', 'emoji_reactions']) as any),
+      ImmutableList(status.pleroma.get('emoji_reactions') as any),
       status.favourites_count,
       status.favourited,
       allowedEmoji,

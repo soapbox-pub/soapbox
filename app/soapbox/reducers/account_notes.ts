@@ -1,5 +1,4 @@
 import { Record as ImmutableRecord } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   ACCOUNT_NOTE_INIT_MODAL,
@@ -7,12 +6,14 @@ import {
   ACCOUNT_NOTE_SUBMIT_REQUEST,
   ACCOUNT_NOTE_SUBMIT_FAIL,
   ACCOUNT_NOTE_SUBMIT_SUCCESS,
-} from '../actions/account_notes';
+} from '../actions/account-notes';
+
+import type { AnyAction } from 'redux';
 
 const EditRecord = ImmutableRecord({
   isSubmitting: false,
   account: null,
-  comment: null,
+  comment: '',
 });
 
 const ReducerRecord = ImmutableRecord({
@@ -26,7 +27,7 @@ export default function account_notes(state: State = ReducerRecord(), action: An
     case ACCOUNT_NOTE_INIT_MODAL:
       return state.withMutations((state) => {
         state.setIn(['edit', 'isSubmitting'], false);
-        state.setIn(['edit', 'account_id'], action.account.get('id'));
+        state.setIn(['edit', 'account'], action.account.get('id'));
         state.setIn(['edit', 'comment'], action.comment);
       });
     case ACCOUNT_NOTE_CHANGE_COMMENT:

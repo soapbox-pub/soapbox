@@ -1,12 +1,10 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
-
 
 import Column from '../ui/components/column';
 

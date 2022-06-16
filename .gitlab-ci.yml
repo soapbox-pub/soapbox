@@ -1,4 +1,4 @@
-image: node:16
+image: node:18
 
 variables:
   NODE_ENV: test
@@ -21,6 +21,13 @@ deps:
   only:
     changes:
       - yarn.lock
+
+danger:
+  stage: test
+  script: npx danger ci
+  cache: []
+  only:
+    - merge_requests
 
 lint-js:
   stage: test
@@ -56,6 +63,14 @@ jest:
       - "jest.config.js"
       - "package.json"
       - "yarn.lock"
+      - ".gitlab-ci.yml"
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      junit: junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: .coverage/cobertura-coverage.xml
 
 nginx-test:
   stage: test

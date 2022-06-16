@@ -8,19 +8,19 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { Link, withRouter } from 'react-router-dom';
 import { length } from 'stringz';
 
+import AutosuggestInput from 'soapbox/components/autosuggest_input';
+import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
+import { isMobile } from 'soapbox/is_mobile';
 
-import AutosuggestInput from '../../../components/autosuggest_input';
-import AutosuggestTextarea from '../../../components/autosuggest_textarea';
-import { Button } from '../../../components/ui';
-import { isMobile } from '../../../is_mobile';
+import PollForm from '../components/polls/poll-form';
 import ReplyMentions from '../components/reply_mentions';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
-import PollFormContainer from '../containers/poll_form_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
@@ -38,6 +38,7 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -62,6 +63,7 @@ class ComposeForm extends ImmutablePureComponent {
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
     caretPosition: PropTypes.number,
+    hasPoll: PropTypes.bool,
     isSubmitting: PropTypes.bool,
     isChangingUpload: PropTypes.bool,
     isEditing: PropTypes.bool,
@@ -340,7 +342,7 @@ class ComposeForm extends ImmutablePureComponent {
 
         <AutosuggestTextarea
           ref={(isModalOpen && shouldCondense) ? null : this.setAutosuggestTextarea}
-          placeholder={intl.formatMessage(messages.placeholder)}
+          placeholder={intl.formatMessage(this.props.hasPoll ? messages.pollPlaceholder : messages.placeholder)}
           disabled={disabled}
           value={this.props.text}
           onChange={this.handleChange}
@@ -359,7 +361,7 @@ class ComposeForm extends ImmutablePureComponent {
             !condensed &&
             <div className='compose-form__modifiers'>
               <UploadForm />
-              <PollFormContainer />
+              <PollForm />
               <ScheduleFormContainer />
             </div>
           }

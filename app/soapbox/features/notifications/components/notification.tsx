@@ -1,16 +1,14 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import Icon from 'soapbox/components/icon';
+import Permalink from 'soapbox/components/permalink';
+import { HStack, Text, Emoji } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
+import StatusContainer from 'soapbox/containers/status_container';
 import { useAppSelector } from 'soapbox/hooks';
-
-import Icon from '../../../components/icon';
-import Permalink from '../../../components/permalink';
-import { HStack, Text, Emoji } from '../../../components/ui';
-import AccountContainer from '../../../containers/account_container';
-import StatusContainer from '../../../containers/status_container';
 
 import type { History } from 'history';
 import type { ScrollPosition } from 'soapbox/components/status';
@@ -261,8 +259,8 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
+          // @ts-ignore
           <StatusContainer
-            // @ts-ignore
             id={status.id}
             withDismiss
             hidden={hidden}

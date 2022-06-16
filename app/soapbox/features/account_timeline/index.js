@@ -5,18 +5,18 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
+import { fetchAccountByUsername } from 'soapbox/actions/accounts';
+import { fetchPatronAccount } from 'soapbox/actions/patron';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { expandAccountFeaturedTimeline, expandAccountTimeline } from 'soapbox/actions/timelines';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import StatusList from 'soapbox/components/status_list';
+import { Card, CardBody, Spinner, Text } from 'soapbox/components/ui';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { fetchPatronAccount } from '../../actions/patron';
-import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
-import StatusList from '../../components/status_list';
-import { Card, CardBody, Spinner, Text } from '../../components/ui';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();
@@ -68,6 +68,7 @@ const makeMapStateToProps = () => {
 };
 
 export default @connect(makeMapStateToProps)
+@withRouter
 class AccountTimeline extends ImmutablePureComponent {
 
   static propTypes = {
@@ -83,11 +84,11 @@ class AccountTimeline extends ImmutablePureComponent {
   };
 
   componentDidMount() {
-    const { params: { username }, accountId, accountApId, withReplies, patronEnabled } = this.props;
+    const { params: { username }, accountId, accountApId, withReplies, patronEnabled, history } = this.props;
+
+    this.props.dispatch(fetchAccountByUsername(username, history));
 
     if (accountId && accountId !== -1) {
-      this.props.dispatch(fetchAccount(accountId));
-
       if (!withReplies) {
         this.props.dispatch(expandAccountFeaturedTimeline(accountId));
       }
@@ -97,17 +98,17 @@ class AccountTimeline extends ImmutablePureComponent {
       }
 
       this.props.dispatch(expandAccountTimeline(accountId, { withReplies }));
-    } else {
-      this.props.dispatch(fetchAccountByUsername(username));
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { params: { username }, accountId, withReplies, accountApId, patronEnabled } = this.props;
+    const { params: { username }, accountId, withReplies, accountApId, patronEnabled, history } = this.props;
+
+    if (username && (username !== prevProps.params.username)) {
+      this.props.dispatch(fetchAccountByUsername(username, history));
+    }
 
     if (accountId && (accountId !== -1) && (accountId !== prevProps.accountId) || withReplies !== prevProps.withReplies) {
-      this.props.dispatch(fetchAccount(accountId));
-
       if (!withReplies) {
         this.props.dispatch(expandAccountFeaturedTimeline(accountId));
       }
@@ -117,8 +118,6 @@ class AccountTimeline extends ImmutablePureComponent {
       }
 
       this.props.dispatch(expandAccountTimeline(accountId, { withReplies }));
-    } else if (username && (username !== prevProps.params.username)) {
-      this.props.dispatch(fetchAccountByUsername(username));
     }
   }
 

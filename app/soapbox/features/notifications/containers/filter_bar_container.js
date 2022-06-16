@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
+import { setFilter } from 'soapbox/actions/notifications';
 import { getSettings } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { setFilter } from '../../../actions/notifications';
 import FilterBar from '../components/filter_bar';
 
 const makeMapStateToProps = state => {
@@ -13,7 +13,7 @@ const makeMapStateToProps = state => {
 
   return {
     selectedFilter: settings.getIn(['notifications', 'quickFilter', 'active']),
-    advancedMode:   settings.getIn(['notifications', 'quickFilter', 'advanced']),
+    advancedMode: settings.getIn(['notifications', 'quickFilter', 'advanced']),
     supportsEmojiReacts: features.emojiReacts,
   };
 };

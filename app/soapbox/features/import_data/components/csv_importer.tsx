@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
 import { Button, FileInput, Form, FormActions, FormGroup, Text } from 'soapbox/components/ui';
@@ -21,7 +20,6 @@ const CSVImporter: React.FC<ICSVImporter> = ({ messages, action }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null | undefined>(null);
-
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const params = new FormData();

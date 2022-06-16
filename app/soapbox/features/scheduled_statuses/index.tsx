@@ -1,6 +1,5 @@
 import { debounce } from 'lodash';
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
@@ -23,9 +22,9 @@ const ScheduledStatuses = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const statusIds = useAppSelector((state) => state.status_lists.getIn(['scheduled_statuses', 'items']));
-  const isLoading = useAppSelector((state) => state.status_lists.getIn(['scheduled_statuses', 'isLoading']));
-  const hasMore = useAppSelector((state) => !!state.status_lists.getIn(['scheduled_statuses', 'next']));
+  const statusIds = useAppSelector((state) => state.status_lists.get('scheduled_statuses')!.items);
+  const isLoading = useAppSelector((state) => state.status_lists.get('scheduled_statuses')!.isLoading);
+  const hasMore = useAppSelector((state) => !!state.status_lists.get('scheduled_statuses')!.next);
 
   useEffect(() => {
     dispatch(fetchScheduledStatuses());
@@ -38,7 +37,7 @@ const ScheduledStatuses = () => {
       <ScrollableList
         scrollKey='scheduled_statuses'
         hasMore={hasMore}
-        isLoading={isLoading}
+        isLoading={typeof isLoading === 'boolean' ? isLoading : true}
         onLoadMore={() => handleLoadMore(dispatch)}
         emptyMessage={emptyMessage}
       >

@@ -117,6 +117,13 @@ export const BIRTHDAY_REMINDERS_FETCH_REQUEST = 'BIRTHDAY_REMINDERS_FETCH_REQUES
 export const BIRTHDAY_REMINDERS_FETCH_SUCCESS = 'BIRTHDAY_REMINDERS_FETCH_SUCCESS';
 export const BIRTHDAY_REMINDERS_FETCH_FAIL    = 'BIRTHDAY_REMINDERS_FETCH_FAIL';
 
+const maybeRedirectLogin = (error, history) => {
+  // The client is unauthorized - redirect to login.
+  if (history && error?.response?.status === 401) {
+    history.push('/login');
+  }
+};
+
 export function createAccount(params) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
@@ -136,36 +143,30 @@ export function fetchAccount(id) {
     const account = getState().getIn(['accounts', id]);
 
     if (account && !account.get('should_refetch')) {
-      return;
+      return null;
     }
 
     dispatch(fetchAccountRequest(id));
 
-    api(getState).get(`/api/v1/accounts/${id}`).then(response => {
-      dispatch(importFetchedAccount(response.data));
-      dispatch(fetchAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(fetchAccountFail(id, error));
-    });
+    return api(getState)
+      .get(`/api/v1/accounts/${id}`)
+      .then(response => {
+        dispatch(importFetchedAccount(response.data));
+        dispatch(fetchAccountSuccess(response.data));
+      })
+      .catch(error => {
+        dispatch(fetchAccountFail(id, error));
+      });
   };
 }
 
-export function fetchAccountByUsername(username) {
+export function fetchAccountByUsername(username, history) {
   return (dispatch, getState) => {
-    const state = getState();
-    const account = state.get('accounts').find(account => account.get('acct') === username);
-
-    if (account) {
-      dispatch(fetchAccount(account.get('id')));
-      return;
-    }
-
-    const instance = state.get('instance');
+    const { instance, me } = getState();
     const features = getFeatures(instance);
-    const me = state.get('me');
 
     if (features.accountByUsername && (me || !features.accountLookup)) {
-      api(getState).get(`/api/v1/accounts/${username}`).then(response => {
+      return api(getState).get(`/api/v1/accounts/${username}`).then(response => {
         dispatch(fetchRelationships([response.data.id]));
         dispatch(importFetchedAccount(response.data));
         dispatch(fetchAccountSuccess(response.data));
@@ -174,14 +175,16 @@ export function fetchAccountByUsername(username) {
         dispatch(importErrorWhileFetchingAccountByUsername(username));
       });
     } else if (features.accountLookup) {
-      dispatch(accountLookup(username)).then(account => {
+      return dispatch(accountLookup(username)).then(account => {
+        dispatch(fetchRelationships([account.id]));
         dispatch(fetchAccountSuccess(account));
       }).catch(error => {
         dispatch(fetchAccountFail(null, error));
         dispatch(importErrorWhileFetchingAccountByUsername(username));
+        maybeRedirectLogin(error, history);
       });
     } else {
-      dispatch(accountSearch({
+      return dispatch(accountSearch({
         q: username,
         limit: 5,
         resolve: true,
@@ -227,32 +230,30 @@ export function fetchAccountFail(id, error) {
 
 export function followAccount(id, options = { reblogs: true }) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     const alreadyFollowing = getState().getIn(['relationships', id, 'following']);
     const locked = getState().getIn(['accounts', id, 'locked'], false);
 
     dispatch(followAccountRequest(id, locked));
 
-    api(getState).post(`/api/v1/accounts/${id}/follow`, options).then(response => {
-      dispatch(followAccountSuccess(response.data, alreadyFollowing));
-    }).catch(error => {
-      dispatch(followAccountFail(error, locked));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/follow`, options)
+      .then(response => dispatch(followAccountSuccess(response.data, alreadyFollowing)))
+      .catch(error => dispatch(followAccountFail(error, locked)));
   };
 }
 
 export function unfollowAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unfollowAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unfollow`).then(response => {
-      dispatch(unfollowAccountSuccess(response.data, getState().get('statuses')));
-    }).catch(error => {
-      dispatch(unfollowAccountFail(error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/unfollow`)
+      .then(response => dispatch(unfollowAccountSuccess(response.data, getState().get('statuses'))))
+      .catch(error => dispatch(unfollowAccountFail(error)));
   };
 }
 
@@ -310,30 +311,29 @@ export function unfollowAccountFail(error) {
 
 export function blockAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(blockAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/block`).then(response => {
-      // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-      dispatch(blockAccountSuccess(response.data, getState().get('statuses')));
-    }).catch(error => {
-      dispatch(blockAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/block`)
+      .then(response => {
+        // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
+        return dispatch(blockAccountSuccess(response.data, getState().get('statuses')));
+      }).catch(error => dispatch(blockAccountFail(error)));
   };
 }
 
 export function unblockAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unblockAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unblock`).then(response => {
-      dispatch(unblockAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(unblockAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/unblock`)
+      .then(response => dispatch(unblockAccountSuccess(response.data)))
+      .catch(error => dispatch(unblockAccountFail(error)));
   };
 }
 
@@ -380,33 +380,32 @@ export function unblockAccountFail(error) {
   };
 }
 
-
 export function muteAccount(id, notifications) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(muteAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/mute`, { notifications }).then(response => {
-      // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-      dispatch(muteAccountSuccess(response.data, getState().get('statuses')));
-    }).catch(error => {
-      dispatch(muteAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/mute`, { notifications })
+      .then(response => {
+        // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
+        return dispatch(muteAccountSuccess(response.data, getState().get('statuses')));
+      })
+      .catch(error => dispatch(muteAccountFail(error)));
   };
 }
 
 export function unmuteAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unmuteAccountRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/unmute`).then(response => {
-      dispatch(unmuteAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(unmuteAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/accounts/${id}/unmute`)
+      .then(response => dispatch(unmuteAccountSuccess(response.data)))
+      .catch(error => dispatch(unmuteAccountFail(error)));
   };
 }
 
@@ -456,29 +455,27 @@ export function unmuteAccountFail(error) {
 
 export function subscribeAccount(id, notifications) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(subscribeAccountRequest(id));
 
-    api(getState).post(`/api/v1/pleroma/accounts/${id}/subscribe`, { notifications }).then(response => {
-      dispatch(subscribeAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(subscribeAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/pleroma/accounts/${id}/subscribe`, { notifications })
+      .then(response => dispatch(subscribeAccountSuccess(response.data)))
+      .catch(error => dispatch(subscribeAccountFail(error)));
   };
 }
 
 export function unsubscribeAccount(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return null;
 
     dispatch(unsubscribeAccountRequest(id));
 
-    api(getState).post(`/api/v1/pleroma/accounts/${id}/unsubscribe`).then(response => {
-      dispatch(unsubscribeAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(unsubscribeAccountFail(id, error));
-    });
+    return api(getState)
+      .post(`/api/v1/pleroma/accounts/${id}/unsubscribe`)
+      .then(response => dispatch(unsubscribeAccountSuccess(response.data)))
+      .catch(error => dispatch(unsubscribeAccountFail(error)));
   };
 }
 
@@ -1047,10 +1044,10 @@ export function fetchPinnedAccountsFail(id, error) {
   };
 }
 
-export function accountSearch(params, cancelToken) {
+export function accountSearch(params, signal) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_SEARCH_REQUEST, params });
-    return api(getState).get('/api/v1/accounts/search', { params, cancelToken }).then(({ data: accounts }) => {
+    return api(getState).get('/api/v1/accounts/search', { params, signal }).then(({ data: accounts }) => {
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: ACCOUNT_SEARCH_SUCCESS, accounts });
       return accounts;

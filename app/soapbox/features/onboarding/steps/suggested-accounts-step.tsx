@@ -1,22 +1,20 @@
-import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppSelector } from 'soapbox/hooks';
 
-import { fetchSuggestions } from '../../../actions/suggestions';
-
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
 
-  const suggestions = useAppSelector((state) => state.suggestions.get('items'));
-  const hasMore = useAppSelector((state) => !!state.suggestions.get('next'));
-  const isLoading = useAppSelector((state) => state.suggestions.get('isLoading'));
+  const suggestions = useAppSelector((state) => state.suggestions.items);
+  const hasMore = useAppSelector((state) => !!state.suggestions.next);
+  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
 
   const handleLoadMore = debounce(() => {
     if (isLoading) {
@@ -41,11 +39,11 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
           useWindowScroll={false}
           style={{ height: 320 }}
         >
-          {suggestions.map((suggestion: ImmutableMap<string, any>) => (
-            <div key={suggestion.get('account')} className='py-2'>
+          {suggestions.map((suggestion) => (
+            <div key={suggestion.account} className='py-2'>
               <AccountContainer
                 // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-                id={suggestion.get('account')}
+                id={suggestion.account}
                 showProfileHoverCard={false}
               />
             </div>

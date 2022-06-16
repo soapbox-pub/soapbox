@@ -5,11 +5,10 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
+import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
+import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-
-import { openModal } from '../../../actions/modals';
-import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
 
 import Sonar from './sonar';
 
@@ -49,7 +48,7 @@ const Header = () => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, username, password) as any)
+    dispatch(logIn(username, password) as any)
       .then(({ access_token }: { access_token: string }) => {
         return (
           dispatch(verifyCredentials(access_token) as any)
@@ -108,7 +107,7 @@ const Header = () => {
                 )}
               </HStack>
 
-              <HStack space={2} className='xl:hidden'>
+              <HStack space={2} className='xl:hidden shrink-0'>
                 <Button to='/login' theme='secondary'>
                   {intl.formatMessage(messages.login)}
                 </Button>
