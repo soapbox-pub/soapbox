@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { fireEvent, render, screen } from '../../../../jest/test-helpers';
+import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
+
 import Form from '../form';
 
 describe('<Form />', () => {

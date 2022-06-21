@@ -15,5 +15,5 @@
     "esModuleInterop": true,
     "typeRoots": [ "./types", "./node_modules/@types"]
   },
-  "exclude": ["node_modules", "types", "**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
+  "exclude": ["node_modules", "types"]
 }
