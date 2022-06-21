@@ -279,7 +279,7 @@ const setFilter = (filterType: string) =>
       value: filterType,
     });
     dispatch(expandNotifications());
-    dispatch(saveSettings());
+    dispatch(saveSettings(false));
   };
 
 // Of course Markers don't work properly in Pleroma.

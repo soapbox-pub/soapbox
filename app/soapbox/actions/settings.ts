@@ -199,7 +199,7 @@ const changeSetting = (path: string[], value: any) =>
     return dispatch(saveSettings());
   };
 
-const saveSettingsImmediate = () =>
+const saveSettingsImmediate = (alert: boolean = true) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -215,14 +215,16 @@ const saveSettingsImmediate = () =>
     })).then(() => {
       dispatch({ type: SETTING_SAVE });
 
-      dispatch(snackbar.success(messages.saveSuccess));
+      if (alert) {
+        dispatch(snackbar.success(messages.saveSuccess));
+      }
     }).catch(error => {
       dispatch(showAlertForError(error));
     });
   };
 
-const saveSettings = () =>
-  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate());
+const saveSettings = (alert: boolean = true) =>
+  (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(alert));
 
 export {
   SETTING_CHANGE,

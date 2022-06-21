@@ -12,7 +12,7 @@ const useEmoji = (emoji: Emoji) =>
       emoji,
     });
 
-    dispatch(saveSettings());
+    dispatch(saveSettings(false));
   };
 
 export {
