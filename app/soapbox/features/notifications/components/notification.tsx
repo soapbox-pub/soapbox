@@ -8,7 +8,7 @@ import Permalink from 'soapbox/components/permalink';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import StatusContainer from 'soapbox/containers/status_container';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { NotificationType } from 'soapbox/normalizers/notification';
@@ -147,6 +147,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   const history = useHistory();
   const intl = useIntl();
   const instance = useAppSelector((state) => state.instance);
+  const { statusNotifications } = useFeatures();
 
   const type = notification.type;
   const { account, status } = notification;
@@ -257,6 +258,10 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'status':
       case 'poll':
       case 'pleroma:emoji_reaction':
+        if (type === 'status' && !statusNotifications) {
+          return null;
+        }
+
         return status && typeof status === 'object' ? (
           // @ts-ignore
           <StatusContainer

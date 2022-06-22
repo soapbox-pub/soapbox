@@ -536,6 +536,11 @@ const getInstanceFeatures = (instance: Instance) => {
     spoilers: v.software !== TRUTHSOCIAL,
 
     /**
+     * Show "status" type notifications in Notification Center.
+     */
+    statusNotifications: v.software !== TRUTHSOCIAL,
+
+    /**
      * Can display suggested accounts.
      * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
      */
