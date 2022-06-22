@@ -90,12 +90,13 @@ export const buildCustomEmojis = (customEmojis, autoplay = false) => {
     emojis.push({
       id: name,
       name,
-      short_names: [name],
-      text: '',
-      emoticons: [],
       keywords: [name],
+      skins: [{ src: url }],
       imageUrl: url,
-      custom: true,
+      // short_names: [name],
+      // text: '',
+      // emoticons: [],
+      // custom: true,
     });
   });
 

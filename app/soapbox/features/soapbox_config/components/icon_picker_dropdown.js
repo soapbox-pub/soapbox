@@ -1,6 +1,7 @@
+// import EmojiData from '@emoji-mart/data';
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import Picker from 'emoji-mart/dist-es/components/picker/picker';
+import { Picker } from 'emoji-mart';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
