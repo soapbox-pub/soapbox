@@ -222,6 +222,8 @@ const insertEmoji = (state: State, position: number, emojiData: Emoji, needsSpac
   const oldText = state.text;
   const emoji = needsSpace ? ' ' + emojiData.native : emojiData.native;
 
+  console.log(emojiData, emoji);
+
   return state.merge({
     text: `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`,
     focusDate: new Date(),

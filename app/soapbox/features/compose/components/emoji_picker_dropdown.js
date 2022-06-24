@@ -1,9 +1,7 @@
-import EmojiData from '@emoji-mart/data';
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import { Picker } from 'emoji-mart';
 import PropTypes from 'prop-types';
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import Overlay from 'react-overlays/lib/Overlay';
@@ -11,7 +9,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import { IconButton } from 'soapbox/components/ui';
 
 import { buildCustomEmojis } from '../../emoji/emoji';
-// import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
+import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -30,35 +28,9 @@ const messages = defineMessages({
   flags: { id: 'emoji_button.flags', defaultMessage: 'Flags' },
 });
 
-// const categories = [
-//   'recent',
-//   'custom',
-//   'people',
-//   'nature',
-//   'foods',
-//   'activity',
-//   'places',
-//   'objects',
-//   'symbols',
-//   'flags',
-// ];
+let EmojiPicker; // load asynchronously
 
-function EmojiPicker(props) {
-  const ref = useRef();
-
-  useEffect(() => {
-    const input = { ...props, data: EmojiData, ref };
-
-    new Picker(input);
-  }, []);
-
-  return <div ref={ref} />;
-}
-// let EmojiPicker, Emoji; // load asynchronously
-
-// const backgroundImageFn = () => require('emoji-datasource/img/twitter/sheets/32.png');
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
-
 
 @injectIntl
 class EmojiPickerMenu extends React.PureComponent {
@@ -132,10 +104,8 @@ class EmojiPickerMenu extends React.PureComponent {
   }
 
   handleClick = emoji => {
-    console.log(emoji);
-
     if (!emoji.native) {
-      emoji.native = emoji.colons;
+      emoji.native = emoji.shortcodes;
     }
 
     this.props.onClose();
@@ -163,6 +133,7 @@ class EmojiPickerMenu extends React.PureComponent {
 
     const title = intl.formatMessage(messages.emoji);
     const { modifierOpen } = this.state;
+    const theme = 'dark';
 
     return (
       <div className={classNames('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={this.setRef}>
@@ -172,6 +143,14 @@ class EmojiPickerMenu extends React.PureComponent {
           onEmojiSelect={this.handleClick}
           recent={frequentlyUsedEmojis}
           skin={skinTone}
+          perLine={8}
+          emojiSize={38}
+          emojiButtonSize={50}
+          navPosition={'bottom'}
+          theme={theme}
+          set={'twitter'}
+          previewEmoji={false}
+          autoFocus
         />
       </div>
     );
@@ -205,18 +184,17 @@ class EmojiPickerDropdown extends React.PureComponent {
 
     this.setState({ active: true });
 
-    // if (!EmojiPicker) {
-    //   this.setState({ loading: true });
-    //
-    //   EmojiPickerAsync().then(EmojiMart => {
-    //     EmojiPicker = EmojiMart.Picker;
-    //     Emoji       = EmojiMart.Emoji;
-    //
-    //     this.setState({ loading: false });
-    //   }).catch(() => {
-    //     this.setState({ loading: false });
-    //   });
-    // }
+    if (!EmojiPicker) {
+      this.setState({ loading: true });
+
+      EmojiPickerAsync().then(EmojiMart => {
+        EmojiPicker = EmojiMart;
+
+        this.setState({ loading: false });
+      }).catch(() => {
+        this.setState({ loading: false });
+      });
+    }
 
     const { top } = e.target.getBoundingClientRect();
     this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
