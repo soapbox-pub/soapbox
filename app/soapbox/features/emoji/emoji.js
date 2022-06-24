@@ -92,11 +92,6 @@ export const buildCustomEmojis = (customEmojis, autoplay = false) => {
       name,
       keywords: [name],
       skins: [{ src: url }],
-      imageUrl: url,
-      // short_names: [name],
-      // text: '',
-      // emoticons: [],
-      // custom: true,
     });
   });
 
