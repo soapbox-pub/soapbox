@@ -1,5 +1,5 @@
-import data from '@emoji-mart/data';
-import { Picker as EmojiPicker } from 'emoji-mart';
+import data from '@emoji-mart/data/sets/14/twitter.json'
+import { Picker as EmojiPicker, PickerProps } from 'emoji-mart';
 import React, { useRef, useEffect } from 'react';
 
 // const categories = [
@@ -14,9 +14,10 @@ import React, { useRef, useEffect } from 'react';
 //   'symbols',
 //   'flags',
 // ];
+//
 
-export default function Picker(props) {
-  const ref = useRef();
+function Picker(props: PickerProps) {
+  const ref = useRef(null);
 
   useEffect(() => {
     const input = { ...props, data, ref };
@@ -25,4 +26,8 @@ export default function Picker(props) {
   }, []);
 
   return <div ref={ref} />;
+}
+
+export {
+  Picker
 }
