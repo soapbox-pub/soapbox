@@ -214,6 +214,16 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     return 0;
   }, [showLoading, initialTopMostItemIndex]);
 
+  // Debugging Virtuoso!
+  // https://github.com/petyosi/react-virtuoso/issues/687#issuecomment-1160676080
+  const customCorrectItemSize = (el: HTMLElement, dimension: 'height' | 'width') => {
+    try {
+      return Math.round(el.getBoundingClientRect()[dimension]);
+    } catch (e) {
+      throw new Error(`${el} does not have getBoundingClientRect`);
+    }
+  };
+
   /** Render the actual Virtuoso list. */
   const renderFeed = (): JSX.Element => (
     <Virtuoso
@@ -241,6 +251,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         Item,
         Footer: loadMore,
       }}
+      itemSize={customCorrectItemSize}
     />
   );
 
