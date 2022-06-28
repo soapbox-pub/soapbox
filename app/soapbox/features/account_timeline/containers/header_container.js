@@ -110,12 +110,12 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onMention(account, router) {
-    dispatch(mentionCompose(account, router));
+  onMention(account) {
+    dispatch(mentionCompose(account));
   },
 
-  onDirect(account, router) {
-    dispatch(directCompose(account, router));
+  onDirect(account) {
+    dispatch(directCompose(account));
   },
 
   onReblogToggle(account) {
@@ -225,7 +225,6 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       .then(() => dispatch(snackbar.success(message)))
       .catch(() => {});
   },
-
 
   onPromoteToAdmin(account) {
     const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.get('acct') });

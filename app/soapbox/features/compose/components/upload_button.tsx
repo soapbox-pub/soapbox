@@ -15,18 +15,18 @@ const onlyImages = (types: ImmutableList<string>) => {
 };
 
 interface IUploadButton {
-  disabled: boolean,
-  unavailable: boolean,
+  disabled?: boolean,
+  unavailable?: boolean,
   onSelectFile: (files: FileList) => void,
-  style: React.CSSProperties,
+  style?: React.CSSProperties,
   resetFileKey: number,
   /** Class name for the <svg> icon. */
   iconClassName?: string,
 }
 
 const UploadButton: React.FC<IUploadButton> = ({
-  disabled,
-  unavailable,
+  disabled = false,
+  unavailable = false,
   onSelectFile,
   resetFileKey,
   iconClassName,

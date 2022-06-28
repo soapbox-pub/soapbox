@@ -77,7 +77,7 @@ const getAuthApp = () =>
   };
 
 const createAuthApp = () =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const params = {
       client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
@@ -91,7 +91,7 @@ const createAuthApp = () =>
   };
 
 const createAppToken = () =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const app = getState().auth.get('app');
 
     const params = {
@@ -108,7 +108,7 @@ const createAppToken = () =>
   };
 
 const createUserToken = (username: string, password: string) =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const app = getState().auth.get('app');
 
     const params = {
@@ -146,7 +146,7 @@ export const refreshUserToken = () =>
   };
 
 export const otpVerify = (code: string, mfa_token: string) =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const app = getState().auth.get('app');
     return api(getState, 'app').post('/oauth/mfa/challenge', {
       client_id: app.get('client_id'),
@@ -162,7 +162,7 @@ export const otpVerify = (code: string, mfa_token: string) =>
 export const verifyCredentials = (token: string, accountUrl?: string) => {
   const baseURL = parseBaseURL(accountUrl);
 
-  return (dispatch: AppDispatch, getState: () => any) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST, token });
 
     return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
@@ -188,7 +188,7 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
 };
 
 export const rememberAuthAccount = (accountUrl: string) =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: AUTH_ACCOUNT_REMEMBER_REQUEST, accountUrl });
     return KVStore.getItemOrError(`authAccount:${accountUrl}`).then(account => {
       dispatch(importFetchedAccount(account));
@@ -230,7 +230,7 @@ export const logIn = (username: string, password: string) =>
   });
 
 export const deleteSession = () =>
-  (dispatch: AppDispatch, getState: () => any) => api(getState).delete('/api/sign_out');
+  (dispatch: AppDispatch, getState: () => RootState) => api(getState).delete('/api/sign_out');
 
 export const logOut = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -246,17 +246,14 @@ export const logOut = () =>
       token: state.auth.getIn(['users', account.url, 'access_token']),
     };
 
-    return Promise.all([
-      dispatch(revokeOAuthToken(params)),
-      dispatch(deleteSession()),
-    ]).finally(() => {
+    return dispatch(revokeOAuthToken(params)).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       return dispatch(snackbar.success(messages.loggedOut));
     });
   };
 
 export const switchAccount = (accountId: string, background = false) =>
-  (dispatch: AppDispatch, getState: () => any) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
     return dispatch({ type: SWITCH_ACCOUNT, account, background });
   };
@@ -272,7 +269,6 @@ export const fetchOwnAccounts = () =>
     });
   };
 
-
 export const register = (params: Record<string, any>) =>
   (dispatch: AppDispatch) => {
     params.fullname = params.username;
@@ -286,7 +282,7 @@ export const register = (params: Record<string, any>) =>
   };
 
 export const fetchCaptcha = () =>
-  (_dispatch: AppDispatch, getState: () => any) => {
+  (_dispatch: AppDispatch, getState: () => RootState) => {
     return api(getState).get('/api/pleroma/captcha');
   };
 

@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -48,8 +48,8 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
     accountId,
     unavailable,
     isAccount: !!state.getIn(['accounts', accountId]),
-    accountIds: state.getIn(['user_lists', 'following', accountId, 'items']),
-    hasMore: !!state.getIn(['user_lists', 'following', accountId, 'next']),
+    accountIds: state.user_lists.following.get(accountId)?.items,
+    hasMore: !!state.user_lists.following.get(accountId)?.next,
     diffCount,
   };
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
@@ -103,6 +103,7 @@ import {
   SidebarMenu,
   UploadArea,
   ProfileHoverCard,
+  StatusHoverCard,
   Share,
   NewStatus,
   IntentionalError,
@@ -652,7 +653,7 @@ const UI: React.FC = ({ children }) => {
       className='floating-action-button'
       aria-label={intl.formatMessage(messages.publish)}
     >
-      <Icon src={require('icons/pen-plus.svg')} />
+      <Icon src={require('@tabler/icons/icons/pencil-plus.svg')} />
     </button>
   );
 
@@ -699,6 +700,10 @@ const UI: React.FC = ({ children }) => {
           <ThumbNavigation />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
             {Component => <Component />}
           </BundleContainer>
         </div>

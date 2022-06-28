@@ -5,6 +5,7 @@ import { httpErrorMessages } from 'soapbox/utils/errors';
 import type { SnackbarActionSeverity } from './snackbar';
 import type { AnyAction } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
+import type { NotificationObject } from 'react-notification';
 
 const messages = defineMessages({
   unexpectedTitle: { id: 'alert.unexpected.title', defaultMessage: 'Oops!' },
@@ -17,7 +18,7 @@ export const ALERT_CLEAR = 'ALERT_CLEAR';
 
 const noOp = () => { };
 
-function dismissAlert(alert: any) {
+function dismissAlert(alert: NotificationObject) {
   return {
     type: ALERT_DISMISS,
     alert,
@@ -38,7 +39,7 @@ function showAlert(
 }
 
 const showAlertForError = (error: AxiosError<any>) => (dispatch: React.Dispatch<AnyAction>, _getState: any) => {
-  if (error.response) {
+  if (error?.response) {
     const { data, status, statusText } = error.response;
 
     if (status === 502) {
@@ -52,7 +53,7 @@ const showAlertForError = (error: AxiosError<any>) => (dispatch: React.Dispatch<
 
     let message: string | undefined = statusText;
 
-    if (data.error) {
+    if (data?.error) {
       message = data.error;
     }
 

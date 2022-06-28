@@ -44,7 +44,7 @@ const AccountGallery = () => {
     const accountFetchError = (state.accounts.get(-1)?.username || '').toLowerCase() === username.toLowerCase();
     const features = getFeatures(state.instance);
 
-    let accountId: string | number | null = -1;
+    let accountId: string | -1 | null = -1;
     let accountUsername = username;
     if (accountFetchError) {
       accountId = null;
@@ -63,8 +63,8 @@ const AccountGallery = () => {
   });
   const isAccount = useAppSelector((state) => !!state.accounts.get(accountId));
   const attachments: ImmutableList<Attachment> = useAppSelector((state) => getAccountGallery(state, accountId as string));
-  const isLoading = useAppSelector((state) => state.timelines.getIn([`account:${accountId}:media`, 'isLoading']));
-  const hasMore = useAppSelector((state) => state.timelines.getIn([`account:${accountId}:media`, 'hasMore']));
+  const isLoading = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.isLoading);
+  const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
 
   const ref = useRef<HTMLDivElement>(null);
   const [width] = useState(323);
