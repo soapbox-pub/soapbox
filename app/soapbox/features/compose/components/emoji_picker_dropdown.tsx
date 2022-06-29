@@ -1,17 +1,18 @@
 import classNames from 'classnames';
-import React, { useRef, useEffect, useState } from 'react';
-import { usePopper } from 'react-popper';
-import { defineMessages, useIntl } from 'react-intl';
-import { createPortal } from 'react-dom';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { defineMessages, useIntl } from 'react-intl';
+import { usePopper } from 'react-popper';
 
-import { IconButton, Toggle } from 'soapbox/components/ui';
-import { useSettings, useSystemTheme } from 'soapbox/hooks';
-import type { List } from 'immutable';
+import { IconButton } from 'soapbox/components/ui';
+import { useSettings } from 'soapbox/hooks';
 
 import { buildCustomEmojis } from '../../emoji/emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 // import EmojiPicker from '../../emoji/emoji_picker';
+
+import type { List } from 'immutable';
 
 let EmojiPicker: any; // load asynchronously
 
@@ -33,8 +34,8 @@ const messages = defineMessages({
 });
 
 interface IEmojiPickerDropdown {
-  custom_emojis: any,
-  frequentlyUsedEmojis: string[], 
+  custom_emojis: List<any>,
+  frequentlyUsedEmojis: string[],
   intl: any,
   onPickEmoji: (emoji: any) => void,
   onSkinTone: () => void,
@@ -65,15 +66,11 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     setVisible(!visible);
   };
 
-  const handleHide = () => {
-    setVisible(false);
-  };
-
   const handleDocClick = (e: any) => {
     if (!containerElement?.contains(e.target) && !popperElement?.contains(e.target)) {
       setVisible(false);
     }
-  }
+  };
 
   const handlePick = (emoji: any) => {
     if (!emoji.native) {
@@ -82,7 +79,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
 
     setVisible(false);
     onPickEmoji(emoji);
-  }
+  };
 
   const getI18n = () => {
     return {
@@ -111,7 +108,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     return function cleanup() {
       document.removeEventListener('click', handleDocClick);
       document.removeEventListener('touchend', handleDocClick);
-    }
+    };
   });
 
   useEffect(() => {
@@ -133,21 +130,23 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   if (loading) {
     Popup = () => <div />;
   } else {
-    Popup = () => <div>
-      <EmojiPicker
-        custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
-        title={title}
-        onEmojiSelect={handlePick}
-        recent={frequentlyUsedEmojis}
-        perLine={8}
-        skin={onSkinTone}
-        emojiSize={38}
-        emojiButtonSize={50}
-        set={'twitter'}
-        theme={theme}
-        autoFocus
-      />
-    </div>
+    Popup = () => (
+      <div>
+        <EmojiPicker
+          custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
+          title={title}
+          onEmojiSelect={handlePick}
+          recent={frequentlyUsedEmojis}
+          perLine={8}
+          skin={onSkinTone}
+          emojiSize={38}
+          emojiButtonSize={50}
+          set={'twitter'}
+          theme={theme}
+          autoFocus
+        />
+      </div>
+    );
   }
 
   return (
@@ -179,7 +178,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
         >
           {visible && (<Popup />)}
         </div>,
-        document.body
+        document.body,
       )}
     </div>
   );
