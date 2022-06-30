@@ -1871,10 +1871,9 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lcdp/offline-plugin@^5.1.0":
+"@lcdp/offline-plugin@https://gitlab.com/soapbox-pub/webpack-offline-plugin.git#fb4129dd65131ce25784c0ad554a55b8201e837c":
   version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@lcdp/offline-plugin/-/offline-plugin-5.1.0.tgz#826f3e10d618711bd002afd674edb36dc1d9a792"
-  integrity sha512-GXdAsFyv+OoVLBKvog+oiOZUdgWYjWjH7O8Btfy1VLQsnnC4CRQ+fv/pYKazFgofX/wOO3MhcszoA5ARvNNlLw==
+  resolved "https://gitlab.com/soapbox-pub/webpack-offline-plugin.git#fb4129dd65131ce25784c0ad554a55b8201e837c"
   dependencies:
     deep-extend "^0.5.1"
     ejs "^2.3.4"
