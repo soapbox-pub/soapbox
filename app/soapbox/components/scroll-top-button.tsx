@@ -39,7 +39,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   };
 
   const maybeUnload = () => {
-    if (autoload && getScrollTop() <= autoloadThreshold) {
+    if (autoload && (getScrollTop() <= autoloadThreshold)) {
       onClick();
     }
   };
