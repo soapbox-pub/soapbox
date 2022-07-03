@@ -5,9 +5,9 @@
 // It's designed to be emitted in an array format to take up less space
 // over the wire.
 
-const { emojiIndex } = require('emoji-mart');
-let data = require('emoji-mart/data/all.json');
-const { uncompress: emojiMartUncompress } = require('emoji-mart/dist/utils/data');
+const { emojiIndex } = require('emoji-mart-old');
+let data = require('emoji-mart-old/data/all.json');
+const { uncompress: emojiMartUncompress } = require('emoji-mart-old/dist/utils/data');
 
 const emojiMap = require('./emoji_map.json');
 const { unicodeToFilename } = require('./unicode_to_filename');

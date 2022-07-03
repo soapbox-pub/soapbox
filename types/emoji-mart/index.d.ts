@@ -24,3 +24,15 @@ declare module 'emoji-mart' {
   }
 
 }
+
+declare module '@emoji-mart/data' {
+  export type EmojiData = {
+    emojis: {
+      [s: string]: {
+        skins: { unified: string, native: string }[],
+      }
+    }
+  }
+
+  export default EmojiData;
+}
