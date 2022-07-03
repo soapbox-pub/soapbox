@@ -12,7 +12,7 @@ interface IUniMap {
   }
 }
 
-const generateMappings = (data: EmojiData): IUniMap => {
+const generateMappings = (data: typeof EmojiData): IUniMap => {
   const result = {};
   const emojis = Object.values(data.emojis ?? {});
 
