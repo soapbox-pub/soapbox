@@ -26,7 +26,7 @@ declare module 'emoji-mart' {
 }
 
 declare module '@emoji-mart/data' {
-  export type EmojiData = {
+  interface EmojiData {
     emojis: {
       [s: string]: {
         skins: { unified: string, native: string }[],
@@ -34,5 +34,5 @@ declare module '@emoji-mart/data' {
     }
   }
 
-  export default EmojiData;
+  export const emojis: Emojidata;
 }
