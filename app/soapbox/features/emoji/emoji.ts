@@ -60,18 +60,17 @@ const convertUnicode = (c: string) => {
 };
 
 const convertEmoji = (str: string, customEmojis: any, autoplay: boolean) => {
+  if (str.length < 3) return str;
   if (str in customEmojis) {
     const emoji = customEmojis[str];
     const filename = autoplay ? emoji.url : emoji.static_url;
 
     if (filename?.length > 0) {
       return convertCustom(str, filename);
-    } else {
-      return str;
     }
-  } else {
-    return str;
   }
+
+  return str;
 };
 
 const popStack = (stack: string, open: boolean, res: string) => {
@@ -132,8 +131,9 @@ const emojify = (str: string | any, customEmojis = {}, autoplay = false) => {
     .contents()
     .filter(filterTextNodes)
     .each((idx, el) => {
+      // skip common case
       // @ts-ignore
-      if (el.data.length < 3) return;
+      if (el.data.length === 0 || el.data === ' ') return;
 
       // mutating el.data is incorrect but we do it to prevent a second dom parse
       // @ts-ignore
