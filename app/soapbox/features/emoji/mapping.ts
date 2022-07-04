@@ -1,15 +1,13 @@
-import emojiData from './data';
+import data, { EmojiData } from './data';
 
-import type EmojiData from '@emoji-mart/data';
-
-interface IUniMap {
+interface UnicodeMap {
   [s: string]: {
     unified: string,
     shortcode: string,
   }
 }
 
-export const generateMappings = (data: typeof EmojiData): IUniMap => {
+export const generateMappings = (data: EmojiData): UnicodeMap => {
   const result = {};
   const emojis = Object.values(data.emojis ?? {});
 
@@ -26,6 +24,6 @@ export const generateMappings = (data: typeof EmojiData): IUniMap => {
   return result;
 };
 
-const unicodeMapping = generateMappings(emojiData);
+const unicodeMapping = generateMappings(data);
 
 export default unicodeMapping;

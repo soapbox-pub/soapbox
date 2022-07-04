@@ -36,14 +36,49 @@ declare module 'emoji-mart' {
 
 }
 
-declare module '@emoji-mart/data' {
-  interface EmojiData {
-    emojis: {
-      [s: string]: {
-        skins: { unified: string, native: string }[],
-      }
-    }
+declare module '@emoji-mart/data/sets/14/twitter.json' {
+  export interface EmojiSkin {
+    unified: string,
+    native: string,
+    x: number,
+    y: number,
   }
 
-  export const emojis: Emojidata;
+  export interface EmojiCategory {
+    id: string,
+    emojis: string[],
+  }
+
+  export interface Emoji {
+    id: string,
+    name: string,
+    keywords: string[],
+    skins: EmojiSkin[],
+    version: number,
+  }
+
+  export interface EmojiMap {
+    [s: string]: Emoji,
+  }
+
+  export interface EmojiAlias {
+    [s: string]: string,
+  }
+
+  export interface EmojiSheet {
+    cols: number,
+    rows: number,
+  }
+
+  export interface EmojiData {
+    categories: EmojiCategory[],
+    emojis: EmojiMap,
+    aliases: EmojiAlias,
+    sheet: EmojiSheet,
+  }
+
+  const data: EmojiData;
+
+  export default data;
+
 }

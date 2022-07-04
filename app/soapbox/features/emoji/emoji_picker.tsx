@@ -1,4 +1,4 @@
-import data from '@emoji-mart/data/sets/14/twitter.json';
+import data from './data';
 import { Picker as EmojiPicker, PickerProps } from 'emoji-mart';
 import React, { useRef, useEffect } from 'react';
 

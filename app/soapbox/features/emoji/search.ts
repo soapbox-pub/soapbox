@@ -1,3 +1,6 @@
+// import data from './data';
+// import { getData, getSanitizedData, uniq, intersect } from './utils';
+
 export interface searchOptions {
   maxResults?: number;
 }
