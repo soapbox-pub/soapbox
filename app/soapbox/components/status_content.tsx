@@ -70,10 +70,18 @@ interface IStatusContent {
   onExpandedToggle?: () => void,
   onClick?: () => void,
   collapsable?: boolean,
+  maxContentHeight?: number,
 }
 
 /** Renders the text content of a status */
-const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onExpandedToggle, onClick, collapsable = false }) => {
+const StatusContent: React.FC<IStatusContent> = ({
+  status,
+  expanded = false,
+  onExpandedToggle,
+  onClick,
+  collapsable = false,
+  maxContentHeight = MAX_HEIGHT,
+}) => {
   const history = useHistory();
 
   const [hidden, setHidden] = useState(true);
@@ -141,7 +149,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     if (!node.current) return;
 
     if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
-      if (node.current.clientHeight > MAX_HEIGHT) {
+      if (node.current.clientHeight > maxContentHeight) {
         setCollapsed(true);
       }
     }
@@ -215,21 +223,21 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   const content = { __html: parsedHtml };
   const spoilerContent = { __html: status.spoilerHtml };
-  const directionStyle: React.CSSProperties = { direction: 'ltr' };
+
   const className = classNames('status__content', {
     'status__content--with-action': onClick,
     'status__content--with-spoiler': status.spoiler_text.length > 0,
-    'status__content--collapsed': collapsed,
     'status__content--big': onlyEmoji,
   });
 
-  if (isRtl(status.search_index)) {
-    directionStyle.direction = 'rtl';
-  }
+  const style: React.CSSProperties = {
+    maxHeight: collapsed ? maxContentHeight : undefined,
+    direction: isRtl(status.search_index) ? 'rtl' : 'ltr',
+  };
 
   if (status.spoiler_text.length > 0) {
     return (
-      <div className={className} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+      <div className={className} ref={node} tabIndex={0} style={style} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
         <p style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
           <span dangerouslySetInnerHTML={spoilerContent} lang={status.language || undefined} />
 
@@ -245,7 +253,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
           className={classNames('status__content__text', {
             'status__content__text--visible': !isHidden,
           })}
-          style={directionStyle}
+          style={style}
           dangerouslySetInnerHTML={content}
           lang={status.language || undefined}
         />
@@ -262,7 +270,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         tabIndex={0}
         key='content'
         className={className}
-        style={directionStyle}
+        style={style}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
         onMouseDown={handleMouseDown}
@@ -289,7 +297,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         className={classNames('status__content', {
           'status__content--big': onlyEmoji,
         })}
-        style={directionStyle}
+        style={style}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
       />,

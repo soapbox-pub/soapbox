@@ -93,10 +93,6 @@
   cursor: pointer;
 }
 
-.status__content.status__content--collapsed {
-  max-height: 20px * 15; // 15 lines is roughly above 500 characters
-}
-
 .status__content__read-more-button {
   @apply block text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline;
 }

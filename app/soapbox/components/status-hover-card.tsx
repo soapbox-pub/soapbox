@@ -71,6 +71,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
         key={statusId}
         id={statusId}
         hoverable={false}
+        maxContentHeight={128}
         hideActionBar
         muted
       />
