@@ -1,17 +1,10 @@
 import React from 'react';
 
-import unicodeMapping from 'soapbox/features/emoji/emoji_unicode_mapping_light';
+import type { Emoji } from 'soapbox/features/emoji';
+import unicodeMapping from 'soapbox/features/emoji/mapping';
 import { joinPublicPath } from 'soapbox/utils/static';
 
-export type Emoji = {
-  id: string,
-  custom: boolean,
-  imageUrl: string,
-  native: string,
-  colons: string,
-}
-
-type UnicodeMapping = {
+interface UnicodeMapping {
   filename: string,
 }
 
@@ -25,14 +18,13 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
   if (emoji.custom) {
     url = emoji.imageUrl;
   } else {
-    // @ts-ignore
-    const mapping: UnicodeMapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
+    const mapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
 
     if (!mapping) {
       return null;
     }
 
-    url = joinPublicPath(`packs/emoji/${mapping.filename}.svg`);
+    url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
   }
 
   return (

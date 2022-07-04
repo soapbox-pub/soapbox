@@ -3,11 +3,12 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest_emoji';
+import AutosuggestEmoji from 'soapbox/components/autosuggest_emoji';
 import Icon from 'soapbox/components/icon';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';
 import { isRtl } from 'soapbox/rtl';
 
+import type { Emoji } from 'soapbox/features/emoji';
 import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
 
 type CursorMatch = [

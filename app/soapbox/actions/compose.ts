@@ -4,7 +4,7 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import api from 'soapbox/api';
-import { search as emojiSearch } from 'soapbox/features/emoji/emoji_mart_search_light';
+import emojiSearch from 'soapbox/features/emoji/search';
 import { tagHistory } from 'soapbox/settings';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
@@ -20,8 +20,8 @@ import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
 import type { History } from 'history';
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
+import type { Emoji } from 'soapbox/features/emoji';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Account, APIEntity, Status } from 'soapbox/types/entities';
 

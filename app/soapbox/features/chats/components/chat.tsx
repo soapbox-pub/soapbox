@@ -5,7 +5,7 @@ import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
 import { Counter } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetChat } from 'soapbox/selectors';
 
@@ -30,7 +30,9 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
   const content = chat.getIn(['last_message', 'content']);
   const attachment = chat.getIn(['last_message', 'attachment']);
   const image = attachment && (attachment as any).getIn(['pleroma', 'mime_type'], '').startsWith('image/');
-  const parsedContent = content ? emojify(content) : '';
+
+  // TODO: fix chat.getIn typings
+  const parsedContent = content ? emojify(content as string) : '';
 
   return (
     <div className='account'>

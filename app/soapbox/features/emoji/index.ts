@@ -1,41 +1,27 @@
-import data from '@emoji-mart/data';
+// import data from '@emoji-mart/data';
 import { load as cheerioLoad } from 'cheerio';
 import { parseDocument } from 'htmlparser2';
 
-import type EmojiData from '@emoji-mart/data';
+import unicodeMapping from './mapping';
+
 import type { Node as CheerioNode } from 'cheerio';
+import type { Emoji as EmojiMartEmoji } from 'emoji-mart';
 
-interface IUniMap {
-  [s: string]: {
-    unified: string,
-    shortcode: string,
-  }
-}
+// export interface Emoji {
+//   id: string,
+//   custom: boolean,
+//   imageUrl: string,
+//   native: string,
+//   colons: string,
+// }
 
-const generateMappings = (data: typeof EmojiData): IUniMap => {
-  const result = {};
-  const emojis = Object.values(data.emojis ?? {});
-
-  for (const value of emojis) {
-    // @ts-ignore
-    for (const item of value.skins) {
-      const { unified, native } = item;
-
-      // @ts-ignore
-      result[native] = { unified, shortcode: value.id };
-    }
-  }
-
-  return result;
-};
-
-const unicodeMapping = generateMappings(data);
+export type Emoji = any;
 
 const isAlphaNumeric = (c: string) => {
   const code = c.charCodeAt(0);
 
-  if (!(code > 47 && code < 58) && // numeric (0-9)
-      !(code > 64 && code < 91) && // upper alpha (A-Z)
+  if (!(code > 47 && code < 58) &&  // numeric (0-9)
+      !(code > 64 && code < 91) &&  // upper alpha (A-Z)
       !(code > 96 && code < 123)) { // lower alpha (a-z)
     return false;
   } else {
@@ -59,11 +45,11 @@ const convertUnicode = (c: string) => {
   return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg">`;
 };
 
-const convertEmoji = (str: string, customEmojis: any, autoplay: boolean) => {
+const convertEmoji = (str: string, customEmojis: any) => {
   if (str.length < 3) return str;
   if (str in customEmojis) {
     const emoji = customEmojis[str];
-    const filename = autoplay ? emoji.url : emoji.static_url;
+    const filename = emoji.static_url;
 
     if (filename?.length > 0) {
       return convertCustom(str, filename);
@@ -73,29 +59,33 @@ const convertEmoji = (str: string, customEmojis: any, autoplay: boolean) => {
   return str;
 };
 
-const popStack = (stack: string, open: boolean, res: string) => {
-  res += stack;
+const popStack = (stack: string, open: boolean) => {
+  const ret = stack;
   open = false;
   stack = '';
+  return ret;
 };
 
-const transmogrify = (str: string, customEmojis = {}, autoplay: boolean) => {
+// TODO: handle grouped unicode emojis
+export const emojifyText = (str: string, customEmojis = {}) => {
   let res = '';
   let stack = '';
   let open = false;
 
-  for (const c of Array.from(str)) { // Array.from respects unicode
+  for (const c of Array.from(str)) { // chunk by unicode codepoint with Array.from
     if (c in unicodeMapping) {
       if (open) { // unicode emoji inside colon
-        popStack(stack, open, res);
+        res += popStack(stack, open);
       }
 
       res += convertUnicode(c);
+
     } else if (c === ':') {
       stack += ':';
 
+      // we see another : we convert it and clear the stack buffer
       if (open) {
-        res += convertEmoji(stack, customEmojis, autoplay);
+        res += convertEmoji(stack, customEmojis);
         stack = '';
       }
 
@@ -104,8 +94,10 @@ const transmogrify = (str: string, customEmojis = {}, autoplay: boolean) => {
       if (open) {
         stack += c;
 
+        // if the stack is non-null and we see invalid chars it's a string not emoji
+        // so we push it to the return result and clear it
         if (!validEmojiChar(c)) {
-          popStack(stack, open, res);
+          res += popStack(stack, open);
         }
       } else {
         res += c;
@@ -113,14 +105,26 @@ const transmogrify = (str: string, customEmojis = {}, autoplay: boolean) => {
     }
   }
 
+  // never found a closing colon so it's just a raw string
+  if (open) {
+    res += stack;
+  }
+
   return res;
 };
+
+// const parseHmtl = (str: string) => {
+//   const ret = [];
+//   let depth = 0;
+//
+//   return ret;
+// }
 
 const filterTextNodes = (idx: number, el: CheerioNode) => {
   return el.nodeType === Node.TEXT_NODE;
 };
 
-const emojify = (str: string | any, customEmojis = {}, autoplay = false) => {
+const emojify = (str: string, customEmojis = {}) => {
   const dom = parseDocument(str);
   const $ = cheerioLoad(dom, {
     xmlMode: true,
@@ -128,8 +132,8 @@ const emojify = (str: string | any, customEmojis = {}, autoplay = false) => {
   });
 
   $.root()
-    .contents()
-    .filter(filterTextNodes)
+    .contents() // iterate over flat map of all html elements
+    .filter(filterTextNodes) // only iterate over text nodes
     .each((idx, el) => {
       // skip common case
       // @ts-ignore
@@ -137,7 +141,7 @@ const emojify = (str: string | any, customEmojis = {}, autoplay = false) => {
 
       // mutating el.data is incorrect but we do it to prevent a second dom parse
       // @ts-ignore
-      el.data = transmogrify(el.data, customEmojis, autoplay);
+      el.data = emojifyText(el.data, customEmojis);
     });
 
   return $.html();
@@ -145,12 +149,12 @@ const emojify = (str: string | any, customEmojis = {}, autoplay = false) => {
 
 export default emojify;
 
-export const buildCustomEmojis = (customEmojis: any, autoplay = false) => {
-  const emojis: any[] = [];
+export const buildCustomEmojis = (customEmojis: any) => {
+  const emojis: EmojiMartEmoji[] = [];
 
   customEmojis.forEach((emoji: any) => {
     const shortcode = emoji.get('shortcode');
-    const url       = autoplay ? emoji.get('url') : emoji.get('static_url');
+    const url       = emoji.get('static_url');
     const name      = shortcode.replace(':', '');
 
     emojis.push({

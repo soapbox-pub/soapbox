@@ -1,6 +1,17 @@
 declare module 'emoji-mart' {
-  export type PickerProps = {
-    custom?: { emojis: any[] }[],
+  export interface EmojiSkin {
+    src: string
+  }
+
+  export interface Emoji {
+    id: string,
+    name: string,
+    keywords: string[],
+    skins: EmojiSkin[],
+  }
+
+  export interface PickerProps {
+    custom?: { emojis: Emoji[] }[],
     set?: string,
     title?: string,
     theme?: string,

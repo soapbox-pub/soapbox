@@ -4,7 +4,7 @@ import React from 'react';
 import spring from 'react-motion/lib/spring';
 
 import Icon from 'soapbox/components/icon';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 
 import Motion from '../features/ui/util/optional_motion';
 

@@ -15,7 +15,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { initReportById } from 'soapbox/actions/reports';
 import { Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useRefEventHandler } from 'soapbox/hooks';

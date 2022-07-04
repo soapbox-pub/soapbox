@@ -8,11 +8,12 @@ import { usePopper } from 'react-popper';
 import { IconButton } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 
-import { buildCustomEmojis } from '../../emoji/emoji';
+import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
-// import EmojiPicker from '../../emoji/emoji_picker';
+// import { Picker as EmojiPicker } from '../../emoji/emoji_picker';
 
 import type { List } from 'immutable';
+import type { Emoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
 
@@ -37,7 +38,7 @@ interface IEmojiPickerDropdown {
   custom_emojis: List<any>,
   frequentlyUsedEmojis: string[],
   intl: any,
-  onPickEmoji: (emoji: any) => void,
+  onPickEmoji: (emoji: Emoji) => void,
   onSkinTone: () => void,
   skinTone: () => void,
 }
@@ -72,7 +73,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     }
   };
 
-  const handlePick = (emoji: any) => {
+  const handlePick = (emoji: Emoji) => {
+    // TODO: remove me
     if (!emoji.native) {
       emoji.native = emoji.shortcodes;
     }
