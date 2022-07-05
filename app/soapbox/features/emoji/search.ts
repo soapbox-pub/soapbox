@@ -30,21 +30,20 @@ const search = (str: string, options: searchOptions, custom_emojis: any) => {
     .flatMap(id => {
       if (Number.isInteger(id)) {
         const { shortcode, static_url } = custom_emojis.get(id).toJS();
+
         return {
           id: shortcode,
           colons: ':' + shortcode + ':',
-          emoticons: [],
           custom: true,
           imageUrl: static_url,
         };
       }
 
-      const { name, skins } = data.emojis[id];
+      const { skins } = data.emojis[id];
 
       return {
-        id: name,
-        colons: ':' + name + ':',
-        emoticons: [],
+        id: id as string,
+        colons: ':' + id + ':',
         unified: skins[0].unified,
         native: skins[0].native,
       };

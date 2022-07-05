@@ -5,17 +5,33 @@ import { parseDocument } from 'htmlparser2';
 import unicodeMapping from './mapping';
 
 import type { Node as CheerioNode } from 'cheerio';
-import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
+import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-mart';
 
-// export interface Emoji {
-//   id: string,
-//   custom: boolean,
-//   imageUrl: string,
-//   native: string,
-//   colons: string,
-// }
+export interface Emoji {
+  id: string,
+  colons: string,
+  custom?: boolean,
+}
 
-export type Emoji = any;
+export interface CustomEmoji extends Emoji {
+  custom: true,
+  imageUrl: string, 
+}
+
+export interface NativeEmoji extends Emoji {
+  unified: string,
+  native: string,
+}
+
+export function isCustomEmoji(emoji: Emoji): emoji is CustomEmoji {
+  return (emoji as CustomEmoji).imageUrl !== undefined;
+}
+
+export function isNativeEmoji(emoji: Emoji): emoji is NativeEmoji {
+  return (emoji as NativeEmoji).native !== undefined;
+}
+
+// export type Emoji = any;
 
 const isAlphaNumeric = (c: string) => {
   const code = c.charCodeAt(0);
@@ -150,7 +166,7 @@ const emojify = (str: string, customEmojis = {}) => {
 export default emojify;
 
 export const buildCustomEmojis = (customEmojis: any) => {
-  const emojis: EmojiMart<CustomEmoji>[] = [];
+  const emojis: EmojiMart<EmojiMartCustom>[] = [];
 
   customEmojis.forEach((emoji: any) => {
     const shortcode = emoji.get('shortcode');

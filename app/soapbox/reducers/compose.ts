@@ -1,6 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 import { v4 as uuid } from 'uuid';
 
+import { isNativeEmoji } from 'soapbox/features/emoji';
 import { tagHistory } from 'soapbox/settings';
 import { PLEROMA } from 'soapbox/utils/features';
 import { hasIntegerMediaIds } from 'soapbox/utils/status';
@@ -220,7 +221,8 @@ const updateSuggestionTags = (state: State, token: string) => {
 
 const insertEmoji = (state: State, position: number, emojiData: Emoji, needsSpace: boolean) => {
   const oldText = state.text;
-  const emoji = needsSpace ? ' ' + emojiData.native : emojiData.native;
+  const emojiText = isNativeEmoji(emojiData) ? emojiData.native : emojiData.colons;
+  const emoji = needsSpace ? ' ' + emojiText : emojiText;
 
   return state.merge({
     text: `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`,

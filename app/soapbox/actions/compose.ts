@@ -4,6 +4,7 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import api from 'soapbox/api';
+import { isNativeEmoji } from 'soapbox/features/emoji';
 import emojiSearch from 'soapbox/features/emoji/search';
 import { tagHistory } from 'soapbox/settings';
 import { isLoggedIn } from 'soapbox/utils/auth';
@@ -526,7 +527,7 @@ const selectComposeSuggestion = (position: number, token: string | null, suggest
     let completion, startPosition;
 
     if (typeof suggestion === 'object' && suggestion.id) {
-      completion    = suggestion.native || suggestion.colons;
+      completion    = isNativeEmoji(suggestion) ? suggestion.native : suggestion.colons;
       startPosition = position - 1;
 
       dispatch(useEmoji(suggestion));

@@ -74,11 +74,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   };
 
   const handlePick = (emoji: Emoji) => {
-    // TODO: remove me
-    if (!emoji.native) {
-      emoji.native = emoji.shortcodes;
-    }
-
     setVisible(false);
     onPickEmoji(emoji);
   };
