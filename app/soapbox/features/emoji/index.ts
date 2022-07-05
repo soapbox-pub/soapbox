@@ -94,7 +94,6 @@ const popStack = (stack: string, open: boolean) => {
   return ret;
 };
 
-// TODO: handle grouped unicode emojis
 export const emojifyText = (str: string, customEmojis = {}) => {
   let buf = '';
   let stack = '';
