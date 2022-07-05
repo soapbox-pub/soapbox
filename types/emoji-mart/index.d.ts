@@ -1,17 +1,26 @@
+
 declare module 'emoji-mart' {
-  export interface EmojiSkin {
+  export interface NativeEmoji {
+    unified: string,
+    native: string,
+    x: number,
+    y: number,
+  }
+
+  export interface CustomEmoji {
     src: string
   }
 
-  export interface Emoji {
+  export interface Emoji<T> {
     id: string,
     name: string,
     keywords: string[],
-    skins: EmojiSkin[],
+    skins: T[],
+    version?: number,
   }
 
   export interface PickerProps {
-    custom?: { emojis: Emoji[] }[],
+    custom?: { emojis: Emoji<CustomEmoji> }[],
     set?: string,
     title?: string,
     theme?: string,
@@ -22,8 +31,6 @@ declare module 'emoji-mart' {
     emojiSize?: number,
     emojiButtonSize?: number,
     navPosition?: string,
-    set?: string,
-    theme?: string,
     autoFocus?: boolean,
     i18n?: any,
   }
@@ -37,11 +44,23 @@ declare module 'emoji-mart' {
 }
 
 declare module '@emoji-mart/data/sets/14/twitter.json' {
-  export interface EmojiSkin {
+  export interface NativeEmoji {
     unified: string,
     native: string,
     x: number,
     y: number,
+  }
+
+  export interface CustomEmoji {
+    src: string
+  }
+
+  export interface Emoji<T> {
+    id: string,
+    name: string,
+    keywords: string[],
+    skins: T[],
+    version?: number,
   }
 
   export interface EmojiCategory {
@@ -49,16 +68,8 @@ declare module '@emoji-mart/data/sets/14/twitter.json' {
     emojis: string[],
   }
 
-  export interface Emoji {
-    id: string,
-    name: string,
-    keywords: string[],
-    skins: EmojiSkin[],
-    version: number,
-  }
-
   export interface EmojiMap {
-    [s: string]: Emoji,
+    [s: string]: Emoji<NativeEmoji>,
   }
 
   export interface EmojiAlias {

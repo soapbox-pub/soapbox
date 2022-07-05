@@ -1,20 +1,54 @@
-// import data from './data';
-// import { getData, getSanitizedData, uniq, intersect } from './utils';
+import { Index } from 'flexsearch';
+
+import data from './data';
+
+import type { Emoji, CustomEmoji } from 'emoji-mart';
+
+const index = new Index({
+  tokenize: 'forward',
+  optimize: true,
+});
+
+for (const [key, emoji] of Object.entries(data.emojis)) {
+  index.add(key, emoji.name);
+}
 
 export interface searchOptions {
   maxResults?: number;
 }
 
-export interface Emoji {
+export const addCustomToPool = (customEmojis: Emoji<CustomEmoji>[]) => {
+  let i = 0;
 
-}
-
-export const addCustomToPool = (customEmojis: Emoji[]) => {
+  for (const emoji of customEmojis) {
+    index.add(i++, emoji.id);
+  }
 };
 
-const search = (str: string, options: searchOptions) => {
-  console.log(str, options);
-  return [];
+const search = (str: string, options: searchOptions, custom_emojis: any) => {
+  return index.search(str, options.maxResults)
+    .flatMap(id => {
+      if (Number.isInteger(id)) {
+        const { shortcode, static_url } = custom_emojis.get(id).toJS();
+        return {
+          id: shortcode,
+          colons: ':' + shortcode + ':',
+          emoticons: [],
+          custom: true,
+          imageUrl: static_url,
+        };
+      }
+
+      const { name, skins } = data.emojis[id];
+
+      return {
+        id: name,
+        colons: ':' + name + ':',
+        emoticons: [],
+        unified: skins[0].unified,
+        native: skins[0].native,
+      };
+    });
 };
 
 export default search;

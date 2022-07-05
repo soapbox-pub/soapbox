@@ -5,7 +5,7 @@ import { parseDocument } from 'htmlparser2';
 import unicodeMapping from './mapping';
 
 import type { Node as CheerioNode } from 'cheerio';
-import type { Emoji as EmojiMartEmoji } from 'emoji-mart';
+import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
 
 // export interface Emoji {
 //   id: string,
@@ -150,7 +150,7 @@ const emojify = (str: string, customEmojis = {}) => {
 export default emojify;
 
 export const buildCustomEmojis = (customEmojis: any) => {
-  const emojis: EmojiMartEmoji[] = [];
+  const emojis: EmojiMart<CustomEmoji>[] = [];
 
   customEmojis.forEach((emoji: any) => {
     const shortcode = emoji.get('shortcode');

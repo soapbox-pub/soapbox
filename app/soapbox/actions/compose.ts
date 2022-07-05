@@ -484,7 +484,9 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => 
 }, 200, { leading: true, trailing: true });
 
 const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, token: string) => {
-  const results = emojiSearch(token.replace(':', ''), { maxResults: 5 } as any);
+  const state = getState();
+  const results = emojiSearch(token.replace(':', ''), { maxResults: 5 }, state.custom_emojis);
+
   dispatch(readyComposeSuggestionsEmojis(token, results));
 };
 
