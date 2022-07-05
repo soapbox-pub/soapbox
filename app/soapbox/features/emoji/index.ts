@@ -21,21 +21,22 @@ import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-m
  * and one type that is used everywhere that the above two are converted into
  */
 
-export interface Emoji {
+export interface CustomEmoji {
   id: string,
   colons: string,
-  custom?: boolean,
-}
-
-export interface CustomEmoji extends Emoji {
   custom: true,
   imageUrl: string, 
 }
 
-export interface NativeEmoji extends Emoji {
+export interface NativeEmoji {
+  id: string,
+  colons: string,
+  custom?: boolean,
   unified: string,
   native: string,
 }
+
+export type Emoji = CustomEmoji | NativeEmoji;
 
 export function isCustomEmoji(emoji: Emoji): emoji is CustomEmoji {
   return (emoji as CustomEmoji).imageUrl !== undefined;

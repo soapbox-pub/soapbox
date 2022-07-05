@@ -20,7 +20,7 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
   if (isCustomEmoji(emoji)) {
     url = emoji.imageUrl;
     alt = emoji.colons;
-  } else if (isNativeEmoji(emoji)) {
+  } else {
     const mapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
 
     if (!mapping) {
@@ -29,8 +29,6 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
 
     url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
     alt = emoji.native;
-  } else {
-    return <div />
   }
 
   return (

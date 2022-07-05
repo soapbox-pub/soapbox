@@ -2,6 +2,8 @@ import { Index } from 'flexsearch';
 
 import data from './data';
 
+import { Emoji as EmojiType } from './index';
+
 import type { Emoji, CustomEmoji } from 'emoji-mart';
 
 const index = new Index({
@@ -25,7 +27,7 @@ export const addCustomToPool = (customEmojis: Emoji<CustomEmoji>[]) => {
   }
 };
 
-const search = (str: string, options: searchOptions, custom_emojis: any) => {
+const search = (str: string, options: searchOptions, custom_emojis: any): EmojiType[] => {
   return index.search(str, options.maxResults)
     .flatMap(id => {
       if (Number.isInteger(id)) {
