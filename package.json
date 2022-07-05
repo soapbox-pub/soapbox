@@ -114,7 +114,6 @@
     "dotenv": "^8.0.0",
     "emoji-datasource": "5.0.0",
     "emoji-mart": "^5.1.0",
-    "entities": "^4.3.1",
     "es6-symbol": "^3.1.1",
     "escape-html": "^1.0.3",
     "exif-js": "^2.3.0",

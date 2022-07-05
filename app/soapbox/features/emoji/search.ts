@@ -29,7 +29,7 @@ export const addCustomToPool = (customEmojis: EmojiMart<CustomEmoji>[]) => {
 };
 
 const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, custom_emojis?: any): Emoji[] => {
-  return index.search(str, maxResults, { suggest: true })
+  return index.search(str, maxResults)
     .flatMap(id => {
       if (Number.isInteger(id)) {
         const { shortcode, static_url } = custom_emojis.get(id).toJS();
