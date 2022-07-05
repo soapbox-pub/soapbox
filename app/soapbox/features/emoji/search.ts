@@ -2,9 +2,8 @@ import { Index } from 'flexsearch';
 
 import data from './data';
 
-import { Emoji as EmojiType } from './index';
-
-import type { Emoji, CustomEmoji } from 'emoji-mart';
+import type { Emoji } from './index';
+import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
 
 const index = new Index({
   tokenize: 'forward',
@@ -19,7 +18,7 @@ export interface searchOptions {
   maxResults?: number;
 }
 
-export const addCustomToPool = (customEmojis: Emoji<CustomEmoji>[]) => {
+export const addCustomToPool = (customEmojis: EmojiMart<CustomEmoji>[]) => {
   let i = 0;
 
   for (const emoji of customEmojis) {
@@ -27,7 +26,7 @@ export const addCustomToPool = (customEmojis: Emoji<CustomEmoji>[]) => {
   }
 };
 
-const search = (str: string, options: searchOptions, custom_emojis: any): EmojiType[] => {
+const search = (str: string, options: searchOptions, custom_emojis: any): Emoji[] => {
   return index.search(str, options.maxResults)
     .flatMap(id => {
       if (Number.isInteger(id)) {
