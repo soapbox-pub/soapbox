@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
@@ -41,12 +41,31 @@ interface IEmojiPickerDropdown {
   intl: any,
   onPickEmoji: (emoji: Emoji) => void,
   onSkinTone: () => void,
-  skinTone: () => void,
+  condensed: boolean,
 }
+
+// Fixes render bug where popover has a delayed position update
+const RenderAfter = ({ children, update }: any) => {
+  const [nextTick, setNextTick] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNextTick(true);
+    }, 0);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (nextTick) {
+      update();
+    }
+  }, [nextTick, update]);
+
+  return nextTick ? children : null;
+};
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, frequentlyUsedEmojis, onPickEmoji, onSkinTone, skinTone }) => {
+const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, frequentlyUsedEmojis, onPickEmoji, onSkinTone, condensed }) => {
   const intl = useIntl();
   const settings = useSettings();
   const title = intl.formatMessage(messages.emoji);
@@ -54,14 +73,14 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   const theme = (userTheme === 'dark' || userTheme === 'light') ? userTheme : 'auto';
 
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-  const [referenceElement, setReferenceElement] = useState<HTMLButtonElement | null>(null);
+  const [popperReference, setPopperReference] = useState<HTMLButtonElement | null>(null);
   const [containerElement, setContainerElement] = useState<HTMLDivElement | null>(null);
 
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: 'top-start',
+  const { styles, attributes, update } = usePopper(popperReference, popperElement, {
+    placement: condensed ? 'bottom-start' : 'top-start',
   });
 
   const handleToggle = () => {
@@ -145,21 +164,19 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     Popup = () => <div />;
   } else {
     Popup = () => (
-      <div>
-        <EmojiPicker
-          custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
-          title={title}
-          onEmojiSelect={handlePick}
-          recent={frequentlyUsedEmojis}
-          perLine={8}
-          skin={onSkinTone}
-          emojiSize={38}
-          emojiButtonSize={50}
-          set={'twitter'}
-          theme={theme}
-          autoFocus
-        />
-      </div>
+      <EmojiPicker
+        custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
+        title={title}
+        onEmojiSelect={handlePick}
+        recent={frequentlyUsedEmojis}
+        perLine={8}
+        skin={onSkinTone}
+        emojiSize={38}
+        emojiButtonSize={50}
+        set={'twitter'}
+        theme={theme}
+        autoFocus
+      />
     );
   }
 
@@ -170,7 +187,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
           'text-gray-400 hover:text-gray-600': true,
           'pulse-loading': visible && loading,
         })}
-        ref={setReferenceElement}
+        ref={setPopperReference}
         src={require('@tabler/icons/icons/mood-happy.svg')}
         title={title}
         aria-label={title}
@@ -190,7 +207,11 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
           style={styles.popper}
           {...attributes.popper}
         >
-          {visible && (<Popup />)}
+          {visible && (
+            <RenderAfter update={update}>
+              <Popup />
+            </RenderAfter>
+          )}
         </div>,
         document.body,
       )}

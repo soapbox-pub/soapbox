@@ -376,7 +376,7 @@ class ComposeForm extends ImmutablePureComponent {
         >
           <div className='flex items-center space-x-2'>
             {features.media && <UploadButtonContainer />}
-            <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
+            <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} condensed={shouldCondense} />
             {features.polls && <PollButtonContainer />}
             {features.privacyScopes && <PrivacyDropdownContainer />}
             {features.scheduledStatuses && <ScheduleButtonContainer />}
