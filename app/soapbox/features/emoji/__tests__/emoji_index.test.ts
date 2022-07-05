@@ -1,8 +1,7 @@
-// @ts-ignore
-import { emojiIndex } from 'emoji-mart';
+// import { emojiIndex } from 'emoji-mart';
 import pick from 'lodash/pick';
 
-import { search } from '../emoji_mart_search_light';
+import search from '../search';
 
 const trimEmojis = (emoji: any) => pick(emoji, ['id', 'unified', 'native', 'custom']);
 
@@ -16,7 +15,7 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('pineapple').map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('pineapple').map(trimEmojis)).toEqual(expected);
+    // expect(emojiIndex.search('pineapple').map(trimEmojis)).toEqual(expected);
   });
 
   it('orders search results correctly', () => {
@@ -43,12 +42,7 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('apple').map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('apple').map(trimEmojis)).toEqual(expected);
-  });
-
-  it('can include/exclude categories', () => {
-    expect(search('flag', { include: ['people'] } as any)).toEqual([]);
-    expect(emojiIndex.search('flag', { include: ['people'] })).toEqual([]);
+    // expect(emojiIndex.search('apple').map(trimEmojis)).toEqual(expected);
   });
 
   it('(different behavior from emoji-mart) do not erases custom emoji if not passed again', () => {
@@ -64,8 +58,9 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    search('', { custom } as any);
-    emojiIndex.search('', { custom });
+    search('', { custom });
+    // emojiIndex.search('', { custom });
+    // const expected = [];
     const lightExpected = [
       {
         id: 'mastodon',
@@ -73,7 +68,7 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('masto').map(trimEmojis)).toEqual(lightExpected);
-    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual([]);
+    // expect(emojiIndex.search('masto').map(trimEmojis)).toEqual(expected);
   });
 
   it('(different behavior from emoji-mart) erases custom emoji if another is passed', () => {
@@ -89,10 +84,11 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    search('', { custom } as any);
-    emojiIndex.search('', { custom });
-    expect(search('masto', { custom: [] } as any).map(trimEmojis)).toEqual([]);
-    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual([]);
+    search('', { custom });
+    // emojiIndex.search('', { custom });
+    // const expected = [];
+    expect(search('masto', { custom: [] }).map(trimEmojis)).toEqual(expected);
+    // expect(emojiIndex.search('masto').map(trimEmojis)).toEqual(expected);
   });
 
   it('handles custom emoji', () => {
@@ -108,24 +104,16 @@ describe('emoji_index', () => {
         custom: true,
       },
     ];
-    search('', { custom } as any);
-    emojiIndex.search('', { custom });
+    search('', { custom });
+    // emojiIndex.search('', { custom });
     const expected = [
       {
         id: 'mastodon',
         custom: true,
       },
     ];
-    expect(search('masto', { custom } as any).map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('masto', { custom }).map(trimEmojis)).toEqual(expected);
-  });
-
-  it('should filter only emojis we care about, exclude pineapple', () => {
-    const emojisToShowFilter = (emoji: any) => emoji.unified !== '1F34D';
-    expect(search('apple', { emojisToShowFilter } as any).map((obj: any) => obj.id))
-      .not.toContain('pineapple');
-    expect(emojiIndex.search('apple', { emojisToShowFilter }).map((obj: any) => obj.id))
-      .not.toContain('pineapple');
+    expect(search('masto', { custom }).map(trimEmojis)).toEqual(expected);
+    // expect(emojiIndex.search('masto', { custom }).map(trimEmojis)).toEqual(expected);
   });
 
   it('does an emoji whose unified name is irregular', () => {
@@ -147,7 +135,7 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('polo').map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('polo').map(trimEmojis)).toEqual(expected);
+    // expect(emojiIndex.search('polo').map(trimEmojis)).toEqual(expected);
   });
 
   it('can search for thinking_face', () => {
@@ -159,7 +147,7 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('thinking_fac').map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('thinking_fac').map(trimEmojis)).toEqual(expected);
+    // expect(emojiIndex.search('thinking_fac').map(trimEmojis)).toEqual(expected);
   });
 
   it('can search for woman-facepalming', () => {
@@ -171,6 +159,6 @@ describe('emoji_index', () => {
       },
     ];
     expect(search('woman-facep').map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('woman-facep').map(trimEmojis)).toEqual(expected);
+    // expect(emojiIndex.search('woman-facep').map(trimEmojis)).toEqual(expected);
   });
 });

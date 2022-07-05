@@ -1,4 +1,4 @@
-import emojify from '../emoji';
+import emojify from '../index';
 
 describe('emoji', () => {
   describe('.emojify', () => {
@@ -32,13 +32,13 @@ describe('emoji', () => {
 
     it('does multiple unicode', () => {
       expect(emojify('\u2757 #\uFE0F\u20E3')).toEqual(
-        '<img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /> <img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/23-20e3.svg" />');
+        '<img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /> <img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/0023-fe0f-20e3.svg" />');
       expect(emojify('\u2757#\uFE0F\u20E3')).toEqual(
-        '<img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /><img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/23-20e3.svg" />');
+        '<img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /><img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/0023-fe0f-20e3.svg" />');
       expect(emojify('\u2757 #\uFE0F\u20E3 \u2757')).toEqual(
-        '<img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /> <img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/23-20e3.svg" /> <img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" />');
+        '<img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /> <img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/0023-fe0f-20e3.svg" /> <img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" />');
       expect(emojify('foo \u2757 #\uFE0F\u20E3 bar')).toEqual(
-        'foo <img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /> <img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/23-20e3.svg" /> bar');
+        'foo <img draggable="false" class="emojione" alt="❗" title=":exclamation:" src="/packs/emoji/2757.svg" /> <img draggable="false" class="emojione" alt="#️⃣" title=":hash:" src="/packs/emoji/0023-fe0f-20e3.svg" /> bar');
     });
 
     it('ignores unicode inside of tags', () => {
@@ -52,26 +52,6 @@ describe('emoji', () => {
 
     it('does an emoji that has no shortcode', () => {
       expect(emojify('👁‍🗨')).toEqual('<img draggable="false" class="emojione" alt="👁‍🗨" title="" src="/packs/emoji/1f441-200d-1f5e8.svg" />');
-    });
-
-    it('does an emoji whose filename is irregular', () => {
-      expect(emojify('↙️')).toEqual('<img draggable="false" class="emojione" alt="↙️" title=":arrow_lower_left:" src="/packs/emoji/2199.svg" />');
-    });
-
-    it('avoid emojifying on invisible text', () => {
-      expect(emojify('<a href="http://example.com/test%F0%9F%98%84"><span class="invisible">http://</span><span class="ellipsis">example.com/te</span><span class="invisible">st😄</span></a>'))
-        .toEqual('<a href="http://example.com/test%F0%9F%98%84"><span class="invisible">http://</span><span class="ellipsis">example.com/te</span><span class="invisible">st😄</span></a>');
-      expect(emojify('<span class="invisible">:luigi:</span>', { ':luigi:': { static_url: 'luigi.exe' } }))
-        .toEqual('<span class="invisible">:luigi:</span>');
-    });
-
-    it('avoid emojifying on invisible text with nested tags', () => {
-      expect(emojify('<span class="invisible">😄<span class="foo">bar</span>😴</span>😇'))
-        .toEqual('<span class="invisible">😄<span class="foo">bar</span>😴</span><img draggable="false" class="emojione" alt="😇" title=":innocent:" src="/packs/emoji/1f607.svg" />');
-      expect(emojify('<span class="invisible">😄<span class="invisible">😕</span>😴</span>😇'))
-        .toEqual('<span class="invisible">😄<span class="invisible">😕</span>😴</span><img draggable="false" class="emojione" alt="😇" title=":innocent:" src="/packs/emoji/1f607.svg" />');
-      expect(emojify('<span class="invisible">😄<br/>😴</span>😇'))
-        .toEqual('<span class="invisible">😄<br/>😴</span><img draggable="false" class="emojione" alt="😇" title=":innocent:" src="/packs/emoji/1f607.svg" />');
     });
 
     it('skips the textual presentation VS15 character', () => {

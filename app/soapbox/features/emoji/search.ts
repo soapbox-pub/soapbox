@@ -6,8 +6,9 @@ import type { Emoji } from './index';
 import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
 
 const index = new Index({
-  tokenize: 'forward',
+  tokenize: 'full',
   optimize: true,
+  context: true,
 });
 
 for (const [key, emoji] of Object.entries(data.emojis)) {
@@ -16,6 +17,7 @@ for (const [key, emoji] of Object.entries(data.emojis)) {
 
 export interface searchOptions {
   maxResults?: number;
+  custom?: any,
 }
 
 export const addCustomToPool = (customEmojis: EmojiMart<CustomEmoji>[]) => {
@@ -26,8 +28,8 @@ export const addCustomToPool = (customEmojis: EmojiMart<CustomEmoji>[]) => {
   }
 };
 
-const search = (str: string, options: searchOptions, custom_emojis: any): Emoji[] => {
-  return index.search(str, options.maxResults)
+const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, custom_emojis?: any): Emoji[] => {
+  return index.search(str, maxResults, { suggest: true })
     .flatMap(id => {
       if (Number.isInteger(id)) {
         const { shortcode, static_url } = custom_emojis.get(id).toJS();

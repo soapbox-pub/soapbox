@@ -1,3 +1,5 @@
+import split from 'graphemesplit';
+
 import unicodeMapping from './mapping';
 
 import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-mart';
@@ -68,7 +70,7 @@ const convertCustom = (shortname: string, filename: string) => {
 const convertUnicode = (c: string) => {
   const { unified, shortcode } = unicodeMapping[c];
 
-  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg">`;
+  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg" />`;
 };
 
 const convertEmoji = (str: string, customEmojis: any) => {
@@ -98,7 +100,11 @@ export const emojifyText = (str: string, customEmojis = {}) => {
   let stack = '';
   let open = false;
 
-  for (const c of Array.from(str)) { // chunk by unicode codepoint with Array.from
+  for (let c of split(str)) {
+    if (c.codePointAt(1) === 65038) {
+      c = String.fromCodePoint(c.codePointAt(0) as number);
+    }
+
     if (c in unicodeMapping) {
       if (open) { // unicode emoji inside colon
         buf += popStack(stack, open);
