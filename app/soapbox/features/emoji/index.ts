@@ -1,10 +1,5 @@
-// import data from '@emoji-mart/data';
-import { load as cheerioLoad } from 'cheerio';
-import { parseDocument } from 'htmlparser2';
-
 import unicodeMapping from './mapping';
 
-import type { Node as CheerioNode } from 'cheerio';
 import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-mart';
 
 /*
@@ -99,24 +94,24 @@ const popStack = (stack: string, open: boolean) => {
 
 // TODO: handle grouped unicode emojis
 export const emojifyText = (str: string, customEmojis = {}) => {
-  let res = '';
+  let buf = '';
   let stack = '';
   let open = false;
 
   for (const c of Array.from(str)) { // chunk by unicode codepoint with Array.from
     if (c in unicodeMapping) {
       if (open) { // unicode emoji inside colon
-        res += popStack(stack, open);
+        buf += popStack(stack, open);
       }
 
-      res += convertUnicode(c);
+      buf += convertUnicode(c);
 
     } else if (c === ':') {
       stack += ':';
 
       // we see another : we convert it and clear the stack buffer
       if (open) {
-        res += convertEmoji(stack, customEmojis);
+        buf += convertEmoji(stack, customEmojis);
         stack = '';
       }
 
@@ -128,54 +123,75 @@ export const emojifyText = (str: string, customEmojis = {}) => {
         // if the stack is non-null and we see invalid chars it's a string not emoji
         // so we push it to the return result and clear it
         if (!validEmojiChar(c)) {
-          res += popStack(stack, open);
+          buf += popStack(stack, open);
         }
       } else {
-        res += c;
+        buf += c;
       }
     }
   }
 
   // never found a closing colon so it's just a raw string
   if (open) {
-    res += stack;
+    buf += stack;
   }
 
-  return res;
+  return buf;
 };
 
-// const parseHmtl = (str: string) => {
-//   const ret = [];
-//   let depth = 0;
-//
-//   return ret;
-// }
+const parseHTML = (str: string): { text: boolean, data: string }[] => {
+  const tokens = [];
+  let buf = '';
+  let stack = '';
+  let open = false;
 
-const filterTextNodes = (idx: number, el: CheerioNode) => {
-  return el.nodeType === Node.TEXT_NODE;
+  for (const c of str) {
+    if (c === '<') {
+      if (open) {
+        tokens.push({ text: true, data: stack });
+        stack = '<';
+      } else {
+        tokens.push({ text: true, data: buf });
+        stack = '<';
+        open = true;
+      }
+    } else if (c === '>') {
+      if (open) {
+        open = false;
+        tokens.push({ text: false, data: stack + '>' });
+        stack = '';
+        buf = '';
+      } else {
+        buf += '>';
+      }
+
+    } else {
+      if (open) {
+        stack += c;
+      } else {
+        buf += c;
+      }
+    }
+  }
+
+  if (open) {
+    tokens.push({ text: true, data: buf + stack });
+  } else if (buf !== '') {
+    tokens.push({ text: true, data: buf });
+  }
+
+  return tokens;
 };
 
 const emojify = (str: string, customEmojis = {}) => {
-  const dom = parseDocument(str);
-  const $ = cheerioLoad(dom, {
-    xmlMode: true,
-    decodeEntities: false,
-  });
+  return parseHTML(str)
+    .map(({ text, data }) => {
+      if (!text) return data;
+      if (data.length === 0 || data === ' ') return data;
 
-  $.root()
-    .contents() // iterate over flat map of all html elements
-    .filter(filterTextNodes) // only iterate over text nodes
-    .each((idx, el) => {
-      // skip common case
-      // @ts-ignore
-      if (el.data.length === 0 || el.data === ' ') return;
-
-      // mutating el.data is incorrect but we do it to prevent a second dom parse
-      // @ts-ignore
-      el.data = emojifyText(el.data, customEmojis);
-    });
-
-  return $.html();
+      return emojifyText(data, customEmojis);
+    })
+    .join('');
 };
 
 export default emojify;
