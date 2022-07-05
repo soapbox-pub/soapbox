@@ -99,11 +99,7 @@ export const emojifyText = (str: string, customEmojis = {}) => {
   let stack = '';
   let open = false;
 
-  for (let c of split(str)) {
-    if (c.codePointAt(1) === 65038) {
-      c = String.fromCodePoint(c.codePointAt(0) as number);
-    }
-
+  for (const c of split(str)) {
     if (c in unicodeMapping) {
       if (open) { // unicode emoji inside colon
         buf += popStack(stack, open);
