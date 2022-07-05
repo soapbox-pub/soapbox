@@ -7,6 +7,20 @@ import unicodeMapping from './mapping';
 import type { Node as CheerioNode } from 'cheerio';
 import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-mart';
 
+/*
+ * TODO: Consolate emoji object types
+ *
+ * There are five different emoji objects currently
+ *  - emoji-mart's "onPickEmoji" handler
+ *  - emoji-mart's custom emoji types
+ *  - an Emoji type that is either NativeEmoji or CustomEmoji
+ *  - a type inside redux's `store.custom_emoji` immutablejs
+ *  
+ * there needs to be one type for the picker handler callback
+ * and one type for the emoji-mart data
+ * and one type that is used everywhere that the above two are converted into
+ */
+
 export interface Emoji {
   id: string,
   colons: string,

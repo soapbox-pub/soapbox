@@ -221,6 +221,7 @@ const updateSuggestionTags = (state: State, token: string) => {
 
 const insertEmoji = (state: State, position: number, emojiData: Emoji, needsSpace: boolean) => {
   const oldText = state.text;
+  console.log(emojiData);
   const emojiText = isNativeEmoji(emojiData) ? emojiData.native : emojiData.colons;
   const emoji = needsSpace ? ' ' + emojiText : emojiText;
 

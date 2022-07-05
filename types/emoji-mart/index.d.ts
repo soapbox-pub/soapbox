@@ -19,12 +19,23 @@ declare module 'emoji-mart' {
     version?: number,
   }
 
+  export interface EmojiPick {
+    id: string,
+    name: string,
+    native?: string,
+    unified?: string,
+    keywords: string[],
+    shortcodes: string,
+    emoticons: string[],
+    src?: string,
+  }
+
   export interface PickerProps {
     custom?: { emojis: Emoji<CustomEmoji> }[],
     set?: string,
     title?: string,
     theme?: string,
-    onEmojiSelect?: any,
+    onEmojiSelect?: (emoji: EmojiPick) => void,
     recent?: any,
     skin?: any,
     perLine?: number,

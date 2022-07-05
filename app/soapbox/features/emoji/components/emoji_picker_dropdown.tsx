@@ -13,7 +13,8 @@ import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components'
 // import { Picker as EmojiPicker } from '../../emoji/emoji_picker';
 
 import type { List } from 'immutable';
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
+import type { EmojiPick } from 'emoji-mart';
 
 let EmojiPicker: any; // load asynchronously
 
@@ -73,9 +74,25 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     }
   };
 
-  const handlePick = (emoji: Emoji) => {
+  const handlePick = (emoji: EmojiPick) => {
     setVisible(false);
-    onPickEmoji(emoji);
+
+    if (emoji.native) {
+      onPickEmoji({
+        id: emoji.id,
+        colons: emoji.shortcodes,
+        custom: false,
+        native: emoji.native,
+        unified: emoji.unified,
+      } as NativeEmoji);
+    } else {
+      onPickEmoji({
+        id: emoji.id,
+        colons: emoji.shortcodes,
+        custom: true,
+        imageUrl: emoji.src,
+      } as CustomEmoji);
+    }
   };
 
   const getI18n = () => {
