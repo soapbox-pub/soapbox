@@ -87,22 +87,21 @@ const convertEmoji = (str: string, customEmojis: any) => {
   return str;
 };
 
-const popStack = (stack: string, open: boolean) => {
-  const ret = stack;
-  open = false;
-  stack = '';
-  return ret;
-};
-
 export const emojifyText = (str: string, customEmojis = {}) => {
   let buf = '';
   let stack = '';
   let open = false;
 
+  const clearStack = () => {
+    buf += stack;
+    open = false;
+    stack = '';
+  };
+
   for (const c of split(str)) {
     if (c in unicodeMapping) {
       if (open) { // unicode emoji inside colon
-        buf += popStack(stack, open);
+        clearStack();
       }
 
       buf += convertUnicode(c);
@@ -124,7 +123,7 @@ export const emojifyText = (str: string, customEmojis = {}) => {
         // if the stack is non-null and we see invalid chars it's a string not emoji
         // so we push it to the return result and clear it
         if (!validEmojiChar(c)) {
-          buf += popStack(stack, open);
+          clearStack();
         }
       } else {
         buf += c;
@@ -140,7 +139,7 @@ export const emojifyText = (str: string, customEmojis = {}) => {
   return buf;
 };
 
-const parseHTML = (str: string): { text: boolean, data: string }[] => {
+export const parseHTML = (str: string): { text: boolean, data: string }[] => {
   const tokens = [];
   let buf = '';
   let stack = '';
