@@ -68,23 +68,10 @@ const convertCustom = (shortname: string, filename: string) => {
   return `<img draggable="false" class="emojione" alt="${shortname}" title="${shortname}" src="${filename}" />`;
 };
 
-function replaceAll(str: string, find: string, replace: string) {
-  return str.replace(new RegExp(find, 'g'), replace);
-}
-
 const convertUnicode = (c: string) => {
   const { unified, shortcode } = unicodeMapping[c];
 
-  let hex;
-
-  // TODO: move to mapping.ts
-  if (unified.includes('200d') && unified !== '1f441-fe0f-200d-1f5e8-fe0f') {
-    hex = unified;
-  } else {
-    hex = replaceAll(unified, '-fe0f', '');
-  }
-
-  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${hex}.svg" />`;
+  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg" />`;
 };
 
 const convertEmoji = (str: string, customEmojis: any) => {
