@@ -60,7 +60,8 @@ const isAlphaNumeric = (c: string) => {
 const validEmojiChar = (c: string) => {
   return isAlphaNumeric(c)
     || c === '_'
-    || c === '-';
+    || c === '-'
+    || c === '.';
 };
 
 const convertCustom = (shortname: string, filename: string) => {
