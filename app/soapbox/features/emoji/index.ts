@@ -68,10 +68,23 @@ const convertCustom = (shortname: string, filename: string) => {
   return `<img draggable="false" class="emojione" alt="${shortname}" title="${shortname}" src="${filename}" />`;
 };
 
+function replaceAll(str: string, find: string, replace: string) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
+
 const convertUnicode = (c: string) => {
   const { unified, shortcode } = unicodeMapping[c];
 
-  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg" />`;
+  let hex;
+
+  // TODO: move to mapping.ts
+  if (unified.includes('200d') && unified !== '1f441-fe0f-200d-1f5e8-fe0f') {
+    hex = unified;
+  } else {
+    hex = replaceAll(unified, '-fe0f', '');
+  }
+
+  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${hex}.svg" />`;
 };
 
 const convertEmoji = (str: string, customEmojis: any) => {
@@ -100,13 +113,20 @@ export const emojifyText = (str: string, customEmojis = {}) => {
   };
 
   for (const c of split(str)) {
+    const unqualified = c + String.fromCodePoint(65039);
+
     if (c in unicodeMapping) {
       if (open) { // unicode emoji inside colon
         clearStack();
       }
 
       buf += convertUnicode(c);
+    } else if (unqualified in unicodeMapping) {
+      if (open) { // unicode emoji inside colon
+        clearStack();
+      }
 
+      buf += convertUnicode(unqualified);
     } else if (c === ':') {
       stack += ':';
 
