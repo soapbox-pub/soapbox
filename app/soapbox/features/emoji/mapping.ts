@@ -43,6 +43,7 @@ const tweaks = {
   '🏳‍🌈': ['1f3f3-fe0f-200d-1f308', 'rainbow-flag'],
   '🏳‍⚧️': ['1f3f3-fe0f-200d-26a7-fe0f', 'transgender_flag'],
   '🏳‍⚧': ['1f3f3-fe0f-200d-26a7-fe0f', 'transgender_flag'],
+  '✴︎': ['2734', 'eight_pointed_black_star'],
 };
 
 export const generateMappings = (data: EmojiData): UnicodeMap => {
@@ -59,7 +60,7 @@ export const generateMappings = (data: EmojiData): UnicodeMap => {
         // @ts-ignore
         result[native] = { unified: stripped, shortcode: value.id };
       } else {
-        const twemojiCode  = replaceAll(stripped, '-fe0f', '');
+        const twemojiCode  = replaceAll(stripped, '-fe0f', '').replace('fe0e', '');
 
         // @ts-ignore
         result[native] = { unified: twemojiCode, shortcode: value.id };

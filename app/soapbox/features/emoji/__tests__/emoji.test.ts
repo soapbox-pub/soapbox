@@ -51,12 +51,12 @@ describe('emoji', () => {
     });
 
     it('does an emoji that has no shortcode', () => {
-      expect(emojify('👁‍🗨')).toEqual('<img draggable="false" class="emojione" alt="👁‍🗨" title="" src="/packs/emoji/1f441-200d-1f5e8.svg"  />');
+      expect(emojify('👁‍🗨')).toEqual('<img draggable="false" class="emojione" alt="👁‍🗨️\" title=":eye-in-speech-bubble:" src="/packs/emoji/1f441-200d-1f5e8.svg" />');
     });
 
     it('skips the textual presentation VS15 character', () => {
       expect(emojify('✴︎')) // This is U+2734 EIGHT POINTED BLACK STAR then U+FE0E VARIATION SELECTOR-15
-        .toEqual('<img draggable="false" class="emojione" alt="✴" title=":eight_pointed_black_star:" src="/packs/emoji/2734.svg" />');
+        .toEqual('<img draggable="false" class="emojione" alt="✴︎" title=":eight_pointed_black_star:" src="/packs/emoji/2734.svg" />');
     });
 
     it('full v14 unicode emoji map', () => {
