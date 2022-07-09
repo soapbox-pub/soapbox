@@ -3,7 +3,7 @@ import { Index } from 'flexsearch';
 import data from './data';
 
 import type { Emoji } from './index';
-import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
+// import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
 
 const index = new Index({
   tokenize: 'full',
@@ -20,7 +20,7 @@ export interface searchOptions {
   custom?: any,
 }
 
-export const addCustomToPool = (customEmojis: EmojiMart<CustomEmoji>[]) => {
+export const addCustomToPool = (customEmojis: any[]) => {
   let i = 0;
 
   for (const emoji of customEmojis) {

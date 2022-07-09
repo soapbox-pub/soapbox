@@ -1,8 +1,8 @@
 import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
 import { buildCustomEmojis } from 'soapbox/features/emoji';
+import emojiData from 'soapbox/features/emoji/data';
 import { addCustomToPool } from 'soapbox/features/emoji/search';
-// import emojiData from 'soapbox/features/emoji/data';
 
 import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom_emojis';
 
@@ -17,18 +17,14 @@ const autosuggestPopulate = (emojis: ImmutableList<ImmutableMap<string, string>>
 };
 
 const importEmojis = (customEmojis: APIEntity[]) => {
-  // const emojis = (fromJS(customEmojis)).filter((emoji) => {
-  //   // If a custom emoji has the shortcode of a Unicode emoji, skip it.
-  //   // Otherwise it breaks EmojiMart.
-  //   // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/610
-  //   const shortcode = emoji.get('shortcode', '').toLowerCase();
-  //   return !emojiData.emojis[shortcode];
-  // });
+  const emojis = (fromJS(customEmojis) as ImmutableList<ImmutableMap<string, string>>).filter((emoji) => {
+    // If a custom emoji has the shortcode of a Unicode emoji, skip it.
+    // Otherwise it breaks EmojiMart.
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/610
+    const shortcode = emoji.get('shortcode', '').toLowerCase();
+    return !emojiData.emojis[shortcode];
+  });
 
-  // @ts-ignore
-  const emojis = fromJS(customEmojis);
-
-  // @ts-ignore
   autosuggestPopulate(emojis);
   return emojis;
 };

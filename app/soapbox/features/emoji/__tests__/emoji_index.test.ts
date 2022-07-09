@@ -90,7 +90,7 @@ describe('emoji_index', () => {
       Map({ static_url: 'http://example.com', shortcode: 'pleroma' }),
     ]);
 
-    const expected = [];
+    const expected: any = [];
     expect(search('masto', {}, custom_emojis).map(trimEmojis)).toEqual(expected);
   });
 

@@ -13,7 +13,7 @@ import {
   FE_NAME,
 } from '../actions/settings';
 
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/features/emoji';
 import type { APIEntity } from 'soapbox/types/entities';
 
 type State = ImmutableMap<string, any>;
