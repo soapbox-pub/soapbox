@@ -10,7 +10,7 @@ const getSpritesheetURL = (set: string) => {
 const getImageURL = (set: string, name: string) => {
   console.log(set, name);
 
-  return `/packs/emojis/${name}.svg`;
+  return `/packs/emoji/${name}.svg`;
 }
 
 function Picker(props: PickerProps) {
