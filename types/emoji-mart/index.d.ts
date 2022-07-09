@@ -44,6 +44,8 @@ declare module 'emoji-mart' {
     navPosition?: string,
     autoFocus?: boolean,
     i18n?: any,
+    getImageURL: (set: string, name: string) => string,
+    getSpritesheetURL: (set: string) => string,
   }
 
   export class Picker {

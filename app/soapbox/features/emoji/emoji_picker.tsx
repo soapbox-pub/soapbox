@@ -3,11 +3,21 @@ import React, { useRef, useEffect } from 'react';
 
 import data from './data';
 
+const getSpritesheetURL = (set: string) => {
+  return '/packs/images/32.png';
+}
+
+const getImageURL = (set: string, name: string) => {
+  console.log(set, name);
+
+  return `/packs/images/${name}.svg`;
+}
+
 function Picker(props: PickerProps) {
   const ref = useRef(null);
 
   useEffect(() => {
-    const input = { ...props, data, ref };
+    const input = { ...props, data, ref, getImageURL, getSpritesheetURL };
 
     new EmojiPicker(input);
   }, []);
