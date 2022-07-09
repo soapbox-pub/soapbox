@@ -4358,7 +4358,7 @@
       },
       {
         "defaultMessage": "{name} sent you a message",
-        "id": "notification.chat_mention"
+        "id": "notification.pleroma:chat_mention"
       },
       {
         "defaultMessage": "{name} reacted to your post",

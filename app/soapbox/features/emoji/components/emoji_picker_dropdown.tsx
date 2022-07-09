@@ -210,7 +210,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
           'pulse-loading': visible && loading,
         })}
         ref={setPopperReference}
-        src={require('@tabler/icons/icons/mood-happy.svg')}
+        src={require('@tabler/icons/mood-happy.svg')}
         title={title}
         aria-label={title}
         aria-expanded={visible}
