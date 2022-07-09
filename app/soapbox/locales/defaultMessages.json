@@ -2300,6 +2300,18 @@
         "id": "emoji_button.not_found"
       },
       {
+        "defaultMessage": "Pick and emoji...",
+        "id": "emoji_button.pick"
+      },
+      {
+        "defaultMessage": "Oh no!",
+        "id": "emoji_button.oh_no"
+      },
+      {
+        "defaultMessage": "Add custom emoji",
+        "id": "emoji_button.add_custom"
+      },
+      {
         "defaultMessage": "Custom",
         "id": "emoji_button.custom"
       },
@@ -2342,9 +2354,37 @@
       {
         "defaultMessage": "Flags",
         "id": "emoji_button.flags"
+      },
+      {
+        "defaultMessage": "Choose default skin tone",
+        "id": "emoji_button.skins_choose"
+      },
+      {
+        "defaultmessage": "default",
+        "id": "emoji_button.skins_1"
+      },
+      {
+        "defaultmessage": "Light",
+        "id": "emoji_button.skins_2"
+      },
+      {
+        "defaultmessage": "Medium-Light",
+        "id": "emoji_button.skins_3"
+      },
+      {
+        "defaultmessage": "Medium",
+        "id": "emoji_button.skins_4"
+      },
+      {
+        "defaultmessage": "Medium-Dark",
+        "id": "emoji_button.skins_5"
+      },
+      {
+        "defaultmessage": "Dark",
+        "id": "emoji_button.skins_6"
       }
     ],
-    "path": "app/soapbox/features/compose/components/emoji_picker_dropdown.json"
+    "path": "app/soapbox/features/emoji/components/emoji_picker_dropdown.json"
   },
   {
     "descriptors": [

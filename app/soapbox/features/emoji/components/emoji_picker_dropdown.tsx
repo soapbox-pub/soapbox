@@ -19,10 +19,26 @@ import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
 
+// const categories = [
+//   'frequent',
+//   'custom',
+//   'people',
+//   'nature',
+//   'foods',
+//   'activity',
+//   'places',
+//   'objects',
+//   'symbols',
+//   'flags',
+// ];
+
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
+  emoji_pick: { id: 'emoji_button.pick', defaultMessage: 'Pick an emoji...' },
+  emoji_oh_no: { id: 'emoji_button.oh_no', defaultMessage: 'Oh no!' },
   emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
   emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emoji\'s found.' },
+  emoji_add_custom: { id: 'emoji_button.add_custom', defaultMessage: 'Add custom emoji' },
   custom: { id: 'emoji_button.custom', defaultMessage: 'Custom' },
   recent: { id: 'emoji_button.recent', defaultMessage: 'Frequently used' },
   search_results: { id: 'emoji_button.search_results', defaultMessage: 'Search results' },
@@ -34,8 +50,16 @@ const messages = defineMessages({
   objects: { id: 'emoji_button.objects', defaultMessage: 'Objects' },
   symbols: { id: 'emoji_button.symbols', defaultMessage: 'Symbols' },
   flags: { id: 'emoji_button.flags', defaultMessage: 'Flags' },
+  skins_choose: { id: 'emoji_button.skins_choose', defaultMessage: 'Choose default skin tone' },
+  skins_1: { id: 'emoji_button.skins_1', defaultMessage: 'Default' },
+  skins_2: { id: 'emoji_button.skins_2', defaultMessage: 'Light' },
+  skins_3: { id: 'emoji_button.skins_3', defaultMessage: 'Medium-Light' },
+  skins_4: { id: 'emoji_button.skins_4', defaultMessage: 'Medium' },
+  skins_5: { id: 'emoji_button.skins_5', defaultMessage: 'Medium-Dark' },
+  skins_6: { id: 'emoji_button.skins_6', defaultMessage: 'Dark' },
 });
 
+// TODO: fix types
 interface IEmojiPickerDropdown {
   custom_emojis: List<any>,
   frequentlyUsedEmojis: string[],
@@ -116,25 +140,37 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     }
   };
 
-  // const getI18n = () => {
-  //   return {
-  //     search: intl.formatMessage(messages.emoji_search),
-  //     notfound: intl.formatMessage(messages.emoji_not_found),
-  //     categories: {
-  //       search: intl.formatMessage(messages.search_results),
-  //       recent: intl.formatMessage(messages.recent),
-  //       people: intl.formatMessage(messages.people),
-  //       nature: intl.formatMessage(messages.nature),
-  //       foods: intl.formatMessage(messages.food),
-  //       activity: intl.formatMessage(messages.activity),
-  //       places: intl.formatMessage(messages.travel),
-  //       objects: intl.formatMessage(messages.objects),
-  //       symbols: intl.formatMessage(messages.symbols),
-  //       flags: intl.formatMessage(messages.flags),
-  //       custom: intl.formatMessage(messages.custom),
-  //     },
-  //   };
-  // };
+  const getI18n = () => {
+    return {
+      search: intl.formatMessage(messages.emoji_search),
+      pick: intl.formatMessage(messages.emoji_pick),
+      search_no_results_1: intl.formatMessage(messages.emoji_oh_no),
+      search_no_results_2: intl.formatMessage(messages.emoji_not_found),
+      add_custom: intl.formatMessage(messages.emoji_add_custom),
+      categories: {
+        search: intl.formatMessage(messages.search_results),
+        frequent: intl.formatMessage(messages.recent),
+        people: intl.formatMessage(messages.people),
+        nature: intl.formatMessage(messages.nature),
+        foods: intl.formatMessage(messages.food),
+        activity: intl.formatMessage(messages.activity),
+        places: intl.formatMessage(messages.travel),
+        objects: intl.formatMessage(messages.objects),
+        symbols: intl.formatMessage(messages.symbols),
+        flags: intl.formatMessage(messages.flags),
+        custom: intl.formatMessage(messages.custom),
+      },
+      skins: {
+        choose: intl.formatMessage(messages.skins_choose),
+        1: intl.formatMessage(messages.skins_1),
+        2: intl.formatMessage(messages.skins_2),
+        3: intl.formatMessage(messages.skins_3),
+        4: intl.formatMessage(messages.skins_4),
+        5: intl.formatMessage(messages.skins_5),
+        6: intl.formatMessage(messages.skins_6),
+      }
+    }
+  }
   
   useEffect(() => {
     document.addEventListener('click', handleDocClick, false);
@@ -207,6 +243,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
                   emojiButtonSize={50}
                   set={'twitter'}
                   theme={theme}
+                  i18n={getI18n()}
+                  // categories={categories}
                 />
               )}
             </RenderAfter>

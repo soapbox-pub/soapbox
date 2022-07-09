@@ -3,20 +3,6 @@ import React, { useRef, useEffect } from 'react';
 
 import data from './data';
 
-// const categories = [
-//   'recent',
-//   'custom',
-//   'people',
-//   'nature',
-//   'foods',
-//   'activity',
-//   'places',
-//   'objects',
-//   'symbols',
-//   'flags',
-// ];
-//
-
 function Picker(props: PickerProps) {
   const ref = useRef(null);
 
