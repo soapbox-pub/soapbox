@@ -7,6 +7,7 @@ import { usePopper } from 'react-popper';
 
 import { IconButton } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
+import { isMobile } from 'soapbox/is_mobile';
 
 import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
@@ -79,8 +80,9 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const placement = condensed ? 'bottom-start' : 'top-start';
   const { styles, attributes, update } = usePopper(popperReference, popperElement, {
-    placement: condensed ? 'bottom-start' : 'top-start',
+    placement: isMobile(window.innerWidth) ? 'auto' : placement,
   });
 
   const handleToggle = () => {
@@ -133,14 +135,15 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   //     },
   //   };
   // };
-
+  
   useEffect(() => {
     document.addEventListener('click', handleDocClick, false);
     document.addEventListener('touchend', handleDocClick, listenerOptions);
 
     return function cleanup() {
-      document.removeEventListener('click', handleDocClick);
-      document.removeEventListener('touchend', handleDocClick);
+      document.removeEventListener('click', handleDocClick, false);
+      // @ts-ignore
+      document.removeEventListener('touchend', handleDocClick, listenerOptions);
     };
   });
 
@@ -158,27 +161,10 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     }
   }, [visible]);
 
-  let Popup;
-
-  if (loading) {
-    Popup = () => <div />;
-  } else {
-    Popup = () => (
-      <EmojiPicker
-        custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
-        title={title}
-        onEmojiSelect={handlePick}
-        recent={frequentlyUsedEmojis}
-        perLine={8}
-        skin={onSkinTone}
-        emojiSize={38}
-        emojiButtonSize={50}
-        set={'twitter'}
-        theme={theme}
-        autoFocus
-      />
-    );
-  }
+  // TODO: move to class
+  const style = !isMobile(window.innerWidth) ? styles.popper : {
+    ...styles.popper, width: '100%',
+  };
 
   return (
     <div className='relative' ref={setContainerElement}>
@@ -204,12 +190,25 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
             'z-1000': true,
           })}
           ref={setPopperElement}
-          style={styles.popper}
+          style={style}
           {...attributes.popper}
         >
           {visible && (
             <RenderAfter update={update}>
-              <Popup />
+              {!loading && (
+                <EmojiPicker
+                  custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
+                  title={title}
+                  onEmojiSelect={handlePick}
+                  recent={frequentlyUsedEmojis}
+                  perLine={8}
+                  skin={onSkinTone}
+                  emojiSize={38}
+                  emojiButtonSize={50}
+                  set={'twitter'}
+                  theme={theme}
+                />
+              )}
             </RenderAfter>
           )}
         </div>,
