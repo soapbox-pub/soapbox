@@ -1,7 +1,7 @@
-// import { emojiIndex } from 'emoji-mart';
+import { List, Map } from 'immutable';
 import pick from 'lodash/pick';
 
-import search from '../search';
+import search, { addCustomToPool } from '../search';
 
 const trimEmojis = (emoji: any) => pick(emoji, ['id', 'unified', 'native', 'custom']);
 
@@ -38,72 +38,60 @@ describe('emoji_index', () => {
     expect(search('apple').map(trimEmojis)).toEqual(expected);
   });
 
-  it('(different behavior from emoji-mart) do not erases custom emoji if not passed again', () => {
+  it('handles custom emojis', () => {
     const custom = [
       {
         id: 'mastodon',
         name: 'mastodon',
-        short_names: ['mastodon'],
-        text: '',
-        emoticons: [],
         keywords: ['mastodon'],
-        imageUrl: 'http://example.com',
-        custom: true,
+        skins: { src: 'http://example.com' },
       },
     ];
-    search('', { custom });
-    // emojiIndex.search('', { custom });
-    // const expected = [];
+
+    const custom_emojis = List([
+      Map({ static_url: 'http://example.com', shortcode: 'mastodon' }),
+    ]);
+
     const lightExpected = [
       {
         id: 'mastodon',
         custom: true,
       },
     ];
-    expect(search('masto').map(trimEmojis)).toEqual(lightExpected);
+
+    addCustomToPool(custom);
+    expect(search('masto', {}, custom_emojis).map(trimEmojis)).toEqual(lightExpected);
   });
 
-  it('(different behavior from emoji-mart) erases custom emoji if another is passed', () => {
+  it('updates custom emoji if another is passed', () => {
     const custom = [
       {
         id: 'mastodon',
         name: 'mastodon',
-        short_names: ['mastodon'],
-        text: '',
-        emoticons: [],
         keywords: ['mastodon'],
-        imageUrl: 'http://example.com',
-        custom: true,
+        skins: { src: 'http://example.com' },
       },
     ];
-    search('', { custom });
-    // emojiIndex.search('', { custom });
+
+    addCustomToPool(custom);
+
+    const custom2 = [
+      {
+        id: 'pleroma',
+        name: 'pleroma',
+        keywords: ['pleroma'],
+        skins: { src: 'http://example.com' },
+      },
+    ];
+
+    addCustomToPool(custom2);
+
+    const custom_emojis = List([
+      Map({ static_url: 'http://example.com', shortcode: 'pleroma' }),
+    ]);
+
     const expected = [];
-    expect(search('masto', { custom: [] }).map(trimEmojis)).toEqual(expected);
-  });
-
-  it('handles custom emoji', () => {
-    const custom = [
-      {
-        id: 'mastodon',
-        name: 'mastodon',
-        short_names: ['mastodon'],
-        text: '',
-        emoticons: [],
-        keywords: ['mastodon'],
-        imageUrl: 'http://example.com',
-        custom: true,
-      },
-    ];
-    search('', { custom });
-    // emojiIndex.search('', { custom });
-    const expected = [
-      {
-        id: 'mastodon',
-        custom: true,
-      },
-    ];
-    expect(search('masto', { custom }).map(trimEmojis)).toEqual(expected);
+    expect(search('masto', {}, custom_emojis).map(trimEmojis)).toEqual(expected);
   });
 
   it('does an emoji whose unified name is irregular', () => {

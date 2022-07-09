@@ -20,14 +20,13 @@ interface UnicodeMap {
  * - fe0f is NOT removed for 1f441-fe0f-200d-1f5e8-fe0f even though it has a 200d
  *
  * this is all wrong
- */ 
+ */
 
 const blacklist = {
   '1f441-fe0f-200d-1f5e8-fe0f': true,
 };
 
 const tweaks = {
-  '👁‍🗨️': ['1f441-200d-1f5e8', 'eye-in-speech-bubble'],
   '#⃣': ['23-20e3', 'hash'],
   '*⃣': ['2a-20e3', 'keycap_star'],
   '0⃣': ['30-20e3', 'zero'],
@@ -40,37 +39,68 @@ const tweaks = {
   '7⃣': ['37-20e3', 'seven'],
   '8⃣': ['38-20e3', 'eight'],
   '9⃣': ['39-20e3', 'nine'],
-  '🏳‍🌈': ['1f3f3-fe0f-200d-1f308', 'rainbow-flag'],
+  '❤‍🔥': ['2764-fe0f-200d-1f525', 'heart_on_fire'],
+  '❤‍🩹': ['2764-fe0f-200d-1fa79', 'mending_heart'],
+  '👁‍🗨️': ['1f441-fe0f-200d-1f5e8-fe0f', 'eye-in-speech-bubble'],
+  '👁️‍🗨': ['1f441-fe0f-200d-1f5e8-fe0f', 'eye-in-speech-bubble'],
+  '👁‍🗨': ['1f441-fe0f-200d-1f5e8-fe0f', 'eye-in-speech-bubble'],
+  '🕵‍♂️': ['1f575-fe0f-200d-2642-fe0f', 'male-detective'],
+  '🕵️‍♂': ['1f575-fe0f-200d-2642-fe0f', 'male-detective'],
+  '🕵‍♂': ['1f575-fe0f-200d-2642-fe0f', 'male-detective'],
+  '🕵‍♀️': ['1f575-fe0f-200d-2640-fe0f', 'female-detective'],
+  '🕵️‍♀': ['1f575-fe0f-200d-2640-fe0f', 'female-detective'],
+  '🕵‍♀': ['1f575-fe0f-200d-2640-fe0f', 'female-detective'],
+  '🏌‍♂️': ['1f3cc-fe0f-200d-2642-fe0f', 'man-golfing'],
+  '🏌️‍♂': ['1f3cc-fe0f-200d-2642-fe0f', 'man-golfing'],
+  '🏌‍♂': ['1f3cc-fe0f-200d-2642-fe0f', 'man-golfing'],
+  '🏌‍♀️': ['1f3cc-fe0f-200d-2640-fe0f', 'woman-golfing'],
+  '🏌️‍♀': ['1f3cc-fe0f-200d-2640-fe0f', 'woman-golfing'],
+  '🏌‍♀': ['1f3cc-fe0f-200d-2640-fe0f', 'woman-golfing'],
+  '⛹‍♂️': ['26f9-fe0f-200d-2642-fe0f', 'man-bouncing-ball'],
+  '⛹️‍♂': ['26f9-fe0f-200d-2642-fe0f', 'man-bouncing-ball'],
+  '⛹‍♂': ['26f9-fe0f-200d-2642-fe0f', 'man-bouncing-ball'],
+  '⛹‍♀️': ['26f9-fe0f-200d-2640-fe0f', 'woman-bouncing-ball'],
+  '⛹️‍♀': ['26f9-fe0f-200d-2640-fe0f', 'woman-bouncing-ball'],
+  '⛹‍♀': ['26f9-fe0f-200d-2640-fe0f', 'woman-bouncing-ball'],
+  '🏋‍♂️': ['1f3cb-fe0f-200d-2642-fe0f', 'man-lifting-weights'],
+  '🏋️‍♂': ['1f3cb-fe0f-200d-2642-fe0f', 'man-lifting-weights'],
+  '🏋‍♂': ['1f3cb-fe0f-200d-2642-fe0f', 'man-lifting-weights'],
+  '🏋‍♀️': ['1f3cb-fe0f-200d-2640-fe0f', 'woman-lifting-weights'],
+  '🏋️‍♀': ['1f3cb-fe0f-200d-2640-fe0f', 'woman-lifting-weights'],
+  '🏋‍♀': ['1f3cb-fe0f-200d-2640-fe0f', 'woman-lifting-weights'],
+  '🏳‍🌈': ['1f3f3-fe0f-200d-1f308', 'rainbow_flag'],
   '🏳‍⚧️': ['1f3f3-fe0f-200d-26a7-fe0f', 'transgender_flag'],
+  '🏳️‍⚧': ['1f3f3-fe0f-200d-26a7-fe0f', 'transgender_flag'],
   '🏳‍⚧': ['1f3f3-fe0f-200d-26a7-fe0f', 'transgender_flag'],
-  '✴︎': ['2734', 'eight_pointed_black_star'],
+};
+
+const stripcodes = (unified: string, native: string) => {
+  const stripped = unified.replace(stripLeadingZeros, '');
+
+  if (unified.includes('200d') && !(unified in blacklist)) {
+    return stripped;
+  } else {
+    return replaceAll(stripped, '-fe0f', '');
+  }
 };
 
 export const generateMappings = (data: EmojiData): UnicodeMap => {
-  const result = {};
+  const result: UnicodeMap = {};
   const emojis = Object.values(data.emojis ?? {});
 
   for (const value of emojis) {
-    // @ts-ignore
     for (const item of value.skins) {
       const { unified, native } = item;
-      const stripped = unified.replace(stripLeadingZeros, '');
+      const stripped = stripcodes(unified, native);
 
-      if (unified.includes('200d') && !(unified in blacklist)) {
-        // @ts-ignore
-        result[native] = { unified: stripped, shortcode: value.id };
-      } else {
-        const twemojiCode  = replaceAll(stripped, '-fe0f', '').replace('fe0e', '');
-
-        // @ts-ignore
-        result[native] = { unified: twemojiCode, shortcode: value.id };
-      }
+      result[native] = { unified: stripped, shortcode: value.id };
     }
   }
 
-  for (const [key, value] of Object.entries(tweaks)) {
-    // @ts-ignore
-    result[key] = { unified: value[0], shortcode: value[1] };
+  for (const [native, [unified, shortcode]] of Object.entries(tweaks)) {
+    const stripped = stripcodes(unified, native);
+
+    result[native] = { unified: stripped, shortcode };
   }
 
   return result;

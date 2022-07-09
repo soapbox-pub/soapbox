@@ -99,7 +99,11 @@ export const emojifyText = (str: string, customEmojis = {}) => {
     stack = '';
   };
 
-  for (const c of split(str)) {
+  for (let c of split(str)) {
+    if (c.codePointAt(c.length - 1) === 65038) {
+      c = c.slice(0, -1) + String.fromCodePoint(65039);
+    }
+
     const unqualified = c + String.fromCodePoint(65039);
 
     if (c in unicodeMapping) {
