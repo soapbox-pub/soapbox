@@ -8,8 +8,6 @@ const getSpritesheetURL = (set: string) => {
 }
 
 const getImageURL = (set: string, name: string) => {
-  console.log(set, name);
-
   return `/packs/emoji/${name}.svg`;
 }
 
