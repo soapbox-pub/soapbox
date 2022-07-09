@@ -12,7 +12,7 @@ const index = new Index({
 });
 
 for (const [key, emoji] of Object.entries(data.emojis)) {
-  index.add(key, emoji.name);
+  index.add('n' + key, emoji.name);
 }
 
 export interface searchOptions {
@@ -21,18 +21,27 @@ export interface searchOptions {
 }
 
 export const addCustomToPool = (customEmojis: any[]) => {
+  // @ts-ignore
+  for (const key in index.register) {
+    if (key[0] === 'c') {
+      index.remove(key); // remove old custom emojis
+    }
+  }
+
   let i = 0;
 
   for (const emoji of customEmojis) {
-    index.add(i++, emoji.id);
+    index.add('c' + i++, emoji.id);
   }
 };
 
+// we can share an index by prefixing custom emojis with 'c' and native with 'n'
 const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, custom_emojis?: any): Emoji[] => {
   return index.search(str, maxResults)
     .flatMap(id => {
-      if (Number.isInteger(id)) {
-        const { shortcode, static_url } = custom_emojis.get(id).toJS();
+    // @ts-ignore
+      if (id[0] === 'c') {
+        const { shortcode, static_url } = custom_emojis.get((id as string).substr(1)).toJS();
 
         return {
           id: shortcode,
@@ -42,10 +51,10 @@ const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, cus
         };
       }
 
-      const { skins } = data.emojis[id];
+      const { skins } = data.emojis[(id as string).substr(1)];
 
       return {
-        id: id as string,
+        id: (id as string).substr(1),
         colons: ':' + id + ':',
         unified: skins[0].unified,
         native: skins[0].native,

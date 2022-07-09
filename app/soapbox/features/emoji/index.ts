@@ -100,10 +100,12 @@ export const emojifyText = (str: string, customEmojis = {}) => {
   };
 
   for (let c of split(str)) {
+    // convert FE0E selector to FE0F so it can be found in unimap
     if (c.codePointAt(c.length - 1) === 65038) {
       c = c.slice(0, -1) + String.fromCodePoint(65039);
     }
 
+    // unqualified emojis aren't in emoji-mart's mappings so we just add FEOF
     const unqualified = c + String.fromCodePoint(65039);
 
     if (c in unicodeMapping) {
