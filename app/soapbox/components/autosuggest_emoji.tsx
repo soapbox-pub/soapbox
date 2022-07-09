@@ -1,14 +1,10 @@
 import React from 'react';
 
-import { isCustomEmoji, isNativeEmoji } from 'soapbox/features/emoji';
+import { isCustomEmoji } from 'soapbox/features/emoji';
 import unicodeMapping from 'soapbox/features/emoji/mapping';
 import { joinPublicPath } from 'soapbox/utils/static';
 
 import type { Emoji } from 'soapbox/features/emoji';
-
-interface UnicodeMapping {
-  filename: string,
-}
 
 interface IAutosuggestEmoji {
   emoji: Emoji,

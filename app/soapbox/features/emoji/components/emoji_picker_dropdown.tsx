@@ -12,9 +12,9 @@ import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 // import { Picker as EmojiPicker } from '../../emoji/emoji_picker';
 
+import type { EmojiPick } from 'emoji-mart';
 import type { List } from 'immutable';
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
-import type { EmojiPick } from 'emoji-mart';
 
 let EmojiPicker: any; // load asynchronously
 
@@ -114,25 +114,25 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     }
   };
 
-  const getI18n = () => {
-    return {
-      search: intl.formatMessage(messages.emoji_search),
-      notfound: intl.formatMessage(messages.emoji_not_found),
-      categories: {
-        search: intl.formatMessage(messages.search_results),
-        recent: intl.formatMessage(messages.recent),
-        people: intl.formatMessage(messages.people),
-        nature: intl.formatMessage(messages.nature),
-        foods: intl.formatMessage(messages.food),
-        activity: intl.formatMessage(messages.activity),
-        places: intl.formatMessage(messages.travel),
-        objects: intl.formatMessage(messages.objects),
-        symbols: intl.formatMessage(messages.symbols),
-        flags: intl.formatMessage(messages.flags),
-        custom: intl.formatMessage(messages.custom),
-      },
-    };
-  };
+  // const getI18n = () => {
+  //   return {
+  //     search: intl.formatMessage(messages.emoji_search),
+  //     notfound: intl.formatMessage(messages.emoji_not_found),
+  //     categories: {
+  //       search: intl.formatMessage(messages.search_results),
+  //       recent: intl.formatMessage(messages.recent),
+  //       people: intl.formatMessage(messages.people),
+  //       nature: intl.formatMessage(messages.nature),
+  //       foods: intl.formatMessage(messages.food),
+  //       activity: intl.formatMessage(messages.activity),
+  //       places: intl.formatMessage(messages.travel),
+  //       objects: intl.formatMessage(messages.objects),
+  //       symbols: intl.formatMessage(messages.symbols),
+  //       flags: intl.formatMessage(messages.flags),
+  //       custom: intl.formatMessage(messages.custom),
+  //     },
+  //   };
+  // };
 
   useEffect(() => {
     document.addEventListener('click', handleDocClick, false);

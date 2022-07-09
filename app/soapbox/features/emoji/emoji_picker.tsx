@@ -1,6 +1,7 @@
-import data from './data';
 import { Picker as EmojiPicker, PickerProps } from 'emoji-mart';
 import React, { useRef, useEffect } from 'react';
+
+import data from './data';
 
 // const categories = [
 //   'recent',

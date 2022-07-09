@@ -8,8 +8,8 @@ import Icon from 'soapbox/components/icon';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';
 import { isRtl } from 'soapbox/rtl';
 
-import type { Emoji } from 'soapbox/features/emoji';
 import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
+import type { Emoji } from 'soapbox/features/emoji';
 
 type CursorMatch = [
   tokenStart: number | null,
