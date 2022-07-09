@@ -168,9 +168,9 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
         4: intl.formatMessage(messages.skins_4),
         5: intl.formatMessage(messages.skins_5),
         6: intl.formatMessage(messages.skins_6),
-      }
-    }
-  }
+      },
+    };
+  };
   
   useEffect(() => {
     document.addEventListener('click', handleDocClick, false);
