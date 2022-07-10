@@ -67,6 +67,7 @@ interface IEmojiPickerDropdown {
   onPickEmoji: (emoji: Emoji) => void,
   onSkinTone: () => void,
   condensed: boolean,
+  render: any,
 }
 
 // Fixes render bug where popover has a delayed position update
@@ -90,7 +91,7 @@ const RenderAfter = ({ children, update }: any) => {
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, frequentlyUsedEmojis, onPickEmoji, onSkinTone, condensed }) => {
+const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, frequentlyUsedEmojis, onPickEmoji, onSkinTone, condensed, render: Render }) => {
   const intl = useIntl();
   const settings = useSettings();
   const title = intl.formatMessage(messages.emoji);
@@ -204,27 +205,17 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
 
   return (
     <div className='relative' ref={setContainerElement}>
-      <IconButton
-        className={classNames({
-          'text-gray-400 hover:text-gray-600': true,
-          'pulse-loading': visible && loading,
-        })}
-        ref={setPopperReference}
-        src={require('@tabler/icons/mood-happy.svg')}
+      <Render
+        handleToggle={handleToggle}
+        visible={visible}
+        loading={loading}
         title={title}
-        aria-label={title}
-        aria-expanded={visible}
-        role='button'
-        onClick={handleToggle}
-        onKeyDown={handleToggle}
-        tabIndex={0}
+        setPopperReference={setPopperReference}
       />
 
       {createPortal(
         <div
-          className={classNames({
-            'z-1000': true,
-          })}
+          className={classNames({ 'z-1000': true })}
           ref={setPopperElement}
           style={style}
           {...attributes.popper}

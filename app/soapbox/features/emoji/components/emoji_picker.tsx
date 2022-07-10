@@ -1,7 +1,7 @@
 import { Picker as EmojiPicker, PickerProps } from 'emoji-mart';
 import React, { useRef, useEffect } from 'react';
 
-import data from './data';
+import data from '../data';
 
 const getSpritesheetURL = (set: string) => {
   return '/packs/images/32.png';
