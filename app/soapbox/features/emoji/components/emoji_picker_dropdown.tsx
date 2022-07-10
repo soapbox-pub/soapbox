@@ -110,7 +110,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
     placement: isMobile(window.innerWidth) ? 'auto' : placement,
   });
 
-  const handleToggle = () => {
+  const handleToggle = (e: Event) => {
+    e.stopPropagation();
     setVisible(!visible);
   };
 
@@ -185,6 +186,13 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   });
 
   useEffect(() => {
+    // fix scrolling focus issue
+    if (visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "initial";
+    }
+
     if (!EmojiPicker) {
       setLoading(true);
 
@@ -199,7 +207,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   }, [visible]);
 
   // TODO: move to class
-  const style = !isMobile(window.innerWidth) ? styles.popper : {
+  const style: React.CSSProperties = !isMobile(window.innerWidth) ? styles.popper : {
     ...styles.popper, width: '100%',
   };
 
