@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
 
-import { IconButton } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
@@ -188,9 +187,9 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   useEffect(() => {
     // fix scrolling focus issue
     if (visible) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "initial";
+      document.body.style.overflow = 'initial';
     }
 
     if (!EmojiPicker) {
