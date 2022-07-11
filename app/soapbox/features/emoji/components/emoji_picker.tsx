@@ -1,15 +1,17 @@
 import { Picker as EmojiPicker, PickerProps } from 'emoji-mart';
 import React, { useRef, useEffect } from 'react';
 
+import { joinPublicPath } from 'soapbox/utils/static';
+
 import data from '../data';
 
 const getSpritesheetURL = (set: string) => {
-  return '/packs/images/32.png';
-}
+  return require('emoji-datasource/img/twitter/sheets/32.png');
+};
 
 const getImageURL = (set: string, name: string) => {
-  return `/packs/emoji/${name}.svg`;
-}
+  return joinPublicPath(`/packs/emoji/${name}.svg`);
+};
 
 function Picker(props: PickerProps) {
   const ref = useRef(null);
