@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -208,7 +207,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
 
       {createPortal(
         <div
-          className={classNames({ 'z-1000': true })}
+          className='z-50'
           ref={setPopperElement}
           style={style}
           {...attributes.popper}
