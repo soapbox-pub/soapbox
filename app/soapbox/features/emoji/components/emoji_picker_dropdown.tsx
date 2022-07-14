@@ -10,26 +10,12 @@ import { isMobile } from 'soapbox/is_mobile';
 
 import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
-// import { Picker as EmojiPicker } from '../../emoji/emoji_picker';
 
 import type { EmojiPick } from 'emoji-mart';
 import type { List } from 'immutable';
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
-
-// const categories = [
-//   'frequent',
-//   'custom',
-//   'people',
-//   'nature',
-//   'foods',
-//   'activity',
-//   'places',
-//   'objects',
-//   'symbols',
-//   'flags',
-// ];
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -172,7 +158,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
       },
     };
   };
-  
+
   useEffect(() => {
     document.addEventListener('click', handleDocClick, false);
     document.addEventListener('touchend', handleDocClick, listenerOptions);
@@ -237,12 +223,11 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
                   recent={frequentlyUsedEmojis}
                   perLine={8}
                   skin={onSkinTone}
-                  emojiSize={38}
-                  emojiButtonSize={50}
-                  set={'twitter'}
+                  emojiSize={22}
+                  emojiButtonSize={34}
+                  set='twitter'
                   theme={theme}
                   i18n={getI18n()}
-                  // categories={categories}
                 />
               )}
             </RenderAfter>
