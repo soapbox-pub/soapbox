@@ -40,7 +40,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           className={classNames({ active, destructive })}
           data-method={isLogout ? 'delete' : null}
         >
-          {icon && <Icon title={text} src={icon} role='presentation' tabIndex='-1' inverted />}
+          {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
           <div>
             <div className={classNames({ 'actions-modal__item-label': !!meta })}>{text}</div>
             <div>{meta}</div>
@@ -60,6 +60,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
                 key={status.account as string}
                 id={status.account as string}
                 showProfileHoverCard={false}
+                withLinkToProfile={false}
                 timestamp={status.created_at}
               />
               <StatusContent status={status} />

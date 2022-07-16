@@ -455,7 +455,7 @@ export function WhoToFollowPanel() {
 }
 
 export function FollowRecommendations() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+  return import(/* webpackChunkName: "features/follow-recommendations" */'../../follow-recommendations');
 }
 
 export function Directory() {
@@ -487,7 +487,7 @@ export function CreateApp() {
 }
 
 export function SettingsStore() {
-  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings-store');
 }
 
 export function TestTimeline() {
@@ -520,4 +520,8 @@ export function VerifySmsModal() {
 
 export function FamiliarFollowersModal() {
   return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
+}
+
+export function AnnouncementsPanel() {
+  return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }
