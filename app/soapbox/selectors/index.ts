@@ -178,30 +178,6 @@ export const makeGetStatus = () => {
   );
 };
 
-const getAlertsBase = (state: RootState) => state.alerts;
-
-const buildAlert = (item: any) => {
-  return {
-    message: item.message,
-    title: item.title,
-    actionLabel: item.actionLabel,
-    actionLink: item.actionLink,
-    key: item.key,
-    className: `notification-bar-${item.severity}`,
-    activeClassName: 'snackbar--active',
-    dismissAfter: 6000,
-    style: false,
-  };
-};
-
-type Alert = ReturnType<typeof buildAlert>;
-
-export const getAlerts = createSelector([getAlertsBase], (base): Alert[] => {
-  const arr: Alert[] = [];
-  base.forEach(item => arr.push(buildAlert(item)));
-  return arr;
-});
-
 export const makeGetNotification = () => {
   return createSelector([
     (_state: RootState, notification: Notification) => notification,
@@ -221,7 +197,7 @@ export const makeGetNotification = () => {
 };
 
 export const getAccountGallery = createSelector([
-  (state: RootState, id: string) => state.timelines.getIn([`account:${id}:media`, 'items'], ImmutableList()),
+  (state: RootState, id: string) => state.timelines.get(`account:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState)       => state.statuses,
   (state: RootState)       => state.accounts,
 ], (statusIds, statuses, accounts) => {
@@ -365,7 +341,7 @@ type ColumnQuery = { type: string, prefix?: string };
 
 export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type, prefix }: ColumnQuery) => getSettings(state).get(prefix || type, ImmutableMap()),
-  (state: RootState, { type }: ColumnQuery) => state.timelines.getIn([type, 'items'], ImmutableOrderedSet()),
+  (state: RootState, { type }: ColumnQuery) => state.timelines.get(type)?.items || ImmutableOrderedSet(),
   (state: RootState) => state.statuses,
 ], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) => {
   return statusIds.filter((id: string) => {

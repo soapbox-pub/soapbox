@@ -70,7 +70,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
         <div className='flex items-center justify-between'>
           <IconButton
             className='datepicker__button'
-            src={require('@tabler/icons/icons/chevron-left.svg')}
+            src={require('@tabler/icons/chevron-left.svg')}
             onClick={decreaseMonth}
             disabled={prevMonthButtonDisabled}
             aria-label={intl.formatMessage(messages.previousMonth)}
@@ -79,7 +79,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           {intl.formatDate(date, { month: 'long' })}
           <IconButton
             className='datepicker__button'
-            src={require('@tabler/icons/icons/chevron-right.svg')}
+            src={require('@tabler/icons/chevron-right.svg')}
             onClick={increaseMonth}
             disabled={nextMonthButtonDisabled}
             aria-label={intl.formatMessage(messages.nextMonth)}
@@ -89,7 +89,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
         <div className='flex items-center justify-between'>
           <IconButton
             className='datepicker__button'
-            src={require('@tabler/icons/icons/chevron-left.svg')}
+            src={require('@tabler/icons/chevron-left.svg')}
             onClick={decreaseYear}
             disabled={prevYearButtonDisabled}
             aria-label={intl.formatMessage(messages.previousYear)}
@@ -98,7 +98,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           {intl.formatDate(date, { year: 'numeric' })}
           <IconButton
             className='datepicker__button'
-            src={require('@tabler/icons/icons/chevron-right.svg')}
+            src={require('@tabler/icons/chevron-right.svg')}
             onClick={increaseYear}
             disabled={nextYearButtonDisabled}
             aria-label={intl.formatMessage(messages.nextYear)}
@@ -109,7 +109,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
     );
   };
 
-  const handleChange = (date: Date) => onChange(new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
+  const handleChange = (date: Date) => onChange(date ? new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10) : '');
 
   return (
     <div className='mt-1 relative rounded-md shadow-sm'>
@@ -123,6 +123,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           maxDate={maxDate}
           required={required}
           renderCustomHeader={renderCustomHeader}
+          isClearable={!required}
         />)}
       </BundleContainer>
     </div>

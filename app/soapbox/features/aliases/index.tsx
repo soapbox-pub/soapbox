@@ -46,7 +46,7 @@ const Aliases = () => {
   }, []);
 
   const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(removeFromAliases(e.currentTarget.dataset.value));
+    dispatch(removeFromAliases(e.currentTarget.dataset.value as string));
   };
 
   const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;
@@ -84,7 +84,7 @@ const Aliases = () => {
                 <Text tag='span'>{alias}</Text>
               </div>
               <div className='flex items-center' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>
-                <Icon className='pr-1.5 text-lg' id='times' size={40} />
+                <Icon className='pr-1.5 text-lg' id='times' />
                 <Text weight='bold' theme='muted'><FormattedMessage id='aliases.aliases_list_delete' defaultMessage='Unlink alias' /></Text>
               </div>
             </HStack>

@@ -1,13 +1,12 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
 
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { useSettings } from 'soapbox/hooks';
 
 import LoadMore from './load_more';
-import { Spinner, Text } from './ui';
+import { Card, Spinner, Text } from './ui';
 
 /** Custom Viruoso component context. */
 type Context = {
@@ -63,7 +62,10 @@ interface IScrollableList extends VirtuosoProps<any, any> {
   placeholderComponent?: React.ComponentType | React.NamedExoticComponent,
   /** Number of placeholders to render while loading. */
   placeholderCount?: number,
-  /** Pull to refresh callback. */
+  /**
+   * Pull to refresh callback.
+   * @deprecated Put a PTR around the component instead.
+   */
   onRefresh?: () => Promise<any>,
   /** Extra class names on the Virtuoso element. */
   className?: string,
@@ -157,13 +159,13 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       <div className='mt-2'>
         {alwaysPrepend && prepend}
 
-        <div className='bg-primary-50 dark:bg-slate-700 mt-2 rounded-lg text-center p-8'>
+        <Card variant='rounded' size='lg'>
           {isLoading ? (
             <Spinner />
           ) : (
             <Text>{emptyMessage}</Text>
           )}
-        </div>
+        </Card>
       </div>
     );
   };
@@ -244,20 +246,12 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     />
   );
 
-  /** Conditionally render inner elements. */
-  const renderBody = (): JSX.Element => {
-    if (isEmpty) {
-      return renderEmpty();
-    } else {
-      return renderFeed();
-    }
-  };
-
-  return (
-    <PullToRefresh onRefresh={onRefresh}>
-      {renderBody()}
-    </PullToRefresh>
-  );
+  // Conditionally render inner elements.
+  if (isEmpty) {
+    return renderEmpty();
+  } else {
+    return renderFeed();
+  }
 });
 
 export default ScrollableList;

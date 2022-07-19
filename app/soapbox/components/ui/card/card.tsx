@@ -35,7 +35,7 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size 
     className={classNames({
       'space-y-4': true,
       'bg-white dark:bg-slate-800 text-black dark:text-white shadow-lg dark:shadow-inset overflow-hidden': variant === 'rounded',
-      [sizes[size]]: true,
+      [sizes[size]]: variant === 'rounded',
     }, className)}
   >
     {children}
@@ -64,7 +64,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
 
     return (
       <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
-        <SvgIcon src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
+        <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
     );

@@ -12,8 +12,10 @@ import admin from './admin';
 import admin_log from './admin_log';
 import alerts from './alerts';
 import aliases from './aliases';
+import announcements from './announcements';
 import auth from './auth';
 import backups from './backups';
+import carousels from './carousels';
 import chat_message_lists from './chat_message_lists';
 import chat_messages from './chat_messages';
 import chats from './chats';
@@ -53,6 +55,7 @@ import security from './security';
 import settings from './settings';
 import sidebar from './sidebar';
 import soapbox from './soapbox';
+import status_hover_card from './status-hover-card';
 import status_lists from './status_lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
@@ -108,6 +111,7 @@ const reducers = {
   chat_messages,
   chat_message_lists,
   profile_hover_card,
+  status_hover_card,
   backups,
   admin_log,
   security,
@@ -120,6 +124,8 @@ const reducers = {
   onboarding,
   rules,
   history,
+  carousels,
+  announcements,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
@@ -130,7 +136,6 @@ export const StateRecord = ImmutableRecord(
   }, {}),
 );
 
-// @ts-ignore: This type is fine but TS thinks it's wrong
 const appReducer = combineReducers(reducers, StateRecord);
 
 // Clear the state (mostly) when the user logs out

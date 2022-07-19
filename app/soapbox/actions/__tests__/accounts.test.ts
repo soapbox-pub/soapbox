@@ -1,17 +1,26 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { ListRecord, ReducerRecord } from 'soapbox/reducers/user_lists';
 
-import { normalizeAccount } from '../../normalizers';
+import { normalizeAccount, normalizeInstance, normalizeRelationship } from '../../normalizers';
 import {
+  authorizeFollowRequest,
   blockAccount,
   createAccount,
+  expandFollowers,
+  expandFollowing,
+  expandFollowRequests,
   fetchAccount,
   fetchAccountByUsername,
+  fetchFollowers,
+  fetchFollowing,
+  fetchFollowRequests,
+  fetchRelationships,
   followAccount,
   muteAccount,
+  removeFromFollowers,
   subscribeAccount,
   unblockAccount,
   unfollowAccount,
@@ -19,7 +28,7 @@ import {
   unsubscribeAccount,
 } from '../accounts';
 
-let store;
+let store: ReturnType<typeof mockStore>;
 
 describe('createAccount()', () => {
   const params = {
@@ -28,7 +37,7 @@ describe('createAccount()', () => {
 
   describe('with a successful API request', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootState;
       store = mockStore(state);
 
       __stub((mock) => {
@@ -65,10 +74,10 @@ describe('fetchAccount()', () => {
         avatar: 'test.jpg',
       });
 
-      const state = rootReducer(undefined, {})
+      const state = rootState
         .set('accounts', ImmutableMap({
           [id]: account,
-        }));
+        }) as any);
 
       store = mockStore(state);
 
@@ -89,7 +98,7 @@ describe('fetchAccount()', () => {
     const account = require('soapbox/__fixtures__/pleroma-account.json');
 
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootState;
       store = mockStore(state);
 
       __stub((mock) => {
@@ -116,7 +125,7 @@ describe('fetchAccount()', () => {
 
   describe('with an unsuccessful API request', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {});
+      const state = rootState;
       store = mockStore(state);
 
       __stub((mock) => {
@@ -146,7 +155,7 @@ describe('fetchAccount()', () => {
 describe('fetchAccountByUsername()', () => {
   const id = '123';
   const username = 'tiger';
-  let state, account;
+  let state, account: any;
 
   beforeEach(() => {
     account = normalizeAccount({
@@ -157,7 +166,7 @@ describe('fetchAccountByUsername()', () => {
       birthday: undefined,
     });
 
-    state = rootReducer(undefined, {})
+    state = rootState
       .set('accounts', ImmutableMap({
         [id]: account,
       }));
@@ -171,15 +180,15 @@ describe('fetchAccountByUsername()', () => {
 
   describe('when "accountByUsername" feature is enabled', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('instance', {
+      const state = rootState
+        .set('instance', normalizeInstance({
           version: '2.7.2 (compatible; Pleroma 2.4.52-1337-g4779199e.gleasonator+soapbox)',
           pleroma: ImmutableMap({
             metadata: ImmutableMap({
               features: [],
             }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
@@ -234,15 +243,15 @@ describe('fetchAccountByUsername()', () => {
 
   describe('when "accountLookup" feature is enabled', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
-        .set('instance', {
+      const state = rootState
+        .set('instance', normalizeInstance({
           version: '3.4.1 (compatible; TruthSocial 1.0.0)',
           pleroma: ImmutableMap({
             metadata: ImmutableMap({
               features: [],
             }),
           }),
-        })
+        }))
         .set('me', '123');
       store = mockStore(state);
     });
@@ -299,7 +308,7 @@ describe('fetchAccountByUsername()', () => {
 
   describe('when using the accountSearch function', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -364,12 +373,12 @@ describe('fetchAccountByUsername()', () => {
 describe('followAccount()', () => {
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
     it('should do nothing', async() => {
-      await store.dispatch(followAccount(1));
+      await store.dispatch(followAccount('1'));
       const actions = store.getActions();
 
       expect(actions).toEqual([]);
@@ -377,10 +386,10 @@ describe('followAccount()', () => {
   });
 
   describe('when logged in', () => {
-    const id = 1;
+    const id = '1';
 
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -435,10 +444,14 @@ describe('followAccount()', () => {
             skipLoading: true,
           },
         ];
-        await store.dispatch(followAccount(id));
-        const actions = store.getActions();
 
-        expect(actions).toEqual(expectedActions);
+        try {
+          await store.dispatch(followAccount(id));
+        } catch (e) {
+          const actions = store.getActions();
+          expect(actions).toEqual(expectedActions);
+          expect(e).toEqual(new Error('Network Error'));
+        }
       });
     });
   });
@@ -447,12 +460,12 @@ describe('followAccount()', () => {
 describe('unfollowAccount()', () => {
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
     it('should do nothing', async() => {
-      await store.dispatch(unfollowAccount(1));
+      await store.dispatch(unfollowAccount('1'));
       const actions = store.getActions();
 
       expect(actions).toEqual([]);
@@ -460,10 +473,10 @@ describe('unfollowAccount()', () => {
   });
 
   describe('when logged in', () => {
-    const id = 1;
+    const id = '1';
 
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -476,7 +489,7 @@ describe('unfollowAccount()', () => {
 
       it('should dispatch the correct actions', async() => {
         const expectedActions = [
-          { type: 'ACCOUNT_UNFOLLOW_REQUEST', id: 1, skipLoading: true },
+          { type: 'ACCOUNT_UNFOLLOW_REQUEST', id: '1', skipLoading: true },
           {
             type: 'ACCOUNT_UNFOLLOW_SUCCESS',
             relationship: { success: true },
@@ -521,11 +534,11 @@ describe('unfollowAccount()', () => {
 });
 
 describe('blockAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -539,7 +552,7 @@ describe('blockAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -588,11 +601,11 @@ describe('blockAccount()', () => {
 });
 
 describe('unblockAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -606,7 +619,7 @@ describe('unblockAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -654,11 +667,11 @@ describe('unblockAccount()', () => {
 });
 
 describe('muteAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -672,7 +685,7 @@ describe('muteAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -721,11 +734,11 @@ describe('muteAccount()', () => {
 });
 
 describe('unmuteAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -739,7 +752,7 @@ describe('unmuteAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -787,11 +800,11 @@ describe('unmuteAccount()', () => {
 });
 
 describe('subscribeAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -805,7 +818,7 @@ describe('subscribeAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -853,11 +866,11 @@ describe('subscribeAccount()', () => {
 });
 
 describe('unsubscribeAccount()', () => {
-  const id = 1;
+  const id = '1';
 
   describe('when logged out', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', null);
+      const state = rootState.set('me', null);
       store = mockStore(state);
     });
 
@@ -871,7 +884,7 @@ describe('unsubscribeAccount()', () => {
 
   describe('when logged in', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '123');
+      const state = rootState.set('me', '123');
       store = mockStore(state);
     });
 
@@ -910,6 +923,712 @@ describe('unsubscribeAccount()', () => {
           { type: 'ACCOUNT_UNSUBSCRIBE_FAIL', error: new Error('Network Error') },
         ];
         await store.dispatch(unsubscribeAccount(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('removeFromFollowers()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(removeFromFollowers(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/remove_from_followers`).reply(200, {});
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_REMOVE_FROM_FOLLOWERS_REQUEST', id },
+          {
+            type: 'ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS',
+            relationship: {},
+          },
+        ];
+        await store.dispatch(removeFromFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/accounts/${id}/remove_from_followers`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'ACCOUNT_REMOVE_FROM_FOLLOWERS_REQUEST', id },
+          { type: 'ACCOUNT_REMOVE_FROM_FOLLOWERS_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(removeFromFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchFollowers()', () => {
+  const id = '1';
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/followers`).reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/followers?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_FETCH_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWERS_FETCH_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(fetchFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/followers`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_FETCH_REQUEST', id },
+          { type: 'FOLLOWERS_FETCH_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('expandFollowers()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(expandFollowers(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState
+        .set('user_lists', ReducerRecord({
+          followers: ImmutableMap({
+            [id]: ListRecord({
+              next: 'next_url',
+            }),
+          }),
+        }))
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('when the url is null', () => {
+      beforeEach(() => {
+        const state = rootState
+          .set('user_lists', ReducerRecord({
+            followers: ImmutableMap({
+              [id]: ListRecord({
+                next: null,
+              }),
+            }),
+          }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(expandFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/followers?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_EXPAND_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWERS_EXPAND_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(expandFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWERS_EXPAND_REQUEST', id },
+          { type: 'FOLLOWERS_EXPAND_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(expandFollowers(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchFollowing()', () => {
+  const id = '1';
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/following`).reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/following?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWING_FETCH_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWING_FETCH_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(fetchFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet(`/api/v1/accounts/${id}/following`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWING_FETCH_REQUEST', id },
+          { type: 'FOLLOWING_FETCH_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('expandFollowing()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(expandFollowing(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState
+        .set('user_lists', ReducerRecord({
+          following: ImmutableMap({
+            [id]: ListRecord({
+              next: 'next_url',
+            }),
+          }),
+        }))
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('when the url is null', () => {
+      beforeEach(() => {
+        const state = rootState
+          .set('user_lists', ReducerRecord({
+            following: ImmutableMap({
+              [id]: ListRecord({
+                next: null,
+              }),
+            }),
+          }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(expandFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').reply(200, [], {
+            link: `<https://example.com/api/v1/accounts/${id}/following?since_id=1>; rel='prev'`,
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWING_EXPAND_REQUEST', id },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOWING_EXPAND_SUCCESS',
+            id,
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(expandFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOWING_EXPAND_REQUEST', id },
+          { type: 'FOLLOWING_EXPAND_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(expandFollowing(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchRelationships()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(fetchRelationships([id]));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('without newAccountIds', () => {
+      beforeEach(() => {
+        const state = rootState
+          .set('relationships', ImmutableMap({ [id]: normalizeRelationship({}) }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(fetchRelationships([id]));
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        const state = rootState
+          .set('relationships', ImmutableMap({}))
+          .set('me', '123');
+        store = mockStore(state);
+
+        __stub((mock) => {
+          mock
+            .onGet(`/api/v1/accounts/relationships?${[id].map(id => `id[]=${id}`).join('&')}`)
+            .reply(200, []);
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'RELATIONSHIPS_FETCH_REQUEST', ids: [id], skipLoading: true },
+          {
+            type: 'RELATIONSHIPS_FETCH_SUCCESS',
+            relationships: [],
+            skipLoading: true,
+          },
+        ];
+        await store.dispatch(fetchRelationships([id]));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock
+            .onGet(`/api/v1/accounts/relationships?${[id].map(id => `id[]=${id}`).join('&')}`)
+            .networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'RELATIONSHIPS_FETCH_REQUEST', ids: [id], skipLoading: true },
+          { type: 'RELATIONSHIPS_FETCH_FAIL', skipLoading: true, error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchRelationships([id]));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('fetchFollowRequests()', () => {
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(fetchFollowRequests());
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        const state = rootState
+          .set('relationships', ImmutableMap({}))
+          .set('me', '123');
+        store = mockStore(state);
+
+        __stub((mock) => {
+          mock.onGet('/api/v1/follow_requests').reply(200, [], {
+            link: '<https://example.com/api/v1/follow_requests?since_id=1>; rel=\'prev\'',
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_FETCH_REQUEST' },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOW_REQUESTS_FETCH_SUCCESS',
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(fetchFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/follow_requests').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_FETCH_REQUEST' },
+          { type: 'FOLLOW_REQUESTS_FETCH_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(fetchFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('expandFollowRequests()', () => {
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(expandFollowRequests());
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState
+        .set('user_lists', ReducerRecord({
+          follow_requests: ListRecord({
+            next: 'next_url',
+          }),
+        }))
+        .set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('when the url is null', () => {
+      beforeEach(() => {
+        const state = rootState
+          .set('user_lists', ReducerRecord({
+            follow_requests: ListRecord({
+              next: null,
+            }),
+          }))
+          .set('me', '123');
+        store = mockStore(state);
+      });
+
+      it('should do nothing', async() => {
+        await store.dispatch(expandFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual([]);
+      });
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').reply(200, [], {
+            link: '<next_url>; rel=\'prev\'',
+          });
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_EXPAND_REQUEST' },
+          { type: 'ACCOUNTS_IMPORT', accounts: [] },
+          {
+            type: 'FOLLOW_REQUESTS_EXPAND_SUCCESS',
+            accounts: [],
+            next: null,
+          },
+        ];
+        await store.dispatch(expandFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('next_url').networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUESTS_EXPAND_REQUEST' },
+          { type: 'FOLLOW_REQUESTS_EXPAND_FAIL', error: new Error('Network Error') },
+        ];
+        await store.dispatch(expandFollowRequests());
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+  });
+});
+
+describe('authorizeFollowRequest()', () => {
+  const id = '1';
+
+  describe('when logged out', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', null);
+      store = mockStore(state);
+    });
+
+    it('should do nothing', async() => {
+      await store.dispatch(authorizeFollowRequest(id));
+      const actions = store.getActions();
+
+      expect(actions).toEqual([]);
+    });
+  });
+
+  describe('when logged in', () => {
+    beforeEach(() => {
+      const state = rootState.set('me', '123');
+      store = mockStore(state);
+    });
+
+    describe('with a successful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/follow_requests/${id}/authorize`).reply(200);
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_REQUEST', id },
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_SUCCESS', id },
+        ];
+        await store.dispatch(authorizeFollowRequest(id));
+        const actions = store.getActions();
+
+        expect(actions).toEqual(expectedActions);
+      });
+    });
+
+    describe('with an unsuccessful API request', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onPost(`/api/v1/follow_requests/${id}/authorize`).networkError();
+        });
+      });
+
+      it('should dispatch the correct actions', async() => {
+        const expectedActions = [
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_REQUEST', id },
+          { type: 'FOLLOW_REQUEST_AUTHORIZE_FAIL', id, error: new Error('Network Error') },
+        ];
+        await store.dispatch(authorizeFollowRequest(id));
         const actions = store.getActions();
 
         expect(actions).toEqual(expectedActions);

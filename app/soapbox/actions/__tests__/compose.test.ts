@@ -1,26 +1,29 @@
-import { mockStore } from 'soapbox/jest/test-helpers';
+import { Map as ImmutableMap } from 'immutable';
+
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { InstanceRecord } from 'soapbox/normalizers';
-import rootReducer from 'soapbox/reducers';
 
 import { uploadCompose } from '../compose';
 
+import type { IntlShape } from 'react-intl';
+
 describe('uploadCompose()', () => {
   describe('with images', () => {
-    let files, store;
+    let files: FileList, store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
       const instance = InstanceRecord({
-        configuration: {
-          statuses: {
+        configuration: ImmutableMap({
+          statuses: ImmutableMap({
             max_media_attachments: 4,
-          },
-          media_attachments: {
+          }),
+          media_attachments: ImmutableMap({
             image_size_limit: 10,
-          },
-        },
+          }),
+        }),
       });
 
-      const state = rootReducer(undefined, {})
+      const state = rootState
         .set('me', '1234')
         .set('instance', instance);
 
@@ -30,13 +33,13 @@ describe('uploadCompose()', () => {
         name: 'Image',
         size: 15,
         type: 'image/png',
-      }];
+      }] as unknown as FileList;
     });
 
     it('creates an alert if exceeds max size', async() => {
       const mockIntl = {
         formatMessage: jest.fn().mockReturnValue('Image exceeds the current file size limit (10 Bytes)'),
-      };
+      } as unknown as IntlShape;
 
       const expectedActions = [
         { type: 'COMPOSE_UPLOAD_REQUEST', skipLoading: true },
@@ -58,21 +61,21 @@ describe('uploadCompose()', () => {
   });
 
   describe('with videos', () => {
-    let files, store;
+    let files: FileList, store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
       const instance = InstanceRecord({
-        configuration: {
-          statuses: {
+        configuration: ImmutableMap({
+          statuses: ImmutableMap({
             max_media_attachments: 4,
-          },
-          media_attachments: {
+          }),
+          media_attachments: ImmutableMap({
             video_size_limit: 10,
-          },
-        },
+          }),
+        }),
       });
 
-      const state = rootReducer(undefined, {})
+      const state = rootState
         .set('me', '1234')
         .set('instance', instance);
 
@@ -82,13 +85,13 @@ describe('uploadCompose()', () => {
         name: 'Video',
         size: 15,
         type: 'video/mp4',
-      }];
+      }] as unknown as FileList;
     });
 
     it('creates an alert if exceeds max size', async() => {
       const mockIntl = {
         formatMessage: jest.fn().mockReturnValue('Video exceeds the current file size limit (10 Bytes)'),
-      };
+      } as unknown as IntlShape;
 
       const expectedActions = [
         { type: 'COMPOSE_UPLOAD_REQUEST', skipLoading: true },

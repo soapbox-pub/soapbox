@@ -87,7 +87,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     return (
       <HStack alignItems='center' space={0.5}>
         <Icon
-          src={require('@tabler/icons/icons/ballon.svg')}
+          src={require('@tabler/icons/ballon.svg')}
           className='w-4 h-4 text-gray-800 dark:text-gray-200'
         />
 
@@ -157,7 +157,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
             {account.locked && (
               <Icon
-                src={require('@tabler/icons/icons/lock.svg')}
+                src={require('@tabler/icons/lock.svg')}
                 alt={intl.formatMessage(messages.account_locked)}
                 className='w-4 h-4 text-gray-600'
               />
@@ -172,10 +172,10 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         )}
 
         <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>
-          {isLocal(account as any) ? (
+          {isLocal(account) ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/icons/calendar.svg')}
+                src={require('@tabler/icons/calendar.svg')}
                 className='w-4 h-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -192,7 +192,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.location ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/icons/map-pin.svg')}
+                src={require('@tabler/icons/map-pin.svg')}
                 className='w-4 h-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -205,7 +205,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.website ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/icons/link.svg')}
+                src={require('@tabler/icons/link.svg')}
                 className='w-4 h-4 text-gray-800 dark:text-gray-200'
               />
 

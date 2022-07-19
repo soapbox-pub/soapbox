@@ -39,7 +39,7 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   });
   const me = useAppSelector((state) => state.me);
 
-  const handleOnAdd = () => dispatch(addToAliases(account));
+  const handleOnAdd = () => dispatch(addToAliases(account!));
 
   if (!account) return null;
 
@@ -48,7 +48,7 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   if (!added && accountId !== me) {
     button = (
       <div className='account__relationship'>
-        <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={handleOnAdd} />
+        <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={handleOnAdd} />
       </div>
     );
   }

@@ -26,7 +26,7 @@ const Account: React.FC<IAccount> = ({ accountId, author }) => {
   const dispatch = useAppDispatch();
 
   const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = useAppSelector((state) => !!account && state.compose.get('to').includes(account.acct));
+  const added = useAppSelector((state) => !!account && state.compose.to?.includes(account.acct));
 
   const onRemove = () => dispatch(removeFromMentions(accountId));
   const onAdd = () => dispatch(addToMentions(accountId));
@@ -42,9 +42,9 @@ const Account: React.FC<IAccount> = ({ accountId, author }) => {
   let button;
 
   if (added) {
-    button = <IconButton src={require('@tabler/icons/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={require('@tabler/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (

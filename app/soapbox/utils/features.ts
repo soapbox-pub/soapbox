@@ -126,6 +126,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountNotifies: any([
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
@@ -142,14 +143,31 @@ const getInstanceFeatures = (instance: Instance) => {
     accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
+     * Can display announcements set by admins.
+     * @see GET /api/v1/announcements
+     * @see POST /api/v1/announcements/:id/dismiss
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcements: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+      v.software === PLEROMA && gte(v.version, '2.2.49'),
+    ]),
+
+    /**
+     * Can emoji react to announcements set by admins.
+     * @see PUT /api/v1/announcements/:id/reactions/:name
+     * @see DELETE /api/v1/announcements/:id/reactions/:name
+     * @see {@link https://docs.joinmastodon.org/methods/announcements/}
+     */
+    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+
+    /**
      * Set your birthday and view upcoming birthdays.
      * @see GET /api/v1/pleroma/birthdays
      * @see POST /api/v1/accounts
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    // birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
-    // FIXME: temporarily disabled until they can be deleted on the backend.
-    birthdays: false,
+    birthdays: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
 
     /** Whether people who blocked you are visible through the API. */
     blockersVisible: features.includes('blockers_visible'),
@@ -205,7 +223,10 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
 
-    editStatuses: v.software === MASTODON && gte(v.version, '3.5.0'),
+    editStatuses: any([
+      v.software === MASTODON && gte(v.version, '3.5.0'),
+      features.includes('editing'),
+    ]),
 
     /**
      * Soapbox email list.
@@ -255,6 +276,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
       v.software === MASTODON,
+      v.software === TRUTHSOCIAL,
       features.includes('exposable_reactions'),
     ]),
 
@@ -267,11 +289,17 @@ const getInstanceFeatures = (instance: Instance) => {
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
 
+    /** Whether or not to show the Feed Carousel for suggested Statuses */
+    feedUserFiltering: v.software === TRUTHSOCIAL,
+
     /**
      * Can edit and manage timeline filters (aka "muted words").
      * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
      */
-    filters: v.software !== TRUTHSOCIAL,
+    filters: any([
+      v.software === MASTODON && lt(v.compatVersion, '3.6.0'),
+      v.software === PLEROMA,
+    ]),
 
     /**
      * Allows setting the focal point of a media attachment.
@@ -401,6 +429,7 @@ const getInstanceFeatures = (instance: Instance) => {
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**
@@ -571,6 +600,11 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
+
+    /**
+     * Supports Truth suggestions.
+     */
+    truthSuggestions: v.software === TRUTHSOCIAL,
 
     /**
      * Whether the backend allows adding users you don't follow to lists.

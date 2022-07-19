@@ -29,7 +29,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const instance = params?.instance;
+  const instance = params?.instance as string;
   const settings = useSettings();
 
   const stream = useRef<any>(null);
@@ -65,10 +65,10 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} heading={instance} transparent>
+    <Column label={intl.formatMessage(messages.title)} heading={instance} transparent withHeader={false}>
       {instance && <PinnedHostsPicker host={instance} />}
       {!pinned && <HStack className='mb-4 px-2' space={2}>
-        <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/icons/x.svg')} onClick={handleCloseClick} />
+        <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleCloseClick} />
         <Text>
           <FormattedMessage
             id='remote_timeline.filter_message'

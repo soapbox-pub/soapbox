@@ -49,6 +49,7 @@ import {
   fetchNext,
 } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { textForScreenReader } from 'soapbox/components/status';
 import SubNavigation from 'soapbox/components/sub_navigation';
@@ -165,7 +166,7 @@ const makeMapStateToProps = () => {
       status,
       ancestorsIds,
       descendantsIds,
-      askReplyConfirmation: state.compose.get('text', '').trim().length !== 0,
+      askReplyConfirmation: state.compose.text.trim().length !== 0,
       me: state.me,
       displayMedia: getSettings(state).get('displayMedia'),
       allowedEmoji: soapbox.allowedEmoji,
@@ -273,10 +274,10 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status, this.props.history)),
+        onConfirm: () => dispatch(replyCompose(status)),
       }));
     } else {
-      dispatch(replyCompose(status, this.props.history));
+      dispatch(replyCompose(status));
     }
   }
 
@@ -305,27 +306,27 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(quoteCompose(status, this.props.history)),
+        onConfirm: () => dispatch(quoteCompose(status)),
       }));
     } else {
-      dispatch(quoteCompose(status, this.props.history));
+      dispatch(quoteCompose(status));
     }
   }
 
-  handleDeleteClick = (status: StatusEntity, history: History, withRedraft = false) => {
+  handleDeleteClick = (status: StatusEntity, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
     this.props.dispatch((_, getState) => {
       const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.id, history, withRedraft));
+        dispatch(deleteStatus(status.id, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
-          icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
+          icon: withRedraft ? require('@tabler/icons/edit.svg') : require('@tabler/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.id, history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.id, withRedraft)),
         }));
       }
     });
@@ -337,16 +338,16 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     dispatch(editStatus(status.id));
   }
 
-  handleDirectClick = (account: AccountEntity, router: History) => {
-    this.props.dispatch(directCompose(account, router));
+  handleDirectClick = (account: AccountEntity) => {
+    this.props.dispatch(directCompose(account));
   }
 
   handleChatClick = (account: AccountEntity, router: History) => {
     this.props.dispatch(launchChat(account.id, router));
   }
 
-  handleMentionClick = (account: AccountEntity, router: History) => {
-    this.props.dispatch(mentionCompose(account, router));
+  handleMentionClick = (account: AccountEntity) => {
+    this.props.dispatch(mentionCompose(account));
   }
 
   handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
@@ -409,7 +410,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     if (!account || typeof account !== 'object') return;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/ban.svg'),
+      icon: require('@tabler/icons/ban.svg'),
       heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
@@ -423,7 +424,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   handleReport = (status: StatusEntity) => {
-    this.props.dispatch(initReport(status.account, status));
+    this.props.dispatch(initReport(status.account as AccountEntity, status));
   }
 
   handleEmbed = (status: StatusEntity) => {
@@ -432,12 +433,12 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   handleDeactivateUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
   }
 
   handleDeleteUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
   }
 
   handleToggleStatusSensitivity = (status: StatusEntity) => {
@@ -475,7 +476,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     e?.preventDefault();
     const { account } = this.props.status;
     if (!account || typeof account !== 'object') return;
-    this.handleMentionClick(account, this.props.history);
+    this.handleMentionClick(account);
   }
 
   handleHotkeyOpenProfile = () => {
@@ -791,28 +792,29 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     }
 
     return (
-      <Column label={intl.formatMessage(titleMessage, { username })} transparent>
+      <Column label={intl.formatMessage(titleMessage, { username })} transparent withHeader={false}>
         <div className='px-4 pt-4 sm:p-0'>
           <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
         </div>
 
-        <Stack space={2}>
-          <div ref={this.setRef} className='thread'>
-            <ScrollableList
-              id='thread'
-              ref={this.setScrollerRef}
-              onRefresh={this.handleRefresh}
-              hasMore={!!this.state.next}
-              onLoadMore={this.handleLoadMore}
-              placeholderComponent={() => <PlaceholderStatus thread />}
-              initialTopMostItemIndex={ancestorsIds.size}
-            >
-              {children}
-            </ScrollableList>
-          </div>
+        <PullToRefresh onRefresh={this.handleRefresh}>
+          <Stack space={2}>
+            <div ref={this.setRef} className='thread'>
+              <ScrollableList
+                id='thread'
+                ref={this.setScrollerRef}
+                hasMore={!!this.state.next}
+                onLoadMore={this.handleLoadMore}
+                placeholderComponent={() => <PlaceholderStatus thread />}
+                initialTopMostItemIndex={ancestorsIds.size}
+              >
+                {children}
+              </ScrollableList>
+            </div>
 
-          {!me && <ThreadLoginCta />}
-        </Stack>
+            {!me && <ThreadLoginCta />}
+          </Stack>
+        </PullToRefresh>
       </Column>
     );
   }

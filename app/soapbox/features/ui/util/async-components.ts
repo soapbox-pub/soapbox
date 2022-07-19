@@ -315,11 +315,11 @@ export function ChatIndex() {
 }
 
 export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
+  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
 }
 
 export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat_panes');
+  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
 }
 
 export function ServerInfo() {
@@ -406,6 +406,10 @@ export function ProfileHoverCard() {
   return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile-hover-card');
 }
 
+export function StatusHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/status-hover-card');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
@@ -451,7 +455,7 @@ export function WhoToFollowPanel() {
 }
 
 export function FollowRecommendations() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+  return import(/* webpackChunkName: "features/follow-recommendations" */'../../follow-recommendations');
 }
 
 export function Directory() {
@@ -483,7 +487,7 @@ export function CreateApp() {
 }
 
 export function SettingsStore() {
-  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings-store');
 }
 
 export function TestTimeline() {
@@ -516,6 +520,10 @@ export function VerifySmsModal() {
 
 export function FamiliarFollowersModal() {
   return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
+}
+
+export function AnnouncementsPanel() {
+  return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }
 
 export function Quotes() {

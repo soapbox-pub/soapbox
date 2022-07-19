@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Map as ImmutableMap } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -130,7 +130,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     </>);
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/icons/check.svg'),
+      icon: require('@tabler/icons/check.svg'),
       heading: needsConfirmation
         ? intl.formatMessage(messages.needsConfirmationHeader)
         : needsApproval

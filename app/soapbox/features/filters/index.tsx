@@ -63,7 +63,7 @@ const Filters = () => {
 
   const handleAddNew: React.FormEventHandler = e => {
     e.preventDefault();
-    const context = [];
+    const context: Array<string> = [];
 
     if (homeTimeline) {
       context.push('home');
@@ -78,7 +78,7 @@ const Filters = () => {
       context.push('thread');
     }
 
-    dispatch(createFilter(intl, phrase, expiresAt, context, wholeWord, irreversible)).then(() => {
+    dispatch(createFilter(phrase, expiresAt, context, wholeWord, irreversible)).then(() => {
       return dispatch(fetchFilters());
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.create_error)));
@@ -86,7 +86,7 @@ const Filters = () => {
   };
 
   const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(deleteFilter(intl, e.currentTarget.dataset.value)).then(() => {
+    dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
       dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));
@@ -216,7 +216,7 @@ const Filters = () => {
               </div>
             </div>
             <div className='filter__delete' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={filter.id} aria-label={intl.formatMessage(messages.delete)}>
-              <Icon className='filter__delete-icon' id='times' size={40} />
+              <Icon className='filter__delete-icon' id='times' />
               <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
             </div>
           </div>

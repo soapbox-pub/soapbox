@@ -26,7 +26,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   if (!hideActions && onCancel) {
     actions = {
       onActionClick: handleClick,
-      actionIcon: require('@tabler/icons/icons/x.svg'),
+      actionIcon: require('@tabler/icons/x.svg'),
       actionAlignment: 'top',
       actionTitle: 'Dismiss',
     };
@@ -39,9 +39,11 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
         id={status.getIn(['account', 'id']) as string}
         timestamp={status.created_at}
         showProfileHoverCard={false}
+        withLinkToProfile={false}
       />
 
       <Text
+        className='break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}

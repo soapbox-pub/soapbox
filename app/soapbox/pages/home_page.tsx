@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import FeedCarousel from 'soapbox/features/feed-filtering/feed-carousel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
   WhoToFollowPanel,
@@ -11,6 +12,7 @@ import {
   CryptoDonatePanel,
   BirthdayPanel,
   CtaBanner,
+  AnnouncementsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -30,7 +32,7 @@ const HomePage: React.FC = ({ children }) => {
 
   const hasPatron = soapboxConfig.extensions.getIn(['patron', 'enabled']) === true;
   const hasCrypto = typeof soapboxConfig.cryptoAddresses.getIn([0, 'ticker']) === 'string';
-  const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit');
+  const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit', 0);
 
   const acct = account ? account.acct : '';
 
@@ -56,6 +58,8 @@ const HomePage: React.FC = ({ children }) => {
           </Card>
         )}
 
+        <FeedCarousel />
+
         {children}
 
         {!me && (
@@ -71,6 +75,11 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component />}
           </BundleContainer>
         )}
+        {me && features.announcements && (
+          <BundleContainer fetchComponent={AnnouncementsPanel}>
+            {Component => <Component key='announcements-panel' />}
+          </BundleContainer>
+        )}
         {features.trends && (
           <BundleContainer fetchComponent={TrendsPanel}>
             {Component => <Component limit={3} />}
@@ -81,7 +90,7 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component />}
           </BundleContainer>
         )}
-        {hasCrypto && cryptoLimit && cryptoLimit > 0 && (
+        {hasCrypto && cryptoLimit > 0 && (
           <BundleContainer fetchComponent={CryptoDonatePanel}>
             {Component => <Component limit={cryptoLimit} />}
           </BundleContainer>

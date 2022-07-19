@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
 import { Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import type { AxiosError } from 'axios';
 
@@ -33,7 +33,7 @@ const Success = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-check.svg')} className='text-primary-600 dark:text-primary-400 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-check.svg')} className='text-primary-600 dark:text-primary-400 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.emailConfirmedHeading)}
       </Text>
@@ -49,7 +49,7 @@ const GenericFail = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.genericFailHeading)}
       </Text>
@@ -65,7 +65,7 @@ const TokenNotFound = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.tokenNotFoundHeading)}
       </Text>
@@ -82,7 +82,7 @@ const TokenExpired = () => {
 
   return (
     <Stack space={4} alignItems='center'>
-      <Icon src={require('@tabler/icons/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
+      <Icon src={require('@tabler/icons/circle-x.svg')} className='text-danger-600 h-10 w-10' />
       <Text size='3xl' weight='semibold' align='center'>
         {intl.formatMessage(messages.tokenExpiredHeading)}
       </Text>
@@ -96,7 +96,7 @@ const TokenExpired = () => {
 const EmailPassThru = () => {
   const { token } = useParams<{ token: string }>();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const [status, setStatus] = React.useState(Statuses.IDLE);

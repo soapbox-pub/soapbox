@@ -1,14 +1,15 @@
 'use strict';
 
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Switch, useHistory, useLocation, matchPath, Redirect } from 'react-router-dom';
+import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
+import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
@@ -19,6 +20,7 @@ import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
+import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
@@ -34,7 +36,6 @@ import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
-import { cacheCurrentUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
@@ -102,6 +103,7 @@ import {
   SidebarMenu,
   UploadArea,
   ProfileHoverCard,
+  StatusHoverCard,
   Share,
   NewStatus,
   IntentionalError,
@@ -258,7 +260,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-      <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
+      <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
@@ -330,7 +332,6 @@ const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { guestExperience } = useSoapboxConfig();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -444,12 +445,16 @@ const UI: React.FC = ({ children }) => {
   const loadAccountData = () => {
     if (!account) return;
 
-    dispatch(expandHomeTimeline());
+    dispatch(expandHomeTimeline({}, () => {
+      dispatch(fetchSuggestionsForTimeline());
+    }));
 
     dispatch(expandNotifications())
       // @ts-ignore
       .then(() => dispatch(fetchMarker(['notifications'])))
       .catch(console.error);
+
+    dispatch(fetchAnnouncements());
 
     if (features.chats) {
       dispatch(fetchChats());
@@ -609,23 +614,6 @@ const UI: React.FC = ({ children }) => {
   // Wait for login to succeed or fail
   if (me === null) return null;
 
-  const isProfileOrStatusPage = !!matchPath(
-    history.location.pathname,
-    [
-      '/@:username',
-      '/@:username/posts/:statusId',
-      '/users/:username',
-      '/users/:username/statuses/:statusId',
-    ],
-  );
-
-  // Require login if Guest Experience is disabled and we're not trying
-  // to render a Profile or Status.
-  if (!me && (!guestExperience && !isProfileOrStatusPage)) {
-    cacheCurrentUrl(history.location);
-    return <Redirect to='/login' />;
-  }
-
   type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
 
   const handlers: HotkeyHandlers = {
@@ -651,7 +639,7 @@ const UI: React.FC = ({ children }) => {
       className='floating-action-button'
       aria-label={intl.formatMessage(messages.publish)}
     >
-      <Icon src={require('icons/pen-plus.svg')} />
+      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
     </button>
   );
 
@@ -698,6 +686,10 @@ const UI: React.FC = ({ children }) => {
           <ThumbNavigation />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
             {Component => <Component />}
           </BundleContainer>
         </div>

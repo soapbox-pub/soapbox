@@ -31,7 +31,7 @@ const ScheduleForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const scheduledAt = useAppSelector((state) => state.compose.get('schedule'));
+  const scheduledAt = useAppSelector((state) => state.compose.schedule);
   const active = !!scheduledAt;
 
   const onSchedule = (date: Date) => {
@@ -72,7 +72,7 @@ const ScheduleForm: React.FC = () => {
         <IconButton
           iconClassName='w-4 h-4'
           className='bg-transparent text-gray-400 hover:text-gray-600'
-          src={require('@tabler/icons/icons/x.svg')}
+          src={require('@tabler/icons/x.svg')}
           onClick={handleRemove}
           title={intl.formatMessage(messages.remove)}
         />

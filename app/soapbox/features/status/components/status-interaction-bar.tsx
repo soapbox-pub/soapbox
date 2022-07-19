@@ -81,7 +81,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
         <HStack space={0.5} alignItems='center'>
           <IconButton
             className='text-success-600 cursor-pointer'
-            src={require('@tabler/icons/icons/repeat.svg')}
+            src={require('@tabler/icons/repeat.svg')}
             role='presentation'
             onClick={handleOpenReblogsModal}
             title={intl.formatMessage(messages.reblogs)}
@@ -137,7 +137,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               'text-accent-300': true,
               'cursor-default': !features.exposableReactions,
             })}
-            src={require('@tabler/icons/icons/heart.svg')}
+            src={require('@tabler/icons/heart.svg')}
             iconClassName='fill-accent-300'
             role='presentation'
             onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
@@ -173,7 +173,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               return (
                 <HStack space={0.5} className='emoji-react p-1' alignItems='center' key={i}>
                   <Emoji
-                    className='emoji-react__emoji w-5 h-5 flex-none'
+                    className={classNames('emoji-react__emoji w-5 h-5 flex-none', { 'cursor-pointer': features.exposableReactions })}
                     emoji={e.get('name')}
                     onClick={features.exposableReactions ? handleOpenReactionsModal(e) : undefined}
                   />

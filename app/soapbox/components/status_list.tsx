@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import LoadGap from 'soapbox/components/load_gap';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import StatusContainer from 'soapbox/containers/status_container';
+import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
@@ -35,7 +36,7 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** ID of the timeline in Redux. */
   timelineId?: string,
   /** Whether to display a gap or border between statuses in the list. */
-  divideType: 'space' | 'border',
+  divideType?: 'space' | 'border',
 }
 
 /** Feed of statuses, built atop ScrollableList. */
@@ -77,7 +78,7 @@ const StatusList: React.FC<IStatusList> = ({
   const handleLoadOlder = useCallback(debounce(() => {
     const maxId = lastStatusId || statusIds.last();
     if (onLoadMore && maxId) {
-      onLoadMore(maxId);
+      onLoadMore(maxId.replace('末suggestions-', ''));
     }
   }, 300, { leading: true }), [onLoadMore, lastStatusId, statusIds.last()]);
 
@@ -86,7 +87,7 @@ const StatusList: React.FC<IStatusList> = ({
       index,
       behavior: 'smooth',
       done: () => {
-        const element: HTMLElement | null = document.querySelector(`#status-list [data-index="${index}"] .focusable`);
+        const element = document.querySelector<HTMLDivElement>(`#status-list [data-index="${index}"] .focusable`);
         element?.focus();
       },
     });
@@ -149,11 +150,17 @@ const StatusList: React.FC<IStatusList> = ({
     ));
   };
 
+  const renderFeedSuggestions = (): React.ReactNode => {
+    return <FeedSuggestions key='suggestions' />;
+  };
+
   const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {
       return statusIds.toArray().map((statusId, index) => {
         if (statusId === null) {
           return renderLoadGap(index);
+        } else if (statusId.startsWith('末suggestions-')) {
+          return renderFeedSuggestions();
         } else if (statusId.startsWith('末pending-')) {
           return renderPendingStatus(statusId);
         } else {

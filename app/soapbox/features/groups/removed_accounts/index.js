@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -23,8 +23,8 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, { params: { id } }) => ({
   group: state.getIn(['groups', id]),
-  accountIds: state.getIn(['user_lists', 'groups_removed_accounts', id, 'items']),
-  hasMore: !!state.getIn(['user_lists', 'groups_removed_accounts', id, 'next']),
+  accountIds: state.user_lists.groups_removed_accounts.get(id)?.items,
+  hasMore: !!state.user_lists.groups_removed_accounts.get(id)?.next,
 });
 
 export default @connect(mapStateToProps)
@@ -82,7 +82,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
           {accountIds.map(id => (<AccountContainer
             key={id}
             id={id}
-            actionIcon={require('@tabler/icons/icons/x.svg')}
+            actionIcon={require('@tabler/icons/x.svg')}
             onActionClick={this.handleOnActionClick(group, id)}
             actionTitle={intl.formatMessage(messages.remove)}
           />))}

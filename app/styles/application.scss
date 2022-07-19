@@ -18,7 +18,6 @@
 @import 'boost';
 @import 'loading';
 @import 'ui';
-@import 'polls';
 // @import 'introduction';
 @import 'emoji_picker';
 @import 'about';
@@ -68,7 +67,6 @@
 @import 'components/backups';
 @import 'components/crypto-donate';
 @import 'components/remote-timeline';
-@import 'components/federation-restrictions';
 @import 'components/aliases';
 @import 'components/icon';
 @import 'components/radio-button';
@@ -93,6 +91,26 @@
     height: 100vh; // Backwards compatibility
     /* stylelint-disable-next-line unit-no-unknown */
     height: 100dvh;
+  }
+
+  .bg-gradient-lg {
+    background: linear-gradient(
+      112deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(var(--color-gradient-start) / 0.1) 30%,
+      rgba(var(--color-gradient-end) / 0.1) 70%,
+      rgba(0, 0, 0, 0) 80%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .bg-gradient-sm {
+    background: linear-gradient(
+      112deg,
+      rgba(var(--color-gradient-start) / 0.1) 0%,
+      rgba(var(--color-gradient-end) / 0.1) 50%
+    );
   }
 }
 

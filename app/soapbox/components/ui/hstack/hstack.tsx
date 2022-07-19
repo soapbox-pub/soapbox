@@ -6,6 +6,7 @@ const justifyContentOptions = {
   center: 'justify-center',
   start: 'justify-start',
   end: 'justify-end',
+  around: 'justify-around',
 };
 
 const alignItemsOptions = {
@@ -23,6 +24,7 @@ const spaces = {
   3: 'space-x-3',
   4: 'space-x-4',
   6: 'space-x-6',
+  8: 'space-x-8',
 };
 
 interface IHStack {
@@ -31,9 +33,9 @@ interface IHStack {
   /** Extra class names on the <div> element. */
   className?: string,
   /** Horizontal alignment of children. */
-  justifyContent?: 'between' | 'center' | 'start' | 'end',
+  justifyContent?: 'between' | 'center' | 'start' | 'end' | 'around',
   /** Size of the gap between elements. */
-  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6,
+  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6 | 8,
   /** Whether to let the flexbox grow. */
   grow?: boolean,
   /** Extra CSS styles for the <div> */

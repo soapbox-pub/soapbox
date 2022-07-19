@@ -80,6 +80,7 @@ const SoapboxMount = () => {
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
+  const swUpdating = useAppSelector(state => state.meta.swUpdating);
 
   const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
 
@@ -127,6 +128,7 @@ const SoapboxMount = () => {
     me && !account,
     !isLoaded,
     localeLoading,
+    swUpdating,
   ].some(Boolean);
 
   const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
