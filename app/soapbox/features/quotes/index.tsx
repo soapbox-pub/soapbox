@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 
 import { expandStatusQuotes, fetchStatusQuotes } from 'soapbox/actions/status_quotes';
 import StatusList from 'soapbox/components/status_list';
-import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -23,9 +22,9 @@ const Quotes: React.FC = () => {
   const intl = useIntl();
   const { statusId } = useParams<{ statusId: string }>();
 
-  const statusIds = useAppSelector((state) => state.status_lists.get(`quotes:${statusId}`)?.items || ImmutableOrderedSet<string>());
-  const isLoading = useAppSelector((state) => state.status_lists.get(`quotes:${statusId}`)?.isLoading || true);
-  const hasMore = useAppSelector((state) => !!state.status_lists.get(`quotes:${statusId}`)?.next);
+  const statusIds = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'items'], ImmutableOrderedSet<string>()));
+  const isLoading = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'isLoading'], true));
+  const hasMore = useAppSelector((state) => !!state.status_lists.getIn([`quotes:${statusId}`, 'next']));
 
   React.useEffect(() => {
     dispatch(fetchStatusQuotes(statusId));
@@ -38,15 +37,12 @@ const Quotes: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.quotes' defaultMessage='This post has not been quoted yet.' />;
 
   return (
-    <Column transparent>
-      <div className='px-4 pt-4 sm:p-0'>
-        <SubNavigation message={intl.formatMessage(messages.heading)} />
-      </div>
+    <Column label={intl.formatMessage(messages.heading)} transparent>
       <StatusList
-        statusIds={statusIds}
+        statusIds={statusIds as ImmutableOrderedSet<string>}
         scrollKey={`quotes:${statusId}`}
         hasMore={hasMore}
-        isLoading={isLoading}
+        isLoading={typeof isLoading === 'boolean' ? isLoading : true}
         onLoadMore={() => handleLoadMore(statusId, dispatch)}
         onRefresh={handleRefresh}
         emptyMessage={emptyMessage}
