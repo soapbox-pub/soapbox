@@ -1,8 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
-import rootReducer from 'soapbox/reducers';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { StatusListRecord } from 'soapbox/reducers/status_lists';
 
 import { fetchStatusQuotes, expandStatusQuotes } from '../status_quotes';
 
@@ -23,10 +23,10 @@ const status = {
 const statusId = 'AJmoVikzI3SkyITyim';
 
 describe('fetchStatusQuotes()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
-    const state = rootReducer(undefined, {}).set('me', '1234');
+    const state = rootState.set('me', '1234');
     store = mockStore(state);
   });
 
@@ -77,13 +77,13 @@ describe('fetchStatusQuotes()', () => {
 });
 
 describe('expandStatusQuotes()', () => {
-  let store;
+  let store: ReturnType<typeof mockStore>;
 
   describe('without a url', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {})
+      const state = rootState
         .set('me', '1234')
-        .set('status_lists', ImmutableMap({ [`quotes:${statusId}`]: { next: null } }));
+        .set('status_lists', ImmutableMap({ [`quotes:${statusId}`]: StatusListRecord({ next: null }) }));
       store = mockStore(state);
     });
 
@@ -97,8 +97,8 @@ describe('expandStatusQuotes()', () => {
 
   describe('with a url', () => {
     beforeEach(() => {
-      const state = rootReducer(undefined, {}).set('me', '1234')
-        .set('status_lists', ImmutableMap({ [`quotes:${statusId}`]: { next: 'example' } }));
+      const state = rootState.set('me', '1234')
+        .set('status_lists', ImmutableMap({ [`quotes:${statusId}`]: StatusListRecord({ next: 'example' }) }));
       store = mockStore(state);
     });
 

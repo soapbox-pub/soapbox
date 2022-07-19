@@ -105,7 +105,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
         <HStack space={0.5} alignItems='center'>
           <IconButton
             className='text-accent-500 cursor-pointer'
-            src={require('@tabler/icons/icons/quote.svg')}
+            src={require('@tabler/icons/quote.svg')}
             role='presentation'
             onClick={navigateToQuotesChangeEmail}
             title={intl.formatMessage(messages.quotes)}

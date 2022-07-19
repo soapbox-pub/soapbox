@@ -60,7 +60,7 @@ import {
 import type { AnyAction } from 'redux';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
-const StatusListRecord = ImmutableRecord({
+export const StatusListRecord = ImmutableRecord({
   next: null as string | null,
   loaded: false,
   isLoading: null as boolean | null,
