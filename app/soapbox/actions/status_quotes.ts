@@ -16,7 +16,7 @@ const noOp = () => new Promise(f => f(null));
 
 export const fetchStatusQuotes = (statusId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (getState().status_lists.get(`quotes:${statusId}`)?.isLoading) {
+    if (getState().status_lists.getIn([`quotes:${statusId}`, 'isLoading'])) {
       return dispatch(noOp);
     }
 
@@ -45,9 +45,9 @@ export const fetchStatusQuotes = (statusId: string) =>
 
 export const expandStatusQuotes = (statusId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const url = (getState().status_lists.get(`quotes:${statusId}`)?.next || null) as string | null;
+    const url = getState().status_lists.getIn([`quotes:${statusId}`, 'next'], null) as string | null;
 
-    if (url === null || getState().status_lists.get(`quotes:${statusId}`)?.isLoading) {
+    if (url === null || getState().status_lists.getIn([`quotes:${statusId}`, 'isLoading'])) {
       return dispatch(noOp);
     }
 
