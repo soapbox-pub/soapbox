@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
 import { useAppDispatch, useAppSelector, useDimensions, useFeatures } from 'soapbox/hooks';
-import useCarouselAvatars from 'soapbox/queries/carousels';
+import { useGetCarouselAvatarsQuery } from 'soapbox/queries/rtk-client';
 
 import { Card, HStack, Icon, Stack, Text } from '../../components/ui';
 import PlaceholderAvatar from '../placeholder/components/placeholder_avatar';
@@ -61,15 +61,15 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
 const FeedCarousel = () => {
   const features = useFeatures();
 
-  const { data: avatars, isFetching, isError } = useCarouselAvatars();
+  const { data: avatars, isFetching, isError } = useGetCarouselAvatarsQuery(null);
 
   const [cardRef, setCardRef, { width }] = useDimensions();
 
   const [pageSize, setPageSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const numberOfPages = Math.ceil(avatars.length / pageSize);
-  const widthPerAvatar = (cardRef?.scrollWidth || 0) / avatars.length;
+  const numberOfPages = avatars ? Math.ceil(avatars.length / pageSize) : 0;
+  const widthPerAvatar = avatars ? (cardRef?.scrollWidth || 0) / avatars.length : 0;
 
   const hasNextPage = currentPage < numberOfPages && numberOfPages > 1;
   const hasPrevPage = currentPage > 1 && numberOfPages > 1;
@@ -97,7 +97,7 @@ const FeedCarousel = () => {
     );
   }
 
-  if (avatars.length === 0) {
+  if (avatars?.length === 0) {
     return null;
   }
 
@@ -132,7 +132,7 @@ const FeedCarousel = () => {
               </div>
             ))
           ) : (
-            avatars.map((avatar) => (
+            avatars?.map((avatar) => (
               <CarouselItem
                 key={avatar.account_id}
                 avatar={avatar}

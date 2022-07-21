@@ -3,6 +3,7 @@ import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build_config';
+import { api } from 'soapbox/queries/rtk-client';
 
 import account_notes from './account_notes';
 import accounts from './accounts';
@@ -124,6 +125,7 @@ const reducers = {
   rules,
   history,
   announcements,
+  [api.reducerPath]: api.reducer,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
