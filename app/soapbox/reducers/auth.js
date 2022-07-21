@@ -29,7 +29,7 @@ const buildKey = parts => parts.join(':');
 // For subdirectory support
 const NAMESPACE = trim(FE_SUBDIRECTORY, '/') ? `soapbox@${FE_SUBDIRECTORY}` : 'soapbox';
 
-const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);
+export const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);
 const SESSION_KEY = buildKey([NAMESPACE, 'auth', 'me']);
 
 const getSessionUser = () => {
