@@ -155,6 +155,11 @@ const SoapboxMount = () => {
     </BundleContainer>
   );
 
+  const isAndroid = document.referrer.includes('android-app://');
+  useEffect(() => {
+    alert(isAndroid)
+  }, [isAndroid]);
+
   /** Render the auth layout or UI. */
   const renderSwitch = () => (
     <Switch>
