@@ -157,7 +157,7 @@ const SoapboxMount = () => {
 
   const isAndroid = document.referrer.includes('android-app://');
   useEffect(() => {
-    alert(isAndroid)
+    alert(isAndroid);
   }, [isAndroid]);
 
   /** Render the auth layout or UI. */
