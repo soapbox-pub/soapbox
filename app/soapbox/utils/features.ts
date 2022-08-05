@@ -117,7 +117,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Move followers to a different ActivityPub account.
      * @see POST /api/pleroma/move_account
      */
-    accountMoving: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    accountMoving: v.software === PLEROMA && gte(v.version, '2.4.50'),
 
     /**
      * Ability to subscribe to notifications every time an account posts.
@@ -398,6 +398,15 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     notes: any([
       v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
+
+    /**
+     * Allows specifying notification types to include, rather than to exclude.
+     * @see GET /api/v1/notifications
+     */
+    notificationsIncludeTypes: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
 

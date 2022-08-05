@@ -644,7 +644,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         offset: -80,
       });
 
-      setImmediate(() => this.status?.querySelector('a')?.focus());
+      setImmediate(() => this.status?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
     }
   }
 
@@ -740,7 +740,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
               onOpenCompareHistoryModal={this.handleOpenCompareHistoryModal}
             />
 
-            <hr className='mb-2 dark:border-slate-600' />
+            <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
             <ActionBar
               status={status}
@@ -774,7 +774,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         </HotKeys>
 
         {hasDescendants && (
-          <hr className='mt-2 dark:border-slate-600' />
+          <hr className='mt-2 border-t-2 dark:border-primary-800' />
         )}
       </div>
     );

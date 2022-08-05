@@ -9,9 +9,11 @@ import {
   unblockAccount,
   muteAccount,
   unmuteAccount,
+  authorizeFollowRequest,
+  rejectFollowRequest,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button } from 'soapbox/components/ui';
+import { Button, HStack } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -28,13 +30,15 @@ const messages = defineMessages({
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
+  authorize: { id: 'follow_request.authorize', defaultMessage: 'Authorize' },
+  reject: { id: 'follow_request.reject', defaultMessage: 'Reject' },
 });
 
 interface IActionButton {
   /** Target account for the action. */
   account: AccountEntity
   /** Type of action to prioritize, eg on Blocks and Mutes pages. */
-  actionType?: 'muting' | 'blocking'
+  actionType?: 'muting' | 'blocking' | 'follow_request'
   /** Displays shorter text on the "Awaiting approval" button. */
   small?: boolean
 }
@@ -73,6 +77,14 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     } else {
       dispatch(muteAccount(account.id));
     }
+  };
+
+  const handleAuthorize = () => {
+    dispatch(authorizeFollowRequest(account.id));
+  };
+
+  const handleReject = () => {
+    dispatch(rejectFollowRequest(account.id));
   };
 
   const handleRemoteFollow = () => {
@@ -115,6 +127,27 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     );
   };
 
+  const followRequestAction = () => {
+    if (account.relationship?.followed_by) return null;
+
+    return (
+      <HStack space={2}>
+        <Button
+          theme='secondary'
+          size='sm'
+          text={intl.formatMessage(messages.authorize)}
+          onClick={handleAuthorize}
+        />
+        <Button
+          theme='danger'
+          size='sm'
+          text={intl.formatMessage(messages.reject)}
+          onClick={handleReject}
+        />
+      </HStack>
+    );
+  };
+
   /** Render a remote follow button, depending on features. */
   const renderRemoteFollow = () => {
     // Remote follow through the API.
@@ -126,7 +159,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
           text={intl.formatMessage(messages.follow)}
         />
       );
-    // Pleroma's classic remote follow form.
+      // Pleroma's classic remote follow form.
     } else if (features.pleromaRemoteFollow) {
       return (
         <form method='POST' action='/main/ostatus'>
@@ -162,6 +195,8 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
         return mutingAction();
       } else if (actionType === 'blocking') {
         return blockingAction();
+      } else if (actionType === 'follow_request') {
+        return followRequestAction();
       }
     }
 
@@ -173,7 +208,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       return (
         <Button
           size='sm'
-          theme='secondary'
+          theme='tertiary'
           text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)}
           onClick={handleFollow}
         />
@@ -210,7 +245,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     // Edit profile
     return (
       <Button
-        theme='secondary'
+        theme='tertiary'
         size='sm'
         text={intl.formatMessage(messages.edit_profile)}
         to='/settings/profile'

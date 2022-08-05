@@ -215,7 +215,7 @@ class Item extends React.PureComponent {
           alt={attachment.get('description')}
           title={attachment.get('description')}
         >
-          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
           <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );
@@ -609,7 +609,7 @@ class MediaGallery extends React.PureComponent {
               />
             ) : (
               <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
-                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-slate-800/75 text-center inline-block space-y-4 max-w-[280px]'>
+                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-gray-900/75 text-center inline-block space-y-4 max-w-[280px]'>
                   <div className='space-y-1'>
                     <Text weight='semibold'>{warning}</Text>
                     <Text size='sm'>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
-import { NotificationStack, NotificationObject, StyleFactoryFn } from 'react-notification';
 import { useHistory } from 'react-router-dom';
 
 import { dismissAlert } from 'soapbox/actions/alerts';
 import { Button } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { NotificationStack, NotificationObject, StyleFactoryFn } from 'soapbox/react-notification';
 
 import type { Alert } from 'soapbox/reducers/alerts';
 
@@ -47,7 +47,7 @@ const SnackbarContainer: React.FC = () => {
       // HACK: it's a JSX.Element instead of a string!
       // react-notification displays it just fine.
       alert.action = (
-        <Button theme='ghost' size='sm' onClick={item.action} text={maybeFormatMessage(item.actionLabel)} />
+        <Button theme='tertiary' size='sm' onClick={item.action} text={maybeFormatMessage(item.actionLabel)} />
       ) as any;
     }
 

@@ -67,13 +67,6 @@
 .account__avatar-wrapper {
   float: left;
   margin-right: 12px;
-
-  .emoji-react__emoji {
-    position: absolute;
-    top: 36px;
-    left: 32px;
-    z-index: 1;
-  }
 }
 
 .account__avatar {
@@ -168,16 +161,20 @@ a .account__avatar {
 }
 
 .account-gallery__item {
+  @apply rounded-lg m-1;
   border: 0;
   box-sizing: border-box;
   display: block;
   position: relative;
-  border-radius: 4px;
   overflow: hidden;
-  margin: 2px;
 
   a {
     background: var(--brand-color--faint);
+  }
+
+  video,
+  img {
+    @apply rounded-lg;
   }
 
   &__icons {
@@ -185,7 +182,10 @@ a .account__avatar {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+
+    .svg-icon {
+      @apply h-6 w-6;
+    }
   }
 }
 
