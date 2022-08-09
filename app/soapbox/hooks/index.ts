@@ -2,6 +2,7 @@ export { useAccount } from './useAccount';
 export { useApi } from './useApi';
 export { useAppDispatch } from './useAppDispatch';
 export { useAppSelector } from './useAppSelector';
+export { useDebounce } from './useDebounce';
 export { useDimensions } from './useDimensions';
 export { useFeatures } from './useFeatures';
 export { useLocale } from './useLocale';
