@@ -176,7 +176,7 @@
   "chats.audio_toggle_off": "音声通知をOFF",
   "chats.audio_toggle_on": "音声通知をON",
   "chats.dividers.today": "Today",
-  "chats.search_placeholder": "Start a chat with…",
+  "chats.search_placeholder": "Type a name",
   "column.admin.awaiting_approval": "Awaiting Approval",
   "column.admin.dashboard": "Dashboard",
   "column.admin.moderation_log": "Moderation Log",
