@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import React from 'react';
 
-interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
+interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'onKeyDown' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */
@@ -18,11 +18,13 @@ interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElemen
   autoComplete?: string,
   /** Whether to display the textarea in red. */
   hasError?: boolean,
+  /** Whether or not you can resize the teztarea */
+  isResizeable?: boolean,
 }
 
 /** Textarea with custom styles. */
 const Textarea = React.forwardRef(
-  ({ isCodeEditor = false, hasError = false, ...props }: ITextarea, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
+  ({ isCodeEditor = false, hasError = false, isResizeable = true, ...props }: ITextarea, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
     return (
       <textarea
         {...props}
@@ -32,6 +34,7 @@ const Textarea = React.forwardRef(
             true,
           'font-mono': isCodeEditor,
           'text-red-600 border-red-600': hasError,
+          'resize-none': !isResizeable,
         })}
       />
     );
