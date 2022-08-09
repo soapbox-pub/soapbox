@@ -67,7 +67,7 @@ const PhoneInput: React.FC<IPhoneInput> = (props) => {
     <Input
       onChange={handleChange}
       value={nationalNumber}
-      addon={
+      prepend={
         <CountryCodeDropdown
           countryCode={countryCode}
           onChange={setCountryCode}
