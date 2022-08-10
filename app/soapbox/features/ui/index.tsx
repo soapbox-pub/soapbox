@@ -457,7 +457,7 @@ const UI: React.FC = ({ children }) => {
     dispatch(fetchAnnouncements());
 
     if (features.chats) {
-      dispatch(fetchChats());
+      // dispatch(fetchChats());
     }
 
     if (account.staff) {

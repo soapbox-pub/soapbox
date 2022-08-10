@@ -58,7 +58,7 @@ const ChatRoom: React.FC<IChatRoom> = ({ params }) => {
   return (
     <Column label={`@${getAcct(chat.account as any, displayFqn)}`}>
       <ChatBox
-        chatId={chat.id}
+        chat={chat as any}
         onSetInputRef={handleInputRef}
         autosize
       />

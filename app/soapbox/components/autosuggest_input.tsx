@@ -59,6 +59,7 @@ interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>,
   maxLength?: number,
   menu?: Menu,
   resultsPosition: string,
+  hidePortal?: boolean,
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {
@@ -284,11 +285,11 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   }
 
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
+    const { hidePortal, value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
     const { suggestionsHidden } = this.state;
     const style: React.CSSProperties = { direction: 'ltr' };
 
-    const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
+    const visible = !hidePortal && !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
 
     if (isRtl(value)) {
       style.direction = 'rtl';

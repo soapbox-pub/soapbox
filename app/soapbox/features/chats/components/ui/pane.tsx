@@ -21,9 +21,9 @@ const Pane: React.FC<IPane> = ({ windowState, index, children, main = false }) =
 
   return (
     <div
-      className={classNames('pane', {
-        'pane--main': main,
-        'h-14': windowState === 'minimized',
+      className={classNames('flex flex-col shadow-3xl bg-white dark:bg-gray-900 rounded-t-lg fixed bottom-0 right-1 w-96 z-[1000]', {
+        'h-[550px] max-h-[100vh]': windowState !== 'minimized',
+        'h-16': windowState === 'minimized',
       })}
       style={{ right: `${right}px` }}
     >

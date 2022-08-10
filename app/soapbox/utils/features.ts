@@ -196,7 +196,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+    chats: v.software === TRUTHSOCIAL || (v.software === PLEROMA && gte(v.version, '2.1.0')),
 
     /**
      * Paginated chats API.

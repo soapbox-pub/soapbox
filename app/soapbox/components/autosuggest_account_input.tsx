@@ -8,11 +8,12 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
-const noOp = () => {};
+const noOp = () => { };
 
 interface IAutosuggestAccountInput {
   onChange: React.ChangeEventHandler<HTMLInputElement>,
   onSelected: (accountId: string) => void,
+  autoFocus?: boolean,
   value: string,
   limit?: number,
   className?: string,
