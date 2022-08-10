@@ -17,7 +17,6 @@ import * as BuildConfig from 'soapbox/build_config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import { AuthProvider, useAuth } from 'soapbox/contexts/auth-context';
 import AuthLayout from 'soapbox/features/auth_layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public_layout';
@@ -41,7 +40,6 @@ import {
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { queryClient } from 'soapbox/queries/client';
-import { useAxiosInterceptors } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -65,7 +63,7 @@ const loadInitial = () => {
   // @ts-ignore
   return async(dispatch, getState) => {
     // Await for authenticated fetch
-    const account = await dispatch(fetchMe());
+    await dispatch(fetchMe());
     // Await for feature detection
     await dispatch(loadInstance());
     // Await for configuration
@@ -78,8 +76,6 @@ const loadInitial = () => {
     if (pepeEnabled && !state.me) {
       await dispatch(fetchVerificationConfig());
     }
-
-    return account;
   };
 };
 
@@ -209,9 +205,6 @@ interface ISoapboxLoad {
 /** Initial data loader. */
 const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const { setAccount, token, baseApiUri } = useAuth();
-
-  useAxiosInterceptors(token, baseApiUri);
 
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
@@ -241,8 +234,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 
   // Load initial data from the API
   useEffect(() => {
-    dispatch(loadInitial()).then((account) => {
-      setAccount(account);
+    dispatch(loadInitial()).then(() => {
       setIsLoaded(true);
     }).catch(() => {
       setIsLoaded(true);
@@ -301,15 +293,13 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
 const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <SoapboxHead>
-            <SoapboxLoad>
-              <SoapboxMount />
-            </SoapboxLoad>
-          </SoapboxHead>
-        </QueryClientProvider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <SoapboxHead>
+          <SoapboxLoad>
+            <SoapboxMount />
+          </SoapboxLoad>
+        </SoapboxHead>
+      </QueryClientProvider>
     </Provider>
   );
 };
