@@ -51,6 +51,8 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
 
   const inputElem = useRef<HTMLTextAreaElement | null>(null);
 
+  const isSubmitDisabled = content.length === 0 && !attachment;
+
   // TODO: needs last_read_id param
   const markAsRead = useMutation(() => markChatAsRead(), {
     onSuccess: () => {
@@ -114,17 +116,8 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
     setResetFileKey(fileKeyGen());
   };
 
-  const canSubmit = () => {
-    const conds = [
-      content.length > 0,
-      attachment,
-    ];
-
-    return conds.some(c => c);
-  };
-
   const sendMessage = () => {
-    if (canSubmit() && !submitMessage.isLoading) {
+    if (!isSubmitDisabled && !submitMessage.isLoading) {
       const params = {
         content,
         media_id: attachment && attachment.id,
@@ -153,7 +146,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
   };
 
   const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
-    if (!canSubmit() && e.clipboardData && e.clipboardData.files.length === 1) {
+    if (isSubmitDisabled && e.clipboardData && e.clipboardData.files.length === 1) {
       handleFiles(e.clipboardData.files);
     }
   };
@@ -245,6 +238,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
             src={require('@tabler/icons/send.svg')}
             iconClassName='w-5 h-5'
             className='text-primary-500'
+            disabled={isSubmitDisabled}
             onClick={sendMessage}
           />
         </HStack>
