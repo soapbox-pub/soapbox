@@ -117,7 +117,7 @@ const Account = ({
           src={actionIcon}
           title={actionTitle}
           onClick={handleAction}
-          className='bg-transparent text-gray-400 hover:text-gray-600'
+          className='bg-transparent text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
           iconClassName='w-4 h-4'
         />
       );
@@ -232,7 +232,7 @@ const Account = ({
                   <>
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
-                    <Icon className='h-5 w-5 stroke-[1.35]' src={require('@tabler/icons/pencil.svg')} />
+                    <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
                   </>
                 ) : null}
               </HStack>

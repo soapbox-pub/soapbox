@@ -227,7 +227,12 @@ const fetchAccountFail = (id: string | null, error: AxiosError) => ({
   skipAlert: true,
 });
 
-const followAccount = (id: string, options = { reblogs: true }) =>
+type FollowAccountOpts = {
+  reblogs?: boolean,
+  notify?: boolean
+};
+
+const followAccount = (id: string, options?: FollowAccountOpts) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
@@ -946,7 +951,7 @@ const fetchBirthdayReminders = (month: number, day: number) =>
 
     dispatch({ type: BIRTHDAY_REMINDERS_FETCH_REQUEST, day, month, id: me });
 
-    api(getState).get('/api/v1/pleroma/birthdays', { params: { day, month } }).then(response => {
+    return api(getState).get('/api/v1/pleroma/birthdays', { params: { day, month } }).then(response => {
       dispatch(importFetchedAccounts(response.data));
       dispatch({
         type: BIRTHDAY_REMINDERS_FETCH_SUCCESS,
