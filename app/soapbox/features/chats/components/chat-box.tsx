@@ -201,15 +201,15 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
   };
 
   const renderActionButton = () => {
-    return canSubmit() ? (
-      <IconButton
-        src={require('@tabler/icons/send.svg')}
-        title={intl.formatMessage(messages.send)}
-        onClick={sendMessage}
-      />
-    ) : (
-      <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
-    );
+    // return canSubmit() ? (
+    //   <IconButton
+    //     src={require('@tabler/icons/send.svg')}
+    //     title={intl.formatMessage(messages.send)}
+    //     onClick={sendMessage}
+    //   />
+    // ) : (
+    //   <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
+    // );
   };
 
   if (!chatMessageIds) return null;
