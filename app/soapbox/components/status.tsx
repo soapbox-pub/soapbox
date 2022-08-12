@@ -18,7 +18,7 @@ import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
-import { HStack, Text } from './ui';
+import { Card, HStack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
 import type {
@@ -47,6 +47,7 @@ export interface IStatus {
   featured?: boolean,
   hideActionBar?: boolean,
   hoverable?: boolean,
+  variant?: 'default' | 'rounded',
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -63,6 +64,7 @@ const Status: React.FC<IStatus> = (props) => {
     unread,
     group,
     hideActionBar,
+    variant = 'rounded',
   } = props;
   const intl = useIntl();
   const history = useHistory();
@@ -318,7 +320,8 @@ const Status: React.FC<IStatus> = (props) => {
       >
         {prepend}
 
-        <div
+        <Card
+          variant={variant}
           className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
             'status-reply': !!status.in_reply_to_id,
             muted,
@@ -378,7 +381,7 @@ const Status: React.FC<IStatus> = (props) => {
               </div>
             )}
           </div>
-        </div>
+        </Card>
       </div>
     </HotKeys>
   );

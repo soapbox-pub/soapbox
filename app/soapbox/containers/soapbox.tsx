@@ -18,6 +18,7 @@ import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
+import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public_layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -147,6 +148,12 @@ const SoapboxMount = () => {
       {pepeEnabled && (
         <Route path='/verify' component={AuthLayout} />
       )}
+
+      <Route
+        path='/embed/:statusId'
+        render={(props) => <EmbeddedStatus params={props.match.params} />}
+      />
+      <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
       <Route path='/reset-password' component={AuthLayout} />
       <Route path='/edit-password' component={AuthLayout} />

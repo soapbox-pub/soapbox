@@ -18,7 +18,7 @@ const messages = defineMessages({
 
 interface ICard {
   /** The type of card. */
-  variant?: 'rounded',
+  variant?: 'default' | 'rounded',
   /** Card size preset. */
   size?: 'md' | 'lg' | 'xl',
   /** Extra classnames for the <div> element. */
@@ -28,7 +28,7 @@ interface ICard {
 }
 
 /** An opaque backdrop to hold a collection of related elements. */
-const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size = 'md', className, ...filteredProps }, ref): JSX.Element => (
+const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'default', size = 'md', className, ...filteredProps }, ref): JSX.Element => (
   <div
     ref={ref}
     {...filteredProps}
