@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
 import {
   Map as ImmutableMap,
@@ -16,10 +17,12 @@ import { initReportById } from 'soapbox/actions/reports';
 import { Avatar, HStack, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import emojify from 'soapbox/features/emoji/emoji';
+import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useRefEventHandler, useOwnAccount } from 'soapbox/hooks';
-import { IChat, IChatMessage, useChatMessages } from 'soapbox/queries/chats';
+import { IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -80,9 +83,9 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   const [initialLoad, setInitialLoad] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const { data: chatMessages, isFetching, isFetched, fetchNextPage, isFetchingNextPage, isPlaceholderData } = useChatMessages(chat.id);
+  const { deleteChatMessage } = useChat(chat.id);
+  const { data: chatMessages, isLoading, isFetching, isFetched, fetchNextPage, isFetchingNextPage, isPlaceholderData } = useChatMessages(chat.id);
   const formattedChatMessages = chatMessages || [];
-
 
   const me = useAppSelector(state => state.me);
 
@@ -93,6 +96,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   const scrollBottom = useRef<number | undefined>(undefined);
 
   const initialCount = useMemo(() => formattedChatMessages.length, []);
+
+  const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
+    onSettled: () => {
+      queryClient.invalidateQueries(['chats', 'messages', chat.id]);
+    },
+  });
 
   const scrollToBottom = () => {
     messagesEnd.current?.scrollIntoView(false);
@@ -224,12 +233,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     </div>
   );
 
-  const handleDeleteMessage = (chatId: string, messageId: string) => {
-    return () => {
-      dispatch(deleteChatMessage(chatId, messageId));
-    };
-  };
-
   const handleReportUser = (userId: string) => {
     return () => {
       dispatch(initReportById(userId));
@@ -242,7 +245,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     const menu: Menu = [
       {
         text: intl.formatMessage(messages.delete),
-        action: handleDeleteMessage(chatMessage.chat_id, chatMessage.id),
+        action: () => handleDeleteMessage.mutate(chatMessage.id),
         icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       },
@@ -257,88 +260,88 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     }
 
     return (
-      <Stack
-        key={chatMessage.id}
-        space={1}
-        className={classNames({
-          'group max-w-[85%]': true,
-          'ml-auto': isMyMessage,
-        })}
-      >
-        <HStack
-          alignItems='center'
-          justifyContent={isMyMessage ? 'end' : 'start'}
-          className={classNames({
-            'opacity-50': chatMessage.pending,
-          })}
-        >
-          {isMyMessage ? (
-            // <IconButton
-            //   src={require('@tabler/icons/dots.svg')}
-            //   className='hidden group-hover:block text-gray-600 mr-2'
-            //   iconClassName='w-5 h-5'
-            // />
-            <div className='hidden group-hover:block mr-2 text-gray-500'>
-              <DropdownMenuContainer
-                items={menu}
-                src={require('@tabler/icons/dots.svg')}
-                title={intl.formatMessage(messages.more)}
-              />
-            </div>
-
-          ) : null}
-
-          <div
-            title={getFormattedTimestamp(chatMessage)}
-            className={
-              classNames({
-                'text-ellipsis break-words relative rounded-md p-2': true,
-                'bg-primary-500 text-white mr-2': isMyMessage,
-                'bg-gray-200 text-gray-900 order-2 ml-2': !isMyMessage,
-              })
-            }
-            ref={setBubbleRef}
-            tabIndex={0}
-          >
-            {maybeRenderMedia(chatMessage)}
-            <Text size='sm' theme='inherit' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
-            <div className='chat-message__menu'>
-              <DropdownMenuContainer
-                items={menu}
-                src={require('@tabler/icons/dots.svg')}
-                title={intl.formatMessage(messages.more)}
-              />
-            </div>
-          </div>
-
-          <div className={classNames({ 'order-1': !isMyMessage })}>
-            <Avatar src={isMyMessage ? account?.avatar : chat.account.avatar} size={34} />
-          </div>
-        </HStack>
-
-        <HStack
-          alignItems='center'
-          space={2}
+      <div key={chatMessage.id} className='group'>
+        <Stack
+          space={1}
           className={classNames({
             'ml-auto': isMyMessage,
           })}
         >
-          <Text
-            theme='muted'
-            size='xs'
+          <HStack
+            alignItems='center'
+            justifyContent={isMyMessage ? 'end' : 'start'}
             className={classNames({
-              'text-right': isMyMessage,
-              'order-2': !isMyMessage,
+              'opacity-50': chatMessage.pending,
             })}
           >
-            {intl.formatTime(chatMessage.created_at)}
-          </Text>
+            {isMyMessage ? (
+              <div className='hidden group-hover:block mr-2 text-gray-500'>
+                <DropdownMenuContainer
+                  items={menu}
+                  src={require('@tabler/icons/dots.svg')}
+                  title={intl.formatMessage(messages.more)}
+                />
+              </div>
+            ) : null}
 
-          <div className={classNames({ 'order-1': !isMyMessage })}>
-            <div className='w-[34px]' />
-          </div>
-        </HStack>
-      </Stack>
+            <HStack
+              alignItems='center'
+              className='max-w-[85%]'
+              justifyContent={isMyMessage ? 'end' : 'start'}
+            >
+              <div
+                title={getFormattedTimestamp(chatMessage)}
+                className={
+                  classNames({
+                    'text-ellipsis break-words relative rounded-md p-2': true,
+                    'bg-primary-500 text-white mr-2': isMyMessage,
+                    'bg-gray-200 text-gray-900 order-2 ml-2': !isMyMessage,
+                  })
+                }
+                ref={setBubbleRef}
+                tabIndex={0}
+              >
+                {maybeRenderMedia(chatMessage)}
+                <Text size='sm' theme='inherit' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
+                <div className='chat-message__menu'>
+                  <DropdownMenuContainer
+                    items={menu}
+                    src={require('@tabler/icons/dots.svg')}
+                    title={intl.formatMessage(messages.more)}
+                  />
+                </div>
+              </div>
+
+              <div className={classNames({ 'order-1': !isMyMessage })}>
+                <Avatar src={isMyMessage ? account?.avatar : chat.account.avatar} size={34} />
+              </div>
+            </HStack>
+          </HStack>
+
+          <HStack
+            alignItems='center'
+            space={2}
+            className={classNames({
+              'ml-auto': isMyMessage,
+            })}
+          >
+            <Text
+              theme='muted'
+              size='xs'
+              className={classNames({
+                'text-right': isMyMessage,
+                'order-2': !isMyMessage,
+              })}
+            >
+              {intl.formatTime(chatMessage.created_at)}
+            </Text>
+
+            <div className={classNames({ 'order-1': !isMyMessage })}>
+              <div className='w-[34px]' />
+            </div>
+          </HStack>
+        </Stack>
+      </div>
     );
   };
 
@@ -358,18 +361,18 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   });
 
   // Stick scrollbar to bottom.
-  // useEffect(() => {
-  //   if (isNearBottom()) {
-  //     scrollToBottom();
-  //   }
+  useEffect(() => {
+    if (isNearBottom()) {
+      scrollToBottom();
+    }
 
-  //   // First load.
-  //   // if (chatMessages.count() !== initialCount) {
-  //   //   setInitialLoad(false);
-  //   //   setIsLoading(false);
-  //   //   scrollToBottom();
-  //   // }
-  // }, [formattedChatMessages.length]);
+    // First load.
+    // if (chatMessages.count() !== initialCount) {
+    //   setInitialLoad(false);
+    //   setIsLoading(false);
+    //   scrollToBottom();
+    // }
+  }, [formattedChatMessages.length]);
 
   // useEffect(() => {
   //   scrollToBottom();
@@ -381,9 +384,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
 
   useEffect(() => {
     // Restore scroll bar position when loading old messages.
-    console.log('hii');
     if (!initialLoad) {
-
       restoreScrollPosition();
     }
   }, [formattedChatMessages.length, initialLoad]);
@@ -398,26 +399,39 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   }
 
   return (
-    <div className='h-full flex flex-col space-y-4 px-4 flex-grow overflow-y-scroll' onScroll={handleScroll} ref={node}> {/* style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} */}
-      {formattedChatMessages.reduce((acc: any, curr: any, idx: number) => {
-        const lastMessage = formattedChatMessages[idx - 1];
+    <div className='h-full flex flex-col px-4 flex-grow overflow-y-scroll' onScroll={handleScroll} ref={node}> {/* style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} */}
+      <div className='flex-grow flex flex-col justify-end space-y-4'>
+        {isLoading ? (
+          <>
+            <PlaceholderChat isMyMessage />
+            <PlaceholderChat />
+            <PlaceholderChat isMyMessage />
+            <PlaceholderChat isMyMessage />
+            <PlaceholderChat />
+          </>
+        ) : (
+          formattedChatMessages.reduce((acc: any, curr: any, idx: number) => {
+            const lastMessage = formattedChatMessages[idx - 1];
 
-        if (lastMessage) {
-          const key = `${curr.id}_divider`;
-          switch (timeChange(lastMessage, curr)) {
-            case 'today':
-              acc.push(renderDivider(key, intl.formatMessage(messages.today)));
-              break;
-            case 'date':
-              acc.push(renderDivider(key, intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' })));
-              break;
-          }
-        }
+            if (lastMessage) {
+              const key = `${curr.id}_divider`;
+              switch (timeChange(lastMessage, curr)) {
+                case 'today':
+                  acc.push(renderDivider(key, intl.formatMessage(messages.today)));
+                  break;
+                case 'date':
+                  acc.push(renderDivider(key, intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' })));
+                  break;
+              }
+            }
 
-        acc.push(renderMessage(curr));
-        return acc;
-      }, [] as React.ReactNode[])}
-      <div style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
+            acc.push(renderMessage(curr));
+            return acc;
+          }, [] as React.ReactNode[])
+        )}
+      </div>
+
+      <div className='float-left clear-both mt-4' style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
     </div>
   );
 };

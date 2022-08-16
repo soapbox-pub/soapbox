@@ -32,7 +32,7 @@ const reverseOrder = (a: IChat, b: IChat): number => {
 const useChatMessages = (chatId: string) => {
   const api = useApi();
 
-  const getChatMessages = async (chatId: string, pageParam?: any): Promise<{ result: IChatMessage[], maxId: string, hasMore: boolean }> => {
+  const getChatMessages = async(chatId: string, pageParam?: any): Promise<{ result: IChatMessage[], maxId: string, hasMore: boolean }> => {
     const { data, headers } = await api.get(`/api/v1/pleroma/chats/${chatId}/messages`, {
       params: {
         max_id: pageParam?.maxId,
@@ -74,7 +74,7 @@ const useChatMessages = (chatId: string) => {
 const useChats = () => {
   const api = useApi();
 
-  const getChats = async () => {
+  const getChats = async() => {
     const { data } = await api.get('/api/v1/pleroma/chats');
     return data;
   };
@@ -97,7 +97,9 @@ const useChat = (chatId: string) => {
     return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/messages`, { content });
   };
 
-  return { createChatMessage, markChatAsRead };
+  const deleteChatMessage = (chatMessageId: string) => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}/messages/${chatMessageId}`);
+
+  return { createChatMessage, markChatAsRead, deleteChatMessage };
 };
 
 export { useChat, useChats, useChatMessages };

@@ -1,27 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-import {
-  closeChat,
-  toggleChat,
-} from 'soapbox/actions/chats';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import IconButton from 'soapbox/components/icon_button';
-import { Avatar, HStack, Counter, Icon, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { IChat } from 'soapbox/queries/chats';
-import { makeGetChat } from 'soapbox/selectors';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn as getDisplayFqn } from 'soapbox/utils/state';
 
 import ChatBox from './chat-box';
 import ChatPaneHeader from './chat-pane-header';
-import { Pane, WindowState } from './ui';
-
-import type { Account as AccountEntity } from 'soapbox/types/entities';
-
-const getChat = makeGetChat();
 
 interface IChatWindow {
   chat: IChat
@@ -67,23 +51,6 @@ const ChatWindow: React.FC<IChatWindow> = ({ chat, closeChat, closePane }) => {
         <ChatBox chat={chat} onSetInputRef={() => null} />
       </Stack>
     </>
-    // <Pane windowState={windowState} index={idx}>
-    //   <HStack space={2} className='pane__header'>
-    //     {unreadCount > 0 ? unreadIcon : avatar }
-    //     <button className='pane__title' onClick={handleChatToggle(chat.id)}>
-    //       @{getAcct(account, displayFqn)}
-    //     </button>
-    //     <div className='pane__close'>
-    //       <IconButton src={require('@tabler/icons/x.svg')} title='Close chat' onClick={handleChatClose(chat.id)} />
-    //     </div>
-    //   </HStack>
-    //   <div className='pane__content'>
-    //     <ChatBox
-    //       chatId={chat.id}
-    //
-    //     />
-    //   </div>
-    // </Pane>
   );
 };
 
