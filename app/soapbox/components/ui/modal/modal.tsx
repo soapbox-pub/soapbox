@@ -3,6 +3,7 @@ import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
+import { ButtonThemes } from '../button/useButtonStyles';
 import IconButton from '../icon-button/icon-button';
 
 const messages = defineMessages({
@@ -39,7 +40,7 @@ interface IModal {
   /** Confirmation button text. */
   confirmationText?: React.ReactNode,
   /** Confirmation button theme. */
-  confirmationTheme?: 'danger',
+  confirmationTheme?: ButtonThemes,
   /** Callback when the modal is closed. */
   onClose?: () => void,
   /** Callback when the secondary action is chosen. */

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Modal, Text } from 'soapbox/components/ui';
+import { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles';
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
 
 interface IConfirmationModal {
@@ -14,6 +15,7 @@ interface IConfirmationModal {
   onSecondary?: () => void,
   onCancel: () => void,
   checkbox?: JSX.Element,
+  confirmationTheme?: ButtonThemes
 }
 
 const ConfirmationModal: React.FC<IConfirmationModal> = ({
@@ -26,6 +28,7 @@ const ConfirmationModal: React.FC<IConfirmationModal> = ({
   onSecondary,
   onCancel,
   checkbox,
+  confirmationTheme = 'danger',
 }) => {
   const [checked, setChecked] = useState(false);
 
@@ -54,7 +57,7 @@ const ConfirmationModal: React.FC<IConfirmationModal> = ({
       confirmationAction={handleClick}
       confirmationText={confirm}
       confirmationDisabled={checkbox && !checked}
-      confirmationTheme='danger'
+      confirmationTheme={confirmationTheme}
       cancelText={<FormattedMessage id='confirmation_modal.cancel' defaultMessage='Cancel' />}
       cancelAction={handleCancel}
       secondaryText={secondary}

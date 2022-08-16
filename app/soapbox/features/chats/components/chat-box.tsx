@@ -8,6 +8,8 @@ import {
   markChatRead,
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
+import { openModal } from 'soapbox/actions/modals';
+import { initReport } from 'soapbox/actions/reports';
 import { Avatar, Button, HStack, Icon, IconButton, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
@@ -184,6 +186,23 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
     });
   };
 
+  const handleLeaveChat = () => {
+    dispatch(openModal('CONFIRM', {
+      heading: 'Leave Chat',
+      message: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.',
+      confirm: 'Leave Chat',
+      confirmationTheme: 'primary',
+      onConfirm: () => {
+        deleteChat.mutate();
+      },
+    }));
+  };
+
+  const handleReportChat = () => {
+    dispatch(initReport(chat.account));
+    acceptChat.mutate();
+  };
+
   const renderAttachment = () => {
     if (!attachment) return null;
 
@@ -244,13 +263,18 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
                 <Button
                   theme='accent'
                   block
-                  onClick={() => deleteChat.mutate()}
-                  disabled={deleteChat.isLoading}
+                  onClick={handleLeaveChat}
                 >
                   Leave chat
                 </Button>
 
-                <Button theme='secondary' block>Report</Button>
+                <Button
+                  theme='secondary'
+                  block
+                  onClick={handleReportChat}
+                >
+                  Report
+                </Button>
               </HStack>
             </Stack>
           </Stack>

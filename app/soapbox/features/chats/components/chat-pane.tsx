@@ -133,14 +133,14 @@ const ChatPane = () => {
               className='px-4 py-2 w-full flex flex-col hover:bg-gray-100'
             >
               <HStack alignItems='center' space={2}>
-                <Avatar src={chat.account.avatar} size={40} />
+                <Avatar src={chat.account?.avatar} size={40} />
 
                 <Stack alignItems='start'>
                   <div className='flex items-center space-x-1 flex-grow'>
-                    <Text weight='semibold' truncate>{chat.account.display_name}</Text>
-                    {chat.account.verified && <VerificationBadge />}
+                    <Text weight='semibold' truncate>{chat.account?.display_name}</Text>
+                    {chat.account?.verified && <VerificationBadge />}
                   </div>
-                  <Text theme='muted' truncate>{chat.account.acct}</Text>
+                  <Text theme='muted' truncate>{chat.account?.acct}</Text>
                 </Stack>
               </HStack>
             </button>
