@@ -13,6 +13,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import AccountSearch from 'soapbox/components/account_search';
 import { Avatar, Button, Counter, HStack, Icon, IconButton, Input, Spinner, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
+import { ChatProvider, useChatContext } from 'soapbox/contexts/chat-context';
 import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import { useAppDispatch, useAppSelector, useDebounce, useSettings } from 'soapbox/hooks';
@@ -47,12 +48,13 @@ const makeNormalizeChatPanes = () => createSelector([
 
 const normalizeChatPanes = makeNormalizeChatPanes();
 
-const ChatPanes = () => {
+const ChatPane = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const debounce = useDebounce;
 
-  const [chat, setChat] = useState<IChat | null>();
+  const { chat, setChat } = useChatContext();
+
   const [value, setValue] = useState<string>();
   const debouncedValue = debounce(value as string, 300);
 
@@ -210,4 +212,4 @@ const ChatPanes = () => {
   );
 };
 
-export default ChatPanes;
+export default ChatPane;

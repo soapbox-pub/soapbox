@@ -1,11 +1,14 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
+import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi } from 'soapbox/hooks';
+
+import { queryClient } from './client';
 
 export interface IChat {
   id: string
   unread: number
-  created_by_account: number
+  created_by_account: string
   last_message: null | string
   created_at: Date
   updated_at: Date
@@ -90,6 +93,7 @@ const useChats = () => {
 
 const useChat = (chatId: string) => {
   const api = useApi();
+  const { setChat } = useChatContext();
 
   const markChatAsRead = () => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`);
 
@@ -99,7 +103,15 @@ const useChat = (chatId: string) => {
 
   const deleteChatMessage = (chatMessageId: string) => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}/messages/${chatMessageId}`);
 
-  return { createChatMessage, markChatAsRead, deleteChatMessage };
+  const acceptChat = useMutation(() => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`), {
+    onSuccess(response) {
+      setChat(response.data);
+      queryClient.invalidateQueries(['chats', 'messages', chatId]);
+      queryClient.invalidateQueries(['chats']);
+    },
+  });
+
+  return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat };
 };
 
 export { useChat, useChats, useChatMessages };

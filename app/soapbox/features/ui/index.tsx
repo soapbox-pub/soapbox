@@ -89,7 +89,7 @@ import {
   MfaForm,
   ChatIndex,
   ChatRoom,
-  ChatPanes,
+  ChatWidget,
   ServerInfo,
   Dashboard,
   ModerationLog,
@@ -680,7 +680,7 @@ const UI: React.FC = ({ children }) => {
               </BundleContainer>
             )}
             {me && features.chats && !mobile && (
-              <BundleContainer fetchComponent={ChatPanes}>
+              <BundleContainer fetchComponent={ChatWidget}>
                 {Component => <Component />}
               </BundleContainer>
             )}

@@ -275,7 +275,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
             })}
           >
             {isMyMessage ? (
-              <div className='hidden group-hover:block mr-2 text-gray-500'>
+              <div className='hidden focus:block group-hover:block mr-2 text-gray-500'>
                 <DropdownMenuContainer
                   items={menu}
                   src={require('@tabler/icons/dots.svg')}

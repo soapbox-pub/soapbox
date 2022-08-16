@@ -8,7 +8,7 @@ import {
   markChatRead,
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
-import { HStack, Icon, IconButton, Input, Stack, Textarea } from 'soapbox/components/ui';
+import { Avatar, Button, HStack, Icon, IconButton, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
@@ -41,7 +41,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
   const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chat.id, ImmutableOrderedSet<string>()));
   const account = useOwnAccount();
 
-  const { createChatMessage, markChatAsRead } = useChat(chat.id);
+  const { createChatMessage, markChatAsRead, acceptChat } = useChat(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);
@@ -50,6 +50,8 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
 
   const inputElem = useRef<HTMLTextAreaElement | null>(null);
+
+  const needsAcceptance = !chat.accepted && chat.created_by_account !== account?.id;
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
@@ -216,8 +218,37 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
 
   return (
     <Stack className='overflow-hidden flex flex-grow' onMouseOver={handleMouseOver}>
-      <div className='flex-grow h-full overflow-hidden'>
-        <ChatMessageList chatMessageIds={chatMessageIds} chat={chat} autosize />
+      <div className='flex-grow h-full overflow-hidden flex justify-center'>
+        {needsAcceptance ? (
+          <Stack justifyContent='center' alignItems='center' space={5} className='w-3/4 mx-auto'>
+            <Stack alignItems='center' space={2}>
+              <Avatar src={chat.account.avatar_static} size={75} />
+              <Text size='lg' align='center'>
+                <Text tag='span' weight='semibold'>@{chat.account.acct}</Text>
+                {' '}
+                <Text tag='span'>wants to start a chat with you</Text>
+              </Text>
+            </Stack>
+
+            <Stack space={2} className='w-full'>
+              <Button
+                theme='primary'
+                block
+                onClick={() => acceptChat.mutate()}
+                disabled={acceptChat.isLoading}
+              >
+                Accept
+              </Button>
+
+              <HStack alignItems='center' space={2} className='w-full'>
+                <Button theme='accent' block>Leave chat</Button>
+                <Button theme='secondary' block>Report</Button>
+              </HStack>
+            </Stack>
+          </Stack>
+        ) : (
+          <ChatMessageList chatMessageIds={chatMessageIds} chat={chat} autosize />
+        )}
       </div>
 
       <div className='mt-auto p-4 shadow-3xl'>
