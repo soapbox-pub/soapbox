@@ -111,7 +111,15 @@ const useChat = (chatId: string) => {
     },
   });
 
-  return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat };
+  const deleteChat = useMutation(() => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}`), {
+    onSuccess(response) {
+      setChat(null);
+      queryClient.invalidateQueries(['chats', 'messages', chatId]);
+      queryClient.invalidateQueries(['chats']);
+    },
+  });
+
+  return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
 };
 
 export { useChat, useChats, useChatMessages };

@@ -41,7 +41,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
   const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chat.id, ImmutableOrderedSet<string>()));
   const account = useOwnAccount();
 
-  const { createChatMessage, markChatAsRead, acceptChat } = useChat(chat.id);
+  const { createChatMessage, markChatAsRead, acceptChat, deleteChat } = useChat(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);
@@ -241,7 +241,15 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
               </Button>
 
               <HStack alignItems='center' space={2} className='w-full'>
-                <Button theme='accent' block>Leave chat</Button>
+                <Button
+                  theme='accent'
+                  block
+                  onClick={() => deleteChat.mutate()}
+                  disabled={deleteChat.isLoading}
+                >
+                  Leave chat
+                </Button>
+
                 <Button theme='secondary' block>Report</Button>
               </HStack>
             </Stack>
