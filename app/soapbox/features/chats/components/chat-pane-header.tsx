@@ -8,10 +8,12 @@ interface IChatPaneHeader {
   onToggle(): void
   title: string | React.ReactNode
   unreadCount?: number
+  secondaryAction?(): void
+  secondaryActionIcon?: string
 }
 
 const ChatPaneHeader = (props: IChatPaneHeader) => {
-  const { onToggle, isOpen, isToggleable = true, title, unreadCount } = props;
+  const { onToggle, isOpen, isToggleable = true, title, unreadCount, secondaryAction, secondaryActionIcon } = props;
 
   const ButtonComp = isToggleable ? 'button' : 'div';
   const buttonProps: HTMLAttributes<HTMLButtonElement | HTMLDivElement> = {};
@@ -42,11 +44,21 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
         )}
       </ButtonComp>
 
-      <IconButton
-        onClick={onToggle}
-        src={isOpen ? require('@tabler/icons/chevron-down.svg') : require('@tabler/icons/chevron-up.svg')}
-        iconClassName='w-5 h-5 text-gray-600'
-      />
+      <HStack space={2} alignItems='center'>
+        {secondaryAction ? (
+          <IconButton
+            onClick={secondaryAction}
+            src={secondaryActionIcon as string}
+            iconClassName='w-5 h-5 text-gray-600'
+          />
+        ) : null}
+
+        <IconButton
+          onClick={onToggle}
+          src={isOpen ? require('@tabler/icons/chevron-down.svg') : require('@tabler/icons/chevron-up.svg')}
+          iconClassName='w-5 h-5 text-gray-600'
+        />
+      </HStack>
     </HStack>
   );
 };

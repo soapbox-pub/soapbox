@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { useRef, useState } from 'react';
+import React, { MutableRefObject, useRef, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import {
@@ -31,13 +31,14 @@ interface IChatBox {
   chat: IChat,
   onSetInputRef: (el: HTMLTextAreaElement) => void,
   autosize?: boolean,
+  inputRef?: MutableRefObject<HTMLTextAreaElement>
 }
 
 /**
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
-const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
+const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chat.id, ImmutableOrderedSet<string>()));
@@ -128,6 +129,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
       };
 
       submitMessage.mutate({ chatId: chat.id, content });
+      acceptChat.mutate();
     }
   };
 
@@ -253,7 +255,10 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
               <Button
                 theme='primary'
                 block
-                onClick={() => acceptChat.mutate()}
+                onClick={() => {
+                  acceptChat.mutate();
+                  inputRef?.current?.focus();
+                }}
                 disabled={acceptChat.isLoading}
               >
                 Accept
@@ -289,6 +294,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize }) => {
             <Textarea
               rows={1}
               autoFocus
+              ref={inputRef}
               placeholder={intl.formatMessage(messages.placeholder)}
               onKeyDown={handleKeyDown}
               value={content}

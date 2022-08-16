@@ -3,10 +3,9 @@ import React from 'react';
 
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 
-import { randomIntFromInterval, generateText } from '../utils';
+import { randomIntFromInterval } from '../utils';
 
 import PlaceholderAvatar from './placeholder_avatar';
-import PlaceholderDisplayName from './placeholder_display_name';
 
 /** Fake chat to display while data is loading. */
 const PlaceholderChat = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {

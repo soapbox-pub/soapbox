@@ -25,7 +25,7 @@ import { Chat } from 'soapbox/types/entities';
 import ChatList from './chat-list';
 import ChatPaneHeader from './chat-pane-header';
 import ChatWindow from './chat-window';
-import { Pane, WindowState } from './ui';
+import { Pane } from './ui';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Type a name' },
@@ -53,7 +53,7 @@ const ChatPane = () => {
   const dispatch = useAppDispatch();
   const debounce = useDebounce;
 
-  const { chat, setChat } = useChatContext();
+  const { chat, setChat, isOpen, toggleChatPane } = useChatContext();
 
   const [value, setValue] = useState<string>();
   const debouncedValue = debounce(value as string, 300);
@@ -62,10 +62,8 @@ const ChatPane = () => {
   const { data: accounts } = useAccountSearch(debouncedValue);
 
   const panes = useAppSelector((state) => normalizeChatPanes(state));
-  const mainWindowState = useSettings().getIn(['chats', 'mainWindow']) as WindowState;
   const unreadCount = sumBy(chats, (chat) => chat.unread);
 
-  const open = mainWindowState === 'open';
   const isSearching = accounts && accounts.length > 0;
   const hasSearchValue = value && value.length > 0;
 
@@ -86,13 +84,6 @@ const ChatPane = () => {
     if (hasSearchValue) {
       setValue('');
     }
-  };
-
-  const handleMainWindowToggle = () => {
-    if (mainWindowState === 'open') {
-      setChat(null);
-    }
-    dispatch(toggleMainWindow());
   };
 
   const renderBody = () => {
@@ -163,14 +154,14 @@ const ChatPane = () => {
 
   return (
     <div>
-      <Pane windowState={mainWindowState} index={0} main>
+      <Pane isOpen={isOpen} index={0} main>
         {chat?.id ? (
-          <ChatWindow chat={chat} closeChat={() => setChat(null)} closePane={handleMainWindowToggle} />
+          <ChatWindow />
         ) : (
           <>
-            <ChatPaneHeader title='Messages' unreadCount={unreadCount} isOpen={open} onToggle={handleMainWindowToggle} />
+            <ChatPaneHeader title='Messages' unreadCount={unreadCount} isOpen={isOpen} onToggle={toggleChatPane} />
 
-            {open ? (
+            {isOpen ? (
               <Stack space={4} className='flex-grow h-full'>
                 <div className='px-4'>
                   <Input
