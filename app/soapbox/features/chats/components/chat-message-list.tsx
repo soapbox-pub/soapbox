@@ -13,9 +13,10 @@ import { createSelector } from 'reselect';
 
 import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
-import { initReportById } from 'soapbox/actions/reports';
-import { Avatar, HStack, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { initReport, initReportById } from 'soapbox/actions/reports';
+import { Avatar, Button, HStack, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { useChatContext } from 'soapbox/contexts/chat-context';
 import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -24,6 +25,8 @@ import { useAppSelector, useAppDispatch, useRefEventHandler, useOwnAccount } fro
 import { IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
+
+import ChatMessageListIntro from './chat-message-list-intro';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
@@ -83,12 +86,13 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   const [initialLoad, setInitialLoad] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const { deleteChatMessage } = useChat(chat.id);
+  const { needsAcceptance } = useChatContext();
+
+  const { deleteChatMessage, acceptChat, deleteChat } = useChat(chat.id);
   const { data: chatMessages, isLoading, isFetching, isFetched, fetchNextPage, isFetchingNextPage, isPlaceholderData } = useChatMessages(chat.id);
   const formattedChatMessages = chatMessages || [];
 
   const me = useAppSelector(state => state.me);
-
 
   const node = useRef<HTMLDivElement>(null);
   const messagesEnd = useRef<HTMLDivElement>(null);
@@ -96,6 +100,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   const scrollBottom = useRef<number | undefined>(undefined);
 
   const initialCount = useMemo(() => formattedChatMessages.length, []);
+
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
@@ -399,7 +404,11 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   }
 
   return (
-    <div className='h-full flex flex-col px-4 flex-grow overflow-y-scroll' onScroll={handleScroll} ref={node}> {/* style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} */}
+    <div className='h-full flex flex-col px-4 flex-grow overflow-y-scroll space-y-6' onScroll={handleScroll} ref={node}> {/* style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} */}
+      {!isLoading ? (
+        <ChatMessageListIntro />
+      ) : null}
+
       <div className='flex-grow flex flex-col justify-end space-y-4'>
         {isLoading ? (
           <>

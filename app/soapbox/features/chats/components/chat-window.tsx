@@ -10,7 +10,7 @@ import ChatSettings from './chat-settings';
 
 /** Floating desktop chat window. */
 const ChatWindow = () => {
-  const { chat, setChat, isOpen, isEditing, setEditing, toggleChatPane } = useChatContext();
+  const { chat, setChat, isOpen, isEditing, needsAcceptance, setEditing, toggleChatPane } = useChatContext();
 
   const inputRef = useRef<HTMLTextAreaElement>();
 
@@ -22,6 +22,14 @@ const ChatWindow = () => {
   };
 
   const openChatSettings = () => setEditing(true);
+
+  const secondaryAction = () => {
+    if (needsAcceptance) {
+      return undefined;
+    }
+
+    return isOpen ? openChatSettings : openAndFocusChat;
+  };
 
   if (!chat) return null;
 
@@ -58,7 +66,7 @@ const ChatWindow = () => {
             </HStack>
           </HStack>
         }
-        secondaryAction={isOpen ? openChatSettings : openAndFocusChat}
+        secondaryAction={secondaryAction()}
         secondaryActionIcon={isOpen ? require('@tabler/icons/info-circle.svg') : require('@tabler/icons/edit.svg')}
         isToggleable={!isOpen}
         isOpen={isOpen}

@@ -44,7 +44,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
   const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chat.id, ImmutableOrderedSet<string>()));
   const account = useOwnAccount();
 
-  const { createChatMessage, markChatAsRead, acceptChat, deleteChat } = useChat(chat.id);
+  const { createChatMessage, markChatAsRead, acceptChat } = useChat(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);
@@ -53,8 +53,6 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
 
   const inputElem = useRef<HTMLTextAreaElement | null>(null);
-
-  const needsAcceptance = !chat.accepted && chat.created_by_account !== account?.id;
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
@@ -188,23 +186,6 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
     });
   };
 
-  const handleLeaveChat = () => {
-    dispatch(openModal('CONFIRM', {
-      heading: 'Leave Chat',
-      message: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.',
-      confirm: 'Leave Chat',
-      confirmationTheme: 'primary',
-      onConfirm: () => {
-        deleteChat.mutate();
-      },
-    }));
-  };
-
-  const handleReportChat = () => {
-    dispatch(initReport(chat.account));
-    acceptChat.mutate();
-  };
-
   const renderAttachment = () => {
     if (!attachment) return null;
 
@@ -240,53 +221,8 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
   return (
     <Stack className='overflow-hidden flex flex-grow' onMouseOver={handleMouseOver}>
       <div className='flex-grow h-full overflow-hidden flex justify-center'>
-        {needsAcceptance ? (
-          <Stack justifyContent='center' alignItems='center' space={5} className='w-3/4 mx-auto'>
-            <Stack alignItems='center' space={2}>
-              <Avatar src={chat.account.avatar_static} size={75} />
-              <Text size='lg' align='center'>
-                <Text tag='span' weight='semibold'>@{chat.account.acct}</Text>
-                {' '}
-                <Text tag='span'>wants to start a chat with you</Text>
-              </Text>
-            </Stack>
-
-            <Stack space={2} className='w-full'>
-              <Button
-                theme='primary'
-                block
-                onClick={() => {
-                  acceptChat.mutate();
-                  inputRef?.current?.focus();
-                }}
-                disabled={acceptChat.isLoading}
-              >
-                Accept
-              </Button>
-
-              <HStack alignItems='center' space={2} className='w-full'>
-                <Button
-                  theme='accent'
-                  block
-                  onClick={handleLeaveChat}
-                >
-                  Leave chat
-                </Button>
-
-                <Button
-                  theme='secondary'
-                  block
-                  onClick={handleReportChat}
-                >
-                  Report
-                </Button>
-              </HStack>
-            </Stack>
-          </Stack>
-        ) : (
-          <ChatMessageList chatMessageIds={chatMessageIds} chat={chat} autosize />
-        )}
-      </div>
+        <ChatMessageList chatMessageIds={chatMessageIds} chat={chat} autosize />
+      </div >
 
       <div className='mt-auto p-4 shadow-3xl'>
         <HStack alignItems='center' justifyContent='between' space={4}>
@@ -312,7 +248,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
           />
         </HStack>
       </div>
-    </Stack>
+    </Stack >
     //   {renderAttachment()}
     //   {isUploading && (
     //     <UploadProgress progress={uploadProgress * 100} />

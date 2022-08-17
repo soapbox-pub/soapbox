@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { toggleMainWindow } from 'soapbox/actions/chats';
-import { useSettings } from 'soapbox/hooks';
+import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
 import type { IChat } from 'soapbox/queries/chats';
 
@@ -12,23 +12,35 @@ const ChatContext = createContext<any>({
   chat: null,
   isOpen: false,
   isEditing: false,
+  needsAcceptance: false,
 });
 
 const ChatProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch();
   const settings = useSettings();
+  const account = useOwnAccount();
 
   const [chat, setChat] = useState<IChat | null>(null);
   const [isEditing, setEditing] = useState<boolean>(false);
 
   const mainWindowState = settings.getIn(['chats', 'mainWindow']) as WindowState;
-
+  const needsAcceptance = !chat?.accepted && chat?.created_by_account !== account?.id;
   const isOpen = mainWindowState === 'open';
 
   const toggleChatPane = () => dispatch(toggleMainWindow());
 
+  const value = useMemo(() => ({
+    chat,
+    setChat,
+    needsAcceptance,
+    isOpen,
+    isEditing,
+    setEditing,
+    toggleChatPane,
+  }), [chat, needsAcceptance, isOpen, isEditing]);
+
   return (
-    <ChatContext.Provider value={{ chat, setChat, isOpen, isEditing, setEditing, toggleChatPane }}>
+    <ChatContext.Provider value={value}>
       {children}
     </ChatContext.Provider>
   );
@@ -38,6 +50,7 @@ interface IChatContext {
   chat: IChat | null
   isOpen: boolean
   isEditing: boolean
+  needsAcceptance: boolean
   setChat: React.Dispatch<React.SetStateAction<IChat | null>>
   setEditing: React.Dispatch<React.SetStateAction<boolean>>
   toggleChatPane(): void

@@ -93,7 +93,7 @@ const useChats = () => {
 
 const useChat = (chatId: string) => {
   const api = useApi();
-  const { setChat } = useChatContext();
+  const { setChat, setEditing } = useChatContext();
 
   const markChatAsRead = () => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`);
 
@@ -114,6 +114,7 @@ const useChat = (chatId: string) => {
   const deleteChat = useMutation(() => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}`), {
     onSuccess(response) {
       setChat(null);
+      setEditing(false);
       queryClient.invalidateQueries(['chats', 'messages', chatId]);
       queryClient.invalidateQueries(['chats']);
     },
