@@ -106,7 +106,7 @@ const ChatPane = () => {
                     <Text weight='semibold' truncate>{account.display_name}</Text>
                     {account.verified && <VerificationBadge />}
                   </div>
-                  <Text theme='muted' truncate>{account.acct}</Text>
+                  <Text theme='muted' truncate>@{account.acct}</Text>
                 </Stack>
               </HStack>
             </button>
@@ -128,10 +128,10 @@ const ChatPane = () => {
 
                 <Stack alignItems='start'>
                   <div className='flex items-center space-x-1 flex-grow'>
-                    <Text weight='semibold' truncate>{chat.account?.display_name}</Text>
+                    <Text weight='bold' size='sm' truncate>{chat.account?.display_name}</Text>
                     {chat.account?.verified && <VerificationBadge />}
                   </div>
-                  <Text theme='muted' truncate>{chat.account?.acct}</Text>
+                  <Text size='sm' weight='medium' theme='muted' truncate>@{chat.account?.acct}</Text>
                 </Stack>
               </HStack>
             </button>

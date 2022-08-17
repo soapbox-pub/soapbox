@@ -11,13 +11,16 @@ type WindowState = 'open' | 'minimized';
 const ChatContext = createContext<any>({
   chat: null,
   isOpen: false,
+  isEditing: false,
 });
 
 const ChatProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch();
   const settings = useSettings();
 
-  const [chat, setChat] = useState<IChat | null>();
+  const [chat, setChat] = useState<IChat | null>(null);
+  const [isEditing, setEditing] = useState<boolean>(false);
+
   const mainWindowState = settings.getIn(['chats', 'mainWindow']) as WindowState;
 
   const isOpen = mainWindowState === 'open';
@@ -25,14 +28,18 @@ const ChatProvider: React.FC = ({ children }) => {
   const toggleChatPane = () => dispatch(toggleMainWindow());
 
   return (
-    <ChatContext.Provider value={{ chat, setChat, isOpen, toggleChatPane }}>{children}</ChatContext.Provider>
+    <ChatContext.Provider value={{ chat, setChat, isOpen, isEditing, setEditing, toggleChatPane }}>
+      {children}
+    </ChatContext.Provider>
   );
 };
 
 interface IChatContext {
   chat: IChat | null
   isOpen: boolean
+  isEditing: boolean
   setChat: React.Dispatch<React.SetStateAction<IChat | null>>
+  setEditing: React.Dispatch<React.SetStateAction<boolean>>
   toggleChatPane(): void
 }
 

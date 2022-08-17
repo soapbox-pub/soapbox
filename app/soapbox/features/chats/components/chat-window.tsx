@@ -6,20 +6,28 @@ import { useChatContext } from 'soapbox/contexts/chat-context';
 
 import ChatBox from './chat-box';
 import ChatPaneHeader from './chat-pane-header';
+import ChatSettings from './chat-settings';
 
 /** Floating desktop chat window. */
 const ChatWindow = () => {
-  const { chat, setChat, isOpen, toggleChatPane } = useChatContext();
+  const { chat, setChat, isOpen, isEditing, setEditing, toggleChatPane } = useChatContext();
 
   const inputRef = useRef<HTMLTextAreaElement>();
 
   const closeChat = () => setChat(null);
+
   const openAndFocusChat = () => {
     toggleChatPane();
     inputRef.current?.focus();
   };
 
+  const openChatSettings = () => setEditing(true);
+
   if (!chat) return null;
+
+  if (isEditing) {
+    return <ChatSettings />;
+  }
 
   return (
     <>
@@ -42,16 +50,16 @@ const ChatWindow = () => {
 
               <Stack alignItems='start'>
                 <div className='flex items-center space-x-1 flex-grow'>
-                  <Text weight='semibold' truncate>{chat.account.display_name}</Text>
+                  <Text size='sm' weight='bold' truncate>{chat.account.display_name}</Text>
                   {chat.account.verified && <VerificationBadge />}
                 </div>
-                <Text theme='muted' truncate>{chat.account.acct}</Text>
+                <Text size='sm' weight='medium' theme='primary' truncate>@{chat.account.acct}</Text>
               </Stack>
             </HStack>
           </HStack>
         }
-        secondaryAction={isOpen ? undefined : openAndFocusChat}
-        secondaryActionIcon={isOpen ? undefined : require('@tabler/icons/edit.svg')}
+        secondaryAction={isOpen ? openChatSettings : openAndFocusChat}
+        secondaryActionIcon={isOpen ? require('@tabler/icons/info-circle.svg') : require('@tabler/icons/edit.svg')}
         isToggleable={!isOpen}
         isOpen={isOpen}
         onToggle={toggleChatPane}
