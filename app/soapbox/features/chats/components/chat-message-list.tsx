@@ -18,7 +18,7 @@ import { Avatar, Button, HStack, IconButton, Spinner, Stack, Text } from 'soapbo
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import emojify from 'soapbox/features/emoji/emoji';
-import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
+import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useRefEventHandler, useOwnAccount } from 'soapbox/hooks';
@@ -412,11 +412,11 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
       <div className='flex-grow flex flex-col justify-end space-y-4'>
         {isLoading ? (
           <>
-            <PlaceholderChat isMyMessage />
-            <PlaceholderChat />
-            <PlaceholderChat isMyMessage />
-            <PlaceholderChat isMyMessage />
-            <PlaceholderChat />
+            <PlaceholderChatMessage isMyMessage />
+            <PlaceholderChatMessage />
+            <PlaceholderChatMessage isMyMessage />
+            <PlaceholderChatMessage isMyMessage />
+            <PlaceholderChatMessage />
           </>
         ) : (
           formattedChatMessages.reduce((acc: any, curr: any, idx: number) => {
