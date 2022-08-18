@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-type ButtonThemes = 'primary' | 'secondary' | 'tertiary' | 'accent' | 'danger' | 'transparent'
+type ButtonThemes = 'primary' | 'secondary' | 'tertiary' | 'accent' | 'danger' | 'transparent' | 'outline'
 type ButtonSizes = 'sm' | 'md' | 'lg'
 
 type IButtonStyles = {
@@ -27,6 +27,7 @@ const useButtonStyles = ({
     accent: 'border-transparent bg-secondary-500 hover:bg-secondary-300 focus:bg-secondary-500 text-gray-100 focus:ring-secondary-300',
     danger: 'border-transparent bg-danger-600 text-gray-100 hover:bg-danger-500 dark:hover:bg-danger-700 focus:bg-danger-600 dark:focus:bg-danger-600',
     transparent: 'border-transparent text-gray-800 backdrop-blur-sm bg-white/75 hover:bg-white/80',
+    outline: 'border-gray-100 border-2 bg-transparent text-gray-100 hover:bg-white/10',
   };
 
   const sizes = {
