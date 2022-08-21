@@ -49,6 +49,7 @@ export interface IStatus {
   hoverable?: boolean,
   variant?: 'default' | 'rounded',
   withDismiss?: boolean,
+  accountAction?: React.ReactElement,
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -68,6 +69,7 @@ const Status: React.FC<IStatus> = (props) => {
     variant = 'rounded',
     withDismiss,
   } = props;
+
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -295,6 +297,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
 
+  const accountAction = props.accountAction || reblogElement;
+
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
@@ -335,8 +339,8 @@ const Status: React.FC<IStatus> = (props) => {
               id={String(actualStatus.getIn(['account', 'id']))}
               timestamp={actualStatus.created_at}
               timestampUrl={statusUrl}
-              action={reblogElement}
-              hideActions={!reblogElement}
+              action={accountAction}
+              hideActions={!accountAction}
               showEdit={!!actualStatus.edited_at}
               showProfileHoverCard={hoverable}
               withLinkToProfile={hoverable}

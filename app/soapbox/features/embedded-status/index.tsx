@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { fetchStatus } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import SiteLogo from 'soapbox/components/site-logo';
 import Status from 'soapbox/components/status';
 import { Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -43,11 +44,17 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
     }, '*');
   }, [status, loading]);
 
+  const logo = (
+    <div className='flex align-middle justify-center ml-4'>
+      <SiteLogo className='h-10' />
+    </div>
+  );
+
   const renderInner = () => {
     if (loading) {
       return <Spinner />;
     } else if (status) {
-      return <Status status={status} variant='default' />;
+      return <Status status={status} accountAction={logo} variant='default' />;
     } else {
       return <MissingIndicator nested />;
     }
