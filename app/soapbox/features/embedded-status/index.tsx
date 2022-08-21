@@ -45,11 +45,16 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
   };
 
   return (
-    <div className='bg-white dark:bg-gray-800 pointer-events-none'>
-      <div className='p-4 sm:p-6 max-w-3xl'>
+    <a
+      className='bg-white dark:bg-gray-800'
+      href={status?.url || '#'}
+      onClick={e => e.stopPropagation()}
+      target='_blank'
+    >
+      <div className='p-4 sm:p-6 max-w-3xl pointer-events-none'>
         {renderInner()}
       </div>
-    </div>
+    </a>
   );
 };
 
