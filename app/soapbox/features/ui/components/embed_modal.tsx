@@ -1,17 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import api from 'soapbox/api';
 import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
-import type { Status } from 'soapbox/types/entities';
+import type { RootState } from 'soapbox/store';
+
+const fetchEmbed = (url: string) => {
+  return (dispatch: any, getState: () => RootState) => {
+    return api(getState).get('/api/oembed', { params: { url } });
+  };
+};
 
 interface IEmbedModal {
-  status: Status,
+  url: string,
+  onError: (error: any) => void,
 }
 
-const EmbedModal: React.FC<IEmbedModal> = ({ status }) => {
-  const url = `${location.origin}/embed/${status.id}`;
-  const embed = `<iframe src="${url}" width="100%" height="300" frameborder="0" />`;
+const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
+  const dispatch = useAppDispatch();
+
+  const iframe = useRef<HTMLIFrameElement>(null);
+  const [oembed, setOembed] = useState<any>(null);
+
+  useEffect(() => {
+
+    dispatch(fetchEmbed(url)).then(({ data }) => {
+      if (!iframe.current?.contentWindow) return;
+      setOembed(data);
+
+      const iframeDocument = iframe.current.contentWindow.document;
+
+      iframeDocument.open();
+      iframeDocument.write(data.html);
+      iframeDocument.close();
+
+      const innerFrame = iframeDocument.querySelector('iframe');
+
+      iframeDocument.body.style.margin = '0';
+
+      if (innerFrame) {
+        innerFrame.width = '100%';
+      }
+    }).catch(error => {
+      onError(error);
+    });
+  }, [!!iframe.current]);
 
   const handleInputClick: React.MouseEventHandler<HTMLInputElement> = (e) => {
     e.currentTarget.select();
@@ -28,12 +63,18 @@ const EmbedModal: React.FC<IEmbedModal> = ({ status }) => {
           <Input
             type='text'
             readOnly
-            value={embed}
+            value={oembed?.html || ''}
             onClick={handleInputClick}
           />
         </Stack>
 
-        <div dangerouslySetInnerHTML={{ __html: embed }} />
+        <iframe
+          className='inline-flex rounded-xl overflow-hidden max-w-full'
+          frameBorder='0'
+          ref={iframe}
+          sandbox='allow-same-origin'
+          title='preview'
+        />
       </Stack>
     </Modal>
   );

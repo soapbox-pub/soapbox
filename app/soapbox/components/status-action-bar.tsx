@@ -284,7 +284,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
-      status,
+      url: status.get('url'),
       onError: (error: any) => dispatch(showAlertForError(error)),
     }));
   };
@@ -362,11 +362,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/link.svg'),
       });
 
-      menu.push({
-        text: intl.formatMessage(messages.embed),
-        action: handleEmbed,
-        icon: require('@tabler/icons/share.svg'),
-      });
+      if (features.embeds) {
+        menu.push({
+          text: intl.formatMessage(messages.embed),
+          action: handleEmbed,
+          icon: require('@tabler/icons/share.svg'),
+        });
+      }
     }
 
     if (!me) {
