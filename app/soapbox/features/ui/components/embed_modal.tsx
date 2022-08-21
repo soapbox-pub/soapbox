@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import api from 'soapbox/api';
+import SafeEmbed from 'soapbox/components/safe-embed';
 import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -20,33 +21,17 @@ interface IEmbedModal {
 
 const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
   const dispatch = useAppDispatch();
-
-  const iframe = useRef<HTMLIFrameElement>(null);
-  const [oembed, setOembed] = useState<any>(null);
+  const [html, setHtml] = useState('');
 
   useEffect(() => {
-
     dispatch(fetchEmbed(url)).then(({ data }) => {
-      if (!iframe.current?.contentWindow) return;
-      setOembed(data);
-
-      const iframeDocument = iframe.current.contentWindow.document;
-
-      iframeDocument.open();
-      iframeDocument.write(data.html);
-      iframeDocument.close();
-
-      const innerFrame = iframeDocument.querySelector('iframe');
-
-      iframeDocument.body.style.margin = '0';
-
-      if (innerFrame) {
-        innerFrame.width = '100%';
+      if (data?.html) {
+        setHtml(data.html);
       }
     }).catch(error => {
       onError(error);
     });
-  }, [!!iframe.current]);
+  }, []);
 
   const handleInputClick: React.MouseEventHandler<HTMLInputElement> = (e) => {
     e.currentTarget.select();
@@ -63,17 +48,16 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
           <Input
             type='text'
             readOnly
-            value={oembed?.html || ''}
+            value={html}
             onClick={handleInputClick}
           />
         </Stack>
 
-        <iframe
+        <SafeEmbed
           className='inline-flex rounded-xl overflow-hidden max-w-full'
-          frameBorder='0'
-          ref={iframe}
           sandbox='allow-same-origin'
-          title='preview'
+          title='embedded-status'
+          html={html}
         />
       </Stack>
     </Modal>
