@@ -6,6 +6,7 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import Status from 'soapbox/components/status';
 import { Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { iframeId } from 'soapbox/iframe';
 import { makeGetStatus } from 'soapbox/selectors';
 
 interface IEmbeddedStatus {
@@ -33,6 +34,14 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
       .then(() => setLoading(false))
       .catch(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    window.parent.postMessage({
+      type: 'setHeight',
+      id: iframeId,
+      height: document.getElementsByTagName('html')[0].scrollHeight,
+    }, '*');
+  }, [status, loading]);
 
   const renderInner = () => {
     if (loading) {

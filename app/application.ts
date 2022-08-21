@@ -1,5 +1,8 @@
 import loadPolyfills from './soapbox/load_polyfills';
 
+// Load iframe event listener
+require('./soapbox/iframe');
+
 // @ts-ignore
 require.context('./images/', true);
 
