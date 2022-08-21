@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import api from 'soapbox/api';
 import SafeEmbed from 'soapbox/components/safe-embed';
 import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-
-import type { RootState } from 'soapbox/store';
-
-const fetchEmbed = (url: string) => {
-  return (dispatch: any, getState: () => RootState) => {
-    return api(getState).get('/api/oembed', { params: { url } });
-  };
-};
+import useEmbed from 'soapbox/queries/embed';
 
 interface IEmbedModal {
   url: string,
@@ -20,18 +11,13 @@ interface IEmbedModal {
 }
 
 const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
-  const dispatch = useAppDispatch();
-  const [html, setHtml] = useState('');
+  const { data: embed, error, isError } = useEmbed(url);
 
   useEffect(() => {
-    dispatch(fetchEmbed(url)).then(({ data }) => {
-      if (data?.html) {
-        setHtml(data.html);
-      }
-    }).catch(error => {
+    if (error && isError) {
       onError(error);
-    });
-  }, []);
+    }
+  }, [isError]);
 
   const handleInputClick: React.MouseEventHandler<HTMLInputElement> = (e) => {
     e.currentTarget.select();
@@ -48,7 +34,7 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
           <Input
             type='text'
             readOnly
-            value={html}
+            value={embed?.html || ''}
             onClick={handleInputClick}
           />
         </Stack>
@@ -57,7 +43,7 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
           className='inline-flex rounded-xl overflow-hidden max-w-full'
           sandbox='allow-same-origin'
           title='embedded-status'
-          html={html}
+          html={embed?.html}
         />
       </Stack>
     </Modal>
