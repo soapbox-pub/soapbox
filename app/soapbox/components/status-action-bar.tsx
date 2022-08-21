@@ -18,6 +18,7 @@ import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { isLocal } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -362,7 +363,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/link.svg'),
       });
 
-      if (features.embeds) {
+      if (features.embeds && isLocal(status.account as Account)) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: handleEmbed,
