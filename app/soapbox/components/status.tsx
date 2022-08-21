@@ -48,6 +48,7 @@ export interface IStatus {
   hideActionBar?: boolean,
   hoverable?: boolean,
   variant?: 'default' | 'rounded',
+  withDismiss?: boolean,
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -65,6 +66,7 @@ const Status: React.FC<IStatus> = (props) => {
     group,
     hideActionBar,
     variant = 'rounded',
+    withDismiss,
   } = props;
   const intl = useIntl();
   const history = useHistory();
@@ -181,7 +183,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   if (!status) return null;
-  let prepend, rebloggedByText, reblogElement, reblogElementMobile;
+  let rebloggedByText, reblogElement, reblogElementMobile;
 
   if (hidden) {
     return (
@@ -204,20 +206,6 @@ const Status: React.FC<IStatus> = (props) => {
           <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
         </div>
       </HotKeys>
-    );
-  }
-
-  if (featured) {
-    prepend = (
-      <div className='pt-4 px-4'>
-        <HStack alignItems='center' space={1}>
-          <Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
-
-          <Text size='sm' theme='muted' weight='medium'>
-            <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
-          </Text>
-        </HStack>
-      </div>
     );
   }
 
@@ -318,7 +306,17 @@ const Status: React.FC<IStatus> = (props) => {
         onClick={() => history.push(statusUrl)}
         role='link'
       >
-        {prepend}
+        {featured && (
+          <div className='pt-4 px-4'>
+            <HStack alignItems='center' space={1}>
+              <Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
+
+              <Text size='sm' theme='muted' weight='medium'>
+                <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+              </Text>
+            </HStack>
+          </div>
+        )}
 
         <Card
           variant={variant}
@@ -377,7 +375,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {!hideActionBar && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} />
+                <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
               </div>
             )}
           </div>

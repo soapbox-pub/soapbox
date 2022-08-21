@@ -442,7 +442,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           action: handleChatClick,
           icon: require('@tabler/icons/messages.svg'),
         });
-      } else {
+      } else if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: username }),
           action: handleDirectClick,
