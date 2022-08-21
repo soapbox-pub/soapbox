@@ -235,7 +235,7 @@ const Status: React.FC<IStatus> = (props) => {
     );
 
     reblogElementMobile = (
-      <div className='pb-5 -mt-2 sm:hidden truncate'>
+      <div className='sm:hidden truncate'>
         <NavLink
           to={`/@${status.getIn(['account', 'acct'])}`}
           onClick={(event) => event.stopPropagation()}
