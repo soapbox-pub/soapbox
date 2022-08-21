@@ -46,7 +46,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
 
   const logo = (
     <div className='flex align-middle justify-center ml-4'>
-      <SiteLogo className='h-10' />
+      <SiteLogo className='h-10 max-w-[128px]' />
     </div>
   );
 
