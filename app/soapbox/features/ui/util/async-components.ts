@@ -191,7 +191,7 @@ export function EditFederationModal() {
 }
 
 export function EmbedModal() {
-  return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed_modal');
+  return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed-modal');
 }
 
 export function ComponentModal() {
