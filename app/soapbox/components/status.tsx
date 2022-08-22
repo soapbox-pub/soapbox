@@ -237,7 +237,7 @@ const Status: React.FC<IStatus> = (props) => {
     );
 
     reblogElementMobile = (
-      <div className='sm:hidden truncate'>
+      <div className='pb-5 -mt-2 sm:hidden truncate'>
         <NavLink
           to={`/@${status.getIn(['account', 'acct'])}`}
           onClick={(event) => event.stopPropagation()}
@@ -325,6 +325,7 @@ const Status: React.FC<IStatus> = (props) => {
         <Card
           variant={variant}
           className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
+            'py-6 sm:p-5': variant === 'rounded',
             'status-reply': !!status.in_reply_to_id,
             muted,
             read: unread === false,
