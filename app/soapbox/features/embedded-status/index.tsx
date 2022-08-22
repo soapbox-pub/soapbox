@@ -46,7 +46,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
 
   const logo = (
     <div className='flex align-middle justify-center ml-4'>
-      <SiteLogo className='h-10 max-w-[128px]' />
+      <SiteLogo className='max-h-[20px] max-w-[112px]' />
     </div>
   );
 
@@ -62,7 +62,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
 
   return (
     <a
-      className='bg-white dark:bg-gray-800'
+      className='block bg-white dark:bg-primary-900'
       href={status?.url || '#'}
       onClick={e => e.stopPropagation()}
       target='_blank'
