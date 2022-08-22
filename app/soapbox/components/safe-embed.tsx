@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 interface ISafeEmbed {
   /** Styles for the outer frame element. */
@@ -19,6 +19,13 @@ const SafeEmbed: React.FC<ISafeEmbed> = ({
   html,
 }) => {
   const iframe = useRef<HTMLIFrameElement>(null);
+  const [height, setHeight] = useState<number | undefined>(undefined);
+
+  const handleMessage = useCallback((e: MessageEvent) => {
+    if (e.data?.type === 'setHeight') {
+      setHeight(e.data?.height);
+    }
+  }, []);
 
   useEffect(() => {
     const iframeDocument = iframe.current?.contentWindow?.document;
@@ -29,11 +36,19 @@ const SafeEmbed: React.FC<ISafeEmbed> = ({
       iframeDocument.close();
       iframeDocument.body.style.margin = '0';
 
+      iframe.current?.contentWindow?.addEventListener('message', handleMessage);
+
       const innerFrame = iframeDocument.querySelector('iframe');
       if (innerFrame) {
         innerFrame.width = '100%';
       }
     }
+
+    return () => {
+      if (iframeDocument) {
+        iframe.current?.contentWindow?.removeEventListener('message', handleMessage);
+      }
+    };
   }, [iframe.current, html]);
 
   return (
@@ -41,6 +56,7 @@ const SafeEmbed: React.FC<ISafeEmbed> = ({
       ref={iframe}
       className={className}
       sandbox={sandbox}
+      height={height}
       title={title}
     />
   );
