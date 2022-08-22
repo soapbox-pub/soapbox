@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { closeModal } from 'soapbox/actions/modals';
 import SafeEmbed from 'soapbox/components/safe-embed';
 import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 import useEmbed from 'soapbox/queries/embed';
 
 interface IEmbedModal {
@@ -11,6 +13,7 @@ interface IEmbedModal {
 }
 
 const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
+  const dispatch = useAppDispatch();
   const { data: embed, error, isError } = useEmbed(url);
 
   useEffect(() => {
@@ -23,29 +26,36 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
     e.currentTarget.select();
   };
 
+  const handleClose = () => {
+    dispatch(closeModal('EMBED'));
+  };
+
   return (
-    <Modal title={<FormattedMessage id='status.embed' defaultMessage='Embed' />}>
+    <Modal
+      title={<FormattedMessage id='status.embed' defaultMessage='Embed post' />}
+      onClose={handleClose}
+    >
       <Stack space={4}>
-        <Stack>
-          <Text theme='muted' size='sm'>
-            <FormattedMessage id='embed.instructions' defaultMessage='Embed this post on your website by copying the code below.' />
-          </Text>
+        <Text theme='muted'>
+          <FormattedMessage id='embed.instructions' defaultMessage='Embed this post on your website by copying the code below.' />
+        </Text>
 
-          <Input
-            type='text'
-            readOnly
-            value={embed?.html || ''}
-            onClick={handleInputClick}
-          />
-        </Stack>
-
-        <SafeEmbed
-          className='inline-flex rounded-xl overflow-hidden max-w-full'
-          sandbox='allow-same-origin allow-scripts'
-          title='embedded-status'
-          html={embed?.html}
+        <Input
+          type='text'
+          readOnly
+          value={embed?.html || ''}
+          onClick={handleInputClick}
         />
       </Stack>
+
+      <hr className='my-9' />
+
+      <SafeEmbed
+        className='rounded-xl overflow-hidden w-full'
+        sandbox='allow-same-origin allow-scripts'
+        title='embedded-status'
+        html={embed?.html}
+      />
     </Modal>
   );
 };
