@@ -619,7 +619,7 @@ class MediaGallery extends React.PureComponent {
             'left-1 top-1': visible || compact,
           })}
         >
-          {(sensitive | inReview) && (
+          {(sensitive || inReview) && (
             (visible || compact) ? (
               <Button
                 text={intl.formatMessage(messages.toggle_visible)}
