@@ -48,7 +48,7 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
         />
       </Stack>
 
-      <hr className='my-9' />
+      <hr className='my-9 dark:border-primary-800' />
 
       <SafeEmbed
         className='rounded-xl overflow-hidden w-full'
