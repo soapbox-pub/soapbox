@@ -7,6 +7,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
@@ -263,9 +264,14 @@ class Item extends React.PureComponent {
 
 }
 
-const mapStateToMediaGalleryProps = state => ({
-  displayMedia: getSettings(state).get('displayMedia'),
-});
+const mapStateToMediaGalleryProps = state => {
+  const { links } = getSoapboxConfig(state);
+
+  return {
+    displayMedia: getSettings(state).get('displayMedia'),
+    links,
+  };
+};
 
 export default @connect(mapStateToMediaGalleryProps)
 @injectIntl
@@ -285,6 +291,7 @@ class MediaGallery extends React.PureComponent {
     onToggleVisibility: PropTypes.func,
     displayMedia: PropTypes.string,
     compact: PropTypes.bool,
+    links: ImmutablePropTypes.map,
   };
 
   static defaultProps = {
@@ -568,7 +575,7 @@ class MediaGallery extends React.PureComponent {
   }
 
   render() {
-    const { media, intl, sensitive, compact, inReview } = this.props;
+    const { media, intl, sensitive, compact, inReview, links } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
 
@@ -638,24 +645,28 @@ class MediaGallery extends React.PureComponent {
                     <Text theme='white' size='sm' weight='medium'>
                       {summary}
 
-                      {' '}
-                      <FormattedMessage
-                        id='status.in_review_summary.contact'
-                        defaultMessage='If you believe this is in error please {link}.'
-                        values={{
-                          link: (
-                            <a
-                              className='underline text-inherit'
-                              href='/hello'
-                            >
-                              <FormattedMessage
-                                id='status.in_review_summary.link'
-                                defaultMessage='Contact Support'
-                              />
-                            </a>
-                          ),
-                        }}
-                      />
+                      {links.get('support') && (
+                        <>
+                          {' '}
+                          <FormattedMessage
+                            id='status.in_review_summary.contact'
+                            defaultMessage='If you believe this is in error please {link}.'
+                            values={{
+                              link: (
+                                <a
+                                  className='underline text-inherit'
+                                  href={links.get('support')}
+                                >
+                                  <FormattedMessage
+                                    id='status.in_review_summary.link'
+                                    defaultMessage='Contact Support'
+                                  />
+                                </a>
+                              ),
+                            }}
+                          />
+                        </>
+                      )}
                     </Text>
                   </div>
 
