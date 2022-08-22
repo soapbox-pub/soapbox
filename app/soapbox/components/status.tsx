@@ -15,10 +15,11 @@ import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import StatusActionBar from './status-action-bar';
+import StatusCard from './status-card';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
-import { Card, HStack, Text } from './ui';
+import { HStack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
 import type {
@@ -322,16 +323,7 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
         )}
 
-        <Card
-          variant={variant}
-          className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
-            'py-6 sm:p-5': variant === 'rounded',
-            'status-reply': !!status.in_reply_to_id,
-            muted,
-            read: unread === false,
-          })}
-          data-id={status.id}
-        >
+        <StatusCard variant={variant} data-id={status.id}>
           {reblogElementMobile}
 
           <div className='mb-4'>
@@ -384,7 +376,7 @@ const Status: React.FC<IStatus> = (props) => {
               </div>
             )}
           </div>
-        </Card>
+        </StatusCard>
       </div>
     </HotKeys>
   );

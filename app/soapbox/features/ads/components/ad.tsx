@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import StatusCard from 'soapbox/components/status-card';
 import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import StatusCard from 'soapbox/features/status/components/card';
+import LinkPreview from 'soapbox/features/status/components/card';
 import { useAppSelector } from 'soapbox/hooks';
 
 import type { Card as CardEntity } from 'soapbox/types/entities';
@@ -53,7 +54,7 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
 
   return (
     <div className='relative'>
-      <Card className='py-6 sm:p-5' variant='rounded'>
+      <StatusCard>
         <Stack space={4}>
           <HStack alignItems='center' space={3}>
             <Avatar src={instance.thumbnail} size={42} />
@@ -88,9 +89,9 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
             </Stack>
           </HStack>
 
-          <StatusCard card={card} onOpenMedia={() => {}} horizontal />
+          <LinkPreview card={card} onOpenMedia={() => {}} horizontal />
         </Stack>
-      </Card>
+      </StatusCard>
 
       {showInfo && (
         <div ref={infobox} className='absolute top-5 right-5 max-w-[234px]'>

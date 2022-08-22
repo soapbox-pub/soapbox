@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 
+import StatusCard from 'soapbox/components/status-card';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { Card, HStack } from 'soapbox/components/ui';
+import { HStack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
@@ -59,10 +60,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
   return (
     <div className={classNames('opacity-50', className)}>
       <div className={classNames('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
-        <Card
-          className={classNames('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
-          variant={thread ? 'default' : 'rounded'}
-        >
+        <StatusCard variant={thread ? 'default' : 'rounded'}>
           <div className='mb-4'>
             <HStack justifyContent='between' alignItems='start'>
               <AccountContainer
@@ -92,7 +90,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
           {/* TODO */}
           {/* <PlaceholderActionBar /> */}
-        </Card>
+        </StatusCard>
       </div>
     </div>
   );
