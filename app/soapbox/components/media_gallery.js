@@ -587,15 +587,20 @@ class MediaGallery extends React.PureComponent {
       />
     ));
 
-    let warning;
+    let warning, summary;
 
     if (sensitive) {
       warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
     } else if (inReview) {
-      // warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
-      warning = 'Content Under Review';
+      warning = <FormattedMessage id='status.in_review_warning' defaultMessage='Content Under Review' />;
     } else {
       warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
+    }
+
+    if (inReview) {
+      summary = <FormattedMessage id='status.in_review_summary.summary' defaultMessage='This Truth has been sent to Moderation for review and is only visible to you.' />;
+    } else {
+      summary = <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />;
     }
 
     return (
@@ -617,22 +622,40 @@ class MediaGallery extends React.PureComponent {
                 size='sm'
               />
             ) : (
-              <button
-                type='button'
-                onClick={this.handleOpen}
+              <div
+                onClick={(e) => e.stopPropagation()}
                 className={
                   classNames({
-                    'backdrop-blur-sm rounded-lg w-full h-full border-0 flex items-center justify-center': true,
+                    'cursor-default backdrop-blur-sm rounded-lg w-full h-full border-0 flex items-center justify-center': true,
                     'bg-gray-800/75': !inReview,
                     'bg-danger-600/75': inReview,
                   })
                 }
               >
-                <div className='text-center space-y-4'>
+                <div className='text-center w-3/4 mx-auto space-y-4'>
                   <div className='space-y-1'>
                     <Text theme='white' weight='semibold'>{warning}</Text>
-                    <Text theme='white' size='sm'>
-                      <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
+                    <Text theme='white' size='sm' weight='medium'>
+                      {summary}
+
+                      {' '}
+                      <FormattedMessage
+                        id='status.in_review_summary.contact'
+                        defaultMessage='If you believe this is in error please {link}.'
+                        values={{
+                          link: (
+                            <a
+                              className='underline text-inherit'
+                              href='/hello'
+                            >
+                              <FormattedMessage
+                                id='status.in_review_summary.link'
+                                defaultMessage='Contact Support'
+                              />
+                            </a>
+                          ),
+                        }}
+                      />
                     </Text>
                   </div>
 
@@ -641,11 +664,12 @@ class MediaGallery extends React.PureComponent {
                     theme='outline'
                     size='sm'
                     icon={require('@tabler/icons/eye.svg')}
+                    onClick={this.handleOpen}
                   >
                     <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
                   </Button>
                 </div>
-              </button>
+              </div>
             )
           )}
         </div>
