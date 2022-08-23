@@ -26,11 +26,11 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
 
   const [loading, setLoading] = useState(true);
 
-  // Prevent navigation for UX and security.
-  // https://stackoverflow.com/a/71531211
-  history.block();
-
   useEffect(() => {
+    // Prevent navigation for UX and security.
+    // https://stackoverflow.com/a/71531211
+    history.block();
+
     dispatch(fetchStatus(params.statusId))
       .then(() => setLoading(false))
       .catch(() => setLoading(false));
