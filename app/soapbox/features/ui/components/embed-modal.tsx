@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
 import SafeEmbed from 'soapbox/components/safe-embed';
-import { Modal, Stack, Text, Input } from 'soapbox/components/ui';
+import { Modal, Stack, Text, Input, Divider } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import useEmbed from 'soapbox/queries/embed';
 
@@ -48,7 +48,9 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
         />
       </Stack>
 
-      <hr className='my-9 dark:border-primary-800' />
+      <div className='py-9'>
+        <Divider />
+      </div>
 
       <SafeEmbed
         className='rounded-xl overflow-hidden w-full'
