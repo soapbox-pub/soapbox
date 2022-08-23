@@ -5,7 +5,7 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getActualStatus } from 'soapbox/utils/status';
@@ -102,7 +102,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <HStack justifyContent='between' alignItems='center' className='py-2'>
           <StatusInteractionBar status={actualStatus} />
 
-          <Stack space={1} alignItems='center'>
+          <HStack space={1} alignItems='center'>
             {statusTypeIcon}
 
             <span>
@@ -128,7 +128,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                 </>
               )}
             </span>
-          </Stack>
+          </HStack>
         </HStack>
       </div>
     </div>
