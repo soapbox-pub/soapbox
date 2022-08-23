@@ -18,7 +18,7 @@ import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
-import { HStack, Text } from './ui';
+import { Card, HStack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
 import type {
@@ -47,7 +47,9 @@ export interface IStatus {
   featured?: boolean,
   hideActionBar?: boolean,
   hoverable?: boolean,
+  variant?: 'default' | 'rounded',
   withDismiss?: boolean,
+  accountAction?: React.ReactElement,
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -64,8 +66,10 @@ const Status: React.FC<IStatus> = (props) => {
     unread,
     group,
     hideActionBar,
+    variant = 'rounded',
     withDismiss,
   } = props;
+
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -293,6 +297,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
 
+  const accountAction = props.accountAction || reblogElement;
+
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
@@ -316,8 +322,10 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
         )}
 
-        <div
+        <Card
+          variant={variant}
           className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
+            'py-6 sm:p-5': variant === 'rounded',
             'status-reply': !!status.in_reply_to_id,
             muted,
             read: unread === false,
@@ -332,8 +340,8 @@ const Status: React.FC<IStatus> = (props) => {
               id={String(actualStatus.getIn(['account', 'id']))}
               timestamp={actualStatus.created_at}
               timestampUrl={statusUrl}
-              action={reblogElement}
-              hideActions={!reblogElement}
+              action={accountAction}
+              hideActions={!accountAction}
               showEdit={!!actualStatus.edited_at}
               showProfileHoverCard={hoverable}
               withLinkToProfile={hoverable}
@@ -376,7 +384,7 @@ const Status: React.FC<IStatus> = (props) => {
               </div>
             )}
           </div>
-        </div>
+        </Card>
       </div>
     </HotKeys>
   );

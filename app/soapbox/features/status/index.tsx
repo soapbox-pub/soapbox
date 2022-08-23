@@ -380,9 +380,9 @@ const Thread: React.FC<IThread> = (props) => {
 
     return (
       <PendingStatus
-        className='thread__status'
         key={id}
         idempotencyKey={idempotencyKey}
+        thread
       />
     );
   };

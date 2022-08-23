@@ -60,7 +60,7 @@ const Settings = () => {
 
   return (
     <Column label={intl.formatMessage(messages.settings)} transparent withHeader={false}>
-      <Card variant='rounded'>
+      <Card className='space-y-4' variant='rounded'>
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.profile)} />
         </CardHeader>

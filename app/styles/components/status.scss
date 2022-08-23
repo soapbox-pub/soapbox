@@ -177,10 +177,6 @@
   }
 }
 
-.status__wrapper {
-  @apply bg-white dark:bg-primary-900 px-4 py-6 shadow-xl dark:shadow-none sm:p-5 sm:rounded-xl;
-}
-
 [column-type=filled] .status__wrapper,
 [column-type=filled] .status-placeholder {
   @apply rounded-none shadow-none p-4;
