@@ -7,6 +7,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
@@ -122,12 +123,12 @@ class Item extends React.PureComponent {
   render() {
     const { attachment, standalone, visible, dimensions, autoPlayGif, last, total } = this.props;
 
-    let width  = 100;
+    let width = 100;
     let height = '100%';
-    let top    = 'auto';
-    let left   = 'auto';
+    let top = 'auto';
+    let left = 'auto';
     let bottom = 'auto';
-    let right  = 'auto';
+    let right = 'auto';
     let float = 'left';
     let position = 'relative';
 
@@ -263,9 +264,14 @@ class Item extends React.PureComponent {
 
 }
 
-const mapStateToMediaGalleryProps = state => ({
-  displayMedia: getSettings(state).get('displayMedia'),
-});
+const mapStateToMediaGalleryProps = state => {
+  const { links } = getSoapboxConfig(state);
+
+  return {
+    displayMedia: getSettings(state).get('displayMedia'),
+    links,
+  };
+};
 
 export default @connect(mapStateToMediaGalleryProps)
 @injectIntl
@@ -285,6 +291,7 @@ class MediaGallery extends React.PureComponent {
     onToggleVisibility: PropTypes.func,
     displayMedia: PropTypes.string,
     compact: PropTypes.bool,
+    links: ImmutablePropTypes.map,
   };
 
   static defaultProps = {
@@ -338,7 +345,7 @@ class MediaGallery extends React.PureComponent {
     const getHeight = () => {
       if (!aspectRatio) return width * 9 / 16;
       if (isPanoramic(aspectRatio)) return Math.floor(width / maximumAspectRatio);
-      if (isPortrait(aspectRatio))  return Math.floor(width / minimumAspectRatio);
+      if (isPortrait(aspectRatio)) return Math.floor(width / minimumAspectRatio);
       return Math.floor(width / aspectRatio);
     };
 
@@ -555,7 +562,7 @@ class MediaGallery extends React.PureComponent {
 
     if (width) {
       if (size === 1) return this.getSizeDataSingle();
-      if (size > 1)   return this.getSizeDataMultiple(size);
+      if (size > 1) return this.getSizeDataMultiple(size);
     }
 
     // Default
@@ -568,7 +575,7 @@ class MediaGallery extends React.PureComponent {
   }
 
   render() {
-    const { media, intl, sensitive, compact } = this.props;
+    const { media, intl, sensitive, compact, inReview, links } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
 
@@ -587,18 +594,32 @@ class MediaGallery extends React.PureComponent {
       />
     ));
 
-    let warning;
+    let warning, summary;
 
     if (sensitive) {
       warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
+    } else if (inReview) {
+      warning = <FormattedMessage id='status.in_review_warning' defaultMessage='Content Under Review' />;
     } else {
       warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
     }
 
+    if (inReview) {
+      summary = <FormattedMessage id='status.in_review_summary.summary' defaultMessage='This Truth has been sent to Moderation for review and is only visible to you.' />;
+    } else {
+      summary = <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />;
+    }
+
     return (
       <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
-        <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible || compact })}>
-          {sensitive && (
+        <div
+          className={classNames({
+            'absolute z-40': true,
+            'inset-0': !visible && !compact,
+            'left-1 top-1': visible || compact,
+          })}
+        >
+          {(sensitive || inReview) && (
             (visible || compact) ? (
               <Button
                 text={intl.formatMessage(messages.toggle_visible)}
@@ -608,20 +629,58 @@ class MediaGallery extends React.PureComponent {
                 size='sm'
               />
             ) : (
-              <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
-                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 dark:bg-gray-900/75 text-center inline-block space-y-4 max-w-[280px]'>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className={
+                  classNames({
+                    'cursor-default backdrop-blur-sm rounded-lg w-full h-full border-0 flex items-center justify-center': true,
+                    'bg-gray-800/75': !inReview,
+                    'bg-danger-600/75': inReview,
+                  })
+                }
+              >
+                <div className='text-center w-3/4 mx-auto space-y-4'>
                   <div className='space-y-1'>
-                    <Text weight='semibold'>{warning}</Text>
-                    <Text size='sm'>
-                      <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
+                    <Text theme='white' weight='semibold'>{warning}</Text>
+                    <Text theme='white' size='sm' weight='medium'>
+                      {summary}
+
+                      {links.get('support') && (
+                        <>
+                          {' '}
+                          <FormattedMessage
+                            id='status.in_review_summary.contact'
+                            defaultMessage='If you believe this is in error please {link}.'
+                            values={{
+                              link: (
+                                <a
+                                  className='underline text-inherit'
+                                  href={links.get('support')}
+                                >
+                                  <FormattedMessage
+                                    id='status.in_review_summary.link'
+                                    defaultMessage='Contact Support'
+                                  />
+                                </a>
+                              ),
+                            }}
+                          />
+                        </>
+                      )}
                     </Text>
                   </div>
 
-                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/eye.svg')}>
+                  <Button
+                    type='button'
+                    theme='outline'
+                    size='sm'
+                    icon={require('@tabler/icons/eye.svg')}
+                    onClick={this.handleOpen}
+                  >
                     <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
                   </Button>
                 </div>
-              </button>
+              </div>
             )
           )}
         </div>
