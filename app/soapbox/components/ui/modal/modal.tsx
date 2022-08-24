@@ -83,73 +83,70 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
-      <div className='sm:flex sm:items-start w-full justify-between'>
-        <div className='w-full'>
-          {title && (
-            <div
-              className={classNames('w-full flex items-center gap-2', {
-                'flex-row-reverse': closePosition === 'left',
-              })}
-            >
-              <h3 className='flex-grow text-lg leading-6 font-bold text-gray-900 dark:text-white'>
-                {title}
-              </h3>
+    <div data-testid='modal' className={classNames('flex flex-col w-full mx-auto text-left align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto max-h-[90vh] md:max-h-[80vh] overflow-auto', widths[width])}>
+      {title && (
+        <div className='p-6 pb-2 backdrop-blur bg-white/75 dark:bg-primary-900/75 sticky top-0 z-10'>
+          <div
+            className={classNames('w-full flex items-center gap-2', {
+              'flex-row-reverse': closePosition === 'left',
+            })}
+          >
+            <h3 className='flex-grow text-lg leading-6 font-bold text-gray-900 dark:text-white'>
+              {title}
+            </h3>
 
-              {onClose && (
-                <IconButton
-                  src={closeIcon}
-                  title={intl.formatMessage(messages.close)}
-                  onClick={onClose}
-                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
-                />
-              )}
-            </div>
-          )}
-
-          {title ? (
-            <div className='w-full mt-2'>
-              {children}
-            </div>
-          ) : children}
-        </div>
-      </div>
-
-      {confirmationAction && (
-        <div className='mt-5 flex flex-row justify-between' data-testid='modal-actions'>
-          <div className='flex-grow'>
-            {cancelAction && (
-              <Button
-                theme='tertiary'
-                onClick={cancelAction}
-              >
-                {cancelText || 'Cancel'}
-              </Button>
+            {onClose && (
+              <IconButton
+                src={closeIcon}
+                title={intl.formatMessage(messages.close)}
+                onClick={onClose}
+                className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
+              />
             )}
-          </div>
-
-          <div className='flex flex-row space-x-2'>
-            {secondaryAction && (
-              <Button
-                theme='secondary'
-                onClick={secondaryAction}
-                disabled={secondaryDisabled}
-              >
-                {secondaryText}
-              </Button>
-            )}
-
-            <Button
-              theme={confirmationTheme || 'primary'}
-              onClick={confirmationAction}
-              disabled={confirmationDisabled}
-              ref={buttonRef}
-            >
-              {confirmationText}
-            </Button>
           </div>
         </div>
       )}
+      <div className={classNames('p-6', { 'pt-0': title })}>
+        <div className='w-full'>
+          {children}
+        </div>
+
+        {confirmationAction && (
+          <div className='mt-5 flex flex-row justify-between' data-testid='modal-actions'>
+            <div className='flex-grow'>
+              {cancelAction && (
+                <Button
+                  theme='tertiary'
+                  onClick={cancelAction}
+                >
+                  {cancelText || 'Cancel'}
+                </Button>
+              )}
+            </div>
+
+            <div className='flex flex-row space-x-2'>
+              {secondaryAction && (
+                <Button
+                  theme='secondary'
+                  onClick={secondaryAction}
+                  disabled={secondaryDisabled}
+                >
+                  {secondaryText}
+                </Button>
+              )}
+
+              <Button
+                theme={confirmationTheme || 'primary'}
+                onClick={confirmationAction}
+                disabled={confirmationDisabled}
+                ref={buttonRef}
+              >
+                {confirmationText}
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
