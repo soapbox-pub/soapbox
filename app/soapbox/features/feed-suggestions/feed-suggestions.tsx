@@ -71,7 +71,7 @@ const FeedSuggestions = () => {
 
         <Link
           to='/suggestions'
-          className='text-primary-600 dark:text-primary-400 hover:underline'
+          className='text-primary-600 dark:text-accent-blue hover:underline'
         >
           {intl.formatMessage(messages.viewAll)}
         </Link>
