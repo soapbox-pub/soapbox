@@ -17,10 +17,9 @@ import { initReport } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
-import Avatar from 'soapbox/components/avatar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still_image';
-import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
+import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider, Avatar } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account_timeline/components/moved_note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
@@ -757,7 +756,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
           <div className='flex'>
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
-                account={account}
+                src={account.avatar}
+                size={96}
                 className='h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900'
               />
             </a>
