@@ -79,7 +79,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
 
-    const date  = new Date(birthday);
+    const date = new Date(birthday);
     const today = new Date();
 
     const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
@@ -212,7 +212,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
               <div className='max-w-[300px]'>
                 <Text size='sm' truncate>
                   {isSafeUrl(account.website) ? (
-                    <a className='text-primary-600 dark:text-primary-400 hover:underline' href={account.website} target='_blank'>{account.website}</a>
+                    <a className='text-primary-600 dark:text-accent-blue hover:underline' href={account.website} target='_blank'>{account.website}</a>
                   ) : (
                     account.website
                   )}
