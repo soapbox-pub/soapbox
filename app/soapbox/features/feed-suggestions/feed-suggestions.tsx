@@ -65,7 +65,7 @@ const FeedSuggestions = () => {
   if (!isLoading && suggestedProfiles.size === 0) return null;
 
   return (
-    <Card size='lg' variant='rounded'>
+    <Card size='lg' variant='rounded' className='space-y-4'>
       <HStack justifyContent='between' alignItems='center'>
         <CardTitle title={intl.formatMessage(messages.heading)} />
 
