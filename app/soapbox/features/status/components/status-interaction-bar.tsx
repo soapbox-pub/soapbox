@@ -163,7 +163,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   return (
     <HStack space={3}>
       {getReposts()}
-      
+
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
     </HStack>
   );

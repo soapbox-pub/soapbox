@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchFavourites } from 'soapbox/actions/interactions';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Modal, Spinner } from 'soapbox/components/ui';
+import { Modal, Spinner, Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -34,18 +34,16 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
   if (!accountIds) {
     body = <Spinner />;
   } else {
-    const emptyMessage = <FormattedMessage id='empty_column.favourites' defaultMessage='No one has liked this post yet. When someone does, they will show up here.' />;
-
     body = (
-      <ScrollableList
-        scrollKey='favourites'
-        emptyMessage={emptyMessage}
-        itemClassName='pb-3'
-      >
-        {accountIds.map((id) =>
-          <AccountContainer key={id} id={id} />,
+      <Stack space={3}>
+        {accountIds.size > 0 ? (
+          accountIds.map((id) =>
+            <AccountContainer key={id} id={id} />,
+          )
+        ) : (
+          <FormattedMessage id='empty_column.favourites' defaultMessage='No one has liked this post yet. When someone does, they will show up here.' />
         )}
-      </ScrollableList>
+      </Stack>
     );
   }
 
