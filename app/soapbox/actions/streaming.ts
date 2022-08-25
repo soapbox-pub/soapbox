@@ -1,5 +1,7 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+import { queryClient } from 'soapbox/queries/client';
+import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
 
@@ -88,6 +90,10 @@ const connectTimelineStream = (
           break;
         case 'filters_changed':
           dispatch(fetchFilters());
+          break;
+        case 'chat_message':
+          queryClient.invalidateQueries(['chats', 'messages', JSON.parse(data.payload).chat_id]);
+          play(soundCache.chat);
           break;
         case 'pleroma:chat_update':
           dispatch((dispatch: AppDispatch, getState: () => RootState) => {
