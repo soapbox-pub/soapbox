@@ -20,9 +20,8 @@ export const start = (): void => {
         'AxiosError',
         // sw.js couldn't be downloaded.
         'Failed to update a ServiceWorker for scope',
-        // The user decided not to share (eg `navigator.share()`).
-        // This exception is useful for a try/catch flow, but not for error monitoring.
-        'AbortError: Share canceled',
+        // Useful for try/catch, useless as a Sentry error.
+        'AbortError',
       ],
       denyUrls: [
         // Browser extensions.
