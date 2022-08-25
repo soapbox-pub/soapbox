@@ -1,7 +1,9 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
+import snackbar from 'soapbox/actions/snackbar';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useApi } from 'soapbox/hooks';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
 
 import { queryClient } from './client';
 
@@ -123,4 +125,64 @@ const useChat = (chatId: string) => {
   return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
 };
 
-export { useChat, useChats, useChatMessages };
+const useChatSnoozes = () => {
+  const api = useApi();
+  const dispatch = useAppDispatch();
+
+  const { chat } = useChatContext();
+  const [isSnoozed, setSnoozed] = useState<boolean>(false);
+
+  const getChatSnoozes = async() => {
+    const { data } = await api.get(`api/v1/pleroma/chats/snooze?account_id=${chat?.account.id}`);
+    return data;
+  };
+
+  const fetchChatSnooze = async() => {
+    const data = await getChatSnoozes();
+    if (data) {
+      setSnoozed(true);
+    }
+  };
+
+  const handleSnooze = () => {
+    if (isSnoozed) {
+      deleteSnooze();
+    } else {
+      createSnooze();
+    }
+  };
+
+  const createSnooze = () => {
+    setSnoozed(true);
+
+    api.post(`api/v1/pleroma/chats/snooze?account_id=${chat?.account.id}`)
+      .then(() => {
+        dispatch(snackbar.success('Successfully snoozed this chat.'));
+      })
+      .catch(() => {
+        dispatch(snackbar.error('Something went wrong trying to snooze this chat. Please try again.'));
+        setSnoozed(false);
+      });
+  };
+
+  const deleteSnooze = () => {
+    setSnoozed(false);
+
+    api.delete(`api/v1/pleroma/chats/snooze?account_id=${chat?.account.id}`)
+      .then(() => {
+        dispatch(snackbar.success('Successfully unsnoozed this chat.'));
+      })
+      .catch(() => {
+        dispatch(snackbar.error('Something went wrong trying to unsnooze this chat. Please try again.'));
+        setSnoozed(true);
+      });
+  };
+
+  useEffect(() => {
+    fetchChatSnooze();
+  }, []);
+
+  return { isSnoozed, handleSnooze };
+};
+
+export { useChat, useChats, useChatMessages, useChatSnoozes };
