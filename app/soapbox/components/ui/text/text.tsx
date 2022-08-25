@@ -3,7 +3,7 @@ import React from 'react';
 
 type Themes = 'default' | 'danger' | 'primary' | 'muted' | 'subtle' | 'success' | 'inherit' | 'white'
 type Weights = 'normal' | 'medium' | 'semibold' | 'bold'
-type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+export type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 type Alignments = 'left' | 'center' | 'right'
 type TrackingSizes = 'normal' | 'wide'
 type TransformProperties = 'uppercase' | 'normal'

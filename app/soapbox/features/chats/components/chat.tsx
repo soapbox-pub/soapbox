@@ -16,7 +16,7 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
       key={chat.id}
       type='button'
       onClick={() => onClick(chat)}
-      className='px-4 py-2 w-full flex flex-col hover:bg-gray-100'
+      className='px-4 py-2 w-full flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
     >
       <HStack alignItems='center' space={2}>
         <Avatar src={chat.account?.avatar} size={40} />

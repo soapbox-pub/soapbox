@@ -14,7 +14,7 @@ import { createSelector } from 'reselect';
 import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
 import { initReport, initReportById } from 'soapbox/actions/reports';
-import { Avatar, Button, HStack, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, Button, Divider, HStack, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import emojify from 'soapbox/features/emoji/emoji';
@@ -227,16 +227,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     // return emojify(formatted, emojiMap.toJS());
   };
 
-  const renderDivider = (key: React.Key, text: string) => (
-    <div className='relative' key={key}>
-      <div className='absolute inset-0 flex items-center' aria-hidden='true'>
-        <div className='w-full border-solid border-t border-gray-300' />
-      </div>
-      <div className='relative flex justify-center'>
-        <Text theme='muted' size='xs' className='px-2 bg-white' tag='span'>{text}</Text>
-      </div>
-    </div>
-  );
+  const renderDivider = (key: React.Key, text: string) => <Divider text={text} textSize='sm' />;
 
   const handleReportUser = (userId: string) => {
     return () => {
@@ -300,7 +291,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
                   classNames({
                     'text-ellipsis break-words relative rounded-md p-2': true,
                     'bg-primary-500 text-white mr-2': isMyMessage,
-                    'bg-gray-200 text-gray-900 order-2 ml-2': !isMyMessage,
+                    'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 order-2 ml-2': !isMyMessage,
                   })
                 }
                 ref={setBubbleRef}
