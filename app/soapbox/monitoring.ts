@@ -1,5 +1,7 @@
 import * as BuildConfig from 'soapbox/build_config';
 
+import type { CaptureContext } from '@sentry/types';
+
 export const start = (): void => {
   Promise.all([
     import(/* webpackChunkName: "error" */'@sentry/react'),
@@ -11,6 +13,24 @@ export const start = (): void => {
       debug: false,
       integrations: [new Integrations.BrowserTracing()],
 
+      // Filter events.
+      // https://docs.sentry.io/platforms/javascript/configuration/filtering/
+      ignoreErrors: [
+        // Network errors.
+        'AxiosError',
+        // sw.js couldn't be downloaded.
+        'Failed to update a ServiceWorker for scope',
+        // The user decided not to share (eg `navigator.share()`).
+        // This exception is useful for a try/catch flow, but not for error monitoring.
+        'AbortError: Share canceled',
+      ],
+      denyUrls: [
+        // Browser extensions.
+        /extensions\//i,
+        /^chrome:\/\//i,
+        /^moz-extension:\/\//i,
+      ],
+
       // We recommend adjusting this value in production, or using tracesSampler
       // for finer control
       tracesSampleRate: 1.0,
@@ -18,10 +38,10 @@ export const start = (): void => {
   }).catch(console.error);
 };
 
-export const captureException = (error: Error): void => {
+export const captureException = (exception: any, captureContext?: CaptureContext | undefined): void => {
   import(/* webpackChunkName: "error" */'@sentry/react')
     .then(Sentry => {
-      Sentry.captureException(error);
+      Sentry.captureException(exception, captureContext);
     })
     .catch(console.error);
 };

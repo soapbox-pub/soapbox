@@ -56,7 +56,12 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
   textarea: HTMLTextAreaElement | null = null;
 
   componentDidCatch(error: any, info: any): void {
-    captureException(error);
+    captureException(error, {
+      tags: {
+        // Allow page crashes to be easily searched in Sentry.
+        ErrorBoundary: 'yes',
+      },
+    });
 
     this.setState({
       hasError: true,
