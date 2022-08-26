@@ -64,7 +64,6 @@ const Status: React.FC<IStatus> = (props) => {
     muted,
     hidden,
     featured,
-    unread,
     group,
     hideActionBar,
     variant = 'rounded',
