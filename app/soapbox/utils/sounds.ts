@@ -29,8 +29,6 @@ const play = (audio: HTMLAudioElement): void => {
     }
   }
 
-  console.log('playing');
-
   audio.play();
 };
 

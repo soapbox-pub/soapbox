@@ -8,7 +8,7 @@ import { randomIntFromInterval } from '../utils';
 import PlaceholderAvatar from './placeholder_avatar';
 
 /** Fake chat to display while data is loading. */
-const PlaceholderChat = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {
+const PlaceholderChatMessage = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {
   const messageLength = randomIntFromInterval(160, 220);
 
   return (
@@ -55,7 +55,7 @@ const PlaceholderChat = ({ isMyMessage = false }: { isMyMessage?: boolean }) => 
             'order-2': !isMyMessage,
           })}
         >
-          <div style={{ width: 50, height: 12 }} className='rounded-full bg-primary-50 dark:bg-primary-800' />
+          <span style={{ width: 50, height: 12 }} className='rounded-full bg-primary-50 dark:bg-primary-800 block' />
         </Text>
 
         <div className={classNames({ 'order-1': !isMyMessage })}>
@@ -66,4 +66,4 @@ const PlaceholderChat = ({ isMyMessage = false }: { isMyMessage?: boolean }) => 
   );
 };
 
-export default PlaceholderChat;
+export default PlaceholderChatMessage;

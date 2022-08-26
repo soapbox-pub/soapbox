@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import snackbar from 'soapbox/actions/snackbar';
@@ -11,7 +11,15 @@ export interface IChat {
   id: string
   unread: number
   created_by_account: string
-  last_message: null | string
+  last_message: null | {
+    account_id: string
+    chat_id: string
+    content: string
+    created_at: string
+    discarded_at: string | null
+    id: string
+    unread: boolean
+  }
   created_at: Date
   updated_at: Date
   accepted: boolean
@@ -76,17 +84,47 @@ const useChatMessages = (chatId: string) => {
     data,
   };
 };
+
 const useChats = () => {
   const api = useApi();
 
-  const getChats = async() => {
-    const { data } = await api.get('/api/v1/pleroma/chats');
-    return data;
+  const getChats = async(pageParam?: any): Promise<{ result: IChat[], maxId: string, hasMore: boolean }> => {
+    const { data, headers } = await api.get('/api/v1/pleroma/chats', {
+      params: {
+        max_id: pageParam?.maxId,
+      },
+    });
+
+    const hasMore = !!headers.link;
+    const nextMaxId = data[data.length - 1]?.id;
+
+    return {
+      result: data,
+      maxId: nextMaxId,
+      hasMore,
+    };
   };
 
-  const chatsQuery = useQuery<IChat[]>(['chats'], getChats, {
-    placeholderData: [],
+  const queryInfo = useInfiniteQuery(['chats'], ({ pageParam }) => getChats(pageParam), {
+    keepPreviousData: true,
+    getNextPageParam: (config) => {
+      if (config.hasMore) {
+        return { maxId: config.maxId };
+      }
+
+      return undefined;
+    },
   });
+
+  const data = queryInfo.data?.pages.reduce<IChat[]>(
+    (prev: IChat[], curr) => [...prev, ...curr.result],
+    [],
+  );
+
+  const chatsQuery = {
+    ...queryInfo,
+    data,
+  };
 
   const getOrCreateChatByAccountId = (accountId: string) => api.post<IChat>(`/api/v1/pleroma/chats/by-account-id/${accountId}`);
 

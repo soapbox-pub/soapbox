@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { MutableRefObject, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import {
@@ -56,7 +56,6 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
-  // TODO: needs last_read_id param
   const markAsRead = useMutation(() => markChatAsRead(), {
     onSuccess: () => {
       queryClient.invalidateQueries(['chats']);
@@ -216,12 +215,10 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
     // );
   };
 
-  if (!chatMessageIds) return null;
-
   return (
     <Stack className='overflow-hidden flex flex-grow' onMouseOver={handleMouseOver}>
       <div className='flex-grow h-full overflow-hidden flex justify-center'>
-        <ChatMessageList chatMessageIds={chatMessageIds} chat={chat} autosize />
+        <ChatMessageList chat={chat} autosize />
       </div >
 
       <div className='mt-auto p-4 shadow-3xl'>

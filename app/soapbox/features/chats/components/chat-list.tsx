@@ -19,18 +19,15 @@ interface IChatList {
 const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false }) => {
   const dispatch = useDispatch();
 
-  const { chatsQuery: { data: chats, isFetching } } = useChats();
+  const { chatsQuery: { data: chats, isFetching, hasNextPage, fetchNextPage } } = useChats();
 
   const isEmpty = chats?.length === 0;
 
-  // const handleLoadMore = useCallback(() => {
-  //   if (hasMore && !isLoading) {
-  //     dispatch(expandChats());
-  //   }
-  // }, [dispatch, hasMore, isLoading]);
-
-  const handleLoadMore = () => console.log('load more');
-
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
 
   const handleRefresh = () => {
     return dispatch(fetchChats()) as any;
@@ -62,7 +59,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
           )}
           components={{
             ScrollSeekPlaceholder: () => <PlaceholderChat />,
-            // Footer: () => hasMore ? <PlaceholderChat /> : null,
+            // Footer: () => hasNextPage ? <Spinner withText={false} /> : null,
             EmptyPlaceholder: renderEmpty,
           }}
         />

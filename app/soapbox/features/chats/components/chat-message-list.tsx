@@ -1,27 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-} from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import escape from 'lodash/escape';
 import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { createSelector } from 'reselect';
 
-import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
-import { initReport, initReportById } from 'soapbox/actions/reports';
-import { Avatar, Button, Divider, HStack, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { initReportById } from 'soapbox/actions/reports';
+import { Avatar, Divider, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import { useChatContext } from 'soapbox/contexts/chat-context';
-import emojify from 'soapbox/features/emoji/emoji';
+// import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch, useRefEventHandler, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
@@ -58,27 +51,15 @@ const timeChange = (prev: IChatMessage, curr: IChatMessage): TimeFormat | null =
 //   return map.set(`:${emoji.get('shortcode')}:`, emoji);
 // }, ImmutableMap());
 
-const getChatMessages = createSelector(
-  [(chatMessages: ImmutableMap<string, ChatMessageEntity>, chatMessageIds: ImmutableOrderedSet<string>) => (
-    chatMessageIds.reduce((acc, curr) => {
-      const chatMessage = chatMessages.get(curr);
-      return chatMessage ? acc.push(chatMessage) : acc;
-    }, ImmutableList<ChatMessageEntity>())
-  )],
-  chatMessages => chatMessages,
-);
-
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
   chat: IChat,
-  /** Message IDs to render. */
-  chatMessageIds: ImmutableOrderedSet<string>,
   /** Whether to make the chatbox fill the height of the screen. */
   autosize?: boolean,
 }
 
 /** Scrollable list of chat messages. */
-const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, autosize }) => {
+const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useOwnAccount();
@@ -86,9 +67,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   const [initialLoad, setInitialLoad] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const { needsAcceptance } = useChatContext();
-
-  const { deleteChatMessage, acceptChat, deleteChat } = useChat(chat.id);
+  const { deleteChatMessage, markChatAsRead } = useChat(chat.id);
   const { data: chatMessages, isLoading, isFetching, isFetched, fetchNextPage, isFetchingNextPage, isPlaceholderData } = useChatMessages(chat.id);
   const formattedChatMessages = chatMessages || [];
 
@@ -98,9 +77,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
   const messagesEnd = useRef<HTMLDivElement>(null);
   const lastComputedScroll = useRef<number | undefined>(undefined);
   const scrollBottom = useRef<number | undefined>(undefined);
-
-  const initialCount = useMemo(() => formattedChatMessages.length, []);
-
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
@@ -152,8 +128,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
 
   const restoreScrollPosition = () => {
     if (node.current && scrollBottom.current) {
-      console.log('bottom', scrollBottom.current);
-
       lastComputedScroll.current = node.current.scrollHeight - scrollBottom.current;
       node.current.scrollTop = lastComputedScroll.current;
     }
@@ -227,7 +201,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     // return emojify(formatted, emojiMap.toJS());
   };
 
-  const renderDivider = (key: React.Key, text: string) => <Divider text={text} textSize='sm' />;
+  const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='sm' />;
 
   const handleReportUser = (userId: string) => {
     return () => {
@@ -370,13 +344,13 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     // }
   }, [formattedChatMessages.length]);
 
+  useEffect(() => {
+    markChatAsRead();
+  }, [formattedChatMessages.length]);
+
   // useEffect(() => {
   //   scrollToBottom();
   // }, [messagesEnd.current]);
-
-  // History added.
-  const lastChatId = Number(chatMessages && chatMessages[0]?.id);
-
 
   useEffect(() => {
     // Restore scroll bar position when loading old messages.
@@ -398,6 +372,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, chatMessageIds, aut
     <div className='h-full flex flex-col px-4 flex-grow overflow-y-scroll space-y-6' onScroll={handleScroll} ref={node}> {/* style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} */}
       {!isLoading ? (
         <ChatMessageListIntro />
+      ) : null}
+
+      {isFetchingNextPage ? (
+        <div className='flex items-center justify-center'>
+          <Spinner size={30} withText={false} />
+        </div>
       ) : null}
 
       <div className='flex-grow flex flex-col justify-end space-y-4'>

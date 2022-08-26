@@ -9,7 +9,8 @@ import { Avatar, HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui'
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useDebounce } from 'soapbox/hooks';
-import { useChats } from 'soapbox/queries/chats';
+import { IChat, useChats } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
 import useAccountSearch from 'soapbox/queries/search';
 
 import ChatList from '../chat-list';
@@ -48,9 +49,11 @@ const ChatPane = () => {
     },
     onSuccess: (response) => {
       setChat(response.data);
+      queryClient.invalidateQueries(['chats']);
     },
   });
 
+  const handleClickChat = (chat: IChat) => setChat(chat);
 
   const clearValue = () => {
     if (hasSearchValue) {
@@ -66,7 +69,7 @@ const ChatPane = () => {
             <button
               key={account.id}
               type='button'
-              className='px-4 py-2 w-full flex flex-col hover:bg-gray-100'
+              className='px-4 py-2 w-full flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
               onClick={() => {
                 handleClickOnSearchResult.mutate(account.id);
                 clearValue();
@@ -88,7 +91,7 @@ const ChatPane = () => {
         </Stack>
       );
     } else {
-      return <ChatList onClickChat={(chat) => setChat(chat)} useWindowScroll={false} />;
+      return <ChatList onClickChat={handleClickChat} useWindowScroll={false} />;
     }
   };
 
