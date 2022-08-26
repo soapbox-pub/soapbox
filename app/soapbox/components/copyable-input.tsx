@@ -5,7 +5,7 @@ import { Button, HStack, Input } from './ui';
 
 interface ICopyableInput {
   /** Text to be copied. */
-  value?: string,
+  value: string,
 }
 
 /** An input with copy abilities. */
@@ -14,6 +14,12 @@ const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
 
   const selectInput = () => {
     input.current?.select();
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(value);
+    } else {
+      document.execCommand('copy');
+    }
   };
 
   return (
