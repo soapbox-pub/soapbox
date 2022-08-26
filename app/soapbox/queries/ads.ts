@@ -17,7 +17,19 @@ export default function useAds() {
     });
   };
 
-  return useQuery<Ad[]>(['ads'], getAds, {
+  const result = useQuery<Ad[]>(['ads'], getAds, {
     placeholderData: [],
   });
+
+  // Filter out expired ads.
+  const data = result.data?.filter(ad => {
+    const now = new Date();
+    const isExpired = ad.expires && (now.getTime() > ad.expires.getTime());
+    return !isExpired;
+  });
+
+  return {
+    ...result,
+    data,
+  };
 }
