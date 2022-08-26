@@ -6035,7 +6035,7 @@
         "id": "column.favourites"
       }
     ],
-    "path": "app/soapbox/features/ui/components/favourites_modal.json"
+    "path": "app/soapbox/features/ui/components/modals/favourites-modal.json"
   },
   {
     "descriptors": [

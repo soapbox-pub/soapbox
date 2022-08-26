@@ -5,6 +5,7 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 
 import api from '../api';
 
+import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 
 import type { AxiosError } from 'axios';
@@ -292,6 +293,7 @@ const fetchReblogs = (id: string) =>
 
     api(getState).get(`/api/v1/statuses/${id}/reblogged_by`).then(response => {
       dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
       dispatch(fetchReblogsSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchReblogsFail(id, error));
@@ -323,6 +325,7 @@ const fetchFavourites = (id: string) =>
 
     api(getState).get(`/api/v1/statuses/${id}/favourited_by`).then(response => {
       dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
       dispatch(fetchFavouritesSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchFavouritesFail(id, error));

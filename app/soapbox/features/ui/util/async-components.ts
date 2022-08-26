@@ -203,7 +203,7 @@ export function ReblogsModal() {
 }
 
 export function FavouritesModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/favourites_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/favourites-modal');
 }
 
 export function ReactionsModal() {
