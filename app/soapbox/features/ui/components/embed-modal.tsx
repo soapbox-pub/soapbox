@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
+import CopyableInput from 'soapbox/components/copyable-input';
 import SafeEmbed from 'soapbox/components/safe-embed';
-import { Modal, Stack, Text, Input, Divider } from 'soapbox/components/ui';
+import { Modal, Stack, Text, Divider } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import useEmbed from 'soapbox/queries/embed';
 
@@ -22,10 +23,6 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
     }
   }, [isError]);
 
-  const handleInputClick: React.MouseEventHandler<HTMLInputElement> = (e) => {
-    e.currentTarget.select();
-  };
-
   const handleClose = () => {
     dispatch(closeModal('EMBED'));
   };
@@ -40,12 +37,7 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
           <FormattedMessage id='embed.instructions' defaultMessage='Embed this post on your website by copying the code below.' />
         </Text>
 
-        <Input
-          type='text'
-          readOnly
-          value={embed?.html || ''}
-          onClick={handleInputClick}
-        />
+        <CopyableInput value={embed?.html || ''} />
       </Stack>
 
       <div className='py-9'>
