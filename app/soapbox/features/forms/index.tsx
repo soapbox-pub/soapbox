@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React, { useState, useRef } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Text, Select } from '../../components/ui';
