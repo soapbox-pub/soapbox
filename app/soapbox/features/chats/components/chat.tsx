@@ -35,7 +35,7 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
             </div>
 
             {chat.last_message?.content && (
-              <Text size='sm' weight='medium' theme='muted' truncate className='max-w-[200px]'>
+              <Text align='left' size='sm' weight='medium' theme='muted' truncate className='max-w-[200px]'>
                 {chat.last_message?.content}
               </Text>
             )}
