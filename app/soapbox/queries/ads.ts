@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Ad, getProvider } from 'soapbox/features/ads/providers';
 import { useAppDispatch } from 'soapbox/hooks';
+import { isExpired } from 'soapbox/utils/ads';
 
 export default function useAds() {
   const dispatch = useAppDispatch();
@@ -22,11 +23,7 @@ export default function useAds() {
   });
 
   // Filter out expired ads.
-  const data = result.data?.filter(ad => {
-    const now = new Date();
-    const isExpired = ad.expires && (now.getTime() > ad.expires.getTime());
-    return !isExpired;
-  });
+  const data = result.data?.filter(isExpired);
 
   return {
     ...result,
