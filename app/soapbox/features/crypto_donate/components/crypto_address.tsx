@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
+import CopyableInput from 'soapbox/components/copyable-input';
 import { Text, Icon, Stack, HStack } from 'soapbox/components/ui';
-import { CopyableInput } from 'soapbox/features/forms';
 
 import { getExplorerUrl } from '../utils/block_explorer';
 import { getTitle } from '../utils/coin_db';
@@ -57,9 +57,7 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
         <Text>{note}</Text>
       )}
 
-      <div className='crypto-address__address simple_form'>
-        <CopyableInput value={address} />
-      </div>
+      <CopyableInput value={address} />
     </Stack>
   );
 };
