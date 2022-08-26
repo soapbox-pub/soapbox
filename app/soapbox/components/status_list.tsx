@@ -137,6 +137,7 @@ const StatusList: React.FC<IStatusList> = ({
       <Ad
         card={ad.card}
         impression={ad.impression}
+        expires={ad.expires}
       />
     );
   };

@@ -9,6 +9,7 @@ import { CardRecord, normalizeCard } from '../card';
 export const AdRecord = ImmutableRecord({
   card: CardRecord(),
   impression: undefined as string | undefined,
+  expires: undefined as Date | undefined,
 });
 
 /** Normalizes an ad from Soapbox Config. */
