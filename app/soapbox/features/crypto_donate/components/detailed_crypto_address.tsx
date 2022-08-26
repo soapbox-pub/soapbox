@@ -1,8 +1,8 @@
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import React from 'react';
 
+import CopyableInput from 'soapbox/components/copyable-input';
 import Icon from 'soapbox/components/icon';
-import { CopyableInput } from 'soapbox/features/forms';
 
 import { getExplorerUrl } from '../utils/block_explorer';
 import { getTitle } from '../utils/coin_db';
@@ -38,9 +38,8 @@ const DetailedCryptoAddress: React.FC<IDetailedCryptoAddress> = ({ address, tick
       <div className='crypto-address__qrcode'>
         <QRCode value={address} />
       </div>
-      <div className='crypto-address__address simple_form'>
-        <CopyableInput value={address} />
-      </div>
+
+      <CopyableInput value={address} />
     </div>
   );
 };

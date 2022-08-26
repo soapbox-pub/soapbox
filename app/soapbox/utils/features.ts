@@ -242,7 +242,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to embed posts on external sites.
      * @see GET /api/oembed
      */
-    embeds: v.software === MASTODON,
+    embeds: any([
+      v.software === MASTODON,
+      v.software === TRUTHSOCIAL,
+    ]),
 
     /**
      * Ability to add emoji reactions to a status.

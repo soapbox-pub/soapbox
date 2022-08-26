@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -12,8 +13,8 @@ interface IButton {
   block?: boolean,
   /** Elements inside the <button> */
   children?: React.ReactNode,
-  /** @deprecated unused */
-  classNames?: string,
+  /** Extra class names for the button. */
+  className?: string,
   /** Prevent the button from being clicked. */
   disabled?: boolean,
   /** URL to an SVG icon to render inside the button. */
@@ -22,8 +23,6 @@ interface IButton {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
   /** A predefined button size. */
   size?: ButtonSizes,
-  /** @deprecated unused */
-  style?: React.CSSProperties,
   /** Text inside the button. Takes precedence over `children`. */
   text?: React.ReactNode,
   /** Makes the button into a navlink, if provided. */
@@ -47,6 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     theme = 'secondary',
     to,
     type = 'button',
+    className,
   } = props;
 
   const themeClass = useButtonStyles({
@@ -72,7 +72,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
 
   const renderButton = () => (
     <button
-      className={themeClass}
+      className={classNames(themeClass, className)}
       disabled={disabled}
       onClick={handleClick}
       ref={ref}

@@ -149,12 +149,6 @@ const SoapboxMount = () => {
         <Route path='/verify' component={AuthLayout} />
       )}
 
-      <Route
-        path='/embed/:statusId'
-        render={(props) => <EmbeddedStatus params={props.match.params} />}
-      />
-      <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
-
       <Route path='/reset-password' component={AuthLayout} />
       <Route path='/edit-password' component={AuthLayout} />
       <Route path='/invite/:token' component={AuthLayout} />
@@ -176,19 +170,27 @@ const SoapboxMount = () => {
     <ErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-          <>
-            {renderBody()}
+          <Switch>
+            <Route
+              path='/embed/:statusId'
+              render={(props) => <EmbeddedStatus params={props.match.params} />}
+            />
+            <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
-            <BundleContainer fetchComponent={NotificationsContainer}>
-              {(Component) => <Component />}
-            </BundleContainer>
+            <Route>
+              {renderBody()}
 
-            <BundleContainer fetchComponent={ModalContainer}>
-              {Component => <Component />}
-            </BundleContainer>
+              <BundleContainer fetchComponent={NotificationsContainer}>
+                {(Component) => <Component />}
+              </BundleContainer>
 
-            <GdprBanner />
-          </>
+              <BundleContainer fetchComponent={ModalContainer}>
+                {Component => <Component />}
+              </BundleContainer>
+
+              <GdprBanner />
+            </Route>
+          </Switch>
         </ScrollContext>
       </BrowserRouter>
     </ErrorBoundary>
