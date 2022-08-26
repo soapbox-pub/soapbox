@@ -287,29 +287,3 @@ export const FileChooserLogo: React.FC<IFileChooserLogo> = props => (
 FileChooserLogo.defaultProps = {
   accept: ['image/svg', 'image/png'],
 };
-
-interface ICopyableInput {
-  value: string,
-}
-
-export const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
-  const node = useRef<HTMLInputElement>(null);
-
-  const handleCopyClick: React.MouseEventHandler = () => {
-    if (!node.current) return;
-
-    node.current.select();
-    node.current.setSelectionRange(0, 99999);
-
-    document.execCommand('copy');
-  };
-
-  return (
-    <div className='copyable-input'>
-      <input ref={node} type='text' value={value} readOnly />
-      <button className='p-2 text-white bg-primary-600' onClick={handleCopyClick}>
-        <FormattedMessage id='forms.copy' defaultMessage='Copy' />
-      </button>
-    </div>
-  );
-};
