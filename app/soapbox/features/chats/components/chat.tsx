@@ -12,11 +12,6 @@ interface IChatInterface {
 }
 
 const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
-  // Temporary: remove once bad Staging data is removed.
-  if (!chat.account) {
-    return null;
-  }
-
   return (
     <button
       key={chat.id}

@@ -163,64 +163,64 @@ const useChat = (chatId: string) => {
   return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
 };
 
-const useChatSnoozes = () => {
+const useChatSilences = () => {
   const api = useApi();
   const dispatch = useAppDispatch();
 
   const { chat } = useChatContext();
-  const [isSnoozed, setSnoozed] = useState<boolean>(false);
+  const [isSilenced, setSilenced] = useState<boolean>(false);
 
-  const getChatSnoozes = async() => {
-    const { data } = await api.get(`api/v1/pleroma/chats/snooze?account_id=${chat?.account.id}`);
+  const getChatSilences = async() => {
+    const { data } = await api.get(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`);
     return data;
   };
 
-  const fetchChatSnooze = async() => {
-    const data = await getChatSnoozes();
+  const fetchChatSilence = async() => {
+    const data = await getChatSilences();
     if (data) {
-      setSnoozed(true);
+      setSilenced(true);
     }
   };
 
-  const handleSnooze = () => {
-    if (isSnoozed) {
-      deleteSnooze();
+  const handleSilence = () => {
+    if (isSilenced) {
+      deleteSilence();
     } else {
-      createSnooze();
+      createSilence();
     }
   };
 
-  const createSnooze = () => {
-    setSnoozed(true);
+  const createSilence = () => {
+    setSilenced(true);
 
-    api.post(`api/v1/pleroma/chats/snooze?account_id=${chat?.account.id}`)
+    api.post(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
-        dispatch(snackbar.success('Successfully snoozed this chat.'));
+        dispatch(snackbar.success('Successfully silenced this chat.'));
       })
       .catch(() => {
-        dispatch(snackbar.error('Something went wrong trying to snooze this chat. Please try again.'));
-        setSnoozed(false);
+        dispatch(snackbar.error('Something went wrong trying to silence this chat. Please try again.'));
+        setSilenced(false);
       });
   };
 
-  const deleteSnooze = () => {
-    setSnoozed(false);
+  const deleteSilence = () => {
+    setSilenced(false);
 
-    api.delete(`api/v1/pleroma/chats/snooze?account_id=${chat?.account.id}`)
+    api.delete(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
-        dispatch(snackbar.success('Successfully unsnoozed this chat.'));
+        dispatch(snackbar.success('Successfully unsilenced this chat.'));
       })
       .catch(() => {
-        dispatch(snackbar.error('Something went wrong trying to unsnooze this chat. Please try again.'));
-        setSnoozed(true);
+        dispatch(snackbar.error('Something went wrong trying to unsilence this chat. Please try again.'));
+        setSilenced(true);
       });
   };
 
   useEffect(() => {
-    fetchChatSnooze();
+    fetchChatSilence();
   }, []);
 
-  return { isSnoozed, handleSnooze };
+  return { isSilenced, handleSilence };
 };
 
-export { useChat, useChats, useChatMessages, useChatSnoozes };
+export { useChat, useChats, useChatMessages, useChatSilences };

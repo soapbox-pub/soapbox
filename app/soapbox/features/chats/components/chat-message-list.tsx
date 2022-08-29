@@ -333,7 +333,9 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   // Stick scrollbar to bottom.
   useEffect(() => {
     if (isNearBottom()) {
-      scrollToBottom();
+      setTimeout(() => {
+        scrollToBottom();
+      }, 25);
     }
 
     // First load.
@@ -347,10 +349,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   useEffect(() => {
     markChatAsRead();
   }, [formattedChatMessages.length]);
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messagesEnd.current]);
 
   useEffect(() => {
     // Restore scroll bar position when loading old messages.

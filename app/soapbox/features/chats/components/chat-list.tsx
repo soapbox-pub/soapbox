@@ -27,7 +27,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
-  const isEmpty = chats?.length === 0;
+  const isEmpty = (!chats || chats.length === 0);
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetching) {
@@ -64,9 +64,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
             useWindowScroll={useWindowScroll}
             data={chats}
             endReached={handleLoadMore}
-            itemContent={(_index, chat) => (
-              <Chat chat={chat} onClick={onClickChat} />
-            )}
+            itemContent={(_index, chat) => <Chat chat={chat} onClick={onClickChat} />}
             components={{
               ScrollSeekPlaceholder: () => <PlaceholderChat />,
               // Footer: () => hasNextPage ? <Spinner withText={false} /> : null,
