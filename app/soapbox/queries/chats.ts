@@ -2,6 +2,7 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import snackbar from 'soapbox/actions/snackbar';
+import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
 
@@ -37,11 +38,7 @@ export interface IChatMessage {
   pending?: boolean
 }
 
-const reverseOrder = (a: IChat, b: IChat): number => {
-  if (Number(a.id) < Number(b.id)) return -1;
-  if (Number(a.id) > Number(b.id)) return 1;
-  return 0;
-};
+const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 
 const useChatMessages = (chatId: string) => {
   const api = useApi();
