@@ -14,6 +14,7 @@ interface IAd {
   card: CardEntity,
   /** Impression URL to fetch upon display. */
   impression?: string,
+  /** Time when the ad expires and should no longer be displayed. */
   expires?: Date,
 }
 
