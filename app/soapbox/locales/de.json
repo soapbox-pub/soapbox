@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# Sekunde} other {# Sekunden}} verbleibend",
   "trends.count_by_accounts": "{count} {rawCount, plural, eine {Person} other {Personen}} reden darüber",
   "trends.title": "Trends",
-  "ui.beforeunload": "Dein Entwurf geht verloren, wenn du Soapbox FE verlässt.",
+  "ui.beforeunload": "Dein Entwurf geht verloren, wenn du Soapbox verlässt.",
   "unauthorized_modal.text": "Für diese Aktion musst Du angemeldet sein.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Zum Hochladen hereinziehen",

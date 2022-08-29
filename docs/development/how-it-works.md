@@ -1,6 +1,6 @@
 # How it works
 
-Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
+Soapbox is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).

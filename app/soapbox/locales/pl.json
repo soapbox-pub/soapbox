@@ -1218,7 +1218,7 @@
   "time_remaining.seconds": "{number, plural, one {Pozostała # sekunda} few {Pozostały # sekundy} many {Pozostało # sekund} other {Pozostało # sekund}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {osoba rozmawia} few {osoby rozmawiają} other {osób rozmawia}} o tym",
   "trends.title": "Trendy",
-  "ui.beforeunload": "Utracisz tworzony wpis, jeżeli opuścisz Soapbox FE.",
+  "ui.beforeunload": "Utracisz tworzony wpis, jeżeli opuścisz Soapbox.",
   "unauthorized_modal.footer": "Masz już konto? {login}.",
   "unauthorized_modal.text": "Musisz się zalogować, aby to zrobić.",
   "unauthorized_modal.title": "Zarejestruj się na {site_title}",

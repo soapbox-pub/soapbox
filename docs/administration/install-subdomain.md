@@ -1,10 +1,10 @@
-# Installing Soapbox FE on a subdomain
+# Installing Soapbox on a subdomain
 
-If you would like to retain Pleroma FE on your Pleroma server, but install Soapbox FE alongside it on a subdomain, you can do so by following these steps.
+If you would like to retain Pleroma FE on your Pleroma server, but install Soapbox alongside it on a subdomain, you can do so by following these steps.
 
 ## 1. Download the build
 
-Create a directory on your system for Soapbox FE.
+Create a directory on your system for Soapbox.
 
 ```sh
 mkdir -p /opt/soapbox
@@ -144,7 +144,7 @@ If that passed, reload Nginx:
 systemctl reload nginx
 ```
 
-If all is well, you should be able to visit the subdomain in your browser and access Soapbox FE!
+If all is well, you should be able to visit the subdomain in your browser and access Soapbox!
 
 ---
 

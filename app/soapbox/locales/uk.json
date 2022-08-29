@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# секунда} few {# секунди} other {# секунд}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {людина} few {людини} many {людей} other {людей}} обговорюють це",
   "trends.title": "Актуальні",
-  "ui.beforeunload": "Вашу чернетку буде втрачено, якщо ви покинете Soapbox FE.",
+  "ui.beforeunload": "Вашу чернетку буде втрачено, якщо ви покинете Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Перетягніть сюди, щоб завантажити",

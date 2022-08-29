@@ -1,8 +1,8 @@
 {
   "name": "soapbox-fe",
-  "displayName": "Soapbox FE",
+  "displayName": "Soapbox",
   "version": "3.0.0",
-  "description": "Soapbox frontend for Pleroma.",
+  "description": "Soapbox frontend for the Fediverse.",
   "homepage": "https://soapbox.pub/",
   "repository": {
     "type": "git",

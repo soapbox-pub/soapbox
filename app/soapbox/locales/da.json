@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# sekund} other {# sekunder}} tilbage",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {personer}} snakker",
   "trends.title": "Trends",
-  "ui.beforeunload": "Din kladde vil gå tabt hvis du forlader Soapbox FE.",
+  "ui.beforeunload": "Din kladde vil gå tabt hvis du forlader Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Træk og slip for at uploade",

@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {осталась # секунду} few {осталось # секунды} many {осталось # секунд} other {осталось # секунд}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {человек говорит} few {человека говорят} other {человек говорят}} про это",
   "trends.title": "Trends",
-  "ui.beforeunload": "Ваш черновик будет утерян, если вы покинете Soapbox FE.",
+  "ui.beforeunload": "Ваш черновик будет утерян, если вы покинете Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Перетащите сюда, чтобы загрузить",

@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# saniye} other {# saniye}} kaldı",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {kişi} other {kişi}} konuşuyor",
   "trends.title": "Trends",
-  "ui.beforeunload": "Soapbox FE'dan ayrılırsanız taslağınız kaybolacak.",
+  "ui.beforeunload": "Soapbox'dan ayrılırsanız taslağınız kaybolacak.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Karşıya yükleme için sürükle bırak yapınız",

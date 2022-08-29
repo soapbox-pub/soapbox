@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# seconde} other {# seconden}} te gaan",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persoon praat} other {mensen praten}} hierover",
   "trends.title": "Trends",
-  "ui.beforeunload": "Je concept zal verloren gaan als je Soapbox FE verlaat.",
+  "ui.beforeunload": "Je concept zal verloren gaan als je Soapbox verlaat.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Hiernaar toe slepen om te uploaden",

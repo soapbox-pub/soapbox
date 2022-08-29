@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# second} other {# seconds}} left",
   "trends.count_by_accounts": "{count} 位用戶在討論",
   "trends.title": "Trends",
-  "ui.beforeunload": "如果你現在離開 Soapbox FE，你的草稿內容將會被丟棄。",
+  "ui.beforeunload": "如果你現在離開 Soapbox，你的草稿內容將會被丟棄。",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "將檔案拖放至此上載",
