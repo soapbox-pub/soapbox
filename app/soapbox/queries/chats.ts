@@ -5,6 +5,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { normalizeChatMessage } from 'soapbox/normalizers';
 
 import { queryClient } from './client';
 
@@ -51,7 +52,7 @@ const useChatMessages = (chatId: string) => {
     });
 
     const hasMore = !!headers.link;
-    const result = data.sort(reverseOrder);
+    const result = data.sort(reverseOrder).map(normalizeChatMessage);
     const nextMaxId = result[0]?.id;
 
     return {
