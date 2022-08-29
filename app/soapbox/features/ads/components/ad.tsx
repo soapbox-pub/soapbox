@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -13,14 +14,23 @@ interface IAd {
   card: CardEntity,
   /** Impression URL to fetch upon display. */
   impression?: string,
+  /** Time when the ad expires and should no longer be displayed. */
+  expires?: Date,
 }
 
 /** Displays an ad in sponsored post format. */
-const Ad: React.FC<IAd> = ({ card, impression }) => {
+const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
+  const queryClient = useQueryClient();
   const instance = useAppSelector(state => state.instance);
 
+  const timer = useRef<NodeJS.Timeout | undefined>(undefined);
   const infobox = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
+
+  /** Invalidate query cache for ads. */
+  const bustCache = (): void => {
+    queryClient.invalidateQueries(['ads']);
+  };
 
   /** Toggle the info box on click. */
   const handleInfoButtonClick: React.MouseEventHandler = () => {
@@ -50,6 +60,20 @@ const Ad: React.FC<IAd> = ({ card, impression }) => {
       fetch(impression);
     }
   }, [impression]);
+
+  // Wait until the ad expires, then invalidate cache.
+  useEffect(() => {
+    if (expires) {
+      const delta = expires.getTime() - (new Date()).getTime();
+      timer.current = setTimeout(bustCache, delta);
+    }
+
+    return () => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+    };
+  }, [expires]);
 
   return (
     <div className='relative'>

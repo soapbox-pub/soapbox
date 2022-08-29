@@ -43,6 +43,7 @@ const RumbleAdProvider: AdProvider = {
             image: item.asset,
             url: item.click,
           }),
+          expires: new Date(item.expires * 1000),
         }));
       }
     }

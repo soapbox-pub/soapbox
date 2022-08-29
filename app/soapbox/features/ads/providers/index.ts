@@ -20,6 +20,8 @@ interface Ad {
   card: Card,
   /** Impression URL to fetch when displaying the ad. */
   impression?: string,
+  /** Time when the ad expires and should no longer be displayed. */
+  expires?: Date,
 }
 
 /** Gets the current provider based on config. */
