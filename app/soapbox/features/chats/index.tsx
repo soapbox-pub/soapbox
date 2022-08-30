@@ -7,7 +7,7 @@ import { launchChat } from 'soapbox/actions/chats';
 import AccountSearch from 'soapbox/components/account_search';
 import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 
-import { Column } from '../../components/ui';
+import { Column, Stack } from '../../components/ui';
 
 import ChatList from './components/chat-list';
 
@@ -31,19 +31,24 @@ const ChatIndex: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)}>
-      <div className='column__switch'>
-        <AudioToggle />
+      <div className='grid grid-cols-9'>
+        <Stack className='col-span-3'>
+          <div className='column__switch'>
+            <AudioToggle />
+          </div>
+
+          <AccountSearch
+            placeholder={intl.formatMessage(messages.searchPlaceholder)}
+            onSelected={handleSuggestion}
+          />
+
+          <ChatList
+            onClickChat={handleClickChat}
+            useWindowScroll
+          />
+        </Stack>
+        <Stack className='col-span-6'>Message area</Stack>
       </div>
-
-      <AccountSearch
-        placeholder={intl.formatMessage(messages.searchPlaceholder)}
-        onSelected={handleSuggestion}
-      />
-
-      <ChatList
-        onClickChat={handleClickChat}
-        useWindowScroll
-      />
     </Column>
   );
 };
