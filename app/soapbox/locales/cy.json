@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# eiliad} other {# o eiliadau}} ar ôl",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} yn siarad",
   "trends.title": "Trends",
-  "ui.beforeunload": "Mi fyddwch yn colli eich drafft os gadewch Soapbox FE.",
+  "ui.beforeunload": "Mi fyddwch yn colli eich drafft os gadewch Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Llusgwch & gollwing i uwchlwytho",

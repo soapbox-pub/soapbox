@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# sekunda} other {# sekund}} je ostalo",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {oseba} other {ljudi}} govori",
   "trends.title": "Trends",
-  "ui.beforeunload": "Vaš osnutek bo izgubljen, če zapustite Soapbox FEa.",
+  "ui.beforeunload": "Vaš osnutek bo izgubljen, če zapustite Soapboxa.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Za pošiljanje povlecite in spustite",

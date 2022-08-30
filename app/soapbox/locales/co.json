@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# siconda ferma} other {# siconde fermanu}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} parlanu",
   "trends.title": "Trends",
-  "ui.beforeunload": "A bruttacopia sarà persa s'ellu hè chjosu Soapbox FE.",
+  "ui.beforeunload": "A bruttacopia sarà persa s'ellu hè chjosu Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Drag & drop per caricà un fugliale",

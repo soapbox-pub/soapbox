@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "απομένουν {number, plural, one {# δευτερόλεπτο} other {# δευτερόλεπτα}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} μιλάνε",
   "trends.title": "Trends",
-  "ui.beforeunload": "Το προσχέδιό σου θα χαθεί αν φύγεις από το Soapbox FE.",
+  "ui.beforeunload": "Το προσχέδιό σου θα χαθεί αν φύγεις από το Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Drag & drop για να ανεβάσεις",

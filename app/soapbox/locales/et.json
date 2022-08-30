@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# sekund} other {# sekundit}} left",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {inimene} other {inimesed}} talking",
   "trends.title": "Trends",
-  "ui.beforeunload": "Sinu mustand läheb kaotsi, kui lahkud Soapbox FE.",
+  "ui.beforeunload": "Sinu mustand läheb kaotsi, kui lahkud Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Lohista & aseta üleslaadimiseks",
