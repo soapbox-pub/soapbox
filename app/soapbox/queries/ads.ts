@@ -23,7 +23,7 @@ export default function useAds() {
   });
 
   // Filter out expired ads.
-  const data = result.data?.filter(isExpired);
+  const data = result.data?.filter(ad => !isExpired(ad));
 
   return {
     ...result,
