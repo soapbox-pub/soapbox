@@ -29,6 +29,7 @@ import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { Layout } from 'soapbox/components/ui';
 import { useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin_page';
+import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
@@ -265,8 +266,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
-      {features.chats && <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
+      {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatRoom} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
