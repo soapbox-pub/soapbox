@@ -12,7 +12,7 @@ import { Column } from '../../components/ui';
 import ChatList from './components/chat-list';
 
 const messages = defineMessages({
-  title: { id: 'column.chats', defaultMessage: 'Chats' },
+  title: { id: 'column.chats', defaultMessage: 'Messages' },
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
 });
 

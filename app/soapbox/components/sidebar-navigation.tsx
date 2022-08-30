@@ -113,9 +113,9 @@ const SidebarNavigation = () => {
       return (
         <SidebarNavigationLink
           to='/chats'
-          icon={require('@tabler/icons/messages.svg')}
+          icon={require('@tabler/icons/mail.svg')}
           count={chatsCount}
-          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
+          text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
         />
       );
     }

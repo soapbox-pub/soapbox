@@ -17,8 +17,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
     if (features.chats) {
       return (
         <ThumbNavigationLink
-          src={require('@tabler/icons/messages.svg')}
-          text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
+          src={require('@tabler/icons/mail.svg')}
+          text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
           to='/chats'
           exact
           count={chatsCount}
