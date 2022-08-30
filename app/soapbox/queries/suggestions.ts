@@ -35,7 +35,6 @@ type Suggestion = {
   account: Account
 }
 
-
 export default function useOnboardingSuggestions() {
   const api = useApi();
   const dispatch = useAppDispatch();

@@ -12,6 +12,7 @@ export { FilterRecord, normalizeFilter } from './filter';
 export { HistoryRecord, normalizeHistory } from './history';
 export { InstanceRecord, normalizeInstance } from './instance';
 export { ListRecord, normalizeList } from './list';
+export { LocationRecord, normalizeLocation } from './location';
 export { MentionRecord, normalizeMention } from './mention';
 export { NotificationRecord, normalizeNotification } from './notification';
 export { PollRecord, PollOptionRecord, normalizePoll } from './poll';

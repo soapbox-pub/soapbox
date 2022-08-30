@@ -63,8 +63,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(selectComposeSuggestion(position, token, suggestion, path));
   },
 
-  onChangeSpoilerText(checked) {
-    dispatch(changeComposeSpoilerText(checked));
+  onChangeSpoilerText(value) {
+    dispatch(changeComposeSpoilerText(value));
   },
 
   onPaste(files) {

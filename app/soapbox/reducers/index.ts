@@ -21,6 +21,7 @@ import chats from './chats';
 import compose from './compose';
 import contexts from './contexts';
 import conversations from './conversations';
+import create_event from './create_event';
 import custom_emojis from './custom_emojis';
 import domain_lists from './domain_lists';
 import dropdown_menu from './dropdown_menu';
@@ -34,6 +35,7 @@ import instance from './instance';
 import listAdder from './list_adder';
 import listEditor from './list_editor';
 import lists from './lists';
+import locations from './locations';
 import me from './me';
 import meta from './meta';
 import modals from './modals';
@@ -90,6 +92,7 @@ const reducers = {
   lists,
   listEditor,
   listAdder,
+  locations,
   filters,
   conversations,
   suggestions,
@@ -124,6 +127,7 @@ const reducers = {
   rules,
   history,
   announcements,
+  create_event,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

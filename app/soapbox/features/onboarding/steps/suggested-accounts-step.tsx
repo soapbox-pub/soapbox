@@ -10,7 +10,6 @@ import useOnboardingSuggestions from 'soapbox/queries/suggestions';
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useOnboardingSuggestions();
 
-
   const handleLoadMore = debounce(() => {
     if (isFetching) {
       return null;

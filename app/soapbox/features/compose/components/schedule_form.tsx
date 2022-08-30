@@ -11,7 +11,7 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-const isCurrentOrFutureDate = (date: Date) => {
+export const isCurrentOrFutureDate = (date: Date) => {
   return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
 };
 
