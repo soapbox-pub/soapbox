@@ -3,6 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
+import { checkComposeContent } from 'soapbox/components/modal_root';
 import { Modal } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -23,13 +24,13 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const statusId = useAppSelector((state) => state.compose.id);
-  const composeText = useAppSelector((state) => state.compose.text);
+  const hasComposeContent = useAppSelector((state) => checkComposeContent(state.compose));
   const privacy = useAppSelector((state) => state.compose.privacy);
   const inReplyTo = useAppSelector((state) => state.compose.in_reply_to);
   const quote = useAppSelector((state) => state.compose.quote);
 
   const onClickClose = () => {
-    if (composeText) {
+    if (hasComposeContent) {
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/trash.svg'),
         heading: statusId
