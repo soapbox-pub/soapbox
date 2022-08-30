@@ -56,12 +56,6 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
-  const markAsRead = useMutation(() => markChatAsRead(), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['chats']);
-    },
-  });
-
   const submitMessage = useMutation(({ chatId, content }: any) => {
     return createChatMessage(chatId, content);
   }, {

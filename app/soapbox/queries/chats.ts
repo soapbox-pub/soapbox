@@ -135,7 +135,11 @@ const useChat = (chatId: string) => {
   const api = useApi();
   const { setChat, setEditing } = useChatContext();
 
-  const markChatAsRead = () => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`);
+  const markChatAsRead = (lastReadId: string) => {
+    api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
+      .then(() => queryClient.invalidateQueries(['chats']))
+      .catch(() => null);
+  };
 
   const createChatMessage = (chatId: string, content: string) => {
     return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/messages`, { content });
