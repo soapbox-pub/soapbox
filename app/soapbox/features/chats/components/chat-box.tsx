@@ -219,7 +219,6 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
         <HStack alignItems='center' justifyContent='between' space={4}>
           <div className='flex-grow'>
             <Textarea
-              rows={1}
               autoFocus
               ref={inputRef}
               placeholder={intl.formatMessage(messages.placeholder)}
@@ -227,6 +226,8 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
               value={content}
               onChange={handleContentChange}
               isResizeable={false}
+              autoGrow
+              maxRows={5}
             />
           </div>
 
