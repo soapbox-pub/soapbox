@@ -29,8 +29,8 @@ const BIG_EMOJI_LIMIT = 1;
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
-  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete message' },
-  report: { id: 'chats.actions.report', defaultMessage: 'Report user' },
+  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete' },
+  copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
 });
 
 type TimeFormat = 'today' | 'date';
@@ -203,29 +203,31 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='sm' />;
 
-  const handleReportUser = (userId: string) => {
-    return () => {
-      dispatch(initReportById(userId));
-    };
+  const handleCopyText = (chatMessage: IChatMessage) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(chatMessage.content);
+    }
   };
 
   const renderMessage = (chatMessage: any) => {
     const isMyMessage = chatMessage.account_id === me;
 
-    const menu: Menu = [
-      {
+    const menu: Menu = [];
+
+    if (navigator.clipboard) {
+      menu.push({
+        text: intl.formatMessage(messages.copy),
+        action: () => handleCopyText(chatMessage),
+        icon: require('@tabler/icons/copy.svg'),
+      });
+    }
+
+    if (isMyMessage) {
+      menu.push({
         text: intl.formatMessage(messages.delete),
         action: () => handleDeleteMessage.mutate(chatMessage.id),
         icon: require('@tabler/icons/trash.svg'),
         destructive: true,
-      },
-    ];
-
-    if (chatMessage.account_id !== me) {
-      menu.push({
-        text: intl.formatMessage(messages.report),
-        action: handleReportUser(chatMessage.account_id),
-        icon: require('@tabler/icons/flag.svg'),
       });
     }
 
@@ -244,19 +246,29 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               'opacity-50': chatMessage.pending,
             })}
           >
-            {isMyMessage ? (
-              <div className='hidden focus:block group-hover:block mr-2 text-gray-500'>
+            {menu.length > 0 && (
+              <div
+                className={classNames({
+                  'hidden focus:block group-hover:block text-gray-500': true,
+                  'mr-2 order-1': isMyMessage,
+                  'ml-2 order-2': !isMyMessage,
+                })}
+              >
                 <DropdownMenuContainer
                   items={menu}
                   src={require('@tabler/icons/dots.svg')}
                   title={intl.formatMessage(messages.more)}
                 />
               </div>
-            ) : null}
+            )}
 
             <HStack
               alignItems='center'
-              className='max-w-[85%]'
+              className={classNames({
+                'max-w-[85%]': true,
+                'order-2': isMyMessage,
+                'order-1': !isMyMessage,
+              })}
               justifyContent={isMyMessage ? 'end' : 'start'}
             >
               <div
