@@ -5,9 +5,8 @@ import { useHistory } from 'react-router-dom';
 
 import { launchChat } from 'soapbox/actions/chats';
 import AccountSearch from 'soapbox/components/account_search';
-import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 
-import { Column, Stack } from '../../components/ui';
+import { Card, CardTitle, Stack } from '../../components/ui';
 
 import ChatList from './components/chat-list';
 
@@ -30,26 +29,26 @@ const ChatIndex: React.FC = () => {
   };
 
   return (
-    <Column label={intl.formatMessage(messages.title)}>
+    <Card className='p-0' variant='rounded'>
       <div className='grid grid-cols-9'>
-        <Stack className='col-span-3'>
-          <div className='column__switch'>
-            <AudioToggle />
-          </div>
+        <Stack className='col-span-3 p-6 bg-gradient-to-r from-white to-gray-100' space={6}>
+          <CardTitle title={intl.formatMessage(messages.title)} />
 
           <AccountSearch
             placeholder={intl.formatMessage(messages.searchPlaceholder)}
             onSelected={handleSuggestion}
           />
 
-          <ChatList
-            onClickChat={handleClickChat}
-            useWindowScroll
-          />
+          <div className='-mx-3'>
+            <ChatList
+              onClickChat={handleClickChat}
+              useWindowScroll
+            />
+          </div>
         </Stack>
         <Stack className='col-span-6'>Message area</Stack>
       </div>
-    </Column>
+    </Card>
   );
 };
 

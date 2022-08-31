@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import React from 'react';
 
-type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
+type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 6 | 10
 
 const spaces = {
   0: 'space-y-0',
@@ -12,6 +12,7 @@ const spaces = {
   3: 'space-y-3',
   4: 'space-y-4',
   5: 'space-y-5',
+  6: 'space-y-6',
   10: 'space-y-10',
 };
 
