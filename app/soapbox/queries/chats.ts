@@ -34,6 +34,7 @@ export interface IChatMessage {
   created_at: Date
   id: string
   unread: boolean
+  pending?: boolean
 }
 
 const reverseOrder = (a: IChat, b: IChat): number => {

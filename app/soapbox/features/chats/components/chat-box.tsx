@@ -14,7 +14,7 @@ import { Avatar, Button, HStack, Icon, IconButton, Input, Stack, Text, Textarea 
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { IChat, useChat } from 'soapbox/queries/chats';
+import { IChat, IChatMessage, useChat } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -56,22 +56,23 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
-  const submitMessage = useMutation(({ chatId, content }: any) => {
-    return createChatMessage(chatId, content);
-  }, {
-    onMutate: async (newMessage) => {
-      clearState();
-
+  const submitMessage = useMutation(({ chatId, content }: any) => createChatMessage(chatId, content), {
+    retry: false,
+    onMutate: async(newMessage: any) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries(['chats', 'messages', chat.id]);
 
       // Snapshot the previous value
-      const previousChatMessages = queryClient.getQueryData(['chats', 'messages', chat.id]);
+      const prevChatMessages = queryClient.getQueryData(['chats', 'messages', chat.id]);
+      const prevContent = content;
+
+      // Clear state (content, attachment, etc)
+      clearState();
 
       // Optimistically update to the new value
       queryClient.setQueryData(['chats', 'messages', chat.id], (prevResult: any) => {
-        const newResult = prevResult;
-        newResult.pages = prevResult.pages.map((page: any, idx: number) => {
+        const newResult = { ...prevResult };
+        newResult.pages = newResult.pages.map((page: any, idx: number) => {
           if (idx === 0) {
             return {
               ...page,
@@ -92,14 +93,15 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
       });
 
       // Return a context object with the snapshotted value
-      return { previousChatMessages };
+      return { prevChatMessages, prevContent };
     },
     // If the mutation fails, use the context returned from onMutate to roll back
-    onError: (err, newTodo, context: any) => {
-      queryClient.setQueryData(['chats', 'messages', chat.id], context.previousChatMessages);
+    onError: (_error: any, _newData: any, context: any) => {
+      setContent(context.prevContent);
+      queryClient.setQueryData(['chats', 'messages', chat.id], context.prevChatMessages);
     },
     // Always refetch after error or success:
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries(['chats', 'messages', chat.id]);
     },
   });
@@ -120,7 +122,9 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
       };
 
       submitMessage.mutate({ chatId: chat.id, content });
-      acceptChat.mutate();
+      if (!chat.accepted) {
+        acceptChat.mutate();
+      }
     }
   };
 

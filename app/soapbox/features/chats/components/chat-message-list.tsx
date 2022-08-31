@@ -359,9 +359,10 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   }, [formattedChatMessages.length]);
 
   useEffect(() => {
-    const lastMessageId = formattedChatMessages.pop()?.id;
+    const lastMessage = formattedChatMessages.pop();
+    const lastMessageId = lastMessage?.id;
 
-    if (lastMessageId) {
+    if (lastMessageId && !lastMessage.pending) {
       markChatAsRead(lastMessageId);
     }
   }, [formattedChatMessages.length]);
