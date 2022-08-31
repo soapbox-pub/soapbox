@@ -21,7 +21,6 @@ describe('normalizePoll()', () => {
     expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(ImmutableRecord.isRecord(result.options.get(0))).toBe(true);
     expect(result.toJS()).toMatchObject(expected);
-    expect(result.expires_at instanceof Date).toBe(true);
   });
 
   it('normalizes a Pleroma logged-out poll', () => {

@@ -54,7 +54,7 @@ interface IAccount {
   id?: string,
   onActionClick?: (account: any) => void,
   showProfileHoverCard?: boolean,
-  timestamp?: string | Date,
+  timestamp?: string,
   timestampUrl?: string,
   futureTimestamp?: boolean,
   withAccountNote?: boolean,

@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { injectIntl, defineMessages } from 'react-intl';
+import { injectIntl, defineMessages, IntlShape, FormatDateOptions } from 'react-intl';
 
-import { Text } from './ui';
+import Text, { IText } from './ui/text/text';
 
 const messages = defineMessages({
   just_now: { id: 'relative_time.just_now', defaultMessage: 'now' },
@@ -17,7 +16,7 @@ const messages = defineMessages({
   days_remaining: { id: 'time_remaining.days', defaultMessage: '{number, plural, one {# day} other {# days}} left' },
 });
 
-const dateFormatOptions = {
+const dateFormatOptions: FormatDateOptions = {
   hour12: false,
   year: 'numeric',
   month: 'short',
@@ -26,7 +25,7 @@ const dateFormatOptions = {
   minute: '2-digit',
 };
 
-const shortDateFormatOptions = {
+const shortDateFormatOptions: FormatDateOptions = {
   month: 'short',
   day: 'numeric',
 };
@@ -38,7 +37,7 @@ const DAY    = 1000 * 60 * 60 * 24;
 
 const MAX_DELAY = 2147483647;
 
-const selectUnits = delta => {
+const selectUnits = (delta: number) => {
   const absDelta = Math.abs(delta);
 
   if (absDelta < MINUTE) {
@@ -52,7 +51,7 @@ const selectUnits = delta => {
   return 'day';
 };
 
-const getUnitDelay = units => {
+const getUnitDelay = (units: string) => {
   switch (units) {
     case 'second':
       return SECOND;
@@ -67,7 +66,7 @@ const getUnitDelay = units => {
   }
 };
 
-export const timeAgoString = (intl, date, now, year) => {
+export const timeAgoString = (intl: IntlShape, date: Date, now: number, year: number) => {
   const delta = now - date.getTime();
 
   let relativeTime;
@@ -93,7 +92,7 @@ export const timeAgoString = (intl, date, now, year) => {
   return relativeTime;
 };
 
-const timeRemainingString = (intl, date, now) => {
+const timeRemainingString = (intl: IntlShape, date: Date, now: number) => {
   const delta = date.getTime() - now;
 
   let relativeTime;
@@ -113,16 +112,21 @@ const timeRemainingString = (intl, date, now) => {
   return relativeTime;
 };
 
-export default @injectIntl
-class RelativeTimestamp extends React.Component {
+interface RelativeTimestampProps extends IText {
+  intl: IntlShape,
+  timestamp: string,
+  year?: number,
+  futureDate?: boolean,
+}
 
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    timestamp: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    theme: PropTypes.string,
-    futureDate: PropTypes.bool,
-  };
+interface RelativeTimestampState {
+  now: number,
+}
+
+/** Displays a timestamp compared to the current time, eg "1m" for one minute ago. */
+class RelativeTimestamp extends React.Component<RelativeTimestampProps, RelativeTimestampState> {
+
+  _timer: NodeJS.Timeout | undefined;
 
   state = {
     now: Date.now(),
@@ -130,10 +134,10 @@ class RelativeTimestamp extends React.Component {
 
   static defaultProps = {
     year: (new Date()).getFullYear(),
-    theme: 'inherit',
+    theme: 'inherit' as const,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: RelativeTimestampProps, nextState: RelativeTimestampState) {
     // As of right now the locale doesn't change without a new page load,
     // but we might as well check in case that ever changes.
     return this.props.timestamp !== nextProps.timestamp ||
@@ -141,14 +145,14 @@ class RelativeTimestamp extends React.Component {
       this.state.now !== nextState.now;
   }
 
-  UNSAFE_componentWillReceiveProps(prevProps) {
+  UNSAFE_componentWillReceiveProps(prevProps: RelativeTimestampProps) {
     if (this.props.timestamp !== prevProps.timestamp) {
       this.setState({ now: Date.now() });
     }
   }
 
   componentDidMount() {
-    this._scheduleNextUpdate(this.props, this.state);
+    this._scheduleNextUpdate();
   }
 
   UNSAFE_componentWillUpdate() {
@@ -156,11 +160,15 @@ class RelativeTimestamp extends React.Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this._timer);
+    if (this._timer) {
+      clearTimeout(this._timer);
+    }
   }
 
   _scheduleNextUpdate() {
-    clearTimeout(this._timer);
+    if (this._timer) {
+      clearTimeout(this._timer);
+    }
 
     const { timestamp }  = this.props;
     const delta          = (new Date(timestamp)).getTime() - this.state.now;
@@ -177,8 +185,8 @@ class RelativeTimestamp extends React.Component {
   render() {
     const { timestamp, intl, year, futureDate, theme, ...textProps } = this.props;
 
-    const date         = new Date(timestamp);
-    const relativeTime = futureDate ? timeRemainingString(intl, date, this.state.now) : timeAgoString(intl, date, this.state.now, year);
+    const date = new Date(timestamp);
+    const relativeTime = futureDate ? timeRemainingString(intl, date, this.state.now) : timeAgoString(intl, date, this.state.now, year!);
 
     return (
       <Text {...textProps} theme={theme} tag='time' title={intl.formatDate(date, dateFormatOptions)}>
@@ -188,3 +196,5 @@ class RelativeTimestamp extends React.Component {
   }
 
 }
+
+export default injectIntl(RelativeTimestamp);
