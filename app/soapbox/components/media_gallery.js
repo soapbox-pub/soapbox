@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { Map as ImmutableMap, is } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';

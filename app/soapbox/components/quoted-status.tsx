@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage, FormattedList } from 'react-intl';
 import { useHistory } from 'react-router-dom';

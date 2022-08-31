@@ -1,5 +1,5 @@
 import Portal from '@reach/portal';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';

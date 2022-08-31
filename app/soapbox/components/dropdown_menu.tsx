@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React from 'react';
 import { spring } from 'react-motion';

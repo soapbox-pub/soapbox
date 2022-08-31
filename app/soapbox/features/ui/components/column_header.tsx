@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import classNames from 'classnames';
+// import classNames from 'clsx';
 // import Icon from 'soapbox/components/icon';
 import SubNavigation from 'soapbox/components/sub_navigation';
 

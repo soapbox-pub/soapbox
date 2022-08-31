@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';

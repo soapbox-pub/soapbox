@@ -1,5 +1,5 @@
 import Portal from '@reach/portal';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';

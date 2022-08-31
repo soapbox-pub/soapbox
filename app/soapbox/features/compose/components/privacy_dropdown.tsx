@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useState, useRef, useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';

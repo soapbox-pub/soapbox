@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedNumber } from 'react-intl';
