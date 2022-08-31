@@ -91,7 +91,7 @@ const ChatPane = () => {
         </Stack>
       );
     } else {
-      return <ChatList onClickChat={handleClickChat} useWindowScroll={false} />;
+      return <ChatList onClickChat={handleClickChat} fade />;
     }
   };
 
