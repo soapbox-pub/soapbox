@@ -162,7 +162,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
           {isLoading ? (
             <Spinner />
           ) : (
-            <Text>{emptyMessage}</Text>
+            emptyMessage
           )}
         </Card>
       </div>
