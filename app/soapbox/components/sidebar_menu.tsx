@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';

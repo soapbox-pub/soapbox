@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useRef } from 'react';
 
 import { useSettings } from 'soapbox/hooks';

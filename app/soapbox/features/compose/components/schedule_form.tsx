@@ -1,6 +1,6 @@
 'use strict';
 
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 

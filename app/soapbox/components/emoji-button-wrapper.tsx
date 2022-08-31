@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState, useEffect, useRef } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';

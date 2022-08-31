@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 type Themes = 'default' | 'danger' | 'primary' | 'muted' | 'subtle' | 'success' | 'inherit' | 'white'

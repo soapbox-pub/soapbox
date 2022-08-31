@@ -1,7 +1,7 @@
 'use strict';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';

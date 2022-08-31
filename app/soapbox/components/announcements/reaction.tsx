@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState } from 'react';
 
 import AnimatedNumber from 'soapbox/components/animated-number';

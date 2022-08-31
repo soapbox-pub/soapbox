@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import * as React from 'react';
 
 import StillImage from 'soapbox/components/still_image';

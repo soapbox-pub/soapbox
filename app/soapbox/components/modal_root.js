@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { createBrowserHistory } from 'history';
 import PropTypes from 'prop-types';
 import React from 'react';
