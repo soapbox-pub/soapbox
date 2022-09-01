@@ -8,6 +8,7 @@ import AccountSearch from 'soapbox/components/account_search';
 
 import { Card, CardTitle, Stack } from '../../components/ui';
 
+import Chat from './components/chat';
 import ChatBox from './components/chat-box';
 import ChatList from './components/chat-list';
 
@@ -49,7 +50,12 @@ const ChatIndex: React.FC = () => {
         </Stack>
         <Stack className='col-span-6 h-full overflow-hidden'>
           {chat && (
-            <ChatBox chat={chat} onSetInputRef={() => {}} />
+            <Stack className='h-full overflow-hidden'>
+              <Chat chat={chat} onClick={() => {}} />
+              <div className='h-full overflow-hidden'>
+                <ChatBox className='h-full overflow-hidden' chat={chat} onSetInputRef={() => {}} />
+              </div>
+            </Stack>
           )}
         </Stack>
       </div>

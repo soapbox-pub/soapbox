@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import classNames from 'classnames';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
@@ -31,14 +32,15 @@ interface IChatBox {
   chat: IChat,
   onSetInputRef: (el: HTMLTextAreaElement) => void,
   autosize?: boolean,
-  inputRef?: MutableRefObject<HTMLTextAreaElement>
+  inputRef?: MutableRefObject<HTMLTextAreaElement>,
+  className?: string,
 }
 
 /**
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
-const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }) => {
+const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef, className }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chat.id, ImmutableOrderedSet<string>()));
@@ -214,7 +216,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
   };
 
   return (
-    <Stack className='overflow-hidden flex flex-grow' onMouseOver={handleMouseOver}>
+    <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
       <div className='flex-grow h-full overflow-hidden flex justify-center'>
         <ChatMessageList chat={chat} autosize />
       </div >
