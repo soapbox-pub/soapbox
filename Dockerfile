@@ -8,5 +8,7 @@ ARG NODE_ENV=production
 RUN yarn build
 
 FROM nginx:stable-alpine
-COPY installation/docker.conf /etc/nginx/conf.d/default.conf
+EXPOSE 5000
+ENV PORT=5000
+COPY installation/docker.conf /etc/nginx/templates/default.conf.template
 COPY --from=build /app/static /usr/share/nginx/html
