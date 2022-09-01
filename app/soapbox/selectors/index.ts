@@ -59,7 +59,7 @@ const findAccountsByUsername = (state: RootState, username: string) => {
   const accounts = state.accounts;
 
   return accounts.filter(account => {
-    return username.toLowerCase() === account.acct.toLowerCase();
+    return username.toLowerCase() === account?.acct.toLowerCase();
   });
 };
 
