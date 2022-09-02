@@ -1,0 +1,7 @@
+{
+  "name": "Soapbox",
+  "description": "Software for the next generation of social media.",
+  "keywords": ["fediverse"],
+  "website": "https://soapbox.pub",
+  "stack": "container"
+}
