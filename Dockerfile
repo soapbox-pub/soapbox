@@ -10,5 +10,5 @@ RUN yarn build
 FROM nginx:stable-alpine
 EXPOSE 5000
 ENV PORT=5000
-COPY installation/docker.conf /etc/nginx/templates/default.conf.template
+COPY installation/docker.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/static /usr/share/nginx/html

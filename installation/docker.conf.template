@@ -1,4 +1,7 @@
 # Soapbox Nginx for Docker.
+# It's intended to be used by the official nginx image, which has templating functionality.
+# Mount at: `/etc/nginx/templates/default.conf.template`
+
 server {
   listen ${PORT};
 
