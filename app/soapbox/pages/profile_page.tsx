@@ -105,7 +105,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
             </BundleContainer>
 
             {account && showTabs && (
-              <Tabs items={tabItems} activeItem={activeItem} />
+              <Tabs key={`profile-tabs-${account.id}`} items={tabItems} activeItem={activeItem} />
             )}
 
             {children}
