@@ -3,7 +3,7 @@
 To get it running, just clone the repo:
 
 ```
-git clone https://gitlab.com/soapbox-pub/soapbox-fe.git
+git clone https://gitlab.com/soapbox-pub/soapbox.git
 cd soapbox-fe
 ```
 
@@ -40,5 +40,5 @@ Try again.
 
 ## Troubleshooting: it's not working!
 
-Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/.tool-versions).
+Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/.tool-versions).
 If they don't match, try installing [asdf](https://asdf-vm.com/).

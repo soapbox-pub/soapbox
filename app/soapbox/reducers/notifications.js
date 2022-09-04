@@ -67,7 +67,7 @@ const fixNotification = notification => {
 
 const isValid = notification => {
   try {
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/424
     if (!notification.account.id) {
       return false;
     }
