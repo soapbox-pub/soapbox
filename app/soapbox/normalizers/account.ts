@@ -78,7 +78,7 @@ export const FieldRecord = ImmutableRecord({
   value_plain: '',
 });
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
+// https://gitlab.com/soapbox-pub/soapbox/-/issues/549
 const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
   return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
     return pleroma.withMutations(pleroma => {

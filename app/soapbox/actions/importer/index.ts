@@ -106,10 +106,10 @@ export function importFetchedStatus(status: APIEntity, idempotencyKey?: string) 
 const isBroken = (status: APIEntity) => {
   try {
     // Skip empty accounts
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/424
     if (!status.account.id) return true;
     // Skip broken reposts
-    // https://gitlab.com/soapbox-pub/soapbox/-/issues/28
+    // https://gitlab.com/soapbox-pub/rebased/-/issues/28
     if (status.reblog && !status.reblog.account.id) return true;
     return false;
   } catch (e) {
