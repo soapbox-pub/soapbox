@@ -10,7 +10,8 @@ RUN yarn build
 FROM nginx:stable-alpine
 EXPOSE 5000
 ENV PORT=5000
-ENV BACKEND_URL=http://localhost
+ENV FALLBACK_PORT=4444
+ENV BACKEND_URL=http://localhost:4444
 ENV CSP=
 COPY installation/docker.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/static /usr/share/nginx/html

@@ -18,8 +18,10 @@ map $http_accept $activitypub_location {
 
 proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=CACHE:10m inactive=7d max_size=1g;
 
+# Fake backend for when BACKEND_URL isn't defined.
 server {
-  server_name localhost;
+  listen ${FALLBACK_PORT};
+  listen [::]:${FALLBACK_PORT};
 
   location / {
     add_header Content-Type "application/json" always;
