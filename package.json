@@ -1,19 +1,19 @@
 {
-  "name": "soapbox-fe",
+  "name": "soapbox",
   "displayName": "Soapbox",
   "version": "3.0.0",
   "description": "Soapbox frontend for the Fediverse.",
   "homepage": "https://soapbox.pub/",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/soapbox-pub/soapbox-fe"
+    "url": "https://gitlab.com/soapbox-pub/soapbox"
   },
   "keywords": [
     "fediverse",
     "pleroma"
   ],
   "bugs": {
-    "url": "https://gitlab.com/soapbox-pub/soapbox-fe/-/issues"
+    "url": "https://gitlab.com/soapbox-pub/soapbox/-/issues"
   },
   "scripts": {
     "start": "npx webpack-dev-server",
