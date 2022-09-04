@@ -50,7 +50,7 @@ server {
 
   # Content Security Policy (CSP)
   # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-  add_header Content-Security-Policy "base-uri 'none'; default-src 'none'; font-src 'self'; img-src 'self' https: data: blob:; style-src 'self' 'unsafe-inline'; media-src 'self' https: data:; frame-src 'self' https:; manifest-src 'self'; connect-src 'self' data: blob:; script-src 'self'; child-src 'self'; worker-src 'self';";
+  add_header Content-Security-Policy "${CSP}";
 
   # Fallback route.
   # Try static files, then fall back to the SPA.
@@ -97,7 +97,7 @@ server {
     proxy_set_header Proxy "";
     proxy_pass_header Server;
 
-    proxy_pass ${BACKEND_URL};
+    proxy_pass "${BACKEND_URL}";
     proxy_buffering on;
     proxy_redirect off;
     proxy_http_version 1.1;
