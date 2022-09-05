@@ -242,7 +242,7 @@ const timelineDisconnect = (state: State, timelineId: string) => {
     if (items.isEmpty()) return;
 
     // This is causing problems. Disable for now.
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/716
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/716
     // timeline.set('items', addStatusId(items, null));
   }));
 };

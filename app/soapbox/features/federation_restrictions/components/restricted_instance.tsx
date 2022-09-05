@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState } from 'react';
 
 import Icon from 'soapbox/components/icon';

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';

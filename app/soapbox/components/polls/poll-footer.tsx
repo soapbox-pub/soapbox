@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { fetchPoll, vote } from 'soapbox/actions/polls';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import RelativeTimestamp from '../relative_timestamp';
+import RelativeTimestamp from '../relative-timestamp';
 import { Button, HStack, Stack, Text, Tooltip } from '../ui';
 
 import type { Selected } from './poll';

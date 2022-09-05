@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';

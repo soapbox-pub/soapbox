@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-// import classNames from 'classnames';
+// import classNames from 'clsx';
 // import { injectIntl, defineMessages } from 'react-intl';
 // import Icon from 'soapbox/components/icon';
 import SubNavigation from 'soapbox/components/sub_navigation';

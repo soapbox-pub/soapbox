@@ -146,6 +146,7 @@ module.exports = {
       'node_modules',
     ],
     alias: {
+      'classnames': 'clsx',
       'icons': resolve('app', 'icons'),
       'custom': resolve('custom'),
     },

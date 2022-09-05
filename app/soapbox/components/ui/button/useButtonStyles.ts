@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 
 type ButtonThemes = 'primary' | 'secondary' | 'tertiary' | 'accent' | 'danger' | 'transparent' | 'outline'
 type ButtonSizes = 'sm' | 'md' | 'lg'

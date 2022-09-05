@@ -5,7 +5,7 @@
  * @see soapbox/components/icon
  */
 
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 export interface IForkAwesomeIcon extends React.HTMLAttributes<HTMLLIElement> {

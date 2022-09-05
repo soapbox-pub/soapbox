@@ -26,7 +26,7 @@ export const AccountRecord = ImmutableRecord({
   avatar_static: '',
   birthday: '',
   bot: false,
-  created_at: new Date(),
+  created_at: '',
   discoverable: false,
   display_name: '',
   emojis: ImmutableList<Emoji>(),
@@ -38,7 +38,7 @@ export const AccountRecord = ImmutableRecord({
   header: '',
   header_static: '',
   id: '',
-  last_status_at: new Date(),
+  last_status_at: '',
   location: '',
   locked: false,
   moved: null as EmbeddedEntity<any>,
@@ -78,7 +78,7 @@ export const FieldRecord = ImmutableRecord({
   value_plain: '',
 });
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
+// https://gitlab.com/soapbox-pub/soapbox/-/issues/549
 const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
   return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
     return pleroma.withMutations(pleroma => {

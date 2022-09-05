@@ -8,7 +8,7 @@ To do so, shell into your server and unpack Soapbox:
 ```sh
 mkdir -p /opt/soapbox
 
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/develop/download?job=build-production -o soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production -o soapbox-fe.zip
 
 busybox unzip soapbox-fe.zip -o -d /opt/soapbox
 ```
@@ -17,7 +17,7 @@ Now create an Nginx file for Soapbox with Mastodon.
 If you already have one, replace it:
 
 ```sh
-curl https://gitlab.com/soapbox-pub/soapbox-fe/-/raw/develop/installation/mastodon.conf > /etc/nginx/sites-available/mastodon
+curl https://gitlab.com/soapbox-pub/soapbox/-/raw/develop/installation/mastodon.conf > /etc/nginx/sites-available/mastodon
 ```
 
 Edit this file and replace all occurrences of `example.com` with your domain name.

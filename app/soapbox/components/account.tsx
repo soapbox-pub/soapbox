@@ -8,7 +8,7 @@ import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
-import RelativeTimestamp from './relative_timestamp';
+import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -54,7 +54,7 @@ interface IAccount {
   id?: string,
   onActionClick?: (account: any) => void,
   showProfileHoverCard?: boolean,
-  timestamp?: string | Date,
+  timestamp?: string,
   timestampUrl?: string,
   futureTimestamp?: boolean,
   withAccountNote?: boolean,

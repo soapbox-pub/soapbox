@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { createBrowserHistory } from 'history';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -14,13 +14,11 @@ const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
 
-const checkComposeContent = compose => {
+export const checkComposeContent = compose => {
   return [
     compose.text.length > 0,
     compose.spoiler_text.length > 0,
     compose.media_attachments.size > 0,
-    compose.in_reply_to !== null,
-    compose.quote !== null,
     compose.poll !== null,
   ].some(check => check === true);
 };

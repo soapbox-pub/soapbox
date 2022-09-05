@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useEffect, useState, useCallback } from 'react';
 import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { fromJS, is } from 'immutable';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';

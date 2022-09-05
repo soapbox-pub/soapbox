@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classnames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 

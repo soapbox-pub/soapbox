@@ -18,7 +18,7 @@ interface IPoll {
 }
 
 const messages = defineMessages({
-  multiple: { id: 'poll.chooseMultiple', defaultMessage: 'Choose as many as you\'d like.' },
+  multiple: { id: 'poll.choose_multiple', defaultMessage: 'Choose as many as you\'d like.' },
 });
 
 const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {

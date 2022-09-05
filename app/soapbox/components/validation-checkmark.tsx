@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';

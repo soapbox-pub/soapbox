@@ -14,13 +14,13 @@ Installing Soapbox on an existing Pleroma server is extremely easy.
 Just ssh into the server and download a .zip of the latest build:
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/develop/download?job=build-production -o soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production -o soapbox.zip
 ```
 
 Then unpack it into Pleroma's `instance` directory:
 
 ```sh
-busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
+busybox unzip soapbox.zip -o -d /opt/pleroma/instance
 ```
 
 **That's it!** :tada:
@@ -54,7 +54,7 @@ location / {
 }
 ```
 
-(See [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/installation/mastodon.conf) for a full example.)
+(See [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/installation/mastodon.conf) for a full example.)
 
 Soapbox incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
 It detects features supported by the backend to provide the right experience for the backend.
@@ -64,8 +64,8 @@ It detects features supported by the backend to provide the right experience for
 To get it running, just clone the repo:
 
 ```sh
-git clone https://gitlab.com/soapbox-pub/soapbox-fe.git
-cd soapbox-fe
+git clone https://gitlab.com/soapbox-pub/soapbox.git
+cd soapbox
 ```
 
 Ensure that Node.js and Yarn are installed, then install dependencies:
@@ -101,7 +101,7 @@ Try again.
 
 ### Troubleshooting: it's not working!
 
-Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/.tool-versions).
+Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/.tool-versions).
 If they don't match, try installing [asdf](https://asdf-vm.com/).
 
 ## Local Dev Configuration
