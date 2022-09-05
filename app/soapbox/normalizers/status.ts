@@ -21,6 +21,19 @@ import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } 
 
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
 
+export type EventJoinMode = 'free' | 'restricted' | 'invite';
+export type EventJoinState = 'pending' | 'reject' | 'accept';
+
+export const EventRecord = ImmutableRecord({
+  name: '',
+  start_time: null as string | null,
+  end_time: null as string | null,
+  join_mode: null as EventJoinMode | null,
+  participants_count: 0,
+  location: null as ImmutableMap<string, any> | null,
+  join_state: null as EventJoinState | null,
+});
+
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
@@ -55,6 +68,7 @@ export const StatusRecord = ImmutableRecord({
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
+  event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields
   contentHtml: '',
@@ -149,6 +163,15 @@ const fixFiltered = (status: ImmutableMap<string, any>) => {
   status.delete('filtered');
 };
 
+// Normalize event
+const normalizeEvent = (status: ImmutableMap<string, any>) => {
+  if (status.getIn(['pleroma', 'event'])) {
+    return status.set('event', EventRecord(status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>));
+  } else {
+    return status.set('event', null);
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -161,6 +184,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       addSelfMention(status);
       fixQuote(status);
       fixFiltered(status);
+      normalizeEvent(status);
     }),
   );
 };
