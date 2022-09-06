@@ -29,7 +29,7 @@ const simpleEmojiReact = (status: Status, emoji: string) =>
   (dispatch: AppDispatch) => {
     const emojiReacts: ImmutableList<ImmutableMap<string, any>> = status.pleroma.get('emoji_reactions') || ImmutableList();
 
-    if (emoji === '👍' && status.favourited) return dispatch(unfavourite(status));
+    if (emoji === '❤️' && status.favourited) return dispatch(unfavourite(status));
 
     const undo = emojiReacts.filter(e => e.get('me') === true && e.get('name') === emoji).count() > 0;
     if (undo) return dispatch(unEmojiReact(status, emoji));
@@ -40,7 +40,7 @@ const simpleEmojiReact = (status: Status, emoji: string) =>
         .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.get('name')))).toArray(),
       status.favourited && dispatch(unfavourite(status)),
     ]).then(() => {
-      if (emoji === '👍') {
+      if (emoji === '❤️') {
         dispatch(favourite(status));
       } else {
         dispatch(emojiReact(status, emoji));

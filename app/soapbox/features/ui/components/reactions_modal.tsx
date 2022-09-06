@@ -29,7 +29,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
   const reactions = useAppSelector<ImmutableList<ReturnType<typeof ReactionRecord>> | undefined>((state) => {
     const favourites = state.user_lists.favourited_by.get(statusId)?.items;
     const reactions = state.user_lists.reactions.get(statusId)?.items;
-    return favourites && reactions && ImmutableList(favourites?.size ? [ReactionRecord({ accounts: favourites, count: favourites.size, name: '👍' })] : []).concat(reactions || []);
+    return favourites && reactions && ImmutableList(favourites?.size ? [ReactionRecord({ accounts: favourites, count: favourites.size, name: '❤️' })] : []).concat(reactions || []);
   });
 
   const fetchData = () => {

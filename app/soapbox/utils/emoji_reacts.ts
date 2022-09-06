@@ -8,7 +8,6 @@ import type { Me } from 'soapbox/types/soapbox';
 // https://emojipedia.org/facebook
 // I've customized them.
 export const ALLOWED_EMOJI = ImmutableList([
-  '👍',
   '❤️',
   '😆',
   '😮',
@@ -29,7 +28,7 @@ export const mergeEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableLis
 
 export const mergeEmojiFavourites = (emojiReacts = ImmutableList<EmojiReact>(), favouritesCount: number, favourited: boolean) => {
   if (!favouritesCount) return emojiReacts;
-  const likeIndex = emojiReacts.findIndex(emojiReact => emojiReact.get('name') === '👍');
+  const likeIndex = emojiReacts.findIndex(emojiReact => emojiReact.get('name') === '❤️');
   if (likeIndex > -1) {
     const likeCount = Number(emojiReacts.getIn([likeIndex, 'count']));
     favourited = favourited || Boolean(emojiReacts.getIn([likeIndex, 'me'], false));
@@ -37,7 +36,7 @@ export const mergeEmojiFavourites = (emojiReacts = ImmutableList<EmojiReact>(), 
       .setIn([likeIndex, 'count'], likeCount + favouritesCount)
       .setIn([likeIndex, 'me'], favourited);
   } else {
-    return emojiReacts.push(ImmutableMap({ count: favouritesCount, me: favourited, name: '👍' }));
+    return emojiReacts.push(ImmutableMap({ count: favouritesCount, me: favourited, name: '❤️' }));
   }
 };
 

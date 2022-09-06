@@ -93,7 +93,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
-    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
+    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '❤️';
 
     if (isUserTouching()) {
       if (visible) {
