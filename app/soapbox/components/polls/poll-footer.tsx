@@ -53,7 +53,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
         </Button>
       )}
 
-      <HStack space={1.5} alignItems='center'>
+      <HStack space={1.5} alignItems='center' wrap>
         {poll.pleroma.get('non_anonymous') && (
           <>
             <Tooltip text={intl.formatMessage(messages.nonAnonymous)}>

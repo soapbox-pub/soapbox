@@ -113,6 +113,7 @@ module.exports = merge(sharedConfig, {
             '/objects',
             '/ostatus_subscribe',
             '/pghero',
+            '/phoenix',
             '/pleroma',
             '/proxy',
             '/relay',
