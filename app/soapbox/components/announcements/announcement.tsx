@@ -38,7 +38,8 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
             year={(skipYear || startsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
             month='short'
             day='2-digit'
-            hour={skipTime ? undefined : '2-digit'} minute={skipTime ? undefined : '2-digit'}
+            hour={skipTime ? undefined : '2-digit'}
+            minute={skipTime ? undefined : '2-digit'}
           />
           {' '}
           -

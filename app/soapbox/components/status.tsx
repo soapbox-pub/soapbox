@@ -14,6 +14,7 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted_status_conta
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
+import EventPreview from './event-preview';
 import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
@@ -360,23 +361,27 @@ const Status: React.FC<IStatus> = (props) => {
               hoverable={hoverable}
             />
 
-            <StatusContent
-              status={actualStatus}
-              onClick={handleClick}
-              expanded={!status.hidden}
-              onExpandedToggle={handleExpandedToggle}
-              collapsable
-            />
+            {actualStatus.event ? <EventPreview status={actualStatus} /> : (
+              <>
+                <StatusContent
+                  status={actualStatus}
+                  onClick={handleClick}
+                  expanded={!status.hidden}
+                  onExpandedToggle={handleExpandedToggle}
+                  collapsable
+                />
 
-            <StatusMedia
-              status={actualStatus}
-              muted={muted}
-              onClick={handleClick}
-              showMedia={showMedia}
-              onToggleVisibility={handleToggleMediaVisibility}
-            />
+                <StatusMedia
+                  status={actualStatus}
+                  muted={muted}
+                  onClick={handleClick}
+                  showMedia={showMedia}
+                  onToggleVisibility={handleToggleMediaVisibility}
+                />
 
-            {quote}
+                {quote}
+              </>
+            )}
 
             {!hideActionBar && (
               <div className='pt-4'>
