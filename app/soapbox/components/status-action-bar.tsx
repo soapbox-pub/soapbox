@@ -301,12 +301,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
-    const { url }  = status;
+    const { uri }  = status;
     const textarea = document.createElement('textarea');
 
     e.stopPropagation();
 
-    textarea.textContent    = url;
+    textarea.textContent    = uri;
     textarea.style.position = 'fixed';
 
     document.body.appendChild(textarea);
