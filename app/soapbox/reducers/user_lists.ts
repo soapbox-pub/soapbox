@@ -72,6 +72,17 @@ const ReactionListRecord = ImmutableRecord({
   isLoading: false,
 });
 
+export const ParticipationRequestRecord = ImmutableRecord({
+  account: '',
+  participation_message: null as string | null,
+});
+
+const ParticipationRequestListRecord = ImmutableRecord({
+  next: null as string | null,
+  items: ImmutableOrderedSet<ParticipationRequest>(),
+  isLoading: false,
+});
+
 export const ReducerRecord = ImmutableRecord({
   followers: ImmutableMap<string, List>(),
   following: ImmutableMap<string, List>(),
@@ -87,14 +98,18 @@ export const ReducerRecord = ImmutableRecord({
   pinned: ImmutableMap<string, List>(),
   birthday_reminders: ImmutableMap<string, List>(),
   familiar_followers: ImmutableMap<string, List>(),
+  event_participations: ImmutableMap<string, List>(),
+  event_participation_requests: ImmutableMap<string, ParticipationRequestList>(),
 });
 
 type State = ReturnType<typeof ReducerRecord>;
 export type List = ReturnType<typeof ListRecord>;
 type Reaction = ReturnType<typeof ReactionRecord>;
 type ReactionList = ReturnType<typeof ReactionListRecord>;
+type ParticipationRequest = ReturnType<typeof ParticipationRequestRecord>;
+type ParticipationRequestList = ReturnType<typeof ParticipationRequestListRecord>;
 type Items = ImmutableOrderedSet<string>;
-type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'groups' | 'groups_removed_accounts' | 'pinned' | 'birthday_reminders' | 'familiar_followers', string];
+type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'groups' | 'groups_removed_accounts' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests', string];
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {

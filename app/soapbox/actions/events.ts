@@ -158,25 +158,22 @@ const uploadEventBanner = (file: File, intl: IntlShape) =>
 
 const uploadEventBannerRequest = () => ({
   type: EVENT_BANNER_UPLOAD_REQUEST,
-  skipLoading: true,
 });
 
 const uploadEventBannerProgress = (loaded: number) => ({
   type: EVENT_BANNER_UPLOAD_PROGRESS,
-  loaded: loaded,
+  loaded,
 });
 
 const uploadEventBannerSuccess = (media: APIEntity, file: File) => ({
   type: EVENT_BANNER_UPLOAD_SUCCESS,
-  media: media,
+  media,
   file,
-  skipLoading: true,
 });
 
 const uploadEventBannerFail = (error: AxiosError | true) => ({
   type: EVENT_BANNER_UPLOAD_FAIL,
-  error: error,
-  skipLoading: true,
+  error,
 });
 
 const undoUploadEventBanner = () => ({
@@ -228,12 +225,12 @@ const submitEventRequest = () => ({
 
 const submitEventSuccess = (status: APIEntity) => ({
   type: EVENT_SUBMIT_SUCCESS,
-  status: status,
+  status,
 });
 
 const submitEventFail = (error: AxiosError) => ({
   type: EVENT_SUBMIT_FAIL,
-  error: error,
+  error,
 });
 
 const joinEvent = (id: string, participationMessage?: string) =>
@@ -253,7 +250,7 @@ const joinEvent = (id: string, participationMessage?: string) =>
         `/@${data.account.acct}/events/${data.id}`,
       ));
     }).catch(function(error) {
-      dispatch(joinEventFail(error));
+      dispatch(joinEventFail(error, status?.event?.join_state || null));
     });
   };
 
@@ -263,12 +260,13 @@ const joinEventRequest = () => ({
 
 const joinEventSuccess = (status: APIEntity) => ({
   type: EVENT_JOIN_SUCCESS,
-  status: status,
+  status,
 });
 
-const joinEventFail = (error: AxiosError) => ({
+const joinEventFail = (error: AxiosError, previousState: string | null) => ({
   type: EVENT_JOIN_FAIL,
-  error: error,
+  error,
+  previousState,
 });
 
 const leaveEvent = (id: string) =>
@@ -293,12 +291,12 @@ const leaveEventRequest = () => ({
 
 const leaveEventSuccess = (status: APIEntity) => ({
   type: EVENT_LEAVE_SUCCESS,
-  status: status,
+  status,
 });
 
 const leaveEventFail = (error: AxiosError) => ({
   type: EVENT_LEAVE_FAIL,
-  error: error,
+  error,
 });
 
 export {
