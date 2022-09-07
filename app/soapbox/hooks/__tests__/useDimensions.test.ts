@@ -1,21 +1,13 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
+import { listener, mockDisconnect } from '../__mocks__/resize-observer';
 import { useDimensions } from '../useDimensions';
 
-let listener: ((rect: any) => void) | undefined = undefined;
-
-(window as any).ResizeObserver = class ResizeObserver {
-
-  constructor(ls: any) {
-    listener = ls;
-  }
-
-  observe() {}
-  disconnect() {}
-
-};
-
 describe('useDimensions()', () => {
+  beforeEach(() => {
+    mockDisconnect.mockClear();
+  });
+
   it('defaults to 0', () => {
     const { result } = renderHook(() => useDimensions());
 
@@ -56,16 +48,6 @@ describe('useDimensions()', () => {
   });
 
   it('disconnects on unmount', () => {
-    const disconnect = jest.fn();
-    (window as any).ResizeObserver = class ResizeObserver {
-
-      observe() {}
-      disconnect() {
-        disconnect();
-      }
-
-    };
-
     const { result, unmount } = renderHook(() => useDimensions());
 
     act(() => {
@@ -73,8 +55,8 @@ describe('useDimensions()', () => {
       (result.current[1] as any)(div);
     });
 
-    expect(disconnect).toHaveBeenCalledTimes(0);
+    expect(mockDisconnect).toHaveBeenCalledTimes(0);
     unmount();
-    expect(disconnect).toHaveBeenCalledTimes(1);
+    expect(mockDisconnect).toHaveBeenCalledTimes(1);
   });
 });
