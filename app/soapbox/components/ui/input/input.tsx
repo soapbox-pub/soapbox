@@ -20,7 +20,7 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   className?: string,
   /** Extra class names for the outer <div> element. */
   outerClassName?: string,
-  /** URL to the svg icon. Cannot be used with addon. */
+  /** URL to the svg icon. Cannot be used with prepend. */
   icon?: string,
   /** Internal input name. */
   name?: string,
@@ -30,12 +30,13 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   value?: string | number,
   /** Change event handler for the input. */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  /** HTML input type. */
-  type?: 'text' | 'number' | 'email' | 'tel' | 'password',
   /** Whether to display the input in red. */
   hasError?: boolean,
   /** An element to display as prefix to input. Cannot be used with icon. */
-  addon?: React.ReactElement,
+  prepend?: React.ReactElement,
+  /** An element to display as suffix to input. Cannot be used with password type. */
+  append?: React.ReactElement,
+  isSearch?: boolean,
 }
 
 /** Form input element. */
@@ -43,7 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, outerClassName, hasError, addon, ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, hasError, append, prepend, isSearch, ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -54,16 +55,23 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     }, []);
 
     return (
-      <div className={classNames('mt-1 relative rounded-md shadow-sm', outerClassName)}>
+      <div
+        className={
+          classNames('mt-1 relative shadow-sm', outerClassName, {
+            'rounded-md': !isSearch,
+            'rounded-full': isSearch,
+          })
+        }
+      >
         {icon ? (
           <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
             <Icon src={icon} className='h-4 w-4 text-gray-700 dark:text-gray-600' aria-hidden='true' />
           </div>
         ) : null}
 
-        {addon ? (
+        {prepend ? (
           <div className='absolute inset-y-0 left-0 flex items-center'>
-            {addon}
+            {prepend}
           </div>
         ) : null}
 
@@ -72,14 +80,23 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={classNames({
-            'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+            'text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               true,
-            'pr-7': isPassword,
+            'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': !isSearch,
+            'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': isSearch,
+            'pr-7': isPassword || append,
             'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
-            'pl-16': typeof addon !== 'undefined',
+            'pl-16': typeof prepend !== 'undefined',
           }, className)}
         />
+
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {append ? (
+          <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+            {append}
+          </div>
+        ) : null}
 
         {isPassword ? (
           <Tooltip
