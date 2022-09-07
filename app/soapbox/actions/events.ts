@@ -35,9 +35,19 @@ const EVENT_SUBMIT_REQUEST = 'EVENT_SUBMIT_REQUEST';
 const EVENT_SUBMIT_SUCCESS = 'EVENT_SUBMIT_SUCCESS';
 const EVENT_SUBMIT_FAIL    = 'EVENT_SUBMIT_FAIL';
 
+const EVENT_JOIN_REQUEST = 'EVENT_JOIN_REQUEST';
+const EVENT_JOIN_SUCCESS = 'EVENT_JOIN_SUCCESS';
+const EVENT_JOIN_FAIL    = 'EVENT_JOIN_FAIL';
+
+const EVENT_LEAVE_REQUEST = 'EVENT_LEAVE_REQUEST';
+const EVENT_LEAVE_SUCCESS = 'EVENT_LEAVE_SUCCESS';
+const EVENT_LEAVE_FAIL    = 'EVENT_LEAVE_FAIL';
+
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
   success: { id: 'create_event.submit_success', defaultMessage: 'Your event was created' },
+  joinSuccess: { id: 'join_event.success', defaultMessage: 'Joined the event' },
+  joinRequestSuccess: { id: 'join_event.request_success', defaultMessage: 'Requested to join the event' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
 });
 
@@ -191,8 +201,6 @@ const submitEvent = () =>
 
     dispatch(submitEventRequest());
 
-    const idempotencyKey = state.compose.idempotencyKey;
-
     const params: Record<string, any> = {
       name,
       status,
@@ -206,9 +214,9 @@ const submitEvent = () =>
 
     return api(getState).post('/api/v1/pleroma/events', params).then(({ data }) => {
       dispatch(closeModal('CREATE_EVENT'));
-      dispatch(importFetchedStatus(data, idempotencyKey));
+      dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
-      dispatch(snackbar.success(messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
+      dispatch(snackbar.success(messages.success, messages.view, `/@${data.account.acct}/events/${data.id}`));
     }).catch(function(error) {
       dispatch(submitEventFail(error));
     });
@@ -225,6 +233,71 @@ const submitEventSuccess = (status: APIEntity) => ({
 
 const submitEventFail = (error: AxiosError) => ({
   type: EVENT_SUBMIT_FAIL,
+  error: error,
+});
+
+const joinEvent = (id: string, participationMessage?: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const status = getState().statuses.get(id);
+
+    if (!status || !status.event || status.event.join_state) return;
+
+    dispatch(joinEventRequest());
+
+    return api(getState).post(`/api/v1/pleroma/events/${id}/join`, { participationMessage }).then(({ data }) => {
+      dispatch(importFetchedStatus(data));
+      dispatch(joinEventSuccess(data));
+      dispatch(snackbar.success(
+        data.pleroma.event?.join_state === 'pending' ? messages.joinRequestSuccess : messages.joinSuccess,
+        messages.view,
+        `/@${data.account.acct}/events/${data.id}`,
+      ));
+    }).catch(function(error) {
+      dispatch(joinEventFail(error));
+    });
+  };
+
+const joinEventRequest = () => ({
+  type: EVENT_JOIN_REQUEST,
+});
+
+const joinEventSuccess = (status: APIEntity) => ({
+  type: EVENT_JOIN_SUCCESS,
+  status: status,
+});
+
+const joinEventFail = (error: AxiosError) => ({
+  type: EVENT_JOIN_FAIL,
+  error: error,
+});
+
+const leaveEvent = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const status = getState().statuses.get(id);
+
+    if (!status || !status.event || !status.event.join_state) return;
+
+    dispatch(leaveEventRequest());
+
+    return api(getState).post(`/api/v1/pleroma/events/${id}/leave`).then(({ data }) => {
+      dispatch(importFetchedStatus(data));
+      dispatch(leaveEventSuccess(data));
+    }).catch(function(error) {
+      dispatch(leaveEventFail(error));
+    });
+  };
+
+const leaveEventRequest = () => ({
+  type: EVENT_LEAVE_REQUEST,
+});
+
+const leaveEventSuccess = (status: APIEntity) => ({
+  type: EVENT_LEAVE_SUCCESS,
+  status: status,
+});
+
+const leaveEventFail = (error: AxiosError) => ({
+  type: EVENT_LEAVE_FAIL,
   error: error,
 });
 
@@ -247,6 +320,12 @@ export {
   EVENT_SUBMIT_REQUEST,
   EVENT_SUBMIT_SUCCESS,
   EVENT_SUBMIT_FAIL,
+  EVENT_JOIN_REQUEST,
+  EVENT_JOIN_SUCCESS,
+  EVENT_JOIN_FAIL,
+  EVENT_LEAVE_REQUEST,
+  EVENT_LEAVE_SUCCESS,
+  EVENT_LEAVE_FAIL,
   locationSearch,
   changeCreateEventName,
   changeCreateEventDescription,
@@ -265,4 +344,12 @@ export {
   submitEventRequest,
   submitEventSuccess,
   submitEventFail,
+  joinEvent,
+  joinEventRequest,
+  joinEventSuccess,
+  joinEventFail,
+  leaveEvent,
+  leaveEventRequest,
+  leaveEventSuccess,
+  leaveEventFail,
 };

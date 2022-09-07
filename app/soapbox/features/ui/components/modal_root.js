@@ -33,6 +33,7 @@ import {
   VerifySmsModal,
   FamiliarFollowersModal,
   CreateEventModal,
+  JoinEventModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle_container';
@@ -71,6 +72,7 @@ const MODAL_COMPONENTS = {
   'VERIFY_SMS': VerifySmsModal,
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
   'CREATE_EVENT': CreateEventModal,
+  'JOIN_EVENT': JoinEventModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

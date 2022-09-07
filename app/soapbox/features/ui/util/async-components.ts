@@ -529,3 +529,7 @@ export function AnnouncementsPanel() {
 export function CreateEventModal() {
   return import(/* webpackChunkName: "features/create_event_modal" */'../components/modals/create-event-modal/create-event-modal');
 }
+
+export function JoinEventModal() {
+  return import(/* webpackChunkName: "features/join_event_modal" */'../components/modals/join-event-modal');
+}
