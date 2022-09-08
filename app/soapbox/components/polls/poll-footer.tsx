@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { fetchPoll, vote } from 'soapbox/actions/polls';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import RelativeTimestamp from '../relative_timestamp';
+import RelativeTimestamp from '../relative-timestamp';
 import { Button, HStack, Stack, Text, Tooltip } from '../ui';
 
 import type { Selected } from './poll';
@@ -54,7 +54,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
         </Button>
       )}
 
-      <HStack space={1.5} alignItems='center'>
+      <HStack space={1.5} alignItems='center' wrap>
         {poll.pleroma.get('non_anonymous') && (
           <>
             <Tooltip text={intl.formatMessage(messages.nonAnonymous)}>

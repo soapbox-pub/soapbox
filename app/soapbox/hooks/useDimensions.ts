@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 
 type UseDimensionsRect = { width: number, height: number };
 type UseDimensionsResult = [Element | null, any, any]
@@ -14,7 +15,7 @@ const useDimensions = (): UseDimensionsResult => {
 
   const observer = useMemo(
     () =>
-      new (window as any).ResizeObserver((entries: any) => {
+      new ResizeObserver((entries: any) => {
         if (entries[0]) {
           const { width, height } = entries[0].contentRect;
           setRect({ width, height });

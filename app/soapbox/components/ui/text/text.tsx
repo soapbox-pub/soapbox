@@ -84,7 +84,9 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   /** Whether to truncate the text if its container is too small. */
   truncate?: boolean,
   /** Font weight of the text. */
-  weight?: Weights
+  weight?: Weights,
+  /** Tooltip title. */
+  title?: string,
 }
 
 /** UI-friendly text container with dark mode support. */
@@ -133,4 +135,7 @@ const Text: React.FC<IText> = React.forwardRef(
   },
 );
 
-export default Text;
+export {
+  Text as default,
+  IText,
+};

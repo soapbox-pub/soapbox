@@ -211,7 +211,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial beta release.
 
-[Unreleased]: https://gitlab.com/soapbox-pub/soapbox-fe/-/compare/v1.0.0...develop
-[Unreleased patch]: https://gitlab.com/soapbox-pub/soapbox-fe/-/compare/v1.0.0...stable/1.0.x
-[1.0.0]: https://gitlab.com/soapbox-pub/soapbox-fe/-/compare/v0.9.0...v1.0.0
-[0.9.0]: https://gitlab.com/soapbox-pub/soapbox-fe/-/tags/v0.9.0
+[Unreleased]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v1.0.0...develop
+[Unreleased patch]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v1.0.0...stable/1.0.x
+[1.0.0]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v0.9.0...v1.0.0
+[0.9.0]: https://gitlab.com/soapbox-pub/soapbox/-/tags/v0.9.0

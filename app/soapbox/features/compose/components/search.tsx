@@ -115,27 +115,34 @@ const Search = (props: ISearch) => {
   ];
 
   const hasValue = value.length > 0 || submitted;
-  const Component = autosuggest ? AutosuggestAccountInput : 'input';
+  const componentProps: any = {
+    className: 'block w-full pl-3 pr-10 py-2 border border-gray-200 dark:border-gray-800 rounded-full leading-5 bg-gray-200 dark:bg-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm',
+    type: 'text',
+    id: 'search',
+    placeholder: intl.formatMessage(messages.placeholder),
+    value,
+    onChange: handleChange,
+    onKeyDown: handleKeyDown,
+    onFocus: handleFocus,
+    autoFocus: autoFocus,
+  };
+
+  if (autosuggest) {
+    componentProps.onSelected = handleSelected;
+    componentProps.menu = makeMenu();
+    componentProps.autoSelect = false;
+  }
 
   return (
     <div className='w-full'>
       <label htmlFor='search' className='sr-only'>{intl.formatMessage(messages.placeholder)}</label>
 
       <div className='relative'>
-        <Component
-          className='block w-full pl-3 pr-10 py-2 border border-gray-200 dark:border-gray-800 rounded-full leading-5 bg-gray-200 dark:bg-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:text-sm'
-          type='text'
-          id='search'
-          placeholder={intl.formatMessage(messages.placeholder)}
-          value={value}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onFocus={handleFocus}
-          onSelected={handleSelected}
-          autoFocus={autoFocus}
-          autoSelect={false}
-          menu={makeMenu()}
-        />
+        {autosuggest ? (
+          <AutosuggestAccountInput {...componentProps} />
+        ) : (
+          <input {...componentProps} />
+        )}
 
         <div
           role='button'

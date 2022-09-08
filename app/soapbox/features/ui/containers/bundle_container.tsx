@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import { fetchBundleRequest, fetchBundleSuccess, fetchBundleFail } from '../../../actions/bundles';
 import Bundle from '../components/bundle';
 
-const mapDispatchToProps = dispatch => ({
+import type { AppDispatch } from 'soapbox/store';
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
   onFetch() {
     dispatch(fetchBundleRequest());
   },
   onFetchSuccess() {
     dispatch(fetchBundleSuccess());
   },
-  onFetchFail(error) {
+  onFetchFail(error: any) {
     dispatch(fetchBundleFail(error));
   },
 });
