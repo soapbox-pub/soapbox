@@ -16,11 +16,11 @@ import {
   FOLLOW_REQUEST_REJECT_SUCCESS,
   PINNED_ACCOUNTS_FETCH_SUCCESS,
   BIRTHDAY_REMINDERS_FETCH_SUCCESS,
-} from '../actions/accounts';
+} from 'soapbox/actions/accounts';
 import {
   BLOCKS_FETCH_SUCCESS,
   BLOCKS_EXPAND_SUCCESS,
-} from '../actions/blocks';
+} from 'soapbox/actions/blocks';
 import {
   DIRECTORY_FETCH_REQUEST,
   DIRECTORY_FETCH_SUCCESS,
@@ -28,29 +28,35 @@ import {
   DIRECTORY_EXPAND_REQUEST,
   DIRECTORY_EXPAND_SUCCESS,
   DIRECTORY_EXPAND_FAIL,
-} from '../actions/directory';
+} from 'soapbox/actions/directory';
+import {
+  EVENT_PARTICIPATIONS_EXPAND_SUCCESS,
+  EVENT_PARTICIPATIONS_FETCH_SUCCESS,
+  EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS,
+  EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS,
+} from 'soapbox/actions/events';
 import {
   FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
-} from '../actions/familiar_followers';
+} from 'soapbox/actions/familiar_followers';
 import {
   GROUP_MEMBERS_FETCH_SUCCESS,
   GROUP_MEMBERS_EXPAND_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_FETCH_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_EXPAND_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS,
-} from '../actions/groups';
+} from 'soapbox/actions/groups';
 import {
   REBLOGS_FETCH_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,
   REACTIONS_FETCH_SUCCESS,
-} from '../actions/interactions';
+} from 'soapbox/actions/interactions';
 import {
   MUTES_FETCH_SUCCESS,
   MUTES_EXPAND_SUCCESS,
-} from '../actions/mutes';
+} from 'soapbox/actions/mutes';
 import {
   NOTIFICATIONS_UPDATE,
-} from '../actions/notifications';
+} from 'soapbox/actions/notifications';
 
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -113,7 +119,6 @@ type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
-
   return state.setIn(path, ListRecord({
     next,
     items: ImmutableOrderedSet(accounts.map(item => item.id)),
@@ -202,6 +207,27 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
       return normalizeList(state, ['birthday_reminders', action.id], action.accounts, action.next);
     case FAMILIAR_FOLLOWERS_FETCH_SUCCESS:
       return normalizeList(state, ['familiar_followers', action.id], action.accounts, action.next);
+    case EVENT_PARTICIPATIONS_FETCH_SUCCESS:
+      return normalizeList(state, ['event_participations', action.id], action.accounts, action.next);
+    case EVENT_PARTICIPATIONS_EXPAND_SUCCESS:
+      return appendToList(state, ['event_participations', action.id], action.accounts, action.next);
+    case EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS:
+      return state.setIn(['event_participations', action.id], ParticipationRequestListRecord({
+        next: action.next,
+        items: ImmutableOrderedSet(action.participations.map(({ account, participation_message }: APIEntity) => ParticipationRequestRecord({
+          account: account.id,
+          participation_message,
+        }))),
+      }));
+    case EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS:
+      return state.updateIn(
+        ['event_participations', action.id, 'items'],
+        (items) => (items as ImmutableOrderedSet<ParticipationRequest>)
+          .union(action.participations.map(({ account, participation_message }: APIEntity) => ParticipationRequestRecord({
+            account: account.id,
+            participation_message,
+          }))),
+      );
     default:
       return state;
   }

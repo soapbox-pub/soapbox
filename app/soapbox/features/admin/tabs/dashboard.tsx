@@ -6,24 +6,11 @@ import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/
 import { Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
+import { download } from 'soapbox/utils/download';
 import { parseVersion } from 'soapbox/utils/features';
 import { isNumber } from 'soapbox/utils/numbers';
 
 import RegistrationModePicker from '../components/registration_mode_picker';
-
-import type { AxiosResponse } from 'axios';
-
-/** Download the file from the response instead of opening it in a tab. */
-// https://stackoverflow.com/a/53230807
-const download = (response: AxiosResponse, filename: string) => {
-  const url = URL.createObjectURL(new Blob([response.data]));
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-};
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();

@@ -533,3 +533,15 @@ export function CreateEventModal() {
 export function JoinEventModal() {
   return import(/* webpackChunkName: "features/join_event_modal" */'../components/modals/join-event-modal');
 }
+
+export function EventHeader() {
+  return import(/* webpackChunkName: "features/event" */'../../event/components/event-header');
+}
+
+export function EventInformation() {
+  return import(/* webpackChunkName: "features/event" */'../../event/event-information');
+}
+
+export function EventDiscussion() {
+  return import(/* webpackChunkName: "features/event" */'../../event/event-discussion');
+}

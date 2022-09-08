@@ -1,10 +1,10 @@
 import { defineMessages, IntlShape } from 'react-intl';
 
-import api from 'soapbox/api';
+import api, { getLinks } from 'soapbox/api';
 import { formatBytes } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { importFetchedStatus } from './importer';
+import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { fetchMedia, uploadMedia } from './media';
 import { closeModal } from './modals';
 import snackbar from './snackbar';
@@ -42,6 +42,24 @@ const EVENT_JOIN_FAIL    = 'EVENT_JOIN_FAIL';
 const EVENT_LEAVE_REQUEST = 'EVENT_LEAVE_REQUEST';
 const EVENT_LEAVE_SUCCESS = 'EVENT_LEAVE_SUCCESS';
 const EVENT_LEAVE_FAIL    = 'EVENT_LEAVE_FAIL';
+
+const EVENT_PARTICIPATIONS_FETCH_REQUEST = 'EVENT_PARTICIPATIONS_FETCH_REQUEST';
+const EVENT_PARTICIPATIONS_FETCH_SUCCESS = 'EVENT_PARTICIPATIONS_FETCH_SUCCESS';
+const EVENT_PARTICIPATIONS_FETCH_FAIL    = 'EVENT_PARTICIPATIONS_FETCH_FAIL';
+
+const EVENT_PARTICIPATIONS_EXPAND_REQUEST = 'EVENT_PARTICIPATIONS_EXPAND_REQUEST';
+const EVENT_PARTICIPATIONS_EXPAND_SUCCESS = 'EVENT_PARTICIPATIONS_EXPAND_SUCCESS';
+const EVENT_PARTICIPATIONS_EXPAND_FAIL    = 'EVENT_PARTICIPATIONS_EXPAND_FAIL';
+
+const EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST = 'EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST';
+const EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS';
+const EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL';
+
+const EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST';
+const EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS';
+const EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL';
+
+const noOp = () => new Promise(f => f(undefined));
 
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
@@ -184,7 +202,7 @@ const submitEvent = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const name = state.create_event.name;
+    const name      = state.create_event.name;
     const status    = state.create_event.status;
     const banner    = state.create_event.banner;
     const startTime = state.create_event.start_time;
@@ -205,8 +223,8 @@ const submitEvent = () =>
       join_mode: joinMode,
     };
 
-    if (endTime) params.end_time = endTime;
-    if (banner) params.banner_id = banner.id;
+    if (endTime)  params.end_time    = endTime;
+    if (banner)   params.banner_id   = banner.id;
     if (location) params.location_id = location.origin_id;
 
     return api(getState).post('/api/v1/pleroma/events', params).then(({ data }) => {
@@ -237,7 +255,9 @@ const joinEvent = (id: string, participationMessage?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const status = getState().statuses.get(id);
 
-    if (!status || !status.event || status.event.join_state) return;
+    if (!status || !status.event || status.event.join_state) {
+      return dispatch(noOp);
+    }
 
     dispatch(joinEventRequest());
 
@@ -273,7 +293,9 @@ const leaveEvent = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const status = getState().statuses.get(id);
 
-    if (!status || !status.event || !status.event.join_state) return;
+    if (!status || !status.event || !status.event.join_state) {
+      return dispatch(noOp);
+    }
 
     dispatch(leaveEventRequest());
 
@@ -298,6 +320,146 @@ const leaveEventFail = (error: AxiosError) => ({
   type: EVENT_LEAVE_FAIL,
   error,
 });
+
+const fetchEventParticipations = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(fetchEventParticipationsRequest(id));
+
+    return api(getState).get(`/api/v1/pleroma/events/${id}/participations`).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data));
+      return dispatch(fetchEventParticipationsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(fetchEventParticipationsFail(id, error));
+    });
+  };
+
+const fetchEventParticipationsRequest = (id: string) => ({
+  type: EVENT_PARTICIPATIONS_FETCH_REQUEST,
+  id,
+});
+
+const fetchEventParticipationsSuccess = (id: string, accounts: APIEntity[], next: string | null) => ({
+  type: EVENT_PARTICIPATIONS_FETCH_SUCCESS,
+  id,
+  accounts,
+  next,
+});
+
+const fetchEventParticipationsFail = (id: string, error: AxiosError) => ({
+  type: EVENT_PARTICIPATIONS_FETCH_FAIL,
+  id,
+  error,
+});
+
+const expandEventParticipations = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const url = getState().user_lists.event_participations.get(id)?.next || null;
+
+    if (url === null) {
+      return dispatch(noOp);
+    }
+
+    dispatch(expandEventParticipationsRequest(id));
+
+    return api(getState).get(url).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data));
+      return dispatch(expandEventParticipationsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(expandEventParticipationsFail(id, error));
+    });
+  };
+
+const expandEventParticipationsRequest = (id: string) => ({
+  type: EVENT_PARTICIPATIONS_EXPAND_REQUEST,
+  id,
+});
+
+const expandEventParticipationsSuccess = (id: string, accounts: APIEntity[], next: string | null) => ({
+  type: EVENT_PARTICIPATIONS_EXPAND_SUCCESS,
+  id,
+  accounts,
+  next,
+});
+
+const expandEventParticipationsFail = (id: string, error: AxiosError) => ({
+  type: EVENT_PARTICIPATIONS_EXPAND_FAIL,
+  id,
+  error,
+});
+
+const fetchEventParticipationRequests = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(fetchEventParticipationRequestsRequest(id));
+
+    return api(getState).get(`/api/v1/pleroma/events/${id}/participation_requests`).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data.map(({ account }: APIEntity) => account)));
+      return dispatch(fetchEventParticipationRequestsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(fetchEventParticipationRequestsFail(id, error));
+    });
+  };
+
+const fetchEventParticipationRequestsRequest = (id: string) => ({
+  type: EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST,
+  id,
+});
+
+const fetchEventParticipationRequestsSuccess = (id: string, participations: APIEntity[], next: string | null) => ({
+  type: EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS,
+  id,
+  participations,
+  next,
+});
+
+const fetchEventParticipationRequestsFail = (id: string, error: AxiosError) => ({
+  type: EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL,
+  id,
+  error,
+});
+
+const expandEventParticipationRequests = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const url = getState().user_lists.event_participations.get(id)?.next || null;
+
+    if (url === null) {
+      return dispatch(noOp);
+    }
+
+    dispatch(expandEventParticipationRequestsRequest(id));
+
+    return api(getState).get(url).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data.map(({ account }: APIEntity) => account)));
+      return dispatch(expandEventParticipationRequestsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(expandEventParticipationRequestsFail(id, error));
+    });
+  };
+
+const expandEventParticipationRequestsRequest = (id: string) => ({
+  type: EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST,
+  id,
+});
+
+const expandEventParticipationRequestsSuccess = (id: string, participations: APIEntity[], next: string | null) => ({
+  type: EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS,
+  id,
+  participations,
+  next,
+});
+
+const expandEventParticipationRequestsFail = (id: string, error: AxiosError) => ({
+  type: EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL,
+  id,
+  error,
+});
+
+const fetchEventIcs = (id: string) =>
+  (dispatch: any, getState: () => RootState) =>
+    api(getState).get(`/api/v1/pleroma/events/${id}/ics`);
 
 export {
   LOCATION_SEARCH_REQUEST,
@@ -324,6 +486,18 @@ export {
   EVENT_LEAVE_REQUEST,
   EVENT_LEAVE_SUCCESS,
   EVENT_LEAVE_FAIL,
+  EVENT_PARTICIPATIONS_FETCH_REQUEST,
+  EVENT_PARTICIPATIONS_FETCH_SUCCESS,
+  EVENT_PARTICIPATIONS_FETCH_FAIL,
+  EVENT_PARTICIPATIONS_EXPAND_REQUEST,
+  EVENT_PARTICIPATIONS_EXPAND_SUCCESS,
+  EVENT_PARTICIPATIONS_EXPAND_FAIL,
+  EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST,
+  EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS,
+  EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL,
+  EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST,
+  EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS,
+  EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL,
   locationSearch,
   changeCreateEventName,
   changeCreateEventDescription,
@@ -350,4 +524,21 @@ export {
   leaveEventRequest,
   leaveEventSuccess,
   leaveEventFail,
+  fetchEventParticipations,
+  fetchEventParticipationsRequest,
+  fetchEventParticipationsSuccess,
+  fetchEventParticipationsFail,
+  expandEventParticipations,
+  expandEventParticipationsRequest,
+  expandEventParticipationsSuccess,
+  expandEventParticipationsFail,
+  fetchEventParticipationRequests,
+  fetchEventParticipationRequestsRequest,
+  fetchEventParticipationRequestsSuccess,
+  fetchEventParticipationRequestsFail,
+  expandEventParticipationRequests,
+  expandEventParticipationRequestsRequest,
+  expandEventParticipationRequestsSuccess,
+  expandEventParticipationRequestsFail,
+  fetchEventIcs,
 };

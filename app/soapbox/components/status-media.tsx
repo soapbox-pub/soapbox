@@ -22,6 +22,8 @@ interface IStatusMedia {
   showMedia?: boolean,
   /** Callback when visibility is toggled (eg clicked through NSFW). */
   onToggleVisibility?: () => void,
+  /** Whether or not to hide image describer as 'Banner' */
+  excludeBanner?: boolean,
 }
 
 /** Render media attachments for a status. */
@@ -31,14 +33,17 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   onClick,
   showMedia = true,
   onToggleVisibility = () => {},
+  excludeBanner = false,
 }) => {
   const dispatch = useAppDispatch();
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
-  const size = status.media_attachments.size;
-  const firstAttachment = status.media_attachments.first();
+  const mediaAttachments = excludeBanner ? status.media_attachments.filter(({ description }) => description !== 'Banner') : status.media_attachments;
 
-  let media = null;
+  const size = mediaAttachments.size;
+  const firstAttachment = mediaAttachments.first();
+
+  let media: JSX.Element | null = null;
 
   const setRef = (c: HTMLDivElement): void => {
     if (c) {
@@ -70,7 +75,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     if (muted) {
       media = (
         <AttachmentThumbs
-          media={status.media_attachments}
+          media={mediaAttachments}
           onClick={onClick}
           sensitive={status.sensitive}
         />
@@ -99,7 +104,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         );
       } else {
         media = (
-          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer} >
+          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer}>
             {(Component: any) => (
               <Component
                 preview={video.preview_url}
@@ -122,7 +127,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
       const attachment = firstAttachment;
 
       media = (
-        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer} >
+        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer}>
           {(Component: any) => (
             <Component
               src={attachment.url}
@@ -142,7 +147,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         <Bundle fetchComponent={MediaGallery} loading={renderLoadingMediaGallery}>
           {(Component: any) => (
             <Component
-              media={status.media_attachments}
+              media={mediaAttachments}
               sensitive={status.sensitive}
               inReview={status.visibility === 'self'}
               height={285}

@@ -32,7 +32,7 @@ const AccountNoteModal: React.FC<IAccountNoteModal> = ({ statusId }) => {
 
   const handleSubmit = () => {
     setIsSubmitting(true);
-    dispatch(joinEvent(statusId, participationMessage))?.then(() => {
+    dispatch(joinEvent(statusId, participationMessage)).then(() => {
       onClose();
     }).catch(() => {});
   };

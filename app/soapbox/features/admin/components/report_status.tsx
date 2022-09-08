@@ -59,7 +59,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
         const video = firstAttachment;
 
         return (
-          <Bundle fetchComponent={Video} >
+          <Bundle fetchComponent={Video}>
             {(Component: any) => (
               <Component
                 preview={video.preview_url}

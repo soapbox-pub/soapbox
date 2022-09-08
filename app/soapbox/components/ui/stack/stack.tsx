@@ -21,13 +21,15 @@ const justifyContentOptions = {
 
 const alignItemsOptions = {
   center: 'items-center',
+  start: 'items-start',
+  end: 'items-end',
 };
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Size of the gap between elements. */
   space?: SIZES,
   /** Horizontal alignment of children. */
-  alignItems?: 'center',
+  alignItems?: 'center' | 'start' | 'end',
   /** Vertical alignment of children. */
   justifyContent?: 'center',
   /** Extra class names on the <div> element. */
@@ -43,7 +45,7 @@ const Stack: React.FC<IStack> = (props) => {
   return (
     <div
       {...filteredProps}
-      className={classNames('flex flex-col', {
+      className={classNames('flex flex-col items', {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
         // @ts-ignore
