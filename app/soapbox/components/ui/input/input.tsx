@@ -36,6 +36,7 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   prepend?: React.ReactElement,
   /** An element to display as suffix to input. Cannot be used with password type. */
   append?: React.ReactElement,
+  /** Adds specific styling to denote a searchabe input. */
   isSearch?: boolean,
 }
 
