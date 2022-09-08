@@ -1,20 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, { MutableRefObject, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
-import {
-  sendChatMessage,
-  markChatRead,
-} from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
-import { openModal } from 'soapbox/actions/modals';
-import { initReport } from 'soapbox/actions/reports';
-import { Avatar, Button, HStack, Icon, IconButton, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
+import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { IChat, IChatMessage, useChat } from 'soapbox/queries/chats';
+import { IChat, useChat } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -29,7 +22,6 @@ const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
 interface IChatBox {
   chat: IChat,
-  onSetInputRef: (el: HTMLTextAreaElement) => void,
   autosize?: boolean,
   inputRef?: MutableRefObject<HTMLTextAreaElement>
 }
@@ -38,21 +30,19 @@ interface IChatBox {
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
-const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }) => {
+const ChatBox: React.FC<IChatBox> = ({ chat, autosize, inputRef }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const chatMessageIds = useAppSelector(state => state.chat_message_lists.get(chat.id, ImmutableOrderedSet<string>()));
   const account = useOwnAccount();
 
-  const { createChatMessage, markChatAsRead, acceptChat } = useChat(chat.id);
+  const { createChatMessage, acceptChat } = useChat(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
-
-  const inputElem = useRef<HTMLTextAreaElement | null>(null);
+  const [hasErrorSubmittingMessage, setErrorSubmittingMessage] = useState<boolean>(false);
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
@@ -99,6 +89,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
     onError: (_error: any, _newData: any, context: any) => {
       setContent(context.prevContent);
       queryClient.setQueryData(['chats', 'messages', chat.id], context.prevChatMessages);
+      setErrorSubmittingMessage(true);
     },
     // Always refetch after error or success:
     onSuccess: () => {
@@ -112,6 +103,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
     setIsUploading(false);
     setUploadProgress(0);
     setResetFileKey(fileKeyGen());
+    setErrorSubmittingMessage(false);
   };
 
   const sendMessage = () => {
@@ -217,11 +209,11 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
     <Stack className='overflow-hidden flex flex-grow' onMouseOver={handleMouseOver}>
       <div className='flex-grow h-full overflow-hidden flex justify-center'>
         <ChatMessageList chat={chat} autosize />
-      </div >
+      </div>
 
-      <div className='mt-auto p-4 shadow-3xl'>
+      <div className='mt-auto pt-4 px-4 shadow-3xl'>
         <HStack alignItems='center' justifyContent='between' space={4}>
-          <div className='flex-grow'>
+          <Stack grow>
             <Textarea
               autoFocus
               ref={inputRef}
@@ -233,7 +225,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
               autoGrow
               maxRows={5}
             />
-          </div>
+          </Stack>
 
           <IconButton
             src={require('@tabler/icons/send.svg')}
@@ -243,8 +235,24 @@ const ChatBox: React.FC<IChatBox> = ({ chat, onSetInputRef, autosize, inputRef }
             onClick={sendMessage}
           />
         </HStack>
+
+        <HStack alignItems='center' className='h-5' space={1}>
+          {hasErrorSubmittingMessage && (
+            <>
+              <Text theme='danger' size='xs'>
+                Message failed to send.
+              </Text>
+
+              <button onClick={sendMessage} className='flex hover:underline'>
+                <Text theme='primary' size='xs' tag='span'>
+                  Retry?
+                </Text>
+              </button>
+            </>
+          )}
+        </HStack>
       </div>
-    </Stack >
+    </Stack>
     //   {renderAttachment()}
     //   {isUploading && (
     //     <UploadProgress progress={uploadProgress * 100} />

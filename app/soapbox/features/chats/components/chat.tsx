@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 

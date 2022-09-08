@@ -74,7 +74,7 @@ const ChatWindow = () => {
       />
 
       <Stack className='overflow-hidden flex-grow h-full' space={2}>
-        <ChatBox chat={chat} inputRef={inputRef as any} onSetInputRef={() => null} />
+        <ChatBox chat={chat} inputRef={inputRef as any} />
       </Stack>
     </>
   );
