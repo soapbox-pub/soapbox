@@ -46,8 +46,8 @@ export const PIXELFED = 'Pixelfed';
 export const TRUTHSOCIAL = 'TruthSocial';
 
 /**
- * Soapbox BE, the recommended Pleroma fork for Soapbox.
- * @see {@link https://gitlab.com/soapbox-pub/soapbox-be}
+ * Rebased, the recommended backend for Soapbox.
+ * @see {@link https://gitlab.com/soapbox-pub/rebased}
  */
 export const SOAPBOX = 'soapbox';
 

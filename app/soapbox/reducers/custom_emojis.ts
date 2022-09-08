@@ -20,7 +20,7 @@ const importEmojis = (customEmojis: APIEntity[]) => {
   const emojis = (fromJS(customEmojis) as ImmutableList<ImmutableMap<string, string>>).filter((emoji) => {
     // If a custom emoji has the shortcode of a Unicode emoji, skip it.
     // Otherwise it breaks EmojiMart.
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/610
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/610
     const shortcode = emoji.get('shortcode', '').toLowerCase();
     return !emojiData[shortcode];
   });

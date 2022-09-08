@@ -42,11 +42,13 @@ interface IHStack {
   grow?: boolean,
   /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
+  /** Whether to let the flexbox wrap onto multiple lines. */
+  wrap?: boolean,
 }
 
 /** Horizontal row of child elements. */
 const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
-  const { space, alignItems, grow, justifyContent, className, ...filteredProps } = props;
+  const { space, alignItems, grow, justifyContent, wrap, className, ...filteredProps } = props;
 
   return (
     <div
@@ -60,6 +62,7 @@ const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
         'flex-grow': grow,
+        'flex-wrap': wrap,
       }, className)}
     />
   );

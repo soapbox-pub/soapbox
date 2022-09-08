@@ -21,7 +21,7 @@ import type { Emoji, PollOption } from 'soapbox/types/entities';
 export const PollRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   expired: false,
-  expires_at: new Date(),
+  expires_at: '',
   id: '',
   multiple: false,
   options: ImmutableList<PollOption>(),

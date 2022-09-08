@@ -14,7 +14,7 @@ import { isRemote, getDomain } from 'soapbox/utils/accounts';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
-  addAdditionalStatuses: { id: 'report.otherActions.addAdditionl', defaultMessage: 'Would you like to add additional statuses to this report?' },
+  addAdditionalStatuses: { id: 'report.otherActions.addAdditional', defaultMessage: 'Would you like to add additional statuses to this report?' },
   addMore: { id: 'report.otherActions.addMore', defaultMessage: 'Add more' },
   furtherActions: { id: 'report.otherActions.furtherActions', defaultMessage: 'Further actions:' },
   hideAdditonalStatuses: { id: 'report.otherActions.hideAdditional', defaultMessage: 'Hide additional statuses' },

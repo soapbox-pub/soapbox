@@ -38,12 +38,13 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** Vertical stack of child elements. */
-const Stack: React.FC<IStack> = (props) => {
+const Stack: React.FC<IStack> = React.forwardRef((props, ref: React.LegacyRef<HTMLDivElement> | undefined) => {
   const { space, alignItems, justifyContent, className, grow, ...filteredProps } = props;
 
   return (
     <div
       {...filteredProps}
+      ref={ref}
       className={classNames('flex flex-col', {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
@@ -55,6 +56,6 @@ const Stack: React.FC<IStack> = (props) => {
       }, className)}
     />
   );
-};
+});
 
 export default Stack;
