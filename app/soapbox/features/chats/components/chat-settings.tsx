@@ -31,7 +31,7 @@ const ChatSettings = () => {
       message: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.',
       confirm: 'Block',
       confirmationTheme: 'primary',
-      onConfirm: () => dispatch(blockAccount(chat?.account.id)),
+      onConfirm: () => dispatch(blockAccount(chat?.account.id as string)),
     }));
   };
 
@@ -48,7 +48,7 @@ const ChatSettings = () => {
   };
 
   const handleReportChat = () => {
-    dispatch(initReport(chat?.account));
+    dispatch(initReport(chat?.account as any));
   };
 
   if (!chat) {

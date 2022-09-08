@@ -1,11 +1,14 @@
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
+import { fetchRelationships } from 'soapbox/actions/accounts';
 import snackbar from 'soapbox/actions/snackbar';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
 
 import { queryClient } from './client';
+
+import type { IAccount } from './accounts';
 
 export interface IChat {
   id: string
@@ -24,7 +27,7 @@ export interface IChat {
   updated_at: Date
   accepted: boolean
   discarded_at: null | string
-  account: any
+  account: IAccount
 }
 
 export interface IChatMessage {
@@ -88,9 +91,10 @@ const useChatMessages = (chatId: string) => {
 
 const useChats = () => {
   const api = useApi();
+  const dispatch = useAppDispatch();
 
   const getChats = async(pageParam?: any): Promise<{ result: IChat[], maxId: string, hasMore: boolean }> => {
-    const { data, headers } = await api.get('/api/v1/pleroma/chats', {
+    const { data, headers } = await api.get<IChat[]>('/api/v1/pleroma/chats', {
       params: {
         max_id: pageParam?.maxId,
       },
@@ -98,6 +102,9 @@ const useChats = () => {
 
     const hasMore = !!headers.link;
     const nextMaxId = data[data.length - 1]?.id;
+
+    // Set the relationships to these users in the redux store.
+    dispatch(fetchRelationships(data.map((item) => item.account.id)));
 
     return {
       result: data,

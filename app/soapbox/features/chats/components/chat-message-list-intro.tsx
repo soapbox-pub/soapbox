@@ -27,7 +27,7 @@ const ChatMessageListIntro = () => {
   };
 
   const handleReportChat = () => {
-    dispatch(initReport(chat?.account));
+    dispatch(initReport(chat?.account as any));
     acceptChat.mutate();
   };
 

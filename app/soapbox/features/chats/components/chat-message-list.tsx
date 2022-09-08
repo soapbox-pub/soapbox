@@ -7,8 +7,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
-import { initReportById } from 'soapbox/actions/reports';
-import { Avatar, Divider, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, Button, Divider, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 // import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
@@ -68,10 +67,21 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const { deleteChatMessage, markChatAsRead } = useChat(chat.id);
-  const { data: chatMessages, isLoading, isFetching, isFetched, fetchNextPage, isFetchingNextPage, isPlaceholderData } = useChatMessages(chat.id);
+  const {
+    data: chatMessages,
+    fetchNextPage,
+    isError,
+    isFetched,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+    isPlaceholderData,
+    refetch,
+  } = useChatMessages(chat.id);
   const formattedChatMessages = chatMessages || [];
 
-  const me = useAppSelector(state => state.me);
+  const me = useAppSelector((state) => state.me);
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account, 'blocked_by']));
 
   const node = useRef<HTMLDivElement>(null);
   const messagesEnd = useRef<HTMLDivElement>(null);
@@ -89,16 +99,14 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   };
 
   const getFormattedTimestamp = (chatMessage: ChatMessageEntity) => {
-    return intl.formatDate(
-      new Date(chatMessage.created_at), {
+    return intl.formatDate(new Date(chatMessage.created_at), {
       hour12: false,
       year: 'numeric',
       month: 'short',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-    },
-    );
+    });
   };
 
   const setBubbleRef = (c: HTMLDivElement) => {
@@ -295,7 +303,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               </div>
 
               <div className={classNames({ 'order-1': !isMyMessage })}>
-                <Avatar src={isMyMessage ? account?.avatar : chat.account.avatar} size={34} />
+                <Avatar src={isMyMessage ? account?.avatar as string : chat.account.avatar as string} size={34} />
               </div>
             </HStack>
           </HStack>
@@ -379,6 +387,44 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     return (
       <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
         <Spinner withText={false} />
+      </Stack>
+    );
+  }
+
+  if (isBlocked) {
+    return (
+      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+        <Stack alignItems='center' space={2}>
+          <Avatar src={chat.account.avatar_static} size={75} />
+          <Text align='center'>
+            <>
+              <Text tag='span'>You are blocked by</Text>
+              {' '}
+              <Text tag='span' theme='primary'>@{chat.account.acct}</Text>
+            </>
+          </Text>
+        </Stack>
+      </Stack>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+        <Stack space={4}>
+          <Stack space={1}>
+            <Text size='lg' weight='bold' align='center'>Whoops!</Text>
+            <Text theme='muted' align='center'>
+              We encountered a network failure.
+            </Text>
+          </Stack>
+
+          <div className='mx-auto'>
+            <Button theme='primary' onClick={() => refetch()}>
+              Try again
+            </Button>
+          </div>
+        </Stack>
       </Stack>
     );
   }
