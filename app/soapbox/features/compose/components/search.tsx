@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import {
   changeSearch,
   clearSearch,
+  clearSearchResults,
   setSearchAccount,
   showSearch,
   submitSearch,
@@ -72,7 +73,7 @@ const Search = (props: ISearch) => {
     event.preventDefault();
 
     if (value.length > 0 || submitted) {
-      dispatch(clearSearch());
+      dispatch(clearSearchResults());
     }
   };
 
