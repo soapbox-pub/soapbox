@@ -89,7 +89,7 @@ const useChatMessages = (chatId: string) => {
   };
 };
 
-const useChats = () => {
+const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
 
@@ -97,6 +97,7 @@ const useChats = () => {
     const { data, headers } = await api.get<IChat[]>('/api/v1/pleroma/chats', {
       params: {
         max_id: pageParam?.maxId,
+        search,
       },
     });
 
@@ -113,7 +114,7 @@ const useChats = () => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(['chats'], ({ pageParam }) => getChats(pageParam), {
+  const queryInfo = useInfiniteQuery(['chats', search], ({ pageParam }) => getChats(pageParam), {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {

@@ -343,12 +343,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   }, [isFetched]);
 
   // Store the scroll position.
-  useLayoutEffect(() => {
-    if (node.current) {
-      const { scrollHeight, scrollTop } = node.current;
-      scrollBottom.current = scrollHeight - scrollTop;
-    }
-  });
+  // useLayoutEffect(() => {
+  //   if (node.current) {
+  //     const { scrollHeight, scrollTop } = node.current;
+  //     scrollBottom.current = scrollHeight - scrollTop;
+  //   }
+  // });
 
   // Stick scrollbar to bottom.
   useEffect(() => {

@@ -22,6 +22,7 @@ const ChatProvider: React.FC = ({ children }) => {
 
   const [chat, setChat] = useState<IChat | null>(null);
   const [isEditing, setEditing] = useState<boolean>(false);
+  const [isSearching, setSearching] = useState<boolean>(false);
 
   const mainWindowState = settings.getIn(['chats', 'mainWindow']) as WindowState;
   const needsAcceptance = !chat?.accepted && chat?.created_by_account !== account?.id;
@@ -35,9 +36,11 @@ const ChatProvider: React.FC = ({ children }) => {
     needsAcceptance,
     isOpen,
     isEditing,
+    isSearching,
     setEditing,
+    setSearching,
     toggleChatPane,
-  }), [chat, needsAcceptance, isOpen, isEditing]);
+  }), [chat, needsAcceptance, isOpen, isEditing, isSearching]);
 
   return (
     <ChatContext.Provider value={value}>
@@ -48,11 +51,13 @@ const ChatProvider: React.FC = ({ children }) => {
 
 interface IChatContext {
   chat: IChat | null
-  isOpen: boolean
   isEditing: boolean
+  isOpen: boolean
+  isSearching: boolean
   needsAcceptance: boolean
   setChat: React.Dispatch<React.SetStateAction<IChat | null>>
   setEditing: React.Dispatch<React.SetStateAction<boolean>>
+  setSearching: React.Dispatch<React.SetStateAction<boolean>>
   toggleChatPane(): void
 }
 

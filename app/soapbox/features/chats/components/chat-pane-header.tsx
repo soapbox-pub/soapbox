@@ -13,7 +13,15 @@ interface IChatPaneHeader {
 }
 
 const ChatPaneHeader = (props: IChatPaneHeader) => {
-  const { onToggle, isOpen, isToggleable = true, title, unreadCount, secondaryAction, secondaryActionIcon } = props;
+  const {
+    isOpen,
+    isToggleable = true,
+    onToggle,
+    secondaryAction,
+    secondaryActionIcon,
+    title,
+    unreadCount,
+  } = props;
 
   const ButtonComp = isToggleable ? 'button' : 'div';
   const buttonProps: HTMLAttributes<HTMLButtonElement | HTMLDivElement> = {};

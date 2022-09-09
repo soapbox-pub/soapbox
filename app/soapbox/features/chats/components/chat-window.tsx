@@ -10,15 +10,16 @@ import ChatSettings from './chat-settings';
 
 /** Floating desktop chat window. */
 const ChatWindow = () => {
-  const { chat, setChat, isOpen, isEditing, needsAcceptance, setEditing, toggleChatPane } = useChatContext();
+  const { chat, setChat, isOpen, isEditing, needsAcceptance, setEditing, setSearching, toggleChatPane } = useChatContext();
 
   const inputRef = useRef<HTMLTextAreaElement>();
 
   const closeChat = () => setChat(null);
 
-  const openAndFocusChat = () => {
+  const openSearch = () => {
     toggleChatPane();
-    inputRef.current?.focus();
+    setSearching(true);
+    setChat(null);
   };
 
   const openChatSettings = () => setEditing(true);
@@ -28,7 +29,7 @@ const ChatWindow = () => {
       return undefined;
     }
 
-    return isOpen ? openChatSettings : openAndFocusChat;
+    return isOpen ? openChatSettings : openSearch;
   };
 
   if (!chat) return null;

@@ -15,14 +15,15 @@ import Blankslate from './chat-pane/blankslate';
 interface IChatList {
   onClickChat: (chat: any) => void,
   useWindowScroll?: boolean,
+  searchValue?: string
 }
 
-const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false }) => {
+const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, searchValue }) => {
   const dispatch = useDispatch();
 
   const chatListRef = useRef(null);
 
-  const { chatsQuery: { data: chats, isFetching, hasNextPage, fetchNextPage } } = useChats();
+  const { chatsQuery: { data: chats, isFetching, hasNextPage, fetchNextPage } } = useChats(searchValue);
 
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
