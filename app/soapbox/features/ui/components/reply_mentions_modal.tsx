@@ -11,11 +11,12 @@ import Account from '../../reply_mentions/account';
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IReplyMentionsModal {
+  composeId: string,
   onClose: (string: string) => void,
 }
 
-const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
+const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose }) => {
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get(composeId)?.in_reply_to! }));
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const mentions = statusToMentionsAccountIdsArray(status!, account!);
@@ -33,7 +34,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ onClose }) => {
       closePosition='left'
     >
       <div className='reply-mentions-modal__accounts'>
-        {mentions.map(accountId => <Account key={accountId} accountId={accountId} author={author === accountId} />)}
+        {mentions.map(accountId => <Account composeId={composeId} key={accountId} accountId={accountId} author={author === accountId} />)}
       </div>
     </Modal>
   );

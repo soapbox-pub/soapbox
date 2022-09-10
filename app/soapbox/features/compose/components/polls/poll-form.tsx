@@ -26,6 +26,7 @@ const messages = defineMessages({
 });
 
 interface IOption {
+  composeId: string
   index: number
   maxChars: number
   numOptions: number
@@ -35,21 +36,20 @@ interface IOption {
   title: string
 }
 
-const Option = (props: IOption) => {
-  const {
-    index,
-    maxChars,
-    numOptions,
-    onChange,
-    onRemove,
-    onRemovePoll,
-    title,
-  } = props;
-
+const Option: React.FC<IOption> = ({
+  composeId,
+  index,
+  maxChars,
+  numOptions,
+  onChange,
+  onRemove,
+  onRemovePoll,
+  title,
+}) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const suggestions = useAppSelector((state) => state.compose.suggestions);
+  const suggestions = useAppSelector((state) => state.compose.get(composeId)!.suggestions);
 
   const handleOptionTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(index, event.target.value);
 
@@ -102,26 +102,30 @@ const Option = (props: IOption) => {
   );
 };
 
-const PollForm = () => {
+interface IPollForm {
+  composeId: string,
+}
+
+const PollForm: React.FC<IPollForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
-  const options = useAppSelector((state) => state.compose.poll?.options);
-  const expiresIn = useAppSelector((state) => state.compose.poll?.expires_in);
-  const isMultiple = useAppSelector((state) => state.compose.poll?.multiple);
+  const options = useAppSelector((state) => state.compose.get(composeId)!.poll?.options);
+  const expiresIn = useAppSelector((state) => state.compose.get(composeId)!.poll?.expires_in);
+  const isMultiple = useAppSelector((state) => state.compose.get(composeId)!.poll?.multiple);
 
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');
 
-  const onRemoveOption = (index: number) => dispatch(removePollOption(index));
-  const onChangeOption = (index: number, title: string) => dispatch(changePollOption(index, title));
-  const handleAddOption = () => dispatch(addPollOption(''));
+  const onRemoveOption = (index: number) => dispatch(removePollOption(composeId, index));
+  const onChangeOption = (index: number, title: string) => dispatch(changePollOption(composeId, index, title));
+  const handleAddOption = () => dispatch(addPollOption(composeId, ''));
   const onChangeSettings = (expiresIn: string | number | undefined, isMultiple?: boolean) =>
-    dispatch(changePollSettings(expiresIn, isMultiple));
+    dispatch(changePollSettings(composeId, expiresIn, isMultiple));
   const handleSelectDuration = (value: number) => onChangeSettings(value, isMultiple);
   const handleToggleMultiple = () => onChangeSettings(expiresIn, !isMultiple);
-  const onRemovePoll = () => dispatch(removePoll());
+  const onRemovePoll = () => dispatch(removePoll(composeId));
 
   if (!options) {
     return null;
@@ -132,6 +136,7 @@ const PollForm = () => {
       <Stack space={2}>
         {options.map((title: string, i: number) => (
           <Option
+            composeId={composeId}
             title={title}
             key={i}
             index={i}

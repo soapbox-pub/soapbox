@@ -10,16 +10,20 @@ const messages = defineMessages({
   unmarked: { id: 'compose_form.sensitive.unmarked', defaultMessage: 'Media is not marked as sensitive' },
 });
 
+interface ISensitiveButton {
+  composeId: string,
+}
+
 /** Button to mark own media as sensitive. */
-const SensitiveButton: React.FC = () => {
+const SensitiveButton: React.FC<ISensitiveButton> = ({ composeId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const active = useAppSelector(state => state.compose.sensitive === true);
-  const disabled = useAppSelector(state => state.compose.spoiler === true);
+  const active = useAppSelector(state => state.compose.get(composeId)!.sensitive === true);
+  const disabled = useAppSelector(state => state.compose.get(composeId)!.spoiler === true);
 
   const onClick = () => {
-    dispatch(changeComposeSensitivity());
+    dispatch(changeComposeSensitivity(composeId));
   };
 
   return (

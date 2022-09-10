@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { Column, Spinner } from 'soapbox/components/ui';
 
-import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
+import ComposeForm from '../../../../soapbox/features/compose/components/compose-form';
 import { connectGroupStream } from '../../../actions/streaming';
 import { expandGroupTimeline } from '../../../actions/timelines';
 import Avatar from '../../../components/avatar';
@@ -85,7 +85,7 @@ class GroupTimeline extends React.PureComponent {
             <Link className='timeline-compose-block__avatar' to={`/@${acct}`}>
               <Avatar account={account} size={46} />
             </Link>
-            <ComposeFormContainer group={group} shouldCondense autoFocus={false} />
+            <ComposeForm group={group} shouldCondense autoFocus={false} />
           </div>
         )}
 

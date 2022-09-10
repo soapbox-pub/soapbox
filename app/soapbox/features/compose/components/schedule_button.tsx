@@ -1,6 +1,9 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { addSchedule, removeSchedule } from 'soapbox/actions/compose';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+
 import ComposeFormButton from './compose_form_button';
 
 const messages = defineMessages({
@@ -9,17 +12,23 @@ const messages = defineMessages({
 });
 
 interface IScheduleButton {
-  disabled: boolean,
-  active: boolean,
-  unavailable: boolean,
-  onClick: () => void,
+  composeId: string,
+  disabled?: boolean,
 }
 
-const ScheduleButton: React.FC<IScheduleButton> = ({ active, unavailable, disabled, onClick }) => {
+const ScheduleButton: React.FC<IScheduleButton> = ({ composeId, disabled }) => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
+
+  const active = useAppSelector((state) => !!state.compose.get(composeId)!.schedule);
+  const unavailable = useAppSelector((state) => !!state.compose.get(composeId)!.id);
 
   const handleClick = () => {
-    onClick();
+    if (active) {
+      dispatch(removeSchedule(composeId));
+    } else {
+      dispatch(addSchedule(composeId));
+    }
   };
 
   if (unavailable) {

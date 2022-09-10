@@ -54,9 +54,6 @@ const COMPOSE_SUGGESTION_TAGS_UPDATE = 'COMPOSE_SUGGESTION_TAGS_UPDATE';
 
 const COMPOSE_TAG_HISTORY_UPDATE = 'COMPOSE_TAG_HISTORY_UPDATE';
 
-const COMPOSE_MOUNT   = 'COMPOSE_MOUNT';
-const COMPOSE_UNMOUNT = 'COMPOSE_UNMOUNT';
-
 const COMPOSE_SENSITIVITY_CHANGE = 'COMPOSE_SENSITIVITY_CHANGE';
 const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
 const COMPOSE_TYPE_CHANGE = 'COMPOSE_TYPE_CHANGE';
@@ -101,14 +98,6 @@ const messages = defineMessages({
   replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
 });
 
-const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
-
-const ensureComposeIsVisible = (getState: () => RootState, routerHistory: History) => {
-  if (!getState().compose.mounted && window.innerWidth < COMPOSE_PANEL_BREAKPOINT) {
-    routerHistory.push('/posts/new');
-  }
-};
-
 const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const { instance } = getState();
@@ -126,8 +115,9 @@ const setComposeToStatus = (status: Status, rawText: string, spoilerText?: strin
     });
   };
 
-const changeCompose = (text: string) => ({
+const changeCompose = (composeId: string, text: string) => ({
   type: COMPOSE_CHANGE,
+  id: composeId,
   text: text,
 });
 
@@ -145,20 +135,6 @@ const replyCompose = (status: Status) =>
     });
 
     dispatch(openModal('COMPOSE'));
-  };
-
-const replyComposeWithConfirmation = (status: Status, intl: IntlShape) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState();
-    if (state.compose.text.trim().length !== 0) {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(messages.replyMessage),
-        confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status)),
-      }));
-    } else {
-      dispatch(replyCompose(status));
-    }
   };
 
 const cancelReplyCompose = () => ({
@@ -221,16 +197,16 @@ const directComposeById = (accountId: string) =>
     dispatch(openModal('COMPOSE'));
   };
 
-const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, data: APIEntity, status: string, edit?: boolean) => {
+const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, composeId: string, data: APIEntity, status: string, edit?: boolean) => {
   if (!dispatch || !getState) return;
 
-  dispatch(insertIntoTagHistory(data.tags || [], status));
-  dispatch(submitComposeSuccess({ ...data }));
+  dispatch(insertIntoTagHistory(composeId, data.tags || [], status));
+  dispatch(submitComposeSuccess(composeId, { ...data }));
   dispatch(snackbar.success(edit ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
 };
 
-const needsDescriptions = (state: RootState) => {
-  const media  = state.compose.media_attachments;
+const needsDescriptions = (state: RootState, composeId: string) => {
+  const media  = state.compose.get(composeId)!.media_attachments;
   const missingDescriptionModal = getSettings(state).get('missingDescriptionModal');
 
   const hasMissing = media.filter(item => !item.description).size > 0;
@@ -238,8 +214,8 @@ const needsDescriptions = (state: RootState) => {
   return missingDescriptionModal && hasMissing;
 };
 
-const validateSchedule = (state: RootState) => {
-  const schedule = state.compose.schedule;
+const validateSchedule = (state: RootState, composeId: string) => {
+  const schedule = state.compose.get(composeId)!.schedule;
   if (!schedule) return true;
 
   const fiveMinutesFromNow = new Date(new Date().getTime() + 300000);
@@ -247,17 +223,19 @@ const validateSchedule = (state: RootState) => {
   return schedule.getTime() > fiveMinutesFromNow.getTime();
 };
 
-const submitCompose = (routerHistory?: History, force = false) =>
+const submitCompose = (composeId: string, routerHistory?: History, force = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const state = getState();
 
-    const status   = state.compose.text;
-    const media    = state.compose.media_attachments;
-    const statusId = state.compose.id;
-    let to         = state.compose.to;
+    const compose = state.compose.get(composeId)!;
 
-    if (!validateSchedule(state)) {
+    const status   = compose.text;
+    const media    = compose.media_attachments;
+    const statusId = compose.id;
+    let to         = compose.to;
+
+    if (!validateSchedule(state, composeId)) {
       dispatch(snackbar.error(messages.scheduleError));
       return;
     }
@@ -266,11 +244,11 @@ const submitCompose = (routerHistory?: History, force = false) =>
       return;
     }
 
-    if (!force && needsDescriptions(state)) {
+    if (!force && needsDescriptions(state, composeId)) {
       dispatch(openModal('MISSING_DESCRIPTION', {
         onContinue: () => {
           dispatch(closeModal('MISSING_DESCRIPTION'));
-          dispatch(submitCompose(routerHistory, true));
+          dispatch(submitCompose(composeId, routerHistory, true));
         },
       }));
       return;
@@ -282,22 +260,22 @@ const submitCompose = (routerHistory?: History, force = false) =>
       to = to.union(mentions.map(mention => mention.trim().slice(1)));
     }
 
-    dispatch(submitComposeRequest());
+    dispatch(submitComposeRequest(composeId));
     dispatch(closeModal());
 
-    const idempotencyKey = state.compose.idempotencyKey;
+    const idempotencyKey = compose.idempotencyKey;
 
     const params = {
       status,
-      in_reply_to_id: state.compose.in_reply_to,
-      quote_id: state.compose.quote,
+      in_reply_to_id: compose.in_reply_to,
+      quote_id: compose.quote,
       media_ids: media.map(item => item.id),
-      sensitive: state.compose.sensitive,
-      spoiler_text: state.compose.spoiler_text,
-      visibility: state.compose.privacy,
-      content_type: state.compose.content_type,
-      poll: state.compose.poll,
-      scheduled_at: state.compose.schedule,
+      sensitive: compose.sensitive,
+      spoiler_text: compose.spoiler_text,
+      visibility: compose.privacy,
+      content_type: compose.content_type,
+      poll: compose.poll,
+      scheduled_at: compose.schedule,
       to,
     };
 
@@ -305,27 +283,30 @@ const submitCompose = (routerHistory?: History, force = false) =>
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
-      handleComposeSubmit(dispatch, getState, data, status, !!statusId);
+      handleComposeSubmit(dispatch, getState, composeId, data, status, !!statusId);
     }).catch(function(error) {
-      dispatch(submitComposeFail(error));
+      dispatch(submitComposeFail(composeId, error));
     });
   };
 
-const submitComposeRequest = () => ({
+const submitComposeRequest = (composeId: string) => ({
   type: COMPOSE_SUBMIT_REQUEST,
+  id: composeId,
 });
 
-const submitComposeSuccess = (status: APIEntity) => ({
+const submitComposeSuccess = (composeId: string, status: APIEntity) => ({
   type: COMPOSE_SUBMIT_SUCCESS,
+  id: composeId,
   status: status,
 });
 
-const submitComposeFail = (error: AxiosError) => ({
+const submitComposeFail = (composeId: string, error: AxiosError) => ({
   type: COMPOSE_SUBMIT_FAIL,
+  id: composeId,
   error: error,
 });
 
-const uploadCompose = (files: FileList, intl: IntlShape) =>
+const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const attachmentLimit = getState().instance.configuration.getIn(['statuses', 'max_media_attachments']) as number;
@@ -333,7 +314,7 @@ const uploadCompose = (files: FileList, intl: IntlShape) =>
     const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
     const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
 
-    const media  = getState().compose.media_attachments;
+    const media  = getState().compose.get(composeId)!.media_attachments;
     const progress = new Array(files.length).fill(0);
     let total = Array.from(files).reduce((a, v) => a + v.size, 0);
 
@@ -576,10 +557,10 @@ const updateTagHistory = (tags: string[]) => ({
   tags,
 });
 
-const insertIntoTagHistory = (recognizedTags: APIEntity[], text: string) =>
+const insertIntoTagHistory = (composeId: string, recognizedTags: APIEntity[], text: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const oldHistory = state.compose.tagHistory;
+    const oldHistory = state.compose.get(composeId)!.tagHistory;
     const me = state.me;
     const names = recognizedTags
       .filter(tag => text.match(new RegExp(`#${tag.name}`, 'i')))
@@ -594,97 +575,99 @@ const insertIntoTagHistory = (recognizedTags: APIEntity[], text: string) =>
     dispatch(updateTagHistory(newHistory));
   };
 
-const mountCompose = () => ({
-  type: COMPOSE_MOUNT,
-});
-
-const unmountCompose = () => ({
-  type: COMPOSE_UNMOUNT,
-});
-
-const changeComposeSensitivity = () => ({
+const changeComposeSensitivity = (composeId: string) => ({
   type: COMPOSE_SENSITIVITY_CHANGE,
+  id: composeId,
 });
 
-const changeComposeSpoilerness = () => ({
+const changeComposeSpoilerness = (composeId: string) => ({
   type: COMPOSE_SPOILERNESS_CHANGE,
+  id: composeId,
 });
 
-const changeComposeContentType = (value: string) => ({
+const changeComposeContentType = (composeId: string, value: string) => ({
   type: COMPOSE_TYPE_CHANGE,
+  id: composeId,
   value,
 });
 
-const changeComposeSpoilerText = (text: string) => ({
+const changeComposeSpoilerText = (composeId: string, text: string) => ({
   type: COMPOSE_SPOILER_TEXT_CHANGE,
+  id: composeId,
   text,
 });
 
-const changeComposeVisibility = (value: string) => ({
+const changeComposeVisibility = (composeId: string, value: string) => ({
   type: COMPOSE_VISIBILITY_CHANGE,
+  id: composeId,
   value,
 });
 
-const insertEmojiCompose = (position: number, emoji: string, needsSpace: boolean) => ({
+const insertEmojiCompose = (composeId: string, position: number, emoji: Emoji, needsSpace: boolean) => ({
   type: COMPOSE_EMOJI_INSERT,
+  id: composeId,
   position,
   emoji,
   needsSpace,
 });
 
-const changeComposing = (value: string) => ({
-  type: COMPOSE_COMPOSING_CHANGE,
-  value,
-});
-
-const addPoll = () => ({
+const addPoll = (composeId: string) => ({
   type: COMPOSE_POLL_ADD,
+  id: composeId,
 });
 
-const removePoll = () => ({
+const removePoll = (composeId: string) => ({
   type: COMPOSE_POLL_REMOVE,
+  id: composeId,
 });
 
-const addSchedule = () => ({
+const addSchedule = (composeId: string) => ({
   type: COMPOSE_SCHEDULE_ADD,
+  id: composeId,
 });
 
-const setSchedule = (date: Date) => ({
+const setSchedule = (composeId: string, date: Date) => ({
   type: COMPOSE_SCHEDULE_SET,
+  id: composeId,
   date: date,
 });
 
-const removeSchedule = () => ({
+const removeSchedule = (composeId: string) => ({
   type: COMPOSE_SCHEDULE_REMOVE,
+  id: composeId,
 });
 
-const addPollOption = (title: string) => ({
+const addPollOption = (composeId: string, title: string) => ({
   type: COMPOSE_POLL_OPTION_ADD,
+  id: composeId,
   title,
 });
 
-const changePollOption = (index: number, title: string) => ({
+const changePollOption = (composeId: string, index: number, title: string) => ({
   type: COMPOSE_POLL_OPTION_CHANGE,
+  id: composeId,
   index,
   title,
 });
 
-const removePollOption = (index: number) => ({
+const removePollOption = (composeId: string, index: number) => ({
   type: COMPOSE_POLL_OPTION_REMOVE,
+  id: composeId,
   index,
 });
 
-const changePollSettings = (expiresIn?: string | number, isMultiple?: boolean) => ({
+const changePollSettings = (composeId: string, expiresIn?: string | number, isMultiple?: boolean) => ({
   type: COMPOSE_POLL_SETTINGS_CHANGE,
+  id: composeId,
   expiresIn,
   isMultiple,
 });
 
-const openComposeWithText = (text = '') =>
+const openComposeWithText = (composeId: string, text = '') =>
   (dispatch: AppDispatch) => {
     dispatch(resetCompose());
     dispatch(openModal('COMPOSE'));
-    dispatch(changeCompose(text));
+    dispatch(changeCompose(composeId, text));
   };
 
 const addToMentions = (accountId: string) =>
@@ -731,8 +714,6 @@ export {
   COMPOSE_SUGGESTION_SELECT,
   COMPOSE_SUGGESTION_TAGS_UPDATE,
   COMPOSE_TAG_HISTORY_UPDATE,
-  COMPOSE_MOUNT,
-  COMPOSE_UNMOUNT,
   COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
   COMPOSE_TYPE_CHANGE,
@@ -756,11 +737,9 @@ export {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
-  ensureComposeIsVisible,
   setComposeToStatus,
   changeCompose,
   replyCompose,
-  replyComposeWithConfirmation,
   cancelReplyCompose,
   quoteCompose,
   cancelQuoteCompose,
@@ -790,15 +769,12 @@ export {
   selectComposeSuggestion,
   updateSuggestionTags,
   updateTagHistory,
-  mountCompose,
-  unmountCompose,
   changeComposeSensitivity,
   changeComposeSpoilerness,
   changeComposeContentType,
   changeComposeSpoilerText,
   changeComposeVisibility,
   insertEmojiCompose,
-  changeComposing,
   addPoll,
   removePoll,
   addSchedule,

@@ -123,18 +123,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReplyClick: React.MouseEventHandler = (e) => {
     if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(replyCompose(status)),
-          }));
-        } else {
-          dispatch(replyCompose(status));
-        }
-      });
+      dispatch(replyCompose(status));
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -186,18 +175,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
 
     if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(quoteCompose(status)),
-          }));
-        } else {
-          dispatch(quoteCompose(status));
-        }
-      });
+      dispatch(quoteCompose(status));
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }

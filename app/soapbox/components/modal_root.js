@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 export const checkComposeContent = compose => {
-  return [
+  return !!compose && [
     compose.text.length > 0,
     compose.spoiler_text.length > 0,
     compose.media_attachments.size > 0,
@@ -24,8 +24,8 @@ export const checkComposeContent = compose => {
 };
 
 const mapStateToProps = state => ({
-  hasComposeContent: checkComposeContent(state.compose),
-  isEditing: state.compose.id !== null,
+  hasComposeContent: checkComposeContent(state.compose.get('modal')),
+  isEditing: state.compose.get('modal')?.id !== null,
 });
 
 const mapDispatchToProps = (dispatch) => ({

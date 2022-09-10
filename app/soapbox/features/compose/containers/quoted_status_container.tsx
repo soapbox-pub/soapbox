@@ -7,10 +7,14 @@ import { makeGetStatus } from 'soapbox/selectors';
 
 const getStatus = makeGetStatus();
 
+interface IQuotedStatusContainer {
+  composeId: string,
+}
+
 /** QuotedStatus shown in post composer. */
-const QuotedStatusContainer: React.FC = () => {
+const QuotedStatusContainer: React.FC<IQuotedStatusContainer> = ({ composeId }) => {
   const dispatch = useAppDispatch();
-  const status = useAppSelector(state => getStatus(state, { id: state.compose.quote! }));
+  const status = useAppSelector(state => getStatus(state, { id: state.compose.get(composeId)!.quote! }));
 
   const onCancel = () => {
     dispatch(cancelQuoteCompose());

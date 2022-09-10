@@ -10,12 +10,16 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
-const ReplyMentions: React.FC = () => {
+interface IReplyMentions {
+  composeId: string,
+}
+
+const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   const dispatch = useDispatch();
   const instance = useAppSelector((state) => state.instance);
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get(composeId)!.in_reply_to! }));
 
-  const to = useAppSelector((state) => state.compose.to);
+  const to = useAppSelector((state) => state.compose.get(composeId)!.to);
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const { explicitAddressing } = getFeatures(instance);

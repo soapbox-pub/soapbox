@@ -27,19 +27,23 @@ const messages = defineMessages({
   remove: { id: 'schedule.remove', defaultMessage: 'Remove schedule' },
 });
 
-const ScheduleForm: React.FC = () => {
+export interface IScheduleForm {
+  composeId: string,
+}
+
+const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const scheduledAt = useAppSelector((state) => state.compose.schedule);
+  const scheduledAt = useAppSelector((state) => state.compose.get(composeId)!.schedule);
   const active = !!scheduledAt;
 
   const onSchedule = (date: Date) => {
-    dispatch(setSchedule(date));
+    dispatch(setSchedule(composeId, date));
   };
 
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(removeSchedule());
+    dispatch(removeSchedule(composeId));
     e.preventDefault();
   };
 

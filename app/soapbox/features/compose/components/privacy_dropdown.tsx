@@ -6,8 +6,12 @@ import { spring } from 'react-motion';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
+import { changeComposeVisibility } from 'soapbox/actions/compose';
+import { closeModal, openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import { IconButton } from 'soapbox/components/ui';
+import { isUserTouching } from 'soapbox/is_mobile';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Motion from '../../ui/util/optional_motion';
 
@@ -50,7 +54,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
   const handleKeyDown: React.KeyboardEventHandler = e => {
     const value = e.currentTarget.getAttribute('data-index');
     const index = items.findIndex(item => item.value === value);
-    let element = null;
+    let element: ChildNode | null | undefined = null;
 
     switch (e.key) {
       case 'Escape':
@@ -136,26 +140,19 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
 };
 
 interface IPrivacyDropdown {
-  isUserTouching: () => boolean,
-  isModalOpen: boolean,
-  onModalOpen: (opts: any) => void,
-  onModalClose: () => void,
-  value: string,
-  onChange: (value: string | null) => void,
-  unavailable: boolean,
+  composeId: string,
 }
 
 const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
-  isUserTouching,
-  onChange,
-  onModalClose,
-  onModalOpen,
-  value,
-  unavailable,
+  composeId,
 }) => {
+  const dispatch = useAppDispatch();
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
+
+  const value = useAppSelector(state => state.compose.get(composeId)!.privacy);
+  const unavailable = useAppSelector(state => !!state.compose.get(composeId)!.id);
 
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState('bottom');
@@ -166,6 +163,12 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
     { icon: require('@tabler/icons/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
     { icon: require('@tabler/icons/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
   ];
+
+  const onChange = (value: string | null) => value && dispatch(changeComposeVisibility(composeId, value));
+
+  const onModalOpen = (props: Record<string, any>) => dispatch(openModal('ACTIONS', props));
+
+  const onModalClose = () => dispatch(closeModal('ACTIONS'));
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (isUserTouching()) {

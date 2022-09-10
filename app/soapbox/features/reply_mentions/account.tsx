@@ -17,16 +17,17 @@ const messages = defineMessages({
 const getAccount = makeGetAccount();
 
 interface IAccount {
+  composeId: string,
   accountId: string,
   author: boolean,
 }
 
-const Account: React.FC<IAccount> = ({ accountId, author }) => {
+const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = useAppSelector((state) => !!account && state.compose.to?.includes(account.acct));
+  const added = useAppSelector((state) => !!account && state.compose.get(composeId)!.to?.includes(account.acct));
 
   const onRemove = () => dispatch(removeFromMentions(accountId));
   const onAdd = () => dispatch(addToMentions(accountId));
