@@ -5,7 +5,7 @@ type PickAlgorithm = <D = any>(
   /** Elligible candidates to pick. */
   items: D[],
   /** Current iteration by which an item may be chosen. */
-  index: number,
+  iteration: number,
   /** Implementation-specific opts. */
   opts: any
 ) => D | undefined;

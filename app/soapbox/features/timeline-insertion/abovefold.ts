@@ -21,11 +21,11 @@ type Opts = {
  * Algorithm to display items per-page.
  * One item is randomly inserted into each page within the index range.
  */
-const abovefoldAlgorithm: PickAlgorithm = (items, index, opts: Opts) => {
+const abovefoldAlgorithm: PickAlgorithm = (items, iteration, opts: Opts) => {
   /** Current page of the index. */
-  const page = Math.floor(((index + 1) / opts.pageSize) - 1);
+  const page = Math.floor(((iteration + 1) / opts.pageSize) - 1);
   /** Current index within the page. */
-  const pageIndex = ((index + 1) % opts.pageSize) - 1;
+  const pageIndex = ((iteration + 1) % opts.pageSize) - 1;
   /** RNG for the page. */
   const rng = seedrandom(`${opts.seed}-page-${page}`);
   /** Index to insert the item. */
