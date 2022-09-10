@@ -6,11 +6,7 @@ const GRAY: Hsl = { h: 0, s: 50, l: 50 };
 /** Modulo (`%`) in both directions. */
 // https://stackoverflow.com/a/39740009
 const wrapAround = (value: number, delta: number, max: number): number => {
-  if (delta >= 0) {
-    return (value + delta) % max;
-  } else {
-    return max - ((max - (value + delta)) % max);
-  }
+  return (max + (value + delta)) % max;
 };
 
 /** Clamp the value within the range of `min` and `max`. */
@@ -42,7 +38,6 @@ const hslShift = (seed: Hsl, delta: HSLDelta): Hsl => {
     s: minmax(seed.s + delta[1], 0, 100),
     l: minmax(seed.l + delta[2], 0, 100),
   };
-
 };
 
 /** Generate a color palette from a single color. */
@@ -71,7 +66,7 @@ const paletteToDelta = (palette: HSLPalette): HSLPaletteDelta => {
   return shades.reduce((result: HSLPaletteDelta, shade: Shade) => {
     const color = palette[shade];
     result[shade] = [
-      wrapAround(color.h, -seed.h, 360),
+      color.h - seed.h,
       minmax(color.s - seed.s, -100, 100),
       minmax(color.l - seed.l, -100, 100),
     ];
