@@ -1,3 +1,4 @@
+import { convert } from 'chromatism';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import tintify from 'soapbox/utils/colors';
@@ -53,4 +54,12 @@ export const toTailwind = (soapboxConfig: SoapboxConfig): SoapboxConfig => {
   const legacyColors: SoapboxColors = ImmutableMap(fromJS(fromLegacyColors(soapboxConfig)));
 
   return soapboxConfig.set('colors', legacyColors.mergeDeep(colors));
+};
+
+export const convertPalette = (palette: TailwindColorPalette, type: string) => {
+  return Object.keys(palette).reduce((acc, curr) => {
+    // @ts-ignore
+    acc[curr] = convert(palette[curr])[type];
+    return acc;
+  }, {} as any);
 };
