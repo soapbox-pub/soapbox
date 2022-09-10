@@ -76,6 +76,7 @@ const paletteToDelta = (palette: HSLPalette): HSLPaletteDelta => {
 
 export {
   hslShift,
+  generatePalette,
   expandPalette,
   paletteToDelta,
   HSLDelta,
