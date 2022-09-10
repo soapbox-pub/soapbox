@@ -7,63 +7,14 @@ import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import StatusList from 'soapbox/components/status_list';
-import { Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { findAccountByUsername } from 'soapbox/selectors';
-import { getFeatures } from 'soapbox/utils/features';
 
 import Column from '../ui/components/column';
-
-import type { RootState } from 'soapbox/store';
 
 const messages = defineMessages({
   heading: { id: 'column.favourited_statuses', defaultMessage: 'Liked posts' },
 });
-
-const mapStateToProps = (state: RootState, { params }: IFavourites) => {
-  const username = params?.username || '';
-  const me = state.get('me');
-  const meUsername = state.accounts.get(me)?.username || '';
-
-  const isMyAccount = (username.toLowerCase() === meUsername?.toLowerCase());
-
-  const features = getFeatures(state.get('instance'));
-
-  if (isMyAccount) {
-    return {
-      isMyAccount,
-      statusIds: state.status_lists.get('favourites')?.items || ImmutableOrderedSet<string>(),
-      isLoading: state.status_lists.get('favourites')?.isLoading === true,
-      hasMore: !!state.status_lists.get('favourites')?.next,
-      unavailable: false,
-      isAccount: true,
-    };
-  }
-
-  const accountFetchError = ((state.accounts.get(-1)?.username || '').toLowerCase() === username.toLowerCase());
-
-  let accountId: number | string | null = -1;
-  if (accountFetchError) {
-    accountId = null;
-  } else {
-    const account = findAccountByUsername(state, username);
-    accountId = account?.id || -1;
-  }
-
-  const isBlocked = state.relationships.getIn([accountId, 'blocked_by'], false) === true;
-  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
-
-  return {
-    isMyAccount,
-    accountId,
-    unavailable,
-    username,
-    isAccount: !!state.getIn(['accounts', accountId]),
-    statusIds: state.status_lists.get(`favourites:${accountId}`)?.items || ImmutableOrderedSet<string>(),
-    isLoading: state.status_lists.get(`favourites:${accountId}`)?.isLoading === true,
-    hasMore: !!state.status_lists.get(`favourites:${accountId}`)?.next,
-  };
-};
 
 interface IFavourites {
   params?: {
@@ -71,20 +22,34 @@ interface IFavourites {
   }
 }
 
+/** Timeline displaying a user's favourited statuses. */
 const Favourites: React.FC<IFavourites> = (props) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
+  const ownAccount = useOwnAccount();
 
   const username = props.params?.username || '';
-  const { statusIds, isLoading, hasMore, isMyAccount, isAccount, accountId, unavailable } = useAppSelector(state => mapStateToProps(state, props));
+  const account = useAppSelector(state => findAccountByUsername(state, username));
+  const isOwnAccount = username.toLowerCase() === ownAccount?.username?.toLowerCase();
+
+  const timelineKey = isOwnAccount ? 'favourites' : `favourites:${account?.id}`;
+  const statusIds = useAppSelector(state => state.status_lists.get(timelineKey)?.items || ImmutableOrderedSet<string>());
+  const isLoading = useAppSelector(state => state.status_lists.get(timelineKey)?.isLoading === true);
+  const hasMore = useAppSelector(state => !!state.status_lists.get(timelineKey)?.next);
+
+  const unavailable = useAppSelector(state => {
+    const blockedBy = state.relationships.getIn([account?.id, 'blocked_by']) === true;
+    return isOwnAccount ? false : (blockedBy && !features.blockersVisible);
+  });
 
   useEffect(() => {
-    if (isMyAccount)
+    if (isOwnAccount)
       dispatch(fetchFavouritedStatuses());
     else {
-      if (typeof accountId === 'string') {
-        dispatch(fetchAccount(accountId));
-        dispatch(fetchAccountFavouritedStatuses(accountId));
+      if (account) {
+        dispatch(fetchAccount(account.id));
+        dispatch(fetchAccountFavouritedStatuses(account.id));
       } else {
         dispatch(fetchAccountByUsername(username));
       }
@@ -92,33 +57,19 @@ const Favourites: React.FC<IFavourites> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!isMyAccount && typeof accountId === 'string') {
-      dispatch(fetchAccount(accountId));
-      dispatch(fetchAccountFavouritedStatuses(accountId));
+    if (account && !isOwnAccount) {
+      dispatch(fetchAccount(account.id));
+      dispatch(fetchAccountFavouritedStatuses(account.id));
     }
-  }, [accountId]);
+  }, [account?.id]);
 
   const handleLoadMore = useCallback(debounce(() => {
-    if (isMyAccount) {
+    if (isOwnAccount) {
       dispatch(expandFavouritedStatuses());
-    } else if (typeof accountId === 'string') {
-      dispatch(expandAccountFavouritedStatuses(accountId));
+    } else if (account) {
+      dispatch(expandAccountFavouritedStatuses(account.id));
     }
-  }, 300, { leading: true }), [accountId]);
-
-  if (!isMyAccount && !isAccount && accountId !== -1) {
-    return (
-      <MissingIndicator />
-    );
-  }
-
-  if (accountId === -1) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
+  }, 300, { leading: true }), [account?.id]);
 
   if (unavailable) {
     return (
@@ -130,7 +81,13 @@ const Favourites: React.FC<IFavourites> = (props) => {
     );
   }
 
-  const emptyMessage = isMyAccount
+  if (!account) {
+    return (
+      <MissingIndicator />
+    );
+  }
+
+  const emptyMessage = isOwnAccount
     ? <FormattedMessage id='empty_column.favourited_statuses' defaultMessage="You don't have any liked posts yet. When you like one, it will show up here." />
     : <FormattedMessage id='empty_column.account_favourited_statuses' defaultMessage="This user doesn't have any liked posts yet." />;
 
@@ -140,7 +97,7 @@ const Favourites: React.FC<IFavourites> = (props) => {
         statusIds={statusIds}
         scrollKey='favourited_statuses'
         hasMore={hasMore}
-        isLoading={typeof isLoading === 'boolean' ? isLoading : true}
+        isLoading={isLoading}
         onLoadMore={handleLoadMore}
         emptyMessage={emptyMessage}
       />
