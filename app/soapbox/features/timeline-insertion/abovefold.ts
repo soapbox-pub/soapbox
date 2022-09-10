@@ -32,7 +32,7 @@ const abovefoldAlgorithm: PickAlgorithm = (items, iteration, opts: Opts) => {
   const insertIndex = Math.floor(rng() * opts.range[1] - opts.range[0]) + opts.range[0];
 
   if (pageIndex === insertIndex) {
-    return items[page];
+    return items[page % items.length];
   }
 };
 
