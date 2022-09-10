@@ -7,7 +7,7 @@ type PickAlgorithm = <D = any>(
   /** Current iteration by which an item may be chosen. */
   iteration: number,
   /** Implementation-specific opts. */
-  opts: any
+  opts: Record<string, unknown>
 ) => D | undefined;
 
 export {
