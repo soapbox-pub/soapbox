@@ -6,7 +6,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { setDonor, removeDonor, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
+import { suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
 import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
@@ -60,8 +60,6 @@ const messages = defineMessages({
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
-  setDonor: { id: 'admin.users.actions.set_donor', defaultMessage: 'Set @{name} as a donor' },
-  removeDonor: { id: 'admin.users.actions.remove_donor', defaultMessage: 'Remove @{name} as a donor' },
   promoteToAdmin: { id: 'admin.users.actions.promote_to_admin', defaultMessage: 'Promote @{name} to an admin' },
   promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
   demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
@@ -74,8 +72,6 @@ const messages = defineMessages({
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
-  setDonorSuccess: { id: 'admin.users.set_donor_message', defaultMessage: '@{acct} was set as a donor' },
-  removeDonorSuccess: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
   promotedToAdmin: { id: 'admin.users.actions.promote_to_admin_message', defaultMessage: '@{acct} was promoted to an admin' },
   promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
   demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
@@ -205,22 +201,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onDeactivateUser = () => {
     dispatch(deactivateUserModal(intl, account.id));
-  };
-
-  const onSetDonor = () => {
-    const message = intl.formatMessage(messages.setDonorSuccess, { acct: account.acct });
-
-    dispatch(setDonor(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
-
-  const onRemoveDonor = () => {
-    const message = intl.formatMessage(messages.removeDonorSuccess, { acct: account.acct });
-
-    dispatch(removeDonor(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
   };
 
   const onSuggestUser = () => {
@@ -493,20 +473,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
           text: intl.formatMessage(messages.adminAccount, { name: account.username }),
           action: onModerate,
           icon: require('@tabler/icons/gavel.svg'),
-        });
-      }
-
-      if (account.donor) {
-        menu.push({
-          text: intl.formatMessage(messages.removeDonor, { name: account.username }),
-          action: onRemoveDonor,
-          icon: require('@tabler/icons/coin.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.setDonor, { name: account.username }),
-          action: onSetDonor,
-          icon: require('@tabler/icons/coin.svg'),
         });
       }
 
