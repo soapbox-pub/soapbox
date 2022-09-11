@@ -10,7 +10,6 @@ import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
 import { openModal } from 'soapbox/actions/modals';
-import { deactivateUserModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
@@ -57,8 +56,6 @@ const messages = defineMessages({
   removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
-  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
-  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
   search: { id: 'account.search', defaultMessage: 'Search from @{name}' },
   searchSelf: { id: 'account.search_self', defaultMessage: 'Search your posts' },
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -183,10 +180,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onChat = () => {
     dispatch(launchChat(account.id, history));
-  };
-
-  const onDeactivateUser = () => {
-    dispatch(deactivateUserModal(intl, account.id));
   };
 
   const onModerate = () => {
@@ -443,18 +436,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
           text: intl.formatMessage(messages.adminAccount, { name: account.username }),
           action: onModerate,
           icon: require('@tabler/icons/gavel.svg'),
-        });
-      }
-
-      if (account.id !== ownAccount?.id) {
-        menu.push({
-          text: intl.formatMessage(messages.deactivateUser, { name: account.username }),
-          action: onDeactivateUser,
-          icon: require('@tabler/icons/user-off.svg'),
-        });
-        menu.push({
-          text: intl.formatMessage(messages.deleteUser, { name: account.username }),
-          icon: require('@tabler/icons/user-minus.svg'),
         });
       }
     }
