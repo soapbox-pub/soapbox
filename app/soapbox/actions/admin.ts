@@ -476,6 +476,18 @@ const demoteToUser = (accountId: string) =>
       dispatch(removePermission([accountId], 'moderator')),
     ]);
 
+const setRole = (accountId: string, role: 'user' | 'moderator' | 'admin') =>
+  (dispatch: AppDispatch) => {
+    switch (role) {
+      case 'user':
+        return dispatch(demoteToUser(accountId));
+      case 'moderator':
+        return dispatch(promoteToModerator(accountId));
+      case 'admin':
+        return dispatch(promoteToAdmin(accountId));
+    }
+  };
+
 const suggestUsers = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
@@ -576,6 +588,7 @@ export {
   promoteToAdmin,
   promoteToModerator,
   demoteToUser,
+  setRole,
   suggestUsers,
   unsuggestUsers,
 };
