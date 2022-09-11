@@ -6,7 +6,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
 import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
@@ -64,8 +63,6 @@ const messages = defineMessages({
   promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
   demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
-  suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
-  unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
   search: { id: 'account.search', defaultMessage: 'Search from @{name}' },
   searchSelf: { id: 'account.search_self', defaultMessage: 'Search your posts' },
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -76,12 +73,9 @@ const messages = defineMessages({
   promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
   demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
   demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
-  userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
-  userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
   removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
-
 });
 
 interface IHeader {
@@ -201,22 +195,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onDeactivateUser = () => {
     dispatch(deactivateUserModal(intl, account.id));
-  };
-
-  const onSuggestUser = () => {
-    const message = intl.formatMessage(messages.userSuggested, { acct: account.acct });
-
-    dispatch(suggestUsers([account.id]))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
-
-  const onUnsuggestUser = () => {
-    const message = intl.formatMessage(messages.userUnsuggested, { acct: account.acct });
-
-    dispatch(unsuggestUsers([account.id]))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
   };
 
   const onModerate = () => {
@@ -474,22 +452,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
           action: onModerate,
           icon: require('@tabler/icons/gavel.svg'),
         });
-      }
-
-      if (features.suggestionsV2 && ownAccount.admin) {
-        if (account.getIn(['pleroma', 'is_suggested'])) {
-          menu.push({
-            text: intl.formatMessage(messages.unsuggestUser, { name: account.username }),
-            action: onUnsuggestUser,
-            icon: require('@tabler/icons/user-x.svg'),
-          });
-        } else {
-          menu.push({
-            text: intl.formatMessage(messages.suggestUser, { name: account.username }),
-            action: onSuggestUser,
-            icon: require('@tabler/icons/user-check.svg'),
-          });
-        }
       }
 
       if (account.id !== ownAccount?.id) {
