@@ -10,6 +10,7 @@ import { Button, HStack, Modal, Stack } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import { isLocal } from 'soapbox/utils/accounts';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -115,15 +116,17 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
           />
         </div>
 
-        <List>
-          <ListItem label={<FormattedMessage id='account_moderation_modal.fields.account_role' defaultMessage='Staff level' />}>
-            <SelectDropdown
-              items={roles}
-              defaultValue={accountRole}
-              onChange={handleRoleChange}
-            />
-          </ListItem>
-        </List>
+        {isLocal(account) && (
+          <List>
+            <ListItem label={<FormattedMessage id='account_moderation_modal.fields.account_role' defaultMessage='Staff level' />}>
+              <SelectDropdown
+                items={roles}
+                defaultValue={accountRole}
+                onChange={handleRoleChange}
+              />
+            </ListItem>
+          </List>
+        )}
 
         {features.adminFE && (
           <HStack justifyContent='center'>
