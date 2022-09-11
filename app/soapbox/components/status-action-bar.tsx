@@ -470,12 +470,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     if (isStaff) {
       menu.push(null);
 
+      menu.push({
+        text: intl.formatMessage(messages.adminAccount, { name: username }),
+        action: onModerate,
+        icon: require('@tabler/icons/gavel.svg'),
+      });
+
       if (isAdmin) {
-        menu.push({
-          text: intl.formatMessage(messages.adminAccount, { name: username }),
-          action: onModerate,
-          icon: require('@tabler/icons/gavel.svg'),
-        });
         menu.push({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.id}/`,

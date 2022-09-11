@@ -431,13 +431,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
     if (ownAccount?.staff) {
       menu.push(null);
 
-      if (ownAccount?.admin) {
-        menu.push({
-          text: intl.formatMessage(messages.adminAccount, { name: account.username }),
-          action: onModerate,
-          icon: require('@tabler/icons/gavel.svg'),
-        });
-      }
+      menu.push({
+        text: intl.formatMessage(messages.adminAccount, { name: account.username }),
+        action: onModerate,
+        icon: require('@tabler/icons/gavel.svg'),
+      });
     }
 
     return menu;

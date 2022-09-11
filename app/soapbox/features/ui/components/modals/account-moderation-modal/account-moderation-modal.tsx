@@ -15,7 +15,7 @@ import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { isLocal } from 'soapbox/utils/accounts';
 
@@ -44,12 +44,13 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const ownAccount = useOwnAccount();
   const features = useFeatures();
   const account = useAppSelector(state => getAccount(state, accountId));
 
   const handleClose = () => onClose('ACCOUNT_MODERATION');
 
-  if (!account) {
+  if (!account || !ownAccount) {
     return (
       <Modal onClose={handleClose}>
         <MissingIndicator />
@@ -118,7 +119,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
         </div>
 
         <List>
-          {isLocal(account) && (
+          {(ownAccount.admin && isLocal(account)) && (
             <ListItem label={<FormattedMessage id='account_moderation_modal.fields.account_role' defaultMessage='Staff level' />}>
               <div className='w-auto'>
                 <StaffRolePicker account={account} />
