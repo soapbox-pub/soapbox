@@ -1,8 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import Account from 'soapbox/components/account';
 import MissingIndicator from 'soapbox/components/missing_indicator';
-import {  Button, HStack, Modal } from 'soapbox/components/ui';
+import { Button, HStack, Modal, Stack } from 'soapbox/components/ui';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -39,13 +40,24 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
       title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
       onClose={handleClose}
     >
-      {features.adminFE && (
-        <HStack justifyContent='center'>
-          <Button icon={require('@tabler/icons/external-link.svg')} size='sm' theme='secondary' onClick={handleAdminFE}>
-            <FormattedMessage id='account_moderation_modal.admin_fe' defaultMessage='Open in AdminFE' />
-          </Button>
-        </HStack>
-      )}
+      <Stack space={4}>
+        <div className='p-4 rounded-lg border border-solid border-gray-300 dark:border-gray-800'>
+          <Account
+            account={account}
+            showProfileHoverCard={false}
+            withLinkToProfile={false}
+            hideActions
+          />
+        </div>
+
+        {features.adminFE && (
+          <HStack justifyContent='center'>
+            <Button icon={require('@tabler/icons/external-link.svg')} size='sm' theme='secondary' onClick={handleAdminFE}>
+              <FormattedMessage id='account_moderation_modal.admin_fe' defaultMessage='Open in AdminFE' />
+            </Button>
+          </HStack>
+        )}
+      </Stack>
     </Modal>
   );
 };
