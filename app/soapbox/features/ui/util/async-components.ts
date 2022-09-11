@@ -107,7 +107,7 @@ export function ReportModal() {
 }
 
 export function AccountModerationModal() {
-  return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal');
+  return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal/account-moderation-modal');
 }
 
 export function MediaGallery() {
