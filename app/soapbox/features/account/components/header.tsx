@@ -6,7 +6,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { verifyUser, unverifyUser, setDonor, removeDonor, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
+import { setDonor, removeDonor, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
 import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
@@ -60,8 +60,6 @@ const messages = defineMessages({
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
-  verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
-  unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
   setDonor: { id: 'admin.users.actions.set_donor', defaultMessage: 'Set @{name} as a donor' },
   removeDonor: { id: 'admin.users.actions.remove_donor', defaultMessage: 'Remove @{name} as a donor' },
   promoteToAdmin: { id: 'admin.users.actions.promote_to_admin', defaultMessage: 'Promote @{name} to an admin' },
@@ -76,8 +74,6 @@ const messages = defineMessages({
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
-  userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
-  userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
   setDonorSuccess: { id: 'admin.users.set_donor_message', defaultMessage: '@{acct} was set as a donor' },
   removeDonorSuccess: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
   promotedToAdmin: { id: 'admin.users.actions.promote_to_admin_message', defaultMessage: '@{acct} was promoted to an admin' },
@@ -209,22 +205,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onDeactivateUser = () => {
     dispatch(deactivateUserModal(intl, account.id));
-  };
-
-  const onVerifyUser = () => {
-    const message = intl.formatMessage(messages.userVerified, { acct: account.acct });
-
-    dispatch(verifyUser(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
-
-  const onUnverifyUser = () => {
-    const message = intl.formatMessage(messages.userUnverified, { acct: account.acct });
-
-    dispatch(unverifyUser(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
   };
 
   const onSetDonor = () => {
@@ -513,20 +493,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
           text: intl.formatMessage(messages.adminAccount, { name: account.username }),
           action: onModerate,
           icon: require('@tabler/icons/gavel.svg'),
-        });
-      }
-
-      if (account.verified) {
-        menu.push({
-          text: intl.formatMessage(messages.unverifyUser, { name: account.username }),
-          action: onUnverifyUser,
-          icon: require('@tabler/icons/check.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.verifyUser, { name: account.username }),
-          action: onVerifyUser,
-          icon: require('@tabler/icons/check.svg'),
         });
       }
 
