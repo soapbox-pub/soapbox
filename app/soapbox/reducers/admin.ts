@@ -21,10 +21,10 @@ import {
   ADMIN_USERS_APPROVE_SUCCESS,
 } from 'soapbox/actions/admin';
 import { normalizeAdminReport, normalizeAdminAccount } from 'soapbox/normalizers';
-import { APIEntity } from 'soapbox/types/entities';
 import { normalizeId } from 'soapbox/utils/normalizers';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 import type { Config } from 'soapbox/utils/config_db';
 
 const ReducerRecord = ImmutableRecord({

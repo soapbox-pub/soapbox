@@ -21,6 +21,7 @@ import { Button, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
+import EmojiPickerDropdown from '../components/emoji-picker/emoji-picker-dropdown';
 import MarkdownButton from '../components/markdown_button';
 import PollButton from '../components/poll_button';
 import PollForm from '../components/polls/poll-form';
@@ -30,7 +31,6 @@ import ScheduleButton from '../components/schedule_button';
 import SpoilerButton from '../components/spoiler_button';
 import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
-import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import ScheduleFormContainer from '../containers/schedule_form_container';

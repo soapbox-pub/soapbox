@@ -3,9 +3,9 @@ import React from 'react';
 
 import { useAppSelector } from 'soapbox/hooks';
 
-import SensitiveButton from '../components/sensitive-button';
-import UploadProgress from '../components/upload-progress';
-import UploadContainer from '../containers/upload_container';
+import SensitiveButton from './sensitive-button';
+import Upload from './upload';
+import UploadProgress from './upload-progress';
 
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
@@ -25,7 +25,7 @@ const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {
 
       <div className={classes}>
         {mediaIds.map((id: string) => (
-          <UploadContainer id={id} key={id} />
+          <Upload id={id} key={id} composeId={composeId} />
         ))}
       </div>
 

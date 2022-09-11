@@ -45,7 +45,6 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
     votesCount = <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.get('votes_count') }} />;
   }
 
-
   return (
     <Stack space={4} data-testid='poll-footer'>
       {(!showResults && poll?.multiple) && (
