@@ -13,7 +13,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
 import MissingIndicator from 'soapbox/components/missing_indicator';
-import { Button, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
+import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { isLocal } from 'soapbox/utils/accounts';
@@ -140,6 +140,14 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
             </ListItem>
           )}
         </List>
+
+        <Text theme='subtle' size='xs'>
+          <FormattedMessage
+            id='account_moderation_modal.info.id'
+            defaultMessage='ID: {id}'
+            values={{ id: account.id }}
+          />
+        </Text>
 
         {features.adminFE && (
           <HStack justifyContent='center'>
