@@ -106,6 +106,10 @@ export function ReportModal() {
   return import(/* webpackChunkName: "modals/report-modal/report-modal" */'../components/modals/report-modal/report-modal');
 }
 
+export function AccountModerationModal() {
+  return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal');
+}
+
 export function MediaGallery() {
   return import(/* webpackChunkName: "status/media_gallery" */'../../../components/media_gallery');
 }

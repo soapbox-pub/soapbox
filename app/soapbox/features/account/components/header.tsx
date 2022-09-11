@@ -59,7 +59,7 @@ const messages = defineMessages({
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
-  admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
+  adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
@@ -285,6 +285,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(unsuggestUsers([account.id]))
       .then(() => dispatch(snackbar.success(message)))
       .catch(() => {});
+  };
+
+  const onModerate = () => {
+    dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
 
   const onRemoveFromFollowers = () => {
@@ -534,9 +538,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       if (ownAccount?.admin) {
         menu.push({
-          text: intl.formatMessage(messages.admin_account, { name: account.username }),
-          to: `/pleroma/admin/#/users/${account.id}/`,
-          newTab: true,
+          text: intl.formatMessage(messages.adminAccount, { name: account.username }),
+          action: onModerate,
           icon: require('@tabler/icons/gavel.svg'),
         });
       }
