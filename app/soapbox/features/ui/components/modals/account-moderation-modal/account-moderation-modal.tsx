@@ -9,6 +9,7 @@ import {
   suggestUsers,
   unsuggestUsers,
 } from 'soapbox/actions/admin';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
@@ -93,6 +94,14 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
       .catch(() => {});
   };
 
+  const handleDeactivate = () => {
+    dispatch(deactivateUserModal(intl, account.id));
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteUserModal(intl, account.id));
+  };
+
   return (
     <Modal
       title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
@@ -139,6 +148,18 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
               />
             </ListItem>
           )}
+        </List>
+
+        <List>
+          <ListItem
+            label={<FormattedMessage id='account_moderation_modal.fields.deactivate' defaultMessage='Deactivate account' />}
+            onClick={handleDeactivate}
+          />
+
+          <ListItem
+            label={<FormattedMessage id='account_moderation_modal.fields.delete' defaultMessage='Delete account' />}
+            onClick={handleDelete}
+          />
         </List>
 
         <Text theme='subtle' size='xs'>
