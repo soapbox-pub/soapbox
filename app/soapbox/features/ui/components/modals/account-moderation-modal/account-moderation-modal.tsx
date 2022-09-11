@@ -6,6 +6,8 @@ import {
   unverifyUser,
   setDonor,
   removeDonor,
+  suggestUsers,
+  unsuggestUsers,
 } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
@@ -25,6 +27,8 @@ const messages = defineMessages({
   userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
   setDonorSuccess: { id: 'admin.users.set_donor_message', defaultMessage: '@{acct} was set as a donor' },
   removeDonorSuccess: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
+  userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
+  userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
 });
 
 interface IAccountModerationModal {
@@ -78,6 +82,17 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
       .catch(() => {});
   };
 
+  const handleSuggestedChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { checked } = e.target;
+
+    const message = checked ? messages.userSuggested : messages.userUnsuggested;
+    const action = checked ? suggestUsers : unsuggestUsers;
+
+    dispatch(action([account.id]))
+      .then(() => dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct }))))
+      .catch(() => {});
+  };
+
   return (
     <Modal
       title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
@@ -115,6 +130,15 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
               onChange={handleDonorChange}
             />
           </ListItem>
+
+          {features.suggestionsV2 && (
+            <ListItem label={<FormattedMessage id='account_moderation_modal.fields.suggested' defaultMessage='Suggested in people to follow' />}>
+              <Toggle
+                checked={account.getIn(['pleroma', 'is_suggested']) === true}
+                onChange={handleSuggestedChange}
+              />
+            </ListItem>
+          )}
         </List>
 
         {features.adminFE && (
