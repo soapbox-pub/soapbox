@@ -6,7 +6,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { verifyUser, unverifyUser, setDonor, removeDonor, promoteToAdmin, promoteToModerator, demoteToUser, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
+import { verifyUser, unverifyUser, setDonor, removeDonor, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
 import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
@@ -26,10 +26,7 @@ import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { Account } from 'soapbox/types/entities';
-import {
-  isLocal,
-  isRemote,
-} from 'soapbox/utils/accounts';
+import { isRemote } from 'soapbox/utils/accounts';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown_menu';
 
@@ -242,31 +239,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     const message = intl.formatMessage(messages.removeDonorSuccess, { acct: account.acct });
 
     dispatch(removeDonor(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
-
-  const onPromoteToAdmin = () => {
-    const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.acct });
-
-    dispatch(promoteToAdmin(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
-
-  const onPromoteToModerator = () => {
-    const messageType = account.admin ? messages.demotedToModerator : messages.promotedToModerator;
-    const message = intl.formatMessage(messageType, { acct: account.acct });
-
-    dispatch(promoteToModerator(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
-  };
-
-  const onDemoteToUser = () => {
-    const message = intl.formatMessage(messages.demotedToUser, { acct: account.acct });
-
-    dispatch(demoteToUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
       .catch(() => {});
   };
@@ -542,43 +514,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
           action: onModerate,
           icon: require('@tabler/icons/gavel.svg'),
         });
-      }
-
-      if (account.id !== ownAccount?.id && isLocal(account) && ownAccount.admin) {
-        if (account.admin) {
-          menu.push({
-            text: intl.formatMessage(messages.demoteToModerator, { name: account.username }),
-            action: onPromoteToModerator,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-          menu.push({
-            text: intl.formatMessage(messages.demoteToUser, { name: account.username }),
-            action: onDemoteToUser,
-            icon: require('@tabler/icons/arrow-down-circle.svg'),
-          });
-        } else if (account.moderator) {
-          menu.push({
-            text: intl.formatMessage(messages.promoteToAdmin, { name: account.username }),
-            action: onPromoteToAdmin,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-          menu.push({
-            text: intl.formatMessage(messages.demoteToUser, { name: account.username }),
-            action: onDemoteToUser,
-            icon: require('@tabler/icons/arrow-down-circle.svg'),
-          });
-        } else {
-          menu.push({
-            text: intl.formatMessage(messages.promoteToAdmin, { name: account.username }),
-            action: onPromoteToAdmin,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-          menu.push({
-            text: intl.formatMessage(messages.promoteToModerator, { name: account.username }),
-            action: onPromoteToModerator,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-        }
       }
 
       if (account.verified) {
