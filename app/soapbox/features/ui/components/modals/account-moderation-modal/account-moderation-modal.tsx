@@ -1,17 +1,24 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { ChangeEventHandler } from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { unverifyUser, verifyUser } from 'soapbox/actions/admin';
+import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
 import MissingIndicator from 'soapbox/components/missing_indicator';
-import { Button, HStack, Modal, Stack } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { Button, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { isLocal } from 'soapbox/utils/accounts';
 
 import StaffRolePicker from './staff-role-picker';
 
 const getAccount = makeGetAccount();
+
+const messages = defineMessages({
+  userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
+  userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
+});
 
 interface IAccountModerationModal {
   /** Action to close the modal. */
@@ -22,6 +29,9 @@ interface IAccountModerationModal {
 
 /** Moderator actions against accounts. */
 const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, accountId }) => {
+  const intl = useIntl();
+  const dispatch = useAppDispatch();
+
   const features = useFeatures();
   const account = useAppSelector(state => getAccount(state, accountId));
 
@@ -39,6 +49,17 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     window.open(`/pleroma/admin/#/users/${account.id}/`, '_blank');
   };
 
+  const handleVerifiedChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { checked } = e.target;
+
+    const message = checked ? messages.userVerified : messages.userUnverified;
+    const action = checked ? verifyUser : unverifyUser;
+
+    dispatch(action(account.id))
+      .then(() => dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct }))))
+      .catch(() => {});
+  };
+
   return (
     <Modal
       title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
@@ -54,15 +75,22 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
           />
         </div>
 
-        {isLocal(account) && (
-          <List>
+        <List>
+          {isLocal(account) && (
             <ListItem label={<FormattedMessage id='account_moderation_modal.fields.account_role' defaultMessage='Staff level' />}>
               <div className='w-auto'>
                 <StaffRolePicker account={account} />
               </div>
             </ListItem>
-          </List>
-        )}
+          )}
+
+          <ListItem label={<FormattedMessage id='account_moderation_modal.fields.verified' defaultMessage='Verified account' />}>
+            <Toggle
+              checked={account.verified}
+              onChange={handleVerifiedChange}
+            />
+          </ListItem>
+        </List>
 
         {features.adminFE && (
           <HStack justifyContent='center'>
