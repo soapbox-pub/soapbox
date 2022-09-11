@@ -1,7 +1,12 @@
 import React, { ChangeEventHandler } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { unverifyUser, verifyUser } from 'soapbox/actions/admin';
+import {
+  verifyUser,
+  unverifyUser,
+  setDonor,
+  removeDonor,
+} from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
@@ -18,6 +23,8 @@ const getAccount = makeGetAccount();
 const messages = defineMessages({
   userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
   userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
+  setDonorSuccess: { id: 'admin.users.set_donor_message', defaultMessage: '@{acct} was set as a donor' },
+  removeDonorSuccess: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
 });
 
 interface IAccountModerationModal {
@@ -60,6 +67,17 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
       .catch(() => {});
   };
 
+  const handleDonorChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { checked } = e.target;
+
+    const message = checked ? messages.setDonorSuccess : messages.removeDonorSuccess;
+    const action = checked ? setDonor : removeDonor;
+
+    dispatch(action(account.id))
+      .then(() => dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct }))))
+      .catch(() => {});
+  };
+
   return (
     <Modal
       title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
@@ -88,6 +106,13 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
             <Toggle
               checked={account.verified}
               onChange={handleVerifiedChange}
+            />
+          </ListItem>
+
+          <ListItem label={<FormattedMessage id='account_moderation_modal.fields.donor' defaultMessage='Donor' />}>
+            <Toggle
+              checked={account.donor}
+              onChange={handleDonorChange}
             />
           </ListItem>
         </List>
