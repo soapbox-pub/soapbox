@@ -1,14 +1,10 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import MissingIndicator from 'soapbox/components/missing_indicator';
-import {  Modal } from 'soapbox/components/ui';
+import {  Button, HStack, Modal } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-
-const messages = defineMessages({
-  title: { id: 'account_moderation_modal.title', defaultMessage: 'Moderate @{acct}' },
-});
 
 const getAccount = makeGetAccount();
 
@@ -21,7 +17,6 @@ interface IAccountModerationModal {
 
 /** Moderator actions against accounts. */
 const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, accountId }) => {
-  const intl = useIntl();
   const account = useAppSelector(state => getAccount(state, accountId));
 
   const handleClose = () => onClose('ACCOUNT_MODERATION');
@@ -34,12 +29,20 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     );
   }
 
+  const handleAdminFE = () => {
+    window.open(`/pleroma/admin/#/users/${account.id}/`, '_blank');
+  };
+
   return (
     <Modal
-      title={intl.formatMessage(messages.title, { acct: account.acct })}
+      title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
       onClose={handleClose}
     >
-      <div>TODO</div>
+      <HStack justifyContent='center'>
+        <Button icon={require('@tabler/icons/external-link.svg')} size='sm' theme='secondary' onClick={handleAdminFE}>
+          <FormattedMessage id='account_moderation_modal.admin_fe' defaultMessage='Open in AdminFE' />
+        </Button>
+      </HStack>
     </Modal>
   );
 };
