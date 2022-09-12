@@ -9,7 +9,7 @@ import { Stack } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
 import { useChats } from 'soapbox/queries/chats';
 
-import Chat from './chat';
+import ChatListItem from './chat-list-item';
 import Blankslate from './chat-pane/blankslate';
 
 interface IChatList {
@@ -66,7 +66,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
             useWindowScroll={useWindowScroll}
             data={chats}
             endReached={handleLoadMore}
-            itemContent={(_index, chat) => <Chat chat={chat} onClick={onClickChat} />}
+            itemContent={(_index, chat) => <ChatListItem chat={chat} onClick={onClickChat} />}
             components={{
               ScrollSeekPlaceholder: () => <PlaceholderChat />,
               // Footer: () => hasNextPage ? <Spinner withText={false} /> : null,

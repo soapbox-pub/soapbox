@@ -3,7 +3,7 @@ import React from 'react';
 import { IChat } from 'soapbox/queries/chats';
 
 import { render, screen } from '../../../../jest/test-helpers';
-import Chat from '../chat';
+import ChatListItem from '../chat-list-item';
 
 const chat: any = {
   id: '1',
@@ -28,9 +28,9 @@ const chat: any = {
   },
 };
 
-describe('<Chat />', () => {
+describe('<ChatListItem />', () => {
   it('renders correctly', () => {
-    render(<Chat chat={chat as IChat} onClick={jest.fn()} />);
+    render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
 
     expect(screen.getByTestId('chat')).toBeInTheDocument();
     expect(screen.getByTestId('chat')).toHaveTextContent(chat.account.display_name);
@@ -38,28 +38,28 @@ describe('<Chat />', () => {
 
   describe('last message content', () => {
     it('renders the last message', () => {
-      render(<Chat chat={chat as IChat} onClick={jest.fn()} />);
+      render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
 
       expect(screen.getByTestId('chat-last-message')).toBeInTheDocument();
     });
 
     it('does not render the last message', () => {
       const changedChat = { ...chat, last_message: null };
-      render(<Chat chat={changedChat as IChat} onClick={jest.fn()} />);
+      render(<ChatListItem chat={changedChat as IChat} onClick={jest.fn()} />);
 
       expect(screen.queryAllByTestId('chat-last-message')).toHaveLength(0);
     });
 
     describe('unread', () => {
       it('renders the unread dot', () => {
-        render(<Chat chat={chat as IChat} onClick={jest.fn()} />);
+        render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
 
         expect(screen.getByTestId('chat-unread-indicator')).toBeInTheDocument();
       });
 
       it('does not render the unread dot', () => {
         const changedChat = { ...chat, last_message: { ...chat.last_message, unread: false } };
-        render(<Chat chat={changedChat as IChat} onClick={jest.fn()} />);
+        render(<ChatListItem chat={changedChat as IChat} onClick={jest.fn()} />);
 
         expect(screen.queryAllByTestId('chat-unread-indicator')).toHaveLength(0);
       });

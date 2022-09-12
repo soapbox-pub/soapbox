@@ -9,8 +9,8 @@ import AccountSearch from 'soapbox/components/account_search';
 import { Card, CardTitle, Stack } from '../../components/ui';
 
 import Chat from './components/chat';
-import ChatBox from './components/chat-box';
 import ChatList from './components/chat-list';
+import ChatListItem from './components/chat-list-item';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Messages' },
@@ -55,9 +55,9 @@ const ChatIndex: React.FC = () => {
         <Stack className='col-span-6 h-full overflow-hidden'>
           {chat && (
             <Stack className='h-full overflow-hidden'>
-              <Chat chat={chat} onClick={() => { }} />
+              <ChatListItem chat={chat} onClick={() => { }} />
               <div className='h-full overflow-hidden'>
-                <ChatBox className='h-full overflow-hidden' chat={chat} />
+                <Chat className='h-full overflow-hidden' chat={chat} />
               </div>
             </Stack>
           )}
