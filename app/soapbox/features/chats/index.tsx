@@ -51,9 +51,9 @@ const ChatIndex: React.FC = () => {
         <Stack className='col-span-6 h-full overflow-hidden'>
           {chat && (
             <Stack className='h-full overflow-hidden'>
-              <Chat chat={chat} onClick={() => {}} />
+              <Chat chat={chat} onClick={() => { }} />
               <div className='h-full overflow-hidden'>
-                <ChatBox className='h-full overflow-hidden' chat={chat} onSetInputRef={() => {}} />
+                <ChatBox className='h-full overflow-hidden' chat={chat} />
               </div>
             </Stack>
           )}
