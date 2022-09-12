@@ -422,13 +422,11 @@ const untagUsers = (accountIds: string[], tags: string[]) =>
 
 /** Synchronizes user tags to the backend. */
 const setTags = (accountId: string, oldTags: string[], newTags: string[]) =>
-  (dispatch: AppDispatch) => {
+  async(dispatch: AppDispatch) => {
     const diff = getTagDiff(oldTags, newTags);
 
-    return Promise.all([
-      dispatch(tagUsers([accountId], diff.added)),
-      dispatch(untagUsers([accountId], diff.removed)),
-    ]);
+    await dispatch(tagUsers([accountId], diff.added));
+    await dispatch(untagUsers([accountId], diff.removed));
   };
 
 /** Synchronizes badges to the backend. */
