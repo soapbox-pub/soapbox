@@ -404,6 +404,12 @@ const tagUsers = (accountIds: string[], tags: string[]) =>
 const untagUsers = (accountIds: string[], tags: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
+
+    // Legacy: allow removing legacy 'donor' tags.
+    if (tags.includes('badge:donor')) {
+      tags = [...tags, 'donor'];
+    }
+
     dispatch({ type: ADMIN_USERS_UNTAG_REQUEST, accountIds, tags });
     return api(getState)
       .delete('/api/v1/pleroma/admin/users/tag', { data: { nicknames, tags } })
