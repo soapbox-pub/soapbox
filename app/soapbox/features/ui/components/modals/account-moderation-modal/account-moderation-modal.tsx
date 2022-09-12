@@ -4,8 +4,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import {
   verifyUser,
   unverifyUser,
-  setDonor,
-  removeDonor,
   suggestUsers,
   unsuggestUsers,
   setBadges as saveBadges,
@@ -80,17 +78,6 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
       .catch(() => {});
   };
 
-  const handleDonorChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { checked } = e.target;
-
-    const message = checked ? messages.setDonorSuccess : messages.removeDonorSuccess;
-    const action = checked ? setDonor : removeDonor;
-
-    dispatch(action(account.id))
-      .then(() => dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct }))))
-      .catch(() => {});
-  };
-
   const handleSuggestedChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { checked } = e.target;
 
@@ -144,13 +131,6 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
             <Toggle
               checked={account.verified}
               onChange={handleVerifiedChange}
-            />
-          </ListItem>
-
-          <ListItem label={<FormattedMessage id='account_moderation_modal.fields.donor' defaultMessage='Donor' />}>
-            <Toggle
-              checked={account.donor}
-              onChange={handleDonorChange}
             />
           </ListItem>
 

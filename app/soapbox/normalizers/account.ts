@@ -56,7 +56,6 @@ export const AccountRecord = ImmutableRecord({
   admin: false,
   display_name_html: '',
   domain: '',
-  donor: false,
   moderator: false,
   note_emojified: '',
   note_plain: '',
@@ -155,9 +154,11 @@ const normalizeVerified = (account: ImmutableMap<string, any>) => {
   });
 };
 
-/** Get donor status from tags. */
+/** Upgrade legacy donor tag to a badge. */
 const normalizeDonor = (account: ImmutableMap<string, any>) => {
-  return account.set('donor', getTags(account).includes('donor'));
+  const tags = getTags(account);
+  const updated = tags.includes('donor') ? tags.push('badge:donor') : tags;
+  return account.setIn(['pleroma', 'tags'], updated);
 };
 
 /** Normalize Fedibird/Truth Social/Pleroma location */

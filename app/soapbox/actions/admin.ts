@@ -442,14 +442,6 @@ const unverifyUser = (accountId: string) =>
   (dispatch: AppDispatch) =>
     dispatch(untagUsers([accountId], ['verified']));
 
-const setDonor = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(tagUsers([accountId], ['donor']));
-
-const removeDonor = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(untagUsers([accountId], ['donor']));
-
 const addPermission = (accountIds: string[], permissionGroup: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
@@ -604,8 +596,6 @@ export {
   setBadges,
   verifyUser,
   unverifyUser,
-  setDonor,
-  removeDonor,
   addPermission,
   removePermission,
   promoteToAdmin,
