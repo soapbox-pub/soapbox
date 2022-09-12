@@ -1,5 +1,6 @@
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
@@ -413,6 +414,26 @@ const untagUsers = (accountIds: string[], tags: string[]) =>
       });
   };
 
+/** Synchronizes user tags to the backend. */
+const setTags = (accountId: string, oldTags: string[], newTags: string[]) =>
+  (dispatch: AppDispatch) => {
+    const diff = getTagDiff(oldTags, newTags);
+
+    return Promise.all([
+      dispatch(tagUsers([accountId], diff.added)),
+      dispatch(untagUsers([accountId], diff.removed)),
+    ]);
+  };
+
+/** Synchronizes badges to the backend. */
+const setBadges = (accountId: string, oldTags: string[], newTags: string[]) =>
+  (dispatch: AppDispatch) => {
+    const oldBadges = filterBadges(oldTags);
+    const newBadges = filterBadges(newTags);
+
+    return dispatch(setTags(accountId, oldBadges, newBadges));
+  };
+
 const verifyUser = (accountId: string) =>
   (dispatch: AppDispatch) =>
     dispatch(tagUsers([accountId], ['verified']));
@@ -579,6 +600,8 @@ export {
   fetchModerationLog,
   tagUsers,
   untagUsers,
+  setTags,
+  setBadges,
   verifyUser,
   unverifyUser,
   setDonor,

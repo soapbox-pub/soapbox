@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -8,6 +8,7 @@ import {
   removeDonor,
   suggestUsers,
   unsuggestUsers,
+  setBadges as saveBadges,
 } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
@@ -18,7 +19,9 @@ import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/u
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { isLocal } from 'soapbox/utils/accounts';
+import { getBadges } from 'soapbox/utils/badges';
 
+import BadgeInput from './badge-input';
 import StaffRolePicker from './staff-role-picker';
 
 const getAccount = makeGetAccount();
@@ -30,6 +33,7 @@ const messages = defineMessages({
   removeDonorSuccess: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
   userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
   userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
+  badgesSaved: { id: 'admin.users.badges_saved_message', defaultMessage: 'Custom badges updated.' },
 });
 
 interface IAccountModerationModal {
@@ -47,6 +51,9 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
   const ownAccount = useOwnAccount();
   const features = useFeatures();
   const account = useAppSelector(state => getAccount(state, accountId));
+
+  const accountBadges = account ? getBadges(account) : [];
+  const [badges, setBadges] = useState<string[]>(accountBadges);
 
   const handleClose = () => onClose('ACCOUNT_MODERATION');
 
@@ -103,6 +110,12 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     dispatch(deleteUserModal(intl, account.id));
   };
 
+  const handleSaveBadges = () => {
+    dispatch(saveBadges(account.id, accountBadges, badges))
+      .then(() => dispatch(snackbar.success(intl.formatMessage(messages.badgesSaved))))
+      .catch(() => {});
+  };
+
   return (
     <Modal
       title={<FormattedMessage id='account_moderation_modal.title' defaultMessage='Moderate @{acct}' values={{ acct: account.acct }} />}
@@ -149,6 +162,17 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
               />
             </ListItem>
           )}
+
+          <ListItem label={<FormattedMessage id='account_moderation_modal.fields.badges' defaultMessage='Custom badges' />}>
+            <div className='flex-grow'>
+              <HStack className='w-full' alignItems='center' space={2}>
+                <BadgeInput badges={badges} onChange={setBadges} />
+                <Button onClick={handleSaveBadges}>
+                  <FormattedMessage id='save' defaultMessage='Save' />
+                </Button>
+              </HStack>
+            </div>
+          </ListItem>
         </List>
 
         <List>

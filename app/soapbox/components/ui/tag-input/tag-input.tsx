@@ -43,7 +43,7 @@ const TagInput: React.FC<ITagInput> = ({ tags, onChange, placeholder }) => {
   };
 
   return (
-    <div className='mt-1 relative shadow-sm'>
+    <div className='mt-1 relative shadow-sm flex-grow'>
       <HStack
         className='p-2 pb-0 text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800'
         space={2}
@@ -56,7 +56,7 @@ const TagInput: React.FC<ITagInput> = ({ tags, onChange, placeholder }) => {
         ))}
 
         <input
-          className='p-1 mb-2 h-8 flex-grow bg-transparent outline-none'
+          className='p-1 mb-2 w-32 h-8 flex-grow bg-transparent outline-none'
           value={input}
           placeholder={placeholder}
           onChange={e => setInput(e.target.value)}
