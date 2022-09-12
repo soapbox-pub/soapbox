@@ -112,3 +112,20 @@ noscript {
 div[data-viewport-type="window"] {
   position: static !important;
 }
+
+// Instance HTML from the API.
+.instance-description {
+  a {
+    @apply underline;
+  }
+
+  b,
+  strong {
+    @apply font-bold;
+  }
+
+  i,
+  em {
+    @apply italic;
+  }
+}
