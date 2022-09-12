@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import classNames from 'clsx';
 import React, { MutableRefObject, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
@@ -6,7 +7,7 @@ import { uploadMedia } from 'soapbox/actions/media';
 import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
-import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { IChat, useChat } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { truncateFilename } from 'soapbox/utils/media';
@@ -23,14 +24,15 @@ const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 interface IChatBox {
   chat: IChat,
   autosize?: boolean,
-  inputRef?: MutableRefObject<HTMLTextAreaElement>
+  inputRef?: MutableRefObject<HTMLTextAreaElement>,
+  className?: string,
 }
 
 /**
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
-const ChatBox: React.FC<IChatBox> = ({ chat, autosize, inputRef }) => {
+const ChatBox: React.FC<IChatBox> = ({ chat, autosize, inputRef, className }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useOwnAccount();
@@ -48,7 +50,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, autosize, inputRef }) => {
 
   const submitMessage = useMutation(({ chatId, content }: any) => createChatMessage(chatId, content), {
     retry: false,
-    onMutate: async(newMessage: any) => {
+    onMutate: async (newMessage: any) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries(['chats', 'messages', chat.id]);
 
@@ -206,7 +208,7 @@ const ChatBox: React.FC<IChatBox> = ({ chat, autosize, inputRef }) => {
   };
 
   return (
-    <Stack className='overflow-hidden flex flex-grow' onMouseOver={handleMouseOver}>
+    <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
       <div className='flex-grow h-full overflow-hidden flex justify-center'>
         <ChatMessageList chat={chat} autosize />
       </div>

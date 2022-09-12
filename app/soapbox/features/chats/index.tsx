@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { launchChat } from 'soapbox/actions/chats';
 import AccountSearch from 'soapbox/components/account_search';
-import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 
-import { Column } from '../../components/ui';
+import { Card, CardTitle, Stack } from '../../components/ui';
 
+import Chat from './components/chat';
+import ChatBox from './components/chat-box';
 import ChatList from './components/chat-list';
 
 const messages = defineMessages({
-  title: { id: 'column.chats', defaultMessage: 'Chats' },
+  title: { id: 'column.chats', defaultMessage: 'Messages' },
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
 });
 
@@ -21,30 +22,44 @@ const ChatIndex: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [chat, setChat] = useState<any>(null);
+
   const handleSuggestion = (accountId: string) => {
     dispatch(launchChat(accountId, history, true));
   };
 
-  const handleClickChat = (chat: { id: string }) => {
-    history.push(`/chats/${chat.id}`);
+  const handleClickChat = (chat: any) => {
+    // history.push(`/chats/${chat.id}`);
+    setChat(chat);
   };
 
   return (
-    <Column label={intl.formatMessage(messages.title)}>
-      <div className='column__switch'>
-        <AudioToggle />
+    <Card className='p-0 h-[calc(100vh-176px)] overflow-hidden' variant='rounded'>
+      <div className='grid grid-cols-9 overflow-hidden h-full'>
+        <Stack className='col-span-3 p-6 bg-gradient-to-r from-white to-gray-100 overflow-hidden' space={6}>
+          <CardTitle title={intl.formatMessage(messages.title)} />
+
+          <AccountSearch
+            placeholder={intl.formatMessage(messages.searchPlaceholder)}
+            onSelected={handleSuggestion}
+          />
+
+          <Stack className='-mx-3 flex-grow h-full'>
+            <ChatList onClickChat={handleClickChat} />
+          </Stack>
+        </Stack>
+        <Stack className='col-span-6 h-full overflow-hidden'>
+          {chat && (
+            <Stack className='h-full overflow-hidden'>
+              <Chat chat={chat} onClick={() => {}} />
+              <div className='h-full overflow-hidden'>
+                <ChatBox className='h-full overflow-hidden' chat={chat} onSetInputRef={() => {}} />
+              </div>
+            </Stack>
+          )}
+        </Stack>
       </div>
-
-      <AccountSearch
-        placeholder={intl.formatMessage(messages.searchPlaceholder)}
-        onSelected={handleSuggestion}
-      />
-
-      <ChatList
-        onClickChat={handleClickChat}
-        useWindowScroll
-      />
-    </Column>
+    </Card>
   );
 };
 

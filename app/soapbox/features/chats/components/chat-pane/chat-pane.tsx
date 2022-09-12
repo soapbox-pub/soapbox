@@ -84,7 +84,7 @@ const ChatPane = () => {
             <ChatList
               searchValue={debouncedValue}
               onClickChat={handleClickChat}
-              useWindowScroll={false}
+              fade
             />
           ) : (
             <Text>no results</Text>

@@ -21,12 +21,12 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
       data-testid='chat'
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>
-        <HStack alignItems='center' space={2}>
-          <Avatar src={chat.account?.avatar} size={40} />
+        <HStack alignItems='center' space={2} className='overflow-hidden'>
+          <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
 
-          <Stack alignItems='start'>
-            <div className='flex items-center space-x-1 flex-grow'>
-              <Text weight='bold' size='sm' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
+          <Stack alignItems='start' className='overflow-hidden'>
+            <div className='flex items-center space-x-1 flex-grow w-full'>
+              <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
               {chat.account?.verified && <VerificationBadge />}
             </div>
 
@@ -37,7 +37,7 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
                 weight='medium'
                 theme='muted'
                 truncate
-                className='max-w-[200px]'
+                className='w-full'
                 data-testid='chat-last-message'
                 dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
               />
@@ -54,7 +54,12 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
               />
             )}
 
-            <RelativeTimestamp timestamp={chat.last_message.created_at} size='sm' />
+            <RelativeTimestamp
+              timestamp={chat.last_message.created_at}
+              align='right'
+              size='xs'
+              truncate
+            />
           </HStack>
         )}
       </HStack>

@@ -15,10 +15,11 @@ import Blankslate from './chat-pane/blankslate';
 interface IChatList {
   onClickChat: (chat: any) => void,
   useWindowScroll?: boolean,
+  fade?: boolean,
   searchValue?: string
 }
 
-const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, searchValue }) => {
+const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, searchValue, fade }) => {
   const dispatch = useDispatch();
 
   const chatListRef = useRef(null);
@@ -75,18 +76,22 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
         )}
       </PullToRefresh>
 
-      <div
-        className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
-          'opacity-0': isNearTop,
-          'opacity-100': !isNearTop,
-        })}
-      />
-      <div
-        className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
-          'opacity-0': isNearBottom,
-          'opacity-100': !isNearBottom,
-        })}
-      />
+      {fade && (
+        <>
+          <div
+            className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              'opacity-0': isNearTop,
+              'opacity-100': !isNearTop,
+            })}
+          />
+          <div
+            className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              'opacity-0': isNearBottom,
+              'opacity-100': !isNearBottom,
+            })}
+          />
+        </>
+      )}
     </div>
   );
 };
