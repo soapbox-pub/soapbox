@@ -38,10 +38,18 @@ const Favourites: React.FC<IFavourites> = (props) => {
   const isLoading = useAppSelector(state => state.status_lists.get(timelineKey)?.isLoading === true);
   const hasMore = useAppSelector(state => !!state.status_lists.get(timelineKey)?.next);
 
-  const unavailable = useAppSelector(state => {
+  const isUnavailable = useAppSelector(state => {
     const blockedBy = state.relationships.getIn([account?.id, 'blocked_by']) === true;
     return isOwnAccount ? false : (blockedBy && !features.blockersVisible);
   });
+
+  const handleLoadMore = useCallback(debounce(() => {
+    if (isOwnAccount) {
+      dispatch(expandFavouritedStatuses());
+    } else if (account) {
+      dispatch(expandAccountFavouritedStatuses(account.id));
+    }
+  }, 300, { leading: true }), [account?.id]);
 
   useEffect(() => {
     if (isOwnAccount)
@@ -63,15 +71,7 @@ const Favourites: React.FC<IFavourites> = (props) => {
     }
   }, [account?.id]);
 
-  const handleLoadMore = useCallback(debounce(() => {
-    if (isOwnAccount) {
-      dispatch(expandFavouritedStatuses());
-    } else if (account) {
-      dispatch(expandAccountFavouritedStatuses(account.id));
-    }
-  }, 300, { leading: true }), [account?.id]);
-
-  if (unavailable) {
+  if (isUnavailable) {
     return (
       <Column>
         <div className='empty-column-indicator'>
