@@ -74,6 +74,7 @@ const messages = defineMessages({
   suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
   unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
   search: { id: 'account.search', defaultMessage: 'Search from @{name}' },
+  searchSelf: { id: 'account.search_self', defaultMessage: 'Search your posts' },
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
@@ -378,6 +379,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         to: '/settings',
         icon: require('@tabler/icons/settings.svg'),
       });
+      if (features.searchFromAccount) {
+        menu.push({
+          text: intl.formatMessage(messages.searchSelf, { name: account.username }),
+          action: onSearch,
+          icon: require('@tabler/icons/search.svg'),
+        });
+      }
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.mutes),

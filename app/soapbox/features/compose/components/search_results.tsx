@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { clearSearch, expandSearch, setFilter } from 'soapbox/actions/search';
+import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';
 import Hashtag from 'soapbox/components/hashtag';
 import IconButton from 'soapbox/components/icon_button';
@@ -43,7 +43,7 @@ const SearchResults = () => {
 
   const handleLoadMore = () => dispatch(expandSearch(selectedFilter));
 
-  const handleClearSearch = () => dispatch(clearSearch());
+  const handleUnsetAccount = () => dispatch(setSearchAccount(null));
 
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
@@ -196,7 +196,7 @@ const SearchResults = () => {
     <>
       {filterByAccount ? (
         <HStack className='mb-4 pb-4 px-2 border-solid border-b border-gray-200 dark:border-gray-800' space={2}>
-          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleClearSearch} />
+          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleUnsetAccount} />
           <Text>
             <FormattedMessage
               id='search_results.filter_message'
