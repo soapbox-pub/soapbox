@@ -21,6 +21,7 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
     secondaryActionIcon,
     title,
     unreadCount,
+    ...rest
   } = props;
 
   const ButtonComp = isToggleable ? 'button' : 'div';
@@ -30,9 +31,10 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
   }
 
   return (
-    <HStack alignItems='center' justifyContent='between' className='rounded-t-xl h-16 py-3 px-4'>
+    <HStack {...rest} alignItems='center' justifyContent='between' className='rounded-t-xl h-16 py-3 px-4'>
       <ButtonComp
         className='flex-grow flex items-center flex-row space-x-1 h-16'
+        data-testid='title'
         {...buttonProps}
       >
         {typeof title === 'string' ? (
@@ -43,7 +45,7 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
 
         {(typeof unreadCount !== 'undefined' && unreadCount > 0) && (
           <HStack alignItems='center' space={2}>
-            <Text weight='semibold'>
+            <Text weight='semibold' data-testid='unread-count'>
               ({unreadCount})
             </Text>
 

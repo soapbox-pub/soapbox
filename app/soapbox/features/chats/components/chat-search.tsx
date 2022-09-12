@@ -50,6 +50,7 @@ const ChatSearch = () => {
   return (
     <Pane isOpen={isOpen} index={0} main>
       <ChatPaneHeader
+        data-testid='pane-header'
         title={
           <HStack alignItems='center' space={2}>
             <button onClick={() => setSearching(false)}>
@@ -71,6 +72,7 @@ const ChatSearch = () => {
         <Stack space={4} className='flex-grow h-full'>
           <div className='px-4'>
             <Input
+              data-testid='search'
               type='text'
               autoFocus
               placeholder='Type a name'
@@ -100,6 +102,7 @@ const ChatSearch = () => {
                   handleClickOnSearchResult.mutate(account.id);
                   clearValue();
                 }}
+                data-testid='account'
               >
                 <HStack alignItems='center' space={2}>
                   <Avatar src={account.avatar} size={40} />

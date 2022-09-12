@@ -37,6 +37,7 @@ const ChatMessageListIntro = () => {
 
   return (
     <Stack
+      data-testid='chat-message-list-intro'
       justifyContent='center'
       alignItems='center'
       space={4}

@@ -13,6 +13,7 @@ const PlaceholderChatMessage = ({ isMyMessage = false }: { isMyMessage?: boolean
 
   return (
     <Stack
+      data-testid='placeholder-chat-message'
       space={1}
       className={classNames({
         'max-w-[85%] animate-pulse': true,

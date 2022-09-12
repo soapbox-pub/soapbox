@@ -3,7 +3,7 @@ import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import escape from 'lodash/escape';
 import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
@@ -81,7 +81,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const formattedChatMessages = chatMessages || [];
 
   const me = useAppSelector((state) => state.me);
-  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account, 'blocked_by']));
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
 
   const node = useRef<HTMLDivElement>(null);
   const messagesEnd = useRef<HTMLDivElement>(null);
@@ -240,7 +240,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     }
 
     return (
-      <div key={chatMessage.id} className='group'>
+      <div key={chatMessage.id} className='group' data-testid='chat-message'>
         <Stack
           space={1}
           className={classNames({
@@ -293,7 +293,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               >
                 {maybeRenderMedia(chatMessage)}
                 <Text size='sm' theme='inherit' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
-                <div className='chat-message__menu'>
+                <div className='chat-message__menu' data-testid='chat-message-menu'>
                   <DropdownMenuContainer
                     items={menu}
                     src={require('@tabler/icons/dots.svg')}
@@ -395,7 +395,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     return (
       <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
         <Stack alignItems='center' space={2}>
-          <Avatar src={chat.account.avatar_static} size={75} />
+          <Avatar src={chat.account.avatar} size={75} />
           <Text align='center'>
             <>
               <Text tag='span'>You are blocked by</Text>

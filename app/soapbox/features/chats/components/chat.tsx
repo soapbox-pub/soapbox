@@ -18,6 +18,7 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
       type='button'
       onClick={() => onClick(chat)}
       className='px-4 py-2 w-full flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
+      data-testid='chat'
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>
         <HStack alignItems='center' space={2}>
@@ -30,9 +31,16 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
             </div>
 
             {chat.last_message?.content && (
-              <Text align='left' size='sm' weight='medium' theme='muted' truncate className='max-w-[200px]'>
-                {chat.last_message?.content}
-              </Text>
+              <Text
+                align='left'
+                size='sm'
+                weight='medium'
+                theme='muted'
+                truncate
+                className='max-w-[200px]'
+                data-testid='chat-last-message'
+                dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
+              />
             )}
           </Stack>
         </HStack>
@@ -40,7 +48,10 @@ const Chat: React.FC<IChatInterface> = ({ chat, onClick }) => {
         {chat.last_message && (
           <HStack alignItems='center' space={2}>
             {chat.last_message.unread && (
-              <div className='w-2 h-2 rounded-full bg-secondary-500' />
+              <div
+                className='w-2 h-2 rounded-full bg-secondary-500'
+                data-testid='chat-unread-indicator'
+              />
             )}
 
             <RelativeTimestamp timestamp={chat.last_message.created_at} size='sm' />
