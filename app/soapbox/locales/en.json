@@ -974,7 +974,7 @@
   "soapbox_config.single_user_mode_profile_label": "Main user handle",
   "soapbox_config.verified_can_edit_name_label": "Allow verified users to edit their own display name.",
   "status.actions.more": "More",
-  "status.admin_account": "Open moderation interface for @{name}",
+  "status.admin_account": "Moderate @{name}",
   "status.admin_status": "Open this post in the moderation interface",
   "status.block": "Block @{name}",
   "status.bookmark": "Bookmark",

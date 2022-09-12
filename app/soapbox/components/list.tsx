@@ -34,7 +34,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
           id: domId,
           className: classNames({
             'w-auto': isSelect,
-          }),
+          }, child.props.className),
         });
       }
 
