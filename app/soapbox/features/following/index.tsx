@@ -44,10 +44,16 @@ const Following: React.FC<IFollowing> = (props) => {
   const accountIds = useAppSelector(state => state.user_lists.following.get(account!?.id)?.items || ImmutableOrderedSet<string>());
   const hasMore = useAppSelector(state => !!state.user_lists.following.get(account!?.id)?.next);
 
-  const unavailable = useAppSelector(state => {
+  const isUnavailable = useAppSelector(state => {
     const blockedBy = state.relationships.getIn([account?.id, 'blocked_by']) === true;
     return isOwnAccount ? false : (blockedBy && !features.blockersVisible);
   });
+
+  const handleLoadMore = useCallback(debounce(() => {
+    if (account) {
+      dispatch(expandFollowing(account.id));
+    }
+  }, 300, { leading: true }), [account?.id]);
 
   useEffect(() => {
     let promises = [];
@@ -69,12 +75,6 @@ const Following: React.FC<IFollowing> = (props) => {
 
   }, [account?.id, username]);
 
-  const handleLoadMore = useCallback(debounce(() => {
-    if (account) {
-      dispatch(expandFollowing(account.id));
-    }
-  }, 300, { leading: true }), [account?.id]);
-
   if (loading && accountIds.isEmpty()) {
     return (
       <Spinner />
@@ -87,7 +87,7 @@ const Following: React.FC<IFollowing> = (props) => {
     );
   }
 
-  if (unavailable) {
+  if (isUnavailable) {
     return (
       <div className='empty-column-indicator'>
         <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
