@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
@@ -14,8 +14,6 @@ const messages = defineMessages({
   add: { id: 'reply_mentions.account.add', defaultMessage: 'Add to mentions' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IAccount {
   accountId: string,
   author: boolean,
@@ -24,6 +22,7 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ accountId, author }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, accountId));
   const added = useAppSelector((state) => !!account && state.compose.to?.includes(account.acct));

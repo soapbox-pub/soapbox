@@ -68,8 +68,6 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
 });
 
-const getStatus = makeGetStatus();
-
 const getAncestorsIds = createSelector([
   (_: RootState, statusId: string | undefined) => statusId,
   (state: RootState) => state.contexts.inReplyTos,
@@ -131,6 +129,7 @@ const Thread: React.FC<IThread> = (props) => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
+  const getStatus = useCallback(makeGetStatus(), []);
 
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
