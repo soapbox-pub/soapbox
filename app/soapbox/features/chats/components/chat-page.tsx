@@ -100,7 +100,7 @@ const ChatPage = () => {
                   <Stack alignItems='start' className='overflow-hidden'>
                     <div className='flex items-center space-x-1 flex-grow w-full'>
                       <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
-                      {!chat.account?.verified && <VerificationBadge />}
+                      {chat.account?.verified && <VerificationBadge />}
                     </div>
 
                     <Text
