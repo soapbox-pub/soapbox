@@ -2136,11 +2136,11 @@
     "descriptors": [
       {
         "defaultMessage": "Send a message…",
-        "id": "chat_box.input.placeholder"
+        "id": "chat.input.placeholder"
       },
       {
         "defaultMessage": "Send",
-        "id": "chat_box.actions.send"
+        "id": "chat.actions.send"
       }
     ],
     "path": "app/soapbox/features/chats/components/chat_box.json"

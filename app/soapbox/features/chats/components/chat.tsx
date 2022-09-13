@@ -15,8 +15,10 @@ import { truncateFilename } from 'soapbox/utils/media';
 import ChatMessageList from './chat-message-list';
 
 const messages = defineMessages({
-  placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Type a message' },
-  send: { id: 'chat_box.actions.send', defaultMessage: 'Send' },
+  placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
+  send: { id: 'chat.actions.send', defaultMessage: 'Send' },
+  failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
+  retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
 });
 
 const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
@@ -242,12 +244,12 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
           {hasErrorSubmittingMessage && (
             <>
               <Text theme='danger' size='xs'>
-                Message failed to send.
+                {intl.formatMessage(messages.failedToSend)}
               </Text>
 
               <button onClick={sendMessage} className='flex hover:underline'>
                 <Text theme='primary' size='xs' tag='span'>
-                  Retry?
+                  {intl.formatMessage(messages.retry)}
                 </Text>
               </button>
             </>

@@ -20,6 +20,15 @@ import ChatList from './chat-list';
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Messages' },
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
+  blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
+  blockHeading: { id: 'chat_settings.block.heading', defaultMessage: 'Block @{acct}' },
+  blockConfirm: { id: 'chat_settings.block.confirm', defaultMessage: 'Block' },
+  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.' },
+  leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
+  leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
+  blockUser: { id: 'chat_settings.options.block_user', defaultMessage: 'Block @{acct}' },
+  reportUser: { id: 'chat_settings.options.report_user', defaultMessage: 'Report @{acct}' },
+  leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
 });
 
 const ChatPage = () => {
@@ -42,9 +51,9 @@ const ChatPage = () => {
 
   const handleBlockUser = () => {
     dispatch(openModal('CONFIRM', {
-      heading: `Block @${chat?.account.acct}`,
-      message: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.',
-      confirm: 'Block',
+      heading: intl.formatMessage(messages.blockHeading, { acct: chat?.account.acct }),
+      message: intl.formatMessage(messages.blockMessage),
+      confirm: intl.formatMessage(messages.blockConfirm),
       confirmationTheme: 'primary',
       onConfirm: () => dispatch(blockAccount(chat?.account.id as string)),
     }));
@@ -52,19 +61,15 @@ const ChatPage = () => {
 
   const handleLeaveChat = () => {
     dispatch(openModal('CONFIRM', {
-      heading: 'Leave Chat',
-      message: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.',
-      confirm: 'Leave Chat',
+      heading: intl.formatMessage(messages.leaveHeading),
+      message: intl.formatMessage(messages.leaveMessage),
+      confirm: intl.formatMessage(messages.leaveConfirm),
       confirmationTheme: 'primary',
-      onConfirm: () => {
-        deleteChat.mutate();
-      },
+      onConfirm: () => deleteChat.mutate(),
     }));
   };
 
-  const handleReportChat = () => {
-    dispatch(initReport(chat?.account as any));
-  };
+  const handleReportChat = () => dispatch(initReport(chat?.account as any));
 
   return (
     <Card className='p-0 h-[calc(100vh-176px)] overflow-hidden' variant='rounded'>
@@ -147,7 +152,7 @@ const ChatPage = () => {
                         >
                           <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
                             <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5' />
-                            <span>Block @{chat.account.acct}</span>
+                            <span>{intl.formatMessage(messages.blockUser, { acct: chat.account.acct })}</span>
                           </div>
                         </MenuItem>
 
@@ -158,7 +163,7 @@ const ChatPage = () => {
                         >
                           <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
                             <Icon src={require('@tabler/icons/flag.svg')} className='w-5 h-5' />
-                            <span>Report @{chat.account.acct}</span>
+                            <span>{intl.formatMessage(messages.reportUser, { acct: chat.account.acct })}</span>
                           </div>
                         </MenuItem>
 
@@ -169,7 +174,7 @@ const ChatPage = () => {
                         >
                           <div className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600 dark:text-danger-500'>
                             <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
-                            <span>Leave chat</span>
+                            <span>{intl.formatMessage(messages.leaveChat)}</span>
                           </div>
                         </MenuItem>
                       </Stack>
