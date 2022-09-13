@@ -3,7 +3,7 @@
  */
 type PickAlgorithm = <D = any>(
   /** Elligible candidates to pick. */
-  items: D[],
+  items: readonly D[],
   /** Current iteration by which an item may be chosen. */
   iteration: number,
   /** Implementation-specific opts. */
