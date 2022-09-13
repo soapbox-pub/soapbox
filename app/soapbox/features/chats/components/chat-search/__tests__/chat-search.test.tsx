@@ -4,7 +4,7 @@ import React from 'react';
 import { __stub } from 'soapbox/api';
 import { ChatProvider } from 'soapbox/contexts/chat-context';
 
-import { render, screen, waitFor } from '../../../../jest/test-helpers';
+import { render, screen, waitFor } from '../../../../../jest/test-helpers';
 import ChatSearch from '../chat-search';
 
 const renderComponent = () => render(
@@ -28,7 +28,7 @@ describe('<ChatSearch />', () => {
   });
 
   describe('when the pane is open', () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       renderComponent();
       await userEvent.click(screen.getByTestId('icon-button'));
     });
@@ -50,7 +50,7 @@ describe('<ChatSearch />', () => {
         });
       });
 
-      it('renders accounts', async() => {
+      it('renders accounts', async () => {
         renderComponent();
 
         const user = userEvent.setup();

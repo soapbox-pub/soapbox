@@ -3,16 +3,19 @@ import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 
 import snackbar from 'soapbox/actions/snackbar';
-import { Avatar, HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import { HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useDebounce } from 'soapbox/hooks';
 import { useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import useAccountSearch from 'soapbox/queries/search';
 
-import ChatPaneHeader from './chat-pane-header';
-import { Pane } from './ui';
+import ChatPaneHeader from '../chat-pane-header';
+import { Pane } from '../ui';
+
+import Blankslate from './blankslate';
+import EmptyResultsBlankslate from './empty-results-blankslate';
+import Results from './results';
 
 const ChatSearch = () => {
   const debounce = useDebounce;
@@ -24,9 +27,10 @@ const ChatSearch = () => {
   const [value, setValue] = useState<string>();
   const debouncedValue = debounce(value as string, 300);
 
-  const { data: accounts } = useAccountSearch(debouncedValue);
+  const { data: accounts, isFetching } = useAccountSearch(debouncedValue);
 
-  const hasSearchValue = value && value.length > 0;
+  const hasSearchValue = debouncedValue && debouncedValue.length > 0;
+  const hasSearchResults = (accounts || []).length > 0;
 
   const handleClickOnSearchResult = useMutation((accountId: string) => {
     return getOrCreateChatByAccountId(accountId);
@@ -40,6 +44,24 @@ const ChatSearch = () => {
       queryClient.invalidateQueries(['chats']);
     },
   });
+
+  const renderBody = () => {
+    if (hasSearchResults) {
+      return (
+        <Results
+          accounts={accounts}
+          onSelect={(id) => {
+            handleClickOnSearchResult.mutate(id);
+            clearValue();
+          }}
+        />
+      );
+    } else if (hasSearchValue && !hasSearchResults && !isFetching) {
+      return <EmptyResultsBlankslate />;
+    } else {
+      return <Blankslate />;
+    }
+  };
 
   const clearValue = () => {
     if (hasSearchValue) {
@@ -93,30 +115,7 @@ const ChatSearch = () => {
           </div>
 
           <Stack className='overflow-y-scroll flex-grow h-full' space={2}>
-            {(accounts || []).map((account: any) => (
-              <button
-                key={account.id}
-                type='button'
-                className='px-4 py-2 w-full flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
-                onClick={() => {
-                  handleClickOnSearchResult.mutate(account.id);
-                  clearValue();
-                }}
-                data-testid='account'
-              >
-                <HStack alignItems='center' space={2}>
-                  <Avatar src={account.avatar} size={40} />
-
-                  <Stack alignItems='start'>
-                    <div className='flex items-center space-x-1 flex-grow'>
-                      <Text weight='bold' size='sm' truncate>{account.display_name}</Text>
-                      {account.verified && <VerificationBadge />}
-                    </div>
-                    <Text size='sm' weight='medium' theme='muted' truncate>@{account.acct}</Text>
-                  </Stack>
-                </HStack>
-              </button>
-            ))}
+            {renderBody()}
           </Stack>
         </Stack>
       ) : null}

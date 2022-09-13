@@ -15,7 +15,7 @@ import useAccountSearch from 'soapbox/queries/search';
 
 import ChatList from '../chat-list';
 import ChatPaneHeader from '../chat-pane-header';
-import ChatSearch from '../chat-search';
+import ChatSearch from '../chat-search/chat-search';
 import ChatWindow from '../chat-window';
 import { Pane } from '../ui';
 
@@ -44,10 +44,11 @@ const ChatPane = () => {
   const unreadCount = sumBy(chats, (chat) => chat.unread);
 
   const hasSearchValue = Number(value?.length) > 0;
-  console.log('hasSearchValue', hasSearchValue);
 
-
-  const handleClickChat = (chat: IChat) => setChat(chat);
+  const handleClickChat = (chat: IChat) => {
+    setChat(chat);
+    setValue(undefined);
+  };
 
   const clearValue = () => {
     if (hasSearchValue) {
@@ -133,7 +134,10 @@ const ChatPane = () => {
         unreadCount={unreadCount}
         isOpen={isOpen}
         onToggle={toggleChatPane}
-        secondaryAction={() => setSearching(true)}
+        secondaryAction={() => {
+          setSearching(true);
+          setValue(undefined);
+        }}
         secondaryActionIcon={require('@tabler/icons/edit.svg')}
       />
 
