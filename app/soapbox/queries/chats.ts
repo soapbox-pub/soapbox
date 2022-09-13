@@ -190,6 +190,8 @@ const useChatSilences = () => {
     const data = await getChatSilences();
     if (data) {
       setSilenced(true);
+    } else {
+      setSilenced(false);
     }
   };
 
@@ -228,8 +230,10 @@ const useChatSilences = () => {
   };
 
   useEffect(() => {
-    fetchChatSilence();
-  }, []);
+    if (chat?.id) {
+      fetchChatSilence();
+    }
+  }, [chat]);
 
   return { isSilenced, handleSilence };
 };
