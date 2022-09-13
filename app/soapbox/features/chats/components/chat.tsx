@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
@@ -11,14 +11,13 @@ import { makeGetChat } from 'soapbox/selectors';
 
 import type { Account as AccountEntity, Chat as ChatEntity } from 'soapbox/types/entities';
 
-const getChat = makeGetChat();
-
 interface IChat {
   chatId: string,
   onClick: (chat: any) => void,
 }
 
 const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
+  const getChat = useCallback(makeGetChat(), []);
   const chat = useAppSelector((state) => {
     const chat = state.chats.items.get(chatId);
     return chat ? getChat(state, (chat as any).toJS()) : undefined;

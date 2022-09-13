@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Account from 'soapbox/components/account';
 import { useAppSelector } from 'soapbox/hooks';
@@ -9,7 +9,7 @@ interface IAutosuggestAccount {
 }
 
 const AutosuggestAccount: React.FC<IAutosuggestAccount> = ({ id }) => {
-  const getAccount = makeGetAccount();
+  const getAccount = useCallback(makeGetAccount(), []);
   const account = useAppSelector((state) => getAccount(state, id));
 
   if (!account) return null;

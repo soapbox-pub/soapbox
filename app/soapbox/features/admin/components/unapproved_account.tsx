@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { approveUsers } from 'soapbox/actions/admin';
@@ -13,8 +13,6 @@ const messages = defineMessages({
   rejected: { id: 'admin.awaiting_approval.rejected_message', defaultMessage: '{acct} was rejected.' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IUnapprovedAccount {
   accountId: string,
 }
@@ -23,6 +21,7 @@ interface IUnapprovedAccount {
 const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector(state => getAccount(state, accountId));
   const adminAccount = useAppSelector(state => state.admin.users.get(accountId));
