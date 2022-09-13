@@ -165,11 +165,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
     if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
         .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .catch(() => { });
     } else {
       dispatch(pinAccount(account.id))
         .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .catch(() => { });
     }
   };
 
@@ -218,7 +218,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(verifyUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onUnverifyUser = () => {
@@ -226,7 +226,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(unverifyUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onSetDonor = () => {
@@ -234,7 +234,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(setDonor(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onRemoveDonor = () => {
@@ -242,7 +242,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(removeDonor(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onPromoteToAdmin = () => {
@@ -250,7 +250,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(promoteToAdmin(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onPromoteToModerator = () => {
@@ -259,7 +259,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(promoteToModerator(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onDemoteToUser = () => {
@@ -267,7 +267,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(demoteToUser(account.id))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onSuggestUser = () => {
@@ -275,7 +275,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(suggestUsers([account.id]))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onUnsuggestUser = () => {
@@ -283,7 +283,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     dispatch(unsuggestUsers([account.id]))
       .then(() => dispatch(snackbar.success(message)))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const onRemoveFromFollowers = () => {
@@ -778,7 +778,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                     children={null}
                   />
 
-                  <MenuList>
+                  <MenuList className='w-56'>
                     {menu.map((menuItem, idx) => {
                       if (typeof menuItem?.text === 'undefined') {
                         return <MenuDivider key={idx} />;

@@ -1,5 +1,5 @@
 [data-reach-menu-popover] {
-  @apply origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-900 dark:ring-2 dark:ring-primary-700 focus:outline-none;
+  @apply origin-top-right absolute mt-2 rounded-md shadow-lg bg-white dark:bg-gray-900 dark:ring-2 dark:ring-primary-700 focus:outline-none;
 
   z-index: 1003;
 }
