@@ -34,6 +34,7 @@ export { default as Select } from './select/select';
 export { default as Spinner } from './spinner/spinner';
 export { default as Stack } from './stack/stack';
 export { default as Tabs } from './tabs/tabs';
+export { default as TagInput } from './tag-input/tag-input';
 export { default as Text } from './text/text';
 export { default as Textarea } from './textarea/textarea';
 export { default as Toggle } from './toggle/toggle';

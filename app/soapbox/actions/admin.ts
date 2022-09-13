@@ -1,5 +1,6 @@
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
@@ -403,6 +404,12 @@ const tagUsers = (accountIds: string[], tags: string[]) =>
 const untagUsers = (accountIds: string[], tags: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
+
+    // Legacy: allow removing legacy 'donor' tags.
+    if (tags.includes('badge:donor')) {
+      tags = [...tags, 'donor'];
+    }
+
     dispatch({ type: ADMIN_USERS_UNTAG_REQUEST, accountIds, tags });
     return api(getState)
       .delete('/api/v1/pleroma/admin/users/tag', { data: { nicknames, tags } })
@@ -413,6 +420,24 @@ const untagUsers = (accountIds: string[], tags: string[]) =>
       });
   };
 
+/** Synchronizes user tags to the backend. */
+const setTags = (accountId: string, oldTags: string[], newTags: string[]) =>
+  async(dispatch: AppDispatch) => {
+    const diff = getTagDiff(oldTags, newTags);
+
+    await dispatch(tagUsers([accountId], diff.added));
+    await dispatch(untagUsers([accountId], diff.removed));
+  };
+
+/** Synchronizes badges to the backend. */
+const setBadges = (accountId: string, oldTags: string[], newTags: string[]) =>
+  (dispatch: AppDispatch) => {
+    const oldBadges = filterBadges(oldTags);
+    const newBadges = filterBadges(newTags);
+
+    return dispatch(setTags(accountId, oldBadges, newBadges));
+  };
+
 const verifyUser = (accountId: string) =>
   (dispatch: AppDispatch) =>
     dispatch(tagUsers([accountId], ['verified']));
@@ -420,14 +445,6 @@ const verifyUser = (accountId: string) =>
 const unverifyUser = (accountId: string) =>
   (dispatch: AppDispatch) =>
     dispatch(untagUsers([accountId], ['verified']));
-
-const setDonor = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(tagUsers([accountId], ['donor']));
-
-const removeDonor = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(untagUsers([accountId], ['donor']));
 
 const addPermission = (accountIds: string[], permissionGroup: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -475,6 +492,18 @@ const demoteToUser = (accountId: string) =>
       dispatch(removePermission([accountId], 'admin')),
       dispatch(removePermission([accountId], 'moderator')),
     ]);
+
+const setRole = (accountId: string, role: 'user' | 'moderator' | 'admin') =>
+  (dispatch: AppDispatch) => {
+    switch (role) {
+      case 'user':
+        return dispatch(demoteToUser(accountId));
+      case 'moderator':
+        return dispatch(promoteToModerator(accountId));
+      case 'admin':
+        return dispatch(promoteToAdmin(accountId));
+    }
+  };
 
 const suggestUsers = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -567,15 +596,16 @@ export {
   fetchModerationLog,
   tagUsers,
   untagUsers,
+  setTags,
+  setBadges,
   verifyUser,
   unverifyUser,
-  setDonor,
-  removeDonor,
   addPermission,
   removePermission,
   promoteToAdmin,
   promoteToModerator,
   demoteToUser,
+  setRole,
   suggestUsers,
   unsuggestUsers,
 };
