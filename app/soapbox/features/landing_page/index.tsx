@@ -113,7 +113,10 @@ const LandingPage = () => {
                 </h1>
 
                 <Text size='lg'>
-                  {instance.description}
+                  <span
+                    className='instance-description'
+                    dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
+                  />
                 </Text>
               </Stack>
             </div>
