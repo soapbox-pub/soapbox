@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Modal } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useCompose } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 
@@ -16,7 +16,9 @@ interface IReplyMentionsModal {
 }
 
 const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose }) => {
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get(composeId)?.in_reply_to! }));
+  const compose = useCompose(composeId);
+
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: compose.in_reply_to! }));
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const mentions = statusToMentionsAccountIdsArray(status!, account!);

@@ -3,7 +3,7 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { changeComposeSensitivity } from 'soapbox/actions/compose';
 import { FormGroup, Checkbox } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 const messages = defineMessages({
   marked: { id: 'compose_form.sensitive.marked', defaultMessage: 'Media is marked as sensitive' },
@@ -19,8 +19,10 @@ const SensitiveButton: React.FC<ISensitiveButton> = ({ composeId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const active = useAppSelector(state => state.compose.get(composeId)!.sensitive === true);
-  const disabled = useAppSelector(state => state.compose.get(composeId)!.spoiler === true);
+  const compose = useCompose(composeId);
+
+  const active = compose.sensitive === true;
+  const disabled = compose.spoiler === true;
 
   const onClick = () => {
     dispatch(changeComposeSensitivity(composeId));

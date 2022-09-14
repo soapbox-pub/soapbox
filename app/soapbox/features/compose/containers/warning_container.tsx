@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useCompose } from 'soapbox/hooks';
 
 import Warning from '../components/warning';
 
@@ -13,11 +13,13 @@ interface IWarningWrapper {
 }
 
 const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
+  const compose = useCompose(composeId);
+
   const me = useAppSelector((state) => state.me);
 
-  const needsLockWarning = useAppSelector(state => state.compose.get(composeId)!.privacy === 'private' && !state.accounts.get(me)!.locked);
-  const hashtagWarning = useAppSelector(state => state.compose.get(composeId)!.privacy !== 'public' && APPROX_HASHTAG_RE.test(state.compose.get(composeId)!.text));
-  const directMessageWarning = useAppSelector(state => state.compose.get(composeId)!.privacy === 'direct');
+  const needsLockWarning = useAppSelector((state) => compose.privacy === 'private' && !state.accounts.get(me)!.locked);
+  const hashtagWarning = compose.privacy !== 'public' && APPROX_HASHTAG_RE.test(compose.text);
+  const directMessageWarning = compose.privacy === 'direct';
 
   if (needsLockWarning) {
     return <Warning message={<FormattedMessage id='compose_form.lock_disclaimer' defaultMessage='Your account is not {locked}. Anyone can follow you to view your follower-only posts.' values={{ locked: <Link to='/settings/profile'><FormattedMessage id='compose_form.lock_disclaimer.lock' defaultMessage='locked' /></Link> }} />} />;

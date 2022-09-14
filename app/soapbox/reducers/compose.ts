@@ -66,7 +66,7 @@ import type {
   Tag,
 } from 'soapbox/types/entities';
 
-// const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
+const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
 
 const PollRecord = ImmutableRecord({
   options: ImmutableList(['', '']),
@@ -137,14 +137,6 @@ export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: A
     .concat(mentions)
     .delete(account.id) as ImmutableOrderedSet<string>;
 };
-
-function clearAll(compose: Compose) {
-  return ReducerCompose({
-    content_type: compose.default_content_type,
-    privacy: compose.default_privacy,
-    idempotencyKey: uuid(),
-  });
-}
 
 function appendMedia(compose: Compose, media: APIEntity) {
   const prevSize = compose.media_attachments.size;
@@ -284,11 +276,10 @@ const updateSetting = (compose: Compose, path: string[], value: string) => {
 };
 
 const updateCompose = (state: State, key: string, updater: (compose: Compose) => Compose) =>
-  state.update(key, ReducerCompose(), updater);
+  state.update(key, state.get('default')!, updater);
 
 const initialState: State = ImmutableMap({
-  default: ReducerCompose(),
-  home: ReducerCompose(),
+  default: ReducerCompose({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }),
 });
 
 export default function compose(state = initialState, action: AnyAction) {
@@ -370,7 +361,7 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_QUOTE_CANCEL:
     case COMPOSE_RESET:
     case COMPOSE_SUBMIT_SUCCESS:
-      return updateCompose(state, action.id, clearAll);
+      return state.get('default')!.set('idempotencyKey', uuid());
     case COMPOSE_SUBMIT_FAIL:
       return updateCompose(state, action.id, compose => compose.set('is_submitting', false));
     case COMPOSE_UPLOAD_CHANGE_FAIL:

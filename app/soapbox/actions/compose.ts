@@ -215,7 +215,7 @@ const needsDescriptions = (state: RootState, composeId: string) => {
 };
 
 const validateSchedule = (state: RootState, composeId: string) => {
-  const schedule = state.compose.get(composeId)!.schedule;
+  const schedule = state.compose.get(composeId)?.schedule;
   if (!schedule) return true;
 
   const fiveMinutesFromNow = new Date(new Date().getTime() + 300000);

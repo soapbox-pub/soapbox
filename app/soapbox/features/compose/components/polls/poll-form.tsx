@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose';
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 
 import DurationSelector from './duration-selector';
 
@@ -49,7 +49,7 @@ const Option: React.FC<IOption> = ({
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const suggestions = useAppSelector((state) => state.compose.get(composeId)!.suggestions);
+  const suggestions = useCompose(composeId).suggestions;
 
   const handleOptionTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(index, event.target.value);
 
@@ -110,10 +110,12 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
+  const compose = useCompose(composeId);
+
   const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
-  const options = useAppSelector((state) => state.compose.get(composeId)!.poll?.options);
-  const expiresIn = useAppSelector((state) => state.compose.get(composeId)!.poll?.expires_in);
-  const isMultiple = useAppSelector((state) => state.compose.get(composeId)!.poll?.multiple);
+  const options = compose.poll?.options;
+  const expiresIn = compose.poll?.expires_in;
+  const isMultiple = compose.poll?.multiple;
 
   const maxOptions = pollLimits.get('max_options');
   const maxOptionChars = pollLimits.get('max_characters_per_option');

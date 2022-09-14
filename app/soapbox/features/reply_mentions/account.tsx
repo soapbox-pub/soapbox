@@ -6,7 +6,7 @@ import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
@@ -27,7 +27,7 @@ const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   const dispatch = useAppDispatch();
 
   const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = useAppSelector((state) => !!account && state.compose.get(composeId)!.to?.includes(account.acct));
+  const added = !!account && useCompose(composeId).to?.includes(account.acct);
 
   const onRemove = () => dispatch(removeFromMentions(accountId));
   const onAdd = () => dispatch(addToMentions(accountId));

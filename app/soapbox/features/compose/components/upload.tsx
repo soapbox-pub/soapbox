@@ -10,7 +10,7 @@ import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 
 import Motion from '../../ui/util/optional_motion';
 
@@ -71,7 +71,7 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const media = useAppSelector((state) => state.compose.get(composeId)!.media_attachments.find(item => item.get('id') === id)!);
+  const media = useCompose(composeId).media_attachments.find(item => item.get('id') === id)!;
   const descriptionLimit = useAppSelector((state) => state.instance.get('description_limit'));
 
   const [hovered, setHovered] = useState(false);

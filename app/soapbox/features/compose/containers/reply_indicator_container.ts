@@ -12,8 +12,8 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const mapStateToProps = (state: RootState, { composeId }: { composeId: string }) => {
-    const statusId = state.compose.get(composeId)!.in_reply_to!;
-    const editing = !!state.compose.get(composeId)!.id;
+    const statusId = state.compose.get(composeId)?.in_reply_to!;
+    const editing = !!state.compose.get(composeId)?.id;
 
     return {
       status: getStatus(state, { id: statusId }) as Status,

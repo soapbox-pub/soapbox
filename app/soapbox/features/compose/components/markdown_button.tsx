@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeComposeContentType } from 'soapbox/actions/compose';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 import ComposeFormButton from './compose_form_button';
 
@@ -19,7 +19,7 @@ const MarkdownButton: React.FC<IMarkdownButton> = ({ composeId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const active = useAppSelector((state) => state.compose.get(composeId)!.content_type === 'text/markdown');
+  const active = useCompose(composeId).content_type === 'text/markdown';
 
   const onClick = () => dispatch(changeComposeContentType(composeId, active ? 'text/plain' : 'text/markdown'));
 

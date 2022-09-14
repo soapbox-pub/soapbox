@@ -3,7 +3,7 @@ import { FormattedList, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useCompose } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
@@ -16,10 +16,12 @@ interface IReplyMentions {
 
 const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   const dispatch = useDispatch();
-  const instance = useAppSelector((state) => state.instance);
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.get(composeId)!.in_reply_to! }));
 
-  const to = useAppSelector((state) => state.compose.get(composeId)!.to);
+  const compose = useCompose(composeId);
+
+  const instance = useAppSelector((state) => state.instance);
+  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: compose.in_reply_to! }));
+  const to = compose.to;
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const { explicitAddressing } = getFeatures(instance);

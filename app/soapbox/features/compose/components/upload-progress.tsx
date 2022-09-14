@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UploadProgress from 'soapbox/components/upload-progress';
-import { useAppSelector } from 'soapbox/hooks';
+import { useCompose } from 'soapbox/hooks';
 
 interface IComposeUploadProgress {
   composeId: string,
@@ -9,8 +9,10 @@ interface IComposeUploadProgress {
 
 /** File upload progress bar for post composer. */
 const ComposeUploadProgress: React.FC<IComposeUploadProgress> = ({ composeId }) => {
-  const active = useAppSelector((state) => state.compose.get(composeId)!.is_uploading);
-  const progress = useAppSelector((state) => state.compose.get(composeId)!.progress);
+  const compose = useCompose(composeId);
+
+  const active = compose.is_uploading;
+  const progress = compose.progress;
 
   if (!active) {
     return null;

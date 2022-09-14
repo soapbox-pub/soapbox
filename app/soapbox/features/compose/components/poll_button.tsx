@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addPoll, removePoll } from 'soapbox/actions/compose';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 import ComposeFormButton from './compose_form_button';
 
@@ -20,8 +20,10 @@ const PollButton: React.FC<IPollButton> = ({ composeId, disabled }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const unavailable = useAppSelector((state) => state.compose.get(composeId)!.is_uploading);
-  const active = useAppSelector((state) => state.compose.get(composeId)!.poll !== null);
+  const compose = useCompose(composeId);
+
+  const unavailable = compose.is_uploading;
+  const active = compose.poll !== null;
 
   const onClick = () => {
     if (active) {

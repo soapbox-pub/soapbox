@@ -10,7 +10,7 @@ import { changeComposeVisibility } from 'soapbox/actions/compose';
 import { closeModal, openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is_mobile';
 
 import Motion from '../../ui/util/optional_motion';
@@ -151,8 +151,10 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const node = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLElement | null>(null);
 
-  const value = useAppSelector(state => state.compose.get(composeId)!.privacy);
-  const unavailable = useAppSelector(state => !!state.compose.get(composeId)!.id);
+  const compose = useCompose(composeId);
+
+  const value = compose.privacy;
+  const unavailable = compose.id;
 
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState('bottom');

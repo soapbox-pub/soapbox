@@ -24,8 +24,8 @@ export const checkComposeContent = compose => {
 };
 
 const mapStateToProps = state => ({
-  hasComposeContent: checkComposeContent(state.compose.get('modal')),
-  isEditing: state.compose.get('modal')?.id !== null,
+  hasComposeContent: checkComposeContent(state.compose.get('compose-modal')),
+  isEditing: state.compose.get('compose-modal')?.id !== null,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addSchedule, removeSchedule } from 'soapbox/actions/compose';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 import ComposeFormButton from './compose_form_button';
 
@@ -20,8 +20,10 @@ const ScheduleButton: React.FC<IScheduleButton> = ({ composeId, disabled }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const active = useAppSelector((state) => !!state.compose.get(composeId)!.schedule);
-  const unavailable = useAppSelector((state) => !!state.compose.get(composeId)!.id);
+  const compose = useCompose(composeId);
+
+  const active = compose.schedule;
+  const unavailable = compose.id;
 
   const handleClick = () => {
     if (active) {

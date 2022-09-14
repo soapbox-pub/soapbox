@@ -5,7 +5,7 @@ import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import { checkComposeContent } from 'soapbox/components/modal_root';
 import { Modal } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 import ComposeForm from '../../compose/components/compose-form';
 
@@ -23,7 +23,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const compose = useAppSelector((state) => state.compose.get('compose-modal'));
+  const compose = useCompose('compose-modal');
 
   const { id: statusId, privacy, in_reply_to: inReplyTo, quote } = compose!;
 

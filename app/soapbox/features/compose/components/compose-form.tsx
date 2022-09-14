@@ -18,7 +18,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
 import { Button, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
 import EmojiPickerDropdown from '../components/emoji-picker/emoji-picker-dropdown';
@@ -68,7 +68,7 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const compose = useAppSelector((state) => state.compose.get(id)!);
+  const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
   const maxTootChars = useAppSelector((state) => state.instance.getIn(['configuration', 'statuses', 'max_characters'])) as number;
@@ -218,6 +218,18 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
     }
   }, [focusDate]);
 
+  const renderButtons = useCallback(() => (
+    <div className='flex items-center space-x-2'>
+      {features.media && <UploadButtonContainer composeId={id} />}
+      <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
+      {features.polls && <PollButton composeId={id} />}
+      {features.privacyScopes && <PrivacyDropdown composeId={id} />}
+      {features.scheduledStatuses && <ScheduleButton composeId={id} />}
+      {features.spoilers && <SpoilerButton composeId={id} />}
+      {features.richText && <MarkdownButton composeId={id} />}
+    </div>
+  ), [features, id]);
+
   const condensed = shouldCondense && !composeFocused && isEmpty() && !isUploading;
   const disabled = isSubmitting;
   const countedText = [spoilerText, countableText(text)].join('');
@@ -335,15 +347,7 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
           'hidden': condensed,
         })}
       >
-        <div className='flex items-center space-x-2'>
-          {features.media && <UploadButtonContainer composeId={id} />}
-          <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
-          {features.polls && <PollButton composeId={id} />}
-          {features.privacyScopes && <PrivacyDropdown composeId={id} />}
-          {features.scheduledStatuses && <ScheduleButton composeId={id} />}
-          {features.spoilers && <SpoilerButton composeId={id} />}
-          {features.richText && <MarkdownButton composeId={id} />}
-        </div>
+        {renderButtons()}
 
         <div className='flex items-center space-x-4 ml-auto'>
           {maxTootChars && (

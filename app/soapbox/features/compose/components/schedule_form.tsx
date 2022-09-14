@@ -9,7 +9,7 @@ import IconButton from 'soapbox/components/icon_button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 const isCurrentOrFutureDate = (date: Date) => {
   return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
@@ -35,7 +35,7 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const scheduledAt = useAppSelector((state) => state.compose.get(composeId)!.schedule);
+  const scheduledAt = useCompose(composeId).schedule;
   const active = !!scheduledAt;
 
   const onSchedule = (date: Date) => {
