@@ -121,6 +121,7 @@ describe('deleteStatus()', () => {
               version: '0.0.0',
             },
             withRedraft: true,
+            id: 'compose-modal',
           },
           { type: 'MODAL_OPEN', modalType: 'COMPOSE', modalProps: undefined },
         ];

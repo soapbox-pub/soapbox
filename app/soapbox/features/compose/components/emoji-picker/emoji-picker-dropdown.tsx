@@ -115,7 +115,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, butt
   };
 
   const handlePickEmoji = (emoji: EmojiType) => {
-    console.log(emoji);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     dispatch(useEmoji(emoji));
 

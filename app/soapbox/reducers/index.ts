@@ -157,7 +157,6 @@ const rootReducer: typeof appReducer = (state, action) => {
     case AUTH_LOGGED_OUT:
       return appReducer(logOut(state), action);
     default:
-      console.log(action.type);
       return appReducer(state, action);
   }
 };

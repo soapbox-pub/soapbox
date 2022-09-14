@@ -105,6 +105,7 @@ const setComposeToStatus = (status: Status, rawText: string, spoilerText?: strin
 
     dispatch({
       type: COMPOSE_SET_STATUS,
+      id: 'compose-modal',
       status,
       rawText,
       explicitAddressing,
@@ -129,6 +130,7 @@ const replyCompose = (status: Status) =>
 
     dispatch({
       type: COMPOSE_REPLY,
+      id: 'compose-modal',
       status: status,
       account: state.accounts.get(state.me),
       explicitAddressing,
@@ -139,6 +141,7 @@ const replyCompose = (status: Status) =>
 
 const cancelReplyCompose = () => ({
   type: COMPOSE_REPLY_CANCEL,
+  id: 'compose-modal',
 });
 
 const quoteCompose = (status: Status) =>
@@ -149,6 +152,7 @@ const quoteCompose = (status: Status) =>
 
     dispatch({
       type: COMPOSE_QUOTE,
+      id: 'compose-modal',
       status: status,
       account: state.accounts.get(state.me),
       explicitAddressing,
@@ -159,16 +163,19 @@ const quoteCompose = (status: Status) =>
 
 const cancelQuoteCompose = () => ({
   type: COMPOSE_QUOTE_CANCEL,
+  id: 'compose-modal',
 });
 
-const resetCompose = () => ({
+const resetCompose = (composeId = 'compose-modal') => ({
   type: COMPOSE_RESET,
+  id: composeId,
 });
 
 const mentionCompose = (account: Account) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: COMPOSE_MENTION,
+      id: 'compose-modal',
       account: account,
     });
 
@@ -179,6 +186,7 @@ const directCompose = (account: Account) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: COMPOSE_DIRECT,
+      id: 'compose-modal',
       account: account,
     });
 
@@ -191,6 +199,7 @@ const directComposeById = (accountId: string) =>
 
     dispatch({
       type: COMPOSE_DIRECT,
+      id: 'compose-modal',
       account: account,
     });
 
@@ -323,7 +332,7 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
       return;
     }
 
-    dispatch(uploadComposeRequest());
+    dispatch(uploadComposeRequest(composeId));
 
     Array.from(files).forEach(async(f, i) => {
       if (media.size + i > attachmentLimit - 1) return;
@@ -336,18 +345,18 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
         const limit = formatBytes(maxImageSize);
         const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
         dispatch(snackbar.error(message));
-        dispatch(uploadComposeFail(true));
+        dispatch(uploadComposeFail(composeId, true));
         return;
       } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
         const limit = formatBytes(maxVideoSize);
         const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
         dispatch(snackbar.error(message));
-        dispatch(uploadComposeFail(true));
+        dispatch(uploadComposeFail(composeId, true));
         return;
       } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
         const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
         dispatch(snackbar.error(message));
-        dispatch(uploadComposeFail(true));
+        dispatch(uploadComposeFail(composeId, true));
         return;
       }
 
@@ -361,7 +370,7 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
 
         const onUploadProgress = ({ loaded }: any) => {
           progress[i] = loaded;
-          dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
+          dispatch(uploadComposeProgress(composeId, progress.reduce((a, v) => a + v, 0), total));
         };
 
         return dispatch(uploadMedia(data, onUploadProgress))
@@ -369,98 +378,107 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
             // If server-side processing of the media attachment has not completed yet,
             // poll the server until it is, before showing the media attachment as uploaded
             if (status === 200) {
-              dispatch(uploadComposeSuccess(data, f));
+              dispatch(uploadComposeSuccess(composeId, data, f));
             } else if (status === 202) {
               const poll = () => {
                 dispatch(fetchMedia(data.id)).then(({ status, data }) => {
                   if (status === 200) {
-                    dispatch(uploadComposeSuccess(data, f));
+                    dispatch(uploadComposeSuccess(composeId, data, f));
                   } else if (status === 206) {
                     setTimeout(() => poll(), 1000);
                   }
-                }).catch(error => dispatch(uploadComposeFail(error)));
+                }).catch(error => dispatch(uploadComposeFail(composeId, error)));
               };
 
               poll();
             }
           });
-      }).catch(error => dispatch(uploadComposeFail(error)));
+      }).catch(error => dispatch(uploadComposeFail(composeId, error)));
       /* eslint-enable no-loop-func */
     });
   };
 
-const changeUploadCompose = (id: string, params: Record<string, any>) =>
+const changeUploadCompose = (composeId: string, id: string, params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(changeUploadComposeRequest());
+    dispatch(changeUploadComposeRequest(composeId));
 
     dispatch(updateMedia(id, params)).then(response => {
-      dispatch(changeUploadComposeSuccess(response.data));
+      dispatch(changeUploadComposeSuccess(composeId, response.data));
     }).catch(error => {
-      dispatch(changeUploadComposeFail(id, error));
+      dispatch(changeUploadComposeFail(composeId, id, error));
     });
   };
 
-const changeUploadComposeRequest = () => ({
+const changeUploadComposeRequest = (composeId: string) => ({
   type: COMPOSE_UPLOAD_CHANGE_REQUEST,
+  id: composeId,
   skipLoading: true,
 });
 
-const changeUploadComposeSuccess = (media: APIEntity) => ({
+const changeUploadComposeSuccess = (composeId: string, media: APIEntity) => ({
   type: COMPOSE_UPLOAD_CHANGE_SUCCESS,
+  id: composeId,
   media: media,
   skipLoading: true,
 });
 
-const changeUploadComposeFail = (id: string, error: AxiosError) => ({
+const changeUploadComposeFail = (composeId: string, id: string, error: AxiosError) => ({
   type: COMPOSE_UPLOAD_CHANGE_FAIL,
+  composeId,
   id,
   error: error,
   skipLoading: true,
 });
 
-const uploadComposeRequest = () => ({
+const uploadComposeRequest = (composeId: string) => ({
   type: COMPOSE_UPLOAD_REQUEST,
+  id: composeId,
   skipLoading: true,
 });
 
-const uploadComposeProgress = (loaded: number, total: number) => ({
+const uploadComposeProgress = (composeId: string, loaded: number, total: number) => ({
   type: COMPOSE_UPLOAD_PROGRESS,
+  id: composeId,
   loaded: loaded,
   total: total,
 });
 
-const uploadComposeSuccess = (media: APIEntity, file: File) => ({
+const uploadComposeSuccess = (composeId: string, media: APIEntity, file: File) => ({
   type: COMPOSE_UPLOAD_SUCCESS,
+  id: composeId,
   media: media,
   file,
   skipLoading: true,
 });
 
-const uploadComposeFail = (error: AxiosError | true) => ({
+const uploadComposeFail = (composeId: string, error: AxiosError | true) => ({
   type: COMPOSE_UPLOAD_FAIL,
+  id: composeId,
   error: error,
   skipLoading: true,
 });
 
-const undoUploadCompose = (media_id: string) => ({
+const undoUploadCompose = (composeId: string, media_id: string) => ({
   type: COMPOSE_UPLOAD_UNDO,
+  id: composeId,
   media_id: media_id,
 });
 
-const clearComposeSuggestions = () => {
+const clearComposeSuggestions = (composeId: string) => {
   if (cancelFetchComposeSuggestionsAccounts) {
     cancelFetchComposeSuggestionsAccounts();
   }
   return {
     type: COMPOSE_SUGGESTIONS_CLEAR,
+    id: composeId,
   };
 };
 
-const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => {
+const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId, token) => {
   if (cancelFetchComposeSuggestionsAccounts) {
-    cancelFetchComposeSuggestionsAccounts();
+    cancelFetchComposeSuggestionsAccounts(composeId);
   }
   api(getState).get('/api/v1/accounts/search', {
     cancelToken: new CancelToken(cancel => {
@@ -473,7 +491,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => 
     },
   }).then(response => {
     dispatch(importFetchedAccounts(response.data));
-    dispatch(readyComposeSuggestionsAccounts(token, response.data));
+    dispatch(readyComposeSuggestionsAccounts(composeId, token, response.data));
   }).catch(error => {
     if (!isCancel(error)) {
       dispatch(showAlertForError(error));
@@ -481,46 +499,48 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => 
   });
 }, 200, { leading: true, trailing: true });
 
-const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, token: string) => {
+const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
   const results = emojiSearch(token.replace(':', ''), { maxResults: 5 } as any);
-  dispatch(readyComposeSuggestionsEmojis(token, results));
+  dispatch(readyComposeSuggestionsEmojis(composeId, token, results));
 };
 
-const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, token: string) => {
+const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
   const state = getState();
   const currentTrends = state.trends.items;
 
-  dispatch(updateSuggestionTags(token, currentTrends));
+  dispatch(updateSuggestionTags(composeId, token, currentTrends));
 };
 
-const fetchComposeSuggestions = (token: string) =>
+const fetchComposeSuggestions = (composeId: string, token: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     switch (token[0]) {
       case ':':
-        fetchComposeSuggestionsEmojis(dispatch, getState, token);
+        fetchComposeSuggestionsEmojis(dispatch, getState, composeId, token);
         break;
       case '#':
-        fetchComposeSuggestionsTags(dispatch, getState, token);
+        fetchComposeSuggestionsTags(dispatch, getState, composeId, token);
         break;
       default:
-        fetchComposeSuggestionsAccounts(dispatch, getState, token);
+        fetchComposeSuggestionsAccounts(dispatch, getState, composeId, token);
         break;
     }
   };
 
-const readyComposeSuggestionsEmojis = (token: string, emojis: Emoji[]) => ({
+const readyComposeSuggestionsEmojis = (composeId: string, token: string, emojis: Emoji[]) => ({
   type: COMPOSE_SUGGESTIONS_READY,
+  id: composeId,
   token,
   emojis,
 });
 
-const readyComposeSuggestionsAccounts = (token: string, accounts: APIEntity[]) => ({
+const readyComposeSuggestionsAccounts = (composeId: string, token: string, accounts: APIEntity[]) => ({
   type: COMPOSE_SUGGESTIONS_READY,
+  id: composeId,
   token,
   accounts,
 });
 
-const selectComposeSuggestion = (position: number, token: string | null, suggestion: AutoSuggestion, path: Array<string | number>) =>
+const selectComposeSuggestion = (composeId: string, position: number, token: string | null, suggestion: AutoSuggestion, path: Array<string | number>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     let completion, startPosition;
 
@@ -539,6 +559,7 @@ const selectComposeSuggestion = (position: number, token: string | null, suggest
 
     dispatch({
       type: COMPOSE_SUGGESTION_SELECT,
+      id: composeId,
       position: startPosition,
       token,
       completion,
@@ -546,14 +567,16 @@ const selectComposeSuggestion = (position: number, token: string | null, suggest
     });
   };
 
-const updateSuggestionTags = (token: string, currentTrends: ImmutableList<Tag>) => ({
+const updateSuggestionTags = (composeId: string, token: string, currentTrends: ImmutableList<Tag>) => ({
   type: COMPOSE_SUGGESTION_TAGS_UPDATE,
+  id: composeId,
   token,
   currentTrends,
 });
 
-const updateTagHistory = (tags: string[]) => ({
+const updateTagHistory = (composeId: string, tags: string[]) => ({
   type: COMPOSE_TAG_HISTORY_UPDATE,
+  id: composeId,
   tags,
 });
 
@@ -572,7 +595,7 @@ const insertIntoTagHistory = (composeId: string, recognizedTags: APIEntity[], te
     const newHistory = names.slice(0, 1000);
 
     tagHistory.set(me as string, newHistory);
-    dispatch(updateTagHistory(newHistory));
+    dispatch(updateTagHistory(composeId, newHistory));
   };
 
 const changeComposeSensitivity = (composeId: string) => ({
@@ -665,29 +688,31 @@ const changePollSettings = (composeId: string, expiresIn?: string | number, isMu
 
 const openComposeWithText = (composeId: string, text = '') =>
   (dispatch: AppDispatch) => {
-    dispatch(resetCompose());
+    dispatch(resetCompose(composeId));
     dispatch(openModal('COMPOSE'));
     dispatch(changeCompose(composeId, text));
   };
 
-const addToMentions = (accountId: string) =>
+const addToMentions = (composeId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const acct = state.accounts.get(accountId)!.acct;
 
     return dispatch({
       type: COMPOSE_ADD_TO_MENTIONS,
+      id: composeId,
       account: acct,
     });
   };
 
-const removeFromMentions = (accountId: string) =>
+const removeFromMentions = (composeId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const acct = state.accounts.get(accountId)!.acct;
 
     return dispatch({
       type: COMPOSE_REMOVE_FROM_MENTIONS,
+      id: composeId,
       account: acct,
     });
   };

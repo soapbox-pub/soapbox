@@ -278,7 +278,7 @@ const updateSetting = (compose: Compose, path: string[], value: string) => {
 const updateCompose = (state: State, key: string, updater: (compose: Compose) => Compose) =>
   state.update(key, state.get('default')!, updater);
 
-const initialState: State = ImmutableMap({
+export const initialState: State = ImmutableMap({
   default: ReducerCompose({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }),
 });
 
@@ -361,11 +361,11 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_QUOTE_CANCEL:
     case COMPOSE_RESET:
     case COMPOSE_SUBMIT_SUCCESS:
-      return state.get('default')!.set('idempotencyKey', uuid());
+      return updateCompose(state, action.id, () => state.get('default')!.set('idempotencyKey', uuid()));
     case COMPOSE_SUBMIT_FAIL:
       return updateCompose(state, action.id, compose => compose.set('is_submitting', false));
     case COMPOSE_UPLOAD_CHANGE_FAIL:
-      return updateCompose(state, action.id, compose => compose.set('is_changing_upload', false));
+      return updateCompose(state, action.composeId, compose => compose.set('is_changing_upload', false));
     case COMPOSE_UPLOAD_REQUEST:
       return updateCompose(state, action.id, compose => compose.set('is_uploading', true));
     case COMPOSE_UPLOAD_SUCCESS:
@@ -392,7 +392,7 @@ export default function compose(state = initialState, action: AnyAction) {
         map.set('idempotencyKey', uuid());
       }));
     case COMPOSE_SUGGESTIONS_CLEAR:
-      return updateCompose(state, action.id, compose => compose.update('suggestions', list => list.clear()).set('suggestion_token', null));
+      return updateCompose(state, action.id, compose => compose.update('suggestions', list => list?.clear()).set('suggestion_token', null));
     case COMPOSE_SUGGESTIONS_READY:
       return updateCompose(state, action.id, compose => compose.set('suggestions', ImmutableList(action.accounts ? action.accounts.map((item: APIEntity) => item.id) : action.emojis)).set('suggestion_token', action.token));
     case COMPOSE_SUGGESTION_SELECT:
@@ -402,7 +402,7 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_TAG_HISTORY_UPDATE:
       return updateCompose(state, action.id, compose => compose.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>));
     case TIMELINE_DELETE:
-      return updateCompose(state, action.id, compose => {
+      return updateCompose(state, 'compose-modal', compose => {
         if (action.id === compose.in_reply_to) {
           return compose.set('in_reply_to', null);
         } if (action.id === compose.quote) {

@@ -149,19 +149,19 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
   };
 
   const onSuggestionsClearRequested = () => {
-    dispatch(clearComposeSuggestions());
+    dispatch(clearComposeSuggestions(id));
   };
 
   const onSuggestionsFetchRequested = (token: string | number) => {
-    dispatch(fetchComposeSuggestions(token as string));
+    dispatch(fetchComposeSuggestions(id, token as string));
   };
 
   const onSuggestionSelected = (tokenStart: number, token: string | null, value: string | undefined) => {
-    if (value) dispatch(selectComposeSuggestion(tokenStart, token, value, ['text']));
+    if (value) dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['text']));
   };
 
   const onSpoilerSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
-    dispatch(selectComposeSuggestion(tokenStart, token, value, ['spoiler_text']));
+    dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['spoiler_text']));
   };
 
   const handleChangeSpoilerText: React.ChangeEventHandler<HTMLInputElement> = (e) => {

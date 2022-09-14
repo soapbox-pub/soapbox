@@ -26,11 +26,13 @@ const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = !!account && useCompose(composeId).to?.includes(account.acct);
+  const compose = useCompose(composeId);
 
-  const onRemove = () => dispatch(removeFromMentions(accountId));
-  const onAdd = () => dispatch(addToMentions(accountId));
+  const account = useAppSelector((state) => getAccount(state, accountId));
+  const added = !!account && compose.to?.includes(account.acct);
+
+  const onRemove = () => dispatch(removeFromMentions(composeId, accountId));
+  const onAdd = () => dispatch(addToMentions(composeId, accountId));
 
   useEffect(() => {
     if (accountId && !account) {

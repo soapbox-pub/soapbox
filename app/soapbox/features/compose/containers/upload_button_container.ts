@@ -9,7 +9,7 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 
 const mapStateToProps = (state: RootState, { composeId }: { composeId: string }) => ({
   disabled: state.compose.get(composeId)?.is_uploading,
-  resetFileKey: state.compose.get(composeId)?.resetFileKey,
+  resetFileKey: state.compose.get(composeId)?.resetFileKey!,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch, { composeId }: { composeId: string }) => ({

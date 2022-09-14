@@ -61,13 +61,13 @@ const Option: React.FC<IOption> = ({
     }
   };
 
-  const onSuggestionsClearRequested = () => dispatch(clearComposeSuggestions());
+  const onSuggestionsClearRequested = () => dispatch(clearComposeSuggestions(composeId));
 
-  const onSuggestionsFetchRequested = (token: string) => dispatch(fetchComposeSuggestions(token));
+  const onSuggestionsFetchRequested = (token: string) => dispatch(fetchComposeSuggestions(composeId, token));
 
   const onSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
     if (token && typeof token === 'string') {
-      dispatch(selectComposeSuggestion(tokenStart, token, value, ['poll', 'options', index]));
+      dispatch(selectComposeSuggestion(composeId, tokenStart, token, value, ['poll', 'options', index]));
     }
   };
 

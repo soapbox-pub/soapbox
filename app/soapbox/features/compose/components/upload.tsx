@@ -91,7 +91,7 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
 
   const handleUndoClick: React.MouseEventHandler = e => {
     e.stopPropagation();
-    dispatch(undoUploadCompose(media.id));
+    dispatch(undoUploadCompose(composeId, media.id));
   };
 
   const handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
@@ -119,7 +119,7 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
     setDirtyDescription(null);
 
     if (dirtyDescription !== null) {
-      dispatch(changeUploadCompose(media.id, { dirtyDescription }));
+      dispatch(changeUploadCompose(composeId, media.id, { dirtyDescription }));
     }
   };
 
