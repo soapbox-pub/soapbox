@@ -30,6 +30,10 @@ const messages = defineMessages({
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
   delete: { id: 'chats.actions.delete', defaultMessage: 'Delete' },
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
+  blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
+  networkFailureTitle: { id: 'chat_message_list.network_failure.title', defaultMessage: 'Whoops!' },
+  networkFailureSubtitle: { id: 'chat_message_list.network_failure.subtitle', defaultMessage: 'We encountered a network failure.' },
+  networkFailureAction: { id: 'chat_message_list.network_failure.action', defaultMessage: 'Try again' },
 });
 
 type TimeFormat = 'today' | 'date';
@@ -398,7 +402,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
           <Avatar src={chat.account.avatar} size={75} />
           <Text align='center'>
             <>
-              <Text tag='span'>You are blocked by</Text>
+              <Text tag='span'>{intl.formatMessage(messages.blockedBy)}</Text>
               {' '}
               <Text tag='span' theme='primary'>@{chat.account.acct}</Text>
             </>
@@ -413,15 +417,17 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
       <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
         <Stack space={4}>
           <Stack space={1}>
-            <Text size='lg' weight='bold' align='center'>Whoops!</Text>
+            <Text size='lg' weight='bold' align='center'>
+              {intl.formatMessage(messages.networkFailureTitle)}
+            </Text>
             <Text theme='muted' align='center'>
-              We encountered a network failure.
+              {intl.formatMessage(messages.networkFailureSubtitle)}
             </Text>
           </Stack>
 
           <div className='mx-auto'>
             <Button theme='primary' onClick={() => refetch()}>
-              Try again
+              {intl.formatMessage(messages.networkFailureAction)}
             </Button>
           </div>
         </Stack>

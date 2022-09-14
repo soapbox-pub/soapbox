@@ -11,9 +11,10 @@ module.exports = {
       xl: '1280px',
     },
     extend: {
-      boxShadow: {
+      boxShadow: ({ theme }) => ({
         '3xl': '0 25px 75px -15px rgba(0, 0, 0, 0.25)',
-      },
+        'inset-ring': `inset 0 0 0 2px ${theme('colors.accent-blue')}`,
+      }),
       fontSize: {
         base: '0.9375rem',
       },

@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
@@ -17,9 +18,14 @@ import Blankslate from './blankslate';
 import EmptyResultsBlankslate from './empty-results-blankslate';
 import Results from './results';
 
+const messages = defineMessages({
+  title: { id: 'chat_search.title', defaultMessage: 'Messages' },
+});
+
 const ChatSearch = () => {
   const debounce = useDebounce;
   const dispatch = useAppDispatch();
+  const intl = useIntl();
 
   const { isOpen, setChat, setSearching, toggleChatPane } = useChatContext();
   const { getOrCreateChatByAccountId } = useChats();
@@ -82,7 +88,9 @@ const ChatSearch = () => {
               />
             </button>
 
-            <Text size='sm' weight='bold' truncate>Messages</Text>
+            <Text size='sm' weight='bold' truncate>
+              {intl.formatMessage(messages.title)}
+            </Text>
           </HStack>
         }
         isOpen={isOpen}

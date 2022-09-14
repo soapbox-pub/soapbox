@@ -1,16 +1,42 @@
 import React from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { Button, Stack, Text } from 'soapbox/components/ui';
 
-const Blankslate = () => (
-  <Stack justifyContent='center' alignItems='center' space={4} className='px-4 h-full'>
-    <Stack space={2}>
-      <Text weight='semibold' size='xl' align='center'>No messages yet</Text>
-      <Text theme='muted' align='center'>You can start a conversation with anyone that follows you.</Text>
-    </Stack>
+const messages = defineMessages({
+  title: { id: 'chat_search.empty_results_blankslate.title', defaultMessage: 'No messages yet' },
+  body: { id: 'chat_search.empty_results_blankslate.body', defaultMessage: 'You can start a conversation with anyone that follows you.' },
+  action: { id: 'chat_search.empty_results_blankslate.action', defaultMessage: 'Message someone' },
+});
 
-    {/* <Button theme='primary'>Message someone</Button> */}
-  </Stack>
-);
+interface IBlankslate {
+  onSearch(): void
+}
+
+const Blankslate = ({ onSearch }: IBlankslate) => {
+  const intl = useIntl();
+
+  return (
+    <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+      <Stack space={4}>
+        <Stack space={1} className='max-w-[85%] mx-auto'>
+          <Text size='lg' weight='bold' align='center'>
+            {intl.formatMessage(messages.title)}
+          </Text>
+
+          <Text theme='muted' align='center'>
+            {intl.formatMessage(messages.body)}
+          </Text>
+        </Stack>
+
+        <div className='mx-auto'>
+          <Button theme='primary' onClick={onSearch}>
+            {intl.formatMessage(messages.action)}
+          </Button>
+        </div>
+      </Stack>
+    </Stack>
+  );
+};
 
 export default Blankslate;

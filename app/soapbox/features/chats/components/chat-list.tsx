@@ -1,16 +1,15 @@
 import classNames from 'clsx';
 import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Virtuoso } from 'react-virtuoso';
 
 import { fetchChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Stack } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
+import { useAppDispatch } from 'soapbox/hooks';
 import { useChats } from 'soapbox/queries/chats';
 
 import ChatListItem from './chat-list-item';
-import Blankslate from './chat-pane/blankslate';
 
 interface IChatList {
   onClickChat: (chat: any) => void,
@@ -20,7 +19,7 @@ interface IChatList {
 }
 
 const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, searchValue, fade }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const chatListRef = useRef(null);
 
@@ -37,23 +36,15 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
     }
   };
 
-  const handleRefresh = () => {
-    return dispatch(fetchChats()) as any;
-  };
+  const handleRefresh = () => dispatch(fetchChats()) as any;
 
-  const renderEmpty = () => {
-    if (isFetching) {
-      return (
-        <Stack space={2}>
-          <PlaceholderChat />
-          <PlaceholderChat />
-          <PlaceholderChat />
-        </Stack>
-      );
-    } else {
-      return <Blankslate />;
-    }
-  };
+  const renderEmpty = () => (
+    <Stack space={2}>
+      <PlaceholderChat />
+      <PlaceholderChat />
+      <PlaceholderChat />
+    </Stack>
+  );
 
   return (
     <div className='relative h-full'>

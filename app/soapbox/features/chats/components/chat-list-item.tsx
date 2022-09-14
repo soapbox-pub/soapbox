@@ -17,7 +17,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
       key={chat.id}
       type='button'
       onClick={() => onClick(chat)}
-      className='px-4 py-2 w-full flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
+      className='px-4 py-2 w-full flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800 focus:shadow-inset-ring'
       data-testid='chat'
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>

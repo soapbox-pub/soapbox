@@ -1,23 +1,20 @@
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import sumBy from 'lodash/sumBy';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
-import { Avatar, Button, HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import { Icon, Input, Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useDebounce } from 'soapbox/hooks';
+import { useDebounce } from 'soapbox/hooks';
 import { IChat, useChats } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
-import useAccountSearch from 'soapbox/queries/search';
 
 import ChatList from '../chat-list';
 import ChatPaneHeader from '../chat-pane-header';
 import ChatSearch from '../chat-search/chat-search';
+import EmptyResultsBlankslate from '../chat-search/empty-results-blankslate';
 import ChatWindow from '../chat-window';
 import { Pane } from '../ui';
+
+import Blankslate from './blankslate';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Search inbox' },
@@ -25,7 +22,6 @@ const messages = defineMessages({
 
 const ChatPane = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
   const debounce = useDebounce;
 
   const [value, setValue] = useState<string>();
@@ -33,17 +29,10 @@ const ChatPane = () => {
 
   const { chat, setChat, isOpen, isSearching, setSearching, toggleChatPane } = useChatContext();
   const { chatsQuery: { data: chats } } = useChats(debouncedValue);
-  // const chats: IChat[] = [];
-
-  // Screens
-  // 1. Search + Chats
-  // 2. Search + empty
-  // 3. User search
-
 
   const unreadCount = sumBy(chats, (chat) => chat.unread);
 
-  const hasSearchValue = Number(value?.length) > 0;
+  const hasSearchValue = Number(debouncedValue?.length) > 0;
 
   const handleClickChat = (chat: IChat) => {
     setChat(chat);
@@ -88,28 +77,13 @@ const ChatPane = () => {
               fade
             />
           ) : (
-            <Text>no results</Text>
+            <EmptyResultsBlankslate />
           )}
         </Stack>
       );
     } else if (chats?.length === 0) {
       return (
-        <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
-          <Stack space={4}>
-            <Stack space={1} className='max-w-[85%] mx-auto'>
-              <Text size='lg' weight='bold' align='center'>No messages yet</Text>
-              <Text theme='muted' align='center'>
-                You can start a conversation with anyone that follows you.
-              </Text>
-            </Stack>
-
-            <div className='mx-auto'>
-              <Button theme='primary' onClick={() => setSearching(true)}>
-                Message someone
-              </Button>
-            </div>
-          </Stack>
-        </Stack>
+        <Blankslate onSearch={() => setSearching(true)} />
       );
     }
   };
