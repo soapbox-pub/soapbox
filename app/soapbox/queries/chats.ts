@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import snackbar from 'soapbox/actions/snackbar';
+import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
@@ -47,20 +48,19 @@ const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 const useChatMessages = (chatId: string) => {
   const api = useApi();
 
-  const getChatMessages = async(chatId: string, pageParam?: any): Promise<{ result: IChatMessage[], maxId: string, hasMore: boolean }> => {
-    const { data, headers } = await api.get(`/api/v1/pleroma/chats/${chatId}/messages`, {
-      params: {
-        max_id: pageParam?.maxId,
-      },
-    });
+  const getChatMessages = async(chatId: string, pageParam?: any): Promise<{ result: IChatMessage[], hasMore: boolean, link?: string }> => {
+    const nextPageLink = pageParam?.link;
+    const uri = nextPageLink || `/api/v1/pleroma/chats/${chatId}/messages`;
+    const response = await api.get(uri);
+    const { data } = response;
 
-    const hasMore = !!headers.link;
+    const link = getNextLink(response);
+    const hasMore = !!link;
     const result = data.sort(reverseOrder).map(normalizeChatMessage);
-    const nextMaxId = result[0]?.id;
 
     return {
       result,
-      maxId: nextMaxId,
+      link,
       hasMore,
     };
   };
@@ -69,7 +69,7 @@ const useChatMessages = (chatId: string) => {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
-        return { maxId: config.maxId };
+        return { link: config.link };
       }
 
       return undefined;
@@ -91,24 +91,26 @@ const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
 
-  const getChats = async(pageParam?: any): Promise<{ result: IChat[], maxId: string, hasMore: boolean }> => {
-    const { data, headers } = await api.get<IChat[]>('/api/v1/pleroma/chats', {
+  const getChats = async(pageParam?: any): Promise<{ result: IChat[], hasMore: boolean, link?: string }> => {
+    const nextPageLink = pageParam?.link;
+    const uri = nextPageLink || '/api/v1/pleroma/chats';
+    const response = await api.get<IChat[]>(uri, {
       params: {
-        max_id: pageParam?.maxId,
         search,
       },
     });
+    const { data } = response;
 
-    const hasMore = !!headers.link;
-    const nextMaxId = data[data.length - 1]?.id;
+    const link = getNextLink(response);
+    const hasMore = !!link;
 
     // Set the relationships to these users in the redux store.
     dispatch(fetchRelationships(data.map((item) => item.account.id)));
 
     return {
       result: data,
-      maxId: nextMaxId,
       hasMore,
+      link,
     };
   };
 
@@ -116,7 +118,7 @@ const useChats = (search?: string) => {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
-        return { maxId: config.maxId };
+        return { link: config.link };
       }
 
       return undefined;
