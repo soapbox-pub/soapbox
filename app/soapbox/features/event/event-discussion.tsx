@@ -3,9 +3,9 @@ import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createSelector } from 'reselect';
 
+import { eventDiscussionCompose } from 'soapbox/actions/compose';
 import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing_indicator';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import Tombstone from 'soapbox/components/tombstone';
 import { Stack } from 'soapbox/components/ui';
@@ -14,6 +14,7 @@ import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
+import ComposeForm from '../compose/components/compose-form';
 import ThreadStatus from '../status/components/thread-status';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -55,13 +56,13 @@ const getDescendantsIds = createSelector([
 
 type RouteParams = { statusId: string };
 
-interface IThread {
+interface IEventDiscussion {
   params: RouteParams,
   onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
   onOpenVideo: (video: AttachmentEntity, time: number) => void,
 }
 
-const Thread: React.FC<IThread> = (props) => {
+const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   const dispatch = useAppDispatch();
 
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
@@ -100,6 +101,10 @@ const Thread: React.FC<IThread> = (props) => {
       setIsLoaded(true);
     });
   }, [props.params.statusId]);
+
+  useEffect(() => {
+    dispatch(eventDiscussionCompose(`reply:${props.params.statusId}`, status!));
+  }, [isLoaded]);
 
   const handleMoveUp = (id: string) => {
     const index = ImmutableList(descendantsIds).indexOf(id);
@@ -174,10 +179,6 @@ const Thread: React.FC<IThread> = (props) => {
     });
   };
 
-  const handleRefresh = () => {
-    return fetchData();
-  };
-
   const handleLoadMore = useCallback(debounce(() => {
     if (next && status) {
       dispatch(fetchNext(status.id, next)).then(({ next }) => {
@@ -205,23 +206,22 @@ const Thread: React.FC<IThread> = (props) => {
   }
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
-      <Stack space={2}>
-        <div ref={node} className='thread p-0 sm:p-2 shadow-none'>
-          <ScrollableList
-            id='thread'
-            ref={scroller}
-            hasMore={!!next}
-            onLoadMore={handleLoadMore}
-            placeholderComponent={() => <PlaceholderStatus thread />}
-            initialTopMostItemIndex={0}
-          >
-            {children}
-          </ScrollableList>
-        </div>
-      </Stack>
-    </PullToRefresh>
+    <Stack space={2}>
+      <ComposeForm id={`reply:${status.id}`} autoFocus={false} eventDiscussion />
+      <div ref={node} className='thread p-0 sm:p-2 shadow-none'>
+        <ScrollableList
+          id='thread'
+          ref={scroller}
+          hasMore={!!next}
+          onLoadMore={handleLoadMore}
+          placeholderComponent={() => <PlaceholderStatus thread />}
+          initialTopMostItemIndex={0}
+        >
+          {children}
+        </ScrollableList>
+      </div>
+    </Stack>
   );
 };
 
-export default Thread;
+export default EventDiscussion;

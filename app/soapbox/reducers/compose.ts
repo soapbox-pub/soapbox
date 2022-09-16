@@ -317,7 +317,7 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_COMPOSING_CHANGE:
       return updateCompose(state, action.id, compose => compose.set('is_composing', action.value));
     case COMPOSE_REPLY:
-      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
         const defaultCompose = state.get('default')!;
 
         map.set('in_reply_to', action.status.get('id'));

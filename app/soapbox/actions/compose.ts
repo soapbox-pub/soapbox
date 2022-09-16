@@ -717,6 +717,21 @@ const removeFromMentions = (composeId: string, accountId: string) =>
     });
   };
 
+const eventDiscussionCompose = (composeId: string, status: Status) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState();
+    const instance = state.instance;
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: COMPOSE_REPLY,
+      id: composeId,
+      status: status,
+      account: state.accounts.get(state.me),
+      explicitAddressing,
+    });
+  };
+
 export {
   COMPOSE_CHANGE,
   COMPOSE_SUBMIT_REQUEST,
@@ -812,4 +827,5 @@ export {
   openComposeWithText,
   addToMentions,
   removeFromMentions,
+  eventDiscussionCompose,
 };

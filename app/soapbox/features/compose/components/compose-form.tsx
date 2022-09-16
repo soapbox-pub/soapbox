@@ -61,9 +61,10 @@ interface IComposeForm {
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
+  eventDiscussion?: boolean
 }
 
-const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, clickableAreaRef }) => {
+const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, clickableAreaRef, eventDiscussion }) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -264,7 +265,7 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
 
   return (
     <Stack className='w-full' space={1} ref={formRef} onClick={handleClick}>
-      {scheduledStatusCount > 0 && (
+      {scheduledStatusCount > 0 && !eventDiscussion && (
         <Warning
           message={(
             <FormattedMessage
@@ -285,9 +286,9 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !eventDiscussion && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !eventDiscussion && <ReplyMentions composeId={id} />}
 
       <div
         className={classNames({
