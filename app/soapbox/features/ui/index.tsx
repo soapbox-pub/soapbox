@@ -392,7 +392,7 @@ const UI: React.FC = ({ children }) => {
     dragTargets.current = [];
 
     if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-      dispatch(uploadCompose(e.dataTransfer.files, intl));
+      dispatch(uploadCompose('home', e.dataTransfer.files, intl));
     }
   };
 

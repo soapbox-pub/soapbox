@@ -1,16 +1,18 @@
 import classNames from 'clsx';
+import { List as ImmutableList } from 'immutable';
 import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 import { useHistory } from 'react-router-dom';
 
+import { undoUploadCompose, changeUploadCompose, submitCompose } from 'soapbox/actions/compose';
+import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
+import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 
 import Motion from '../../ui/util/optional_motion';
-
-import type { Map as ImmutableMap } from 'immutable';
 
 const bookIcon = require('@tabler/icons/book.svg');
 const fileCodeIcon = require('@tabler/icons/file-code.svg');
@@ -60,18 +62,17 @@ const messages = defineMessages({
 });
 
 interface IUpload {
-  media: ImmutableMap<string, any>,
-  descriptionLimit: number,
-  onUndo: (attachmentId: string) => void,
-  onDescriptionChange: (attachmentId: string, description: string) => void,
-  onOpenFocalPoint: (attachmentId: string) => void,
-  onOpenModal: (attachments: ImmutableMap<string, any>) => void,
-  onSubmit: (history: ReturnType<typeof useHistory>) => void,
+  id: string,
+  composeId: string,
 }
 
-const Upload: React.FC<IUpload> = (props) => {
+const Upload: React.FC<IUpload> = ({ composeId, id }) => {
   const intl = useIntl();
   const history = useHistory();
+  const dispatch = useAppDispatch();
+
+  const media = useCompose(composeId).media_attachments.find(item => item.get('id') === id)!;
+  const descriptionLimit = useAppSelector((state) => state.instance.get('description_limit'));
 
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -85,12 +86,12 @@ const Upload: React.FC<IUpload> = (props) => {
 
   const handleSubmit = () => {
     handleInputBlur();
-    props.onSubmit(history);
+    dispatch(submitCompose(composeId, history));
   };
 
   const handleUndoClick: React.MouseEventHandler = e => {
     e.stopPropagation();
-    props.onUndo(props.media.get('id'));
+    dispatch(undoUploadCompose(composeId, media.id));
   };
 
   const handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
@@ -118,22 +119,22 @@ const Upload: React.FC<IUpload> = (props) => {
     setDirtyDescription(null);
 
     if (dirtyDescription !== null) {
-      props.onDescriptionChange(props.media.get('id'), dirtyDescription);
+      dispatch(changeUploadCompose(composeId, media.id, { dirtyDescription }));
     }
   };
 
   const handleOpenModal = () => {
-    props.onOpenModal(props.media);
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(media), index: 0 }));
   };
 
   const active = hovered || focused;
-  const description = dirtyDescription || (dirtyDescription !== '' && props.media.get('description')) || '';
-  const focusX = props.media.getIn(['meta', 'focus', 'x']) as number | undefined;
-  const focusY = props.media.getIn(['meta', 'focus', 'y']) as number | undefined;
+  const description = dirtyDescription || (dirtyDescription !== '' && media.description) || '';
+  const focusX = media.meta.getIn(['focus', 'x']) as number | undefined;
+  const focusY = media.meta.getIn(['focus', 'y']) as number | undefined;
   const x = focusX ? ((focusX /  2) + .5) * 100 : undefined;
   const y = focusY ? ((focusY / -2) + .5) * 100 : undefined;
-  const mediaType = props.media.get('type');
-  const mimeType = props.media.getIn(['pleroma', 'mime_type']) as string | undefined;
+  const mediaType = media.type;
+  const mimeType = media.pleroma.get('mime_type') as string | undefined;
 
   const uploadIcon = mediaType === 'unknown' && (
     <Icon
@@ -144,14 +145,14 @@ const Upload: React.FC<IUpload> = (props) => {
 
   return (
     <div className='compose-form__upload' tabIndex={0} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} role='button'>
-      <Blurhash hash={props.media.get('blurhash')} className='media-gallery__preview' />
+      <Blurhash hash={media.blurhash} className='media-gallery__preview' />
       <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
         {({ scale }) => (
           <div
             className={classNames('compose-form__upload-thumbnail',  mediaType)}
             style={{
               transform: `scale(${scale})`,
-              backgroundImage: mediaType === 'image' ? `url(${props.media.get('preview_url')})` : undefined,
+              backgroundImage: mediaType === 'image' ? `url(${media.preview_url})` : undefined,
               backgroundPosition: typeof x === 'number' && typeof y === 'number' ? `${x}% ${y}%` : undefined }}
           >
             <div className={classNames('compose-form__upload__actions', { active })}>
@@ -162,7 +163,7 @@ const Upload: React.FC<IUpload> = (props) => {
               />
 
               {/* Only display the "Preview" button for a valid attachment with a URL */}
-              {(mediaType !== 'unknown' && Boolean(props.media.get('url'))) && (
+              {(mediaType !== 'unknown' && Boolean(media.url)) && (
                 <IconButton
                   onClick={handleOpenModal}
                   src={require('@tabler/icons/zoom-in.svg')}
@@ -178,7 +179,7 @@ const Upload: React.FC<IUpload> = (props) => {
                 <textarea
                   placeholder={intl.formatMessage(messages.description)}
                   value={description}
-                  maxLength={props.descriptionLimit}
+                  maxLength={descriptionLimit}
                   onFocus={handleInputFocus}
                   onChange={handleInputChange}
                   onBlur={handleInputBlur}
@@ -190,7 +191,7 @@ const Upload: React.FC<IUpload> = (props) => {
             <div className='compose-form__upload-preview'>
               {mediaType === 'video' && (
                 <video autoPlay playsInline muted loop>
-                  <source src={props.media.get('preview_url')} />
+                  <source src={media.preview_url} />
                 </video>
               )}
               {uploadIcon}
