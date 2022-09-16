@@ -13,6 +13,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import OutlineBox from 'soapbox/components/outline-box';
 import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -109,14 +110,14 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
       onClose={handleClose}
     >
       <Stack space={4}>
-        <div className='p-4 rounded-lg border border-solid border-gray-300 dark:border-gray-800'>
+        <OutlineBox>
           <Account
             account={account}
             showProfileHoverCard={false}
             withLinkToProfile={false}
             hideActions
           />
-        </div>
+        </OutlineBox>
 
         <List>
           {(ownAccount.admin && isLocal(account)) && (
