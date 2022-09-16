@@ -1,16 +1,17 @@
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
-import { launchChat } from 'soapbox/actions/chats';
+import snackbar from 'soapbox/actions/snackbar';
 import AccountSearch from 'soapbox/components/account_search';
 import { CardTitle, Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
+import { IChat, useChats } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
 
 import ChatList from '../../chat-list';
-
-import type { IChat } from 'soapbox/queries/chats';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Messages' },
@@ -19,22 +20,32 @@ const messages = defineMessages({
 
 const ChatPageSidebar = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const intl = useIntl();
 
   const { setChat } = useChatContext();
+  const { getOrCreateChatByAccountId } = useChats();
 
   const handleSuggestion = (accountId: string) => {
-    dispatch(launchChat(accountId, history, true));
+    handleClickOnSearchResult.mutate(accountId);
   };
+
+  const handleClickOnSearchResult = useMutation((accountId: string) => {
+    return getOrCreateChatByAccountId(accountId);
+  }, {
+    onError: (error: AxiosError) => {
+      const data = error.response?.data as any;
+      dispatch(snackbar.error(data?.error));
+    },
+    onSuccess: (response) => {
+      setChat(response.data);
+      queryClient.invalidateQueries(['chats']);
+    },
+  });
 
   const handleClickChat = (chat: IChat) => setChat(chat);
 
   return (
-    <Stack
-      className='col-span-3 p-6 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset'
-      space={6}
-    >
+    <Stack space={6} className='h-full'>
       <CardTitle title={intl.formatMessage(messages.title)} />
 
       <AccountSearch

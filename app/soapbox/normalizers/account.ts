@@ -21,11 +21,13 @@ import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/e
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
+  accepting_messages: false,
   acct: '',
   avatar: '',
   avatar_static: '',
   birthday: '',
   bot: false,
+  chats_onboarded: false,
   created_at: '',
   discoverable: false,
   display_name: '',
