@@ -1,7 +1,9 @@
 import classNames from 'clsx';
+import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import React, { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { v4 as uuidv4 } from 'uuid';
 
 import LoadGap from 'soapbox/components/load_gap';
 import ScrollableList from 'soapbox/components/scrollable_list';
@@ -9,6 +11,7 @@ import StatusContainer from 'soapbox/containers/status_container';
 import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import { ALGORITHMS } from 'soapbox/features/timeline-insertion';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import useAds from 'soapbox/queries/ads';
@@ -60,8 +63,12 @@ const StatusList: React.FC<IStatusList> = ({
 }) => {
   const { data: ads } = useAds();
   const soapboxConfig = useSoapboxConfig();
-  const adsInterval = Number(soapboxConfig.extensions.getIn(['ads', 'interval'], 40)) || 0;
+
+  const adsAlgorithm = String(soapboxConfig.extensions.getIn(['ads', 'algorithm', 0]));
+  const adsOpts = (soapboxConfig.extensions.getIn(['ads', 'algorithm', 1], ImmutableMap()) as ImmutableMap<string, any>).toJS();
+
   const node = useRef<VirtuosoHandle>(null);
+  const seed = useRef<string>(uuidv4());
 
   const getFeaturedStatusCount = () => {
     return featuredStatusIds?.size || 0;
@@ -132,9 +139,10 @@ const StatusList: React.FC<IStatusList> = ({
     );
   };
 
-  const renderAd = (ad: AdEntity) => {
+  const renderAd = (ad: AdEntity, index: number) => {
     return (
       <Ad
+        key={`ad-${index}`}
         card={ad.card}
         impression={ad.impression}
         expires={ad.expires}
@@ -175,9 +183,13 @@ const StatusList: React.FC<IStatusList> = ({
   const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {
       return statusIds.toList().reduce((acc, statusId, index) => {
-        const adIndex = ads ? Math.floor((index + 1) / adsInterval) % ads.length : 0;
-        const ad = ads ? ads[adIndex] : undefined;
-        const showAd = (index + 1) % adsInterval === 0;
+        if (showAds && ads) {
+          const ad = ALGORITHMS[adsAlgorithm]?.(ads, index, { ...adsOpts, seed: seed.current });
+
+          if (ad) {
+            acc.push(renderAd(ad, index));
+          }
+        }
 
         if (statusId === null) {
           acc.push(renderLoadGap(index));
@@ -187,10 +199,6 @@ const StatusList: React.FC<IStatusList> = ({
           acc.push(renderPendingStatus(statusId));
         } else {
           acc.push(renderStatus(statusId));
-        }
-
-        if (showAds && ad && showAd) {
-          acc.push(renderAd(ad));
         }
 
         return acc;

@@ -18,6 +18,7 @@ import {
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
   SEARCH_ACCOUNT_SET,
+  SEARCH_RESULTS_CLEAR,
 } from '../actions/search';
 
 import type { AnyAction } from 'redux';
@@ -82,7 +83,7 @@ const paginateResults = (state: State, searchType: SearchFilter, results: APIEnt
         const data = results[searchType];
         // Hashtags are a list of maps. Others are IDs.
         if (searchType === 'hashtags') {
-          return (items as ImmutableOrderedSet<string>).concat(fromJS(data));
+          return (items as ImmutableOrderedSet<string>).concat((fromJS(data) as Record<string, any>).map(normalizeTag));
         } else {
           return (items as ImmutableOrderedSet<string>).concat(toIds(data));
         }
@@ -105,6 +106,13 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
       return state.set('value', action.value);
     case SEARCH_CLEAR:
       return ReducerRecord();
+    case SEARCH_RESULTS_CLEAR:
+      return state.merge({
+        value: '',
+        results: ResultsRecord(),
+        submitted: false,
+        submittedValue: '',
+      });
     case SEARCH_SHOW:
       return state.set('hidden', false);
     case COMPOSE_REPLY:
@@ -123,7 +131,13 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
     case SEARCH_EXPAND_SUCCESS:
       return paginateResults(state, action.searchType, action.results, action.searchTerm);
     case SEARCH_ACCOUNT_SET:
-      if (!action.accountId) return state.set('accountId', null);
+      if (!action.accountId) return state.merge({
+        results: ResultsRecord(),
+        submitted: false,
+        submittedValue: '',
+        filter: 'accounts',
+        accountId: null,
+      });
       return ReducerRecord({ accountId: action.accountId, filter: 'statuses' });
     default:
       return state;

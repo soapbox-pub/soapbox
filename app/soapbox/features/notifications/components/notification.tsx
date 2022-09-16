@@ -20,8 +20,6 @@ import { NotificationType, validType } from 'soapbox/utils/notification';
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
 
-const getNotification = makeGetNotification();
-
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
 
@@ -152,6 +150,8 @@ const Notification: React.FC<INotificaton> = (props) => {
   const { hidden = false, onMoveUp, onMoveDown } = props;
 
   const dispatch = useAppDispatch();
+
+  const getNotification = useCallback(makeGetNotification(), []);
 
   const notification = useAppSelector((state) => getNotification(state, props.notification));
 

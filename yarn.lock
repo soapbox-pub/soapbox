@@ -2841,6 +2841,11 @@
   dependencies:
     schema-utils "*"
 
+"@types/seedrandom@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/seedrandom/-/seedrandom-3.0.2.tgz#7f30db28221067a90b02e73ffd46b6685b18df1a"
+  integrity sha512-YPLqEOo0/X8JU3rdiq+RgUKtQhQtrppE766y7vMTu8dGML7TVtZNiiiaC/hhU9Zqw9UYopXxhuWWENclMVBwKQ==
+
 "@types/semver@^7.3.9":
   version "7.3.9"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.9.tgz#152c6c20a7688c30b967ec1841d31ace569863fc"
@@ -10460,6 +10465,11 @@ scroll-behavior@^0.9.1:
   dependencies:
     dom-helpers "^3.4.0"
     invariant "^2.2.4"
+
+seedrandom@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-3.0.5.tgz#54edc85c95222525b0c7a6f6b3543d8e0b3aa0a7"
+  integrity sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==
 
 select-hose@^2.0.0:
   version "2.0.0"

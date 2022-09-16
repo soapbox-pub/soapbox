@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,8 @@ import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { Button, HStack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { makeGetReport } from 'soapbox/selectors';
 
 import ReportStatus from './report_status';
 
@@ -24,14 +25,20 @@ const messages = defineMessages({
 });
 
 interface IReport {
-  report: AdminReport;
+  id: string;
 }
 
-const Report: React.FC<IReport> = ({ report }) => {
+const Report: React.FC<IReport> = ({ id }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const getReport = useCallback(makeGetReport(), []);
+
+  const report = useAppSelector((state) => getReport(state, id) as AdminReport | undefined);
+
   const [accordionExpanded, setAccordionExpanded] = useState(false);
+
+  if (!report) return null;
 
   const account = report.account as Account;
   const targetAccount = report.target_account as Account;

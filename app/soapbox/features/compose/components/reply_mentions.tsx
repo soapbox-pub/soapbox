@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
@@ -12,8 +12,10 @@ import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const ReplyMentions: React.FC = () => {
   const dispatch = useDispatch();
+  const getStatus = useCallback(makeGetStatus(), []);
+
   const instance = useAppSelector((state) => state.instance);
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
+  const status = useAppSelector<StatusEntity | null>(state => getStatus(state, { id: state.compose.in_reply_to! }));
 
   const to = useAppSelector((state) => state.compose.to);
   const account = useAppSelector((state) => state.accounts.get(state.me));

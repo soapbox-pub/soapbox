@@ -175,6 +175,19 @@ const normalizeFooterLinks = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap
   return soapboxConfig.setIn(path, items);
 };
 
+/** Migrate legacy ads config. */
+const normalizeAdsAlgorithm = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const interval = soapboxConfig.getIn(['extensions', 'ads', 'interval']);
+  const algorithm = soapboxConfig.getIn(['extensions', 'ads', 'algorithm']);
+
+  if (typeof interval === 'number' && !algorithm) {
+    const result = fromJS(['linear', { interval }]);
+    return soapboxConfig.setIn(['extensions', 'ads', 'algorithm'], result);
+  } else {
+    return soapboxConfig;
+  }
+};
+
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
@@ -186,6 +199,7 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
       normalizeAds(soapboxConfig);
+      normalizeAdsAlgorithm(soapboxConfig);
     }),
   );
 };

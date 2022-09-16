@@ -34,6 +34,7 @@ import {
   FamiliarFollowersModal,
   CreateEventModal,
   JoinEventModal,
+  AccountModerationModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle_container';
@@ -73,6 +74,7 @@ const MODAL_COMPONENTS = {
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
   'CREATE_EVENT': CreateEventModal,
   'JOIN_EVENT': JoinEventModal,
+  'ACCOUNT_MODERATION': AccountModerationModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

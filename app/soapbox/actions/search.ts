@@ -8,9 +8,10 @@ import type { SearchFilter } from 'soapbox/reducers/search';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const SEARCH_CHANGE = 'SEARCH_CHANGE';
-const SEARCH_CLEAR  = 'SEARCH_CLEAR';
-const SEARCH_SHOW   = 'SEARCH_SHOW';
+const SEARCH_CHANGE        = 'SEARCH_CHANGE';
+const SEARCH_CLEAR         = 'SEARCH_CLEAR';
+const SEARCH_SHOW          = 'SEARCH_SHOW';
+const SEARCH_RESULTS_CLEAR = 'SEARCH_RESULTS_CLEAR';
 
 const SEARCH_FETCH_REQUEST = 'SEARCH_FETCH_REQUEST';
 const SEARCH_FETCH_SUCCESS = 'SEARCH_FETCH_SUCCESS';
@@ -28,7 +29,11 @@ const changeSearch = (value: string) =>
   (dispatch: AppDispatch) => {
     // If backspaced all the way, clear the search
     if (value.length === 0) {
-      return dispatch(clearSearch());
+      dispatch(clearSearchResults());
+      return dispatch({
+        type: SEARCH_CHANGE,
+        value,
+      });
     } else {
       return dispatch({
         type: SEARCH_CHANGE,
@@ -39,6 +44,10 @@ const changeSearch = (value: string) =>
 
 const clearSearch = () => ({
   type: SEARCH_CLEAR,
+});
+
+const clearSearchResults = () => ({
+  type: SEARCH_RESULTS_CLEAR,
 });
 
 const submitSearch = (filter?: SearchFilter) =>
@@ -167,6 +176,7 @@ export {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
   SEARCH_SHOW,
+  SEARCH_RESULTS_CLEAR,
   SEARCH_FETCH_REQUEST,
   SEARCH_FETCH_SUCCESS,
   SEARCH_FETCH_FAIL,
@@ -177,6 +187,7 @@ export {
   SEARCH_ACCOUNT_SET,
   changeSearch,
   clearSearch,
+  clearSearchResults,
   submitSearch,
   fetchSearchRequest,
   fetchSearchSuccess,

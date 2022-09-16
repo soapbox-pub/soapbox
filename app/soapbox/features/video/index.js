@@ -497,7 +497,7 @@ class Video extends React.PureComponent {
   }
 
   render() {
-    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio, blurhash } = this.props;
+    const { src, inline, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio, blurhash } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
     const playerStyle = {};
@@ -614,8 +614,6 @@ class Video extends React.PureComponent {
 
             <div className='video-player__buttons right'>
               {(sensitive && !onCloseVideo) && <button type='button' title={intl.formatMessage(messages.hide)} aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/eye-off.svg')} /></button>}
-              {(!fullscreen && onOpenVideo) && <button type='button' title={intl.formatMessage(messages.expand)} aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/maximize.svg')} /></button>}
-              {/* onCloseVideo && <button type='button' title={intl.formatMessage(messages.close)} aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/x.svg')} /></button> */}
               <button type='button' title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')} /></button>
             </div>
           </div>
