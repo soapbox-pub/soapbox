@@ -14,8 +14,8 @@ import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useChat, useChatSilence } from 'soapbox/queries/chats';
 
-import Chat from './chat';
-import ChatList from './chat-list';
+import Chat from '../chat';
+import ChatList from '../chat-list';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Messages' },
