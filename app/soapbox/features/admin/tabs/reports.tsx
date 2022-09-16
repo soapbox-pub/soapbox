@@ -4,7 +4,6 @@ import { defineMessages, useIntl } from 'react-intl';
 import { fetchReports } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-import { makeGetReport } from 'soapbox/selectors';
 
 import Report from '../components/report';
 
@@ -14,18 +13,13 @@ const messages = defineMessages({
   emptyMessage: { id: 'admin.reports.empty_message', defaultMessage: 'There are no open reports. If a user gets reported, they will show up here.' },
 });
 
-const getReport = makeGetReport();
-
 const Reports: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const [isLoading, setLoading] = useState(true);
 
-  const reports = useAppSelector(state => {
-    const ids = state.admin.openReports;
-    return ids.toList().map(id => getReport(state, id));
-  });
+  const reports = useAppSelector(state => state.admin.openReports.toList());
 
   useEffect(() => {
     dispatch(fetchReports())
@@ -42,7 +36,7 @@ const Reports: React.FC = () => {
       scrollKey='admin-reports'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
     >
-      {reports.map(report => report && <Report report={report} key={report?.id} />)}
+      {reports.map(report => report && <Report id={report} key={report} />)}
     </ScrollableList>
   );
 };

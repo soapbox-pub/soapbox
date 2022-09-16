@@ -1,5 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchStatusWithContext } from 'soapbox/actions/statuses';
@@ -9,8 +9,6 @@ import AccountContainer from 'soapbox/containers/account_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
-const getStatus = makeGetStatus();
-
 interface IMentionsModal {
   onClose: (type: string) => void,
   statusId: string,
@@ -18,6 +16,7 @@ interface IMentionsModal {
 
 const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
+  const getStatus = useCallback(makeGetStatus(), []);
 
   const status = useAppSelector((state) => getStatus(state, { id: statusId }));
   const accountIds = status ? ImmutableOrderedSet(status.mentions.map(m => m.get('id'))) : null;

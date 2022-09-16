@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
@@ -16,8 +16,6 @@ const messages = defineMessages({
   reject: { id: 'follow_request.reject', defaultMessage: 'Reject' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IAccountAuthorize {
   id: string,
 }
@@ -25,6 +23,8 @@ interface IAccountAuthorize {
 const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
+  
+  const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, id));
 

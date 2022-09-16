@@ -83,7 +83,7 @@ const paginateResults = (state: State, searchType: SearchFilter, results: APIEnt
         const data = results[searchType];
         // Hashtags are a list of maps. Others are IDs.
         if (searchType === 'hashtags') {
-          return (items as ImmutableOrderedSet<string>).concat(fromJS(data));
+          return (items as ImmutableOrderedSet<string>).concat((fromJS(data) as Record<string, any>).map(normalizeTag));
         } else {
           return (items as ImmutableOrderedSet<string>).concat(toIds(data));
         }

@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import QuotedStatus from 'soapbox/components/quoted-status';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
-
-const getStatus = makeGetStatus();
 
 interface IQuotedStatusContainer {
   /** Status ID to the quoted status. */
@@ -12,6 +10,8 @@ interface IQuotedStatusContainer {
 }
 
 const QuotedStatusContainer: React.FC<IQuotedStatusContainer> = ({ statusId }) => {
+  const getStatus = useCallback(makeGetStatus(), []);
+
   const status = useAppSelector(state => getStatus(state, { id: statusId }));
 
   if (!status) {

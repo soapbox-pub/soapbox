@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { fetchStatus } from 'soapbox/actions/statuses';
@@ -16,12 +16,12 @@ interface IEmbeddedStatus {
   },
 }
 
-const getStatus = makeGetStatus();
-
 /** Status to be presented in an iframe for embeds on external websites. */
 const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const getStatus = useCallback(makeGetStatus(), []);
+
   const status = useAppSelector(state => getStatus(state, { id: params.statusId }));
 
   const [loading, setLoading] = useState(true);
