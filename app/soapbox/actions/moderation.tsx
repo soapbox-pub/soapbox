@@ -9,6 +9,8 @@ import AccountContainer from 'soapbox/containers/account_container';
 import { isLocal } from 'soapbox/utils/accounts';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
+import { Stack, Text } from 'soapbox/components/ui';
+import OutlineBox from 'soapbox/components/outline-box';
 
 const messages = defineMessages({
   deactivateUserHeading: { id: 'confirmations.admin.deactivate_user.heading', defaultMessage: 'Deactivate @{acct}' },
@@ -43,10 +45,22 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
     const acct = state.accounts.get(accountId)!.acct;
     const name = state.accounts.get(accountId)!.username;
 
+    const message = (
+      <Stack space={4}>
+        <OutlineBox>
+          <AccountContainer id={accountId} />
+        </OutlineBox>
+
+        <Text>
+          {intl.formatMessage(messages.deactivateUserPrompt, { acct })}
+        </Text>
+      </Stack>
+    );
+
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/user-off.svg'),
       heading: intl.formatMessage(messages.deactivateUserHeading, { acct }),
-      message: intl.formatMessage(messages.deactivateUserPrompt, { acct }),
+      message,
       confirm: intl.formatMessage(messages.deactivateUserConfirm, { name }),
       onConfirm: () => {
         dispatch(deactivateUsers([accountId])).then(() => {
@@ -64,22 +78,21 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const account = state.accounts.get(accountId)!;
     const acct = account.acct;
     const name = account.username;
-    const favicon = account.pleroma.get('favicon');
     const local = isLocal(account);
 
-    const message = (<>
-      <AccountContainer id={accountId} />
-      {intl.formatMessage(messages.deleteUserPrompt, { acct })}
-    </>);
+    const message = (
+      <Stack space={4}>
+        <OutlineBox>
+          <AccountContainer id={accountId} />
+        </OutlineBox>
 
-    const confirm = (<>
-      {favicon &&
-        <div className='submit__favicon'>
-          <img src={favicon} alt='' />
-        </div>}
-      {intl.formatMessage(messages.deleteUserConfirm, { name })}
-    </>);
+        <Text>
+          {intl.formatMessage(messages.deleteUserPrompt, { acct })}
+        </Text>
+      </Stack>
+    );
 
+    const confirm = intl.formatMessage(messages.deleteUserConfirm, { name });
     const checkbox = local ? intl.formatMessage(messages.deleteLocalUserCheckbox) : false;
 
     dispatch(openModal('CONFIRM', {
