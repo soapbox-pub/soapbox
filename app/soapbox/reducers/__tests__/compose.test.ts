@@ -170,14 +170,14 @@ describe('compose reducer', () => {
     });
   });
 
-  it('sets default scope on settings save (but retains current scope)', () => {
+  it('sets default scope on settings save', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: ME_PATCH_SUCCESS,
       me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
     };
     expect(reducer(state, action).toJS().default).toMatchObject({
-      privacy: 'public',
+      privacy: 'unlisted',
     });
   });
 
