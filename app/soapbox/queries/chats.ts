@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
@@ -41,6 +41,12 @@ export interface IChatMessage {
   id: string
   unread: boolean
   pending?: boolean
+}
+
+export interface IChatSilence {
+  id: number
+  account_id: number
+  target_account_id: number
 }
 
 const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
@@ -178,9 +184,22 @@ const useChat = (chatId: string) => {
 
 const useChatSilences = () => {
   const api = useApi();
+
+  const getChatSilences = async() => {
+    const { data } = await api.get<IChatSilence[]>('/api/v1/pleroma/chats/silences');
+
+    return data;
+  };
+
+  return useQuery<IChatSilence[]>(['chatSilences'], getChatSilences, {
+    placeholderData: [],
+  });
+};
+
+const useChatSilence = (chat: IChat | null) => {
+  const api = useApi();
   const dispatch = useAppDispatch();
 
-  const { chat } = useChatContext();
   const [isSilenced, setSilenced] = useState<boolean>(false);
 
   const getChatSilences = async() => {
@@ -235,9 +254,9 @@ const useChatSilences = () => {
     if (chat?.id) {
       fetchChatSilence();
     }
-  }, [chat]);
+  }, [chat?.id]);
 
   return { isSilenced, handleSilence };
 };
 
-export { useChat, useChats, useChatMessages, useChatSilences };
+export { useChat, useChats, useChatMessages, useChatSilences, useChatSilence };

@@ -1,17 +1,18 @@
 import React from 'react';
 
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
-import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 
-import type { IChat } from 'soapbox/queries/chats';
+import type { IChat, IChatSilence } from 'soapbox/queries/chats';
 
 interface IChatListItemInterface {
   chat: IChat,
   onClick: (chat: any) => void,
+  chatSilence?: IChatSilence
 }
 
-const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
+const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onClick }) => {
   return (
     <button
       key={chat.id}
@@ -37,7 +38,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                 weight='medium'
                 theme='muted'
                 truncate
-                className='w-full'
+                className='w-full truncate-child'
                 data-testid='chat-last-message'
                 dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
               />
@@ -45,23 +46,29 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
           </Stack>
         </HStack>
 
-        {chat.last_message && (
-          <HStack alignItems='center' space={2}>
-            {chat.last_message.unread && (
-              <div
-                className='w-2 h-2 rounded-full bg-secondary-500'
-                data-testid='chat-unread-indicator'
-              />
-            )}
+        <HStack alignItems='center' space={2}>
+          {chatSilence ? (
+            <Icon src={require('@tabler/icons/bell-off.svg')} className='w-5 h-5 text-gray-600' />
+          ) : null}
 
-            <RelativeTimestamp
-              timestamp={chat.last_message.created_at}
-              align='right'
-              size='xs'
-              truncate
-            />
-          </HStack>
-        )}
+          {chat.last_message && (
+            <>
+              {chat.last_message.unread && (
+                <div
+                  className='w-2 h-2 rounded-full bg-secondary-500'
+                  data-testid='chat-unread-indicator'
+                />
+              )}
+
+              <RelativeTimestamp
+                timestamp={chat.last_message.created_at}
+                align='right'
+                size='xs'
+                truncate
+              />
+            </>
+          )}
+        </HStack>
       </HStack>
     </button>
   );

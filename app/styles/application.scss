@@ -87,6 +87,10 @@
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
   }
 
+  .truncate-child > * {
+    @apply truncate;
+  }
+
   .d-screen {
     height: 100vh; // Backwards compatibility
     /* stylelint-disable-next-line unit-no-unknown */

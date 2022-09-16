@@ -12,7 +12,7 @@ import { Avatar, Card, CardTitle, Divider, HStack, Icon, IconButton, Menu, MenuB
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useChat, useChatSilences } from 'soapbox/queries/chats';
+import { useChat, useChatSilence } from 'soapbox/queries/chats';
 
 import Chat from './chat';
 import ChatList from './chat-list';
@@ -36,8 +36,8 @@ const ChatPage = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const { isSilenced, handleSilence } = useChatSilences();
   const { chat, setChat } = useChatContext();
+  const { isSilenced, handleSilence } = useChatSilence(chat);
   const { deleteChat } = useChat(chat?.id as string);
 
   const handleSuggestion = (accountId: string) => {
