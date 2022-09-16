@@ -56,14 +56,14 @@ const messages = defineMessages({
   saveChanges: { id: 'compose_form.save_changes', defaultMessage: 'Save changes' },
 });
 
-interface IComposeForm {
-  id: string,
+interface IComposeForm<ID extends string> {
+  id: ID extends 'default' ? never : ID,
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
 }
 
-const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, clickableAreaRef }) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
