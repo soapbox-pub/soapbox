@@ -125,12 +125,13 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   }
 
   return (
-    <OutlineBox className={classNames('mt-3 cursor-pointer', {
-      'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
-    })}
+    <OutlineBox
+      data-testid='quoted-status'
+      className={classNames('mt-3 cursor-pointer', {
+        'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
+      })}
     >
       <Stack
-        data-testid='quoted-status'
         space={2}
         onClick={handleExpandClick}
       >
