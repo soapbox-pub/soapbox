@@ -31,8 +31,6 @@ describe('compose reducer', () => {
         poll: null,
         suggestion_token: null,
         suggestions: [],
-        default_privacy: 'public',
-        default_sensitive: false,
         tagHistory: [],
         content_type: 'text/plain',
       },
@@ -100,7 +98,7 @@ describe('compose reducer', () => {
   });
 
   it('uses \'direct\' scope when replying to a DM', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'public' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
       status: ImmutableRecord({ visibility: 'direct' })(),
@@ -110,7 +108,7 @@ describe('compose reducer', () => {
   });
 
   it('uses \'private\' scope when replying to a private post', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'public' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
       status: ImmutableRecord({ visibility: 'private' })(),
@@ -120,7 +118,7 @@ describe('compose reducer', () => {
   });
 
   it('uses \'unlisted\' scope when replying to an unlisted post', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'public' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
       status: ImmutableRecord({ visibility: 'unlisted' })(),
@@ -130,7 +128,7 @@ describe('compose reducer', () => {
   });
 
   it('uses \'private\' scope when set as preference and replying to a public post', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'private' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'private' }));
     const action = {
       type: actions.COMPOSE_REPLY,
       status: ImmutableRecord({ visibility: 'public' })(),
@@ -140,7 +138,7 @@ describe('compose reducer', () => {
   });
 
   it('uses \'unlisted\' scope when set as preference and replying to a public post', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'unlisted' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'unlisted' }));
     const action = {
       type: actions.COMPOSE_REPLY,
       status: ImmutableRecord({ visibility: 'public' })(),
@@ -150,38 +148,35 @@ describe('compose reducer', () => {
   });
 
   it('sets preferred scope on user login', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'public' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: ME_FETCH_SUCCESS,
       me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
     };
     expect(reducer(state, action).toJS().default).toMatchObject({
-      default_privacy: 'unlisted',
       privacy: 'unlisted',
     });
   });
 
   it('sets preferred scope on settings change', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'public' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: SETTING_CHANGE,
       path: ['defaultPrivacy'],
       value: 'unlisted',
     };
     expect(reducer(state, action).toJS().default).toMatchObject({
-      default_privacy: 'unlisted',
       privacy: 'unlisted',
     });
   });
 
   it('sets default scope on settings save (but retains current scope)', () => {
-    const state = initialState.set('default', ReducerCompose({ default_privacy: 'public', privacy: 'public' }));
+    const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: ME_PATCH_SUCCESS,
       me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
     };
     expect(reducer(state, action).toJS().default).toMatchObject({
-      default_privacy: 'unlisted',
       privacy: 'public',
     });
   });
@@ -293,7 +288,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_SUBMIT_SUCCESS', () => {
-    const state = initialState.set('home', ReducerCompose({ default_privacy: 'public', privacy: 'private' }));
+    const state = initialState.set('home', ReducerCompose({ privacy: 'private' }));
     const action = {
       type: actions.COMPOSE_SUBMIT_SUCCESS,
       id: 'home',
