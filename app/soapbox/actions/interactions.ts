@@ -177,7 +177,6 @@ const toggleFavourite = (status: StatusEntity) =>
     }
   };
 
-
 const favouriteRequest = (status: StatusEntity) => ({
   type: FAVOURITE_REQUEST,
   status: status,

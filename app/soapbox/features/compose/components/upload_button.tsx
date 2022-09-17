@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
@@ -14,12 +14,12 @@ const onlyImages = (types: ImmutableList<string>) => {
   return Boolean(types && types.every(type => type.startsWith('image/')));
 };
 
-interface IUploadButton {
+export interface IUploadButton {
   disabled?: boolean,
   unavailable?: boolean,
-  onSelectFile: (files: FileList) => void,
+  onSelectFile: (files: FileList, intl: IntlShape) => void,
   style?: React.CSSProperties,
-  resetFileKey: number,
+  resetFileKey: number | null,
 }
 
 const UploadButton: React.FC<IUploadButton> = ({
@@ -35,7 +35,7 @@ const UploadButton: React.FC<IUploadButton> = ({
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) {
-      onSelectFile(e.target.files);
+      onSelectFile(e.target.files, intl);
     }
   };
 

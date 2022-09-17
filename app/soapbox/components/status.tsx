@@ -4,7 +4,7 @@ import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { NavLink, useHistory } from 'react-router-dom';
 
-import { mentionCompose, replyComposeWithConfirmation } from 'soapbox/actions/compose';
+import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden } from 'soapbox/actions/statuses';
@@ -125,7 +125,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(replyComposeWithConfirmation(actualStatus, intl));
+    dispatch(replyCompose(actualStatus));
   };
 
   const handleHotkeyFavourite = (): void => {
