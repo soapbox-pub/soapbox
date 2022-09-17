@@ -323,11 +323,13 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
     const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
 
-    const media  = getState().compose.get(composeId)!.media_attachments;
+    const media  = getState().compose.get(composeId)?.media_attachments;
     const progress = new Array(files.length).fill(0);
     let total = Array.from(files).reduce((a, v) => a + v.size, 0);
 
-    if (files.length + media.size > attachmentLimit) {
+    const mediaCount = media ? media.size : 0;
+
+    if (files.length + mediaCount > attachmentLimit) {
       dispatch(showAlert(undefined, messages.uploadErrorLimit, 'error'));
       return;
     }
@@ -335,7 +337,7 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     dispatch(uploadComposeRequest(composeId));
 
     Array.from(files).forEach(async(f, i) => {
-      if (media.size + i > attachmentLimit - 1) return;
+      if (mediaCount + i > attachmentLimit - 1) return;
 
       const isImage = f.type.match(/image.*/);
       const isVideo = f.type.match(/video.*/);
