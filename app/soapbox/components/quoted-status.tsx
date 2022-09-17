@@ -9,6 +9,8 @@ import AccountContainer from 'soapbox/containers/account_container';
 import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import OutlineBox from './outline-box';
+
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -123,38 +125,41 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   }
 
   return (
-    <Stack
+    <OutlineBox
       data-testid='quoted-status'
-      space={2}
-      className={classNames('mt-3 p-4 rounded-lg border border-solid border-gray-300 dark:border-gray-800 cursor-pointer', {
+      className={classNames('mt-3 cursor-pointer', {
         'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
       })}
-      onClick={handleExpandClick}
     >
-      <AccountContainer
-        {...actions}
-        id={account.id}
-        timestamp={status.created_at}
-        withRelationship={false}
-        showProfileHoverCard={!compose}
-        withLinkToProfile={!compose}
-      />
+      <Stack
+        space={2}
+        onClick={handleExpandClick}
+      >
+        <AccountContainer
+          {...actions}
+          id={account.id}
+          timestamp={status.created_at}
+          withRelationship={false}
+          showProfileHoverCard={!compose}
+          withLinkToProfile={!compose}
+        />
 
-      {renderReplyMentions()}
+        {renderReplyMentions()}
 
-      <Text
-        className='break-words status__content status__content--quote'
-        size='sm'
-        dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-      />
+        <Text
+          className='break-words status__content status__content--quote'
+          size='sm'
+          dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+        />
 
-      <StatusMedia
-        status={status}
-        muted={compose}
-        showMedia={showMedia}
-        onToggleVisibility={handleToggleMediaVisibility}
-      />
-    </Stack>
+        <StatusMedia
+          status={status}
+          muted={compose}
+          showMedia={showMedia}
+          onToggleVisibility={handleToggleMediaVisibility}
+        />
+      </Stack>
+    </OutlineBox>
   );
 };
 
