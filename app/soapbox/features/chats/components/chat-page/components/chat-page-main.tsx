@@ -1,17 +1,14 @@
-import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
-import { patchMeSuccess } from 'soapbox/actions/me';
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
-import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, CardBody, CardHeader, CardTitle, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Toggle } from 'soapbox/components/ui';
+import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Toggle } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useApi, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { useChat, useChatSilence } from 'soapbox/queries/chats';
 
 import Chat from '../../chat';
@@ -34,7 +31,6 @@ const ChatPageMain = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const account = useOwnAccount();
-  const api = useApi();
 
   const { chat } = useChatContext();
   const { isSilenced, handleSilence } = useChatSilence(chat);

@@ -28,7 +28,7 @@ describe('<ChatSearch />', () => {
   });
 
   describe('when the pane is open', () => {
-    beforeEach(async () => {
+    beforeEach(async() => {
       renderComponent();
       await userEvent.click(screen.getByTestId('icon-button'));
     });
@@ -50,7 +50,7 @@ describe('<ChatSearch />', () => {
         });
       });
 
-      it('renders accounts', async () => {
+      it('renders accounts', async() => {
         renderComponent();
 
         const user = userEvent.setup();
