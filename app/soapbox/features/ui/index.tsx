@@ -1,6 +1,5 @@
 'use strict';
 
-import { QueryClientProvider } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
@@ -10,7 +9,6 @@ import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
-import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
@@ -120,7 +118,6 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
-import { queryClient } from 'soapbox/queries/client';
 
 const EmptyPage = HomePage;
 
@@ -654,53 +651,51 @@ const UI: React.FC = ({ children }) => {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
-        <div ref={node} style={style}>
-          <BackgroundShapes />
+    <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
+      <div ref={node} style={style}>
+        <BackgroundShapes />
 
-          <div className='z-10 flex flex-col'>
-            <Navbar />
+        <div className='z-10 flex flex-col'>
+          <Navbar />
 
-            <Layout>
-              <Layout.Sidebar>
-                {!standalone && <SidebarNavigation />}
-              </Layout.Sidebar>
+          <Layout>
+            <Layout.Sidebar>
+              {!standalone && <SidebarNavigation />}
+            </Layout.Sidebar>
 
-              <SwitchingColumnsArea>
-                {children}
-              </SwitchingColumnsArea>
-            </Layout>
+            <SwitchingColumnsArea>
+              {children}
+            </SwitchingColumnsArea>
+          </Layout>
 
-            {me && floatingActionButton}
+          {me && floatingActionButton}
 
-            <BundleContainer fetchComponent={UploadArea}>
-              {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
-            </BundleContainer>
+          <BundleContainer fetchComponent={UploadArea}>
+            {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
+          </BundleContainer>
 
-            {me && (
-              <BundleContainer fetchComponent={SidebarMenu}>
-                {Component => <Component />}
-              </BundleContainer>
-            )}
-            {me && features.chats && !mobile && (
-              <BundleContainer fetchComponent={ChatWidget}>
-                {Component => <Component />}
-              </BundleContainer>
-            )}
-            <ThumbNavigation />
-
-            <BundleContainer fetchComponent={ProfileHoverCard}>
+          {me && (
+            <BundleContainer fetchComponent={SidebarMenu}>
               {Component => <Component />}
             </BundleContainer>
-
-            <BundleContainer fetchComponent={StatusHoverCard}>
+          )}
+          {me && features.chats && !mobile && (
+            <BundleContainer fetchComponent={ChatWidget}>
               {Component => <Component />}
             </BundleContainer>
-          </div>
+          )}
+          <ThumbNavigation />
+
+          <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
         </div>
-      </HotKeys>
-    </QueryClientProvider>
+      </div>
+    </HotKeys>
   );
 };
 
