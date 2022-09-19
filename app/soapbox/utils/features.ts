@@ -143,6 +143,12 @@ const getInstanceFeatures = (instance: Instance) => {
     accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
+     * An additional moderator interface is available on the domain.
+     * @see /pleroma/admin
+     */
+    adminFE: v.software === PLEROMA,
+
+    /**
      * Can display announcements set by admins.
      * @see GET /api/v1/announcements
      * @see POST /api/v1/announcements/:id/dismiss

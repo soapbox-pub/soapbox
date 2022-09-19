@@ -25,7 +25,7 @@ const Timeline: React.FC<ITimeline> = ({
   ...rest
 }) => {
   const dispatch = useAppDispatch();
-  const getStatusIds = useCallback(makeGetStatusIds, [])();
+  const getStatusIds = useCallback(makeGetStatusIds(), []);
 
   const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
   const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId }));

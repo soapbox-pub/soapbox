@@ -12,7 +12,6 @@ type Suggestion = {
   account: IAccount
 }
 
-
 export default function useOnboardingSuggestions() {
   const api = useApi();
   const dispatch = useAppDispatch();

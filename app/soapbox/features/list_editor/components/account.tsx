@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists';
@@ -13,8 +13,6 @@ const messages = defineMessages({
   add: { id: 'lists.account.add', defaultMessage: 'Add to list' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IAccount {
   accountId: string,
 }
@@ -22,6 +20,7 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ accountId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, accountId));
   const isAdded = useAppSelector((state) => state.listEditor.accounts.items.includes(accountId));

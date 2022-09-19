@@ -1,6 +1,9 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { changeComposeSpoilerness } from 'soapbox/actions/compose';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
+
 import ComposeFormButton from './compose_form_button';
 
 const messages = defineMessages({
@@ -9,12 +12,17 @@ const messages = defineMessages({
 });
 
 interface ISpoilerButton {
-  active?: boolean,
-  onClick: () => void,
+  composeId: string,
 }
 
-const SpoilerButton: React.FC<ISpoilerButton> = ({ active, onClick }) => {
+const SpoilerButton: React.FC<ISpoilerButton> = ({ composeId }) => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
+
+  const active = useCompose(composeId).spoiler;
+
+  const onClick = () =>
+    dispatch(changeComposeSpoilerness(composeId));
 
   return (
     <ComposeFormButton

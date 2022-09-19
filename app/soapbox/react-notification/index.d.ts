@@ -49,7 +49,7 @@ declare module 'soapbox/react-notification' {
     title?: string | ReactElement<any>;
     /** Custom title styles. */
     titleStyle?: object;
-    
+
     /**
      * Callback function to run when dismissAfter timer runs out
      * @param notification  Notification currently being dismissed.

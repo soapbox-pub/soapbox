@@ -3,7 +3,7 @@ import React from 'react';
 import { TransitionMotion, spring } from 'react-motion';
 
 import { Icon } from 'soapbox/components/ui';
-import EmojiPickerDropdown from 'soapbox/features/compose/containers/emoji_picker_dropdown_container';
+import EmojiPickerDropdown from 'soapbox/features/compose/components/emoji-picker/emoji-picker-dropdown';
 import { useSettings } from 'soapbox/hooks';
 
 import Reaction from './reaction';

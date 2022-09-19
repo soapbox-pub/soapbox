@@ -155,7 +155,7 @@ const SoapboxConfig: React.FC = () => {
 
   const addStreamItem = (path: ConfigPath, template: Template) => {
     return () => {
-      const items = data.getIn(path);
+      const items = data.getIn(path) || ImmutableList();
       setConfig(path, items.push(template));
     };
   };

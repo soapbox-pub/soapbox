@@ -20,6 +20,7 @@ import KVStore from 'soapbox/storage/kv_store';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
+import { normalizeUsername } from 'soapbox/utils/input';
 import { isStandalone } from 'soapbox/utils/state';
 
 import api, { baseClient } from '../api';
@@ -204,16 +205,6 @@ export const loadCredentials = (token: string, accountUrl: string) =>
   (dispatch: AppDispatch) => dispatch(rememberAuthAccount(accountUrl))
     .then(() => dispatch(verifyCredentials(token, accountUrl)))
     .catch(() => dispatch(verifyCredentials(token, accountUrl)));
-
-/** Trim the username and strip the leading @. */
-const normalizeUsername = (username: string): string => {
-  const trimmed = username.trim();
-  if (trimmed[0] === '@') {
-    return trimmed.slice(1);
-  } else {
-    return trimmed;
-  }
-};
 
 export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {

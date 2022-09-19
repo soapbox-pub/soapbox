@@ -17,7 +17,7 @@ import {
 import { normalizeAnnouncement, normalizeAnnouncementReaction } from 'soapbox/normalizers';
 
 import type { AnyAction } from 'redux';
-import type{ Announcement, AnnouncementReaction, APIEntity } from 'soapbox/types/entities';
+import type { Announcement, AnnouncementReaction, APIEntity } from 'soapbox/types/entities';
 
 const ReducerRecord = ImmutableRecord({
   items: ImmutableList<Announcement>(),

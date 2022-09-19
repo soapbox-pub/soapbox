@@ -98,7 +98,6 @@ type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
-
   return state.setIn(path, ListRecord({
     next,
     items: ImmutableOrderedSet(accounts.map(item => item.id)),

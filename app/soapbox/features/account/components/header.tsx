@@ -6,12 +6,10 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { verifyUser, unverifyUser, setDonor, removeDonor, promoteToAdmin, promoteToModerator, demoteToUser, suggestUsers, unsuggestUsers } from 'soapbox/actions/admin';
 import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
 import { openModal } from 'soapbox/actions/modals';
-import { deactivateUserModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
@@ -26,10 +24,7 @@ import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { Account } from 'soapbox/types/entities';
-import {
-  isLocal,
-  isRemote,
-} from 'soapbox/utils/accounts';
+import { isRemote } from 'soapbox/utils/accounts';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown_menu';
 
@@ -59,39 +54,17 @@ const messages = defineMessages({
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
-  admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
+  adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
-  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
-  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
-  verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
-  unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
-  setDonor: { id: 'admin.users.actions.set_donor', defaultMessage: 'Set @{name} as a donor' },
-  removeDonor: { id: 'admin.users.actions.remove_donor', defaultMessage: 'Remove @{name} as a donor' },
-  promoteToAdmin: { id: 'admin.users.actions.promote_to_admin', defaultMessage: 'Promote @{name} to an admin' },
-  promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
-  demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
-  demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
-  suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
-  unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
   search: { id: 'account.search', defaultMessage: 'Search from @{name}' },
+  searchSelf: { id: 'account.search_self', defaultMessage: 'Search your posts' },
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
-  userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
-  userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
-  setDonorSuccess: { id: 'admin.users.set_donor_message', defaultMessage: '@{acct} was set as a donor' },
-  removeDonorSuccess: { id: 'admin.users.remove_donor_message', defaultMessage: '@{acct} was removed as a donor' },
-  promotedToAdmin: { id: 'admin.users.actions.promote_to_admin_message', defaultMessage: '@{acct} was promoted to an admin' },
-  promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
-  demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
-  demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
-  userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
-  userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
   removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
-
 });
 
 interface IHeader {
@@ -209,81 +182,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(launchChat(account.id, history));
   };
 
-  const onDeactivateUser = () => {
-    dispatch(deactivateUserModal(intl, account.id));
-  };
-
-  const onVerifyUser = () => {
-    const message = intl.formatMessage(messages.userVerified, { acct: account.acct });
-
-    dispatch(verifyUser(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onUnverifyUser = () => {
-    const message = intl.formatMessage(messages.userUnverified, { acct: account.acct });
-
-    dispatch(unverifyUser(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onSetDonor = () => {
-    const message = intl.formatMessage(messages.setDonorSuccess, { acct: account.acct });
-
-    dispatch(setDonor(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onRemoveDonor = () => {
-    const message = intl.formatMessage(messages.removeDonorSuccess, { acct: account.acct });
-
-    dispatch(removeDonor(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onPromoteToAdmin = () => {
-    const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.acct });
-
-    dispatch(promoteToAdmin(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onPromoteToModerator = () => {
-    const messageType = account.admin ? messages.demotedToModerator : messages.promotedToModerator;
-    const message = intl.formatMessage(messageType, { acct: account.acct });
-
-    dispatch(promoteToModerator(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onDemoteToUser = () => {
-    const message = intl.formatMessage(messages.demotedToUser, { acct: account.acct });
-
-    dispatch(demoteToUser(account.id))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onSuggestUser = () => {
-    const message = intl.formatMessage(messages.userSuggested, { acct: account.acct });
-
-    dispatch(suggestUsers([account.id]))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
-  };
-
-  const onUnsuggestUser = () => {
-    const message = intl.formatMessage(messages.userUnsuggested, { acct: account.acct });
-
-    dispatch(unsuggestUsers([account.id]))
-      .then(() => dispatch(snackbar.success(message)))
-      .catch(() => { });
+  const onModerate = () => {
+    dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
 
   const onRemoveFromFollowers = () => {
@@ -378,6 +278,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         to: '/settings',
         icon: require('@tabler/icons/settings.svg'),
       });
+      if (features.searchFromAccount) {
+        menu.push({
+          text: intl.formatMessage(messages.searchSelf, { name: account.username }),
+          action: onSearch,
+          icon: require('@tabler/icons/search.svg'),
+        });
+      }
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.mutes),
@@ -524,107 +431,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
     if (ownAccount?.staff) {
       menu.push(null);
 
-      if (ownAccount?.admin) {
-        menu.push({
-          text: intl.formatMessage(messages.admin_account, { name: account.username }),
-          to: `/pleroma/admin/#/users/${account.id}/`,
-          newTab: true,
-          icon: require('@tabler/icons/gavel.svg'),
-        });
-      }
-
-      if (account.id !== ownAccount?.id && isLocal(account) && ownAccount.admin) {
-        if (account.admin) {
-          menu.push({
-            text: intl.formatMessage(messages.demoteToModerator, { name: account.username }),
-            action: onPromoteToModerator,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-          menu.push({
-            text: intl.formatMessage(messages.demoteToUser, { name: account.username }),
-            action: onDemoteToUser,
-            icon: require('@tabler/icons/arrow-down-circle.svg'),
-          });
-        } else if (account.moderator) {
-          menu.push({
-            text: intl.formatMessage(messages.promoteToAdmin, { name: account.username }),
-            action: onPromoteToAdmin,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-          menu.push({
-            text: intl.formatMessage(messages.demoteToUser, { name: account.username }),
-            action: onDemoteToUser,
-            icon: require('@tabler/icons/arrow-down-circle.svg'),
-          });
-        } else {
-          menu.push({
-            text: intl.formatMessage(messages.promoteToAdmin, { name: account.username }),
-            action: onPromoteToAdmin,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-          menu.push({
-            text: intl.formatMessage(messages.promoteToModerator, { name: account.username }),
-            action: onPromoteToModerator,
-            icon: require('@tabler/icons/arrow-up-circle.svg'),
-          });
-        }
-      }
-
-      if (account.verified) {
-        menu.push({
-          text: intl.formatMessage(messages.unverifyUser, { name: account.username }),
-          action: onUnverifyUser,
-          icon: require('@tabler/icons/check.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.verifyUser, { name: account.username }),
-          action: onVerifyUser,
-          icon: require('@tabler/icons/check.svg'),
-        });
-      }
-
-      if (account.donor) {
-        menu.push({
-          text: intl.formatMessage(messages.removeDonor, { name: account.username }),
-          action: onRemoveDonor,
-          icon: require('@tabler/icons/coin.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.setDonor, { name: account.username }),
-          action: onSetDonor,
-          icon: require('@tabler/icons/coin.svg'),
-        });
-      }
-
-      if (features.suggestionsV2 && ownAccount.admin) {
-        if (account.getIn(['pleroma', 'is_suggested'])) {
-          menu.push({
-            text: intl.formatMessage(messages.unsuggestUser, { name: account.username }),
-            action: onUnsuggestUser,
-            icon: require('@tabler/icons/user-x.svg'),
-          });
-        } else {
-          menu.push({
-            text: intl.formatMessage(messages.suggestUser, { name: account.username }),
-            action: onSuggestUser,
-            icon: require('@tabler/icons/user-check.svg'),
-          });
-        }
-      }
-
-      if (account.id !== ownAccount?.id) {
-        menu.push({
-          text: intl.formatMessage(messages.deactivateUser, { name: account.username }),
-          action: onDeactivateUser,
-          icon: require('@tabler/icons/user-off.svg'),
-        });
-        menu.push({
-          text: intl.formatMessage(messages.deleteUser, { name: account.username }),
-          icon: require('@tabler/icons/user-minus.svg'),
-        });
-      }
+      menu.push({
+        text: intl.formatMessage(messages.adminAccount, { name: account.username }),
+        action: onModerate,
+        icon: require('@tabler/icons/gavel.svg'),
+      });
     }
 
     return menu;
