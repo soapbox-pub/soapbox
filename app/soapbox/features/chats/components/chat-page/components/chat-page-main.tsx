@@ -58,7 +58,7 @@ const ChatPageMain = () => {
 
   const handleReportChat = () => dispatch(initReport(chat?.account as any));
 
-  if (!account?.chats_onboarded) {
+  if (!chat && !account?.chats_onboarded) {
     return (
       <Welcome />
     );
