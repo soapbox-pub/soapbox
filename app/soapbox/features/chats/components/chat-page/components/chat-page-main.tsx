@@ -32,7 +32,7 @@ const ChatPageMain = () => {
   const intl = useIntl();
   const account = useOwnAccount();
 
-  const { chat } = useChatContext();
+  const { chat, setChat } = useChatContext();
   const { isSilenced, handleSilence } = useChatSilence(chat);
   const { deleteChat } = useChat(chat?.id as string);
 
@@ -72,6 +72,12 @@ const ChatPageMain = () => {
     <Stack className='h-full overflow-hidden'>
       <HStack alignItems='center' justifyContent='between' space={2} className='px-4 py-2 w-full'>
         <HStack alignItems='center' space={2} className='overflow-hidden'>
+          <IconButton
+            src={require('@tabler/icons/arrow-left.svg')}
+            className='sm:hidden h-7 w-7'
+            onClick={() => setChat(null)}
+          />
+
           <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
 
           <Stack alignItems='start' className='overflow-hidden'>
