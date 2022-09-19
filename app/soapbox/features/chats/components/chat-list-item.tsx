@@ -38,7 +38,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
                 weight='medium'
                 theme='muted'
                 truncate
-                className='w-full truncate-child'
+                className='w-full truncate-child pointer-events-none'
                 data-testid='chat-last-message'
                 dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
               />
