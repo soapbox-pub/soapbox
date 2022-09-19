@@ -10,12 +10,12 @@ const ChatPage = () => {
     <Card className='p-0 h-[calc(100vh-176px)] overflow-hidden' variant='rounded'>
       <div className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'>
         <Stack
-          className='col-span-3 p-6 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset'
+          className='col-span-9 sm:col-span-3 p-6 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset'
         >
           <ChatPageSidebar />
         </Stack>
 
-        <Stack className='col-span-6 h-full overflow-hidden'>
+        <Stack className='hidden sm:block col-span-6 h-full overflow-hidden'>
           <ChatPageMain />
         </Stack>
       </div>
