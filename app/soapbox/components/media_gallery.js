@@ -605,7 +605,7 @@ class MediaGallery extends React.PureComponent {
     }
 
     if (inReview) {
-      summary = <FormattedMessage id='status.in_review_summary.summary' defaultMessage='This Truth has been sent to Moderation for review and is only visible to you.' />;
+      summary = <FormattedMessage id='status.in_review_summary.summary' defaultMessage='This post has been sent to Moderation for review and is only visible to you.' />;
     } else {
       summary = <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />;
     }
