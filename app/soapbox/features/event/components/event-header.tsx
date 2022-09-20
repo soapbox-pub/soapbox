@@ -21,6 +21,8 @@ import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/t
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
+  exportIcs: { id: 'event.export_ics', defaultMessage: 'Export to your calendar' },
+  copy: { id: 'event.copy', defaultMessage: 'Copy link to event' },
 });
 
 interface IEventHeader {
@@ -65,7 +67,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const menu: MenuType = [
     {
-      text: 'Export to your calendar',
+      text: intl.formatMessage(messages.exportIcs),
       action: handleExportClick,
       icon: require('@tabler/icons/calendar-plus.svg'),
     },

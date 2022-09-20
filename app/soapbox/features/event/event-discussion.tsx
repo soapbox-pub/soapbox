@@ -1,6 +1,7 @@
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { createSelector } from 'reselect';
 
 import { eventDiscussionCompose } from 'soapbox/actions/compose';
@@ -103,7 +104,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   }, [props.params.statusId]);
 
   useEffect(() => {
-    dispatch(eventDiscussionCompose(`reply:${props.params.statusId}`, status!));
+    if (isLoaded) dispatch(eventDiscussionCompose(`reply:${props.params.statusId}`, status!));
   }, [isLoaded]);
 
   const handleMoveUp = (id: string) => {
@@ -207,7 +208,9 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
 
   return (
     <Stack space={2}>
-      <ComposeForm id={`reply:${status.id}`} autoFocus={false} eventDiscussion />
+      <div className='sm:p-2 pt-0 border-b border-solid border-gray-200 dark:border-gray-800'>
+        <ComposeForm id={`reply:${status.id}`} autoFocus={false} eventDiscussion />
+      </div>
       <div ref={node} className='thread p-0 sm:p-2 shadow-none'>
         <ScrollableList
           id='thread'
@@ -216,6 +219,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
           onLoadMore={handleLoadMore}
           placeholderComponent={() => <PlaceholderStatus thread />}
           initialTopMostItemIndex={0}
+          emptyMessage={<FormattedMessage id='event.discussion.empty' defaultMessage='No one has commented this event yet. When someone does, they will appear here.' />}
         >
           {children}
         </ScrollableList>

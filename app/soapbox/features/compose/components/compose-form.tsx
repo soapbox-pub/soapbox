@@ -1,6 +1,6 @@
 import classNames from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -47,7 +47,8 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
-  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
+  eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -238,6 +239,7 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
   let publishText: string | JSX.Element = '';
+  let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
@@ -261,6 +263,14 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
 
   if (scheduledAt) {
     publishText = intl.formatMessage(messages.schedule);
+  }
+
+  if (eventDiscussion) {
+    textareaPlaceholder = messages.eventPlaceholder;
+  } else if (hasPoll) {
+    textareaPlaceholder = messages.pollPlaceholder;
+  } else {
+    textareaPlaceholder = messages.placeholder;
   }
 
   return (
@@ -316,7 +326,7 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
-        placeholder={intl.formatMessage(hasPoll ? messages.pollPlaceholder : messages.placeholder)}
+        placeholder={intl.formatMessage(textareaPlaceholder)}
         disabled={disabled}
         value={text}
         onChange={handleChange}
