@@ -120,7 +120,7 @@ const useChats = (search?: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(['chats', search], ({ pageParam }) => getChats(pageParam), {
+  const queryInfo = useInfiniteQuery(['chats', 'search', search], ({ pageParam }) => getChats(pageParam), {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
@@ -152,7 +152,7 @@ const useChat = (chatId: string) => {
 
   const markChatAsRead = (lastReadId: string) => {
     api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
-      .then(() => queryClient.invalidateQueries(['chats']))
+      .then(() => queryClient.invalidateQueries(['chats', 'search']))
       .catch(() => null);
   };
 
@@ -166,7 +166,7 @@ const useChat = (chatId: string) => {
     onSuccess(response) {
       setChat(response.data);
       queryClient.invalidateQueries(['chats', 'messages', chatId]);
-      queryClient.invalidateQueries(['chats']);
+      queryClient.invalidateQueries(['chats', 'search']);
     },
   });
 
@@ -175,7 +175,7 @@ const useChat = (chatId: string) => {
       setChat(null);
       setEditing(false);
       queryClient.invalidateQueries(['chats', 'messages', chatId]);
-      queryClient.invalidateQueries(['chats']);
+      queryClient.invalidateQueries(['chats', 'search']);
     },
   });
 

@@ -47,7 +47,7 @@ const ChatSearch = () => {
     },
     onSuccess: (response) => {
       setChat(response.data);
-      queryClient.invalidateQueries(['chats']);
+      queryClient.invalidateQueries(['chats', 'search']);
     },
   });
 
