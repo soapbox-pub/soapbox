@@ -22,8 +22,6 @@ import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
-const getStatus = makeGetStatus();
-
 const getDescendantsIds = createSelector([
   (_: RootState, statusId: string) => statusId,
   (state: RootState) => state.contexts.replies,
@@ -66,7 +64,10 @@ interface IEventDiscussion {
 const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   const dispatch = useAppDispatch();
 
+  const getStatus = useCallback(makeGetStatus(), []);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
+
+  const me = useAppSelector((state) => state.me);
 
   const descendantsIds = useAppSelector(state => {
     let descendantsIds = ImmutableOrderedSet<string>();
@@ -104,8 +105,8 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   }, [props.params.statusId]);
 
   useEffect(() => {
-    if (isLoaded) dispatch(eventDiscussionCompose(`reply:${props.params.statusId}`, status!));
-  }, [isLoaded]);
+    if (isLoaded && me) dispatch(eventDiscussionCompose(`reply:${props.params.statusId}`, status!));
+  }, [isLoaded, me]);
 
   const handleMoveUp = (id: string) => {
     const index = ImmutableList(descendantsIds).indexOf(id);
@@ -208,9 +209,9 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
 
   return (
     <Stack space={2}>
-      <div className='sm:p-2 pt-0 border-b border-solid border-gray-200 dark:border-gray-800'>
+      {me && <div className='sm:p-2 pt-0 border-b border-solid border-gray-200 dark:border-gray-800'>
         <ComposeForm id={`reply:${status.id}`} autoFocus={false} eventDiscussion />
-      </div>
+      </div>}
       <div ref={node} className='thread p-0 sm:p-2 shadow-none'>
         <ScrollableList
           id='thread'

@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { joinEvent, leaveEvent } from 'soapbox/actions/events';
 import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -20,6 +20,8 @@ interface IEventAction {
 const EventActionButton: React.FC<IEventAction> = ({ status }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  const me = useAppSelector((state) => state.me);
 
   const event = status.event!;
 
@@ -49,6 +51,15 @@ const EventActionButton: React.FC<IEventAction> = ({ status }) => {
     }
   };
 
+  const handleOpenUnauthorizedModal: React.EventHandler<React.MouseEvent> = (e) => {
+    e.preventDefault();
+
+    dispatch(openModal('UNAUTHORIZED', {
+      action: 'JOIN',
+      ap_id: status.url,
+    }));
+  };
+
   let buttonLabel;
   let buttonIcon;
   let buttonDisabled = false;
@@ -69,7 +80,7 @@ const EventActionButton: React.FC<IEventAction> = ({ status }) => {
       break;
     default:
       buttonLabel = <FormattedMessage id='event.join_state.empty' defaultMessage='Participate' />;
-      buttonAction = handleJoin;
+      buttonAction = me ? handleJoin : handleOpenUnauthorizedModal;
   }
 
   return (

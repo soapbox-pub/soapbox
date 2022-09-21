@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 
 import { fetchEventIcs } from 'soapbox/actions/events';
 import { openModal } from 'soapbox/actions/modals';
+import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
-import { HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
+import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import PlaceholderEventHeader from '../../placeholder/components/placeholder_event_header';
 import EventActionButton from '../components/event-action-button';
@@ -23,6 +25,13 @@ const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
   exportIcs: { id: 'event.export_ics', defaultMessage: 'Export to your calendar' },
   copy: { id: 'event.copy', defaultMessage: 'Copy link to event' },
+  bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
+  adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
+  adminStatus: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
+  markStatusSensitive: { id: 'admin.statuses.actions.mark_status_sensitive', defaultMessage: 'Mark post sensitive' },
+  markStatusNotSensitive: { id: 'admin.statuses.actions.mark_status_not_sensitive', defaultMessage: 'Mark post not sensitive' },
+  deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
 });
 
 interface IEventHeader {
@@ -33,13 +42,15 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const me = useAppSelector(state => state.me);
+  const ownAccount = useOwnAccount();
+  const isStaff = ownAccount ? ownAccount.staff : false;
+  const isAdmin = ownAccount ? ownAccount.admin : false;
 
   if (!status || !status.event) {
     return (
       <>
         <div className='-mt-4 -mx-4'>
-          <div className='relative h-48 w-full lg:h-64 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
         </div>
 
         <PlaceholderEventHeader />
@@ -52,17 +63,51 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const banner = status.media_attachments?.find(({ description }) => description === 'Banner');
 
   const handleHeaderClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault();
+    e.stopPropagation();
 
     const index = status.media_attachments!.findIndex(({ description }) => description === 'Banner');
     dispatch(openModal('MEDIA', { media: status.media_attachments, index }));
   };
 
-  const handleExportClick: React.MouseEventHandler = e => {
+  const handleExportClick = () => {
     dispatch(fetchEventIcs(status.id)).then((response) => {
       download(response, 'calendar.ics');
     }).catch(() => {});
-    e.preventDefault();
+  };
+
+  const handleCopy = () => {
+    const { uri }  = status;
+    const textarea = document.createElement('textarea');
+
+    textarea.textContent    = uri;
+    textarea.style.position = 'fixed';
+
+    document.body.appendChild(textarea);
+
+    try {
+      textarea.select();
+      document.execCommand('copy');
+    } catch {
+      // Do nothing
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  };
+
+  const handleModerate = () => {
+    dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
+  };
+
+  const handleModerateStatus = () => {
+    window.open(`/pleroma/admin/#/statuses/${status.id}/`, '_blank');
+  };
+
+  const handleToggleStatusSensitivity = () => {
+    dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
+  };
+
+  const handleDeleteStatus = () => {
+    dispatch(deleteStatusModal(intl, status.id));
   };
 
   const menu: MenuType = [
@@ -71,12 +116,66 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       action: handleExportClick,
       icon: require('@tabler/icons/calendar-plus.svg'),
     },
+    {
+      text: intl.formatMessage(messages.copy),
+      action: handleCopy,
+      icon: require('@tabler/icons/link.svg'),
+    },
   ];
+
+  if (isStaff) {
+    menu.push(null);
+
+    menu.push({
+      text: intl.formatMessage(messages.adminAccount, { name: account.username }),
+      action: handleModerate,
+      icon: require('@tabler/icons/gavel.svg'),
+    });
+
+    if (isAdmin) {
+      menu.push({
+        text: intl.formatMessage(messages.adminStatus),
+        action: handleModerateStatus,
+        icon: require('@tabler/icons/pencil.svg'),
+      });
+    }
+
+    menu.push({
+      text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+      action: handleToggleStatusSensitivity,
+      icon: require('@tabler/icons/alert-triangle.svg'),
+    });
+
+    if (account.id !== ownAccount?.id) {
+      menu.push({
+        text: intl.formatMessage(messages.deleteStatus),
+        action: handleDeleteStatus,
+        icon: require('@tabler/icons/trash.svg'),
+        destructive: true,
+      });
+    }
+  }
+
+  const handleManageClick: React.MouseEventHandler = e => {
+    e.stopPropagation();
+
+    dispatch(openModal('MANAGE_EVENT', {
+      statusId: status.id,
+    }));
+  };
+
+  const handleParticipantsClick: React.MouseEventHandler = e => {
+    e.stopPropagation();
+
+    dispatch(openModal('EVENT_PARTICIPANTS', {
+      statusId: status.id,
+    }));
+  };
 
   return (
     <>
       <div className='-mt-4 -mx-4'>
-        <div className='relative h-48 w-full lg:h-64 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50'>
+        <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50'>
           {banner && (
             <a href={banner.url} onClick={handleHeaderClick} target='_blank'>
               <StillImage
@@ -124,12 +223,21 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
               })}
             </MenuList>
           </Menu>
-          {account.id !== me && <EventActionButton status={status} />}
+          {account.id === ownAccount?.id ? (
+            <Button
+              size='sm'
+              theme='secondary'
+              onClick={handleManageClick}
+              to={`/@${account.acct}/events/${status.id}`}
+            >
+              <FormattedMessage id='event.manage' defaultMessage='Manage' />
+            </Button>
+          ) : <EventActionButton status={status} />}
         </HStack>
 
         <Stack space={1}>
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/user.svg')} />
+            <Icon src={require('@tabler/icons/flag-3.svg')} />
             <span>
               <FormattedMessage
                 id='event.organized_by'
@@ -144,6 +252,22 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                 }}
               />
             </span>
+          </HStack>
+
+          <HStack alignItems='center' space={2}>
+            <Icon src={require('@tabler/icons/users.svg')} />
+            <a href='#' className='hover:underline' onClick={handleParticipantsClick}>
+              <span>
+                <FormattedMessage
+                  id='event.participants'
+                  defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
+                  values={{
+                    rawCount: event.participants_count || 0,
+                    count: shortNumberFormat(event.participants_count || 0),
+                  }}
+                />
+              </span>
+            </a>
           </HStack>
 
           <EventDate status={status} />

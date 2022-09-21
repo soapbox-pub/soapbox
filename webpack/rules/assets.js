@@ -11,6 +11,7 @@ module.exports = [{
   include: [
     resolve('app', 'images'),
     resolve('node_modules', 'emoji-datasource'),
+    resolve('node_modules', 'leaflet'),
   ],
   generator: {
     filename: 'packs/images/[name]-[contenthash:8][ext]',

@@ -261,12 +261,12 @@ export default function statuses(state = initialState, action: AnyAction): State
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
     case EVENT_JOIN_REQUEST:
-      return state.setIn([action.status.get('id'), 'event', 'join_state'], 'pending');
+      return state.setIn([action.id, 'event', 'join_state'], 'pending');
     case EVENT_JOIN_FAIL:
     case EVENT_LEAVE_REQUEST:
-      return state.setIn([action.status.get('id'), 'event', 'join_state'], null);
+      return state.setIn([action.id, 'event', 'join_state'], null);
     case EVENT_LEAVE_FAIL:
-      return state.setIn([action.status.get('id'), 'event', 'join_state'], action.previousState);
+      return state.setIn([action.id, 'event', 'join_state'], action.previousState);
     default:
       return state;
   }

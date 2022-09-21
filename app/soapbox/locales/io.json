@@ -161,7 +161,7 @@
   "bundle_column_error.retry": "Try again",
   "bundle_column_error.title": "Network error",
   "bundle_modal_error.close": "Close",
-  "bundle_modal_error.message": "Something went wrong while loading this page.",
+  "bundle_modal_error.message": "Something went wrong while loading this modal.",
   "bundle_modal_error.retry": "Try again",
   "card.back.label": "Back",
   "chat_box.actions.send": "Send",

@@ -38,7 +38,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   const dispatch = useAppDispatch();
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
-  const mediaAttachments = excludeBanner ? status.media_attachments.filter(({ description }) => description !== 'Banner') : status.media_attachments;
+  const mediaAttachments = excludeBanner ? status.media_attachments.filter(({ description, pleroma }) => description !== 'Banner' && pleroma.get('mime_type') !== 'text/html') : status.media_attachments;
 
   const size = mediaAttachments.size;
   const firstAttachment = mediaAttachments.first();

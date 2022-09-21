@@ -11,7 +11,7 @@ import snackbar from './snackbar';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const LOCATION_SEARCH_REQUEST = 'LOCATION_SEARCH_REQUEST';
 const LOCATION_SEARCH_SUCCESS = 'LOCATION_SEARCH_SUCCESS';
@@ -259,7 +259,7 @@ const joinEvent = (id: string, participationMessage?: string) =>
       return dispatch(noOp);
     }
 
-    dispatch(joinEventRequest());
+    dispatch(joinEventRequest(status));
 
     return api(getState).post(`/api/v1/pleroma/events/${id}/join`, { participationMessage }).then(({ data }) => {
       dispatch(importFetchedStatus(data));
@@ -270,22 +270,24 @@ const joinEvent = (id: string, participationMessage?: string) =>
         `/@${data.account.acct}/events/${data.id}`,
       ));
     }).catch(function(error) {
-      dispatch(joinEventFail(error, status?.event?.join_state || null));
+      dispatch(joinEventFail(error, status, status?.event?.join_state || null));
     });
   };
 
-const joinEventRequest = () => ({
+const joinEventRequest = (status: StatusEntity) => ({
   type: EVENT_JOIN_REQUEST,
+  id: status.id,
 });
 
 const joinEventSuccess = (status: APIEntity) => ({
   type: EVENT_JOIN_SUCCESS,
-  status,
+  id: status.id,
 });
 
-const joinEventFail = (error: AxiosError, previousState: string | null) => ({
+const joinEventFail = (error: AxiosError, status: StatusEntity, previousState: string | null) => ({
   type: EVENT_JOIN_FAIL,
   error,
+  id: status.id,
   previousState,
 });
 
@@ -297,27 +299,29 @@ const leaveEvent = (id: string) =>
       return dispatch(noOp);
     }
 
-    dispatch(leaveEventRequest());
+    dispatch(leaveEventRequest(status));
 
     return api(getState).post(`/api/v1/pleroma/events/${id}/leave`).then(({ data }) => {
       dispatch(importFetchedStatus(data));
       dispatch(leaveEventSuccess(data));
     }).catch(function(error) {
-      dispatch(leaveEventFail(error));
+      dispatch(leaveEventFail(error, status));
     });
   };
 
-const leaveEventRequest = () => ({
+const leaveEventRequest = (status: StatusEntity) => ({
   type: EVENT_LEAVE_REQUEST,
+  id: status.id,
 });
 
 const leaveEventSuccess = (status: APIEntity) => ({
   type: EVENT_LEAVE_SUCCESS,
-  status,
+  id: status.id,
 });
 
-const leaveEventFail = (error: AxiosError) => ({
+const leaveEventFail = (error: AxiosError, status: StatusEntity) => ({
   type: EVENT_LEAVE_FAIL,
+  id: status.id,
   error,
 });
 

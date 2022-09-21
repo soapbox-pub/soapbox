@@ -7,7 +7,7 @@ import { Button } from 'soapbox/components/ui';
 
 const ComposeButton = () => {
   const dispatch = useDispatch();
-  const onOpenCompose = () => dispatch(openModal('COMPOSE'));
+  const onOpenCompose = () => dispatch(openModal('CREATE_EVENT'));
 
   return (
     <div className='mt-4'>
