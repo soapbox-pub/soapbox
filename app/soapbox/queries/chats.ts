@@ -49,12 +49,18 @@ export interface IChatSilence {
   target_account_id: number
 }
 
+export interface PaginatedResult<T> {
+  result: T[],
+  hasMore: boolean,
+  link?: string,
+}
+
 const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 
 const useChatMessages = (chatId: string) => {
   const api = useApi();
 
-  const getChatMessages = async(chatId: string, pageParam?: any): Promise<{ result: IChatMessage[], hasMore: boolean, link?: string }> => {
+  const getChatMessages = async(chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || `/api/v1/pleroma/chats/${chatId}/messages`;
     const response = await api.get(uri);
@@ -97,7 +103,7 @@ const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
 
-  const getChats = async(pageParam?: any): Promise<{ result: IChat[], hasMore: boolean, link?: string }> => {
+  const getChats = async(pageParam?: any): Promise<PaginatedResult<IChat>> => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || '/api/v1/pleroma/chats';
     const response = await api.get<IChat[]>(uri, {

@@ -1,6 +1,5 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
-import { normalizeChat } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -25,7 +24,8 @@ import {
   processTimelineUpdate,
 } from './timelines';
 
-import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
+import type { InfiniteData } from '@tanstack/react-query';
+import type { PaginatedResult } from 'soapbox/queries/chats';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Chat, ChatMessage } from 'soapbox/types/entities';
 
@@ -53,14 +53,10 @@ interface ChatPayload extends Omit<Chat, 'last_message'> {
   last_message: ChatMessage | null,
 }
 
-interface ChatPage {
-  result: Chat[],
-  hasMore: boolean,
-  link?: string,
-}
-
 const updateChat = (payload: ChatPayload) => {
-  queryClient.setQueriesData<InfiniteData<ChatPage>>(['chats', 'search'], (data) => {
+  const { last_message: lastMessage } = payload;
+
+  queryClient.setQueriesData<InfiniteData<PaginatedResult<Chat>>>(['chats', 'search'], (data) => {
     if (data) {
       const pages = data.pages.map(page => {
         const result = page.result.map(chat => chat.id === payload.id ? payload as any : chat);
@@ -70,15 +66,15 @@ const updateChat = (payload: ChatPayload) => {
     }
   });
 
-  // if (payload.last_message) {
-  //   queryClient.setQueryData<UseInfiniteQueryResult<ChatMessage[]>>(['chats', 'messages', payload.id], (data) => {
-  //     if (data) {
-  //       const pages = [...data.pages];
-  //       pages[0]?.push(payload.last_message);
-  //       return { ...result, pages };
-  //     }
-  //   });
-  // }
+  if (lastMessage) {
+    queryClient.setQueryData<InfiniteData<PaginatedResult<ChatMessage>>>(['chats', 'messages', payload.id], (data) => {
+      if (data) {
+        const pages = [...data.pages];
+        pages[0] = { ...pages[0], result: [...pages[0].result, lastMessage] };
+        return { ...data, pages };
+      }
+    });
+  }
 };
 
 const connectTimelineStream = (
