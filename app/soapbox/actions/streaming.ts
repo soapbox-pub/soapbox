@@ -1,5 +1,6 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+import { normalizeChat } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -24,8 +25,9 @@ import {
   processTimelineUpdate,
 } from './timelines';
 
+import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Chat, ChatMessage } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
@@ -46,6 +48,38 @@ const updateFollowRelationships = (relationships: APIEntity) =>
       ...relationships,
     });
   };
+
+interface ChatPayload extends Omit<Chat, 'last_message'> {
+  last_message: ChatMessage | null,
+}
+
+interface ChatPage {
+  result: Chat[],
+  hasMore: boolean,
+  link?: string,
+}
+
+const updateChat = (payload: ChatPayload) => {
+  queryClient.setQueriesData<InfiniteData<ChatPage>>(['chats', 'search'], (data) => {
+    if (data) {
+      const pages = data.pages.map(page => {
+        const result = page.result.map(chat => chat.id === payload.id ? payload as any : chat);
+        return { ...page, result };
+      });
+      return { ...data, pages };
+    }
+  });
+
+  // if (payload.last_message) {
+  //   queryClient.setQueryData<UseInfiniteQueryResult<ChatMessage[]>>(['chats', 'messages', payload.id], (data) => {
+  //     if (data) {
+  //       const pages = [...data.pages];
+  //       pages[0]?.push(payload.last_message);
+  //       return { ...result, pages };
+  //     }
+  //   });
+  // }
+};
 
 const connectTimelineStream = (
   timelineId: string,
@@ -91,24 +125,10 @@ const connectTimelineStream = (
         case 'filters_changed':
           dispatch(fetchFilters());
           break;
-        case 'chat_message':
-          queryClient.invalidateQueries(['chats', 'messages', JSON.parse(data.payload).chat_id]);
-          play(soundCache.chat);
-          break;
         case 'pleroma:chat_update':
-          dispatch((dispatch: AppDispatch, getState: () => RootState) => {
-            const chat = JSON.parse(data.payload);
-            const me = getState().me;
-            const messageOwned = !(chat.last_message && chat.last_message.account_id !== me);
-
-            dispatch({
-              type: STREAMING_CHAT_UPDATE,
-              chat,
-              me,
-              // Only play sounds for recipient messages
-              meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
-            });
-          });
+        case 'chat_message': // TruthSocial
+          updateChat(JSON.parse(data.payload));
+          play(soundCache.chat);
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
