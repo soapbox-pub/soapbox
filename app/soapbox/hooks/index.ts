@@ -9,6 +9,7 @@ export { useFeatures } from './useFeatures';
 export { useLocale } from './useLocale';
 export { useOnScreen } from './useOnScreen';
 export { useOwnAccount } from './useOwnAccount';
+export { usePrevious } from './usePrevious';
 export { useRefEventHandler } from './useRefEventHandler';
 export { useSettings } from './useSettings';
 export { useSoapboxConfig } from './useSoapboxConfig';

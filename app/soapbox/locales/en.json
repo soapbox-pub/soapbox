@@ -992,7 +992,7 @@
   "status.favourite": "Like",
   "status.filtered": "Filtered",
   "status.in_review_warning": "Content Under Review",
-  "status.in_review_summary.summary": "This Truth has been sent to Moderation for review and is only visible to you.",
+  "status.in_review_summary.summary": "This post has been sent to Moderation for review and is only visible to you.",
   "status.in_review_summary.contact": "If you believe this is in error please {link}.",
   "status.in_review_summary.link": "Contact Support",
   "status.load_more": "Load more",
