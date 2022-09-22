@@ -6,7 +6,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 
 import { queryClient } from './client';
@@ -102,10 +102,12 @@ const useChatMessages = (chatId: string) => {
 const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const getChats = async(pageParam?: any): Promise<PaginatedResult<IChat>> => {
+    const endpoint = features.chatsV2 ? '/api/v2/pleroma/chats' : '/api/v1/pleroma/chats';
     const nextPageLink = pageParam?.link;
-    const uri = nextPageLink || '/api/v1/pleroma/chats';
+    const uri = nextPageLink || endpoint;
     const response = await api.get<IChat[]>(uri, {
       params: {
         search,
