@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useDebounce } from 'soapbox/hooks';
+import { useDebounce, useFeatures } from 'soapbox/hooks';
 import { IChat, useChats } from 'soapbox/queries/chats';
 
 import ChatList from '../chat-list';
@@ -17,6 +17,7 @@ import { Pane } from '../ui';
 import Blankslate from './blankslate';
 
 const ChatPane = () => {
+  const features = useFeatures();
   const debounce = useDebounce;
 
   const [value, setValue] = useState<string>();
@@ -44,13 +45,15 @@ const ChatPane = () => {
     if (hasSearchValue || Number(chats?.length) > 0) {
       return (
         <Stack space={4} className='flex-grow h-full'>
-          <div className='px-4'>
-            <ChatSearchInput
-              value={value || ''}
-              onChange={(event) => setValue(event.target.value)}
-              onClear={clearValue}
-            />
-          </div>
+          {features.chatsSearch && (
+            <div className='px-4'>
+              <ChatSearchInput
+                value={value || ''}
+                onChange={(event) => setValue(event.target.value)}
+                onClear={clearValue}
+              />
+            </div>
+          )}
 
           {Number(chats?.length) > 0 ? (
             <ChatList
