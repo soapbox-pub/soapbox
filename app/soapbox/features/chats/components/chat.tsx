@@ -232,7 +232,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
           </Stack>
 
           <IconButton
-            src={require('@tabler/icons/send.svg')}
+            src={require('icons/airplane.svg')}
             iconClassName='w-5 h-5'
             className='text-primary-500'
             disabled={isSubmitDisabled}
