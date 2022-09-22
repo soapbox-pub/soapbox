@@ -1,14 +1,14 @@
 import sumBy from 'lodash/sumBy';
 import React, { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
 
-import { Icon, Input, Stack } from 'soapbox/components/ui';
+import { Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useDebounce } from 'soapbox/hooks';
 import { IChat, useChats } from 'soapbox/queries/chats';
 
 import ChatList from '../chat-list';
 import ChatPaneHeader from '../chat-pane-header';
+import ChatSearchInput from '../chat-search-input';
 import ChatSearch from '../chat-search/chat-search';
 import EmptyResultsBlankslate from '../chat-search/empty-results-blankslate';
 import ChatWindow from '../chat-window';
@@ -16,12 +16,7 @@ import { Pane } from '../ui';
 
 import Blankslate from './blankslate';
 
-const messages = defineMessages({
-  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Search inbox' },
-});
-
 const ChatPane = () => {
-  const intl = useIntl();
   const debounce = useDebounce;
 
   const [value, setValue] = useState<string>();
@@ -50,23 +45,10 @@ const ChatPane = () => {
       return (
         <Stack space={4} className='flex-grow h-full'>
           <div className='px-4'>
-            <Input
-              type='text'
-              autoFocus
-              placeholder={intl.formatMessage(messages.searchPlaceholder)}
-              className='rounded-full'
+            <ChatSearchInput
               value={value || ''}
               onChange={(event) => setValue(event.target.value)}
-              isSearch
-              append={
-                <button onClick={clearValue}>
-                  <Icon
-                    src={hasSearchValue ? require('@tabler/icons/x.svg') : require('@tabler/icons/search.svg')}
-                    className='h-4 w-4 text-gray-700 dark:text-gray-600'
-                    aria-hidden='true'
-                  />
-                </button>
-              }
+              onClear={clearValue}
             />
           </div>
 
