@@ -1,6 +1,6 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
-import { queryClient } from 'soapbox/queries/client';
+import { updatePageItem, appendPageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
@@ -24,8 +24,6 @@ import {
   processTimelineUpdate,
 } from './timelines';
 
-import type { InfiniteData } from '@tanstack/react-query';
-import type { PaginatedResult } from 'soapbox/queries/chats';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Chat, ChatMessage } from 'soapbox/types/entities';
 
@@ -56,24 +54,10 @@ interface ChatPayload extends Omit<Chat, 'last_message'> {
 const updateChat = (payload: ChatPayload) => {
   const { last_message: lastMessage } = payload;
 
-  queryClient.setQueriesData<InfiniteData<PaginatedResult<Chat>>>(['chats', 'search'], (data) => {
-    if (data) {
-      const pages = data.pages.map(page => {
-        const result = page.result.map(chat => chat.id === payload.id ? payload as any : chat);
-        return { ...page, result };
-      });
-      return { ...data, pages };
-    }
-  });
+  updatePageItem<Chat>(['chats', 'search'], payload as any, (o, n) => o.id === n.id);
 
   if (lastMessage) {
-    queryClient.setQueryData<InfiniteData<PaginatedResult<ChatMessage>>>(['chats', 'messages', payload.id], (data) => {
-      if (data) {
-        const pages = [...data.pages];
-        pages[0] = { ...pages[0], result: [...pages[0].result, lastMessage] };
-        return { ...data, pages };
-      }
-    });
+    appendPageItem(['chats', 'messages', payload.id], lastMessage);
   }
 };
 

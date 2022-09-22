@@ -8,6 +8,7 @@ import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import { flattenPages } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
 
@@ -88,10 +89,7 @@ const useChatMessages = (chatId: string) => {
     },
   });
 
-  const data = queryInfo.data?.pages.reduce<IChatMessage[]>(
-    (prev: IChatMessage[], curr) => [...curr.result, ...prev],
-    [],
-  );
+  const data = flattenPages(queryInfo);
 
   return {
     ...queryInfo,
@@ -139,10 +137,7 @@ const useChats = (search?: string) => {
     },
   });
 
-  const data = queryInfo.data?.pages.reduce<IChat[]>(
-    (prev: IChat[], curr) => [...prev, ...curr.result],
-    [],
-  );
+  const data = flattenPages(queryInfo);
 
   const chatsQuery = {
     ...queryInfo,
