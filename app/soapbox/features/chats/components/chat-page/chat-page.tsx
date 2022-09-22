@@ -21,7 +21,10 @@ const ChatPage = () => {
     const { top } = containerRef.current.getBoundingClientRect();
     const fullHeight = document.body.offsetHeight;
 
-    setHeight(fullHeight - top);
+    // On mobile, account for bottom navigation.
+    const offset = document.body.clientWidth < 976 ? -61 : 0;
+
+    setHeight(fullHeight - top + offset);
   };
 
   useEffect(() => {
