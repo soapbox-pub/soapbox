@@ -10,6 +10,9 @@ const ChatWidget = () => {
   const account = useOwnAccount();
   const dispatch = useAppDispatch();
 
+  const path = location.pathname;
+  const shouldHideWidget = Boolean(path.match(/^\/chats/));
+
   useEffect(() => {
     const disconnect = dispatch(connectDirectStream());
 
@@ -18,7 +21,7 @@ const ChatWidget = () => {
     });
   }, []);
 
-  if (!account?.chats_onboarded) {
+  if (!account?.chats_onboarded || shouldHideWidget) {
     return null;
   }
 

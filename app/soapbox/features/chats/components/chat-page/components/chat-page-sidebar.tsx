@@ -45,15 +45,17 @@ const ChatPageSidebar = () => {
   const handleClickChat = (chat: IChat) => setChat(chat);
 
   return (
-    <Stack space={6} className='h-full'>
-      <CardTitle title={intl.formatMessage(messages.title)} />
+    <Stack space={4} className='h-full'>
+      <Stack space={4} className='px-4 pt-4'>
+        <CardTitle title={intl.formatMessage(messages.title)} />
 
-      <AccountSearch
-        placeholder={intl.formatMessage(messages.searchPlaceholder)}
-        onSelected={handleSuggestion}
-      />
+        <AccountSearch
+          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          onSelected={handleSuggestion}
+        />
+      </Stack>
 
-      <Stack className='-mx-3 flex-grow h-full'>
+      <Stack className='flex-grow h-full'>
         <ChatList onClickChat={handleClickChat} />
       </Stack>
     </Stack>

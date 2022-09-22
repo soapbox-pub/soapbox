@@ -61,7 +61,11 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
             endReached={handleLoadMore}
             itemContent={(_index, chat) => {
               const chatSilence = chatSilences?.find((chatSilence) => String(chatSilence.target_account_id) === chat.account.id);
-              return <ChatListItem chat={chat} onClick={onClickChat} chatSilence={chatSilence} />;
+              return (
+                <div className='px-2'>
+                  <ChatListItem chat={chat} onClick={onClickChat} chatSilence={chatSilence} />
+                </div>
+              );
             }}
             components={{
               ScrollSeekPlaceholder: () => <PlaceholderChat />,

@@ -72,13 +72,15 @@ const ChatPageMain = () => {
     <Stack className='h-full overflow-hidden'>
       <HStack alignItems='center' justifyContent='between' space={2} className='px-4 py-2 w-full'>
         <HStack alignItems='center' space={2} className='overflow-hidden'>
-          <IconButton
-            src={require('@tabler/icons/arrow-left.svg')}
-            className='sm:hidden h-7 w-7'
-            onClick={() => setChat(null)}
-          />
+          <HStack alignItems='center'>
+            <IconButton
+              src={require('@tabler/icons/arrow-left.svg')}
+              className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
+              onClick={() => setChat(null)}
+            />
 
-          <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
+            <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
+          </HStack>
 
           <Stack alignItems='start' className='overflow-hidden'>
             <div className='flex items-center space-x-1 flex-grow w-full'>
