@@ -28,7 +28,7 @@ const BIG_EMOJI_LIMIT = 1;
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
-  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete' },
+  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete for both' },
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
   blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
   networkFailureTitle: { id: 'chat_message_list.network_failure.title', defaultMessage: 'Whoops!' },
