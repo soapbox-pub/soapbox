@@ -87,19 +87,19 @@ const ChatMessageListIntro = () => {
 
           <HStack alignItems='center' space={2} className='w-full'>
             <Button
-              theme='danger'
-              block
-              onClick={handleLeaveChat}
-            >
-              {intl.formatMessage(messages.leaveChat)}
-            </Button>
-
-            <Button
               theme='secondary'
               block
               onClick={handleReportChat}
             >
               {intl.formatMessage(messages.report)}
+            </Button>
+
+            <Button
+              theme='danger'
+              block
+              onClick={handleLeaveChat}
+            >
+              {intl.formatMessage(messages.leaveChat)}
             </Button>
           </HStack>
         </Stack>
