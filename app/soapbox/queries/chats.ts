@@ -8,7 +8,7 @@ import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
-import { flattenPages } from 'soapbox/utils/queries';
+import { flattenPages, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
 
@@ -155,7 +155,7 @@ const useChat = (chatId: string) => {
 
   const markChatAsRead = (lastReadId: string) => {
     api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
-      .then(() => queryClient.invalidateQueries(['chats', 'search']))
+      .then(({ data }) => updatePageItem(['chats', 'search'], data, (o, n) => o.id === n.id))
       .catch(() => null);
   };
 
