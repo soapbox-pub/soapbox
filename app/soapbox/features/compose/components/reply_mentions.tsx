@@ -36,7 +36,9 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    dispatch(openModal('REPLY_MENTIONS'));
+    dispatch(openModal('REPLY_MENTIONS', {
+      composeId,
+    }));
   };
 
   if (!parentTo || (parentTo.size === 0)) {
