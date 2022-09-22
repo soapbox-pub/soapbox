@@ -679,6 +679,7 @@ const UI: React.FC = ({ children }) => {
               {Component => <Component />}
             </BundleContainer>
           )}
+
           {me && features.chats && !mobile && (
             <BundleContainer fetchComponent={ChatWidget}>
               {Component => <Component />}
