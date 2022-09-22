@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Icon, Input } from 'soapbox/components/ui';
-import { useDebounce } from 'soapbox/hooks';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Search inbox' },
@@ -21,9 +20,6 @@ interface IChatSearchInput {
 const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear }) => {
   const intl = useIntl();
 
-  const debouncedValue = useDebounce(value, 300);
-  const hasSearchValue = Number(debouncedValue?.length) > 0;
-
   return (
     <Input
       type='text'
@@ -36,7 +32,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
       append={
         <button onClick={onClear}>
           <Icon
-            src={hasSearchValue ? require('@tabler/icons/x.svg') : require('@tabler/icons/search.svg')}
+            src={value.length ? require('@tabler/icons/x.svg') : require('@tabler/icons/search.svg')}
             className='h-4 w-4 text-gray-700 dark:text-gray-600'
             aria-hidden='true'
           />

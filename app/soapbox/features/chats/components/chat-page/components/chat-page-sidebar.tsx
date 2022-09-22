@@ -1,46 +1,26 @@
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
-import AccountSearch from 'soapbox/components/account_search';
 import { CardTitle, Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch } from 'soapbox/hooks';
-import { IChat, useChats } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
+import { useDebounce, useFeatures } from 'soapbox/hooks';
+import { IChat } from 'soapbox/queries/chats';
 
 import ChatList from '../../chat-list';
+import ChatSearchInput from '../../chat-search-input';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Messages' },
-  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
 });
 
 const ChatPageSidebar = () => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
+  const [search, setSearch] = useState('');
   const { setChat } = useChatContext();
-  const { getOrCreateChatByAccountId } = useChats();
 
-  const handleSuggestion = (accountId: string) => {
-    handleClickOnSearchResult.mutate(accountId);
-  };
-
-  const handleClickOnSearchResult = useMutation((accountId: string) => {
-    return getOrCreateChatByAccountId(accountId);
-  }, {
-    onError: (error: AxiosError) => {
-      const data = error.response?.data as any;
-      dispatch(snackbar.error(data?.error));
-    },
-    onSuccess: (response) => {
-      setChat(response.data);
-      queryClient.invalidateQueries(['chats', 'search']);
-    },
-  });
+  const debouncedSearch = useDebounce(search, 300);
 
   const handleClickChat = (chat: IChat) => setChat(chat);
 
@@ -49,14 +29,20 @@ const ChatPageSidebar = () => {
       <Stack space={4} className='px-4 pt-4'>
         <CardTitle title={intl.formatMessage(messages.title)} />
 
-        <AccountSearch
-          placeholder={intl.formatMessage(messages.searchPlaceholder)}
-          onSelected={handleSuggestion}
-        />
+        {features.chatsSearch && (
+          <ChatSearchInput
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            onClear={() => setSearch('')}
+          />
+        )}
       </Stack>
 
       <Stack className='flex-grow h-full'>
-        <ChatList onClickChat={handleClickChat} />
+        <ChatList
+          onClickChat={handleClickChat}
+          searchValue={debouncedSearch}
+        />
       </Stack>
     </Stack>
   );
