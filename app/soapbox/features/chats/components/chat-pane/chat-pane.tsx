@@ -96,6 +96,10 @@ const ChatPane = () => {
         secondaryAction={() => {
           setSearching(true);
           setValue(undefined);
+
+          if (!isOpen) {
+            toggleChatPane();
+          }
         }}
         secondaryActionIcon={require('@tabler/icons/edit.svg')}
       />
