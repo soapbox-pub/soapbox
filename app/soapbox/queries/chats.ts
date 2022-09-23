@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import snackbar from 'soapbox/actions/snackbar';
@@ -255,13 +255,7 @@ const useChatSilence = (chat: IChat | null) => {
       });
   };
 
-  useEffect(() => {
-    if (chat?.id) {
-      fetchChatSilence();
-    }
-  }, [chat?.id]);
-
-  return { isSilenced, handleSilence };
+  return { isSilenced, handleSilence, fetchChatSilence };
 };
 
 export { useChat, useChats, useChatMessages, useChatSilences, useChatSilence };

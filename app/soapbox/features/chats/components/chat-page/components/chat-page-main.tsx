@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
@@ -33,7 +33,7 @@ const ChatPageMain = () => {
   const account = useOwnAccount();
 
   const { chat, setChat } = useChatContext();
-  const { isSilenced, handleSilence } = useChatSilence(chat);
+  const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
   const { deleteChat } = useChat(chat?.id as string);
 
   const handleBlockUser = () => {
@@ -57,6 +57,12 @@ const ChatPageMain = () => {
   };
 
   const handleReportChat = () => dispatch(initReport(chat?.account as any));
+
+  useEffect(() => {
+    if (chat?.id) {
+      fetchChatSilence();
+    }
+  }, [chat?.id]);
 
   if (!chat && !account?.chats_onboarded) {
     return (
