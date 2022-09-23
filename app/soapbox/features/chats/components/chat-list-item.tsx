@@ -3,15 +3,17 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
-import { Avatar, HStack, Icon, IconButton, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useAppDispatch } from 'soapbox/hooks';
-import { IChat, IChatSilence, useChat, useChatSilence, useChatSilences } from 'soapbox/queries/chats';
+import { IChat, IChatSilence, useChat, useChatSilence } from 'soapbox/queries/chats';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
 const messages = defineMessages({
+  silenceNotifications: { id: 'chat_settings.silence_notifications', defaultMessage: 'Silence notifications' },
+  unsilenceNotifications: { id: 'chat_settings.unsilence_notifications', defaultMessage: 'Unsilence notifications' },
   leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
@@ -36,7 +38,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
 
     if (chatSilence) {
       menu.push({
-        text: 'Unsilence notifications',
+        text: intl.formatMessage(messages.unsilenceNotifications),
         action: (event) => {
           event.stopPropagation();
           handleSilence();
@@ -45,7 +47,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
       });
     } else {
       menu.push({
-        text: 'Silence notifications',
+        text: intl.formatMessage(messages.silenceNotifications),
         action: (event) => {
           event.stopPropagation();
           handleSilence();
