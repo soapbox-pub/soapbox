@@ -205,6 +205,12 @@ const getInstanceFeatures = (instance: Instance) => {
     chats: v.software === TRUTHSOCIAL || (v.software === PLEROMA && gte(v.version, '2.1.0')),
 
     /**
+     * Ability to search among chats.
+     * @see GET /api/v1/pleroma/chats
+     */
+    chatsSearch: v.software === TRUTHSOCIAL,
+
+    /**
      * Paginated chats API.
      * @see GET /api/v2/chats
      */

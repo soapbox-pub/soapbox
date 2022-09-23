@@ -6,8 +6,9 @@ import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import { flattenPages, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
 
@@ -88,10 +89,7 @@ const useChatMessages = (chatId: string) => {
     },
   });
 
-  const data = queryInfo.data?.pages.reduce<IChatMessage[]>(
-    (prev: IChatMessage[], curr) => [...curr.result, ...prev],
-    [],
-  );
+  const data = flattenPages(queryInfo);
 
   return {
     ...queryInfo,
@@ -102,10 +100,12 @@ const useChatMessages = (chatId: string) => {
 const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const getChats = async(pageParam?: any): Promise<PaginatedResult<IChat>> => {
+    const endpoint = features.chatsV2 ? '/api/v2/pleroma/chats' : '/api/v1/pleroma/chats';
     const nextPageLink = pageParam?.link;
-    const uri = nextPageLink || '/api/v1/pleroma/chats';
+    const uri = nextPageLink || endpoint;
     const response = await api.get<IChat[]>(uri, {
       params: {
         search,
@@ -137,10 +137,7 @@ const useChats = (search?: string) => {
     },
   });
 
-  const data = queryInfo.data?.pages.reduce<IChat[]>(
-    (prev: IChat[], curr) => [...prev, ...curr.result],
-    [],
-  );
+  const data = flattenPages(queryInfo);
 
   const chatsQuery = {
     ...queryInfo,
@@ -158,7 +155,7 @@ const useChat = (chatId: string) => {
 
   const markChatAsRead = (lastReadId: string) => {
     api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
-      .then(() => queryClient.invalidateQueries(['chats', 'search']))
+      .then(({ data }) => updatePageItem(['chats', 'search'], data, (o, n) => o.id === n.id))
       .catch(() => null);
   };
 
