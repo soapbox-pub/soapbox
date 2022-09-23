@@ -24,7 +24,7 @@ const ChatPane = () => {
   const debouncedValue = debounce(value as string, 300);
 
   const { chat, setChat, isOpen, isSearching, setSearching, toggleChatPane } = useChatContext();
-  const { chatsQuery: { data: chats } } = useChats(debouncedValue);
+  const { chatsQuery: { data: chats, isLoading } } = useChats(debouncedValue);
 
   const unreadCount = sumBy(chats, (chat) => chat.unread);
 
@@ -42,7 +42,7 @@ const ChatPane = () => {
   };
 
   const renderBody = () => {
-    if (hasSearchValue || Number(chats?.length) > 0) {
+    if (hasSearchValue || Number(chats?.length) > 0 || isLoading) {
       return (
         <Stack space={4} className='flex-grow h-full'>
           {features.chatsSearch && (
@@ -55,7 +55,7 @@ const ChatPane = () => {
             </div>
           )}
 
-          {Number(chats?.length) > 0 ? (
+          {(Number(chats?.length) > 0 || isLoading) ? (
             <ChatList
               searchValue={debouncedValue}
               onClickChat={handleClickChat}
