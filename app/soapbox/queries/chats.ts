@@ -149,9 +149,22 @@ const useChats = (search?: string) => {
   return { chatsQuery, getOrCreateChatByAccountId };
 };
 
-const useChat = (chatId: string) => {
+const useChat = (chatId?: string) => {
   const api = useApi();
+  const dispatch = useAppDispatch();
   const { setChat, setEditing } = useChatContext();
+
+  const chat = useQuery(['chats', 'chat', chatId], async(): Promise<IChat | undefined> => {
+    if (!chatId) return undefined;
+
+    const response = await api.get<IChat>(`/api/v1/pleroma/chats/${chatId}`);
+    const { data: chat } = response;
+
+    // Set the relationships to these users in the redux store.
+    dispatch(fetchRelationships([chat.account.id]));
+
+    return chat;
+  });
 
   const markChatAsRead = (lastReadId: string) => {
     api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
@@ -182,7 +195,7 @@ const useChat = (chatId: string) => {
     },
   });
 
-  return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
+  return { chat, createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
 };
 
 const useChatSilences = () => {
@@ -199,7 +212,7 @@ const useChatSilences = () => {
   });
 };
 
-const useChatSilence = (chat: IChat | null) => {
+const useChatSilence = (chat?: IChat) => {
   const api = useApi();
   const dispatch = useAppDispatch();
 

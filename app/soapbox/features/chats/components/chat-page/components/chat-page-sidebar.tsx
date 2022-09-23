@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useDebounce, useFeatures } from 'soapbox/hooks';
 import { IChat } from 'soapbox/queries/chats';
 
@@ -15,14 +15,13 @@ const messages = defineMessages({
 
 const ChatPageSidebar = () => {
   const intl = useIntl();
+  const history = useHistory();
   const features = useFeatures();
 
   const [search, setSearch] = useState('');
-  const { setChat } = useChatContext();
-
   const debouncedSearch = useDebounce(search, 300);
 
-  const handleClickChat = (chat: IChat) => setChat(chat);
+  const handleClickChat = (chat: IChat) => history.push(`/chats/${chat.id}`);
 
   return (
     <Stack space={4} className='h-full'>

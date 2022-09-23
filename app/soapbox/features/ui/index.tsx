@@ -86,7 +86,6 @@ import {
   // Backups,
   MfaForm,
   ChatIndex,
-  ChatRoom,
   ChatWidget,
   ServerInfo,
   Dashboard,
@@ -263,7 +262,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatRoom} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatIndex} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />

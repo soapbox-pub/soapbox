@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
@@ -7,7 +8,6 @@ import { initReport } from 'soapbox/actions/reports';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Toggle } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { useChat, useChatSilence } from 'soapbox/queries/chats';
 
@@ -27,22 +27,26 @@ const messages = defineMessages({
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
 });
 
-const ChatPageMain = () => {
-  const dispatch = useAppDispatch();
+interface IChatPageMain {
+  chatId?: string,
+}
+
+const ChatPageMain: React.FC<IChatPageMain> = ({ chatId }) => {
   const intl = useIntl();
+  const history = useHistory();
+  const dispatch = useAppDispatch();
   const account = useOwnAccount();
 
-  const { chat, setChat } = useChatContext();
-  const { isSilenced, handleSilence } = useChatSilence(chat);
-  const { deleteChat } = useChat(chat?.id as string);
+  const { chat, deleteChat } = useChat(chatId);
+  const { isSilenced, handleSilence } = useChatSilence(chat?.data);
 
   const handleBlockUser = () => {
     dispatch(openModal('CONFIRM', {
-      heading: intl.formatMessage(messages.blockHeading, { acct: chat?.account.acct }),
+      heading: intl.formatMessage(messages.blockHeading, { acct: chat?.data?.account.acct }),
       message: intl.formatMessage(messages.blockMessage),
       confirm: intl.formatMessage(messages.blockConfirm),
       confirmationTheme: 'primary',
-      onConfirm: () => dispatch(blockAccount(chat?.account.id as string)),
+      onConfirm: () => dispatch(blockAccount(chat?.data?.account.id as any)),
     }));
   };
 
@@ -56,7 +60,7 @@ const ChatPageMain = () => {
     }));
   };
 
-  const handleReportChat = () => dispatch(initReport(chat?.account as any));
+  const handleReportChat = () => dispatch(initReport(chat?.data?.account as any));
 
   if (!chat && !account?.chats_onboarded) {
     return (
@@ -76,16 +80,16 @@ const ChatPageMain = () => {
             <IconButton
               src={require('@tabler/icons/arrow-left.svg')}
               className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
-              onClick={() => setChat(null)}
+              onClick={() => history.push('/chats')}
             />
 
-            <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
+            <Avatar src={chat?.data?.account?.avatar!} size={40} className='flex-none' />
           </HStack>
 
           <Stack alignItems='start' className='overflow-hidden'>
             <div className='flex items-center space-x-1 flex-grow w-full'>
-              <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
-              {chat.account?.verified && <VerificationBadge />}
+              <Text weight='bold' size='sm' align='left' truncate>{chat?.data?.account?.display_name || `@${chat?.data?.account.username}`}</Text>
+              {chat?.data?.account?.verified && <VerificationBadge />}
             </div>
 
             <Text
@@ -96,7 +100,7 @@ const ChatPageMain = () => {
               truncate
               className='w-full'
             >
-              {chat.account.acct}
+              {chat?.data?.account.acct}
             </Text>
           </Stack>
         </HStack>
@@ -112,10 +116,10 @@ const ChatPageMain = () => {
           <MenuList className='w-80 py-6'>
             <Stack space={4} className='w-5/6 mx-auto'>
               <Stack alignItems='center' space={2}>
-                <Avatar src={chat.account.avatar_static} size={75} />
+                <Avatar src={chat?.data?.account.avatar_static!} size={75} />
                 <Stack>
-                  <Text size='lg' weight='semibold' align='center'>{chat.account.display_name}</Text>
-                  <Text theme='primary' align='center'>@{chat.account.acct}</Text>
+                  <Text size='lg' weight='semibold' align='center'>{chat?.data?.account.display_name}</Text>
+                  <Text theme='primary' align='center'>@{chat?.data?.account.acct}</Text>
                 </Stack>
               </Stack>
 
@@ -137,7 +141,7 @@ const ChatPageMain = () => {
                 >
                   <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
                     <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5' />
-                    <span>{intl.formatMessage(messages.blockUser, { acct: chat.account.acct })}</span>
+                    <span>{intl.formatMessage(messages.blockUser, { acct: chat?.data?.account.acct })}</span>
                   </div>
                 </MenuItem>
 
@@ -148,7 +152,7 @@ const ChatPageMain = () => {
                 >
                   <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
                     <Icon src={require('@tabler/icons/flag.svg')} className='w-5 h-5' />
-                    <span>{intl.formatMessage(messages.reportUser, { acct: chat.account.acct })}</span>
+                    <span>{intl.formatMessage(messages.reportUser, { acct: chat?.data?.account.acct })}</span>
                   </div>
                 </MenuItem>
 
@@ -169,7 +173,9 @@ const ChatPageMain = () => {
       </HStack>
 
       <div className='h-full overflow-hidden'>
-        <Chat className='h-full overflow-hidden' chat={chat} />
+        {chat?.data && (
+          <Chat className='h-full overflow-hidden' chat={chat?.data} />
+        )}
       </div>
     </Stack>
   );

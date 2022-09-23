@@ -2,13 +2,17 @@ import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useChat } from 'soapbox/queries/chats';
 
 import ChatPageMain from './components/chat-page-main';
 import ChatPageSidebar from './components/chat-page-sidebar';
 
-const ChatPage = () => {
-  const { chat } = useChatContext();
+interface IChatPage {
+  chatId?: string,
+}
+
+const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
+  const { chat } = useChat(chatId);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<string | number>('100%');
@@ -58,7 +62,7 @@ const ChatPage = () => {
           'hidden sm:block': !chat,
         })}
         >
-          <ChatPageMain />
+          <ChatPageMain chatId={chatId} />
         </Stack>
       </div>
     </div>

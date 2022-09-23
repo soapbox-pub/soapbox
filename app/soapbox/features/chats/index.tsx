@@ -4,9 +4,15 @@ import { ChatProvider } from 'soapbox/contexts/chat-context';
 
 import ChatPage from './components/chat-page/chat-page';
 
-const ChatIndex: React.FC = () => (
+interface IChatIndex {
+  params?: {
+    chatId: string,
+  }
+}
+
+const ChatIndex: React.FC<IChatIndex> = ({ params }) => (
   <ChatProvider>
-    <ChatPage />
+    <ChatPage chatId={params?.chatId} />
   </ChatProvider>
 );
 

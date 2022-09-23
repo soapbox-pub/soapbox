@@ -50,7 +50,7 @@ const ChatProvider: React.FC = ({ children }) => {
 };
 
 interface IChatContext {
-  chat: IChat | null
+  chat?: IChat
   isEditing: boolean
   isOpen: boolean
   isSearching: boolean
