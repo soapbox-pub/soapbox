@@ -98,7 +98,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
                 align='left'
                 size='sm'
                 weight='medium'
-                theme='muted'
+                theme={chat.last_message.unread ? 'default' : 'muted'}
                 truncate
                 className='w-full h-5 truncate-child pointer-events-none'
                 data-testid='chat-last-message'
