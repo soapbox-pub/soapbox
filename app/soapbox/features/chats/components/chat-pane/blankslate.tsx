@@ -19,7 +19,7 @@ const Blankslate = ({ onSearch }: IBlankslate) => {
   return (
     <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
       <Stack space={4}>
-        <Stack space={1} className='max-w-[85%] mx-auto'>
+        <Stack space={1} className='max-w-[80%] mx-auto'>
           <Text size='lg' weight='bold' align='center'>
             {intl.formatMessage(messages.title)}
           </Text>

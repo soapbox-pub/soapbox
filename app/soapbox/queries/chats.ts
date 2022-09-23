@@ -236,6 +236,7 @@ const useChatSilence = (chat: IChat | null) => {
     api.post(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
         dispatch(snackbar.success('Successfully silenced this chat.'));
+        queryClient.invalidateQueries(['chatSilences']);
       })
       .catch(() => {
         dispatch(snackbar.error('Something went wrong trying to silence this chat. Please try again.'));
@@ -249,6 +250,7 @@ const useChatSilence = (chat: IChat | null) => {
     api.delete(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
         dispatch(snackbar.success('Successfully unsilenced this chat.'));
+        queryClient.invalidateQueries(['chatSilences']);
       })
       .catch(() => {
         dispatch(snackbar.error('Something went wrong trying to unsilence this chat. Please try again.'));
