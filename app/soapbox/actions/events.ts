@@ -6,8 +6,13 @@ import resizeImage from 'soapbox/utils/resize_image';
 
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { fetchMedia, uploadMedia } from './media';
-import { closeModal } from './modals';
+import { closeModal, openModal } from './modals';
 import snackbar from './snackbar';
+import {
+  STATUS_FETCH_SOURCE_FAIL,
+  STATUS_FETCH_SOURCE_REQUEST,
+  STATUS_FETCH_SOURCE_SUCCESS,
+} from './statuses';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -17,13 +22,13 @@ const LOCATION_SEARCH_REQUEST = 'LOCATION_SEARCH_REQUEST';
 const LOCATION_SEARCH_SUCCESS = 'LOCATION_SEARCH_SUCCESS';
 const LOCATION_SEARCH_FAIL    = 'LOCATION_SEARCH_FAIL';
 
-const CREATE_EVENT_NAME_CHANGE              = 'CREATE_EVENT_NAME_CHANGE';
-const CREATE_EVENT_DESCRIPTION_CHANGE       = 'CREATE_EVENT_DESCRIPTION_CHANGE';
-const CREATE_EVENT_START_TIME_CHANGE        = 'CREATE_EVENT_START_TIME_CHANGE';
-const CREATE_EVENT_HAS_END_TIME_CHANGE      = 'CREATE_EVENT_HAS_END_TIME_CHANGE';
-const CREATE_EVENT_END_TIME_CHANGE          = 'CREATE_EVENT_END_TIME_CHANGE';
-const CREATE_EVENT_APPROVAL_REQUIRED_CHANGE = 'CREATE_EVENT_APPROVAL_REQUIRED_CHANGE';
-const CREATE_EVENT_LOCATION_CHANGE          = 'CREATE_EVENT_LOCATION_CHANGE';
+const EDIT_EVENT_NAME_CHANGE              = 'EDIT_EVENT_NAME_CHANGE';
+const EDIT_EVENT_DESCRIPTION_CHANGE       = 'EDIT_EVENT_DESCRIPTION_CHANGE';
+const EDIT_EVENT_START_TIME_CHANGE        = 'EDIT_EVENT_START_TIME_CHANGE';
+const EDIT_EVENT_HAS_END_TIME_CHANGE      = 'EDIT_EVENT_HAS_END_TIME_CHANGE';
+const EDIT_EVENT_END_TIME_CHANGE          = 'EDIT_EVENT_END_TIME_CHANGE';
+const EDIT_EVENT_APPROVAL_REQUIRED_CHANGE = 'EDIT_EVENT_APPROVAL_REQUIRED_CHANGE';
+const EDIT_EVENT_LOCATION_CHANGE          = 'EDIT_EVENT_LOCATION_CHANGE';
 
 const EVENT_BANNER_UPLOAD_REQUEST  = 'EVENT_BANNER_UPLOAD_REQUEST';
 const EVENT_BANNER_UPLOAD_PROGRESS = 'EVENT_BANNER_UPLOAD_PROGRESS';
@@ -59,14 +64,28 @@ const EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST = 'EVENT_PARTICIPATION_REQUEST
 const EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS';
 const EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL';
 
+const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST';
+const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS';
+const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL    = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL';
+
+const EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST = 'EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST';
+const EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS = 'EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS';
+const EVENT_PARTICIPATION_REQUEST_REJECT_FAIL    = 'EVENT_PARTICIPATION_REQUEST_REJECT_FAIL';
+
+const EVENT_COMPOSE_CANCEL = 'EVENT_COMPOSE_CANCEL';
+
+const EVENT_FORM_SET = 'EVENT_FORM_SET';
+
 const noOp = () => new Promise(f => f(undefined));
 
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
-  success: { id: 'create_event.submit_success', defaultMessage: 'Your event was created' },
+  success: { id: 'compose_event.submit_success', defaultMessage: 'Your event was created' },
   joinSuccess: { id: 'join_event.success', defaultMessage: 'Joined the event' },
   joinRequestSuccess: { id: 'join_event.request_success', defaultMessage: 'Requested to join the event' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
+  authorized: { id: 'compose_event.participation_requests.authorize_success', defaultMessage: 'User accepted' },
+  rejected: { id: 'compose_event.participation_requests.reject_success', defaultMessage: 'User rejected' },
 });
 
 const locationSearch = (query: string, signal?: AbortSignal) =>
@@ -81,37 +100,37 @@ const locationSearch = (query: string, signal?: AbortSignal) =>
     });
   };
 
-const changeCreateEventName = (value: string) => ({
-  type: CREATE_EVENT_NAME_CHANGE,
+const changeEditEventName = (value: string) => ({
+  type: EDIT_EVENT_NAME_CHANGE,
   value,
 });
 
-const changeCreateEventDescription = (value: string) => ({
-  type: CREATE_EVENT_DESCRIPTION_CHANGE,
+const changeEditEventDescription = (value: string) => ({
+  type: EDIT_EVENT_DESCRIPTION_CHANGE,
   value,
 });
 
-const changeCreateEventStartTime = (value: Date) => ({
-  type: CREATE_EVENT_START_TIME_CHANGE,
+const changeEditEventStartTime = (value: Date) => ({
+  type: EDIT_EVENT_START_TIME_CHANGE,
   value,
 });
 
-const changeCreateEventEndTime = (value: Date) => ({
-  type: CREATE_EVENT_END_TIME_CHANGE,
+const changeEditEventEndTime = (value: Date) => ({
+  type: EDIT_EVENT_END_TIME_CHANGE,
   value,
 });
 
-const changeCreateEventHasEndTime = (value: boolean) => ({
-  type: CREATE_EVENT_HAS_END_TIME_CHANGE,
+const changeEditEventHasEndTime = (value: boolean) => ({
+  type: EDIT_EVENT_HAS_END_TIME_CHANGE,
   value,
 });
 
-const changeCreateEventApprovalRequired = (value: boolean) => ({
-  type: CREATE_EVENT_APPROVAL_REQUIRED_CHANGE,
+const changeEditEventApprovalRequired = (value: boolean) => ({
+  type: EDIT_EVENT_APPROVAL_REQUIRED_CHANGE,
   value,
 });
 
-const changeCreateEventLocation = (value: string | null) =>
+const changeEditEventLocation = (value: string | null) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     let location = null;
 
@@ -120,7 +139,7 @@ const changeCreateEventLocation = (value: string | null) =>
     }
 
     dispatch({
-      type: CREATE_EVENT_LOCATION_CHANGE,
+      type: EDIT_EVENT_LOCATION_CHANGE,
       value: location,
     });
   };
@@ -202,15 +221,15 @@ const submitEvent = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
-    const name      = state.create_event.name;
-    const status    = state.create_event.status;
-    const banner    = state.create_event.banner;
-    const startTime = state.create_event.start_time;
-    const endTime   = state.create_event.end_time;
-    const joinMode  = state.create_event.approval_required ? 'restricted' : 'free';
-    const location  = state.create_event.location;
+    const name      = state.compose_event.name;
+    const status    = state.compose_event.status;
+    const banner    = state.compose_event.banner;
+    const startTime = state.compose_event.start_time;
+    const endTime   = state.compose_event.end_time;
+    const joinMode  = state.compose_event.approval_required ? 'restricted' : 'free';
+    const location  = state.compose_event.location;
 
-    if (!status || !status.length) {
+    if (!name || !name.length) {
       return;
     }
 
@@ -228,7 +247,7 @@ const submitEvent = () =>
     if (location) params.location_id = location.origin_id;
 
     return api(getState).post('/api/v1/pleroma/events', params).then(({ data }) => {
-      dispatch(closeModal('CREATE_EVENT'));
+      dispatch(closeModal('COMPOSE_EVENT'));
       dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
       dispatch(snackbar.success(messages.success, messages.view, `/@${data.account.acct}/events/${data.id}`));
@@ -261,7 +280,9 @@ const joinEvent = (id: string, participationMessage?: string) =>
 
     dispatch(joinEventRequest(status));
 
-    return api(getState).post(`/api/v1/pleroma/events/${id}/join`, { participationMessage }).then(({ data }) => {
+    return api(getState).post(`/api/v1/pleroma/events/${id}/join`, {
+      participation_message: participationMessage,
+    }).then(({ data }) => {
       dispatch(importFetchedStatus(data));
       dispatch(joinEventSuccess(data));
       dispatch(snackbar.success(
@@ -461,21 +482,108 @@ const expandEventParticipationRequestsFail = (id: string, error: AxiosError) => 
   error,
 });
 
+const authorizeEventParticipationRequest = (id: string, accountId: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(authorizeEventParticipationRequestRequest(id, accountId));
+
+    return api(getState)
+      .post(`/api/v1/pleroma/events/${id}/participation_requests/${accountId}/authorize`)
+      .then(() => {
+        dispatch(authorizeEventParticipationRequestSuccess(id, accountId));
+        dispatch(snackbar.success(messages.authorized));
+      })
+      .catch(error => dispatch(authorizeEventParticipationRequestFail(id, accountId, error)));
+  };
+
+const authorizeEventParticipationRequestRequest = (id: string, accountId: string) => ({
+  type: EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST,
+  id,
+  accountId,
+});
+
+const authorizeEventParticipationRequestSuccess = (id: string, accountId: string) => ({
+  type: EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS,
+  id,
+  accountId,
+});
+
+const authorizeEventParticipationRequestFail = (id: string, accountId: string, error: AxiosError) => ({
+  type: EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL,
+  id,
+  accountId,
+  error,
+});
+
+const rejectEventParticipationRequest = (id: string, accountId: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(rejectEventParticipationRequestRequest(id, accountId));
+
+    return api(getState)
+      .post(`/api/v1/pleroma/events/${id}/participation_requests/${accountId}/reject`)
+      .then(() => {
+        dispatch(rejectEventParticipationRequestSuccess(id, accountId));
+        dispatch(snackbar.success(messages.rejected));
+      })
+      .catch(error => dispatch(rejectEventParticipationRequestFail(id, accountId, error)));
+  };
+
+const rejectEventParticipationRequestRequest = (id: string, accountId: string) => ({
+  type: EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST,
+  id,
+  accountId,
+});
+
+const rejectEventParticipationRequestSuccess = (id: string, accountId: string) => ({
+  type: EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS,
+  id,
+  accountId,
+});
+
+const rejectEventParticipationRequestFail = (id: string, accountId: string, error: AxiosError) => ({
+  type: EVENT_PARTICIPATION_REQUEST_REJECT_FAIL,
+  id,
+  accountId,
+  error,
+});
+
 const fetchEventIcs = (id: string) =>
   (dispatch: any, getState: () => RootState) =>
     api(getState).get(`/api/v1/pleroma/events/${id}/ics`);
+
+const cancelEventCompose = () => ({
+  type: EVENT_COMPOSE_CANCEL,
+});
+
+const editEvent = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+  const status = getState().statuses.get(id)!;
+
+  dispatch({ type: STATUS_FETCH_SOURCE_REQUEST });
+
+  api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
+    dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
+    dispatch({
+      type: EVENT_FORM_SET,
+      status,
+      text: response.data.text,
+      location: response.data.location,
+    });
+    dispatch(openModal('COMPOSE_EVENT'));
+  }).catch(error => {
+    dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
+  });
+};
 
 export {
   LOCATION_SEARCH_REQUEST,
   LOCATION_SEARCH_SUCCESS,
   LOCATION_SEARCH_FAIL,
-  CREATE_EVENT_NAME_CHANGE,
-  CREATE_EVENT_DESCRIPTION_CHANGE,
-  CREATE_EVENT_START_TIME_CHANGE,
-  CREATE_EVENT_END_TIME_CHANGE,
-  CREATE_EVENT_HAS_END_TIME_CHANGE,
-  CREATE_EVENT_APPROVAL_REQUIRED_CHANGE,
-  CREATE_EVENT_LOCATION_CHANGE,
+  EDIT_EVENT_NAME_CHANGE,
+  EDIT_EVENT_DESCRIPTION_CHANGE,
+  EDIT_EVENT_START_TIME_CHANGE,
+  EDIT_EVENT_END_TIME_CHANGE,
+  EDIT_EVENT_HAS_END_TIME_CHANGE,
+  EDIT_EVENT_APPROVAL_REQUIRED_CHANGE,
+  EDIT_EVENT_LOCATION_CHANGE,
   EVENT_BANNER_UPLOAD_REQUEST,
   EVENT_BANNER_UPLOAD_PROGRESS,
   EVENT_BANNER_UPLOAD_SUCCESS,
@@ -502,14 +610,22 @@ export {
   EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST,
   EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS,
   EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL,
+  EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST,
+  EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS,
+  EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL,
+  EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST,
+  EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS,
+  EVENT_PARTICIPATION_REQUEST_REJECT_FAIL,
+  EVENT_COMPOSE_CANCEL,
+  EVENT_FORM_SET,
   locationSearch,
-  changeCreateEventName,
-  changeCreateEventDescription,
-  changeCreateEventStartTime,
-  changeCreateEventEndTime,
-  changeCreateEventHasEndTime,
-  changeCreateEventApprovalRequired,
-  changeCreateEventLocation,
+  changeEditEventName,
+  changeEditEventDescription,
+  changeEditEventStartTime,
+  changeEditEventEndTime,
+  changeEditEventHasEndTime,
+  changeEditEventApprovalRequired,
+  changeEditEventLocation,
   uploadEventBanner,
   uploadEventBannerRequest,
   uploadEventBannerProgress,
@@ -544,5 +660,15 @@ export {
   expandEventParticipationRequestsRequest,
   expandEventParticipationRequestsSuccess,
   expandEventParticipationRequestsFail,
+  authorizeEventParticipationRequest,
+  authorizeEventParticipationRequestRequest,
+  authorizeEventParticipationRequestSuccess,
+  authorizeEventParticipationRequestFail,
+  rejectEventParticipationRequest,
+  rejectEventParticipationRequestRequest,
+  rejectEventParticipationRequestSuccess,
+  rejectEventParticipationRequestFail,
   fetchEventIcs,
+  cancelEventCompose,
+  editEvent,
 };

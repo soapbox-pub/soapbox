@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
+import { cancelEventCompose } from 'soapbox/actions/events';
 import { closeModal } from 'soapbox/actions/modals';
 import { cancelReport } from 'soapbox/actions/reports';
 
@@ -23,6 +24,9 @@ const mapDispatchToProps = (dispatch) => ({
     switch (type) {
       case 'COMPOSE':
         dispatch(cancelReplyCompose());
+        break;
+      case 'COMPOSE_EVENT':
+        dispatch(cancelEventCompose());
         break;
       case 'REPORT':
         dispatch(cancelReport());

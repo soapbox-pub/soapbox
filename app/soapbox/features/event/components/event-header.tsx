@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchEventIcs } from 'soapbox/actions/events';
+import { editEvent, fetchEventIcs } from 'soapbox/actions/events';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import Icon from 'soapbox/components/icon';
@@ -159,9 +159,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const handleManageClick: React.MouseEventHandler = e => {
     e.stopPropagation();
 
-    dispatch(openModal('MANAGE_EVENT', {
-      statusId: status.id,
-    }));
+    dispatch(editEvent(status.id));
   };
 
   const handleParticipantsClick: React.MouseEventHandler = e => {
@@ -228,7 +226,6 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
               size='sm'
               theme='secondary'
               onClick={handleManageClick}
-              to={`/@${account.acct}/events/${status.id}`}
             >
               <FormattedMessage id='event.manage' defaultMessage='Manage' />
             </Button>

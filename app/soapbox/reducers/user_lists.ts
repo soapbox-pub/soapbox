@@ -34,6 +34,8 @@ import {
   EVENT_PARTICIPATIONS_FETCH_SUCCESS,
   EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS,
   EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS,
+  EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS,
+  EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS,
 } from 'soapbox/actions/events';
 import {
   FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
@@ -212,7 +214,7 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
     case EVENT_PARTICIPATIONS_EXPAND_SUCCESS:
       return appendToList(state, ['event_participations', action.id], action.accounts, action.next);
     case EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS:
-      return state.setIn(['event_participations', action.id], ParticipationRequestListRecord({
+      return state.setIn(['event_participation_requests', action.id], ParticipationRequestListRecord({
         next: action.next,
         items: ImmutableOrderedSet(action.participations.map(({ account, participation_message }: APIEntity) => ParticipationRequestRecord({
           account: account.id,
@@ -221,12 +223,18 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
       }));
     case EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS:
       return state.updateIn(
-        ['event_participations', action.id, 'items'],
+        ['event_participation_requests', action.id, 'items'],
         (items) => (items as ImmutableOrderedSet<ParticipationRequest>)
           .union(action.participations.map(({ account, participation_message }: APIEntity) => ParticipationRequestRecord({
             account: account.id,
             participation_message,
           }))),
+      );
+    case EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS:
+    case EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS:
+      return state.updateIn(
+        ['event_participation_requests', action.id, 'items'],
+        items => (items as ImmutableOrderedSet<ParticipationRequest>).filter(({ account }) => account !== action.accountId),
       );
     default:
       return state;

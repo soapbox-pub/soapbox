@@ -19,9 +19,9 @@ import chat_message_lists from './chat_message_lists';
 import chat_messages from './chat_messages';
 import chats from './chats';
 import compose from './compose';
+import compose_event from './compose_event';
 import contexts from './contexts';
 import conversations from './conversations';
-import create_event from './create_event';
 import custom_emojis from './custom_emojis';
 import domain_lists from './domain_lists';
 import dropdown_menu from './dropdown_menu';
@@ -127,7 +127,7 @@ const reducers = {
   rules,
   history,
   announcements,
-  create_event,
+  compose_event,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

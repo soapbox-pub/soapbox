@@ -506,8 +506,8 @@ export function AnnouncementsPanel() {
   return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }
 
-export function CreateEventModal() {
-  return import(/* webpackChunkName: "features/create_event_modal" */'../components/modals/create-event-modal/create-event-modal');
+export function ComposeEventModal() {
+  return import(/* webpackChunkName: "features/compose_event_modal" */'../components/modals/compose-event-modal/compose-event-modal');
 }
 
 export function JoinEventModal() {

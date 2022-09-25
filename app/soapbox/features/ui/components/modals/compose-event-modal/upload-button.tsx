@@ -7,7 +7,7 @@ import { useAppSelector } from 'soapbox/hooks';
 import type { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
-  upload: { id: 'create_event.upload_banner', defaultMessage: 'Upload event banner' },
+  upload: { id: 'compose_event.upload_banner', defaultMessage: 'Upload event banner' },
 });
 
 interface IUploadButton {
