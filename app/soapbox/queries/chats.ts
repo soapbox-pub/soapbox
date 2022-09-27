@@ -8,7 +8,7 @@ import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
-import { flattenPages, updatePageItem } from 'soapbox/utils/queries';
+import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
 
@@ -50,12 +50,6 @@ export interface IChatSilence {
   target_account_id: number
 }
 
-export interface PaginatedResult<T> {
-  result: T[],
-  hasMore: boolean,
-  link?: string,
-}
-
 const chatKeys = {
   chatMessages: (chatId: string) => ['chats', 'messages', chatId] as const,
   chatSearch: (searchQuery?: string) => ['chats', 'search', searchQuery] as const,
@@ -67,7 +61,7 @@ const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 const useChatMessages = (chatId: string) => {
   const api = useApi();
 
-  const getChatMessages = async(chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
+  const getChatMessages = async (chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || `/api/v1/pleroma/chats/${chatId}/messages`;
     const response = await api.get(uri);
@@ -108,7 +102,7 @@ const useChats = (search?: string) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
-  const getChats = async(pageParam?: any): Promise<PaginatedResult<IChat>> => {
+  const getChats = async (pageParam?: any): Promise<PaginatedResult<IChat>> => {
     const endpoint = features.chatsV2 ? '/api/v2/pleroma/chats' : '/api/v1/pleroma/chats';
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || endpoint;
@@ -194,7 +188,7 @@ const useChat = (chatId: string) => {
 const useChatSilences = () => {
   const api = useApi();
 
-  const getChatSilences = async() => {
+  const getChatSilences = async () => {
     const { data } = await api.get<IChatSilence[]>('/api/v1/pleroma/chats/silences');
 
     return data;
@@ -211,12 +205,12 @@ const useChatSilence = (chat: IChat | null) => {
 
   const [isSilenced, setSilenced] = useState<boolean>(false);
 
-  const getChatSilences = async() => {
+  const getChatSilences = async () => {
     const { data } = await api.get(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`);
     return data;
   };
 
-  const fetchChatSilence = async() => {
+  const fetchChatSilence = async () => {
     const data = await getChatSilences();
     if (data) {
       setSilenced(true);

@@ -17,10 +17,6 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<string[]>([]);
 
-  const trimmedValue = value.trim();
-  const isValid = trimmedValue.length > 0;
-  const isDisabled = !isValid;
-
   const handleSubmit = () => {
     setSubmitting(true);
 
@@ -79,7 +75,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
                   block
                   theme='primary'
                   type='submit'
-                  disabled={isDisabled || isSubmitting}
+                  disabled={isSubmitting}
                   onClick={handleSubmit}
                 >
                   {isSubmitting ? (

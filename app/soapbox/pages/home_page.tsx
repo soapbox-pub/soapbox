@@ -105,7 +105,7 @@ const HomePage: React.FC = ({ children }) => {
         )}
         {features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={5} />}
+            {Component => <Component limit={3} />}
           </BundleContainer>
         )}
         <LinkFooter key='link-footer' />
