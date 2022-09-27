@@ -19,7 +19,7 @@ const Share = () => {
     .join('\n\n');
 
   if (text) {
-    dispatch(openComposeWithText(text));
+    dispatch(openComposeWithText('compose-modal', text));
   }
 
   return (
