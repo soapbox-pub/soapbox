@@ -4,7 +4,7 @@ import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccounts } from 'soapbox/actions/importer';
 import { SuggestedProfile } from 'soapbox/actions/suggestions';
 import { getLinks } from 'soapbox/api';
-import { useApi, useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 import { PaginatedResult, removePageItem } from '../utils/queries';
 
@@ -47,6 +47,10 @@ type TruthSuggestion = {
   verified: boolean
 }
 
+type Result = TruthSuggestion | {
+  account: string
+}
+
 type PageParam = {
   link?: string
 }
@@ -66,12 +70,11 @@ const mapSuggestedProfileToAccount = (suggestedProfile: SuggestedProfile) => ({
 });
 
 const useSuggestions = () => {
-  const account = useOwnAccount();
   const api = useApi();
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
-  const getV2Suggestions = async(pageParam: PageParam): Promise<PaginatedResult<TruthSuggestion | Suggestion>> => {
+  const getV2Suggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
     const endpoint = pageParam?.link || '/api/v2/suggestions';
     const response = await api.get<Suggestion[]>(endpoint);
     const hasMore = !!response.headers.link;
@@ -83,13 +86,13 @@ const useSuggestions = () => {
     dispatch(fetchRelationships(accountIds));
 
     return {
-      result: response.data,
+      result: response.data.map(x => ({ ...x, account: x.account.id })),
       link: nextLink,
       hasMore,
     };
   };
 
-  const getTruthSuggestions = async(pageParam: PageParam): Promise<PaginatedResult<TruthSuggestion | Suggestion>> => {
+  const getTruthSuggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
     const endpoint = pageParam?.link || '/api/v1/truth/carousels/suggestions';
     const response = await api.get<TruthSuggestion[]>(endpoint);
     const hasMore = !!response.headers.link;
@@ -118,7 +121,6 @@ const useSuggestions = () => {
     ({ pageParam }: any) => getSuggestions(pageParam),
     {
       keepPreviousData: true,
-      enabled: !!account,
       getNextPageParam: (config) => {
         if (config?.hasMore) {
           return { nextLink: config?.link };
@@ -153,7 +155,7 @@ function useOnboardingSuggestions() {
   const api = useApi();
   const dispatch = useAppDispatch();
 
-  const getV2Suggestions = async(pageParam: any): Promise<{ data: Suggestion[], link: string | undefined, hasMore: boolean }> => {
+  const getV2Suggestions = async (pageParam: any): Promise<{ data: Suggestion[], link: string | undefined, hasMore: boolean }> => {
     const link = pageParam?.link || '/api/v2/suggestions';
     const response = await api.get<Suggestion[]>(link);
     const hasMore = !!response.headers.link;
@@ -193,4 +195,4 @@ function useOnboardingSuggestions() {
   };
 }
 
-export { useOnboardingSuggestions as default, useSuggestions, useDismissSuggestion };
+export { useOnboardingSuggestions, useSuggestions, useDismissSuggestion };

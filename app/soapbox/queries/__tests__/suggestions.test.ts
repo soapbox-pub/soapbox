@@ -1,7 +1,7 @@
 import { __stub } from 'soapbox/api';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
 
-import useOnboardingSuggestions from '../suggestions';
+import { useOnboardingSuggestions } from '../suggestions';
 
 describe('useCarouselAvatars', () => {
   describe('with a successful query', () => {
@@ -17,7 +17,7 @@ describe('useCarouselAvatars', () => {
       });
     });
 
-    it('is successful', async() => {
+    it('is successful', async () => {
       const { result } = renderHook(() => useOnboardingSuggestions());
 
       await waitFor(() => expect(result.current.isFetching).toBe(false));
@@ -33,7 +33,7 @@ describe('useCarouselAvatars', () => {
       });
     });
 
-    it('is successful', async() => {
+    it('is successful', async () => {
       const { result } = renderHook(() => useOnboardingSuggestions());
 
       await waitFor(() => expect(result.current.isFetching).toBe(false));

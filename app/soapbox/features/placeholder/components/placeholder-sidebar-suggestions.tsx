@@ -11,7 +11,7 @@ export default ({ limit }: { limit: number }) => {
   return (
     <>
       {new Array(limit).fill(undefined).map((_, idx) => (
-        <HStack alignItems='center' space={2} className='animate-pulse'>
+        <HStack key={idx} alignItems='center' space={2} className='animate-pulse'>
           <Stack space={3} className='text-center'>
             <div
               className='w-9 h-9 block mx-auto rounded-full bg-primary-200 dark:bg-primary-700'
