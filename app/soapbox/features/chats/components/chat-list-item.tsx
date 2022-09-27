@@ -110,6 +110,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
 
         <HStack alignItems='center' space={2}>
           <div className='text-gray-600 hidden group-hover:block hover:text-gray-100'>
+            {/* TODO: fix nested buttons here */}
             <DropdownMenuContainer
               items={menu}
               src={require('@tabler/icons/dots.svg')}

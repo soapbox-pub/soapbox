@@ -59,7 +59,6 @@ const ChatPane = () => {
             <ChatList
               searchValue={debouncedValue}
               onClickChat={handleClickChat}
-              fade
             />
           ) : (
             <EmptyResultsBlankslate />
