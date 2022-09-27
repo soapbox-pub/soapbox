@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import sumBy from 'lodash/sumBy';
 import { useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
@@ -6,6 +7,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
@@ -101,6 +103,7 @@ const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
   const features = useFeatures();
+  const { setUnreadChatsCount } = useStatContext();
 
   const getChats = async (pageParam?: any): Promise<PaginatedResult<IChat>> => {
     const endpoint = features.chatsV2 ? '/api/v2/pleroma/chats' : '/api/v1/pleroma/chats';
@@ -115,6 +118,9 @@ const useChats = (search?: string) => {
 
     const link = getNextLink(response);
     const hasMore = !!link;
+
+    // TODO: change to response header
+    setUnreadChatsCount(sumBy(data, (chat) => chat.unread));
 
     // Set the relationships to these users in the redux store.
     dispatch(fetchRelationships(data.map((item) => item.account.id)));
