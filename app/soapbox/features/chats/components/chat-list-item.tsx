@@ -14,7 +14,7 @@ import type { Menu } from 'soapbox/components/dropdown_menu';
 const messages = defineMessages({
   silenceNotifications: { id: 'chat_settings.silence_notifications', defaultMessage: 'Silence notifications' },
   unsilenceNotifications: { id: 'chat_settings.unsilence_notifications', defaultMessage: 'Unsilence notifications' },
-  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.' },
+  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
