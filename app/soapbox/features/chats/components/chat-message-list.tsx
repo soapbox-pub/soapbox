@@ -14,7 +14,7 @@ import PlaceholderChatMessage from 'soapbox/features/placeholder/components/plac
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
+import { chatKeys, IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
@@ -96,7 +96,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
-      queryClient.invalidateQueries(['chats', 'messages', chat.id]);
+      queryClient.invalidateQueries(chatKeys.chatMessages(chat.id));
     },
   });
 

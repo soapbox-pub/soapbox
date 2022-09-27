@@ -4,7 +4,11 @@ import { Ad, getProvider } from 'soapbox/features/ads/providers';
 import { useAppDispatch } from 'soapbox/hooks';
 import { isExpired } from 'soapbox/utils/ads';
 
-export default function useAds() {
+const adKeys = {
+  ads: ['ads'] as const,
+};
+
+function useAds() {
   const dispatch = useAppDispatch();
 
   const getAds = async() => {
@@ -18,7 +22,7 @@ export default function useAds() {
     });
   };
 
-  const result = useQuery<Ad[]>(['ads'], getAds, {
+  const result = useQuery<Ad[]>(adKeys.ads, getAds, {
     placeholderData: [],
   });
 
@@ -30,3 +34,5 @@ export default function useAds() {
     data,
   };
 }
+
+export { useAds as default, adKeys };
