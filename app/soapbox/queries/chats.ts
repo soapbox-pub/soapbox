@@ -155,7 +155,7 @@ const useChats = (search?: string) => {
   return { chatsQuery, getOrCreateChatByAccountId };
 };
 
-const useChat = (chatId: string) => {
+const useChatActions = (chatId: string) => {
   const api = useApi();
   const { setChat, setEditing } = useChatContext();
 
@@ -264,4 +264,4 @@ const useChatSilence = (chat: IChat | null) => {
   return { isSilenced, handleSilence, fetchChatSilence };
 };
 
-export { chatKeys, useChat, useChats, useChatMessages, useChatSilences, useChatSilence };
+export { chatKeys, useChatActions, useChats, useChatMessages, useChatSilences, useChatSilence };

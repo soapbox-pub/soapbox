@@ -8,7 +8,7 @@ import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { chatKeys, IChat, useChat } from 'soapbox/queries/chats';
+import { chatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -39,7 +39,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
   const dispatch = useAppDispatch();
   const account = useOwnAccount();
 
-  const { createChatMessage, acceptChat } = useChat(chat.id);
+  const { createChatMessage, acceptChat } = useChatActions(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);

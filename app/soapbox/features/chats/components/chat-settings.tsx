@@ -8,7 +8,7 @@ import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, Divider, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useChat, useChatSilence } from 'soapbox/queries/chats';
+import { useChatActions, useChatSilence } from 'soapbox/queries/chats';
 
 import ChatPaneHeader from './chat-pane-header';
 
@@ -32,7 +32,7 @@ const ChatSettings = () => {
   const { chat, setEditing, toggleChatPane } = useChatContext();
   const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
 
-  const { deleteChat } = useChat(chat?.id as string);
+  const { deleteChat } = useChatActions(chat?.id as string);
 
   const closeSettings = () => setEditing(false);
 

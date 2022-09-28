@@ -7,7 +7,7 @@ import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useAppDispatch } from 'soapbox/hooks';
-import { IChat, IChatSilence, useChat, useChatSilence } from 'soapbox/queries/chats';
+import { IChat, IChatSilence, useChatActions, useChatSilence } from 'soapbox/queries/chats';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
@@ -31,7 +31,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
   const intl = useIntl();
 
   const { handleSilence } = useChatSilence(chat);
-  const { deleteChat } = useChat(chat?.id as string);
+  const { deleteChat } = useChatActions(chat?.id as string);
 
   const menu = useMemo((): Menu => {
     const menu: Menu = [];
