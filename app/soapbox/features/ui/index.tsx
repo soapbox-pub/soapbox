@@ -28,15 +28,14 @@ import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFea
 import AdminPage from 'soapbox/pages/admin_page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default_page';
-// import GroupsPage from 'soapbox/pages/groups_page';
-// import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
+
+import { StatProvider } from '../../contexts/stat-context';
 
 import BackgroundShapes from './components/background_shapes';
 import Navbar from './components/navbar';
@@ -64,15 +63,9 @@ import {
   Filters,
   PinnedStatuses,
   Search,
-  // Groups,
-  // GroupTimeline,
   ListTimeline,
   Lists,
   Bookmarks,
-  // GroupMembers,
-  // GroupRemovedAccounts,
-  // GroupCreate,
-  // GroupEdit,
   Settings,
   MediaDisplay,
   EditProfile,
@@ -86,7 +79,6 @@ import {
   // Backups,
   MfaForm,
   ChatIndex,
-  ChatRoom,
   ChatWidget,
   ServerInfo,
   Dashboard,
@@ -118,7 +110,6 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
-import { StatProvider } from '../../contexts/stat-context';
 
 const EmptyPage = HomePage;
 
@@ -264,7 +255,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatRoom} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatIndex} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />

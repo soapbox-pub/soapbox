@@ -294,10 +294,6 @@ export function ChatIndex() {
   return import(/* webpackChunkName: "features/chats" */'../../chats');
 }
 
-export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
-}
-
 export function ChatWidget() {
   return import(/* webpackChunkName: "features/chats/components/chat-widget" */'../../chats/components/chat-widget');
 }
