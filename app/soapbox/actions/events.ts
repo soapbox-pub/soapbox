@@ -221,6 +221,7 @@ const submitEvent = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
+    const id        = state.compose_event.id;
     const name      = state.compose_event.name;
     const status    = state.compose_event.status;
     const banner    = state.compose_event.banner;
@@ -246,7 +247,11 @@ const submitEvent = () =>
     if (banner)   params.banner_id   = banner.id;
     if (location) params.location_id = location.origin_id;
 
-    return api(getState).post('/api/v1/pleroma/events', params).then(({ data }) => {
+    return api(getState).request({
+      url: id === null ? '/api/v1/pleroma/events' : `/api/v1/pleroma/events/${id}`,
+      method: id === null ? 'post' : 'put',
+      data: params,
+    }).then(({ data }) => {
       dispatch(closeModal('COMPOSE_EVENT'));
       dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
