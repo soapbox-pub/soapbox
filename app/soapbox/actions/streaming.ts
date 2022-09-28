@@ -1,5 +1,6 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+import { queryClient } from 'soapbox/queries/client';
 import { updatePageItem, appendPageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -52,8 +53,9 @@ interface ChatPayload extends Omit<Chat, 'last_message'> {
 }
 
 const updateChat = (payload: ChatPayload) => {
-  const { last_message: lastMessage } = payload;
+  const { id: chatId, last_message: lastMessage } = payload;
 
+  queryClient.setQueryData<Chat>(['chats', 'chat', chatId], payload as any);
   updatePageItem<Chat>(['chats', 'search'], payload as any, (o, n) => o.id === n.id);
 
   if (lastMessage) {
