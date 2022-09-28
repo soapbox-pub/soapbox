@@ -11,7 +11,7 @@ import { useChat } from 'soapbox/queries/chats';
 
 const messages = defineMessages({
   leaveChatHeading: { id: 'chat_message_list_intro.leave_chat.heading', defaultMessage: 'Leave Chat' },
-  leaveChatMessage: { id: 'chat_message_list_intro.leave_chat.message', defaultMessage: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.' },
+  leaveChatMessage: { id: 'chat_message_list_intro.leave_chat.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveChatConfirm: { id: 'chat_message_list_intro.leave_chat.confirm', defaultMessage: 'Leave Chat' },
   intro: { id: 'chat_message_list_intro.intro', defaultMessage: 'wants to start a chat with you' },
   accept: { id: 'chat_message_list_intro.actions.accept', defaultMessage: 'Accept' },

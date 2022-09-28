@@ -1,14 +1,16 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import sumBy from 'lodash/sumBy';
+import { useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
-import { flattenPages, updatePageItem } from 'soapbox/utils/queries';
+import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
 
@@ -50,18 +52,18 @@ export interface IChatSilence {
   target_account_id: number
 }
 
-export interface PaginatedResult<T> {
-  result: T[],
-  hasMore: boolean,
-  link?: string,
-}
+const chatKeys = {
+  chatMessages: (chatId: string) => ['chats', 'messages', chatId] as const,
+  chatSearch: (searchQuery?: string) => ['chats', 'search', searchQuery] as const,
+  chatSilences: ['chatSilences'] as const,
+};
 
 const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 
 const useChatMessages = (chatId: string) => {
   const api = useApi();
 
-  const getChatMessages = async(chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
+  const getChatMessages = async (chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || `/api/v1/pleroma/chats/${chatId}/messages`;
     const response = await api.get(uri);
@@ -78,7 +80,7 @@ const useChatMessages = (chatId: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(['chats', 'messages', chatId], ({ pageParam }) => getChatMessages(chatId, pageParam), {
+  const queryInfo = useInfiniteQuery(chatKeys.chatMessages(chatId), ({ pageParam }) => getChatMessages(chatId, pageParam), {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
@@ -101,8 +103,9 @@ const useChats = (search?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
   const features = useFeatures();
+  const { setUnreadChatsCount } = useStatContext();
 
-  const getChats = async(pageParam?: any): Promise<PaginatedResult<IChat>> => {
+  const getChats = async (pageParam?: any): Promise<PaginatedResult<IChat>> => {
     const endpoint = features.chatsV2 ? '/api/v2/pleroma/chats' : '/api/v1/pleroma/chats';
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || endpoint;
@@ -116,6 +119,9 @@ const useChats = (search?: string) => {
     const link = getNextLink(response);
     const hasMore = !!link;
 
+    // TODO: change to response header
+    setUnreadChatsCount(sumBy(data, (chat) => chat.unread));
+
     // Set the relationships to these users in the redux store.
     dispatch(fetchRelationships(data.map((item) => item.account.id)));
 
@@ -126,7 +132,7 @@ const useChats = (search?: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(['chats', 'search', search], ({ pageParam }) => getChats(pageParam), {
+  const queryInfo = useInfiniteQuery(chatKeys.chatSearch(search), ({ pageParam }) => getChats(pageParam), {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
@@ -181,8 +187,8 @@ const useChat = (chatId?: string) => {
   const acceptChat = useMutation(() => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`), {
     onSuccess(response) {
       setChat(response.data);
-      queryClient.invalidateQueries(['chats', 'messages', chatId]);
-      queryClient.invalidateQueries(['chats', 'search']);
+      queryClient.invalidateQueries(chatKeys.chatMessages(chatId));
+      queryClient.invalidateQueries(chatKeys.chatSearch());
     },
   });
 
@@ -190,8 +196,8 @@ const useChat = (chatId?: string) => {
     onSuccess(response) {
       setChat(null);
       setEditing(false);
-      queryClient.invalidateQueries(['chats', 'messages', chatId]);
-      queryClient.invalidateQueries(['chats', 'search']);
+      queryClient.invalidateQueries(chatKeys.chatMessages(chatId));
+      queryClient.invalidateQueries(chatKeys.chatSearch());
     },
   });
 
@@ -201,13 +207,13 @@ const useChat = (chatId?: string) => {
 const useChatSilences = () => {
   const api = useApi();
 
-  const getChatSilences = async() => {
+  const getChatSilences = async () => {
     const { data } = await api.get<IChatSilence[]>('/api/v1/pleroma/chats/silences');
 
     return data;
   };
 
-  return useQuery<IChatSilence[]>(['chatSilences'], getChatSilences, {
+  return useQuery<IChatSilence[]>(chatKeys.chatSilences, getChatSilences, {
     placeholderData: [],
   });
 };
@@ -218,12 +224,12 @@ const useChatSilence = (chat?: IChat) => {
 
   const [isSilenced, setSilenced] = useState<boolean>(false);
 
-  const getChatSilences = async() => {
+  const getChatSilences = async () => {
     const { data } = await api.get(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`);
     return data;
   };
 
-  const fetchChatSilence = async() => {
+  const fetchChatSilence = async () => {
     const data = await getChatSilences();
     if (data) {
       setSilenced(true);
@@ -246,6 +252,7 @@ const useChatSilence = (chat?: IChat) => {
     api.post(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
         dispatch(snackbar.success('Successfully silenced this chat.'));
+        queryClient.invalidateQueries(chatKeys.chatSilences);
       })
       .catch(() => {
         dispatch(snackbar.error('Something went wrong trying to silence this chat. Please try again.'));
@@ -259,6 +266,7 @@ const useChatSilence = (chat?: IChat) => {
     api.delete(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
         dispatch(snackbar.success('Successfully unsilenced this chat.'));
+        queryClient.invalidateQueries(chatKeys.chatSilences);
       })
       .catch(() => {
         dispatch(snackbar.error('Something went wrong trying to unsilence this chat. Please try again.'));
@@ -266,13 +274,7 @@ const useChatSilence = (chat?: IChat) => {
       });
   };
 
-  useEffect(() => {
-    if (chat?.id) {
-      fetchChatSilence();
-    }
-  }, [chat?.id]);
-
-  return { isSilenced, handleSilence };
+  return { isSilenced, handleSilence, fetchChatSilence };
 };
 
-export { useChat, useChats, useChatMessages, useChatSilences, useChatSilence };
+export { chatKeys, useChat, useChats, useChatMessages, useChatSilences, useChatSilence };

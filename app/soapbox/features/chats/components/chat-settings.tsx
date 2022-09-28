@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
@@ -16,7 +16,7 @@ const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
   blockHeading: { id: 'chat_settings.block.heading', defaultMessage: 'Block @{acct}' },
   blockConfirm: { id: 'chat_settings.block.confirm', defaultMessage: 'Block' },
-  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.' },
+  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
   title: { id: 'chat_settings.title', defaultMessage: 'Chat Details' },
@@ -30,7 +30,7 @@ const ChatSettings = () => {
   const intl = useIntl();
 
   const { chat, setEditing, toggleChatPane } = useChatContext();
-  const { isSilenced, handleSilence } = useChatSilence(chat);
+  const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
 
   const { deleteChat } = useChat(chat?.id as string);
 
@@ -62,6 +62,12 @@ const ChatSettings = () => {
   };
 
   const handleReportChat = () => dispatch(initReport(chat?.account as any));
+
+  useEffect(() => {
+    if (chat?.id) {
+      fetchChatSilence();
+    }
+  }, [chat?.id]);
 
   if (!chat) {
     return null;

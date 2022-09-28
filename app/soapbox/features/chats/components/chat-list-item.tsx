@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
+import { openModal } from 'soapbox/actions/modals';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { useAppDispatch } from 'soapbox/hooks';
+import { IChat, IChatSilence, useChat, useChatSilence } from 'soapbox/queries/chats';
 
-import type { IChat, IChatSilence } from 'soapbox/queries/chats';
+import type { Menu } from 'soapbox/components/dropdown_menu';
+
+const messages = defineMessages({
+  silenceNotifications: { id: 'chat_settings.silence_notifications', defaultMessage: 'Silence notifications' },
+  unsilenceNotifications: { id: 'chat_settings.unsilence_notifications', defaultMessage: 'Unsilence notifications' },
+  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
+  leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
+  leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
+  leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
+});
 
 interface IChatListItemInterface {
   chat: IChat,
@@ -13,12 +27,60 @@ interface IChatListItemInterface {
 }
 
 const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onClick }) => {
+  const dispatch = useAppDispatch();
+  const intl = useIntl();
+
+  const { handleSilence } = useChatSilence(chat);
+  const { deleteChat } = useChat(chat?.id as string);
+
+  const menu = useMemo((): Menu => {
+    const menu: Menu = [];
+
+    if (chatSilence) {
+      menu.push({
+        text: intl.formatMessage(messages.unsilenceNotifications),
+        action: (event) => {
+          event.stopPropagation();
+          handleSilence();
+        },
+        icon: require('@tabler/icons/bell.svg'),
+      });
+    } else {
+      menu.push({
+        text: intl.formatMessage(messages.silenceNotifications),
+        action: (event) => {
+          event.stopPropagation();
+          handleSilence();
+        },
+        icon: require('@tabler/icons/bell-off.svg'),
+      });
+    }
+
+    menu.push({
+      text: intl.formatMessage(messages.leaveChat),
+      action: (event) => {
+        event.stopPropagation();
+
+        dispatch(openModal('CONFIRM', {
+          heading: intl.formatMessage(messages.leaveHeading),
+          message: intl.formatMessage(messages.leaveMessage),
+          confirm: intl.formatMessage(messages.leaveConfirm),
+          confirmationTheme: 'primary',
+          onConfirm: () => deleteChat.mutate(),
+        }));
+      },
+      icon: require('@tabler/icons/logout.svg'),
+    });
+
+    return menu;
+  }, [chatSilence]);
+
   return (
     <button
       key={chat.id}
       type='button'
       onClick={() => onClick(chat)}
-      className='px-2 py-3 w-full flex flex-col rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:shadow-inset-ring'
+      className='group px-2 py-3 w-full flex flex-col rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:shadow-inset-ring'
       data-testid='chat'
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>
@@ -36,7 +98,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
                 align='left'
                 size='sm'
                 weight='medium'
-                theme='muted'
+                theme={chat.last_message.unread ? 'default' : 'muted'}
                 truncate
                 className='w-full h-5 truncate-child pointer-events-none'
                 data-testid='chat-last-message'
@@ -47,6 +109,16 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
         </HStack>
 
         <HStack alignItems='center' space={2}>
+          <div className='text-gray-600 hidden group-hover:block hover:text-gray-100'>
+            {/* TODO: fix nested buttons here */}
+            <DropdownMenuContainer
+              items={menu}
+              src={require('@tabler/icons/dots.svg')}
+              title='Settings'
+            />
+          </div>
+
+
           {chatSilence ? (
             <Icon src={require('@tabler/icons/bell-off.svg')} className='w-5 h-5 text-gray-600' />
           ) : null}

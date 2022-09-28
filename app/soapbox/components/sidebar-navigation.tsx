@@ -3,6 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
@@ -24,12 +25,12 @@ const messages = defineMessages({
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
   const intl = useIntl();
+  const { unreadChatsCount } = useStatContext();
 
   const instance = useAppSelector((state) => state.instance);
   const settings = useAppSelector((state) => getSettings(state));
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
@@ -114,7 +115,7 @@ const SidebarNavigation = () => {
         <SidebarNavigationLink
           to='/chats'
           icon={require('@tabler/icons/mail.svg')}
-          count={chatsCount}
+          count={unreadChatsCount}
           text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
         />
       );

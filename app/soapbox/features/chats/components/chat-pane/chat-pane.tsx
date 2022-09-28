@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useDebounce, useFeatures } from 'soapbox/hooks';
 import { IChat, useChats } from 'soapbox/queries/chats';
 
@@ -19,14 +20,13 @@ import Blankslate from './blankslate';
 const ChatPane = () => {
   const features = useFeatures();
   const debounce = useDebounce;
+  const { unreadChatsCount } = useStatContext();
 
   const [value, setValue] = useState<string>();
   const debouncedValue = debounce(value as string, 300);
 
   const { chat, setChat, isOpen, isSearching, setSearching, toggleChatPane } = useChatContext();
-  const { chatsQuery: { data: chats } } = useChats(debouncedValue);
-
-  const unreadCount = sumBy(chats, (chat) => chat.unread);
+  const { chatsQuery: { data: chats, isLoading } } = useChats(debouncedValue);
 
   const hasSearchValue = Number(debouncedValue?.length) > 0;
 
@@ -42,7 +42,7 @@ const ChatPane = () => {
   };
 
   const renderBody = () => {
-    if (hasSearchValue || Number(chats?.length) > 0) {
+    if (hasSearchValue || Number(chats?.length) > 0 || isLoading) {
       return (
         <Stack space={4} className='flex-grow h-full'>
           {features.chatsSearch && (
@@ -55,11 +55,10 @@ const ChatPane = () => {
             </div>
           )}
 
-          {Number(chats?.length) > 0 ? (
+          {(Number(chats?.length) > 0 || isLoading) ? (
             <ChatList
               searchValue={debouncedValue}
               onClickChat={handleClickChat}
-              fade
             />
           ) : (
             <EmptyResultsBlankslate />
@@ -90,12 +89,16 @@ const ChatPane = () => {
     <Pane isOpen={isOpen} index={0} main>
       <ChatPaneHeader
         title='Messages'
-        unreadCount={unreadCount}
+        unreadCount={unreadChatsCount}
         isOpen={isOpen}
         onToggle={toggleChatPane}
         secondaryAction={() => {
           setSearching(true);
           setValue(undefined);
+
+          if (!isOpen) {
+            toggleChatPane();
+          }
         }}
         secondaryActionIcon={require('@tabler/icons/edit.svg')}
       />

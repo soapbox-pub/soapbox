@@ -14,7 +14,7 @@ import PlaceholderChatMessage from 'soapbox/features/placeholder/components/plac
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
+import { chatKeys, IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
@@ -30,6 +30,8 @@ const messages = defineMessages({
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
   delete: { id: 'chats.actions.delete', defaultMessage: 'Delete for both' },
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
+  report: { id: 'chats.actions.report', defaultMessage: 'Report' },
+  deleteForMe: { id: 'chats.actions.deleteForMe', defaultMessage: 'Delete for me' },
   blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
   networkFailureTitle: { id: 'chat_message_list.network_failure.title', defaultMessage: 'Whoops!' },
   networkFailureSubtitle: { id: 'chat_message_list.network_failure.subtitle', defaultMessage: 'We encountered a network failure.' },
@@ -94,7 +96,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
-      queryClient.invalidateQueries(['chats', 'messages', chat.id]);
+      queryClient.invalidateQueries(chatKeys.chatMessages(chat.id));
     },
   });
 
@@ -238,6 +240,18 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
       menu.push({
         text: intl.formatMessage(messages.delete),
         action: () => handleDeleteMessage.mutate(chatMessage.id),
+        icon: require('@tabler/icons/trash.svg'),
+        destructive: true,
+      });
+    } else {
+      menu.push({
+        text: intl.formatMessage(messages.report),
+        action: () => null, // TODO: implement once API is available
+        icon: require('@tabler/icons/flag.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.deleteForMe),
+        action: () => null, // TODO: implement once API is available
         icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       });

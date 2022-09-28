@@ -1,7 +1,12 @@
 import { queryClient } from 'soapbox/queries/client';
 
 import type { InfiniteData, QueryKey, UseInfiniteQueryResult } from '@tanstack/react-query';
-import type { PaginatedResult } from 'soapbox/queries/chats';
+
+export interface PaginatedResult<T> {
+  result: T[],
+  hasMore: boolean,
+  link?: string,
+}
 
 /** Flatten paginated results into a single array. */
 const flattenPages = <T>(queryInfo: UseInfiniteQueryResult<PaginatedResult<T>>) => {
@@ -35,8 +40,22 @@ const appendPageItem = <T>(queryKey: QueryKey, newItem: T) => {
   });
 };
 
+/** Remove an item inside if found. */
+const removePageItem = <T>(queryKey: QueryKey, itemToRemove: T, isItem: (item: T, newItem: T) => boolean) => {
+  queryClient.setQueriesData<InfiniteData<PaginatedResult<T>>>(queryKey, (data) => {
+    if (data) {
+      const pages = data.pages.map(page => {
+        const result = page.result.filter(item => !isItem(item, itemToRemove));
+        return { ...page, result };
+      });
+      return { ...data, pages };
+    }
+  });
+};
+
 export {
   flattenPages,
   updatePageItem,
   appendPageItem,
+  removePageItem,
 };

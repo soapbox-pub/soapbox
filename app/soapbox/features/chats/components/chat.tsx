@@ -8,7 +8,7 @@ import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { IChat, useChat } from 'soapbox/queries/chats';
+import { chatKeys, IChat, useChat } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -97,7 +97,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
     },
     // Always refetch after error or success:
     onSuccess: () => {
-      queryClient.invalidateQueries(['chats', 'messages', chat.id]);
+      queryClient.invalidateQueries(chatKeys.chatMessages(chat.id));
     },
   });
 

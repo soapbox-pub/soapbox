@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
   blockHeading: { id: 'chat_settings.block.heading', defaultMessage: 'Block @{acct}' },
   blockConfirm: { id: 'chat_settings.block.confirm', defaultMessage: 'Block' },
-  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? This conversation will be removed from your inbox.' },
+  leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
   blockUser: { id: 'chat_settings.options.block_user', defaultMessage: 'Block @{acct}' },
@@ -38,7 +38,7 @@ const ChatPageMain: React.FC<IChatPageMain> = ({ chatId }) => {
   const account = useOwnAccount();
 
   const { chat, deleteChat } = useChat(chatId);
-  const { isSilenced, handleSilence } = useChatSilence(chat?.data);
+  const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat?.data);
 
   const handleBlockUser = () => {
     dispatch(openModal('CONFIRM', {
@@ -61,6 +61,12 @@ const ChatPageMain: React.FC<IChatPageMain> = ({ chatId }) => {
   };
 
   const handleReportChat = () => dispatch(initReport(chat?.data?.account as any));
+
+  useEffect(() => {
+    if (chatId) {
+      fetchChatSilence();
+    }
+  }, [chatId]);
 
   if (!chat && !account?.chats_onboarded) {
     return (
