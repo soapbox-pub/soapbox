@@ -3,12 +3,18 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useChat } from 'soapbox/queries/chats';
 
 import ChatPageMain from './components/chat-page-main';
 import ChatPageSidebar from './components/chat-page-sidebar';
 
-const ChatPage = () => {
-  const { chat } = useChatContext();
+interface IChatPage {
+  chatId?: string,
+}
+
+const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
+  const { chat, setChat } = useChatContext();
+  const { chat: chatQueryResult } = useChat(chatId);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<string | number>('100%');
@@ -26,6 +32,14 @@ const ChatPage = () => {
 
     setHeight(fullHeight - top + offset);
   };
+
+  useEffect(() => {
+    const data = chatQueryResult?.data;
+
+    if (data) {
+      setChat(data);
+    }
+  }, [chatQueryResult?.isLoading]);
 
   useEffect(() => {
     calculateHeight();
