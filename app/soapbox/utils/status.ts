@@ -11,9 +11,7 @@ export const defaultMediaVisibility = (status: StatusEntity | undefined | null, 
     status = status.reblog;
   }
 
-  const isSensitive = status.sensitive || status.visibility === 'self';
-
-  return (displayMedia !== 'hide_all' && !isSensitive || displayMedia === 'show_all');
+  return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
 };
 
 /** Grab the first external link from a status. */
