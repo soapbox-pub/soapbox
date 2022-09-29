@@ -28,15 +28,14 @@ import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFea
 import AdminPage from 'soapbox/pages/admin_page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default_page';
-// import GroupsPage from 'soapbox/pages/groups_page';
-// import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
+
+import { StatProvider } from '../../contexts/stat-context';
 
 import BackgroundShapes from './components/background_shapes';
 import Navbar from './components/navbar';
@@ -64,15 +63,9 @@ import {
   Filters,
   PinnedStatuses,
   Search,
-  // Groups,
-  // GroupTimeline,
   ListTimeline,
   Lists,
   Bookmarks,
-  // GroupMembers,
-  // GroupRemovedAccounts,
-  // GroupCreate,
-  // GroupEdit,
   Settings,
   MediaDisplay,
   EditProfile,
@@ -86,7 +79,6 @@ import {
   // Backups,
   MfaForm,
   ChatIndex,
-  ChatRoom,
   ChatWidget,
   ServerInfo,
   Dashboard,
@@ -118,7 +110,6 @@ import { WrappedRoute } from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
-import { StatProvider } from '../../contexts/stat-context';
 
 const EmptyPage = HomePage;
 
@@ -190,18 +181,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
         <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
       )}
 
-      {/* Gab groups */}
-      {/*
-      <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/create' page={GroupsPage} component={Groups} content={children} componentParams={{ showCreateForm: true, activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/browse/member' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'member' }} />
-      <WrappedRoute path='/groups/browse/admin' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'admin' }} />
-      <WrappedRoute path='/groups/:id/members' page={GroupPage} component={GroupMembers} content={children} />
-      <WrappedRoute path='/groups/:id/removed_accounts' page={GroupPage} component={GroupRemovedAccounts} content={children} />
-      <WrappedRoute path='/groups/:id/edit' page={GroupPage} component={GroupEdit} content={children} />
-      <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
-      */}
-
       {/* Mastodon web routes */}
       <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
       <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
@@ -264,7 +243,9 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatRoom} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/new' page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/settings' page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatIndex} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />

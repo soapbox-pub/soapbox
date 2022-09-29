@@ -9,7 +9,7 @@ import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, 
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { useChat, useChatSilence } from 'soapbox/queries/chats';
+import { useChatActions, useChatSilence } from 'soapbox/queries/chats';
 
 import Chat from '../../chat';
 
@@ -34,7 +34,7 @@ const ChatPageMain = () => {
 
   const { chat, setChat } = useChatContext();
   const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
-  const { deleteChat } = useChat(chat?.id as string);
+  const { deleteChat } = useChatActions(chat?.id as string);
 
   const handleBlockUser = () => {
     dispatch(openModal('CONFIRM', {

@@ -53,6 +53,7 @@ export interface IChatSilence {
 }
 
 const chatKeys = {
+  chat: (chatId?: string) => ['chats', 'chat', chatId] as const,
   chatMessages: (chatId: string) => ['chats', 'messages', chatId] as const,
   chatSearch: (searchQuery?: string) => ['chats', 'search', searchQuery] as const,
   chatSilences: ['chatSilences'] as const,
@@ -155,7 +156,23 @@ const useChats = (search?: string) => {
   return { chatsQuery, getOrCreateChatByAccountId };
 };
 
-const useChat = (chatId: string) => {
+const useChat = (chatId?: string) => {
+  const api = useApi();
+  const actions = useChatActions(chatId!);
+
+  const getChat = async () => {
+    if (chatId) {
+      const { data } = await api.get<IChat>(`/api/v1/pleroma/chats/${chatId}`);
+      return data;
+    }
+  };
+
+  const chat = useQuery<IChat | undefined>(chatKeys.chat(chatId), getChat);
+
+  return { ...actions, chat };
+};
+
+const useChatActions = (chatId: string) => {
   const api = useApi();
   const { setChat, setEditing } = useChatContext();
 
@@ -264,4 +281,4 @@ const useChatSilence = (chat: IChat | null) => {
   return { isSilenced, handleSilence, fetchChatSilence };
 };
 
-export { chatKeys, useChat, useChats, useChatMessages, useChatSilences, useChatSilence };
+export { chatKeys, useChat, useChatActions, useChats, useChatMessages, useChatSilences, useChatSilence };

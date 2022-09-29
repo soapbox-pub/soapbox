@@ -7,7 +7,7 @@ import { initReport } from 'soapbox/actions/reports';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useChat } from 'soapbox/queries/chats';
+import { useChatActions } from 'soapbox/queries/chats';
 
 const messages = defineMessages({
   leaveChatHeading: { id: 'chat_message_list_intro.leave_chat.heading', defaultMessage: 'Leave Chat' },
@@ -25,7 +25,7 @@ const ChatMessageListIntro = () => {
   const intl = useIntl();
 
   const { chat, needsAcceptance } = useChatContext();
-  const { acceptChat, deleteChat } = useChat(chat?.id as string);
+  const { acceptChat, deleteChat } = useChatActions(chat?.id as string);
 
   const handleLeaveChat = () => {
     dispatch(openModal('CONFIRM', {

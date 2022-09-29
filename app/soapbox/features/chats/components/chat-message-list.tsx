@@ -16,7 +16,7 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
-import { chatKeys, IChat, IChatMessage, useChat, useChatMessages } from 'soapbox/queries/chats';
+import { chatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
@@ -74,7 +74,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const { deleteChatMessage, markChatAsRead } = useChat(chat.id);
+  const { deleteChatMessage, markChatAsRead } = useChatActions(chat.id);
   const {
     data: chatMessages,
     fetchNextPage,
