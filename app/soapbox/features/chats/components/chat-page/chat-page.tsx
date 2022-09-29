@@ -1,11 +1,13 @@
 import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
 import { Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useChat } from 'soapbox/queries/chats';
 
 import ChatPageMain from './components/chat-page-main';
+import ChatPageNew from './components/chat-page-new';
 import ChatPageSidebar from './components/chat-page-sidebar';
 
 interface IChatPage {
@@ -72,7 +74,14 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           'hidden sm:block': !chat,
         })}
         >
-          <ChatPageMain />
+          <Switch>
+            <Route path='/chats/new'>
+              <ChatPageNew />
+            </Route>
+            <Route>
+              <ChatPageMain />
+            </Route>
+          </Switch>
         </Stack>
       </div>
     </div>
