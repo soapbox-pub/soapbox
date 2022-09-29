@@ -7,7 +7,6 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
@@ -264,14 +263,9 @@ class Item extends React.PureComponent {
 
 }
 
-const mapStateToMediaGalleryProps = state => {
-  const { links } = getSoapboxConfig(state);
-
-  return {
-    displayMedia: getSettings(state).get('displayMedia'),
-    links,
-  };
-};
+const mapStateToMediaGalleryProps = state => ({
+  displayMedia: getSettings(state).get('displayMedia'),
+});
 
 export default @connect(mapStateToMediaGalleryProps)
 @injectIntl
@@ -291,7 +285,6 @@ class MediaGallery extends React.PureComponent {
     onToggleVisibility: PropTypes.func,
     displayMedia: PropTypes.string,
     compact: PropTypes.bool,
-    links: ImmutablePropTypes.map,
   };
 
   static defaultProps = {
@@ -575,7 +568,7 @@ class MediaGallery extends React.PureComponent {
   }
 
   render() {
-    const { media, intl, sensitive, compact, inReview, links } = this.props;
+    const { media, intl, sensitive, compact } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
 
@@ -594,20 +587,12 @@ class MediaGallery extends React.PureComponent {
       />
     ));
 
-    let warning, summary;
+    let warning;
 
     if (sensitive) {
       warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
-    } else if (inReview) {
-      warning = <FormattedMessage id='status.in_review_warning' defaultMessage='Content Under Review' />;
     } else {
       warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
-    }
-
-    if (inReview) {
-      summary = <FormattedMessage id='status.in_review_summary.summary' defaultMessage='This post has been sent to Moderation for review and is only visible to you.' />;
-    } else {
-      summary = <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />;
     }
 
     return (
@@ -619,7 +604,7 @@ class MediaGallery extends React.PureComponent {
             'left-1 top-1': visible || compact,
           })}
         >
-          {(sensitive || inReview) && (
+          {sensitive && (
             (visible || compact) ? (
               <Button
                 text={intl.formatMessage(messages.toggle_visible)}
@@ -633,40 +618,15 @@ class MediaGallery extends React.PureComponent {
                 onClick={(e) => e.stopPropagation()}
                 className={
                   classNames({
-                    'cursor-default backdrop-blur-sm rounded-lg w-full h-full border-0 flex items-center justify-center': true,
-                    'bg-gray-800/75': !inReview,
-                    'bg-danger-600/75': inReview,
+                    'bg-gray-800/75 cursor-default backdrop-blur-sm rounded-lg w-full h-full border-0 flex items-center justify-center': true,
                   })
                 }
               >
                 <div className='text-center w-3/4 mx-auto space-y-4'>
                   <div className='space-y-1'>
                     <Text theme='white' weight='semibold'>{warning}</Text>
-                    <Text theme='white' size='sm' weight='medium'>
-                      {summary}
-
-                      {links.get('support') && (
-                        <>
-                          {' '}
-                          <FormattedMessage
-                            id='status.in_review_summary.contact'
-                            defaultMessage='If you believe this is in error please {link}.'
-                            values={{
-                              link: (
-                                <a
-                                  className='underline text-inherit'
-                                  href={links.get('support')}
-                                >
-                                  <FormattedMessage
-                                    id='status.in_review_summary.link'
-                                    defaultMessage='Contact Support'
-                                  />
-                                </a>
-                              ),
-                            }}
-                          />
-                        </>
-                      )}
+                    <Text size='sm'>
+                      <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
                     </Text>
                   </div>
 
