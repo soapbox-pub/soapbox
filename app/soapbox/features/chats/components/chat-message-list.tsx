@@ -85,6 +85,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     isFetchingNextPage,
     isLoading,
     isPlaceholderData,
+    hasNextPage,
     refetch,
   } = useChatMessages(chat.id);
   const formattedChatMessages = chatMessages || [];
@@ -154,7 +155,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     // const maxId = chatMessages.getIn([0, 'id']) as string;
     // dispatch(fetchChatMessages(chat.id, maxId as any));
     // setIsLoading(true);
-    if (!isFetching) {
+    if (!isFetching && hasNextPage) {
       // setMaxId(formattedChatMessages[0].id);
       fetchNextPage()
         .then(() => {

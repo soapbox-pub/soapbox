@@ -82,7 +82,6 @@ const useChatMessages = (chatId: string) => {
   };
 
   const queryInfo = useInfiniteQuery(chatKeys.chatMessages(chatId), ({ pageParam }) => getChatMessages(chatId, pageParam), {
-    keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };
