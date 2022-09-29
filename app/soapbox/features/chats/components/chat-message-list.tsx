@@ -7,6 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
+import { initReport } from 'soapbox/actions/reports';
 import { Avatar, Button, Divider, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 // import emojify from 'soapbox/features/emoji/emoji';
@@ -14,6 +15,7 @@ import PlaceholderChatMessage from 'soapbox/features/placeholder/components/plac
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { normalizeAccount } from 'soapbox/normalizers';
 import { chatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { stripHTML } from 'soapbox/utils/html';
@@ -248,7 +250,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     } else {
       menu.push({
         text: intl.formatMessage(messages.report),
-        action: () => null, // TODO: implement once API is available
+        action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage })),
         icon: require('@tabler/icons/flag.svg'),
       });
       menu.push({
