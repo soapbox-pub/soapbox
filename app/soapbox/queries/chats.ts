@@ -3,6 +3,7 @@ import sumBy from 'lodash/sumBy';
 import { useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
+import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
@@ -124,6 +125,7 @@ const useChats = (search?: string) => {
 
     // Set the relationships to these users in the redux store.
     dispatch(fetchRelationships(data.map((item) => item.account.id)));
+    dispatch(importFetchedAccounts(data.map((item) => item.account)));
 
     return {
       result: data,
@@ -158,10 +160,14 @@ const useChats = (search?: string) => {
 const useChat = (chatId?: string) => {
   const api = useApi();
   const actions = useChatActions(chatId!);
+  const dispatch = useAppDispatch();
 
   const getChat = async () => {
     if (chatId) {
       const { data } = await api.get<IChat>(`/api/v1/pleroma/chats/${chatId}`);
+
+      dispatch(importFetchedAccount(data.account));
+
       return data;
     }
   };
