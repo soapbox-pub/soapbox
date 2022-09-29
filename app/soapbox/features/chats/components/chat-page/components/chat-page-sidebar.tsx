@@ -33,17 +33,29 @@ const ChatPageSidebar = () => {
     history.push('/chats/new');
   };
 
+  const handleSettingsClick = () => {
+    history.push('/chats/settings');
+  };
+
   return (
     <Stack space={4} className='h-full'>
       <Stack space={4} className='px-4 pt-4'>
         <HStack alignItems='center' justifyContent='between'>
           <CardTitle title={intl.formatMessage(messages.title)} />
 
-          <IconButton
-            src={require('@tabler/icons/edit.svg')}
-            iconClassName='w-5 h-5 text-gray-600'
-            onClick={handleChatCreate}
-          />
+          <HStack space={1}>
+            <IconButton
+              src={require('@tabler/icons/settings.svg')}
+              iconClassName='w-5 h-5 text-gray-600'
+              onClick={handleSettingsClick}
+            />
+
+            <IconButton
+              src={require('@tabler/icons/edit.svg')}
+              iconClassName='w-5 h-5 text-gray-600'
+              onClick={handleChatCreate}
+            />
+          </HStack>
         </HStack>
 
         {features.chatsSearch && (

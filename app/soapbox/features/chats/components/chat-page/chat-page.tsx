@@ -9,6 +9,7 @@ import { useChat } from 'soapbox/queries/chats';
 import ChatPageMain from './components/chat-page-main';
 import ChatPageNew from './components/chat-page-new';
 import ChatPageSidebar from './components/chat-page-sidebar';
+import Welcome from './components/welcome';
 
 interface IChatPage {
   chatId?: string,
@@ -77,6 +78,9 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           <Switch>
             <Route path='/chats/new'>
               <ChatPageNew />
+            </Route>
+            <Route path='/chats/settings'>
+              <Welcome />
             </Route>
             <Route>
               <ChatPageMain />
