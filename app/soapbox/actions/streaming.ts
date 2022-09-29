@@ -109,8 +109,17 @@ const connectTimelineStream = (
           break;
         case 'pleroma:chat_update':
         case 'chat_message': // TruthSocial
-          updateChat(JSON.parse(data.payload));
-          play(soundCache.chat);
+          dispatch((dispatch: AppDispatch, getState: () => RootState) => {
+            const chat = JSON.parse(data.payload);
+            const me = getState().me;
+            const messageOwned = chat.last_message?.account_id === me;
+
+            // Don't update own messages from streaming
+            if (!messageOwned) {
+              updateChat(chat);
+              play(soundCache.chat);
+            }
+          });
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
