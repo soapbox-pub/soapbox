@@ -251,7 +251,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, status));
+        dispatch(initReport(account, { status }));
       },
     }));
   };
@@ -270,7 +270,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    dispatch(initReport(status.account as Account, status));
+    dispatch(initReport(status.account as Account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {

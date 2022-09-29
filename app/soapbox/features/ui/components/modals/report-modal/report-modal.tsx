@@ -6,7 +6,7 @@ import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/act
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusContent from 'soapbox/components/status_content';
-import { Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -74,6 +74,12 @@ interface IReportModal {
   onClose: () => void
 }
 
+enum ReportedEntities {
+  Account = 'Account',
+  Status = 'Status',
+  ChatMessage = 'ChatMessage'
+}
+
 const ReportModal = ({ onClose }: IReportModal) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
@@ -86,9 +92,22 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const rules = useAppSelector((state) => state.rules.items);
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
+  const selectedChatMessage = useAppSelector((state) => state.reports.new.chat_message);
 
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
   const shouldRequireRule = rules.length > 0;
+
+  const reportedEntity = useMemo(() => {
+    if (selectedStatusIds.size === 0 && !selectedChatMessage) {
+      return ReportedEntities.Account;
+    } else if (selectedChatMessage) {
+      return ReportedEntities.ChatMessage;
+    } else {
+      return ReportedEntities.Status;
+    }
+  }, []);
+
+  const isReportingAccount = reportedEntity === ReportedEntities.Account;
+  const isReportingStatus = reportedEntity === ReportedEntities.Status;
 
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
 
@@ -132,6 +151,31 @@ const ReportModal = ({ onClose }: IReportModal) => {
     }
   }, [selectedStatusIds.size]);
 
+  const renderSelectedChatMessage = () => {
+    if (account) {
+      return (
+        <HStack alignItems='center' space={4} className='rounded-md border dark:border-2 border-solid border-gray-400 dark:border-gray-800 p-4'>
+          <div>
+            <Avatar src={account.avatar} className='w-8 h-8' />
+          </div>
+
+          <div className='bg-gray-200 dark:bg-primary-800 rounded-md p-4 flex-grow'>
+            <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
+          </div>
+        </HStack>
+      );
+    }
+  };
+
+  const renderSelectedEntity = () => {
+    switch (reportedEntity) {
+      case ReportedEntities.Status:
+        return renderSelectedStatuses();
+      case ReportedEntities.ChatMessage:
+        return renderSelectedChatMessage();
+    }
+  };
+
   const confirmationText = useMemo(() => {
     switch (currentStep) {
       case Steps.TWO:
@@ -148,8 +192,8 @@ const ReportModal = ({ onClose }: IReportModal) => {
       return false;
     }
 
-    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (!isReportingAccount && selectedStatusIds.size === 0);
-  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingAccount]);
+    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (isReportingStatus && selectedStatusIds.size === 0);
+  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingStatus]);
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {
@@ -189,7 +233,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       <Stack space={4}>
         <ProgressBar progress={calculateProgress()} />
 
-        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedStatuses()}
+        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedEntity()}
 
         <StepToRender account={account} />
       </Stack>
