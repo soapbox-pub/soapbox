@@ -76,9 +76,10 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
   }, [chatSilence]);
 
   return (
-    <button
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
+    <div
+      role='button'
       key={chat.id}
-      type='button'
       onClick={() => onClick(chat)}
       className='group px-2 py-3 w-full flex flex-col rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:shadow-inset-ring'
       data-testid='chat'
@@ -142,7 +143,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
           )}
         </HStack>
       </HStack>
-    </button>
+    </div>
   );
 };
 
