@@ -29,6 +29,10 @@ const ChatPageSidebar = () => {
     history.push(`/chats/${chat.id}`);
   };
 
+  const handleChatCreate = () => {
+    history.push('/chats/new');
+  };
+
   return (
     <Stack space={4} className='h-full'>
       <Stack space={4} className='px-4 pt-4'>
@@ -38,6 +42,7 @@ const ChatPageSidebar = () => {
           <IconButton
             src={require('@tabler/icons/edit.svg')}
             iconClassName='w-5 h-5 text-gray-600'
+            onClick={handleChatCreate}
           />
         </HStack>
 
