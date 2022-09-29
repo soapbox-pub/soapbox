@@ -16,6 +16,7 @@ import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { chatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
+import { stripHTML } from 'soapbox/utils/html';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 import ChatMessageListIntro from './chat-message-list-intro';
@@ -219,7 +220,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   const handleCopyText = (chatMessage: IChatMessage) => {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(chatMessage.content);
+      const text = stripHTML(chatMessage.content);
+      navigator.clipboard.writeText(text);
     }
   };
 
