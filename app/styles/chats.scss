@@ -400,3 +400,7 @@
   font-size: 13px;
   opacity: 0.8;
 }
+
+.floating-link {
+  @apply w-full h-full inset-0 absolute z-10;
+}
