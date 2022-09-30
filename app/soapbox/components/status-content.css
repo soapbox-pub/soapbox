@@ -58,11 +58,6 @@
   @apply mb-0;
 }
 
-/* Inline emojis */
-.status-content .emojione {
-  @apply w-5 h-5 -mt-[3px] inline;
-}
-
 /* Markdown images */
 .status-content img:not(.emojione):not([width][height]) {
   @apply w-full h-72 object-contain rounded-lg overflow-hidden my-5 block;
