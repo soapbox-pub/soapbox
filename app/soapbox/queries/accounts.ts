@@ -1,3 +1,9 @@
+import { useMutation } from '@tanstack/react-query';
+
+import { patchMeSuccess } from 'soapbox/actions/me';
+import snackbar from 'soapbox/actions/snackbar';
+import { useApi, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+
 export type IAccount = {
   acct: string
   avatar: string
@@ -22,3 +28,33 @@ export type IAccount = {
   verified: boolean
   website: string
 }
+
+type UpdateCredentialsData = {
+  accepting_messages?: boolean
+  chats_onboarded?: boolean
+}
+
+const useUpdateCredentials = () => {
+  const account = useOwnAccount();
+  const api = useApi();
+  const dispatch = useAppDispatch();
+
+  return useMutation((data: UpdateCredentialsData) => api.patch('/api/v1/accounts/update_credentials', data), {
+    onMutate(variables) {
+      const cachedAccount = account?.toJS();
+      dispatch(patchMeSuccess({ ...cachedAccount, ...variables }));
+
+      return { cachedAccount };
+    },
+    onSuccess(response) {
+      dispatch(patchMeSuccess(response.data));
+      dispatch(snackbar.success('Chat Settings updated successfully'));
+    },
+    onError(_error, _variables, context: any) {
+      dispatch(snackbar.error('Chat Settings failed to update.'));
+      dispatch(patchMeSuccess(context.cachedAccount));
+    },
+  });
+};
+
+export { useUpdateCredentials };

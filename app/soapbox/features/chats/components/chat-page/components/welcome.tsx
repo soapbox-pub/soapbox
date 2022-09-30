@@ -1,11 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-import { patchMeSuccess } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, CardBody, CardTitle, Form, Stack, Toggle } from 'soapbox/components/ui';
-import { useApi, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useOwnAccount } from 'soapbox/hooks';
+import { useUpdateCredentials } from 'soapbox/queries/accounts';
 
 type FormData = {
   accepting_messages?: boolean
@@ -14,28 +12,17 @@ type FormData = {
 
 const Welcome = () => {
   const account = useOwnAccount();
-  const api = useApi();
-  const dispatch = useAppDispatch();
+  const updateCredentials = useUpdateCredentials();
 
   const [data, setData] = useState<FormData>({
     chats_onboarded: true,
     accepting_messages: account?.accepting_messages,
   });
 
-  const updateSettings = useMutation(() => api.patch('/api/v1/accounts/update_credentials', data), {
-    onSuccess(response) {
-      dispatch(patchMeSuccess(response.data));
-      dispatch(snackbar.success('Chat Settings updated successfully'));
-    },
-    onError() {
-      dispatch(snackbar.success('Chat Settings failed to update.'));
-    },
-  });
-
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    updateSettings.mutate();
+    updateCredentials.mutate(data);
   };
 
   return (
