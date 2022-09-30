@@ -41,7 +41,7 @@ const DefaultPage: React.FC = ({ children }) => {
         )}
         {features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={5} key='wtf-panel' />}
+            {Component => <Component limit={3} key='wtf-panel' />}
           </BundleContainer>
         )}
         <LinkFooter key='link-footer' />

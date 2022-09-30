@@ -119,7 +119,7 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
     setDirtyDescription(null);
 
     if (dirtyDescription !== null) {
-      dispatch(changeUploadCompose(composeId, media.id, { dirtyDescription }));
+      dispatch(changeUploadCompose(composeId, media.id, { description: dirtyDescription }));
     }
   };
 

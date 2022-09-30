@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Modal } from 'soapbox/components/ui';
@@ -18,7 +18,8 @@ interface IReplyMentionsModal {
 const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose }) => {
   const compose = useCompose(composeId);
 
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: compose.in_reply_to! }));
+  const getStatus = useCallback(makeGetStatus(), []);
+  const status = useAppSelector<StatusEntity | null>(state => getStatus(state, { id: compose.in_reply_to! }));
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const mentions = statusToMentionsAccountIdsArray(status!, account!);

@@ -19,6 +19,7 @@ import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
+import ModerationOverlay from './statuses/moderation-overlay';
 import { Card, HStack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
@@ -300,6 +301,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const accountAction = props.accountAction || reblogElement;
 
+  const inReview = status.visibility === 'self';
+
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
@@ -349,7 +352,15 @@ const Status: React.FC<IStatus> = (props) => {
             />
           </div>
 
-          <div className='status__content-wrapper'>
+          <div
+            className={classNames('status__content-wrapper relative', {
+              'min-h-[220px]': inReview,
+            })}
+          >
+            {inReview ? (
+              <ModerationOverlay />
+            ) : null}
+
             {!group && actualStatus.group && (
               <div className='status__meta'>
                 Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
@@ -390,8 +401,8 @@ const Status: React.FC<IStatus> = (props) => {
             )}
           </div>
         </Card>
-      </div>
-    </HotKeys>
+      </div >
+    </HotKeys >
   );
 };
 

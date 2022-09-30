@@ -7,6 +7,7 @@
 import snackbar from 'soapbox/actions/snackbar';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
 import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
+import { normalizeUsername } from 'soapbox/utils/input';
 
 import api from '../api';
 
@@ -84,15 +85,16 @@ const changePassword = (oldPassword: string, newPassword: string, confirmation: 
 
 const resetPassword = (usernameOrEmail: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
+    const input = normalizeUsername(usernameOrEmail);
     const state = getState();
     const v = parseVersion(state.instance.version);
 
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
     const params =
-      usernameOrEmail.includes('@')
-        ? { email: usernameOrEmail }
-        : { nickname: usernameOrEmail, username: usernameOrEmail };
+      input.includes('@')
+        ? { email: input }
+        : { nickname: input, username: input };
 
     const endpoint =
       v.software === TRUTHSOCIAL

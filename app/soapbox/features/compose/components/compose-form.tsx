@@ -18,7 +18,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
 import Icon from 'soapbox/components/icon';
 import { Button, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
 import EmojiPickerDropdown from '../components/emoji-picker/emoji-picker-dropdown';
@@ -57,15 +57,15 @@ const messages = defineMessages({
   saveChanges: { id: 'compose_form.save_changes', defaultMessage: 'Save changes' },
 });
 
-interface IComposeForm {
-  id: string,
+interface IComposeForm<ID extends string> {
+  id: ID extends 'default' ? never : ID,
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
   eventDiscussion?: boolean
 }
 
-const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, clickableAreaRef, eventDiscussion }) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, eventDiscussion }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -78,6 +78,7 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
   const features = useFeatures();
 
   const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt } = compose;
+  const prevSpoiler = usePrevious(spoiler);
 
   const hasPoll = !!compose.poll;
   const isEditing = compose.id !== null;
@@ -208,9 +209,10 @@ const ComposeForm: React.FC<IComposeForm> = ({ id, shouldCondense, autoFocus, cl
   }, []);
 
   useEffect(() => {
-    switch (spoiler) {
-      case true: focusSpoilerInput(); break;
-      case false: focusTextarea(); break;
+    if (spoiler && !prevSpoiler) {
+      focusSpoilerInput();
+    } else if (!spoiler && prevSpoiler) {
+      focusTextarea();
     }
   }, [spoiler]);
 

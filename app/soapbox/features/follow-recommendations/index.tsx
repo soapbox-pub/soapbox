@@ -10,7 +10,7 @@ import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
-  heading: { id: 'followRecommendations.heading', defaultMessage: 'Suggested profiles' },
+  heading: { id: 'followRecommendations.heading', defaultMessage: 'Suggested Profiles' },
 });
 
 const FollowRecommendations: React.FC = () => {

@@ -1,7 +1,9 @@
 /** List of supported E164 country codes. */
 const COUNTRY_CODES = [
   '1',
+  '351',
   '44',
+  '55',
 ] as const;
 
 /** Supported E164 country code. */

@@ -4,7 +4,6 @@ import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
@@ -26,7 +25,7 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
 import EventPage from 'soapbox/pages/event_page';
@@ -334,7 +333,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
 const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -391,9 +390,13 @@ const UI: React.FC = ({ children }) => {
     setDraggingOver(false);
     dragTargets.current = [];
 
-    if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-      dispatch(uploadCompose('home', e.dataTransfer.files, intl));
-    }
+    dispatch((_, getState) => {
+      if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
+        const modals = getState().modals;
+        const isModalOpen = modals.last()?.modalType === 'COMPOSE';
+        dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
+      }
+    });
   };
 
   const handleDragLeave = (e: DragEvent) => {
