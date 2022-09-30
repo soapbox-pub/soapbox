@@ -35,6 +35,11 @@ module.exports = {
           'Segoe UI Symbol',
           'Noto Color Emoji',
         ],
+        'mono': [
+          'Roboto Mono',
+          'ui-monospace',
+          'mono',
+        ],
       },
       colors: parseColorMatrix({
         // Define color matrix (of available colors)
@@ -49,6 +54,7 @@ module.exports = {
         'gradient-start': true,
         'gradient-end': true,
         'sea-blue': true,
+        'greentext': true,
       }),
       animation: {
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',

@@ -11,6 +11,7 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 import { isRtl } from '../rtl';
 
 import Poll from './polls/poll';
+import './status-content.css';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
@@ -28,7 +29,7 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <button className='status__content__read-more-button' onClick={onClick}>
+  <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
     <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
   </button>
@@ -216,11 +217,11 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   const content = { __html: parsedHtml };
   const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
-  const className = classNames('status__content', {
-    'status__content--with-action': onClick,
+  const className = classNames('status-content', {
+    'cursor-pointer': onClick,
     'status__content--with-spoiler': status.spoiler_text.length > 0,
-    'status__content--collapsed': collapsed,
-    'status__content--big': onlyEmoji,
+    'max-h-[300px]': collapsed,
+    'leading-normal big-emoji': onlyEmoji,
   });
 
   if (isRtl(status.search_index)) {
@@ -286,8 +287,8 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames('status__content', {
-          'status__content--big': onlyEmoji,
+        className={classNames('status-content', {
+          'leading-normal big-emoji': onlyEmoji,
         })}
         style={directionStyle}
         dangerouslySetInnerHTML={content}
