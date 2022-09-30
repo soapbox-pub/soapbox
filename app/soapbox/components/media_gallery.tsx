@@ -80,8 +80,6 @@ const Item: React.FC<IItem> = ({
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif') === true;
 
-  const [loaded, setLoaded] = useState(false);
-
   const handleMouseEnter: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {
     if (hoverToPlay()) {
       video.play();
@@ -116,10 +114,6 @@ const Item: React.FC<IItem> = ({
     }
 
     e.stopPropagation();
-  };
-
-  const handleImageLoad = () => {
-    setLoaded(true);
   };
 
   const handleVideoHover: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {
@@ -166,7 +160,7 @@ const Item: React.FC<IItem> = ({
     return (
       <div className={classNames('media-gallery__item', { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
         <a className='media-gallery__item-thumbnail' href={attachment.url} target='_blank' style={{ cursor: 'pointer' }}>
-          <Blurhash hash={attachment.get('blurhash')} className='media-gallery__preview' />
+          <Blurhash hash={attachment.blurhash} className='media-gallery__preview' />
           <span className='media-gallery__item__icons'>{attachmentIcon}</span>
           <span className='media-gallery__filename__label'>{filename}</span>
         </a>
@@ -258,10 +252,8 @@ const Item: React.FC<IItem> = ({
         </div>
       )}
       <Blurhash
-        hash={attachment.get('blurhash')}
-        className={classNames('media-gallery__preview', {
-          'media-gallery__preview--hidden': visible && loaded,
-        })}
+        hash={attachment.blurhash}
+        className='media-gallery__preview'
       />
       {visible && thumbnail}
     </div>
@@ -304,15 +296,6 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
 
   const node = useRef<HTMLDivElement>(null);
 
-  // const componentDidUpdate = (prevProps) => {
-  //   const { visible } = props;
-  //   if (!is(media, prevProps.media) && visible === undefined) {
-  //     this.setState({ visible: prevProps.displayMedia !== 'hide_all' && !sensitive || prevProps.displayMedia === 'show_all' });
-  //   } else if (!is(visible, prevProps.visible) && visible !== undefined) {
-  //     setVisible(visible);
-  //   }
-  // };
-
   const handleOpen: React.MouseEventHandler = (e) => {
     e.stopPropagation();
 
@@ -326,18 +309,6 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
   const handleClick = (index: number) => {
     onOpenMedia(media, index);
   };
-
-  useEffect(() => {
-    if (node.current) {
-      const { offsetWidth } = node.current;
-
-      if (cacheWidth) {
-        cacheWidth(offsetWidth);
-      }
-
-      setWidth(offsetWidth);
-    }
-  }, [node.current]);
 
   const getSizeDataSingle = (): SizeData => {
     const w = width || defaultWidth;
@@ -589,6 +560,18 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
   } else {
     warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
   }
+
+  useEffect(() => {
+    if (node.current) {
+      const { offsetWidth } = node.current;
+
+      if (cacheWidth) {
+        cacheWidth(offsetWidth);
+      }
+
+      setWidth(offsetWidth);
+    }
+  }, [node.current]);
 
   return (
     <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
