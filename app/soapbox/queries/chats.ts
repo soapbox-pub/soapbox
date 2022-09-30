@@ -56,7 +56,7 @@ export interface IChatSilence {
 const chatKeys = {
   chat: (chatId?: string) => ['chats', 'chat', chatId] as const,
   chatMessages: (chatId: string) => ['chats', 'messages', chatId] as const,
-  chatSearch: (searchQuery?: string) => ['chats', 'search', searchQuery] as const,
+  chatSearch: (searchQuery?: string) => searchQuery ? ['chats', 'search', searchQuery] : ['chats', 'search'] as const,
   chatSilences: ['chatSilences'] as const,
 };
 
