@@ -62,10 +62,10 @@ interface IComposeForm<ID extends string> {
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
-  eventDiscussion?: boolean
+  event?: string,
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, eventDiscussion }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -267,7 +267,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     publishText = intl.formatMessage(messages.schedule);
   }
 
-  if (eventDiscussion) {
+  if (event) {
     textareaPlaceholder = messages.eventPlaceholder;
   } else if (hasPoll) {
     textareaPlaceholder = messages.pollPlaceholder;
@@ -277,7 +277,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   return (
     <Stack className='w-full' space={1} ref={formRef} onClick={handleClick}>
-      {scheduledStatusCount > 0 && !eventDiscussion && (
+      {scheduledStatusCount > 0 && !event && (
         <Warning
           message={(
             <FormattedMessage
@@ -298,9 +298,9 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && !eventDiscussion && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && !eventDiscussion && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !event && <ReplyMentions composeId={id} />}
 
       <div
         className={classNames({

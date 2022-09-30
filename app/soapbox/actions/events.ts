@@ -81,6 +81,7 @@ const noOp = () => new Promise(f => f(undefined));
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
   success: { id: 'compose_event.submit_success', defaultMessage: 'Your event was created' },
+  editSuccess: { id: 'compose_event.edit_success', defaultMessage: 'Your event was edited' },
   joinSuccess: { id: 'join_event.success', defaultMessage: 'Joined the event' },
   joinRequestSuccess: { id: 'join_event.request_success', defaultMessage: 'Requested to join the event' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
@@ -255,7 +256,7 @@ const submitEvent = () =>
       dispatch(closeModal('COMPOSE_EVENT'));
       dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
-      dispatch(snackbar.success(messages.success, messages.view, `/@${data.account.acct}/events/${data.id}`));
+      dispatch(snackbar.success(id ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/events/${data.id}`));
     }).catch(function(error) {
       dispatch(submitEventFail(error));
     });

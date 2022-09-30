@@ -1,3 +1,4 @@
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -18,10 +19,11 @@ const messages = defineMessages({
 });
 
 interface IEventPreview {
-  status: StatusEntity
+  status: StatusEntity,
+  className?: string,
 }
 
-const EventPreview: React.FC<IEventPreview> = ({ status }) => {
+const EventPreview: React.FC<IEventPreview> = ({ status, className }) => {
   const intl = useIntl();
 
   const me = useAppSelector((state) => state.me);
@@ -32,7 +34,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status }) => {
   const banner = status.media_attachments?.find(({ description }) => description === 'Banner');
 
   return (
-    <div className='rounded-lg bg-gray-100 dark:bg-primary-800 shadow-xl relative overflow-hidden'>
+    <div className={classNames('rounded-lg bg-gray-100 dark:bg-primary-800 relative overflow-hidden', className)}>
       <div className='absolute top-28 right-3'>
         {account.id === me ? (
           <Button

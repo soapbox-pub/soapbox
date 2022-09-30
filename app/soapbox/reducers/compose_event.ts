@@ -92,7 +92,7 @@ export default function compose_event(state = ReducerRecord(), action: AnyAction
         status: action.text,
         // location: null as LocationEntity | null,
         start_time: new Date(action.status.event.start_time),
-        end_time: action.status.event.start_time ? new Date(action.status.event.end_time) : null,
+        end_time: action.status.event.end_time ? new Date(action.status.event.end_time) : null,
         approval_required: action.status.event.join_mode !== 'free',
         banner: (action.status as StatusEntity).media_attachments.find(({ description }) => description === 'Banner') || null,
         location: action.location ? normalizeLocation(action.location) : null,

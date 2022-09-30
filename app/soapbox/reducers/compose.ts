@@ -49,6 +49,7 @@ import {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
+  COMPOSE_EVENT_REPLY,
 } from '../actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
@@ -337,6 +338,12 @@ export default function compose(state = initialState, action: AnyAction) {
           map.set('spoiler_text', '');
         }
       }));
+    case COMPOSE_EVENT_REPLY:
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
+        map.set('in_reply_to', action.status.get('id'));
+        map.set('to', statusToMentionsArray(action.status, action.account));
+        map.set('idempotencyKey', uuid());
+      }));
     case COMPOSE_QUOTE:
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
         const defaultCompose = state.get('default')!;
@@ -360,7 +367,10 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_QUOTE_CANCEL:
     case COMPOSE_RESET:
     case COMPOSE_SUBMIT_SUCCESS:
-      return updateCompose(state, action.id, () => state.get('default')!.set('idempotencyKey', uuid()));
+      return updateCompose(state, action.id, () => state.get('default')!.withMutations(map => {
+        map.set('idempotencyKey', uuid());
+        map.set('in_reply_to', action.id.startsWith('reply:') ? action.id.slice(6) : null);
+      }));
     case COMPOSE_SUBMIT_FAIL:
       return updateCompose(state, action.id, compose => compose.set('is_submitting', false));
     case COMPOSE_UPLOAD_CHANGE_FAIL:

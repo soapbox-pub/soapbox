@@ -372,7 +372,7 @@ const Status: React.FC<IStatus> = (props) => {
               hoverable={hoverable}
             />
 
-            {actualStatus.event ? <EventPreview status={actualStatus} /> : (
+            {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
               <>
                 <StatusContent
                   status={actualStatus}

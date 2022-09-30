@@ -2,7 +2,6 @@ import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immuta
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { createSelector } from 'reselect';
 
 import { eventDiscussionCompose } from 'soapbox/actions/compose';
 import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
@@ -16,42 +15,11 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 import ComposeForm from '../compose/components/compose-form';
+import { getDescendantsIds } from '../status';
 import ThreadStatus from '../status/components/thread-status';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { RootState } from 'soapbox/store';
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
-
-const getDescendantsIds = createSelector([
-  (_: RootState, statusId: string) => statusId,
-  (state: RootState) => state.contexts.replies,
-], (statusId, contextReplies) => {
-  let descendantsIds = ImmutableOrderedSet<string>();
-  const ids = [statusId];
-
-  while (ids.length > 0) {
-    const id = ids.shift();
-    if (!id) break;
-
-    const replies = contextReplies.get(id);
-
-    if (descendantsIds.includes(id)) {
-      break;
-    }
-
-    if (statusId !== id) {
-      descendantsIds = descendantsIds.union([id]);
-    }
-
-    if (replies) {
-      replies.reverse().forEach((reply: string) => {
-        ids.unshift(reply);
-      });
-    }
-  }
-
-  return descendantsIds;
-});
 
 type RouteParams = { statusId: string };
 
@@ -87,7 +55,6 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   const node = useRef<HTMLDivElement>(null);
   const scroller = useRef<VirtuosoHandle>(null);
 
-  /** Fetch the status (and context) from the API. */
   const fetchData = async() => {
     const { params } = props;
     const { statusId } = params;
@@ -95,7 +62,6 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
     setNext(next);
   };
 
-  // Load data.
   useEffect(() => {
     fetchData().then(() => {
       setIsLoaded(true);
@@ -210,7 +176,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   return (
     <Stack space={2}>
       {me && <div className='sm:p-2 pt-0 border-b border-solid border-gray-200 dark:border-gray-800'>
-        <ComposeForm id={`reply:${status.id}`} autoFocus={false} eventDiscussion />
+        <ComposeForm id={`reply:${status.id}`} autoFocus={false} event={status.id} />
       </div>}
       <div ref={node} className='thread p-0 sm:p-2 shadow-none'>
         <ScrollableList

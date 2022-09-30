@@ -84,7 +84,7 @@ const getAncestorsIds = createSelector([
   return ancestorsIds;
 });
 
-const getDescendantsIds = createSelector([
+export const getDescendantsIds = createSelector([
   (_: RootState, statusId: string) => statusId,
   (state: RootState) => state.contexts.replies,
 ], (statusId, contextReplies) => {

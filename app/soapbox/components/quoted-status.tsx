@@ -9,6 +9,7 @@ import AccountContainer from 'soapbox/containers/account_container';
 import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import EventPreview from './event-preview';
 import OutlineBox from './outline-box';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
@@ -146,18 +147,22 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
         {renderReplyMentions()}
 
-        <Text
-          className='break-words status__content status__content--quote'
-          size='sm'
-          dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-        />
+        {status.event ? <EventPreview status={status} /> : (
+          <>
+            <Text
+              className='break-words status__content status__content--quote'
+              size='sm'
+              dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+            />
 
-        <StatusMedia
-          status={status}
-          muted={compose}
-          showMedia={showMedia}
-          onToggleVisibility={handleToggleMediaVisibility}
-        />
+            <StatusMedia
+              status={status}
+              muted={compose}
+              showMedia={showMedia}
+              onToggleVisibility={handleToggleMediaVisibility}
+            />
+          </>
+        )}
       </Stack>
     </OutlineBox>
   );
