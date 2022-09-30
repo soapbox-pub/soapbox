@@ -49,7 +49,7 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) 
       'inline-block rounded-md px-1.5 py-0.5 ml-[0.5em]',
       'text-gray-900 dark:text-gray-100',
       'font-bold text-[11px] uppercase',
-      'bg-primary-100 dark:bg-primary-900',
+      'bg-primary-100 dark:bg-primary-800',
       'hover:bg-primary-300 dark:hover:bg-primary-600',
       'focus:bg-primary-200 dark:focus:bg-primary-600',
       'hover:no-underline',
@@ -213,13 +213,16 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   }
 
   const isHidden = onExpandedToggle ? !expanded : hidden;
+  const withSpoiler = status.spoiler_text.length > 0;
+
+  const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
   const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
-  const className = classNames('status-content', {
+  const className = classNames(baseClassName, 'status-content', {
     'cursor-pointer': onClick,
-    'status__content--with-spoiler': status.spoiler_text.length > 0,
+    'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
     'leading-normal big-emoji': onlyEmoji,
   });
@@ -243,8 +246,10 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
         <div
           tabIndex={!isHidden ? 0 : undefined}
-          className={classNames('status__content__text', {
-            'status__content__text--visible': !isHidden,
+          className={classNames({
+            'whitespace-pre-wrap': withSpoiler,
+            'hidden': isHidden,
+            'block': !isHidden,
           })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
@@ -287,7 +292,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames('status-content', {
+        className={classNames(baseClassName, 'status-content', {
           'leading-normal big-emoji': onlyEmoji,
         })}
         style={directionStyle}

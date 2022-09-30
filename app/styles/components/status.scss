@@ -94,63 +94,6 @@
   padding: 10px;
 }
 
-.status__content {
-  @apply text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative;
-
-  &:focus {
-    @apply outline-none;
-  }
-
-  &.status__content--with-spoiler {
-    @apply whitespace-normal;
-
-    .status__content__text {
-      @apply whitespace-pre-wrap;
-    }
-  }
-
-  .emojione {
-    width: 20px;
-    height: 20px;
-    margin: -3px 0 0;
-    display: inline;
-  }
-
-  p {
-    margin-bottom: 20px;
-    white-space: pre-wrap;
-
-    &:last-child {
-      margin-bottom: 2px;
-    }
-  }
-
-  a {
-    @apply text-primary-600 dark:text-accent-blue hover:underline;
-
-    .fa {
-      color: var(--primary-text-color);
-    }
-  }
-
-  .status__content__text {
-    display: none;
-
-    &.status__content__text--visible {
-      display: block;
-    }
-  }
-}
-
-.underline-links {
-  .status__content,
-  .reply-indicator__content {
-    a {
-      text-decoration: underline;
-    }
-  }
-}
-
 .focusable:focus,
 .focusable-within:focus-within {
   outline: 0; /* Required b/c HotKeys lib sets this outline */
