@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -7,6 +8,18 @@ import { useChatContext } from 'soapbox/contexts/chat-context';
 import Chat from './chat';
 import ChatPaneHeader from './chat-pane-header';
 import ChatSettings from './chat-settings';
+
+const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, children: React.ReactNode }): JSX.Element => {
+  if (!enabled) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Link to={to}>
+      {children}
+    </Link>
+  );
+};
 
 /** Floating desktop chat window. */
 const ChatWindow = () => {
@@ -54,16 +67,20 @@ const ChatWindow = () => {
 
             <HStack alignItems='center' space={3}>
               {isOpen && (
-                <Avatar src={chat.account.avatar} size={40} />
+                <Link to={`@${chat.account.acct}`}>
+                  <Avatar src={chat.account.avatar} size={40} />
+                </Link>
               )}
 
-              <Stack alignItems='start'>
-                <div className='flex items-center space-x-1 flex-grow'>
-                  <Text size='sm' weight='bold' truncate>{chat.account.display_name}</Text>
-                  {chat.account.verified && <VerificationBadge />}
-                </div>
-                <Text size='sm' weight='medium' theme='primary' truncate>@{chat.account.acct}</Text>
-              </Stack>
+              <LinkWrapper enabled={isOpen} to={`@${chat.account.acct}`}>
+                <Stack alignItems='start'>
+                  <div className='flex items-center space-x-1 flex-grow'>
+                    <Text size='sm' weight='bold' truncate>{chat.account.display_name}</Text>
+                    {chat.account.verified && <VerificationBadge />}
+                  </div>
+                  <Text size='sm' weight='medium' theme='primary' truncate>@{chat.account.acct}</Text>
+                </Stack>
+              </LinkWrapper>
             </HStack>
           </HStack>
         }

@@ -3,7 +3,6 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { initReport } from 'soapbox/actions/reports';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, Divider, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
@@ -21,7 +20,6 @@ const messages = defineMessages({
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
   title: { id: 'chat_settings.title', defaultMessage: 'Chat Details' },
   blockUser: { id: 'chat_settings.options.block_user', defaultMessage: 'Block @{acct}' },
-  reportUser: { id: 'chat_settings.options.report_user', defaultMessage: 'Report @{acct}' },
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
 });
 
@@ -60,8 +58,6 @@ const ChatSettings = () => {
       onConfirm: () => deleteChat.mutate(),
     }));
   };
-
-  const handleReportChat = () => dispatch(initReport(chat?.account as any));
 
   useEffect(() => {
     if (chat?.id) {
@@ -118,11 +114,6 @@ const ChatSettings = () => {
           <button onClick={handleBlockUser} className='w-full flex items-center space-x-2 font-bold text-sm text-gray-700'>
             <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5 text-gray-600' />
             <span>{intl.formatMessage(messages.blockUser, { acct: chat.account.acct })}</span>
-          </button>
-
-          <button onClick={handleReportChat} className='w-full flex items-center space-x-2 font-bold text-sm text-gray-700'>
-            <Icon src={require('@tabler/icons/flag.svg')} className='w-5 h-5 text-gray-600' />
-            <span>{intl.formatMessage(messages.reportUser, { acct: chat.account.acct })}</span>
           </button>
 
           <button onClick={handleLeaveChat} className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600'>

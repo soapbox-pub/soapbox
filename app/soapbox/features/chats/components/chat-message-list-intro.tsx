@@ -4,6 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
+import Link from 'soapbox/components/link';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -60,7 +61,10 @@ const ChatMessageListIntro = () => {
       }
     >
       <Stack alignItems='center' space={2}>
-        <Avatar src={chat.account.avatar_static} size={75} />
+        <Link to={`@${chat.account.acct}`}>
+          <Avatar src={chat.account.avatar_static} size={75} />
+        </Link>
+
         <Text size='lg' align='center'>
           {needsAcceptance ? (
             <>
@@ -69,7 +73,9 @@ const ChatMessageListIntro = () => {
               <Text tag='span'>{intl.formatMessage(messages.intro)}</Text>
             </>
           ) : (
-            <Text tag='span' weight='semibold'>@{chat.account.acct}</Text>
+            <Link to={`@${chat.account.acct}`}>
+              <Text tag='span' theme='inherit' weight='semibold'>@{chat.account.acct}</Text>
+            </Link>
           )}
         </Text>
       </Stack>

@@ -121,7 +121,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
 
 
           {chatSilence ? (
-            <Icon src={require('@tabler/icons/bell-off.svg')} className='w-5 h-5 text-gray-600' />
+            <Icon src={require('icons/bell-filled.svg')} className='w-5 h-5 text-gray-600' />
           ) : null}
 
           {chat.last_message && (

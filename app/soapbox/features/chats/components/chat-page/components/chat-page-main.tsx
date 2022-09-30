@@ -3,7 +3,6 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { initReport } from 'soapbox/actions/reports';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Toggle } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -55,8 +54,6 @@ const ChatPageMain = () => {
       onConfirm: () => deleteChat.mutate(),
     }));
   };
-
-  const handleReportChat = () => dispatch(initReport(chat?.account as any));
 
   useEffect(() => {
     if (chat?.id) {
@@ -144,17 +141,6 @@ const ChatPageMain = () => {
                   <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
                     <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5' />
                     <span>{intl.formatMessage(messages.blockUser, { acct: chat.account.acct })}</span>
-                  </div>
-                </MenuItem>
-
-                <MenuItem
-                  as='button'
-                  onSelect={handleReportChat}
-                  className='!px-0 hover:!bg-transparent'
-                >
-                  <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
-                    <Icon src={require('@tabler/icons/flag.svg')} className='w-5 h-5' />
-                    <span>{intl.formatMessage(messages.reportUser, { acct: chat.account.acct })}</span>
                   </div>
                 </MenuItem>
 

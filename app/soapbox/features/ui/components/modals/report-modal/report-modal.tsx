@@ -5,8 +5,9 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import List, { ListItem } from 'soapbox/components/list';
 import StatusContent from 'soapbox/components/status_content';
-import { Avatar, HStack, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -23,6 +24,8 @@ const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
   submit: { id: 'report.submit', defaultMessage: 'Submit' },
+  reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the ten messages before and after the one selected will be passed along to our moderation team for context.' },
+  reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },
 });
 
 enum Steps {
@@ -154,15 +157,25 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const renderSelectedChatMessage = () => {
     if (account) {
       return (
-        <HStack alignItems='center' space={4} className='rounded-md border dark:border-2 border-solid border-gray-400 dark:border-gray-800 p-4'>
-          <div>
-            <Avatar src={account.avatar} className='w-8 h-8' />
-          </div>
+        <Stack space={4}>
+          <HStack alignItems='center' space={4} className='rounded-md border dark:border-2 border-solid border-gray-400 dark:border-gray-800 p-4'>
+            <div>
+              <Avatar src={account.avatar} className='w-8 h-8' />
+            </div>
 
-          <div className='bg-gray-200 dark:bg-primary-800 rounded-md p-4 flex-grow'>
-            <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
-          </div>
-        </HStack>
+            <div className='bg-gray-200 dark:bg-primary-800 rounded-md p-4 flex-grow'>
+              <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
+            </div>
+          </HStack>
+
+          <List>
+            <ListItem
+              label={<Icon src={require('@tabler/icons/info-circle.svg')} className='text-gray-600' />}
+            >
+              <Text size='sm'>{intl.formatMessage(messages.reportContext)}</Text>
+            </ListItem>
+          </List>
+        </Stack>
       );
     }
   };
@@ -173,6 +186,15 @@ const ReportModal = ({ onClose }: IReportModal) => {
         return renderSelectedStatuses();
       case ReportedEntities.ChatMessage:
         return renderSelectedChatMessage();
+    }
+  };
+
+  const renderTitle = () => {
+    switch (reportedEntity) {
+      case ReportedEntities.ChatMessage:
+        return intl.formatMessage(messages.reportMessage);
+      default:
+        return <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account?.acct}</strong> }} />;
     }
   };
 
@@ -222,7 +244,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
   return (
     <Modal
-      title={<FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account.acct}</strong> }} />}
+      title={renderTitle()}
       onClose={onClose}
       cancelAction={currentStep === Steps.THREE ? undefined : onClose}
       confirmationAction={handleNextStep}
