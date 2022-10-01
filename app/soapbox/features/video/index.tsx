@@ -135,7 +135,7 @@ const Video: React.FC<IVideo> = ({
   alt,
   onCloseVideo,
   inline,
-  aspectRatio = 0,
+  aspectRatio = 16 / 9,
   link,
   blurhash,
 }) => {
