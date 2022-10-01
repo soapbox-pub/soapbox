@@ -368,7 +368,7 @@ const Video: React.FC<IVideo> = ({
   const toggleFullscreen = () => {
     if (isFullscreen()) {
       exitFullscreen();
-    } else {
+    } else if (player.current) {
       requestFullscreen(player.current);
     }
   };

@@ -1,31 +1,43 @@
 // APIs for normalizing fullscreen operations. Note that Edge uses
 // the WebKit-prefixed APIs currently (as of Edge 16).
 
-export const isFullscreen = () => document.fullscreenElement ||
-  document.webkitFullscreenElement ||
-  document.mozFullScreenElement;
+export const isFullscreen = (): boolean => {
+  return Boolean(
+    document.fullscreenElement ||
+    // @ts-ignore
+    document.webkitFullscreenElement ||
+    // @ts-ignore
+    document.mozFullScreenElement,
+  );
+};
 
-export const exitFullscreen = () => {
+export const exitFullscreen = (): void => {
   if (document.exitFullscreen) {
     document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
+  } else if ('webkitExitFullscreen' in document) {
+    // @ts-ignore
     document.webkitExitFullscreen();
-  } else if (document.mozCancelFullScreen) {
+  } else if ('mozCancelFullScreen' in document) {
+    // @ts-ignore
     document.mozCancelFullScreen();
   }
 };
 
-export const requestFullscreen = el => {
+export const requestFullscreen = (el: Element): void => {
   if (el.requestFullscreen) {
     el.requestFullscreen();
-  } else if (el.webkitRequestFullscreen) {
+  } else if ('webkitRequestFullscreen' in el) {
+    // @ts-ignore
     el.webkitRequestFullscreen();
-  } else if (el.mozRequestFullScreen) {
+  } else if ('mozRequestFullScreen' in el) {
+    // @ts-ignore
     el.mozRequestFullScreen();
   }
 };
 
-export const attachFullscreenListener = (listener) => {
+type FullscreenListener = (this: Document, ev: Event) => void;
+
+export const attachFullscreenListener = (listener: FullscreenListener): void => {
   if ('onfullscreenchange' in document) {
     document.addEventListener('fullscreenchange', listener);
   } else if ('onwebkitfullscreenchange' in document) {
@@ -35,7 +47,7 @@ export const attachFullscreenListener = (listener) => {
   }
 };
 
-export const detachFullscreenListener = (listener) => {
+export const detachFullscreenListener = (listener: FullscreenListener): void => {
   if ('onfullscreenchange' in document) {
     document.removeEventListener('fullscreenchange', listener);
   } else if ('onwebkitfullscreenchange' in document) {
