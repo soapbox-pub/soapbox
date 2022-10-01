@@ -27,10 +27,8 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
 
   const { id: statusId, privacy, in_reply_to: inReplyTo, quote } = compose!;
 
-  const hasComposeContent = checkComposeContent(compose);
-
   const onClickClose = () => {
-    if (hasComposeContent) {
+    if (checkComposeContent(compose)) {
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/trash.svg'),
         heading: statusId
