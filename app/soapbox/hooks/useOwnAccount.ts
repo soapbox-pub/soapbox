@@ -9,5 +9,5 @@ const getAccount: (state: any, accountId: any) => any = makeGetAccount();
 
 /** Get the logged-in account from the store, if any */
 export const useOwnAccount = (): Account | null => {
-  return useAppSelector((state) =>  getAccount(state, state.me));
+  return useAppSelector((state) => getAccount(state, state.me));
 };

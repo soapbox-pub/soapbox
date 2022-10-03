@@ -23,6 +23,7 @@ const Pane: React.FC<IPane> = ({ isOpen = false, index, children, main = false }
         'h-16': !isOpen,
       })}
       style={{ right: `${right}px` }}
+      data-testid='pane'
     >
       {children}
     </div>
