@@ -573,6 +573,10 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     }
   }, [node.current]);
 
+  useEffect(() => {
+    setVisible(!!props.visible);
+  }, [props.visible]);
+
   return (
     <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
       <div
