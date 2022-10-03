@@ -22,6 +22,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
 
   return (
     <Input
+      data-testid='chat-search-input'
       type='text'
       autoFocus
       placeholder={intl.formatMessage(messages.searchPlaceholder)}

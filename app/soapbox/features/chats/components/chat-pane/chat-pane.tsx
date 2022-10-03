@@ -1,4 +1,3 @@
-import sumBy from 'lodash/sumBy';
 import React, { useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';

@@ -4,7 +4,7 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { fetchChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Stack } from 'soapbox/components/ui';
+import { Spinner, Stack } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useChats, useChatSilences } from 'soapbox/queries/chats';
@@ -29,15 +29,13 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
-  const isEmpty = (!chats || chats.length === 0);
-
   const handleLoadMore = () => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
     }
   };
 
-  const handleRefresh = () => dispatch(fetchChats()) as any;
+  const handleRefresh = () => dispatch(fetchChats());
 
   const renderEmpty = () => (
     <Stack space={2}>
@@ -50,29 +48,27 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
   return (
     <div className='relative h-full'>
       <PullToRefresh onRefresh={handleRefresh}>
-        {isEmpty ? renderEmpty() : (
-          <Virtuoso
-            ref={chatListRef}
-            atTopStateChange={(atTop) => setNearTop(atTop)}
-            atBottomStateChange={(atBottom) => setNearBottom(atBottom)}
-            useWindowScroll={useWindowScroll}
-            data={chats}
-            endReached={handleLoadMore}
-            itemContent={(_index, chat) => {
-              const chatSilence = chatSilences?.find((chatSilence) => String(chatSilence.target_account_id) === chat.account.id);
-              return (
-                <div className='px-2'>
-                  <ChatListItem chat={chat} onClick={onClickChat} chatSilence={chatSilence} />
-                </div>
-              );
-            }}
-            components={{
-              ScrollSeekPlaceholder: () => <PlaceholderChat />,
-              // Footer: () => hasNextPage ? <Spinner withText={false} /> : null,
-              EmptyPlaceholder: renderEmpty,
-            }}
-          />
-        )}
+        <Virtuoso
+          ref={chatListRef}
+          atTopStateChange={(atTop) => setNearTop(atTop)}
+          atBottomStateChange={(atBottom) => setNearBottom(atBottom)}
+          useWindowScroll={useWindowScroll}
+          data={chats}
+          endReached={handleLoadMore}
+          itemContent={(_index, chat) => {
+            const chatSilence = chatSilences?.find((chatSilence) => String(chatSilence.target_account_id) === chat.account.id);
+            return (
+              <div className='px-2'>
+                <ChatListItem chat={chat} onClick={onClickChat} chatSilence={chatSilence} />
+              </div>
+            );
+          }}
+          components={{
+            ScrollSeekPlaceholder: () => <PlaceholderChat />,
+            Footer: () => hasNextPage ? <Spinner withText={false} /> : null,
+            EmptyPlaceholder: renderEmpty,
+          }}
+        />
       </PullToRefresh>
 
       <>

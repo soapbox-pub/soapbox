@@ -17,7 +17,12 @@ const Blankslate = ({ onSearch }: IBlankslate) => {
   const intl = useIntl();
 
   return (
-    <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+    <Stack
+      alignItems='center'
+      justifyContent='center'
+      className='h-full flex-grow'
+      data-testid='chat-pane-blankslate'
+    >
       <Stack space={4}>
         <Stack space={1} className='max-w-[80%] mx-auto'>
           <Text size='lg' weight='bold' align='center'>

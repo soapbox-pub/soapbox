@@ -21,6 +21,11 @@ export const getLinks = (response: AxiosResponse): LinkHeader => {
   return new LinkHeader(response.headers?.link);
 };
 
+export const getNextLink = (response: AxiosResponse) => {
+  const nextLink = new LinkHeader(response.headers?.link);
+  return nextLink.refs.find((ref) => ref.uri)?.uri;
+};
+
 export const baseClient = (...params: any[]) => {
   const axios = api.baseClient(...params);
   setupMock(axios);

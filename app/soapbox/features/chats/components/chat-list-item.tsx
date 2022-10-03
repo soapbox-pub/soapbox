@@ -82,7 +82,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
       key={chat.id}
       onClick={() => onClick(chat)}
       className='group px-2 py-3 w-full flex flex-col rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:shadow-inset-ring'
-      data-testid='chat'
+      data-testid='chat-list-item'
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>
         <HStack alignItems='center' space={2} className='overflow-hidden'>
