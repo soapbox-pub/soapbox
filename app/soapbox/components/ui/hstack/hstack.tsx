@@ -17,7 +17,7 @@ const alignItemsOptions = {
 };
 
 const spaces = {
-  '0.5': 'space-x-0.5',
+  [0.5]: 'space-x-0.5',
   1: 'space-x-1',
   1.5: 'space-x-1.5',
   2: 'space-x-2',
