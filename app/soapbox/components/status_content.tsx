@@ -11,6 +11,7 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 import { isRtl } from '../rtl';
 
 import Poll from './polls/poll';
+import './status-content.css';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
@@ -28,7 +29,7 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <button className='status__content__read-more-button' onClick={onClick}>
+  <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
     <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
   </button>
@@ -48,7 +49,7 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) 
       'inline-block rounded-md px-1.5 py-0.5 ml-[0.5em]',
       'text-gray-900 dark:text-gray-100',
       'font-bold text-[11px] uppercase',
-      'bg-primary-100 dark:bg-primary-900',
+      'bg-primary-100 dark:bg-primary-800',
       'hover:bg-primary-300 dark:hover:bg-primary-600',
       'focus:bg-primary-200 dark:focus:bg-primary-600',
       'hover:no-underline',
@@ -212,15 +213,18 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   }
 
   const isHidden = onExpandedToggle ? !expanded : hidden;
+  const withSpoiler = status.spoiler_text.length > 0;
+
+  const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
   const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
-  const className = classNames('status__content', {
-    'status__content--with-action': onClick,
-    'status__content--with-spoiler': status.spoiler_text.length > 0,
-    'status__content--collapsed': collapsed,
-    'status__content--big': onlyEmoji,
+  const className = classNames(baseClassName, 'status-content', {
+    'cursor-pointer': onClick,
+    'whitespace-normal': withSpoiler,
+    'max-h-[300px]': collapsed,
+    'leading-normal big-emoji': onlyEmoji,
   });
 
   if (isRtl(status.search_index)) {
@@ -242,8 +246,10 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
         <div
           tabIndex={!isHidden ? 0 : undefined}
-          className={classNames('status__content__text', {
-            'status__content__text--visible': !isHidden,
+          className={classNames({
+            'whitespace-pre-wrap': withSpoiler,
+            'hidden': isHidden,
+            'block': !isHidden,
           })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
@@ -286,8 +292,8 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames('status__content', {
-          'status__content--big': onlyEmoji,
+        className={classNames(baseClassName, 'status-content', {
+          'leading-normal big-emoji': onlyEmoji,
         })}
         style={directionStyle}
         dangerouslySetInnerHTML={content}

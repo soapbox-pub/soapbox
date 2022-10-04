@@ -11,7 +11,7 @@ export const addGreentext = (html: string): string => {
             .replace(/@\w+/gi, '') // remove mentions (even failed ones)
             .trim()
             .startsWith('&gt;')) {
-        return `<span class='greentext'>${string}</span>`;
+        return `<span class='text-greentext'>${string}</span>`;
       } else {
         return string;
       }
