@@ -29,7 +29,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
       className='rounded-full'
       value={value}
       onChange={onChange}
-      isSearch
+      theme='search'
       append={
         <button onClick={onClear}>
           <Icon

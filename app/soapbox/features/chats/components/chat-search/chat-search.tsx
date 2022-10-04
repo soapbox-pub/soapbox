@@ -110,7 +110,7 @@ const ChatSearch = () => {
               className='rounded-full'
               value={value || ''}
               onChange={(event) => setValue(event.target.value)}
-              isSearch
+              theme='search'
               append={
                 <button onClick={clearValue}>
                   <Icon
