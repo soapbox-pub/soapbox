@@ -3,7 +3,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
-import { initReport } from 'soapbox/actions/reports';
 import Link from 'soapbox/components/link';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
@@ -36,11 +35,6 @@ const ChatMessageListIntro = () => {
       confirmationTheme: 'primary',
       onConfirm: () => deleteChat.mutate(),
     }));
-  };
-
-  const handleReportChat = () => {
-    dispatch(initReport(chat?.account as any));
-    acceptChat.mutate();
   };
 
   if (!chat) {
@@ -81,7 +75,7 @@ const ChatMessageListIntro = () => {
       </Stack>
 
       {needsAcceptance ? (
-        <Stack space={2} className='w-full'>
+        <HStack alignItems='center' space={2} className='w-full'>
           <Button
             theme='primary'
             block
@@ -91,24 +85,14 @@ const ChatMessageListIntro = () => {
             {intl.formatMessage(messages.accept)}
           </Button>
 
-          <HStack alignItems='center' space={2} className='w-full'>
-            <Button
-              theme='secondary'
-              block
-              onClick={handleReportChat}
-            >
-              {intl.formatMessage(messages.report)}
-            </Button>
-
-            <Button
-              theme='danger'
-              block
-              onClick={handleLeaveChat}
-            >
-              {intl.formatMessage(messages.leaveChat)}
-            </Button>
-          </HStack>
-        </Stack>
+          <Button
+            theme='danger'
+            block
+            onClick={handleLeaveChat}
+          >
+            {intl.formatMessage(messages.leaveChat)}
+          </Button>
+        </HStack>
       ) : (
         <HStack justifyContent='center' alignItems='center' space={1} className='flex-shrink-0'>
           <Icon src={require('@tabler/icons/clock.svg')} className='text-gray-600 w-4 h-4' />
