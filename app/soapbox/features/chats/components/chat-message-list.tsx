@@ -2,9 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import escape from 'lodash/escape';
-import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
@@ -66,37 +66,33 @@ interface IChatMessageList {
   autosize?: boolean,
 }
 
+const START_INDEX = 10000;
+
 /** Scrollable list of chat messages. */
 const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useOwnAccount();
 
-  const [initialLoad, setInitialLoad] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const node = useRef<VirtuosoHandle>(null);
+  const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX - 20);
 
   const { deleteChatMessage, markChatAsRead } = useChatActions(chat.id);
   const {
     data: chatMessages,
     fetchNextPage,
+    hasNextPage,
     isError,
-    isFetched,
     isFetching,
     isFetchingNextPage,
     isLoading,
-    isPlaceholderData,
-    hasNextPage,
     refetch,
   } = useChatMessages(chat.id);
+
   const formattedChatMessages = chatMessages || [];
 
   const me = useAppSelector((state) => state.me);
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
-
-  const node = useRef<HTMLDivElement>(null);
-  const messagesEnd = useRef<HTMLDivElement>(null);
-  const lastComputedScroll = useRef<number | undefined>(undefined);
-  const scrollBottom = useRef<number | undefined>(undefined);
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
@@ -104,9 +100,40 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     },
   });
 
-  const scrollToBottom = () => {
-    messagesEnd.current?.scrollIntoView(false);
-  };
+  const lastChatMessage = chatMessages ? chatMessages[chatMessages.length - 1] : null;
+
+  const cachedChatMessages = useMemo(() => {
+    if (!chatMessages) {
+      return [];
+    }
+
+    const nextFirstItemIndex = START_INDEX - chatMessages.length;
+    setFirstItemIndex(nextFirstItemIndex);
+    return chatMessages.reduce((acc: any, curr: any, idx: number) => {
+      const lastMessage = formattedChatMessages[idx - 1];
+
+      if (lastMessage) {
+        switch (timeChange(lastMessage, curr)) {
+          case 'today':
+            acc.push({
+              type: 'divider',
+              text: intl.formatMessage(messages.today),
+            });
+            break;
+          case 'date':
+            acc.push({
+              type: 'divider',
+              text: intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' }),
+            });
+            break;
+        }
+      }
+
+      acc.push(curr);
+      return acc;
+    }, []);
+
+  }, [chatMessages?.length, lastChatMessage]);
 
   const getFormattedTimestamp = (chatMessage: ChatMessageEntity) => {
     return intl.formatDate(new Date(chatMessage.created_at), {
@@ -136,52 +163,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     }
   };
 
-  const isNearBottom = (): boolean => {
-    const elem = node.current;
-    if (!elem) return false;
-
-    const scrollBottom = elem.scrollHeight - elem.offsetHeight - elem.scrollTop;
-    return scrollBottom < elem.offsetHeight * 1.5;
-  };
-
-  const restoreScrollPosition = () => {
-    if (node.current && scrollBottom.current) {
-      lastComputedScroll.current = node.current.scrollHeight - scrollBottom.current;
-      node.current.scrollTop = lastComputedScroll.current;
+  const handleStartReached = useCallback(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
     }
-  };
-
-  const handleLoadMore = () => {
-    // const maxId = chatMessages.getIn([0, 'id']) as string;
-    // dispatch(fetchChatMessages(chat.id, maxId as any));
-    // setIsLoading(true);
-    if (!isFetching && hasNextPage) {
-      // setMaxId(formattedChatMessages[0].id);
-      fetchNextPage()
-        .then(() => {
-          if (node.current) {
-            setScrollPosition(node.current.scrollHeight - node.current.scrollTop);
-          }
-        })
-        .catch(() => null);
-    }
-  };
-
-  const handleScroll = throttle(() => {
-    if (node.current) {
-      const { scrollTop, offsetHeight } = node.current;
-      const computedScroll = lastComputedScroll.current === scrollTop;
-      const nearTop = scrollTop < offsetHeight;
-
-      setScrollPosition(node.current.scrollHeight - node.current.scrollTop);
-
-      if (nearTop && !isFetching && !initialLoad && !computedScroll) {
-        handleLoadMore();
-      }
-    }
-  }, 150, {
-    trailing: true,
-  });
+    return false;
+  }, [firstItemIndex, hasNextPage, isFetching]);
 
   const onOpenMedia = (media: any, index: number) => {
     dispatch(openModal('MEDIA', { media, index }));
@@ -316,13 +303,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               >
                 {maybeRenderMedia(chatMessage)}
                 <Text size='sm' theme='inherit' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
-                <div className='chat-message__menu' data-testid='chat-message-menu'>
-                  <DropdownMenuContainer
-                    items={menu}
-                    src={require('@tabler/icons/dots.svg')}
-                    title={intl.formatMessage(messages.more)}
-                  />
-                </div>
               </div>
 
               <div className={classNames({ 'order-1': !isMyMessage })}>
@@ -359,37 +339,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   };
 
   useEffect(() => {
-    if (isFetched) {
-      setInitialLoad(false);
-      scrollToBottom();
-    }
-  }, [isFetched]);
-
-  // Store the scroll position.
-  // useLayoutEffect(() => {
-  //   if (node.current) {
-  //     const { scrollHeight, scrollTop } = node.current;
-  //     scrollBottom.current = scrollHeight - scrollTop;
-  //   }
-  // });
-
-  // Stick scrollbar to bottom.
-  useEffect(() => {
-    if (isNearBottom()) {
-      setTimeout(() => {
-        scrollToBottom();
-      }, 25);
-    }
-
-    // First load.
-    // if (chatMessages.count() !== initialCount) {
-    //   setInitialLoad(false);
-    //   setIsLoading(false);
-    //   scrollToBottom();
-    // }
-  }, [formattedChatMessages.length]);
-
-  useEffect(() => {
     const lastMessage = formattedChatMessages.pop();
     const lastMessageId = lastMessage?.id;
 
@@ -397,22 +346,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
       markChatAsRead(lastMessageId);
     }
   }, [formattedChatMessages.length]);
-
-  useEffect(() => {
-    // Restore scroll bar position when loading old messages.
-    if (!initialLoad) {
-      restoreScrollPosition();
-    }
-  }, [formattedChatMessages.length, initialLoad]);
-
-
-  if (isPlaceholderData) {
-    return (
-      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
-        <Spinner withText={false} />
-      </Stack>
-    );
-  }
 
   if (isBlocked) {
     return (
@@ -455,49 +388,50 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   }
 
   return (
-    <div className='h-full flex flex-col px-4 flex-grow overflow-y-scroll space-y-6' onScroll={handleScroll} ref={node}> {/* style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} */}
-      {!isLoading ? (
-        <ChatMessageListIntro />
-      ) : null}
-
-      {isFetchingNextPage ? (
-        <div className='flex items-center justify-center'>
-          <Spinner size={30} withText={false} />
-        </div>
-      ) : null}
-
-      <div className='flex-grow flex flex-col justify-end space-y-4'>
-        {isLoading ? (
-          <>
-            <PlaceholderChatMessage isMyMessage />
-            <PlaceholderChatMessage />
-            <PlaceholderChatMessage isMyMessage />
-            <PlaceholderChatMessage isMyMessage />
-            <PlaceholderChatMessage />
-          </>
-        ) : (
-          formattedChatMessages.reduce((acc: any, curr: any, idx: number) => {
-            const lastMessage = formattedChatMessages[idx - 1];
-
-            if (lastMessage) {
-              const key = `${curr.id}_divider`;
-              switch (timeChange(lastMessage, curr)) {
-                case 'today':
-                  acc.push(renderDivider(key, intl.formatMessage(messages.today)));
-                  break;
-                case 'date':
-                  acc.push(renderDivider(key, intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' })));
-                  break;
-              }
+    <div className='h-full flex flex-col flex-grow overflow-y-scroll space-y-6'>
+      <div className='flex-grow flex flex-col justify-end'>
+        <Virtuoso
+          ref={node}
+          firstItemIndex={Math.max(0, firstItemIndex)}
+          initialTopMostItemIndex={cachedChatMessages.length - 1}
+          data={cachedChatMessages}
+          startReached={handleStartReached}
+          itemContent={(_index, chatMessage) => {
+            if (chatMessage.type === 'divider') {
+              return renderDivider(_index, chatMessage.text);
+            } else {
+              return (
+                <div className='py-2 px-4'>
+                  {renderMessage(chatMessage)}
+                </div>
+              );
             }
+          }}
+          followOutput='auto'
+          components={{
+            Header: () => {
+              if (hasNextPage && isFetchingNextPage) {
+                return <div className='mb-6'><Spinner withText={false} /></div>;
+              }
 
-            acc.push(renderMessage(curr));
-            return acc;
-          }, [] as React.ReactNode[])
-        )}
+              if (!hasNextPage && !isLoading) {
+                return <div className='mb-6'><ChatMessageListIntro /></div>;
+              }
+
+              return null;
+            },
+            EmptyPlaceholder: () => (
+              <div className='px-4'>
+                <PlaceholderChatMessage isMyMessage />
+                <PlaceholderChatMessage />
+                <PlaceholderChatMessage isMyMessage />
+                <PlaceholderChatMessage isMyMessage />
+                <PlaceholderChatMessage />
+              </div>
+            ),
+          }}
+        />
       </div>
-
-      <div className='float-left clear-both mt-4' style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
     </div>
   );
 };
