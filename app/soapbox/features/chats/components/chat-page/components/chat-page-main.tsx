@@ -12,6 +12,7 @@ import { useChatActions, useChatSilence } from 'soapbox/queries/chats';
 
 import Chat from '../../chat';
 
+import Blankslate from './blankslate';
 import Welcome from './welcome';
 
 const messages = defineMessages({
@@ -68,7 +69,7 @@ const ChatPageMain = () => {
   }
 
   if (!chat) {
-    return null;
+    return <Blankslate />;
   }
 
   return (
