@@ -1,8 +1,6 @@
 import classNames from 'clsx';
 import React from 'react';
 
-type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
-
 const spaces = {
   0: 'space-y-0',
   '0.5': 'space-y-0.5',
@@ -25,15 +23,15 @@ const alignItemsOptions = {
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Size of the gap between elements. */
-  space?: SIZES,
+  space?: keyof typeof spaces
   /** Horizontal alignment of children. */
-  alignItems?: 'center',
+  alignItems?: 'center'
   /** Vertical alignment of children. */
-  justifyContent?: 'center',
+  justifyContent?: 'center'
   /** Extra class names on the <div> element. */
-  className?: string,
+  className?: string
   /** Whether to let the flexbox grow. */
-  grow?: boolean,
+  grow?: boolean
 }
 
 /** Vertical stack of child elements. */
