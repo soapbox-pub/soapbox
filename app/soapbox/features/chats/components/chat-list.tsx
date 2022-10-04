@@ -1,10 +1,11 @@
 import classNames from 'clsx';
 import React, { useRef, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
 import { fetchChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Spinner, Stack } from 'soapbox/components/ui';
+import { Spinner, Stack, Text } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useChats, useChatSilences } from 'soapbox/queries/chats';
@@ -37,13 +38,35 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
 
   const handleRefresh = () => dispatch(fetchChats());
 
-  const renderEmpty = () => (
-    <Stack space={2}>
-      <PlaceholderChat />
-      <PlaceholderChat />
-      <PlaceholderChat />
-    </Stack>
-  );
+  const renderEmpty = () => {
+    if (isFetching) {
+      return (
+        <Stack space={2}>
+          <PlaceholderChat />
+          <PlaceholderChat />
+          <PlaceholderChat />
+        </Stack>
+      );
+    } else {
+      return (
+        <Stack className='p-6' space={2}>
+          <Text size='2xl' weight='bold' tag='h3'>
+            <FormattedMessage
+              id='chats.getting_started.title'
+              defaultMessage='Getting started'
+            />
+          </Text>
+
+          <Text theme='muted'>
+            <FormattedMessage
+              id='chats.getting_started.hint'
+              defaultMessage='To start a chat, search for a user in the field above.'
+            />
+          </Text>
+        </Stack>
+      );
+    }
+  };
 
   return (
     <div className='relative h-full'>
