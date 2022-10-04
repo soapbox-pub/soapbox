@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
 import React, { MutableRefObject, useState } from 'react';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
 import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
@@ -12,14 +12,8 @@ import { chatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { truncateFilename } from 'soapbox/utils/media';
 
+import ChatComposer from './chat-composer';
 import ChatMessageList from './chat-message-list';
-
-const messages = defineMessages({
-  placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
-  send: { id: 'chat.actions.send', defaultMessage: 'Send' },
-  failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
-  retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
-});
 
 const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
@@ -215,47 +209,13 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
         <ChatMessageList chat={chat} autosize />
       </div>
 
-      <div className='mt-auto pt-4 px-4 shadow-3xl'>
-        <HStack alignItems='center' justifyContent='between' space={4}>
-          <Stack grow>
-            <Textarea
-              autoFocus
-              ref={inputRef}
-              placeholder={intl.formatMessage(messages.placeholder)}
-              onKeyDown={handleKeyDown}
-              value={content}
-              onChange={handleContentChange}
-              isResizeable={false}
-              autoGrow
-              maxRows={5}
-            />
-          </Stack>
-
-          <IconButton
-            src={require('icons/airplane.svg')}
-            iconClassName='w-5 h-5'
-            className='text-primary-500'
-            disabled={isSubmitDisabled}
-            onClick={sendMessage}
-          />
-        </HStack>
-
-        <HStack alignItems='center' className='h-5' space={1}>
-          {hasErrorSubmittingMessage && (
-            <>
-              <Text theme='danger' size='xs'>
-                {intl.formatMessage(messages.failedToSend)}
-              </Text>
-
-              <button onClick={sendMessage} className='flex hover:underline'>
-                <Text theme='primary' size='xs' tag='span'>
-                  {intl.formatMessage(messages.retry)}
-                </Text>
-              </button>
-            </>
-          )}
-        </HStack>
-      </div>
+      <ChatComposer
+        ref={inputRef}
+        onKeyDown={handleKeyDown}
+        value={content}
+        onChange={handleContentChange}
+        onSubmit={sendMessage}
+      />
     </Stack>
     //   {renderAttachment()}
     //   {isUploading && (
