@@ -6,6 +6,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest_emoji';
 import Icon from 'soapbox/components/icon';
+import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';
 import { isRtl } from 'soapbox/rtl';
 
@@ -298,11 +299,9 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
       <div key='input' className='relative w-full'>
         <label className='sr-only'>{placeholder}</label>
 
-        <input
+        <Input
           type='text'
-          className={classNames({
-            'block w-full sm:text-sm border-gray-200 dark:border-gray-800 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 focus:border-gray-200 dark:focus-border-gray-800 focus:ring-primary-500 focus:ring-2': true,
-          }, className)}
+          className={className}
           ref={this.setInput}
           disabled={disabled}
           placeholder={placeholder}
