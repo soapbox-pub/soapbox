@@ -10,7 +10,7 @@ const messages = defineMessages({
   retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
 });
 
-interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange'> {
+interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'disabled'> {
   value: string,
   onSubmit: () => void,
   hasErrorSubmittingMessage?: boolean,
@@ -23,10 +23,11 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement, IChatComposer>(({
   value,
   onSubmit,
   hasErrorSubmittingMessage = false,
+  disabled = false,
 }, ref) => {
   const intl = useIntl();
 
-  const isSubmitDisabled = value.length === 0;
+  const isSubmitDisabled = disabled || value.length === 0;
 
   return (
     <div className='mt-auto pt-4 px-4 shadow-3xl'>
@@ -42,6 +43,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement, IChatComposer>(({
             isResizeable={false}
             autoGrow
             maxRows={5}
+            disabled={disabled}
           />
         </Stack>
 

@@ -6,6 +6,7 @@ import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_inpu
 import Icon from 'soapbox/components/icon';
 
 import SvgIcon from './ui/icon/svg-icon';
+import { InputThemes } from './ui/input/input';
 
 const messages = defineMessages({
   placeholder: { id: 'account_search.placeholder', defaultMessage: 'Search for an account' },
@@ -22,10 +23,12 @@ interface IAccountSearch {
   className?: string,
   autoFocus?: boolean,
   hidePortal?: boolean,
+  theme?: InputThemes,
+  showButtons?: boolean,
 }
 
 /** Input to search for accounts. */
-const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, ...rest }) => {
+const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, showButtons = true, ...rest }) => {
   const intl = useIntl();
 
   const [value, setValue] = useState('');
@@ -76,23 +79,25 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, ...res
           {...rest}
         />
 
-        <div
-          role='button'
-          tabIndex={0}
-          className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
-          onClick={handleClear}
-        >
-          <SvgIcon
-            src={require('@tabler/icons/search.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
-          />
+        {showButtons && (
+          <div
+            role='button'
+            tabIndex={0}
+            className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
+            onClick={handleClear}
+          >
+            <SvgIcon
+              src={require('@tabler/icons/search.svg')}
+              className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+            />
 
-          <SvgIcon
-            src={require('@tabler/icons/x.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
-            aria-label={intl.formatMessage(messages.placeholder)}
-          />
-        </div>
+            <SvgIcon
+              src={require('@tabler/icons/x.svg')}
+              className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+              aria-label={intl.formatMessage(messages.placeholder)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,12 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import AccountSearch from 'soapbox/components/account_search';
-import { CardTitle, Stack } from 'soapbox/components/ui';
+import { CardTitle, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useChats } from 'soapbox/queries/chats';
+
+import ChatComposer from '../../chat-composer';
 
 interface IChatPageNew {
 }
@@ -19,11 +22,31 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
   };
 
   return (
-    <Stack className='h-full p-6 space-y-8'>
-      <CardTitle title='New Message' />
+    <Stack className='h-full'>
+      <Stack className='flex-grow p-6 space-y-8'>
+        <CardTitle title='New Message' />
 
-      <AccountSearch
-        onSelected={handleAccountSelected}
+        <HStack space={2} alignItems='center'>
+          <Text>
+            <FormattedMessage
+              id='chats.new.to'
+              defaultMessage='To:'
+            />
+          </Text>
+
+          <AccountSearch
+            onSelected={handleAccountSelected}
+            theme='transparent'
+            showButtons={false}
+            autoFocus
+          />
+        </HStack>
+      </Stack>
+
+      <ChatComposer
+        value=''
+        onSubmit={() => {}}
+        disabled
       />
     </Stack>
   );
