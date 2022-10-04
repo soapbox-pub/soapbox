@@ -11,6 +11,7 @@ import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_
 import { isRtl } from 'soapbox/rtl';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
+import type { InputThemes } from 'soapbox/components/ui/input/input';
 
 type CursorMatch = [
   tokenStart: number | null,
@@ -60,6 +61,7 @@ interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>,
   maxLength?: number,
   menu?: Menu,
   resultsPosition: string,
+  theme?: InputThemes,
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {
@@ -285,7 +287,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   }
 
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
     const style: React.CSSProperties = { direction: 'ltr' };
 
@@ -317,6 +319,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
           id={id}
           maxLength={maxLength}
           data-testid='autosuggest-input'
+          theme={theme}
         />
       </div>,
       <Portal key='portal'>
