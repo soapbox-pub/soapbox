@@ -304,6 +304,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         <Input
           type='text'
           className={className}
+          outerClassName='mt-0'
           ref={this.setInput}
           disabled={disabled}
           placeholder={placeholder}
