@@ -39,7 +39,7 @@ const ChatPageSidebar = () => {
 
   return (
     <Stack space={4} className='h-full'>
-      <Stack space={4} className='px-4 pt-4'>
+      <Stack space={4} className='px-6 pt-6'>
         <HStack alignItems='center' justifyContent='between'>
           <CardTitle title={intl.formatMessage(messages.title)} />
 
