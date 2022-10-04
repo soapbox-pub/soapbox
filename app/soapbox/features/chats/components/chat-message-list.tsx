@@ -410,8 +410,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
           followOutput='auto'
           components={{
             Header: () => {
-              if (hasNextPage && isFetchingNextPage) {
-                return <div className='mb-6'><Spinner withText={false} /></div>;
+              if (hasNextPage || isFetchingNextPage) {
+                return <Spinner withText={false} />;
               }
 
               if (!hasNextPage && !isLoading) {
@@ -420,15 +420,21 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
               return null;
             },
-            EmptyPlaceholder: () => (
-              <div className='px-4'>
-                <PlaceholderChatMessage isMyMessage />
-                <PlaceholderChatMessage />
-                <PlaceholderChatMessage isMyMessage />
-                <PlaceholderChatMessage isMyMessage />
-                <PlaceholderChatMessage />
-              </div>
-            ),
+            EmptyPlaceholder: () => {
+              if (isFetching) {
+                return (
+                  <div className='px-4'>
+                    <PlaceholderChatMessage isMyMessage />
+                    <PlaceholderChatMessage />
+                    <PlaceholderChatMessage isMyMessage />
+                    <PlaceholderChatMessage isMyMessage />
+                    <PlaceholderChatMessage />
+                  </div>
+                );
+              }
+
+              return null;
+            },
           }}
         />
       </div>
