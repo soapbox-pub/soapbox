@@ -36,6 +36,11 @@ module.exports = {
           'Segoe UI Symbol',
           'Noto Color Emoji',
         ],
+        'mono': [
+          'Roboto Mono',
+          'ui-monospace',
+          'mono',
+        ],
       },
       colors: parseColorMatrix({
         // Define color matrix (of available colors)
@@ -50,6 +55,7 @@ module.exports = {
         'gradient-start': true,
         'gradient-end': true,
         'sea-blue': true,
+        'greentext': true,
       }),
       animation: {
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
@@ -59,20 +65,20 @@ module.exports = {
       },
       keyframes: {
         'sonar-scale-4': {
-          from: { opacity: '0.4' },
-          to: { opacity: 0, transform: 'scale(4)' },
+          from: { opacity: '0.4', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(4)' },
         },
         'sonar-scale-3': {
-          from: { opacity: '0.4' },
-          to: { opacity: 0, transform: 'scale(3.5)' },
+          from: { opacity: '0.4', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(3.5)' },
         },
         'sonar-scale-2': {
-          from: { opacity: '0.4' },
-          to: { opacity: 0, transform: 'scale(3)' },
+          from: { opacity: '0.4', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(3)' },
         },
         'sonar-scale-1': {
-          from: { opacity: '0.4' },
-          to: { opacity: 0, transform: 'scale(2.5)' },
+          from: { opacity: '0.4', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(2.5)' },
         },
       },
     },

@@ -144,7 +144,6 @@ const StatusMedia: React.FC<IStatusMedia> = ({
             <Component
               media={status.media_attachments}
               sensitive={status.sensitive}
-              inReview={status.visibility === 'self'}
               height={285}
               onOpenMedia={openMedia}
               visible={showMedia}

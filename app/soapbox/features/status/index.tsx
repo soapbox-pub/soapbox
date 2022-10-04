@@ -29,6 +29,7 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
+import ModerationOverlay from 'soapbox/components/statuses/moderation-overlay';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
@@ -134,6 +135,7 @@ const Thread: React.FC<IThread> = (props) => {
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
+  const inReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -459,11 +461,19 @@ const Thread: React.FC<IThread> = (props) => {
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}
-          className='detailed-status__wrapper focusable'
+          className={
+            classNames('detailed-status__wrapper focusable relative', {
+              'min-h-[220px]': inReview,
+            })
+          }
           tabIndex={0}
           // FIXME: no "reblogged by" text is added for the screen reader
           aria-label={textForScreenReader(intl, status)}
         >
+          {inReview ? (
+            <ModerationOverlay />
+          ) : null}
+
           <DetailedStatus
             status={status}
             onOpenVideo={handleOpenVideo}

@@ -17,6 +17,13 @@ module.exports = merge(sharedConfig, {
   devtool: 'source-map',
   stats: 'errors-warnings',
   bail: true,
+
+  output: {
+    filename: 'packs/js/[name]-[chunkhash].js',
+    chunkFilename: 'packs/js/[name]-[chunkhash].chunk.js',
+    hotUpdateChunkFilename: 'packs/js/[id]-[contenthash].hot-update.js',
+  },
+
   optimization: {
     minimize: true,
   },
