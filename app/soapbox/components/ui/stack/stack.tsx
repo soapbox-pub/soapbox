@@ -3,9 +3,9 @@ import React from 'react';
 
 const spaces = {
   0: 'space-y-0',
-  '0.5': 'space-y-0.5',
+  [0.5]: 'space-y-0.5',
   1: 'space-y-1',
-  '1.5': 'space-y-1.5',
+  [1.5]: 'space-y-1.5',
   2: 'space-y-2',
   3: 'space-y-3',
   4: 'space-y-4',
