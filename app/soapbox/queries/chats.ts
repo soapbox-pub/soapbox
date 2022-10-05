@@ -52,7 +52,7 @@ export interface IChatSilence {
   target_account_id: number
 }
 
-const chatKeys = {
+const ChatKeys = {
   chat: (chatId?: string) => ['chats', 'chat', chatId] as const,
   chatMessages: (chatId: string) => ['chats', 'messages', chatId] as const,
   chatSearch: (searchQuery?: string) => searchQuery ? ['chats', 'search', searchQuery] : ['chats', 'search'] as const,
@@ -81,7 +81,7 @@ const useChatMessages = (chatId: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(chatKeys.chatMessages(chatId), ({ pageParam }) => getChatMessages(chatId, pageParam), {
+  const queryInfo = useInfiniteQuery(ChatKeys.chatMessages(chatId), ({ pageParam }) => getChatMessages(chatId, pageParam), {
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };
@@ -91,7 +91,7 @@ const useChatMessages = (chatId: string) => {
     },
   });
 
-  const data = flattenPages(queryInfo);
+  const data = flattenPages(queryInfo.data);
 
   return {
     ...queryInfo,
@@ -133,7 +133,7 @@ const useChats = (search?: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(chatKeys.chatSearch(search), ({ pageParam }) => getChats(pageParam), {
+  const queryInfo = useInfiniteQuery(ChatKeys.chatSearch(search), ({ pageParam }) => getChats(pageParam), {
     keepPreviousData: true,
     getNextPageParam: (config) => {
       if (config.hasMore) {
@@ -144,7 +144,7 @@ const useChats = (search?: string) => {
     },
   });
 
-  const data = flattenPages(queryInfo);
+  const data = flattenPages(queryInfo.data);
 
   const chatsQuery = {
     ...queryInfo,
@@ -171,7 +171,7 @@ const useChat = (chatId?: string) => {
     }
   };
 
-  const chat = useQuery<IChat | undefined>(chatKeys.chat(chatId), getChat);
+  const chat = useQuery<IChat | undefined>(ChatKeys.chat(chatId), getChat);
 
   return { ...actions, chat };
 };
@@ -195,8 +195,8 @@ const useChatActions = (chatId: string) => {
   const acceptChat = useMutation(() => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`), {
     onSuccess(response) {
       setChat(response.data);
-      queryClient.invalidateQueries(chatKeys.chatMessages(chatId));
-      queryClient.invalidateQueries(chatKeys.chatSearch());
+      queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
   });
 
@@ -204,8 +204,8 @@ const useChatActions = (chatId: string) => {
     onSuccess(response) {
       setChat(null);
       setEditing(false);
-      queryClient.invalidateQueries(chatKeys.chatMessages(chatId));
-      queryClient.invalidateQueries(chatKeys.chatSearch());
+      queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
   });
 
@@ -221,7 +221,7 @@ const useChatSilences = () => {
     return data;
   };
 
-  return useQuery<IChatSilence[]>(chatKeys.chatSilences, getChatSilences, {
+  return useQuery<IChatSilence[]>(ChatKeys.chatSilences, getChatSilences, {
     placeholderData: [],
   });
 };
@@ -260,7 +260,7 @@ const useChatSilence = (chat: IChat | null) => {
     api.post(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
         dispatch(snackbar.success('Successfully silenced this chat.'));
-        queryClient.invalidateQueries(chatKeys.chatSilences);
+        queryClient.invalidateQueries(ChatKeys.chatSilences);
       })
       .catch(() => {
         dispatch(snackbar.error('Something went wrong trying to silence this chat. Please try again.'));
@@ -274,7 +274,7 @@ const useChatSilence = (chat: IChat | null) => {
     api.delete(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
       .then(() => {
         dispatch(snackbar.success('Successfully unsilenced this chat.'));
-        queryClient.invalidateQueries(chatKeys.chatSilences);
+        queryClient.invalidateQueries(ChatKeys.chatSilences);
       })
       .catch(() => {
         dispatch(snackbar.error('Something went wrong trying to unsilence this chat. Please try again.'));
@@ -285,4 +285,4 @@ const useChatSilence = (chat: IChat | null) => {
   return { isSilenced, handleSilence, fetchChatSilence };
 };
 
-export { chatKeys, useChat, useChatActions, useChats, useChatMessages, useChatSilences, useChatSilence };
+export { ChatKeys, useChat, useChatActions, useChats, useChatMessages, useChatSilences, useChatSilence };

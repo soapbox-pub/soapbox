@@ -9,8 +9,8 @@ export interface PaginatedResult<T> {
 }
 
 /** Flatten paginated results into a single array. */
-const flattenPages = <T>(queryInfo: UseInfiniteQueryResult<PaginatedResult<T>>) => {
-  return queryInfo.data?.pages.reduce<T[]>(
+const flattenPages = <T>(queryData: UseInfiniteQueryResult<PaginatedResult<T>>['data']) => {
+  return queryData?.pages.reduce<T[]>(
     (prev: T[], curr) => [...curr.result, ...prev],
     [],
   );

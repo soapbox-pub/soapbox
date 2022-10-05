@@ -11,7 +11,7 @@ import { useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import useAccountSearch from 'soapbox/queries/search';
 
-import { chatKeys } from '../../../../queries/chats';
+import { ChatKeys } from '../../../../queries/chats';
 import ChatPaneHeader from '../chat-pane-header';
 import { Pane } from '../ui';
 
@@ -48,7 +48,7 @@ const ChatSearch = () => {
     },
     onSuccess: (response) => {
       setChat(response.data);
-      queryClient.invalidateQueries(chatKeys.chatSearch());
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
   });
 

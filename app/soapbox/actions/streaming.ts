@@ -1,7 +1,10 @@
+import { InfiniteData } from '@tanstack/react-query';
+
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+import { ChatKeys } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { updatePageItem, appendPageItem } from 'soapbox/utils/queries';
+import { updatePageItem, appendPageItem, flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
@@ -55,11 +58,22 @@ interface ChatPayload extends Omit<Chat, 'last_message'> {
 const updateChat = (payload: ChatPayload) => {
   const { id: chatId, last_message: lastMessage } = payload;
 
-  queryClient.setQueryData<Chat>(['chats', 'chat', chatId], payload as any);
-  updatePageItem<Chat>(['chats', 'search'], payload as any, (o, n) => o.id === n.id);
+  const currentChats = flattenPages(queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch()));
+
+  // Update the specific Chat query data.
+  queryClient.setQueryData<Chat>(ChatKeys.chat(chatId), payload as any);
+
+  if (currentChats?.find((chat: any) => chat.id === chatId)) {
+    // If the chat exists in the client, let's update it.
+    updatePageItem<Chat>(ChatKeys.chatSearch(), payload as any, (o, n) => o.id === n.id);
+  } else {
+    // If this is a brand-new chat, let's invalid the queries.
+    queryClient.invalidateQueries(ChatKeys.chatSearch());
+  }
 
   if (lastMessage) {
-    appendPageItem(['chats', 'messages', payload.id], lastMessage);
+    // Update the Chat Messages query data.
+    appendPageItem(ChatKeys.chatMessages(payload.id), lastMessage);
   }
 };
 

@@ -16,7 +16,7 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
-import { chatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
+import { ChatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { stripHTML } from 'soapbox/utils/html';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
@@ -96,7 +96,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
-      queryClient.invalidateQueries(chatKeys.chatMessages(chat.id));
+      queryClient.invalidateQueries(ChatKeys.chatMessages(chat.id));
     },
   });
 

@@ -32,7 +32,7 @@ type PageParam = {
   link?: string
 }
 
-const suggestionKeys = {
+const SuggestionKeys = {
   suggestions: ['suggestions'] as const,
 };
 
@@ -94,7 +94,7 @@ const useSuggestions = () => {
   };
 
   const result = useInfiniteQuery(
-    suggestionKeys.suggestions,
+    SuggestionKeys.suggestions,
     ({ pageParam }: any) => getSuggestions(pageParam),
     {
       keepPreviousData: true,
@@ -123,7 +123,7 @@ const useDismissSuggestion = () => {
 
   return useMutation((accountId: string) => api.delete(`/api/v1/suggestions/${accountId}`), {
     onMutate(accountId: string) {
-      removePageItem(suggestionKeys.suggestions, accountId, (o: any, n: any) => o.account_id === n);
+      removePageItem(SuggestionKeys.suggestions, accountId, (o: any, n: any) => o.account_id === n);
     },
   });
 };

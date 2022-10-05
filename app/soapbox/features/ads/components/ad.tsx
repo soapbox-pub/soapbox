@@ -6,7 +6,7 @@ import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import StatusCard from 'soapbox/features/status/components/card';
 import { useAppSelector } from 'soapbox/hooks';
-import { adKeys } from 'soapbox/queries/ads';
+import { AdKeys } from 'soapbox/queries/ads';
 
 import type { Card as CardEntity } from 'soapbox/types/entities';
 
@@ -30,7 +30,7 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
 
   /** Invalidate query cache for ads. */
   const bustCache = (): void => {
-    queryClient.invalidateQueries(adKeys.ads);
+    queryClient.invalidateQueries(AdKeys.ads);
   };
 
   /** Toggle the info box on click. */
@@ -113,7 +113,7 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
             </Stack>
           </HStack>
 
-          <StatusCard card={card} onOpenMedia={() => {}} horizontal />
+          <StatusCard card={card} onOpenMedia={() => { }} horizontal />
         </Stack>
       </Card>
 
