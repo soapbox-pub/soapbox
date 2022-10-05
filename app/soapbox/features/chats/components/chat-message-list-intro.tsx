@@ -50,7 +50,7 @@ const ChatMessageListIntro = () => {
       className={
         classNames({
           'w-3/4 mx-auto': needsAcceptance,
-          'mt-6': true,
+          'py-6': true, // needs to be padding to prevent Virtuoso bugs
         })
       }
     >

@@ -392,6 +392,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
       <div className='flex-grow flex flex-col justify-end'>
         <Virtuoso
           ref={node}
+          alignToBottom
           firstItemIndex={Math.max(0, firstItemIndex)}
           initialTopMostItemIndex={cachedChatMessages.length - 1}
           data={cachedChatMessages}
@@ -415,7 +416,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               }
 
               if (!hasNextPage && !isLoading) {
-                return <div className='mb-6'><ChatMessageListIntro /></div>;
+                return <ChatMessageListIntro />;
               }
 
               return null;

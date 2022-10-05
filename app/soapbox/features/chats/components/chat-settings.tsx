@@ -111,13 +111,13 @@ const ChatSettings = () => {
         <Divider />
 
         <Stack space={5}>
-          <button onClick={handleBlockUser} className='w-full flex items-center space-x-2 font-bold text-sm text-gray-700'>
-            <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5 text-gray-600' />
+          <button onClick={handleBlockUser} className='w-full flex items-center space-x-2 font-bold text-sm text-primary-600 dark:text-accent-blue'>
+            <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5' />
             <span>{intl.formatMessage(messages.blockUser, { acct: chat.account.acct })}</span>
           </button>
 
           <button onClick={handleLeaveChat} className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600'>
-            <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5 text-danger-600' />
+            <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
             <span>{intl.formatMessage(messages.leaveChat)}</span>
           </button>
         </Stack>
