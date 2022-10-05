@@ -61,9 +61,10 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     return (
       <div
         className={
-          classNames('relative shadow-sm', {
+          classNames('relative', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
+            'shadow-sm': theme !== 'transparent',
             'mt-1': !String(outerClassName).includes('mt-'),
             [String(outerClassName)]: typeof outerClassName !== 'undefined',
           })

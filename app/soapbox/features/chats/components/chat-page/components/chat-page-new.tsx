@@ -6,8 +6,6 @@ import AccountSearch from 'soapbox/components/account_search';
 import { CardTitle, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useChats } from 'soapbox/queries/chats';
 
-import ChatComposer from '../../chat-composer';
-
 interface IChatPageNew {
 }
 
@@ -40,6 +38,7 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
             theme='transparent'
             showButtons={false}
             autoFocus
+            className='mb-0.5'
           />
         </HStack>
       </Stack>

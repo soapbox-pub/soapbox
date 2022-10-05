@@ -74,7 +74,7 @@ const ChatPageMain = () => {
 
   return (
     <Stack className='h-full overflow-hidden'>
-      <HStack alignItems='center' justifyContent='between' space={2} className='px-4 py-2 w-full'>
+      <HStack alignItems='center' justifyContent='between' space={2} className='px-4 py-4 w-full'>
         <HStack alignItems='center' space={2} className='overflow-hidden'>
           <HStack alignItems='center'>
             <IconButton
