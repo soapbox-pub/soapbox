@@ -36,18 +36,13 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
 
           <AccountSearch
             onSelected={handleAccountSelected}
+            placeholder='Type a name'
             theme='transparent'
             showButtons={false}
             autoFocus
           />
         </HStack>
       </Stack>
-
-      <ChatComposer
-        value=''
-        onSubmit={() => {}}
-        disabled
-      />
     </Stack>
   );
 };

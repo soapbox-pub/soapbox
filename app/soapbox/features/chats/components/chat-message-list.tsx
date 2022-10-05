@@ -387,6 +387,20 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className='flex-grow flex flex-col justify-end'>
+        <div className='px-4'>
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage />
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className='h-full flex flex-col flex-grow overflow-y-scroll space-y-6'>
       <div className='flex-grow flex flex-col justify-end'>
@@ -417,21 +431,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
               if (!hasNextPage && !isLoading) {
                 return <ChatMessageListIntro />;
-              }
-
-              return null;
-            },
-            EmptyPlaceholder: () => {
-              if (isFetching) {
-                return (
-                  <div className='px-4'>
-                    <PlaceholderChatMessage isMyMessage />
-                    <PlaceholderChatMessage />
-                    <PlaceholderChatMessage isMyMessage />
-                    <PlaceholderChatMessage isMyMessage />
-                    <PlaceholderChatMessage />
-                  </div>
-                );
               }
 
               return null;

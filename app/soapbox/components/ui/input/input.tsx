@@ -61,9 +61,11 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     return (
       <div
         className={
-          classNames('mt-1 relative shadow-sm', outerClassName, {
+          classNames('relative shadow-sm', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
+            'mt-1': !String(outerClassName).includes('mt-'),
+            [String(outerClassName)]: typeof outerClassName !== 'undefined',
           })
         }
       >
@@ -83,12 +85,12 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           {...filteredProps}
           type={revealed ? 'text' : type}
           ref={ref}
-          className={classNames({
-            'text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+          className={classNames('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
+            'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
-            'bg-transparent border-none': theme === 'transparent',
+            'bg-transparent border-none focus:shadow-none dark:focus:shadow-none focus:border-transparent focus:ring-0 p-0': theme === 'transparent',
             'pr-7': isPassword || append,
             'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
