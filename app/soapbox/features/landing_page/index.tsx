@@ -8,6 +8,8 @@ import RegistrationForm from 'soapbox/features/auth_login/components/registratio
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
 
+import './instance-description.css';
+
 const LandingPage = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
