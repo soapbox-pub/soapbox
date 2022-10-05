@@ -147,7 +147,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
         {renderReplyMentions()}
 
-        {status.event ? <EventPreview status={status} /> : (
+        {status.event ? <EventPreview status={status} hideAction /> : (
           <>
             <Text
               className='break-words status__content status__content--quote'

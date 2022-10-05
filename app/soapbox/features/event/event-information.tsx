@@ -45,7 +45,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   };
 
   const handleShowMap: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.stopPropagation();
+    e.preventDefault();
 
     dispatch(openModal('EVENT_MAP', {
       statusId: status.id,
@@ -138,16 +138,18 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
   return (
     <Stack className='mt-4 sm:p-2' space={2}>
-      <Stack space={1}>
-        <Text size='xl' weight='bold'>
-          <FormattedMessage id='event.description' defaultMessage='Description' />
-        </Text>
-        <Text
-          className='break-words status__content'
-          size='sm'
-          dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-        />
-      </Stack>
+      {!!status.contentHtml.trim() && (
+        <Stack space={1}>
+          <Text size='xl' weight='bold'>
+            <FormattedMessage id='event.description' defaultMessage='Description' />
+          </Text>
+          <Text
+            className='break-words status__content'
+            size='sm'
+            dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+          />
+        </Stack>
+      )}
 
       <StatusMedia
         status={status}

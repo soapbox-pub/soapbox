@@ -185,6 +185,124 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
     return <Tabs items={items} activeItem={tab} />;
   };
 
+  let body;
+  if (tab === 'edit') body = (
+    <Form>
+      <FormGroup
+        labelText={<FormattedMessage id='compose_event.fields.banner_label' defaultMessage='Event banner' />}
+      >
+        <div className='flex items-center justify-center bg-gray-200 dark:bg-gray-900/50 rounded-lg text-black dark:text-white sm:shadow dark:sm:shadow-inset overflow-hidden h-24 sm:h-32 relative'>
+          {banner ? (
+            <>
+              <img className='h-full w-full object-cover' src={banner.url} alt='' />
+              <IconButton className='absolute top-2 right-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
+            </>
+          ) : (
+            <UploadButton disabled={isUploading} onSelectFile={handleFiles} />
+          )}
+
+        </div>
+      </FormGroup>
+      <FormGroup
+        labelText={<FormattedMessage id='compose_event.fields.name_label' defaultMessage='Event name' />}
+      >
+        <Input
+          type='text'
+          placeholder={intl.formatMessage(messages.eventNamePlaceholder)}
+          value={name}
+          onChange={onChangeName}
+        />
+      </FormGroup>
+      <FormGroup
+        labelText={<FormattedMessage id='compose_event.fields.description_label' defaultMessage='Event description' />}
+        hintText={<FormattedMessage id='compose_event.fields.description_hint' defaultMessage='Markdown syntax is supported' />}
+      >
+        <Textarea
+          autoComplete='off'
+          placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
+          value={description}
+          onChange={onChangeDescription}
+        />
+      </FormGroup>
+      <FormGroup
+        labelText={<FormattedMessage id='compose_event.fields.location_label' defaultMessage='Event location' />}
+      >
+        {location ? renderLocation() : (
+          <LocationSearch
+            onSelected={onChangeLocation}
+          />
+        )}
+      </FormGroup>
+      <FormGroup
+        labelText={<FormattedMessage id='compose_event.fields.start_time_label' defaultMessage='Event start date' />}
+      >
+        <BundleContainer fetchComponent={DatePicker}>
+          {Component => (<Component
+            showTimeSelect
+            dateFormat='MMMM d, yyyy h:mm aa'
+            timeIntervals={15}
+            wrapperClassName='react-datepicker-wrapper'
+            placeholderText={intl.formatMessage(messages.eventStartTimePlaceholder)}
+            filterDate={isCurrentOrFutureDate}
+            selected={startTime}
+            onChange={onChangeStartTime}
+          />)}
+        </BundleContainer>
+      </FormGroup>
+      <HStack alignItems='center' space={2}>
+        <Toggle
+          icons={false}
+          checked={!!endTime}
+          onChange={onChangeHasEndTime}
+        />
+        <Text tag='span' theme='muted'>
+          <FormattedMessage id='compose_event.fields.has_end_time' defaultMessage='The event has end date' />
+        </Text>
+      </HStack>
+      {endTime && (
+        <FormGroup
+          labelText={<FormattedMessage id='compose_event.fields.end_time_label' defaultMessage='Event end date' />}
+        >
+          <BundleContainer fetchComponent={DatePicker}>
+            {Component => (<Component
+              showTimeSelect
+              dateFormat='MMMM d, yyyy h:mm aa'
+              timeIntervals={15}
+              wrapperClassName='react-datepicker-wrapper'
+              placeholderText={intl.formatMessage(messages.eventEndTimePlaceholder)}
+              filterDate={isCurrentOrFutureDate}
+              selected={endTime}
+              onChange={onChangeEndTime}
+            />)}
+          </BundleContainer>
+        </FormGroup>
+      )}
+      {!id && (
+        <HStack alignItems='center' space={2}>
+          <Toggle
+            icons={false}
+            checked={approvalRequired}
+            onChange={onChangeApprovalRequired}
+          />
+          <Text tag='span' theme='muted'>
+            <FormattedMessage id='compose_event.fields.approval_required' defaultMessage='I want to approve participation requests manually' />
+          </Text>
+        </HStack>
+      )}
+    </Form>
+  );
+  else body = accounts ? (
+    <Stack space={3}>
+      {accounts.size > 0 ? (
+        accounts.map(({ account, participation_message }) =>
+          <Account key={account} eventId={id!} id={account} participationMessage={participation_message} />,
+        )
+      ) : (
+        <FormattedMessage id='empty_column.event_participant_requests' defaultMessage='There are no pending event participation requests.' />
+      )}
+    </Stack>
+  ) : <Spinner />;
+
   return (
     <Modal
       title={id
@@ -199,119 +317,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
     >
       <Stack space={2}>
         {id && renderTabs()}
-        {tab === 'edit' ? (
-          <Form>
-            <FormGroup
-              labelText={<FormattedMessage id='compose_event.fields.banner_label' defaultMessage='Event banner' />}
-            >
-              <div className='flex items-center justify-center bg-gray-200 dark:bg-gray-900/50 rounded-lg text-black dark:text-white sm:shadow dark:sm:shadow-inset overflow-hidden h-24 sm:h-32 relative'>
-                {banner ? (
-                  <>
-                    <img className='h-full w-full object-cover' src={banner.url} alt='' />
-                    <IconButton className='absolute top-2 right-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
-                  </>
-                ) : (
-                  <UploadButton disabled={isUploading} onSelectFile={handleFiles} />
-                )}
-
-              </div>
-            </FormGroup>
-            <FormGroup
-              labelText={<FormattedMessage id='compose_event.fields.name_label' defaultMessage='Event name' />}
-            >
-              <Input
-                type='text'
-                placeholder={intl.formatMessage(messages.eventNamePlaceholder)}
-                value={name}
-                onChange={onChangeName}
-              />
-            </FormGroup>
-            <FormGroup
-              labelText={<FormattedMessage id='compose_event.fields.description_label' defaultMessage='Event description' />}
-              hintText={<FormattedMessage id='compose_event.fields.description_hint' defaultMessage='Markdown syntax is supported' />}
-            >
-              <Textarea
-                autoComplete='off'
-                placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
-                value={description}
-                onChange={onChangeDescription}
-              />
-            </FormGroup>
-            <FormGroup
-              labelText={<FormattedMessage id='compose_event.fields.location_label' defaultMessage='Event location' />}
-            >
-              {location ? renderLocation() : (
-                <LocationSearch
-                  onSelected={onChangeLocation}
-                />
-              )}
-            </FormGroup>
-            <FormGroup
-              labelText={<FormattedMessage id='compose_event.fields.start_time_label' defaultMessage='Event start date' />}
-            >
-              <BundleContainer fetchComponent={DatePicker}>
-                {Component => (<Component
-                  showTimeSelect
-                  dateFormat='MMMM d, yyyy h:mm aa'
-                  timeIntervals={15}
-                  wrapperClassName='react-datepicker-wrapper'
-                  placeholderText={intl.formatMessage(messages.eventStartTimePlaceholder)}
-                  filterDate={isCurrentOrFutureDate}
-                  selected={startTime}
-                  onChange={onChangeStartTime}
-                />)}
-              </BundleContainer>
-            </FormGroup>
-            <HStack alignItems='center' space={2}>
-              <Toggle
-                icons={false}
-                checked={!!endTime}
-                onChange={onChangeHasEndTime}
-              />
-              <Text tag='span' theme='muted'>
-                <FormattedMessage id='compose_event.fields.has_end_time' defaultMessage='The event has end date' />
-              </Text>
-            </HStack>
-            {endTime && (
-              <FormGroup
-                labelText={<FormattedMessage id='compose_event.fields.end_time_label' defaultMessage='Event end date' />}
-              >
-                <BundleContainer fetchComponent={DatePicker}>
-                  {Component => (<Component
-                    showTimeSelect
-                    dateFormat='MMMM d, yyyy h:mm aa'
-                    timeIntervals={15}
-                    wrapperClassName='react-datepicker-wrapper'
-                    placeholderText={intl.formatMessage(messages.eventEndTimePlaceholder)}
-                    filterDate={isCurrentOrFutureDate}
-                    selected={endTime}
-                    onChange={onChangeEndTime}
-                  />)}
-                </BundleContainer>
-              </FormGroup>
-            )}
-            <HStack alignItems='center' space={2}>
-              <Toggle
-                icons={false}
-                checked={approvalRequired}
-                onChange={onChangeApprovalRequired}
-              />
-              <Text tag='span' theme='muted'>
-                <FormattedMessage id='compose_event.fields.approval_required' defaultMessage='I want to approve participation requests manually' />
-              </Text>
-            </HStack>
-          </Form>
-        ) : accounts ? (
-          <Stack space={3}>
-            {accounts.size > 0 ? (
-              accounts.map(({ account, participation_message }) =>
-                <Account key={account} eventId={id!} id={account} participationMessage={participation_message} />,
-              )
-            ) : (
-              <FormattedMessage id='empty_column.event_participant_requests' defaultMessage='There are no pending event participation requests.' />
-            )}
-          </Stack>
-        ) : <Spinner />}
+        {body}
       </Stack>
     </Modal>
   );

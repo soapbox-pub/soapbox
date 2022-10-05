@@ -21,9 +21,10 @@ const messages = defineMessages({
 interface IEventPreview {
   status: StatusEntity,
   className?: string,
+  hideAction?: boolean;
 }
 
-const EventPreview: React.FC<IEventPreview> = ({ status, className }) => {
+const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction }) => {
   const intl = useIntl();
 
   const me = useAppSelector((state) => state.me);
@@ -36,7 +37,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className }) => {
   return (
     <div className={classNames('rounded-lg bg-gray-100 dark:bg-primary-800 relative overflow-hidden', className)}>
       <div className='absolute top-28 right-3'>
-        {account.id === me ? (
+        {!hideAction && (account.id === me ? (
           <Button
             size='sm'
             theme='secondary'
@@ -44,7 +45,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className }) => {
           >
             <FormattedMessage id='event.manage' defaultMessage='Manage' />
           </Button>
-        ) : <EventActionButton status={status} />}
+        ) : <EventActionButton status={status} />)}
       </div>
       <div className='bg-primary-200 dark:bg-gray-600 h-40'>
         {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.bannerHeader)} />}

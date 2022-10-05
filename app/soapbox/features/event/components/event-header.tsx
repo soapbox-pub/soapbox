@@ -1,16 +1,23 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
+import { blockAccount } from 'soapbox/actions/accounts';
+import { launchChat } from 'soapbox/actions/chats';
+import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
 import { editEvent, fetchEventIcs } from 'soapbox/actions/events';
+import { toggleBookmark, togglePin } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { initMuteModal } from 'soapbox/actions/mutes';
+import { initReport } from 'soapbox/actions/reports';
+import { deleteStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
 import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
@@ -27,11 +34,28 @@ const messages = defineMessages({
   copy: { id: 'event.copy', defaultMessage: 'Copy link to event' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
+  quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
+  pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
+  unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
+  reblog_private: { id: 'status.reblog_private', defaultMessage: 'Repost to original audience' },
+  cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
+  delete: { id: 'status.delete', defaultMessage: 'Delete' },
+  mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
+  chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
+  direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
+  mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
+  block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  report: { id: 'status.report', defaultMessage: 'Report @{name}' },
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
   adminStatus: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   markStatusSensitive: { id: 'admin.statuses.actions.mark_status_sensitive', defaultMessage: 'Mark post sensitive' },
   markStatusNotSensitive: { id: 'admin.statuses.actions.mark_status_not_sensitive', defaultMessage: 'Mark post not sensitive' },
   deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
+  blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
+  blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
+  deleteConfirm: { id: 'confirmations.delete_event.confirm', defaultMessage: 'Delete' },
+  deleteHeading: { id: 'confirmations.delete_event.heading', defaultMessage: 'Delete event' },
+  deleteMessage: { id: 'confirmations.delete_event.message', defaultMessage: 'Are you sure you want to delete this event?' },
 });
 
 interface IEventHeader {
@@ -41,7 +65,9 @@ interface IEventHeader {
 const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
+  const features = useFeatures();
   const ownAccount = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
@@ -61,6 +87,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const account = status.account as AccountEntity;
   const event = status.event;
   const banner = status.media_attachments?.find(({ description }) => description === 'Banner');
+
+  const username = account.username;
 
   const handleHeaderClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.stopPropagation();
@@ -94,6 +122,63 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     }
   };
 
+  const handleBookmarkClick = () => {
+    dispatch(toggleBookmark(status));
+  };
+
+  const handleQuoteClick = () => {
+    dispatch(quoteCompose(status));
+  };
+
+  const handlePinClick = () => {
+    dispatch(togglePin(status));
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/trash.svg'),
+      heading: intl.formatMessage(messages.deleteHeading),
+      message: intl.formatMessage(messages.deleteMessage),
+      confirm: intl.formatMessage(messages.deleteConfirm),
+      onConfirm: () => dispatch(deleteStatus(status.id)),
+    }));
+  };
+
+  const handleMentionClick = () => {
+    dispatch(mentionCompose(account));
+  };
+
+  const handleChatClick = () => {
+    dispatch(launchChat(account.id, history));
+  };
+
+  const handleDirectClick = () => {
+    dispatch(directCompose(account));
+  };
+
+  const handleMuteClick = () => {
+    dispatch(initMuteModal(account));
+  };
+
+  const handleBlockClick = () => {
+    dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/ban.svg'),
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
+      confirm: intl.formatMessage(messages.blockConfirm),
+      onConfirm: () => dispatch(blockAccount(account.id)),
+      secondary: intl.formatMessage(messages.blockAndReport),
+      onSecondary: () => {
+        dispatch(blockAccount(account.id));
+        dispatch(initReport(account, status));
+      },
+    }));
+  };
+
+  const handleReport = () => {
+    dispatch(initReport(account, status));
+  };
+
   const handleModerate = () => {
     dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
@@ -110,51 +195,129 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     dispatch(deleteStatusModal(intl, status.id));
   };
 
-  const menu: MenuType = [
-    {
-      text: intl.formatMessage(messages.exportIcs),
-      action: handleExportClick,
-      icon: require('@tabler/icons/calendar-plus.svg'),
-    },
-    {
-      text: intl.formatMessage(messages.copy),
-      action: handleCopy,
-      icon: require('@tabler/icons/link.svg'),
-    },
-  ];
+  const makeMenu = () => {
+    const menu: MenuType = [
+      {
+        text: intl.formatMessage(messages.exportIcs),
+        action: handleExportClick,
+        icon: require('@tabler/icons/calendar-plus.svg'),
+      },
+      {
+        text: intl.formatMessage(messages.copy),
+        action: handleCopy,
+        icon: require('@tabler/icons/link.svg'),
+      },
+    ];
 
-  if (isStaff) {
-    menu.push(null);
+    if (!ownAccount) return menu;
 
-    menu.push({
-      text: intl.formatMessage(messages.adminAccount, { name: account.username }),
-      action: handleModerate,
-      icon: require('@tabler/icons/gavel.svg'),
-    });
-
-    if (isAdmin) {
+    if (features.bookmarks) {
       menu.push({
-        text: intl.formatMessage(messages.adminStatus),
-        action: handleModerateStatus,
-        icon: require('@tabler/icons/pencil.svg'),
+        text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
+        action: handleBookmarkClick,
+        icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
       });
     }
 
-    menu.push({
-      text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
-      action: handleToggleStatusSensitivity,
-      icon: require('@tabler/icons/alert-triangle.svg'),
-    });
-
-    if (account.id !== ownAccount?.id) {
+    if (features.quotePosts) {
       menu.push({
-        text: intl.formatMessage(messages.deleteStatus),
-        action: handleDeleteStatus,
+        text: intl.formatMessage(messages.quotePost),
+        action: handleQuoteClick,
+        icon: require('@tabler/icons/quote.svg'),
+      });
+    }
+
+    menu.push(null);
+
+    if (ownAccount.id === account.id) {
+      if (['public', 'unlisted'].includes(status.visibility)) {
+        menu.push({
+          text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
+          action: handlePinClick,
+          icon: status.pinned ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
+        });
+      }
+
+      menu.push({
+        text: intl.formatMessage(messages.delete),
+        action: handleDeleteClick,
         icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       });
+    } else {
+      menu.push({
+        text: intl.formatMessage(messages.mention, { name: username }),
+        action: handleMentionClick,
+        icon: require('@tabler/icons/at.svg'),
+      });
+
+      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+        menu.push({
+          text: intl.formatMessage(messages.chat, { name: username }),
+          action: handleChatClick,
+          icon: require('@tabler/icons/messages.svg'),
+        });
+      } else if (features.privacyScopes) {
+        menu.push({
+          text: intl.formatMessage(messages.direct, { name: username }),
+          action: handleDirectClick,
+          icon: require('@tabler/icons/mail.svg'),
+        });
+      }
+
+      menu.push(null);
+      menu.push({
+        text: intl.formatMessage(messages.mute, { name: username }),
+        action: handleMuteClick,
+        icon: require('@tabler/icons/circle-x.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.block, { name: username }),
+        action: handleBlockClick,
+        icon: require('@tabler/icons/ban.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.report, { name: username }),
+        action: handleReport,
+        icon: require('@tabler/icons/flag.svg'),
+      });
     }
-  }
+
+    if (isStaff) {
+      menu.push(null);
+
+      menu.push({
+        text: intl.formatMessage(messages.adminAccount, { name: account.username }),
+        action: handleModerate,
+        icon: require('@tabler/icons/gavel.svg'),
+      });
+
+      if (isAdmin) {
+        menu.push({
+          text: intl.formatMessage(messages.adminStatus),
+          action: handleModerateStatus,
+          icon: require('@tabler/icons/pencil.svg'),
+        });
+      }
+
+      menu.push({
+        text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+        action: handleToggleStatusSensitivity,
+        icon: require('@tabler/icons/alert-triangle.svg'),
+      });
+
+      if (account.id !== ownAccount?.id) {
+        menu.push({
+          text: intl.formatMessage(messages.deleteStatus),
+          action: handleDeleteStatus,
+          icon: require('@tabler/icons/trash.svg'),
+          destructive: true,
+        });
+      }
+    }
+
+    return menu;
+  };
 
   const handleManageClick: React.MouseEventHandler = e => {
     e.stopPropagation();
@@ -199,7 +362,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
             />
 
             <MenuList>
-              {menu.map((menuItem, idx) => {
+              {makeMenu().map((menuItem, idx) => {
                 if (typeof menuItem?.text === 'undefined') {
                   return <MenuDivider key={idx} />;
                 } else {
