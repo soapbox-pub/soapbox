@@ -39,7 +39,7 @@ const DefaultPage: React.FC = ({ children }) => {
             {Component => <Component limit={3} key='trends-panel' />}
           </BundleContainer>
         )}
-        {features.suggestions && (
+        {me && features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
             {Component => <Component limit={3} key='wtf-panel' />}
           </BundleContainer>
