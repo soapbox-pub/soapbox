@@ -6,9 +6,10 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 
 import type { List as ImmutableList } from 'immutable';
+import type { Attachment } from 'soapbox/types/entities';
 
 interface IAttachmentThumbs {
-  media: ImmutableList<Immutable.Record<any>>
+  media: ImmutableList<Attachment>
   onClick?(): void
   sensitive?: boolean
 }
@@ -18,7 +19,7 @@ const AttachmentThumbs = (props: IAttachmentThumbs) => {
   const dispatch = useDispatch();
 
   const renderLoading = () => <div className='media-gallery--compact' />;
-  const onOpenMedia = (media: Immutable.Record<any>, index: number) => dispatch(openModal('MEDIA', { media, index }));
+  const onOpenMedia = (media: ImmutableList<Attachment>, index: number) => dispatch(openModal('MEDIA', { media, index }));
 
   return (
     <div className='attachment-thumbs'>
@@ -30,6 +31,7 @@ const AttachmentThumbs = (props: IAttachmentThumbs) => {
             height={50}
             compact
             sensitive={sensitive}
+            visible
           />
         )}
       </Bundle>
