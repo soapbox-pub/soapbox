@@ -23,7 +23,7 @@ interface IAccountAuthorize {
 const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
-  
+
   const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, id));
