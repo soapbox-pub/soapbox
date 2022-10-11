@@ -23,7 +23,7 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  
+
   const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, accountId));

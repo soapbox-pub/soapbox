@@ -15,13 +15,13 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import { isLocal } from 'soapbox/utils/accounts';
 
 import { showProfileHoverCard } from './hover_ref_wrapper';
 import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
 
 import type { AppDispatch } from 'soapbox/store';
 import type { Account } from 'soapbox/types/entities';
-import { isLocal } from 'soapbox/utils/accounts';
 
 const getAccount = makeGetAccount();
 
