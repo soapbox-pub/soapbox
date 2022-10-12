@@ -123,7 +123,7 @@ export function Audio() {
 }
 
 export function MediaModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/media_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/media-modal');
 }
 
 export function VideoModal() {
