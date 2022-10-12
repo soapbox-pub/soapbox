@@ -4,7 +4,6 @@ const MIN_SCALE = 1;
 const MAX_SCALE = 4;
 
 type Point = { x: number, y: number };
-type EventRemover = () => void;
 
 const getMidpoint = (p1: React.Touch, p2: React.Touch): Point => ({
   x: (p1.clientX + p2.clientX) / 2,
@@ -22,7 +21,7 @@ interface IZoomableImage {
   onClick?: React.MouseEventHandler,
 }
 
-export default class ZoomableImage extends React.PureComponent<IZoomableImage> {
+class ZoomableImage extends React.PureComponent<IZoomableImage> {
 
   static defaultProps = {
     alt: '',
@@ -34,31 +33,20 @@ export default class ZoomableImage extends React.PureComponent<IZoomableImage> {
     scale: MIN_SCALE,
   }
 
-  removers: EventRemover[] = [];
   container: HTMLDivElement | null = null;
   image: HTMLImageElement | null = null;
-  lastTouchEndTime = 0;
   lastDistance = 0;
-  lastMidpoint: Point | undefined = undefined;
 
   componentDidMount() {
-    let handler = this.handleTouchStart;
-    this.container?.addEventListener('touchstart', handler);
-    this.removers.push(() => this.container?.removeEventListener('touchstart', handler));
-    handler = this.handleTouchMove;
+    this.container?.addEventListener('touchstart', this.handleTouchStart);
     // on Chrome 56+, touch event listeners will default to passive
     // https://www.chromestatus.com/features/5093566007214080
-    this.container?.addEventListener('touchmove', handler, { passive: false });
-    this.removers.push(() => this.container?.removeEventListener('touchend', handler));
+    this.container?.addEventListener('touchmove', this.handleTouchMove, { passive: false });
   }
 
   componentWillUnmount() {
-    this.removeEventListeners();
-  }
-
-  removeEventListeners() {
-    this.removers.forEach(listeners => listeners());
-    this.removers = [];
+    this.container?.removeEventListener('touchstart', this.handleTouchStart);
+    this.container?.removeEventListener('touchend', this.handleTouchMove);
   }
 
   handleTouchStart = (e: TouchEvent) => {
@@ -89,7 +77,6 @@ export default class ZoomableImage extends React.PureComponent<IZoomableImage> {
 
     this.zoom(scale, midpoint);
 
-    this.lastMidpoint = midpoint;
     this.lastDistance = distance;
   }
 
@@ -158,3 +145,5 @@ export default class ZoomableImage extends React.PureComponent<IZoomableImage> {
   }
 
 }
+
+export default ZoomableImage;
