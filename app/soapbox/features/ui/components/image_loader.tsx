@@ -1,19 +1,20 @@
 import classNames from 'clsx';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import ZoomableImage from './zoomable-image';
 
-export default class ImageLoader extends React.PureComponent {
+type EventRemover = () => void;
 
-  static propTypes = {
-    alt: PropTypes.string,
-    src: PropTypes.string.isRequired,
-    previewSrc: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
-    onClick: PropTypes.func,
-  }
+interface IImageLoader {
+  alt?: string,
+  src: string,
+  previewSrc?: string,
+  width?: number,
+  height?: number,
+  onClick?: React.MouseEventHandler,
+}
+
+class ImageLoader extends React.PureComponent<IImageLoader> {
 
   static defaultProps = {
     alt: '',
@@ -27,8 +28,9 @@ export default class ImageLoader extends React.PureComponent {
     width: null,
   }
 
-  removers = [];
-  canvas = null;
+  removers: EventRemover[] = [];
+  canvas: HTMLCanvasElement | null = null;
+  _canvasContext: CanvasRenderingContext2D | null = null;
 
   get canvasContext() {
     if (!this.canvas) {
@@ -42,7 +44,7 @@ export default class ImageLoader extends React.PureComponent {
     this.loadImage(this.props);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IImageLoader) {
     if (prevProps.src !== this.props.src) {
       this.loadImage(this.props);
     }
@@ -52,7 +54,7 @@ export default class ImageLoader extends React.PureComponent {
     this.removeEventListeners();
   }
 
-  loadImage(props) {
+  loadImage(props: IImageLoader) {
     this.removeEventListeners();
     this.setState({ loading: true, error: false });
     Promise.all([
@@ -66,7 +68,7 @@ export default class ImageLoader extends React.PureComponent {
       .catch(() => this.setState({ loading: false, error: true }));
   }
 
-  loadPreviewCanvas = ({ previewSrc, width, height }) => new Promise((resolve, reject) => {
+  loadPreviewCanvas = ({ previewSrc, width, height }: IImageLoader) => new Promise<void>((resolve, reject) => {
     const image = new Image();
     const removeEventListeners = () => {
       image.removeEventListener('error', handleError);
@@ -78,21 +80,23 @@ export default class ImageLoader extends React.PureComponent {
     };
     const handleLoad = () => {
       removeEventListeners();
-      this.canvasContext.drawImage(image, 0, 0, width, height);
+      this.canvasContext?.drawImage(image, 0, 0, width || 0, height || 0);
       resolve();
     };
     image.addEventListener('error', handleError);
     image.addEventListener('load', handleLoad);
-    image.src = previewSrc;
+    image.src = previewSrc || '';
     this.removers.push(removeEventListeners);
   })
 
   clearPreviewCanvas() {
-    const { width, height } = this.canvas;
-    this.canvasContext.clearRect(0, 0, width, height);
+    if (this.canvas && this.canvasContext) {
+      const { width, height } = this.canvas;
+      this.canvasContext.clearRect(0, 0, width, height);
+    }
   }
 
-  loadOriginalImage = ({ src }) => new Promise((resolve, reject) => {
+  loadOriginalImage = ({ src }: IImageLoader) => new Promise<void>((resolve, reject) => {
     const image = new Image();
     const removeEventListeners = () => {
       image.removeEventListener('error', handleError);
@@ -122,7 +126,7 @@ export default class ImageLoader extends React.PureComponent {
     return typeof width === 'number' && typeof height === 'number';
   }
 
-  setCanvasRef = c => {
+  setCanvasRef = (c: HTMLCanvasElement) => {
     this.canvas = c;
     if (c) this.setState({ width: c.offsetWidth });
   }
@@ -157,3 +161,5 @@ export default class ImageLoader extends React.PureComponent {
   }
 
 }
+
+export default ImageLoader;
