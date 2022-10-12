@@ -13,7 +13,7 @@ import IconButton from 'soapbox/components/icon_button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
 
-import ImageLoader from './image_loader';
+import ImageLoader from './image-loader';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
