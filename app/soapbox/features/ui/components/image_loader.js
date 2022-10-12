@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ZoomableImage from './zoomable_image';
+import ZoomableImage from './zoomable-image';
 
 export default class ImageLoader extends React.PureComponent {
 
