@@ -5,6 +5,8 @@ import {
   fromJS,
 } from 'immutable';
 
+import { normalizeAttachment } from 'soapbox/normalizers/attachment';
+
 import type { Attachment, Card, Emoji } from 'soapbox/types/entities';
 
 export const ChatMessageRecord = ImmutableRecord({
@@ -22,8 +24,14 @@ export const ChatMessageRecord = ImmutableRecord({
   pending: false,
 });
 
+const normalizeMedia = (status: ImmutableMap<string, any>) => {
+  return status.update('attachment', null, normalizeAttachment);
+};
+
 export const normalizeChatMessage = (chatMessage: Record<string, any>) => {
   return ChatMessageRecord(
-    ImmutableMap(fromJS(chatMessage)),
+    ImmutableMap(fromJS(chatMessage)).withMutations(chatMessage => {
+      normalizeMedia(chatMessage);
+    }),
   );
 };
