@@ -102,44 +102,6 @@ const Audio: React.FC<IAudio> = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (player.current) {
-      _setDimensions();
-    }
-  }, [player.current]);
-
-  useEffect(() => {
-    if (audio.current) {
-      setVolume(audio.current.volume);
-      setMuted(audio.current.muted);
-    }
-  }, [audio.current]);
-
-  useEffect(() => {
-    if (canvas.current && visualizer.current) {
-      visualizer.current.setCanvas(canvas.current);
-    }
-  }, [canvas.current, visualizer.current]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-
-      if (!paused && audio.current && deployPictureInPicture) {
-        deployPictureInPicture('audio', _pack());
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    _clear();
-    _draw();
-  }, [src, width, height, accentColor]);
-
   const togglePlay = () => {
     if (!audioContext.current) {
       _initAudioContext();
@@ -334,24 +296,6 @@ const Audio: React.FC<IAudio> = (props) => {
     }
   };
 
-  // const handleDownload = () => {
-  //   fetch(src).then(res => res.blob()).then(blob => {
-  //     const element   = document.createElement('a');
-  //     const objectURL = URL.createObjectURL(blob);
-
-  //     element.setAttribute('href', objectURL);
-  //     element.setAttribute('download', fileNameFromURL(src));
-
-  //     document.body.appendChild(element);
-  //     element.click();
-  //     document.body.removeChild(element);
-
-  //     URL.revokeObjectURL(objectURL);
-  //   }).catch(err => {
-  //     console.error(err);
-  //   });
-  // };
-
   const _renderCanvas = () => {
     requestAnimationFrame(() => {
       if (!audio.current) return;
@@ -450,7 +394,46 @@ const Audio: React.FC<IAudio> = (props) => {
   };
 
   const getDuration = () => duration || props.duration || 0;
+
   const progress = Math.min((currentTime / getDuration()) * 100, 100);
+
+  useEffect(() => {
+    if (player.current) {
+      _setDimensions();
+    }
+  }, [player.current]);
+
+  useEffect(() => {
+    if (audio.current) {
+      setVolume(audio.current.volume);
+      setMuted(audio.current.muted);
+    }
+  }, [audio.current]);
+
+  useEffect(() => {
+    if (canvas.current && visualizer.current) {
+      visualizer.current.setCanvas(canvas.current);
+    }
+  }, [canvas.current, visualizer.current]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+
+      if (!paused && audio.current && deployPictureInPicture) {
+        deployPictureInPicture('audio', _pack());
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    _clear();
+    _draw();
+  }, [src, width, height, accentColor]);
 
   return (
     <div
