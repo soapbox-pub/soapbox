@@ -146,10 +146,6 @@ export function ActionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
 }
 
-export function FocalPointModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/focal_point_modal');
-}
-
 export function HotkeysModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/hotkeys_modal');
 }
