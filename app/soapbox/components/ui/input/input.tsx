@@ -11,7 +11,10 @@ const messages = defineMessages({
   hidePassword: { id: 'input.password.hide_password', defaultMessage: 'Hide password' },
 });
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
+/** Possible theme names for an Input. */
+type InputThemes = 'normal' | 'search' | 'transparent';
+
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */
@@ -36,8 +39,8 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   prepend?: React.ReactElement,
   /** An element to display as suffix to input. Cannot be used with password type. */
   append?: React.ReactElement,
-  /** Adds specific styling to denote a searchabe input. */
-  isSearch?: boolean,
+  /** Theme to style the input with. */
+  theme?: InputThemes,
 }
 
 /** Form input element. */
@@ -45,7 +48,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, outerClassName, hasError, append, prepend, isSearch, ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, hasError, append, prepend, theme = 'normal', ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -59,8 +62,8 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
       <div
         className={
           classNames('mt-1 relative shadow-sm', outerClassName, {
-            'rounded-md': !isSearch,
-            'rounded-full': isSearch,
+            'rounded-md': theme !== 'search',
+            'rounded-full': theme === 'search',
           })
         }
       >
@@ -82,9 +85,10 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           ref={ref}
           className={classNames({
             'text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
-              true,
-            'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': !isSearch,
-            'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': isSearch,
+              ['normal', 'search'].includes(theme),
+            'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
+            'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
+            'bg-transparent border-none': theme === 'transparent',
             'pr-7': isPassword || append,
             'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
@@ -127,4 +131,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   },
 );
 
-export default Input;
+export {
+  Input as default,
+  InputThemes,
+};
