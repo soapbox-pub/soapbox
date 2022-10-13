@@ -209,11 +209,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         <Audio
           src={attachment.url}
           alt={attachment.description}
-          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status.getIn(['account', 'avatar_static']))}
-          backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-          foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-          accentColor={attachment.meta.getIn(['colors', 'accent'])}
-          duration={attachment.meta.getIn(['original', 'duration'], 0)}
+          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status.getIn(['account', 'avatar_static'])) as string | undefined}
+          backgroundColor={attachment.meta.getIn(['colors', 'background']) as string | undefined}
+          foregroundColor={attachment.meta.getIn(['colors', 'foreground']) as string | undefined}
+          accentColor={attachment.meta.getIn(['colors', 'accent']) as string | undefined}
+          duration={attachment.meta.getIn(['original', 'duration'], 0) as number | undefined}
           key={attachment.url}
         />
       );
