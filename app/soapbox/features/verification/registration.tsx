@@ -108,7 +108,7 @@ const Registration = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Your username' hintText={messages.usernameHint}>
+          <FormGroup labelText='Your username' hintText={intl.formatMessage(messages.usernameHint)}>
             <Input
               name='username'
               type='text'
