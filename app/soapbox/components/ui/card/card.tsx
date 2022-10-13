@@ -18,13 +18,13 @@ const messages = defineMessages({
 
 interface ICard {
   /** The type of card. */
-  variant?: 'default' | 'rounded',
+  variant?: 'default' | 'rounded'
   /** Card size preset. */
-  size?: 'md' | 'lg' | 'xl',
+  size?: keyof typeof sizes
   /** Extra classnames for the <div> element. */
-  className?: string,
+  className?: string
   /** Elements inside the card. */
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /** An opaque backdrop to hold a collection of related elements. */
