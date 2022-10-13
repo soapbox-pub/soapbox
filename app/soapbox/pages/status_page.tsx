@@ -40,7 +40,7 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
         )}
         {features.trends && (
           <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={3} key='trends-panel' />}
+            {Component => <Component limit={5} key='trends-panel' />}
           </BundleContainer>
         )}
         {me && features.suggestions && (

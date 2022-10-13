@@ -82,7 +82,7 @@ const HomePage: React.FC = ({ children }) => {
         )}
         {features.trends && (
           <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={3} />}
+            {Component => <Component limit={5} />}
           </BundleContainer>
         )}
         {hasPatron && (
