@@ -185,6 +185,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               media={ImmutableList([attachment])}
               height={120}
               onOpenMedia={onOpenMedia}
+              visible
             />
           )}
         </Bundle>

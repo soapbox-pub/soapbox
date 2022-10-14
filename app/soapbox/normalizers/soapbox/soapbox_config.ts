@@ -106,12 +106,12 @@ export const SoapboxConfigRecord = ImmutableRecord({
     limit: 1,
   }),
   aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
-  mobilePages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
   authenticatedProfile: true,
   singleUserMode: false,
   singleUserModeProfile: '',
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
+  displayCta: true,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

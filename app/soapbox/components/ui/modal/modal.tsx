@@ -11,8 +11,6 @@ const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
 
-type Widths = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
-
 const widths = {
   xs: 'max-w-xs',
   sm: 'max-w-sm',
@@ -52,7 +50,7 @@ interface IModal {
   skipFocus?: boolean,
   /** Title text for the modal. */
   title?: React.ReactNode,
-  width?: Widths,
+  width?: keyof typeof widths,
 }
 
 /** Displays a modal dialog box. */

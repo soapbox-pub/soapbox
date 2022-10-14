@@ -17,11 +17,11 @@ const messages = defineMessages({
 });
 
 const dateFormatOptions: FormatDateOptions = {
-  hour12: false,
+  hour12: true,
   year: 'numeric',
   month: 'short',
   day: '2-digit',
-  hour: '2-digit',
+  hour: 'numeric',
   minute: '2-digit',
 };
 
@@ -32,8 +32,8 @@ const shortDateFormatOptions: FormatDateOptions = {
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
-const HOUR   = 1000 * 60 * 60;
-const DAY    = 1000 * 60 * 60 * 24;
+const HOUR = 1000 * 60 * 60;
+const DAY = 1000 * 60 * 60 * 24;
 
 const MAX_DELAY = 2147483647;
 
@@ -170,12 +170,12 @@ class RelativeTimestamp extends React.Component<RelativeTimestampProps, Relative
       clearTimeout(this._timer);
     }
 
-    const { timestamp }  = this.props;
-    const delta          = (new Date(timestamp)).getTime() - this.state.now;
-    const unitDelay      = getUnitDelay(selectUnits(delta));
-    const unitRemainder  = Math.abs(delta % unitDelay);
+    const { timestamp } = this.props;
+    const delta = (new Date(timestamp)).getTime() - this.state.now;
+    const unitDelay = getUnitDelay(selectUnits(delta));
+    const unitRemainder = Math.abs(delta % unitDelay);
     const updateInterval = 1000 * 10;
-    const delay          = delta < 0 ? Math.max(updateInterval, unitDelay - unitRemainder) : Math.max(updateInterval, unitRemainder);
+    const delay = delta < 0 ? Math.max(updateInterval, unitDelay - unitRemainder) : Math.max(updateInterval, unitRemainder);
 
     this._timer = setTimeout(() => {
       this.setState({ now: Date.now() });

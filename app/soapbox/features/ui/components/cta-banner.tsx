@@ -5,11 +5,11 @@ import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 const CtaBanner = () => {
-  const { singleUserMode } = useSoapboxConfig();
+  const { displayCta, singleUserMode } = useSoapboxConfig();
   const siteTitle = useAppSelector((state) => state.instance.title);
   const me = useAppSelector((state) => state.me);
 
-  if (me || singleUserMode) return null;
+  if (me || !displayCta || singleUserMode) return null;
 
   return (
     <div data-testid='cta-banner' className='hidden lg:block'>

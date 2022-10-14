@@ -32,7 +32,7 @@ const ModerationLog = () => {
         setIsLoading(false);
         setLastPage(1);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const handleLoadMore = () => {
@@ -43,7 +43,7 @@ const ModerationLog = () => {
       .then(() => {
         setIsLoading(false);
         setLastPage(page);
-      }).catch(() => {});
+      }).catch(() => { });
   };
 
   return (
@@ -62,11 +62,11 @@ const ModerationLog = () => {
             <div className='logentry__timestamp'>
               <FormattedDate
                 value={new Date(item.time * 1000)}
-                hour12={false}
+                hour12
                 year='numeric'
                 month='short'
                 day='2-digit'
-                hour='2-digit'
+                hour='numeric'
                 minute='2-digit'
               />
             </div>

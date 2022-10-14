@@ -82,7 +82,7 @@ const HomePage: React.FC = ({ children }) => {
         )}
         {features.trends && (
           <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={3} />}
+            {Component => <Component limit={5} />}
           </BundleContainer>
         )}
         {hasPatron && (
@@ -103,7 +103,7 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component limit={10} />}
           </BundleContainer>
         )}
-        {features.suggestions && (
+        {me && features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
             {Component => <Component limit={3} />}
           </BundleContainer>

@@ -137,7 +137,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
           <BundleContainer fetchComponent={PinnedAccountsPanel}>
             {Component => <Component account={account} limit={5} key='pinned-accounts-panel' />}
           </BundleContainer>
-        ) : features.suggestions && (
+        ) : me && features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
             {Component => <Component limit={3} key='wtf-panel' />}
           </BundleContainer>

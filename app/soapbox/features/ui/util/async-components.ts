@@ -23,7 +23,7 @@ export function CommunityTimeline() {
 }
 
 export function HashtagTimeline() {
-  return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag_timeline');
+  return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag-timeline');
 }
 
 export function DirectTimeline() {
@@ -123,7 +123,7 @@ export function Audio() {
 }
 
 export function MediaModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/media_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/media-modal');
 }
 
 export function VideoModal() {
@@ -144,10 +144,6 @@ export function MissingDescriptionModal() {
 
 export function ActionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
-}
-
-export function FocalPointModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/focal_point_modal');
 }
 
 export function HotkeysModal() {
