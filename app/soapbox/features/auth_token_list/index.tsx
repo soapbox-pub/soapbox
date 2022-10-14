@@ -31,11 +31,11 @@ const AuthToken: React.FC<IAuthToken> = ({ token }) => {
           <Text size='sm' theme='muted'>
             <FormattedDate
               value={new Date(token.valid_until)}
-              hour12={false}
+              hour12
               year='numeric'
               month='short'
               day='2-digit'
-              hour='2-digit'
+              hour='numeric'
               minute='2-digit'
             />
           </Text>
@@ -51,7 +51,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token }) => {
   );
 };
 
-const AuthTokenList: React.FC = () =>{
+const AuthTokenList: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());

@@ -108,7 +108,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             <span>
               <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
                 <Text tag='span' theme='muted' size='sm'>
-                  <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                  <FormattedDate value={new Date(actualStatus.created_at)} hour12 year='numeric' month='short' day='2-digit' hour='numeric' minute='2-digit' />
                 </Text>
               </a>
 
@@ -122,7 +122,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                     tabIndex={0}
                   >
                     <Text tag='span' theme='muted' size='sm'>
-                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
+                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: true, month: 'short', day: '2-digit', hour: 'numeric', minute: '2-digit' }) }} />
                     </Text>
                   </div>
                 </>
