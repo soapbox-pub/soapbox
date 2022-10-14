@@ -7,7 +7,6 @@ import { isStandalone } from 'soapbox/utils/state';
 
 import AboutPage from '../about';
 import LandingPage from '../landing_page';
-import MobilePage from '../mobile';
 
 import Footer from './components/footer';
 import Header from './components/header';
@@ -31,7 +30,6 @@ const PublicLayout = () => {
             <Switch>
               <Route exact path='/' component={LandingPage} />
               <Route exact path='/about/:slug?' component={AboutPage} />
-              <Route exact path='/mobile/:slug?' component={MobilePage} />
             </Switch>
           </div>
         </div>
