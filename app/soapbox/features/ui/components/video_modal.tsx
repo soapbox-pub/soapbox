@@ -41,6 +41,7 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
         link={link}
         detailed
         alt={media.description}
+        visible
       />
     </div>
   );
