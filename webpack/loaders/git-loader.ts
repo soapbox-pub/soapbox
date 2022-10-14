@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import { LoaderContext } from 'webpack';
+import type { LoaderContext } from 'webpack';
 
 /**
  * Forces recompile whenever the current commit changes.
