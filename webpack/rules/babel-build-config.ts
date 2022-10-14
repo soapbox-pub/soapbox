@@ -1,11 +1,13 @@
-const { resolve } = require('path');
+import { resolve } from 'path';
 
-const { env } = require('../configuration');
+import { env } from '../configuration';
+
+import type { RuleSetRule } from 'webpack';
 
 // This is a hack, used to force build_config @preval to recompile
 // https://github.com/kentcdodds/babel-plugin-preval/issues/19
 
-module.exports = {
+const rule: RuleSetRule = {
   test: resolve(__dirname, '../../app/soapbox/build_config.js'),
   use: [
     {
@@ -18,3 +20,5 @@ module.exports = {
     },
   ],
 };
+
+export default rule;
