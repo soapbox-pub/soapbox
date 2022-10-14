@@ -6,7 +6,7 @@ import type { RuleSetRule } from 'webpack';
 const rule: RuleSetRule = {
   test: resolve(__dirname, '../../app/soapbox/utils/code.js'),
   use: {
-    loader: resolve(__dirname, '../loaders/git-loader.js'),
+    loader: resolve(__dirname, '../loaders/git-loader.ts'),
   },
 };
 
