@@ -1,5 +1,5 @@
-const { join } = require('path');
-const { env } = require('process');
+import { join } from 'path';
+import { env } from 'process';
 
 const {
   FE_SUBDIRECTORY,
@@ -21,10 +21,12 @@ const output = {
   path: join(__dirname, '..', outputDir, FE_SUBDIRECTORY),
 };
 
-module.exports = {
+const exportEnv = {
+  NODE_ENV: env.NODE_ENV,
+};
+
+export {
   settings,
-  env: {
-    NODE_ENV: env.NODE_ENV,
-  },
+  exportEnv as env,
   output,
 };

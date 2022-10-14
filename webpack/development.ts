@@ -1,13 +1,16 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
-const { join } = require('path');
+import { join } from 'path';
 
-const { merge } = require('webpack-merge');
+import { merge } from 'webpack-merge';
 
-const sharedConfig = require('./shared');
+import sharedConfig from './shared';
 
-const watchOptions = {};
+import type { Configuration } from 'webpack';
+import type { Configuration as DevServerConfiguration, ProxyConfigMap } from 'webpack-dev-server';
+
+const watchOptions: Configuration['watchOptions'] = {};
 
 const {
   DEVSERVER_URL,
@@ -36,10 +39,10 @@ const backendEndpoints = [
   '/favicon.png',
 ];
 
-const makeProxyConfig = () => {
+const makeProxyConfig = (): ProxyConfigMap => {
   const secureProxy = PROXY_HTTPS_INSECURE !== 'true';
 
-  const proxyConfig = {};
+  const proxyConfig: ProxyConfigMap = {};
   proxyConfig['/api/patron'] = {
     target: PATRON_URL || DEFAULTS.PATRON_URL,
     secure: secureProxy,
@@ -47,7 +50,7 @@ const makeProxyConfig = () => {
   };
   backendEndpoints.map(endpoint => {
     proxyConfig[endpoint] = {
-      target: BACKEND_URL || DEFAULTS.BACKEND_URL,
+      target: BACKEND_URL,
       secure: secureProxy,
       changeOrigin: true,
     };
@@ -64,13 +67,36 @@ if (process.env.VAGRANT) {
 
 const devServerUrl = (() => {
   try {
-    return new URL(DEVSERVER_URL);
+    return new URL(DEVSERVER_URL || DEFAULTS.DEVSERVER_URL);
   } catch {
     return new URL(DEFAULTS.DEVSERVER_URL);
   }
 })();
 
-module.exports = merge(sharedConfig, {
+const devServer: DevServerConfiguration = {
+  compress: true,
+  host: devServerUrl.hostname,
+  port: devServerUrl.port,
+  https: devServerUrl.protocol === 'https:',
+  hot: false,
+  allowedHosts: 'all',
+  historyApiFallback: {
+    disableDotRule: true,
+    index: join(FE_SUBDIRECTORY, '/'),
+  },
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
+  client: {
+    overlay: true,
+  },
+  static: {
+    serveIndex: true,
+  },
+  proxy: makeProxyConfig(),
+};
+
+const configuration: Configuration = {
   mode: 'development',
   cache: true,
   devtool: 'source-map',
@@ -90,26 +116,7 @@ module.exports = merge(sharedConfig, {
     watchOptions,
   ),
 
-  devServer: {
-    compress: true,
-    host: devServerUrl.hostname,
-    port: devServerUrl.port,
-    https: devServerUrl.protocol === 'https:',
-    hot: false,
-    allowedHosts: 'all',
-    historyApiFallback: {
-      disableDotRule: true,
-      index: join(FE_SUBDIRECTORY, '/'),
-    },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-    client: {
-      overlay: true,
-    },
-    static: {
-      serveIndex: true,
-    },
-    proxy: makeProxyConfig(),
-  },
-});
+  devServer,
+};
+
+export default merge<Configuration>(sharedConfig, configuration);

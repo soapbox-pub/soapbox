@@ -1,11 +1,13 @@
 // Asset modules
 // https://webpack.js.org/guides/asset-modules/
 
-const { resolve } = require('path');
+import { resolve } from 'path';
+
+import type { RuleSetRule } from 'webpack';
 
 // These are processed in reverse-order
 // We use the name 'packs' instead of 'assets' for legacy reasons
-module.exports = [{
+const rules: RuleSetRule[] = [{
   test: /\.(png|svg)/,
   type: 'asset/resource',
   include: [
@@ -81,3 +83,5 @@ module.exports = [{
     filename: 'packs/images/crypto/[name]-[contenthash:8][ext]',
   },
 }];
+
+export default rules;

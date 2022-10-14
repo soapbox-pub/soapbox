@@ -1,6 +1,8 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-module.exports = {
+import type { RuleSetRule } from 'webpack';
+
+const rule: RuleSetRule = {
   test: /\.s?css$/i,
   use: [
     MiniCssExtractPlugin.loader,
@@ -26,3 +28,5 @@ module.exports = {
     },
   ],
 };
+
+export default rule;
