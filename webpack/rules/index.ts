@@ -4,7 +4,7 @@ import buildConfig from './babel-build-config';
 import git from './babel-git';
 import css from './css';
 import gitRefresh from './git-refresh';
-import nodeModules from './node_modules';
+import nodeModules from './node-modules';
 
 import type { RuleSetRule } from 'webpack';
 
