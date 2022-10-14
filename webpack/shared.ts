@@ -1,24 +1,24 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
-const fs = require('fs');
-const { join, resolve } = require('path');
+import fs from 'fs';
+import { join, resolve } from 'path';
 
-const CopyPlugin = require('copy-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require('webpack');
-const AssetsManifestPlugin = require('webpack-assets-manifest');
-const DeadCodePlugin = require('webpack-deadcode-plugin');
+import CopyPlugin from 'copy-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack, { Configuration } from 'webpack';
+import AssetsManifestPlugin from 'webpack-assets-manifest';
+import DeadCodePlugin from 'webpack-deadcode-plugin';
 
-const { env, settings, output } = require('./configuration');
-const rules = require('./rules');
+import { env, settings, output } from './configuration';
+import rules from './rules';
 
 const { FE_SUBDIRECTORY, FE_INSTANCE_SOURCE_DIR } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
-// Return file as string, or return empty string
-const readFile = filename => {
+/** Return file as string, or return empty string. */
+const readFile = (filename: string) => {
   try {
     return fs.readFileSync(filename, 'utf8');
   } catch {
@@ -26,8 +26,8 @@ const readFile = filename => {
   }
 };
 
-const makeHtmlConfig = (params = {}) => {
-  return Object.assign({
+const makeHtmlConfig = (params = {}): HtmlWebpackPlugin.Options => {
+  const defaults: HtmlWebpackPlugin.Options = {
     template: 'app/index.ejs',
     chunksSortMode: 'manual',
     chunks: ['common', 'locale_en', 'application', 'styles'],
@@ -43,10 +43,12 @@ const makeHtmlConfig = (params = {}) => {
     templateParameters: {
       snippets: readFile(resolve('custom/snippets.html')),
     },
-  }, params);
+  };
+
+  return Object.assign(defaults, params);
 };
 
-module.exports = {
+const configuration: Configuration = {
   entry: {
     application: resolve('app/application.ts'),
   },
@@ -94,6 +96,7 @@ module.exports = {
       filename: 'packs/css/[name]-[contenthash:8].css',
       chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
     }),
+    // @ts-ignore
     new AssetsManifestPlugin({
       integrity: false,
       entrypoints: true,
@@ -101,6 +104,7 @@ module.exports = {
       publicPath: true,
     }),
     // https://github.com/MQuy/webpack-deadcode-plugin
+    // @ts-ignore
     new DeadCodePlugin({
       patterns: [
         'app/**/*',
@@ -160,3 +164,5 @@ module.exports = {
     modules: ['node_modules'],
   },
 };
+
+export default configuration;
