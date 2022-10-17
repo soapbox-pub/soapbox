@@ -1,21 +1,19 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 
-import { uploadMedia } from 'soapbox/actions/media';
-import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
-import UploadProgress from 'soapbox/components/upload-progress';
-import UploadButton from 'soapbox/features/compose/components/upload_button';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { Stack } from 'soapbox/components/ui';
+// import UploadProgress from 'soapbox/components/upload-progress';
+// import UploadButton from 'soapbox/features/compose/components/upload_button';
+import { useOwnAccount } from 'soapbox/hooks';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { truncateFilename } from 'soapbox/utils/media';
+// import { truncateFilename } from 'soapbox/utils/media';
 
 import ChatComposer from './chat-composer';
 import ChatMessageList from './chat-message-list';
 
-const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
+// const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
 interface ChatInterface {
   chat: IChat,
@@ -29,17 +27,15 @@ interface ChatInterface {
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
 const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) => {
-  const intl = useIntl();
-  const dispatch = useAppDispatch();
   const account = useOwnAccount();
 
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
+  // const [isUploading, setIsUploading] = useState(false);
+  // const [uploadProgress, setUploadProgress] = useState(0);
+  // const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
   const [hasErrorSubmittingMessage, setErrorSubmittingMessage] = useState<boolean>(false);
 
   const isSubmitDisabled = content.length === 0 && !attachment;
@@ -98,20 +94,16 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
   const clearState = () => {
     setContent('');
     setAttachment(undefined);
-    setIsUploading(false);
-    setUploadProgress(0);
-    setResetFileKey(fileKeyGen());
-    setErrorSubmittingMessage(false);
+    // setIsUploading(false);
+    // setUploadProgress(0);
+    // setResetFileKey(fileKeyGen());
+    // setErrorSubmittingMessage(false);
   };
 
   const sendMessage = () => {
     if (!isSubmitDisabled && !submitMessage.isLoading) {
-      const params = {
-        content,
-        media_id: attachment && attachment.id,
-      };
-
       submitMessage.mutate({ chatId: chat.id, content });
+
       if (!chat.accepted) {
         acceptChat.mutate();
       }
@@ -136,11 +128,11 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
     setContent(event.target.value);
   };
 
-  const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
-    if (isSubmitDisabled && e.clipboardData && e.clipboardData.files.length === 1) {
-      handleFiles(e.clipboardData.files);
-    }
-  };
+  // const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
+  //   if (isSubmitDisabled && e.clipboardData && e.clipboardData.files.length === 1) {
+  //     handleFiles(e.clipboardData.files);
+  //   }
+  // };
 
   const markRead = () => {
     // markAsRead.mutate();
@@ -149,59 +141,59 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
 
   const handleMouseOver = () => markRead();
 
-  const handleRemoveFile = () => {
-    setAttachment(undefined);
-    setResetFileKey(fileKeyGen());
-  };
+  // const handleRemoveFile = () => {
+  //   setAttachment(undefined);
+  //   setResetFileKey(fileKeyGen());
+  // };
 
-  const onUploadProgress = (e: ProgressEvent) => {
-    const { loaded, total } = e;
-    setUploadProgress(loaded / total);
-  };
+  // const onUploadProgress = (e: ProgressEvent) => {
+  //   const { loaded, total } = e;
+  //   setUploadProgress(loaded / total);
+  // };
 
-  const handleFiles = (files: FileList) => {
-    setIsUploading(true);
+  // const handleFiles = (files: FileList) => {
+  //   setIsUploading(true);
 
-    const data = new FormData();
-    data.append('file', files[0]);
+  //   const data = new FormData();
+  //   data.append('file', files[0]);
 
-    dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
-      setAttachment(response.data);
-      setIsUploading(false);
-    }).catch(() => {
-      setIsUploading(false);
-    });
-  };
+  //   dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
+  //     setAttachment(response.data);
+  //     setIsUploading(false);
+  //   }).catch(() => {
+  //     setIsUploading(false);
+  //   });
+  // };
 
-  const renderAttachment = () => {
-    if (!attachment) return null;
+  // const renderAttachment = () => {
+  //   if (!attachment) return null;
 
-    return (
-      <div className='chat-box__attachment'>
-        <div className='chat-box__filename'>
-          {truncateFilename(attachment.preview_url, 20)}
-        </div>
-        <div className='chat-box__remove-attachment'>
-          <IconButton
-            src={require('@tabler/icons/x.svg')}
-            onClick={handleRemoveFile}
-          />
-        </div>
-      </div>
-    );
-  };
+  //   return (
+  //     <div className='chat-box__attachment'>
+  //       <div className='chat-box__filename'>
+  //         {truncateFilename(attachment.preview_url, 20)}
+  //       </div>
+  //       <div className='chat-box__remove-attachment'>
+  //         <IconButton
+  //           src={require('@tabler/icons/x.svg')}
+  //           onClick={handleRemoveFile}
+  //         />
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
-  const renderActionButton = () => {
-    // return canSubmit() ? (
-    //   <IconButton
-    //     src={require('@tabler/icons/send.svg')}
-    //     title={intl.formatMessage(messages.send)}
-    //     onClick={sendMessage}
-    //   />
-    // ) : (
-    //   <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
-    // );
-  };
+  // const renderActionButton = () => {
+  //   return canSubmit() ? (
+  //     <IconButton
+  //       src={require('@tabler/icons/send.svg')}
+  //       title={intl.formatMessage(messages.send)}
+  //       onClick={sendMessage}
+  //     />
+  //   ) : (
+  //     <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
+  //   );
+  // };
 
   useEffect(() => {
     if (inputRef?.current) {
@@ -221,6 +213,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
         value={content}
         onChange={handleContentChange}
         onSubmit={sendMessage}
+        hasErrorSubmittingMessage={hasErrorSubmittingMessage}
       />
     </Stack>
     //   {renderAttachment()}
