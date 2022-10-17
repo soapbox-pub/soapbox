@@ -135,6 +135,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   }, [chatMessages?.length, lastChatMessage]);
 
+  const initialTopMostItemIndex = process.env.NODE_ENV === 'test' ? 0 : cachedChatMessages.length - 1;
+
   const getFormattedTimestamp = (chatMessage: ChatMessageEntity) => {
     return intl.formatDate(new Date(chatMessage.created_at), {
       hour12: false,
@@ -272,6 +274,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
                   'mr-2 order-1': isMyMessage,
                   'ml-2 order-2': !isMyMessage,
                 })}
+                data-testid='chat-message-menu'
               >
                 <DropdownMenuContainer
                   items={menu}
@@ -409,9 +412,10 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
           ref={node}
           alignToBottom
           firstItemIndex={Math.max(0, firstItemIndex)}
-          initialTopMostItemIndex={cachedChatMessages.length - 1}
+          initialTopMostItemIndex={initialTopMostItemIndex}
           data={cachedChatMessages}
           startReached={handleStartReached}
+          followOutput='auto'
           itemContent={(_index, chatMessage) => {
             if (chatMessage.type === 'divider') {
               return renderDivider(_index, chatMessage.text);
@@ -423,7 +427,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               );
             }
           }}
-          followOutput='auto'
           components={{
             Header: () => {
               if (hasNextPage || isFetchingNextPage) {

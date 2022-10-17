@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { ChatContext } from 'soapbox/contexts/chat-context';
 import { IAccount } from 'soapbox/queries/accounts';
@@ -44,19 +45,21 @@ const chatMessages: IChatMessage[] = [
 ];
 
 // Mock scrollIntoView function.
-window.HTMLElement.prototype.scrollIntoView = function() { };
+window.HTMLElement.prototype.scrollIntoView = function () { };
 Object.assign(navigator, {
   clipboard: {
-    writeText: () => {},
+    writeText: () => { },
   },
 });
 
 const store = rootState.set('me', '1');
 
 const renderComponentWithChatContext = () => render(
-  <ChatContext.Provider value={{ chat }}>
-    <ChatMessageList chat={chat} />
-  </ChatContext.Provider>,
+  <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>
+    <ChatContext.Provider value={{ chat }}>
+      <ChatMessageList chat={chat} />
+    </ChatContext.Provider>
+  </VirtuosoMockContext.Provider>,
   undefined,
   store,
 );
@@ -75,7 +78,7 @@ describe('<ChatMessageList />', () => {
       });
     });
 
-    it('displays the skeleton loader', async() => {
+    it('displays the skeleton loader', async () => {
       renderComponentWithChatContext();
 
       expect(screen.queryAllByTestId('placeholder-chat-message')).toHaveLength(5);
@@ -96,7 +99,7 @@ describe('<ChatMessageList />', () => {
       });
     });
 
-    it('displays the intro', async() => {
+    it('displays the intro', async () => {
       renderComponentWithChatContext();
 
       expect(screen.queryAllByTestId('chat-message-list-intro')).toHaveLength(0);
@@ -106,7 +109,7 @@ describe('<ChatMessageList />', () => {
       });
     });
 
-    it('displays the messages', async() => {
+    it('displays the messages', async () => {
       renderComponentWithChatContext();
 
       expect(screen.queryAllByTestId('chat-message')).toHaveLength(0);
@@ -117,19 +120,23 @@ describe('<ChatMessageList />', () => {
       });
     });
 
-    it('displays the correct menu options depending on the owner of the message', async() => {
+    it('displays the correct menu options depending on the owner of the message', async () => {
       renderComponentWithChatContext();
 
       await waitFor(() => {
         expect(screen.queryAllByTestId('chat-message-menu')).toHaveLength(2);
       });
 
+      // my message
       await userEvent.click(screen.queryAllByTestId('chat-message-menu')[0].querySelector('button') as any);
-      expect(screen.getByTestId('dropdown-menu')).toHaveTextContent('Delete');
+      expect(screen.getByTestId('dropdown-menu')).toHaveTextContent('Delete for both');
+      expect(screen.getByTestId('dropdown-menu')).not.toHaveTextContent('Report');
       expect(screen.getByTestId('dropdown-menu')).toHaveTextContent('Copy');
 
+      // other user message
       await userEvent.click(screen.queryAllByTestId('chat-message-menu')[1].querySelector('button') as any);
-      expect(screen.getByTestId('dropdown-menu')).not.toHaveTextContent('Delete');
+      expect(screen.getByTestId('dropdown-menu')).toHaveTextContent('Delete for me');
+      expect(screen.getByTestId('dropdown-menu')).toHaveTextContent('Report');
       expect(screen.getByTestId('dropdown-menu')).toHaveTextContent('Copy');
     });
   });
