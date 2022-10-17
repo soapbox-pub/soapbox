@@ -22,6 +22,8 @@ interface IAutosuggestAccountInput {
   menu?: Menu,
   onKeyDown?: React.KeyboardEventHandler,
   theme?: InputThemes,
+  /** Search only among people who follow you (TruthSocial). */
+  followers?: boolean,
 }
 
 const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
@@ -29,6 +31,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   onSelected,
   value = '',
   limit = 4,
+  followers = false,
   ...rest
 }) => {
   const dispatch = useAppDispatch();
@@ -45,7 +48,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   };
 
   const handleAccountSearch = useCallback(throttle(q => {
-    const params = { q, limit, resolve: false };
+    const params = { q, limit, followers, resolve: false };
 
     dispatch(accountSearch(params, controller.current.signal))
       .then((accounts: { id: string }[]) => {

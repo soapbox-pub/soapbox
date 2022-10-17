@@ -39,6 +39,7 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
             showButtons={false}
             autoFocus
             className='mb-0.5'
+            followers
           />
         </HStack>
       </Stack>
