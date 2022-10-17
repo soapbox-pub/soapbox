@@ -26,7 +26,7 @@ const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, 
 const ChatWindow = () => {
   const { chat, setChat, isOpen, isEditing, needsAcceptance, setEditing, setSearching, toggleChatPane } = useChatContext();
 
-  const inputRef = useRef<HTMLTextAreaElement>();
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const closeChat = () => setChat(null);
 
@@ -93,7 +93,7 @@ const ChatWindow = () => {
       />
 
       <Stack className='overflow-hidden flex-grow h-full' space={2}>
-        <Chat chat={chat} inputRef={inputRef as any} />
+        <Chat chat={chat} inputRef={inputRef} />
       </Stack>
     </>
   );

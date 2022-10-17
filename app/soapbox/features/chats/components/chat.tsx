@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
-import React, { MutableRefObject, useState } from 'react';
+import React, { MutableRefObject, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
@@ -20,7 +20,7 @@ const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 interface ChatInterface {
   chat: IChat,
   autosize?: boolean,
-  inputRef?: MutableRefObject<HTMLTextAreaElement>,
+  inputRef?: MutableRefObject<HTMLTextAreaElement | null>,
   className?: string,
 }
 
@@ -202,6 +202,12 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
     //   <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
     // );
   };
+
+  useEffect(() => {
+    if (inputRef?.current) {
+      inputRef.current.focus();
+    }
+  }, [chat.id, inputRef?.current]);
 
   return (
     <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>

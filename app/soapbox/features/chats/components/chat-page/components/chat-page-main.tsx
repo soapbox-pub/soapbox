@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
@@ -31,6 +31,8 @@ const ChatPageMain = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const account = useOwnAccount();
+
+  const inputRef = useRef<HTMLTextAreaElement| null>(null);
 
   const { chat, setChat } = useChatContext();
   const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
@@ -162,7 +164,11 @@ const ChatPageMain = () => {
       </HStack>
 
       <div className='h-full overflow-hidden'>
-        <Chat className='h-full overflow-hidden' chat={chat} />
+        <Chat
+          className='h-full overflow-hidden'
+          chat={chat}
+          inputRef={inputRef}
+        />
       </div>
     </Stack>
   );

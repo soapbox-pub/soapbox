@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
-import Icon from 'soapbox/components/icon';
 
 import SvgIcon from './ui/icon/svg-icon';
 import { InputThemes } from './ui/input/input';
@@ -25,6 +24,8 @@ interface IAccountSearch {
   hidePortal?: boolean,
   theme?: InputThemes,
   showButtons?: boolean,
+  /** Search only among people who follow you (TruthSocial). */
+  followers?: boolean,
 }
 
 /** Input to search for accounts. */
