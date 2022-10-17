@@ -113,15 +113,15 @@ const ChatPageMain = () => {
             children={null}
           />
 
-          <MenuList className='w-80 py-6'>
-            <Stack space={4} className='w-5/6 mx-auto'>
-              <Stack alignItems='center' space={2}>
-                <Avatar src={chat.account.avatar_static} size={75} />
+          <MenuList className='w-80'>
+            <Stack space={4} className='px-6 py-5'>
+              <HStack alignItems='center' space={3}>
+                <Avatar src={chat.account.avatar_static} size={50} />
                 <Stack>
-                  <Text size='lg' weight='semibold' align='center'>{chat.account.display_name}</Text>
-                  <Text theme='primary' align='center'>@{chat.account.acct}</Text>
+                  <Text weight='semibold'>{chat.account.display_name}</Text>
+                  <Text size='sm' theme='primary'>@{chat.account.acct}</Text>
                 </Stack>
-              </Stack>
+              </HStack>
 
               <Divider />
 

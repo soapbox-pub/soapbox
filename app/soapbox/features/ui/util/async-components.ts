@@ -291,7 +291,7 @@ export function ChatIndex() {
 }
 
 export function ChatWidget() {
-  return import(/* webpackChunkName: "features/chats/components/chat-widget" */'../../chats/components/chat-widget');
+  return import(/* webpackChunkName: "features/chats/components/chat-widget" */'../../chats/components/chat-widget/chat-widget');
 }
 
 export function ServerInfo() {

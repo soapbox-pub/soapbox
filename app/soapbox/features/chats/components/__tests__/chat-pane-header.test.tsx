@@ -2,10 +2,10 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
-import ChatPaneHeader from '../chat-pane-header';
+import ChatPaneHeader from '../chat-widget/chat-pane-header';
 
 describe('<ChatPaneHeader />', () => {
-  it('handles the onToggle prop', async() => {
+  it('handles the onToggle prop', async () => {
     const mockFn = jest.fn();
     render(<ChatPaneHeader title='title' onToggle={mockFn} isOpen />);
 
@@ -64,7 +64,7 @@ describe('<ChatPaneHeader />', () => {
   });
 
   describe('secondaryAction prop', () => {
-    it('handles the secondaryAction callback', async() => {
+    it('handles the secondaryAction callback', async () => {
       const mockFn = jest.fn();
       render(
         <ChatPaneHeader

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { ChatProvider } from 'soapbox/contexts/chat-context';
 import { useOwnAccount } from 'soapbox/hooks';
 
-import ChatPane from './chat-pane/chat-pane';
+import ChatPane from '../chat-pane/chat-pane';
 
 const ChatWidget = () => {
   const account = useOwnAccount();

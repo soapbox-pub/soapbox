@@ -5,7 +5,8 @@ import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 
-import Chat from './chat';
+import Chat from '../chat';
+
 import ChatPaneHeader from './chat-pane-header';
 import ChatSettings from './chat-settings';
 

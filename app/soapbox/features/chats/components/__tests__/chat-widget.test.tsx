@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { normalizeAccount } from 'soapbox/normalizers';
 
 import { render, rootState } from '../../../../jest/test-helpers';
-import ChatWidget from '../chat-widget';
+import ChatWidget from '../chat-widget/chat-widget';
 
 const id = '1';
 const account = normalizeAccount({

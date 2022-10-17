@@ -7,11 +7,11 @@ import { useDebounce, useFeatures } from 'soapbox/hooks';
 import { IChat, useChats } from 'soapbox/queries/chats';
 
 import ChatList from '../chat-list';
-import ChatPaneHeader from '../chat-pane-header';
+import ChatPaneHeader from '../chat-widget/chat-pane-header';
 import ChatSearchInput from '../chat-search-input';
 import ChatSearch from '../chat-search/chat-search';
 import EmptyResultsBlankslate from '../chat-search/empty-results-blankslate';
-import ChatWindow from '../chat-window';
+import ChatWindow from '../chat-widget/chat-window';
 import { Pane } from '../ui';
 
 import Blankslate from './blankslate';

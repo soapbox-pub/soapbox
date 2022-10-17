@@ -12,7 +12,7 @@ import { queryClient } from 'soapbox/queries/client';
 import useAccountSearch from 'soapbox/queries/search';
 
 import { ChatKeys } from '../../../../queries/chats';
-import ChatPaneHeader from '../chat-pane-header';
+import ChatPaneHeader from '../chat-widget/chat-pane-header';
 import { Pane } from '../ui';
 
 import Blankslate from './blankslate';
