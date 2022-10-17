@@ -32,8 +32,8 @@ describe('<ChatListItem />', () => {
   it('renders correctly', () => {
     render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
 
-    expect(screen.getByTestId('chat')).toBeInTheDocument();
-    expect(screen.getByTestId('chat')).toHaveTextContent(chat.account.display_name);
+    expect(screen.getByTestId('chat-list-item')).toBeInTheDocument();
+    expect(screen.getByTestId('chat-list-item')).toHaveTextContent(chat.account.display_name);
   });
 
   describe('last message content', () => {
