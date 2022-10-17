@@ -17,7 +17,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
 }
 
 /** Textarea input for chats. */
-const ChatComposer = React.forwardRef<HTMLTextAreaElement, IChatComposer>(({
+const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>(({
   onKeyDown,
   onChange,
   value,
