@@ -1,8 +1,10 @@
-const { join, resolve } = require('path');
+import { join, resolve } from 'path';
 
-const { env, settings } = require('../configuration');
+import { env, settings } from '../configuration';
 
-module.exports = {
+import type { RuleSetRule } from 'webpack';
+
+const rule: RuleSetRule = {
   test: /\.(js|jsx|mjs|ts|tsx)$/,
   include: [
     settings.source_path,
@@ -27,3 +29,5 @@ module.exports = {
     },
   ],
 };
+
+export default rule;
