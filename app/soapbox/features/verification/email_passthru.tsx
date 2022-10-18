@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
 import { Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+
+import { ChallengeTypes } from './index';
 
 import type { AxiosError } from 'axios';
 
@@ -30,6 +32,14 @@ const messages = defineMessages({
 
 const Success = () => {
   const intl = useIntl();
+  const history = useHistory();
+  const currentChallenge = useAppSelector((state) => state.verification.currentChallenge as ChallengeTypes);
+
+  // Bypass the user straight to the next step.
+  if (currentChallenge === ChallengeTypes.SMS) {
+    history.push('/verify');
+    return null;
+  }
 
   return (
     <Stack space={4} alignItems='center'>
