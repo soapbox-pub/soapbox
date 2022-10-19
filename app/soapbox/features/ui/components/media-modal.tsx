@@ -101,12 +101,12 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     }
   };
 
-  const handleCloserClick: React.MouseEventHandler = ({ currentTarget }) => {
+  const handleCloserClick: React.MouseEventHandler = ({ target }) => {
     const whitelist = ['zoomable-image'];
     const activeSlide = document.querySelector('.media-modal .react-swipeable-view-container > div[aria-hidden="false"]');
 
-    const isClickOutside = currentTarget === activeSlide || !activeSlide?.contains(currentTarget);
-    const isWhitelisted = whitelist.some(w => currentTarget.classList.contains(w));
+    const isClickOutside = target === activeSlide || !activeSlide?.contains(target as Element);
+    const isWhitelisted = whitelist.some(w => (target as Element).classList.contains(w));
 
     if (isClickOutside || isWhitelisted) {
       onClose();
