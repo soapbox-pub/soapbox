@@ -59,7 +59,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   };
 
   const openMedia = (media: ImmutableList<Attachment>, index: number) => {
-    dispatch(openModal('MEDIA', { media, index }));
+    dispatch(openModal('MEDIA', { media, status, index }));
   };
 
   const openVideo = (media: Attachment, time: number): void => {

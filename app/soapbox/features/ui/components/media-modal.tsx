@@ -23,7 +23,7 @@ const messages = defineMessages({
 
 interface IMediaModal {
   media: ImmutableList<Attachment>,
-  status: Status,
+  status?: Status,
   account: Account,
   index: number,
   time?: number,
@@ -96,7 +96,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const handleStatusClick: React.MouseEventHandler = e => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      history.push(`/@${account.acct}/posts/${status.id}`);
+      history.push(`/@${account.acct}/posts/${status?.id}`);
       onClose();
     }
   };
@@ -209,7 +209,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         <Audio
           src={attachment.url}
           alt={attachment.description}
-          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status.getIn(['account', 'avatar_static'])) as string | undefined}
+          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status?.getIn(['account', 'avatar_static'])) as string | undefined}
           backgroundColor={attachment.meta.getIn(['colors', 'background']) as string | undefined}
           foregroundColor={attachment.meta.getIn(['colors', 'foreground']) as string | undefined}
           accentColor={attachment.meta.getIn(['colors', 'accent']) as string | undefined}

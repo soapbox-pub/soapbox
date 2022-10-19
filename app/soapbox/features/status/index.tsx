@@ -228,7 +228,7 @@ const Thread: React.FC<IThread> = (props) => {
   };
 
   const handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
-    dispatch(openModal('MEDIA', { media, index }));
+    dispatch(openModal('MEDIA', { media, status, index }));
   };
 
   const handleOpenVideo = (media: ImmutableList<AttachmentEntity>, time: number) => {
