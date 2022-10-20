@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -27,6 +27,14 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
   const infobox = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
 
+  // Fetch the impression URL (if any) upon displaying the ad.
+  // Don't fetch it more than once.
+  useQuery(['ads', 'impression', impression], () => {
+    if (impression) {
+      return fetch(impression);
+    }
+  }, { cacheTime: Infinity, staleTime: Infinity });
+
   /** Invalidate query cache for ads. */
   const bustCache = (): void => {
     queryClient.invalidateQueries(['ads']);
@@ -52,14 +60,6 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [infobox]);
-
-  // Fetch the impression URL (if any) upon displaying the ad.
-  // It's common for ad providers to provide this.
-  useEffect(() => {
-    if (impression) {
-      fetch(impression);
-    }
-  }, [impression]);
 
   // Wait until the ad expires, then invalidate cache.
   useEffect(() => {
