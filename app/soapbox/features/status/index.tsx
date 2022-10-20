@@ -29,7 +29,6 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
-import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
