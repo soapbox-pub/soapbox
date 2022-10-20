@@ -1,6 +1,6 @@
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { normalizeCard } from 'soapbox/normalizers';
+import { normalizeAd, normalizeCard } from 'soapbox/normalizers';
 
 import type { AdProvider } from '.';
 
@@ -36,14 +36,14 @@ const RumbleAdProvider: AdProvider = {
 
       if (response.ok) {
         const data = await response.json() as RumbleApiResponse;
-        return data.ads.map(item => ({
+        return data.ads.map(item => normalizeAd({
           impression: item.impression,
           card: normalizeCard({
             type: item.type === 1 ? 'link' : 'rich',
             image: item.asset,
             url: item.click,
           }),
-          expires: new Date(item.expires * 1000),
+          expires_at: new Date(item.expires * 1000),
         }));
       }
     }

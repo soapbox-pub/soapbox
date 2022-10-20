@@ -1,4 +1,4 @@
-import { normalizeCard } from 'soapbox/normalizers';
+import { normalizeAd } from 'soapbox/normalizers';
 
 import { isExpired } from '../ads';
 
@@ -10,13 +10,14 @@ const fiveMins = 5 * 60 * 1000;
 
 test('isExpired()', () => {
   const now = new Date();
-  const card = normalizeCard({});
+  const iso = now.toISOString();
+  const epoch = now.getTime();
 
   // Sanity tests.
-  expect(isExpired({ expires: now, card })).toBe(true);
-  expect(isExpired({ expires: new Date(now.getTime() + 999999), card })).toBe(false);
+  expect(isExpired(normalizeAd({ expires_at: iso }))).toBe(true);
+  expect(isExpired(normalizeAd({ expires_at: new Date(epoch + 999999).toISOString() }))).toBe(false);
 
   // Testing the 5-minute mark.
-  expect(isExpired({ expires: new Date(now.getTime() + threeMins), card }, fiveMins)).toBe(true);
-  expect(isExpired({ expires: new Date(now.getTime() + fiveMins + 1000), card }, fiveMins)).toBe(false);
+  expect(isExpired(normalizeAd({ expires_at: new Date(epoch + threeMins).toISOString() }), fiveMins)).toBe(true);
+  expect(isExpired(normalizeAd({ expires_at: new Date(epoch + fiveMins + 1000).toISOString() }), fiveMins)).toBe(false);
 });
