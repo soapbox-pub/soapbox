@@ -91,7 +91,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <StatusReplyMentions status={actualStatus} />
 
         <Stack
-          justifyContent='end'
           className={
             classNames('relative', {
               'min-h-[220px]': isUnderReview || isSensitive,

@@ -354,7 +354,6 @@ const Status: React.FC<IStatus> = (props) => {
 
           <div className='status__content-wrapper'>
             <Stack
-              justifyContent='end'
               className={
                 classNames('relative', {
                   'min-h-[220px]': inReview || isSensitive,
