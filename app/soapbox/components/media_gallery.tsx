@@ -1,6 +1,5 @@
 import classNames from 'clsx';
 import React, { useState, useRef, useEffect } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -12,8 +11,6 @@ import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is_mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
-
-import { Button, Text } from './ui';
 
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
@@ -38,10 +35,6 @@ interface SizeData {
   size: number,
   width: number,
 }
-
-const messages = defineMessages({
-  toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Hide' },
-});
 
 const withinLimits = (aspectRatio: number) => {
   return aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
@@ -276,34 +269,15 @@ interface IMediaGallery {
 const MediaGallery: React.FC<IMediaGallery> = (props) => {
   const {
     media,
-    sensitive = false,
     defaultWidth = 0,
-    onToggleVisibility,
     onOpenMedia,
     cacheWidth,
     compact,
     height,
   } = props;
-
-  const intl = useIntl();
-
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string | undefined;
-
-  const [visible, setVisible] = useState<boolean>(props.visible !== undefined ? props.visible : (displayMedia !== 'hide_all' && !sensitive || displayMedia === 'show_all'));
   const [width, setWidth] = useState<number>(defaultWidth);
 
   const node = useRef<HTMLDivElement>(null);
-
-  const handleOpen: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
-
-    if (onToggleVisibility) {
-      onToggleVisibility();
-    } else {
-      setVisible(!visible);
-    }
-  };
 
   const handleClick = (index: number) => {
     onOpenMedia(media, index);
@@ -545,20 +519,13 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
       index={i}
       size={sizeData.size}
       displayWidth={sizeData.width}
-      visible={visible}
+      visible={!!props.visible}
       dimensions={sizeData.itemsDimensions[i]}
       last={i === ATTACHMENT_LIMIT - 1}
       total={media.size}
     />
   ));
 
-  let warning;
-
-  if (sensitive) {
-    warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
-  } else {
-    warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
-  }
 
   useEffect(() => {
     if (node.current) {
@@ -572,60 +539,8 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     }
   }, [node.current]);
 
-  useEffect(() => {
-    setVisible(!!props.visible);
-  }, [props.visible]);
-
   return (
     <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
-      <div
-        className={classNames({
-          'absolute z-40': true,
-          'inset-0': !visible && !compact,
-          'left-1 top-1': visible || compact,
-        })}
-      >
-        {sensitive && (
-          (visible || compact) ? (
-            <Button
-              text={intl.formatMessage(messages.toggle_visible)}
-              icon={visible ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}
-              onClick={handleOpen}
-              theme='transparent'
-              size='sm'
-            />
-          ) : (
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className={
-                classNames({
-                  'bg-gray-800/75 cursor-default backdrop-blur-sm rounded-lg w-full h-full border-0 flex items-center justify-center': true,
-                })
-              }
-            >
-              <div className='text-center w-3/4 mx-auto space-y-4'>
-                <div className='space-y-1'>
-                  <Text theme='white' weight='semibold'>{warning}</Text>
-                  <Text size='sm'>
-                    <FormattedMessage id='status.sensitive_warning.subtitle' defaultMessage='This content may not be suitable for all audiences.' />
-                  </Text>
-                </div>
-
-                <Button
-                  type='button'
-                  theme='outline'
-                  size='sm'
-                  icon={require('@tabler/icons/eye.svg')}
-                  onClick={handleOpen}
-                >
-                  <FormattedMessage id='status.sensitive_warning.action' defaultMessage='Show content' />
-                </Button>
-              </div>
-            </div>
-          )
-        )}
-      </div>
-
       {children}
     </div>
   );

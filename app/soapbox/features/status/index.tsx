@@ -156,7 +156,7 @@ const Thread: React.FC<IThread> = (props) => {
     };
   });
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
 
@@ -165,7 +165,7 @@ const Thread: React.FC<IThread> = (props) => {
   const scroller = useRef<VirtuosoHandle>(null);
 
   /** Fetch the status (and context) from the API. */
-  const fetchData = async() => {
+  const fetchData = async () => {
     const { params } = props;
     const { statusId } = params;
     const { next } = await dispatch(fetchStatusWithContext(statusId));
@@ -393,7 +393,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   // Reset media visibility if status changes.
   useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
+    setShowMedia(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   }, [status?.id]);
 
   // Scroll focused status into view when thread updates.
@@ -414,7 +414,7 @@ const Thread: React.FC<IThread> = (props) => {
     if (next && status) {
       dispatch(fetchNext(status.id, next)).then(({ next }) => {
         setNext(next);
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }, 300, { leading: true }), [next, status]);
 
@@ -471,7 +471,11 @@ const Thread: React.FC<IThread> = (props) => {
           aria-label={textForScreenReader(intl, status)}
         >
           {inReview ? (
-            <ModerationOverlay />
+            <ModerationOverlay
+              status={status}
+              visible={showMedia}
+              onToggleVisibility={handleToggleMediaVisibility}
+            />
           ) : null}
 
           <DetailedStatus

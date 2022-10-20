@@ -15,6 +15,7 @@ const spaces = {
 
 const justifyContentOptions = {
   center: 'justify-center',
+  end: 'justify-end',
 };
 
 const alignItemsOptions = {
@@ -27,7 +28,7 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Horizontal alignment of children. */
   alignItems?: 'center'
   /** Vertical alignment of children. */
-  justifyContent?: 'center'
+  justifyContent?: keyof typeof justifyContentOptions
   /** Extra class names on the <div> element. */
   className?: string
   /** Whether to let the flexbox grow. */

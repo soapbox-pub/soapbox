@@ -19,7 +19,7 @@ import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
 import ModerationOverlay from './statuses/moderation-overlay';
-import { Card, HStack, Text } from './ui';
+import { Card, HStack, Stack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
 import type {
@@ -80,7 +80,7 @@ const Status: React.FC<IStatus> = (props) => {
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [showMedia, setShowMedia] = useState<boolean>(status.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
 
   const actualStatus = getActualStatus(status);
 
@@ -90,7 +90,7 @@ const Status: React.FC<IStatus> = (props) => {
   }, []);
 
   useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
+    setShowMedia(status.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   }, [status.id]);
 
   const handleToggleMediaVisibility = (): void => {
@@ -301,6 +301,7 @@ const Status: React.FC<IStatus> = (props) => {
   const accountAction = props.accountAction || reblogElement;
 
   const inReview = status.visibility === 'self';
+  const isSensitive = status.sensitive;
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
@@ -351,43 +352,52 @@ const Status: React.FC<IStatus> = (props) => {
             />
           </div>
 
-          <div
-            className={classNames('status__content-wrapper relative', {
-              'min-h-[220px]': inReview,
-            })}
-          >
-            {inReview ? (
-              <ModerationOverlay />
-            ) : null}
+          <div className='status__content-wrapper'>
+            <Stack
+              justifyContent='end'
+              className={
+                classNames('relative', {
+                  'min-h-[220px]': inReview || isSensitive,
+                })
+              }
+            >
+              {(inReview || isSensitive) ? (
+                <ModerationOverlay
+                  status={status}
+                  visible={showMedia}
+                  onToggleVisibility={handleToggleMediaVisibility}
+                />
+              ) : null}
 
-            {!group && actualStatus.group && (
-              <div className='status__meta'>
-                Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
-              </div>
-            )}
+              {!group && actualStatus.group && (
+                <div className='status__meta'>
+                  Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
+                </div>
+              )}
 
-            <StatusReplyMentions
-              status={actualStatus}
-              hoverable={hoverable}
-            />
+              <StatusReplyMentions
+                status={actualStatus}
+                hoverable={hoverable}
+              />
 
-            <StatusContent
-              status={actualStatus}
-              onClick={handleClick}
-              expanded={!status.hidden}
-              onExpandedToggle={handleExpandedToggle}
-              collapsable
-            />
+              <StatusContent
+                status={actualStatus}
+                onClick={handleClick}
+                expanded={!status.hidden}
+                onExpandedToggle={handleExpandedToggle}
+                collapsable
+              />
 
-            <StatusMedia
-              status={actualStatus}
-              muted={muted}
-              onClick={handleClick}
-              showMedia={showMedia}
-              onToggleVisibility={handleToggleMediaVisibility}
-            />
+              <StatusMedia
+                status={actualStatus}
+                muted={muted}
+                onClick={handleClick}
+                showMedia={showMedia}
+                onToggleVisibility={handleToggleMediaVisibility}
+              />
 
-            {quote}
+              {quote}
+            </Stack>
 
             {!hideActionBar && (
               <div className='pt-4'>
