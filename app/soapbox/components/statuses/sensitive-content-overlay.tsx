@@ -18,21 +18,19 @@ const messages = defineMessages({
   show: { id: 'moderation_overlay.show', defaultMessage: 'Show Content' },
 });
 
-interface IModerationOverlay {
+interface ISensitiveContentOverlay {
   status: StatusEntity
   onToggleVisibility?(): void
   visible?: boolean
 }
 
-const ModerationOverlay = (props: IModerationOverlay) => {
+const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
   const { onToggleVisibility, status } = props;
   const isUnderReview = status.visibility === 'self';
   const isSensitive = status.sensitive;
 
   const settings = useSettings();
   const displayMedia = settings.get('displayMedia') as string | undefined;
-
-  // under review ovverides displaymedia
 
   const intl = useIntl();
 
@@ -130,4 +128,4 @@ const ModerationOverlay = (props: IModerationOverlay) => {
   );
 };
 
-export default ModerationOverlay;
+export default SensitiveContentOverlay;

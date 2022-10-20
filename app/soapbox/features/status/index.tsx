@@ -29,7 +29,7 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
-import ModerationOverlay from 'soapbox/components/statuses/moderation-overlay';
+import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
@@ -471,7 +471,7 @@ const Thread: React.FC<IThread> = (props) => {
           aria-label={textForScreenReader(intl, status)}
         >
           {inReview ? (
-            <ModerationOverlay
+            <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={handleToggleMediaVisibility}

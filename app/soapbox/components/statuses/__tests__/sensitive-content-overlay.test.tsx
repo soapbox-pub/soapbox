@@ -5,9 +5,9 @@ import { normalizeStatus } from 'soapbox/normalizers';
 import { ReducerStatus } from 'soapbox/reducers/statuses';
 
 import { fireEvent, render, rootState, screen } from '../../../jest/test-helpers';
-import ModerationOverlay from '../moderation-overlay';
+import SensitiveContentOverlay from '../sensitive-content-overlay';
 
-describe('<ModerationOverlay />', () => {
+describe('<SensitiveContentOverlay />', () => {
   let status: ReducerStatus;
 
   describe('when the Status is marked as sensitive', () => {
@@ -16,12 +16,12 @@ describe('<ModerationOverlay />', () => {
     });
 
     it('displays the "Sensitive content" warning', () => {
-      render(<ModerationOverlay status={status} />);
+      render(<SensitiveContentOverlay status={status} />);
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Sensitive content');
     });
 
     it('can be toggled', () => {
-      render(<ModerationOverlay status={status} />);
+      render(<SensitiveContentOverlay status={status} />);
 
       fireEvent.click(screen.getByTestId('button'));
       expect(screen.getByTestId('sensitive-overlay')).not.toHaveTextContent('Sensitive content');
@@ -39,12 +39,12 @@ describe('<ModerationOverlay />', () => {
     });
 
     it('displays the "Under review" warning', () => {
-      render(<ModerationOverlay status={status} />);
+      render(<SensitiveContentOverlay status={status} />);
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Content Under Review');
     });
 
     it('can be toggled', () => {
-      render(<ModerationOverlay status={status} />);
+      render(<SensitiveContentOverlay status={status} />);
 
       fireEvent.click(screen.getByTestId('button'));
       expect(screen.getByTestId('sensitive-overlay')).not.toHaveTextContent('Content Under Review');
@@ -62,12 +62,12 @@ describe('<ModerationOverlay />', () => {
     });
 
     it('displays the "Under review" warning', () => {
-      render(<ModerationOverlay status={status} />);
+      render(<SensitiveContentOverlay status={status} />);
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Content Under Review');
     });
 
     it('can be toggled', () => {
-      render(<ModerationOverlay status={status} />);
+      render(<SensitiveContentOverlay status={status} />);
 
       fireEvent.click(screen.getByTestId('button'));
       expect(screen.getByTestId('sensitive-overlay')).not.toHaveTextContent('Content Under Review');
@@ -91,13 +91,13 @@ describe('<ModerationOverlay />', () => {
     });
 
     it('displays the "Under review" warning', () => {
-      render(<ModerationOverlay status={status} />, undefined, store);
+      render(<SensitiveContentOverlay status={status} />, undefined, store);
       expect(screen.getByTestId('sensitive-overlay')).not.toHaveTextContent('Sensitive content');
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Hide');
     });
 
     it('can be toggled', () => {
-      render(<ModerationOverlay status={status} />, undefined, store);
+      render(<SensitiveContentOverlay status={status} />, undefined, store);
 
       fireEvent.click(screen.getByTestId('button'));
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Sensitive content');

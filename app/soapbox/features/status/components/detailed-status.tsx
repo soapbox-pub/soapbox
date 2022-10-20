@@ -6,7 +6,7 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import ModerationOverlay from 'soapbox/components/statuses/moderation-overlay';
+import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
@@ -99,7 +99,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           }
         >
           {(inReview || isSensitive) ? (
-            <ModerationOverlay
+            <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}

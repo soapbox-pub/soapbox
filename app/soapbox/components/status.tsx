@@ -18,7 +18,7 @@ import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status_content';
-import ModerationOverlay from './statuses/moderation-overlay';
+import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import { Card, HStack, Stack, Text } from './ui';
 
 import type { Map as ImmutableMap } from 'immutable';
@@ -362,7 +362,7 @@ const Status: React.FC<IStatus> = (props) => {
               }
             >
               {(inReview || isSensitive) ? (
-                <ModerationOverlay
+                <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
