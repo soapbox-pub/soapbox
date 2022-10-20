@@ -80,7 +80,7 @@ const Status: React.FC<IStatus> = (props) => {
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
 
-  const [showMedia, setShowMedia] = useState<boolean>(status.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
+  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
   const actualStatus = getActualStatus(status);
 
@@ -90,7 +90,7 @@ const Status: React.FC<IStatus> = (props) => {
   }, []);
 
   useEffect(() => {
-    setShowMedia(status.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
+    setShowMedia(defaultMediaVisibility(status, displayMedia));
   }, [status.id]);
 
   const handleToggleMediaVisibility = (): void => {

@@ -50,7 +50,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
 
-  const inReview = actualStatus.visibility === 'self';
+  const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.sensitive;
 
   let statusTypeIcon = null;
@@ -94,11 +94,11 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           justifyContent='end'
           className={
             classNames('relative', {
-              'min-h-[220px]': inReview || isSensitive,
+              'min-h-[220px]': isUnderReview || isSensitive,
             })
           }
         >
-          {(inReview || isSensitive) ? (
+          {(isUnderReview || isSensitive) ? (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}

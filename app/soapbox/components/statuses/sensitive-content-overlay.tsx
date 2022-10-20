@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import { Button, HStack, Text } from '../ui';
 
@@ -27,23 +28,15 @@ interface ISensitiveContentOverlay {
 const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
   const { onToggleVisibility, status } = props;
   const isUnderReview = status.visibility === 'self';
-  const isSensitive = status.sensitive;
 
   const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string | undefined;
+  const displayMedia = settings.get('displayMedia') as string;
 
   const intl = useIntl();
 
   const { links } = useSoapboxConfig();
 
-  const [visible, setVisible] = useState<boolean>(
-    isUnderReview === true ? false : null
-      || (
-        props.visible !== undefined
-          ? props.visible
-          : (displayMedia !== 'hide_all' && !isSensitive || displayMedia === 'show_all')
-      ),
-  );
+  const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
   const toggleVisibility = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();

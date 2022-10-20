@@ -135,7 +135,7 @@ const Thread: React.FC<IThread> = (props) => {
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
-  const inReview = status?.visibility === 'self';
+  const isUnderReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -463,14 +463,14 @@ const Thread: React.FC<IThread> = (props) => {
           ref={statusRef}
           className={
             classNames('detailed-status__wrapper focusable relative', {
-              'min-h-[220px]': inReview,
+              'min-h-[220px]': isUnderReview,
             })
           }
           tabIndex={0}
           // FIXME: no "reblogged by" text is added for the screen reader
           aria-label={textForScreenReader(intl, status)}
         >
-          {inReview ? (
+          {isUnderReview ? (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}

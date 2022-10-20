@@ -11,6 +11,12 @@ export const defaultMediaVisibility = (status: StatusEntity | undefined | null, 
     status = status.reblog;
   }
 
+  const isUnderReview = status.visibility === 'self';
+
+  if (isUnderReview) {
+    return false;
+  }
+
   return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
 };
 
