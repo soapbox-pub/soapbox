@@ -412,7 +412,7 @@ const Thread: React.FC<IThread> = (props) => {
     if (next && status) {
       dispatch(fetchNext(status.id, next)).then(({ next }) => {
         setNext(next);
-      }).catch(() => { });
+      }).catch(() => {});
     }
   }, 300, { leading: true }), [next, status]);
 
