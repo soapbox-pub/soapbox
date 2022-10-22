@@ -25,7 +25,13 @@ export const ChatMessageRecord = ImmutableRecord({
 });
 
 const normalizeMedia = (status: ImmutableMap<string, any>) => {
-  return status.update('attachment', null, normalizeAttachment);
+  const attachment = status.get('attachment');
+
+  if (attachment) {
+    return status.set('attachment', normalizeAttachment(attachment));
+  } else {
+    return status;
+  }
 };
 
 export const normalizeChatMessage = (chatMessage: Record<string, any>) => {
