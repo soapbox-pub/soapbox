@@ -285,7 +285,7 @@
 }
 
 .actions-modal {
-  @apply w-full max-h-full max-w-lg mt-auto mb-2 bg-white dark:bg-gray-800;
+  @apply w-full max-h-full max-w-lg m-auto mb-2 bg-white dark:bg-gray-800;
 
   .status {
     overflow-y: auto;
@@ -384,32 +384,5 @@
 
   @media screen and (max-width: 480px) {
     width: 330px !important;
-  }
-}
-
-.column-inline-form {
-  padding: 7px 15px;
-  padding-right: 5px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background: var(--brand-color--faint);
-
-  label {
-    flex: 1 1 auto;
-
-    input {
-      width: 100%;
-      margin-bottom: 6px;
-
-      &:focus {
-        outline: 0;
-      }
-    }
-  }
-
-  .icon-button {
-    flex: 0 0 auto;
-    margin: 0 5px;
   }
 }
