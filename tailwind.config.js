@@ -1,5 +1,6 @@
 const { parseColorMatrix } = require('./tailwind/colors');
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./app/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './app/index.ejs'],
   darkMode: 'class',
