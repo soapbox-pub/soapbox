@@ -1,3 +1,4 @@
+import classNames from 'clsx';
 import React, { useRef } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
@@ -5,7 +6,8 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { HStack, Text } from 'soapbox/components/ui';
+import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getActualStatus } from 'soapbox/utils/status';
@@ -48,6 +50,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
 
+  const isUnderReview = actualStatus.visibility === 'self';
+  const isSensitive = actualStatus.sensitive;
+
   let statusTypeIcon = null;
 
   let quote;
@@ -85,19 +90,35 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
         <StatusReplyMentions status={actualStatus} />
 
-        <StatusContent
-          status={actualStatus}
-          expanded={!actualStatus.hidden}
-          onExpandedToggle={handleExpandedToggle}
-        />
+        <Stack
+          className={
+            classNames('relative', {
+              'min-h-[220px]': isUnderReview || isSensitive,
+            })
+          }
+        >
+          {(isUnderReview || isSensitive) ? (
+            <SensitiveContentOverlay
+              status={status}
+              visible={showMedia}
+              onToggleVisibility={onToggleMediaVisibility}
+            />
+          ) : null}
 
-        <StatusMedia
-          status={actualStatus}
-          showMedia={showMedia}
-          onToggleVisibility={onToggleMediaVisibility}
-        />
+          <StatusContent
+            status={actualStatus}
+            expanded={!actualStatus.hidden}
+            onExpandedToggle={handleExpandedToggle}
+          />
 
-        {quote}
+          <StatusMedia
+            status={actualStatus}
+            showMedia={showMedia}
+            onToggleVisibility={onToggleMediaVisibility}
+          />
+
+          {quote}
+        </Stack>
 
         <HStack justifyContent='between' alignItems='center' className='py-2' wrap>
           <StatusInteractionBar status={actualStatus} />

@@ -1,13 +1,13 @@
-import type { Ad } from 'soapbox/features/ads/providers';
+import type { Ad } from 'soapbox/types/soapbox';
 
 /** Time (ms) window to not display an ad if it's about to expire. */
 const AD_EXPIRY_THRESHOLD = 5 * 60 * 1000;
 
 /** Whether the ad is expired or about to expire. */
 const isExpired = (ad: Ad, threshold = AD_EXPIRY_THRESHOLD): boolean => {
-  if (ad.expires) {
+  if (ad.expires_at) {
     const now = new Date();
-    return now.getTime() > (ad.expires.getTime() - threshold);
+    return now.getTime() > (new Date(ad.expires_at).getTime() - threshold);
   } else {
     return false;
   }

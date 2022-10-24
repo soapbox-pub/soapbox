@@ -30,7 +30,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   muted = false,
   onClick,
   showMedia = true,
-  onToggleVisibility = () => {},
+  onToggleVisibility = () => { },
 }) => {
   const dispatch = useAppDispatch();
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);

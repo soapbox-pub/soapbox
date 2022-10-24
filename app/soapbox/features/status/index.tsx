@@ -29,7 +29,6 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
-import ModerationOverlay from 'soapbox/components/statuses/moderation-overlay';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
@@ -135,7 +134,6 @@ const Thread: React.FC<IThread> = (props) => {
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
-  const inReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -156,7 +154,7 @@ const Thread: React.FC<IThread> = (props) => {
     };
   });
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
 
@@ -165,7 +163,7 @@ const Thread: React.FC<IThread> = (props) => {
   const scroller = useRef<VirtuosoHandle>(null);
 
   /** Fetch the status (and context) from the API. */
-  const fetchData = async() => {
+  const fetchData = async () => {
     const { params } = props;
     const { statusId } = params;
     const { next } = await dispatch(fetchStatusWithContext(statusId));
@@ -393,7 +391,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   // Reset media visibility if status changes.
   useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
+    setShowMedia(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   }, [status?.id]);
 
   // Scroll focused status into view when thread updates.
@@ -461,18 +459,11 @@ const Thread: React.FC<IThread> = (props) => {
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}
-          className={
-            classNames('detailed-status__wrapper focusable relative', {
-              'min-h-[220px]': inReview,
-            })
-          }
+          className='detailed-status__wrapper focusable relative'
           tabIndex={0}
           // FIXME: no "reblogged by" text is added for the screen reader
           aria-label={textForScreenReader(intl, status)}
         >
-          {inReview ? (
-            <ModerationOverlay />
-          ) : null}
 
           <DetailedStatus
             status={status}
