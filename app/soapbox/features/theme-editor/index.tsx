@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list';
@@ -18,39 +18,58 @@ interface IThemeEditor {
 const ThemeEditor: React.FC<IThemeEditor> = () => {
   const intl = useIntl();
   const soapbox = useSoapboxConfig();
-  const colors = soapbox.colors.toJS();
+
+  const [colors, setColors] = useState(soapbox.colors.toJS() as any);
+
+  const updateColors = (key: string) => {
+    return (newColors: any) => {
+      setColors({
+        ...colors,
+        [key]: {
+          ...colors[key],
+          ...newColors,
+        },
+      });
+    };
+  };
 
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <List>
         <PaletteListItem
           label='Primary'
-          palette={colors.primary as any}
+          palette={colors.primary}
+          onChange={updateColors('primary')}
         />
 
         <PaletteListItem
           label='Secondary'
-          palette={colors.secondary as any}
+          palette={colors.secondary}
+          onChange={updateColors('secondary')}
         />
 
         <PaletteListItem
           label='Accent'
-          palette={colors.accent as any}
+          palette={colors.accent}
+          onChange={updateColors('accent')}
         />
 
         <PaletteListItem
           label='Gray'
-          palette={colors.gray as any}
+          palette={colors.gray}
+          onChange={updateColors('gray')}
         />
 
         <PaletteListItem
           label='Success'
-          palette={colors.success as any}
+          palette={colors.success}
+          onChange={updateColors('success')}
         />
 
         <PaletteListItem
           label='Danger'
-          palette={colors.danger as any}
+          palette={colors.danger}
+          onChange={updateColors('danger')}
         />
       </List>
     </Column>
@@ -60,13 +79,14 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 interface IPaletteListItem {
   label: React.ReactNode,
   palette: ColorGroup,
+  onChange: (palette: ColorGroup) => void,
 }
 
 /** Palette editor inside a ListItem. */
-const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette }) => {
+const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette, onChange }) => {
   return (
     <ListItem label={<div className='w-20'>{label}</div>}>
-      <Palette palette={palette} />
+      <Palette palette={palette} onChange={onChange} />
     </ListItem>
   );
 };

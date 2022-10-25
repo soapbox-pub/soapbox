@@ -2,7 +2,8 @@ import React from 'react';
 
 import compareId from 'soapbox/compare_id';
 import { HStack } from 'soapbox/components/ui';
-import ColorWithPicker from 'soapbox/features/soapbox_config/components/color-with-picker';
+
+import Color from './color';
 
 interface ColorGroup {
   [tint: string]: string,
@@ -10,27 +11,27 @@ interface ColorGroup {
 
 interface IPalette {
   palette: ColorGroup,
+  onChange: (palette: ColorGroup) => void,
 }
 
 /** Editable color palette. */
-const Palette: React.FC<IPalette> = ({ palette }) => {
+const Palette: React.FC<IPalette> = ({ palette, onChange }) => {
   const tints = Object.keys(palette).sort(compareId);
 
-  const result = tints.map(tint => {
-    const hex = palette[tint];
-
-    return (
-      <ColorWithPicker
-        className='w-full h-full'
-        value={hex}
-        onChange={() => {}}
-      />
-    );
-  });
+  const handleChange = (tint: string) => {
+    return (color: string) => {
+      onChange({
+        ...palette,
+        [tint]: color,
+      });
+    };
+  };
 
   return (
     <HStack className='w-full h-8 rounded-md overflow-hidden'>
-      {result}
+      {tints.map(tint => (
+        <Color color={palette[tint]} onChange={handleChange(tint)} />
+      ))}
     </HStack>
   );
 };
