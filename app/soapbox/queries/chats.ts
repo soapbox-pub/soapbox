@@ -7,7 +7,7 @@ import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
@@ -52,8 +52,9 @@ const ChatKeys = {
 
 const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 
-const useChatMessages = (chatId: string) => {
+const useChatMessages = (chat: IChat) => {
   const api = useApi();
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
 
   const getChatMessages = async (chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
     const nextPageLink = pageParam?.link;
@@ -72,7 +73,8 @@ const useChatMessages = (chatId: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(ChatKeys.chatMessages(chatId), ({ pageParam }) => getChatMessages(chatId, pageParam), {
+  const queryInfo = useInfiniteQuery(ChatKeys.chatMessages(chat.id), ({ pageParam }) => getChatMessages(chat.id, pageParam), {
+    enabled: !isBlocked,
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };

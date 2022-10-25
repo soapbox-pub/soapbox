@@ -87,7 +87,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     isFetchingNextPage,
     isLoading,
     refetch,
-  } = useChatMessages(chat.id);
+  } = useChatMessages(chat);
 
   const formattedChatMessages = chatMessages || [];
 
