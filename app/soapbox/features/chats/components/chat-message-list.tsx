@@ -35,6 +35,7 @@ const messages = defineMessages({
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
   report: { id: 'chats.actions.report', defaultMessage: 'Report' },
   deleteForMe: { id: 'chats.actions.deleteForMe', defaultMessage: 'Delete for me' },
+  blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
   networkFailureTitle: { id: 'chat_message_list.network_failure.title', defaultMessage: 'Whoops!' },
   networkFailureSubtitle: { id: 'chat_message_list.network_failure.subtitle', defaultMessage: 'We encountered a network failure.' },
   networkFailureAction: { id: 'chat_message_list.network_failure.action', defaultMessage: 'Try again' },
@@ -91,6 +92,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const formattedChatMessages = chatMessages || [];
 
   const me = useAppSelector((state) => state.me);
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
 
   const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
     onSettled: () => {
@@ -348,6 +350,23 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
       markChatAsRead(lastMessageId);
     }
   }, [formattedChatMessages.length]);
+
+  if (isBlocked) {
+    return (
+      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+        <Stack alignItems='center' space={2}>
+          <Avatar src={chat.account.avatar} size={75} />
+          <Text align='center'>
+            <>
+              <Text tag='span'>{intl.formatMessage(messages.blockedBy)}</Text>
+              {' '}
+              <Text tag='span' theme='primary'>@{chat.account.acct}</Text>
+            </>
+          </Text>
+        </Stack>
+      </Stack>
+    );
+  }
 
   if (isError) {
     return (

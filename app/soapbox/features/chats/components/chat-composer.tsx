@@ -12,7 +12,6 @@ const messages = defineMessages({
   send: { id: 'chat.actions.send', defaultMessage: 'Send' },
   failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
   retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
-  blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
   blocked: { id: 'chat_message_list.blocked', defaultMessage: 'You blocked this user' },
   unblock: { id: 'chat_composer.unblock', defaultMessage: 'Unblock' },
   unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow you to resume messaging with the user.' },
@@ -71,17 +70,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   }
 
   if (isBlocked) {
-    return (
-      <div className='mt-auto p-6 shadow-3xl dark:border-t-2 dark:border-solid dark:border-gray-800'>
-        <Text align='center' theme='muted'>
-          <>
-            <Text tag='span' theme='inherit'>{intl.formatMessage(messages.blockedBy)}</Text>
-            {' '}
-            <Text tag='span' theme='inherit'>@{chat?.account?.acct}</Text>
-          </>
-        </Text>
-      </div>
-    );
+    return null;
   }
 
   return (
