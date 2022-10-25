@@ -6,15 +6,23 @@ import {
 
 import { CardRecord, normalizeCard } from '../card';
 
-export const AdRecord = ImmutableRecord({
+import type { Ad } from 'soapbox/features/ads/providers';
+
+export const AdRecord = ImmutableRecord<Ad>({
   card: CardRecord(),
   impression: undefined as string | undefined,
-  expires: undefined as Date | undefined,
+  expires_at: undefined as string | undefined,
+  reason: undefined as string | undefined,
 });
 
 /** Normalizes an ad from Soapbox Config. */
 export const normalizeAd = (ad: Record<string, any>) => {
   const map = ImmutableMap<string, any>(fromJS(ad));
   const card = normalizeCard(map.get('card'));
-  return AdRecord(map.set('card', card));
+  const expiresAt = map.get('expires_at') || map.get('expires');
+
+  return AdRecord(map.merge({
+    card,
+    expires_at: expiresAt,
+  }));
 };

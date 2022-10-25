@@ -1,28 +1,27 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const MIN_SCALE = 1;
 const MAX_SCALE = 4;
 
-const getMidpoint = (p1, p2) => ({
+type Point = { x: number, y: number };
+
+const getMidpoint = (p1: React.Touch, p2: React.Touch): Point => ({
   x: (p1.clientX + p2.clientX) / 2,
   y: (p1.clientY + p2.clientY) / 2,
 });
 
-const getDistance = (p1, p2) =>
+const getDistance = (p1: React.Touch, p2: React.Touch): number =>
   Math.sqrt(Math.pow(p1.clientX - p2.clientX, 2) + Math.pow(p1.clientY - p2.clientY, 2));
 
-const clamp = (min, max, value) => Math.min(max, Math.max(min, value));
+const clamp = (min: number, max: number, value: number): number => Math.min(max, Math.max(min, value));
 
-export default class ZoomableImage extends React.PureComponent {
+interface IZoomableImage {
+  alt?: string,
+  src: string,
+  onClick?: React.MouseEventHandler,
+}
 
-  static propTypes = {
-    alt: PropTypes.string,
-    src: PropTypes.string.isRequired,
-    width: PropTypes.number,
-    height: PropTypes.number,
-    onClick: PropTypes.func,
-  }
+class ZoomableImage extends React.PureComponent<IZoomableImage> {
 
   static defaultProps = {
     alt: '',
@@ -34,39 +33,32 @@ export default class ZoomableImage extends React.PureComponent {
     scale: MIN_SCALE,
   }
 
-  removers = [];
-  container = null;
-  image = null;
-  lastTouchEndTime = 0;
+  container: HTMLDivElement | null = null;
+  image: HTMLImageElement | null = null;
   lastDistance = 0;
 
   componentDidMount() {
-    let handler = this.handleTouchStart;
-    this.container.addEventListener('touchstart', handler);
-    this.removers.push(() => this.container.removeEventListener('touchstart', handler));
-    handler = this.handleTouchMove;
+    this.container?.addEventListener('touchstart', this.handleTouchStart);
     // on Chrome 56+, touch event listeners will default to passive
     // https://www.chromestatus.com/features/5093566007214080
-    this.container.addEventListener('touchmove', handler, { passive: false });
-    this.removers.push(() => this.container.removeEventListener('touchend', handler));
+    this.container?.addEventListener('touchmove', this.handleTouchMove, { passive: false });
   }
 
   componentWillUnmount() {
-    this.removeEventListeners();
+    this.container?.removeEventListener('touchstart', this.handleTouchStart);
+    this.container?.removeEventListener('touchend', this.handleTouchMove);
   }
 
-  removeEventListeners() {
-    this.removers.forEach(listeners => listeners());
-    this.removers = [];
-  }
-
-  handleTouchStart = e => {
+  handleTouchStart = (e: TouchEvent) => {
     if (e.touches.length !== 2) return;
+    const [p1, p2] = Array.from(e.touches);
 
-    this.lastDistance = getDistance(...e.touches);
+    this.lastDistance = getDistance(p1, p2);
   }
 
-  handleTouchMove = e => {
+  handleTouchMove = (e: TouchEvent) => {
+    if (!this.container) return;
+
     const { scrollTop, scrollHeight, clientHeight } = this.container;
     if (e.touches.length === 1 && scrollTop !== scrollHeight - clientHeight) {
       // prevent propagating event to MediaModal
@@ -78,17 +70,19 @@ export default class ZoomableImage extends React.PureComponent {
     e.preventDefault();
     e.stopPropagation();
 
-    const distance = getDistance(...e.touches);
-    const midpoint = getMidpoint(...e.touches);
+    const [p1, p2] = Array.from(e.touches);
+    const distance = getDistance(p1, p2);
+    const midpoint = getMidpoint(p1, p2);
     const scale = clamp(MIN_SCALE, MAX_SCALE, this.state.scale * distance / this.lastDistance);
 
     this.zoom(scale, midpoint);
 
-    this.lastMidpoint = midpoint;
     this.lastDistance = distance;
   }
 
-  zoom(nextScale, midpoint) {
+  zoom(nextScale: number, midpoint: Point) {
+    if (!this.container) return;
+
     const { scale } = this.state;
     const { scrollLeft, scrollTop } = this.container;
 
@@ -102,23 +96,24 @@ export default class ZoomableImage extends React.PureComponent {
     const nextScrollTop = (scrollTop + midpoint.y) * nextScale / scale - midpoint.y;
 
     this.setState({ scale: nextScale }, () => {
+      if (!this.container) return;
       this.container.scrollLeft = nextScrollLeft;
       this.container.scrollTop = nextScrollTop;
     });
   }
 
-  handleClick = e => {
+  handleClick: React.MouseEventHandler = e => {
     // don't propagate event to MediaModal
     e.stopPropagation();
     const handler = this.props.onClick;
-    if (handler) handler();
+    if (handler) handler(e);
   }
 
-  setContainerRef = c => {
+  setContainerRef = (c: HTMLDivElement) => {
     this.container = c;
   }
 
-  setImageRef = c => {
+  setImageRef = (c: HTMLImageElement) => {
     this.image = c;
   }
 
@@ -150,3 +145,5 @@ export default class ZoomableImage extends React.PureComponent {
   }
 
 }
+
+export default ZoomableImage;

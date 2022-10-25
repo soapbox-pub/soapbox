@@ -34,11 +34,11 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
         <Text theme='muted'>
           <FormattedDate
             value={startsAt}
-            hour12={false}
+            hour12
             year={(skipYear || startsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
             month='short'
             day='2-digit'
-            hour={skipTime ? undefined : '2-digit'}
+            hour={skipTime ? undefined : 'numeric'}
             minute={skipTime ? undefined : '2-digit'}
           />
           {' '}
@@ -46,11 +46,11 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
           {' '}
           <FormattedDate
             value={endsAt}
-            hour12={false}
+            hour12
             year={(skipYear || endsAt.getFullYear() === now.getFullYear()) ? undefined : 'numeric'}
             month={skipEndDate ? undefined : 'short'}
             day={skipEndDate ? undefined : '2-digit'}
-            hour={skipTime ? undefined : '2-digit'}
+            hour={skipTime ? undefined : 'numeric'}
             minute={skipTime ? undefined : '2-digit'}
           />
         </Text>

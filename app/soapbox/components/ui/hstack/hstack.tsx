@@ -17,7 +17,7 @@ const alignItemsOptions = {
 };
 
 const spaces = {
-  '0.5': 'space-x-0.5',
+  [0.5]: 'space-x-0.5',
   1: 'space-x-1',
   1.5: 'space-x-1.5',
   2: 'space-x-2',
@@ -29,21 +29,21 @@ const spaces = {
 
 interface IHStack {
   /** Vertical alignment of children. */
-  alignItems?: 'top' | 'bottom' | 'center' | 'start',
+  alignItems?: keyof typeof alignItemsOptions
   /** Extra class names on the <div> element. */
-  className?: string,
+  className?: string
   /** Children */
-  children?: React.ReactNode,
+  children?: React.ReactNode
   /** Horizontal alignment of children. */
-  justifyContent?: 'between' | 'center' | 'start' | 'end' | 'around',
+  justifyContent?: keyof typeof justifyContentOptions
   /** Size of the gap between elements. */
-  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6 | 8,
+  space?: keyof typeof spaces
   /** Whether to let the flexbox grow. */
-  grow?: boolean,
+  grow?: boolean
   /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
   /** Whether to let the flexbox wrap onto multiple lines. */
-  wrap?: boolean,
+  wrap?: boolean
 }
 
 /** Horizontal row of child elements. */

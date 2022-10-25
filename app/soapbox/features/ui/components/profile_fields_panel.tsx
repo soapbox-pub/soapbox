@@ -22,8 +22,8 @@ const dateFormatOptions: FormatDateOptions = {
   month: 'short',
   day: 'numeric',
   year: 'numeric',
-  hour12: false,
-  hour: '2-digit',
+  hour12: true,
+  hour: 'numeric',
   minute: '2-digit',
 };
 

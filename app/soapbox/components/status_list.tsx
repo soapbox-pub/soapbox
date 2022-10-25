@@ -19,7 +19,7 @@ import useAds from 'soapbox/queries/ads';
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable_list';
-import type { Ad as AdEntity } from 'soapbox/features/ads/providers';
+import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** Unique key to preserve the scroll position when navigating back. */
@@ -141,12 +141,7 @@ const StatusList: React.FC<IStatusList> = ({
 
   const renderAd = (ad: AdEntity, index: number) => {
     return (
-      <Ad
-        key={`ad-${index}`}
-        card={ad.card}
-        impression={ad.impression}
-        expires={ad.expires}
-      />
+      <Ad key={`ad-${index}`} ad={ad} />
     );
   };
 

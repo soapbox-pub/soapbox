@@ -27,7 +27,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
   const dispatch = useAppDispatch();
 
   const handleOpenMedia = (media: Attachment, index: number) => {
-    dispatch(openModal('MEDIA', { media, index }));
+    dispatch(openModal('MEDIA', { media, status, index }));
   };
 
   const handleDeleteStatus = () => {

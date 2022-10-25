@@ -1,6 +1,6 @@
 'use strict';
 
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -23,6 +23,7 @@ import MovedNote from 'soapbox/features/account_timeline/components/moved_note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { normalizeAttachment } from 'soapbox/normalizers';
 import { Account } from 'soapbox/types/entities';
 import { isRemote } from 'soapbox/utils/accounts';
 
@@ -207,12 +208,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onAvatarClick = () => {
-    const avatar_url = account.avatar;
-    const avatar = ImmutableMap({
+    const avatar = normalizeAttachment({
       type: 'image',
-      preview_url: avatar_url,
-      url: avatar_url,
-      description: '',
+      url: account.avatar,
     });
     dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar), index: 0 }));
   };
@@ -225,12 +223,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onHeaderClick = () => {
-    const header_url = account.header;
-    const header = ImmutableMap({
+    const header = normalizeAttachment({
       type: 'image',
-      preview_url: header_url,
-      url: header_url,
-      description: '',
+      url: account.header,
     });
     dispatch(openModal('MEDIA', { media: ImmutableList.of(header), index: 0 }));
   };

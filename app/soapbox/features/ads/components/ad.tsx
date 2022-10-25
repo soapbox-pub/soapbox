@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -7,25 +7,28 @@ import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import StatusCard from 'soapbox/features/status/components/card';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { Card as CardEntity } from 'soapbox/types/entities';
+import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
 interface IAd {
-  /** Embedded ad data in Card format (almost like OEmbed). */
-  card: CardEntity,
-  /** Impression URL to fetch upon display. */
-  impression?: string,
-  /** Time when the ad expires and should no longer be displayed. */
-  expires?: Date,
+  ad: AdEntity,
 }
 
 /** Displays an ad in sponsored post format. */
-const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
+const Ad: React.FC<IAd> = ({ ad }) => {
   const queryClient = useQueryClient();
   const instance = useAppSelector(state => state.instance);
 
   const timer = useRef<NodeJS.Timeout | undefined>(undefined);
   const infobox = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
+
+  // Fetch the impression URL (if any) upon displaying the ad.
+  // Don't fetch it more than once.
+  useQuery(['ads', 'impression', ad.impression], () => {
+    if (ad.impression) {
+      return fetch(ad.impression);
+    }
+  }, { cacheTime: Infinity, staleTime: Infinity });
 
   /** Invalidate query cache for ads. */
   const bustCache = (): void => {
@@ -53,18 +56,10 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
     };
   }, [infobox]);
 
-  // Fetch the impression URL (if any) upon displaying the ad.
-  // It's common for ad providers to provide this.
-  useEffect(() => {
-    if (impression) {
-      fetch(impression);
-    }
-  }, [impression]);
-
   // Wait until the ad expires, then invalidate cache.
   useEffect(() => {
-    if (expires) {
-      const delta = expires.getTime() - (new Date()).getTime();
+    if (ad.expires_at) {
+      const delta = new Date(ad.expires_at).getTime() - (new Date()).getTime();
       timer.current = setTimeout(bustCache, delta);
     }
 
@@ -73,7 +68,7 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
         clearTimeout(timer.current);
       }
     };
-  }, [expires]);
+  }, [ad.expires_at]);
 
   return (
     <div className='relative'>
@@ -112,7 +107,7 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
             </Stack>
           </HStack>
 
-          <StatusCard card={card} onOpenMedia={() => {}} horizontal />
+          <StatusCard card={ad.card} onOpenMedia={() => {}} horizontal />
         </Stack>
       </Card>
 
@@ -125,11 +120,15 @@ const Ad: React.FC<IAd> = ({ card, impression, expires }) => {
               </Text>
 
               <Text size='sm' theme='muted'>
-                <FormattedMessage
-                  id='sponsored.info.message'
-                  defaultMessage='{siteTitle} displays ads to help fund our service.'
-                  values={{ siteTitle: instance.title }}
-                />
+                {ad.reason ? (
+                  ad.reason
+                ) : (
+                  <FormattedMessage
+                    id='sponsored.info.message'
+                    defaultMessage='{siteTitle} displays ads to help fund our service.'
+                    values={{ siteTitle: instance.title }}
+                  />
+                )}
               </Text>
             </Stack>
           </Card>
