@@ -221,7 +221,7 @@ const SoapboxConfig: React.FC = () => {
 
             <ListItem label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}>
               <ColorWithPicker
-                buttonId='brandColor'
+                className='w-8 h-8 rounded-md overflow-hidden'
                 value={soapbox.brandColor}
                 onChange={handleColorChange(['brandColor'], (color) => color.hex)}
               />
@@ -229,7 +229,7 @@ const SoapboxConfig: React.FC = () => {
 
             <ListItem label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}>
               <ColorWithPicker
-                buttonId='accentColor'
+                className='w-8 h-8 rounded-md overflow-hidden'
                 value={soapbox.accentColor}
                 onChange={handleColorChange(['accentColor'], (color) => color.hex)}
               />
