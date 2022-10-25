@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, Divider, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
+import { Avatar, Divider, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useChatActions, useChatSilence } from 'soapbox/queries/chats';
+import { useChatActions } from 'soapbox/queries/chats';
 
 import ChatPaneHeader from './chat-pane-header';
 
@@ -28,8 +27,6 @@ const ChatSettings = () => {
   const intl = useIntl();
 
   const { chat, setEditing, toggleChatPane } = useChatContext();
-  const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
-
   const { deleteChat } = useChatActions(chat?.id as string);
 
   const closeSettings = () => setEditing(false);
@@ -58,12 +55,6 @@ const ChatSettings = () => {
       onConfirm: () => deleteChat.mutate(),
     }));
   };
-
-  useEffect(() => {
-    if (chat?.id) {
-      fetchChatSilence();
-    }
-  }, [chat?.id]);
 
   if (!chat) {
     return null;
@@ -99,14 +90,6 @@ const ChatSettings = () => {
             <Text size='sm' theme='primary'>@{chat.account.acct}</Text>
           </Stack>
         </HStack>
-
-        <Divider />
-
-        <List>
-          <ListItem label='Silence notifications'>
-            <Toggle checked={isSilenced} onChange={handleSilence} />
-          </ListItem>
-        </List>
 
         <Divider />
 

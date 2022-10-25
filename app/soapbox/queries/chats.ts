@@ -1,10 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import sumBy from 'lodash/sumBy';
-import { useState } from 'react';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
-import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
@@ -46,17 +44,10 @@ export interface IChatMessage {
   pending?: boolean
 }
 
-export interface IChatSilence {
-  id: number
-  account_id: number
-  target_account_id: number
-}
-
 const ChatKeys = {
   chat: (chatId?: string) => ['chats', 'chat', chatId] as const,
   chatMessages: (chatId: string) => ['chats', 'messages', chatId] as const,
   chatSearch: (searchQuery?: string) => searchQuery ? ['chats', 'search', searchQuery] : ['chats', 'search'] as const,
-  chatSilences: ['chatSilences'] as const,
 };
 
 const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
@@ -212,77 +203,4 @@ const useChatActions = (chatId: string) => {
   return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
 };
 
-const useChatSilences = () => {
-  const api = useApi();
-
-  const getChatSilences = async () => {
-    const { data } = await api.get<IChatSilence[]>('/api/v1/pleroma/chats/silences');
-
-    return data;
-  };
-
-  return useQuery<IChatSilence[]>(ChatKeys.chatSilences, getChatSilences, {
-    placeholderData: [],
-  });
-};
-
-const useChatSilence = (chat: IChat | null) => {
-  const api = useApi();
-  const dispatch = useAppDispatch();
-
-  const [isSilenced, setSilenced] = useState<boolean>(false);
-
-  const getChatSilences = async () => {
-    const { data } = await api.get(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`);
-    return data;
-  };
-
-  const fetchChatSilence = async () => {
-    const data = await getChatSilences();
-    if (data) {
-      setSilenced(true);
-    } else {
-      setSilenced(false);
-    }
-  };
-
-  const handleSilence = () => {
-    if (isSilenced) {
-      deleteSilence();
-    } else {
-      createSilence();
-    }
-  };
-
-  const createSilence = () => {
-    setSilenced(true);
-
-    api.post(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
-      .then(() => {
-        dispatch(snackbar.success('Successfully silenced this chat.'));
-        queryClient.invalidateQueries(ChatKeys.chatSilences);
-      })
-      .catch(() => {
-        dispatch(snackbar.error('Something went wrong trying to silence this chat. Please try again.'));
-        setSilenced(false);
-      });
-  };
-
-  const deleteSilence = () => {
-    setSilenced(false);
-
-    api.delete(`api/v1/pleroma/chats/silence?account_id=${chat?.account.id}`)
-      .then(() => {
-        dispatch(snackbar.success('Successfully unsilenced this chat.'));
-        queryClient.invalidateQueries(ChatKeys.chatSilences);
-      })
-      .catch(() => {
-        dispatch(snackbar.error('Something went wrong trying to unsilence this chat. Please try again.'));
-        setSilenced(true);
-      });
-  };
-
-  return { isSilenced, handleSilence, fetchChatSilence };
-};
-
-export { ChatKeys, useChat, useChatActions, useChats, useChatMessages, useChatSilences, useChatSilence };
+export { ChatKeys, useChat, useChatActions, useChats, useChatMessages };

@@ -3,17 +3,15 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
-import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useAppDispatch } from 'soapbox/hooks';
-import { IChat, IChatSilence, useChatActions, useChatSilence } from 'soapbox/queries/chats';
+import { IChat, useChatActions } from 'soapbox/queries/chats';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
 const messages = defineMessages({
-  silenceNotifications: { id: 'chat_settings.silence_notifications', defaultMessage: 'Silence notifications' },
-  unsilenceNotifications: { id: 'chat_settings.unsilence_notifications', defaultMessage: 'Unsilence notifications' },
   leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
@@ -23,57 +21,29 @@ const messages = defineMessages({
 interface IChatListItemInterface {
   chat: IChat,
   onClick: (chat: any) => void,
-  chatSilence?: IChatSilence
 }
 
-const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onClick }) => {
+const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const { handleSilence } = useChatSilence(chat);
   const { deleteChat } = useChatActions(chat?.id as string);
 
-  const menu = useMemo((): Menu => {
-    const menu: Menu = [];
+  const menu = useMemo((): Menu => [{
+    text: intl.formatMessage(messages.leaveChat),
+    action: (event) => {
+      event.stopPropagation();
 
-    if (chatSilence) {
-      menu.push({
-        text: intl.formatMessage(messages.unsilenceNotifications),
-        action: (event) => {
-          event.stopPropagation();
-          handleSilence();
-        },
-        icon: require('@tabler/icons/bell.svg'),
-      });
-    } else {
-      menu.push({
-        text: intl.formatMessage(messages.silenceNotifications),
-        action: (event) => {
-          event.stopPropagation();
-          handleSilence();
-        },
-        icon: require('@tabler/icons/bell-off.svg'),
-      });
-    }
-
-    menu.push({
-      text: intl.formatMessage(messages.leaveChat),
-      action: (event) => {
-        event.stopPropagation();
-
-        dispatch(openModal('CONFIRM', {
-          heading: intl.formatMessage(messages.leaveHeading),
-          message: intl.formatMessage(messages.leaveMessage),
-          confirm: intl.formatMessage(messages.leaveConfirm),
-          confirmationTheme: 'primary',
-          onConfirm: () => deleteChat.mutate(),
-        }));
-      },
-      icon: require('@tabler/icons/logout.svg'),
-    });
-
-    return menu;
-  }, [chatSilence]);
+      dispatch(openModal('CONFIRM', {
+        heading: intl.formatMessage(messages.leaveHeading),
+        message: intl.formatMessage(messages.leaveMessage),
+        confirm: intl.formatMessage(messages.leaveConfirm),
+        confirmationTheme: 'primary',
+        onConfirm: () => deleteChat.mutate(),
+      }));
+    },
+    icon: require('@tabler/icons/logout.svg'),
+  }], []);
 
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus
@@ -118,11 +88,6 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, chatSilence, onC
               title='Settings'
             />
           </div>
-
-
-          {chatSilence ? (
-            <Icon src={require('icons/bell-filled.svg')} className='w-5 h-5 text-gray-600' />
-          ) : null}
 
           {chat.last_message && (
             <>

@@ -1,14 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Toggle } from 'soapbox/components/ui';
+import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { useChatActions, useChatSilence } from 'soapbox/queries/chats';
+import { useChatActions } from 'soapbox/queries/chats';
 
 import Chat from '../../chat';
 
@@ -32,10 +31,9 @@ const ChatPageMain = () => {
   const intl = useIntl();
   const account = useOwnAccount();
 
-  const inputRef = useRef<HTMLTextAreaElement| null>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { chat, setChat } = useChatContext();
-  const { isSilenced, handleSilence, fetchChatSilence } = useChatSilence(chat);
   const { deleteChat } = useChatActions(chat?.id as string);
 
   const handleBlockUser = () => {
@@ -57,12 +55,6 @@ const ChatPageMain = () => {
       onConfirm: () => deleteChat.mutate(),
     }));
   };
-
-  useEffect(() => {
-    if (chat?.id) {
-      fetchChatSilence();
-    }
-  }, [chat?.id]);
 
   if (!chat && !account?.chats_onboarded) {
     return (
@@ -124,14 +116,6 @@ const ChatPageMain = () => {
                   <Text size='sm' theme='primary'>@{chat.account.acct}</Text>
                 </Stack>
               </HStack>
-
-              <Divider />
-
-              <List>
-                <ListItem label='Silence notifications'>
-                  <Toggle checked={isSilenced} onChange={handleSilence} />
-                </ListItem>
-              </List>
 
               <Divider />
 
