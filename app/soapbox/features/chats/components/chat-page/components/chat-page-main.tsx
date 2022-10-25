@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { blockAccount } from 'soapbox/actions/accounts';
+import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import { Avatar, Divider, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { useChatActions } from 'soapbox/queries/chats';
 
 import Chat from '../../chat';
@@ -18,10 +18,14 @@ const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
   blockHeading: { id: 'chat_settings.block.heading', defaultMessage: 'Block @{acct}' },
   blockConfirm: { id: 'chat_settings.block.confirm', defaultMessage: 'Block' },
+  unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow you to resume messaging with the user.' },
+  unblockHeading: { id: 'chat_settings.unblock.heading', defaultMessage: 'Unblock @{acct}' },
+  unblockConfirm: { id: 'chat_settings.unblock.confirm', defaultMessage: 'Unblock' },
   leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
   blockUser: { id: 'chat_settings.options.block_user', defaultMessage: 'Block @{acct}' },
+  unblockUser: { id: 'chat_settings.options.unblock_user', defaultMessage: 'Unblock @{acct}' },
   reportUser: { id: 'chat_settings.options.report_user', defaultMessage: 'Report @{acct}' },
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
 });
@@ -36,6 +40,8 @@ const ChatPageMain = () => {
   const { chat, setChat } = useChatContext();
   const { deleteChat } = useChatActions(chat?.id as string);
 
+  const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
+
   const handleBlockUser = () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.blockHeading, { acct: chat?.account.acct }),
@@ -43,6 +49,16 @@ const ChatPageMain = () => {
       confirm: intl.formatMessage(messages.blockConfirm),
       confirmationTheme: 'primary',
       onConfirm: () => dispatch(blockAccount(chat?.account.id as string)),
+    }));
+  };
+
+  const handleUnblockUser = () => {
+    dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.unblockHeading, { acct: chat?.account.acct }),
+      message: intl.formatMessage(messages.unblockMessage),
+      confirm: intl.formatMessage(messages.unblockConfirm),
+      confirmationTheme: 'primary',
+      onConfirm: () => dispatch(unblockAccount(chat?.account.id as string)),
     }));
   };
 
@@ -122,12 +138,12 @@ const ChatPageMain = () => {
               <Stack space={2}>
                 <MenuItem
                   as='button'
-                  onSelect={handleBlockUser}
+                  onSelect={isBlocking ? handleUnblockUser : handleBlockUser}
                   className='!px-0 hover:!bg-transparent'
                 >
                   <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
                     <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5' />
-                    <span>{intl.formatMessage(messages.blockUser, { acct: chat.account.acct })}</span>
+                    <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
                   </div>
                 </MenuItem>
 

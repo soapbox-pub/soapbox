@@ -1,13 +1,23 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
+import { unblockAccount } from 'soapbox/actions/accounts';
+import { openModal } from 'soapbox/actions/modals';
+import { Button, HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
+import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
   send: { id: 'chat.actions.send', defaultMessage: 'Send' },
   failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
   retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
+  blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
+  blocked: { id: 'chat_message_list.blocked', defaultMessage: 'You blocked this user' },
+  unblock: { id: 'chat_composer.unblock', defaultMessage: 'Unblock' },
+  unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow you to resume messaging with the user.' },
+  unblockHeading: { id: 'chat_settings.unblock.heading', defaultMessage: 'Unblock @{acct}' },
+  unblockConfirm: { id: 'chat_settings.unblock.confirm', defaultMessage: 'Unblock' },
 });
 
 interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'disabled'> {
@@ -25,9 +35,54 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   hasErrorSubmittingMessage = false,
   disabled = false,
 }, ref) => {
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
+  const { chat } = useChatContext();
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocked_by']));
+  const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
+
   const isSubmitDisabled = disabled || value.length === 0;
+
+  const handleUnblockUser = () => {
+    dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.unblockHeading, { acct: chat?.account.acct }),
+      message: intl.formatMessage(messages.unblockMessage),
+      confirm: intl.formatMessage(messages.unblockConfirm),
+      confirmationTheme: 'primary',
+      onConfirm: () => dispatch(unblockAccount(chat?.account.id as string)),
+    }));
+  };
+
+  if (isBlocking) {
+    return (
+      <div className='mt-auto p-6 shadow-3xl dark:border-t-2 dark:border-solid dark:border-gray-800'>
+        <Stack space={3} alignItems='center'>
+          <Text align='center' theme='muted'>
+            {intl.formatMessage(messages.blocked)}
+          </Text>
+
+          <Button theme='secondary' onClick={handleUnblockUser}>
+            {intl.formatMessage(messages.unblock)}
+          </Button>
+        </Stack>
+      </div>
+    );
+  }
+
+  if (isBlocked) {
+    return (
+      <div className='mt-auto p-6 shadow-3xl dark:border-t-2 dark:border-solid dark:border-gray-800'>
+        <Text align='center' theme='muted'>
+          <>
+            <Text tag='span' theme='inherit'>{intl.formatMessage(messages.blockedBy)}</Text>
+            {' '}
+            <Text tag='span' theme='inherit'>@{chat?.account?.acct}</Text>
+          </>
+        </Text>
+      </div>
+    );
+  }
 
   return (
     <div className='mt-auto pt-4 px-4 shadow-3xl'>
