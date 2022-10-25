@@ -246,7 +246,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
       });
       menu.push({
         text: intl.formatMessage(messages.deleteForMe),
-        action: () => null, // TODO: implement once API is available
+        action: () => handleDeleteMessage.mutate(chatMessage.id),
         icon: require('@tabler/icons/trash.svg'),
         destructive: true,
       });
