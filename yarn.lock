@@ -4559,10 +4559,10 @@ cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-cryptocurrency-icons@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/cryptocurrency-icons/-/cryptocurrency-icons-0.18.0.tgz#823552afcd299f4899d26a869252d1d27b004bc0"
-  integrity sha512-Q8Uq/Vhzcn/B6ouoJk+5Q/Kfp0zz0DjfldPv836OKT5mxgYDZm8vWgMQ5wBuRvT8Z/ZHLeXaBUgJtufPXmG0NQ==
+cryptocurrency-icons@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/cryptocurrency-icons/-/cryptocurrency-icons-0.18.1.tgz#b1bdbfb4b78996ec003e63dbd7ec0b830d23b89c"
+  integrity sha512-dvR5O8JOmav3559Yb0Igpkia+3vpt/aeNvMu5ZIVUG2Bzpq9wNcOJRIQas49XJrPjtZ98GAEn3aDQO+w7uhS2w==
 
 css-declaration-sorter@^6.2.2:
   version "6.2.2"
