@@ -29,8 +29,8 @@ const ChatPane = () => {
 
   const hasSearchValue = Number(debouncedValue?.length) > 0;
 
-  const handleClickChat = (chat: IChat) => {
-    setChat(chat);
+  const handleClickChat = (nextChat: IChat) => {
+    setChat(nextChat);
     setValue(undefined);
   };
 

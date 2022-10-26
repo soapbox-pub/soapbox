@@ -15,11 +15,13 @@ import { queryClient } from './client';
 
 import type { IAccount } from './accounts';
 
+export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
+
 export enum MessageExpirationValues {
-  'SEVEN' = 604800,
-  'FOURTEEN' = 1209600,
-  'THIRTY' = 2592000,
-  'NINETY' = 7776000
+  'SEVEN' = messageExpirationOptions[0],
+  'FOURTEEN' = messageExpirationOptions[1],
+  'THIRTY' = messageExpirationOptions[2],
+  'NINETY' = messageExpirationOptions[3]
 }
 
 export interface IChat {
@@ -225,6 +227,7 @@ const useChatActions = (chatId: string) => {
     },
     onSuccess(response) {
       queryClient.invalidateQueries(ChatKeys.chat(chatId));
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
       setChat(response.data);
       dispatch(snackbar.success('Chat Settings updated successfully'));
     },

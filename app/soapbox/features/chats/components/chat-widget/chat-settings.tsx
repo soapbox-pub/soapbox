@@ -4,10 +4,11 @@ import { defineMessages, useIntl } from 'react-intl';
 import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Select, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
+import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
+import { secondsToDays } from 'soapbox/utils/numbers';
 
 import ChatPaneHeader from './chat-pane-header';
 
@@ -26,11 +27,7 @@ const messages = defineMessages({
   unblockUser: { id: 'chat_settings.options.unblock_user', defaultMessage: 'Unblock @{acct}' },
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
   autoDeleteLabel: { id: 'chat_settings.auto_delete.label', defaultMessage: 'Auto-delete messages' },
-  autoDeleteHint: { id: 'chat_settings.auto_delete.hint', defaultMessage: 'Sent messages will auto-delete after the time period selected' },
-  autoDelete7Days: { id: 'chat_settings.auto_delete.7days', defaultMessage: '7 days' },
-  autoDelete14Days: { id: 'chat_settings.auto_delete.14days', defaultMessage: '14 days' },
-  autoDelete30Days: { id: 'chat_settings.auto_delete.30days', defaultMessage: '30 days' },
-  autoDelete90Days: { id: 'chat_settings.auto_delete.90days', defaultMessage: '90 days' },
+  autoDeleteDays: { id: 'chat_settings.auto_delete.days', defaultMessage: '{day} days' },
 });
 
 const ChatSettings = () => {
@@ -117,30 +114,19 @@ const ChatSettings = () => {
         </HStack>
 
         <List>
-          <ListItem
-            label={intl.formatMessage(messages.autoDeleteLabel)}
-            hint={intl.formatMessage(messages.autoDeleteHint)}
-          />
-          <ListItem
-            label={intl.formatMessage(messages.autoDelete7Days)}
-            onSelect={() => handleUpdateChat(MessageExpirationValues.SEVEN)}
-            isSelected={chat.message_expiration === MessageExpirationValues.SEVEN}
-          />
-          <ListItem
-            label={intl.formatMessage(messages.autoDelete14Days)}
-            onSelect={() => handleUpdateChat(MessageExpirationValues.FOURTEEN)}
-            isSelected={chat.message_expiration === MessageExpirationValues.FOURTEEN}
-          />
-          <ListItem
-            label={intl.formatMessage(messages.autoDelete30Days)}
-            onSelect={() => handleUpdateChat(MessageExpirationValues.THIRTY)}
-            isSelected={chat.message_expiration === MessageExpirationValues.THIRTY}
-          />
-          <ListItem
-            label={intl.formatMessage(messages.autoDelete90Days)}
-            onSelect={() => handleUpdateChat(MessageExpirationValues.NINETY)}
-            isSelected={chat.message_expiration === MessageExpirationValues.NINETY}
-          />
+          <ListItem label={intl.formatMessage(messages.autoDeleteLabel)}>
+            <Select defaultValue={chat.message_expiration} onChange={(event) => handleUpdateChat(Number(event.target.value))}>
+              {messageExpirationOptions.map((duration) => {
+                const inDays = secondsToDays(duration);
+
+                return (
+                  <option key={duration} value={duration}>
+                    {intl.formatMessage(messages.autoDeleteDays, { day: inDays })}
+                  </option>
+                );
+              })}
+            </Select>
+          </ListItem>
         </List>
 
         <Stack space={5}>

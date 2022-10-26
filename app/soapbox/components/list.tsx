@@ -66,7 +66,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
 
           <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1' />
         </div>
-      ) : renderChildren()}
+      ) : null}
 
       {onSelect ? (
         <div className='flex flex-row items-center text-gray-700 dark:text-gray-600'>
@@ -76,7 +76,9 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
             <Icon src={require('@tabler/icons/check.svg')} className='ml-1 text-primary-500 dark:text-primary-400' />
           ) : null}
         </div>
-      ) : renderChildren()}
+      ) : null}
+
+      {typeof onClick === 'undefined' && typeof onSelect === 'undefined' ? renderChildren() : null}
     </Comp>
   );
 };
