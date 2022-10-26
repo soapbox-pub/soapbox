@@ -1,14 +1,20 @@
 import React, { useRef } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { secondsToDays } from 'soapbox/utils/numbers';
 
 import Chat from '../chat';
 
 import ChatPaneHeader from './chat-pane-header';
 import ChatSettings from './chat-settings';
+
+const messages = defineMessages({
+  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day} days' },
+});
 
 const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, children: React.ReactNode }): JSX.Element => {
   if (!enabled) {
@@ -24,6 +30,8 @@ const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, 
 
 /** Floating desktop chat window. */
 const ChatWindow = () => {
+  const intl = useIntl();
+
   const { chat, setChat, isOpen, isEditing, needsAcceptance, setEditing, setSearching, toggleChatPane } = useChatContext();
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -79,7 +87,9 @@ const ChatWindow = () => {
                     <Text size='sm' weight='bold' truncate>{chat.account.display_name}</Text>
                     {chat.account.verified && <VerificationBadge />}
                   </div>
-                  <Text size='sm' weight='medium' theme='primary' truncate>@{chat.account.acct}</Text>
+                  <Text size='sm' weight='medium' theme='primary' truncate>
+                    {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
+                  </Text>
                 </Stack>
               </LinkWrapper>
             </HStack>

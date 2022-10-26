@@ -3,6 +3,7 @@ import sumBy from 'lodash/sumBy';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
+import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
@@ -14,10 +15,20 @@ import { queryClient } from './client';
 
 import type { IAccount } from './accounts';
 
+export enum MessageExpirationValues {
+  'SEVEN' = 604800,
+  'FOURTEEN' = 1209600,
+  'THIRTY' = 2592000,
+  'NINETY' = 7776000
+}
+
 export interface IChat {
-  id: string
-  unread: number
+  accepted: boolean
+  account: IAccount
+  created_at: Date
   created_by_account: string
+  discarded_at: null | string
+  id: string
   last_message: null | {
     account_id: string
     chat_id: string
@@ -27,11 +38,12 @@ export interface IChat {
     id: string
     unread: boolean
   }
-  created_at: Date
-  updated_at: Date
-  accepted: boolean
-  discarded_at: null | string
-  account: IAccount
+  latest_read_message_by_account: {
+    [id: number]: string
+  }[]
+  latest_read_message_created_at: string
+  message_expiration: MessageExpirationValues
+  unread: number
 }
 
 export interface IChatMessage {
@@ -42,6 +54,10 @@ export interface IChatMessage {
   id: string
   unread: boolean
   pending?: boolean
+}
+
+type UpdateChatVariables = {
+  message_expiration: MessageExpirationValues
 }
 
 const ChatKeys = {
@@ -171,7 +187,9 @@ const useChat = (chatId?: string) => {
 
 const useChatActions = (chatId: string) => {
   const api = useApi();
-  const { setChat, setEditing } = useChatContext();
+  const dispatch = useAppDispatch();
+
+  const { chat, setChat, setEditing } = useChatContext();
 
   const markChatAsRead = (lastReadId: string) => {
     api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
@@ -182,6 +200,35 @@ const useChatActions = (chatId: string) => {
   const createChatMessage = (chatId: string, content: string) => {
     return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/messages`, { content });
   };
+
+  const updateChat = useMutation((data: UpdateChatVariables) => api.patch<IChat>(`/api/v1/pleroma/chats/${chatId}`, data), {
+    onMutate: async (data) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries(ChatKeys.chat(chatId));
+
+      // Snapshot the previous value
+      const prevChat = { ...chat };
+      const nextChat = { ...chat, ...data };
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(ChatKeys.chat(chatId), nextChat);
+      setChat(nextChat as IChat);
+
+      // Return a context object with the snapshotted value
+      return { prevChat };
+    },
+    // If the mutation fails, use the context returned from onMutate to roll back
+    onError: (_error: any, _newData: any, context: any) => {
+      setChat(context?.prevChat);
+      queryClient.setQueryData(ChatKeys.chat(chatId), context.prevChat);
+      dispatch(snackbar.error('Chat Settings failed to update.'));
+    },
+    onSuccess(response) {
+      queryClient.invalidateQueries(ChatKeys.chat(chatId));
+      setChat(response.data);
+      dispatch(snackbar.success('Chat Settings updated successfully'));
+    },
+  });
 
   const deleteChatMessage = (chatMessageId: string) => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}/messages/${chatMessageId}`);
 
@@ -202,7 +249,7 @@ const useChatActions = (chatId: string) => {
     },
   });
 
-  return { createChatMessage, markChatAsRead, deleteChatMessage, acceptChat, deleteChat };
+  return { createChatMessage, markChatAsRead, deleteChatMessage, updateChat, acceptChat, deleteChat };
 };
 
 export { ChatKeys, useChat, useChatActions, useChats, useChatMessages };

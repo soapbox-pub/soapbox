@@ -4,6 +4,8 @@ import { FormattedNumber } from 'react-intl';
 /** Check if a value is REALLY a number. */
 export const isNumber = (value: unknown): value is number => typeof value === 'number' && !isNaN(value);
 
+export const secondsToDays = (seconds: number) => Math.floor(seconds / (3600 * 24));
+
 const roundDown = (num: number) => {
   if (num >= 100 && num < 1000) {
     num = Math.floor(num);
