@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import get from 'lodash/get';
+import { gte } from 'semver';
 
 import KVStore from 'soapbox/storage/kv_store';
 import { RootState } from 'soapbox/store';
@@ -37,6 +38,12 @@ const needsNodeinfo = (instance: Record<string, any>): boolean => {
   return v.software === 'Pleroma' && !get(instance, ['pleroma', 'metadata']);
 };
 
+/** Mastodon exposes features availabiliy under /api/v2/instance since 4.0.0 */
+const supportsInstanceV2 = (instance: Record<string, any>): boolean => {
+  const v = parseVersion(get(instance, 'version'));
+  return v.software === 'Mastodon' && gte(v.compatVersion, '4.0.0');
+};
+
 export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
   'instance/fetch',
   async(_arg, { dispatch, getState, rejectWithValue }) => {
@@ -44,6 +51,9 @@ export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
       const { data: instance } = await api(getState).get('/api/v1/instance');
       if (needsNodeinfo(instance)) {
         dispatch(fetchNodeinfo());
+      }
+      if (supportsInstanceV2(instance)) {
+        dispatch(fetchInstanceV2());
       }
       return instance;
     } catch (e) {
@@ -64,9 +74,15 @@ export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
   },
 );
 
-export const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
+export const fetchInstanceV2 = createAsyncThunk<void, void, { state: RootState }>(
   'nodeinfo/fetch',
   async(_arg, { getState }) => {
-    return await api(getState).get('/nodeinfo/2.1.json');
+    const { data: instance } = await api(getState).get('/api/v2/instance');
+    return instance;
   },
+);
+
+export const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
+  'nodeinfo/fetch',
+  async(_arg, { getState }) => await api(getState).get('/nodeinfo/2.1.json'),
 );

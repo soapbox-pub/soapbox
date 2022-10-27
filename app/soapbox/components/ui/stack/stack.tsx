@@ -19,14 +19,17 @@ const justifyContentOptions = {
 };
 
 const alignItemsOptions = {
+  top: 'items-start',
+  bottom: 'items-end',
   center: 'items-center',
+  start: 'items-start',
 };
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Size of the gap between elements. */
   space?: keyof typeof spaces
   /** Horizontal alignment of children. */
-  alignItems?: 'center'
+  alignItems?: keyof typeof alignItemsOptions
   /** Vertical alignment of children. */
   justifyContent?: keyof typeof justifyContentOptions
   /** Extra class names on the <div> element. */

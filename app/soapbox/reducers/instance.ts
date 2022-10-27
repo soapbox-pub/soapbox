@@ -10,6 +10,7 @@ import {
   rememberInstance,
   fetchInstance,
   fetchNodeinfo,
+  fetchInstanceV2,
 } from '../actions/instance';
 
 import type { AnyAction } from 'redux';
@@ -32,8 +33,18 @@ const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
   }));
 };
 
+const instanceV2ToInstance = (instanceV2: ImmutableMap<string, any>) =>
+  normalizeInstance(ImmutableMap({
+    configuration: instanceV2.get('configuration'),
+  }));
+
 const importInstance = (_state: typeof initialState, instance: ImmutableMap<string, any>) => {
   return normalizeInstance(instance);
+};
+
+const importInstanceV2 = (state: typeof initialState, instanceV2: ImmutableMap<string, any>) => {
+  console.log(instanceV2.toJS());
+  return state.mergeDeep(instanceV2ToInstance(instanceV2));
 };
 
 const importNodeinfo = (state: typeof initialState, nodeinfo: ImmutableMap<string, any>) => {
@@ -120,6 +131,8 @@ export default function instance(state = initialState, action: AnyAction) {
     case fetchInstance.fulfilled.type:
       persistInstance(action.payload);
       return importInstance(state, ImmutableMap(fromJS(action.payload)));
+    case fetchInstanceV2.fulfilled.type:
+      return importInstanceV2(state, ImmutableMap(fromJS(action.payload)));
     case fetchInstance.rejected.type:
       return handleInstanceFetchFail(state, action.error);
     case fetchNodeinfo.fulfilled.type:
