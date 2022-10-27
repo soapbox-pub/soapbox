@@ -4,7 +4,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { updatePageItem, appendPageItem, flattenPages, PaginatedResult } from 'soapbox/utils/queries';
+import { updatePageItem, appendPageItem, removePageItem, flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
@@ -77,6 +77,13 @@ const updateChat = (payload: ChatPayload) => {
   }
 };
 
+const removeChatMessage = (payload: string) => {
+  const chat = JSON.parse(payload);
+  const chatMessageId = chat.chat_message_id;
+
+  removePageItem(ChatKeys.chatMessages(chat.id), chatMessageId, (o: any, n: any) => Number(o.id) === Number(n));
+};
+
 const connectTimelineStream = (
   timelineId: string,
   path: string,
@@ -122,7 +129,7 @@ const connectTimelineStream = (
           dispatch(fetchFilters());
           break;
         case 'pleroma:chat_update':
-        case 'chat_message': // TruthSocial
+        case 'chat_message.created': // TruthSocial
           dispatch((dispatch: AppDispatch, getState: () => RootState) => {
             const chat = JSON.parse(data.payload);
             const me = getState().me;
@@ -134,6 +141,9 @@ const connectTimelineStream = (
               play(soundCache.chat);
             }
           });
+          break;
+        case 'chat_message.deleted': // TruthSocial
+          removeChatMessage(data.payload);
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
