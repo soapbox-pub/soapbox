@@ -37,10 +37,10 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           {...compProps}
           rel='noopener'
           data-index={i}
-          className={classNames({ active, destructive })}
+          className={classNames('w-full', { active, destructive })}
           data-method={isLogout ? 'delete' : null}
         >
-          {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
+          {icon && <Icon className='min-w-fit' title={text} src={icon} role='presentation' tabIndex={-1} />}
           <div>
             <div className={classNames({ 'actions-modal__item-label': !!meta })}>{text}</div>
             <div>{meta}</div>
