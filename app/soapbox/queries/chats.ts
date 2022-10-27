@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import sumBy from 'lodash/sumBy';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
@@ -130,8 +130,7 @@ const useChats = (search?: string) => {
     const link = getNextLink(response);
     const hasMore = !!link;
 
-    // TODO: change to response header
-    setUnreadChatsCount(sumBy(data, (chat) => chat.unread));
+    setUnreadChatsCount(Number(response.headers['x-unread-messages-count']) || sumBy(data, (chat) => chat.unread));
 
     // Set the relationships to these users in the redux store.
     dispatch(fetchRelationships(data.map((item) => item.account.id)));
@@ -190,12 +189,26 @@ const useChat = (chatId?: string) => {
 const useChatActions = (chatId: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const { setUnreadChatsCount } = useStatContext();
 
   const { chat, setChat, setEditing } = useChatContext();
 
   const markChatAsRead = (lastReadId: string) => {
     api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
-      .then(({ data }) => updatePageItem(['chats', 'search'], data, (o, n) => o.id === n.id))
+      .then(({ data }) => {
+        updatePageItem(ChatKeys.chatSearch(), data, (o, n) => o.id === n.id);
+        const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch());
+        if (queryData) {
+          const flattenedQueryData: any = flattenPages(queryData)?.map((chat: any) => {
+            if (chat.id === data.id) {
+              return data;
+            } else {
+              return chat;
+            }
+          });
+          setUnreadChatsCount(sumBy(flattenedQueryData, (chat: IChat) => chat.unread));
+        }
+      })
       .catch(() => null);
   };
 

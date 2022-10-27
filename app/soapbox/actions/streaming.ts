@@ -78,10 +78,10 @@ const updateChat = (payload: ChatPayload) => {
 };
 
 const removeChatMessage = (payload: string) => {
-  const chat = JSON.parse(payload);
-  const chatMessageId = chat.chat_message_id;
+  const data = JSON.parse(payload);
+  const chatMessageId = data.deleted_message_id;
 
-  removePageItem(ChatKeys.chatMessages(chat.id), chatMessageId, (o: any, n: any) => Number(o.id) === Number(n));
+  removePageItem(ChatKeys.chatMessages(data.chat_id), chatMessageId, (o: any, n: any) => String(o.id) === String(n));
 };
 
 const connectTimelineStream = (
