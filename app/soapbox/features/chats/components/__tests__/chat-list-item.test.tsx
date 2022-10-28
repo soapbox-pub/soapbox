@@ -18,8 +18,8 @@ const chat: any = {
     id: '12332423234',
     unread: true,
   },
-  created_at: new Date('2022-09-09T16:02:26.186Z'),
-  updated_at: new Date('2022-09-09T16:02:26.186Z'),
+  created_at: '2022-09-09T16:02:26.186Z',
+  updated_at: '2022-09-09T16:02:26.186Z',
   accepted: true,
   discarded_at: null,
   account: {

@@ -27,7 +27,7 @@ export enum MessageExpirationValues {
 export interface IChat {
   accepted: boolean
   account: IAccount
-  created_at: Date
+  created_at: string
   created_by_account: string
   discarded_at: null | string
   id: string
@@ -40,10 +40,10 @@ export interface IChat {
     id: string
     unread: boolean
   }
-  latest_read_message_by_account: {
+  latest_read_message_by_account: null | {
     [id: number]: string
   }[]
-  latest_read_message_created_at: string
+  latest_read_message_created_at: null | string
   message_expiration: MessageExpirationValues
   unread: number
 }
@@ -52,7 +52,7 @@ export interface IChatMessage {
   account_id: string
   chat_id: string
   content: string
-  created_at: Date
+  created_at: string
   id: string
   unread: boolean
   pending?: boolean
@@ -193,11 +193,12 @@ const useChatActions = (chatId: string) => {
 
   const { chat, setChat, setEditing } = useChatContext();
 
-  const markChatAsRead = (lastReadId: string) => {
-    api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
+  const markChatAsRead = async (lastReadId: string) => {
+    return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
       .then(({ data }) => {
         updatePageItem(ChatKeys.chatSearch(), data, (o, n) => o.id === n.id);
         const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch());
+
         if (queryData) {
           const flattenedQueryData: any = flattenPages(queryData)?.map((chat: any) => {
             if (chat.id === data.id) {
@@ -208,6 +209,8 @@ const useChatActions = (chatId: string) => {
           });
           setUnreadChatsCount(sumBy(flattenedQueryData, (chat: IChat) => chat.unread));
         }
+
+        return data;
       })
       .catch(() => null);
   };
