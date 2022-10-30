@@ -1,6 +1,22 @@
 // Adapted from Pleroma FE
 // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/ef5bbc4e5f84bb9e8da76a0440eea5d656d36977/src/services/favicon_service/favicon_service.js
 
+const checkCanvasExtractPermission = () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+
+  const ctx = canvas.getContext('2d')!;
+  if (!ctx) return false;
+
+  ctx.fillStyle = '#0482d8';
+  ctx.fillRect(0, 0, 1, 1);
+
+  const { data } = ctx.getImageData(0, 0, 1, 1);
+
+  return data.join(',') === '4,130,216,255';
+};
+
 type Favicon = {
   favcanvas: HTMLCanvasElement,
   favimg: HTMLImageElement,
@@ -17,6 +33,8 @@ const createFaviconService = () => {
 
   /** Start the favicon service */
   const initFaviconService = (): void => {
+    if (!checkCanvasExtractPermission()) return;
+
     const nodes: NodeListOf<HTMLLinkElement> = document.querySelectorAll('link[rel="icon"]');
     nodes.forEach(favicon => {
       if (favicon) {
