@@ -105,10 +105,6 @@ const Status: React.FC<IStatus> = (props) => {
     }
   };
 
-  const handleExpandedToggle = (): void => {
-    dispatch(toggleStatusHidden(actualStatus));
-  };
-
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const status = actualStatus;
     const firstAttachment = status.media_attachments.first();
@@ -301,7 +297,7 @@ const Status: React.FC<IStatus> = (props) => {
   const accountAction = props.accountAction || reblogElement;
 
   const inReview = status.visibility === 'self';
-  const isSensitive = status.sensitive;
+  const isSensitive = status.hidden;
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
@@ -382,8 +378,6 @@ const Status: React.FC<IStatus> = (props) => {
               <StatusContent
                 status={actualStatus}
                 onClick={handleClick}
-                expanded={!status.hidden}
-                onExpandedToggle={handleExpandedToggle}
                 collapsable
               />
 
