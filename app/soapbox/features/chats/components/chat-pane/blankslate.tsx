@@ -5,7 +5,7 @@ import { Button, Stack, Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   title: { id: 'chat_search.empty_results_blankslate.title', defaultMessage: 'No messages yet' },
-  body: { id: 'chat_search.empty_results_blankslate.body', defaultMessage: 'You can start a conversation with anyone that follows you.' },
+  body: { id: 'chat_search.empty_results_blankslate.body', defaultMessage: 'You can start a chat with anyone that follows you.' },
   action: { id: 'chat_search.empty_results_blankslate.action', defaultMessage: 'Message someone' },
 });
 

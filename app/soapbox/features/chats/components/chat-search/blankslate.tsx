@@ -5,7 +5,7 @@ import { Stack, Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   title: { id: 'chat_search.blankslate.title', defaultMessage: 'Search followers' },
-  body: { id: 'chat_search.blankslate.body', defaultMessage: 'You can start a conversation with anyone that follows you.' },
+  body: { id: 'chat_search.blankslate.body', defaultMessage: 'You can start a chat with anyone that follows you.' },
 });
 
 const Blankslate = () => {
