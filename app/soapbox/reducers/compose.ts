@@ -26,7 +26,6 @@ import {
   COMPOSE_SUGGESTION_SELECT,
   COMPOSE_SUGGESTION_TAGS_UPDATE,
   COMPOSE_TAG_HISTORY_UPDATE,
-  COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
   COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
@@ -279,14 +278,6 @@ export const initialState: State = ImmutableMap({
 
 export default function compose(state = initialState, action: AnyAction) {
   switch (action.type) {
-    case COMPOSE_SENSITIVITY_CHANGE:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        if (!compose.spoiler) {
-          map.set('sensitive', !compose.sensitive);
-        }
-
-        map.set('idempotencyKey', uuid());
-      }));
     case COMPOSE_TYPE_CHANGE:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('content_type', action.value);
