@@ -18,12 +18,12 @@ interface ISpoilerInput extends Pick<IAutosuggestInput, 'onSuggestionsFetchReque
 }
 
 /** Text input for content warning in composer. */
-const SpoilerInput: React.FC<ISpoilerInput> = ({
+const SpoilerInput = React.forwardRef<AutosuggestInput, ISpoilerInput>(({
   composeId,
   onSuggestionsFetchRequested,
   onSuggestionsClearRequested,
   onSuggestionSelected,
-}) => {
+}, ref) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const compose = useCompose(composeId);
@@ -63,6 +63,7 @@ const SpoilerInput: React.FC<ISpoilerInput> = ({
           searchTokens={[':']}
           id='cw-spoiler-input'
           className='rounded-md dark:!bg-transparent !bg-transparent'
+          ref={ref}
           autoFocus
         />
 
@@ -74,6 +75,6 @@ const SpoilerInput: React.FC<ISpoilerInput> = ({
       </Stack>
     </Stack>
   );
-};
+});
 
 export default SpoilerInput;

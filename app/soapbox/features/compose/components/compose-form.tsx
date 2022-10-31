@@ -316,6 +316,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
               onSuggestionsFetchRequested={onSuggestionsFetchRequested}
               onSuggestionsClearRequested={onSuggestionsClearRequested}
               onSuggestionSelected={onSpoilerSuggestionSelected}
+              ref={spoilerTextRef}
             />
           </Stack>
         }
