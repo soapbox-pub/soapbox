@@ -109,6 +109,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const account = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
+  const isUnderReview = status.visibility === 'self';
 
   if (!status) {
     return null;
@@ -279,12 +280,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
-    const { uri }  = status;
+    const { uri } = status;
     const textarea = document.createElement('textarea');
 
     e.stopPropagation();
 
-    textarea.textContent    = uri;
+    textarea.textContent = uri;
     textarea.style.position = 'fixed';
 
     document.body.appendChild(textarea);
