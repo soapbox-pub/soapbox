@@ -14,7 +14,7 @@ const messages = defineMessages({
   retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
   blocked: { id: 'chat_message_list.blocked', defaultMessage: 'You blocked this user' },
   unblock: { id: 'chat_composer.unblock', defaultMessage: 'Unblock' },
-  unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow you to resume messaging with the user.' },
+  unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow this profile to direct message you and view your content.' },
   unblockHeading: { id: 'chat_settings.unblock.heading', defaultMessage: 'Unblock @{acct}' },
   unblockConfirm: { id: 'chat_settings.unblock.confirm', defaultMessage: 'Unblock' },
 });

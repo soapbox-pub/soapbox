@@ -19,7 +19,7 @@ const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
   blockHeading: { id: 'chat_settings.block.heading', defaultMessage: 'Block @{acct}' },
   blockConfirm: { id: 'chat_settings.block.confirm', defaultMessage: 'Block' },
-  unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow you to resume messaging with the user.' },
+  unblockMessage: { id: 'chat_settings.unblock.message', defaultMessage: 'Unblocking will allow this profile to direct message you and view your content.' },
   unblockHeading: { id: 'chat_settings.unblock.heading', defaultMessage: 'Unblock @{acct}' },
   unblockConfirm: { id: 'chat_settings.unblock.confirm', defaultMessage: 'Unblock' },
   leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
