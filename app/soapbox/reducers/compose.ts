@@ -296,11 +296,8 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('spoiler_text', '');
         map.set('spoiler', !compose.spoiler);
+        map.set('sensitive', !compose.spoiler);
         map.set('idempotencyKey', uuid());
-
-        if (!compose.sensitive && compose.media_attachments.size >= 1) {
-          map.set('sensitive', true);
-        }
       }));
     case COMPOSE_SPOILER_TEXT_CHANGE:
       return updateCompose(state, action.id, compose => compose
