@@ -149,7 +149,7 @@ const Preferences = () => {
           />
         </ListItem>
 
-        <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Sensitive contnt' />}>
+        <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Sensitive content' />}>
           <SelectDropdown
             items={displayMediaOptions}
             defaultValue={settings.get('displayMedia') as string | undefined}
