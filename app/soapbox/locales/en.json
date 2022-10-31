@@ -288,7 +288,7 @@
   "compose_form.sensitive.unmarked": "Media is not marked as sensitive",
   "compose_form.spoiler.marked": "Text is hidden behind warning",
   "compose_form.spoiler.unmarked": "Text is not hidden",
-  "compose_form.spoiler_placeholder": "Write your warning here",
+  "compose_form.spoiler_placeholder": "Write your warning here (optional)",
   "confirmation_modal.cancel": "Cancel",
   "confirmations.admin.deactivate_user.confirm": "Deactivate @{name}",
   "confirmations.admin.deactivate_user.heading": "Deactivate @{acct}",
