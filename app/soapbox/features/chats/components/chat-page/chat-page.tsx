@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Stack } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { useOwnAccount } from 'soapbox/hooks';
 import { useChat } from 'soapbox/queries/chats';
 
 import ChatPageMain from './components/chat-page-main';
@@ -16,6 +17,9 @@ interface IChatPage {
 }
 
 const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
+  const account = useOwnAccount();
+  const isOnboarded = account?.chats_onboarded;
+
   const { chat, setChat } = useChatContext();
   const { chat: chatQueryResult } = useChat(chatId);
 
@@ -62,32 +66,36 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
       style={{ height }}
       className='h-screen bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden sm:rounded-t-xl'
     >
-      <div className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'>
-        <Stack
-          className={classNames('col-span-9 sm:col-span-3 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset', {
-            'hidden sm:block': chat,
-          })}
-        >
-          <ChatPageSidebar />
-        </Stack>
+      {isOnboarded ? (
+        <div className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'>
+          <Stack
+            className={classNames('col-span-9 sm:col-span-3 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset', {
+              'hidden sm:block': chat,
+            })}
+          >
+            <ChatPageSidebar />
+          </Stack>
 
-        <Stack className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
-          'hidden sm:block': !chat,
-        })}
-        >
-          <Switch>
-            <Route path='/chats/new'>
-              <ChatPageNew />
-            </Route>
-            <Route path='/chats/settings'>
-              <Welcome />
-            </Route>
-            <Route>
-              <ChatPageMain />
-            </Route>
-          </Switch>
-        </Stack>
-      </div>
+          <Stack className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
+            'hidden sm:block': !chat,
+          })}
+          >
+            <Switch>
+              <Route path='/chats/new'>
+                <ChatPageNew />
+              </Route>
+              <Route path='/chats/settings'>
+                <Welcome />
+              </Route>
+              <Route>
+                <ChatPageMain />
+              </Route>
+            </Switch>
+          </Stack>
+        </div>
+      ) : (
+        <Welcome />
+      )}
     </div>
   );
 };

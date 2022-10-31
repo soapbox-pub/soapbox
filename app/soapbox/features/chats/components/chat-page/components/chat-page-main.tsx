@@ -7,14 +7,13 @@ import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
 import Chat from '../../chat';
 
 import Blankslate from './blankslate';
-import Welcome from './welcome';
 
 const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
@@ -42,7 +41,6 @@ const messages = defineMessages({
 const ChatPageMain = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const account = useOwnAccount();
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -82,12 +80,6 @@ const ChatPageMain = () => {
       onConfirm: () => deleteChat.mutate(),
     }));
   };
-
-  if (!chat && !account?.chats_onboarded) {
-    return (
-      <Welcome />
-    );
-  }
 
   if (!chat) {
     return <Blankslate />;
