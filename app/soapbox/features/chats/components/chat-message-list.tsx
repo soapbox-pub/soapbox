@@ -8,7 +8,7 @@ import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
-import { Avatar, Button, Divider, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, Button, Divider, HStack, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 // import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
@@ -255,7 +255,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     return (
       <div key={chatMessage.id} className='group' data-testid='chat-message'>
         <Stack
-          space={1}
+          space={1.5}
           className={classNames({
             'ml-auto': isMyMessage,
           })}
@@ -322,16 +322,27 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
               'ml-auto': isMyMessage,
             })}
           >
-            <Text
-              theme='muted'
-              size='xs'
+            <div
               className={classNames({
                 'text-right': isMyMessage,
                 'order-2': !isMyMessage,
               })}
             >
-              {intl.formatTime(chatMessage.created_at)}
-            </Text>
+              <span className='flex items-center space-x-1.5'>
+                <Text
+                  theme='muted'
+                  size='xs'
+                >
+                  {intl.formatTime(chatMessage.created_at)}
+                </Text>
+
+                {isMyMessage && !chatMessage.unread ? (
+                  <span className='rounded-full flex flex-col items-center justify-center h-3.5 w-3.5 dark:bg-primary-400 dark:text-primary-900'>
+                    <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
+                  </span>
+                ) : null}
+              </span>
+            </div>
 
             <div className={classNames({ 'order-1': !isMyMessage })}>
               <div className='w-[34px]' />

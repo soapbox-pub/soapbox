@@ -66,6 +66,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
                 created_at: new Date(),
                 account_id: account?.id,
                 pending: true,
+                unread: true,
               }],
             };
           }
