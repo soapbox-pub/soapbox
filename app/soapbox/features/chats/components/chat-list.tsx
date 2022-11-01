@@ -45,25 +45,9 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
           <PlaceholderChat />
         </Stack>
       );
-    } else {
-      return (
-        <Stack className='p-6' space={2}>
-          <Text size='2xl' weight='bold' tag='h3'>
-            <FormattedMessage
-              id='chats.getting_started.title'
-              defaultMessage='Getting started'
-            />
-          </Text>
-
-          <Text theme='muted'>
-            <FormattedMessage
-              id='chats.getting_started.hint'
-              defaultMessage='To start a chat, search for a user in the field above.'
-            />
-          </Text>
-        </Stack>
-      );
     }
+
+    return null;
   };
 
   return (
