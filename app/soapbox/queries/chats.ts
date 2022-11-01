@@ -68,6 +68,15 @@ const ChatKeys = {
   chatSearch: (searchQuery?: string) => searchQuery ? ['chats', 'search', searchQuery] : ['chats', 'search'] as const,
 };
 
+/** Check if item is most recent */
+const isLastMessage = (chatMessageId: string): boolean => {
+  const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<IChat>>>(ChatKeys.chatSearch());
+  const items = flattenPages(queryData);
+  const chat = items?.find((item) => item.last_message?.id === chatMessageId);
+
+  return !!chat;
+};
+
 const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
 
 const useChatMessages = (chat: IChat) => {
@@ -271,4 +280,4 @@ const useChatActions = (chatId: string) => {
   return { createChatMessage, markChatAsRead, deleteChatMessage, updateChat, acceptChat, deleteChat };
 };
 
-export { ChatKeys, useChat, useChatActions, useChats, useChatMessages };
+export { ChatKeys, useChat, useChatActions, useChats, useChatMessages, isLastMessage };

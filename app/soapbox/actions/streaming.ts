@@ -2,7 +2,7 @@ import { InfiniteData } from '@tanstack/react-query';
 
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
-import { ChatKeys } from 'soapbox/queries/chats';
+import { ChatKeys, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { updatePageItem, appendPageItem, removePageItem, flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
@@ -79,9 +79,16 @@ const updateChat = (payload: ChatPayload) => {
 
 const removeChatMessage = (payload: string) => {
   const data = JSON.parse(payload);
+  const chatId = data.chat_id;
   const chatMessageId = data.deleted_message_id;
 
-  removePageItem(ChatKeys.chatMessages(data.chat_id), chatMessageId, (o: any, n: any) => String(o.id) === String(n));
+  // If the user just deleted the "last_message", then let's invalidate
+  // the Chat Search query so the Chat List will show the new "last_message".
+  if (isLastMessage(chatMessageId)) {
+    queryClient.invalidateQueries(ChatKeys.chatSearch());
+  }
+
+  removePageItem(ChatKeys.chatMessages(chatId), chatMessageId, (o: any, n: any) => String(o.id) === String(n));
 };
 
 const connectTimelineStream = (
