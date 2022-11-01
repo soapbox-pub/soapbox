@@ -37,10 +37,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
 
-  const handleExpandedToggle = () => {
-    onToggleHidden(status);
-  };
-
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
   };
@@ -51,7 +47,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (!account || typeof account !== 'object') return null;
 
   const isUnderReview = actualStatus.visibility === 'self';
-  const isSensitive = actualStatus.sensitive;
+  const isSensitive = actualStatus.hidden;
 
   let statusTypeIcon = null;
 
@@ -105,11 +101,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             />
           ) : null}
 
-          <StatusContent
-            status={actualStatus}
-            expanded={!actualStatus.hidden}
-            onExpandedToggle={handleExpandedToggle}
-          />
+          <StatusContent status={actualStatus} />
 
           <StatusMedia
             status={actualStatus}
