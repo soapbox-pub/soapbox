@@ -268,7 +268,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   };
 
   const renderContent = () => {
-    switch (type) {
+    switch (type as NotificationType) {
       case 'follow':
       case 'user_approved':
         return account && typeof account === 'object' ? (
