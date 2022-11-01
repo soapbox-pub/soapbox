@@ -7,6 +7,8 @@ import { useHistory } from 'react-router-dom';
 import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import { useAppDispatch, useAppSelector, usePrevious } from 'soapbox/hooks';
+import { queryClient } from 'soapbox/queries/client';
+import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
 import type { UnregisterCallback } from 'history';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
@@ -74,6 +76,15 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
         }));
       } else if (hasComposeContent && type === 'CONFIRM') {
         dispatch(closeModal('CONFIRM'));
+      } else if (type === 'POLICY') {
+        // If the user has not accepted the Policy, prevent them
+        // from closing the Modal.
+        const pendingPolicy = queryClient.getQueryData(PolicyKeys.policy) as IPolicy;
+        if (pendingPolicy?.pending_policy_id) {
+          return;
+        }
+
+        onClose();
       } else {
         onClose();
       }

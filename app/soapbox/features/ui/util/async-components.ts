@@ -110,6 +110,10 @@ export function AccountModerationModal() {
   return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal/account-moderation-modal');
 }
 
+export function PolicyModal() {
+  return import(/* webpackChunkName: "modals/policy-modal" */'../components/modals/policy-modal');
+}
+
 export function MediaGallery() {
   return import(/* webpackChunkName: "status/media_gallery" */'../../../components/media_gallery');
 }

@@ -32,12 +32,14 @@ import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
+import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import { StatProvider } from '../../contexts/stat-context';
 
 import BackgroundShapes from './components/background_shapes';
+import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle_container';
 import {
@@ -311,6 +313,7 @@ const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { data: pendingPolicy } = usePendingPolicy();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -499,6 +502,12 @@ const UI: React.FC = ({ children }) => {
   useEffect(() => {
     dispatch(registerPushNotifications());
   }, [vapidKey]);
+
+  useEffect(() => {
+    if (pendingPolicy && supportedPolicyIds.includes(pendingPolicy.pending_policy_id)) {
+      dispatch(openModal('POLICY'));
+    }
+  }, [pendingPolicy]);
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();

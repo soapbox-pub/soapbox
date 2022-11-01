@@ -33,7 +33,7 @@ const Blankslate: React.FC<IBlankslate> = () => {
         </Text>
       </Stack>
 
-      <Button onClick={handleNewChat}>
+      <Button theme='primary' onClick={handleNewChat}>
         <FormattedMessage
           id='chats.main.blankslate.new_chat'
           defaultMessage='Message someone'
