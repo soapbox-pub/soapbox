@@ -8,6 +8,7 @@ import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useChatActions } from 'soapbox/queries/chats';
+import { secondsToDays } from 'soapbox/utils/numbers';
 
 const messages = defineMessages({
   leaveChatHeading: { id: 'chat_message_list_intro.leave_chat.heading', defaultMessage: 'Leave Chat' },
@@ -17,7 +18,7 @@ const messages = defineMessages({
   accept: { id: 'chat_message_list_intro.actions.accept', defaultMessage: 'Accept' },
   leaveChat: { id: 'chat_message_list_intro.actions.leave_chat', defaultMessage: 'Leave chat' },
   report: { id: 'chat_message_list_intro.actions.report', defaultMessage: 'Report' },
-  messageLifespan: { id: 'chat_message_list_intro.actions.message_lifespan', defaultMessage: 'Messages older than 15 days are deleted.' },
+  messageLifespan: { id: 'chat_message_list_intro.actions.message_lifespan', defaultMessage: 'Messages older than {day} days are deleted.' },
 });
 
 const ChatMessageListIntro = () => {
@@ -97,7 +98,7 @@ const ChatMessageListIntro = () => {
         <HStack justifyContent='center' alignItems='center' space={1} className='flex-shrink-0'>
           <Icon src={require('@tabler/icons/clock.svg')} className='text-gray-600 w-4 h-4' />
           <Text size='sm' theme='muted'>
-            {intl.formatMessage(messages.messageLifespan)}
+            {intl.formatMessage(messages.messageLifespan, { day: secondsToDays(chat.message_expiration) })}
           </Text>
         </HStack>
       )}
