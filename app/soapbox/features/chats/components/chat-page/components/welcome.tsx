@@ -77,7 +77,7 @@ const Welcome = () => {
           {intl.formatMessage(messages.notice)}
         </Text>
 
-        <Button type='submit' theme='primary' block size='lg'>
+        <Button type='submit' theme='primary' block size='lg' disabled={updateCredentials.isLoading}>
           {intl.formatMessage(messages.submit)}
         </Button>
       </Form>
