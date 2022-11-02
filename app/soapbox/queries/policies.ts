@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useApi, useOwnAccount } from 'soapbox/hooks';
+import { useApi, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import { queryClient } from './client';
 
@@ -15,6 +15,7 @@ const PolicyKeys = {
 function usePendingPolicy() {
   const api = useApi();
   const account = useOwnAccount();
+  const features = useFeatures();
 
   const getPolicy = async() => {
     const { data } = await api.get<IPolicy>('/api/v1/truth/policies/pending');
@@ -27,7 +28,7 @@ function usePendingPolicy() {
     refetchOnWindowFocus: true,
     staleTime: 60000, // 1 minute
     cacheTime: Infinity,
-    enabled: !!account,
+    enabled: !!account && features.truthPolicies,
   });
 }
 
