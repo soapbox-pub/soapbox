@@ -7,7 +7,7 @@ import { useOwnAccount } from 'soapbox/hooks';
 import { useUpdateCredentials } from 'soapbox/queries/accounts';
 
 type FormData = {
-  accepting_messages?: boolean
+  accepts_chat_messages?: boolean
   chats_onboarded: boolean
 }
 
@@ -26,7 +26,7 @@ const ChatPageSettings = () => {
 
   const [data, setData] = useState<FormData>({
     chats_onboarded: true,
-    accepting_messages: account?.accepting_messages,
+    accepts_chat_messages: account?.accepts_chat_messages,
   });
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -49,8 +49,8 @@ const ChatPageSettings = () => {
               hint={intl.formatMessage(messages.acceptingMessageHint)}
             >
               <Toggle
-                checked={data.accepting_messages}
-                onChange={(event) => setData((prevData) => ({ ...prevData, accepting_messages: event.target.checked }))}
+                checked={data.accepts_chat_messages}
+                onChange={(event) => setData((prevData) => ({ ...prevData, accepts_chat_messages: event.target.checked }))}
               />
             </ListItem>
           </List>

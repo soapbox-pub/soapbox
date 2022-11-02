@@ -21,7 +21,7 @@ import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/e
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
-  accepting_messages: false,
+  accepts_chat_messages: false,
   acct: '',
   avatar: '',
   avatar_static: '',
@@ -264,6 +264,12 @@ const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
   return account.set('discoverable', discoverable);
 };
 
+/** Normalize message acceptance between Pleroma and Truth Social. */
+const normalizeMessageAcceptance = (account: ImmutableMap<string, any>) => {
+  const acceptance = Boolean(account.getIn(['pleroma', 'accepts_chat_messages']) || account.get('accepting_messages'));
+  return account.set('accepts_chat_messages', acceptance);
+};
+
 /** Normalize undefined/null birthday to empty string. */
 const fixBirthday = (account: ImmutableMap<string, any>) => {
   const birthday = account.get('birthday');
@@ -285,6 +291,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeFqn(account);
       normalizeFavicon(account);
       normalizeDiscoverable(account);
+      normalizeMessageAcceptance(account);
       addDomain(account);
       addStaffFields(account);
       fixUsername(account);

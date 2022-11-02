@@ -30,7 +30,7 @@ export type IAccount = {
 }
 
 type UpdateCredentialsData = {
-  accepting_messages?: boolean
+  accepts_chat_messages?: boolean
   chats_onboarded?: boolean
 }
 
