@@ -532,10 +532,17 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
     ]),
 
-    reportMultipleStatuses: any([
-      v.software === MASTODON,
-      v.software === PLEROMA,
-    ]),
+    /**
+     * Ability to report chat messages.
+     * @see POST /api/v1/reports
+     */
+    reportChats: v.software === TRUTHSOCIAL,
+
+    /**
+     * Ability to select more than one status when reporting.
+     * @see POST /api/v1/reports
+     */
+    reportMultipleStatuses: v.software !== TRUTHSOCIAL,
 
     /**
      * Can request a password reset email through the API.

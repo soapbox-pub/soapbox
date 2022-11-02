@@ -3,6 +3,7 @@ import React from 'react';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { ChatContext } from 'soapbox/contexts/chat-context';
+import { normalizeInstance } from 'soapbox/normalizers';
 import { IAccount } from 'soapbox/queries/accounts';
 
 import { __stub } from '../../../../api';
@@ -52,7 +53,9 @@ Object.assign(navigator, {
   },
 });
 
-const store = rootState.set('me', '1');
+const store = rootState
+  .set('me', '1')
+  .set('instance', normalizeInstance({ version: '3.4.1 (compatible; TruthSocial 1.0.0)' }));
 
 const renderComponentWithChatContext = () => render(
   <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>

@@ -14,7 +14,7 @@ import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import { ChatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
@@ -73,6 +73,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useOwnAccount();
+  const features = useFeatures();
 
   const node = useRef<VirtuosoHandle>(null);
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX - 20);
@@ -239,11 +240,13 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
         destructive: true,
       });
     } else {
-      menu.push({
-        text: intl.formatMessage(messages.report),
-        action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage })),
-        icon: require('@tabler/icons/flag.svg'),
-      });
+      if (features.reportChats) {
+        menu.push({
+          text: intl.formatMessage(messages.report),
+          action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage })),
+          icon: require('@tabler/icons/flag.svg'),
+        });
+      }
       menu.push({
         text: intl.formatMessage(messages.deleteForMe),
         action: () => handleDeleteMessage.mutate(chatMessage.id),
