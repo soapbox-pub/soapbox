@@ -7,7 +7,7 @@ import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
@@ -41,6 +41,7 @@ const messages = defineMessages({
 const ChatPageMain = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -138,32 +139,34 @@ const ChatPageMain = () => {
                 </Stack>
               </HStack>
 
-              <List>
-                <ListItem
-                  label={intl.formatMessage(messages.autoDeleteLabel)}
-                  hint={intl.formatMessage(messages.autoDeleteHint)}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete7Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.SEVEN)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.SEVEN}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete14Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.FOURTEEN)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.FOURTEEN}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete30Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.THIRTY)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.THIRTY}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete90Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.NINETY)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.NINETY}
-                />
-              </List>
+              {features.chatsExpiration && (
+                <List>
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDeleteLabel)}
+                    hint={intl.formatMessage(messages.autoDeleteHint)}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete7Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.SEVEN)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.SEVEN}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete14Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.FOURTEEN)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.FOURTEEN}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete30Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.THIRTY)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.THIRTY}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete90Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.NINETY)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.NINETY}
+                  />
+                </List>
+              )}
 
               <Stack space={2}>
                 <MenuItem

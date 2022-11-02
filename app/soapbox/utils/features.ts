@@ -205,6 +205,12 @@ const getInstanceFeatures = (instance: Instance) => {
     chats: v.software === TRUTHSOCIAL || (v.software === PLEROMA && gte(v.version, '2.1.0')),
 
     /**
+     * Ability to set disappearing messages on chats.
+     * @see PATCH /api/v1/pleroma/chats/:id
+     */
+    chatsExpiration: v.software === TRUTHSOCIAL,
+
+    /**
      * Ability to search among chats.
      * @see GET /api/v1/pleroma/chats
      */

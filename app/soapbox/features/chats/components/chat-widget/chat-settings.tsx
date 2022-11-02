@@ -6,7 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, Select, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
@@ -33,6 +33,7 @@ const messages = defineMessages({
 const ChatSettings = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
   const { chat, setEditing, toggleChatPane } = useChatContext();
   const { deleteChat, updateChat } = useChatActions(chat?.id as string);
@@ -113,21 +114,23 @@ const ChatSettings = () => {
           </Stack>
         </HStack>
 
-        <List>
-          <ListItem label={intl.formatMessage(messages.autoDeleteLabel)}>
-            <Select defaultValue={chat.message_expiration} onChange={(event) => handleUpdateChat(Number(event.target.value))}>
-              {messageExpirationOptions.map((duration) => {
-                const inDays = secondsToDays(duration);
+        {features.chatsExpiration && (
+          <List>
+            <ListItem label={intl.formatMessage(messages.autoDeleteLabel)}>
+              <Select defaultValue={chat.message_expiration} onChange={(event) => handleUpdateChat(Number(event.target.value))}>
+                {messageExpirationOptions.map((duration) => {
+                  const inDays = secondsToDays(duration);
 
-                return (
-                  <option key={duration} value={duration}>
-                    {intl.formatMessage(messages.autoDeleteDays, { day: inDays })}
-                  </option>
-                );
-              })}
-            </Select>
-          </ListItem>
-        </List>
+                  return (
+                    <option key={duration} value={duration}>
+                      {intl.formatMessage(messages.autoDeleteDays, { day: inDays })}
+                    </option>
+                  );
+                })}
+              </Select>
+            </ListItem>
+          </List>
+        )}
 
         <Stack space={5}>
           <button onClick={isBlocking ? handleUnblockUser : handleBlockUser} className='w-full flex items-center space-x-2 font-bold text-sm text-primary-600 dark:text-accent-blue'>
