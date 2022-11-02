@@ -9,6 +9,7 @@ import compareId from 'soapbox/compare_id';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { normalizeChatMessage } from 'soapbox/normalizers';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
@@ -91,7 +92,7 @@ const useChatMessages = (chat: IChat) => {
 
     const link = getNextLink(response);
     const hasMore = !!link;
-    const result = data.sort(reverseOrder);
+    const result = data.sort(reverseOrder).map(normalizeChatMessage);
 
     return {
       result,
