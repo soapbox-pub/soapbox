@@ -105,16 +105,18 @@ const ChatPageMain = () => {
               {chat.account?.verified && <VerificationBadge />}
             </div>
 
-            <Text
-              align='left'
-              size='sm'
-              weight='medium'
-              theme='primary'
-              truncate
-              className='w-full'
-            >
-              {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
-            </Text>
+            {chat.message_expiration && (
+              <Text
+                align='left'
+                size='sm'
+                weight='medium'
+                theme='primary'
+                truncate
+                className='w-full'
+              >
+                {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
+              </Text>
+            )}
           </Stack>
         </HStack>
 

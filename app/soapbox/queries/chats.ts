@@ -44,7 +44,7 @@ export interface IChat {
     [id: number]: string
   }[]
   latest_read_message_created_at: null | string
-  message_expiration: MessageExpirationValues
+  message_expiration?: MessageExpirationValues
   unread: number
 }
 

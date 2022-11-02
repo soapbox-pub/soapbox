@@ -97,9 +97,11 @@ const ChatMessageListIntro = () => {
       ) : (
         <HStack justifyContent='center' alignItems='center' space={1} className='flex-shrink-0'>
           <Icon src={require('@tabler/icons/clock.svg')} className='text-gray-600 w-4 h-4' />
-          <Text size='sm' theme='muted'>
-            {intl.formatMessage(messages.messageLifespan, { day: secondsToDays(chat.message_expiration) })}
-          </Text>
+          {chat.message_expiration && (
+            <Text size='sm' theme='muted'>
+              {intl.formatMessage(messages.messageLifespan, { day: secondsToDays(chat.message_expiration) })}
+            </Text>
+          )}
         </HStack>
       )}
     </Stack>
