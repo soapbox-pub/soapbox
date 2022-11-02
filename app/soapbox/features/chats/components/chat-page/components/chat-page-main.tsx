@@ -180,16 +180,18 @@ const ChatPageMain = () => {
                   </div>
                 </MenuItem>
 
-                <MenuItem
-                  as='button'
-                  onSelect={handleLeaveChat}
-                  className='!px-0 hover:!bg-transparent'
-                >
-                  <div className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600 dark:text-danger-500'>
-                    <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
-                    <span>{intl.formatMessage(messages.leaveChat)}</span>
-                  </div>
-                </MenuItem>
+                {features.chatsDelete && (
+                  <MenuItem
+                    as='button'
+                    onSelect={handleLeaveChat}
+                    className='!px-0 hover:!bg-transparent'
+                  >
+                    <div className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600 dark:text-danger-500'>
+                      <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
+                      <span>{intl.formatMessage(messages.leaveChat)}</span>
+                    </div>
+                  </MenuItem>
+                )}
               </Stack>
             </Stack>
           </MenuList>

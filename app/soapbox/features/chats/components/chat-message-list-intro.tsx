@@ -6,7 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import Link from 'soapbox/components/link';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
@@ -24,6 +24,7 @@ const messages = defineMessages({
 const ChatMessageListIntro = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
   const { chat, needsAcceptance } = useChatContext();
   const { acceptChat, deleteChat } = useChatActions(chat?.id as string);
@@ -38,7 +39,7 @@ const ChatMessageListIntro = () => {
     }));
   };
 
-  if (!chat) {
+  if (!chat || !features.chatAcceptance) {
     return null;
   }
 

@@ -199,10 +199,22 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to accept a chat.
+     * POST /api/v1/pleroma/chats/:id/accept
+     */
+    chatAcceptance: v.software === TRUTHSOCIAL,
+
+    /**
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
     chats: v.software === TRUTHSOCIAL || (v.software === PLEROMA && gte(v.version, '2.1.0')),
+
+    /**
+     * Ability to delete a chat.
+     * @see DELETE /api/v1/pleroma/chats/:id
+     */
+    chatsDelete: v.software === TRUTHSOCIAL,
 
     /**
      * Ability to set disappearing messages on chats.

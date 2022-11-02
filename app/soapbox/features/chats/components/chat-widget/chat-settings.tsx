@@ -138,10 +138,12 @@ const ChatSettings = () => {
             <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
           </button>
 
-          <button onClick={handleLeaveChat} className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600'>
-            <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
-            <span>{intl.formatMessage(messages.leaveChat)}</span>
-          </button>
+          {features.chatsDelete && (
+            <button onClick={handleLeaveChat} className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600'>
+              <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
+              <span>{intl.formatMessage(messages.leaveChat)}</span>
+            </button>
+          )}
         </Stack>
       </Stack>
     </>

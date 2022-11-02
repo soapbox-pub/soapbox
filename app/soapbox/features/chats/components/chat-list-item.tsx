@@ -6,7 +6,7 @@ import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -26,6 +26,7 @@ interface IChatListItemInterface {
 const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
   const { deleteChat } = useChatActions(chat?.id as string);
 
@@ -80,14 +81,16 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
         </HStack>
 
         <HStack alignItems='center' space={2}>
-          <div className='text-gray-600 hidden group-hover:block hover:text-gray-100'>
-            {/* TODO: fix nested buttons here */}
-            <DropdownMenuContainer
-              items={menu}
-              src={require('@tabler/icons/dots.svg')}
-              title='Settings'
-            />
-          </div>
+          {features.chatsDelete && (
+            <div className='text-gray-600 hidden group-hover:block hover:text-gray-100'>
+              {/* TODO: fix nested buttons here */}
+              <DropdownMenuContainer
+                items={menu}
+                src={require('@tabler/icons/dots.svg')}
+                title='Settings'
+              />
+            </div>
+          )}
 
           {chat.last_message && (
             <>
