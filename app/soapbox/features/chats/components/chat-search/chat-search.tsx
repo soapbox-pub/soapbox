@@ -5,7 +5,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { HStack, Icon, Input, Stack, Text } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useDebounce } from 'soapbox/hooks';
 import { useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
@@ -28,7 +28,7 @@ const ChatSearch = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const { isOpen, setChat, setSearching, toggleChatPane } = useChatContext();
+  const { isOpen, changeScreen, toggleChatPane } = useChatContext();
   const { getOrCreateChatByAccountId } = useChats();
 
   const [value, setValue] = useState<string>();
@@ -47,7 +47,7 @@ const ChatSearch = () => {
       dispatch(snackbar.error(data?.error));
     },
     onSuccess: (response) => {
-      setChat(response.data);
+      changeScreen(ChatWidgetScreens.CHAT, response.data.id);
       queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
   });
@@ -82,7 +82,11 @@ const ChatSearch = () => {
         data-testid='pane-header'
         title={
           <HStack alignItems='center' space={2}>
-            <button onClick={() => setSearching(false)}>
+            <button
+              onClick={() => {
+                changeScreen(ChatWidgetScreens.INBOX);
+              }}
+            >
               <Icon
                 src={require('@tabler/icons/arrow-left.svg')}
                 className='h-6 w-6 text-gray-600 dark:text-gray-400'

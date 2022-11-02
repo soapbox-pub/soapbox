@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
+import { MessageExpirationValues, useChat, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
 import Chat from '../../chat';
@@ -42,10 +42,14 @@ const ChatPageMain = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const features = useFeatures();
+  const history = useHistory();
+
+  const { chatId } = useParams<{ chatId: string }>();
+
+  const { data: chat } = useChat(chatId);
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const { chat, setChat } = useChatContext();
   const { deleteChat, updateChat } = useChatActions(chat?.id as string);
 
   const handleUpdateChat = (value: MessageExpirationValues) => updateChat.mutate({ message_expiration: value });
@@ -94,7 +98,7 @@ const ChatPageMain = () => {
             <IconButton
               src={require('@tabler/icons/arrow-left.svg')}
               className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
-              onClick={() => setChat(null)}
+              onClick={() => history.push('/chats')}
             />
 
             <Avatar src={chat.account?.avatar} size={40} className='flex-none' />

@@ -28,7 +28,7 @@ const chat: IChat = {
   discarded_at: null,
   id: '1',
   last_message: null,
-  latest_read_message_by_account: null,
+  latest_read_message_by_account: [],
   latest_read_message_created_at: null,
   message_expiration: 1209600,
   unread: 0,
@@ -169,7 +169,7 @@ describe('useChat()', () => {
     });
 
     it('is successful', async () => {
-      const { result } = renderHook(() => useChat(chat.id).chat);
+      const { result } = renderHook(() => useChat(chat.id));
 
       await waitFor(() => expect(result.current.isFetching).toBe(false));
 
@@ -185,7 +185,7 @@ describe('useChat()', () => {
     });
 
     it('is has error state', async() => {
-      const { result } = renderHook(() => useChat(chat.id).chat);
+      const { result } = renderHook(() => useChat(chat.id));
 
       await waitFor(() => expect(result.current.isFetching).toBe(false));
 
