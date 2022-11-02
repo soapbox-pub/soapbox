@@ -3,7 +3,6 @@ import React from 'react';
 
 import { useCompose } from 'soapbox/hooks';
 
-import SensitiveButton from './sensitive-button';
 import Upload from './upload';
 import UploadProgress from './upload-progress';
 
@@ -28,8 +27,6 @@ const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {
           <Upload id={id} key={id} composeId={composeId} />
         ))}
       </div>
-
-      {!mediaIds.isEmpty() && <SensitiveButton composeId={composeId} />}
     </div>
   );
 };
