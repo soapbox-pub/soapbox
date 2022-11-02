@@ -54,7 +54,6 @@ const COMPOSE_SUGGESTION_TAGS_UPDATE = 'COMPOSE_SUGGESTION_TAGS_UPDATE';
 
 const COMPOSE_TAG_HISTORY_UPDATE = 'COMPOSE_TAG_HISTORY_UPDATE';
 
-const COMPOSE_SENSITIVITY_CHANGE = 'COMPOSE_SENSITIVITY_CHANGE';
 const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
 const COMPOSE_TYPE_CHANGE = 'COMPOSE_TYPE_CHANGE';
 const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
@@ -600,11 +599,6 @@ const insertIntoTagHistory = (composeId: string, recognizedTags: APIEntity[], te
     dispatch(updateTagHistory(composeId, newHistory));
   };
 
-const changeComposeSensitivity = (composeId: string) => ({
-  type: COMPOSE_SENSITIVITY_CHANGE,
-  id: composeId,
-});
-
 const changeComposeSpoilerness = (composeId: string) => ({
   type: COMPOSE_SPOILERNESS_CHANGE,
   id: composeId,
@@ -741,7 +735,6 @@ export {
   COMPOSE_SUGGESTION_SELECT,
   COMPOSE_SUGGESTION_TAGS_UPDATE,
   COMPOSE_TAG_HISTORY_UPDATE,
-  COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
   COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
@@ -796,7 +789,6 @@ export {
   selectComposeSuggestion,
   updateSuggestionTags,
   updateTagHistory,
-  changeComposeSensitivity,
   changeComposeSpoilerness,
   changeComposeContentType,
   changeComposeSpoilerText,

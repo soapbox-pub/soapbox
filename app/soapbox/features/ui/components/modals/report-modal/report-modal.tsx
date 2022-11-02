@@ -59,7 +59,6 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
 
       <StatusContent
         status={status}
-        expanded
         collapsable
       />
 

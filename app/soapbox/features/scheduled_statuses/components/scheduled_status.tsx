@@ -44,7 +44,6 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
 
         <StatusContent
           status={status}
-          expanded
           collapsable
         />
 
