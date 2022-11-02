@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useDebounce, useFeatures } from 'soapbox/hooks';
 import { IChat, useChats } from 'soapbox/queries/chats';
@@ -24,13 +24,13 @@ const ChatPane = () => {
   const [value, setValue] = useState<string>();
   const debouncedValue = debounce(value as string, 300);
 
-  const { chat, setChat, isOpen, isSearching, setSearching, toggleChatPane } = useChatContext();
+  const { screen, changeScreen, isOpen, toggleChatPane } = useChatContext();
   const { chatsQuery: { data: chats, isLoading } } = useChats(debouncedValue);
 
   const hasSearchValue = Number(debouncedValue?.length) > 0;
 
   const handleClickChat = (nextChat: IChat) => {
-    setChat(nextChat);
+    changeScreen(ChatWidgetScreens.CHAT, nextChat.id);
     setValue(undefined);
   };
 
@@ -66,13 +66,17 @@ const ChatPane = () => {
       );
     } else if (chats?.length === 0) {
       return (
-        <Blankslate onSearch={() => setSearching(true)} />
+        <Blankslate
+          onSearch={() => {
+            changeScreen(ChatWidgetScreens.SEARCH);
+          }}
+        />
       );
     }
   };
 
   // Active chat
-  if (chat?.id) {
+  if (screen === ChatWidgetScreens.CHAT || screen === ChatWidgetScreens.CHAT_SETTINGS) {
     return (
       <Pane isOpen={isOpen} index={0} main>
         <ChatWindow />
@@ -80,7 +84,7 @@ const ChatPane = () => {
     );
   }
 
-  if (isSearching) {
+  if (screen === ChatWidgetScreens.SEARCH) {
     return <ChatSearch />;
   }
 
@@ -92,7 +96,7 @@ const ChatPane = () => {
         isOpen={isOpen}
         onToggle={toggleChatPane}
         secondaryAction={() => {
-          setSearching(true);
+          changeScreen(ChatWidgetScreens.SEARCH);
           setValue(undefined);
 
           if (!isOpen) {

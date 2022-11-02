@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { Stack } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useOwnAccount } from 'soapbox/hooks';
 import { useChat } from 'soapbox/queries/chats';
 
@@ -21,8 +20,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
   const account = useOwnAccount();
   const isOnboarded = account?.chats_onboarded;
 
-  const { chat, setChat } = useChatContext();
-  const { chat: chatQueryResult } = useChat(chatId);
+  const { data: chat } = useChat(chatId);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<string | number>('100%');
@@ -40,14 +38,6 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
 
     setHeight(fullHeight - top + offset);
   };
-
-  useEffect(() => {
-    const data = chatQueryResult?.data;
-
-    if (data) {
-      setChat(data);
-    }
-  }, [chatQueryResult?.isLoading]);
 
   useEffect(() => {
     calculateHeight();

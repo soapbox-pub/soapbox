@@ -5,7 +5,7 @@ import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, Select, Stack, Text } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
@@ -34,14 +34,16 @@ const ChatSettings = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const { chat, setEditing, toggleChatPane } = useChatContext();
+  const { chat, changeScreen, toggleChatPane } = useChatContext();
   const { deleteChat, updateChat } = useChatActions(chat?.id as string);
 
   const handleUpdateChat = (value: MessageExpirationValues) => updateChat.mutate({ message_expiration: value });
 
   const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
 
-  const closeSettings = () => setEditing(false);
+  const closeSettings = () => {
+    changeScreen(ChatWidgetScreens.CHAT, chat?.id);
+  };
 
   const minimizeChatPane = () => {
     closeSettings();

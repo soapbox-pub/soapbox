@@ -1,11 +1,10 @@
 import classNames from 'clsx';
 import React, { useRef, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
 import { fetchChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Spinner, Stack } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useChats } from 'soapbox/queries/chats';

@@ -2,7 +2,7 @@ import { InfiniteData } from '@tanstack/react-query';
 
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
-import { ChatKeys, isLastMessage } from 'soapbox/queries/chats';
+import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { updatePageItem, appendPageItem, removePageItem, flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
@@ -91,6 +91,21 @@ const removeChatMessage = (payload: string) => {
   removePageItem(ChatKeys.chatMessages(chatId), chatMessageId, (o: any, n: any) => String(o.id) === String(n));
 };
 
+// Update the specific Chat query data.
+const updateChatQuery = (chat: IChat) => {
+  const cachedChat = queryClient.getQueryData<IChat>(ChatKeys.chat(chat.id));
+  if (!cachedChat) {
+    return;
+  }
+
+  const newChat = {
+    ...cachedChat,
+    latest_read_message_by_account: chat.latest_read_message_by_account,
+    latest_read_message_created_at: chat.latest_read_message_created_at,
+  };
+  queryClient.setQueryData<Chat>(ChatKeys.chat(chat.id), newChat as any);
+};
+
 const connectTimelineStream = (
   timelineId: string,
   path: string,
@@ -151,6 +166,9 @@ const connectTimelineStream = (
           break;
         case 'chat_message.deleted': // TruthSocial
           removeChatMessage(data.payload);
+          break;
+        case 'chat_message.read': // TruthSocial
+          updateChatQuery(JSON.parse(data.payload));
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));

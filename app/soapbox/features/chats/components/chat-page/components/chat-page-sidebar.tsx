@@ -3,7 +3,6 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useDebounce, useFeatures } from 'soapbox/hooks';
 import { IChat } from 'soapbox/queries/chats';
 
@@ -20,12 +19,10 @@ const ChatPageSidebar = () => {
   const features = useFeatures();
 
   const [search, setSearch] = useState('');
-  const { setChat } = useChatContext();
 
   const debouncedSearch = useDebounce(search, 300);
 
   const handleClickChat = (chat: IChat) => {
-    setChat(chat);
     history.push(`/chats/${chat.id}`);
   };
 

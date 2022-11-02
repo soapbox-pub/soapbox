@@ -73,6 +73,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useOwnAccount();
+  const lastReadMessageDateString = chat.latest_read_message_by_account.find((latest) => latest.id === chat.account.id)?.date;
+  const lastReadMessageTimestamp = lastReadMessageDateString ? new Date(lastReadMessageDateString) : null;
 
   const node = useRef<VirtuosoHandle>(null);
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX - 20);
@@ -211,15 +213,19 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
 
   const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='sm' />;
 
-  const handleCopyText = (chatMessage: IChatMessage) => {
+  const handleCopyText = (chatMessage: ChatMessageEntity) => {
     if (navigator.clipboard) {
       const text = stripHTML(chatMessage.content);
       navigator.clipboard.writeText(text);
     }
   };
 
-  const renderMessage = (chatMessage: any) => {
+  const renderMessage = (chatMessage: ChatMessageEntity) => {
     const isMyMessage = chatMessage.account_id === me;
+    // did this occur before this time?
+    const isRead = isMyMessage
+      && lastReadMessageTimestamp
+      && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
     const menu: Menu = [];
 
@@ -241,7 +247,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
     } else {
       menu.push({
         text: intl.formatMessage(messages.report),
-        action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage })),
+        action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage } as any)),
         icon: require('@tabler/icons/flag.svg'),
       });
       menu.push({
@@ -336,7 +342,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
                   {intl.formatTime(chatMessage.created_at)}
                 </Text>
 
-                {isMyMessage && !chatMessage.unread ? (
+                {isRead ? (
                   <span className='rounded-full flex flex-col items-center justify-center h-3.5 w-3.5 dark:bg-primary-400 dark:text-primary-900'>
                     <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
                   </span>

@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 import AccountSearch from 'soapbox/components/account_search';
 import { CardTitle, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 
@@ -14,12 +13,10 @@ interface IChatPageNew {
 /** New message form to create a chat. */
 const ChatPageNew: React.FC<IChatPageNew> = () => {
   const history = useHistory();
-  const { setChat } = useChatContext();
   const { getOrCreateChatByAccountId } = useChats();
 
   const handleAccountSelected = async (accountId: string) => {
     const { data } = await getOrCreateChatByAccountId(accountId);
-    setChat(data);
     history.push(`/chats/${data.id}`);
     queryClient.invalidateQueries(ChatKeys.chatSearch());
   };

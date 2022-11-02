@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useChatContext } from 'soapbox/contexts/chat-context';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
 import Chat from '../chat';
@@ -32,19 +32,22 @@ const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, 
 const ChatWindow = () => {
   const intl = useIntl();
 
-  const { chat, setChat, isOpen, isEditing, needsAcceptance, setEditing, setSearching, toggleChatPane } = useChatContext();
+  const { chat, currentChatId, screen, changeScreen, isOpen, needsAcceptance, toggleChatPane } = useChatContext();
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const closeChat = () => setChat(null);
+  const closeChat = () => {
+    changeScreen(ChatWidgetScreens.INBOX);
+  };
 
   const openSearch = () => {
     toggleChatPane();
-    setSearching(true);
-    setChat(null);
+    changeScreen(ChatWidgetScreens.SEARCH);
   };
 
-  const openChatSettings = () => setEditing(true);
+  const openChatSettings = () => {
+    changeScreen(ChatWidgetScreens.CHAT_SETTINGS, currentChatId);
+  };
 
   const secondaryAction = () => {
     if (needsAcceptance) {
@@ -56,7 +59,7 @@ const ChatWindow = () => {
 
   if (!chat) return null;
 
-  if (isEditing) {
+  if (screen === ChatWidgetScreens.CHAT_SETTINGS) {
     return <ChatSettings />;
   }
 

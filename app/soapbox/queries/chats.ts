@@ -6,7 +6,7 @@ import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/imp
 import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
-import { useChatContext } from 'soapbox/contexts/chat-context';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
@@ -40,8 +40,9 @@ export interface IChat {
     id: string
     unread: boolean
   }
-  latest_read_message_by_account: null | {
-    [id: number]: string
+  latest_read_message_by_account: {
+    id: string,
+    date: string
   }[]
   latest_read_message_created_at: null | string
   message_expiration: MessageExpirationValues
@@ -177,7 +178,6 @@ const useChats = (search?: string) => {
 
 const useChat = (chatId?: string) => {
   const api = useApi();
-  const actions = useChatActions(chatId!);
   const dispatch = useAppDispatch();
 
   const getChat = async () => {
@@ -190,9 +190,9 @@ const useChat = (chatId?: string) => {
     }
   };
 
-  const chat = useQuery<IChat | undefined>(ChatKeys.chat(chatId), getChat);
-
-  return { ...actions, chat };
+  return useQuery<IChat | undefined>(ChatKeys.chat(chatId), getChat, {
+    enabled: !!chatId,
+  });
 };
 
 const useChatActions = (chatId: string) => {
@@ -200,7 +200,7 @@ const useChatActions = (chatId: string) => {
   const dispatch = useAppDispatch();
   const { setUnreadChatsCount } = useStatContext();
 
-  const { chat, setChat, setEditing } = useChatContext();
+  const { chat, changeScreen } = useChatContext();
 
   const markChatAsRead = async (lastReadId: string) => {
     return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
@@ -239,21 +239,22 @@ const useChatActions = (chatId: string) => {
 
       // Optimistically update to the new value
       queryClient.setQueryData(ChatKeys.chat(chatId), nextChat);
-      setChat(nextChat as IChat);
+
+      changeScreen(ChatWidgetScreens.CHAT, nextChat.id);
 
       // Return a context object with the snapshotted value
       return { prevChat };
     },
     // If the mutation fails, use the context returned from onMutate to roll back
     onError: (_error: any, _newData: any, context: any) => {
-      setChat(context?.prevChat);
+      changeScreen(ChatWidgetScreens.CHAT, context.prevChat.id);
       queryClient.setQueryData(ChatKeys.chat(chatId), context.prevChat);
       dispatch(snackbar.error('Chat Settings failed to update.'));
     },
     onSuccess(response) {
       queryClient.invalidateQueries(ChatKeys.chat(chatId));
       queryClient.invalidateQueries(ChatKeys.chatSearch());
-      setChat(response.data);
+      changeScreen(ChatWidgetScreens.CHAT, response.data.id);
       dispatch(snackbar.success('Chat Settings updated successfully'));
     },
   });
@@ -262,16 +263,15 @@ const useChatActions = (chatId: string) => {
 
   const acceptChat = useMutation(() => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`), {
     onSuccess(response) {
-      setChat(response.data);
+      changeScreen(ChatWidgetScreens.CHAT, response.data.id);
       queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
       queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
   });
 
   const deleteChat = useMutation(() => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}`), {
-    onSuccess(response) {
-      setChat(null);
-      setEditing(false);
+    onSuccess() {
+      changeScreen(ChatWidgetScreens.INBOX);
       queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
       queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
