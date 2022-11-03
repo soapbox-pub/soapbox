@@ -168,7 +168,14 @@ const connectTimelineStream = (
           removeChatMessage(data.payload);
           break;
         case 'chat_message.read': // TruthSocial
-          updateChatQuery(JSON.parse(data.payload));
+          dispatch((_dispatch: AppDispatch, getState: () => RootState) => {
+            const chat = JSON.parse(data.payload);
+            const me = getState().me;
+            const isFromOtherUser = chat.account.id !== me;
+            if (isFromOtherUser) {
+              updateChatQuery(JSON.parse(data.payload));
+            }
+          });
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));

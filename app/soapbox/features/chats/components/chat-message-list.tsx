@@ -344,10 +344,18 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                   {intl.formatTime(chatMessage.created_at)}
                 </Text>
 
-                {isRead ? (
-                  <span className='rounded-full flex flex-col items-center justify-center h-3.5 w-3.5 dark:bg-primary-400 dark:text-primary-900'>
-                    <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
-                  </span>
+                {isMyMessage ? (
+                  <>
+                    {isRead ? (
+                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 dark:bg-primary-400 dark:text-primary-900 border border-solid border-primary-400'>
+                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-3 h-3' />
+                      </span>
+                    ) : (
+                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-transparent dark:text-primary-400 border border-solid dark:border-primary-400'>
+                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-3 h-3' />
+                      </span>
+                    )}
+                  </>
                 ) : null}
               </span>
             </div>
