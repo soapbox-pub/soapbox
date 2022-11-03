@@ -12,17 +12,26 @@ import { IChat, IChatMessage } from '../../../../queries/chats';
 import ChatMessageList from '../chat-message-list';
 
 const chat: IChat = {
-  id: '14',
-  unread: 5,
-  created_by_account: '2',
-  account: {
-    id: '1',
-    avatar: 'url',
-    acct: 'username',
-  } as IAccount,
-  last_message: null,
   accepted: true,
-} as IChat;
+  account: {
+    username: 'username',
+    verified: true,
+    id: '1',
+    acct: 'acct',
+    avatar: 'avatar',
+    avatar_static: 'avatar',
+    display_name: 'my name',
+  } as IAccount,
+  created_at: '2020-06-10T02:05:06.000Z',
+  created_by_account: '2',
+  discarded_at: null,
+  id: '14',
+  last_message: null,
+  latest_read_message_by_account: [],
+  latest_read_message_created_at: null,
+  message_expiration: 1209600,
+  unread: 5,
+};
 
 const chatMessages: IChatMessage[] = [
   {

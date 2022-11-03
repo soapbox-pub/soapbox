@@ -51,8 +51,8 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   return (
     <Provider store={props.store}>
       <StatProvider>
-        <ChatProvider>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <ChatProvider>
             <IntlProvider locale={props.locale}>
               <MemoryRouter {...routerProps}>
                 {children}
@@ -60,8 +60,8 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
                 <NotificationsContainer />
               </MemoryRouter>
             </IntlProvider>
-          </QueryClientProvider>
-        </ChatProvider>
+          </ChatProvider>
+        </QueryClientProvider>
       </StatProvider>
     </Provider>
   );
