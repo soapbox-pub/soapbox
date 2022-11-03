@@ -314,7 +314,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 tabIndex={0}
               >
                 {maybeRenderMedia(chatMessage)}
-                <Text size='sm' theme='inherit' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
+                <Text size='sm' theme='inherit' className='break-word-nested' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
               </div>
 
               <div className={classNames({ 'order-1': !isMyMessage })}>
