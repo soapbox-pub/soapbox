@@ -14,8 +14,6 @@ describe('user_lists reducer', () => {
       blocks: { next: null, items: ImmutableOrderedSet(), isLoading: false },
       mutes: { next: null, items: ImmutableOrderedSet(), isLoading: false },
       directory: { next: null, items: ImmutableOrderedSet(), isLoading: true },
-      groups: {},
-      groups_removed_accounts: {},
       pinned: {},
       birthday_reminders: {},
       familiar_followers: {},
