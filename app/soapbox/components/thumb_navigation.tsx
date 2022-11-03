@@ -24,6 +24,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
           to='/chats'
           exact
           count={unreadChatsCount}
+          countMax={20}
         />
       );
     }

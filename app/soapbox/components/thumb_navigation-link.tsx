@@ -7,6 +7,7 @@ import { Icon, Text } from 'soapbox/components/ui';
 
 interface IThumbNavigationLink {
   count?: number,
+  countMax?: number,
   src: string,
   text: string | React.ReactElement,
   to: string,
@@ -14,7 +15,7 @@ interface IThumbNavigationLink {
   paths?: Array<string>,
 }
 
-const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text, to, exact, paths }): JSX.Element => {
+const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, src, text, to, exact, paths }): JSX.Element => {
   const { pathname } = useLocation();
 
   const isActive = (): boolean => {
@@ -38,6 +39,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
             'text-primary-500': active,
           })}
           count={count}
+          countMax={countMax}
         />
       ) : (
         <Icon

@@ -116,6 +116,7 @@ const SidebarNavigation = () => {
           to='/chats'
           icon={require('@tabler/icons/mail.svg')}
           count={unreadChatsCount}
+          countMax={20}
           text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
         />
       );

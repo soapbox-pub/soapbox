@@ -2,11 +2,13 @@ import classNames from 'clsx';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { Icon, Text } from './ui';
+import { Counter, HStack, Icon, Text } from './ui';
 
 interface ISidebarNavigationLink {
   /** Notification count, if any. */
   count?: number,
+  /** Optional max to cap count (ie: N+) */
+  countMax?: number
   /** URL to an SVG icon. */
   icon: string,
   /** Link label. */
@@ -19,7 +21,7 @@ interface ISidebarNavigationLink {
 
 /** Desktop sidebar navigation link. */
 const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, ref: React.ForwardedRef<HTMLAnchorElement>): JSX.Element => {
-  const { icon, text, to = '', count, onClick } = props;
+  const { icon, text, to = '', count, countMax, onClick } = props;
   const isActive = location.pathname === to;
 
   const handleClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -44,14 +46,19 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       <span className='relative'>
         <Icon
           src={icon}
-          count={count}
           className={classNames('h-5 w-5 group-hover:text-primary-500', {
             'text-primary-500': isActive,
           })}
         />
       </span>
 
-      <Text weight='semibold' theme='inherit'>{text}</Text>
+      <HStack space={2} alignItems='center'>
+        <Text weight='semibold' theme='inherit'>{text}</Text>
+
+        {count ? (
+          <Counter count={count} countMax={countMax} />
+        ) : null}
+      </HStack>
     </NavLink>
   );
 });

@@ -27,6 +27,11 @@ describe('shortNumberFormat', () => {
     expect(screen.getByTestId('num')).toHaveTextContent('•');
   });
 
+  test('handles max argument', () => {
+    render(<div data-testid='num'>{shortNumberFormat(25, 20)}</div>, undefined, null);
+    expect(screen.getByTestId('num')).toHaveTextContent('20+');
+  });
+
   test('formats numbers under 1,000', () => {
     render(<div data-testid='num'>{shortNumberFormat(555)}</div>, undefined, null);
     expect(screen.getByTestId('num')).toHaveTextContent('555');
