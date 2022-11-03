@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -31,9 +31,9 @@ const ChatProvider: React.FC = ({ children }) => {
   const { chatId } = useParams<{ chatId: string }>();
 
   const [screen, setScreen] = useState<ChatWidgetScreens>(ChatWidgetScreens.INBOX);
-  const [currentChatId, setCurrentChatId] = useState<null | string>(null);
+  const [currentChatId, setCurrentChatId] = useState<null | string>(chatId);
 
-  const { data: chat } = useChat(currentChatId || chatId as string);
+  const { data: chat } = useChat(currentChatId as string);
 
   const mainWindowState = settings.getIn(['chats', 'mainWindow']) as WindowState;
   const needsAcceptance = !chat?.accepted && chat?.created_by_account !== account?.id;
@@ -56,6 +56,14 @@ const ChatProvider: React.FC = ({ children }) => {
     changeScreen,
     currentChatId,
   }), [chat, currentChatId, needsAcceptance, isUsingMainChatPage, isOpen, screen, changeScreen]);
+
+  useEffect(() => {
+    if (chatId) {
+      setCurrentChatId(chatId);
+    } else {
+      setCurrentChatId(null);
+    }
+  }, [chatId]);
 
   return (
     <ChatContext.Provider value={value}>

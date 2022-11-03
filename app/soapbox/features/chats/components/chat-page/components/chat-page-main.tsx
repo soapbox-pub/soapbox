@@ -7,6 +7,7 @@ import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
+import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { MessageExpirationValues, useChat, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
@@ -47,6 +48,7 @@ const ChatPageMain = () => {
   const { chatId } = useParams<{ chatId: string }>();
 
   const { data: chat } = useChat(chatId);
+  const { currentChatId } = useChatContext();
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -92,8 +94,12 @@ const ChatPageMain = () => {
     }));
   };
 
-  if (!chat) {
+  if (!currentChatId) {
     return <Blankslate />;
+  }
+
+  if (!chat) {
+    return null;
   }
 
   return (
