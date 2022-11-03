@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { toggleMainWindow } from 'soapbox/actions/chats';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
@@ -20,9 +21,13 @@ enum ChatWidgetScreens {
 }
 
 const ChatProvider: React.FC = ({ children }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const settings = useSettings();
   const account = useOwnAccount();
+
+  const path = history.location.pathname;
+  const isUsingMainChatPage = Boolean(path.match(/^\/chats/));
 
   const [screen, setScreen] = useState<ChatWidgetScreens>(ChatWidgetScreens.INBOX);
   const [currentChatId, setCurrentChatId] = useState<null | string>(null);
@@ -44,11 +49,12 @@ const ChatProvider: React.FC = ({ children }) => {
     chat,
     needsAcceptance,
     isOpen,
+    isUsingMainChatPage,
     toggleChatPane,
     screen,
     changeScreen,
     currentChatId,
-  }), [chat, currentChatId, needsAcceptance, isOpen, screen, changeScreen]);
+  }), [chat, currentChatId, needsAcceptance, isUsingMainChatPage, isOpen, screen, changeScreen]);
 
   return (
     <ChatContext.Provider value={value}>
@@ -60,6 +66,7 @@ const ChatProvider: React.FC = ({ children }) => {
 interface IChatContext {
   chat: IChat | null
   isOpen: boolean
+  isUsingMainChatPage?: boolean
   needsAcceptance: boolean
   toggleChatPane(): void
   screen: ChatWidgetScreens

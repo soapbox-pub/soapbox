@@ -82,7 +82,13 @@ const ChatPageMain = () => {
       message: intl.formatMessage(messages.leaveMessage),
       confirm: intl.formatMessage(messages.leaveConfirm),
       confirmationTheme: 'primary',
-      onConfirm: () => deleteChat.mutate(),
+      onConfirm: () => {
+        deleteChat.mutate(undefined, {
+          onSuccess() {
+            history.push('/chats');
+          },
+        });
+      },
     }));
   };
 

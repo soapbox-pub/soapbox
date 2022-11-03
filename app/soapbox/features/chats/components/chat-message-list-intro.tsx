@@ -1,6 +1,7 @@
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import Link from 'soapbox/components/link';
@@ -25,8 +26,9 @@ const ChatMessageListIntro = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const features = useFeatures();
+  const history = useHistory();
 
-  const { chat, needsAcceptance } = useChatContext();
+  const { chat, isUsingMainChatPage, needsAcceptance } = useChatContext();
   const { acceptChat, deleteChat } = useChatActions(chat?.id as string);
 
   const handleLeaveChat = () => {
@@ -35,7 +37,15 @@ const ChatMessageListIntro = () => {
       message: intl.formatMessage(messages.leaveChatMessage),
       confirm: intl.formatMessage(messages.leaveChatConfirm),
       confirmationTheme: 'primary',
-      onConfirm: () => deleteChat.mutate(),
+      onConfirm: () => {
+        deleteChat.mutate(undefined, {
+          onSuccess() {
+            if (isUsingMainChatPage) {
+              history.push('/chats');
+            }
+          },
+        });
+      },
     }));
   };
 

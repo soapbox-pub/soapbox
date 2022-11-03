@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
 
@@ -27,7 +29,9 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const features = useFeatures();
+  const history = useHistory();
 
+  const { isUsingMainChatPage } = useChatContext();
   const { deleteChat } = useChatActions(chat?.id as string);
 
   const menu = useMemo((): Menu => [{
@@ -40,7 +44,15 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
         message: intl.formatMessage(messages.leaveMessage),
         confirm: intl.formatMessage(messages.leaveConfirm),
         confirmationTheme: 'primary',
-        onConfirm: () => deleteChat.mutate(),
+        onConfirm: () => {
+          deleteChat.mutate(undefined, {
+            onSuccess() {
+              if (isUsingMainChatPage) {
+                history.push('/chats');
+              }
+            },
+          });
+        },
       }));
     },
     icon: require('@tabler/icons/logout.svg'),
