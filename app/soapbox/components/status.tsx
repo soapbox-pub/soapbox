@@ -65,7 +65,6 @@ const Status: React.FC<IStatus> = (props) => {
     hidden,
     featured,
     unread,
-    group,
     hideActionBar,
     variant = 'rounded',
     withDismiss,
@@ -349,6 +348,8 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
 
           <div className='status__content-wrapper'>
+            <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
+
             <Stack
               className={
                 classNames('relative', {
@@ -364,32 +365,27 @@ const Status: React.FC<IStatus> = (props) => {
                 />
               )}
 
-              {!group && actualStatus.group && (
-                <div className='status__meta'>
-                  Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
-                </div>
-              )}
+              <Stack space={4}>
+                <StatusContent
+                  status={actualStatus}
+                  onClick={handleClick}
+                  collapsable
+                />
 
-              <StatusReplyMentions
-                status={actualStatus}
-                hoverable={hoverable}
-              />
+                {(quote || actualStatus.media_attachments.size > 0) && (
+                  <Stack space={4}>
+                    <StatusMedia
+                      status={actualStatus}
+                      muted={muted}
+                      onClick={handleClick}
+                      showMedia={showMedia}
+                      onToggleVisibility={handleToggleMediaVisibility}
+                    />
 
-              <StatusContent
-                status={actualStatus}
-                onClick={handleClick}
-                collapsable
-              />
-
-              <StatusMedia
-                status={actualStatus}
-                muted={muted}
-                onClick={handleClick}
-                showMedia={showMedia}
-                onToggleVisibility={handleToggleMediaVisibility}
-              />
-
-              {quote}
+                    {quote}
+                  </Stack>
+                )}
+              </Stack>
             </Stack>
 
             {!hideActionBar && (
