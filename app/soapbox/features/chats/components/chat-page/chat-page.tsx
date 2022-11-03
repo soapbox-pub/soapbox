@@ -67,9 +67,10 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
             <ChatPageSidebar />
           </Stack>
 
-          <Stack className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
-            'hidden sm:block': !chat,
-          })}
+          <Stack
+            className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
+              'hidden sm:block': !chat,
+            })}
           >
             <Switch>
               <Route path='/chats/new'>
@@ -78,7 +79,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
               <Route path='/chats/settings'>
                 <ChatPageSettings />
               </Route>
-              <Route>
+              <Route path='/chats/:chatId?'>
                 <ChatPageMain />
               </Route>
             </Switch>
