@@ -202,6 +202,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           link={link}
           alt={attachment.description}
           key={attachment.url}
+          visible
         />
       );
     } else if (attachment.type === 'audio') {
