@@ -104,6 +104,8 @@ const useChatMessages = (chat: IChat) => {
 
   const queryInfo = useInfiniteQuery(ChatKeys.chatMessages(chat.id), ({ pageParam }) => getChatMessages(chat.id, pageParam), {
     enabled: !isBlocked,
+    cacheTime: 0,
+    staleTime: 0,
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };

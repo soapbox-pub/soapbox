@@ -62,14 +62,12 @@ const timeChange = (prev: IChatMessage, curr: IChatMessage): TimeFormat | null =
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
   chat: IChat,
-  /** Whether to make the chatbox fill the height of the screen. */
-  autosize?: boolean,
 }
 
 const START_INDEX = 10000;
 
 /** Scrollable list of chat messages. */
-const ChatMessageList: React.FC<IChatMessageList> = ({ chat, autosize }) => {
+const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const account = useOwnAccount();

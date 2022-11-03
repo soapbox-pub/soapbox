@@ -17,7 +17,6 @@ import ChatMessageList from './chat-message-list';
 
 interface ChatInterface {
   chat: IChat,
-  autosize?: boolean,
   inputRef?: MutableRefObject<HTMLTextAreaElement | null>,
   className?: string,
 }
@@ -26,7 +25,7 @@ interface ChatInterface {
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
-const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) => {
+const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const account = useOwnAccount();
 
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
@@ -205,7 +204,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, autosize, inputRef, className }) 
   return (
     <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
       <div className='flex-grow h-full overflow-hidden flex justify-center'>
-        <ChatMessageList chat={chat} autosize />
+        <ChatMessageList chat={chat} />
       </div>
 
       <ChatComposer
