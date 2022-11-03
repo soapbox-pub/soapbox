@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { toggleMainWindow } from 'soapbox/actions/chats';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
@@ -28,11 +28,12 @@ const ChatProvider: React.FC = ({ children }) => {
 
   const path = history.location.pathname;
   const isUsingMainChatPage = Boolean(path.match(/^\/chats/));
+  const { chatId } = useParams<{ chatId: string }>();
 
   const [screen, setScreen] = useState<ChatWidgetScreens>(ChatWidgetScreens.INBOX);
   const [currentChatId, setCurrentChatId] = useState<null | string>(null);
 
-  const { data: chat } = useChat(currentChatId as string);
+  const { data: chat } = useChat(currentChatId || chatId as string);
 
   const mainWindowState = settings.getIn(['chats', 'mainWindow']) as WindowState;
   const needsAcceptance = !chat?.accepted && chat?.created_by_account !== account?.id;

@@ -187,6 +187,7 @@ const useChat = (chatId?: string) => {
     if (chatId) {
       const { data } = await api.get<IChat>(`/api/v1/pleroma/chats/${chatId}`);
 
+      dispatch(fetchRelationships([data.account.id]));
       dispatch(importFetchedAccount(data.account));
 
       return data;
