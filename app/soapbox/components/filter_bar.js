@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-export default @withRouter
 class FilterBar extends React.PureComponent {
 
   static propTypes = {
@@ -153,3 +152,5 @@ class FilterBar extends React.PureComponent {
   }
 
 }
+
+export default withRouter(FilterBar);

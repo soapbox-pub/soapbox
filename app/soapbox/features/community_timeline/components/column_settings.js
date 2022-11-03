@@ -11,7 +11,6 @@ const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
-export default @injectIntl
 class ColumnSettings extends React.PureComponent {
 
   static propTypes = {
@@ -49,3 +48,5 @@ class ColumnSettings extends React.PureComponent {
   }
 
 }
+
+export default injectIntl(ColumnSettings);
