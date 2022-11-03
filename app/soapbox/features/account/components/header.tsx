@@ -1,5 +1,7 @@
 'use strict';
 
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -24,6 +26,8 @@ import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { ChatKeys, useChats } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/types/entities';
 import { isRemote } from 'soapbox/utils/accounts';
 
@@ -79,6 +83,21 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+
+  const { getOrCreateChatByAccountId } = useChats();
+
+  const createAndNavigateToChat = useMutation((accountId: string) => {
+    return getOrCreateChatByAccountId(accountId);
+  }, {
+    onError: (error: AxiosError) => {
+      const data = error.response?.data as any;
+      dispatch(snackbar.error(data?.error));
+    },
+    onSuccess: (response) => {
+      history.push(`/chats/${response.data.id}`);
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
+    },
+  });
 
   if (!account) {
     return (
@@ -480,34 +499,28 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return info;
   };
 
-  // const renderMessageButton = () => {
-  //   if (!ownAccount || !account || account.id === ownAccount?.id) {
-  //     return null;
-  //   }
+  const renderMessageButton = () => {
+    if (!ownAccount || !account || account.id === ownAccount?.id) {
+      return null;
+    }
 
-  //   const canChat = account.getIn(['pleroma', 'accepts_chat_messages']) === true;
+    const canChat = account.relationship?.followed_by;
+    if (!canChat) {
+      return null;
+    }
 
-  //   if (canChat) {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/messages.svg')}
-  //         onClick={onChat}
-  //         title={intl.formatMessage(messages.chat, { name: account.username })}
-  //       />
-  //     );
-  //   } else {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/mail.svg')}
-  //         onClick={onDirect}
-  //         title={intl.formatMessage(messages.direct, { name: account.username })}
-  //         theme='outlined'
-  //         className='px-2'
-  //         iconClassName='w-4 h-4'
-  //       />
-  //     );
-  //   }
-  // };
+    return (
+      <IconButton
+        src={require('@tabler/icons/mail.svg')}
+        onClick={() => createAndNavigateToChat.mutate(account.id)}
+        title={intl.formatMessage(messages.chat, { name: account.username })}
+        theme='outlined'
+        className='px-2'
+        iconClassName='w-4 h-4'
+        disabled={createAndNavigateToChat.isLoading}
+      />
+    );
+  };
 
   const renderShareButton = () => {
     const canShare = 'share' in navigator;
@@ -610,7 +623,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               )}
 
               {renderShareButton()}
-              {/* {renderMessageButton()} */}
+              {renderMessageButton()}
 
               <ActionButton account={account} />
             </div>
