@@ -10,6 +10,7 @@ import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import OutlineBox from './outline-box';
+import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -127,7 +128,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   return (
     <OutlineBox
       data-testid='quoted-status'
-      className={classNames('mt-3 cursor-pointer', {
+      className={classNames('cursor-pointer relative', {
         'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
       })}
     >
@@ -152,12 +153,22 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
           dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         />
 
-        <StatusMedia
-          status={status}
-          muted={compose}
-          showMedia={showMedia}
-          onToggleVisibility={handleToggleMediaVisibility}
-        />
+        <Stack>
+          {status.hidden && (
+            <SensitiveContentOverlay
+              status={status}
+              visible={showMedia}
+              onToggleVisibility={handleToggleMediaVisibility}
+            />
+          )}
+
+          <StatusMedia
+            status={status}
+            muted={compose}
+            showMedia={showMedia}
+            onToggleVisibility={handleToggleMediaVisibility}
+          />
+        </Stack>
       </Stack>
     </OutlineBox>
   );

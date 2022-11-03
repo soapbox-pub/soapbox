@@ -296,8 +296,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const accountAction = props.accountAction || reblogElement;
 
-  const inReview = status.visibility === 'self';
-  const isSensitive = status.hidden;
+  const inReview = actualStatus.visibility === 'self';
+  const isSensitive = actualStatus.hidden;
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
@@ -356,13 +356,13 @@ const Status: React.FC<IStatus> = (props) => {
                 })
               }
             >
-              {(inReview || isSensitive) ? (
+              {(inReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
                 />
-              ) : null}
+              )}
 
               {!group && actualStatus.group && (
                 <div className='status__meta'>

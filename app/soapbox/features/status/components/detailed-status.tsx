@@ -29,7 +29,6 @@ interface IDetailedStatus {
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
@@ -93,13 +92,13 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             })
           }
         >
-          {(isUnderReview || isSensitive) ? (
+          {(isUnderReview || isSensitive) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}
             />
-          ) : null}
+          )}
 
           <StatusContent status={actualStatus} />
 
