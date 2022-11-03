@@ -9,6 +9,7 @@ import compareId from 'soapbox/compare_id';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { normalizeChatMessage } from 'soapbox/normalizers';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
@@ -45,7 +46,7 @@ export interface IChat {
     date: string
   }[]
   latest_read_message_created_at: null | string
-  message_expiration: MessageExpirationValues
+  message_expiration?: MessageExpirationValues
   unread: number
 }
 
@@ -92,7 +93,7 @@ const useChatMessages = (chat: IChat) => {
 
     const link = getNextLink(response);
     const hasMore = !!link;
-    const result = data.sort(reverseOrder);
+    const result = data.sort(reverseOrder).map(normalizeChatMessage);
 
     return {
       result,

@@ -17,7 +17,7 @@ const MessagesSettings = () => {
   const updateCredentials = useUpdateCredentials();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateCredentials.mutate({ accepting_messages: event.target.checked });
+    updateCredentials.mutate({ accepts_chat_messages: event.target.checked });
   };
 
   if (!account) {
@@ -31,7 +31,7 @@ const MessagesSettings = () => {
         hint={intl.formatMessage(messages.hint)}
       >
         <Toggle
-          checked={account.accepting_messages}
+          checked={account.accepts_chat_messages}
           onChange={handleChange}
         />
       </ListItem>

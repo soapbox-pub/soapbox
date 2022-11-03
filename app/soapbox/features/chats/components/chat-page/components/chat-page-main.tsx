@@ -7,7 +7,7 @@ import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { MessageExpirationValues, useChat, useChatActions } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
@@ -41,6 +41,7 @@ const messages = defineMessages({
 const ChatPageMain = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
   const history = useHistory();
 
   const { chatId } = useParams<{ chatId: string }>();
@@ -109,16 +110,18 @@ const ChatPageMain = () => {
               {chat.account?.verified && <VerificationBadge />}
             </div>
 
-            <Text
-              align='left'
-              size='sm'
-              weight='medium'
-              theme='primary'
-              truncate
-              className='w-full'
-            >
-              {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
-            </Text>
+            {chat.message_expiration && (
+              <Text
+                align='left'
+                size='sm'
+                weight='medium'
+                theme='primary'
+                truncate
+                className='w-full'
+              >
+                {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
+              </Text>
+            )}
           </Stack>
         </HStack>
 
@@ -140,32 +143,34 @@ const ChatPageMain = () => {
                 </Stack>
               </HStack>
 
-              <List>
-                <ListItem
-                  label={intl.formatMessage(messages.autoDeleteLabel)}
-                  hint={intl.formatMessage(messages.autoDeleteHint)}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete7Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.SEVEN)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.SEVEN}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete14Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.FOURTEEN)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.FOURTEEN}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete30Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.THIRTY)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.THIRTY}
-                />
-                <ListItem
-                  label={intl.formatMessage(messages.autoDelete90Days)}
-                  onSelect={() => handleUpdateChat(MessageExpirationValues.NINETY)}
-                  isSelected={chat.message_expiration === MessageExpirationValues.NINETY}
-                />
-              </List>
+              {features.chatsExpiration && (
+                <List>
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDeleteLabel)}
+                    hint={intl.formatMessage(messages.autoDeleteHint)}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete7Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.SEVEN)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.SEVEN}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete14Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.FOURTEEN)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.FOURTEEN}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete30Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.THIRTY)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.THIRTY}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete90Days)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.NINETY)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.NINETY}
+                  />
+                </List>
+              )}
 
               <Stack space={2}>
                 <MenuItem
@@ -179,16 +184,18 @@ const ChatPageMain = () => {
                   </div>
                 </MenuItem>
 
-                <MenuItem
-                  as='button'
-                  onSelect={handleLeaveChat}
-                  className='!px-0 hover:!bg-transparent'
-                >
-                  <div className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600 dark:text-danger-500'>
-                    <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
-                    <span>{intl.formatMessage(messages.leaveChat)}</span>
-                  </div>
-                </MenuItem>
+                {features.chatsDelete && (
+                  <MenuItem
+                    as='button'
+                    onSelect={handleLeaveChat}
+                    className='!px-0 hover:!bg-transparent'
+                  >
+                    <div className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600 dark:text-danger-500'>
+                      <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
+                      <span>{intl.formatMessage(messages.leaveChat)}</span>
+                    </div>
+                  </MenuItem>
+                )}
               </Stack>
             </Stack>
           </MenuList>

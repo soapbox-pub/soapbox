@@ -90,9 +90,11 @@ const ChatWindow = () => {
                     <Text size='sm' weight='bold' truncate>{chat.account.display_name}</Text>
                     {chat.account.verified && <VerificationBadge />}
                   </div>
-                  <Text size='sm' weight='medium' theme='primary' truncate>
-                    {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
-                  </Text>
+                  {chat.message_expiration && (
+                    <Text size='sm' weight='medium' theme='primary' truncate>
+                      {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
+                    </Text>
+                  )}
                 </Stack>
               </LinkWrapper>
             </HStack>
