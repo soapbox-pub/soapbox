@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { Counter, HStack, Icon, Text } from './ui';
+import { Icon, Text } from './ui';
 
 interface ISidebarNavigationLink {
   /** Notification count, if any. */
@@ -46,19 +46,15 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       <span className='relative'>
         <Icon
           src={icon}
+          count={count}
+          countMax={countMax}
           className={classNames('h-5 w-5 group-hover:text-primary-500', {
             'text-primary-500': isActive,
           })}
         />
       </span>
 
-      <HStack space={2} alignItems='center'>
-        <Text weight='semibold' theme='inherit'>{text}</Text>
-
-        {count ? (
-          <Counter count={count} countMax={countMax} />
-        ) : null}
-      </HStack>
+      <Text weight='semibold' theme='inherit'>{text}</Text>
     </NavLink>
   );
 });
