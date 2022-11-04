@@ -8,22 +8,13 @@ import { Text, Stack } from 'soapbox/components/ui';
 import { captureException } from 'soapbox/monitoring';
 import KVStore from 'soapbox/storage/kv_store';
 import sourceCode from 'soapbox/utils/code';
+import { unregisterSw } from 'soapbox/utils/sw';
 
 import SiteLogo from './site-logo';
 
 import type { RootState } from 'soapbox/store';
 
 const goHome = () => location.href = '/';
-
-/** Unregister the ServiceWorker */
-// https://stackoverflow.com/a/49771828/8811886
-const unregisterSw = async(): Promise<void> => {
-  if (navigator.serviceWorker) {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    const unregisterAll = registrations.map(r => r.unregister());
-    await Promise.all(unregisterAll);
-  }
-};
 
 const mapStateToProps = (state: RootState) => {
   const { links, logo } = getSoapboxConfig(state);
