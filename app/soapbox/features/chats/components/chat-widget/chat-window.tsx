@@ -87,7 +87,7 @@ const ChatWindow = () => {
               <LinkWrapper enabled={isOpen} to={`@${chat.account.acct}`}>
                 <Stack alignItems='start'>
                   <div className='flex items-center space-x-1 flex-grow'>
-                    <Text size='sm' weight='bold' truncate>{chat.account.display_name}</Text>
+                    <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>
                     {chat.account.verified && <VerificationBadge />}
                   </div>
                   {chat.message_expiration && (
