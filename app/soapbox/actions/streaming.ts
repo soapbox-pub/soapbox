@@ -61,7 +61,7 @@ const updateChat = (payload: ChatPayload) => {
   const currentChats = flattenPages(queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch()));
 
   // Update the specific Chat query data.
-  queryClient.setQueryData<Chat>(ChatKeys.chat(chatId), payload as any);
+  // queryClient.setQueryData<Chat>(ChatKeys.chat(chatId), payload as any);
 
   if (currentChats?.find((chat: any) => chat.id === chatId)) {
     // If the chat exists in the client, let's update it.
