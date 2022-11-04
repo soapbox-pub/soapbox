@@ -268,6 +268,7 @@ const useChatActions = (chatId: string) => {
   const acceptChat = useMutation(() => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`), {
     onSuccess(response) {
       changeScreen(ChatWidgetScreens.CHAT, response.data.id);
+      queryClient.invalidateQueries(ChatKeys.chat(chatId));
       queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
       queryClient.invalidateQueries(ChatKeys.chatSearch());
     },
