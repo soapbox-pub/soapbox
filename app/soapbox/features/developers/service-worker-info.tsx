@@ -50,10 +50,10 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
   const url = registration?.active?.scriptURL;
 
   const getState = () => {
-    if (registration?.active) {
-      return 'active';
-    } else if (registration?.waiting) {
+    if (registration?.waiting) {
       return 'pending';
+    } else if (registration?.active) {
+      return 'active';
     } else {
       return 'inactive';
     }
@@ -74,18 +74,18 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
           defaultMessage='Unavailable'
         />
       );
-    } else if (registration?.active) {
-      return (
-        <FormattedMessage
-          id='sw.state.active'
-          defaultMessage='Active'
-        />
-      );
     } else if (registration?.waiting) {
       return (
         <FormattedMessage
           id='sw.state.waiting'
           defaultMessage='Waiting'
+        />
+      );
+    } else if (registration?.active) {
+      return (
+        <FormattedMessage
+          id='sw.state.active'
+          defaultMessage='Active'
         />
       );
     } else {
