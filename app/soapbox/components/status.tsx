@@ -372,7 +372,7 @@ const Status: React.FC<IStatus> = (props) => {
                   collapsable
                 />
 
-                {(quote || actualStatus.media_attachments.size > 0) && (
+                {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
                   <Stack space={4}>
                     <StatusMedia
                       status={actualStatus}

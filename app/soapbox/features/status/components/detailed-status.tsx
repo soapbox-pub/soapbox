@@ -103,7 +103,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           <Stack space={4}>
             <StatusContent status={actualStatus} />
 
-            {(quote || actualStatus.media_attachments.size > 0) && (
+            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
               <Stack space={4}>
                 <StatusMedia
                   status={actualStatus}
