@@ -244,8 +244,6 @@ const useChatActions = (chatId: string) => {
       // Optimistically update to the new value
       queryClient.setQueryData(ChatKeys.chat(chatId), nextChat);
 
-      changeScreen(ChatWidgetScreens.CHAT, nextChat.id);
-
       // Return a context object with the snapshotted value
       return { prevChat };
     },
@@ -255,10 +253,9 @@ const useChatActions = (chatId: string) => {
       queryClient.setQueryData(ChatKeys.chat(chatId), context.prevChat);
       dispatch(snackbar.error('Chat Settings failed to update.'));
     },
-    onSuccess(response) {
+    onSuccess() {
       queryClient.invalidateQueries(ChatKeys.chat(chatId));
       queryClient.invalidateQueries(ChatKeys.chatSearch());
-      changeScreen(ChatWidgetScreens.CHAT, response.data.id);
       dispatch(snackbar.success('Chat Settings updated successfully'));
     },
   });
