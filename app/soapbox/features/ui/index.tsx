@@ -504,10 +504,12 @@ const UI: React.FC = ({ children }) => {
   }, [vapidKey]);
 
   useEffect(() => {
-    if (pendingPolicy && supportedPolicyIds.includes(pendingPolicy.pending_policy_id)) {
-      dispatch(openModal('POLICY'));
+    if (account && pendingPolicy && supportedPolicyIds.includes(pendingPolicy.pending_policy_id)) {
+      setTimeout(() => {
+        dispatch(openModal('POLICY'));
+      }, 500);
     }
-  }, [pendingPolicy]);
+  }, [pendingPolicy, !!account]);
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
