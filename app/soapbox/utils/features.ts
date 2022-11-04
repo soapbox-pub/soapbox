@@ -354,12 +354,6 @@ const getInstanceFeatures = (instance: Instance) => {
     importData: v.software === PLEROMA && gte(v.version, '2.2.0'),
 
     /**
-     * Supports V2 instance endpoint.
-     * @see GET /api/v2/instance
-     */
-    instanceV2: v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
-
-    /**
      * Can create, view, and manage lists.
      * @see {@link https://docs.joinmastodon.org/methods/timelines/lists/}
      * @see GET /api/v1/timelines/list/:list_id
@@ -618,7 +612,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can translate statuses.
      * @see POST /api/v1/statuses/:id/translate
      */
-    translations: v.software === MASTODON && instance.configuration.getIn(['translation', 'enabled'], false),
+    translations: features.includes('translation'),
 
     /**
      * Trending statuses.

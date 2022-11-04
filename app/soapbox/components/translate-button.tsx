@@ -27,7 +27,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
     if (status.translation) {
       dispatch(undoStatusTranslation(status.id));
     } else {
-      dispatch(translateStatus(status.id));
+      dispatch(translateStatus(status.id, intl.locale));
     }
   };
 

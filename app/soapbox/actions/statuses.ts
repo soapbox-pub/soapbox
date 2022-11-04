@@ -310,10 +310,12 @@ const toggleStatusHidden = (status: Status) => {
   }
 };
 
-const translateStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+const translateStatus = (id: string, targetLanguage?: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch({ type: STATUS_TRANSLATE_REQUEST, id });
 
-  api(getState).post(`/api/v1/statuses/${id}/translate`).then(response => {
+  api(getState).post(`/api/v1/statuses/${id}/translate`, {
+    target_language: targetLanguage,
+  }).then(response => {
     dispatch({
       type: STATUS_TRANSLATE_SUCCESS,
       id,
