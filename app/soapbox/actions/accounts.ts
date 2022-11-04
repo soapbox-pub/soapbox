@@ -1,5 +1,5 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
 
@@ -359,14 +359,30 @@ const unblockAccountFail = (error: AxiosError) => ({
   error,
 });
 
-const muteAccount = (id: string, notifications?: boolean) =>
+const muteAccount = (id: string, notifications?: boolean, duration = 0) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
     dispatch(muteAccountRequest(id));
 
+    const params: Record<string, any> = {
+      notifications,
+    };
+
+    if (duration) {
+      const state = getState();
+      const instance = state.instance;
+      const v = parseVersion(instance.version);
+
+      if (v.software === PLEROMA) {
+        params.expires_in = duration;
+      } else {
+        params.duration = duration;
+      }
+    }
+
     return api(getState)
-      .post(`/api/v1/accounts/${id}/mute`, { notifications })
+      .post(`/api/v1/accounts/${id}/mute`, params)
       .then(response => {
         // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
         return dispatch(muteAccountSuccess(response.data, getState().statuses));
