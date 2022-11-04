@@ -29,7 +29,6 @@ interface IDetailedStatus {
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
@@ -93,23 +92,29 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             })
           }
         >
-          {(isUnderReview || isSensitive) ? (
+          {(isUnderReview || isSensitive) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}
             />
-          ) : null}
+          )}
 
-          <StatusContent status={actualStatus} />
+          <Stack space={4}>
+            <StatusContent status={actualStatus} />
 
-          <StatusMedia
-            status={actualStatus}
-            showMedia={showMedia}
-            onToggleVisibility={onToggleMediaVisibility}
-          />
+            {(quote || actualStatus.media_attachments.size > 0) && (
+              <Stack space={4}>
+                <StatusMedia
+                  status={actualStatus}
+                  showMedia={showMedia}
+                  onToggleVisibility={onToggleMediaVisibility}
+                />
 
-          {quote}
+                {quote}
+              </Stack>
+            )}
+          </Stack>
         </Stack>
 
         <HStack justifyContent='between' alignItems='center' className='py-2' wrap>
