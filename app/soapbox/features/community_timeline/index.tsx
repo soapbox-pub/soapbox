@@ -10,8 +10,6 @@ import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
-import ColumnSettings from './containers/column_settings_container';
-
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
 });
@@ -44,7 +42,10 @@ const CommunityTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
+      <div className='px-4 sm:p-0'>
+        <SubNavigation message={intl.formatMessage(messages.title)} />
+      </div>
+
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           scrollKey={`${timelineId}_timeline`}
