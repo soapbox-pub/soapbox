@@ -30,17 +30,12 @@ interface IDetailedStatus {
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
-
-  const handleExpandedToggle = () => {
-    onToggleHidden(status);
-  };
 
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
@@ -52,7 +47,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (!account || typeof account !== 'object') return null;
 
   const isUnderReview = actualStatus.visibility === 'self';
-  const isSensitive = actualStatus.sensitive;
+  const isSensitive = actualStatus.hidden;
 
   let statusTypeIcon = null;
 
@@ -98,30 +93,31 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             })
           }
         >
-          {(isUnderReview || isSensitive) ? (
+          {(isUnderReview || isSensitive) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}
             />
-          ) : null}
+          )}
 
-          <StatusContent
-            status={actualStatus}
-            expanded={!actualStatus.hidden}
-            onExpandedToggle={handleExpandedToggle}
-            translatable
-          />
+          <Stack space={4}>
+            <StatusContent status={actualStatus} translatable />
 
-          <TranslateButton status={actualStatus} />
+            <TranslateButton status={actualStatus} />
 
-          <StatusMedia
-            status={actualStatus}
-            showMedia={showMedia}
-            onToggleVisibility={onToggleMediaVisibility}
-          />
+            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+              <Stack space={4}>
+                <StatusMedia
+                  status={actualStatus}
+                  showMedia={showMedia}
+                  onToggleVisibility={onToggleMediaVisibility}
+                />
 
-          {quote}
+                {quote}
+              </Stack>
+            )}
+          </Stack>
         </Stack>
 
         <HStack justifyContent='between' alignItems='center' className='py-2' wrap>

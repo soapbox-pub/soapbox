@@ -35,50 +35,17 @@ const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   </button>
 );
 
-interface ISpoilerButton {
-  onClick: React.MouseEventHandler,
-  hidden: boolean,
-  tabIndex?: number,
-}
-
-/** Button to expand status text behind a content warning */
-const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) => (
-  <button
-    tabIndex={tabIndex}
-    className={classNames(
-      'inline-block rounded-md px-1.5 py-0.5 ml-[0.5em]',
-      'text-gray-900 dark:text-gray-100',
-      'font-bold text-[11px] uppercase',
-      'bg-primary-100 dark:bg-primary-800',
-      'hover:bg-primary-300 dark:hover:bg-primary-600',
-      'focus:bg-primary-200 dark:focus:bg-primary-600',
-      'hover:no-underline',
-      'duration-100',
-    )}
-    onClick={onClick}
-  >
-    {hidden ? (
-      <FormattedMessage id='status.show_more' defaultMessage='Show more' />
-    ) : (
-      <FormattedMessage id='status.show_less' defaultMessage='Show less' />
-    )}
-  </button>
-);
-
 interface IStatusContent {
   status: Status,
-  expanded?: boolean,
-  onExpandedToggle?: () => void,
   onClick?: () => void,
   collapsable?: boolean,
   translatable?: boolean,
 }
 
 /** Renders the text content of a status */
-const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onExpandedToggle, onClick, collapsable = false, translatable }) => {
+const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable = false, translatable }) => {
   const history = useHistory();
 
-  const [hidden, setHidden] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 
@@ -187,18 +154,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     startXY.current = undefined;
   };
 
-  const handleSpoilerClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (onExpandedToggle) {
-      // The parent manages the state
-      onExpandedToggle();
-    } else {
-      setHidden(!hidden);
-    }
-  };
-
   const parsedHtml = useMemo((): string => {
     const html = translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
 
@@ -213,13 +168,11 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     return null;
   }
 
-  const isHidden = onExpandedToggle ? !expanded : hidden;
   const withSpoiler = status.spoiler_text.length > 0;
 
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
-  const spoilerContent = { __html: status.spoilerHtml };
   const directionStyle: React.CSSProperties = { direction: 'ltr' };
   const className = classNames(baseClassName, 'status-content', {
     'cursor-pointer': onClick,
@@ -232,37 +185,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     directionStyle.direction = 'rtl';
   }
 
-  if (status.spoiler_text.length > 0) {
-    return (
-      <div className={className} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-        <p style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
-          <span dangerouslySetInnerHTML={spoilerContent} lang={status.language || undefined} />
-
-          <SpoilerButton
-            tabIndex={0}
-            onClick={handleSpoilerClick}
-            hidden={isHidden}
-          />
-        </p>
-
-        <div
-          tabIndex={!isHidden ? 0 : undefined}
-          className={classNames({
-            'whitespace-pre-wrap': withSpoiler,
-            'hidden': isHidden,
-            'block': !isHidden,
-          })}
-          style={directionStyle}
-          dangerouslySetInnerHTML={content}
-          lang={status.language || undefined}
-        />
-
-        {!isHidden && status.poll && typeof status.poll === 'string' && (
-          <Poll id={status.poll} status={status.url} />
-        )}
-      </div>
-    );
-  } else if (onClick) {
+  if (onClick) {
     const output = [
       <div
         ref={node}

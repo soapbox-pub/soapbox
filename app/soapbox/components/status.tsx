@@ -66,7 +66,6 @@ const Status: React.FC<IStatus> = (props) => {
     hidden,
     featured,
     unread,
-    group,
     hideActionBar,
     variant = 'rounded',
     withDismiss,
@@ -104,10 +103,6 @@ const Status: React.FC<IStatus> = (props) => {
     } else {
       history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
     }
-  };
-
-  const handleExpandedToggle = (): void => {
-    dispatch(toggleStatusHidden(actualStatus));
   };
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
@@ -301,8 +296,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const accountAction = props.accountAction || reblogElement;
 
-  const inReview = status.visibility === 'self';
-  const isSensitive = status.sensitive;
+  const inReview = actualStatus.visibility === 'self';
+  const isSensitive = actualStatus.hidden;
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
@@ -354,6 +349,8 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
 
           <div className='status__content-wrapper'>
+            <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
+
             <Stack
               className={
                 classNames('relative', {
@@ -361,45 +358,38 @@ const Status: React.FC<IStatus> = (props) => {
                 })
               }
             >
-              {(inReview || isSensitive) ? (
+              {(inReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
                 />
-              ) : null}
-
-              {!group && actualStatus.group && (
-                <div className='status__meta'>
-                  Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
-                </div>
               )}
 
-              <StatusReplyMentions
-                status={actualStatus}
-                hoverable={hoverable}
-              />
+              <Stack space={4}>
+                <StatusContent
+                  status={actualStatus}
+                  onClick={handleClick}
+                  collapsable
+                  translatable
+                />
 
-              <StatusContent
-                status={actualStatus}
-                onClick={handleClick}
-                expanded={!status.hidden}
-                onExpandedToggle={handleExpandedToggle}
-                collapsable
-                translatable
-              />
+                <TranslateButton status={actualStatus} />
 
-              <TranslateButton status={actualStatus} />
+                {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                  <Stack space={4}>
+                    <StatusMedia
+                      status={actualStatus}
+                      muted={muted}
+                      onClick={handleClick}
+                      showMedia={showMedia}
+                      onToggleVisibility={handleToggleMediaVisibility}
+                    />
 
-              <StatusMedia
-                status={actualStatus}
-                muted={muted}
-                onClick={handleClick}
-                showMedia={showMedia}
-                onToggleVisibility={handleToggleMediaVisibility}
-              />
-
-              {quote}
+                    {quote}
+                  </Stack>
+                )}
+              </Stack>
             </Stack>
 
             {!hideActionBar && (

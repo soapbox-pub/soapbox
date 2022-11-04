@@ -79,7 +79,6 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
             <StatusContent
               status={status}
-              expanded
               collapsable
             />
 

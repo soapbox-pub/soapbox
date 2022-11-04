@@ -10,7 +10,6 @@ import {
   clearComposeSuggestions,
   fetchComposeSuggestions,
   selectComposeSuggestion,
-  changeComposeSpoilerText,
   insertEmojiCompose,
   uploadCompose,
 } from 'soapbox/actions/compose';
@@ -38,6 +37,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
+import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
@@ -48,7 +48,7 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
   pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
-  spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
+  spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
@@ -165,10 +165,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['spoiler_text']));
   };
 
-  const handleChangeSpoilerText: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    dispatch(changeComposeSpoilerText(id, e.target.value));
-  };
-
   const setCursor = (start: number, end: number = start) => {
     if (!autosuggestTextareaRef.current?.textarea) return;
     autosuggestTextareaRef.current.textarea.setSelectionRange(start, end);
@@ -265,7 +261,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }
 
   return (
-    <Stack className='w-full' space={1} ref={formRef} onClick={handleClick}>
+    <Stack className='w-full' space={4} ref={formRef} onClick={handleClick}>
       {scheduledStatusCount > 0 && (
         <Warning
           message={(
@@ -291,30 +287,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       {!shouldCondense && <ReplyMentions composeId={id} />}
 
-      <div
-        className={classNames({
-          'relative transition-height': true,
-          'hidden': !spoiler,
-        })}
-      >
-        <AutosuggestInput
-          placeholder={intl.formatMessage(messages.spoiler_placeholder)}
-          value={spoilerText}
-          onChange={handleChangeSpoilerText}
-          onKeyDown={handleKeyDown}
-          disabled={!spoiler}
-          ref={spoilerTextRef}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          onSuggestionSelected={onSpoilerSuggestionSelected}
-          searchTokens={[':']}
-          id='cw-spoiler-input'
-          className='border-none shadow-none px-0 py-2 text-base'
-          autoFocus
-        />
-      </div>
-
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
         placeholder={intl.formatMessage(hasPoll ? messages.pollPlaceholder : messages.placeholder)}
@@ -334,11 +306,19 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       >
         {
           !condensed &&
-          <div className='compose-form__modifiers'>
+          <Stack space={4} className='compose-form__modifiers'>
             <UploadForm composeId={id} />
             <PollForm composeId={id} />
             <ScheduleFormContainer composeId={id} />
-          </div>
+
+            <SpoilerInput
+              composeId={id}
+              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={onSuggestionsClearRequested}
+              onSuggestionSelected={onSpoilerSuggestionSelected}
+              ref={spoilerTextRef}
+            />
+          </Stack>
         }
       </AutosuggestTextarea>
 

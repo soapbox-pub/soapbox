@@ -14,8 +14,6 @@ import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
 import Timeline from '../ui/components/timeline';
 
-import ColumnSettings from './containers/column_settings_container';
-
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Fediverse timeline' },
   dismiss: { id: 'fediverse_tab.explanation_box.dismiss', defaultMessage: 'Don\'t show again' },
@@ -65,8 +63,12 @@ const CommunityTimeline = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
+      <div className='px-4 sm:p-0'>
+        <SubNavigation message={intl.formatMessage(messages.title)} />
+      </div>
+
       <PinnedHostsPicker />
+
       {showExplanationBox && <div className='mb-4'>
         <Accordion
           headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}

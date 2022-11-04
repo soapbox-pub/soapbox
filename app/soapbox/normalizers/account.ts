@@ -42,6 +42,7 @@ export const AccountRecord = ImmutableRecord({
   location: '',
   locked: false,
   moved: null as EmbeddedEntity<any>,
+  mute_expires_at: null as string | null,
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),

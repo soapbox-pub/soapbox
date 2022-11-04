@@ -1,39 +1,29 @@
 'use strict';
 
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
-import { connect } from 'react-redux';
 
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
+import { useAppSelector } from 'soapbox/hooks';
 
-const hasRestrictions = remoteInstance => {
+import type { Map as ImmutableMap } from 'immutable';
+
+const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean => {
   return remoteInstance
     .get('federation')
     .deleteAll(['accept', 'reject_deletes', 'report_removal'])
-    .reduce((acc, value) => acc || value, false);
+    .reduce((acc: boolean, value: boolean) => acc || value, false);
 };
 
-const mapStateToProps = state => {
-  return {
-    instance: state.get('instance'),
-  };
-};
+interface IInstanceRestrictions {
+  remoteInstance: ImmutableMap<string, any>,
+}
 
-export default @connect(mapStateToProps)
-class InstanceRestrictions extends ImmutablePureComponent {
+const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance }) => {
+  const instance = useAppSelector(state => state.instance);
 
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    remoteInstance: ImmutablePropTypes.map.isRequired,
-    instance: ImmutablePropTypes.map,
-  };
-
-  renderRestrictions = () => {
-    const { remoteInstance } = this.props;
+  const renderRestrictions = () => {
     const items = [];
 
     const {
@@ -105,10 +95,9 @@ class InstanceRestrictions extends ImmutablePureComponent {
     }
 
     return items;
-  }
+  };
 
-  renderContent = () => {
-    const { instance, remoteInstance } = this.props;
+  const renderContent = () => {
     if (!instance || !remoteInstance) return null;
 
     const host = remoteInstance.get('host');
@@ -136,7 +125,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
             />
           </Text>
         ),
-        this.renderRestrictions(),
+        renderRestrictions(),
       ];
     } else {
       return (
@@ -150,14 +139,13 @@ class InstanceRestrictions extends ImmutablePureComponent {
         </Text>
       );
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className='py-1 pl-4 mb-4 border-solid border-l-[3px] border-gray-300 dark:border-gray-500'>
-        {this.renderContent()}
-      </div>
-    );
-  }
+  return (
+    <div className='py-1 pl-4 mb-4 border-solid border-l-[3px] border-gray-300 dark:border-gray-500'>
+      {renderContent()}
+    </div>
+  );
+};
 
-}
+export default InstanceRestrictions;

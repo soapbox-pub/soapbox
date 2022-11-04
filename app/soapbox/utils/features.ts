@@ -401,6 +401,15 @@ const getInstanceFeatures = (instance: Instance) => {
     muteStrangers: v.software === PLEROMA,
 
     /**
+     * Ability to specify how long the account mute should last.
+     * @see PUT /api/v1/accounts/:id/mute
+     */
+    mutesDuration: any([
+      v.software === PLEROMA && gte(v.version, '2.3.0'),
+      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+    ]),
+
+    /**
      * Add private notes to accounts.
      * @see POST /api/v1/accounts/:id/note
      * @see GET /api/v1/accounts/relationships

@@ -235,6 +235,14 @@ const Account = ({
                     <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
                   </>
                 ) : null}
+
+                {actionType === 'muting' && account.mute_expires_at ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text theme='muted' size='sm'><RelativeTimestamp timestamp={account.mute_expires_at} futureDate /></Text>
+                  </>
+                ) : null}
               </HStack>
 
               {withAccountNote && (

@@ -18,8 +18,6 @@ const messages = defineMessages({
   searchPlaceholder: { id: 'admin.user_index.search_input_placeholder', defaultMessage: 'Who are you looking for?' },
 });
 
-export default @connect()
-@injectIntl
 class UserIndex extends ImmutablePureComponent {
 
   static propTypes = {
@@ -130,3 +128,5 @@ class UserIndex extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(connect()(UserIndex));

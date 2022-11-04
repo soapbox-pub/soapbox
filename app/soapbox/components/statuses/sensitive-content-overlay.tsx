@@ -81,6 +81,14 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
             <Text theme='white' size='sm' weight='medium'>
               {intl.formatMessage(isUnderReview ? messages.underReviewSubtitle : messages.sensitiveSubtitle)}
             </Text>
+
+            {status.spoiler_text && (
+              <div className='py-4 italic'>
+                <Text theme='white' size='md' weight='medium'>
+                  &ldquo;<span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} />&rdquo;
+                </Text>
+              </div>
+            )}
           </div>
 
           <HStack alignItems='center' justifyContent='center' space={2}>

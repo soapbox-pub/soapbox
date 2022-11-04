@@ -3,6 +3,7 @@ import { Record as ImmutableRecord } from 'immutable';
 import {
   MUTES_INIT_MODAL,
   MUTES_TOGGLE_HIDE_NOTIFICATIONS,
+  MUTES_CHANGE_DURATION,
 } from '../actions/mutes';
 
 import type { AnyAction } from 'redux';
@@ -11,6 +12,7 @@ const NewMuteRecord = ImmutableRecord({
   isSubmitting: false,
   accountId: null,
   notifications: true,
+  duration: 0,
 });
 
 const ReducerRecord = ImmutableRecord({
@@ -29,6 +31,8 @@ export default function mutes(state: State = ReducerRecord(), action: AnyAction)
       });
     case MUTES_TOGGLE_HIDE_NOTIFICATIONS:
       return state.updateIn(['new', 'notifications'], (old) => !old);
+    case MUTES_CHANGE_DURATION:
+      return state.setIn(['new', 'duration'], action.duration);
     default:
       return state;
   }
