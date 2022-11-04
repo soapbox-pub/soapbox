@@ -65,7 +65,6 @@ const Status: React.FC<IStatus> = (props) => {
     hidden,
     featured,
     unread,
-    group,
     hideActionBar,
     variant = 'rounded',
     withDismiss,
@@ -296,8 +295,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const accountAction = props.accountAction || reblogElement;
 
-  const inReview = status.visibility === 'self';
-  const isSensitive = status.hidden;
+  const inReview = actualStatus.visibility === 'self';
+  const isSensitive = actualStatus.hidden;
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
@@ -349,6 +348,8 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
 
           <div className='status__content-wrapper'>
+            <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
+
             <Stack
               className={
                 classNames('relative', {
@@ -356,40 +357,35 @@ const Status: React.FC<IStatus> = (props) => {
                 })
               }
             >
-              {(inReview || isSensitive) ? (
+              {(inReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
                 />
-              ) : null}
-
-              {!group && actualStatus.group && (
-                <div className='status__meta'>
-                  Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
-                </div>
               )}
 
-              <StatusReplyMentions
-                status={actualStatus}
-                hoverable={hoverable}
-              />
+              <Stack space={4}>
+                <StatusContent
+                  status={actualStatus}
+                  onClick={handleClick}
+                  collapsable
+                />
 
-              <StatusContent
-                status={actualStatus}
-                onClick={handleClick}
-                collapsable
-              />
+                {(quote || actualStatus.media_attachments.size > 0) && (
+                  <Stack space={4}>
+                    <StatusMedia
+                      status={actualStatus}
+                      muted={muted}
+                      onClick={handleClick}
+                      showMedia={showMedia}
+                      onToggleVisibility={handleToggleMediaVisibility}
+                    />
 
-              <StatusMedia
-                status={actualStatus}
-                muted={muted}
-                onClick={handleClick}
-                showMedia={showMedia}
-                onToggleVisibility={handleToggleMediaVisibility}
-              />
-
-              {quote}
+                    {quote}
+                  </Stack>
+                )}
+              </Stack>
             </Stack>
 
             {!hideActionBar && (
