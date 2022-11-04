@@ -1,9 +1,9 @@
 .status-content p {
-  @apply mb-5 whitespace-pre-wrap;
+  @apply mb-4 whitespace-pre-wrap;
 }
 
 .status-content p:last-child {
-  @apply mb-0.5;
+  @apply mb-0;
 }
 
 .status-content a {
@@ -20,7 +20,7 @@
 
 .status-content ul,
 .status-content ol {
-  @apply pl-10 mb-5;
+  @apply pl-10 mb-4;
 }
 
 .status-content ul {
@@ -32,7 +32,7 @@
 }
 
 .status-content blockquote {
-  @apply py-1 pl-4 mb-5 border-l-4 border-solid border-gray-400 text-gray-500 dark:text-gray-400;
+  @apply py-1 pl-4 mb-4 border-l-4 border-solid border-gray-400 text-gray-500 dark:text-gray-400;
 }
 
 .status-content code {
@@ -51,7 +51,7 @@
 
 /* Code block */
 .status-content pre {
-  @apply py-2 px-3 mb-5 leading-6 overflow-x-auto rounded-md break-all;
+  @apply py-2 px-3 mb-4 leading-6 overflow-x-auto rounded-md break-all;
 }
 
 .status-content pre:last-child {
@@ -60,7 +60,7 @@
 
 /* Markdown images */
 .status-content img:not(.emojione):not([width][height]) {
-  @apply w-full h-72 object-contain rounded-lg overflow-hidden my-5 block;
+  @apply w-full h-72 object-contain rounded-lg overflow-hidden my-4 block;
 }
 
 /* User setting to underline links */
