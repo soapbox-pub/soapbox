@@ -347,11 +347,11 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 {isMyMessage ? (
                   <>
                     {isRead ? (
-                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 dark:bg-primary-400 dark:text-primary-900 border border-solid border-primary-400'>
+                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-primary-500 text-white dark:bg-primary-400 dark:text-primary-900 border border-solid border-primary-500 dark:border-primary-400'>
                         <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-3 h-3' />
                       </span>
                     ) : (
-                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-transparent dark:text-primary-400 border border-solid dark:border-primary-400'>
+                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-transparent text-primary-500 dark:text-primary-400 border border-solid border-primary-500 dark:border-primary-400'>
                         <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-3 h-3' />
                       </span>
                     )}
