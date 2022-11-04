@@ -116,7 +116,7 @@ const ChatPageMain = () => {
             <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
           </HStack>
 
-          <Stack alignItems='start' className='overflow-hidden'>
+          <Stack alignItems='start' className='overflow-hidden h-11'>
             <div className='flex items-center space-x-1 flex-grow w-full'>
               <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
               {chat.account?.verified && <VerificationBadge />}
