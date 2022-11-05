@@ -1,26 +1,45 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
+import { openModal } from 'soapbox/actions/modals';
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Token } from 'soapbox/reducers/security';
 
+import type { Map as ImmutableMap } from 'immutable';
+
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
   revoke: { id: 'security.tokens.revoke', defaultMessage: 'Revoke' },
+  revokeSessionHeading: { id: 'confirmations.revoke_session.heading', defaultMessage: 'Revoke current session' },
+  revokeSessionMessage: { id: 'confirmations.revoke_session.message', defaultMessage: 'You are about to revoke your current session. You will be signed out.' },
+  revokeSessionConfirm: { id: 'confirmations.revoke_session.confirm', defaultMessage: 'Revoke' },
 });
 
 interface IAuthToken {
   token: Token,
+  isCurrent: boolean,
 }
 
-const AuthToken: React.FC<IAuthToken> = ({ token }) => {
+const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const handleRevoke = () => {
-    dispatch(revokeOAuthTokenById(token.id));
+    if (isCurrent)
+      dispatch(openModal('CONFIRM', {
+        icon: require('@tabler/icons/alert-triangle.svg'),
+        heading: intl.formatMessage(messages.revokeSessionHeading),
+        message: intl.formatMessage(messages.revokeSessionMessage),
+        confirm: intl.formatMessage(messages.revokeSessionConfirm),
+        onConfirm: () => {
+          dispatch(revokeOAuthTokenById(token.id));
+        },
+      }));
+    else {
+      dispatch(revokeOAuthTokenById(token.id));
+    }
   };
 
   return (
@@ -42,7 +61,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token }) => {
         </Stack>
 
         <div className='flex justify-end'>
-          <Button theme='primary' onClick={handleRevoke}>
+          <Button theme={isCurrent ? 'danger' : 'primary'} onClick={handleRevoke}>
             {intl.formatMessage(messages.revoke)}
           </Button>
         </div>
@@ -55,6 +74,11 @@ const AuthTokenList: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());
+  const currentTokenId = useAppSelector(state => {
+    const currentToken = state.auth.get('tokens').valueSeq().find((token: ImmutableMap<string, any>) => token.get('me') === state.auth.get('me'));
+
+    return currentToken?.get('id');
+  });
 
   useEffect(() => {
     dispatch(fetchOAuthTokens());
@@ -63,7 +87,7 @@ const AuthTokenList: React.FC = () => {
   const body = tokens ? (
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
       {tokens.map((token) => (
-        <AuthToken key={token.id} token={token} />
+        <AuthToken key={token.id} token={token} isCurrent={token.id === currentTokenId} />
       ))}
     </div>
   ) : <Spinner />;

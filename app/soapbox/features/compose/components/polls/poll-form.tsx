@@ -168,7 +168,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
 
       <Divider />
 
-      <button onClick={handleToggleMultiple} className='text-left'>
+      <button type='button' onClick={handleToggleMultiple} className='text-left'>
         <HStack alignItems='center' justifyContent='between'>
           <Stack>
             <Text weight='medium'>
@@ -197,7 +197,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
 
       {/* Remove Poll */}
       <div className='text-center'>
-        <button className='text-danger-500' onClick={onRemovePoll}>
+        <button type='button' className='text-danger-500' onClick={onRemovePoll}>
           {intl.formatMessage(messages.removePoll)}
         </button>
       </div>

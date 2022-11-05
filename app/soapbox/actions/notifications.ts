@@ -11,7 +11,7 @@ import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
-import { NOTIFICATION_TYPES } from 'soapbox/utils/notification';
+import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';
 import { joinPublicPath } from 'soapbox/utils/static';
 
 import { fetchRelationships } from './accounts';
@@ -195,7 +195,9 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
 
     if (activeFilter === 'all') {
       if (features.notificationsIncludeTypes) {
-        params.types = NOTIFICATION_TYPES;
+        params.types = NOTIFICATION_TYPES.filter(type => !EXCLUDE_TYPES.includes(type as any));
+      } else {
+        params.exclude_types = EXCLUDE_TYPES;
       }
     } else {
       if (features.notificationsIncludeTypes) {

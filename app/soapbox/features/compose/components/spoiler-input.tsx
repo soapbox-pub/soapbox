@@ -68,7 +68,7 @@ const SpoilerInput = React.forwardRef<AutosuggestInput, ISpoilerInput>(({
         />
 
         <div className='text-center'>
-          <button className='text-danger-500' onClick={handleRemove}>
+          <button type='button' className='text-danger-500' onClick={handleRemove}>
             {intl.formatMessage(messages.remove)}
           </button>
         </div>
