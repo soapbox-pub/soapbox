@@ -132,7 +132,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     setComposeFocused(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: React.FormEvent<Element>) => {
     if (text !== autosuggestTextareaRef.current?.textarea?.value) {
       // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
       // Update the state to match the current text
@@ -141,6 +141,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
     // Submit disabled:
     const fulltext = [spoilerText, countableText(text)].join('');
+
+    if (e) {
+      e.preventDefault();
+    }
 
     if (isSubmitting || isUploading || isChangingUpload || length(fulltext) > maxTootChars || (fulltext.length !== 0 && fulltext.trim().length === 0 && !anyMedia)) {
       return;
@@ -261,7 +265,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }
 
   return (
-    <Stack className='w-full' space={4} ref={formRef} onClick={handleClick}>
+    <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
       {scheduledStatusCount > 0 && (
         <Warning
           message={(
@@ -339,7 +343,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             </div>
           )}
 
-          <Button theme='primary' text={publishText} onClick={handleSubmit} disabled={disabledButton} />
+          <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
         </div>
       </div>
     </Stack>
