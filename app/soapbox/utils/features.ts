@@ -618,6 +618,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can translate statuses.
+     * @see POST /api/v1/statuses/:id/translate
+     */
+    translations: features.includes('translation'),
+
+    /**
      * Trending statuses.
      * @see GET /api/v1/trends/statuses
      */

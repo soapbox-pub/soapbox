@@ -7,6 +7,7 @@ import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
+import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
@@ -101,7 +102,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           )}
 
           <Stack space={4}>
-            <StatusContent status={actualStatus} />
+            <StatusContent status={actualStatus} translatable />
+
+            <TranslateButton status={actualStatus} />
 
             {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
               <Stack space={4}>

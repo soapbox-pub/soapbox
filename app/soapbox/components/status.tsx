@@ -9,6 +9,7 @@ import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
+import TranslateButton from 'soapbox/components/translate-button';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
@@ -370,7 +371,10 @@ const Status: React.FC<IStatus> = (props) => {
                   status={actualStatus}
                   onClick={handleClick}
                   collapsable
+                  translatable
                 />
+
+                <TranslateButton status={actualStatus} />
 
                 {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
                   <Stack space={4}>

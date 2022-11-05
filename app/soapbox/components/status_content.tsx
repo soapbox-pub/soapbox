@@ -39,10 +39,11 @@ interface IStatusContent {
   status: Status,
   onClick?: () => void,
   collapsable?: boolean,
+  translatable?: boolean,
 }
 
 /** Renders the text content of a status */
-const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable = false }) => {
+const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable = false, translatable }) => {
   const history = useHistory();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -154,14 +155,14 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   };
 
   const parsedHtml = useMemo((): string => {
-    const { contentHtml: html } = status;
+    const html = translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
 
     if (greentext) {
       return addGreentext(html);
     } else {
       return html;
     }
-  }, [status.contentHtml]);
+  }, [status.contentHtml, status.translation]);
 
   if (status.content.length === 0) {
     return null;

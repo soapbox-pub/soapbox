@@ -1,5 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
@@ -30,6 +30,8 @@ import {
   STATUS_HIDE,
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
+  STATUS_TRANSLATE_SUCCESS,
+  STATUS_TRANSLATE_UNDO,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
@@ -255,6 +257,10 @@ export default function statuses(state = initialState, action: AnyAction): State
       return decrementReplyCount(state, action.params);
     case STATUS_DELETE_FAIL:
       return incrementReplyCount(state, action.params);
+    case STATUS_TRANSLATE_SUCCESS:
+      return state.setIn([action.id, 'translation'], fromJS(action.translation));
+    case STATUS_TRANSLATE_UNDO:
+      return state.deleteIn([action.id, 'translation']);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
     default:
