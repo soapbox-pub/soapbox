@@ -40,6 +40,8 @@ interface IHStack {
   space?: keyof typeof spaces
   /** Whether to let the flexbox grow. */
   grow?: boolean
+  /** HTML element to use for container. */
+  element?: keyof JSX.IntrinsicElements,
   /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
   /** Whether to let the flexbox wrap onto multiple lines. */
@@ -48,10 +50,12 @@ interface IHStack {
 
 /** Horizontal row of child elements. */
 const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
-  const { space, alignItems, grow, justifyContent, wrap, className, ...filteredProps } = props;
+  const { space, alignItems, justifyContent, className, grow, element = 'div', wrap, ...filteredProps } = props;
+
+  const Elem = element as 'div';
 
   return (
-    <div
+    <Elem
       {...filteredProps}
       ref={ref}
       className={classNames('flex', {

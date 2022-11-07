@@ -43,6 +43,11 @@ const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
 const STATUS_REVEAL = 'STATUS_REVEAL';
 const STATUS_HIDE   = 'STATUS_HIDE';
 
+const STATUS_TRANSLATE_REQUEST = 'STATUS_TRANSLATE_REQUEST';
+const STATUS_TRANSLATE_SUCCESS = 'STATUS_TRANSLATE_SUCCESS';
+const STATUS_TRANSLATE_FAIL    = 'STATUS_TRANSLATE_FAIL';
+const STATUS_TRANSLATE_UNDO    = 'STATUS_TRANSLATE_UNDO';
+
 const statusExists = (getState: () => RootState, statusId: string) => {
   return (getState().statuses.get(statusId) || null) !== null;
 };
@@ -305,6 +310,31 @@ const toggleStatusHidden = (status: Status) => {
   }
 };
 
+const translateStatus = (id: string, targetLanguage?: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch({ type: STATUS_TRANSLATE_REQUEST, id });
+
+  api(getState).post(`/api/v1/statuses/${id}/translate`, {
+    target_language: targetLanguage,
+  }).then(response => {
+    dispatch({
+      type: STATUS_TRANSLATE_SUCCESS,
+      id,
+      translation: response.data,
+    });
+  }).catch(error => {
+    dispatch({
+      type: STATUS_TRANSLATE_FAIL,
+      id,
+      error,
+    });
+  });
+};
+
+const undoStatusTranslation = (id: string) => ({
+  type: STATUS_TRANSLATE_UNDO,
+  id,
+});
+
 export {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -329,6 +359,10 @@ export {
   STATUS_UNMUTE_FAIL,
   STATUS_REVEAL,
   STATUS_HIDE,
+  STATUS_TRANSLATE_REQUEST,
+  STATUS_TRANSLATE_SUCCESS,
+  STATUS_TRANSLATE_FAIL,
+  STATUS_TRANSLATE_UNDO,
   createStatus,
   editStatus,
   fetchStatus,
@@ -345,4 +379,6 @@ export {
   hideStatus,
   revealStatus,
   toggleStatusHidden,
+  translateStatus,
+  undoStatusTranslation,
 };

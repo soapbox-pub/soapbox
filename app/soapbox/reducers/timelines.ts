@@ -12,7 +12,6 @@ import {
   ACCOUNT_MUTE_SUCCESS,
   ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
-import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -210,10 +209,6 @@ const filterTimelines = (state: State, relationship: APIEntity, statuses: Immuta
   });
 };
 
-const removeStatusFromGroup = (state: State, groupId: string, statusId: string) => {
-  return state.updateIn([`group:${groupId}`, 'items'], ImmutableOrderedSet(), ids => (ids as ImmutableOrderedSet<string>).delete(statusId));
-};
-
 const timelineDequeue = (state: State, timelineId: string) => {
   const top = state.getIn([timelineId, 'top']);
 
@@ -348,8 +343,6 @@ export default function timelines(state: State = initialState, action: AnyAction
       return timelineConnect(state, action.timeline);
     case TIMELINE_DISCONNECT:
       return timelineDisconnect(state, action.timeline);
-    case GROUP_REMOVE_STATUS_SUCCESS:
-      return removeStatusFromGroup(state, action.groupId, action.id);
     case TIMELINE_REPLACE:
       return state
         .update('home', TimelineRecord(), timeline => timeline.withMutations(timeline => {
