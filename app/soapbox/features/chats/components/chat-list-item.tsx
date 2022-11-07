@@ -117,6 +117,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                 timestamp={chat.last_message.created_at}
                 align='right'
                 size='xs'
+                theme={chat.unread ? 'default' : 'muted'}
                 truncate
               />
             </>
