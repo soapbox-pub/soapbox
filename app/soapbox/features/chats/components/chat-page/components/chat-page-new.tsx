@@ -23,7 +23,7 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
 
   return (
     <Stack className='h-full'>
-      <Stack className='flex-grow p-6 space-y-8'>
+      <Stack className='flex-grow p-6 space-y-4'>
         <CardTitle title='New Message' />
 
         <HStack space={2} alignItems='center'>
@@ -37,7 +37,7 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
           <AccountSearch
             onSelected={handleAccountSelected}
             placeholder='Type a name'
-            theme='transparent'
+            theme='search'
             showButtons={false}
             autoFocus
             className='mb-0.5'
