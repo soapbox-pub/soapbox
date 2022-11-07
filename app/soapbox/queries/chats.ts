@@ -195,6 +195,7 @@ const useChat = (chatId?: string) => {
   };
 
   return useQuery<IChat | undefined>(ChatKeys.chat(chatId), getChat, {
+    cacheTime: 0,
     enabled: !!chatId,
   });
 };
