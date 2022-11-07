@@ -79,12 +79,12 @@ const ChatWindow = () => {
 
             <HStack alignItems='center' space={3}>
               {isOpen && (
-                <Link to={`@${chat.account.acct}`}>
+                <Link to={`/@${chat.account.acct}`}>
                   <Avatar src={chat.account.avatar} size={40} />
                 </Link>
               )}
 
-              <LinkWrapper enabled={isOpen} to={`@${chat.account.acct}`}>
+              <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
                 <Stack alignItems='start'>
                   <div className='flex items-center space-x-1 flex-grow'>
                     <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>

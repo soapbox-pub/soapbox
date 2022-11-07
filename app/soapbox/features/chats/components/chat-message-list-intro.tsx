@@ -67,7 +67,7 @@ const ChatMessageListIntro = () => {
       }
     >
       <Stack alignItems='center' space={2}>
-        <Link to={`@${chat.account.acct}`}>
+        <Link to={`/@${chat.account.acct}`}>
           <Avatar src={chat.account.avatar_static} size={75} />
         </Link>
 
@@ -79,7 +79,7 @@ const ChatMessageListIntro = () => {
               <Text tag='span'>{intl.formatMessage(messages.intro)}</Text>
             </>
           ) : (
-            <Link to={`@${chat.account.acct}`}>
+            <Link to={`/@${chat.account.acct}`}>
               <Text tag='span' theme='inherit' weight='semibold'>@{chat.account.acct}</Text>
             </Link>
           )}
