@@ -235,6 +235,11 @@ const getInstanceFeatures = (instance: Instance) => {
     chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
 
     /**
+     * Ability to only chat with people that follow you.
+     */
+    chatsWithFollowers: v.software === TRUTHSOCIAL,
+
+    /**
      * Mastodon's newer solution for direct messaging.
      * @see {@link https://docs.joinmastodon.org/methods/timelines/conversations/}
      */

@@ -317,13 +317,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
-        menu.push({
-          text: intl.formatMessage(messages.chat, { name: account.username }),
-          action: onChat,
-          icon: require('@tabler/icons/messages.svg'),
-        });
-      } else if (features.privacyScopes) {
+      if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,
@@ -500,26 +494,41 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const renderMessageButton = () => {
-    if (!ownAccount || !account || account.id === ownAccount?.id) {
-      return null;
+    if (features.chatsWithFollowers) { // Truth Social
+      if (!ownAccount || !account || account.id === ownAccount?.id) {
+        return null;
+      }
+
+      const canChat = account.relationship?.followed_by;
+      if (!canChat) {
+        return null;
+      }
+
+      return (
+        <IconButton
+          src={require('@tabler/icons/mail.svg')}
+          onClick={() => createAndNavigateToChat.mutate(account.id)}
+          title={intl.formatMessage(messages.chat, { name: account.username })}
+          theme='outlined'
+          className='px-2'
+          iconClassName='w-4 h-4'
+          disabled={createAndNavigateToChat.isLoading}
+        />
+      );
     }
 
-    const canChat = account.relationship?.followed_by;
-    if (!canChat) {
-      return null;
-    }
-
-    return (
+    if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
       <IconButton
         src={require('@tabler/icons/mail.svg')}
-        onClick={() => createAndNavigateToChat.mutate(account.id)}
+        onClick={onChat}
         title={intl.formatMessage(messages.chat, { name: account.username })}
         theme='outlined'
         className='px-2'
         iconClassName='w-4 h-4'
-        disabled={createAndNavigateToChat.isLoading}
-      />
-    );
+      />;
+    }
+
+    return null;
   };
 
   const renderShareButton = () => {
