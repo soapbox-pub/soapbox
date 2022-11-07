@@ -5,7 +5,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Tooltip } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
@@ -37,6 +37,7 @@ const messages = defineMessages({
   autoDelete30Days: { id: 'chat_settings.auto_delete.30days', defaultMessage: '30 days' },
   autoDelete90Days: { id: 'chat_settings.auto_delete.90days', defaultMessage: '90 days' },
   autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day} days' },
+  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day} days days upon sending.' },
 });
 
 const ChatPageMain = () => {
@@ -129,16 +130,20 @@ const ChatPageMain = () => {
             </div>
 
             {chat.message_expiration && (
-              <Text
-                align='left'
-                size='sm'
-                weight='medium'
-                theme='primary'
-                truncate
-                className='w-full'
+              <Tooltip
+                text={intl.formatMessage(messages.autoDeleteMessageTooltip, { day: secondsToDays(chat.message_expiration) })}
               >
-                {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
-              </Text>
+                <Text
+                  align='left'
+                  size='sm'
+                  weight='medium'
+                  theme='primary'
+                  truncate
+                  className='w-full cursor-help'
+                >
+                  {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
+                </Text>
+              </Tooltip>
             )}
           </Stack>
         </HStack>

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Stack, Text, Tooltip } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { secondsToDays } from 'soapbox/utils/numbers';
@@ -14,6 +14,7 @@ import ChatSettings from './chat-settings';
 
 const messages = defineMessages({
   autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day} days' },
+  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day} days days upon sending.' },
 });
 
 const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, children: React.ReactNode }): JSX.Element => {
@@ -84,19 +85,24 @@ const ChatWindow = () => {
                 </Link>
               )}
 
-              <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
-                <Stack alignItems='start'>
+              <Stack alignItems='start'>
+                <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
                   <div className='flex items-center space-x-1 flex-grow'>
                     <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>
                     {chat.account.verified && <VerificationBadge />}
                   </div>
-                  {chat.message_expiration && (
-                    <Text size='sm' weight='medium' theme='primary' truncate>
+                </LinkWrapper>
+
+                {chat.message_expiration && (
+                  <Tooltip
+                    text={intl.formatMessage(messages.autoDeleteMessageTooltip, { day: secondsToDays(chat.message_expiration) })}
+                  >
+                    <Text size='sm' weight='medium' theme='primary' truncate className='cursor-help'>
                       {intl.formatMessage(messages.autoDeleteMessage, { day: secondsToDays(chat.message_expiration) })}
                     </Text>
-                  )}
-                </Stack>
-              </LinkWrapper>
+                  </Tooltip>
+                )}
+              </Stack>
             </HStack>
           </HStack>
         }
