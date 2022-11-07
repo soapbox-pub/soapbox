@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
@@ -113,13 +113,19 @@ const ChatPageMain = () => {
               onClick={() => history.push('/chats')}
             />
 
-            <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
+            <Link to={`/@${chat.account.acct}`}>
+              <Avatar src={chat.account.avatar} size={40} className='flex-none' />
+            </Link>
           </HStack>
 
           <Stack alignItems='start' className='overflow-hidden h-11'>
             <div className='flex items-center space-x-1 flex-grow w-full'>
-              <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
-              {chat.account?.verified && <VerificationBadge />}
+              <Link to={`/@${chat.account.acct}`}>
+                <Text weight='bold' size='sm' align='left' truncate>
+                  {chat.account.display_name || `@${chat.account.username}`}
+                </Text>
+              </Link>
+              {chat.account.verified && <VerificationBadge />}
             </div>
 
             {chat.message_expiration && (
