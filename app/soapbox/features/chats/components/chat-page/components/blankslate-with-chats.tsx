@@ -4,11 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { Button, Stack, Text } from 'soapbox/components/ui';
 
-interface IBlankslate {
-}
-
-/** To display on the chats main page when no message is selected. */
-const Blankslate: React.FC<IBlankslate> = () => {
+/** To display on the chats main page when no message is selected, but chats are present. */
+const BlankslateWithChats = () => {
   const history = useHistory();
 
   const handleNewChat = () => {
@@ -20,15 +17,15 @@ const Blankslate: React.FC<IBlankslate> = () => {
       <Stack space={2} className='max-w-sm'>
         <Text size='2xl' weight='bold' tag='h2' align='center'>
           <FormattedMessage
-            id='chats.main.blankslate.title'
-            defaultMessage='No messages yet'
+            id='chats.main.blankslate_with_chats.title'
+            defaultMessage='Select a chat'
           />
         </Text>
 
         <Text size='sm' theme='muted' align='center'>
           <FormattedMessage
-            id='chats.main.blankslate.subtitle'
-            defaultMessage='You can start a chat with anyone that follows you'
+            id='chats.main.blankslate_with_chats.subtitle'
+            defaultMessage='Select from one of your open chats or create a new message.'
           />
         </Text>
       </Stack>
@@ -43,4 +40,4 @@ const Blankslate: React.FC<IBlankslate> = () => {
   );
 };
 
-export default Blankslate;
+export default BlankslateWithChats;

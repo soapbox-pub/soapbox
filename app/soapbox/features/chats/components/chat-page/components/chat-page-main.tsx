@@ -9,12 +9,13 @@ import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList,
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { MessageExpirationValues, useChat, useChatActions } from 'soapbox/queries/chats';
+import { MessageExpirationValues, useChat, useChatActions, useChats } from 'soapbox/queries/chats';
 import { secondsToDays } from 'soapbox/utils/numbers';
 
 import Chat from '../../chat';
 
-import Blankslate from './blankslate';
+import BlankslateEmpty from './blankslate-empty';
+import BlankslateWithChats from './blankslate-with-chats';
 
 const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
@@ -50,6 +51,7 @@ const ChatPageMain = () => {
 
   const { data: chat } = useChat(chatId);
   const { currentChatId } = useChatContext();
+  const { chatsQuery: { data: chats, isLoading } } = useChats();
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -95,8 +97,16 @@ const ChatPageMain = () => {
     }));
   };
 
+  if (isLoading) {
+    return null;
+  }
+
+  if (!currentChatId && chats && chats.length > 0) {
+    return <BlankslateWithChats />;
+  }
+
   if (!currentChatId) {
-    return <Blankslate />;
+    return <BlankslateEmpty />;
   }
 
   if (!chat) {
