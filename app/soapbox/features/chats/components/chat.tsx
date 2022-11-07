@@ -85,8 +85,8 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       queryClient.setQueryData(['chats', 'messages', chat.id], context.prevChatMessages);
       setErrorSubmittingMessage(true);
     },
-    // Always refetch after error or success:
     onSuccess: () => {
+      setErrorSubmittingMessage(false);
       queryClient.invalidateQueries(ChatKeys.chatMessages(chat.id));
     },
   });
