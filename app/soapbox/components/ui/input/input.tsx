@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 /** Possible theme names for an Input. */
-type InputThemes = 'normal' | 'search' | 'transparent';
+type InputThemes = 'normal' | 'search'
 
 interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
@@ -64,7 +64,6 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           classNames('relative', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
-            'shadow-sm': theme !== 'transparent',
             'mt-1': !String(outerClassName).includes('mt-'),
             [String(outerClassName)]: typeof outerClassName !== 'undefined',
           })
@@ -91,7 +90,6 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
               ['normal', 'search'].includes(theme),
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
-            'bg-transparent border-none focus:shadow-none dark:focus:shadow-none focus:border-transparent focus:ring-0 p-0': theme === 'transparent',
             'pr-7': isPassword || append,
             'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
