@@ -8,12 +8,13 @@ import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
 
 const messages = defineMessages({
+  blockedYou: { id: 'chat_list_item.blocked_you', defaultMessage: 'This user has blocked you' },
   leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
@@ -33,6 +34,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
 
   const { isUsingMainChatPage } = useChatContext();
   const { deleteChat } = useChatActions(chat?.id as string);
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
 
   const menu = useMemo((): Menu => [{
     text: intl.formatMessage(messages.leaveChat),
@@ -77,17 +79,33 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
               {chat.account?.verified && <VerificationBadge />}
             </div>
 
-            {chat.last_message?.content && (
+            {isBlocked ? (
               <Text
                 align='left'
                 size='sm'
                 weight='medium'
-                theme={chat.last_message.unread ? 'default' : 'muted'}
+                theme='muted'
                 truncate
-                className='w-full h-5 truncate-child pointer-events-none'
+                className='w-full h-5 pointer-events-none italic'
                 data-testid='chat-last-message'
-                dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
-              />
+              >
+                {intl.formatMessage(messages.blockedYou)}
+              </Text>
+            ) : (
+              <>
+                {chat.last_message?.content && (
+                  <Text
+                    align='left'
+                    size='sm'
+                    weight='medium'
+                    theme={chat.last_message.unread ? 'default' : 'muted'}
+                    truncate
+                    className='w-full h-5 truncate-child pointer-events-none'
+                    data-testid='chat-last-message'
+                    dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
+                  />
+                )}
+              </>
             )}
           </Stack>
         </HStack>
