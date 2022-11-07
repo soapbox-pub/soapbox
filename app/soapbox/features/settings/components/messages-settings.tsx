@@ -7,8 +7,7 @@ import { useOwnAccount } from 'soapbox/hooks';
 import { useUpdateCredentials } from 'soapbox/queries/accounts';
 
 const messages = defineMessages({
-  label: { id: 'settings.messages.label', defaultMessage: 'Allow others to message me' },
-  hint: { id: 'settings.messages.hint', defaultMessage: 'Only people I follow can send me messages' },
+  label: { id: 'settings.messages.label', defaultMessage: 'Allow your followers to start a new chat with you' },
 });
 
 const MessagesSettings = () => {
@@ -28,7 +27,6 @@ const MessagesSettings = () => {
     <List>
       <ListItem
         label={intl.formatMessage(messages.label)}
-        hint={intl.formatMessage(messages.hint)}
       >
         <Toggle
           checked={account.accepts_chat_messages}

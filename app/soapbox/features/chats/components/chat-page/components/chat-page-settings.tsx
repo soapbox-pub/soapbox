@@ -14,8 +14,7 @@ type FormData = {
 const messages = defineMessages({
   title: { id: 'chat.page_settings.title', defaultMessage: 'Message Settings' },
   privacy: { id: 'chat.page_settings.privacy', defaultMessage: 'Privacy' },
-  acceptingMessageLabel: { id: 'chat.page_settings.accepting_messages.label', defaultMessage: 'Allow others to message me' },
-  acceptingMessageHint: { id: 'chat.page_settings.accepting_messages.hint', defaultMessage: 'Only people I follow can send me messages' },
+  acceptingMessageLabel: { id: 'chat.page_settings.accepting_messages.label', defaultMessage: 'Allow your followers to start a new chat with you' },
   submit: { id: 'chat.page_settings.submit', defaultMessage: 'Save' },
 });
 
@@ -46,7 +45,6 @@ const ChatPageSettings = () => {
           <List>
             <ListItem
               label={intl.formatMessage(messages.acceptingMessageLabel)}
-              hint={intl.formatMessage(messages.acceptingMessageHint)}
             >
               <Toggle
                 checked={data.accepts_chat_messages}

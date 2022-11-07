@@ -14,8 +14,7 @@ type FormData = {
 const messages = defineMessages({
   title: { id: 'chat.welcome.title', defaultMessage: 'Welcome to {br} Direct Messages!' },
   subtitle: { id: 'chat.welcome.subtitle', defaultMessage: 'By default, all messages are automatically deleted after 14 days for your security.' },
-  acceptingMessageLabel: { id: 'chat.welcome.accepting_messages.label', defaultMessage: 'Allow others to message me' },
-  acceptingMessageHint: { id: 'chat.welcome.accepting_messages.hint', defaultMessage: 'Only people I follow can send me messages' },
+  acceptingMessageLabel: { id: 'chat.welcome.accepting_messages.label', defaultMessage: 'Allow your followers to start a new chat with you' },
   notice: { id: 'chat.welcome.notice', defaultMessage: 'You can change these settings later.' },
   submit: { id: 'chat.welcome.submit', defaultMessage: 'Save & Continue' },
 });
@@ -62,7 +61,6 @@ const Welcome = () => {
             <List>
               <ListItem
                 label={intl.formatMessage(messages.acceptingMessageLabel)}
-                hint={intl.formatMessage(messages.acceptingMessageHint)}
               >
                 <Toggle
                   checked={data.accepts_chat_messages}
