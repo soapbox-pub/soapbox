@@ -116,8 +116,8 @@ manageTranslations({
 // used in translations which are not used in the default message.
 /* eslint-disable no-console */
 
-function findVariablesinAST(tree: parser.MessageFormatElement[]) {
-  const result = new Set();
+function findVariablesinAST(tree: parser.MessageFormatElement[]): Set<string> {
+  const result = new Set<string>();
   tree.forEach((element) => {
     switch (element.type) {
       case parser.TYPE.argument:
@@ -142,7 +142,7 @@ function findVariablesinAST(tree: parser.MessageFormatElement[]) {
   return result;
 }
 
-function findVariables(string: string) {
+function findVariables(string: string): Set<string> {
   return findVariablesinAST(parser.parse(string));
 }
 
@@ -161,14 +161,19 @@ const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
   return acc;
 }, [] as ExtractedDescriptor[]);
 
-const translations = languages.map((language: string) => {
+interface Translation {
+  language: string,
+  data: Record<string, string>,
+}
+
+const translations: Translation[] = languages.map((language: string) => {
   return {
     language: language,
     data: JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
   };
 });
 
-function difference<T>(a: Set<T>, b: Set<T>) {
+function difference<T>(a: Set<T>, b: Set<T>): Set<T> {
   return new Set(Array.from(a).filter(x => !b.has(x)));
 }
 
