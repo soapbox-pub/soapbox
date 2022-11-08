@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import parser from 'intl-messageformat-parser';
+import * as parser from 'intl-messageformat-parser';
 import manageTranslations, { readMessageFiles, ExtractedDescriptor } from 'react-intl-translations-manager';
 
 type Validator = (language: string) => void;
