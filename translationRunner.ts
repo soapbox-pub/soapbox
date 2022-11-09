@@ -1,12 +1,19 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const parser = require('intl-messageformat-parser');
-const { default: manageTranslations, readMessageFiles } = require('react-intl-translations-manager'); // eslint-disable-line import/order
+import * as parser from 'intl-messageformat-parser';
+import manageTranslations, { readMessageFiles, ExtractedDescriptor } from 'react-intl-translations-manager';
+
+type Validator = (language: string) => void;
+
+interface LanguageResult {
+  language: string,
+  error: any,
+}
 
 const RFC5646_REGEXP = /^[a-z]{2,3}(?:-(?:x|[A-Za-z]{2,4}))*$/;
 
-const rootDirectory = path.resolve(__dirname, '..');
+const rootDirectory = path.resolve(__dirname);
 const translationsDirectory = path.resolve(rootDirectory, 'app', 'soapbox', 'locales');
 const messagesDirectory = path.resolve(rootDirectory, 'build', 'messages');
 const availableLanguages = fs.readdirSync(translationsDirectory).reduce((languages, filename) => {
@@ -15,29 +22,29 @@ const availableLanguages = fs.readdirSync(translationsDirectory).reduce((languag
     languages.push(basename);
   }
   return languages;
-}, []);
+}, [] as string[]);
 
-const testRFC5646 = language => {
+const testRFC5646: Validator = (language) => {
   if (!RFC5646_REGEXP.test(language)) {
     throw new Error('Not RFC5646 name');
   }
 };
 
-const testAvailability = language => {
+const testAvailability: Validator = (language) => {
   if (!availableLanguages.includes(language)) {
     throw new Error('Not an available language');
   }
 };
 
-const validateLanguages = (languages, validators) => {
-  const invalidLanguages = languages.reduce((acc, language) => {
+const validateLanguages = (languages: string[], validators: Validator[]): void => {
+  const invalidLanguages = languages.reduce((acc, language): LanguageResult[] => {
     try {
       validators.forEach(validator => validator(language));
     } catch (error) {
       acc.push({ language, error });
     }
     return acc;
-  }, []);
+  }, [] as LanguageResult[]);
 
   if (invalidLanguages.length > 0) {
     console.error(`
@@ -80,13 +87,18 @@ Try to run "yarn build" first`);
 }
 
 // determine the languages list
-const languages = (argv._.length > 0) ? argv._ : availableLanguages;
+const languages: string[] = (argv._.length > 0) ? argv._ : availableLanguages;
+
+const validators: Validator[] = [
+  testRFC5646,
+];
+
+if (!argv.force) {
+  validators.push(testAvailability);
+}
 
 // validate languages
-validateLanguages(languages, [
-  testRFC5646,
-  !argv.force && testAvailability,
-].filter(Boolean));
+validateLanguages(languages, validators);
 
 // manage translations
 manageTranslations({
@@ -104,8 +116,8 @@ manageTranslations({
 // used in translations which are not used in the default message.
 /* eslint-disable no-console */
 
-function findVariablesinAST(tree) {
-  const result = new Set();
+function findVariablesinAST(tree: parser.MessageFormatElement[]): Set<string> {
+  const result = new Set<string>();
   tree.forEach((element) => {
     switch (element.type) {
       case parser.TYPE.argument:
@@ -130,14 +142,14 @@ function findVariablesinAST(tree) {
   return result;
 }
 
-function findVariables(string) {
+function findVariables(string: string): Set<string> {
   return findVariablesinAST(parser.parse(string));
 }
 
 const extractedMessagesFiles = readMessageFiles(translationsDirectory);
 const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
   messageFile.descriptors.forEach((descriptor) => {
-    descriptor.descriptors.forEach((item) => {
+    descriptor.descriptors?.forEach((item) => {
       const variables = findVariables(item.defaultMessage);
       acc.push({
         id: item.id,
@@ -147,20 +159,25 @@ const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
     });
   });
   return acc;
-}, []);
+}, [] as ExtractedDescriptor[]);
 
-const translations = languages.map((language) => {
+interface Translation {
+  language: string,
+  data: Record<string, string>,
+}
+
+const translations: Translation[] = languages.map((language: string) => {
   return {
     language: language,
     data: JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
   };
 });
 
-function difference(a, b) {
-  return new Set([...a].filter(x => !b.has(x)));
+function difference<T>(a: Set<T>, b: Set<T>): Set<T> {
+  return new Set(Array.from(a).filter(x => !b.has(x)));
 }
 
-function pushIfUnique(arr, newItem) {
+function pushIfUnique<T>(arr: T[], newItem: T): void {
   if (arr.every((item) => {
     return (JSON.stringify(item) !== JSON.stringify(newItem));
   })) {
@@ -168,18 +185,25 @@ function pushIfUnique(arr, newItem) {
   }
 }
 
-const problems = translations.reduce((acc, translation) => {
+interface Problem {
+  language: string,
+  id: ExtractedDescriptor['id'],
+  severity: 'error' | 'warning',
+  type: string,
+}
+
+const problems: Problem[] = translations.reduce((acc, translation) => {
   extractedMessages.forEach((message) => {
     try {
-      const translationVariables = findVariables(translation.data[message.id]);
-      if ([...difference(translationVariables, message.variables)].length > 0) {
+      const translationVariables = findVariables(translation.data[message.id!]);
+      if (Array.from(difference(translationVariables, message.variables)).length > 0) {
         pushIfUnique(acc, {
           language: translation.language,
           id: message.id,
           severity: 'error',
           type: 'missing variable      ',
         });
-      } else if ([...difference(message.variables, translationVariables)].length > 0) {
+      } else if (Array.from(difference(message.variables, translationVariables)).length > 0) {
         pushIfUnique(acc, {
           language: translation.language,
           id: message.id,
@@ -197,7 +221,7 @@ const problems = translations.reduce((acc, translation) => {
     }
   });
   return acc;
-}, []);
+}, [] as Problem[]);
 
 if (problems.length > 0) {
   console.error(`${problems.length} messages found with errors or warnings:`);
