@@ -295,6 +295,43 @@ describe('useChatActions', () => {
     });
   });
 
+  describe('createChatMessage()', () => {
+    beforeEach(() => {
+      const initialQueryData = {
+        pages: [
+          { result: [buildChatMessage('1')], hasMore: false, link: undefined },
+        ],
+        pageParams: [undefined],
+      };
+
+      queryClient.setQueryData(ChatKeys.chatMessages(chat.id), initialQueryData);
+
+      __stub((mock) => {
+        mock
+          .onPost(`/api/v1/pleroma/chats/${chat.id}/messages`)
+          .reply(200, { hello: 'world' });
+      });
+    });
+
+    it('creates a chat message', async() => {
+      const { result } = renderHook(() => {
+        const { createChatMessage } = useChatActions(chat.id);
+
+        useEffect(() => {
+          createChatMessage.mutate({ chatId: chat.id, content: 'hello' });
+        }, []);
+
+        return createChatMessage;
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      expect(result.current.data.data).toEqual({ hello: 'world' });
+    });
+  });
+
   describe('updateChat()', () => {
     const nextUnreadCount = 5;
 

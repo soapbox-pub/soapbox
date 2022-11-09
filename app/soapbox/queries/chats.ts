@@ -8,7 +8,7 @@ import { getNextLink } from 'soapbox/api';
 import compareId from 'soapbox/compare_id';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useApi, useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
@@ -202,8 +202,10 @@ const useChat = (chatId?: string) => {
 };
 
 const useChatActions = (chatId: string) => {
+  const account = useOwnAccount();
   const api = useApi();
   const dispatch = useAppDispatch();
+
   const { setUnreadChatsCount } = useStatContext();
 
   const { chat, changeScreen } = useChatContext();
@@ -230,9 +232,55 @@ const useChatActions = (chatId: string) => {
       .catch(() => null);
   };
 
-  const createChatMessage = (chatId: string, content: string) => {
-    return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/messages`, { content });
-  };
+  const createChatMessage = useMutation(
+    (
+      {  chatId, content }: { chatId: string, content: string },
+    ) => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/messages`, { content }),
+    {
+      retry: false,
+      onMutate: async (variables) => {
+        // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+        await queryClient.cancelQueries(['chats', 'messages', variables.chatId]);
+
+        // Snapshot the previous value
+        const prevContent = variables.content;
+        const prevChatMessages = queryClient.getQueryData(['chats', 'messages', variables.chatId]);
+
+        // Optimistically update to the new value
+        queryClient.setQueryData(ChatKeys.chatMessages(variables.chatId), (prevResult: any) => {
+          const newResult = { ...prevResult };
+          newResult.pages = newResult.pages.map((page: any, idx: number) => {
+            if (idx === 0) {
+              return {
+                ...page,
+                result: [...page.result, {
+                  content: variables.content,
+                  id: String(Number(new Date())),
+                  created_at: new Date(),
+                  account_id: account?.id,
+                  pending: true,
+                  unread: true,
+                }],
+              };
+            }
+
+            return page;
+          });
+
+          return newResult;
+        });
+
+        return { prevChatMessages, prevContent };
+      },
+      // If the mutation fails, use the context returned from onMutate to roll back
+      onError: (_error: any, variables, context: any) => {
+        queryClient.setQueryData(['chats', 'messages', variables.chatId], context.prevChatMessages);
+      },
+      onSuccess: (_data: any, variables) => {
+        queryClient.invalidateQueries(ChatKeys.chatMessages(variables.chatId));
+      },
+    },
+  );
 
   const updateChat = useMutation((data: UpdateChatVariables) => api.patch<IChat>(`/api/v1/pleroma/chats/${chatId}`, data), {
     onMutate: async (data) => {

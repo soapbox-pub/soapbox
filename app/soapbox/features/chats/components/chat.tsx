@@ -1,13 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
 
 import { Stack } from 'soapbox/components/ui';
 // import UploadProgress from 'soapbox/components/upload-progress';
 // import UploadButton from 'soapbox/features/compose/components/upload_button';
-import { useOwnAccount } from 'soapbox/hooks';
-import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
+import { IChat, useChatActions } from 'soapbox/queries/chats';
 // import { truncateFilename } from 'soapbox/utils/media';
 
 import ChatComposer from './chat-composer';
@@ -26,8 +23,6 @@ interface ChatInterface {
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
 const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
-  const account = useOwnAccount();
-
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
 
   const [content, setContent] = useState<string>('');
@@ -39,57 +34,19 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
-  const submitMessage = useMutation(({ chatId, content }: any) => createChatMessage(chatId, content), {
-    retry: false,
-    onMutate: async (newMessage: any) => {
-      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries(['chats', 'messages', chat.id]);
+  const submitMessage = () => {
+    createChatMessage.mutate({ chatId: chat.id, content }, {
+      onError: (_error, _variables, context: any) => {
+        setContent(context.prevContent as string);
+        setErrorSubmittingMessage(true);
+      },
+      onSuccess: () => {
+        setErrorSubmittingMessage(false);
+      },
+    });
 
-      // Snapshot the previous value
-      const prevChatMessages = queryClient.getQueryData(['chats', 'messages', chat.id]);
-      const prevContent = content;
-
-      // Clear state (content, attachment, etc)
-      clearState();
-
-      // Optimistically update to the new value
-      queryClient.setQueryData(['chats', 'messages', chat.id], (prevResult: any) => {
-        const newResult = { ...prevResult };
-        newResult.pages = newResult.pages.map((page: any, idx: number) => {
-          if (idx === 0) {
-            return {
-              ...page,
-              result: [...page.result, {
-                ...newMessage,
-                id: String(Number(new Date())),
-                created_at: new Date(),
-                account_id: account?.id,
-                pending: true,
-                unread: true,
-              }],
-            };
-          }
-
-          return page;
-        });
-
-        return newResult;
-      });
-
-      // Return a context object with the snapshotted value
-      return { prevChatMessages, prevContent };
-    },
-    // If the mutation fails, use the context returned from onMutate to roll back
-    onError: (_error: any, _newData: any, context: any) => {
-      setContent(context.prevContent);
-      queryClient.setQueryData(['chats', 'messages', chat.id], context.prevChatMessages);
-      setErrorSubmittingMessage(true);
-    },
-    onSuccess: () => {
-      setErrorSubmittingMessage(false);
-      queryClient.invalidateQueries(ChatKeys.chatMessages(chat.id));
-    },
-  });
+    clearState();
+  };
 
   const clearState = () => {
     setContent('');
@@ -101,8 +58,8 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   };
 
   const sendMessage = () => {
-    if (!isSubmitDisabled && !submitMessage.isLoading) {
-      submitMessage.mutate({ chatId: chat.id, content });
+    if (!isSubmitDisabled && !createChatMessage.isLoading) {
+      submitMessage();
 
       if (!chat.accepted) {
         acceptChat.mutate();
