@@ -74,7 +74,9 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   const features = useFeatures();
 
   const lastReadMessageDateString = chat.latest_read_message_by_account.find((latest) => latest.id === chat.account.id)?.date;
+  const myLastReadMessageDateString = chat.latest_read_message_by_account.find((latest) => latest.id === account?.id)?.date;
   const lastReadMessageTimestamp = lastReadMessageDateString ? new Date(lastReadMessageDateString) : null;
+  const myLastReadMessageTimestamp = myLastReadMessageDateString ? new Date(myLastReadMessageDateString) : null;
 
   const node = useRef<VirtuosoHandle>(null);
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX - 20);
@@ -370,10 +372,21 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   };
 
   useEffect(() => {
-    const lastMessage = formattedChatMessages.pop();
-    const lastMessageId = lastMessage?.id;
+    const lastMessage = formattedChatMessages[formattedChatMessages.length - 1];
+    if (!lastMessage) {
+      return;
+    }
 
-    if (lastMessageId && !lastMessage.pending) {
+    const lastMessageId = lastMessage.id;
+    const isMessagePending = lastMessage.pending;
+    const isAlreadyRead = myLastReadMessageTimestamp ? myLastReadMessageTimestamp >= new Date(lastMessage.created_at) : false;
+
+    /**
+     * Only "mark the message as read" if..
+     * 1) it is not pending and
+     * 2) it has not already been read
+    */
+    if (!isMessagePending && !isAlreadyRead) {
       markChatAsRead(lastMessageId);
     }
   }, [formattedChatMessages.length]);
