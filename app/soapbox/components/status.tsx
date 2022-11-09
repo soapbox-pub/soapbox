@@ -392,7 +392,7 @@ const Status: React.FC<IStatus> = (props) => {
               </Stack>
             </Stack>
 
-            {!hideActionBar && (
+            {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
                 <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
               </div>
