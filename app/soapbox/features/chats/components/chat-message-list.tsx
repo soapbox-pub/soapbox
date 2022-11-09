@@ -10,7 +10,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
 import { Avatar, Button, Divider, HStack, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-// import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
@@ -26,7 +26,7 @@ import ChatMessageListIntro from './chat-message-list-intro';
 import type { Menu } from 'soapbox/components/dropdown_menu';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
-const BIG_EMOJI_LIMIT = 1;
+const BIG_EMOJI_LIMIT = 3;
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
@@ -54,10 +54,6 @@ const timeChange = (prev: IChatMessage, curr: IChatMessage): TimeFormat | null =
 
   return null;
 };
-
-// const makeEmojiMap = (record: any) => record.get('emojis', ImmutableList()).reduce((map: ImmutableMap<string, any>, emoji: ImmutableMap<string, any>) => {
-//   return map.set(`:${emoji.get('shortcode')}:`, emoji);
-// }, ImmutableMap());
 
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
@@ -161,12 +157,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
       link.setAttribute('rel', 'ugc nofollow noopener');
       link.setAttribute('target', '_blank');
     });
-
-    if (onlyEmoji(c, BIG_EMOJI_LIMIT, false)) {
-      c.classList.add('chat-message__bubble--onlyEmoji');
-    } else {
-      c.classList.remove('chat-message__bubble--onlyEmoji');
-    }
   };
 
   const handleStartReached = useCallback(() => {
@@ -208,9 +198,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
     const pending = chatMessage.pending;
     const deleting = chatMessage.deleting;
     const formatted = (pending && !deleting) ? parsePendingContent(content) : content;
-    return formatted;
-    // const emojiMap = makeEmojiMap(chatMessage);
-    // return emojify(formatted, emojiMap.toJS());
+    return emojify(formatted);
   };
 
   const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='sm' />;
@@ -223,6 +211,11 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   };
 
   const renderMessage = (chatMessage: ChatMessageEntity) => {
+    const content = parseContent(chatMessage);
+    const hiddenEl = document.createElement('div');
+    hiddenEl.innerHTML = content;
+    const isOnlyEmoji = onlyEmoji(hiddenEl, BIG_EMOJI_LIMIT, false);
+
     const isMyMessage = chatMessage.account_id === me;
     // did this occur before this time?
     const isRead = isMyMessage
@@ -310,13 +303,14 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                     'text-ellipsis break-all relative rounded-md p-2 max-w-full': true,
                     'bg-primary-500 text-white mr-2': isMyMessage,
                     'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 order-2 ml-2': !isMyMessage,
+                    '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
                   })
                 }
                 ref={setBubbleRef}
                 tabIndex={0}
               >
                 {maybeRenderMedia(chatMessage)}
-                <Text size='sm' theme='inherit' className='break-word-nested' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
+                <Text size='sm' theme='inherit' className='break-word-nested' dangerouslySetInnerHTML={{ __html: content }} />
               </div>
 
               <div className={classNames({ 'order-1': !isMyMessage })}>
