@@ -16,13 +16,14 @@ import { queryClient } from './client';
 
 import type { IAccount } from './accounts';
 
-export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
+export const messageExpirationOptions = [120, 604800, 1209600, 2592000, 7776000];
 
 export enum MessageExpirationValues {
-  'SEVEN' = messageExpirationOptions[0],
-  'FOURTEEN' = messageExpirationOptions[1],
-  'THIRTY' = messageExpirationOptions[2],
-  'NINETY' = messageExpirationOptions[3]
+  'TWO_MINUTES' = messageExpirationOptions[0],
+  'SEVEN' = messageExpirationOptions[1],
+  'FOURTEEN' = messageExpirationOptions[2],
+  'THIRTY' = messageExpirationOptions[3],
+  'NINETY' = messageExpirationOptions[4]
 }
 
 export interface IChat {

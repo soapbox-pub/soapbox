@@ -33,6 +33,7 @@ const messages = defineMessages({
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
   autoDeleteLabel: { id: 'chat_settings.auto_delete.label', defaultMessage: 'Auto-delete messages' },
   autoDeleteHint: { id: 'chat_settings.auto_delete.hint', defaultMessage: 'Sent messages will auto-delete after the time period selected' },
+  autoDelete2Minutes: { id: 'chat_settings.auto_delete.2minutes', defaultMessage: '2 minutes' },
   autoDelete7Days: { id: 'chat_settings.auto_delete.7days', defaultMessage: '7 days' },
   autoDelete14Days: { id: 'chat_settings.auto_delete.14days', defaultMessage: '14 days' },
   autoDelete30Days: { id: 'chat_settings.auto_delete.30days', defaultMessage: '30 days' },
@@ -181,6 +182,11 @@ const ChatPageMain = () => {
                   <ListItem
                     label={intl.formatMessage(messages.autoDeleteLabel)}
                     hint={intl.formatMessage(messages.autoDeleteHint)}
+                  />
+                  <ListItem
+                    label={intl.formatMessage(messages.autoDelete2Minutes)}
+                    onSelect={() => handleUpdateChat(MessageExpirationValues.TWO_MINUTES)}
+                    isSelected={chat.message_expiration === MessageExpirationValues.TWO_MINUTES}
                   />
                   <ListItem
                     label={intl.formatMessage(messages.autoDelete7Days)}
