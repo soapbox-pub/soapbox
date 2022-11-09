@@ -57,6 +57,12 @@ export const SOAPBOX = 'soapbox';
  */
 export const GLITCH = 'glitch';
 
+/**
+ * Akkoma, a Pleroma fork.
+ * @see {@link https://akkoma.dev/AkkomaGang/akkoma}
+ */
+export const AKKOMA = 'akkoma';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -202,7 +208,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+    chats: v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA,
 
     /**
      * Paginated chats API.
