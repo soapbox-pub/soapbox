@@ -443,12 +443,19 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
           data={cachedChatMessages}
           startReached={handleStartReached}
           followOutput='auto'
-          itemContent={(_index, chatMessage) => {
+          itemContent={(index, chatMessage) => {
             if (chatMessage.type === 'divider') {
-              return renderDivider(_index, chatMessage.text);
+              return renderDivider(index, chatMessage.text);
             } else {
               return (
-                <div className='py-2 px-4'>
+                <div
+                  className={
+                    classNames('px-4', {
+                      'py-2': index !== START_INDEX,
+                      'pt-2 pb-4': index === START_INDEX || chatMessage.pending,
+                    })
+                  }
+                >
                   {renderMessage(chatMessage)}
                 </div>
               );
