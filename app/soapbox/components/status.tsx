@@ -296,7 +296,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const accountAction = props.accountAction || reblogElement;
 
-  const inReview = actualStatus.visibility === 'self';
+  const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
 
   return (
@@ -354,11 +354,11 @@ const Status: React.FC<IStatus> = (props) => {
             <Stack
               className={
                 classNames('relative', {
-                  'min-h-[220px]': inReview || isSensitive,
+                  'min-h-[220px]': isUnderReview || isSensitive,
                 })
               }
             >
-              {(inReview || isSensitive) && (
+              {(isUnderReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
