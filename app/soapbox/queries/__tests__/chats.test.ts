@@ -8,7 +8,7 @@ import { normalizeRelationship } from 'soapbox/normalizers';
 import { flattenPages } from 'soapbox/utils/queries';
 
 import { IAccount } from '../accounts';
-import { ChatKeys, IChat, IChatMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
+import { ChatKeys, IChat, IChatMessage, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
 
 jest.mock('soapbox/utils/queries');
 
@@ -41,6 +41,67 @@ const buildChatMessage = (id: string): IChatMessage => ({
   content: `chat message #${id}`,
   created_at: '2020-06-10T02:05:06.000Z',
   unread: true,
+});
+
+describe('ChatKeys', () => {
+  it('has a "chat" key', () => {
+    const id = '1';
+
+    expect(ChatKeys.chat(id)).toEqual(['chats', 'chat', id]);
+  });
+
+  it('has a "chatMessages" key', () => {
+    const id = '1';
+
+    expect(ChatKeys.chatMessages(id)).toEqual(['chats', 'messages', id]);
+  });
+
+  it('has a "chatSearch" key', () => {
+    const searchQuery = 'che';
+
+    expect(ChatKeys.chatSearch()).toEqual(['chats', 'search']);
+    expect(ChatKeys.chatSearch(searchQuery)).toEqual(['chats', 'search', searchQuery]);
+  });
+});
+
+describe('isLastMessage', () => {
+  describe('when its the last message', () => {
+    it('is truthy', () => {
+      const id = '5';
+      const newChat = { ...chat, last_message: { id } } as any;
+      const initialQueryData = {
+        pages: [
+          { result: [newChat], hasMore: false, link: undefined },
+        ],
+        pageParams: [undefined],
+      };
+      const initialFlattenedData = flattenPages(initialQueryData);
+      expect(sumBy(initialFlattenedData, (chat: IChat) => chat.unread)).toBe(0);
+
+      queryClient.setQueryData(ChatKeys.chatSearch(), initialQueryData);
+
+      expect(isLastMessage(id)).toBeTruthy();
+    });
+  });
+
+  describe('when its not the last message', () => {
+    it('is not truthy', () => {
+      const id = '5';
+      const newChat = { ...chat, last_message: { id } } as any;
+      const initialQueryData = {
+        pages: [
+          { result: [newChat], hasMore: false, link: undefined },
+        ],
+        pageParams: [undefined],
+      };
+      const initialFlattenedData = flattenPages(initialQueryData);
+      expect(sumBy(initialFlattenedData, (chat: IChat) => chat.unread)).toBe(0);
+
+      queryClient.setQueryData(ChatKeys.chatSearch(), initialQueryData);
+
+      expect(isLastMessage('10')).not.toBeTruthy();
+    });
+  });
 });
 
 describe('useChatMessages', () => {
