@@ -253,14 +253,17 @@ const useChatActions = (chatId: string) => {
             if (idx === 0) {
               return {
                 ...page,
-                result: [...page.result, {
-                  content: variables.content,
-                  id: String(Number(new Date())),
-                  created_at: new Date(),
-                  account_id: account?.id,
-                  pending: true,
-                  unread: true,
-                }],
+                result: [
+                  ...page.result,
+                  normalizeChatMessage({
+                    content: variables.content,
+                    id: String(Number(new Date())),
+                    created_at: new Date(),
+                    account_id: account?.id,
+                    pending: true,
+                    unread: true,
+                  }),
+                ],
               };
             }
 

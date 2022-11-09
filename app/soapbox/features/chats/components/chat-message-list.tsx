@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
-import { List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import escape from 'lodash/escape';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
+import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
@@ -55,12 +55,21 @@ const timeChange = (prev: IChatMessage, curr: IChatMessage): TimeFormat | null =
   return null;
 };
 
+const makeEmojiMap = (record: any) => record.get('emojis', ImmutableList()).reduce((map: ImmutableMap<string, any>, emoji: ImmutableMap<string, any>) => {
+  return map.set(`:${emoji.get('shortcode')}:`, emoji);
+}, ImmutableMap());
+
+const START_INDEX = 10000;
+
+const List: Components['List'] = React.forwardRef((props, ref) => {
+  const { context, ...rest } = props;
+  return <div ref={ref} {...rest} className='mb-2' />;
+});
+
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
   chat: IChat,
 }
-
-const START_INDEX = 10000;
 
 /** Scrollable list of chat messages. */
 const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
@@ -198,7 +207,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
     const pending = chatMessage.pending;
     const deleting = chatMessage.deleting;
     const formatted = (pending && !deleting) ? parsePendingContent(content) : content;
-    return emojify(formatted);
+    const emojiMap = makeEmojiMap(chatMessage);
+    return emojify(formatted, emojiMap.toJS());
   };
 
   const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='sm' />;
@@ -455,20 +465,14 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
               return renderDivider(index, chatMessage.text);
             } else {
               return (
-                <div
-                  className={
-                    classNames('px-4', {
-                      'py-2': index !== START_INDEX,
-                      'pt-2 pb-4': index === START_INDEX || chatMessage.pending,
-                    })
-                  }
-                >
+                <div className='px-4 py-2'>
                   {renderMessage(chatMessage)}
                 </div>
               );
             }
           }}
           components={{
+            List,
             Header: () => {
               if (hasNextPage || isFetchingNextPage) {
                 return <Spinner withText={false} />;

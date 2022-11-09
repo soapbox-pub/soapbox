@@ -2,6 +2,7 @@ import { InfiniteData } from '@tanstack/react-query';
 
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+import { normalizeChatMessage } from 'soapbox/normalizers';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { updatePageItem, appendPageItem, removePageItem, flattenPages, PaginatedResult } from 'soapbox/utils/queries';
@@ -73,7 +74,7 @@ const updateChat = (payload: ChatPayload) => {
 
   if (lastMessage) {
     // Update the Chat Messages query data.
-    appendPageItem(ChatKeys.chatMessages(payload.id), lastMessage);
+    appendPageItem(ChatKeys.chatMessages(payload.id), normalizeChatMessage(lastMessage));
   }
 };
 
@@ -152,7 +153,7 @@ const connectTimelineStream = (
           break;
         case 'pleroma:chat_update':
         case 'chat_message.created': // TruthSocial
-          dispatch((dispatch: AppDispatch, getState: () => RootState) => {
+          dispatch((_dispatch: AppDispatch, getState: () => RootState) => {
             const chat = JSON.parse(data.payload);
             const me = getState().me;
             const messageOwned = chat.last_message?.account_id === me;

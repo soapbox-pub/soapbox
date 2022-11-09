@@ -19,7 +19,6 @@ export const ChatMessageRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   id: '',
   unread: false,
-
   deleting: false,
   pending: false as boolean | undefined,
 });
