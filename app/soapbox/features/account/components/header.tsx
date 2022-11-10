@@ -21,6 +21,7 @@ import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, Men
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account_timeline/components/moved_note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
+import FeedButton from 'soapbox/features/ui/components/feed-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
@@ -573,7 +574,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
             <div className='mt-10 flex flex-row space-y-0 space-x-2'>
               <SubscriptionButton account={account} />
 
-              {ownAccount && (
+              {ownAccount ? (
                 <Menu>
                   <MenuButton
                     as={IconButton}
@@ -607,6 +608,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
                     })}
                   </MenuList>
                 </Menu>
+              ) : (
+                <FeedButton account={account} />
               )}
 
               {renderShareButton()}
