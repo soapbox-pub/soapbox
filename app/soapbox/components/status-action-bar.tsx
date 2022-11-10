@@ -459,7 +459,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.id}/`,
           icon: require('@tabler/icons/pencil.svg'),
-          action: (event) => event.stopPropagation(),
         });
       }
 
