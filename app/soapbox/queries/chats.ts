@@ -237,7 +237,7 @@ const useChatActions = (chatId: string) => {
   const createChatMessage = useMutation(
     (
       {  chatId, content }: { chatId: string, content: string },
-    ) => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/messages`, { content }),
+    ) => api.post<IChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, { content }),
     {
       retry: false,
       onMutate: async (variables) => {
@@ -281,7 +281,10 @@ const useChatActions = (chatId: string) => {
       onError: (_error: any, variables, context: any) => {
         queryClient.setQueryData(['chats', 'messages', variables.chatId], context.prevChatMessages);
       },
-      onSuccess: (_data: any, variables) => {
+      onSuccess: (response, variables) => {
+        const nextChat = { ...chat, last_message: response.data };
+        updatePageItem(ChatKeys.chatSearch(), nextChat, (o, n) => o.id === n.id);
+
         queryClient.invalidateQueries(ChatKeys.chatMessages(variables.chatId));
       },
     },
