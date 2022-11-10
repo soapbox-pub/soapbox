@@ -74,7 +74,7 @@ const ChatKeys = {
 /** Check if item is most recent */
 const isLastMessage = (chatMessageId: string): boolean => {
   const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<IChat>>>(ChatKeys.chatSearch());
-  const items = flattenPages(queryData);
+  const items = flattenPages<IChat>(queryData);
   const chat = items?.find((item) => item.last_message?.id === chatMessageId);
 
   return !!chat;

@@ -1,6 +1,6 @@
 import { queryClient } from 'soapbox/queries/client';
 
-import type { InfiniteData, QueryKey, UseInfiniteQueryResult } from '@tanstack/react-query';
+import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 
 export interface PaginatedResult<T> {
   result: T[],
@@ -9,7 +9,7 @@ export interface PaginatedResult<T> {
 }
 
 /** Flatten paginated results into a single array. */
-const flattenPages = <T>(queryData: UseInfiniteQueryResult<PaginatedResult<T>>['data']) => {
+const flattenPages = <T>(queryData: InfiniteData<PaginatedResult<T>> | undefined) => {
   return queryData?.pages.reduce<T[]>(
     (prev: T[], curr) => [...curr.result, ...prev],
     [],
@@ -53,9 +53,42 @@ const removePageItem = <T>(queryKey: QueryKey, itemToRemove: T, isItem: (item: T
   });
 };
 
+const paginateQueryData = <T>(array: T[] | undefined) => {
+  return array?.reduce((resultArray: any, item: any, index: any) => {
+    const chunkIndex = Math.floor(index / 20);
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item);
+
+    return resultArray;
+  }, []);
+};
+
+const sortQueryData = <T>(queryKey: QueryKey, comparator: (a: T, b: T) => number) => {
+  queryClient.setQueryData<InfiniteData<PaginatedResult<T>>>(queryKey, (prevResult) => {
+    if (prevResult) {
+      const nextResult = { ...prevResult };
+      const flattenedQueryData = flattenPages(nextResult);
+      const sortedQueryData = flattenedQueryData?.sort(comparator);
+      const paginatedPages = paginateQueryData(sortedQueryData);
+      const newPages = paginatedPages.map((page: T, idx: number) => ({
+        ...prevResult.pages[idx],
+        result: page,
+      }));
+
+      nextResult.pages = newPages;
+      return nextResult;
+    }
+  });
+};
+
 export {
   flattenPages,
   updatePageItem,
   appendPageItem,
   removePageItem,
+  sortQueryData,
 };
