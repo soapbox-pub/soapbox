@@ -6,7 +6,7 @@ import { normalizeChatMessage } from 'soapbox/normalizers';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { updatePageItem, appendPageItem, removePageItem, flattenPages, PaginatedResult, sortQueryData } from 'soapbox/utils/queries';
-import { play, soundCache } from 'soapbox/utils/sounds';
+// import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
 
@@ -172,7 +172,8 @@ const connectTimelineStream = (
             // Don't update own messages from streaming
             if (!messageOwned) {
               updateChat(chat);
-              play(soundCache.chat);
+              // Temp disable until we support disabling/enabling.
+              // play(soundCache.chat);
             }
           });
           break;
