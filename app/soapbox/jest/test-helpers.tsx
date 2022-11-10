@@ -36,7 +36,9 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   let store: ReturnType<typeof createTestStore>;
   let appState = rootState;
 
-  if (storeProps) {
+  if (storeProps && typeof storeProps.getState !== 'undefined') { // storeProps is a store
+    store = storeProps;
+  } else if (storeProps) { // storeProps is state
     appState = merge(rootState, storeProps);
     store = createTestStore(appState);
   } else {

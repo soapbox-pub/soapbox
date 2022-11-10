@@ -1,7 +1,6 @@
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import sumBy from 'lodash/sumBy';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
@@ -13,6 +12,7 @@ import { normalizeChatMessage } from 'soapbox/normalizers';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
+import { useFetchRelationships } from './relationships';
 
 import type { IAccount } from './accounts';
 
@@ -129,6 +129,7 @@ const useChats = (search?: string) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const { setUnreadChatsCount } = useStatContext();
+  const fetchRelationships = useFetchRelationships();
 
   const getChats = async (pageParam?: any): Promise<PaginatedResult<IChat>> => {
     const endpoint = features.chatsV2 ? '/api/v2/pleroma/chats' : '/api/v1/pleroma/chats';
@@ -147,7 +148,7 @@ const useChats = (search?: string) => {
     setUnreadChatsCount(Number(response.headers['x-unread-messages-count']) || sumBy(data, (chat) => chat.unread));
 
     // Set the relationships to these users in the redux store.
-    dispatch(fetchRelationships(data.map((item) => item.account.id)));
+    fetchRelationships.mutate({ accountIds: data.map((item) => item.account.id) });
     dispatch(importFetchedAccounts(data.map((item) => item.account)));
 
     return {
@@ -183,12 +184,13 @@ const useChats = (search?: string) => {
 const useChat = (chatId?: string) => {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const fetchRelationships = useFetchRelationships();
 
   const getChat = async () => {
     if (chatId) {
       const { data } = await api.get<IChat>(`/api/v1/pleroma/chats/${chatId}`);
 
-      dispatch(fetchRelationships([data.account.id]));
+      fetchRelationships.mutate({ accountIds: [data.account.id] });
       dispatch(importFetchedAccount(data.account));
 
       return data;

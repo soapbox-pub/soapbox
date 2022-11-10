@@ -3,8 +3,9 @@ import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';
 
 import { __stub } from 'soapbox/api';
-import { mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
+import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
 import { normalizeRelationship } from 'soapbox/normalizers';
+import { Store } from 'soapbox/store';
 import { flattenPages } from 'soapbox/utils/queries';
 
 import { IAccount } from '../accounts';
@@ -179,7 +180,7 @@ describe('useChats', () => {
 
   describe('with a successful request', () => {
     beforeEach(() => {
-      store = mockStore(ImmutableMap());
+      store = mockStore(rootState);
 
       __stub((mock) => {
         mock.onGet('/api/v1/pleroma/chats')
@@ -218,7 +219,13 @@ describe('useChats', () => {
 });
 
 describe('useChat()', () => {
+  const relationshipId = '123';
+  let store: Store;
+
   beforeEach(() => {
+    const state = rootState;
+    store = createTestStore(state);
+
     queryClient.clear();
   });
 
@@ -226,14 +233,21 @@ describe('useChat()', () => {
     beforeEach(() => {
       __stub((mock) => {
         mock.onGet(`/api/v1/pleroma/chats/${chat.id}`).reply(200, chat);
+        mock
+          .onGet(`/api/v1/accounts/relationships?id[]=${chat.account.id}`)
+          .reply(200, [normalizeRelationship({ id: relationshipId, blocked_by: true })]);
       });
     });
 
     it('is successful', async () => {
-      const { result } = renderHook(() => useChat(chat.id));
+      expect(store.getState().relationships.getIn([relationshipId, 'blocked_by'])).toBeUndefined();
+
+      const { result } = renderHook(() => useChat(chat.id), undefined, store);
 
       await waitFor(() => expect(result.current.isFetching).toBe(false));
 
+      expect(store.getState().relationships.getIn([relationshipId, 'id'])).toBe(relationshipId);
+      expect(store.getState().relationships.getIn([relationshipId, 'blocked_by'])).toBe(true);
       expect(result.current.data.id).toBe(chat.id);
     });
   });
