@@ -84,6 +84,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const actualStatus = getActualStatus(status);
 
+  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
@@ -97,11 +99,17 @@ const Status: React.FC<IStatus> = (props) => {
     setShowMedia(!showMedia);
   };
 
-  const handleClick = (): void => {
-    if (onClick) {
-      onClick();
+  const handleClick = (e?: React.MouseEvent): void => {
+    e?.stopPropagation();
+
+    if (!e || !(e.ctrlKey || e.metaKey)) {
+      if (onClick) {
+        onClick();
+      } else {
+        history.push(statusUrl);
+      }
     } else {
-      history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
+      window.open(statusUrl, '_blank');
     }
   };
 
@@ -145,7 +153,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyOpen = (): void => {
-    history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
+    history.push(statusUrl);
   };
 
   const handleHotkeyOpenProfile = (): void => {
@@ -292,8 +300,6 @@ const Status: React.FC<IStatus> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
-
   const accountAction = props.accountAction || reblogElement;
 
   const isUnderReview = actualStatus.visibility === 'self';
@@ -307,7 +313,7 @@ const Status: React.FC<IStatus> = (props) => {
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
         ref={node}
-        onClick={() => history.push(statusUrl)}
+        onClick={handleClick}
         role='link'
       >
         {featured && (

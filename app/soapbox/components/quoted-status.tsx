@@ -44,7 +44,12 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
     const account = status.account as AccountEntity;
 
     if (!compose && e.button === 0) {
-      history.push(`/@${account.acct}/posts/${status.id}`);
+      const statusUrl = `/@${account.acct}/posts/${status.id}`;
+      if (!(e.ctrlKey || e.metaKey)) {
+        history.push(statusUrl);
+      } else {
+        window.open(statusUrl, '_blank');
+      }
       e.stopPropagation();
       e.preventDefault();
     }

@@ -147,7 +147,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
       return;
     }
 
-    if (deltaX + deltaY < 5 && e.button === 0 && onClick) {
+    if (deltaX + deltaY < 5 && e.button === 0 && !(e.ctrlKey || e.metaKey) && onClick) {
       onClick();
     }
 
