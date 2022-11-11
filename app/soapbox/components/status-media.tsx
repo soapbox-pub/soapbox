@@ -6,7 +6,7 @@ import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder
 import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { List as ImmutableList } from 'immutable';
@@ -34,6 +34,9 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   onToggleVisibility = () => { },
 }) => {
   const dispatch = useAppDispatch();
+  const settings = useSettings();
+  const shouldAutoPlayVideo = settings.get('autoPlayVideo');
+
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
   const size = status.media_attachments.size;
@@ -94,7 +97,9 @@ const StatusMedia: React.FC<IStatusMedia> = ({
               ref={setRef}
               className='status-card__image status-card-video'
               style={height ? { height } : undefined}
-              dangerouslySetInnerHTML={{ __html: addAutoPlay(status.card.html) }}
+              dangerouslySetInnerHTML={{
+                __html: shouldAutoPlayVideo ? addAutoPlay(status.card.html) : status.card.html,
+              }}
             />
           </div>
         );

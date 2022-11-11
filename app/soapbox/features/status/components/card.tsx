@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { useSettings } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { addAutoPlay } from 'soapbox/utils/media';
 
@@ -41,6 +42,9 @@ const Card: React.FC<ICard> = ({
   onOpenMedia,
   horizontal,
 }): JSX.Element => {
+  const settings = useSettings();
+  const shouldAutoPlayVideo = settings.get('autoPlayVideo');
+
   const [width, setWidth] = useState(defaultWidth);
   const [embedded, setEmbedded] = useState(false);
 
@@ -88,7 +92,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const renderVideo = () => {
-    const content = { __html: addAutoPlay(card.html) };
+    const content = { __html: shouldAutoPlayVideo ? addAutoPlay(card.html) : card.html };
     const ratio = getRatio(card);
     const height = width / ratio;
 
