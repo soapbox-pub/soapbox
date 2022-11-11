@@ -279,12 +279,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
-    const { uri }  = status;
+    const { uri } = status;
     const textarea = document.createElement('textarea');
 
     e.stopPropagation();
 
-    textarea.textContent    = uri;
+    textarea.textContent = uri;
     textarea.style.position = 'fixed';
 
     document.body.appendChild(textarea);
@@ -459,7 +459,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.id}/`,
           icon: require('@tabler/icons/pencil.svg'),
-          action: (event) => event.stopPropagation(),
         });
       }
 
@@ -552,6 +551,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   return (
     <div
+      data-testid='status-action-bar'
       className={classNames('flex flex-row', {
         'justify-between': space === 'expand',
         'space-x-2': space === 'compact',

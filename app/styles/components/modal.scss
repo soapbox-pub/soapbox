@@ -311,7 +311,7 @@
         }
 
         .svg-icon:first-child {
-          @apply w-5 h-5 mr-2.5;
+          @apply min-w-[1.25rem] w-5 h-5 mr-2.5;
 
           svg {
             stroke-width: 1.5;

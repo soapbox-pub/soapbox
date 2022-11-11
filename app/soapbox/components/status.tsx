@@ -84,6 +84,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const actualStatus = getActualStatus(status);
 
+  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
@@ -97,11 +99,17 @@ const Status: React.FC<IStatus> = (props) => {
     setShowMedia(!showMedia);
   };
 
-  const handleClick = (): void => {
-    if (onClick) {
-      onClick();
+  const handleClick = (e?: React.MouseEvent): void => {
+    e?.stopPropagation();
+
+    if (!e || !(e.ctrlKey || e.metaKey)) {
+      if (onClick) {
+        onClick();
+      } else {
+        history.push(statusUrl);
+      }
     } else {
-      history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
+      window.open(statusUrl, '_blank');
     }
   };
 
@@ -145,7 +153,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyOpen = (): void => {
-    history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
+    history.push(statusUrl);
   };
 
   const handleHotkeyOpenProfile = (): void => {
@@ -292,11 +300,9 @@ const Status: React.FC<IStatus> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
-
   const accountAction = props.accountAction || reblogElement;
 
-  const inReview = actualStatus.visibility === 'self';
+  const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
 
   return (
@@ -307,7 +313,7 @@ const Status: React.FC<IStatus> = (props) => {
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
         ref={node}
-        onClick={() => history.push(statusUrl)}
+        onClick={handleClick}
         role='link'
       >
         {featured && (
@@ -354,11 +360,11 @@ const Status: React.FC<IStatus> = (props) => {
             <Stack
               className={
                 classNames('relative', {
-                  'min-h-[220px]': inReview || isSensitive,
+                  'min-h-[220px]': isUnderReview || isSensitive,
                 })
               }
             >
-              {(inReview || isSensitive) && (
+              {(isUnderReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
@@ -392,7 +398,7 @@ const Status: React.FC<IStatus> = (props) => {
               </Stack>
             </Stack>
 
-            {!hideActionBar && (
+            {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
                 <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
               </div>

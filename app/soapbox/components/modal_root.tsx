@@ -49,12 +49,13 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const isEditing = useAppSelector(state => state.compose.get('compose-modal')?.id !== null);
 
-  const handleKeyUp = useCallback((e) => {
-    if ((e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27)
-      && !!children) {
+  const visible = !!children;
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
       handleOnClose();
     }
-  }, []);
+  };
 
   const handleOnClose = () => {
     dispatch((_, getState) => {
@@ -147,6 +148,8 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   };
 
   useEffect(() => {
+    if (!visible) return;
+
     window.addEventListener('keyup', handleKeyUp, false);
     window.addEventListener('keydown', handleKeyDown, false);
 
@@ -154,7 +157,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [visible]);
 
   useEffect(() => {
     if (!!children && !prevChildren) {
@@ -182,8 +185,6 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       ensureHistoryBuffer();
     }
   });
-
-  const visible = !!children;
 
   if (!visible) {
     return (

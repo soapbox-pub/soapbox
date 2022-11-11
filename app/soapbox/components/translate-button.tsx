@@ -19,7 +19,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   const me = useAppSelector((state) => state.me);
 
-  const renderTranslate = /* translationEnabled && */ me && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
+  const renderTranslate = me && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
 
   const handleTranslate: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();

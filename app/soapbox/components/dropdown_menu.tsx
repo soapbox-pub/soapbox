@@ -143,12 +143,14 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
 
     this.props.onClose();
 
-    if (typeof action === 'function') {
-      e.preventDefault();
-      action(e);
-    } else if (to) {
+    e.stopPropagation();
+
+    if (to) {
       e.preventDefault();
       this.props.history.push(to);
+    } else if (typeof action === 'function') {
+      e.preventDefault();
+      action(e);
     }
   }
 
@@ -192,6 +194,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           data-index={i}
           target={newTab ? '_blank' : undefined}
           data-method={isLogout ? 'delete' : undefined}
+          title={text}
         >
           {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none' />}
 
