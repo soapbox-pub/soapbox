@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import List, { ListItem } from 'soapbox/components/list';
-import { Button, CardBody, CardTitle, Form, Stack, Toggle } from 'soapbox/components/ui';
+import { Button, CardBody, CardTitle, Form, HStack, IconButton, Stack, Toggle } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
 import { useUpdateCredentials } from 'soapbox/queries/accounts';
 
@@ -21,6 +22,7 @@ const messages = defineMessages({
 const ChatPageSettings = () => {
   const account = useOwnAccount();
   const intl = useIntl();
+  const history = useHistory();
   const updateCredentials = useUpdateCredentials();
 
   const [data, setData] = useState<FormData>({
@@ -35,8 +37,16 @@ const ChatPageSettings = () => {
   };
 
   return (
-    <Stack className='h-full p-6 space-y-8'>
-      <CardTitle title={intl.formatMessage(messages.title)} />
+    <Stack className='h-full py-6 px-4 sm:p-6 space-y-8'>
+      <HStack alignItems='center'>
+        <IconButton
+          src={require('@tabler/icons/arrow-left.svg')}
+          className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
+          onClick={() => history.push('/chats')}
+        />
+
+        <CardTitle title={intl.formatMessage(messages.title)} />
+      </HStack>
 
       <Form onSubmit={handleSubmit}>
         <CardTitle title={intl.formatMessage(messages.privacy)} />

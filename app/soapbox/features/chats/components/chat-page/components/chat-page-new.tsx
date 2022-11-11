@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import AccountSearch from 'soapbox/components/account_search';
-import { CardTitle, HStack, Stack, Text } from 'soapbox/components/ui';
+import { CardTitle, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 
@@ -23,8 +23,16 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
 
   return (
     <Stack className='h-full'>
-      <Stack className='flex-grow p-6 space-y-4'>
-        <CardTitle title='New Message' />
+      <Stack className='flex-grow py-6 px-4 sm:p-6 space-y-4'>
+        <HStack alignItems='center'>
+          <IconButton
+            src={require('@tabler/icons/arrow-left.svg')}
+            className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
+            onClick={() => history.push('/chats')}
+          />
+
+          <CardTitle title='New Message' />
+        </HStack>
 
         <HStack space={2} alignItems='center'>
           <Text>

@@ -1,10 +1,9 @@
 import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
 import { Stack } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
-import { useChat } from 'soapbox/queries/chats';
 
 import ChatPageMain from './components/chat-page-main';
 import ChatPageNew from './components/chat-page-new';
@@ -18,9 +17,15 @@ interface IChatPage {
 
 const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
   const account = useOwnAccount();
+  const history = useHistory();
+
   const isOnboarded = account?.chats_onboarded;
 
-  const { data: chat } = useChat(chatId);
+  const path = history.location.pathname;
+  const isSidebarHidden = matchPath(path, {
+    path: ['/chats/settings', '/chats/new', '/chats/:chatId'],
+    exact: true,
+  });
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<string | number>('100%');
@@ -61,7 +66,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
         <div className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'>
           <Stack
             className={classNames('col-span-9 sm:col-span-3 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset', {
-              'hidden sm:block': chat,
+              'hidden sm:block': isSidebarHidden,
             })}
           >
             <ChatPageSidebar />
@@ -69,7 +74,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
 
           <Stack
             className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
-              'hidden sm:block': !chat,
+              'hidden sm:block': !isSidebarHidden,
             })}
           >
             <Switch>
