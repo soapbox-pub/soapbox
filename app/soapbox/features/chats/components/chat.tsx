@@ -36,12 +36,14 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   const submitMessage = () => {
     createChatMessage.mutate({ chatId: chat.id, content }, {
-      onError: (_error, _variables, context: any) => {
-        setContent(context.prevContent as string);
-        setErrorSubmittingMessage(true);
-      },
       onSuccess: () => {
         setErrorSubmittingMessage(false);
+      },
+      onError: (error, _variables, context: any) => {
+        console.log(context);
+
+        setContent(context.prevContent as string);
+        setErrorSubmittingMessage(true);
       },
     });
 
