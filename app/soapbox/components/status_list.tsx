@@ -13,7 +13,7 @@ import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions'
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import { ALGORITHMS } from 'soapbox/features/timeline-insertion';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import useAds from 'soapbox/queries/ads';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
@@ -66,6 +66,7 @@ const StatusList: React.FC<IStatusList> = ({
 
   const adsAlgorithm = String(soapboxConfig.extensions.getIn(['ads', 'algorithm', 0]));
   const adsOpts = (soapboxConfig.extensions.getIn(['ads', 'algorithm', 1], ImmutableMap()) as ImmutableMap<string, any>).toJS();
+  const adIndexes = useAppSelector(state => state.timelines.getIn([timelineId, 'adIndexes'], [[]]) as readonly number[][]);
 
   const node = useRef<VirtuosoHandle>(null);
   const seed = useRef<string>(uuidv4());
@@ -177,12 +178,23 @@ const StatusList: React.FC<IStatusList> = ({
 
   const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {
+      let lastAdIndex = 0;
       return statusIds.toList().reduce((acc, statusId, index) => {
         if (showAds && ads) {
-          const ad = ALGORITHMS[adsAlgorithm]?.(ads, index, { ...adsOpts, seed: seed.current });
+          if ((adIndexes[Math.floor(index / 20)] || []).includes(index)) {
+            const ad = ads[lastAdIndex % ads.length];
 
-          if (ad) {
-            acc.push(renderAd(ad, index));
+            if (ad) {
+              acc.push(renderAd(ad, index));
+            }
+
+            lastAdIndex++;
+          } else {
+            const ad = ALGORITHMS[adsAlgorithm]?.(ads, index, { ...adsOpts, seed: seed.current });
+
+            if (ad) {
+              acc.push(renderAd(ad, index));
+            }
           }
         }
 

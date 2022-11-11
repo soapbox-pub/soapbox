@@ -2,6 +2,7 @@ import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutabl
 
 import { getSettings } from 'soapbox/actions/settings';
 import { normalizeStatus } from 'soapbox/normalizers';
+import { adIndexesFromHeader } from 'soapbox/utils/ads';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
 import api, { getLinks } from '../api';
@@ -172,8 +173,9 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
 
     return api(getState).get(path, { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const adIndexes = adIndexesFromHeader(response);
       dispatch(importFetchedStatuses(response.data));
-      dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingRecent, isLoadingMore));
+      dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingRecent, isLoadingMore, adIndexes));
       done();
     }).catch(error => {
       dispatch(expandTimelineFail(timelineId, error, isLoadingMore));
@@ -234,7 +236,15 @@ const expandTimelineRequest = (timeline: string, isLoadingMore: boolean) => ({
   skipLoading: !isLoadingMore,
 });
 
-const expandTimelineSuccess = (timeline: string, statuses: APIEntity[], next: string | null, partial: boolean, isLoadingRecent: boolean, isLoadingMore: boolean) => ({
+const expandTimelineSuccess = (
+  timeline: string,
+  statuses: APIEntity[],
+  next: string | null,
+  partial: boolean,
+  isLoadingRecent: boolean,
+  isLoadingMore: boolean,
+  adIndexes: number[],
+) => ({
   type: TIMELINE_EXPAND_SUCCESS,
   timeline,
   statuses,
@@ -242,6 +252,7 @@ const expandTimelineSuccess = (timeline: string, statuses: APIEntity[], next: st
   partial,
   isLoadingRecent,
   skipLoading: !isLoadingMore,
+  adIndexes,
 });
 
 const expandTimelineFail = (timeline: string, error: AxiosError, isLoadingMore: boolean) => ({

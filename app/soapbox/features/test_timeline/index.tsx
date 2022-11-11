@@ -36,7 +36,7 @@ const TestTimeline: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(importFetchedStatuses(MOCK_STATUSES));
-    dispatch(expandTimelineSuccess(timelineId, MOCK_STATUSES, null, false, false, false));
+    dispatch(expandTimelineSuccess(timelineId, MOCK_STATUSES, null, false, false, false, []));
   }, []);
 
   return (

@@ -53,6 +53,7 @@ const TimelineRecord = ImmutableRecord({
   totalQueuedItemsCount: 0, //used for queuedItems overflow for MAX_QUEUED_ITEMS+
   loadingFailed: false,
   isPartial: false,
+  adIndexes: [] as readonly number[][],
 });
 
 const initialState = ImmutableMap<string, Timeline>();
@@ -88,13 +89,17 @@ const setFailed = (state: State, timelineId: string, failed: boolean) => {
   return state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
 };
 
-const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean) => {
+const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean, adIndexes: number[]) => {
   const newIds = getStatusIds(statuses);
 
   return state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
     timeline.set('isLoading', false);
     timeline.set('loadingFailed', false);
     timeline.set('isPartial', isPartial);
+
+    timeline.update('adIndexes', (oldAdIndexes: readonly number[][]) => {
+      return [...oldAdIndexes, [...adIndexes]];
+    });
 
     if (!next && !isLoadingRecent) timeline.set('hasMore', false);
 
@@ -321,7 +326,7 @@ export default function timelines(state: State = initialState, action: AnyAction
     case TIMELINE_EXPAND_FAIL:
       return handleExpandFail(state, action.timeline);
     case TIMELINE_EXPAND_SUCCESS:
-      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent);
+      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent, action.adIndexes);
     case TIMELINE_UPDATE:
       return updateTimeline(state, action.timeline, action.statusId);
     case TIMELINE_UPDATE_QUEUE:

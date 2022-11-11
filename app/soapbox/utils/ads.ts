@@ -1,3 +1,4 @@
+import type { AxiosResponse } from 'axios';
 import type { Ad } from 'soapbox/types/soapbox';
 
 /** Time (ms) window to not display an ad if it's about to expire. */
@@ -13,4 +14,14 @@ const isExpired = (ad: Ad, threshold = AD_EXPIRY_THRESHOLD): boolean => {
   }
 };
 
-export { isExpired };
+/** Get ad indexes from X-Truth-Ad-Indexes header. */
+const adIndexesFromHeader = (response: AxiosResponse): number[] => {
+  const header: string = response.headers['x-truth-ad-indexes'];
+  const strIndexes: string[] = header.split(',');
+  return strIndexes.map(strIndex => Number(strIndex.trim()));
+};
+
+export {
+  isExpired,
+  adIndexesFromHeader,
+};
