@@ -6,6 +6,7 @@ import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
 
@@ -17,30 +18,6 @@ const trim = (text: string, len: number): string => {
   }
 
   return text.substring(0, cut) + (text.length > len ? '…' : '');
-};
-
-const domParser = new DOMParser();
-
-const addAutoPlay = (html: string): string => {
-  const document = domParser.parseFromString(html, 'text/html').documentElement;
-  const iframe = document.querySelector('iframe');
-
-  if (iframe) {
-    if (iframe.src.includes('?')) {
-      iframe.src += '&';
-    } else {
-      iframe.src += '?';
-    }
-
-    iframe.src += 'autoplay=1&auto_play=1';
-    iframe.allow = 'autoplay';
-
-    // DOM parser creates html/body elements around original HTML fragment,
-    // so we need to get innerHTML out of the body and not the entire document
-    return (document.querySelector('body') as HTMLBodyElement).innerHTML;
-  }
-
-  return html;
 };
 
 interface ICard {

@@ -7,6 +7,7 @@ import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';
+import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Status, Attachment } from 'soapbox/types/entities';
@@ -93,7 +94,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
               ref={setRef}
               className='status-card__image status-card-video'
               style={height ? { height } : undefined}
-              dangerouslySetInnerHTML={{ __html: status.card.html }}
+              dangerouslySetInnerHTML={{ __html: addAutoPlay(status.card.html) }}
             />
           </div>
         );

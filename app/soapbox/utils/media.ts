@@ -51,4 +51,32 @@ const getVideoDuration = (file: File): Promise<number> => {
   return promise;
 };
 
-export { getVideoDuration, formatBytes, truncateFilename };
+const domParser = new DOMParser();
+
+const addAutoPlay = (html: string): string => {
+  const document = domParser.parseFromString(html, 'text/html').documentElement;
+  const iframe = document.querySelector('iframe');
+
+  if (iframe) {
+    if (iframe.src.includes('?')) {
+      iframe.src += '&';
+    } else {
+      iframe.src += '?';
+    }
+
+    if (new URL(iframe.src).host === 'rumble.com') {
+      iframe.src += 'pub=7a20&autoplay=2';
+    } else {
+      iframe.src += 'autoplay=1&auto_play=1';
+      iframe.allow = 'autoplay';
+    }
+
+    // DOM parser creates html/body elements around original HTML fragment,
+    // so we need to get innerHTML out of the body and not the entire document
+    return (document.querySelector('body') as HTMLBodyElement).innerHTML;
+  }
+
+  return html;
+};
+
+export { getVideoDuration, formatBytes, truncateFilename, addAutoPlay };
