@@ -151,7 +151,14 @@ const connectTimelineStream = (
         //   break;
         case 'notification':
           messages[locale]().then(messages => {
-            dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
+            dispatch(
+              updateNotificationsQueue(
+                JSON.parse(data.payload),
+                messages,
+                locale,
+                window.location.pathname,
+              ),
+            );
           }).catch(error => {
             console.error(error);
           });
