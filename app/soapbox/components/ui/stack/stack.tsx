@@ -1,13 +1,11 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
-
-type SIZES = 0 | 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
 
 const spaces = {
   0: 'space-y-0',
-  '0.5': 'space-y-0.5',
+  [0.5]: 'space-y-0.5',
   1: 'space-y-1',
-  '1.5': 'space-y-1.5',
+  [1.5]: 'space-y-1.5',
   2: 'space-y-2',
   3: 'space-y-3',
   4: 'space-y-4',
@@ -17,32 +15,41 @@ const spaces = {
 
 const justifyContentOptions = {
   center: 'justify-center',
+  end: 'justify-end',
 };
 
 const alignItemsOptions = {
+  top: 'items-start',
+  bottom: 'items-end',
   center: 'items-center',
+  start: 'items-start',
 };
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
-  /** Size of the gap between elements. */
-  space?: SIZES,
   /** Horizontal alignment of children. */
-  alignItems?: 'center',
+  alignItems?: keyof typeof alignItemsOptions
+  /** Extra class names on the element. */
+  className?: string
   /** Vertical alignment of children. */
-  justifyContent?: 'center',
-  /** Extra class names on the <div> element. */
-  className?: string,
+  justifyContent?: keyof typeof justifyContentOptions
+  /** Size of the gap between elements. */
+  space?: keyof typeof spaces
   /** Whether to let the flexbox grow. */
-  grow?: boolean,
+  grow?: boolean
+  /** HTML element to use for container. */
+  element?: keyof JSX.IntrinsicElements,
 }
 
 /** Vertical stack of child elements. */
-const Stack: React.FC<IStack> = (props) => {
-  const { space, alignItems, justifyContent, className, grow, ...filteredProps } = props;
+const Stack = React.forwardRef<HTMLDivElement, IStack>((props, ref: React.LegacyRef<HTMLDivElement> | undefined) => {
+  const { space, alignItems, justifyContent, className, grow, element = 'div', ...filteredProps } = props;
+
+  const Elem = element as 'div';
 
   return (
-    <div
+    <Elem
       {...filteredProps}
+      ref={ref}
       className={classNames('flex flex-col', {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
@@ -54,6 +61,6 @@ const Stack: React.FC<IStack> = (props) => {
       }, className)}
     />
   );
-};
+});
 
 export default Stack;

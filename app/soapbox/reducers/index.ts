@@ -25,10 +25,6 @@ import custom_emojis from './custom_emojis';
 import domain_lists from './domain_lists';
 import dropdown_menu from './dropdown_menu';
 import filters from './filters';
-import group_editor from './group_editor';
-import group_lists from './group_lists';
-import group_relationships from './group_relationships';
-import groups from './groups';
 import history from './history';
 import instance from './instance';
 import listAdder from './list_adder';
@@ -95,10 +91,6 @@ const reducers = {
   suggestions,
   polls,
   trends,
-  groups,
-  group_relationships,
-  group_lists,
-  group_editor,
   sidebar,
   patron,
   soapbox,

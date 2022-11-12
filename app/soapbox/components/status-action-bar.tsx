@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -10,7 +10,7 @@ import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
-import { deactivateUserModal, deleteStatusModal, deleteUserModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
@@ -18,6 +18,7 @@ import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { isLocal } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
@@ -50,7 +51,7 @@ const messages = defineMessages({
   pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
   embed: { id: 'status.embed', defaultMessage: 'Embed' },
-  admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
+  adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   group_remove_account: { id: 'status.remove_account_from_group', defaultMessage: 'Remove account from group' },
@@ -122,18 +123,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReplyClick: React.MouseEventHandler = (e) => {
     if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(replyCompose(status)),
-          }));
-        } else {
-          dispatch(replyCompose(status));
-        }
-      });
+      dispatch(replyCompose(status));
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -185,18 +175,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     e.stopPropagation();
 
     if (me) {
-      dispatch((_, getState) => {
-        const state = getState();
-        if (state.compose.text.trim().length !== 0) {
-          dispatch(openModal('CONFIRM', {
-            message: intl.formatMessage(messages.replyMessage),
-            confirm: intl.formatMessage(messages.replyConfirm),
-            onConfirm: () => dispatch(quoteCompose(status)),
-          }));
-        } else {
-          dispatch(quoteCompose(status));
-        }
-      });
+      dispatch(quoteCompose(status));
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -300,12 +279,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
-    const { url }  = status;
+    const { uri } = status;
     const textarea = document.createElement('textarea');
 
     e.stopPropagation();
 
-    textarea.textContent    = url;
+    textarea.textContent = uri;
     textarea.style.position = 'fixed';
 
     document.body.appendChild(textarea);
@@ -320,14 +299,10 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
   };
 
-  const handleDeactivateUser: React.EventHandler<React.MouseEvent> = (e) => {
+  const onModerate: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id']) as string));
-  };
-
-  const handleDeleteUser: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
-    dispatch(deleteUserModal(intl, status.getIn(['account', 'id']) as string));
+    const account = status.account as Account;
+    dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
 
   const handleDeleteStatus: React.EventHandler<React.MouseEvent> = (e) => {
@@ -362,7 +337,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/link.svg'),
       });
 
-      if (features.embeds) {
+      if (features.embeds && isLocal(status.account as Account)) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: handleEmbed,
@@ -399,7 +374,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         menu.push({
           text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
           action: handlePinClick,
-          icon: mutingConversation ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
+          icon: status.pinned ? require('@tabler/icons/pinned-off.svg') : require('@tabler/icons/pin.svg'),
         });
       } else {
         if (status.visibility === 'private') {
@@ -473,18 +448,17 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     if (isStaff) {
       menu.push(null);
 
+      menu.push({
+        text: intl.formatMessage(messages.adminAccount, { name: username }),
+        action: onModerate,
+        icon: require('@tabler/icons/gavel.svg'),
+      });
+
       if (isAdmin) {
-        menu.push({
-          text: intl.formatMessage(messages.admin_account, { name: username }),
-          href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
-          icon: require('@tabler/icons/gavel.svg'),
-          action: (event) => event.stopPropagation(),
-        });
         menu.push({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.id}/`,
           icon: require('@tabler/icons/pencil.svg'),
-          action: (event) => event.stopPropagation(),
         });
       }
 
@@ -495,17 +469,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       });
 
       if (!ownAccount) {
-        menu.push({
-          text: intl.formatMessage(messages.deactivateUser, { name: username }),
-          action: handleDeactivateUser,
-          icon: require('@tabler/icons/user-off.svg'),
-        });
-        menu.push({
-          text: intl.formatMessage(messages.deleteUser, { name: username }),
-          action: handleDeleteUser,
-          icon: require('@tabler/icons/user-minus.svg'),
-          destructive: true,
-        });
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: handleDeleteStatus,
@@ -588,6 +551,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   return (
     <div
+      data-testid='status-action-bar'
       className={classNames('flex flex-row', {
         'justify-between': space === 'expand',
         'space-x-2': space === 'compact',

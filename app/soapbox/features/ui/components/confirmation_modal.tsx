@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Modal, Text } from 'soapbox/components/ui';
-import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
+import List, { ListItem } from 'soapbox/components/list';
+import { Modal, Stack, Text, Toggle } from 'soapbox/components/ui';
 
 interface IConfirmationModal {
   heading: React.ReactNode,
@@ -60,23 +60,23 @@ const ConfirmationModal: React.FC<IConfirmationModal> = ({
       secondaryText={secondary}
       secondaryAction={onSecondary && handleSecondary}
     >
-      <Text>
-        {message}
-      </Text>
+      <Stack space={4}>
+        <Text>
+          {message}
+        </Text>
 
-      <div className='mt-2'>
-        {checkbox && <div className='confirmation-modal__checkbox'>
-          <SimpleForm>
-            <FieldsGroup>
-              <Checkbox
-                onChange={handleCheckboxChange}
-                label={checkbox}
+        {checkbox && (
+          <List>
+            <ListItem label={checkbox}>
+              <Toggle
                 checked={checked}
+                onChange={handleCheckboxChange}
+                required
               />
-            </FieldsGroup>
-          </SimpleForm>
-        </div>}
-      </div>
+            </ListItem>
+          </List>
+        )}
+      </Stack>
     </Modal>
   );
 };

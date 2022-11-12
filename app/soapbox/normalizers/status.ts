@@ -19,7 +19,7 @@ import { normalizePoll } from 'soapbox/normalizers/poll';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
-export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
+export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
@@ -28,8 +28,8 @@ export const StatusRecord = ImmutableRecord({
   bookmarked: false,
   card: null as Card | null,
   content: '',
-  created_at: new Date(),
-  edited_at: null as Date | null,
+  created_at: '',
+  edited_at: null as string | null,
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
@@ -64,6 +64,7 @@ export const StatusRecord = ImmutableRecord({
   hidden: false,
   search_index: '',
   spoilerHtml: '',
+  translation: null as ImmutableMap<string, string> | null,
 });
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
@@ -152,6 +153,13 @@ const fixFiltered = (status: ImmutableMap<string, any>) => {
   status.delete('filtered');
 };
 
+/** If the status contains spoiler text, treat it as sensitive. */
+const fixSensitivity = (status: ImmutableMap<string, any>) => {
+  if (status.get('spoiler_text')) {
+    status.set('sensitive', true);
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -164,6 +172,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       addSelfMention(status);
       fixQuote(status);
       fixFiltered(status);
+      fixSensitivity(status);
     }),
   );
 };

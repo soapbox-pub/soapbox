@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-// import classNames from 'classnames';
+// import classNames from 'clsx';
 // import { injectIntl, defineMessages } from 'react-intl';
 // import Icon from 'soapbox/components/icon';
 import SubNavigation from 'soapbox/components/sub_navigation';
@@ -14,7 +14,6 @@ import SubNavigation from 'soapbox/components/sub_navigation';
 //   hide: { id: 'column_header.hide_settings', defaultMessage: 'Hide settings' },
 // });
 
-export default @withRouter
 class ColumnHeader extends React.PureComponent {
 
   static propTypes = {
@@ -126,3 +125,5 @@ class ColumnHeader extends React.PureComponent {
   // }
 
 }
+
+export default withRouter(ColumnHeader);

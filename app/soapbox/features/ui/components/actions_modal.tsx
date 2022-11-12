@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
@@ -37,7 +37,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           {...compProps}
           rel='noopener'
           data-index={i}
-          className={classNames({ active, destructive })}
+          className={classNames('w-full', { active, destructive })}
           data-method={isLogout ? 'delete' : null}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}

@@ -1042,7 +1042,7 @@
   "time_remaining.seconds": "{number, plural, one {# segon} other {# segons}} restants",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persona} other {persones}} parlant-hi",
   "trends.title": "Tendències",
-  "ui.beforeunload": "El teu esborrany es perdrà si surts de Soapbox FE.",
+  "ui.beforeunload": "El teu esborrany es perdrà si surts de Soapbox.",
   "unauthorized_modal.text": "Heu d'iniciar sessió per fer això.",
   "unauthorized_modal.title": "Registrar-se a {site_title}",
   "upload_area.title": "Arrossega i deixa anar per a carregar",

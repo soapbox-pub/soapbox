@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -18,22 +18,21 @@ const messages = defineMessages({
 
 interface ICard {
   /** The type of card. */
-  variant?: 'rounded',
+  variant?: 'default' | 'rounded'
   /** Card size preset. */
-  size?: 'md' | 'lg' | 'xl',
+  size?: keyof typeof sizes
   /** Extra classnames for the <div> element. */
-  className?: string,
+  className?: string
   /** Elements inside the card. */
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /** An opaque backdrop to hold a collection of related elements. */
-const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant, size = 'md', className, ...filteredProps }, ref): JSX.Element => (
+const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'default', size = 'md', className, ...filteredProps }, ref): JSX.Element => (
   <div
     ref={ref}
     {...filteredProps}
     className={classNames({
-      'space-y-4': true,
       'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
     }, className)}

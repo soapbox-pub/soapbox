@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { fetchSuggestions, dismissSuggestion } from 'soapbox/actions/suggestions';
-import { Widget } from 'soapbox/components/ui';
+import { Text, Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { useAppSelector } from 'soapbox/hooks';
+import PlaceholderSidebarSuggestions from 'soapbox/features/placeholder/components/placeholder-sidebar-suggestions';
+import { useDismissSuggestion, useSuggestions } from 'soapbox/queries/suggestions';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -18,44 +18,44 @@ interface IWhoToFollowPanel {
 }
 
 const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
-  const dispatch = useDispatch();
   const intl = useIntl();
 
-  const suggestions = useAppSelector((state) => state.suggestions.items);
+  const { data: suggestions, isFetching } = useSuggestions();
+  const dismissSuggestion = useDismissSuggestion();
+
   const suggestionsToRender = suggestions.slice(0, limit);
 
   const handleDismiss = (account: AccountEntity) => {
-    dispatch(dismissSuggestion(account.id));
+    dismissSuggestion.mutate(account.id);
   };
 
-  React.useEffect(() => {
-    dispatch(fetchSuggestions());
-  }, []);
-
-  if (suggestionsToRender.isEmpty()) {
+  if (!isFetching && !suggestions.length) {
     return null;
   }
-
-  // FIXME: This page actually doesn't look good right now
-  // const handleAction = () => {
-  //   history.push('/suggestions');
-  // };
 
   return (
     <Widget
       title={<FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />}
-      // onAction={handleAction}
+      action={
+        <Link to='/suggestions'>
+          <Text tag='span' theme='primary' size='sm' className='hover:underline'>View all</Text>
+        </Link>
+      }
     >
-      {suggestionsToRender.map((suggestion) => (
-        <AccountContainer
-          key={suggestion.account}
-          // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-          id={suggestion.account}
-          actionIcon={require('@tabler/icons/x.svg')}
-          actionTitle={intl.formatMessage(messages.dismissSuggestion)}
-          onActionClick={handleDismiss}
-        />
-      ))}
+      {isFetching ? (
+        <PlaceholderSidebarSuggestions limit={limit} />
+      ) : (
+        suggestionsToRender.map((suggestion: any) => (
+          <AccountContainer
+            key={suggestion.account}
+            // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
+            id={suggestion.account}
+            actionIcon={require('@tabler/icons/x.svg')}
+            actionTitle={intl.formatMessage(messages.dismissSuggestion)}
+            onActionClick={handleDismiss}
+          />
+        ))
+      )}
     </Widget>
   );
 };

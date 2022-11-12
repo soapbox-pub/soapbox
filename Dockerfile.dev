@@ -1,0 +1,18 @@
+FROM node:18
+
+RUN apt-get update &&\
+    apt-get install -y inotify-tools &&\
+    # clean up apt
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+ENV NODE_ENV=development
+
+COPY package.json .
+COPY yarn.lock .
+RUN yarn
+
+COPY . .
+
+ENV DEVSERVER_URL=http://0.0.0.0:3036
+CMD yarn dev

@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "เหลืออีก {number, plural, other {# วินาที}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, other {คน}}กำลังคุย",
   "trends.title": "Trends",
-  "ui.beforeunload": "แบบร่างของคุณจะหายไปหากคุณออกจาก Soapbox FE",
+  "ui.beforeunload": "แบบร่างของคุณจะหายไปหากคุณออกจาก Soapbox",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "ลากแล้วปล่อยเพื่ออัปโหลด",

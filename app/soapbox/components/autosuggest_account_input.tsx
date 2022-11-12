@@ -7,6 +7,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { InputThemes } from 'soapbox/components/ui/input/input';
 
 const noOp = () => {};
 
@@ -19,6 +20,7 @@ interface IAutosuggestAccountInput {
   autoSelect?: boolean,
   menu?: Menu,
   onKeyDown?: React.KeyboardEventHandler,
+  theme?: InputThemes,
 }
 
 const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({

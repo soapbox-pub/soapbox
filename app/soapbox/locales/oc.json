@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "demòra{number, plural, one { # segonda} other {n # segondas}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} talking",
   "trends.title": "Trends",
-  "ui.beforeunload": "Vòstre brolhon serà perdut se quitatz Soapbox FE.",
+  "ui.beforeunload": "Vòstre brolhon serà perdut se quitatz Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Lisatz e depausatz per mandar",

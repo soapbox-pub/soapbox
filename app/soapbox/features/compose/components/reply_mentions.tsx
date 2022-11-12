@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useCompose } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
-const ReplyMentions: React.FC = () => {
-  const dispatch = useDispatch();
-  const instance = useAppSelector((state) => state.instance);
-  const status = useAppSelector<StatusEntity | null>(state => makeGetStatus()(state, { id: state.compose.in_reply_to! }));
+interface IReplyMentions {
+  composeId: string,
+}
 
-  const to = useAppSelector((state) => state.compose.to);
+const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
+  const dispatch = useDispatch();
+  const getStatus = useCallback(makeGetStatus(), []);
+
+  const compose = useCompose(composeId);
+
+  const instance = useAppSelector((state) => state.instance);
+  const status = useAppSelector<StatusEntity | null>(state => getStatus(state, { id: compose.in_reply_to! }));
+  const to = compose.to;
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
   const { explicitAddressing } = getFeatures(instance);
@@ -29,7 +36,9 @@ const ReplyMentions: React.FC = () => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    dispatch(openModal('REPLY_MENTIONS'));
+    dispatch(openModal('REPLY_MENTIONS', {
+      composeId,
+    }));
   };
 
   if (!parentTo || (parentTo.size === 0)) {

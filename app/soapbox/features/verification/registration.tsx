@@ -20,6 +20,10 @@ const messages = defineMessages({
     id: 'registrations.success',
     defaultMessage: 'Welcome to {siteTitle}!',
   },
+  usernameHint: {
+    id: 'registrations.username.hint',
+    defaultMessage: 'May only contain A-Z, 0-9, and underscores',
+  },
   usernameTaken: {
     id: 'registrations.unprocessable_entity',
     defaultMessage: 'This username has already been taken.',
@@ -104,7 +108,7 @@ const Registration = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Your username'>
+          <FormGroup labelText='Your username' hintText={intl.formatMessage(messages.usernameHint)}>
             <Input
               name='username'
               type='text'
@@ -112,6 +116,7 @@ const Registration = () => {
               onChange={handleInputChange}
               required
               icon={require('@tabler/icons/at.svg')}
+              placeholder='LibertyForAll'
             />
           </FormGroup>
 

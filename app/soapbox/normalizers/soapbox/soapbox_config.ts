@@ -44,6 +44,7 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     900: '#7f1d1d',
   }),
   'sea-blue': '#2feecc',
+  'greentext': '#789922',
 });
 
 export const PromoPanelItemRecord = ImmutableRecord({
@@ -105,12 +106,12 @@ export const SoapboxConfigRecord = ImmutableRecord({
     limit: 1,
   }),
   aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
-  mobilePages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
   authenticatedProfile: true,
   singleUserMode: false,
   singleUserModeProfile: '',
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
+  displayCta: true,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
@@ -175,6 +176,19 @@ const normalizeFooterLinks = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap
   return soapboxConfig.setIn(path, items);
 };
 
+/** Migrate legacy ads config. */
+const normalizeAdsAlgorithm = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const interval = soapboxConfig.getIn(['extensions', 'ads', 'interval']);
+  const algorithm = soapboxConfig.getIn(['extensions', 'ads', 'algorithm']);
+
+  if (typeof interval === 'number' && !algorithm) {
+    const result = fromJS(['linear', { interval }]);
+    return soapboxConfig.setIn(['extensions', 'ads', 'algorithm'], result);
+  } else {
+    return soapboxConfig;
+  }
+};
+
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
@@ -186,6 +200,7 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
       normalizeAds(soapboxConfig);
+      normalizeAdsAlgorithm(soapboxConfig);
     }),
   );
 };

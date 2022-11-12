@@ -2,6 +2,7 @@ import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutabl
 
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { InstanceRecord } from 'soapbox/normalizers';
+import { ReducerCompose } from 'soapbox/reducers/compose';
 
 import { uploadCompose, submitCompose } from '../compose';
 import { STATUS_CREATE_REQUEST } from '../statuses';
@@ -26,7 +27,8 @@ describe('uploadCompose()', () => {
 
       const state = rootState
         .set('me', '1234')
-        .set('instance', instance);
+        .set('instance', instance)
+        .setIn(['compose', 'home'], ReducerCompose());
 
       store = mockStore(state);
       files = [{
@@ -43,7 +45,7 @@ describe('uploadCompose()', () => {
       } as unknown as IntlShape;
 
       const expectedActions = [
-        { type: 'COMPOSE_UPLOAD_REQUEST', skipLoading: true },
+        { type: 'COMPOSE_UPLOAD_REQUEST', id: 'home', skipLoading: true },
         {
           type: 'ALERT_SHOW',
           message: 'Image exceeds the current file size limit (10 Bytes)',
@@ -51,10 +53,10 @@ describe('uploadCompose()', () => {
           actionLink: undefined,
           severity: 'error',
         },
-        { type: 'COMPOSE_UPLOAD_FAIL', error: true, skipLoading: true },
+        { type: 'COMPOSE_UPLOAD_FAIL', id: 'home', error: true, skipLoading: true },
       ];
 
-      await store.dispatch(uploadCompose(files, mockIntl));
+      await store.dispatch(uploadCompose('home', files, mockIntl));
       const actions = store.getActions();
 
       expect(actions).toEqual(expectedActions);
@@ -78,7 +80,8 @@ describe('uploadCompose()', () => {
 
       const state = rootState
         .set('me', '1234')
-        .set('instance', instance);
+        .set('instance', instance)
+        .setIn(['compose', 'home'], ReducerCompose());
 
       store = mockStore(state);
       files = [{
@@ -95,7 +98,7 @@ describe('uploadCompose()', () => {
       } as unknown as IntlShape;
 
       const expectedActions = [
-        { type: 'COMPOSE_UPLOAD_REQUEST', skipLoading: true },
+        { type: 'COMPOSE_UPLOAD_REQUEST', id: 'home', skipLoading: true },
         {
           type: 'ALERT_SHOW',
           message: 'Video exceeds the current file size limit (10 Bytes)',
@@ -103,10 +106,10 @@ describe('uploadCompose()', () => {
           actionLink: undefined,
           severity: 'error',
         },
-        { type: 'COMPOSE_UPLOAD_FAIL', error: true, skipLoading: true },
+        { type: 'COMPOSE_UPLOAD_FAIL', id: 'home', error: true, skipLoading: true },
       ];
 
-      await store.dispatch(uploadCompose(files, mockIntl));
+      await store.dispatch(uploadCompose('home', files, mockIntl));
       const actions = store.getActions();
 
       expect(actions).toEqual(expectedActions);
@@ -118,10 +121,10 @@ describe('submitCompose()', () => {
   it('inserts mentions from text', async() => {
     const state = rootState
       .set('me', '123')
-      .setIn(['compose', 'text'], '@alex hello @mkljczk@pl.fediverse.pl @gg@汉语/漢語.com alex@alexgleason.me');
+      .setIn(['compose', 'home'], ReducerCompose({ text: '@alex hello @mkljczk@pl.fediverse.pl @gg@汉语/漢語.com alex@alexgleason.me' }));
 
     const store = mockStore(state);
-    await store.dispatch(submitCompose());
+    await store.dispatch(submitCompose('home'));
     const actions = store.getActions();
 
     const statusCreateRequest = actions.find(action => action.type === STATUS_CREATE_REQUEST);

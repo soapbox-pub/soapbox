@@ -5,11 +5,10 @@ import { FormattedMessage } from 'react-intl';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import useOnboardingSuggestions from 'soapbox/queries/suggestions';
+import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
 
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useOnboardingSuggestions();
-
 
   const handleLoadMore = debounce(() => {
     if (isFetching) {

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
@@ -44,7 +44,6 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
 
         <StatusContent
           status={status}
-          expanded
           collapsable
         />
 

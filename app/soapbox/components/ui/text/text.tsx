@@ -1,15 +1,5 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
-
-type Themes = 'default' | 'danger' | 'primary' | 'muted' | 'subtle' | 'success' | 'inherit' | 'white'
-type Weights = 'normal' | 'medium' | 'semibold' | 'bold'
-type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
-type Alignments = 'left' | 'center' | 'right'
-type TrackingSizes = 'normal' | 'wide'
-type TransformProperties = 'uppercase' | 'normal'
-type Families = 'sans' | 'mono'
-type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
-type Directions = 'ltr' | 'rtl'
 
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
@@ -60,15 +50,19 @@ const families = {
   mono: 'font-mono',
 };
 
+export type Sizes = keyof typeof sizes
+type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
+type Directions = 'ltr' | 'rtl'
+
 interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML'> {
   /** How to align the text. */
-  align?: Alignments,
+  align?: keyof typeof alignments,
   /** Extra class names for the outer element. */
   className?: string,
   /** Text direction. */
   direction?: Directions,
   /** Typeface of the text. */
-  family?: Families,
+  family?: keyof typeof families,
   /** The "for" attribute specifies which form element a label is bound to. */
   htmlFor?: string,
   /** Font size of the text. */
@@ -76,15 +70,17 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   /** HTML element name of the outer element. */
   tag?: Tags,
   /** Theme for the text. */
-  theme?: Themes,
+  theme?: keyof typeof themes,
   /** Letter-spacing of the text. */
-  tracking?: TrackingSizes,
+  tracking?: keyof typeof trackingSizes,
   /** Transform (eg uppercase) for the text. */
-  transform?: TransformProperties,
+  transform?: keyof typeof transformProperties,
   /** Whether to truncate the text if its container is too small. */
   truncate?: boolean,
   /** Font weight of the text. */
-  weight?: Weights
+  weight?: keyof typeof weights,
+  /** Tooltip title. */
+  title?: string,
 }
 
 /** UI-friendly text container with dark mode support. */
@@ -133,4 +129,7 @@ const Text: React.FC<IText> = React.forwardRef(
   },
 );
 
-export default Text;
+export {
+  Text as default,
+  IText,
+};

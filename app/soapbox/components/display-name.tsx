@@ -6,7 +6,7 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 import { getAcct } from '../utils/accounts';
 
 import Icon from './icon';
-import RelativeTimestamp from './relative_timestamp';
+import RelativeTimestamp from './relative-timestamp';
 import VerificationBadge from './verification_badge';
 
 import type { Account } from 'soapbox/types/entities';

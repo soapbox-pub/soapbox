@@ -7,6 +7,7 @@ import type { Card } from 'soapbox/types/entities';
 const PROVIDERS: Record<string, () => Promise<AdProvider>> = {
   soapbox: async() => (await import(/* webpackChunkName: "features/ads/soapbox" */'./soapbox-config')).default,
   rumble: async() => (await import(/* webpackChunkName: "features/ads/rumble" */'./rumble')).default,
+  truth: async() => (await import(/* webpackChunkName: "features/ads/truth" */'./truth')).default,
 };
 
 /** Ad server implementation. */
@@ -20,6 +21,10 @@ interface Ad {
   card: Card,
   /** Impression URL to fetch when displaying the ad. */
   impression?: string,
+  /** Time when the ad expires and should no longer be displayed. */
+  expires_at?: string,
+  /** Reason the ad is displayed. */
+  reason?: string,
 }
 
 /** Gets the current provider based on config. */

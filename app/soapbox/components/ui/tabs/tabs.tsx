@@ -5,7 +5,7 @@ import {
   Tab as ReachTab,
   useTabsContext,
 } from '@reach/tabs';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 

@@ -18,7 +18,7 @@ import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'so
 
 import Avatar from '../components/avatar';
 import { Card, CardBody, Layout } from '../components/ui';
-import ComposeFormContainer from '../features/compose/containers/compose_form_container';
+import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle_container';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
@@ -47,8 +47,8 @@ const HomePage: React.FC = ({ children }) => {
                   <Avatar account={account} size={46} />
                 </Link>
 
-                <ComposeFormContainer
-                  // @ts-ignore
+                <ComposeForm
+                  id='home'
                   shouldCondense
                   autoFocus={false}
                   clickableAreaRef={composeBlock}
@@ -82,7 +82,7 @@ const HomePage: React.FC = ({ children }) => {
         )}
         {features.trends && (
           <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={3} />}
+            {Component => <Component limit={5} />}
           </BundleContainer>
         )}
         {hasPatron && (
@@ -103,9 +103,9 @@ const HomePage: React.FC = ({ children }) => {
             {Component => <Component limit={10} />}
           </BundleContainer>
         )}
-        {features.suggestions && (
+        {me && features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={5} />}
+            {Component => <Component limit={3} />}
           </BundleContainer>
         )}
         <LinkFooter key='link-footer' />

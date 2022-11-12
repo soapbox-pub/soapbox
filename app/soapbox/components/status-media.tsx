@@ -30,7 +30,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   muted = false,
   onClick,
   showMedia = true,
-  onToggleVisibility = () => {},
+  onToggleVisibility = () => { },
 }) => {
   const dispatch = useAppDispatch();
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
@@ -59,7 +59,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   };
 
   const openMedia = (media: ImmutableList<Attachment>, index: number) => {
-    dispatch(openModal('MEDIA', { media, index }));
+    dispatch(openModal('MEDIA', { media, status, index }));
   };
 
   const openVideo = (media: Attachment, time: number): void => {

@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# second} other {# seconds}} left",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person duke folur} other {persona që flasin}}",
   "trends.title": "Trends",
-  "ui.beforeunload": "Skica juaj do të humbë nëse dilni nga Soapbox FE-i.",
+  "ui.beforeunload": "Skica juaj do të humbë nëse dilni nga Soapbox-i.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Merreni & vëreni që të ngarkohet",

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedNumber, useIntl } from 'react-intl';
@@ -97,7 +97,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     return '';
   };
 
-  const navigateToQuotesChangeEmail = () => history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
+  const navigateToQuotes = () => history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
 
   const getQuotes = () => {
     if (status.quotes_count) {
@@ -107,7 +107,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             className='text-accent-500 cursor-pointer'
             src={require('@tabler/icons/quote.svg')}
             role='presentation'
-            onClick={navigateToQuotesChangeEmail}
+            onClick={navigateToQuotes}
             title={intl.formatMessage(messages.quotes)}
           />
 

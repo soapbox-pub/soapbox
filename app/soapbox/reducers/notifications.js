@@ -5,6 +5,7 @@ import {
 } from 'immutable';
 
 import { normalizeNotification } from 'soapbox/normalizers/notification';
+import { validType } from 'soapbox/utils/notification';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
@@ -67,7 +68,12 @@ const fixNotification = notification => {
 
 const isValid = notification => {
   try {
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    // Ensure the notification is a known type
+    if (!validType(notification.type)) {
+      return false;
+    }
+
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/424
     if (!notification.account.id) {
       return false;
     }

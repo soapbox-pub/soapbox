@@ -8,6 +8,8 @@ import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
+import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
+import { capitalize } from 'soapbox/utils/strings';
 
 import ProfileFamiliarFollowers from './profile_familiar_followers';
 import ProfileStats from './profile_stats';
@@ -52,7 +54,20 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     }
   };
 
+  const getCustomBadges = (): React.ReactNode[] => {
+    const badges = getAccountBadges(account);
+
+    return badges.map(badge => (
+      <Badge
+        key={badge}
+        slug={badge}
+        title={capitalize(badgeToTag(badge))}
+      />
+    ));
+  };
+
   const getBadges = (): React.ReactNode[] => {
+    const custom = getCustomBadges();
     const staffBadge = getStaffBadge();
     const isPatron = account.getIn(['patron', 'is_patron']) === true;
 
@@ -66,11 +81,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
       badges.push(<Badge slug='patron' title='Patron' key='patron' />);
     }
 
-    if (account.donor) {
-      badges.push(<Badge slug='donor' title='Donor' key='donor' />);
-    }
-
-    return badges;
+    return [...badges, ...custom];
   };
 
   const renderBirthday = (): React.ReactNode => {
@@ -79,7 +90,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
 
-    const date  = new Date(birthday);
+    const date = new Date(birthday);
     const today = new Date();
 
     const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
@@ -212,7 +223,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
               <div className='max-w-[300px]'>
                 <Text size='sm' truncate>
                   {isSafeUrl(account.website) ? (
-                    <a className='text-primary-600 dark:text-primary-400 hover:underline' href={account.website} target='_blank'>{account.website}</a>
+                    <a className='text-primary-600 dark:text-accent-blue hover:underline' href={account.website} target='_blank'>{account.website}</a>
                   ) : (
                     account.website
                   )}

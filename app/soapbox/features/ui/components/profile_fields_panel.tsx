@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage, FormatDateOptions } from 'react-intl';
 
@@ -22,8 +22,8 @@ const dateFormatOptions: FormatDateOptions = {
   month: 'short',
   day: 'numeric',
   year: 'numeric',
-  hour12: false,
-  hour: '2-digit',
+  hour12: true,
+  hour: 'numeric',
   minute: '2-digit',
 };
 

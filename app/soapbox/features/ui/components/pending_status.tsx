@@ -1,9 +1,9 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
-import { HStack } from 'soapbox/components/ui';
+import { Card, HStack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
@@ -24,6 +24,7 @@ interface IPendingStatus {
   className?: string,
   idempotencyKey: string,
   muted?: boolean,
+  thread?: boolean,
 }
 
 interface IPendingStatusMedia {
@@ -44,7 +45,7 @@ const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {
   }
 };
 
-const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, muted }) => {
+const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, muted, thread = false }) => {
   const status = useAppSelector((state) => {
     const pendingStatus = state.pending_statuses.get(idempotencyKey);
     return pendingStatus ? buildStatus(state, pendingStatus, idempotencyKey) : null;
@@ -58,7 +59,10 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
   return (
     <div className={classNames('opacity-50', className)}>
       <div className={classNames('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
-        <div className={classNames('status__wrapper', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })} tabIndex={muted ? undefined : 0}>
+        <Card
+          className={classNames('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
+          variant={thread ? 'default' : 'rounded'}
+        >
           <div className='mb-4'>
             <HStack justifyContent='between' alignItems='start'>
               <AccountContainer
@@ -75,7 +79,6 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
             <StatusContent
               status={status}
-              expanded
               collapsable
             />
 
@@ -88,7 +91,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
           {/* TODO */}
           {/* <PlaceholderActionBar /> */}
-        </div>
+        </Card>
       </div>
     </div>
   );

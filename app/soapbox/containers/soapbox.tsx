@@ -1,7 +1,7 @@
 'use strict';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
@@ -18,6 +18,7 @@ import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import AuthLayout from 'soapbox/features/auth_layout';
+import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public_layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -137,7 +138,6 @@ const SoapboxMount = () => {
       )}
 
       <Route exact path='/about/:slug?' component={PublicLayout} />
-      <Route exact path='/mobile/:slug?' component={PublicLayout} />
       <Route path='/login' component={AuthLayout} />
 
       {(features.accountCreation && instance.registrations) && (
@@ -169,19 +169,27 @@ const SoapboxMount = () => {
     <ErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-          <>
-            {renderBody()}
+          <Switch>
+            <Route
+              path='/embed/:statusId'
+              render={(props) => <EmbeddedStatus params={props.match.params} />}
+            />
+            <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
-            <BundleContainer fetchComponent={NotificationsContainer}>
-              {(Component) => <Component />}
-            </BundleContainer>
+            <Route>
+              {renderBody()}
 
-            <BundleContainer fetchComponent={ModalContainer}>
-              {Component => <Component />}
-            </BundleContainer>
+              <BundleContainer fetchComponent={NotificationsContainer}>
+                {(Component) => <Component />}
+              </BundleContainer>
 
-            <GdprBanner />
-          </>
+              <BundleContainer fetchComponent={ModalContainer}>
+                {Component => <Component />}
+              </BundleContainer>
+
+              <GdprBanner />
+            </Route>
+          </Switch>
         </ScrollContext>
       </BrowserRouter>
     </ErrorBoundary>

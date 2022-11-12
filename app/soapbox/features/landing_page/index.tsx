@@ -8,6 +8,8 @@ import RegistrationForm from 'soapbox/features/auth_login/components/registratio
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
 
+import './instance-description.css';
+
 const LandingPage = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
@@ -113,7 +115,10 @@ const LandingPage = () => {
                 </h1>
 
                 <Text size='lg'>
-                  {instance.description}
+                  <span
+                    className='instance-description'
+                    dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
+                  />
                 </Text>
               </Stack>
             </div>

@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural,one {queda # segundo} other {quedan # segundos}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persona} other {personas}} hablando",
   "trends.title": "Trends",
-  "ui.beforeunload": "Tu borrador se perderá si abandonás Soapbox FE.",
+  "ui.beforeunload": "Tu borrador se perderá si abandonás Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Para subir, arrastrá y soltá",

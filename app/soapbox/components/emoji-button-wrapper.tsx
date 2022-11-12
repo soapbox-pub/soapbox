@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState, useEffect, useRef } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
@@ -83,10 +83,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     if (ownAccount) {
       dispatch(simpleEmojiReact(status, emoji));
     } else {
-      dispatch(openModal('UNAUTHORIZED', {
-        action: 'FAVOURITE',
-        ap_id: status.url,
-      }));
+      handleUnauthorized();
     }
 
     setVisible(false);
@@ -96,10 +93,14 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
 
     if (isUserTouching()) {
-      if (visible) {
-        handleReact(meEmojiReact);
+      if (ownAccount) {
+        if (visible) {
+          handleReact(meEmojiReact);
+        } else {
+          setVisible(true);
+        }
       } else {
-        setVisible(true);
+        handleUnauthorized();
       }
     } else {
       handleReact(meEmojiReact);
@@ -107,6 +108,13 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
 
     e.preventDefault();
     e.stopPropagation();
+  };
+
+  const handleUnauthorized = () => {
+    dispatch(openModal('UNAUTHORIZED', {
+      action: 'FAVOURITE',
+      ap_id: status.url,
+    }));
   };
 
   // const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -6,7 +6,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import Permalink from 'soapbox/components/permalink';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';

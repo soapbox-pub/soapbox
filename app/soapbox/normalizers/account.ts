@@ -26,7 +26,7 @@ export const AccountRecord = ImmutableRecord({
   avatar_static: '',
   birthday: '',
   bot: false,
-  created_at: new Date(),
+  created_at: '',
   discoverable: false,
   display_name: '',
   emojis: ImmutableList<Emoji>(),
@@ -38,10 +38,11 @@ export const AccountRecord = ImmutableRecord({
   header: '',
   header_static: '',
   id: '',
-  last_status_at: new Date(),
+  last_status_at: '',
   location: '',
   locked: false,
   moved: null as EmbeddedEntity<any>,
+  mute_expires_at: null as string | null,
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
@@ -56,7 +57,6 @@ export const AccountRecord = ImmutableRecord({
   admin: false,
   display_name_html: '',
   domain: '',
-  donor: false,
   moderator: false,
   note_emojified: '',
   note_plain: '',
@@ -78,7 +78,7 @@ export const FieldRecord = ImmutableRecord({
   value_plain: '',
 });
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
+// https://gitlab.com/soapbox-pub/soapbox/-/issues/549
 const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
   return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
     return pleroma.withMutations(pleroma => {
@@ -155,9 +155,11 @@ const normalizeVerified = (account: ImmutableMap<string, any>) => {
   });
 };
 
-/** Get donor status from tags. */
+/** Upgrade legacy donor tag to a badge. */
 const normalizeDonor = (account: ImmutableMap<string, any>) => {
-  return account.set('donor', getTags(account).includes('donor'));
+  const tags = getTags(account);
+  const updated = tags.includes('donor') ? tags.push('badge:donor') : tags;
+  return account.setIn(['pleroma', 'tags'], updated);
 };
 
 /** Normalize Fedibird/Truth Social/Pleroma location */

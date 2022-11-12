@@ -4,7 +4,7 @@
  * @see soapbox/components/icon
  */
 
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 

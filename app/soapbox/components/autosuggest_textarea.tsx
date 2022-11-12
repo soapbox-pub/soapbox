@@ -1,5 +1,5 @@
-import Portal from '@reach/portal';
-import classNames from 'classnames';
+import { Portal } from '@reach/portal';
+import classNames from 'clsx';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
@@ -46,8 +46,8 @@ interface IAutosuggesteTextarea {
   onSuggestionsClearRequested: () => void,
   onSuggestionsFetchRequested: (token: string | number) => void,
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>,
-  onKeyUp: React.KeyboardEventHandler<HTMLTextAreaElement>,
-  onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement>,
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>,
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>,
   onPaste: (files: FileList) => void,
   autoFocus: boolean,
   onFocus: () => void,
