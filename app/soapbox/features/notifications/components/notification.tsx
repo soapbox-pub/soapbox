@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
@@ -54,6 +54,11 @@ const icons: Record<NotificationType, string> = {
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
 };
+
+const nameMessage = defineMessage({
+  id: 'notification.name',
+  defaultMessage: '{link}{others}',
+});
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
@@ -115,10 +120,7 @@ const buildMessage = (
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
-  const name = intl.formatMessage({
-    id: 'notification.name',
-    defaultMessage: '{link}{others}',
-  }, {
+  const name = intl.formatMessage(nameMessage, {
     link,
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
