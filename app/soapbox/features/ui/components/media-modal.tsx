@@ -225,7 +225,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           muted
           controls={false}
           width={width}
-          link={link}
           height={height}
           key={attachment.preview_url}
           alt={attachment.description}
