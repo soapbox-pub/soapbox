@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { Sparklines, SparklinesCurve } from 'react-sparklines';
 
 import { shortNumberFormat } from '../utils/numbers';
 
-import Permalink from './permalink';
 import { HStack, Stack, Text } from './ui';
 
 import type { Tag } from 'soapbox/types/entities';
@@ -19,9 +19,9 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
   return (
     <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
       <Stack>
-        <Permalink href={hashtag.url} to={`/tags/${hashtag.name}`} className='hover:underline'>
+        <Link to={`/tags/${hashtag.name}`} className='hover:underline'>
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
-        </Permalink>
+        </Link>
 
         {hashtag.history && (
           <Text theme='muted' size='sm'>
