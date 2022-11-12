@@ -66,6 +66,7 @@ const messages = defineMessages({
   removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
+  composeEvent: { od: 'navigation.compose_event', defaultMessage: 'Create new event' },
 });
 
 interface IHeader {
@@ -207,6 +208,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     history.push('/search');
   };
 
+  const onComposeEvent = () => {
+    dispatch(openModal('COMPOSE_EVENT'));
+  };
+
   const onAvatarClick = () => {
     const avatar = normalizeAttachment({
       type: 'image',
@@ -291,6 +296,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         to: '/blocks',
         icon: require('@tabler/icons/ban.svg'),
       });
+      if (features.events) {
+        menu.push({
+          text: intl.formatMessage(messages.composeEvent),
+          action: onComposeEvent,
+          icon: require('@tabler/icons/calendar.svg'),
+        });
+      }
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: account.username }),

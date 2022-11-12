@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import React from 'react';
 
-interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
+interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'onKeyDown' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean,
   /** The initial text in the input. */

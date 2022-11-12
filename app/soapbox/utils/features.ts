@@ -279,6 +279,8 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     ethereumLogin: v.software === MITRA,
 
+    events: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+
     /**
      * Ability to address recipients of a status explicitly (with `to`).
      * @see POST /api/v1/statuses

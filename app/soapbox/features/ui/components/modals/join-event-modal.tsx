@@ -3,10 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { joinEvent } from 'soapbox/actions/events';
 import { closeModal } from 'soapbox/actions/modals';
-import { Modal, Text } from 'soapbox/components/ui';
+import { FormGroup, Modal, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
+  hint: { id: 'join_event.hint', defaultMessage: 'You can tell the organizer why do you want to participate in this event:' },
   placeholder: { id: 'join_event.placeholder', defaultMessage: 'Message to organizer' },
   join: { id: 'join_event.join', defaultMessage: 'Request join' },
 });
@@ -51,19 +52,16 @@ const AccountNoteModal: React.FC<IAccountNoteModal> = ({ statusId }) => {
       confirmationText={intl.formatMessage(messages.join)}
       confirmationDisabled={isSubmitting}
     >
-      <Text theme='muted'>
-        <FormattedMessage id='join_event.hint' defaultMessage='You can tell the organizer why do you want to participate in this event:' />
-      </Text>
-
-      <textarea
-        className='setting-text light'
-        placeholder={intl.formatMessage(messages.placeholder)}
-        value={participationMessage}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        disabled={isSubmitting}
-        autoFocus
-      />
+      <FormGroup labelText={intl.formatMessage(messages.hint)}>
+        <Textarea
+          placeholder={intl.formatMessage(messages.placeholder)}
+          value={participationMessage}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          disabled={isSubmitting}
+          autoFocus
+        />
+      </FormGroup>
     </Modal>
   );
 };
