@@ -114,7 +114,6 @@ const countFuture = (notifications: ImmutableOrderedMap<string, NotificationReco
   }, 0);
 };
 
-
 const importNotification = (state: State, notification: APIEntity) => {
   const top = state.top;
 
