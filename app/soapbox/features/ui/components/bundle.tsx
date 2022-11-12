@@ -3,10 +3,10 @@ import React from 'react';
 const emptyComponent = () => null;
 const noop = () => { };
 
-interface BundleProps {
+export interface BundleProps {
   fetchComponent: () => Promise<any>,
   loading: React.ComponentType,
-  error: React.ComponentType<{ onRetry: (props: BundleProps) => void }>,
+  error: React.ComponentType<{ onRetry: (props?: BundleProps) => void }>,
   children: (mod: any) => React.ReactNode,
   renderDelay?: number,
   onFetch: () => void,
@@ -57,7 +57,7 @@ class Bundle extends React.PureComponent<BundleProps, BundleState> {
     }
   }
 
-  load = (props: BundleProps) => {
+  load = (props?: BundleProps) => {
     const { fetchComponent, onFetch, onFetchSuccess, onFetchFail, renderDelay } = props || this.props;
     const cachedMod = Bundle.cache.get(fetchComponent);
 

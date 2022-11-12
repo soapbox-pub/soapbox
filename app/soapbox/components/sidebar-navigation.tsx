@@ -28,7 +28,7 @@ const SidebarNavigation = () => {
   const instance = useAppSelector((state) => state.instance);
   const settings = useAppSelector((state) => getSettings(state));
   const account = useOwnAccount();
-  const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
+  const notificationCount = useAppSelector((state) => state.notifications.unread);
   const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());

@@ -35,6 +35,7 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle_container';
+import { BundleProps } from './bundle';
 
 import BundleModalError from './bundle_modal_error';
 import ModalLoading from './modal_loading';
@@ -71,19 +72,21 @@ const MODAL_COMPONENTS = {
   'ACCOUNT_MODERATION': AccountModerationModal,
 };
 
-export default class ModalRoot extends React.PureComponent {
+export type ModalType = keyof typeof MODAL_COMPONENTS | null;
 
-  static propTypes = {
-    type: PropTypes.string,
-    props: PropTypes.object,
-    onClose: PropTypes.func.isRequired,
-  };
+interface IModalRoot {
+  type: ModalType,
+  props?: Record<string, any> | null,
+  onClose: (type?: ModalType) => void,
+}
+
+export default class ModalRoot extends React.PureComponent<IModalRoot> {
 
   getSnapshotBeforeUpdate() {
     return { visible: !!this.props.type };
   }
 
-  componentDidUpdate(prevProps, prevState, { visible }) {
+  componentDidUpdate(prevProps: IModalRoot, prevState: any, { visible }: any) {
     if (visible) {
       document.body.classList.add('with-modals');
     } else {
@@ -91,15 +94,15 @@ export default class ModalRoot extends React.PureComponent {
     }
   }
 
-  renderLoading = modalId => () => {
+  renderLoading = (modalId: string) => () => {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
   }
 
-  renderError = (props) => {
+  renderError: React.ComponentType<{ onRetry: (props?: BundleProps) => void }> = (props) => {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
   }
 
-  onClickClose = (_) => {
+  onClickClose = (_?: ModalType) => {
     const { onClose, type } = this.props;
     onClose(type);
   }
