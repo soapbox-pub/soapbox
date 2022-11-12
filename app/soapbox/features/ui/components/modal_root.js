@@ -15,7 +15,6 @@ import {
   ListAdder,
   MissingDescriptionModal,
   ActionsModal,
-  FocalPointModal,
   HotkeysModal,
   ComposeModal,
   ReplyMentionsModal,
@@ -32,6 +31,7 @@ import {
   CompareHistoryModal,
   VerifySmsModal,
   FamiliarFollowersModal,
+  AccountModerationModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle_container';
@@ -50,7 +50,6 @@ const MODAL_COMPONENTS = {
   'ACTIONS': ActionsModal,
   'EMBED': EmbedModal,
   'LIST_EDITOR': ListEditor,
-  'FOCAL_POINT': FocalPointModal,
   'LIST_ADDER': ListAdder,
   'HOTKEYS': HotkeysModal,
   'COMPOSE': ComposeModal,
@@ -69,6 +68,7 @@ const MODAL_COMPONENTS = {
   'COMPARE_HISTORY': CompareHistoryModal,
   'VERIFY_SMS': VerifySmsModal,
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
+  'ACCOUNT_MODERATION': AccountModerationModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

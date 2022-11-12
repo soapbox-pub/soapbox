@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Status, { IStatus } from 'soapbox/components/status';
 import { useAppSelector } from 'soapbox/hooks';
@@ -16,14 +16,14 @@ interface IStatusContainer extends Omit<IStatus, 'status'> {
   updateScrollBottom?: any,
 }
 
-const getStatus = makeGetStatus();
-
 /**
  * Legacy Status wrapper accepting a status ID instead of the full entity.
  * @deprecated Use the Status component directly.
  */
 const StatusContainer: React.FC<IStatusContainer> = (props) => {
   const { id, ...rest } = props;
+
+  const getStatus = useCallback(makeGetStatus(), []);
   const status = useAppSelector(state => getStatus(state, { id }));
 
   if (status) {

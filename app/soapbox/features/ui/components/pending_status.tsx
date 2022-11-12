@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
@@ -79,7 +79,6 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
             <StatusContent
               status={status}
-              expanded
               collapsable
             />
 

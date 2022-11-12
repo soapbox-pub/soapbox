@@ -17,7 +17,7 @@ import { makeEmojiMap } from 'soapbox/utils/normalizers';
 import { normalizeAnnouncementReaction } from './announcement_reaction';
 import { normalizeMention } from './mention';
 
-import type {  AnnouncementReaction, Emoji, Mention } from 'soapbox/types/entities';
+import type { AnnouncementReaction, Emoji, Mention } from 'soapbox/types/entities';
 
 // https://docs.joinmastodon.org/entities/announcement/
 export const AnnouncementRecord = ImmutableRecord({

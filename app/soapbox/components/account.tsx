@@ -8,7 +8,7 @@ import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
-import RelativeTimestamp from './relative_timestamp';
+import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -22,7 +22,13 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
 
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    history.push(`/timeline/${account.domain}`);
+
+    const timelineUrl = `/timeline/${account.domain}`;
+    if (!(e.ctrlKey || e.metaKey)) {
+      history.push(timelineUrl);
+    } else {
+      window.open(timelineUrl, '_blank');
+    }
   };
 
   return (
@@ -54,7 +60,7 @@ interface IAccount {
   id?: string,
   onActionClick?: (account: any) => void,
   showProfileHoverCard?: boolean,
-  timestamp?: string | Date,
+  timestamp?: string,
   timestampUrl?: string,
   futureTimestamp?: boolean,
   withAccountNote?: boolean,
@@ -219,7 +225,7 @@ const Account = ({
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
                     {timestampUrl ? (
-                      <Link to={timestampUrl} className='hover:underline'>
+                      <Link to={timestampUrl} className='hover:underline' onClick={(event) => event.stopPropagation()}>
                         <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                       </Link>
                     ) : (
@@ -233,6 +239,14 @@ const Account = ({
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
                     <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
+                  </>
+                ) : null}
+
+                {actionType === 'muting' && account.mute_expires_at ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text theme='muted' size='sm'><RelativeTimestamp timestamp={account.mute_expires_at} futureDate /></Text>
                   </>
                 ) : null}
               </HStack>

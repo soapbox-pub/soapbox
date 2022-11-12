@@ -1,15 +1,17 @@
-import Portal from '@reach/portal';
-import classNames from 'classnames';
+import { Portal } from '@reach/portal';
+import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest_emoji';
 import Icon from 'soapbox/components/icon';
+import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';
 import { isRtl } from 'soapbox/rtl';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
+import type { InputThemes } from 'soapbox/components/ui/input/input';
 
 type CursorMatch = [
   tokenStart: number | null,
@@ -43,7 +45,7 @@ const textAtCursorMatchesToken = (str: string, caretPosition: number, searchToke
   }
 };
 
-interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
+export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
   value: string,
   suggestions: ImmutableList<any>,
   disabled?: boolean,
@@ -59,6 +61,7 @@ interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>,
   maxLength?: number,
   menu?: Menu,
   resultsPosition: string,
+  theme?: InputThemes,
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {
@@ -284,7 +287,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   }
 
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
     const style: React.CSSProperties = { direction: 'ltr' };
 
@@ -298,11 +301,10 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
       <div key='input' className='relative w-full'>
         <label className='sr-only'>{placeholder}</label>
 
-        <input
+        <Input
           type='text'
-          className={classNames({
-            'block w-full sm:text-sm border-gray-200 dark:border-gray-800 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 focus:border-gray-200 dark:focus-border-gray-800 focus:ring-primary-500 focus:ring-2': true,
-          }, className)}
+          className={className}
+          outerClassName='mt-0'
           ref={this.setInput}
           disabled={disabled}
           placeholder={placeholder}
@@ -318,6 +320,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
           id={id}
           maxLength={maxLength}
           data-testid='autosuggest-input'
+          theme={theme}
         />
       </div>,
       <Portal key='portal'>

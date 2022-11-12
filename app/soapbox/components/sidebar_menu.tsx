@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -37,6 +37,7 @@ const messages = defineMessages({
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
+  followRequests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
 });
 
 interface ISidebarLink {
@@ -87,6 +88,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
+  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
 
   const closeButtonRef = React.useRef(null);
 
@@ -176,6 +178,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   text={intl.formatMessage(messages.profile)}
                   onClick={onClose}
                 />
+
+                {(account.locked || followRequestsCount > 0) && (
+                  <SidebarLink
+                    to='/follow_requests'
+                    icon={require('@tabler/icons/user-plus.svg')}
+                    text={intl.formatMessage(messages.followRequests)}
+                    onClick={onClose}
+                  />
+                )}
 
                 {features.bookmarks && (
                   <SidebarLink

@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Registration from './registration';
 import AgeVerification from './steps/age-verification';
 import EmailVerification from './steps/email-verification';
 import SmsVerification from './steps/sms-verification';
 
-enum ChallengeTypes {
+export enum ChallengeTypes {
   EMAIL = 'email',
   SMS = 'sms',
   AGE = 'age',
@@ -23,7 +22,7 @@ const verificationSteps = {
 };
 
 const Verification = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const isInstanceReady = useAppSelector((state) => state.verification.instance.get('isReady') === true);
   const isRegistrationOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);

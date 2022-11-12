@@ -18,11 +18,13 @@ const messages = defineMessages({
  * These get embedded into the build, but only in this chunk, so it's okay.
  */
 const MOCK_STATUSES: any[] = [
+  require('soapbox/__fixtures__/pleroma-status.json'),
   require('soapbox/__fixtures__/pleroma-status-with-poll.json'),
   require('soapbox/__fixtures__/pleroma-status-vertical-video-without-metadata.json'),
   require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json'),
   require('soapbox/__fixtures__/pleroma-quote-of-quote-post.json'),
   require('soapbox/__fixtures__/truthsocial-status-with-external-video.json'),
+  require('soapbox/__fixtures__/truthsocial-status-in-moderation.json'),
 ];
 
 const timelineId = 'test';

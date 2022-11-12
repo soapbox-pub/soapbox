@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# secondo} other {# secondi}} rimasti",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persona ne sta} other {persone ne stanno}} parlando",
   "trends.title": "Trends",
-  "ui.beforeunload": "La bozza andrà persa se esci da Soapbox FE.",
+  "ui.beforeunload": "La bozza andrà persa se esci da Soapbox.",
   "unauthorized_modal.text": "Devi eseguire l'autenticazione per fare questo",
   "unauthorized_modal.title": "Iscriviti su {site_title}",
   "upload_area.title": "Trascina per caricare",

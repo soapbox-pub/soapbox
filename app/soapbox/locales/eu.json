@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {segundo #} other {# segundo}} amaitzeko",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} hitz egiten",
   "trends.title": "Trends",
-  "ui.beforeunload": "Zure zirriborroa galduko da Soapbox FE uzten baduzu.",
+  "ui.beforeunload": "Zure zirriborroa galduko da Soapbox uzten baduzu.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Arrastatu eta jaregin igotzeko",

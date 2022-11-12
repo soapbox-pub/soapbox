@@ -1042,7 +1042,7 @@
   "time_remaining.seconds": "{number, plural, one {# segundo restante} other {# segundos restantes}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {pessoa} other {pessoas}} estão a falar sobre",
   "trends.title": "Atualidade",
-  "ui.beforeunload": "O teu rascunho será perdido se abandonares o Soapbox FE.",
+  "ui.beforeunload": "O teu rascunho será perdido se abandonares o Soapbox.",
   "unauthorized_modal.text": "Deves ter a sessão iniciada para realizares essa ação.",
   "unauthorized_modal.title": "Registar no {site_title}",
   "upload_area.title": "Arrasta e larga para enviar",

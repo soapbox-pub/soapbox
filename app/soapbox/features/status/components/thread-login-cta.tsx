@@ -2,11 +2,14 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Card, CardTitle, Text, Stack, Button } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 /** Prompts logged-out users to log in when viewing a thread. */
 const ThreadLoginCta: React.FC = () => {
+  const { displayCta } = useSoapboxConfig();
   const siteTitle = useAppSelector(state => state.instance.title);
+
+  if (!displayCta) return null;
 
   return (
     <Card className='px-6 py-12 space-y-6 text-center' variant='rounded'>

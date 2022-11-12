@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -68,8 +68,6 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
 });
 
-const getStatus = makeGetStatus();
-
 const getAncestorsIds = createSelector([
   (_: RootState, statusId: string | undefined) => statusId,
   (state: RootState) => state.contexts.inReplyTos,
@@ -131,11 +129,12 @@ const Thread: React.FC<IThread> = (props) => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
+  const getStatus = useCallback(makeGetStatus(), []);
 
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
-  const askReplyConfirmation = useAppSelector(state => state.compose.text.trim().length !== 0);
+  const isUnderReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -156,7 +155,7 @@ const Thread: React.FC<IThread> = (props) => {
     };
   });
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
 
@@ -165,7 +164,7 @@ const Thread: React.FC<IThread> = (props) => {
   const scroller = useRef<VirtuosoHandle>(null);
 
   /** Fetch the status (and context) from the API. */
-  const fetchData = async() => {
+  const fetchData = async () => {
     const { params } = props;
     const { statusId } = params;
     const { next } = await dispatch(fetchStatusWithContext(statusId));
@@ -201,15 +200,7 @@ const Thread: React.FC<IThread> = (props) => {
   };
 
   const handleReplyClick = (status: StatusEntity) => {
-    if (askReplyConfirmation) {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(messages.replyMessage),
-        confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status)),
-      }));
-    } else {
-      dispatch(replyCompose(status));
-    }
+    dispatch(replyCompose(status));
   };
 
   const handleModalReblog = (status: StatusEntity) => {
@@ -236,7 +227,7 @@ const Thread: React.FC<IThread> = (props) => {
   };
 
   const handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
-    dispatch(openModal('MEDIA', { media, index }));
+    dispatch(openModal('MEDIA', { media, status, index }));
   };
 
   const handleOpenVideo = (media: ImmutableList<AttachmentEntity>, time: number) => {
@@ -401,7 +392,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   // Reset media visibility if status changes.
   useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
+    setShowMedia(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   }, [status?.id]);
 
   // Scroll focused status into view when thread updates.
@@ -422,7 +413,7 @@ const Thread: React.FC<IThread> = (props) => {
     if (next && status) {
       dispatch(fetchNext(status.id, next)).then(({ next }) => {
         setNext(next);
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }, 300, { leading: true }), [next, status]);
 
@@ -469,11 +460,12 @@ const Thread: React.FC<IThread> = (props) => {
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}
-          className='detailed-status__wrapper focusable'
+          className='detailed-status__wrapper focusable relative'
           tabIndex={0}
           // FIXME: no "reblogged by" text is added for the screen reader
           aria-label={textForScreenReader(intl, status)}
         >
+
           <DetailedStatus
             status={status}
             onOpenVideo={handleOpenVideo}
@@ -484,14 +476,18 @@ const Thread: React.FC<IThread> = (props) => {
             onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
           />
 
-          <hr className='mb-2 border-t-2 dark:border-primary-800' />
+          {!isUnderReview ? (
+            <>
+              <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
-          <StatusActionBar
-            status={status}
-            expandable={false}
-            space='expand'
-            withLabels
-          />
+              <StatusActionBar
+                status={status}
+                expandable={false}
+                space='expand'
+                withLabels
+              />
+            </>
+          ) : null}
         </div>
       </HotKeys>
 

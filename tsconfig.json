@@ -11,8 +11,12 @@
     "allowJs": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "experimentalDecorators": true,
     "esModuleInterop": true,
     "typeRoots": [ "./types", "./node_modules/@types"]
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addToAliases } from 'soapbox/actions/aliases';
@@ -15,8 +15,6 @@ const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IAccount {
   accountId: string,
   aliases: ImmutableList<string>
@@ -25,6 +23,8 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, accountId));
   const added = useAppSelector((state) => {

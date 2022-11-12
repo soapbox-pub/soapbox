@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
@@ -12,14 +12,14 @@ const messages = defineMessages({
   birthday: { id: 'account.birthday', defaultMessage: 'Born {date}' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IAccount {
   accountId: string,
 }
 
 const Account: React.FC<IAccount> = ({ accountId }) => {
   const intl = useIntl();
+  const getAccount = useCallback(makeGetAccount(), []);
+
   const account = useAppSelector((state) => getAccount(state, accountId));
 
   // useEffect(() => {
@@ -30,7 +30,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
 
   if (!account) return null;
 
-  const birthday = account.get('birthday');
+  const birthday = account.birthday;
   if (!birthday) return null;
 
   const formattedBirthday = intl.formatDate(birthday, { day: 'numeric', month: 'short', year: 'numeric' });
@@ -38,7 +38,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   return (
     <div className='account'>
       <div className='account__wrapper'>
-        <Permalink className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
+        <Permalink className='account__display-name' title={account.acct} href={`/@${account.acct}`} to={`/@${account.acct}`}>
           <div className='account__display-name'>
             <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
             <DisplayName account={account} />

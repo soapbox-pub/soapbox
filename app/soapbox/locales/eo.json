@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# sekundo} other {# sekundoj}} restas",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persono} other {personoj}} parolas",
   "trends.title": "Trends",
-  "ui.beforeunload": "Via malneto perdiĝos se vi eliras de Soapbox FE.",
+  "ui.beforeunload": "Via malneto perdiĝos se vi eliras de Soapbox.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "Altreni kaj lasi por alŝuti",

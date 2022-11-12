@@ -1,3 +1,4 @@
+import classNames from 'clsx';
 import React, { useRef } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
@@ -5,6 +6,8 @@ import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
+import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
+import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
@@ -27,17 +30,12 @@ interface IDetailedStatus {
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
-
-  const handleExpandedToggle = () => {
-    onToggleHidden(status);
-  };
 
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
@@ -47,6 +45,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (!actualStatus) return null;
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
+
+  const isUnderReview = actualStatus.visibility === 'self';
+  const isSensitive = actualStatus.hidden;
 
   let statusTypeIcon = null;
 
@@ -85,30 +86,50 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
         <StatusReplyMentions status={actualStatus} />
 
-        <StatusContent
-          status={actualStatus}
-          expanded={!actualStatus.hidden}
-          onExpandedToggle={handleExpandedToggle}
-        />
+        <Stack
+          className={
+            classNames('relative', {
+              'min-h-[220px]': isUnderReview || isSensitive,
+            })
+          }
+        >
+          {(isUnderReview || isSensitive) && (
+            <SensitiveContentOverlay
+              status={status}
+              visible={showMedia}
+              onToggleVisibility={onToggleMediaVisibility}
+            />
+          )}
 
-        <StatusMedia
-          status={actualStatus}
-          showMedia={showMedia}
-          onToggleVisibility={onToggleMediaVisibility}
-        />
+          <Stack space={4}>
+            <StatusContent status={actualStatus} translatable />
 
-        {quote}
+            <TranslateButton status={actualStatus} />
 
-        <HStack justifyContent='between' alignItems='center' className='py-2'>
+            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+              <Stack space={4}>
+                <StatusMedia
+                  status={actualStatus}
+                  showMedia={showMedia}
+                  onToggleVisibility={onToggleMediaVisibility}
+                />
+
+                {quote}
+              </Stack>
+            )}
+          </Stack>
+        </Stack>
+
+        <HStack justifyContent='between' alignItems='center' className='py-2' wrap>
           <StatusInteractionBar status={actualStatus} />
 
-          <Stack space={1} alignItems='center'>
+          <HStack space={1} alignItems='center'>
             {statusTypeIcon}
 
             <span>
               <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
                 <Text tag='span' theme='muted' size='sm'>
-                  <FormattedDate value={new Date(actualStatus.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                  <FormattedDate value={new Date(actualStatus.created_at)} hour12 year='numeric' month='short' day='2-digit' hour='numeric' minute='2-digit' />
                 </Text>
               </a>
 
@@ -122,13 +143,13 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                     tabIndex={0}
                   >
                     <Text tag='span' theme='muted' size='sm'>
-                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: false, month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }} />
+                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: true, month: 'short', day: '2-digit', hour: 'numeric', minute: '2-digit' }) }} />
                     </Text>
                   </div>
                 </>
               )}
             </span>
-          </Stack>
+          </HStack>
         </HStack>
       </div>
     </div>

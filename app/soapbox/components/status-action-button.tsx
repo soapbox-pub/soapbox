@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 
 import { Text, Icon, Emoji } from 'soapbox/components/ui';
@@ -87,7 +87,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
           'text-black dark:text-white': active && emoji,
           'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && !emoji && color === COLORS.accent,
           'text-success-600 hover:text-success-600 dark:hover:text-success-600': active && !emoji && color === COLORS.success,
-          'space-x-0.5': !text,
+          'space-x-1': !text,
           'space-x-2': text,
         },
         className,

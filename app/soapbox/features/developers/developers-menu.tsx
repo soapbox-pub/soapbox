@@ -89,6 +89,14 @@ const Developers: React.FC = () => {
             </Text>
           </DashWidget>
 
+          <DashWidget to='/developers/sw'>
+            <SvgIcon src={require('@tabler/icons/script.svg')} className='text-gray-700 dark:text-gray-600' />
+
+            <Text>
+              <FormattedMessage id='developers.navigation.service_worker_label' defaultMessage='Service Worker' />
+            </Text>
+          </DashWidget>
+
           <DashWidget onClick={leaveDevelopers}>
             <SvgIcon src={require('@tabler/icons/logout.svg')} className='text-gray-700 dark:text-gray-600' />
 

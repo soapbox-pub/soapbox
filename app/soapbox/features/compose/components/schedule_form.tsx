@@ -1,6 +1,6 @@
 'use strict';
 
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -9,7 +9,7 @@ import IconButton from 'soapbox/components/icon_button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 const isCurrentOrFutureDate = (date: Date) => {
   return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
@@ -27,19 +27,23 @@ const messages = defineMessages({
   remove: { id: 'schedule.remove', defaultMessage: 'Remove schedule' },
 });
 
-const ScheduleForm: React.FC = () => {
+export interface IScheduleForm {
+  composeId: string,
+}
+
+const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const scheduledAt = useAppSelector((state) => state.compose.schedule);
+  const scheduledAt = useCompose(composeId).schedule;
   const active = !!scheduledAt;
 
   const onSchedule = (date: Date) => {
-    dispatch(setSchedule(date));
+    dispatch(setSchedule(composeId, date));
   };
 
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(removeSchedule());
+    dispatch(removeSchedule(composeId));
     e.preventDefault();
   };
 

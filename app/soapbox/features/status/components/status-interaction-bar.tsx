@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedNumber } from 'react-intl';
@@ -163,7 +163,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   return (
     <HStack space={3}>
       {getReposts()}
-      
+
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
     </HStack>
   );

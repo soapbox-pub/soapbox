@@ -21,7 +21,7 @@ export const federationRestrictionsDisclosed = (state: RootState): boolean => {
 };
 
 /**
- * Determine whether Soapbox FE is running in standalone mode.
+ * Determine whether Soapbox is running in standalone mode.
  * Standalone mode runs separately from any backend and can login anywhere.
  */
 export const isStandalone = (state: RootState): boolean => {

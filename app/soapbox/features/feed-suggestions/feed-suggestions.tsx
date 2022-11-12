@@ -11,7 +11,7 @@ import ActionButton from '../ui/components/action-button';
 import type { Account } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  heading: { id: 'feed_suggestions.heading', defaultMessage: 'Suggested profiles' },
+  heading: { id: 'feed_suggestions.heading', defaultMessage: 'Suggested Profiles' },
   viewAll: { id: 'feed_suggestions.view_all', defaultMessage: 'View all' },
 });
 
@@ -65,13 +65,13 @@ const FeedSuggestions = () => {
   if (!isLoading && suggestedProfiles.size === 0) return null;
 
   return (
-    <Card size='lg' variant='rounded'>
+    <Card size='lg' variant='rounded' className='space-y-6'>
       <HStack justifyContent='between' alignItems='center'>
         <CardTitle title={intl.formatMessage(messages.heading)} />
 
         <Link
           to='/suggestions'
-          className='text-primary-600 dark:text-primary-400 hover:underline'
+          className='text-primary-600 dark:text-accent-blue hover:underline'
         >
           {intl.formatMessage(messages.viewAll)}
         </Link>

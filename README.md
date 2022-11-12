@@ -1,9 +1,8 @@
-# Soapbox FE
+# Soapbox
 
-![Soapbox FE Screenshot](soapbox-screenshot.png)
+![Soapbox Screenshot](soapbox-screenshot.png)
 
-**Soapbox FE** is a frontend for Mastodon and Pleroma with a focus on custom branding and ease of use.
-It's part of the [Soapbox](https://soapbox.pub) project.
+**Soapbox** is a frontend for Mastodon and Pleroma with a focus on custom branding and ease of use.
 
 ## Try it out
 
@@ -11,25 +10,25 @@ Visit https://fe.soapbox.pub/ and point it to your favorite instance.
 
 ## :rocket: Deploy on Pleroma
 
-Installing Soapbox FE on an existing Pleroma server is extremely easy.
+Installing Soapbox on an existing Pleroma server is extremely easy.
 Just ssh into the server and download a .zip of the latest build:
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v2.0.0/download?job=build-production -o soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production -o soapbox.zip
 ```
 
 Then unpack it into Pleroma's `instance` directory:
 
 ```sh
-busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
+busybox unzip soapbox.zip -o -d /opt/pleroma/instance
 ```
 
 **That's it!** :tada:
-**Soapbox FE is installed.**
+**Soapbox is installed.**
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
-To remove Soapbox FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
+To remove Soapbox and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
 ## :elephant: Deploy on Mastodon
 
@@ -37,7 +36,7 @@ See [Installing Soapbox over Mastodon](https://docs.soapbox.pub/frontend/adminis
 
 ## How does it work?
 
-Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
+Soapbox is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
 It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
 It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
@@ -55,7 +54,7 @@ location / {
 }
 ```
 
-(See [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/installation/mastodon.conf) for a full example.)
+(See [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/installation/mastodon.conf) for a full example.)
 
 Soapbox incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/), [Pleroma API](https://api.pleroma.social/), and more.
 It detects features supported by the backend to provide the right experience for the backend.
@@ -65,8 +64,8 @@ It detects features supported by the backend to provide the right experience for
 To get it running, just clone the repo:
 
 ```sh
-git clone https://gitlab.com/soapbox-pub/soapbox-fe.git
-cd soapbox-fe
+git clone https://gitlab.com/soapbox-pub/soapbox.git
+cd soapbox
 ```
 
 Ensure that Node.js and Yarn are installed, then install dependencies:
@@ -102,7 +101,7 @@ Try again.
 
 ### Troubleshooting: it's not working!
 
-Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/.tool-versions).
+Run `node -V` and compare your Node.js version with the version in [`.tool-versions`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/.tool-versions).
 If they don't match, try installing [asdf](https://asdf-vm.com/).
 
 ## Local Dev Configuration
@@ -115,9 +114,9 @@ All configuration is optional, except `NODE_ENV`.
 #### `NODE_ENV`
 
 The Node environment.
-Soapbox FE checks for the following options:
+Soapbox checks for the following options:
 
-- `development` - What you should use while developing Soapbox FE.
+- `development` - What you should use while developing Soapbox.
 - `production` - Use when compiling to deploy to a live server.
 - `test` - Use when running automated tests.
 
@@ -193,19 +192,19 @@ More details can be found in [Customizing Soapbox](docs/customization.md).
 
 # License & Credits
 
-Soapbox FE is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
+Soapbox is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
 
 - `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
 
-Soapbox FE is free software: you can redistribute it and/or modify
+Soapbox is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Soapbox FE is distributed in the hope that it will be useful,
+Soapbox is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Soapbox FE.  If not, see <https://www.gnu.org/licenses/>.
+along with Soapbox.  If not, see <https://www.gnu.org/licenses/>.

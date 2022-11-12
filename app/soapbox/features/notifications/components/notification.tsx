@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
@@ -19,8 +19,6 @@ import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
 import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
-
-const getNotification = makeGetNotification();
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -56,6 +54,11 @@ const icons: Record<NotificationType, string> = {
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
 };
+
+const nameMessage = defineMessage({
+  id: 'notification.name',
+  defaultMessage: '{link}{others}',
+});
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
@@ -117,10 +120,7 @@ const buildMessage = (
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
-  const name = intl.formatMessage({
-    id: 'notification.name',
-    defaultMessage: '{link}{others}',
-  }, {
+  const name = intl.formatMessage(nameMessage, {
     link,
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
@@ -152,6 +152,8 @@ const Notification: React.FC<INotificaton> = (props) => {
   const { hidden = false, onMoveUp, onMoveDown } = props;
 
   const dispatch = useAppDispatch();
+
+  const getNotification = useCallback(makeGetNotification(), []);
 
   const notification = useAppSelector((state) => getNotification(state, props.notification));
 
@@ -268,7 +270,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   };
 
   const renderContent = () => {
-    switch (type) {
+    switch (type as NotificationType) {
       case 'follow':
       case 'user_approved':
         return account && typeof account === 'object' ? (

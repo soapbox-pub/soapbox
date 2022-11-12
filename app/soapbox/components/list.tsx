@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -34,7 +34,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
           id: domId,
           className: classNames({
             'w-auto': isSelect,
-          }),
+          }, child.props.className),
         });
       }
 

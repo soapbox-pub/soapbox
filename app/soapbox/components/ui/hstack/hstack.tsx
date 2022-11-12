@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { forwardRef } from 'react';
 
 const justifyContentOptions = {
@@ -17,7 +17,7 @@ const alignItemsOptions = {
 };
 
 const spaces = {
-  '0.5': 'space-x-0.5',
+  [0.5]: 'space-x-0.5',
   1: 'space-x-1',
   1.5: 'space-x-1.5',
   2: 'space-x-2',
@@ -29,27 +29,33 @@ const spaces = {
 
 interface IHStack {
   /** Vertical alignment of children. */
-  alignItems?: 'top' | 'bottom' | 'center' | 'start',
+  alignItems?: keyof typeof alignItemsOptions
   /** Extra class names on the <div> element. */
-  className?: string,
+  className?: string
   /** Children */
-  children?: React.ReactNode,
+  children?: React.ReactNode
   /** Horizontal alignment of children. */
-  justifyContent?: 'between' | 'center' | 'start' | 'end' | 'around',
+  justifyContent?: keyof typeof justifyContentOptions
   /** Size of the gap between elements. */
-  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6 | 8,
+  space?: keyof typeof spaces
   /** Whether to let the flexbox grow. */
-  grow?: boolean,
+  grow?: boolean
+  /** HTML element to use for container. */
+  element?: keyof JSX.IntrinsicElements,
   /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
+  /** Whether to let the flexbox wrap onto multiple lines. */
+  wrap?: boolean
 }
 
 /** Horizontal row of child elements. */
 const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
-  const { space, alignItems, grow, justifyContent, className, ...filteredProps } = props;
+  const { space, alignItems, justifyContent, className, grow, element = 'div', wrap, ...filteredProps } = props;
+
+  const Elem = element as 'div';
 
   return (
-    <div
+    <Elem
       {...filteredProps}
       ref={ref}
       className={classNames('flex', {
@@ -60,6 +66,7 @@ const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
         'flex-grow': grow,
+        'flex-wrap': wrap,
       }, className)}
     />
   );

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
@@ -79,7 +79,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
               )}
 
               <Text align='right' tag='span' theme='muted' size='sm'>
-                <FormattedDate value={new Date(version.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                <FormattedDate value={new Date(version.created_at)} hour12 year='numeric' month='short' day='2-digit' hour='numeric' minute='2-digit' />
               </Text>
             </div>
           );

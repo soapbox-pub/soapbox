@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
@@ -6,7 +6,7 @@ import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon_button';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
@@ -14,22 +14,24 @@ const messages = defineMessages({
   add: { id: 'reply_mentions.account.add', defaultMessage: 'Add to mentions' },
 });
 
-const getAccount = makeGetAccount();
-
 interface IAccount {
+  composeId: string,
   accountId: string,
   author: boolean,
 }
 
-const Account: React.FC<IAccount> = ({ accountId, author }) => {
+const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const getAccount = useCallback(makeGetAccount(), []);
+
+  const compose = useCompose(composeId);
 
   const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = useAppSelector((state) => !!account && state.compose.to?.includes(account.acct));
+  const added = !!account && compose.to?.includes(account.acct);
 
-  const onRemove = () => dispatch(removeFromMentions(accountId));
-  const onAdd = () => dispatch(addToMentions(accountId));
+  const onRemove = () => dispatch(removeFromMentions(composeId, accountId));
+  const onAdd = () => dispatch(addToMentions(composeId, accountId));
 
   useEffect(() => {
     if (accountId && !account) {

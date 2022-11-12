@@ -11,6 +11,12 @@ export const defaultMediaVisibility = (status: StatusEntity | undefined | null, 
     status = status.reblog;
   }
 
+  const isUnderReview = status.visibility === 'self';
+
+  if (isUnderReview) {
+    return false;
+  }
+
   return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
 };
 
@@ -33,7 +39,7 @@ export const shouldHaveCard = (status: StatusEntity): boolean => {
 };
 
 /** Whether the media IDs on this status have integer IDs (opposed to FlakeIds). */
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/merge_requests/1087
+// https://gitlab.com/soapbox-pub/soapbox/-/merge_requests/1087
 export const hasIntegerMediaIds = (status: StatusEntity): boolean => {
   return status.media_attachments.some(({ id }) => isIntegerId(id));
 };

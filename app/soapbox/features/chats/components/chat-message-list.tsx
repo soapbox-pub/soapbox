@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -178,6 +178,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
               media={ImmutableList([attachment])}
               height={120}
               onOpenMedia={onOpenMedia}
+              visible
             />
           )}
         </Bundle>

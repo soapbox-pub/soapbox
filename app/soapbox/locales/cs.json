@@ -1042,7 +1042,7 @@
   "time_remaining.seconds": "{number, plural, one {Zbývá # sekunda} few {Zbývají # sekundy} many {Zbývá # sekundy} other {Zbývá # sekund}}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {člověk} few {lidé} many {lidí} other {lidí}} hovoří",
   "trends.title": "Trendy",
-  "ui.beforeunload": "Váš koncept se ztratí, pokud Soapbox FE opustíte.",
+  "ui.beforeunload": "Váš koncept se ztratí, pokud Soapbox opustíte.",
   "unauthorized_modal.text": "Pro toto musíte být přihlášen/a.",
   "unauthorized_modal.title": "Registrovat se na {site_title}",
   "upload_area.title": "Přetažením nahrajete",

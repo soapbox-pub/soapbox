@@ -23,7 +23,7 @@ export function CommunityTimeline() {
 }
 
 export function HashtagTimeline() {
-  return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag_timeline');
+  return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag-timeline');
 }
 
 export function DirectTimeline() {
@@ -36,30 +36,6 @@ export function Conversations() {
 
 export function ListTimeline() {
   return import(/* webpackChunkName: "features/list_timeline" */'../../list_timeline');
-}
-
-export function GroupTimeline() {
-  return import(/* webpackChunkName: "features/groups/timeline" */'../../groups/timeline');
-}
-
-export function GroupMembers() {
-  return import(/* webpackChunkName: "features/groups/timeline" */'../../groups/members');
-}
-
-export function GroupRemovedAccounts() {
-  return import(/* webpackChunkName: "features/groups/timeline" */'../../groups/removed_accounts');
-}
-
-export function GroupCreate() {
-  return import(/* webpackChunkName: "features/groups/timeline" */'../../groups/create');
-}
-
-export function GroupEdit() {
-  return import(/* webpackChunkName: "features/groups/timeline" */'../../groups/edit');
-}
-
-export function Groups() {
-  return import(/* webpackChunkName: "features/groups/index" */'../../groups/index');
 }
 
 export function Lists() {
@@ -130,6 +106,10 @@ export function ReportModal() {
   return import(/* webpackChunkName: "modals/report-modal/report-modal" */'../components/modals/report-modal/report-modal');
 }
 
+export function AccountModerationModal() {
+  return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal/account-moderation-modal');
+}
+
 export function MediaGallery() {
   return import(/* webpackChunkName: "status/media_gallery" */'../../../components/media_gallery');
 }
@@ -143,7 +123,7 @@ export function Audio() {
 }
 
 export function MediaModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/media_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/media-modal');
 }
 
 export function VideoModal() {
@@ -164,10 +144,6 @@ export function MissingDescriptionModal() {
 
 export function ActionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
-}
-
-export function FocalPointModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/focal_point_modal');
 }
 
 export function HotkeysModal() {
@@ -203,7 +179,7 @@ export function ReblogsModal() {
 }
 
 export function FavouritesModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/favourites_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/favourites-modal');
 }
 
 export function ReactionsModal() {
@@ -492,6 +468,10 @@ export function SettingsStore() {
 
 export function TestTimeline() {
   return import(/* webpackChunkName: "features/test_timeline" */'../../test_timeline');
+}
+
+export function ServiceWorkerInfo() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/service-worker-info');
 }
 
 export function DatePicker() {

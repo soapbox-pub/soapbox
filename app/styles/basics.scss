@@ -99,12 +99,8 @@ noscript {
   }
 }
 
-.floating-link {
-  @apply w-full h-full inset-0 absolute z-10;
-}
-
-.greentext {
-  color: #789922;
+.emojione {
+  @apply w-5 h-5 -mt-[3px] inline;
 }
 
 // Virtuoso empty placeholder fix.

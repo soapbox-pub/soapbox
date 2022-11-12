@@ -1,6 +1,6 @@
 # Removing Soapbox
 
-Removing Soapbox FE and reverting to Pleroma FE is really easy. Just run the following:
+Removing Soapbox and reverting to Pleroma FE is really easy. Just run the following:
 ```
 rm /opt/pleroma/instance/static/index.html
 rm -R /opt/pleroma/instance/static/packs

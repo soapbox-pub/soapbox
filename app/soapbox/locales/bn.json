@@ -1044,7 +1044,7 @@
   "time_remaining.seconds": "{number, plural, one {# second} other {# seconds}} বাকি আছে",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} কথা বলছে",
   "trends.title": "Trends",
-  "ui.beforeunload": "যে পর্যন্ত এটা লেখা হয়েছে, Soapbox FE থেকে চলে গেলে এটা মুছে যাবে।",
+  "ui.beforeunload": "যে পর্যন্ত এটা লেখা হয়েছে, Soapbox থেকে চলে গেলে এটা মুছে যাবে।",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
   "upload_area.title": "টেনে এখানে ছেড়ে দিলে এখানে যুক্ত করা যাবে",

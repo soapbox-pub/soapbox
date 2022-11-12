@@ -14,6 +14,7 @@ describe('mutes reducer', () => {
         isSubmitting: false,
         accountId: null,
         notifications: true,
+        duration: 0,
       },
     });
   });
@@ -24,6 +25,7 @@ describe('mutes reducer', () => {
         isSubmitting: false,
         accountId: null,
         notifications: true,
+        duration: 0,
       })(),
     })();
     const action = {
@@ -35,6 +37,7 @@ describe('mutes reducer', () => {
         isSubmitting: false,
         accountId: 'account1',
         notifications: true,
+        duration: 0,
       },
     });
   });
@@ -45,6 +48,7 @@ describe('mutes reducer', () => {
         isSubmitting: false,
         accountId: null,
         notifications: true,
+        duration: 0,
       })(),
     })();
     const action = {
@@ -55,6 +59,7 @@ describe('mutes reducer', () => {
         isSubmitting: false,
         accountId: null,
         notifications: false,
+        duration: 0,
       },
     });
   });

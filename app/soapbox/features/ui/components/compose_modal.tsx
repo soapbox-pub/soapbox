@@ -3,10 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
+import { checkComposeContent } from 'soapbox/components/modal_root';
 import { Modal } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
-import ComposeFormContainer from '../../compose/containers/compose_form_container';
+import ComposeForm from '../../compose/components/compose-form';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -22,14 +23,12 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const statusId = useAppSelector((state) => state.compose.id);
-  const composeText = useAppSelector((state) => state.compose.text);
-  const privacy = useAppSelector((state) => state.compose.privacy);
-  const inReplyTo = useAppSelector((state) => state.compose.in_reply_to);
-  const quote = useAppSelector((state) => state.compose.quote);
+  const compose = useCompose('compose-modal');
+
+  const { id: statusId, privacy, in_reply_to: inReplyTo, quote } = compose!;
 
   const onClickClose = () => {
-    if (composeText) {
+    if (checkComposeContent(compose)) {
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/trash.svg'),
         heading: statusId
@@ -68,7 +67,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
       title={renderTitle()}
       onClose={onClickClose}
     >
-      <ComposeFormContainer />
+      <ComposeForm id='compose-modal' />
     </Modal>
   );
 };

@@ -4,7 +4,6 @@ import debounce from 'lodash/debounce';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
@@ -26,7 +25,7 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin_page';
 import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
@@ -113,6 +112,7 @@ import {
   TestTimeline,
   LogoutPage,
   AuthTokenList,
+  ServiceWorkerInfo,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -312,6 +312,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
       <WrappedRoute path='/developers/settings_store' developerOnly page={DefaultPage} component={SettingsStore} content={children} />
       <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
+      <WrappedRoute path='/developers/sw' developerOnly page={DefaultPage} component={ServiceWorkerInfo} content={children} />
       <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
       <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={() => new Promise((_resolve, reject) => reject())} content={children} />
       <WrappedRoute path='/error' developerOnly page={EmptyPage} component={IntentionalError} content={children} />
@@ -329,7 +330,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
 const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -386,9 +387,13 @@ const UI: React.FC = ({ children }) => {
     setDraggingOver(false);
     dragTargets.current = [];
 
-    if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-      dispatch(uploadCompose(e.dataTransfer.files, intl));
-    }
+    dispatch((_, getState) => {
+      if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
+        const modals = getState().modals;
+        const isModalOpen = modals.last()?.modalType === 'COMPOSE';
+        dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
+      }
+    });
   };
 
   const handleDragLeave = (e: DragEvent) => {

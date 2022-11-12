@@ -1,6 +1,5 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import React, { useState, useRef } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Text, Select } from '../../components/ui';
@@ -286,30 +285,4 @@ export const FileChooserLogo: React.FC<IFileChooserLogo> = props => (
 
 FileChooserLogo.defaultProps = {
   accept: ['image/svg', 'image/png'],
-};
-
-interface ICopyableInput {
-  value: string,
-}
-
-export const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
-  const node = useRef<HTMLInputElement>(null);
-
-  const handleCopyClick: React.MouseEventHandler = () => {
-    if (!node.current) return;
-
-    node.current.select();
-    node.current.setSelectionRange(0, 99999);
-
-    document.execCommand('copy');
-  };
-
-  return (
-    <div className='copyable-input'>
-      <input ref={node} type='text' value={value} readOnly />
-      <button className='p-2 text-white bg-primary-600' onClick={handleCopyClick}>
-        <FormattedMessage id='forms.copy' defaultMessage='Copy' />
-      </button>
-    </div>
-  );
 };

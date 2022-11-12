@@ -87,7 +87,7 @@ The full app entity must be provided, for example:
   "client_id": "cf5yI6ffXH1UcDkEApEIrtHpwCi5Tv9xmju8IKdMAkE",
   "client_secret": "vHmSDpm6BJGUvR4_qWzmqWjfHcSYlZumxpFfohRwNNQ",
   "id": "7132",
-  "name": "Soapbox FE",
+  "name": "Soapbox",
   "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
   "website": "https://soapbox.pub/",
   "vapid_key": "BLElLQVJVmY_e4F5JoYxI5jXiVOYNsJ9p-amkykc9NcI-jwa9T1Y2GIbDqbY-HqC6ayPkfW4K4o9vgBFKYmkuS4"
@@ -98,7 +98,7 @@ It is crucial that the app has the expected scopes.
 You can obtain one with the following curl command (replace `MY_DOMAIN`):
 
 ```sh
-curl -X POST -H "Content-Type: application/json" -d '{"client_name": "Soapbox FE", "redirect_uris": "urn:ietf:wg:oauth:2.0:oob", "scopes": "read write follow push admin", "website": "https://soapbox.pub/"}' "https://MY_DOMAIN.com/api/v1/apps"
+curl -X POST -H "Content-Type: application/json" -d '{"client_name": "Soapbox", "redirect_uris": "urn:ietf:wg:oauth:2.0:oob", "scopes": "read write follow push admin", "website": "https://soapbox.pub/"}' "https://MY_DOMAIN.com/api/v1/apps"
 ```
 
 ### Custom files (`custom/instance/*`)
@@ -114,7 +114,7 @@ Some use cases:
 
 ## Environment variables
 
-When compiling Soapbox FE, environment variables may be passed to change the build itself.
+When compiling Soapbox, environment variables may be passed to change the build itself.
 For example:
 
 ```sh
@@ -123,7 +123,7 @@ NODE_ENV="production" FE_BUILD_DIR="public" FE_SUBDIRECTORY="/soapbox" yarn buil
 
 ### `NODE_ENV`
 
-The environment to build Soapbox FE for.
+The environment to build Soapbox for.
 
 Options:
 
@@ -138,7 +138,7 @@ It's recommended to always build in `"production"` mode for live sites.
 ### `BACKEND_URL`
 
 The base URL for API calls.
-You only need to set this if Soapbox FE is hosted in a different place than the backend.
+You only need to set this if Soapbox is hosted in a different place than the backend.
 
 Options:
 
@@ -159,7 +159,7 @@ Default: `"static"`
 
 ### `FE_SUBDIRECTORY`
 
-Subdirectory to host Soapbox FE out of.
+Subdirectory to host Soapbox out of.
 When hosting on a subdirectory, you must create a custom build for it.
 This option will set the imports in `index.html`, and the basename for routes in React.
 

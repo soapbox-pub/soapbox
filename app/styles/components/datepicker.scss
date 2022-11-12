@@ -3,7 +3,7 @@
 }
 
 .react-datepicker__input-container > input {
-  @apply dark:bg-gray-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500;
+  @apply dark:bg-gray-900 dark:text-gray-100 block w-full sm:text-sm border-gray-400 dark:border-gray-800 rounded-md focus:ring-primary-500 focus:border-primary-500;
 
   &.has-error {
     @apply text-red-600 border-red-600;
