@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import Base from 'soapbox/components/modal_root';
@@ -35,8 +34,8 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle_container';
-import { BundleProps } from './bundle';
 
+import { BundleProps } from './bundle';
 import BundleModalError from './bundle_modal_error';
 import ModalLoading from './modal_loading';
 
