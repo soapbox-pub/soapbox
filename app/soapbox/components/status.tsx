@@ -9,6 +9,7 @@ import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
+import TranslateButton from 'soapbox/components/translate-button';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
@@ -66,7 +67,6 @@ const Status: React.FC<IStatus> = (props) => {
     hidden,
     featured,
     unread,
-    group,
     hideActionBar,
     variant = 'rounded',
     withDismiss,
@@ -85,6 +85,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const actualStatus = getActualStatus(status);
 
+  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
@@ -98,16 +100,18 @@ const Status: React.FC<IStatus> = (props) => {
     setShowMedia(!showMedia);
   };
 
-  const handleClick = (): void => {
-    if (onClick) {
-      onClick();
-    } else {
-      history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
-    }
-  };
+  const handleClick = (e?: React.MouseEvent): void => {
+    e?.stopPropagation();
 
-  const handleExpandedToggle = (): void => {
-    dispatch(toggleStatusHidden(actualStatus));
+    if (!e || !(e.ctrlKey || e.metaKey)) {
+      if (onClick) {
+        onClick();
+      } else {
+        history.push(statusUrl);
+      }
+    } else {
+      window.open(statusUrl, '_blank');
+    }
   };
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
@@ -150,7 +154,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyOpen = (): void => {
-    history.push(`/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`);
+    history.push(statusUrl);
   };
 
   const handleHotkeyOpenProfile = (): void => {
@@ -297,12 +301,10 @@ const Status: React.FC<IStatus> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
-
   const accountAction = props.accountAction || reblogElement;
 
-  const inReview = status.visibility === 'self';
-  const isSensitive = status.sensitive;
+  const isUnderReview = actualStatus.visibility === 'self';
+  const isSensitive = actualStatus.hidden;
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
@@ -312,7 +314,7 @@ const Status: React.FC<IStatus> = (props) => {
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
         ref={node}
-        onClick={() => history.push(statusUrl)}
+        onClick={handleClick}
         role='link'
       >
         {featured && (
@@ -354,56 +356,52 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
 
           <div className='status__content-wrapper'>
+            <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
+
             <Stack
               className={
                 classNames('relative', {
-                  'min-h-[220px]': inReview || isSensitive,
+                  'min-h-[220px]': isUnderReview || isSensitive,
                 })
               }
             >
-              {(inReview || isSensitive) ? (
+              {(isUnderReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
                 />
-              ) : null}
-
-              {!group && actualStatus.group && (
-                <div className='status__meta'>
-                  Posted in <NavLink to={`/groups/${actualStatus.getIn(['group', 'id'])}`}>{String(actualStatus.getIn(['group', 'title']))}</NavLink>
-                </div>
               )}
-
-              <StatusReplyMentions
-                status={actualStatus}
-                hoverable={hoverable}
-              />
 
               {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
                 <>
                   <StatusContent
                     status={actualStatus}
                     onClick={handleClick}
-                    expanded={!status.hidden}
-                    onExpandedToggle={handleExpandedToggle}
                     collapsable
+                    translatable
                   />
 
-                  <StatusMedia
-                    status={actualStatus}
-                    muted={muted}
-                    onClick={handleClick}
-                    showMedia={showMedia}
-                    onToggleVisibility={handleToggleMediaVisibility}
-                  />
+                  <TranslateButton status={actualStatus} />
 
-                  {quote}
+                  {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                    <Stack space={4}>
+                      <StatusMedia
+                        status={actualStatus}
+                        muted={muted}
+                        onClick={handleClick}
+                        showMedia={showMedia}
+                        onToggleVisibility={handleToggleMediaVisibility}
+                      />
+
+                      {quote}
+                    </Stack>
+                  )}
                 </>
               )}
             </Stack>
 
-            {!hideActionBar && (
+            {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
                 <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
               </div>

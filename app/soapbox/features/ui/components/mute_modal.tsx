@@ -4,9 +4,10 @@ import Toggle from 'react-toggle';
 
 import { muteAccount } from 'soapbox/actions/accounts';
 import { closeModal } from 'soapbox/actions/modals';
-import { toggleHideNotifications } from 'soapbox/actions/mutes';
+import { toggleHideNotifications, changeMuteDuration } from 'soapbox/actions/mutes';
 import { Modal, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import DurationSelector from 'soapbox/features/compose/components/polls/duration-selector';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 const getAccount = makeGetAccount();
@@ -16,12 +17,14 @@ const MuteModal = () => {
 
   const account = useAppSelector((state) => getAccount(state, state.mutes.new.accountId!));
   const notifications = useAppSelector((state) => state.mutes.new.notifications);
+  const duration = useAppSelector((state) => state.mutes.new.duration);
+  const mutesDuration = useFeatures().mutesDuration;
 
   if (!account) return null;
 
   const handleClick = () => {
     dispatch(closeModal());
-    dispatch(muteAccount(account.id, notifications));
+    dispatch(muteAccount(account.id, notifications, duration));
   };
 
   const handleCancel = () => {
@@ -31,6 +34,12 @@ const MuteModal = () => {
   const toggleNotifications = () => {
     dispatch(toggleHideNotifications());
   };
+
+  const handleChangeMuteDuration = (expiresIn: number): void => {
+    dispatch(changeMuteDuration(expiresIn));
+  };
+
+  const toggleAutoExpire = () => handleChangeMuteDuration(duration ? 0 : 2 * 60 * 60 * 24);
 
   return (
     <Modal
@@ -69,6 +78,32 @@ const MuteModal = () => {
             />
           </HStack>
         </label>
+
+        {mutesDuration && (
+          <>
+            <label>
+              <HStack alignItems='center' space={2}>
+                <Text tag='span'>
+                  <FormattedMessage id='mute_modal.auto_expire' defaultMessage='Automatically expire mute?' />
+                </Text>
+
+                <Toggle
+                  checked={duration !== 0}
+                  onChange={toggleAutoExpire}
+                  icons={false}
+                />
+              </HStack>
+            </label>
+
+            {duration !== 0 && (
+              <Stack space={2}>
+                <Text weight='medium'><FormattedMessage id='mute_modal.duration' defaultMessage='Duration' />: </Text>
+
+                <DurationSelector onDurationChange={handleChangeMuteDuration} />
+              </Stack>
+            )}
+          </>
+        )}
       </Stack>
     </Modal>
   );

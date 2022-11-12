@@ -1,4 +1,4 @@
-import Portal from '@reach/portal';
+import { Portal } from '@reach/portal';
 import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
@@ -45,7 +45,7 @@ const textAtCursorMatchesToken = (str: string, caretPosition: number, searchToke
   }
 };
 
-interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
+export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
   value: string,
   suggestions: ImmutableList<any>,
   disabled?: boolean,

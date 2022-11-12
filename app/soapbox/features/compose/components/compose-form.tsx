@@ -10,7 +10,6 @@ import {
   clearComposeSuggestions,
   fetchComposeSuggestions,
   selectComposeSuggestion,
-  changeComposeSpoilerText,
   insertEmojiCompose,
   uploadCompose,
 } from 'soapbox/actions/compose';
@@ -38,6 +37,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
+import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
@@ -49,7 +49,7 @@ const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
   pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
   eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
-  spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
+  spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
@@ -134,7 +134,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     setComposeFocused(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: React.FormEvent<Element>) => {
     if (text !== autosuggestTextareaRef.current?.textarea?.value) {
       // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
       // Update the state to match the current text
@@ -143,6 +143,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
     // Submit disabled:
     const fulltext = [spoilerText, countableText(text)].join('');
+
+    if (e) {
+      e.preventDefault();
+    }
 
     if (isSubmitting || isUploading || isChangingUpload || length(fulltext) > maxTootChars || (fulltext.length !== 0 && fulltext.trim().length === 0 && !anyMedia)) {
       return;
@@ -165,10 +169,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const onSpoilerSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
     dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['spoiler_text']));
-  };
-
-  const handleChangeSpoilerText: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    dispatch(changeComposeSpoilerText(id, e.target.value));
   };
 
   const setCursor = (start: number, end: number = start) => {
@@ -276,7 +276,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }
 
   return (
-    <Stack className='w-full' space={1} ref={formRef} onClick={handleClick}>
+    <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
       {scheduledStatusCount > 0 && !event && (
         <Warning
           message={(
@@ -302,30 +302,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       {!shouldCondense && !event && <ReplyMentions composeId={id} />}
 
-      <div
-        className={classNames({
-          'relative transition-height': true,
-          'hidden': !spoiler,
-        })}
-      >
-        <AutosuggestInput
-          placeholder={intl.formatMessage(messages.spoiler_placeholder)}
-          value={spoilerText}
-          onChange={handleChangeSpoilerText}
-          onKeyDown={handleKeyDown}
-          disabled={!spoiler}
-          ref={spoilerTextRef}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          onSuggestionSelected={onSpoilerSuggestionSelected}
-          searchTokens={[':']}
-          id='cw-spoiler-input'
-          className='border-none shadow-none px-0 py-2 text-base'
-          autoFocus
-        />
-      </div>
-
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
         placeholder={intl.formatMessage(textareaPlaceholder)}
@@ -345,11 +321,19 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       >
         {
           !condensed &&
-          <div className='compose-form__modifiers'>
+          <Stack space={4} className='compose-form__modifiers'>
             <UploadForm composeId={id} />
             <PollForm composeId={id} />
             <ScheduleFormContainer composeId={id} />
-          </div>
+
+            <SpoilerInput
+              composeId={id}
+              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={onSuggestionsClearRequested}
+              onSuggestionSelected={onSpoilerSuggestionSelected}
+              ref={spoilerTextRef}
+            />
+          </Stack>
         }
       </AutosuggestTextarea>
 
@@ -370,7 +354,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             </div>
           )}
 
-          <Button theme='primary' text={publishText} onClick={handleSubmit} disabled={disabledButton} />
+          <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
         </div>
       </div>
     </Stack>

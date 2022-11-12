@@ -26,7 +26,6 @@ import {
   COMPOSE_SUGGESTION_SELECT,
   COMPOSE_SUGGESTION_TAGS_UPDATE,
   COMPOSE_TAG_HISTORY_UPDATE,
-  COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
   COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
@@ -280,14 +279,6 @@ export const initialState: State = ImmutableMap({
 
 export default function compose(state = initialState, action: AnyAction) {
   switch (action.type) {
-    case COMPOSE_SENSITIVITY_CHANGE:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        if (!compose.spoiler) {
-          map.set('sensitive', !compose.sensitive);
-        }
-
-        map.set('idempotencyKey', uuid());
-      }));
     case COMPOSE_TYPE_CHANGE:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('content_type', action.value);
@@ -297,11 +288,8 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('spoiler_text', '');
         map.set('spoiler', !compose.spoiler);
+        map.set('sensitive', !compose.spoiler);
         map.set('idempotencyKey', uuid());
-
-        if (!compose.sensitive && compose.media_attachments.size >= 1) {
-          map.set('sensitive', true);
-        }
       }));
     case COMPOSE_SPOILER_TEXT_CHANGE:
       return updateCompose(state, action.id, compose => compose
@@ -329,14 +317,6 @@ export default function compose(state = initialState, action: AnyAction) {
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
         map.set('content_type', defaultCompose.content_type);
-
-        if (action.status.get('spoiler_text', '').length > 0) {
-          map.set('spoiler', true);
-          map.set('spoiler_text', action.status.spoiler_text);
-        } else {
-          map.set('spoiler', false);
-          map.set('spoiler_text', '');
-        }
       }));
     case COMPOSE_EVENT_REPLY:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {

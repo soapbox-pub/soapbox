@@ -66,7 +66,5 @@ export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
 
 export const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
   'nodeinfo/fetch',
-  async(_arg, { getState }) => {
-    return await api(getState).get('/nodeinfo/2.1.json');
-  },
+  async(_arg, { getState }) => await api(getState).get('/nodeinfo/2.1.json'),
 );

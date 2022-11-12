@@ -134,6 +134,7 @@ const Thread: React.FC<IThread> = (props) => {
   const me = useAppSelector(state => state.me);
   const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
+  const isUnderReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector(state => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -412,7 +413,7 @@ const Thread: React.FC<IThread> = (props) => {
     if (next && status) {
       dispatch(fetchNext(status.id, next)).then(({ next }) => {
         setNext(next);
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }, 300, { leading: true }), [next, status]);
 
@@ -481,14 +482,18 @@ const Thread: React.FC<IThread> = (props) => {
             onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
           />
 
-          <hr className='mb-2 border-t-2 dark:border-primary-800' />
+          {!isUnderReview ? (
+            <>
+              <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
-          <StatusActionBar
-            status={status}
-            expandable={false}
-            space='expand'
-            withLabels
-          />
+              <StatusActionBar
+                status={status}
+                expandable={false}
+                space='expand'
+                withLabels
+              />
+            </>
+          ) : null}
         </div>
       </HotKeys>
 

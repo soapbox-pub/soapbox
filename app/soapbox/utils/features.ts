@@ -57,6 +57,12 @@ export const SOAPBOX = 'soapbox';
  */
 export const GLITCH = 'glitch';
 
+/**
+ * Akkoma, a Pleroma fork.
+ * @see {@link https://akkoma.dev/AkkomaGang/akkoma}
+ */
+export const AKKOMA = 'akkoma';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -202,7 +208,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+    chats: v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA,
 
     /**
      * Paginated chats API.
@@ -399,6 +405,15 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see PUT /api/pleroma/notification_settings
      */
     muteStrangers: v.software === PLEROMA,
+
+    /**
+     * Ability to specify how long the account mute should last.
+     * @see PUT /api/v1/accounts/:id/mute
+     */
+    mutesDuration: any([
+      v.software === PLEROMA && gte(v.version, '2.3.0'),
+      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+    ]),
 
     /**
      * Add private notes to accounts.
@@ -607,6 +622,12 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
+
+    /**
+     * Can translate statuses.
+     * @see POST /api/v1/statuses/:id/translate
+     */
+    translations: features.includes('translation'),
 
     /**
      * Trending statuses.

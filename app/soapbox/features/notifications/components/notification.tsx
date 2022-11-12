@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
@@ -57,6 +57,11 @@ const icons: Record<NotificationType, string> = {
   'pleroma:participation_request': require('@tabler/icons/calendar-event.svg'),
   'pleroma:participation_accepted': require('@tabler/icons/calendar-event.svg'),
 };
+
+const nameMessage = defineMessage({
+  id: 'notification.name',
+  defaultMessage: '{link}{others}',
+});
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
@@ -130,10 +135,7 @@ const buildMessage = (
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
-  const name = intl.formatMessage({
-    id: 'notification.name',
-    defaultMessage: '{link}{others}',
-  }, {
+  const name = intl.formatMessage(nameMessage, {
     link,
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
@@ -283,7 +285,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   };
 
   const renderContent = () => {
-    switch (type) {
+    switch (type as NotificationType) {
       case 'follow':
       case 'user_approved':
         return account && typeof account === 'object' ? (

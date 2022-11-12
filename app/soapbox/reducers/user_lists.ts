@@ -41,13 +41,6 @@ import {
   FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
 } from 'soapbox/actions/familiar_followers';
 import {
-  GROUP_MEMBERS_FETCH_SUCCESS,
-  GROUP_MEMBERS_EXPAND_SUCCESS,
-  GROUP_REMOVED_ACCOUNTS_FETCH_SUCCESS,
-  GROUP_REMOVED_ACCOUNTS_EXPAND_SUCCESS,
-  GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS,
-} from 'soapbox/actions/groups';
-import {
   REBLOGS_FETCH_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,
   REACTIONS_FETCH_SUCCESS,
@@ -101,8 +94,6 @@ export const ReducerRecord = ImmutableRecord({
   blocks: ListRecord(),
   mutes: ListRecord(),
   directory: ListRecord({ isLoading: true }),
-  groups: ImmutableMap<string, List>(),
-  groups_removed_accounts: ImmutableMap<string, List>(),
   pinned: ImmutableMap<string, List>(),
   birthday_reminders: ImmutableMap<string, List>(),
   familiar_followers: ImmutableMap<string, List>(),
@@ -117,7 +108,7 @@ type ReactionList = ReturnType<typeof ReactionListRecord>;
 type ParticipationRequest = ReturnType<typeof ParticipationRequestRecord>;
 type ParticipationRequestList = ReturnType<typeof ParticipationRequestListRecord>;
 type Items = ImmutableOrderedSet<string>;
-type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'groups' | 'groups_removed_accounts' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests', string];
+type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests', string];
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
@@ -193,16 +184,6 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
     case DIRECTORY_FETCH_FAIL:
     case DIRECTORY_EXPAND_FAIL:
       return state.setIn(['directory', 'isLoading'], false);
-    case GROUP_MEMBERS_FETCH_SUCCESS:
-      return normalizeList(state, ['groups', action.id], action.accounts, action.next);
-    case GROUP_MEMBERS_EXPAND_SUCCESS:
-      return appendToList(state, ['groups', action.id], action.accounts, action.next);
-    case GROUP_REMOVED_ACCOUNTS_FETCH_SUCCESS:
-      return normalizeList(state, ['groups_removed_accounts', action.id], action.accounts, action.next);
-    case GROUP_REMOVED_ACCOUNTS_EXPAND_SUCCESS:
-      return appendToList(state, ['groups_removed_accounts', action.id], action.accounts, action.next);
-    case GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS:
-      return removeFromList(state, ['groups_removed_accounts', action.groupId], action.id);
     case PINNED_ACCOUNTS_FETCH_SUCCESS:
       return normalizeList(state, ['pinned', action.id], action.accounts, action.next);
     case BIRTHDAY_REMINDERS_FETCH_SUCCESS:

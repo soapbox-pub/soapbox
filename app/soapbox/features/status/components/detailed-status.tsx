@@ -7,6 +7,7 @@ import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status_content';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
+import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
@@ -29,17 +30,12 @@ interface IDetailedStatus {
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
 }) => {
   const intl = useIntl();
   const node = useRef<HTMLDivElement>(null);
-
-  const handleExpandedToggle = () => {
-    onToggleHidden(status);
-  };
 
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
@@ -51,7 +47,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (!account || typeof account !== 'object') return null;
 
   const isUnderReview = actualStatus.visibility === 'self';
-  const isSensitive = actualStatus.sensitive;
+  const isSensitive = actualStatus.hidden;
 
   let statusTypeIcon = null;
 
@@ -97,27 +93,31 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             })
           }
         >
-          {(isUnderReview || isSensitive) ? (
+          {(isUnderReview || isSensitive) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}
             />
-          ) : null}
+          )}
 
-          <StatusContent
-            status={actualStatus}
-            expanded={!actualStatus.hidden}
-            onExpandedToggle={handleExpandedToggle}
-          />
+          <Stack space={4}>
+            <StatusContent status={actualStatus} translatable />
 
-          <StatusMedia
-            status={actualStatus}
-            showMedia={showMedia}
-            onToggleVisibility={onToggleMediaVisibility}
-          />
+            <TranslateButton status={actualStatus} />
 
-          {quote}
+            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+              <Stack space={4}>
+                <StatusMedia
+                  status={actualStatus}
+                  showMedia={showMedia}
+                  onToggleVisibility={onToggleMediaVisibility}
+                />
+
+                {quote}
+              </Stack>
+            )}
+          </Stack>
         </Stack>
 
         <HStack justifyContent='between' alignItems='center' className='py-2' wrap>

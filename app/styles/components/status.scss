@@ -14,11 +14,6 @@
   opacity: 1;
   animation: fade 150ms linear;
 
-  .video-player,
-  .audio-player {
-    margin-top: 8px;
-  }
-
   &.light {
     .display-name {
       strong {
@@ -107,7 +102,7 @@
 }
 
 .status-card {
-  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-800 rounded-lg text-gray-800 dark:text-gray-200 mt-3 min-h-[150px] no-underline overflow-hidden;
+  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-800 rounded-lg text-gray-800 dark:text-gray-200 min-h-[150px] no-underline overflow-hidden;
 }
 
 a.status-card {

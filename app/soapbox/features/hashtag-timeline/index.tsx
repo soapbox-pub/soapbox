@@ -3,10 +3,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { connectHashtagStream } from 'soapbox/actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from 'soapbox/actions/timelines';
-import ColumnHeader from 'soapbox/components/column_header';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Tag as TagEntity } from 'soapbox/types/entities';
 
@@ -27,7 +27,6 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const tags = params?.tags || { any: [], all: [], none: [] };
 
   const dispatch = useAppDispatch();
-  const hasUnread = useAppSelector<boolean>(state => (state.timelines.getIn([`hashtag:${id}`, 'unread']) as number) > 0);
   const disconnects = useRef<(() => void)[]>([]);
 
   // Mastodon supports displaying results from multiple hashtags.
@@ -100,7 +99,10 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
 
   return (
     <Column label={`#${id}`} transparent withHeader={false}>
-      <ColumnHeader active={hasUnread} title={title()} />
+      <div className='px-4 pt-4 sm:p-0'>
+        <SubNavigation message={title()} />
+      </div>
+
       <Timeline
         scrollKey='hashtag_timeline'
         timelineId={`hashtag:${id}`}

@@ -28,6 +28,11 @@ const messages = defineMessages({
   tokenNotFoundBody: { id: 'email_passthru.token_not_found.body', defaultMessage: 'Your email token was not found. Please request a new email confirmation from the {bold} from which you sent this email confirmation.' },
   tokenExpiredHeading: { id: 'email_passthru.token_expired.heading', defaultMessage: 'Token Expired' },
   tokenExpiredBody: { id: 'email_passthru.token_expired.body', defaultMessage: 'Your email token has expired. Please request a new email confirmation from the {bold} from which you sent this email confirmation.' },
+  emailConfirmed: { id: 'email_passthru.success', defaultMessage: 'Your email has been verified!' },
+  genericFail: { id: 'email_passthru.fail.generic', defaultMessage: 'Unable to confirm your email' },
+  tokenExpired: { id: 'email_passthru.fail.expired', defaultMessage: 'Your email token has expired' },
+  tokenNotFound: { id: 'email_passthru.fail.not_found', defaultMessage: 'Your email token is invalid.' },
+  invalidToken: { id: 'email_passthru.fail.invalid_token', defaultMessage: 'Your token is invalid' },
 });
 
 const Success = () => {
@@ -116,30 +121,21 @@ const EmailPassThru = () => {
       dispatch(confirmEmailVerification(token))
         .then(() => {
           setStatus(Statuses.SUCCESS);
-          dispatch(snackbar.success(intl.formatMessage({ id: 'email_passthru.success', defaultMessage: 'Your email has been verified!' })));
+          dispatch(snackbar.success(intl.formatMessage(messages.emailConfirmed)));
         })
         .catch((error: AxiosError<any>) => {
           const errorKey = error?.response?.data?.error;
-          let message = intl.formatMessage({
-            id: 'email_passthru.fail.generic',
-            defaultMessage: 'Unable to confirm your email',
-          });
+          let message = intl.formatMessage(messages.genericFail);
 
           if (errorKey) {
             switch (errorKey) {
               case 'token_expired':
-                message = intl.formatMessage({
-                  id: 'email_passthru.fail.expired',
-                  defaultMessage: 'Your email token has expired.',
-                });
+                message = intl.formatMessage(messages.tokenExpired);
                 setStatus(Statuses.TOKEN_EXPIRED);
                 break;
               case 'token_not_found':
-                message = intl.formatMessage({
-                  id: 'email_passthru.fail.not_found',
-                  defaultMessage: 'Your email token is invalid.',
-                });
-                message = 'Your token is invalid';
+                message = intl.formatMessage(messages.tokenNotFound);
+                message = intl.formatMessage(messages.invalidToken);
                 setStatus(Statuses.TOKEN_NOT_FOUND);
                 break;
               default:

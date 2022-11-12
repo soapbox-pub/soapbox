@@ -77,6 +77,7 @@ export const StatusRecord = ImmutableRecord({
   hidden: false,
   search_index: '',
   spoilerHtml: '',
+  translation: null as ImmutableMap<string, string> | null,
 });
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
@@ -163,6 +164,13 @@ const fixFiltered = (status: ImmutableMap<string, any>) => {
   status.delete('filtered');
 };
 
+/** If the status contains spoiler text, treat it as sensitive. */
+const fixSensitivity = (status: ImmutableMap<string, any>) => {
+  if (status.get('spoiler_text')) {
+    status.set('sensitive', true);
+  }
+};
+
 // Normalize event
 const normalizeEvent = (status: ImmutableMap<string, any>) => {
   if (status.getIn(['pleroma', 'event'])) {
@@ -184,6 +192,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       addSelfMention(status);
       fixQuote(status);
       fixFiltered(status);
+      fixSensitivity(status);
       normalizeEvent(status);
     }),
   );

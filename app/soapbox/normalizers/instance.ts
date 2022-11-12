@@ -98,6 +98,17 @@ const normalizeVersion = (instance: ImmutableMap<string, any>) => {
   });
 };
 
+/** Rename Akkoma to Pleroma+akkoma */
+const fixAkkoma = (instance: ImmutableMap<string, any>) => {
+  const version: string = instance.get('version', '');
+
+  if (version.includes('Akkoma')) {
+    return instance.set('version', '2.7.2 (compatible; Pleroma 2.4.5+akkoma)');
+  } else {
+    return instance;
+  }
+};
+
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
 export const normalizeInstance = (instance: Record<string, any>) => {
   return InstanceRecord(
@@ -117,6 +128,7 @@ export const normalizeInstance = (instance: Record<string, any>) => {
 
       // Normalize version
       normalizeVersion(instance);
+      fixAkkoma(instance);
 
       // Merge defaults
       instance.mergeDeepWith(mergeDefined, InstanceRecord());
