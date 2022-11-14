@@ -88,7 +88,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
         <Stack
           className={
-            classNames('relative', {
+            classNames('relative z-0', {
               'min-h-[220px]': isUnderReview || isSensitive,
             })
           }

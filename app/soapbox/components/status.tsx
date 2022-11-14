@@ -359,7 +359,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             <Stack
               className={
-                classNames('relative', {
+                classNames('relative z-0', {
                   'min-h-[220px]': isUnderReview || isSensitive,
                 })
               }
