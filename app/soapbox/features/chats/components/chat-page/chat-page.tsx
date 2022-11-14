@@ -63,7 +63,10 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
       className='h-screen bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden sm:rounded-t-xl'
     >
       {isOnboarded ? (
-        <div className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'>
+        <div
+          className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'
+          data-testid='chat-page'
+        >
           <Stack
             className={classNames('col-span-9 sm:col-span-3 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset', {
               'hidden sm:block': isSidebarHidden,
@@ -84,7 +87,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
               <Route path='/chats/settings'>
                 <ChatPageSettings />
               </Route>
-              <Route path='/chats/:chatId?'>
+              <Route>
                 <ChatPageMain />
               </Route>
             </Switch>

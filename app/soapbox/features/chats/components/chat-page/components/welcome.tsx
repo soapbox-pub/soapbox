@@ -36,7 +36,7 @@ const Welcome = () => {
   };
 
   return (
-    <Stack className='py-20 px-4 sm:px-0'>
+    <Stack className='py-20 px-4 sm:px-0' data-testid='chats-welcome'>
       <img
         src='/instance/images/chats/welcome.svg'
         className='mx-auto w-32 md:w-40 h-auto mb-10'
