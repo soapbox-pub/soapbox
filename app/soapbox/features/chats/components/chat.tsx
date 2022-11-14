@@ -1,5 +1,7 @@
+import { AxiosError } from 'axios';
 import classNames from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { Stack } from 'soapbox/components/ui';
 // import UploadProgress from 'soapbox/components/upload-progress';
@@ -12,6 +14,10 @@ import ChatMessageList from './chat-message-list';
 
 // const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
+const messages = defineMessages({
+  failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
+});
+
 interface ChatInterface {
   chat: IChat,
   inputRef?: MutableRefObject<HTMLTextAreaElement | null>,
@@ -19,10 +25,28 @@ interface ChatInterface {
 }
 
 /**
+ * Clears the value of the input while dispatching the `onChange` function
+ * which allows the <Textarea> to resize itself (this is important)
+ * because we autoGrow the element as the user inputs text that spans
+ * beyond one line
+ */
+const clearNativeInputValue = (element: HTMLTextAreaElement) => {
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+  if (nativeInputValueSetter) {
+    nativeInputValueSetter.call(element, '');
+
+    const ev2 = new Event('input', { bubbles: true });
+    element.dispatchEvent(ev2);
+  }
+};
+
+/**
  * Chat UI with just the messages and textarea.
  * Reused between floating desktop chats and fullscreen/mobile chats.
  */
 const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
+  const intl = useIntl();
+
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
 
   const [content, setContent] = useState<string>('');
@@ -30,20 +54,19 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   // const [isUploading, setIsUploading] = useState(false);
   // const [uploadProgress, setUploadProgress] = useState(0);
   // const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
-  const [hasErrorSubmittingMessage, setErrorSubmittingMessage] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const isSubmitDisabled = content.length === 0 && !attachment;
 
   const submitMessage = () => {
     createChatMessage.mutate({ chatId: chat.id, content }, {
       onSuccess: () => {
-        setErrorSubmittingMessage(false);
+        setErrorMessage(undefined);
       },
-      onError: (error, _variables, context: any) => {
-        console.log(context);
-
+      onError: (error: AxiosError<{ error: string }>, _variables, context) => {
+        const message = error.response?.data?.error;
+        setErrorMessage(message || intl.formatMessage(messages.failedToSend));
         setContent(context.prevContent as string);
-        setErrorSubmittingMessage(true);
       },
     });
 
@@ -51,6 +74,9 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   };
 
   const clearState = () => {
+    if (inputRef?.current) {
+      clearNativeInputValue(inputRef.current);
+    }
     setContent('');
     setAttachment(undefined);
     // setIsUploading(false);
@@ -172,7 +198,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         value={content}
         onChange={handleContentChange}
         onSubmit={sendMessage}
-        hasErrorSubmittingMessage={hasErrorSubmittingMessage}
+        errorMessage={errorMessage}
       />
     </Stack>
     //   {renderAttachment()}

@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
   send: { id: 'chat.actions.send', defaultMessage: 'Send' },
-  failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
   retry: { id: 'chat.retry', defaultMessage: 'Retry?' },
   blocked: { id: 'chat_message_list.blocked', defaultMessage: 'You blocked this user' },
   unblock: { id: 'chat_composer.unblock', defaultMessage: 'Unblock' },
@@ -20,9 +19,9 @@ const messages = defineMessages({
 });
 
 interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'disabled'> {
-  value: string,
-  onSubmit: () => void,
-  hasErrorSubmittingMessage?: boolean,
+  value: string
+  onSubmit: () => void
+  errorMessage: string | undefined
 }
 
 /** Textarea input for chats. */
@@ -31,7 +30,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onChange,
   value,
   onSubmit,
-  hasErrorSubmittingMessage = false,
+  errorMessage = false,
   disabled = false,
 }, ref) => {
   const dispatch = useAppDispatch();
@@ -102,10 +101,10 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
       </HStack>
 
       <HStack alignItems='center' className='h-5' space={1}>
-        {hasErrorSubmittingMessage && (
+        {errorMessage && (
           <>
             <Text theme='danger' size='xs'>
-              {intl.formatMessage(messages.failedToSend)}
+              {errorMessage}
             </Text>
 
             <button onClick={onSubmit} className='flex hover:underline'>
