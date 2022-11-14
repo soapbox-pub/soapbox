@@ -53,23 +53,28 @@ const getVideoDuration = (file: File): Promise<number> => {
 
 const domParser = new DOMParser();
 
+enum VideoProviders {
+  RUMBLE = 'rumble.com'
+}
+
 const addAutoPlay = (html: string): string => {
   const document = domParser.parseFromString(html, 'text/html').documentElement;
   const iframe = document.querySelector('iframe');
 
   if (iframe) {
-    if (iframe.src.includes('?')) {
-      iframe.src += '&';
-    } else {
-      iframe.src += '?';
-    }
+    const url = new URL(iframe.src);
+    const provider = new URL(iframe.src).host;
 
-    if (new URL(iframe.src).host === 'rumble.com') {
-      iframe.src += 'pub=7a20&autoplay=2';
+    if (provider === VideoProviders.RUMBLE) {
+      url.searchParams.append('pub', '7a20');
+      url.searchParams.append('autoplay', '2');
     } else {
-      iframe.src += 'autoplay=1&auto_play=1';
+      url.searchParams.append('autoplay', '1');
+      url.searchParams.append('auto_play', '1');
       iframe.allow = 'autoplay';
     }
+
+    iframe.src = url.toString();
 
     // DOM parser creates html/body elements around original HTML fragment,
     // so we need to get innerHTML out of the body and not the entire document
