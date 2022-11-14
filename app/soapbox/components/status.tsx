@@ -130,7 +130,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(replyCompose(actualStatus));
+    dispatch(replyCompose(status, status.reblog && typeof status.reblog === 'object' ? status.account as AccountEntity : undefined));
   };
 
   const handleHotkeyFavourite = (): void => {
@@ -190,7 +190,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   if (!status) return null;
-  let rebloggedByText, reblogElement, reblogElementMobile;
+  let rebloggedBy, rebloggedByText, reblogElement, reblogElementMobile;
 
   if (hidden) {
     return (
@@ -269,6 +269,8 @@ const Status: React.FC<IStatus> = (props) => {
       messages.reblogged_by,
       { name: String(status.getIn(['account', 'acct'])) },
     );
+
+    rebloggedBy = status.account;
   }
 
   let quote;
@@ -400,7 +402,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
+                <StatusActionBar status={actualStatus} rebloggedBy={rebloggedBy as AccountEntity | undefined} withDismiss={withDismiss} />
               </div>
             )}
           </div>

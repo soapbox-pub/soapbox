@@ -99,6 +99,7 @@ export const ReducerCompose = ImmutableRecord({
   tagHistory: ImmutableList<string>(),
   text: '',
   to: ImmutableOrderedSet<string>(),
+  parent_reblogged_by: null as string | null,
 });
 
 type State = ImmutableMap<string, Compose>;
@@ -116,20 +117,22 @@ const statusToTextMentions = (status: ImmutableMap<string, any>, account: Accoun
     .join('');
 };
 
-export const statusToMentionsArray = (status: ImmutableMap<string, any>, account: AccountEntity) => {
+export const statusToMentionsArray = (status: ImmutableMap<string, any>, account: AccountEntity, rebloggedBy?: AccountEntity) => {
   const author = status.getIn(['account', 'acct']) as string;
   const mentions = status.get('mentions')?.map((m: ImmutableMap<string, any>) => m.get('acct')) || [];
 
   return ImmutableOrderedSet([author])
+    .concat(rebloggedBy ? [rebloggedBy.acct] : [])
     .concat(mentions)
     .delete(account.get('acct')) as ImmutableOrderedSet<string>;
 };
 
-export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: AccountEntity) => {
+export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: AccountEntity, parentRebloggedBy?: string | null) => {
   const author = (status.account as AccountEntity).id;
   const mentions = status.mentions.map((m) => m.id);
 
   return ImmutableOrderedSet([author])
+    .concat(parentRebloggedBy ? [parentRebloggedBy] : [])
     .concat(mentions)
     .delete(account.id) as ImmutableOrderedSet<string>;
 };
@@ -308,8 +311,13 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
         const defaultCompose = state.get('default')!;
 
+        const to = action.explicitAddressing
+          ? statusToMentionsArray(action.status, action.account, action.rebloggedBy)
+          : ImmutableOrderedSet<string>();
+
         map.set('in_reply_to', action.status.get('id'));
-        map.set('to', action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : ImmutableOrderedSet<string>());
+        map.set('to', to);
+        map.set('parent_reblogged_by', (action.rebloggedBy as AccountEntity)?.id || null);
         map.set('text', !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '');
         map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());
@@ -323,6 +331,7 @@ export default function compose(state = initialState, action: AnyAction) {
 
         map.set('quote', action.status.get('id'));
         map.set('to', ImmutableOrderedSet());
+        map.set('parent_reblogged_by', null);
         map.set('text', '');
         map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());
@@ -404,11 +413,13 @@ export default function compose(state = initialState, action: AnyAction) {
         })));
     case COMPOSE_SET_STATUS:
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
+        const to = action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : ImmutableOrderedSet<string>();
         if (!action.withRedraft) {
           map.set('id', action.status.get('id'));
         }
         map.set('text', action.rawText || unescapeHTML(expandMentions(action.status)));
-        map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : ImmutableOrderedSet<string>());
+        map.set('to', to);
+        map.set('parent_reblogged_by', null);
         map.set('in_reply_to', action.status.get('in_reply_to_id'));
         map.set('privacy', action.status.get('visibility'));
         map.set('focusDate', new Date());

@@ -22,7 +22,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose 
   const status = useAppSelector<StatusEntity | null>(state => getStatus(state, { id: compose.in_reply_to! }));
   const account = useAppSelector((state) => state.accounts.get(state.me));
 
-  const mentions = statusToMentionsAccountIdsArray(status!, account!);
+  const mentions = statusToMentionsAccountIdsArray(status!, account!, compose.parent_reblogged_by);
   const author = (status?.account as AccountEntity).id;
 
   const onClickClose = () => {

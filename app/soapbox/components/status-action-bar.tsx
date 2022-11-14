@@ -82,6 +82,7 @@ const messages = defineMessages({
 
 interface IStatusActionBar {
   status: Status,
+  rebloggedBy?: Account,
   withDismiss?: boolean,
   withLabels?: boolean,
   expandable?: boolean,
@@ -94,6 +95,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   withLabels = false,
   expandable = true,
   space = 'compact',
+  rebloggedBy,
 }) => {
   const intl = useIntl();
   const history = useHistory();
@@ -123,7 +125,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReplyClick: React.MouseEventHandler = (e) => {
     if (me) {
-      dispatch(replyCompose(status));
+      dispatch(replyCompose(status, rebloggedBy));
     } else {
       onOpenUnauthorizedModal('REPLY');
     }

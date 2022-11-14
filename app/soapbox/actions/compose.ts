@@ -121,7 +121,7 @@ const changeCompose = (composeId: string, text: string) => ({
   text: text,
 });
 
-const replyCompose = (status: Status) =>
+const replyCompose = (status: Status, rebloggedBy?: Account) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
@@ -133,6 +133,7 @@ const replyCompose = (status: Status) =>
       status: status,
       account: state.accounts.get(state.me),
       explicitAddressing,
+      rebloggedBy,
     });
 
     dispatch(openModal('COMPOSE'));

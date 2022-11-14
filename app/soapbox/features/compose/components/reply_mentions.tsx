@@ -41,7 +41,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     }));
   };
 
-  if (!parentTo || (parentTo.size === 0)) {
+  if (!compose.parent_reblogged_by && (!parentTo || (parentTo.size === 0))) {
     return null;
   }
 
