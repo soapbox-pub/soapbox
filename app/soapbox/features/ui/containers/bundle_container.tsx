@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
-import { fetchBundleRequest, fetchBundleSuccess, fetchBundleFail } from '../../../actions/bundles';
+import { fetchBundleRequest, fetchBundleSuccess, fetchBundleFail } from 'soapbox/actions/bundles';
+
 import Bundle from '../components/bundle';
 
 import type { AppDispatch } from 'soapbox/store';

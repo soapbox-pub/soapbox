@@ -11,6 +11,7 @@ import { queryClient } from 'soapbox/queries/client';
 import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
 import type { UnregisterCallback } from 'history';
+import type { ModalType } from 'soapbox/features/ui/components/modal_root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
 
 const messages = defineMessages({
@@ -28,8 +29,8 @@ export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>)
 
 interface IModalRoot {
   onCancel?: () => void,
-  onClose: (type?: string) => void,
-  type: string,
+  onClose: (type?: ModalType) => void,
+  type: ModalType,
 }
 
 const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) => {

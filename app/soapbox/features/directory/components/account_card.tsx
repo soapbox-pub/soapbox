@@ -1,11 +1,11 @@
 import classNames from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
-import Permalink from 'soapbox/components/permalink';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
@@ -44,10 +44,10 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
       </div>
 
       <div className='directory__card__bar'>
-        <Permalink className='directory__card__bar__name' href={account.url} to={`/@${account.acct}`}>
+        <Link className='directory__card__bar__name' to={`/@${account.acct}`}>
           <Avatar account={account} size={48} />
           <DisplayName account={account} />
-        </Permalink>
+        </Link>
       </div>
 
       <div className='directory__card__extra'>

@@ -526,7 +526,6 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     />
   ));
 
-
   useEffect(() => {
     if (node.current) {
       const { offsetWidth } = node.current;

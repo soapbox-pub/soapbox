@@ -18,7 +18,6 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 const categoriesSort = ['custom'];
 
-
 class IconPickerMenu extends React.PureComponent {
 
   static propTypes = {

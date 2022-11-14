@@ -1,4 +1,4 @@
-import Portal from '@reach/portal';
+import { Portal } from '@reach/portal';
 import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';

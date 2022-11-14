@@ -1,12 +1,19 @@
 import { AxiosError } from 'axios';
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, PhoneInput, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+
+const messages = defineMessages({
+  verificationInvalid: { id: 'sms_verification.invalid', defaultMessage: 'Please enter a valid phone number.' },
+  verificationSuccess: { id: 'sms_verification.success', defaultMessage: 'A verification code has been sent to your phone number.' },
+  verificationFail: { id: 'sms_verification.fail', defaultMessage: 'Failed to send SMS message to your phone number.' },
+  verificationExpired: { id: 'sms_verification.expired', defaultMessage: 'Your SMS token has expired.' },
+});
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -38,10 +45,7 @@ const SmsVerification = () => {
       setStatus(Statuses.IDLE);
       dispatch(
         snackbar.error(
-          intl.formatMessage({
-            id: 'sms_verification.invalid',
-            defaultMessage: 'Please enter a valid phone number.',
-          }),
+          intl.formatMessage(messages.verificationInvalid),
         ),
       );
       return;
@@ -50,18 +54,12 @@ const SmsVerification = () => {
     dispatch(requestPhoneVerification(phone!)).then(() => {
       dispatch(
         snackbar.success(
-          intl.formatMessage({
-            id: 'sms_verification.success',
-            defaultMessage: 'A verification code has been sent to your phone number.',
-          }),
+          intl.formatMessage(messages.verificationSuccess),
         ),
       );
       setStatus(Statuses.REQUESTED);
     }).catch((error: AxiosError) => {
-      const message = (error.response?.data as any)?.message || intl.formatMessage({
-        id: 'sms_verification.fail',
-        defaultMessage: 'Failed to send SMS message to your phone number.',
-      });
+      const message = (error.response?.data as any)?.message || intl.formatMessage(messages.verificationFail);
 
       dispatch(snackbar.error(message));
       setStatus(Statuses.FAIL);
@@ -78,10 +76,7 @@ const SmsVerification = () => {
     dispatch(confirmPhoneVerification(verificationCode))
       .catch(() => dispatch(
         snackbar.error(
-          intl.formatMessage({
-            id: 'sms_verification.invalid',
-            defaultMessage: 'Your SMS token has expired.',
-          }),
+          intl.formatMessage(messages.verificationExpired),
         ),
       ));
   };
@@ -97,7 +92,7 @@ const SmsVerification = () => {
       <div>
         <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
           <h1 className='text-center font-bold text-2xl'>
-            {intl.formatMessage({ id: 'sms_verification.sent.header', defaultMessage: 'Verification code' })}
+            <FormattedMessage id='sms_verification.sent.header' defaultMessage='Verification code' />
           </h1>
         </div>
 
@@ -136,7 +131,9 @@ const SmsVerification = () => {
   return (
     <div>
       <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>{intl.formatMessage({ id: 'sms_verification.header', defaultMessage: 'Enter your phone number' })}</h1>
+        <h1 className='text-center font-bold text-2xl'>
+          <FormattedMessage id='sms_verification.header' defaultMessage='Enter your phone number' />
+        </h1>
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>

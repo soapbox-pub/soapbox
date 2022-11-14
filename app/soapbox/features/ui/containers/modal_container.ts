@@ -4,22 +4,24 @@ import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { closeModal } from 'soapbox/actions/modals';
 import { cancelReport } from 'soapbox/actions/reports';
 
-import ModalRoot from '../components/modal_root';
+import ModalRoot, { ModalType } from '../components/modal_root';
 
-const mapStateToProps = state => {
-  const modal = state.get('modals').last({
+import type { AppDispatch, RootState } from 'soapbox/store';
+
+const mapStateToProps = (state: RootState) => {
+  const modal = state.modals.last({
     modalType: null,
     modalProps: {},
   });
 
   return {
-    type: modal.modalType,
+    type: modal.modalType as ModalType,
     props: modal.modalProps,
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onClose(type) {
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  onClose(type?: ModalType) {
     switch (type) {
       case 'COMPOSE':
         dispatch(cancelReplyCompose());

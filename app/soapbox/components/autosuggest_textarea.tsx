@@ -1,4 +1,4 @@
-import Portal from '@reach/portal';
+import { Portal } from '@reach/portal';
 import classNames from 'clsx';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
