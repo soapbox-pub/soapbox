@@ -6,7 +6,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build_config';
 import { Text, Stack } from 'soapbox/components/ui';
 import { captureException } from 'soapbox/monitoring';
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
 import { unregisterSw } from 'soapbox/utils/sw';
 

@@ -3,7 +3,7 @@ import trim from 'lodash/trim';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { validId, isURL } from 'soapbox/utils/auth';
 
 import {
