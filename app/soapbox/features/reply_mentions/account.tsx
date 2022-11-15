@@ -5,7 +5,7 @@ import { fetchAccount } from 'soapbox/actions/accounts';
 import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 

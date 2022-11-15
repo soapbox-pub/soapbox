@@ -5,7 +5,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { setSchedule, removeSchedule } from 'soapbox/actions/compose';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';

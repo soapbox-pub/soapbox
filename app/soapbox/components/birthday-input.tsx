@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';

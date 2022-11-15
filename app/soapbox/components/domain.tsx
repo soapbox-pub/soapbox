@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { unblockDomain } from 'soapbox/actions/domain_blocks';
 
-import IconButton from './icon_button';
+import IconButton from './icon-button';
 
 const messages = defineMessages({
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },

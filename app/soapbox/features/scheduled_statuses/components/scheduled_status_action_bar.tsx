@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { openModal } from 'soapbox/actions/modals';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled_statuses';
 import { getSettings } from 'soapbox/actions/settings';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 

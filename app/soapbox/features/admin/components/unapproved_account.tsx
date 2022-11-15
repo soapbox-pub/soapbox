@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { approveUsers } from 'soapbox/actions/admin';
 import { rejectUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 
 const messages = defineMessages({
   error: { id: 'bundle_modal_error.message', defaultMessage: 'Something went wrong while loading this page.' },

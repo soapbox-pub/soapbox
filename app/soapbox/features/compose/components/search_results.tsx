@@ -5,7 +5,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';
 import Hashtag from 'soapbox/components/hashtag';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { HStack, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';

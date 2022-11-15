@@ -7,7 +7,7 @@ import {
   markChatRead,
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';

@@ -6,7 +6,7 @@ import ReactSwipeableViews from 'react-swipeable-views';
 
 import ExtendedVideoPlayer from 'soapbox/components/extended-video-player';
 import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
 

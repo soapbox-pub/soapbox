@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { removeFromListAdder, addToListAdder } from 'soapbox/actions/lists';
 import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({

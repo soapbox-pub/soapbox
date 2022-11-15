@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { connectRemoteStream } from 'soapbox/actions/streaming';
 import { expandRemoteTimeline } from 'soapbox/actions/timelines';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { HStack, Text } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';

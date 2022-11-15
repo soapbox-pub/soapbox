@@ -9,7 +9,7 @@ import { undoUploadCompose, changeUploadCompose, submitCompose } from 'soapbox/a
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 
 import Motion from '../../ui/util/optional_motion';

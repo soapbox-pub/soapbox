@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';

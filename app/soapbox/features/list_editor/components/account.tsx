@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists';
 import DisplayName from 'soapbox/components/display-name';
-import IconButton from 'soapbox/components/icon_button';
+import IconButton from 'soapbox/components/icon-button';
 import { Avatar } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
