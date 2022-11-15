@@ -1,4 +1,4 @@
-import loadPolyfills from './soapbox/load_polyfills';
+import loadPolyfills from './soapbox/load-polyfills';
 
 // Load iframe event listener
 require('./soapbox/iframe');
