@@ -13,8 +13,8 @@ import {
   insertEmojiCompose,
   uploadCompose,
 } from 'soapbox/actions/compose';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest_input';
-import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
+import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import Icon from 'soapbox/components/icon';
 import { Button, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
@@ -41,7 +41,7 @@ import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 

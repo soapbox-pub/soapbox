@@ -4,7 +4,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest_emoji';
+import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
 import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';

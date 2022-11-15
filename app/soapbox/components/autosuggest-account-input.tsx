@@ -3,7 +3,7 @@ import throttle from 'lodash/throttle';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 
 import { accountSearch } from 'soapbox/actions/accounts';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest_input';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';

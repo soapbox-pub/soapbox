@@ -7,7 +7,7 @@ import Textarea from 'react-textarea-autosize';
 import AutosuggestAccount from '../features/compose/components/autosuggest_account';
 import { isRtl } from '../rtl';
 
-import AutosuggestEmoji, { Emoji } from './autosuggest_emoji';
+import AutosuggestEmoji, { Emoji } from './autosuggest-emoji';
 
 import type { List as ImmutableList } from 'immutable';
 

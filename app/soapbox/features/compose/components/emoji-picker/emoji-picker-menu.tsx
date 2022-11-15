@@ -9,7 +9,7 @@ import { buildCustomEmojis } from '../../../emoji/emoji';
 import { EmojiPicker } from './emoji-picker-dropdown';
 import ModifierPicker from './modifier-picker';
 
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 
 const backgroundImageFn = () => require('emoji-datasource/img/twitter/sheets/32.png');
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;

@@ -21,8 +21,8 @@ import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
 import type { History } from 'history';
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
-import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
+import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
 

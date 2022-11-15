@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { render, screen } from '../../jest/test-helpers';
-import AutosuggestEmoji from '../autosuggest_emoji';
+import AutosuggestEmoji from '../autosuggest-emoji';
 
 describe('<AutosuggestEmoji />', () => {
   it('renders native emoji', () => {
