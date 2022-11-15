@@ -17,7 +17,7 @@ import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { isLocal } from 'soapbox/utils/accounts';
 
-import { showProfileHoverCard } from './hover_ref_wrapper';
+import { showProfileHoverCard } from './hover-ref-wrapper';
 import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
 
 import type { AppDispatch } from 'soapbox/store';

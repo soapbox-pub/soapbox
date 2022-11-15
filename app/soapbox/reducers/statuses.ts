@@ -3,7 +3,7 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
 

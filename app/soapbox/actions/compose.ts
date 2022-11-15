@@ -10,7 +10,7 @@ import { tagHistory } from 'soapbox/settings';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
-import resizeImage from 'soapbox/utils/resize_image';
+import resizeImage from 'soapbox/utils/resize-image';
 
 import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';

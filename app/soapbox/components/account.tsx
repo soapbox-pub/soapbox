@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';

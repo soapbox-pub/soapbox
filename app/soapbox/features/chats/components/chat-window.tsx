@@ -6,7 +6,7 @@ import {
   toggleChat,
 } from 'soapbox/actions/chats';
 import Avatar from 'soapbox/components/avatar';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import IconButton from 'soapbox/components/icon-button';
 import { HStack, Counter } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';

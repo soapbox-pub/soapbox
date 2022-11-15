@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar_followers';
 import { openModal } from 'soapbox/actions/modals';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';

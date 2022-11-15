@@ -10,7 +10,7 @@ import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is_mobile';
-import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
 
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';

@@ -6,7 +6,7 @@ import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Button, HStack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import Accordion from 'soapbox/features/ui/components/accordion';

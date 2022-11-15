@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import IconWithCounter from 'soapbox/components/icon_with_counter';
+import IconWithCounter from 'soapbox/components/icon-with-counter';
 import { Icon, Text } from 'soapbox/components/ui';
 
 interface IThumbNavigationLink {

@@ -21,7 +21,7 @@ import {
 import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
-import resizeImage from 'soapbox/utils/resize_image';
+import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
 

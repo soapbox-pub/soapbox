@@ -11,7 +11,7 @@ import {
   getReactForStatus,
   simulateEmojiReact,
   simulateUnEmojiReact,
-} from '../emoji_reacts';
+} from '../emoji-reacts';
 
 const ALLOWED_EMOJI = ImmutableList([
   '👍',

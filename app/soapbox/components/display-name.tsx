@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { getAcct } from '../utils/accounts';

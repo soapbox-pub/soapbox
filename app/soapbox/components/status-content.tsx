@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { addGreentext } from 'soapbox/utils/greentext';
-import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
+import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
 import { isRtl } from '../rtl';
 
