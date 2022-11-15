@@ -9,7 +9,7 @@
  * - `1`: id1 > id2
  * - `-1`: id1 < id2
  */
-export default function compareId(id1: string, id2: string) {
+function compareId(id1: string, id2: string) {
   if (id1 === id2) {
     return 0;
   }
@@ -19,3 +19,5 @@ export default function compareId(id1: string, id2: string) {
     return id1.length > id2.length ? 1 : -1;
   }
 }
+
+export { compareId };

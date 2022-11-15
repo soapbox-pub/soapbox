@@ -4,10 +4,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { fetchUsers } from 'soapbox/actions/admin';
-import compareId from 'soapbox/compare_id';
 import { Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { compareId } from 'soapbox/utils/comparators';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },
