@@ -1,6 +1,6 @@
 import { Record as ImmutableRecord } from 'immutable';
 
-import { normalizeSoapboxConfig } from '../soapbox_config';
+import { normalizeSoapboxConfig } from '../soapbox-config';
 
 describe('normalizeSoapboxConfig()', () => {
   it('adds base fields', () => {
