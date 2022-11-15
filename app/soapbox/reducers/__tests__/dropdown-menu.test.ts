@@ -1,4 +1,4 @@
-import reducer from '../dropdown_menu';
+import reducer from '../dropdown-menu';
 
 describe('dropdown_menu reducer', () => {
   it('should return the initial state', () => {

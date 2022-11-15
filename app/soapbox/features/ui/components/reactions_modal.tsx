@@ -7,7 +7,7 @@ import ScrollableList from 'soapbox/components/scrollable-list';
 import { Emoji, Modal, Spinner, Tabs } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { ReactionRecord } from 'soapbox/reducers/user_lists';
+import { ReactionRecord } from 'soapbox/reducers/user-lists';
 
 import type { Item } from 'soapbox/components/ui/tabs/tabs';
 

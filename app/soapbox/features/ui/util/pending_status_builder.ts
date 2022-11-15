@@ -4,7 +4,7 @@ import { normalizeStatus } from 'soapbox/normalizers/status';
 import { calculateStatus } from 'soapbox/reducers/statuses';
 import { makeGetAccount } from 'soapbox/selectors';
 
-import type { PendingStatus } from 'soapbox/reducers/pending_statuses';
+import type { PendingStatus } from 'soapbox/reducers/pending-statuses';
 import type { RootState } from 'soapbox/store';
 
 const getAccount = makeGetAccount();

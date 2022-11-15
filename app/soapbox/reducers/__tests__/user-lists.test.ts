@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import reducer from '../user_lists';
+import reducer from '../user-lists';
 
 describe('user_lists reducer', () => {
   it('should return the initial state', () => {

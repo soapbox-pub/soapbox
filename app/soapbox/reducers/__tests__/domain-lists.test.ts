@@ -1,4 +1,4 @@
-import reducer from '../domain_lists';
+import reducer from '../domain-lists';
 
 describe('domain_lists reducer', () => {
   it('should return the initial state', () => {

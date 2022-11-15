@@ -4,7 +4,7 @@ import { normalizeStatus } from 'soapbox/normalizers/status';
 import { calculateStatus } from 'soapbox/reducers/statuses';
 import { makeGetAccount } from 'soapbox/selectors';
 
-import type { ScheduledStatus } from 'soapbox/reducers/scheduled_statuses';
+import type { ScheduledStatus } from 'soapbox/reducers/scheduled-statuses';
 import type { RootState } from 'soapbox/store';
 
 export const buildStatus = (state: RootState, scheduledStatus: ScheduledStatus) => {

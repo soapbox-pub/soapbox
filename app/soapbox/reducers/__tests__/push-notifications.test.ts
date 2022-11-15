@@ -1,4 +1,4 @@
-import reducer from '../push_notifications';
+import reducer from '../push-notifications';
 
 describe('push_notifications reducer', () => {
   it('should return the initial state', () => {

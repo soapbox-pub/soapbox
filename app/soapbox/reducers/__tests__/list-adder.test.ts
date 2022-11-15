@@ -2,7 +2,7 @@ import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import * as actions from 'soapbox/actions/lists';
 
-import reducer from '../list_adder';
+import reducer from '../list-adder';
 
 describe('list_adder reducer', () => {
   it('should return the initial state', () => {

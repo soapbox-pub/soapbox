@@ -1,4 +1,4 @@
-import reducer from '../status_lists';
+import reducer from '../status-lists';
 
 describe('status_lists reducer', () => {
   it('should return the initial state', () => {
