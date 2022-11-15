@@ -7,7 +7,7 @@ import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import { openModal } from 'soapbox/actions/modals';
 import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector';
 import { useAppSelector, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
-import { isUserTouching } from 'soapbox/is_mobile';
+import { isUserTouching } from 'soapbox/is-mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji-reacts';
 
 interface IEmojiButtonWrapper {

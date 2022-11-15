@@ -9,7 +9,7 @@ import { useSettings } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
 
-import { isIOS } from '../is_mobile';
+import { isIOS } from '../is-mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
 
 import type { Property } from 'csstype';

@@ -9,7 +9,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 import { RootState } from 'soapbox/store';
 import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
 

@@ -5,7 +5,7 @@ import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { useSettings } from 'soapbox/hooks';
-import { isIOS } from 'soapbox/is_mobile';
+import { isIOS } from 'soapbox/is-mobile';
 
 import type { Attachment } from 'soapbox/types/entities';
 

@@ -1,4 +1,4 @@
-import { compareId } from '../utils/comparators';
+import { compareId } from '../comparators';
 
 test('compareId', () => {
   expect(compareId('3', '3')).toBe(0);

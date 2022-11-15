@@ -11,7 +11,7 @@ import { closeModal, openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import { IconButton } from 'soapbox/components/ui';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
-import { isUserTouching } from 'soapbox/is_mobile';
+import { isUserTouching } from 'soapbox/is-mobile';
 
 import Motion from '../../ui/util/optional_motion';
 

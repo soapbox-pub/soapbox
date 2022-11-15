@@ -2,7 +2,7 @@ import { Record as ImmutableRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 
 import account_notes from './account-notes';
 import accounts from './accounts';

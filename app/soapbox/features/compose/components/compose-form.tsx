@@ -18,7 +18,7 @@ import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import Icon from 'soapbox/components/icon';
 import { Button, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is_mobile';
+import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container';
