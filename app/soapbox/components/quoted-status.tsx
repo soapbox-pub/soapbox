@@ -103,7 +103,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
         <StatusReplyMentions status={status} hoverable={false} />
 
-        <Stack className={classNames('relative', {
+        <Stack className={classNames('relative z-0', {
           'min-h-[220px]': status.hidden,
         })}
         >
