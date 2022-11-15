@@ -95,7 +95,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
     subscribe();
     dispatch(clearTimeline(`hashtag:${id}`));
     dispatch(expandHashtagTimeline(id, { tags }));
-  }, [id, tags]);
+  }, [id]);
 
   return (
     <Column label={`#${id}`} transparent withHeader={false}>
