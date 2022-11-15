@@ -11,7 +11,7 @@ import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import OutlineBox from './outline-box';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusContent from './status_content';
+import StatusContent from './status-content';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';

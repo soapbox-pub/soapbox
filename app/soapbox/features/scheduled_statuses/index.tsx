@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Column from '../ui/components/column';

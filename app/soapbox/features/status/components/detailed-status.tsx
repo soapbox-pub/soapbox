@@ -5,7 +5,7 @@ import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import StatusContent from 'soapbox/components/status_content';
+import StatusContent from 'soapbox/components/status-content';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
 import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';

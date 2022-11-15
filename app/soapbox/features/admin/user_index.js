@@ -7,7 +7,7 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { fetchUsers } from 'soapbox/actions/admin';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import AccountContainer from 'soapbox/containers/account_container';
 import { SimpleForm, TextInput } from 'soapbox/features/forms';
 import Column from 'soapbox/features/ui/components/column';

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize_image';

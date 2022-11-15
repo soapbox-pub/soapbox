@@ -5,8 +5,8 @@ import React, { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
 
-import LoadGap from 'soapbox/components/load_gap';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import LoadGap from 'soapbox/components/load-gap';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import StatusContainer from 'soapbox/containers/status_container';
 import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
@@ -18,7 +18,7 @@ import useAds from 'soapbox/queries/ads';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { IScrollableList } from 'soapbox/components/scrollable_list';
+import type { IScrollableList } from 'soapbox/components/scrollable-list';
 import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {

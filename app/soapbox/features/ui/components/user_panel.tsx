@@ -3,9 +3,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import Avatar from 'soapbox/components/avatar';
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';

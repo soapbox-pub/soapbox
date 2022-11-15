@@ -3,8 +3,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import { fetchPinnedStatuses } from 'soapbox/actions/pin_statuses';
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import StatusList from 'soapbox/components/status_list';
+import MissingIndicator from 'soapbox/components/missing-indicator';
+import StatusList from 'soapbox/components/status-list';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/column';

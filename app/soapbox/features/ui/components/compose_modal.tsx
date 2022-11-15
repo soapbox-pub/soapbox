@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
-import { checkComposeContent } from 'soapbox/components/modal_root';
+import { checkComposeContent } from 'soapbox/components/modal-root';
 import { Modal } from 'soapbox/components/ui';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 

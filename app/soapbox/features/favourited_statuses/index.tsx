@@ -5,8 +5,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import StatusList from 'soapbox/components/status_list';
+import MissingIndicator from 'soapbox/components/missing-indicator';
+import StatusList from 'soapbox/components/status-list';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { findAccountByUsername } from 'soapbox/selectors';
 

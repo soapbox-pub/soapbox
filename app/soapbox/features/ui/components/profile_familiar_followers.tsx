@@ -8,7 +8,7 @@ import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar_follower
 import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 

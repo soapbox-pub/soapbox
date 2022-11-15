@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Modal, Spinner } from 'soapbox/components/ui';
 import Account from 'soapbox/features/birthdays/account';
 import { useAppSelector } from 'soapbox/hooks';

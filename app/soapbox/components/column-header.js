@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 // import classNames from 'clsx';
 // import { injectIntl, defineMessages } from 'react-intl';
 // import Icon from 'soapbox/components/icon';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import SubNavigation from 'soapbox/components/sub-navigation';
 
 // const messages = defineMessages({
 //   show: { id: 'column_header.show_settings', defaultMessage: 'Show settings' },

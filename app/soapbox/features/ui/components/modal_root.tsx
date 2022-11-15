@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Base from 'soapbox/components/modal_root';
+import Base from 'soapbox/components/modal-root';
 import {
   MediaModal,
   VideoModal,

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain_blocks';
 import Domain from 'soapbox/components/domain';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Spinner } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 

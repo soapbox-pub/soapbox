@@ -8,7 +8,7 @@
 import React from 'react';
 
 import ForkAwesomeIcon, { IForkAwesomeIcon } from './fork-awesome-icon';
-import SvgIcon, { ISvgIcon } from './svg_icon';
+import SvgIcon, { ISvgIcon } from './svg-icon';
 
 export type IIcon = IForkAwesomeIcon | ISvgIcon;
 

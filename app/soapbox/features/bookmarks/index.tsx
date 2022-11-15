@@ -4,8 +4,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import StatusList from 'soapbox/components/status_list';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import StatusList from 'soapbox/components/status-list';
+import SubNavigation from 'soapbox/components/sub-navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 

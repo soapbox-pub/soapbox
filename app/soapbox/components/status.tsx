@@ -18,7 +18,7 @@ import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'so
 import StatusActionBar from './status-action-bar';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusContent from './status_content';
+import StatusContent from './status-content';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import { Card, HStack, Stack, Text } from './ui';
 

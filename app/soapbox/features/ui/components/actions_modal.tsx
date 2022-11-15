@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 
 import Icon from 'soapbox/components/icon';
-import StatusContent from 'soapbox/components/status_content';
+import StatusContent from 'soapbox/components/status-content';
 import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 

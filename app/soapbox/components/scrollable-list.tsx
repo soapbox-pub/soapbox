@@ -5,7 +5,7 @@ import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLo
 
 import { useSettings } from 'soapbox/hooks';
 
-import LoadMore from './load_more';
+import LoadMore from './load-more';
 import { Card, Spinner } from './ui';
 
 /** Custom Viruoso component context. */

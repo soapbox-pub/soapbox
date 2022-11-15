@@ -3,7 +3,7 @@ import React from 'react';
 import Toggle from 'react-toggle';
 
 import { toggleStatusReport } from 'soapbox/actions/reports';
-import StatusContent from 'soapbox/components/status_content';
+import StatusContent from 'soapbox/components/status-content';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Bundle from '../../ui/components/bundle';

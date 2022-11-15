@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ThumbNavigationLink from 'soapbox/components/thumb_navigation-link';
+import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 

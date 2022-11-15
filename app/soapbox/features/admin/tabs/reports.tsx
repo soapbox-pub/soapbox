@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchReports } from 'soapbox/actions/admin';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Report from '../components/report';

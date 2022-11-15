@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { importFetchedStatuses } from 'soapbox/actions/importer';
 import { expandTimelineSuccess } from 'soapbox/actions/timelines';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import SubNavigation from 'soapbox/components/sub-navigation';
 
 import { Column } from '../../components/ui';
 import Timeline from '../ui/components/timeline';

@@ -13,7 +13,7 @@ import {
 import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollTopButton from 'soapbox/components/scroll-top-button';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';

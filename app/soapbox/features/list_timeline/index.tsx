@@ -6,7 +6,7 @@ import { fetchList } from 'soapbox/actions/lists';
 import { openModal } from 'soapbox/actions/modals';
 import { connectListStream } from 'soapbox/actions/streaming';
 import { expandListTimeline } from 'soapbox/actions/timelines';
-import MissingIndicator from 'soapbox/components/missing_indicator';
+import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Button, Spinner } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';

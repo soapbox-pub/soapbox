@@ -111,7 +111,7 @@ export function AccountModerationModal() {
 }
 
 export function MediaGallery() {
-  return import(/* webpackChunkName: "status/media_gallery" */'../../../components/media_gallery');
+  return import(/* webpackChunkName: "status/media_gallery" */'../../../components/media-gallery');
 }
 
 export function Video() {
@@ -363,7 +363,7 @@ export function LatestAccountsPanel() {
 }
 
 export function SidebarMenu() {
-  return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar_menu');
+  return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar-menu');
 }
 
 export function UploadArea() {

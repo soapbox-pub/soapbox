@@ -5,7 +5,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import Badge from 'soapbox/components/badge';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';

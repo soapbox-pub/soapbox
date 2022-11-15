@@ -23,7 +23,7 @@ import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
-import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin_page';

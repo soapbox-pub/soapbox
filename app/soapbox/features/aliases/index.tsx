@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { CardHeader, CardTitle, Column, HStack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';

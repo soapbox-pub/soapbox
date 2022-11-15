@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { expandConversations } from 'soapbox/actions/conversations';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Conversation from '../components/conversation';

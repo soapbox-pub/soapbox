@@ -3,7 +3,7 @@ import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import StatusContent from 'soapbox/components/status_content';
+import StatusContent from 'soapbox/components/status-content';
 import { HStack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import PollPreview from 'soapbox/features/ui/components/poll_preview';

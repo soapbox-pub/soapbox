@@ -1,6 +1,6 @@
 import React from 'react';
 
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 

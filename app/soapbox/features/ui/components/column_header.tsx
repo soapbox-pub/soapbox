@@ -2,7 +2,7 @@ import React from 'react';
 
 // import classNames from 'clsx';
 // import Icon from 'soapbox/components/icon';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import SubNavigation from 'soapbox/components/sub-navigation';
 
 interface IColumnHeader {
   icon?: string,

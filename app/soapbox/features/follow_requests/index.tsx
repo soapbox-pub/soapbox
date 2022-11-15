@@ -4,7 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Spinner } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 

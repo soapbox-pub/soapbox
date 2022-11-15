@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { connectCommunityStream } from 'soapbox/actions/streaming';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import SubNavigation from 'soapbox/components/sub-navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 

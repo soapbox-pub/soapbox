@@ -1,8 +1,8 @@
 import classNames from 'clsx';
 import React from 'react';
 
+import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import StatusContent from 'soapbox/components/status_content';
 import { Card, HStack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';

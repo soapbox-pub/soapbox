@@ -1,8 +1,8 @@
 import React from 'react';
 
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 import type { Account } from 'soapbox/types/entities';

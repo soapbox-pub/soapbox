@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Emoji, Modal, Spinner, Tabs } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';

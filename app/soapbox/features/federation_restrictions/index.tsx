@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetHosts } from 'soapbox/selectors';
