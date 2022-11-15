@@ -9,7 +9,7 @@ import { Spinner, Widget } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getAccountGallery } from 'soapbox/selectors';
 
-import MediaItem from '../../account_gallery/components/media_item';
+import MediaItem from '../../account-gallery/components/media-item';
 
 import type { Account, Attachment } from 'soapbox/types/entities';
 

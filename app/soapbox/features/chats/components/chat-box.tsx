@@ -9,7 +9,7 @@ import {
 import { uploadMedia } from 'soapbox/actions/media';
 import IconButton from 'soapbox/components/icon-button';
 import UploadProgress from 'soapbox/components/upload-progress';
-import UploadButton from 'soapbox/features/compose/components/upload_button';
+import UploadButton from 'soapbox/features/compose/components/upload-button';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { truncateFilename } from 'soapbox/utils/media';
 

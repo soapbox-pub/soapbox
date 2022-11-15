@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import { Stack, CardTitle, Text } from 'soapbox/components/ui';
-import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
+import RegistrationForm from 'soapbox/features/auth-login/components/registration_form';
 import { useAppSelector } from 'soapbox/hooks';
 
 interface RegisterInviteParams {

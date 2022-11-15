@@ -1,4 +1,4 @@
-import { urlRegex } from './url_regex';
+import { urlRegex } from './url-regex';
 
 const urlPlaceholder = 'xxxxxxxxxxxxxxxxxxxxxxx';
 

@@ -9,7 +9,7 @@ import sourceCode from 'soapbox/utils/code';
 import { parseVersion } from 'soapbox/utils/features';
 import { isNumber } from 'soapbox/utils/numbers';
 
-import RegistrationModePicker from '../components/registration_mode_picker';
+import RegistrationModePicker from '../components/registration-mode-picker';
 
 import type { AxiosResponse } from 'axios';
 

@@ -114,7 +114,7 @@ const configuration: Configuration = {
         '**/__*__/*',
         '**/(LICENSE|README|COPYING)(.md|.txt)?',
         // This file is imported with @preval
-        'app/soapbox/features/emoji/emoji_map.json',
+        'app/soapbox/features/emoji/emoji-map.json',
       ],
     }),
     // https://github.com/jantimon/html-webpack-plugin#options

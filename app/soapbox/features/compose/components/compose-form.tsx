@@ -20,26 +20,26 @@ import { Button, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is_mobile';
 
-import EmojiPickerDropdown from '../components/emoji-picker/emoji-picker-dropdown';
-import MarkdownButton from '../components/markdown_button';
-import PollButton from '../components/poll_button';
-import PollForm from '../components/polls/poll-form';
-import PrivacyDropdown from '../components/privacy_dropdown';
-import ReplyMentions from '../components/reply_mentions';
-import ScheduleButton from '../components/schedule_button';
-import SpoilerButton from '../components/spoiler_button';
-import UploadForm from '../components/upload_form';
-import Warning from '../components/warning';
-import QuotedStatusContainer from '../containers/quoted_status_container';
-import ReplyIndicatorContainer from '../containers/reply_indicator_container';
-import ScheduleFormContainer from '../containers/schedule_form_container';
-import UploadButtonContainer from '../containers/upload_button_container';
-import WarningContainer from '../containers/warning_container';
+import QuotedStatusContainer from '../containers/quoted-status-container';
+import ReplyIndicatorContainer from '../containers/reply-indicator-container';
+import ScheduleFormContainer from '../containers/schedule-form-container';
+import UploadButtonContainer from '../containers/upload-button-container';
+import WarningContainer from '../containers/warning-container';
 import { countableText } from '../util/counter';
 
+import EmojiPickerDropdown from './emoji-picker/emoji-picker-dropdown';
+import MarkdownButton from './markdown-button';
+import PollButton from './poll-button';
+import PollForm from './polls/poll-form';
+import PrivacyDropdown from './privacy-dropdown';
+import ReplyMentions from './reply-mentions';
+import ScheduleButton from './schedule-button';
+import SpoilerButton from './spoiler-button';
 import SpoilerInput from './spoiler-input';
-import TextCharacterCounter from './text_character_counter';
-import VisualCharacterCounter from './visual_character_counter';
+import TextCharacterCounter from './text-character-counter';
+import UploadForm from './upload-form';
+import VisualCharacterCounter from './visual-character-counter';
+import Warning from './warning';
 
 import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 

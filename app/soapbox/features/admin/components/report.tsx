@@ -13,7 +13,7 @@ import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
 
-import ReportStatus from './report_status';
+import ReportStatus from './report-status';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Account, AdminReport, Status } from 'soapbox/types/entities';

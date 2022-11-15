@@ -19,7 +19,7 @@ import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still-image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider, Avatar } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import MovedNote from 'soapbox/features/account_timeline/components/moved_note';
+import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';

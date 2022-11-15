@@ -5,7 +5,7 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import api from 'soapbox/api';
-import { search as emojiSearch } from 'soapbox/features/emoji/emoji_mart_search_light';
+import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { tagHistory } from 'soapbox/settings';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';

@@ -8,7 +8,7 @@ import AccountSearch from 'soapbox/components/account-search';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import ConversationsList from './components/conversations_list';
+import ConversationsList from './components/conversations-list';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },

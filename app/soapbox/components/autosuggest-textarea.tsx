@@ -4,7 +4,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
-import AutosuggestAccount from '../features/compose/components/autosuggest_account';
+import AutosuggestAccount from '../features/compose/components/autosuggest-account';
 import { isRtl } from '../rtl';
 
 import AutosuggestEmoji, { Emoji } from './autosuggest-emoji';

@@ -17,7 +17,7 @@ import * as BuildConfig from 'soapbox/build_config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import AuthLayout from 'soapbox/features/auth_layout';
+import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public_layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';

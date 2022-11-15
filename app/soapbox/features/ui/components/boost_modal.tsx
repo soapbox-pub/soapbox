@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { Modal, Stack, Text } from 'soapbox/components/ui';
-import ReplyIndicator from 'soapbox/features/compose/components/reply_indicator';
+import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 

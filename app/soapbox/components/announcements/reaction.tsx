@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useState } from 'react';
 
 import AnimatedNumber from 'soapbox/components/animated-number';
-import unicodeMapping from 'soapbox/features/emoji/emoji_unicode_mapping_light';
+import unicodeMapping from 'soapbox/features/emoji/emoji-unicode-mapping-light';
 
 import Emoji from './emoji';
 

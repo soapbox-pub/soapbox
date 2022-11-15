@@ -1,7 +1,7 @@
 import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
-import { emojis as emojiData } from 'soapbox/features/emoji/emoji_mart_data_light';
-import { addCustomToPool } from 'soapbox/features/emoji/emoji_mart_search_light';
+import { emojis as emojiData } from 'soapbox/features/emoji/emoji-mart-data-light';
+import { addCustomToPool } from 'soapbox/features/emoji/emoji-mart-search-light';
 
 import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom_emojis';
 import { buildCustomEmojis } from '../features/emoji/emoji';
