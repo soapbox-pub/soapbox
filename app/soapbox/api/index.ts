@@ -16,11 +16,11 @@ import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/
 import type MockAdapter from 'axios-mock-adapter';
 
 /**
- Parse Link headers, mostly for pagination.
- @see {@link https://www.npmjs.com/package/http-link-header}
- @param {object} response - Axios response object
- @returns {object} Link object
- */
+  Parse Link headers, mostly for pagination.
+  @see {@link https://www.npmjs.com/package/http-link-header}
+  @param {object} response - Axios response object
+  @returns {object} Link object
+  */
 export const getLinks = (response: AxiosResponse): LinkHeader => {
   return new LinkHeader(response.headers?.link);
 };
@@ -50,11 +50,11 @@ const getAuthBaseURL = createSelector([
 });
 
 /**
- * Base client for HTTP requests.
- * @param {string} accessToken
- * @param {string} baseURL
- * @returns {object} Axios instance
- */
+  * Base client for HTTP requests.
+  * @param {string} accessToken
+  * @param {string} baseURL
+  * @returns {object} Axios instance
+  */
 export const baseClient = (accessToken?: string | null, baseURL: string = ''): AxiosInstance => {
   return axios.create({
     // When BACKEND_URL is set, always use it.
@@ -68,22 +68,22 @@ export const baseClient = (accessToken?: string | null, baseURL: string = ''): A
 };
 
 /**
- * Dumb client for grabbing static files.
- * It uses FE_SUBDIRECTORY and parses JSON if possible.
- * No authorization is needed.
- */
+  * Dumb client for grabbing static files.
+  * It uses FE_SUBDIRECTORY and parses JSON if possible.
+  * No authorization is needed.
+  */
 export const staticClient = axios.create({
   baseURL: BuildConfig.FE_SUBDIRECTORY,
   transformResponse: [maybeParseJSON],
 });
 
 /**
- * Stateful API client.
- * Uses credentials from the Redux store if available.
- * @param {function} getState - Must return the Redux state
- * @param {string} authType - Either 'user' or 'app'
- * @returns {object} Axios instance
- */
+  * Stateful API client.
+  * Uses credentials from the Redux store if available.
+  * @param {function} getState - Must return the Redux state
+  * @param {string} authType - Either 'user' or 'app'
+  * @returns {object} Axios instance
+  */
 export default (getState: () => RootState, authType: string = 'user'): AxiosInstance => {
   const state = getState();
   const accessToken = getToken(state, authType);

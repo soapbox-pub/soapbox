@@ -4,7 +4,7 @@ import LinkHeader from 'http-link-header';
 
 import type { AxiosInstance, AxiosResponse } from 'axios';
 
-const api = jest.requireActual('../api') as Record<string, Function>;
+const api = jest.requireActual('../index') as Record<string, Function>;
 let mocks: Array<Function> = [];
 
 export const __stub = (func: (mock: MockAdapter) => void) => mocks.push(func);
