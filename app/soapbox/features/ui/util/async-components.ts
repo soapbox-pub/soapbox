@@ -238,6 +238,10 @@ export function MediaDisplay() {
   return import(/* webpackChunkName: "features/settings" */'../../settings/media_display');
 }
 
+export function AdsToken() {
+  return import(/* webpackChunkName: "features/settings/ads" */'../../ads-token');
+}
+
 export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit_profile');
 }

@@ -113,6 +113,7 @@ import {
   LogoutPage,
   AuthTokenList,
   ServiceWorkerInfo,
+  AdsToken,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -298,6 +299,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
+      <WrappedRoute path='/settings/ads' page={DefaultPage} component={AdsToken} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
       {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
