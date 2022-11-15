@@ -5,7 +5,7 @@ import { useIntl, defineMessages } from 'react-intl';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal } from 'soapbox/actions/moderation';
 import StatusContent from 'soapbox/components/status-content';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';

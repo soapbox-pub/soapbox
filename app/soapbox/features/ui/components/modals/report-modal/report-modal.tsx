@@ -7,7 +7,7 @@ import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusContent from 'soapbox/components/status-content';
 import { Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import ConfirmationStep from './steps/confirmation-step';

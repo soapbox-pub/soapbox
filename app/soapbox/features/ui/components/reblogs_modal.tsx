@@ -5,7 +5,7 @@ import { fetchReblogs } from 'soapbox/actions/interactions';
 import { fetchStatus } from 'soapbox/actions/statuses';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Modal, Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 interface IReblogsModal {

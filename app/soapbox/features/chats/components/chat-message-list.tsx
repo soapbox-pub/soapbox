@@ -14,7 +14,7 @@ import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
 import { initReportById } from 'soapbox/actions/reports';
 import { Text } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import emojify from 'soapbox/features/emoji/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';

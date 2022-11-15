@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchPinnedAccounts } from 'soapbox/actions/accounts';
 import { Widget } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';

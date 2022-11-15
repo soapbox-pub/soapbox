@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { fetchBlocks, expandBlocks } from 'soapbox/actions/blocks';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({

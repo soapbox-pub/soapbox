@@ -5,7 +5,7 @@ import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import StatusContent from 'soapbox/components/status-content';
 import { HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import PollPreview from 'soapbox/features/ui/components/poll_preview';
 import { useAppSelector } from 'soapbox/hooks';
 

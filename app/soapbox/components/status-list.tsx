@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import LoadGap from 'soapbox/components/load-gap';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import StatusContainer from 'soapbox/containers/status_container';
+import StatusContainer from 'soapbox/containers/status-container';
 import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';

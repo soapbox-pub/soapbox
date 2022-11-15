@@ -5,13 +5,13 @@ import { useHistory } from 'react-router-dom';
 
 import StatusMedia from 'soapbox/components/status-media';
 import { Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import OutlineBox from './outline-box';
-import StatusReplyMentions from './status-reply-mentions';
 import StatusContent from './status-content';
+import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';

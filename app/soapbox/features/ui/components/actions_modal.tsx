@@ -6,7 +6,7 @@ import { spring } from 'react-motion';
 import Icon from 'soapbox/components/icon';
 import StatusContent from 'soapbox/components/status-content';
 import { Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 
 import Motion from '../util/optional_motion';
 

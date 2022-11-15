@@ -8,7 +8,7 @@ import {
   updateStatusHoverCard,
 } from 'soapbox/actions/status-hover-card';
 import { fetchStatus } from 'soapbox/actions/statuses';
-import StatusContainer from 'soapbox/containers/status_container';
+import StatusContainer from 'soapbox/containers/status-container';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import { showStatusHoverCard } from './hover-status-wrapper';

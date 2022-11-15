@@ -4,7 +4,7 @@ import React from 'react';
 import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import { Card, HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';

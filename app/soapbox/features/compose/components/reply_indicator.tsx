@@ -2,7 +2,7 @@ import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { isRtl } from 'soapbox/rtl';
 
 import type { Status } from 'soapbox/types/entities';

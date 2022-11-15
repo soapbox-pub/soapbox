@@ -16,7 +16,7 @@ import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';

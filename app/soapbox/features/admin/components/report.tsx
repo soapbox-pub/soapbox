@@ -8,7 +8,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { Button, HStack } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
