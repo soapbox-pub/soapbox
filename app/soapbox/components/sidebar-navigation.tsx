@@ -97,7 +97,7 @@ const SidebarNavigation = () => {
     if (features.publicTimeline && features.federating) {
       menu.push({
         to: '/timeline/fediverse',
-        icon: require('icons/fediverse.svg'),
+        icon: require('assets/icons/fediverse.svg'),
         text: intl.formatMessage(messages.fediverse),
       });
     }

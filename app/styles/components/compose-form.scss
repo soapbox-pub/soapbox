@@ -135,12 +135,12 @@
       position: relative;
 
       &.video {
-        background-image: url('../images/video-placeholder.png');
+        background-image: url('../assets/images/video-placeholder.png');
         background-size: cover;
       }
 
       &.audio {
-        background-image: url('../images/audio-placeholder.png');
+        background-image: url('../assets/images/audio-placeholder.png');
         background-size: cover;
       }
     }

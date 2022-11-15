@@ -228,7 +228,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   {features.federating && (
                     <SidebarLink
                       to='/timeline/fediverse'
-                      icon={require('icons/fediverse.svg')}
+                      icon={require('assets/icons/fediverse.svg')}
                       text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
                       onClick={onClose}
                     />
