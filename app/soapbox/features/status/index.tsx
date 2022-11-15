@@ -32,7 +32,7 @@ import StatusActionBar from 'soapbox/components/status-action-bar';
 import SubNavigation from 'soapbox/components/sub-navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';

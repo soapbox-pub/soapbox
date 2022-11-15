@@ -10,7 +10,7 @@ import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-conte
 import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';

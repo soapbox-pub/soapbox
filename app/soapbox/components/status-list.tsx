@@ -10,7 +10,7 @@ import ScrollableList from 'soapbox/components/scrollable-list';
 import StatusContainer from 'soapbox/containers/status-container';
 import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { ALGORITHMS } from 'soapbox/features/timeline-insertion';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import { useSoapboxConfig } from 'soapbox/hooks';

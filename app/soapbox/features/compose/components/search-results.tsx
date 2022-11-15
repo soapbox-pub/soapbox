@@ -10,9 +10,9 @@ import ScrollableList from 'soapbox/components/scrollable-list';
 import { HStack, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
-import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
-import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
+import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';

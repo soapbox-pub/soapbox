@@ -7,7 +7,7 @@ import Toggle from 'react-toggle';
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
-import StatusCheckBox from 'soapbox/features/report/components/status_check_box';
+import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 

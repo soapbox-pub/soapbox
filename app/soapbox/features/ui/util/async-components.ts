@@ -7,15 +7,15 @@ export function Notifications() {
 }
 
 export function HomeTimeline() {
-  return import(/* webpackChunkName: "features/home_timeline" */'../../home_timeline');
+  return import(/* webpackChunkName: "features/home_timeline" */'../../home-timeline');
 }
 
 export function PublicTimeline() {
-  return import(/* webpackChunkName: "features/public_timeline" */'../../public_timeline');
+  return import(/* webpackChunkName: "features/public_timeline" */'../../public-timeline');
 }
 
 export function RemoteTimeline() {
-  return import(/* webpackChunkName: "features/remote_timeline" */'../../remote_timeline');
+  return import(/* webpackChunkName: "features/remote_timeline" */'../../remote-timeline');
 }
 
 export function CommunityTimeline() {
@@ -51,7 +51,7 @@ export function Status() {
 }
 
 export function PinnedStatuses() {
-  return import(/* webpackChunkName: "features/pinned_statuses" */'../../pinned_statuses');
+  return import(/* webpackChunkName: "features/pinned_statuses" */'../../pinned-statuses');
 }
 
 export function AccountTimeline() {
@@ -71,11 +71,11 @@ export function Following() {
 }
 
 export function FollowRequests() {
-  return import(/* webpackChunkName: "features/follow_requests" */'../../follow_requests');
+  return import(/* webpackChunkName: "features/follow_requests" */'../../follow-requests');
 }
 
 export function GenericNotFound() {
-  return import(/* webpackChunkName: "features/generic_not_found" */'../../generic_not_found');
+  return import(/* webpackChunkName: "features/generic_not_found" */'../../generic-not-found');
 }
 
 export function FavouritedStatuses() {
@@ -211,7 +211,7 @@ export function ListEditor() {
 }
 
 export function ListAdder() {
-  return import(/*webpackChunkName: "features/list_adder" */'../../list_adder');
+  return import(/*webpackChunkName: "features/list_adder" */'../../list-adder');
 }
 
 export function Search() {
@@ -235,7 +235,7 @@ export function Settings() {
 }
 
 export function MediaDisplay() {
-  return import(/* webpackChunkName: "features/settings" */'../../settings/media_display');
+  return import(/* webpackChunkName: "features/settings" */'../../settings/media-display');
 }
 
 export function EditProfile() {
@@ -259,7 +259,7 @@ export function DeleteAccount() {
 }
 
 export function SoapboxConfig() {
-  return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox_config');
+  return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox-config');
 }
 
 export function ExportData() {
@@ -267,7 +267,7 @@ export function ExportData() {
 }
 
 export function ImportData() {
-  return import(/* webpackChunkName: "features/import_data" */'../../import_data');
+  return import(/* webpackChunkName: "features/import_data" */'../../import-data');
 }
 
 export function Backups() {
@@ -283,7 +283,7 @@ export function PasswordResetConfirm() {
 }
 
 export function MfaForm() {
-  return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
+  return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa-form');
 }
 
 export function ChatIndex() {
@@ -299,7 +299,7 @@ export function ChatPanes() {
 }
 
 export function ServerInfo() {
-  return import(/* webpackChunkName: "features/server_info" */'../../server_info');
+  return import(/* webpackChunkName: "features/server_info" */'../../server-info');
 }
 
 export function Dashboard() {
@@ -403,7 +403,7 @@ export function CryptoDonateModal() {
 }
 
 export function ScheduledStatuses() {
-  return import(/* webpackChunkName: "features/scheduled_statuses" */'../../scheduled_statuses');
+  return import(/* webpackChunkName: "features/scheduled_statuses" */'../../scheduled-statuses');
 }
 
 export function UserIndex() {
@@ -411,7 +411,7 @@ export function UserIndex() {
 }
 
 export function FederationRestrictions() {
-  return import(/* webpackChunkName: "features/federation_restrictions" */'../../federation_restrictions');
+  return import(/* webpackChunkName: "features/federation_restrictions" */'../../federation-restrictions');
 }
 
 export function Aliases() {
@@ -439,7 +439,7 @@ export function Directory() {
 }
 
 export function RegisterInvite() {
-  return import(/* webpackChunkName: "features/register_invite" */'../../register_invite');
+  return import(/* webpackChunkName: "features/register_invite" */'../../register-invite');
 }
 
 export function Share() {
@@ -447,11 +447,11 @@ export function Share() {
 }
 
 export function NewStatus() {
-  return import(/* webpackChunkName: "features/new_status" */'../../new_status');
+  return import(/* webpackChunkName: "features/new_status" */'../../new-status');
 }
 
 export function IntentionalError() {
-  return import(/* webpackChunkName: "error" */'../../intentional_error');
+  return import(/* webpackChunkName: "error" */'../../intentional-error');
 }
 
 export function Developers() {
@@ -467,7 +467,7 @@ export function SettingsStore() {
 }
 
 export function TestTimeline() {
-  return import(/* webpackChunkName: "features/test_timeline" */'../../test_timeline');
+  return import(/* webpackChunkName: "features/test_timeline" */'../../test-timeline');
 }
 
 export function ServiceWorkerInfo() {

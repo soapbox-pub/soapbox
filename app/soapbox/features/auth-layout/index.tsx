@@ -12,8 +12,8 @@ import PasswordReset from '../auth-login/components/password_reset';
 import PasswordResetConfirm from '../auth-login/components/password_reset_confirm';
 import RegistrationForm from '../auth-login/components/registration_form';
 import ExternalLoginForm from '../external-login/components/external-login-form';
-import Footer from '../public_layout/components/footer';
-import RegisterInvite from '../register_invite';
+import Footer from '../public-layout/components/footer';
+import RegisterInvite from '../register-invite';
 import Verification from '../verification';
 import EmailPassthru from '../verification/email_passthru';
 

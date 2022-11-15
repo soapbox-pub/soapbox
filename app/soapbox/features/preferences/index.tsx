@@ -6,7 +6,7 @@ import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Form } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
