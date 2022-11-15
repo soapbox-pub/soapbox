@@ -1,4 +1,4 @@
-import type { DropdownPlacement } from 'soapbox/components/dropdown_menu';
+import type { DropdownPlacement } from 'soapbox/components/dropdown-menu';
 
 const DROPDOWN_MENU_OPEN = 'DROPDOWN_MENU_OPEN';
 const DROPDOWN_MENU_CLOSE = 'DROPDOWN_MENU_CLOSE';

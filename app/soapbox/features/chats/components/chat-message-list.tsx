@@ -21,7 +21,7 @@ import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useRefEventHandler } from 'soapbox/hooks';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
 const BIG_EMOJI_LIMIT = 1;

@@ -10,7 +10,7 @@ import AccountContainer from 'soapbox/containers/account_container';
 
 import Motion from '../util/optional_motion';
 
-import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
+import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IActionsModal {

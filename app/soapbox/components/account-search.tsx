@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({

@@ -27,7 +27,7 @@ import { normalizeAttachment } from 'soapbox/normalizers';
 import { Account } from 'soapbox/types/entities';
 import { isRemote } from 'soapbox/utils/accounts';
 
-import type { Menu as MenuType } from 'soapbox/components/dropdown_menu';
+import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { render, screen } from '../../jest/test-helpers';
-import EmojiSelector from '../emoji_selector';
+import EmojiSelector from '../emoji-selector';
 
 describe('<EmojiSelector />', () => {
   it('renders correctly', () => {

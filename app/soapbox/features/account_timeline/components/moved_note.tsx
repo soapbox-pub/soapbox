@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
-import AvatarOverlay from 'soapbox/components/avatar_overlay';
+import AvatarOverlay from 'soapbox/components/avatar-overlay';
 import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
 

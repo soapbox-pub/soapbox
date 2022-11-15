@@ -6,10 +6,10 @@ import { accountSearch } from 'soapbox/actions/accounts';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest_input';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { InputThemes } from 'soapbox/components/ui/input/input';
 
-const noOp = () => {};
+const noOp = () => { };
 
 interface IAutosuggestAccountInput {
   onChange: React.ChangeEventHandler<HTMLInputElement>,

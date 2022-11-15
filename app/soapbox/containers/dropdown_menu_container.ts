@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 
 import { openDropdownMenu, closeDropdownMenu } from '../actions/dropdown_menu';
 import { openModal, closeModal } from '../actions/modals';
-import DropdownMenu from '../components/dropdown_menu';
+import DropdownMenu from '../components/dropdown-menu';
 import { isUserTouching } from '../is_mobile';
 
 import type { Dispatch } from 'redux';
-import type { DropdownPlacement, IDropdown } from 'soapbox/components/dropdown_menu';
+import type { DropdownPlacement, IDropdown } from 'soapbox/components/dropdown-menu';
 import type { RootState } from 'soapbox/store';
 
 const mapStateToProps = (state: RootState) => ({

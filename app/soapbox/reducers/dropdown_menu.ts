@@ -6,7 +6,7 @@ import {
 } from '../actions/dropdown_menu';
 
 import type { AnyAction } from 'redux';
-import type { DropdownPlacement } from 'soapbox/components/dropdown_menu';
+import type { DropdownPlacement } from 'soapbox/components/dropdown-menu';
 
 const ReducerRecord = ImmutableRecord({
   openId: null as number | null,

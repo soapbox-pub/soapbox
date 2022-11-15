@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { launchChat } from 'soapbox/actions/chats';
-import AccountSearch from 'soapbox/components/account_search';
+import AccountSearch from 'soapbox/components/account-search';
 import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 
 import { Column } from '../../components/ui';

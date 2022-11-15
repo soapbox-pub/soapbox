@@ -3,7 +3,7 @@ import React from 'react';
 import { normalizeAccount } from 'soapbox/normalizers';
 
 import { render, screen } from '../../jest/test-helpers';
-import AvatarOverlay from '../avatar_overlay';
+import AvatarOverlay from '../avatar-overlay';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 

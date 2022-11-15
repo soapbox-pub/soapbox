@@ -10,7 +10,7 @@ import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest_account';
 import { isRtl } from 'soapbox/rtl';
 
-import type { Menu, MenuItem } from 'soapbox/components/dropdown_menu';
+import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { InputThemes } from 'soapbox/components/ui/input/input';
 
 type CursorMatch = [

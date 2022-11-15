@@ -4,7 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
-import BirthdayInput from 'soapbox/components/birthday_input';
+import BirthdayInput from 'soapbox/components/birthday-input';
 import List, { ListItem } from 'soapbox/components/list';
 import {
   Button,

@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings
 import { isLocal } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { Account, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({

@@ -4,8 +4,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { directComposeById } from 'soapbox/actions/compose';
 import { connectDirectStream } from 'soapbox/actions/streaming';
 import { expandDirectTimeline } from 'soapbox/actions/timelines';
-import AccountSearch from 'soapbox/components/account_search';
-import ColumnHeader from 'soapbox/components/column_header';
+import AccountSearch from 'soapbox/components/account-search';
+import ColumnHeader from 'soapbox/components/column-header';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 

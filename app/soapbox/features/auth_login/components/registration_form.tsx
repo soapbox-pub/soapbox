@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
-import BirthdayInput from 'soapbox/components/birthday_input';
+import BirthdayInput from 'soapbox/components/birthday-input';
 import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
