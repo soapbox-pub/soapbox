@@ -35,11 +35,11 @@ const AboutPage: React.FC = () => {
   }, [locale, slug]);
 
   const alsoAvailable = (defaultLocale) && (
-    <div className='rich-formatting also-available'>
+    <div>
       <FormattedMessage id='about.also_available' defaultMessage='Available in:' />
       {' '}
-      <ul>
-        <li>
+      <ul className='p-0 inline list-none'>
+        <li className="inline after:content-['_·_']">
           <a href='#' onClick={() => setLocale(defaultLocale)}>
             {/* @ts-ignore */}
             {languages[defaultLocale] || defaultLocale}
@@ -47,7 +47,7 @@ const AboutPage: React.FC = () => {
         </li>
         {
           pageLocales?.map(locale => (
-            <li key={locale}>
+            <li className="inline after:content-['_·_'] last:after:content-none" key={locale}>
               <a href='#' onClick={() => setLocale(locale)}>
                 {/* @ts-ignore */}
                 {languages[locale] || locale}
@@ -60,14 +60,10 @@ const AboutPage: React.FC = () => {
   );
 
   return (
-    <div className='content'>
-      <div className='about-page'>
-        <div
-          className='rich-formatting'
-          dangerouslySetInnerHTML={{ __html: pageHtml }}
-        />
-        {alsoAvailable}
-      </div>
+    <div className='prose mx-auto py-20'>
+      <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
+
+      {alsoAvailable}
     </div>
   );
 };
