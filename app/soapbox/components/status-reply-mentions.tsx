@@ -75,7 +75,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   return (
     <div className='reply-mentions'>
       <FormattedMessage
-        id='reply_mentions.reply'
+        id='reply_mentions.reply.hoverable'
         defaultMessage='<hover>Replying to</hover> {accounts}'
         values={{
           accounts: <FormattedList type='conjunction' value={accounts} />,
