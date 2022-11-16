@@ -66,6 +66,7 @@ const messages = defineMessages({
   removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
+  profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
 });
 
 interface IHeader {
@@ -171,6 +172,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onUnblockDomain = (domain: string) => {
     dispatch(unblockDomain(domain));
+  };
+
+  const onProfileExternal = (url: string) => {
+    window.open(url, '_blank');
   };
 
   const onAddToList = () => {
@@ -419,6 +424,14 @@ const Header: React.FC<IHeader> = ({ account }) => {
           text: intl.formatMessage(messages.blockDomain, { domain }),
           action: () => onBlockDomain(domain),
           icon: require('@tabler/icons/ban.svg'),
+        });
+      }
+
+      if (features.federating) {
+        menu.push({
+          text: intl.formatMessage(messages.profileExternal, { domain }),
+          action: () => onProfileExternal(account.url),
+          icon: require('@tabler/icons/external-link.svg'),
         });
       }
     }
