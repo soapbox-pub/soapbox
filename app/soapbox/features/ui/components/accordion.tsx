@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Text } from 'soapbox/components/ui';
+import { HStack, Icon, Text } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
@@ -29,21 +29,38 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
   };
 
   return (
-    <div className={classNames('accordion', { 'accordion--expanded': expanded })}>
-      {menu && (
-        <div className='accordion__menu'>
-          <DropdownMenu items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
-        </div>
-      )}
+    <div className='bg-white dark:bg-primary-800 text-gray-900 dark:text-gray-100 rounded-lg shadow dark:shadow-none'>
       <button
         type='button'
-        className='accordion__title'
         onClick={handleToggle}
         title={intl.formatMessage(expanded ? messages.collapse : messages.expand)}
+        aria-expanded={expanded}
+        className='px-4 py-3 font-semibold flex items-center justify-between w-full'
       >
-        <Text weight='bold'>{headline}</Text>
+        <span>{headline}</span>
+
+        <HStack alignItems='center' space={2}>
+          {menu && (
+            <DropdownMenu
+              items={menu}
+              src={require('@tabler/icons/dots-vertical.svg')}
+            />
+          )}
+          <Icon
+            src={expanded ? require('@tabler/icons/chevron-up.svg') : require('@tabler/icons/chevron-down.svg')}
+            className='text-gray-700 dark:text-gray-600 h-5 w-5'
+          />
+        </HStack>
       </button>
-      <div className='accordion__content'>
+
+      <div
+        className={
+          classNames({
+            'p-4 rounded-b-lg border-t border-solid border-gray-100 dark:border-primary-900': true,
+            'h-0 hidden': !expanded,
+          })
+        }
+      >
         <Text>{children}</Text>
       </div>
     </div>
