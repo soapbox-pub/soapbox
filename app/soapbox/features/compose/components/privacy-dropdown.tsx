@@ -13,7 +13,7 @@ import { IconButton } from 'soapbox/components/ui';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
 
-import Motion from '../../ui/util/optional_motion';
+import Motion from '../../ui/util/optional-motion';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },

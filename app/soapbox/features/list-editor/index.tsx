@@ -6,7 +6,7 @@ import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Account from './components/account';
-import EditListForm from './components/edit_list_form';
+import EditListForm from './components/edit-list-form';
 import Search from './components/search';
 
 const messages = defineMessages({

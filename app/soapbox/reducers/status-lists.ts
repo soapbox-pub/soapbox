@@ -36,7 +36,7 @@ import {
 } from '../actions/interactions';
 import {
   PINNED_STATUSES_FETCH_SUCCESS,
-} from '../actions/pin_statuses';
+} from '../actions/pin-statuses';
 import {
   SCHEDULED_STATUSES_FETCH_REQUEST,
   SCHEDULED_STATUSES_FETCH_SUCCESS,
@@ -46,7 +46,7 @@ import {
   SCHEDULED_STATUSES_EXPAND_FAIL,
   SCHEDULED_STATUS_CANCEL_REQUEST,
   SCHEDULED_STATUS_CANCEL_SUCCESS,
-} from '../actions/scheduled_statuses';
+} from '../actions/scheduled-statuses';
 
 import type { AnyAction } from 'redux';
 import type { Status as StatusEntity } from 'soapbox/types/entities';

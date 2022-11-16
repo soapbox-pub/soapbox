@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { ScheduleForm } from 'soapbox/features/ui/util/async-components';
 
 import type { IScheduleForm } from '../components/schedule-form';

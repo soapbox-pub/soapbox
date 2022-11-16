@@ -8,7 +8,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { IconButton, Counter } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import Motion from 'soapbox/features/ui/util/optional_motion';
+import Motion from 'soapbox/features/ui/util/optional-motion';
 
 import type { Status } from 'soapbox/types/entities';
 

@@ -6,7 +6,7 @@ import { fetchBackups, createBackup } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import Column from '../ui/components/better_column';
+import Column from '../ui/components/better-column';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },

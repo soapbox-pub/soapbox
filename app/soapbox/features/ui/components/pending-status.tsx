@@ -10,9 +10,9 @@ import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/pla
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { useAppSelector } from 'soapbox/hooks';
 
-import { buildStatus } from '../util/pending_status_builder';
+import { buildStatus } from '../util/pending-status-builder';
 
-import PollPreview from './poll_preview';
+import PollPreview from './poll-preview';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 

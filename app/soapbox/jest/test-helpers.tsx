@@ -11,7 +11,7 @@ import { Action, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 
-import NotificationsContainer from '../features/ui/containers/notifications_container';
+import NotificationsContainer from '../features/ui/containers/notifications-container';
 import { default as rootReducer } from '../reducers';
 
 import type { AnyAction } from 'redux';

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { openDropdownMenu, closeDropdownMenu } from '../actions/dropdown_menu';
+import { openDropdownMenu, closeDropdownMenu } from '../actions/dropdown-menu';
 import { openModal, closeModal } from '../actions/modals';
 import DropdownMenu from '../components/dropdown-menu';
 import { isUserTouching } from '../is-mobile';

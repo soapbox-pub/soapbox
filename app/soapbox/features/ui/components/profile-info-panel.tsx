@@ -11,8 +11,8 @@ import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
 
-import ProfileFamiliarFollowers from './profile_familiar_followers';
-import ProfileStats from './profile_stats';
+import ProfileFamiliarFollowers from './profile-familiar-followers';
+import ProfileStats from './profile-stats';
 
 import type { Account } from 'soapbox/types/entities';
 

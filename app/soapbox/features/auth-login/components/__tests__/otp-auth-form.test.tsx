@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
-import OtpAuthForm from '../otp_auth_form';
+import OtpAuthForm from '../otp-auth-form';
 
 describe('<OtpAuthForm />', () => {
   it('renders correctly', () => {

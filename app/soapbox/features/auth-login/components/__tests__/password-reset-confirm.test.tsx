@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { __stub } from 'soapbox/api';
 
 import { fireEvent, render, screen, waitFor } from '../../../../jest/test-helpers';
-import PasswordResetConfirm from '../password_reset_confirm';
+import PasswordResetConfirm from '../password-reset-confirm';
 
 const TestableComponent = () => (
   <Switch>

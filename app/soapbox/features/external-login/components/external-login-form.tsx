@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { externalLogin, loginWithCode } from 'soapbox/actions/external_auth';
+import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';

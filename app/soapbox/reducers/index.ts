@@ -7,7 +7,7 @@ import * as BuildConfig from 'soapbox/build-config';
 import account_notes from './account-notes';
 import accounts from './accounts';
 import accounts_counters from './accounts-counters';
-import accounts_meta from './accounts_meta';
+import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_log from './admin-log';
 import alerts from './alerts';

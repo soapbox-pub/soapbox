@@ -12,7 +12,7 @@ import Ad from 'soapbox/features/ads/components/ad';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { ALGORITHMS } from 'soapbox/features/timeline-insertion';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import PendingStatus from 'soapbox/features/ui/components/pending-status';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import useAds from 'soapbox/queries/ads';
 

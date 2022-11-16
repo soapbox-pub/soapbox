@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';
-import { fetchTrendingStatuses } from 'soapbox/actions/trending_statuses';
+import { fetchTrendingStatuses } from 'soapbox/actions/trending-statuses';
 import Hashtag from 'soapbox/components/hashtag';
 import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable-list';

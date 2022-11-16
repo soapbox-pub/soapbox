@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
+import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import {
   WhoToFollowPanel,
   TrendsPanel,
@@ -10,7 +10,7 @@ import {
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import { Layout } from '../components/ui';
-import BundleContainer from '../features/ui/containers/bundle_container';
+import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface IStatusPage {
   children: React.ReactNode,

@@ -5,7 +5,7 @@ import {
   importFollows,
   importBlocks,
   importMutes,
-} from 'soapbox/actions/import_data';
+} from 'soapbox/actions/import-data';
 
 import Column from '../ui/components/column';
 

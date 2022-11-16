@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { defaultSettings } from 'soapbox/actions/settings';
 import SiteLogo from 'soapbox/components/site-logo';
-import BackgroundShapes from 'soapbox/features/ui/components/background_shapes';
+import BackgroundShapes from 'soapbox/features/ui/components/background-shapes';
 import { useSystemTheme } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { generateThemeCss } from 'soapbox/utils/theme';

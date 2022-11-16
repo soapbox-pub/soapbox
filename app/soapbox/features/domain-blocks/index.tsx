@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain_blocks';
+import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks';
 import Domain from 'soapbox/components/domain';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Spinner } from 'soapbox/components/ui';

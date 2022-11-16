@@ -4,11 +4,11 @@ import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as 
 import { Layout } from 'soapbox/components/ui';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
-import BundleColumnError from '../components/bundle_column_error';
-import ColumnForbidden from '../components/column_forbidden';
-import ColumnLoading from '../components/column_loading';
-import ColumnsArea from '../components/columns_area';
-import BundleContainer from '../containers/bundle_container';
+import BundleColumnError from '../components/bundle-column-error';
+import ColumnForbidden from '../components/column-forbidden';
+import ColumnLoading from '../components/column-loading';
+import ColumnsArea from '../components/columns-area';
+import BundleContainer from '../containers/bundle-container';
 
 type PageProps = {
   params?: MatchType['params'],

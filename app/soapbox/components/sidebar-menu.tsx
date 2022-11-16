@@ -9,7 +9,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
-import ProfileStats from 'soapbox/features/ui/components/profile_stats';
+import ProfileStats from 'soapbox/features/ui/components/profile-stats';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 

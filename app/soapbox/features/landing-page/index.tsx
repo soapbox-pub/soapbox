@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { prepareRequest } from 'soapbox/actions/consumer-auth';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
-import RegistrationForm from 'soapbox/features/auth-login/components/registration_form';
+import RegistrationForm from 'soapbox/features/auth-login/components/registration-form';
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
 

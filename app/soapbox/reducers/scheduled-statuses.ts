@@ -5,7 +5,7 @@ import {
   SCHEDULED_STATUSES_FETCH_SUCCESS,
   SCHEDULED_STATUS_CANCEL_REQUEST,
   SCHEDULED_STATUS_CANCEL_SUCCESS,
-} from 'soapbox/actions/scheduled_statuses';
+} from 'soapbox/actions/scheduled-statuses';
 import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
 
 import type { AnyAction } from 'redux';

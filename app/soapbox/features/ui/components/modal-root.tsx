@@ -33,11 +33,11 @@ import {
   AccountModerationModal,
 } from 'soapbox/features/ui/util/async-components';
 
-import BundleContainer from '../containers/bundle_container';
+import BundleContainer from '../containers/bundle-container';
 
 import { BundleProps } from './bundle';
-import BundleModalError from './bundle_modal_error';
-import ModalLoading from './modal_loading';
+import BundleModalError from './bundle-modal-error';
+import ModalLoading from './modal-loading';
 
 const MODAL_COMPONENTS = {
   'MEDIA': MediaModal,

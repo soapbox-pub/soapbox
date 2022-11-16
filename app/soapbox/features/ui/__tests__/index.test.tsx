@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { render, screen, waitFor } from '../../../jest/test-helpers';
 import { normalizeAccount } from '../../../normalizers';
 import UI from '../index';
-import { WrappedRoute } from '../util/react_router_helpers';
+import { WrappedRoute } from '../util/react-router-helpers';
 
 const TestableComponent = () => (
   <Switch>

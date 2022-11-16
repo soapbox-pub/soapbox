@@ -8,7 +8,7 @@ import StatusContent from 'soapbox/components/status-content';
 import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 
-import Motion from '../util/optional_motion';
+import Motion from '../util/optional-motion';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { Status as StatusEntity } from 'soapbox/types/entities';

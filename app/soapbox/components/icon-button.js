@@ -6,7 +6,7 @@ import spring from 'react-motion/lib/spring';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 
-import Motion from '../features/ui/util/optional_motion';
+import Motion from '../features/ui/util/optional-motion';
 
 export default class IconButton extends React.PureComponent {
 

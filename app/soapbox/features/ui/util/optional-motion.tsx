@@ -3,7 +3,7 @@ import { Motion, MotionProps } from 'react-motion';
 
 import { useSettings } from 'soapbox/hooks';
 
-import ReducedMotion from './reduced_motion';
+import ReducedMotion from './reduced-motion';
 
 const OptionalMotion = (props: MotionProps) => {
   const reduceMotion = useSettings().get('reduceMotion');

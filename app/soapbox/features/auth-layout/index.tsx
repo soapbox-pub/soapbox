@@ -7,15 +7,15 @@ import SiteLogo from 'soapbox/components/site-logo';
 import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
 
 import { Button, Card, CardBody } from '../../components/ui';
-import LoginPage from '../auth-login/components/login_page';
-import PasswordReset from '../auth-login/components/password_reset';
-import PasswordResetConfirm from '../auth-login/components/password_reset_confirm';
-import RegistrationForm from '../auth-login/components/registration_form';
+import LoginPage from '../auth-login/components/login-page';
+import PasswordReset from '../auth-login/components/password-reset';
+import PasswordResetConfirm from '../auth-login/components/password-reset-confirm';
+import RegistrationForm from '../auth-login/components/registration-form';
 import ExternalLoginForm from '../external-login/components/external-login-form';
 import Footer from '../public-layout/components/footer';
 import RegisterInvite from '../register-invite';
 import Verification from '../verification';
-import EmailPassthru from '../verification/email_passthru';
+import EmailPassthru from '../verification/email-passthru';
 
 const messages = defineMessages({
   register: { id: 'auth_layout.register', defaultMessage: 'Create an account' },

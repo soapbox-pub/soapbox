@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Layout } from 'soapbox/components/ui';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   LatestAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 
-import LinkFooter from '../features/ui/components/link_footer';
+import LinkFooter from '../features/ui/components/link-footer';
 
 const AdminPage: React.FC = ({ children }) => {
   return (

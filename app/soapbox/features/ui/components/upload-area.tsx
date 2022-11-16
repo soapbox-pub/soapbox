@@ -5,7 +5,7 @@ import { spring } from 'react-motion';
 
 import { Icon, Stack, Text } from 'soapbox/components/ui';
 
-import Motion from '../../ui/util/optional_motion';
+import Motion from '../util/optional-motion';
 
 interface IUploadArea {
   /** Whether the upload area is active. */

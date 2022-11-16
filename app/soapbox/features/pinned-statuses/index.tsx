@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { fetchPinnedStatuses } from 'soapbox/actions/pin_statuses';
+import { fetchPinnedStatuses } from 'soapbox/actions/pin-statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusList from 'soapbox/components/status-list';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';

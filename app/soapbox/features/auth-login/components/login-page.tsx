@@ -8,8 +8,8 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 
-import LoginForm from './login_form';
-import OtpAuthForm from './otp_auth_form';
+import LoginForm from './login-form';
+import OtpAuthForm from './otp-auth-form';
 
 import type { AxiosError } from 'axios';
 

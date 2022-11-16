@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import FeedCarousel from 'soapbox/features/feed-filtering/feed-carousel';
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
+import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import {
   WhoToFollowPanel,
   TrendsPanel,
@@ -19,7 +19,7 @@ import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'so
 import Avatar from '../components/avatar';
 import { Card, CardBody, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
-import BundleContainer from '../features/ui/containers/bundle_container';
+import BundleContainer from '../features/ui/containers/bundle-container';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
 const HomePage: React.FC = ({ children }) => {

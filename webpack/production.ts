@@ -12,7 +12,7 @@ import sharedConfig from './shared';
 
 import type { Configuration } from 'webpack';
 
-const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build-config'));
 const joinPublicPath = (...paths: string[]) => join(FE_SUBDIRECTORY, ...paths);
 
 const configuration: Configuration = {

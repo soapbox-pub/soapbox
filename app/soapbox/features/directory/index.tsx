@@ -11,7 +11,7 @@ import Column from 'soapbox/features/ui/components/column';
 import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
-import AccountCard from './components/account_card';
+import AccountCard from './components/account-card';
 
 const messages = defineMessages({
   title: { id: 'column.directory', defaultMessage: 'Browse profiles' },

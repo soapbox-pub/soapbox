@@ -3,7 +3,7 @@ import React from 'react';
 import { normalizeInstance } from 'soapbox/normalizers';
 
 import { render, screen } from '../../../../jest/test-helpers';
-import LoginPage from '../login_page';
+import LoginPage from '../login-page';
 
 describe('<LoginPage />', () => {
   it('renders correctly on load', () => {

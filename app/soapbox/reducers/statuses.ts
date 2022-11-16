@@ -10,7 +10,7 @@ import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
 import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,
-} from '../actions/emoji_reacts';
+} from '../actions/emoji-reacts';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,

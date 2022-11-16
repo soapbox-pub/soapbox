@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, useIntl, FormattedMessage, FormatDateOptions } from 'react-intl';
 
 import { Widget, Stack, HStack, Icon, Text } from 'soapbox/components/ui';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
 import type { Account, Field } from 'soapbox/types/entities';

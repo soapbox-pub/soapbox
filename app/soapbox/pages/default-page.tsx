@@ -1,7 +1,7 @@
 import React from 'react';
 
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import LinkFooter from 'soapbox/features/ui/components/link-footer';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   WhoToFollowPanel,
   TrendsPanel,

@@ -4,7 +4,7 @@ import { FormattedList, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar_followers';
+import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers';
 import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Text } from 'soapbox/components/ui';

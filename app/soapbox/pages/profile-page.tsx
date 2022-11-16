@@ -4,8 +4,8 @@ import { Redirect, useHistory } from 'react-router-dom';
 
 import { Column, Layout, Tabs } from 'soapbox/components/ui';
 import Header from 'soapbox/features/account/components/header';
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import LinkFooter from 'soapbox/features/ui/components/link-footer';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   WhoToFollowPanel,
   ProfileInfoPanel,

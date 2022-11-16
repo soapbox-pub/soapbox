@@ -3,7 +3,7 @@ import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'im
 import {
   TRENDING_STATUSES_FETCH_REQUEST,
   TRENDING_STATUSES_FETCH_SUCCESS,
-} from 'soapbox/actions/trending_statuses';
+} from 'soapbox/actions/trending-statuses';
 import { APIEntity } from 'soapbox/types/entities';
 
 import type { AnyAction } from 'redux';

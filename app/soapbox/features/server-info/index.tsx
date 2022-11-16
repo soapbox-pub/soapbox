@@ -4,8 +4,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/column';
-import LinkFooter from '../ui/components/link_footer';
-import PromoPanel from '../ui/components/promo_panel';
+import LinkFooter from '../ui/components/link-footer';
+import PromoPanel from '../ui/components/promo-panel';
 
 const messages = defineMessages({
   heading: { id: 'column.info', defaultMessage: 'Server information' },

@@ -3,7 +3,7 @@ import React from 'react';
 import { normalizeInstance } from 'soapbox/normalizers';
 
 import { fireEvent, render, screen } from '../../../../jest/test-helpers';
-import LoginForm from '../login_form';
+import LoginForm from '../login-form';
 
 describe('<LoginForm />', () => {
   it('renders for Pleroma', () => {

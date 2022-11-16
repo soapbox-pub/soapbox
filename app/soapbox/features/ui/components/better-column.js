@@ -4,7 +4,7 @@ import React from 'react';
 import { Column } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 
-import ColumnHeader from './column_header';
+import ColumnHeader from './column-header';
 
 // Yes, there are 3 types of columns at this point, but this one is better, I swear
 export default class BetterColumn extends React.PureComponent {

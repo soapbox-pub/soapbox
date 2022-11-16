@@ -1,7 +1,7 @@
 // @preval
 /**
  * Build config: configuration set at build time.
- * @module soapbox/build_config
+ * @module soapbox/build-config
  */
 
 const trim = require('lodash/trim');

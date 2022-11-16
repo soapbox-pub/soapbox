@@ -12,7 +12,7 @@ import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon-button';
 import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 
-import Motion from '../../ui/util/optional_motion';
+import Motion from '../../ui/util/optional-motion';
 
 const bookIcon = require('@tabler/icons/book.svg');
 const fileCodeIcon = require('@tabler/icons/file-code.svg');

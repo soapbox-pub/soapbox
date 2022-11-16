@@ -6,7 +6,7 @@ import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import { HStack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import PollPreview from 'soapbox/features/ui/components/poll_preview';
+import PollPreview from 'soapbox/features/ui/components/poll-preview';
 import { useAppSelector } from 'soapbox/hooks';
 
 import { buildStatus } from '../builder';

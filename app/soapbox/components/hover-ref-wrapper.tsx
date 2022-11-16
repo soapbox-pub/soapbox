@@ -6,7 +6,7 @@ import { fetchAccount } from 'soapbox/actions/accounts';
 import {
   openProfileHoverCard,
   closeProfileHoverCard,
-} from 'soapbox/actions/profile_hover_card';
+} from 'soapbox/actions/profile-hover-card';
 import { useAppDispatch } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 

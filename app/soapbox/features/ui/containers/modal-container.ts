@@ -4,7 +4,7 @@ import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { closeModal } from 'soapbox/actions/modals';
 import { cancelReport } from 'soapbox/actions/reports';
 
-import ModalRoot, { ModalType } from '../components/modal_root';
+import ModalRoot, { ModalType } from '../components/modal-root';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 

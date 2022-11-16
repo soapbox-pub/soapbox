@@ -3,7 +3,7 @@ import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 import { emojis as emojiData } from 'soapbox/features/emoji/emoji-mart-data-light';
 import { addCustomToPool } from 'soapbox/features/emoji/emoji-mart-search-light';
 
-import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom_emojis';
+import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom-emojis';
 import { buildCustomEmojis } from '../features/emoji/emoji';
 
 import type { AnyAction } from 'redux';

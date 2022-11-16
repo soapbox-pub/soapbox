@@ -31,7 +31,7 @@ import {
 } from '../actions/directory';
 import {
   FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
-} from '../actions/familiar_followers';
+} from '../actions/familiar-followers';
 import {
   REBLOGS_FETCH_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,

@@ -35,7 +35,7 @@ export function Conversations() {
 }
 
 export function ListTimeline() {
-  return import(/* webpackChunkName: "features/list_timeline" */'../../list_timeline');
+  return import(/* webpackChunkName: "features/list_timeline" */'../../list-timeline');
 }
 
 export function Lists() {
@@ -95,7 +95,7 @@ export function Mutes() {
 }
 
 export function MuteModal() {
-  return import(/* webpackChunkName: "modals/mute_modal" */'../components/mute_modal');
+  return import(/* webpackChunkName: "modals/mute_modal" */'../components/mute-modal');
 }
 
 export function Filters() {
@@ -127,43 +127,43 @@ export function MediaModal() {
 }
 
 export function VideoModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/video_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/video-modal');
 }
 
 export function BoostModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/boost_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/boost-modal');
 }
 
 export function ConfirmationModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/confirmation_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/confirmation-modal');
 }
 
 export function MissingDescriptionModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/missing_description_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/missing-description-modal');
 }
 
 export function ActionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/actions-modal');
 }
 
 export function HotkeysModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/hotkeys_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/hotkeys-modal');
 }
 
 export function ComposeModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/compose-modal');
 }
 
 export function ReplyMentionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/reply_mentions_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/reply-mentions-modal');
 }
 
 export function UnauthorizedModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/unauthorized_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/unauthorized-modal');
 }
 
 export function EditFederationModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/edit_federation_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/edit-federation-modal');
 }
 
 export function EmbedModal() {
@@ -171,11 +171,11 @@ export function EmbedModal() {
 }
 
 export function ComponentModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/component_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/component-modal');
 }
 
 export function ReblogsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/reblogs_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/reblogs-modal');
 }
 
 export function FavouritesModal() {
@@ -183,11 +183,11 @@ export function FavouritesModal() {
 }
 
 export function ReactionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/reactions_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/reactions-modal');
 }
 
 export function MentionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/mentions_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/mentions-modal');
 }
 
 export function LandingPageModal() {
@@ -195,7 +195,7 @@ export function LandingPageModal() {
 }
 
 export function BirthdaysModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/birthdays_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/birthdays-modal');
 }
 
 export function BirthdayPanel() {
@@ -203,11 +203,11 @@ export function BirthdayPanel() {
 }
 
 export function AccountNoteModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/account_note_modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/account-note-modal');
 }
 
 export function ListEditor() {
-  return import(/* webpackChunkName: "features/list_editor" */'../../list_editor');
+  return import(/* webpackChunkName: "features/list_editor" */'../../list-editor');
 }
 
 export function ListAdder() {
@@ -219,7 +219,7 @@ export function Search() {
 }
 
 export function LoginPage() {
-  return import(/* webpackChunkName: "features/auth_login" */'../../auth-login/components/login_page');
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth-login/components/login-page');
 }
 
 export function ExternalLogin() {
@@ -275,11 +275,11 @@ export function Backups() {
 }
 
 export function PasswordReset() {
-  return import(/* webpackChunkName: "features/auth_login" */'../../auth-login/components/password_reset');
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth-login/components/password-reset');
 }
 
 export function PasswordResetConfirm() {
-  return import(/* webpackChunkName: "features/auth_login/password_reset_confirm" */'../../auth-login/components/password_reset_confirm');
+  return import(/* webpackChunkName: "features/auth_login/password_reset_confirm" */'../../auth-login/components/password-reset-confirm');
 }
 
 export function MfaForm() {
@@ -311,11 +311,11 @@ export function ModerationLog() {
 }
 
 export function UserPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/user_panel');
+  return import(/* webpackChunkName: "features/ui" */'../components/user-panel');
 }
 
 export function PromoPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/promo_panel');
+  return import(/* webpackChunkName: "features/ui" */'../components/promo-panel');
 }
 
 export function SignUpPanel() {
@@ -327,7 +327,7 @@ export function CtaBanner() {
 }
 
 export function FundingPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/funding_panel');
+  return import(/* webpackChunkName: "features/ui" */'../components/funding-panel');
 }
 
 export function TrendsPanel() {
@@ -335,27 +335,27 @@ export function TrendsPanel() {
 }
 
 export function ProfileInfoPanel() {
-  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_info_panel');
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile-info-panel');
 }
 
 export function ProfileMediaPanel() {
-  return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
+  return import(/* webpackChunkName: "features/account_gallery" */'../components/profile-media-panel');
 }
 
 export function ProfileFieldsPanel() {
-  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_fields_panel');
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile-fields-panel');
 }
 
 export function PinnedAccountsPanel() {
-  return import(/* webpackChunkName: "features/pinned_accounts" */'../components/pinned_accounts_panel');
+  return import(/* webpackChunkName: "features/pinned_accounts" */'../components/pinned-accounts-panel');
 }
 
 export function InstanceInfoPanel() {
-  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_info_panel');
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance-info-panel');
 }
 
 export function InstanceModerationPanel() {
-  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_moderation_panel');
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance-moderation-panel');
 }
 
 export function LatestAccountsPanel() {
@@ -367,15 +367,15 @@ export function SidebarMenu() {
 }
 
 export function UploadArea() {
-  return import(/* webpackChunkName: "features/compose" */'../components/upload_area');
+  return import(/* webpackChunkName: "features/compose" */'../components/upload-area');
 }
 
 export function NotificationsContainer() {
-  return import(/* webpackChunkName: "features/ui" */'../containers/notifications_container');
+  return import(/* webpackChunkName: "features/ui" */'../containers/notifications-container');
 }
 
 export function ModalContainer() {
-  return import(/* webpackChunkName: "features/ui" */'../containers/modal_container');
+  return import(/* webpackChunkName: "features/ui" */'../containers/modal-container');
 }
 
 export function ProfileHoverCard() {
@@ -399,7 +399,7 @@ export function CryptoAddress() {
 }
 
 export function CryptoDonateModal() {
-  return import(/* webpackChunkName: "features/crypto_donate" */'../components/crypto_donate_modal');
+  return import(/* webpackChunkName: "features/crypto_donate" */'../components/crypto-donate-modal');
 }
 
 export function ScheduledStatuses() {
@@ -483,11 +483,11 @@ export function OnboardingWizard() {
 }
 
 export function WaitlistPage() {
-  return import(/* webpackChunkName: "features/verification" */'../../verification/waitlist_page');
+  return import(/* webpackChunkName: "features/verification" */'../../verification/waitlist-page');
 }
 
 export function CompareHistoryModal() {
-  return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
+  return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare-history-modal');
 }
 
 export function AuthTokenList() {
@@ -499,7 +499,7 @@ export function VerifySmsModal() {
 }
 
 export function FamiliarFollowersModal() {
-  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar_followers_modal');
+  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar-followers-modal');
 }
 
 export function AnnouncementsPanel() {

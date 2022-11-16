@@ -3,7 +3,7 @@
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { pinHost, unpinHost } from 'soapbox/actions/remote_timeline';
+import { pinHost, unpinHost } from 'soapbox/actions/remote-timeline';
 import { Widget } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 import { makeGetRemoteInstance } from 'soapbox/selectors';

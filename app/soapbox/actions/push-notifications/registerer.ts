@@ -1,4 +1,4 @@
-import { createPushSubscription, updatePushSubscription } from 'soapbox/actions/push_subscriptions';
+import { createPushSubscription, updatePushSubscription } from 'soapbox/actions/push-subscriptions';
 import { pushNotificationsSetting } from 'soapbox/settings';
 import { getVapidKey } from 'soapbox/utils/auth';
 import { decode as decodeBase64 } from 'soapbox/utils/base64';
