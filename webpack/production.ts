@@ -95,7 +95,7 @@ const configuration: Configuration = {
       ],
       ServiceWorker: {
         cacheName: 'soapbox',
-        entry: join(__dirname, '../app/soapbox/service_worker/entry.ts'),
+        entry: join(__dirname, '../app/soapbox/service-worker/entry.ts'),
         events: true,
         minify: true,
       },
