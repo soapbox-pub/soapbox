@@ -1,4 +1,3 @@
-.placeholder-hashtag,
 .media-gallery--placeholder {
   position: relative;
 
@@ -30,11 +29,6 @@
 @keyframes placeholder-pulse {
   0% { background-position-x: 200%; }
   100% { background-position-x: 0; }
-}
-
-.placeholder-hashtag .trends__item__name {
-  color: var(--brand-color);
-  opacity: 0.1;
 }
 
 .chat-list-item--placeholder .chat__last-message {
