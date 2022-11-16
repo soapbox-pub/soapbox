@@ -203,23 +203,6 @@ a .account__avatar {
   }
 }
 
-.account__section-headline {
-  button,
-  a {
-    flex: none;
-    padding: 18px 15px;
-    font-size: 16px;
-    font-weight: 600;
-
-    &.active {
-      &::before,
-      &::after {
-        border-color: transparent transparent var(--foreground-color);
-      }
-    }
-  }
-}
-
 .account__moved-note {
   padding: 14px 10px;
   padding-bottom: 16px;
