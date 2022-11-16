@@ -7,12 +7,8 @@ const PlaceholderHashtag: React.FC = () => {
   const length = randomIntFromInterval(15, 30);
 
   return (
-    <div className='placeholder-hashtag'>
-      <div className='trends__item'>
-        <div className='trends__item__name'>
-          {generateText(length)}
-        </div>
-      </div>
+    <div className='animate-pulse text-primary-200 dark:text-primary-700'>
+      <p>{generateText(length)}</p>
     </div>
   );
 };

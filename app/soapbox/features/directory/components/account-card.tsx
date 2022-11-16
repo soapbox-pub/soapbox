@@ -1,13 +1,12 @@
 import classNames from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display-name';
+import Badge from 'soapbox/components/badge';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
-import { Text } from 'soapbox/components/ui';
+import { Stack, Text } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account-container';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -29,51 +28,76 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const followedBy = me !== account.id && account.relationship?.followed_by;
 
   return (
-    <div className='directory__card'>
-      {followedBy &&
-        <div className='directory__card__info'>
-          <span className='relationship-tag'>
-            <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
-          </span>
-        </div>}
-      <div className='directory__card__action-button'>
-        <ActionButton account={account} small />
-      </div>
-      <div className='directory__card__img'>
-        <img src={autoPlayGif ? account.header : account.header_static} alt='' className='parallax' />
-      </div>
+    <div className='flex flex-col divide-y divide-gray-200 dark:divide-primary-700 rounded-lg bg-white dark:bg-primary-800 text-center shadow'>
+      <div className='relative'>
+        {followedBy && (
+          <div className='absolute top-2.5 left-2.5'>
+            <Badge
+              slug='opaque'
+              title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
+            />
+          </div>
+        )}
 
-      <div className='directory__card__bar'>
-        <Link className='directory__card__bar__name' to={`/@${account.acct}`}>
-          <Avatar account={account} size={48} />
-          <DisplayName account={account} />
-        </Link>
-      </div>
+        <div className='absolute bottom-2.5 right-2.5'>
+          <ActionButton account={account} small />
+        </div>
 
-      <div className='directory__card__extra'>
-        <Text
-          className={classNames('account__header__content', (account.note.length === 0 || account.note === '<p></p>') && 'empty')}
-          dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+        <img
+          src={autoPlayGif ? account.header : account.header_static}
+          alt=''
+          className='object-cover h-32 w-full rounded-t-lg'
         />
       </div>
 
-      <div className='directory__card__extra'>
-        <div className='accounts-table__count'>
-          <Text theme='primary' size='sm'>
+      <Stack space={4} className='p-3'>
+        <AccountContainer
+          id={account.id}
+          withRelationship={false}
+        />
+
+        <Text
+          truncate
+          align='left'
+          className={classNames('[&_br]:hidden [&_p]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate')}
+          dangerouslySetInnerHTML={{ __html: account.note_emojified || '&nbsp;' }}
+        />
+      </Stack>
+
+      <div className='grid grid-cols-3 gap-1 py-4'>
+        <Stack>
+          <Text theme='primary' size='md' weight='medium'>
             {shortNumberFormat(account.statuses_count)}
-          </Text> <small><FormattedMessage id='account.posts' defaultMessage='Posts' /></small>
-        </div>
-        <div className='accounts-table__count'>
-          <Text theme='primary' size='sm'>
+          </Text>
+
+          <Text theme='muted' size='sm'>
+            <FormattedMessage id='account.posts' defaultMessage='Posts' />
+          </Text>
+        </Stack>
+
+        <Stack>
+          <Text theme='primary' size='md' weight='medium'>
             {shortNumberFormat(account.followers_count)}
-          </Text> <small><FormattedMessage id='account.followers' defaultMessage='Followers' />
-          </small>
-        </div>
-        <div className='accounts-table__count'>
-          {account.last_status_at === null
-            ? <Text theme='primary' size='sm'><FormattedMessage id='account.never_active' defaultMessage='Never' /></Text>
-            : <RelativeTimestamp className='text-primary-600 dark:text-primary-400' timestamp={account.last_status_at} />} <small><FormattedMessage id='account.last_status' defaultMessage='Last active' /></small>
-        </div>
+          </Text>
+
+          <Text theme='muted' size='sm'>
+            <FormattedMessage id='account.followers' defaultMessage='Followers' />
+          </Text>
+        </Stack>
+
+        <Stack>
+          <Text theme='primary' size='md' weight='medium'>
+            {account.last_status_at === null ? (
+              <FormattedMessage id='account.never_active' defaultMessage='Never' />
+            ) : (
+              <RelativeTimestamp theme='inherit' timestamp={account.last_status_at} />
+            )}
+          </Text>
+
+          <Text theme='muted' size='sm'>
+            <FormattedMessage id='account.last_status' defaultMessage='Last active' />
+          </Text>
+        </Stack>
       </div>
     </div>
   );

@@ -97,7 +97,10 @@ const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: 
 
 const appendToList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next: string | null) => {
   return state.updateIn(path, map => {
-    return (map as List).set('next', next).update('items', list => (list as Items).concat(accounts.map(item => item.id)));
+    return (map as List)
+      .set('next', next)
+      .set('isLoading', false)
+      .update('items', list => (list as Items).concat(accounts.map(item => item.id)));
   });
 };
 
