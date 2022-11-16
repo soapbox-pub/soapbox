@@ -180,21 +180,21 @@ const handlePush = (event: PushEvent) => {
 /** Native action to open a status on the device. */
 const actionExpand = (preferred_locale: string) => ({
   action: 'expand',
-  icon: `/${require('../../images/web-push/web-push-icon_expand.png')}`,
+  icon: `/${require('../../assets/images/web-push/web-push-icon_expand.png')}`,
   title: formatMessage('status.show_more', preferred_locale),
 });
 
 /** Native action to repost status. */
 const actionReblog = (preferred_locale: string) => ({
   action: 'reblog',
-  icon: `/${require('../../images/web-push/web-push-icon_reblog.png')}`,
+  icon: `/${require('../../assets/images/web-push/web-push-icon_reblog.png')}`,
   title: formatMessage('status.reblog', preferred_locale),
 });
 
 /** Native action to like status. */
 const actionFavourite = (preferred_locale: string) => ({
   action: 'favourite',
-  icon: `/${require('../../images/web-push/web-push-icon_favourite.png')}`,
+  icon: `/${require('../../assets/images/web-push/web-push-icon_favourite.png')}`,
   title: formatMessage('status.favourite', preferred_locale),
 });
 

@@ -132,13 +132,6 @@ const SettingsStore: React.FC = () => {
           </ListItem>
         </div>
 
-        {/* <ListItem
-          label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
-          hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Supports light/dark toggle.' />}
-        >
-          <SettingToggle settings={settings} settingPath={['halloween']} onChange={onToggleChange} />
-        </ListItem> */}
-
         <ListItem
           label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}
           hint={<FormattedMessage id='preferences.hints.demetricator' defaultMessage='Decrease social media anxiety by hiding all numbers from the site.' />}

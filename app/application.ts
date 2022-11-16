@@ -4,7 +4,7 @@ import loadPolyfills from './soapbox/load_polyfills';
 require('./soapbox/iframe');
 
 // @ts-ignore
-require.context('./images/', true);
+require.context('./assets/images/', true);
 
 // Load stylesheet
 require('react-datepicker/dist/react-datepicker.css');
