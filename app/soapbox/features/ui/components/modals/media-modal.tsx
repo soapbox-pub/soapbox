@@ -10,7 +10,7 @@ import IconButton from 'soapbox/components/icon-button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
 
-import ImageLoader from './image-loader';
+import ImageLoader from '../image-loader';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Account, Attachment, Status } from 'soapbox/types/entities';

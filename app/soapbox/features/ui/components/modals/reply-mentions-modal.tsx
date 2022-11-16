@@ -6,7 +6,7 @@ import { useAppSelector, useCompose } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 
-import Account from '../../reply-mentions/account';
+import Account from '../../../reply-mentions/account';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 

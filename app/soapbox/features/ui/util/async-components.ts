@@ -95,7 +95,7 @@ export function Mutes() {
 }
 
 export function MuteModal() {
-  return import(/* webpackChunkName: "modals/mute_modal" */'../components/mute-modal');
+  return import(/* webpackChunkName: "modals/mute_modal" */'../components/modals/mute-modal');
 }
 
 export function Filters() {
@@ -123,59 +123,59 @@ export function Audio() {
 }
 
 export function MediaModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/media-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/media-modal');
 }
 
 export function VideoModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/video-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/video-modal');
 }
 
 export function BoostModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/boost-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/boost-modal');
 }
 
 export function ConfirmationModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/confirmation-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/confirmation-modal');
 }
 
 export function MissingDescriptionModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/missing-description-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/missing-description-modal');
 }
 
 export function ActionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/actions-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/actions-modal');
 }
 
 export function HotkeysModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/hotkeys-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/hotkeys-modal');
 }
 
 export function ComposeModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/compose-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/compose-modal');
 }
 
 export function ReplyMentionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/reply-mentions-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/reply-mentions-modal');
 }
 
 export function UnauthorizedModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/unauthorized-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/unauthorized-modal');
 }
 
 export function EditFederationModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/edit-federation-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/edit-federation-modal');
 }
 
 export function EmbedModal() {
-  return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed-modal');
+  return import(/* webpackChunkName: "modals/embed_modal" */'../components/modals/embed-modal');
 }
 
 export function ComponentModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/component-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/component-modal');
 }
 
 export function ReblogsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/reblogs-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/reblogs-modal');
 }
 
 export function FavouritesModal() {
@@ -183,11 +183,11 @@ export function FavouritesModal() {
 }
 
 export function ReactionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/reactions-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/reactions-modal');
 }
 
 export function MentionsModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/mentions-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/mentions-modal');
 }
 
 export function LandingPageModal() {
@@ -195,7 +195,7 @@ export function LandingPageModal() {
 }
 
 export function BirthdaysModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/birthdays-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/birthdays-modal');
 }
 
 export function BirthdayPanel() {
@@ -203,7 +203,7 @@ export function BirthdayPanel() {
 }
 
 export function AccountNoteModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/account-note-modal');
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/account-note-modal');
 }
 
 export function ListEditor() {
@@ -399,7 +399,7 @@ export function CryptoAddress() {
 }
 
 export function CryptoDonateModal() {
-  return import(/* webpackChunkName: "features/crypto_donate" */'../components/crypto-donate-modal');
+  return import(/* webpackChunkName: "features/crypto_donate" */'../components/modals/crypto-donate-modal');
 }
 
 export function ScheduledStatuses() {
@@ -487,7 +487,7 @@ export function WaitlistPage() {
 }
 
 export function CompareHistoryModal() {
-  return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare-history-modal');
+  return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/modals/compare-history-modal');
 }
 
 export function AuthTokenList() {
@@ -499,7 +499,7 @@ export function VerifySmsModal() {
 }
 
 export function FamiliarFollowersModal() {
-  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/familiar-followers-modal');
+  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/modals/familiar-followers-modal');
 }
 
 export function AnnouncementsPanel() {
