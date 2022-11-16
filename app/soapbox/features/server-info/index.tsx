@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { Column, Divider, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import Column from '../ui/components/column';
 import LinkFooter from '../ui/components/link-footer';
 import PromoPanel from '../ui/components/promo-panel';
 
@@ -16,19 +16,21 @@ const ServerInfo = () => {
   const instance = useAppSelector((state) => state.instance);
 
   return (
-    <Column icon='info' label={intl.formatMessage(messages.heading)}>
-      <div className='info_column_area'>
-        <div className='info__brand'>
-          <div className='brand'>
-            <h1>{instance.title}</h1>
-          </div>
-          <div className='brand__tagline'>
-            <span>{instance.description}</span>
-          </div>
-        </div>
+    <Column label={intl.formatMessage(messages.heading)}>
+      <Stack space={4}>
+        <Stack>
+          <Text size='lg' weight='medium'>{instance.title}</Text>
+          <Text theme='muted'>{instance.description}</Text>
+        </Stack>
+
+        <Divider />
+
         <PromoPanel />
+
+        <Divider />
+
         <LinkFooter />
-      </div>
+      </Stack>
     </Column>
   );
 };

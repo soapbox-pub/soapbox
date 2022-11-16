@@ -232,73 +232,8 @@
 }
 
 .public-layout {
-  .brand__tagline {
-    width: auto;
-    max-width: 800px;
-  }
-
   .landing__brand {
     align-items: flex-start;
-  }
-
-  .public-layout__top {
-    display: flex;
-    flex-direction: column;
-
-    .header-container {
-      position: relative;
-      padding-top: 10px;
-    }
-
-    .nav-left,
-    .nav-right {
-      position: relative;
-      z-index: 10;
-    }
-
-    .container {
-      display: flex;
-      flex: 1;
-    }
-
-    .landing {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .landing-columns {
-      width: 100%;
-
-      .landing-columns--right {
-        margin-left: auto;
-
-        form {
-          margin: 0 auto;
-        }
-      }
-
-      .landing-columns--left {
-        position: relative;
-        z-index: 10;
-        margin-right: 0;
-
-        svg {
-          width: 700px;
-          max-width: 100%;
-          fill: $color-3-dark;
-
-          .cls-1 {
-            opacity: 0.33;
-          }
-
-          .cls-2 {
-            opacity: 0.66;
-          }
-        }
-      }
-    }
   }
 
   .footer {
