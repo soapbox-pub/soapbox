@@ -7,7 +7,7 @@ import { checkComposeContent } from 'soapbox/components/modal-root';
 import { Modal } from 'soapbox/components/ui';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
-import ComposeForm from '../../compose/components/compose-form';
+import ComposeForm from '../../../compose/components/compose-form';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
