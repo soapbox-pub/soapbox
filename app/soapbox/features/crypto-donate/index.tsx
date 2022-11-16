@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { Column, Stack } from 'soapbox/components/ui';
-import Accordion from 'soapbox/features/ui/components/accordion';
+import { Accordion, Column, Stack } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import SiteWallet from './components/site-wallet';

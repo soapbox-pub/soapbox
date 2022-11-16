@@ -7,9 +7,8 @@ import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation
 import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Button, HStack } from 'soapbox/components/ui';
+import { Accordion, Button, HStack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
-import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
 
