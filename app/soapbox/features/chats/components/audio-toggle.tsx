@@ -11,11 +11,7 @@ const messages = defineMessages({
   switchOff: { id: 'chats.audio_toggle_off', defaultMessage: 'Audio notification off' },
 });
 
-interface IAudioToggle {
-  showLabel?: boolean
-}
-
-const AudioToggle: React.FC<IAudioToggle> = ({ showLabel }) => {
+const AudioToggle: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
@@ -37,7 +33,6 @@ const AudioToggle: React.FC<IAudioToggle> = ({ showLabel }) => {
           onChange={handleToggleAudio}
           // onKeyDown={this.onKeyDown}
         />
-        {showLabel && (<label htmlFor={id} className='setting-toggle__label'>{label}</label>)}
       </div>
     </div>
   );
