@@ -1,6 +1,6 @@
 import React from 'react';
 
-import unicodeMapping from 'soapbox/features/emoji/emoji_unicode_mapping_light';
+import unicodeMapping from 'soapbox/features/emoji/emoji-unicode-mapping-light';
 import { useSettings } from 'soapbox/hooks';
 import { joinPublicPath } from 'soapbox/utils/static';
 

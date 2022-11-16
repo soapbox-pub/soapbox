@@ -15,7 +15,7 @@ import {
   FormGroup,
   Textarea,
 } from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 
 const isJSONValid = (text: any): boolean => {

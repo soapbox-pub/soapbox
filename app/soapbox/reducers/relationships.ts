@@ -26,7 +26,7 @@ import {
 import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
-} from '../actions/domain_blocks';
+} from '../actions/domain-blocks';
 import {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,

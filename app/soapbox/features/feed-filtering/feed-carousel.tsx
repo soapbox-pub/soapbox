@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector, useDimensions } from 'soapbox/hooks';
 import useCarouselAvatars from 'soapbox/queries/carousels';
 
 import { Card, HStack, Icon, Stack, Text } from '../../components/ui';
-import PlaceholderAvatar from '../placeholder/components/placeholder_avatar';
+import PlaceholderAvatar from '../placeholder/components/placeholder-avatar';
 
 const CarouselItem = ({ avatar }: { avatar: any }) => {
   const dispatch = useAppDispatch();

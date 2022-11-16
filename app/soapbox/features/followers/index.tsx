@@ -9,10 +9,10 @@ import {
   expandFollowers,
   fetchAccountByUsername,
 } from 'soapbox/actions/accounts';
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import MissingIndicator from 'soapbox/components/missing-indicator';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { findAccountByUsername } from 'soapbox/selectors';
 

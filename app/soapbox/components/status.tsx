@@ -10,15 +10,15 @@ import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import TranslateButton from 'soapbox/components/translate-button';
-import AccountContainer from 'soapbox/containers/account_container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import AccountContainer from 'soapbox/containers/account-container';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import StatusActionBar from './status-action-bar';
+import StatusContent from './status-content';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusContent from './status_content';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import { Card, HStack, Stack, Text } from './ui';
 

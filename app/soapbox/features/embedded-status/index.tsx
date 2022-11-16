@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { fetchStatus } from 'soapbox/actions/statuses';
-import MissingIndicator from 'soapbox/components/missing_indicator';
+import MissingIndicator from 'soapbox/components/missing-indicator';
 import SiteLogo from 'soapbox/components/site-logo';
 import Status from 'soapbox/components/status';
 import { Spinner } from 'soapbox/components/ui';

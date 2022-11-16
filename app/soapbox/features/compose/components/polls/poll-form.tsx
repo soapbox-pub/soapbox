@@ -2,13 +2,13 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose';
-import AutosuggestInput from 'soapbox/components/autosuggest_input';
+import AutosuggestInput from 'soapbox/components/autosuggest-input';
 import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 
 import DurationSelector from './duration-selector';
 
-import type { AutoSuggestion } from 'soapbox/components/autosuggest_input';
+import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },

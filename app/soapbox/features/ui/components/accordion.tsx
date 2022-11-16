@@ -3,9 +3,9 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Text } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   collapse: { id: 'accordion.collapse', defaultMessage: 'Collapse' },

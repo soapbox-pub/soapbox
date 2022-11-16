@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 
 import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
 import { getSettings } from 'soapbox/actions/settings';
-import AccountSearch from 'soapbox/components/account_search';
+import AccountSearch from 'soapbox/components/account-search';
 import { Counter } from 'soapbox/components/ui';
 import AudioToggle from 'soapbox/features/chats/components/audio-toggle';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';

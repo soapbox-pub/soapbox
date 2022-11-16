@@ -6,14 +6,14 @@ import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Button, HStack } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
 
-import ReportStatus from './report_status';
+import ReportStatus from './report-status';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Account, AdminReport, Status } from 'soapbox/types/entities';

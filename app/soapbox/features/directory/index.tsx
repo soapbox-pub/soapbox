@@ -5,13 +5,13 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
-import LoadMore from 'soapbox/components/load_more';
-import RadioButton from 'soapbox/components/radio_button';
+import LoadMore from 'soapbox/components/load-more';
+import RadioButton from 'soapbox/components/radio-button';
 import Column from 'soapbox/features/ui/components/column';
 import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
-import AccountCard from './components/account_card';
+import AccountCard from './components/account-card';
 
 const messages = defineMessages({
   title: { id: 'column.directory', defaultMessage: 'Browse profiles' },

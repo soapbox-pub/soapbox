@@ -14,7 +14,7 @@ import {
   showSearch,
   submitSearch,
 } from 'soapbox/actions/search';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
 import { Input } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppSelector } from 'soapbox/hooks';

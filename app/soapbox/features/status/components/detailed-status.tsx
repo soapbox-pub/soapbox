@@ -3,14 +3,14 @@ import React, { useRef } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
+import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import StatusContent from 'soapbox/components/status_content';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
 import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import AccountContainer from 'soapbox/containers/account-container';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';
