@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchPatronInstance } from 'soapbox/actions/patron';
-import { Widget, Button, ProgressBar, Text } from 'soapbox/components/ui';
+import { Widget, Button, ProgressBar, Text, Stack } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 /** Open link in a new tab. */
@@ -42,7 +42,7 @@ const FundingPanel: React.FC = () => {
   let ratioText;
 
   if (goalReached) {
-    ratioText = <><strong>{moneyFormat(goal)}</strong> per month<span className='funding-panel__reached'>&mdash; reached!</span></>;
+    ratioText = <><strong>{moneyFormat(goal)}</strong> per month <span>&mdash; reached!</span></>;
   } else {
     ratioText = <><strong>{moneyFormat(amount)} out of {moneyFormat(goal)}</strong> per month</>;
   }
@@ -56,18 +56,19 @@ const FundingPanel: React.FC = () => {
       title={<FormattedMessage id='patron.title' defaultMessage='Funding Goal' />}
       onActionClick={handleDonateClick}
     >
-      <div className='funding-panel__ratio'>
-        <Text>{ratioText}</Text>
-      </div>
-      <ProgressBar progress={amount / goal} />
-      <div className='funding-panel__description'>
-        <Text>{goalText}</Text>
-      </div>
-      <div>
-        <Button theme='secondary' onClick={handleDonateClick}>
-          <FormattedMessage id='patron.donate' defaultMessage='Donate' />
-        </Button>
-      </div>
+      <Stack space={4}>
+        <Stack space={2}>
+          <Text>{ratioText}</Text>
+          <ProgressBar progress={amount / goal} />
+        </Stack>
+
+        <Stack space={2}>
+          <Text theme='muted'>{goalText}</Text>
+          <Button block theme='primary' onClick={handleDonateClick}>
+            <FormattedMessage id='patron.donate' defaultMessage='Donate' />
+          </Button>
+        </Stack>
+      </Stack>
     </Widget>
   );
 };
