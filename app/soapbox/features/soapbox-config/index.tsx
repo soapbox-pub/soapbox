@@ -7,6 +7,7 @@ import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
 import {
+  Accordion,
   Column,
   CardHeader,
   CardTitle,
@@ -23,8 +24,6 @@ import Streamfield from 'soapbox/components/ui/streamfield/streamfield';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-
-import Accordion from '../ui/components/accordion';
 
 import ColorWithPicker from './components/color-with-picker';
 import CryptoAddressInput from './components/crypto-address-input';

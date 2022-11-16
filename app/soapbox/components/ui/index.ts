@@ -1,3 +1,4 @@
+export { default as Accordion } from './accordion/accordion';
 export { default as Avatar } from './avatar/avatar';
 export { default as Banner } from './banner/banner';
 export { default as Button } from './button/button';

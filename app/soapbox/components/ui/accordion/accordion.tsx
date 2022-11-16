@@ -20,6 +20,10 @@ interface IAccordion {
   onToggle?: (value: boolean) => void,
 }
 
+/**
+ * Accordion
+ * An accordion is a vertically stacked group of collapsible sections.
+ */
 const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = false, onToggle = () => {} }) => {
   const intl = useIntl();
 
