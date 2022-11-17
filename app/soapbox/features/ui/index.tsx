@@ -113,6 +113,7 @@ import {
   LogoutPage,
   AuthTokenList,
   ServiceWorkerInfo,
+  DevelopersFeaturesEditor,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
 
@@ -312,6 +313,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
       <WrappedRoute path='/developers/settings_store' developerOnly page={DefaultPage} component={SettingsStore} content={children} />
       <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
+      <WrappedRoute path='/developers/features' developerOnly page={DefaultPage} component={DevelopersFeaturesEditor} content={children} />
       <WrappedRoute path='/developers/sw' developerOnly page={DefaultPage} component={ServiceWorkerInfo} content={children} />
       <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
       <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={() => new Promise((_resolve, reject) => reject())} content={children} />

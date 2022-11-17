@@ -474,6 +474,10 @@ export function ServiceWorkerInfo() {
   return import(/* webpackChunkName: "features/developers" */'../../developers/service-worker-info');
 }
 
+export function DevelopersFeaturesEditor() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/features-editor');
+}
+
 export function DatePicker() {
   return import(/* webpackChunkName: "date_picker" */'../../birthdays/date-picker');
 }
