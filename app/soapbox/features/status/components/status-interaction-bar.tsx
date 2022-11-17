@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import React from 'react';
-import { FormattedNumber } from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
@@ -69,18 +69,25 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getReposts = () => {
     if (status.reblogs_count) {
       return (
-        <HStack space={0.5} alignItems='center'>
-          <IconButton
-            className='text-success-600 cursor-pointer'
-            src={require('@tabler/icons/repeat.svg')}
-            role='presentation'
-            onClick={handleOpenReblogsModal}
-          />
+        <button
+          type='button'
+          onClick={handleOpenReblogsModal}
+          className='text-gray-600 dark:text-gray-700 hover:underline'
+        >
+          <HStack space={1} alignItems='center'>
+            <Text theme='primary' size='sm' weight='bold'>
+              <FormattedNumber value={status.reblogs_count} />
+            </Text>
 
-          <Text theme='muted' size='sm'>
-            <FormattedNumber value={status.reblogs_count} />
-          </Text>
-        </HStack>
+            <Text theme='muted' size='sm'>
+              <FormattedMessage
+                id='status.interactions.reblogs'
+                defaultMessage='{count, plural, one {Repost} other {Reposts}}'
+                values={{ count: status.reblogs_count }}
+              />
+            </Text>
+          </HStack>
+        </button>
       );
     }
 
@@ -97,22 +104,27 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getFavourites = () => {
     if (status.favourites_count) {
       return (
-        <HStack space={0.5} alignItems='center'>
-          <IconButton
-            className={classNames({
-              'text-accent-300': true,
-              'cursor-default': !features.exposableReactions,
-            })}
-            src={require('@tabler/icons/heart.svg')}
-            iconClassName='fill-accent-300'
-            role='presentation'
-            onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
-          />
+        <button
+          type='button'
+          onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
+          className='text-gray-600 dark:text-gray-700 hover:underline'
+        >
+          <HStack space={1} alignItems='center'>
+            <Text theme='primary' size='sm' weight='bold'>
+              <FormattedNumber value={status.favourites_count} />
+            </Text>
 
-          <Text theme='muted' size='sm'>
-            <FormattedNumber value={status.favourites_count} />
-          </Text>
-        </HStack>
+            {/* default: !features.exposableReactions */}
+
+            <Text theme='muted' size='sm'>
+              <FormattedMessage
+                id='status.interactions.favourites'
+                defaultMessage='{count, plural, one {Like} other {Likes}}'
+                values={{ count: status.favourites_count }}
+              />
+            </Text>
+          </HStack>
+        </button>
       );
     }
 
