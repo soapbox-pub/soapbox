@@ -15,9 +15,9 @@ const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, ...rest }) =
       <Icon id={icon} {...rest as IIcon} />
 
       {count > 0 && (
-        <i className='absolute -top-2 -right-2'>
+        <span className='absolute -top-2 -right-2'>
           <Counter count={count} />
-        </i>
+        </span>
       )}
     </div>
   );
