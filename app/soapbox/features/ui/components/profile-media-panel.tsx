@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
-import { Spinner, Widget } from 'soapbox/components/ui';
+import { Spinner, Text, Widget } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getAccountGallery } from 'soapbox/selectors';
 
@@ -52,7 +52,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
 
     if (!nineAttachments.isEmpty()) {
       return (
-        <div className='media-panel__list'>
+        <div className='flex flex-wrap'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
               key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
@@ -65,9 +65,9 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
       );
     } else {
       return (
-        <div className='media-panel__empty'>
+        <Text size='sm' theme='muted'>
           <FormattedMessage id='media_panel.empty_message' defaultMessage='No media found.' />
-        </div>
+        </Text>
       );
     }
   };
@@ -75,7 +75,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
   return (
     <Widget title={<FormattedMessage id='media_panel.title' defaultMessage='Media' />}>
       {account && (
-        <div className='media-panel__content'>
+        <div className='w-full py-2'>
           {loading ? (
             <Spinner />
           ) : (

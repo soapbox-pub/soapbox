@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { unblockDomain } from 'soapbox/actions/domain-blocks';
 
-import IconButton from './icon-button';
+import { HStack, IconButton, Text } from './ui';
 
 const messages = defineMessages({
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
@@ -34,17 +34,12 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
   };
 
   return (
-    <div className='domain'>
-      <div className='domain__wrapper'>
-        <span className='domain__domain-name'>
-          <strong>{domain}</strong>
-        </span>
-
-        <div className='domain__buttons'>
-          <IconButton active src={require('@tabler/icons/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
-        </div>
-      </div>
-    </div>
+    <HStack alignItems='center' justifyContent='between' space={1} className='p-2'>
+      <Text tag='span'>
+        {domain}
+      </Text>
+      <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
+    </HStack>
   );
 };
 

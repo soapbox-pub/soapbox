@@ -11,7 +11,7 @@ const ModalLoading = () => (
     </div>
     <div className='error-modal__footer'>
       <div>
-        <button className='error-modal__nav onboarding-modal__skip' />
+        <button className='error-modal__nav' />
       </div>
     </div>
   </div>

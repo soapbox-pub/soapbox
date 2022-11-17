@@ -1,10 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { NavLink } from 'react-router-dom';
 
-import AvatarOverlay from 'soapbox/components/avatar-overlay';
-import DisplayName from 'soapbox/components/display-name';
+import Account from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
+import { HStack, Text } from 'soapbox/components/ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -13,22 +12,30 @@ interface IMovedNote {
   to: AccountEntity,
 }
 
-const MovedNote: React.FC<IMovedNote> = ({ from, to }) => {
-  const displayNameHtml = { __html: from.display_name_html };
+const MovedNote: React.FC<IMovedNote> = ({ from, to }) => (
+  <div className='account__moved-note'>
+    <HStack className='mb-2' alignItems='center' space={1.5}>
+      <Icon
+        src={require('@tabler/icons/briefcase.svg')}
+        className='text-primary-600 dark:text-primary-400 flex-none'
+      />
 
-  return (
-    <div className='account__moved-note'>
-      <div className='account__moved-note__message'>
-        <div className='account__moved-note__icon-wrapper'><Icon src={require('feather-icons/dist/icons/briefcase.svg')} className='account__moved-note__icon' fixedWidth /></div>
-        <FormattedMessage id='account.moved_to' defaultMessage='{name} has moved to:' values={{ name: <bdi><strong dangerouslySetInnerHTML={displayNameHtml} /></bdi> }} />
+      <div className='truncate'>
+        <Text theme='muted' size='sm' truncate>
+          <FormattedMessage
+            id='notification.move'
+            defaultMessage='{name} moved to {targetName}'
+            values={{
+              name: <span dangerouslySetInnerHTML={{ __html: from.display_name_html }} />,
+              targetName: to.acct,
+            }}
+          />
+        </Text>
       </div>
+    </HStack>
 
-      <NavLink to={`/@${to.acct}`} className='detailed-status__display-name'>
-        <div className='detailed-status__display-avatar'><AvatarOverlay account={to} friend={from} /></div>
-        <DisplayName account={to} />
-      </NavLink>
-    </div>
-  );
-};
+    <Account account={to} withRelationship={false} />
+  </div>
+);
 
 export default MovedNote;
