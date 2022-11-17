@@ -1,11 +1,11 @@
 import classNames from 'clsx';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import { HStack, IconButton, Text, Emoji } from 'soapbox/components/ui';
+import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
@@ -42,19 +42,18 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     }));
   };
 
-  const onOpenReactionsModal = (username: string, statusId: string, reaction: string): void => {
+  const onOpenReactionsModal = (username: string, statusId: string): void => {
     dispatch(openModal('REACTIONS', {
       username,
       statusId,
-      reaction,
     }));
   };
 
   const getNormalizedReacts = () => {
     return reduceEmoji(
       ImmutableList(status.pleroma.get('emoji_reactions') as any),
-      status.favourites_count,
-      status.favourited,
+      0,
+      false,
       allowedEmoji,
     ).reverse();
   };
@@ -107,14 +106,18 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
         <button
           type='button'
           onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
-          className='text-gray-600 dark:text-gray-700 hover:underline'
+          className={
+            classNames({
+              'text-gray-600 dark:text-gray-700 hover:underline': true,
+              'hover:underline': features.exposableReactions,
+              'cursor-default': !features.exposableReactions,
+            })
+          }
         >
           <HStack space={1} alignItems='center'>
             <Text theme='primary' size='sm' weight='bold'>
               <FormattedNumber value={status.favourites_count} />
             </Text>
-
-            {/* default: !features.exposableReactions */}
 
             <Text theme='muted' size='sm'>
               <FormattedMessage
@@ -131,9 +134,12 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     return '';
   };
 
-  const handleOpenReactionsModal = (reaction: ImmutableMap<string, any>) => () => {
-    if (!me) onOpenUnauthorizedModal();
-    else onOpenReactionsModal(account.acct, status.id, String(reaction.get('name')));
+  const handleOpenReactionsModal = () => {
+    if (!me) {
+      return onOpenUnauthorizedModal();
+    }
+
+    onOpenReactionsModal(account.acct, status.id);
   };
 
   const getEmojiReacts = () => {
@@ -142,41 +148,44 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       acc + cur.get('count')
     ), 0);
 
-    if (count > 0) {
-      return (
-        <HStack space={0.5} className='emoji-reacts-container' alignItems='center'>
-          <div className='emoji-reacts'>
-            {emojiReacts.map((e, i) => {
-              return (
-                <HStack space={0.5} className='emoji-react p-1' alignItems='center' key={i}>
-                  <Emoji
-                    className={classNames('emoji-react__emoji w-5 h-5 flex-none', { 'cursor-pointer': features.exposableReactions })}
-                    emoji={e.get('name')}
-                    onClick={features.exposableReactions ? handleOpenReactionsModal(e) : undefined}
-                  />
-                  <Text theme='muted' size='sm' className='emoji-react__count'>
-                    <FormattedNumber value={e.get('count')} />
-                  </Text>
-                </HStack>
-              );
-            })}
-          </div>
-
-          <Text theme='muted' size='sm' className='emoji-reacts__count'>
+    return (
+      <button
+        type='button'
+        onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}
+        className={
+          classNames({
+            'text-gray-600 dark:text-gray-700': true,
+            'hover:underline': features.exposableReactions,
+            'cursor-default': !features.exposableReactions,
+          })
+        }
+      >
+        <HStack space={1} alignItems='center'>
+          <Text theme='primary' size='sm' weight='bold'>
             <FormattedNumber value={count} />
           </Text>
-        </HStack>
-      );
-    }
 
-    return '';
+          <HStack space={0.5} alignItems='center'>
+            {emojiReacts.map((e, i) => {
+              return (
+                <Emoji
+                  key={i}
+                  className={classNames('w-5 h-5 flex-none')}
+                  emoji={e.get('name')}
+                />
+              );
+            })}
+          </HStack>
+        </HStack>
+      </button>
+    );
   };
 
   return (
     <HStack space={3}>
       {getReposts()}
-
-      {features.emojiReacts ? getEmojiReacts() : getFavourites()}
+      {getFavourites()}
+      {features.emojiReacts ? getEmojiReacts() : null}
     </HStack>
   );
 };
