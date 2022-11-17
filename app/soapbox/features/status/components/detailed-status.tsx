@@ -1,5 +1,4 @@
-import classNames from 'clsx';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
@@ -35,7 +34,17 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   showMedia,
 }) => {
   const intl = useIntl();
+
   const node = useRef<HTMLDivElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
+
+  const [minHeight, setMinHeight] = useState(208);
+
+  useEffect(() => {
+    if (overlay.current) {
+      setMinHeight(overlay.current.getBoundingClientRect().height);
+    }
+  }, [overlay.current]);
 
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
@@ -87,17 +96,15 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <StatusReplyMentions status={actualStatus} />
 
         <Stack
-          className={
-            classNames('relative z-0', {
-              'min-h-[220px]': isUnderReview || isSensitive,
-            })
-          }
+          className='relative z-0'
+          style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
         >
           {(isUnderReview || isSensitive) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}
+              ref={overlay}
             />
           )}
 
