@@ -298,7 +298,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
             )}
 
             <HStack
-              alignItems='center'
+              alignItems='bottom'
               className={classNames({
                 'max-w-[85%]': true,
                 'order-2': isMyMessage,
