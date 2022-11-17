@@ -101,13 +101,18 @@ const Settings = () => {
             </CardBody>
           </>
         )}
-        <CardHeader>
-          <CardTitle title='Direct Messages' />
-        </CardHeader>
 
-        <CardBody>
-          <MessagesSettings />
-        </CardBody>
+        {features.chats ? (
+          <>
+            <CardHeader>
+              <CardTitle title='Direct Messages' />
+            </CardHeader>
+
+            <CardBody>
+              <MessagesSettings />
+            </CardBody>
+          </>
+        ) : null}
 
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />
