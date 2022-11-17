@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import AccountSearch from 'soapbox/components/account_search';
+import AccountSearch from 'soapbox/components/account-search';
 import { CardTitle, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';

@@ -10,38 +10,38 @@ import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
-import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { openModal } from 'soapbox/actions/modals';
 import { expandNotifications } from 'soapbox/actions/notifications';
-import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
-import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
+import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
+import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
-import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
-import AdminPage from 'soapbox/pages/admin_page';
+import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
-import DefaultPage from 'soapbox/pages/default_page';
-import HomePage from 'soapbox/pages/home_page';
-import ProfilePage from 'soapbox/pages/profile_page';
-import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
-import StatusPage from 'soapbox/pages/status_page';
+import DefaultPage from 'soapbox/pages/default-page';
+import HomePage from 'soapbox/pages/home-page';
+import ProfilePage from 'soapbox/pages/profile-page';
+import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
+import StatusPage from 'soapbox/pages/status-page';
 import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import { StatProvider } from '../../contexts/stat-context';
 
-import BackgroundShapes from './components/background_shapes';
+import BackgroundShapes from './components/background-shapes';
 import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
-import BundleContainer from './containers/bundle_container';
+import BundleContainer from './containers/bundle-container';
 import {
   Status,
   CommunityTimeline,
@@ -108,7 +108,7 @@ import {
   AuthTokenList,
   ServiceWorkerInfo,
 } from './util/async-components';
-import { WrappedRoute } from './util/react_router_helpers';
+import { WrappedRoute } from './util/react-router-helpers';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.

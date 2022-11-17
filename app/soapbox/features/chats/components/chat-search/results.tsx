@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 
 interface IResults {
   accounts: {

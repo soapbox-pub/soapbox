@@ -1,12 +1,12 @@
 export { AccountRecord, FieldRecord, normalizeAccount } from './account';
-export { AdminAccountRecord, normalizeAdminAccount } from './admin_account';
-export { AdminReportRecord, normalizeAdminReport } from './admin_report';
+export { AdminAccountRecord, normalizeAdminAccount } from './admin-account';
+export { AdminReportRecord, normalizeAdminReport } from './admin-report';
 export { AnnouncementRecord, normalizeAnnouncement } from './announcement';
-export { AnnouncementReactionRecord, normalizeAnnouncementReaction } from './announcement_reaction';
+export { AnnouncementReactionRecord, normalizeAnnouncementReaction } from './announcement-reaction';
 export { AttachmentRecord, normalizeAttachment } from './attachment';
 export { CardRecord, normalizeCard } from './card';
 export { ChatRecord, normalizeChat } from './chat';
-export { ChatMessageRecord, normalizeChatMessage } from './chat_message';
+export { ChatMessageRecord, normalizeChatMessage } from './chat-message';
 export { EmojiRecord, normalizeEmoji } from './emoji';
 export { FilterRecord, normalizeFilter } from './filter';
 export { HistoryRecord, normalizeHistory } from './history';
@@ -17,8 +17,8 @@ export { NotificationRecord, normalizeNotification } from './notification';
 export { PollRecord, PollOptionRecord, normalizePoll } from './poll';
 export { RelationshipRecord, normalizeRelationship } from './relationship';
 export { StatusRecord, normalizeStatus } from './status';
-export { StatusEditRecord, normalizeStatusEdit } from './status_edit';
+export { StatusEditRecord, normalizeStatusEdit } from './status-edit';
 export { TagRecord, normalizeTag } from './tag';
 
 export { AdRecord, normalizeAd } from './soapbox/ad';
-export { SoapboxConfigRecord, normalizeSoapboxConfig } from './soapbox/soapbox_config';
+export { SoapboxConfigRecord, normalizeSoapboxConfig } from './soapbox/soapbox-config';

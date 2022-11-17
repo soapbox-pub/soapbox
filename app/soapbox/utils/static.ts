@@ -5,7 +5,7 @@
 
 import { join } from 'path';
 
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 
 /** Gets the path to a file with build configuration being considered. */
 export const joinPublicPath = (...paths: string[]): string => {

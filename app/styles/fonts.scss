@@ -3,26 +3,26 @@
 // OpenDyslexic
 @font-face {
   font-family: 'OpenDyslexic';
-  src: url('../fonts/OpenDyslexic/OpenDyslexic-Regular.woff2') format('woff2');
+  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Regular.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'OpenDyslexic';
   font-weight: bold;
-  src: url('../fonts/OpenDyslexic/OpenDyslexic-Bold.woff2') format('woff2');
+  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Bold.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'OpenDyslexic';
   font-weight: bold;
   font-style: italic;
-  src: url('../fonts/OpenDyslexic/OpenDyslexic-Bold-Italic.woff2') format('woff2');
+  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Bold-Italic.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'OpenDyslexic';
   font-style: italic;
-  src: url('../fonts/OpenDyslexic/OpenDyslexic-Italic.woff2') format('woff2');
+  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Italic.woff2') format('woff2');
 }
 
 // TYPEOGRAPHY MIXINS
@@ -62,11 +62,11 @@
 // Soapbox icon font
 @font-face {
   font-family: 'soapbox';
-  src: url('../fonts/soapbox/soapbox.eot?pryg6i');
-  src: url('../fonts/soapbox/soapbox.eot?pryg6i#iefix') format('embedded-opentype'),
-    url('../fonts/soapbox/soapbox.ttf?pryg6i') format('truetype'),
-    url('../fonts/soapbox/soapbox.woff?pryg6i') format('woff'),
-    url('../fonts/soapbox/soapbox.svg?pryg6i#soapbox') format('svg');
+  src: url('../assets/fonts/soapbox/soapbox.eot?pryg6i');
+  src: url('../assets/fonts/soapbox/soapbox.eot?pryg6i#iefix') format('embedded-opentype'),
+    url('../assets/fonts/soapbox/soapbox.ttf?pryg6i') format('truetype'),
+    url('../assets/fonts/soapbox/soapbox.woff?pryg6i') format('woff'),
+    url('../assets/fonts/soapbox/soapbox.svg?pryg6i#soapbox') format('svg');
   font-weight: normal;
   font-style: normal;
 }

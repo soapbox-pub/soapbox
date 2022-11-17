@@ -5,13 +5,13 @@ import { useHistory } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import VerificationBadge from 'soapbox/components/verification-badge';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   blockedYou: { id: 'chat_list_item.blocked_you', defaultMessage: 'This user has blocked you' },

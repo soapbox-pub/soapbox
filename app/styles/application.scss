@@ -11,19 +11,15 @@
 @import 'themes';
 @import 'variables';
 @import 'fonts';
-@import 'reset';
 @import 'basics';
-@import 'footer';
 @import 'accounts';
 @import 'boost';
 @import 'loading';
 @import 'ui';
 // @import 'introduction';
-@import 'emoji_picker';
-@import 'about';
+@import 'emoji-picker';
 @import 'rtl';
 @import 'accessibility';
-@import 'donations';
 @import 'dyslexic';
 @import 'demetricator';
 @import 'chats';
@@ -50,33 +46,19 @@
 @import 'components/search';
 @import 'components/react-toggle';
 @import 'components/still-image';
-@import 'components/trends';
-@import 'components/wtf-panel';
 @import 'components/profile-media-panel';
 @import 'components/profile-info-panel';
-@import 'components/setting-toggle';
 @import 'components/spoiler-button';
 @import 'components/video-player';
 @import 'components/audio-player';
-@import 'components/profile_hover_card';
+@import 'components/profile-hover-card';
 @import 'components/filters';
 @import 'components/snackbar';
-@import 'components/accordion';
-@import 'components/server-info';
 @import 'components/admin';
 @import 'components/backups';
 @import 'components/crypto-donate';
-@import 'components/remote-timeline';
 @import 'components/aliases';
 @import 'components/icon';
-@import 'components/radio-button';
-@import 'components/directory';
-
-// Holiday
-@import 'holiday/halloween';
-
-// Truth custom styles
-@import 'truth';
 
 @tailwind base;
 @tailwind components;

@@ -4,11 +4,11 @@ import sumBy from 'lodash/sumBy';
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
-import compareId from 'soapbox/compare_id';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import { compareId } from 'soapbox/utils/comparators';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';

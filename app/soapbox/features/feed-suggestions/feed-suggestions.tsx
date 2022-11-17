@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAccount, useAppSelector } from 'soapbox/hooks';
 
 import { Card, CardBody, CardTitle, HStack, Stack, Text } from '../../components/ui';

@@ -10,7 +10,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
-import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
+import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
@@ -18,10 +18,10 @@ import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import Badge from 'soapbox/components/badge';
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider, Avatar } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import MovedNote from 'soapbox/features/account_timeline/components/moved_note';
+import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
@@ -31,7 +31,7 @@ import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/types/entities';
 import { isRemote } from 'soapbox/utils/accounts';
 
-import type { Menu as MenuType } from 'soapbox/components/dropdown_menu';
+import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -70,6 +70,7 @@ const messages = defineMessages({
   removeFromFollowersConfirm: { id: 'confirmations.remove_from_followers.confirm', defaultMessage: 'Remove' },
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
+  profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
 });
 
 interface IHeader {
@@ -190,6 +191,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onUnblockDomain = (domain: string) => {
     dispatch(unblockDomain(domain));
+  };
+
+  const onProfileExternal = (url: string) => {
+    window.open(url, '_blank');
   };
 
   const onAddToList = () => {
@@ -432,6 +437,14 @@ const Header: React.FC<IHeader> = ({ account }) => {
           text: intl.formatMessage(messages.blockDomain, { domain }),
           action: () => onBlockDomain(domain),
           icon: require('@tabler/icons/ban.svg'),
+        });
+      }
+
+      if (features.federating) {
+        menu.push({
+          text: intl.formatMessage(messages.profileExternal, { domain }),
+          action: () => onProfileExternal(account.url),
+          icon: require('@tabler/icons/external-link.svg'),
         });
       }
     }

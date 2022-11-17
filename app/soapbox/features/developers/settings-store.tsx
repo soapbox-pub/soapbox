@@ -15,7 +15,7 @@ import {
   FormGroup,
   Textarea,
 } from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 
 const isJSONValid = (text: any): boolean => {
@@ -131,13 +131,6 @@ const SettingsStore: React.FC = () => {
             <SettingToggle settings={settings} settingPath={['dyslexicFont']} onChange={onToggleChange} />
           </ListItem>
         </div>
-
-        {/* <ListItem
-          label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
-          hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Supports light/dark toggle.' />}
-        >
-          <SettingToggle settings={settings} settingPath={['halloween']} onChange={onToggleChange} />
-        </ListItem> */}
 
         <ListItem
           label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}

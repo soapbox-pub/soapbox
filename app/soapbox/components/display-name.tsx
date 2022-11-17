@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { getAcct } from '../utils/accounts';
 
 import Icon from './icon';
 import RelativeTimestamp from './relative-timestamp';
-import VerificationBadge from './verification_badge';
+import VerificationBadge from './verification-badge';
 
 import type { Account } from 'soapbox/types/entities';
 

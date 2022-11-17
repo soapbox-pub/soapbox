@@ -3,9 +3,9 @@ import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
-import compareId from 'soapbox/compare_id';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { compareId } from 'soapbox/utils/comparators';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';

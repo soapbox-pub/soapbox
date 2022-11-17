@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
@@ -10,7 +10,7 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import SidebarNavigationLink from './sidebar-navigation-link';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
@@ -98,7 +98,7 @@ const SidebarNavigation = () => {
     if (features.publicTimeline && features.federating) {
       menu.push({
         to: '/timeline/fediverse',
-        icon: require('icons/fediverse.svg'),
+        icon: require('assets/icons/fediverse.svg'),
         text: intl.formatMessage(messages.fediverse),
       });
     }

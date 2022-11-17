@@ -1,3 +1,4 @@
+export { default as Accordion } from './accordion/accordion';
 export { default as Avatar } from './avatar/avatar';
 export { default as Banner } from './banner/banner';
 export { default as Button } from './button/button';
@@ -30,6 +31,7 @@ export {
 export { default as Modal } from './modal/modal';
 export { default as PhoneInput } from './phone-input/phone-input';
 export { default as ProgressBar } from './progress-bar/progress-bar';
+export { default as RadioButton } from './radio-button/radio-button';
 export { default as Select } from './select/select';
 export { default as Spinner } from './spinner/spinner';
 export { default as Stack } from './stack/stack';

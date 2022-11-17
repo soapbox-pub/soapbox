@@ -92,7 +92,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
         </Stack>
 
         <IconButton
-          src={require('icons/airplane.svg')}
+          src={require('assets/icons/airplane.svg')}
           iconClassName='w-5 h-5'
           className='text-primary-500'
           disabled={isSubmitDisabled}

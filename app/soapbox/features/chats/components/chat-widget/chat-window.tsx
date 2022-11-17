@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Avatar, HStack, Icon, Stack, Text, Tooltip } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { secondsToDays } from 'soapbox/utils/numbers';
 

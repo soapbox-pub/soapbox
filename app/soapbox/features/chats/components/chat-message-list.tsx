@@ -9,7 +9,7 @@ import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
 import { Avatar, Button, Divider, HStack, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -19,11 +19,11 @@ import { normalizeAccount } from 'soapbox/normalizers';
 import { ChatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { stripHTML } from 'soapbox/utils/html';
-import { onlyEmoji } from 'soapbox/utils/rich_content';
+import { onlyEmoji } from 'soapbox/utils/rich-content';
 
 import ChatMessageListIntro from './chat-message-list-intro';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
 const BIG_EMOJI_LIMIT = 3;

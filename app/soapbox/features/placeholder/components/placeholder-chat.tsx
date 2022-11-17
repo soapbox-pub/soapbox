@@ -2,8 +2,8 @@ import React from 'react';
 
 import { HStack, Stack } from 'soapbox/components/ui';
 
-import PlaceholderAvatar from './placeholder_avatar';
-import PlaceholderDisplayName from './placeholder_display_name';
+import PlaceholderAvatar from './placeholder-avatar';
+import PlaceholderDisplayName from './placeholder-display-name';
 
 /** Fake chat to display while data is loading. */
 const PlaceholderChat = () => {
