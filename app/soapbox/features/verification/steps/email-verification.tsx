@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 const messages = defineMessages({
   verificationSuccess: { id: 'email_verification.success', defaultMessage: 'Verification email sent successfully.' },
   verificationFail: { id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' },
-  verificationFailTakenAlert: { id: 'emai_verifilcation.exists', defaultMessage: 'This email has already been taken.' },
+  verificationFailTakenAlert: { id: 'email_verifilcation.exists', defaultMessage: 'This email has already been taken.' },
   verificationFailTaken: { id: 'email_verification.taken', defaultMessage: 'is taken' },
 });
 
