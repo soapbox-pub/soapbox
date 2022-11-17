@@ -15,6 +15,7 @@ import type { Menu } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   blockedYou: { id: 'chat_list_item.blocked_you', defaultMessage: 'This user has blocked you' },
+  blocking: { id: 'chat_list_item.blocking', defaultMessage: 'You have blocked this user' },
   leaveMessage: { id: 'chat_settings.leave.message', defaultMessage: 'Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.' },
   leaveHeading: { id: 'chat_settings.leave.heading', defaultMessage: 'Leave Chat' },
   leaveConfirm: { id: 'chat_settings.leave.confirm', defaultMessage: 'Leave Chat' },
@@ -35,6 +36,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
   const { isUsingMainChatPage } = useChatContext();
   const { deleteChat } = useChatActions(chat?.id as string);
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
+  const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
 
   const menu = useMemo((): Menu => [{
     text: intl.formatMessage(messages.leaveChat),
@@ -79,7 +81,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
               {chat.account?.verified && <VerificationBadge />}
             </div>
 
-            {isBlocked ? (
+            {(isBlocked || isBlocking) ? (
               <Text
                 align='left'
                 size='sm'
@@ -89,7 +91,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                 className='w-full h-5 pointer-events-none italic'
                 data-testid='chat-last-message'
               >
-                {intl.formatMessage(messages.blockedYou)}
+                {intl.formatMessage(isBlocked ? messages.blockedYou : messages.blocking)}
               </Text>
             ) : (
               <>
