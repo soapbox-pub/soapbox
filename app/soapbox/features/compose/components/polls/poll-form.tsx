@@ -96,7 +96,9 @@ const Option: React.FC<IOption> = ({
 
       {index > 1 && (
         <div>
-          <Button theme='danger' size='sm' onClick={handleOptionRemove}>{intl.formatMessage(messages.delete_option)}</Button>
+          <Button theme='danger' size='sm' onClick={handleOptionRemove}>
+            <FormattedMessage {...messages.delete_option} />
+          </Button>
         </div>
       )}
     </HStack>
