@@ -5,6 +5,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import StopPropagation from '../stop-propagation';
 import { Button, HStack, Text } from '../ui';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
@@ -38,9 +39,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
 
   const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
-  const toggleVisibility = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-
+  const toggleVisibility = () => {
     if (onToggleVisibility) {
       onToggleVisibility();
     } else {
@@ -64,13 +63,15 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
       data-testid='sensitive-overlay'
     >
       {visible ? (
-        <Button
-          text={intl.formatMessage(messages.hide)}
-          icon={require('@tabler/icons/eye-off.svg')}
-          onClick={toggleVisibility}
-          theme='primary'
-          size='sm'
-        />
+        <StopPropagation>
+          <Button
+            text={intl.formatMessage(messages.hide)}
+            icon={require('@tabler/icons/eye-off.svg')}
+            onClick={toggleVisibility}
+            theme='primary'
+            size='sm'
+          />
+        </StopPropagation>
       ) : (
         <div className='text-center w-3/4 mx-auto space-y-4' ref={ref}>
           <div className='space-y-1'>
@@ -92,36 +93,34 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
           </div>
 
           <HStack alignItems='center' justifyContent='center' space={2}>
-            {isUnderReview ? (
-              <>
-                {links.get('support') && (
-                  <a
-                    href={links.get('support')}
-                    target='_blank'
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    <Button
-                      type='button'
-                      theme='outline'
-                      size='sm'
-                      icon={require('@tabler/icons/headset.svg')}
-                    >
-                      {intl.formatMessage(messages.contact)}
-                    </Button>
-                  </a>
-                )}
-              </>
-            ) : null}
+            <StopPropagation>
+              {isUnderReview ? (
+                <>
+                  {links.get('support') && (
+                    <a href={links.get('support')} target='_blank'>
+                      <Button
+                        type='button'
+                        theme='outline'
+                        size='sm'
+                        icon={require('@tabler/icons/headset.svg')}
+                      >
+                        {intl.formatMessage(messages.contact)}
+                      </Button>
+                    </a>
+                  )}
+                </>
+              ) : null}
 
-            <Button
-              type='button'
-              theme='outline'
-              size='sm'
-              icon={require('@tabler/icons/eye.svg')}
-              onClick={toggleVisibility}
-            >
-              {intl.formatMessage(messages.show)}
-            </Button>
+              <Button
+                type='button'
+                theme='outline'
+                size='sm'
+                icon={require('@tabler/icons/eye.svg')}
+                onClick={toggleVisibility}
+              >
+                {intl.formatMessage(messages.show)}
+              </Button>
+            </StopPropagation>
           </HStack>
         </div>
       )}

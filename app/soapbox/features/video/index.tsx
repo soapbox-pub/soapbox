@@ -183,8 +183,6 @@ const Video: React.FC<IVideo> = ({
     }
   }, [video.current]);
 
-  const handleClickRoot: React.MouseEventHandler = e => e.stopPropagation();
-
   const handlePlay = () => {
     setPaused(false);
   };
@@ -507,7 +505,6 @@ const Video: React.FC<IVideo> = ({
       ref={player}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClickRoot}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
