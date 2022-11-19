@@ -58,12 +58,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   const renderAccount = (account: AccountEntity) => {
     return (
-      <div className='relative'>
-        {/* HACK: The <Account> component stops click events, so insert this div as something to click. */}
-        <div className='absolute inset-0' />
-
-        <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
-      </div>
+      <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
     );
   };
 

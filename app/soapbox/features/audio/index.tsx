@@ -449,6 +449,7 @@ const Audio: React.FC<IAudio> = (props) => {
       onMouseLeave={handleMouseLeave}
       tabIndex={0}
       onKeyDown={handleKeyDown}
+      onClick={e => e.stopPropagation()}
     >
       <audio
         src={src}

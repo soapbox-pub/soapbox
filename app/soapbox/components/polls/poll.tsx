@@ -5,7 +5,6 @@ import { openModal } from 'soapbox/actions/modals';
 import { vote } from 'soapbox/actions/polls';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import StopPropagation from '../stop-propagation';
 import { Stack, Text } from '../ui';
 
 import PollFooter from './poll-footer';
@@ -65,7 +64,8 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
   const showResults = poll.voted || poll.expired;
 
   return (
-    <StopPropagation>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div onClick={e => e.stopPropagation()}>
       {!showResults && poll.multiple && (
         <Text theme='muted' size='sm'>
           {intl.formatMessage(messages.multiple)}
@@ -93,7 +93,7 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
           selected={selected}
         />
       </Stack>
-    </StopPropagation>
+    </div>
   );
 };
 

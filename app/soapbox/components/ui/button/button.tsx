@@ -8,7 +8,7 @@ import { useButtonStyles } from './useButtonStyles';
 
 import type { ButtonSizes, ButtonThemes } from './useButtonStyles';
 
-interface IButton extends Pick<React.HTMLAttributes<HTMLButtonElement>, 'onClick' | 'onMouseUp'> {
+interface IButton {
   /** Whether this button expands the width of its container. */
   block?: boolean,
   /** Elements inside the <button> */
@@ -19,6 +19,8 @@ interface IButton extends Pick<React.HTMLAttributes<HTMLButtonElement>, 'onClick
   disabled?: boolean,
   /** URL to an SVG icon to render inside the button. */
   icon?: string,
+  /** Action when the button is clicked. */
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
   /** A predefined button size. */
   size?: ButtonSizes,
   /** Text inside the button. Takes precedence over `children`. */
