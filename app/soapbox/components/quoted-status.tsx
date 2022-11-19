@@ -13,6 +13,7 @@ import OutlineBox from './outline-box';
 import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
+import StopPropagation from './stop-propagation';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -91,58 +92,60 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   }
 
   return (
-    <OutlineBox
-      data-testid='quoted-status'
-      className={classNames('cursor-pointer', {
-        'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
-      })}
-    >
-      <Stack
-        space={2}
-        onClick={handleExpandClick}
+    <StopPropagation>
+      <OutlineBox
+        data-testid='quoted-status'
+        className={classNames('cursor-pointer', {
+          'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
+        })}
       >
-        <AccountContainer
-          {...actions}
-          id={account.id}
-          timestamp={status.created_at}
-          withRelationship={false}
-          showProfileHoverCard={!compose}
-          withLinkToProfile={!compose}
-        />
-
-        <StatusReplyMentions status={status} hoverable={false} />
-
         <Stack
-          className='relative z-0'
-          style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
+          space={2}
+          onClick={handleExpandClick}
         >
-          {(status.hidden) && (
-            <SensitiveContentOverlay
-              status={status}
-              visible={showMedia}
-              onToggleVisibility={handleToggleMediaVisibility}
-              ref={overlay}
-            />
-          )}
+          <AccountContainer
+            {...actions}
+            id={account.id}
+            timestamp={status.created_at}
+            withRelationship={false}
+            showProfileHoverCard={!compose}
+            withLinkToProfile={!compose}
+          />
 
-          <Stack space={4}>
-            <StatusContent
-              status={status}
-              collapsable
-            />
+          <StatusReplyMentions status={status} hoverable={false} />
 
-            {(status.card || status.media_attachments.size > 0) && (
-              <StatusMedia
+          <Stack
+            className='relative z-0'
+            style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
+          >
+            {(status.hidden) && (
+              <SensitiveContentOverlay
                 status={status}
-                muted={compose}
-                showMedia={showMedia}
+                visible={showMedia}
                 onToggleVisibility={handleToggleMediaVisibility}
+                ref={overlay}
               />
             )}
+
+            <Stack space={4}>
+              <StatusContent
+                status={status}
+                collapsable
+              />
+
+              {(status.card || status.media_attachments.size > 0) && (
+                <StatusMedia
+                  status={status}
+                  muted={compose}
+                  showMedia={showMedia}
+                  onToggleVisibility={handleToggleMediaVisibility}
+                />
+              )}
+            </Stack>
           </Stack>
         </Stack>
-      </Stack>
-    </OutlineBox>
+      </OutlineBox>
+    </StopPropagation>
   );
 };
 
