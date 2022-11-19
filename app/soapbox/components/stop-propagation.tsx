@@ -1,7 +1,10 @@
 import React from 'react';
 
 interface IStopPropagation {
+  /** Children to render within the bubble. */
   children: React.ReactNode,
+  /** Whether to prevent mouse events from bubbling. (default: `true`) */
+  enabled?: boolean,
 }
 
 /**
@@ -11,10 +14,12 @@ interface IStopPropagation {
  * To prevent a lot of code duplication, this component can stop all mouse events.
  * Plus, placing it in the component tree makes it more readable.
  */
-const StopPropagation: React.FC<IStopPropagation> = ({ children }) => {
+const StopPropagation: React.FC<IStopPropagation> = ({ children, enabled = true }) => {
 
   const handler: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
+    if (enabled) {
+      e.stopPropagation();
+    }
   };
 
   return (
