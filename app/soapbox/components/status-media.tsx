@@ -10,6 +10,7 @@ import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { List as ImmutableList } from 'immutable';
+import type VideoType from 'soapbox/features/video';
 import type { Status, Attachment } from 'soapbox/types/entities';
 
 interface IStatusMedia {
@@ -66,10 +67,6 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     dispatch(openModal('MEDIA', { media, status, index }));
   };
 
-  const openVideo = (media: Attachment, time: number): void => {
-    dispatch(openModal('VIDEO', { media, time }));
-  };
-
   if (size > 0 && firstAttachment) {
     if (muted) {
       media = (
@@ -105,20 +102,17 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         );
       } else {
         media = (
-          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer} >
-            {(Component: any) => (
+          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer}>
+            {(Component: typeof VideoType) => (
               <Component
                 preview={video.preview_url}
                 blurhash={video.blurhash}
                 src={video.url}
                 alt={video.description}
-                aspectRatio={video.meta.getIn(['original', 'aspect'])}
+                aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
                 height={285}
-                inline
-                sensitive={status.sensitive}
-                onOpenVideo={openVideo}
                 visible={showMedia}
-                onToggleVisibility={onToggleVisibility}
+                inline
               />
             )}
           </Bundle>
