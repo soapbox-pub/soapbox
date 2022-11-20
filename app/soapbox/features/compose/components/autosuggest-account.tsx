@@ -14,7 +14,14 @@ const AutosuggestAccount: React.FC<IAutosuggestAccount> = ({ id }) => {
 
   if (!account) return null;
 
-  return <Account account={account} hideActions showProfileHoverCard={false} />;
+  return (
+    <div className='relative'>
+      {/* HACK: The <Account> component stops click events, so insert this div as something to click. */}
+      <div className='absolute inset-0' />
+
+      <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
+    </div>
+  );
 
 };
 
