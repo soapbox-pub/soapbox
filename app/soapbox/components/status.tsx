@@ -326,7 +326,7 @@ const Status: React.FC<IStatus> = (props) => {
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
         ref={node}
-        onMouseUp={handleClick}
+        onClick={handleClick}
         role='link'
       >
         {featured && (
