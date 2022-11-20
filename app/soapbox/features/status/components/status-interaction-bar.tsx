@@ -73,19 +73,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
           onClick={handleOpenReblogsModal}
           className='text-gray-600 dark:text-gray-700 hover:underline'
         >
-          <HStack space={1} alignItems='center'>
-            <Text theme='primary' size='sm' weight='bold'>
-              <FormattedNumber value={status.reblogs_count} />
-            </Text>
-
-            <Text theme='muted' size='sm'>
-              <FormattedMessage
-                id='status.interactions.reblogs'
-                defaultMessage='{count, plural, one {Repost} other {Reposts}}'
-                values={{ count: status.reblogs_count }}
-              />
-            </Text>
-          </HStack>
+          <InteractionCounter count={status.reblogs_count}>
+            <FormattedMessage
+              id='status.interactions.reblogs'
+              defaultMessage='{count, plural, one {Repost} other {Reposts}}'
+              values={{ count: status.reblogs_count }}
+            />
+          </InteractionCounter>
         </button>
       );
     }
@@ -114,19 +108,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             })
           }
         >
-          <HStack space={1} alignItems='center'>
-            <Text theme='primary' size='sm' weight='bold'>
-              <FormattedNumber value={status.favourites_count} />
-            </Text>
-
-            <Text theme='muted' size='sm'>
-              <FormattedMessage
-                id='status.interactions.favourites'
-                defaultMessage='{count, plural, one {Like} other {Likes}}'
-                values={{ count: status.favourites_count }}
-              />
-            </Text>
-          </HStack>
+          <InteractionCounter count={status.favourites_count}>
+            <FormattedMessage
+              id='status.interactions.favourites'
+              defaultMessage='{count, plural, one {Like} other {Likes}}'
+              values={{ count: status.favourites_count }}
+            />
+          </InteractionCounter>
         </button>
       );
     }
@@ -160,23 +148,19 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
           })
         }
       >
-        <HStack space={1} alignItems='center'>
-          <Text theme='primary' size='sm' weight='bold'>
-            <FormattedNumber value={count} />
-          </Text>
-
+        <InteractionCounter count={count}>
           <HStack space={0.5} alignItems='center'>
-            {emojiReacts.map((e, i) => {
+            {emojiReacts.take(3).map((e, i) => {
               return (
                 <Emoji
                   key={i}
-                  className={classNames('w-5 h-5 flex-none')}
+                  className='w-4.5 h-4.5 flex-none'
                   emoji={e.get('name')}
                 />
               );
             })}
           </HStack>
-        </HStack>
+        </InteractionCounter>
       </button>
     );
   };
@@ -186,6 +170,26 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       {getReposts()}
       {getFavourites()}
       {features.emojiReacts ? getEmojiReacts() : null}
+    </HStack>
+  );
+};
+
+interface IInteractionCounter {
+  count: number,
+  children: React.ReactNode,
+}
+
+/** InteractionCounter component. */
+const InteractionCounter: React.FC<IInteractionCounter> = ({ count, children }) => {
+  return (
+    <HStack space={1} alignItems='center'>
+      <Text theme='primary' weight='bold'>
+        <FormattedNumber value={count} />
+      </Text>
+
+      <Text tag='div' theme='muted'>
+        {children}
+      </Text>
     </HStack>
   );
 };

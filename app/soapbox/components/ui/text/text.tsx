@@ -51,7 +51,7 @@ const families = {
 };
 
 export type Sizes = keyof typeof sizes
-type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
+type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'div'
 type Directions = 'ltr' | 'rtl'
 
 interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML'> {
