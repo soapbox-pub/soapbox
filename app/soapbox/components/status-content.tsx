@@ -10,19 +10,14 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
 import { isRtl } from '../rtl';
 
+import Markup from './markup';
 import Poll from './polls/poll';
-import './status-content.css';
 import StopPropagation from './stop-propagation';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
-
-type Point = [
-  x: number,
-  y: number,
-]
 
 interface IReadMoreButton {
   onClick: React.MouseEventHandler,
@@ -52,7 +47,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const [collapsed, setCollapsed] = useState(false);
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 
-  const startXY = useRef<Point>();
   const node = useRef<HTMLDivElement>(null);
 
   const { greentext } = useSoapboxConfig();
@@ -138,29 +132,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     updateStatusLinks();
   });
 
-  const handleMouseDown: React.EventHandler<React.MouseEvent> = (e) => {
-    startXY.current = [e.clientX, e.clientY];
-  };
-
-  const handleMouseUp: React.EventHandler<React.MouseEvent> = (e) => {
-    if (!startXY.current) return;
-    const target = e.target as HTMLElement;
-    const parentNode = target.parentNode as HTMLElement;
-
-    const [startX, startY] = startXY.current;
-    const [deltaX, deltaY] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
-
-    if (target.localName === 'button' || target.localName === 'a' || (parentNode && (parentNode.localName === 'button' || parentNode.localName === 'a'))) {
-      return;
-    }
-
-    if (deltaX + deltaY < 5 && e.button === 0 && !(e.ctrlKey || e.metaKey) && onClick) {
-      onClick();
-    }
-
-    startXY.current = undefined;
-  };
-
   const parsedHtml = useMemo((): string => {
     const html = translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
 
@@ -180,30 +151,24 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
-  const directionStyle: React.CSSProperties = { direction: 'ltr' };
-  const className = classNames(baseClassName, 'status-content', {
+  const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';
+  const className = classNames(baseClassName, {
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
     'leading-normal big-emoji': onlyEmoji,
   });
 
-  if (isRtl(status.search_index)) {
-    directionStyle.direction = 'rtl';
-  }
-
   if (onClick) {
     const output = [
-      <div
+      <Markup
         ref={node}
         tabIndex={0}
         key='content'
         className={className}
-        style={directionStyle}
+        direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
       />,
     ];
 
@@ -219,14 +184,14 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     return <div className={classNames({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
-      <div
+      <Markup
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames(baseClassName, 'status-content', {
+        className={classNames(baseClassName, {
           'leading-normal big-emoji': onlyEmoji,
         })}
-        style={directionStyle}
+        direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
       />,

@@ -2,7 +2,8 @@ import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage, FormatDateOptions } from 'react-intl';
 
-import { Widget, Stack, HStack, Icon, Text } from 'soapbox/components/ui';
+import Markup from 'soapbox/components/markup';
+import { Widget, Stack, HStack, Icon } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
@@ -51,7 +52,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
   return (
     <dl>
       <dt title={field.name}>
-        <Text weight='bold' tag='span' dangerouslySetInnerHTML={{ __html: field.name_emojified }} />
+        <Markup weight='bold' tag='span' dangerouslySetInnerHTML={{ __html: field.name_emojified }} />
       </dt>
 
       <dd
@@ -65,7 +66,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
             </span>
           )}
 
-          <Text className='break-words overflow-hidden' tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+          <Markup className='break-words overflow-hidden' tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
         </HStack>
       </dd>
     </dl>

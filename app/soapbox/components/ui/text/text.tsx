@@ -54,7 +54,9 @@ export type Sizes = keyof typeof sizes
 type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
 type Directions = 'ltr' | 'rtl'
 
-interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML'> {
+interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML' | 'tabIndex' | 'lang'> {
+  /** Text content. */
+  children?: React.ReactNode,
   /** How to align the text. */
   align?: keyof typeof alignments,
   /** Extra class names for the outer element. */
@@ -84,8 +86,8 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
 }
 
 /** UI-friendly text container with dark mode support. */
-const Text: React.FC<IText> = React.forwardRef(
-  (props: IText, ref: React.LegacyRef<any>) => {
+const Text = React.forwardRef<any, IText>(
+  (props, ref) => {
     const {
       align,
       className,
