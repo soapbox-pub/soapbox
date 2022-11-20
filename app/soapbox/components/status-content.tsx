@@ -12,7 +12,6 @@ import { isRtl } from '../rtl';
 
 import Markup from './markup';
 import Poll from './polls/poll';
-import StopPropagation from './stop-propagation';
 
 import type { Status, Mention } from 'soapbox/types/entities';
 
@@ -25,12 +24,10 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <StopPropagation>
-    <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
-      <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-      <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
-    </button>
-  </StopPropagation>
+  <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
+    <FormattedMessage id='status.read_more' defaultMessage='Read more' />
+    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
+  </button>
 );
 
 interface IStatusContent {
@@ -100,10 +97,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
         link.setAttribute('title', link.href);
         link.addEventListener('click', onLinkClick.bind(link), false);
       }
-
-      // Prevent bubbling
-      link.addEventListener('mouseup', e => e.stopPropagation());
-      link.addEventListener('mousedown', e => e.stopPropagation());
     });
   };
 

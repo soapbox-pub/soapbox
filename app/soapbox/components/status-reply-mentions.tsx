@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
-import StopPropagation from 'soapbox/components/stop-propagation';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account, Status } from 'soapbox/types/entities';
@@ -19,6 +18,8 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   const dispatch = useAppDispatch();
 
   const handleOpenMentionsModal: React.MouseEventHandler<HTMLSpanElement> = (e) => {
+    e.stopPropagation();
+
     const account = status.account as Account;
 
     dispatch(openModal('MENTIONS', {
@@ -49,7 +50,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   // The typical case with a reply-to and a list of mentions.
   const accounts = to.slice(0, 2).map(account => {
     const link = (
-      <Link to={`/@${account.acct}`} className='reply-mentions__account'>@{account.username}</Link>
+      <Link to={`/@${account.acct}`} className='reply-mentions__account' onClick={(e) => e.stopPropagation()}>@{account.username}</Link>
     );
 
     if (hoverable) {
@@ -72,34 +73,32 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   }
 
   return (
-    <StopPropagation>
-      <div className='reply-mentions'>
-        <FormattedMessage
-          id='reply_mentions.reply.hoverable'
-          defaultMessage='<hover>Replying to</hover> {accounts}'
-          values={{
-            accounts: <FormattedList type='conjunction' value={accounts} />,
-            hover: (children: React.ReactNode) => {
-              if (hoverable) {
-                return (
-                  <HoverStatusWrapper statusId={status.in_reply_to_id} inline>
-                    <span
-                      key='hoverstatus'
-                      className='hover:underline cursor-pointer'
-                      role='presentation'
-                    >
-                      {children}
-                    </span>
-                  </HoverStatusWrapper>
-                );
-              } else {
-                return children;
-              }
-            },
-          }}
-        />
-      </div>
-    </StopPropagation>
+    <div className='reply-mentions'>
+      <FormattedMessage
+        id='reply_mentions.reply.hoverable'
+        defaultMessage='<hover>Replying to</hover> {accounts}'
+        values={{
+          accounts: <FormattedList type='conjunction' value={accounts} />,
+          hover: (children: React.ReactNode) => {
+            if (hoverable) {
+              return (
+                <HoverStatusWrapper statusId={status.in_reply_to_id} inline>
+                  <span
+                    key='hoverstatus'
+                    className='hover:underline cursor-pointer'
+                    role='presentation'
+                  >
+                    {children}
+                  </span>
+                </HoverStatusWrapper>
+              );
+            } else {
+              return children;
+            }
+          },
+        }}
+      />
+    </div>
   );
 };
 
