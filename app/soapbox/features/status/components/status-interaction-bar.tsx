@@ -68,23 +68,17 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getReposts = () => {
     if (status.reblogs_count) {
       return (
-        <button
-          type='button'
-          onClick={handleOpenReblogsModal}
-          className='text-gray-600 dark:text-gray-700 hover:underline'
-        >
-          <InteractionCounter count={status.reblogs_count}>
-            <FormattedMessage
-              id='status.interactions.reblogs'
-              defaultMessage='{count, plural, one {Repost} other {Reposts}}'
-              values={{ count: status.reblogs_count }}
-            />
-          </InteractionCounter>
-        </button>
+        <InteractionCounter count={status.reblogs_count} onClick={handleOpenReblogsModal}>
+          <FormattedMessage
+            id='status.interactions.reblogs'
+            defaultMessage='{count, plural, one {Repost} other {Reposts}}'
+            values={{ count: status.reblogs_count }}
+          />
+        </InteractionCounter>
       );
     }
 
-    return '';
+    return null;
   };
 
   const handleOpenFavouritesModal: React.EventHandler<React.MouseEvent<HTMLButtonElement>> = (e) => {
@@ -97,29 +91,17 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getFavourites = () => {
     if (status.favourites_count) {
       return (
-        <button
-          type='button'
-          onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
-          className={
-            classNames({
-              'text-gray-600 dark:text-gray-700 hover:underline': true,
-              'hover:underline': features.exposableReactions,
-              'cursor-default': !features.exposableReactions,
-            })
-          }
-        >
-          <InteractionCounter count={status.favourites_count}>
-            <FormattedMessage
-              id='status.interactions.favourites'
-              defaultMessage='{count, plural, one {Like} other {Likes}}'
-              values={{ count: status.favourites_count }}
-            />
-          </InteractionCounter>
-        </button>
+        <InteractionCounter count={status.favourites_count} onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}>
+          <FormattedMessage
+            id='status.interactions.favourites'
+            defaultMessage='{count, plural, one {Like} other {Likes}}'
+            values={{ count: status.favourites_count }}
+          />
+        </InteractionCounter>
       );
     }
 
-    return '';
+    return null;
   };
 
   const handleOpenReactionsModal = () => {
@@ -136,19 +118,9 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       acc + cur.get('count')
     ), 0);
 
-    return (
-      <button
-        type='button'
-        onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}
-        className={
-          classNames({
-            'text-gray-600 dark:text-gray-700': true,
-            'hover:underline': features.exposableReactions,
-            'cursor-default': !features.exposableReactions,
-          })
-        }
-      >
-        <InteractionCounter count={count}>
+    if (count) {
+      return (
+        <InteractionCounter count={count} onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}>
           <HStack space={0.5} alignItems='center'>
             {emojiReacts.take(3).map((e, i) => {
               return (
@@ -161,36 +133,52 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             })}
           </HStack>
         </InteractionCounter>
-      </button>
-    );
+      );
+    }
+
+    return null;
   };
 
   return (
     <HStack space={3}>
       {getReposts()}
       {getFavourites()}
-      {features.emojiReacts ? getEmojiReacts() : null}
+      {features.emojiReacts && getEmojiReacts()}
     </HStack>
   );
 };
 
 interface IInteractionCounter {
   count: number,
+  onClick?: React.MouseEventHandler<HTMLButtonElement>,
   children: React.ReactNode,
 }
 
-/** InteractionCounter component. */
-const InteractionCounter: React.FC<IInteractionCounter> = ({ count, children }) => {
-  return (
-    <HStack space={1} alignItems='center'>
-      <Text theme='primary' weight='bold'>
-        <FormattedNumber value={count} />
-      </Text>
+const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, children }) => {
+  const features = useFeatures();
 
-      <Text tag='div' theme='muted'>
-        {children}
-      </Text>
-    </HStack>
+  return (
+    <button
+      type='button'
+      onClick={onClick}
+      className={
+        classNames({
+          'text-gray-600 dark:text-gray-700': true,
+          'hover:underline': features.exposableReactions,
+          'cursor-default': !features.exposableReactions,
+        })
+      }
+    >
+      <HStack space={1} alignItems='center'>
+        <Text theme='primary' weight='bold'>
+          <FormattedNumber value={count} />
+        </Text>
+
+        <Text tag='div' theme='muted'>
+          {children}
+        </Text>
+      </HStack>
+    </button>
   );
 };
 
