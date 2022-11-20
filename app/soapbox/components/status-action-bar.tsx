@@ -530,8 +530,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         justifyContent={space === 'expand' ? 'between' : undefined}
         space={space === 'compact' ? 2 : undefined}
         grow={space === 'expand'}
-        onMouseUp={e => e.stopPropagation()}
-        onMouseDown={e => e.stopPropagation()}
         onClick={e => e.stopPropagation()}
       >
         <StatusActionButton

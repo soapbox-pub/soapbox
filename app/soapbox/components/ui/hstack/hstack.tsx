@@ -27,7 +27,7 @@ const spaces = {
   8: 'space-x-8',
 };
 
-interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick' | 'onMouseUp' | 'onMouseDown'> {
+interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   /** Vertical alignment of children. */
   alignItems?: keyof typeof alignItemsOptions
   /** Extra class names on the <div> element. */
