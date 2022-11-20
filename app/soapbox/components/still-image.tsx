@@ -12,10 +12,12 @@ interface IStillImage {
   src: string,
   /** Extra CSS styles on the outer <div> element. */
   style?: React.CSSProperties,
+  /** Whether to display the image contained vs filled in its container. */
+  letterboxed?: boolean,
 }
 
 /** Renders images on a canvas, only playing GIFs if autoPlayGif is enabled. */
-const StillImage: React.FC<IStillImage> = ({ alt, className, src, style }) => {
+const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterboxed = false }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif');
 
@@ -34,10 +36,38 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style }) => {
     }
   };
 
+  /** ClassNames shared between the `<img>` and `<canvas>` elements. */
+  const baseClassName = classNames('w-full h-full block', {
+    'object-contain': letterboxed,
+    'object-cover': !letterboxed,
+  });
+
   return (
-    <div data-testid='still-image-container' className={classNames(className, 'still-image', { 'still-image--play-on-hover': hoverToPlay })} style={style}>
-      <img src={src} alt={alt} ref={img} onLoad={handleImageLoad} />
-      {hoverToPlay && <canvas ref={canvas} />}
+    <div
+      data-testid='still-image-container'
+      className={classNames(className, 'group overflow-hidden')}
+      style={style}
+    >
+      <div className='relative w-full h-full'>
+        <img
+          src={src}
+          alt={alt}
+          ref={img}
+          onLoad={handleImageLoad}
+          className={classNames(baseClassName, {
+            'absolute invisible group-hover:visible': hoverToPlay,
+          })}
+        />
+
+        {hoverToPlay && (
+          <canvas
+            ref={canvas}
+            className={classNames(baseClassName, {
+              'group-hover:invisible': hoverToPlay,
+            })}
+          />
+        )}
+      </div>
     </div>
   );
 };
