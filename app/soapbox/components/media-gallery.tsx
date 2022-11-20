@@ -164,7 +164,7 @@ const Item: React.FC<IItem> = ({
 
     thumbnail = (
       <a
-        className={classNames('media-gallery__item-thumbnail')}
+        className='media-gallery__item-thumbnail'
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
@@ -174,6 +174,7 @@ const Item: React.FC<IItem> = ({
           src={attachment.url}
           alt={attachment.description}
           letterboxed={letterboxed}
+          showExt
         />
       </a>
     );
