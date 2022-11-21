@@ -9,7 +9,6 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative-timestamp';
-import StopPropagation from './stop-propagation';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -22,6 +21,8 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
   const history = useHistory();
 
   const handleClick: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
+
     const timelineUrl = `/timeline/${account.domain}`;
     if (!(e.ctrlKey || e.metaKey)) {
       history.push(timelineUrl);
@@ -166,100 +167,106 @@ const Account = ({
   const LinkEl: any = withLinkToProfile ? Link : 'div';
 
   return (
-    <StopPropagation>
-      <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
-        <HStack alignItems={actionAlignment} justifyContent='between'>
-          <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
+    <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
+      <HStack alignItems={actionAlignment} justifyContent='between'>
+        <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
+          <ProfilePopper
+            condition={showProfileHoverCard}
+            wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
+          >
+            <LinkEl
+              to={`/@${account.acct}`}
+              title={account.acct}
+              onClick={(event: React.MouseEvent) => event.stopPropagation()}
+            >
+              <Avatar src={account.avatar} size={avatarSize} />
+              {emoji && (
+                <Emoji
+                  className='w-5 h-5 absolute -bottom-1.5 -right-1.5'
+                  emoji={emoji}
+                />
+              )}
+            </LinkEl>
+          </ProfilePopper>
+
+          <div className='flex-grow'>
             <ProfilePopper
               condition={showProfileHoverCard}
-              wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
+              wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
             >
-              <LinkEl to={`/@${account.acct}`} title={account.acct}>
-                <Avatar src={account.avatar} size={avatarSize} />
-                {emoji && (
-                  <Emoji
-                    className='w-5 h-5 absolute -bottom-1.5 -right-1.5'
-                    emoji={emoji}
+              <LinkEl
+                to={`/@${account.acct}`}
+                title={account.acct}
+                onClick={(event: React.MouseEvent) => event.stopPropagation()}
+              >
+                <div className='flex items-center space-x-1 flex-grow' style={style}>
+                  <Text
+                    size='sm'
+                    weight='semibold'
+                    truncate
+                    dangerouslySetInnerHTML={{ __html: account.display_name_html }}
                   />
-                )}
+
+                  {account.verified && <VerificationBadge />}
+                </div>
               </LinkEl>
             </ProfilePopper>
 
-            <div className='flex-grow'>
-              <ProfilePopper
-                condition={showProfileHoverCard}
-                wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
-              >
-                <LinkEl to={`/@${account.acct}`} title={account.acct}>
-                  <div className='flex items-center space-x-1 flex-grow' style={style}>
-                    <Text
-                      size='sm'
-                      weight='semibold'
-                      truncate
-                      dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-                    />
+            <Stack space={withAccountNote ? 1 : 0}>
+              <HStack alignItems='center' space={1} style={style}>
+                <Text theme='muted' size='sm' truncate>@{username}</Text>
 
-                    {account.verified && <VerificationBadge />}
-                  </div>
-                </LinkEl>
-              </ProfilePopper>
-
-              <Stack space={withAccountNote ? 1 : 0}>
-                <HStack alignItems='center' space={1} style={style}>
-                  <Text theme='muted' size='sm' truncate>@{username}</Text>
-
-                  {account.favicon && (
-                    <InstanceFavicon account={account} />
-                  )}
-
-                  {(timestamp) ? (
-                    <>
-                      <Text tag='span' theme='muted' size='sm'>&middot;</Text>
-
-                      {timestampUrl ? (
-                        <Link to={timestampUrl} className='hover:underline'>
-                          <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
-                        </Link>
-                      ) : (
-                        <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
-                      )}
-                    </>
-                  ) : null}
-
-                  {showEdit ? (
-                    <>
-                      <Text tag='span' theme='muted' size='sm'>&middot;</Text>
-
-                      <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
-                    </>
-                  ) : null}
-
-                  {actionType === 'muting' && account.mute_expires_at ? (
-                    <>
-                      <Text tag='span' theme='muted' size='sm'>&middot;</Text>
-
-                      <Text theme='muted' size='sm'><RelativeTimestamp timestamp={account.mute_expires_at} futureDate /></Text>
-                    </>
-                  ) : null}
-                </HStack>
-
-                {withAccountNote && (
-                  <Text
-                    size='sm'
-                    dangerouslySetInnerHTML={{ __html: account.note_emojified }}
-                    className='mr-2'
-                  />
+                {account.favicon && (
+                  <InstanceFavicon account={account} />
                 )}
-              </Stack>
-            </div>
-          </HStack>
 
-          <div ref={actionRef}>
-            {withRelationship ? renderAction() : null}
+                {(timestamp) ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    {timestampUrl ? (
+                      <Link to={timestampUrl} className='hover:underline' onClick={(event) => event.stopPropagation()}>
+                        <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                      </Link>
+                    ) : (
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
+                    )}
+                  </>
+                ) : null}
+
+                {showEdit ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
+                  </>
+                ) : null}
+
+                {actionType === 'muting' && account.mute_expires_at ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text theme='muted' size='sm'><RelativeTimestamp timestamp={account.mute_expires_at} futureDate /></Text>
+                  </>
+                ) : null}
+              </HStack>
+
+              {withAccountNote && (
+                <Text
+                  size='sm'
+                  dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+                  className='mr-2'
+                />
+              )}
+            </Stack>
           </div>
         </HStack>
-      </div>
-    </StopPropagation>
+
+        <div ref={actionRef}>
+          {withRelationship ? renderAction() : null}
+        </div>
+      </HStack>
+    </div>
   );
 };
 

@@ -2,13 +2,12 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { prepareRequest } from 'soapbox/actions/consumer-auth';
+import Markup from 'soapbox/components/markup';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import RegistrationForm from 'soapbox/features/auth-login/components/registration-form';
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
-
-import './instance-description.css';
 
 const LandingPage = () => {
   const dispatch = useAppDispatch();
@@ -114,12 +113,10 @@ const LandingPage = () => {
                   {instance.title}
                 </h1>
 
-                <Text size='lg'>
-                  <span
-                    className='instance-description'
-                    dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
-                  />
-                </Text>
+                <Markup
+                  size='lg'
+                  dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
+                />
               </Stack>
             </div>
           </div>

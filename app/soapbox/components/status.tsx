@@ -235,8 +235,7 @@ const Status: React.FC<IStatus> = (props) => {
     reblogElement = (
       <NavLink
         to={`/@${status.getIn(['account', 'acct'])}`}
-        onClick={e => e.stopPropagation()}
-        onMouseUp={e => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
         className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
       >
         <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
@@ -259,8 +258,7 @@ const Status: React.FC<IStatus> = (props) => {
       <div className='pb-5 -mt-2 sm:hidden truncate'>
         <NavLink
           to={`/@${status.getIn(['account', 'acct'])}`}
-          onClick={e => e.stopPropagation()}
-          onMouseUp={e => e.stopPropagation()}
+          onClick={(event) => event.stopPropagation()}
           className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
         >
           <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
@@ -328,7 +326,7 @@ const Status: React.FC<IStatus> = (props) => {
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
         ref={node}
-        onMouseUp={handleClick}
+        onClick={handleClick}
         role='link'
       >
         {featured && (

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import StopPropagation from 'soapbox/components/stop-propagation';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -176,9 +175,10 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
   if (media) {
     return (
-      <StopPropagation>
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div onClick={e => e.stopPropagation()}>
         {media}
-      </StopPropagation>
+      </div>
     );
   } else {
     return null;
