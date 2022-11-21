@@ -157,6 +157,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
           onClick={handleRemoteFollow}
           icon={require('@tabler/icons/plus.svg')}
           text={intl.formatMessage(messages.follow)}
+          size='sm'
         />
       );
       // Pleroma's classic remote follow form.
@@ -165,7 +166,11 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
         <form method='POST' action='/main/ostatus'>
           <input type='hidden' name='nickname' value={account.acct} />
           <input type='hidden' name='profile' value='' />
-          <Button text={intl.formatMessage(messages.remote_follow)} type='submit' />
+          <Button
+            text={intl.formatMessage(messages.remote_follow)}
+            type='submit'
+            size='sm'
+          />
         </form>
       );
     }

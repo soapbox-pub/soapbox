@@ -544,6 +544,14 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to follow account feeds using RSS.
+     */
+    rssFeeds: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Can schedule statuses to be posted at a later time.
      * @see POST /api/v1/statuses
      * @see {@link https://docs.joinmastodon.org/methods/statuses/scheduled_statuses/}

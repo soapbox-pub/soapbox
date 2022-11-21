@@ -21,12 +21,12 @@ import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, Men
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import FeedButton from 'soapbox/features/ui/components/feed-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
-import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { Account } from 'soapbox/types/entities';
-import { isRemote } from 'soapbox/utils/accounts';
+import { isLocal, isRemote } from 'soapbox/utils/accounts';
+import { MASTODON, parseVersion } from 'soapbox/utils/features';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 
@@ -68,6 +68,7 @@ const messages = defineMessages({
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
+  subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
 });
 
 interface IHeader {
@@ -81,6 +82,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+
+  const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
   if (!account) {
     return (
@@ -243,6 +246,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
   };
 
+  const handleRssFeedClick = () => {
+    window.open(software === MASTODON ? `${account.url}.rss` : `${account.url}/feed.rss`, '_blank');
+  };
+
   const handleShare = () => {
     navigator.share({
       text: `@${account.acct}`,
@@ -255,8 +262,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const makeMenu = () => {
     const menu: MenuType = [];
 
-    if (!account || !ownAccount) {
+    if (!account) {
       return [];
+    }
+
+    if (features.rssFeeds && isLocal(account)) {
+      menu.push({
+        text: intl.formatMessage(messages.subscribeFeed),
+        action: handleRssFeedClick,
+        icon: require('@tabler/icons/rss.svg'),
+      });
     }
 
     if ('share' in navigator) {
@@ -265,10 +280,25 @@ const Header: React.FC<IHeader> = ({ account }) => {
         action: handleShare,
         icon: require('@tabler/icons/upload.svg'),
       });
+    }
+
+    if (features.federating && isRemote(account)) {
+      const domain = account.fqn.split('@')[1];
+
+      menu.push({
+        text: intl.formatMessage(messages.profileExternal, { domain }),
+        action: () => onProfileExternal(account.url),
+        icon: require('@tabler/icons/external-link.svg'),
+      });
+    }
+
+    if (!ownAccount) return menu;
+
+    if (menu.length) {
       menu.push(null);
     }
 
-    if (account.id === ownAccount?.id) {
+    if (account.id === ownAccount.id) {
       menu.push({
         text: intl.formatMessage(messages.edit_profile),
         to: '/settings/profile',
@@ -427,17 +457,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
           icon: require('@tabler/icons/ban.svg'),
         });
       }
-
-      if (features.federating) {
-        menu.push({
-          text: intl.formatMessage(messages.profileExternal, { domain }),
-          action: () => onProfileExternal(account.url),
-          icon: require('@tabler/icons/external-link.svg'),
-        });
-      }
     }
 
-    if (ownAccount?.staff) {
+    if (ownAccount.staff) {
       menu.push(null);
 
       menu.push({
@@ -455,7 +477,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     if (!account || !ownAccount) return info;
 
-    if (ownAccount?.id !== account.id && account.relationship?.followed_by) {
+    if (ownAccount.id !== account.id && account.relationship?.followed_by) {
       info.push(
         <Badge
           key='followed_by'
@@ -463,7 +485,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
-    } else if (ownAccount?.id !== account.id && account.relationship?.blocking) {
+    } else if (ownAccount.id !== account.id && account.relationship?.blocking) {
       info.push(
         <Badge
           key='blocked'
@@ -473,7 +495,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       );
     }
 
-    if (ownAccount?.id !== account.id && account.relationship?.muting) {
+    if (ownAccount.id !== account.id && account.relationship?.muting) {
       info.push(
         <Badge
           key='muted'
@@ -481,7 +503,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
-    } else if (ownAccount?.id !== account.id && account.relationship?.domain_blocking) {
+    } else if (ownAccount.id !== account.id && account.relationship?.domain_blocking) {
       info.push(
         <Badge
           key='domain_blocked'
@@ -495,7 +517,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   // const renderMessageButton = () => {
-  //   if (!ownAccount || !account || account.id === ownAccount?.id) {
+  //   if (!ownAccount || !account || account.id === ownAccount.id) {
   //     return null;
   //   }
 
@@ -587,7 +609,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
             <div className='mt-10 flex flex-row space-y-0 space-x-2'>
               <SubscriptionButton account={account} />
 
-              {ownAccount ? (
+              {menu.length > 0 && (
                 <Menu>
                   <MenuButton
                     as={IconButton}
@@ -621,8 +643,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
                     })}
                   </MenuList>
                 </Menu>
-              ) : (
-                <FeedButton account={account} />
               )}
 
               {renderShareButton()}
