@@ -6,8 +6,6 @@ import unicodeMapping from './emoji-unicode-mapping-light';
 
 const trie = new Trie(Object.keys(unicodeMapping));
 
-const domParser = new DOMParser();
-
 const emojifyTextNode = (node, customEmojis, autoPlayGif = false) => {
   let str = node.textContent;
 
@@ -26,7 +24,7 @@ const emojifyTextNode = (node, customEmojis, autoPlayGif = false) => {
       }
     }
 
-    let rend, replacement = '';
+    let rend, replacement = null;
     if (i === str.length) {
       break;
     } else if (str[i] === ':') {
@@ -39,7 +37,14 @@ const emojifyTextNode = (node, customEmojis, autoPlayGif = false) => {
         // if you want additional emoji handler, add statements below which set replacement and return true.
         if (shortname in customEmojis) {
           const filename = autoPlayGif ? customEmojis[shortname].url : customEmojis[shortname].static_url;
-          replacement = `<img draggable="false" class="emojione custom-emoji" alt="${shortname}" title="${shortname}" src="${filename}" data-original="${customEmojis[shortname].url}" data-static="${customEmojis[shortname].static_url}" />`;
+          replacement = document.createElement('img');
+          replacement.setAttribute('draggable', false);
+          replacement.setAttribute('class', 'emojione custom-emoji');
+          replacement.setAttribute('alt', shortname);
+          replacement.setAttribute('title', shortname);
+          replacement.setAttribute('src', filename);
+          replacement.setAttribute('data-original', customEmojis[shortname].url);
+          replacement.setAttribute('data-static', customEmojis[shortname].static_url);
           return true;
         }
         return false;
@@ -47,8 +52,12 @@ const emojifyTextNode = (node, customEmojis, autoPlayGif = false) => {
     } else { // matched to unicode emoji
       const { filename, shortCode } = unicodeMapping[match];
       const title = shortCode ? `:${shortCode}:` : '';
-      const src = joinPublicPath(`packs/emoji/${filename}.svg`);
-      replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${src}" />`;
+      replacement = document.createElement('img');
+      replacement.setAttribute('draggable', false);
+      replacement.setAttribute('class', 'emojione');
+      replacement.setAttribute('alt', match);
+      replacement.setAttribute('title', title);
+      replacement.setAttribute('src', joinPublicPath(`packs/emoji/${filename}.svg`));
       rend = i + match.length;
       // If the matched character was followed by VS15 (for selecting text presentation), skip it.
       if (str.codePointAt(rend) === 65038) {
@@ -58,7 +67,7 @@ const emojifyTextNode = (node, customEmojis, autoPlayGif = false) => {
 
     fragment.append(document.createTextNode(str.slice(0, i)));
     if (replacement) {
-      fragment.append(domParser.parseFromString(replacement, 'text/html').documentElement.getElementsByTagName('img')[0]);
+      fragment.append(replacement);
     }
     node.textContent = str.slice(0, i);
     str = str.slice(rend);

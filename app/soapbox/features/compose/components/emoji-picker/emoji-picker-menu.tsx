@@ -4,7 +4,7 @@ import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { buildCustomEmojis } from '../../../emoji/emoji';
+import { buildCustomEmojis, categoriesFromEmojis } from '../../../emoji/emoji';
 
 import { EmojiPicker } from './emoji-picker-dropdown';
 import ModifierPicker from './modifier-picker';
@@ -13,19 +13,6 @@ import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 
 const backgroundImageFn = () => require('emoji-datasource/img/twitter/sheets/32.png');
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
-
-const categoriesSort = [
-  'recent',
-  'custom',
-  'people',
-  'nature',
-  'foods',
-  'activity',
-  'places',
-  'objects',
-  'symbols',
-  'flags',
-];
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -70,6 +57,20 @@ const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
   const node = useRef<HTMLDivElement>(null);
 
   const [modifierOpen, setModifierOpen] = useState(false);
+
+  const categoriesSort = [
+    'recent',
+    'people',
+    'nature',
+    'foods',
+    'activity',
+    'places',
+    'objects',
+    'symbols',
+    'flags',
+  ];
+
+  categoriesSort.splice(1, 0, ...Array.from(categoriesFromEmojis(customEmojis) as Set<string>).sort());
 
   const handleDocumentClick = useCallback(e => {
     if (node.current && !node.current.contains(e.target)) {
