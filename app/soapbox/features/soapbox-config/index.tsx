@@ -48,7 +48,6 @@ const messages = defineMessages({
   authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
   authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
   displayCtaLabel: { id: 'soapbox_config.cta_label', defaultMessage: 'Display call to action panels if not authenticated' },
-  featureFeedsLabel: { id: 'soapbox_config.feature_feeds_label', defaultMessage: 'Feature RSS feeds to unauthenticated users' },
   singleUserModeLabel: { id: 'soapbox_config.single_user_mode_label', defaultMessage: 'Single user mode' },
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
@@ -266,13 +265,6 @@ const SoapboxConfig: React.FC = () => {
               <Toggle
                 checked={soapbox.displayCta === true}
                 onChange={handleChange(['displayCta'], (e) => e.target.checked)}
-              />
-            </ListItem>
-
-            <ListItem label={intl.formatMessage(messages.featureFeedsLabel)}>
-              <Toggle
-                checked={soapbox.featureFeeds === true}
-                onChange={handleChange(['featureFeeds'], (e) => e.target.checked)}
               />
             </ListItem>
 
