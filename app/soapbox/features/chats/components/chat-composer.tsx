@@ -40,8 +40,12 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocked_by']));
   const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
+  const maxCharacterCount = useAppSelector((state) => state.instance.getIn(['configuration', 'chats', 'max_characters']) as number);
 
-  const isSubmitDisabled = disabled || value.length === 0;
+  const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
+  const isSubmitDisabled = disabled || isOverCharacterLimit || value.length === 0;
+
+  const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
 
   const handleUnblockUser = () => {
     dispatch(openModal('CONFIRM', {
@@ -75,7 +79,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
   return (
     <div className='mt-auto pt-4 px-4 shadow-3xl'>
-      <HStack alignItems='center' justifyContent='between' space={4}>
+      <HStack alignItems='stretch' justifyContent='between' space={4}>
         <Stack grow>
           <Textarea
             autoFocus
@@ -91,13 +95,19 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
           />
         </Stack>
 
-        <IconButton
-          src={require('assets/icons/airplane.svg')}
-          iconClassName='w-5 h-5'
-          className='text-primary-500'
-          disabled={isSubmitDisabled}
-          onClick={onSubmit}
-        />
+        <Stack space={2} justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
+          {isOverCharacterLimit ? (
+            <Text size='sm' theme='danger'>{overLimitText}</Text>
+          ) : null}
+
+          <IconButton
+            src={require('assets/icons/airplane.svg')}
+            iconClassName='w-5 h-5'
+            className='text-primary-500'
+            disabled={isSubmitDisabled}
+            onClick={onSubmit}
+          />
+        </Stack>
       </HStack>
 
       <HStack alignItems='center' className='h-5' space={1}>
