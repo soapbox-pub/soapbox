@@ -6,14 +6,6 @@
   position: absolute;
   z-index: 40;
 
-  &--minified {
-    display: block;
-    left: 4px;
-    top: 4px;
-    width: auto;
-    height: auto;
-  }
-
   &--hidden {
     display: none;
   }

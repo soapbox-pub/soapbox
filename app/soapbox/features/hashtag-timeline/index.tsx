@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { connectHashtagStream } from 'soapbox/actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from 'soapbox/actions/timelines';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import SubNavigation from 'soapbox/components/sub-navigation';
 import { Column } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -95,7 +95,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
     subscribe();
     dispatch(clearTimeline(`hashtag:${id}`));
     dispatch(expandHashtagTimeline(id, { tags }));
-  }, [id, tags]);
+  }, [id]);
 
   return (
     <Column label={`#${id}`} transparent withHeader={false}>

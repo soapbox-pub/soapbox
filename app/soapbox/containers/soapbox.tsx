@@ -13,14 +13,14 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import AuthLayout from 'soapbox/features/auth_layout';
+import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
-import PublicLayout from 'soapbox/features/public_layout';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import PublicLayout from 'soapbox/features/public-layout';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
   NotificationsContainer,
@@ -45,7 +45,7 @@ import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
-import ErrorBoundary from '../components/error_boundary';
+import ErrorBoundary from '../components/error-boundary';
 import UI from '../features/ui';
 import { store } from '../store';
 

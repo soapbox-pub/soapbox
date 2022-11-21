@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
+import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
@@ -9,10 +9,9 @@ import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
-import Permalink from 'soapbox/components/permalink';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import StatusContainer from 'soapbox/containers/status_container';
+import AccountContainer from 'soapbox/containers/account-container';
+import StatusContainer from 'soapbox/containers/status-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
@@ -30,9 +29,8 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
 
 const buildLink = (account: Account): JSX.Element => (
   <bdi>
-    <Permalink
+    <Link
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
-      href={`/@${account.acct}`}
       title={account.acct}
       to={`/@${account.acct}`}
       dangerouslySetInnerHTML={{ __html: account.display_name_html }}
@@ -54,6 +52,11 @@ const icons: Record<NotificationType, string> = {
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
 };
+
+const nameMessage = defineMessage({
+  id: 'notification.name',
+  defaultMessage: '{link}{others}',
+});
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
@@ -115,10 +118,7 @@ const buildMessage = (
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
-  const name = intl.formatMessage({
-    id: 'notification.name',
-    defaultMessage: '{link}{others}',
-  }, {
+  const name = intl.formatMessage(nameMessage, {
     link,
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage

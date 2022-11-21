@@ -7,7 +7,7 @@ import {
   fetchMe, patchMe,
 } from '../me';
 
-jest.mock('../../storage/kv_store', () => ({
+jest.mock('../../storage/kv-store', () => ({
   __esModule: true,
   default: {
     getItemOrError: jest.fn().mockReturnValue(Promise.resolve({})),

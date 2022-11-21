@@ -3,14 +3,14 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
 
 import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,
-} from '../actions/emoji_reacts';
+} from '../actions/emoji-reacts';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,

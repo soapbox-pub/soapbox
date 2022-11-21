@@ -1,4 +1,4 @@
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 
 import type { CaptureContext } from '@sentry/types';
 

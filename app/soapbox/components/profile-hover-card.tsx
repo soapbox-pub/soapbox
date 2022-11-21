@@ -8,16 +8,16 @@ import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,
-} from 'soapbox/actions/profile_hover_card';
+} from 'soapbox/actions/profile-hover-card';
 import Badge from 'soapbox/components/badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { isLocal } from 'soapbox/utils/accounts';
 
-import { showProfileHoverCard } from './hover_ref_wrapper';
+import { showProfileHoverCard } from './hover-ref-wrapper';
 import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
 
 import type { AppDispatch } from 'soapbox/store';

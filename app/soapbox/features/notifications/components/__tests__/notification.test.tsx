@@ -13,7 +13,7 @@ const normalize = (notification: any) => {
 
   return {
     // @ts-ignore
-    notification: state.notifications.items.get(notification.id),
+    notification: state.notifications.items.get(notification.id)!,
     state,
   };
 };

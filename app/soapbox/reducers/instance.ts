@@ -3,8 +3,8 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { normalizeInstance } from 'soapbox/normalizers/instance';
-import KVStore from 'soapbox/storage/kv_store';
-import { ConfigDB } from 'soapbox/utils/config_db';
+import KVStore from 'soapbox/storage/kv-store';
+import { ConfigDB } from 'soapbox/utils/config-db';
 
 import {
   rememberInstance,

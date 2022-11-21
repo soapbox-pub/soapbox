@@ -1,14 +1,11 @@
-import {
-  Map as ImmutableMap,
-} from 'immutable';
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
-import compareId from 'soapbox/compare_id';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { compareId } from 'soapbox/utils/comparators';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';
@@ -149,13 +146,13 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
 
 const dequeueNotifications = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const queuedNotifications = getState().notifications.get('queuedNotifications');
-    const totalQueuedNotificationsCount = getState().notifications.get('totalQueuedNotificationsCount');
+    const queuedNotifications = getState().notifications.queuedNotifications;
+    const totalQueuedNotificationsCount = getState().notifications.totalQueuedNotificationsCount;
 
     if (totalQueuedNotificationsCount === 0) {
       return;
     } else if (totalQueuedNotificationsCount > 0 && totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
-      queuedNotifications.forEach((block: APIEntity) => {
+      queuedNotifications.forEach((block) => {
         dispatch(updateNotifications(block.notification));
       });
     } else {
@@ -184,7 +181,7 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
     const notifications = state.notifications;
     const isLoadingMore = !!maxId;
 
-    if (notifications.get('isLoading')) {
+    if (notifications.isLoading) {
       done();
       return dispatch(noOp);
     }
@@ -207,7 +204,7 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
       }
     }
 
-    if (!maxId && notifications.get('items').size > 0) {
+    if (!maxId && notifications.items.size > 0) {
       params.since_id = notifications.getIn(['items', 0, 'id']);
     }
 
@@ -306,8 +303,8 @@ const markReadNotifications = () =>
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const topNotificationId: string | undefined = state.notifications.get('items').first(ImmutableMap()).get('id');
-    const lastReadId: string | -1 = state.notifications.get('lastRead');
+    const topNotificationId = state.notifications.items.first()?.id;
+    const lastReadId = state.notifications.lastRead;
     const v = parseVersion(state.instance.version);
 
     if (topNotificationId && (lastReadId === -1 || compareId(topNotificationId, lastReadId) > 0)) {

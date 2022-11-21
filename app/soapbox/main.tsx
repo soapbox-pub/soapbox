@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { setSwUpdating } from 'soapbox/actions/sw';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 import { store } from 'soapbox/store';
 import { printConsoleWarning } from 'soapbox/utils/console';
 

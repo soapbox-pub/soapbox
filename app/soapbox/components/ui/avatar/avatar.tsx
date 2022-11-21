@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import * as React from 'react';
 
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 
 const AVATAR_SIZE = 42;
 

@@ -7,7 +7,7 @@ import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
-import resizeImage from 'soapbox/utils/resize_image';
+import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
 

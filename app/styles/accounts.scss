@@ -29,15 +29,6 @@
     border-bottom: 1px solid var(--brand-color--med);
   }
 
-  &.compact {
-    padding: 0;
-    border-bottom: 0;
-
-    .account__avatar-wrapper {
-      margin-left: 0;
-    }
-  }
-
   .account__display-name {
     flex: 1 1 auto;
     display: block;
@@ -50,13 +41,6 @@
       display: flex;
     }
   }
-
-  &__note {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--primary-text-color--faint);
-  }
 }
 
 .account__wrapper {
@@ -67,30 +51,6 @@
 .account__avatar-wrapper {
   float: left;
   margin-right: 12px;
-}
-
-.account__avatar {
-  @include avatar-radius;
-  position: relative;
-  background-color: var(--brand-color--faint);
-
-  &-inline {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
-  }
-
-  &-composite {
-    @include avatar-radius;
-    overflow: hidden;
-
-    & > div {
-      @include avatar-radius;
-      float: left;
-      position: relative;
-      box-sizing: border-box;
-    }
-  }
 }
 
 a .account__avatar {
@@ -133,16 +93,6 @@ a .account__avatar {
   .svg-icon {
     width: 20px;
     height: 20px;
-  }
-}
-
-.account-authorize {
-  padding: 14px 10px;
-
-  .detailed-status__display-name {
-    display: block;
-    margin-bottom: 15px;
-    overflow: hidden;
   }
 }
 
@@ -203,23 +153,6 @@ a .account__avatar {
   }
 }
 
-.account__section-headline {
-  button,
-  a {
-    flex: none;
-    padding: 18px 15px;
-    font-size: 16px;
-    font-weight: 600;
-
-    &.active {
-      &::before,
-      &::after {
-        border-color: transparent transparent var(--foreground-color);
-      }
-    }
-  }
-}
-
 .account__moved-note {
   padding: 14px 10px;
   padding-bottom: 16px;
@@ -246,35 +179,6 @@ a .account__avatar {
   &__icon-wrapper {
     left: -26px;
     position: absolute;
-  }
-
-  .detailed-status__display-avatar {
-    position: relative;
-  }
-
-  .detailed-status__display-name {
-    margin-bottom: 0;
-  }
-}
-
-.relationship-tag {
-  color: var(--primary-text-color);
-  margin-bottom: 4px;
-  margin-left: 4px;
-  display: block;
-  vertical-align: top;
-  background-color: var(--background-color);
-  text-transform: uppercase;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 4px;
-  border-radius: 4px;
-  opacity: 0.7;
-  white-space: nowrap;
-  transition: 0.2s;
-
-  &:hover {
-    opacity: 1;
   }
 }
 
