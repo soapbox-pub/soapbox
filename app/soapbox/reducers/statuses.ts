@@ -1,5 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
@@ -195,6 +195,24 @@ const simulateFavourite = (
   return state.set(statusId, updatedStatus);
 };
 
+interface Translation {
+  content: string,
+  detected_source_language: string,
+  provider: string,
+}
+
+/** Import translation from translation service into the store. */
+const importTranslation = (state: State, statusId: string, translation: Translation) => {
+  const map = ImmutableMap(translation);
+  const result = map.set('content', stripCompatibilityFeatures(map.get('content', '')));
+  return state.setIn([statusId, 'translation'], result);
+};
+
+/** Delete translation from the store. */
+const deleteTranslation = (state: State, statusId: string) => {
+  return state.deleteIn([statusId, 'translation']);
+};
+
 const initialState: State = ImmutableMap();
 
 export default function statuses(state = initialState, action: AnyAction): State {
@@ -258,9 +276,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case STATUS_DELETE_FAIL:
       return incrementReplyCount(state, action.params);
     case STATUS_TRANSLATE_SUCCESS:
-      return state.setIn([action.id, 'translation'], fromJS(action.translation));
+      return importTranslation(state, action.id, action.translation);
     case STATUS_TRANSLATE_UNDO:
-      return state.deleteIn([action.id, 'translation']);
+      return deleteTranslation(state, action.id);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
     default:
