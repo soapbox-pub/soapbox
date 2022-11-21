@@ -28,6 +28,8 @@ busybox unzip soapbox.zip -o -d /opt/pleroma/instance
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
+***For OTP releases,*** *unpack to /var/lib/pleroma instead.*
+
 To remove Soapbox and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
 ## :elephant: Deploy on Mastodon

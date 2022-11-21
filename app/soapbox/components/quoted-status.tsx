@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -37,7 +37,16 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const settings = useSettings();
   const displayMedia = settings.get('displayMedia');
 
+  const overlay = useRef<HTMLDivElement>(null);
+
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [minHeight, setMinHeight] = useState(208);
+
+  useEffect(() => {
+    if (overlay.current) {
+      setMinHeight(overlay.current.getBoundingClientRect().height);
+    }
+  }, [overlay.current]);
 
   const handleExpandClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (!status) return;
@@ -103,15 +112,16 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
         <StatusReplyMentions status={status} hoverable={false} />
 
-        <Stack className={classNames('relative z-0', {
-          'min-h-[220px]': status.hidden,
-        })}
+        <Stack
+          className='relative z-0'
+          style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
         >
           {(status.hidden) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={handleToggleMediaVisibility}
+              ref={overlay}
             />
           )}
 

@@ -402,7 +402,7 @@ const Thread: React.FC<IThread> = (props) => {
       offset: -80,
     });
 
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-status')?.focus());
+    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
   }, [props.params.statusId, status?.id, ancestorsIds.size, isLoaded]);
 
   const handleRefresh = () => {
@@ -456,11 +456,11 @@ const Thread: React.FC<IThread> = (props) => {
   const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
   const focusedStatus = (
-    <div className={classNames('thread__detailed-status', { 'pb-4': hasDescendants })} key={status.id}>
+    <div className={classNames({ 'pb-4': hasDescendants })} key={status.id}>
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}
-          className='detailed-status__wrapper focusable relative'
+          className='focusable relative'
           tabIndex={0}
           // FIXME: no "reblogged by" text is added for the screen reader
           aria-label={textForScreenReader(intl, status)}

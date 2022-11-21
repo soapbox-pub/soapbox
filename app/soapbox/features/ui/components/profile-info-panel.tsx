@@ -4,6 +4,7 @@ import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import Badge from 'soapbox/components/badge';
+import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
@@ -139,13 +140,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   return (
     <div className='mt-6 min-w-0 flex-1 sm:px-2'>
       <Stack space={2}>
-        {/* Not sure if this is actual used. */}
-        {/* <div className='profile-info-panel-content__deactivated'>
-          <FormattedMessage
-            id='account.deactivated_description' defaultMessage='This account has been deactivated.'
-          />
-        </div> */}
-
         <Stack>
           <HStack space={1} alignItems='center'>
             <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
@@ -178,8 +172,8 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
         <ProfileStats account={account} />
 
-        {account.note.length > 0 && account.note !== '<p></p>' && (
-          <Text size='sm' dangerouslySetInnerHTML={content} />
+        {account.note.length > 0 && (
+          <Markup size='sm' dangerouslySetInnerHTML={content} />
         )}
 
         <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>

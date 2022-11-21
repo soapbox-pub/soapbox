@@ -14,10 +14,6 @@
   .search--account {
     border-top: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
     padding: 5px;
-
-    input.search__input {
-      border-radius: 6px;
-    }
   }
 
   &__header {
@@ -63,17 +59,6 @@
         height: 18px;
         transform: translateY(2px);
       }
-    }
-
-    .icon-with-badge__badge {
-      position: static;
-      pointer-events: none;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 7px;
     }
   }
 
@@ -224,13 +209,6 @@
       }
     }
   }
-
-  .icon-with-badge__badge {
-    top: 0;
-    right: 0;
-    left: auto;
-    bottom: auto;
-  }
 }
 
 .chat-box {
@@ -318,16 +296,6 @@
     font-weight: bold;
     text-align: left;
     font-size: 14px;
-  }
-}
-
-.chatroom__back {
-  display: flex;
-  align-items: center;
-  background: var(--accent-color--faint);
-
-  .column-back-button {
-    background: transparent;
   }
 }
 

@@ -63,7 +63,7 @@ const Aliases = () => {
             <FormattedMessage id='empty_column.aliases.suggestions' defaultMessage='There are no account suggestions available for the provided term.' />
           </div>
         ) : (
-          <div className='aliases__accounts'>
+          <div className='aliases__accounts mb-4'>
             {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} aliases={aliases} />)}
           </div>
         )

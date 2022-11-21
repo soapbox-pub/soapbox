@@ -1,77 +1,77 @@
-.status-content p {
+[data-markup] p {
   @apply mb-4 whitespace-pre-wrap;
 }
 
-.status-content p:last-child {
+[data-markup] p:last-child {
   @apply mb-0;
 }
 
-.status-content a {
+[data-markup] a {
   @apply text-primary-600 dark:text-accent-blue hover:underline;
 }
 
-.status-content strong {
+[data-markup] strong {
   @apply font-bold;
 }
 
-.status-content em {
+[data-markup] em {
   @apply italic;
 }
 
-.status-content ul,
-.status-content ol {
+[data-markup] ul,
+[data-markup] ol {
   @apply pl-10 mb-4;
 }
 
-.status-content ul {
+[data-markup] ul {
   @apply list-disc list-outside;
 }
 
-.status-content ol {
+[data-markup] ol {
   @apply list-decimal list-outside;
 }
 
-.status-content blockquote {
+[data-markup] blockquote {
   @apply py-1 pl-4 mb-4 border-l-4 border-solid border-gray-400 text-gray-500 dark:text-gray-400;
 }
 
-.status-content code {
+[data-markup] code {
   @apply cursor-text font-mono;
 }
 
-.status-content p > code,
-.status-content pre {
+[data-markup] p > code,
+[data-markup] pre {
   @apply bg-gray-100 dark:bg-primary-800;
 }
 
 /* Inline code */
-.status-content p > code {
+[data-markup] p > code {
   @apply py-0.5 px-1 rounded-sm;
 }
 
 /* Code block */
-.status-content pre {
+[data-markup] pre {
   @apply py-2 px-3 mb-4 leading-6 overflow-x-auto rounded-md break-all;
 }
 
-.status-content pre:last-child {
+[data-markup] pre:last-child {
   @apply mb-0;
 }
 
 /* Markdown images */
-.status-content img:not(.emojione):not([width][height]) {
+[data-markup] img:not(.emojione):not([width][height]) {
   @apply w-full h-72 object-contain rounded-lg overflow-hidden my-4 block;
 }
 
 /* User setting to underline links */
-body.underline-links .status-content a {
+body.underline-links [data-markup] a {
   @apply underline;
 }
 
-.status-content .big-emoji img.emojione {
+[data-markup] .big-emoji img.emojione {
   @apply inline w-9 h-9 p-1;
 }
 
-.status-content .status-link {
+[data-markup] .status-link {
   @apply hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue;
 }

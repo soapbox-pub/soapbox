@@ -253,6 +253,10 @@ export const logOut = () =>
 export const switchAccount = (accountId: string, background = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
+    // Clear all stored cache from React Query
+    queryClient.invalidateQueries();
+    queryClient.clear();
+
     return dispatch({ type: SWITCH_ACCOUNT, account, background });
   };
 

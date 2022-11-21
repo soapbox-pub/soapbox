@@ -32,7 +32,7 @@ const BundleModalError: React.FC<IBundleModalError> = ({ onRetry, onClose }) => 
         <div>
           <button
             onClick={onClose}
-            className='error-modal__nav onboarding-modal__skip'
+            className='error-modal__nav'
           >
             {intl.formatMessage(messages.close)}
           </button>

@@ -277,6 +277,15 @@ const fixBirthday = (account: ImmutableMap<string, any>) => {
   return account.set('birthday', birthday || '');
 };
 
+/** Rewrite `<p></p>` to empty string. */
+const fixNote = (account: ImmutableMap<string, any>) => {
+  if (account.get('note') === '<p></p>') {
+    return account.set('note', '');
+  } else {
+    return account;
+  }
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -298,6 +307,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       fixUsername(account);
       fixDisplayName(account);
       fixBirthday(account);
+      fixNote(account);
       addInternalFields(account);
     }),
   );
