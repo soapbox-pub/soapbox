@@ -35,7 +35,7 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
             <HStack alignItems='center' justifyContent='center' space={1}>
               <Text
                 weight='semibold'
-                dangerouslySetInnerHTML={{ __html: account.display_name }}
+                dangerouslySetInnerHTML={{ __html: account.display_name_html }}
                 truncate
                 align='center'
                 size='sm'
