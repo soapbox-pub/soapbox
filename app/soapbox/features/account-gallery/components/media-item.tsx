@@ -74,6 +74,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
         src={attachment.preview_url}
         alt={attachment.description}
         style={{ objectPosition: `${x}% ${y}%` }}
+        className='w-full h-full rounded-lg overflow-hidden'
       />
     );
   } else if (['gifv', 'video'].indexOf(attachment.type) !== -1) {
