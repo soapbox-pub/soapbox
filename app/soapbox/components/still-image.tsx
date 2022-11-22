@@ -47,7 +47,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
   return (
     <div
       data-testid='still-image-container'
-      className={classNames(className, 'group overflow-hidden')}
+      className={classNames(className, 'group overflow-hidden isolate')}
       style={style}
     >
       <div className='relative w-full h-full'>
