@@ -311,8 +311,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 className={
                   classNames({
                     'text-ellipsis break-all relative rounded-md p-2 max-w-full': true,
-                    'bg-primary-500 text-white mr-2': isMyMessage,
-                    'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 order-2 ml-2': !isMyMessage,
+                    'bg-primary-500 text-white': isMyMessage,
+                    'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
                     '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
                   })
                 }
@@ -320,11 +320,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 tabIndex={0}
               >
                 {maybeRenderMedia(chatMessage)}
-                <Text size='sm' theme='inherit' className='break-word-nested' dangerouslySetInnerHTML={{ __html: content }} />
-              </div>
-
-              <div className={classNames({ 'order-1': !isMyMessage })}>
-                <Avatar src={isMyMessage ? account?.avatar as string : chat.account.avatar as string} size={34} />
+                <Text
+                  size='sm'
+                  theme='inherit'
+                  className='break-word-nested'
+                  dangerouslySetInnerHTML={{ __html: content }}
+                />
               </div>
             </HStack>
           </HStack>
@@ -364,10 +365,6 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                   </>
                 ) : null}
               </span>
-            </div>
-
-            <div className={classNames({ 'order-1': !isMyMessage })}>
-              <div className='w-[34px]' />
             </div>
           </HStack>
         </Stack>
