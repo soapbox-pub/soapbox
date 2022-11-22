@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button, HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
+import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
@@ -17,6 +19,18 @@ const messages = defineMessages({
   unblockHeading: { id: 'chat_settings.unblock.heading', defaultMessage: 'Unblock @{acct}' },
   unblockConfirm: { id: 'chat_settings.unblock.confirm', defaultMessage: 'Unblock' },
 });
+
+const initialSuggestionState = {
+  list: [],
+  tokenStart: 0,
+  token: '',
+};
+
+interface Suggestion {
+  list: { native: string, colons: string }[],
+  tokenStart: number,
+  token: string,
+}
 
 interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'disabled'> {
   value: string
@@ -42,10 +56,59 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
   const maxCharacterCount = useAppSelector((state) => state.instance.getIn(['configuration', 'chats', 'max_characters']) as number);
 
+  const [suggestions, setSuggestions] = useState<Suggestion>(initialSuggestionState);
+  const isSuggestionsAvailable = suggestions.list.length > 0;
+
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
   const isSubmitDisabled = disabled || isOverCharacterLimit || value.length === 0;
 
   const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
+
+  const renderSuggestionValue = (emoji: any) => {
+    return `${(value).slice(0, suggestions.tokenStart)}${emoji.native} ${(value as string).slice(suggestions.tokenStart + suggestions.token.length)}`;
+  };
+
+  const onSelectComboboxOption = (selection: string) => {
+    const event = { target: { value: selection } } as React.ChangeEvent<HTMLTextAreaElement>;
+
+    if (onChange) {
+      onChange(event);
+      setSuggestions(initialSuggestionState);
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const [tokenStart, token] = textAtCursorMatchesToken(
+      event.target.value,
+      event.target.selectionStart,
+      [':'],
+    );
+
+    if (token && tokenStart) {
+      const results = emojiSearch(token.replace(':', ''), { maxResults: 5 } as any);
+      setSuggestions({
+        list: results,
+        token,
+        tokenStart: tokenStart - 1,
+      });
+    } else {
+      setSuggestions(initialSuggestionState);
+    }
+
+    if (onChange) {
+      onChange(event);
+    }
+  };
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey && isSuggestionsAvailable) {
+      return;
+    }
+
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+  };
 
   const handleUnblockUser = () => {
     dispatch(openModal('CONFIRM', {
@@ -81,18 +144,42 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
     <div className='mt-auto pt-4 px-4 shadow-3xl'>
       <HStack alignItems='stretch' justifyContent='between' space={4}>
         <Stack grow>
-          <Textarea
-            autoFocus
-            ref={ref}
-            placeholder={intl.formatMessage(messages.placeholder)}
-            onKeyDown={onKeyDown}
-            value={value}
-            onChange={onChange}
-            isResizeable={false}
-            autoGrow
-            maxRows={5}
-            disabled={disabled}
-          />
+          <Combobox
+            aria-labelledby='demo'
+            onSelect={onSelectComboboxOption}
+          >
+            <ComboboxInput
+              as={Textarea}
+              autoFocus
+              ref={ref}
+              placeholder={intl.formatMessage(messages.placeholder)}
+              onKeyDown={handleKeyDown}
+              value={value}
+              onChange={handleChange}
+              isResizeable={false}
+              autoGrow
+              maxRows={5}
+              disabled={disabled}
+              autoComplete='off'
+            />
+            {isSuggestionsAvailable ? (
+              <ComboboxPopover>
+                <ComboboxList>
+                  {suggestions.list.map((emojiSuggestion) => (
+                    <ComboboxOption
+                      key={emojiSuggestion.colons}
+                      value={renderSuggestionValue(emojiSuggestion)}
+                    >
+                      <span>{emojiSuggestion.native}</span>
+                      <span className='ml-1'>
+                        {emojiSuggestion.colons}
+                      </span>
+                    </ComboboxOption>
+                  ))}
+                </ComboboxList>
+              </ComboboxPopover>
+            ) : null}
+          </Combobox>
         </Stack>
 
         <Stack space={2} justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
