@@ -33,7 +33,7 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
     ref={ref}
     {...filteredProps}
     className={classNames({
-      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
+      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden isolate': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
     }, className)}
   >

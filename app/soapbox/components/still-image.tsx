@@ -47,35 +47,33 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
   return (
     <div
       data-testid='still-image-container'
-      className={classNames(className, 'group overflow-hidden isolate')}
+      className={classNames(className, 'relative group overflow-hidden isolate')}
       style={style}
     >
-      <div className='relative w-full h-full'>
-        <img
-          src={src}
-          alt={alt}
-          ref={img}
-          onLoad={handleImageLoad}
+      <img
+        src={src}
+        alt={alt}
+        ref={img}
+        onLoad={handleImageLoad}
+        className={classNames(baseClassName, {
+          'invisible group-hover:visible': hoverToPlay,
+        })}
+      />
+
+      {hoverToPlay && (
+        <canvas
+          ref={canvas}
           className={classNames(baseClassName, {
-            'absolute invisible group-hover:visible': hoverToPlay,
+            'group-hover:invisible': hoverToPlay,
           })}
         />
+      )}
 
-        {hoverToPlay && (
-          <canvas
-            ref={canvas}
-            className={classNames(baseClassName, {
-              'group-hover:invisible': hoverToPlay,
-            })}
-          />
-        )}
-
-        {(hoverToPlay && showExt) && (
-          <div className='group-hover:hidden absolute opacity-90 left-2 bottom-2 pointer-events-none'>
-            <ExtensionBadge ext='GIF' />
-          </div>
-        )}
-      </div>
+      {(hoverToPlay && showExt) && (
+        <div className='group-hover:hidden absolute opacity-90 left-2 bottom-2 pointer-events-none'>
+          <ExtensionBadge ext='GIF' />
+        </div>
+      )}
     </div>
   );
 };

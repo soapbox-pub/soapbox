@@ -551,13 +551,12 @@ const Header: React.FC<IHeader> = ({ account }) => {
       )}
 
       <div>
-        <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50'>
+        <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
           {account.header && (
             <a href={account.header} onClick={handleHeaderClick} target='_blank'>
               <StillImage
                 src={account.header}
                 alt='Profile Header'
-                className='absolute inset-0 object-cover md:rounded-t-xl'
               />
             </a>
           )}
