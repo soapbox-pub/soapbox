@@ -83,7 +83,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [index]);
 
   const getIndex = () => {
     return index !== null ? index : props.index;
