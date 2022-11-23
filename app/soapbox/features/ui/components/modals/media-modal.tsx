@@ -197,7 +197,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           width={width}
           height={height}
           startTime={time}
-          onCloseVideo={onClose}
           detailed
           link={link}
           alt={attachment.description}
