@@ -25,7 +25,7 @@ const Avatar = (props: IAvatar) => {
 
   return (
     <StillImage
-      className={classNames('rounded-full overflow-hidden', className)}
+      className={classNames('rounded-full', className)}
       style={style}
       src={src}
       alt='Avatar'
