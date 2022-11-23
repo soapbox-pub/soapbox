@@ -167,7 +167,16 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     );
   }
 
-  return media;
+  if (media) {
+    return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div onClick={e => e.stopPropagation()}>
+        {media}
+      </div>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default StatusMedia;

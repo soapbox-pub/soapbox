@@ -352,11 +352,6 @@
   &__preview {
     background-color: transparent;
   }
-
-  &__item-thumbnail img,
-  &__item-thumbnail .still-image img {
-    object-fit: contain;
-  }
 }
 
 .chat-messages__divider {

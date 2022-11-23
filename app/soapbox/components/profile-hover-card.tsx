@@ -136,7 +136,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               </HStack>
             ) : null}
 
-            {account.source.get('note', '').length > 0 && (
+            {account.note.length > 0 && (
               <Text size='sm' dangerouslySetInnerHTML={accountBio} />
             )}
           </Stack>
