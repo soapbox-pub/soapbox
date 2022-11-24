@@ -8,6 +8,7 @@ import {
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
 import IconButton from 'soapbox/components/icon-button';
+import { Textarea } from 'soapbox/components/ui';
 import UploadProgress from 'soapbox/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
@@ -179,11 +180,11 @@ const ChatBox: React.FC<IChatBox> = ({ chatId, onSetInputRef, autosize }) => {
       {isUploading && (
         <UploadProgress progress={uploadProgress * 100} />
       )}
-      <div className='chat-box__actions simple_form'>
+      <div className='chat-box__actions'>
         <div className='chat-box__send'>
           {renderActionButton()}
         </div>
-        <textarea
+        <Textarea
           rows={1}
           placeholder={intl.formatMessage(messages.placeholder)}
           onKeyDown={handleKeyDown}
