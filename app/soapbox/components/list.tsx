@@ -21,9 +21,15 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
   const id = uuidv4();
   const domId = `list-group-${id}`;
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      onClick!();
+    }
+  };
+
   const Comp = onClick ? 'a' : 'div';
   const LabelComp = onClick ? 'span' : 'label';
-  const linkProps = onClick ? { onClick } : {};
+  const linkProps = onClick ? { onClick, onKeyDown, tabIndex: 0, role: 'link' } : {};
 
   const renderChildren = React.useCallback(() => {
     return React.Children.map(children, (child) => {

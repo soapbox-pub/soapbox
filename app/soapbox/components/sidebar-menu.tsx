@@ -134,9 +134,11 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   if (!account) return null;
 
   return (
-    <div className={classNames('sidebar-menu__root', {
-      'sidebar-menu__root--visible': sidebarOpen,
-    })}
+    <div
+      className={classNames('sidebar-menu__root', {
+        'sidebar-menu__root--visible': sidebarOpen,
+      })}
+      aria-expanded={sidebarOpen}
     >
       <div
         className={classNames({
