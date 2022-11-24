@@ -259,6 +259,7 @@ export interface IDropdown extends RouteComponentProps {
   text?: string,
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   children?: JSX.Element,
+  dropdownMenuStyle?: React.CSSProperties,
 }
 
 interface IDropdownState {
@@ -369,7 +370,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   render() {
-    const { src = require('@tabler/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
+    const { src = require('@tabler/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children, dropdownMenuStyle } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
@@ -403,7 +404,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
         )}
 
         <Overlay show={open} placement={dropdownPlacement} target={this.findTarget}>
-          <RouterDropdownMenu items={items} onClose={this.handleClose} openedViaKeyboard={openedViaKeyboard} />
+          <RouterDropdownMenu items={items} onClose={this.handleClose} openedViaKeyboard={openedViaKeyboard} style={dropdownMenuStyle} />
         </Overlay>
       </>
     );

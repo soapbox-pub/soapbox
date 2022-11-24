@@ -254,6 +254,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
               items={menu}
               src={require('@tabler/icons/dots.svg')}
               title={intl.formatMessage(messages.more)}
+              dropdownMenuStyle={{ zIndex: 1000 }}
             />
           </div>
         </div>
