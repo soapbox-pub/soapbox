@@ -58,6 +58,11 @@
   @apply mb-0;
 }
 
+/* Emojis */
+[data-markup] img.emojione {
+  @apply w-5 h-5;
+}
+
 /* Markdown images */
 [data-markup] img:not(.emojione):not([width][height]) {
   @apply w-full h-72 object-contain rounded-lg overflow-hidden my-4 block;
@@ -68,7 +73,7 @@ body.underline-links [data-markup] a {
   @apply underline;
 }
 
-[data-markup] .big-emoji img.emojione {
+[data-markup].big-emoji img.emojione {
   @apply inline w-9 h-9 p-1;
 }
 
