@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Icon } from 'soapbox/components/ui';
-
-import Select from '../../../components/ui/select/select';
+import { Icon, Select } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   light: { id: 'theme_toggle.light', defaultMessage: 'Light' },

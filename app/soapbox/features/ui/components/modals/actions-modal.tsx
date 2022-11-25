@@ -34,8 +34,8 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
     return (
       <li key={`${text}-${i}`}>
         <HStack
-          space={2.5}
           {...compProps}
+          space={2.5}
           data-index={i}
           className={classNames('w-full', { active, destructive })}
           data-method={isLogout ? 'delete' : null}

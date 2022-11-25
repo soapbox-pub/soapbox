@@ -6,7 +6,7 @@ import { spring } from 'react-motion';
 import Overlay from 'react-overlays/lib/Overlay';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { IconButton, Counter } from 'soapbox/components/ui';
+import { Counter, IconButton } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import Motion from 'soapbox/features/ui/util/optional-motion';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { HStack } from 'soapbox/components/ui';
 
 import PlaceholderAvatar from './placeholder-avatar';

@@ -17,7 +17,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still-image';
-import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider, Avatar } from 'soapbox/components/ui';
+import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';

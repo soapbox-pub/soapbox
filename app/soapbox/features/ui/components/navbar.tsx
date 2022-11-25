@@ -78,9 +78,10 @@ const Navbar = () => {
             </div>
           )}
 
-          <div
-            className={classNames({
-              'flex-1 flex items-center lg:items-stretch space-x-4': true,
+          <HStack
+            space={4}
+            alignItems='center'
+            className={classNames('flex-1 enter lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
@@ -97,7 +98,7 @@ const Navbar = () => {
                 </div>
               </div>
             )}
-          </div>
+          </HStack>
 
           <HStack space={3} alignItems='center' className='absolute inset-y-0 right-0 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0'>
             {account ? (
