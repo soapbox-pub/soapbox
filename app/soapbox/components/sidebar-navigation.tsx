@@ -16,7 +16,6 @@ const messages = defineMessages({
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
-  dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
   all: { id: 'tabs_bar.all', defaultMessage: 'All' },
   fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
 });
@@ -69,15 +68,6 @@ const SidebarNavigation = () => {
           to: '/developers',
           icon: require('@tabler/icons/code.svg'),
           text: intl.formatMessage(messages.developers),
-        });
-      }
-
-      if (account.staff) {
-        menu.push({
-          to: '/soapbox/admin',
-          icon: require('@tabler/icons/dashboard.svg'),
-          text: intl.formatMessage(messages.dashboard),
-          count: dashboardCount,
         });
       }
 
@@ -170,6 +160,15 @@ const SidebarNavigation = () => {
               icon={require('@tabler/icons/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
             />
+
+            {account.staff && (
+              <SidebarNavigationLink
+                to='/soapbox/admin'
+                icon={require('@tabler/icons/dashboard.svg')}
+                count={dashboardCount}
+                text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+              />
+            )}
           </>
         )}
 
