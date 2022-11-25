@@ -10,7 +10,7 @@ interface ISidebarNavigationLink {
   /** URL to an SVG icon. */
   icon: string,
   /** Link label. */
-  text: React.ReactElement,
+  text: React.ReactNode,
   /** Route to an internal page. */
   to?: string,
   /** Callback when the link is clicked. */
