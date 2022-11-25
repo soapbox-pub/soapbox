@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { HStack } from 'soapbox/components/ui';
 
 import PlaceholderAvatar from './placeholder-avatar';
 import PlaceholderDisplayName from './placeholder-display-name';
@@ -13,7 +14,7 @@ const PlaceholderNotification = () => (
       </div>
 
       <div>
-        <div className='flex space-x-3 items-center'>
+        <HStack space={3} alignItems='center'>
           <div className='flex-shrink-0'>
             <PlaceholderAvatar size={48} />
           </div>
@@ -21,7 +22,7 @@ const PlaceholderNotification = () => (
           <div className='min-w-0 flex-1'>
             <PlaceholderDisplayName minLength={3} maxLength={25} />
           </div>
-        </div>
+        </HStack>
       </div>
 
       <div className='mt-4'>

@@ -31,7 +31,7 @@ const GdprBanner: React.FC = () => {
 
   return (
     <Banner theme='opaque' className={classNames('transition-transform', { 'translate-y-full': slideout })}>
-      <div className='flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row lg:items-center lg:justify-between'>
+      <div className='flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 rtl:space-x-reverse lg:flex-row lg:items-center lg:justify-between'>
         <Stack space={2}>
           <Text size='xl' weight='bold'>
             <FormattedMessage id='gdpr.title' defaultMessage='{siteTitle} uses cookies' values={{ siteTitle }} />

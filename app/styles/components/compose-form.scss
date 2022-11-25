@@ -59,7 +59,7 @@
         }
 
         .icon-button {
-          @apply text-gray-200 hover:text-white text-sm font-medium p-2.5 space-x-1 flex items-center;
+          @apply text-gray-200 hover:text-white text-sm font-medium p-2.5 space-x-1 rtl:space-x-reverse flex items-center;
         }
       }
 

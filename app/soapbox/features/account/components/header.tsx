@@ -89,13 +89,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         </div>
 
         <div className='px-4 sm:px-6'>
-          <div className='-mt-12 flex items-end space-x-5'>
+          <HStack alignItems='bottom' space={5} className='-mt-12'>
             <div className='flex relative'>
               <div
                 className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
               />
             </div>
-          </div>
+          </HStack>
         </div>
       </div>
     );
@@ -570,7 +570,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       </div>
 
       <div className='px-4 sm:px-6'>
-        <div className='-mt-12 flex items-end space-x-5'>
+        <HStack className='-mt-12' alignItems='bottom' space={5}>
           <div className='flex'>
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
@@ -582,7 +582,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           </div>
 
           <div className='mt-6 flex justify-end w-full sm:pb-1'>
-            <div className='mt-10 flex flex-row space-y-0 space-x-2'>
+            <HStack space={2} className='mt-10'>
               <SubscriptionButton account={account} />
 
               {ownAccount && (
@@ -606,13 +606,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
                         return (
                           <Comp key={idx} {...itemProps} className='group'>
-                            <div className='flex items-center'>
+                            <HStack space={3} alignItems='center'>
                               {menuItem.icon && (
-                                <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
+                                <SvgIcon src={menuItem.icon} className='h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
                               )}
 
                               <div className='truncate'>{menuItem.text}</div>
-                            </div>
+                            </HStack>
                           </Comp>
                         );
                       }
@@ -625,9 +625,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
               {/* {renderMessageButton()} */}
 
               <ActionButton account={account} />
-            </div>
+            </HStack>
           </div>
-        </div>
+        </HStack>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ import {
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import Avatar from '../components/avatar';
-import { Card, CardBody, Layout } from '../components/ui';
+import { Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle-container';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
@@ -42,7 +42,7 @@ const HomePage: React.FC = ({ children }) => {
         {me && (
           <Card variant='rounded' ref={composeBlock}>
             <CardBody>
-              <div className='flex items-start space-x-4'>
+              <HStack alignItems='start' space={4}>
                 <Link to={`/@${acct}`}>
                   <Avatar account={account} size={46} />
                 </Link>
@@ -53,7 +53,7 @@ const HomePage: React.FC = ({ children }) => {
                   autoFocus={false}
                   clickableAreaRef={composeBlock}
                 />
-              </div>
+              </HStack>
             </CardBody>
           </Card>
         )}

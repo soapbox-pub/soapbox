@@ -92,7 +92,7 @@ const Header = () => {
 
           </div>
 
-          <div className='ml-10 flex space-x-6 items-center relative z-10'>
+          <HStack space={6} alignItems='center' className='ml-10 relative z-10'>
             <HStack alignItems='center'>
               <HStack space={6} alignItems='center' className='hidden md:flex md:mr-6'>
                 {links.get('help') && (
@@ -122,7 +122,7 @@ const Header = () => {
               </HStack>
             </HStack>
 
-            <Form className='hidden xl:flex space-x-2 items-center' onSubmit={handleSubmit}>
+            <Form className='hidden xl:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
               <Input
                 required
                 value={username}
@@ -165,7 +165,7 @@ const Header = () => {
                 {intl.formatMessage(messages.login)}
               </Button>
             </Form>
-          </div>
+          </HStack>
         </div>
       </nav>
     </header>

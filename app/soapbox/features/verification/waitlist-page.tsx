@@ -40,7 +40,7 @@ const WaitlistPage = (/* { account } */) => {
               <SiteLogo alt='Logo' className='h-7' />
             </Link>
 
-            <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-3'>
+            <div className='absolute inset-y-0 right-0 flex items-center pr-2'>
               <Button onClick={onClickLogOut} theme='primary' to='/logout'>
                 Sign out
               </Button>

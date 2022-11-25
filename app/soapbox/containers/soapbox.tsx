@@ -49,6 +49,8 @@ import ErrorBoundary from '../components/error-boundary';
 import UI from '../features/ui';
 import { store } from '../store';
 
+const RTL_LOCALES = ['ar', 'ckb', 'fa', 'he'];
+
 // Configure global functions for developers
 createGlobals(store);
 
@@ -276,7 +278,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     <>
       <Helmet>
         <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-        <body className={bodyClass} />
+        <body className={bodyClass} dir={RTL_LOCALES.includes(locale) ? 'rtl' : undefined} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
