@@ -16,8 +16,6 @@ const messages = defineMessages({
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
-  all: { id: 'tabs_bar.all', defaultMessage: 'All' },
-  fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
@@ -70,26 +68,6 @@ const SidebarNavigation = () => {
           text: intl.formatMessage(messages.developers),
         });
       }
-
-      if (features.publicTimeline) {
-        menu.push(null);
-      }
-    }
-
-    if (features.publicTimeline) {
-      menu.push({
-        to: '/timeline/local',
-        icon: features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg'),
-        text: features.federating ? instance.title : intl.formatMessage(messages.all),
-      });
-    }
-
-    if (features.publicTimeline && features.federating) {
-      menu.push({
-        to: '/timeline/fediverse',
-        icon: require('assets/icons/fediverse.svg'),
-        text: intl.formatMessage(messages.fediverse),
-      });
     }
 
     return menu;
@@ -167,6 +145,24 @@ const SidebarNavigation = () => {
                 icon={require('@tabler/icons/dashboard.svg')}
                 count={dashboardCount}
                 text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+              />
+            )}
+          </>
+        )}
+
+        {features.publicTimeline && (
+          <>
+            <SidebarNavigationLink
+              to='/timeline/local'
+              icon={features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg')}
+              text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+            />
+
+            {features.federating && (
+              <SidebarNavigationLink
+                to='/timeline/fediverse'
+                icon={require('assets/icons/fediverse.svg')}
+                text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
               />
             )}
           </>
