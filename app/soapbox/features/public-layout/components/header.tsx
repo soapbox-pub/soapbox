@@ -50,14 +50,12 @@ const Header = () => {
     setLoading(true);
 
     dispatch(logIn(username, password) as any)
-      .then(({ access_token }: { access_token: string }) => {
-        return (
-          dispatch(verifyCredentials(access_token) as any)
-            // Refetch the instance for authenticated fetch
-            .then(() => dispatch(fetchInstance()))
-            .then(() => setShouldRedirect(true))
-        );
-      })
+      .then(({ access_token }: { access_token: string }) => (
+        dispatch(verifyCredentials(access_token) as any)
+        // Refetch the instance for authenticated fetch
+          .then(() => dispatch(fetchInstance()))
+          .then(() => setShouldRedirect(true))
+      ))
       .catch((error: AxiosError) => {
         setLoading(false);
 
