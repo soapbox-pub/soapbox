@@ -26,32 +26,35 @@ const LoginPage = () => {
   const [mfaToken, setMfaToken] = useState(token || '');
   const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  const getFormData = (form: HTMLFormElement) => {
-    return Object.fromEntries(
+  const getFormData = (form: HTMLFormElement) =>
+    Object.fromEntries(
       Array.from(form).map((i: any) => [i.name, i.value]),
     );
-  };
 
   const handleSubmit: React.FormEventHandler = (event) => {
     const { username, password } = getFormData(event.target as HTMLFormElement);
-    dispatch(logIn(username, password)).then(({ access_token }) => {
-      return dispatch(verifyCredentials(access_token as string))
-        // Refetch the instance for authenticated fetch
-        .then(() => dispatch(fetchInstance() as any));
-    }).then((account: { id: string }) => {
-      dispatch(closeModal());
-      setShouldRedirect(true);
-      if (typeof me === 'string') {
-        dispatch(switchAccount(account.id));
-      }
-    }).catch((error: AxiosError) => {
-      const data: any = error.response?.data;
-      if (data?.error === 'mfa_required') {
-        setMfaAuthNeeded(true);
-        setMfaToken(data.mfa_token);
-      }
-      setIsLoading(false);
-    });
+    dispatch(logIn(username, password))
+      .then(({ access_token }) => dispatch(verifyCredentials(access_token as string)))
+      // Refetch the instance for authenticated fetch
+      .then(async (account) => {
+        await dispatch(fetchInstance());
+        return account;
+      })
+      .then((account: { id: string }) => {
+        dispatch(closeModal());
+        if (typeof me === 'string') {
+          dispatch(switchAccount(account.id));
+        } else {
+          setShouldRedirect(true);
+        }
+      }).catch((error: AxiosError) => {
+        const data: any = error.response?.data;
+        if (data?.error === 'mfa_required') {
+          setMfaAuthNeeded(true);
+          setMfaToken(data.mfa_token);
+        }
+        setIsLoading(false);
+      });
     setIsLoading(true);
     event.preventDefault();
   };
