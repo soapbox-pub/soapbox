@@ -172,7 +172,6 @@ const SidebarNavigation = () => {
           <DropdownMenu items={menu}>
             <SidebarNavigationLink
               icon={require('@tabler/icons/dots-circle-horizontal.svg')}
-              count={dashboardCount}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
             />
           </DropdownMenu>
