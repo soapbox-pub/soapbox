@@ -32,6 +32,7 @@
   video {
     display: block;
     z-index: 1;
+    position: relative;
   }
 
   &.fullscreen {
@@ -51,7 +52,6 @@
   &--inline {
     video {
       object-fit: contain;
-      position: relative;
       max-height: 100%;
     }
   }
