@@ -198,7 +198,10 @@ const EditProfile: React.FC = () => {
   const handleSubmit: React.FormEventHandler = (event) => {
     const promises = [];
 
-    promises.push(dispatch(patchMe(data, true)));
+    const params = { ...data };
+    if (params.fields_attributes?.length === 0) params.fields_attributes = [{ name: '', value: '' }];
+
+    promises.push(dispatch(patchMe(params, true)));
 
     if (features.muteStrangers) {
       promises.push(
