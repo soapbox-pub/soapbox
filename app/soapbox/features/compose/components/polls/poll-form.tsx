@@ -169,7 +169,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
 
       <Divider />
 
-      <button type='button' onClick={handleToggleMultiple} className='text-left'>
+      <button type='button' onClick={handleToggleMultiple} className='text-start'>
         <HStack alignItems='center' justifyContent='between'>
           <Stack>
             <Text weight='medium'>

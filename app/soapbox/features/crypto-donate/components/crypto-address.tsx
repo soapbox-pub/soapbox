@@ -33,7 +33,7 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
     <Stack>
       <HStack alignItems='center' className='mb-1'>
         <CryptoIcon
-          className='flex items-start justify-center w-6 mr-2.5'
+          className='flex items-start justify-center w-6 mr-2.5 rtl:ml-2.5 rtl:mr-0'
           ticker={ticker}
           title={title}
         />
@@ -41,12 +41,12 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
         <Text weight='bold'>{title || ticker.toUpperCase()}</Text>
 
         <HStack alignItems='center' className='ml-auto'>
-          <a className='text-gray-500 ml-1' href='#' onClick={handleModalClick}>
+          <a className='text-gray-500 ml-1 rtl:ml-0 rtl:mr-1' href='#' onClick={handleModalClick}>
             <Icon src={require('@tabler/icons/qrcode.svg')} size={20} />
           </a>
 
           {explorerUrl && (
-            <a className='text-gray-500 ml-1' href={explorerUrl} target='_blank'>
+            <a className='text-gray-500 ml-1 rtl:ml-0 rtl:mr-1' href={explorerUrl} target='_blank'>
               <Icon src={require('@tabler/icons/external-link.svg')} size={20} />
             </a>
           )}

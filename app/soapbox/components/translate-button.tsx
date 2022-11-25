@@ -50,7 +50,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   }
 
   return (
-    <button className='text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue text-left text-sm hover:underline' onClick={handleTranslate}>
+    <button className='text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue text-start text-sm hover:underline' onClick={handleTranslate}>
       <FormattedMessage id='status.translate' defaultMessage='Translate' />
     </button>
   );

@@ -15,16 +15,17 @@ import {
   FormGroup,
   HStack,
   Input,
+  Streamfield,
   Textarea,
   Toggle,
 } from 'soapbox/components/ui';
-import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
 
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import type { Account } from 'soapbox/types/entities';
 
 /**

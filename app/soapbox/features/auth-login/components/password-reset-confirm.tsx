@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 

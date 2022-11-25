@@ -86,9 +86,11 @@ const Settings = () => {
                     <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
                     <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
                     <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
-                      {isMfaEnabled ?
-                        intl.formatMessage(messages.mfaEnabled) :
-                        intl.formatMessage(messages.mfaDisabled)}
+                      <span>
+                        {isMfaEnabled ?
+                          intl.formatMessage(messages.mfaEnabled) :
+                          intl.formatMessage(messages.mfaDisabled)}
+                      </span>
                     </ListItem>
                   </>
                 )}

@@ -75,23 +75,6 @@ a .account__avatar {
   }
 }
 
-.account__relationship {
-  height: auto;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  button {
-    margin-left: 5px;
-  }
-
-  .svg-icon {
-    width: 20px;
-    height: 20px;
-  }
-}
-
 .account-authorize__avatar {
   float: left;
   margin-right: 10px;
