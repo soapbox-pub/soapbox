@@ -116,6 +116,7 @@ import {
   EventInformation,
   EventDiscussion,
   ServiceWorkerInfo,
+  Events,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -265,6 +266,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
+      {features.events && <WrappedRoute path='/events' page={DefaultPage} component={Events} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />}
       {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}

@@ -533,3 +533,7 @@ export function EventMapModal() {
 export function EventParticipantsModal() {
   return import(/* webpackChunkName: "modals/event-participants-modal" */'../components/modals/event-participants-modal');
 }
+
+export function Events() {
+  return import(/* webpackChunkName: "features/events" */'../../events');
+}
