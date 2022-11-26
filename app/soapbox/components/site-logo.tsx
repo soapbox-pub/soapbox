@@ -14,7 +14,9 @@ interface ISiteLogo extends React.ComponentProps<'img'> {
 const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   const { logo, logoDarkMode } = useSoapboxConfig();
   const settings = useSettings();
-  const darkMode = useTheme() === 'dark';
+
+  let darkMode = useTheme() === 'dark';
+  if (theme === 'dark') darkMode = true;
 
   /** Soapbox logo. */
   const soapboxLogo = darkMode
