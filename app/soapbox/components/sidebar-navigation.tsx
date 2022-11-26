@@ -154,14 +154,14 @@ const SidebarNavigation = () => {
           <>
             <SidebarNavigationLink
               to='/timeline/local'
-              icon={features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg')}
-              text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+              icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+              text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
             />
 
             {features.federating && (
               <SidebarNavigationLink
                 to='/timeline/fediverse'
-                icon={require('assets/icons/fediverse.svg')}
+                icon={require('@tabler/icons/topology-star-ring-3.svg')}
                 text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
               />
             )}
