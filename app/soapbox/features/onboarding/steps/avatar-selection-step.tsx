@@ -1,6 +1,6 @@
 import classNames from 'clsx';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -10,6 +10,10 @@ import { useOwnAccount } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
+
+const messages = defineMessages({
+  error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
+});
 
 /** Default avatar filenames from various backends */
 const DEFAULT_AVATARS = [
@@ -64,7 +68,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
         if (error.response?.status === 422) {
           dispatch(snackbar.error((error.response.data as any).error.replace('Validation failed: ', '')));
         } else {
-          dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
+          dispatch(snackbar.error(messages.error));
         }
       });
     }).catch(console.error);

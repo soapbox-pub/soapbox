@@ -18,7 +18,7 @@ import type { AxiosError } from 'axios';
 const messages = defineMessages({
   success: { id: 'registrations.success', defaultMessage: 'Welcome to {siteTitle}!' },
   usernameLabel: { id: 'registrations.username.label', defaultMessage: 'Your username' },
-  usernameHint: { id: 'registrations.username.hint', defaultMessage: 'May only contain A-Z, 0-9, and underscores', },
+  usernameHint: { id: 'registrations.username.hint', defaultMessage: 'May only contain A-Z, 0-9, and underscores' },
   usernameTaken: { id: 'registrations.unprocessable_entity', defaultMessage: 'This username has already been taken.' },
   passwordLabel: { id: 'registrations.password.label', defaultMessage: 'Password' },
   error: { id: 'registrations.error', defaultMessage: 'Failed to register your account.' },

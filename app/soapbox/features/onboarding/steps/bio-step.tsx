@@ -11,6 +11,7 @@ import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   bioPlaceholder: { id: 'onboarding.bio.placeholder', defaultMessage: 'Tell the world a little about yourself…' },
+  error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
 
 const BioStep = ({ onNext }: { onNext: () => void }) => {
@@ -37,7 +38,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
         if (error.response?.status === 422) {
           setErrors([(error.response.data as any).error.replace('Validation failed: ', '')]);
         } else {
-          dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
+          dispatch(snackbar.error(messages.error));
         }
       });
   };
