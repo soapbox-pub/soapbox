@@ -68,7 +68,6 @@ const messages = defineMessages({
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
-  composeEvent: { od: 'navigation.compose_event', defaultMessage: 'Create new event' },
 });
 
 interface IHeader {
@@ -214,10 +213,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     history.push('/search');
   };
 
-  const onComposeEvent = () => {
-    dispatch(openModal('COMPOSE_EVENT'));
-  };
-
   const onAvatarClick = () => {
     const avatar = normalizeAttachment({
       type: 'image',
@@ -302,13 +297,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
         to: '/blocks',
         icon: require('@tabler/icons/ban.svg'),
       });
-      if (features.events) {
-        menu.push({
-          text: intl.formatMessage(messages.composeEvent),
-          action: onComposeEvent,
-          icon: require('@tabler/icons/calendar.svg'),
-        });
-      }
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: account.username }),

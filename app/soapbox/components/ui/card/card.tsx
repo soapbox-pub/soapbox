@@ -87,9 +87,14 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
   <Text size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
 );
 
+interface ICardBody {
+  /** Classnames for the <div> element. */
+  className?: string
+}
+
 /** A card's body. */
-const CardBody: React.FC = ({ children }): JSX.Element => (
-  <div data-testid='card-body'>{children}</div>
+const CardBody: React.FC<ICardBody> = ({ className, children }): JSX.Element => (
+  <div data-testid='card-body' className={className}>{children}</div>
 );
 
 export { Card, CardHeader, CardTitle, CardBody };

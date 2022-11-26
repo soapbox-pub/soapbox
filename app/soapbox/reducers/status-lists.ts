@@ -13,6 +13,14 @@ import {
   BOOKMARKED_STATUSES_EXPAND_FAIL,
 } from '../actions/bookmarks';
 import {
+  RECENT_EVENTS_FETCH_REQUEST,
+  RECENT_EVENTS_FETCH_SUCCESS,
+  RECENT_EVENTS_FETCH_FAIL,
+  JOINED_EVENTS_FETCH_REQUEST,
+  JOINED_EVENTS_FETCH_SUCCESS,
+  JOINED_EVENTS_FETCH_FAIL,
+} from '../actions/events';
+import {
   FAVOURITED_STATUSES_FETCH_REQUEST,
   FAVOURITED_STATUSES_FETCH_SUCCESS,
   FAVOURITED_STATUSES_FETCH_FAIL,
@@ -68,6 +76,8 @@ const initialState: State = ImmutableMap({
   bookmarks: StatusListRecord(),
   pins: StatusListRecord(),
   scheduled_statuses: StatusListRecord(),
+  recent_events: StatusListRecord(),
+  joined_events: StatusListRecord(),
 });
 
 const getStatusId = (status: string | StatusEntity) => typeof status === 'string' ? status : status.id;
@@ -168,6 +178,18 @@ export default function statusLists(state = initialState, action: AnyAction) {
     case SCHEDULED_STATUS_CANCEL_REQUEST:
     case SCHEDULED_STATUS_CANCEL_SUCCESS:
       return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.id);
+    case RECENT_EVENTS_FETCH_REQUEST:
+      return setLoading(state, 'recent_events', true);
+    case RECENT_EVENTS_FETCH_FAIL:
+      return setLoading(state, 'recent_events', false);
+    case RECENT_EVENTS_FETCH_SUCCESS:
+      return normalizeList(state, 'recent_events', action.statuses, action.next);
+    case JOINED_EVENTS_FETCH_REQUEST:
+      return setLoading(state, 'joined_events', true);
+    case JOINED_EVENTS_FETCH_FAIL:
+      return setLoading(state, 'joined_events', false);
+    case JOINED_EVENTS_FETCH_SUCCESS:
+      return normalizeList(state, 'joined_events', action.statuses, action.next);
     default:
       return state;
   }

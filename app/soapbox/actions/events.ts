@@ -4,7 +4,7 @@ import api, { getLinks } from 'soapbox/api';
 import { formatBytes } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
 
-import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
 import { fetchMedia, uploadMedia } from './media';
 import { closeModal, openModal } from './modals';
 import snackbar from './snackbar';
@@ -75,6 +75,13 @@ const EVENT_PARTICIPATION_REQUEST_REJECT_FAIL    = 'EVENT_PARTICIPATION_REQUEST_
 const EVENT_COMPOSE_CANCEL = 'EVENT_COMPOSE_CANCEL';
 
 const EVENT_FORM_SET = 'EVENT_FORM_SET';
+
+const RECENT_EVENTS_FETCH_REQUEST = 'RECENT_EVENTS_FETCH_REQUEST';
+const RECENT_EVENTS_FETCH_SUCCESS = 'RECENT_EVENTS_FETCH_SUCCESS';
+const RECENT_EVENTS_FETCH_FAIL = 'RECENT_EVENTS_FETCH_FAIL';
+const JOINED_EVENTS_FETCH_REQUEST = 'JOINED_EVENTS_FETCH_REQUEST';
+const JOINED_EVENTS_FETCH_SUCCESS = 'JOINED_EVENTS_FETCH_SUCCESS';
+const JOINED_EVENTS_FETCH_FAIL = 'JOINED_EVENTS_FETCH_FAIL';
 
 const noOp = () => new Promise(f => f(undefined));
 
@@ -579,6 +586,48 @@ const editEvent = (id: string) => (dispatch: AppDispatch, getState: () => RootSt
   });
 };
 
+const fetchRecentEvents = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (getState().status_lists.get('recent_events')?.isLoading) {
+      return;
+    }
+
+    dispatch({ type: RECENT_EVENTS_FETCH_REQUEST });
+
+    api(getState).get('/api/v1/timelines/public?only_events=true').then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedStatuses(response.data));
+      dispatch({
+        type: RECENT_EVENTS_FETCH_SUCCESS,
+        statuses: response.data,
+        next: next ? next.uri : null,
+      });
+    }).catch(error => {
+      dispatch({ type: RECENT_EVENTS_FETCH_FAIL,  error });
+    });
+  };
+
+const fetchJoinedEvents = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (getState().status_lists.get('joined_events')?.isLoading) {
+      return;
+    }
+
+    dispatch({ type: JOINED_EVENTS_FETCH_REQUEST });
+
+    api(getState).get('/api/v1/pleroma/events/joined_events').then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedStatuses(response.data));
+      dispatch({
+        type: JOINED_EVENTS_FETCH_SUCCESS,
+        statuses: response.data,
+        next: next ? next.uri : null,
+      });
+    }).catch(error => {
+      dispatch({ type: JOINED_EVENTS_FETCH_FAIL,  error });
+    });
+  };
+
 export {
   LOCATION_SEARCH_REQUEST,
   LOCATION_SEARCH_SUCCESS,
@@ -624,6 +673,12 @@ export {
   EVENT_PARTICIPATION_REQUEST_REJECT_FAIL,
   EVENT_COMPOSE_CANCEL,
   EVENT_FORM_SET,
+  RECENT_EVENTS_FETCH_REQUEST,
+  RECENT_EVENTS_FETCH_SUCCESS,
+  RECENT_EVENTS_FETCH_FAIL,
+  JOINED_EVENTS_FETCH_REQUEST,
+  JOINED_EVENTS_FETCH_SUCCESS,
+  JOINED_EVENTS_FETCH_FAIL,
   locationSearch,
   changeEditEventName,
   changeEditEventDescription,
@@ -677,4 +732,6 @@ export {
   fetchEventIcs,
   cancelEventCompose,
   editEvent,
+  fetchRecentEvents,
+  fetchJoinedEvents,
 };
