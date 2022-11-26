@@ -33,9 +33,9 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
   return (
     <div className='account'>
       <button className='floating-link' onClick={() => onClick(chat)} />
-      <HStack key={account.id} space={3} className='relative'>
-        <Avatar src={account.avatar} size={36} />
-        <Stack>
+      <HStack key={account.id} space={3} className='relative overflow-hidden'>
+        <Avatar className='flex-none' src={account.avatar} size={36} />
+        <Stack className='overflow-hidden'>
           <DisplayName account={account} withSuffix={false} />
           {attachment && (
             <Icon
@@ -49,6 +49,7 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
               size='sm'
               className='chat__last-message'
               dangerouslySetInnerHTML={{ __html: parsedContent }}
+              truncate
             />
           ) : attachment && (
             <span

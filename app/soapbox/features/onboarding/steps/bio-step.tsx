@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -9,7 +9,13 @@ import { useOwnAccount } from 'soapbox/hooks';
 
 import type { AxiosError } from 'axios';
 
+const messages = defineMessages({
+  bioPlaceholder: { id: 'onboarding.bio.placeholder', defaultMessage: 'Tell the world a little about yourself…' },
+  error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
+});
+
 const BioStep = ({ onNext }: { onNext: () => void }) => {
+  const intl = useIntl();
   const dispatch = useDispatch();
 
   const account = useOwnAccount();
@@ -32,7 +38,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
         if (error.response?.status === 422) {
           setErrors([(error.response.data as any).error.replace('Validation failed: ', '')]);
         } else {
-          dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
+          dispatch(snackbar.error(messages.error));
         }
       });
   };
@@ -56,13 +62,13 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
           <Stack space={5}>
             <div className='sm:pt-10 sm:w-2/3 mx-auto'>
               <FormGroup
-                hintText='Max 500 characters'
-                labelText='Bio'
+                hintText={<FormattedMessage id='onboarding.bio.hint' defaultMessage='Max 500 characters' />}
+                labelText={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
                 errors={errors}
               >
                 <Textarea
                   onChange={(event) => setValue(event.target.value)}
-                  placeholder='Tell the world a little about yourself…'
+                  placeholder={intl.formatMessage(messages.bioPlaceholder)}
                   value={value}
                   maxLength={500}
                 />
