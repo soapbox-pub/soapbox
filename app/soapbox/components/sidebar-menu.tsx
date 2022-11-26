@@ -38,6 +38,7 @@ const messages = defineMessages({
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   followRequests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
 interface ISidebarLink {
@@ -148,7 +149,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
         onClick={handleClose}
       >
         <IconButton
-          title='close'
+          title={intl.formatMessage(messages.close)}
           onClick={handleClose}
           src={require('@tabler/icons/x.svg')}
           ref={closeButtonRef}

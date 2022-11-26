@@ -16,22 +16,12 @@ import PasswordIndicator from './components/password-indicator';
 import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
-  success: {
-    id: 'registrations.success',
-    defaultMessage: 'Welcome to {siteTitle}!',
-  },
-  usernameHint: {
-    id: 'registrations.username.hint',
-    defaultMessage: 'May only contain A-Z, 0-9, and underscores',
-  },
-  usernameTaken: {
-    id: 'registrations.unprocessable_entity',
-    defaultMessage: 'This username has already been taken.',
-  },
-  error: {
-    id: 'registrations.error',
-    defaultMessage: 'Failed to register your account.',
-  },
+  success: { id: 'registrations.success', defaultMessage: 'Welcome to {siteTitle}!' },
+  usernameLabel: { id: 'registrations.username.label', defaultMessage: 'Your username' },
+  usernameHint: { id: 'registrations.username.hint', defaultMessage: 'May only contain A-Z, 0-9, and underscores', },
+  usernameTaken: { id: 'registrations.unprocessable_entity', defaultMessage: 'This username has already been taken.' },
+  passwordLabel: { id: 'registrations.password.label', defaultMessage: 'Password' },
+  error: { id: 'registrations.error', defaultMessage: 'Failed to register your account.' },
 });
 
 const initialState = {
@@ -108,7 +98,7 @@ const Registration = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Your username' hintText={intl.formatMessage(messages.usernameHint)}>
+          <FormGroup labelText={intl.formatMessage(messages.usernameLabel)} hintText={intl.formatMessage(messages.usernameHint)}>
             <Input
               name='username'
               type='text'
@@ -120,7 +110,7 @@ const Registration = () => {
             />
           </FormGroup>
 
-          <FormGroup labelText='Password'>
+          <FormGroup labelText={intl.formatMessage(messages.passwordLabel)}>
             <Input
               name='password'
               type='password'
@@ -140,7 +130,7 @@ const Registration = () => {
               type='submit'
               disabled={isLoading || !hasValidPassword}
             >
-              Register
+              <FormattedMessage id='header.register.label' defaultMessage='Register' />
             </Button>
 
             {(links.get('termsOfService') && links.get('privacyPolicy')) ? (

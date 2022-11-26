@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -9,7 +9,12 @@ import { useOwnAccount } from 'soapbox/hooks';
 
 import type { AxiosError } from 'axios';
 
+const messages = defineMessages({
+  usernamePlaceholder: { id: 'onboarding.display_name.placeholder', defaultMessage: 'Eg. John Smith' },
+});
+
 const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
+  const intl = useIntl();
   const dispatch = useDispatch();
 
   const account = useOwnAccount();
@@ -68,12 +73,12 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
             <Stack space={5}>
               <FormGroup
                 hintText={hintText}
-                labelText='Display name'
+                labelText={<FormattedMessage id='onboarding.display_name.label' defaultMessage='Display name' />}
                 errors={errors}
               >
                 <Input
                   onChange={(event) => setValue(event.target.value)}
-                  placeholder='Eg. John Smith'
+                  placeholder={intl.formatMessage(messages.usernamePlaceholder)}
                   type='text'
                   value={value}
                   maxLength={30}
@@ -88,7 +93,11 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
                   disabled={isDisabled || isSubmitting}
                   onClick={handleSubmit}
                 >
-                  {isSubmitting ? 'Saving…' : 'Next'}
+                  {isSubmitting ? (
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
+                  ) : (
+                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+                  )}
                 </Button>
 
                 <Button block theme='tertiary' type='button' onClick={onNext}>
