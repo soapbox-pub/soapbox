@@ -15,6 +15,7 @@ import Sonar from './sonar';
 import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
+  menu: { id: 'header.menu.title', defaultMessage: 'Open menu' },
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
   register: { id: 'header.register.label', defaultMessage: 'Register' },
@@ -79,7 +80,7 @@ const Header = () => {
             </div>
 
             <IconButton
-              title='Open Menu'
+              title={intl.formatMessage(messages.menu)}
               src={require('@tabler/icons/menu-2.svg')}
               onClick={open}
               className='md:hidden mr-4 bg-transparent text-gray-700 dark:text-gray-600 hover:text-gray-600'

@@ -67,6 +67,7 @@ const messages = defineMessages({
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
+  header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
 });
 
 interface IHeader {
@@ -556,7 +557,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
             <a href={account.header} onClick={handleHeaderClick} target='_blank'>
               <StillImage
                 src={account.header}
-                alt='Profile Header'
+                alt={intl.formatMessage(messages.header)}
               />
             </a>
           )}

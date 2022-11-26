@@ -13,6 +13,7 @@ const messages = defineMessages({
   verificationFail: { id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' },
   verificationFailTakenAlert: { id: 'email_verifilcation.exists', defaultMessage: 'This email has already been taken.' },
   verificationFailTaken: { id: 'email_verification.taken', defaultMessage: 'is taken' },
+  emailLabel: { id: 'email_verification.email.label', defaultMessage: 'E-mail address' },
 });
 
 const Statuses = {
@@ -122,7 +123,7 @@ const EmailVerification = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Email Address' errors={errors}>
+          <FormGroup labelText={intl.formatMessage(messages.emailLabel)} errors={errors}>
             <Input
               type='email'
               value={email}
@@ -134,7 +135,9 @@ const EmailVerification = () => {
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>Next</Button>
+            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            </Button>
           </div>
         </Form>
       </div>
