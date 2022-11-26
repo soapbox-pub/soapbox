@@ -7,7 +7,7 @@ import { closeModal } from 'soapbox/actions/modals';
 import snackbar from 'soapbox/actions/snackbar';
 import { reConfirmPhoneVerification, reRequestPhoneVerification } from 'soapbox/actions/verification';
 import { FormGroup, PhoneInput, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { getAccessToken } from 'soapbox/utils/auth';
 
 const messages = defineMessages({
@@ -56,8 +56,8 @@ enum Statuses {
 const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const instance = useInstance();
   const accessToken = useAppSelector((state) => getAccessToken(state));
-  const title = useAppSelector((state) => state.instance.title);
   const isLoading = useAppSelector((state) => state.verification.isLoading);
 
   const [status, setStatus] = useState<Statuses>(Statuses.IDLE);
@@ -143,7 +143,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
               id='sms_verification.modal.verify_help_text'
               defaultMessage='Verify your phone number to start using {instance}.'
               values={{
-                instance: title,
+                instance: instance.title,
               }}
             />
           </Text>

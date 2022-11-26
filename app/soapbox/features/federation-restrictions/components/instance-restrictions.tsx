@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useInstance } from 'soapbox/hooks';
 
 import type { Map as ImmutableMap } from 'immutable';
 
@@ -21,7 +21,7 @@ interface IInstanceRestrictions {
 }
 
 const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance }) => {
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
 
   const renderRestrictions = () => {
     const items = [];

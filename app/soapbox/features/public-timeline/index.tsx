@@ -8,7 +8,7 @@ import { expandPublicTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub-navigation';
 import { Accordion, Column } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useInstance, useSettings } from 'soapbox/hooks';
 
 import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker';
 import Timeline from '../ui/components/timeline';
@@ -22,12 +22,12 @@ const CommunityTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const instance = useInstance();
   const settings = useSettings();
   const onlyMedia = settings.getIn(['public', 'other', 'onlyMedia']);
 
   const timelineId = 'public';
 
-  const siteTitle = useAppSelector((state) => state.instance.title);
   const explanationBoxExpanded = settings.get('explanationBox');
   const showExplanationBox = settings.get('showExplanationBox');
 
@@ -79,13 +79,13 @@ const CommunityTimeline = () => {
             id='fediverse_tab.explanation_box.explanation'
             defaultMessage='{site_title} is part of the Fediverse, a social network made up of thousands of independent social media sites (aka "servers"). The posts you see here are from 3rd-party servers. You have the freedom to engage with them, or to block any server you don&apos;t like. Pay attention to the full username after the second @ symbol to know which server a post is from. To see only {site_title} posts, visit {local}.'
             values={{
-              site_title: siteTitle,
+              site_title: instance.title,
               local: (
                 <Link to='/timeline/local'>
                   <FormattedMessage
                     id='empty_column.home.local_tab'
                     defaultMessage='the {site_title} tab'
-                    values={{ site_title: siteTitle }}
+                    values={{ site_title: instance.title }}
                   />
                 </Link>
               ),

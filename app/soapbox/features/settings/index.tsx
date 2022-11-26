@@ -6,8 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
 import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
 
@@ -36,7 +35,7 @@ const Settings = () => {
   const intl = useIntl();
 
   const mfa = useAppSelector((state) => state.security.get('mfa'));
-  const features = useAppSelector((state) => getFeatures(state.instance));
+  const features = useFeatures();
   const account = useOwnAccount();
 
   const navigateToChangeEmail = () => history.push('/settings/email');

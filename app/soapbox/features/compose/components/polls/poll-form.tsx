@@ -4,10 +4,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose';
 import AutosuggestInput from 'soapbox/components/autosuggest-input';
 import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
+import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks';
 
 import DurationSelector from './duration-selector';
 
+import type { Map as ImmutableMap } from 'immutable';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
 const messages = defineMessages({
@@ -110,16 +111,17 @@ interface IPollForm {
 const PollForm: React.FC<IPollForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const { configuration } = useInstance();
 
   const compose = useCompose(composeId);
 
-  const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
+  const pollLimits = configuration.get('polls') as ImmutableMap<string, number>;
   const options = compose.poll?.options;
   const expiresIn = compose.poll?.expires_in;
   const isMultiple = compose.poll?.multiple;
 
-  const maxOptions = pollLimits.get('max_options');
-  const maxOptionChars = pollLimits.get('max_characters_per_option');
+  const maxOptions = pollLimits.get('max_options') as number;
+  const maxOptionChars = pollLimits.get('max_characters_per_option') as number;
 
   const onRemoveOption = (index: number) => dispatch(removePollOption(composeId, index));
   const onChangeOption = (index: number, title: string) => dispatch(changePollOption(composeId, index, title));
