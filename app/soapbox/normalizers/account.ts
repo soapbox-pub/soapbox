@@ -98,7 +98,7 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
 const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   const avatar = account.get('avatar');
   const avatarStatic = account.get('avatar_static');
-  const missing = require('images/avatar-missing.png');
+  const missing = require('assets/images/avatar-missing.png');
 
   return account.withMutations(account => {
     account.set('avatar', avatar || avatarStatic || missing);
@@ -110,7 +110,7 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
 const normalizeHeader = (account: ImmutableMap<string, any>) => {
   const header = account.get('header');
   const headerStatic = account.get('header_static');
-  const missing = require('images/header-missing.png');
+  const missing = require('assets/images/header-missing.png');
 
   return account.withMutations(account => {
     account.set('header', header || headerStatic || missing);
@@ -269,6 +269,15 @@ const fixBirthday = (account: ImmutableMap<string, any>) => {
   return account.set('birthday', birthday || '');
 };
 
+/** Rewrite `<p></p>` to empty string. */
+const fixNote = (account: ImmutableMap<string, any>) => {
+  if (account.get('note') === '<p></p>') {
+    return account.set('note', '');
+  } else {
+    return account;
+  }
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -289,6 +298,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       fixUsername(account);
       fixDisplayName(account);
       fixBirthday(account);
+      fixNote(account);
       addInternalFields(account);
     }),
   );

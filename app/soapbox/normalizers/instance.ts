@@ -103,7 +103,7 @@ const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   const version: string = instance.get('version', '');
 
   if (version.includes('Akkoma')) {
-    return instance.set('version', '2.7.2 (compatible; Pleroma 2.4.5+akkoma)');
+    return instance.set('version', '2.7.2 (compatible; Pleroma 2.4.50+akkoma)');
   } else {
     return instance;
   }

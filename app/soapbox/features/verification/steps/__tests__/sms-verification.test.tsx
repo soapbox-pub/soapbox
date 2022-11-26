@@ -26,7 +26,7 @@ describe('<SmsVerification />', () => {
 
       render(<SmsVerification />);
 
-      await userEvent.type(screen.getByLabelText('Phone Number'), '+1 (555) 555-5555');
+      await userEvent.type(screen.getByLabelText('Phone number'), '+1 (555) 555-5555');
       await waitFor(() => {
         fireEvent.submit(
           screen.getByRole('button', { name: 'Next' }), {
@@ -53,7 +53,7 @@ describe('<SmsVerification />', () => {
 
       render(<SmsVerification />);
 
-      await userEvent.type(screen.getByLabelText('Phone Number'), '+1 (555) 555-5555');
+      await userEvent.type(screen.getByLabelText('Phone number'), '+1 (555) 555-5555');
       await waitFor(() => {
         fireEvent.submit(
           screen.getByRole('button', { name: 'Next' }), {
@@ -87,7 +87,7 @@ describe('<SmsVerification />', () => {
     it('renders errors', async() => {
       render(<SmsVerification />);
 
-      await userEvent.type(screen.getByLabelText('Phone Number'), '+1 (555) 555-5555');
+      await userEvent.type(screen.getByLabelText('Phone number'), '+1 (555) 555-5555');
       await waitFor(() => {
         fireEvent.submit(
           screen.getByRole('button', { name: 'Next' }), {

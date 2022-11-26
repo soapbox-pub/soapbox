@@ -20,9 +20,9 @@ import {
 import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
 import LocationSearch from 'soapbox/components/location-search';
 import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Textarea } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule_form';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import AccountContainer from 'soapbox/containers/account-container';
+import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 

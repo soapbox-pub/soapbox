@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import Motion from 'soapbox/features/ui/util/optional_motion';
+import Motion from 'soapbox/features/ui/util/optional-motion';
 
 interface IUploadProgress {
   /** Number between 0 and 1 to represent the percentage complete. */

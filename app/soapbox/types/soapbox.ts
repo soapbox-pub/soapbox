@@ -4,7 +4,7 @@ import {
   FooterItemRecord,
   CryptoAddressRecord,
   SoapboxConfigRecord,
-} from 'soapbox/normalizers/soapbox/soapbox_config';
+} from 'soapbox/normalizers/soapbox/soapbox-config';
 
 type Me = string | null | false | undefined;
 

@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { locationSearch } from 'soapbox/actions/events';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest_input';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import Icon from 'soapbox/components/icon';
 import { useAppDispatch } from 'soapbox/hooks';
 

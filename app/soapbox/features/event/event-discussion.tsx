@@ -5,12 +5,12 @@ import { FormattedMessage } from 'react-intl';
 
 import { eventDiscussionCompose } from 'soapbox/actions/compose';
 import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import MissingIndicator from 'soapbox/components/missing-indicator';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import Tombstone from 'soapbox/components/tombstone';
 import { Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
+import PendingStatus from 'soapbox/features/ui/components/pending-status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 

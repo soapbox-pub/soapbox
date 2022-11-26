@@ -12,7 +12,7 @@ import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation
 import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
-import MissingIndicator from 'soapbox/components/missing_indicator';
+import MissingIndicator from 'soapbox/components/missing-indicator';
 import OutlineBox from 'soapbox/components/outline-box';
 import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';

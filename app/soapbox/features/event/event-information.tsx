@@ -3,7 +3,7 @@ import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { fetchStatus } from 'soapbox/actions/statuses';
-import MissingIndicator from 'soapbox/components/missing_indicator';
+import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusMedia from 'soapbox/components/status-media';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';

@@ -15,7 +15,7 @@ import {
   FormGroup,
   Textarea,
 } from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 
 const isJSONValid = (text: any): boolean => {
@@ -29,6 +29,7 @@ const isJSONValid = (text: any): boolean => {
 
 const messages = defineMessages({
   heading: { id: 'column.settings_store', defaultMessage: 'Settings store' },
+  advanced: { id: 'developers.settings_store.advanced', defaultMessage: 'Advanced settings' },
   hint: { id: 'developers.settings_store.hint', defaultMessage: 'It is possible to directly edit your user settings here. BE CAREFUL! Editing this section can break your account, and you will only be able to recover through the API.' },
 });
 
@@ -98,7 +99,7 @@ const SettingsStore: React.FC = () => {
       </Form>
 
       <CardHeader>
-        <CardTitle title='Advanced settings' />
+        <CardTitle title={intl.formatMessage(messages.advanced)} />
       </CardHeader>
 
       <List>
@@ -131,13 +132,6 @@ const SettingsStore: React.FC = () => {
             <SettingToggle settings={settings} settingPath={['dyslexicFont']} onChange={onToggleChange} />
           </ListItem>
         </div>
-
-        {/* <ListItem
-          label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
-          hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Supports light/dark toggle.' />}
-        >
-          <SettingToggle settings={settings} settingPath={['halloween']} onChange={onToggleChange} />
-        </ListItem> */}
 
         <ListItem
           label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}

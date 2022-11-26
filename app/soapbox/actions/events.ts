@@ -2,7 +2,7 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
 import { formatBytes } from 'soapbox/utils/media';
-import resizeImage from 'soapbox/utils/resize_image';
+import resizeImage from 'soapbox/utils/resize-image';
 
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { fetchMedia, uploadMedia } from './media';

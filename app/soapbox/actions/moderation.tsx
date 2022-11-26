@@ -7,7 +7,7 @@ import { openModal } from 'soapbox/actions/modals';
 import snackbar from 'soapbox/actions/snackbar';
 import OutlineBox from 'soapbox/components/outline-box';
 import { Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { isLocal } from 'soapbox/utils/accounts';
 
 import type { AppDispatch, RootState } from 'soapbox/store';

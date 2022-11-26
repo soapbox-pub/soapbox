@@ -57,7 +57,7 @@ import { normalizeAttachment } from '../normalizers/attachment';
 import { unescapeHTML } from '../utils/html';
 
 import type { AnyAction } from 'redux';
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type {
   Account as AccountEntity,
   APIEntity,

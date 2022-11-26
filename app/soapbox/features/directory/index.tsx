@@ -5,13 +5,12 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
-import LoadMore from 'soapbox/components/load_more';
-import RadioButton from 'soapbox/components/radio_button';
-import Column from 'soapbox/features/ui/components/column';
+import LoadMore from 'soapbox/components/load-more';
+import { Column, RadioButton, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { getFeatures } from 'soapbox/utils/features';
 
-import AccountCard from './components/account_card';
+import AccountCard from './components/account-card';
 
 const messages = defineMessages({
   title: { id: 'column.directory', defaultMessage: 'Browse profiles' },
@@ -52,26 +51,49 @@ const Directory = () => {
   };
 
   return (
-    <Column icon='address-book-o' label={intl.formatMessage(messages.title)}>
-      <div className='directory__filter-form'>
-        <div className='directory__filter-form__column' role='group'>
-          <RadioButton name='order' value='active' label={intl.formatMessage(messages.recentlyActive)} checked={order === 'active'} onChange={handleChangeOrder} />
-          <RadioButton name='order' value='new' label={intl.formatMessage(messages.newArrivals)} checked={order === 'new'} onChange={handleChangeOrder} />
+    <Column label={intl.formatMessage(messages.title)}>
+      <Stack space={4}>
+        <div className='grid grid-cols-2 gap-2'>
+          <div>
+            <Text weight='medium'>Display filter</Text>
+            <fieldset className='mt-3'>
+              <legend className='sr-only'>Display filter</legend>
+              <div className='space-y-2'>
+                <RadioButton name='order' value='active' label={intl.formatMessage(messages.recentlyActive)} checked={order === 'active'} onChange={handleChangeOrder} />
+                <RadioButton name='order' value='new' label={intl.formatMessage(messages.newArrivals)} checked={order === 'new'} onChange={handleChangeOrder} />
+              </div>
+            </fieldset>
+          </div>
+
+          {features.federating && (
+            <div>
+              <Text weight='medium'>Fediverse filter</Text>
+              <fieldset className='mt-3'>
+                <legend className='sr-only'>Fediverse filter</legend>
+                <div className='space-y-2'>
+                  <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: title })} checked={local} onChange={handleChangeLocal} />
+                  <RadioButton name='local' value='0' label={intl.formatMessage(messages.federated)} checked={!local} onChange={handleChangeLocal} />
+                </div>
+              </fieldset>
+            </div>
+          )}
         </div>
 
-        {features.federating && (
-          <div className='directory__filter-form__column' role='group'>
-            <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: title })} checked={local} onChange={handleChangeLocal} />
-            <RadioButton name='local' value='0' label={intl.formatMessage(messages.federated)} checked={!local} onChange={handleChangeLocal} />
-          </div>
-        )}
-      </div>
+        <div
+          className={
+            classNames({
+              'grid grid-cols-1 sm:grid-cols-2 gap-2.5': true,
+              'opacity-30': isLoading,
+            })
+          }
+        >
+          {accountIds.map((accountId) => (
+            <AccountCard id={accountId} key={accountId} />),
+          )}
+        </div>
 
-      <div className={classNames('directory__list', { loading: isLoading })}>
-        {accountIds.map((accountId) => <AccountCard id={accountId} key={accountId} />)}
-      </div>
-
-      <LoadMore onClick={handleLoadMore} visible={!isLoading} />
+        <LoadMore onClick={handleLoadMore} disabled={isLoading} />
+      </Stack>
     </Column>
   );
 };

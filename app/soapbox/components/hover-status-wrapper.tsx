@@ -7,7 +7,7 @@ import {
   openStatusHoverCard,
   closeStatusHoverCard,
 } from 'soapbox/actions/status-hover-card';
-import { isMobile } from 'soapbox/is_mobile';
+import { isMobile } from 'soapbox/is-mobile';
 
 const showStatusHoverCard = debounce((dispatch, ref, statusId) => {
   dispatch(openStatusHoverCard(ref, statusId));

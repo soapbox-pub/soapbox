@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
-import { Counter } from 'soapbox/components/ui';
+import { Avatar, Counter, HStack, Stack, Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetChat } from 'soapbox/selectors';
@@ -34,12 +33,10 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
   return (
     <div className='account'>
       <button className='floating-link' onClick={() => onClick(chat)} />
-      <div className='account__wrapper'>
-        <div key={account.id} className='account__display-name'>
-          <div className='account__avatar-wrapper'>
-            <Avatar account={account} size={36} />
-          </div>
-          <DisplayName account={account} />
+      <HStack key={account.id} space={3} className='relative overflow-hidden'>
+        <Avatar className='flex-none' src={account.avatar} size={36} />
+        <Stack className='overflow-hidden'>
+          <DisplayName account={account} withSuffix={false} />
           {attachment && (
             <Icon
               className='chat__attachment-icon'
@@ -47,9 +44,12 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
             />
           )}
           {content ? (
-            <span
+            <Text
+              theme='muted'
+              size='sm'
               className='chat__last-message'
               dangerouslySetInnerHTML={{ __html: parsedContent }}
+              truncate
             />
           ) : attachment && (
             <span
@@ -63,8 +63,8 @@ const Chat: React.FC<IChat> = ({ chatId, onClick }) => {
               <Counter count={unreadCount} />
             </div>
           )}
-        </div>
-      </div>
+        </Stack>
+      </HStack>
     </div>
   );
 };

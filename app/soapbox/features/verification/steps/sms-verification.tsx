@@ -13,6 +13,7 @@ const messages = defineMessages({
   verificationSuccess: { id: 'sms_verification.success', defaultMessage: 'A verification code has been sent to your phone number.' },
   verificationFail: { id: 'sms_verification.fail', defaultMessage: 'Failed to send SMS message to your phone number.' },
   verificationExpired: { id: 'sms_verification.expired', defaultMessage: 'Your SMS token has expired.' },
+  phoneLabel: { id: 'sms_verification.phone.label', defaultMessage: 'Phone number' },
 });
 
 const Statuses = {
@@ -98,7 +99,7 @@ const SmsVerification = () => {
 
         <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
           <Text theme='muted' size='sm' align='center'>
-            We sent you a 6-digit code via SMS. Enter it below.
+            <FormattedMessage id='sms_verification.sent.body' defaultMessage='We sent you a 6-digit code via SMS. Enter it below.' />
           </Text>
 
           <OtpInput
@@ -120,7 +121,7 @@ const SmsVerification = () => {
               onClick={resendVerificationCode}
               disabled={requestedAnother}
             >
-              Resend verification code?
+              <FormattedMessage id='sms_verification.sent.actions.resend' defaultMessage='Resend verification code?' />
             </Button>
           </div>
         </div>
@@ -138,7 +139,7 @@ const SmsVerification = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Phone Number'>
+          <FormGroup labelText={intl.formatMessage(messages.phoneLabel)}>
             <PhoneInput
               value={phone}
               onChange={onChange}
@@ -147,7 +148,9 @@ const SmsVerification = () => {
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>Next</Button>
+            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            </Button>
           </div>
         </Form>
       </div>

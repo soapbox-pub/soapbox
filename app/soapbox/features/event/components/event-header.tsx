@@ -13,19 +13,19 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
-import PlaceholderEventHeader from '../../placeholder/components/placeholder_event_header';
+import PlaceholderEventHeader from '../../placeholder/components/placeholder-event-header';
 import EventActionButton from '../components/event-action-button';
 import EventDate from '../components/event-date';
 
-import type { Menu as MenuType } from 'soapbox/components/dropdown_menu';
+import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -195,7 +195,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     dispatch(deleteStatusModal(intl, status.id));
   };
 
-  const makeMenu = () => {
+  const makeMenu = (): MenuType => {
     const menu: MenuType = [
       {
         text: intl.formatMessage(messages.exportIcs),

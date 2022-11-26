@@ -8,7 +8,7 @@ import { useAppSelector } from 'soapbox/hooks';
 
 import Icon from './icon';
 import { Button, HStack, Stack, Text } from './ui';
-import VerificationBadge from './verification_badge';
+import VerificationBadge from './verification-badge';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 

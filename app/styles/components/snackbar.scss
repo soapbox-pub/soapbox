@@ -16,7 +16,7 @@
   @apply text-success-500;
 
   &::before {
-    @apply ml-4;
+    @apply ml-4 rtl:ml-0 rtl:mr-4;
     content: '\f058';
   }
 }
@@ -25,13 +25,13 @@
   @apply text-danger-500 ml-4;
 
   &::before {
-    @apply ml-4;
+    @apply ml-4 rtl:ml-0 rtl:mr-4;
     content: '\f057';
   }
 }
 
 .notification-bar-info {
-  @apply text-primary-500 ml-4;
+  @apply text-primary-500 ml-4 rtl:ml-0 rtl:mr-4;
 
   &::before {
     @apply ml-4;
@@ -40,7 +40,7 @@
 }
 
 .notification-bar-wrapper {
-  @apply p-4 flex items-center justify-between w-full space-x-2;
+  @apply p-4 flex items-center justify-between w-full space-x-2 rtl:space-x-reverse;
 }
 
 .notification-bar-title {

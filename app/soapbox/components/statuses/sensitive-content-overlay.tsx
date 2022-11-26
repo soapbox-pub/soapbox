@@ -25,7 +25,7 @@ interface ISensitiveContentOverlay {
   visible?: boolean
 }
 
-const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
+const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {
   const { onToggleVisibility, status } = props;
   const isUnderReview = status.visibility === 'self';
 
@@ -72,7 +72,7 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
           size='sm'
         />
       ) : (
-        <div className='text-center w-3/4 mx-auto space-y-4'>
+        <div className='text-center w-3/4 mx-auto space-y-4' ref={ref}>
           <div className='space-y-1'>
             <Text theme='white' weight='semibold'>
               {intl.formatMessage(isUnderReview ? messages.underReviewTitle : messages.sensitiveTitle)}
@@ -84,7 +84,7 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
 
             {status.spoiler_text && (
               <div className='py-4 italic'>
-                <Text theme='white' size='md' weight='medium'>
+                <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
                   &ldquo;<span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} />&rdquo;
                 </Text>
               </div>
@@ -127,6 +127,6 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
       )}
     </div>
   );
-};
+});
 
 export default SensitiveContentOverlay;

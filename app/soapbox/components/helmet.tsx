@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
 import { useAppSelector, useSettings } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
-import FaviconService from 'soapbox/utils/favicon_service';
+import FaviconService from 'soapbox/utils/favicon-service';
 
 FaviconService.initFaviconService();
 

@@ -6,7 +6,7 @@ import {
   useTabsContext,
 } from '@reach/tabs';
 import classNames from 'clsx';
-import * as React from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Counter from '../counter/counter';

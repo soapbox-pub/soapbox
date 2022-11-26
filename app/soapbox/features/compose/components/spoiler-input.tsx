@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeComposeSpoilerness, changeComposeSpoilerText } from 'soapbox/actions/compose';
-import AutosuggestInput, { IAutosuggestInput } from 'soapbox/components/autosuggest_input';
+import AutosuggestInput, { IAutosuggestInput } from 'soapbox/components/autosuggest-input';
 import { Divider, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 

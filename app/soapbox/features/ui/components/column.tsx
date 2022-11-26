@@ -3,7 +3,7 @@ import React from 'react';
 import Pullable from 'soapbox/components/pullable';
 import { Column } from 'soapbox/components/ui';
 
-import ColumnHeader from './column_header';
+import ColumnHeader from './column-header';
 
 import type { IColumn } from 'soapbox/components/ui/column/column';
 

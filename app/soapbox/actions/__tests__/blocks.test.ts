@@ -1,6 +1,6 @@
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { ListRecord, ReducerRecord as UserListsRecord } from 'soapbox/reducers/user_lists';
+import { ListRecord, ReducerRecord as UserListsRecord } from 'soapbox/reducers/user-lists';
 
 import { expandBlocks, fetchBlocks } from '../blocks';
 

@@ -197,7 +197,7 @@ describe('normalizeInstance()', () => {
     const instance = require('soapbox/__fixtures__/akkoma-instance.json');
     const result = normalizeInstance(instance);
 
-    expect(result.version).toEqual('2.7.2 (compatible; Pleroma 2.4.5+akkoma)');
+    expect(result.version).toEqual('2.7.2 (compatible; Pleroma 2.4.50+akkoma)');
 
   });
 });

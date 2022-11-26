@@ -1,7 +1,7 @@
 import classNames from 'clsx';
-import * as React from 'react';
+import React from 'react';
 
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 
 const AVATAR_SIZE = 42;
 
@@ -25,7 +25,7 @@ const Avatar = (props: IAvatar) => {
 
   return (
     <StillImage
-      className={classNames('rounded-full overflow-hidden', className)}
+      className={classNames('rounded-full', className)}
       style={style}
       src={src}
       alt='Avatar'

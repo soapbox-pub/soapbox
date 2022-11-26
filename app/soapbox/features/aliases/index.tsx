@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { CardHeader, CardTitle, Column, HStack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -63,7 +63,7 @@ const Aliases = () => {
             <FormattedMessage id='empty_column.aliases.suggestions' defaultMessage='There are no account suggestions available for the provided term.' />
           </div>
         ) : (
-          <div className='aliases__accounts'>
+          <div className='aliases__accounts mb-4'>
             {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} aliases={aliases} />)}
           </div>
         )

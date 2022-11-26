@@ -8,7 +8,7 @@ import { createSelector } from 'reselect';
 import { fetchChats, expandChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Card, Text } from 'soapbox/components/ui';
-import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
+import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
 import { useAppSelector } from 'soapbox/hooks';
 
 import Chat from './chat';

@@ -1,6 +1,6 @@
 'use strict';
 
-import { __clear as clearApiMocks } from '../__mocks__/api';
+import { __clear as clearApiMocks } from '../api/__mocks__';
 
 // API mocking
 jest.mock('soapbox/api');

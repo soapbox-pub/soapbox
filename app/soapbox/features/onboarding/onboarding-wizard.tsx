@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import * as React from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import ReactSwipeableViews from 'react-swipeable-views';
 

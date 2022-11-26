@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchEventParticipations } from 'soapbox/actions/events';
 import { Modal, Spinner, Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 interface IEventParticipantsModal {
