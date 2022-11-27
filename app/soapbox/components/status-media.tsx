@@ -24,8 +24,6 @@ interface IStatusMedia {
   showMedia?: boolean,
   /** Callback when visibility is toggled (eg clicked through NSFW). */
   onToggleVisibility?: () => void,
-  /** Whether or not to hide image describer as 'Banner' */
-  excludeBanner?: boolean,
 }
 
 /** Render media attachments for a status. */
@@ -35,7 +33,6 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   onClick,
   showMedia = true,
   onToggleVisibility = () => { },
-  excludeBanner = false,
 }) => {
   const dispatch = useAppDispatch();
   const settings = useSettings();
@@ -43,10 +40,8 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
-  const mediaAttachments = excludeBanner ? status.media_attachments.filter(({ description, pleroma }) => description !== 'Banner' && pleroma.get('mime_type') !== 'text/html') : status.media_attachments;
-
-  const size = mediaAttachments.size;
-  const firstAttachment = mediaAttachments.first();
+  const size = status.media_attachments.size;
+  const firstAttachment = status.media_attachments.first();
 
   let media: JSX.Element | null = null;
 
@@ -76,7 +71,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     if (muted) {
       media = (
         <AttachmentThumbs
-          media={mediaAttachments}
+          media={status.media_attachments}
           onClick={onClick}
           sensitive={status.sensitive}
         />
@@ -147,7 +142,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         <Bundle fetchComponent={MediaGallery} loading={renderLoadingMediaGallery}>
           {(Component: any) => (
             <Component
-              media={mediaAttachments}
+              media={status.media_attachments}
               sensitive={status.sensitive}
               height={285}
               onOpenMedia={openMedia}

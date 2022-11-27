@@ -1,3 +1,4 @@
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -86,15 +87,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const account = status.account as AccountEntity;
   const event = status.event;
-  const banner = status.media_attachments?.find(({ description }) => description === 'Banner');
+  const banner = event.banner;
 
   const username = account.username;
 
   const handleHeaderClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.stopPropagation();
 
-    const index = status.media_attachments!.findIndex(({ description }) => description === 'Banner');
-    dispatch(openModal('MEDIA', { media: status.media_attachments, index }));
+    dispatch(openModal('MEDIA', { media: ImmutableList([event.banner]) }));
   };
 
   const handleExportClick = () => {

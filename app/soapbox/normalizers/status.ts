@@ -32,6 +32,8 @@ export const EventRecord = ImmutableRecord({
   participants_count: 0,
   location: null as ImmutableMap<string, any> | null,
   join_state: null as EventJoinState | null,
+  banner: null as Attachment | null,
+  links: ImmutableList<Attachment>(),
 });
 
 // https://docs.joinmastodon.org/entities/status/
@@ -174,9 +176,27 @@ const fixSensitivity = (status: ImmutableMap<string, any>) => {
 // Normalize event
 const normalizeEvent = (status: ImmutableMap<string, any>) => {
   if (status.getIn(['pleroma', 'event'])) {
-    return status.set('event', EventRecord(status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>));
-  } else {
-    return status.set('event', null);
+    const firstAttachment = status.get('media_attachments').first();
+    let banner = null;
+    let mediaAttachments = status.get('media_attachments');
+
+    if (firstAttachment && firstAttachment.description === 'Banner' && firstAttachment.type === 'image') {
+      banner = normalizeAttachment(firstAttachment);
+      mediaAttachments = mediaAttachments.shift();
+    }
+
+    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') === 'text/html');
+    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') !== 'text/html');
+
+    const event = EventRecord(
+      (status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>)
+        .set('banner', banner)
+        .set('links', links),
+    );
+
+    status
+      .set('event', event)
+      .set('media_attachments', mediaAttachments);
   }
 };
 

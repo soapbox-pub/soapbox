@@ -22,7 +22,7 @@ const Event = ({ id }: { id: string }) => {
       className='w-full px-1'
       to={`/@${status.getIn(['account', 'acct'])}/events/${status.id}`}
     >
-      <EventPreview status={status} />
+      <EventPreview status={status} floatingAction={false} />
     </Link>
   );
 };
@@ -56,7 +56,6 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
       {index !== 0 && (
         <div className='z-10 absolute left-3 top-1/2 -mt-4'>
           <button
-            data-testid='prev-page'
             onClick={() => handleChangeIndex(index - 1)}
             className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
           >
@@ -70,7 +69,6 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
       {index !== statusIds.size - 1 && (
         <div className='z-10 absolute right-3 top-1/2 -mt-4'>
           <button
-            data-testid='next-page'
             onClick={() => handleChangeIndex(index + 1)}
             className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
           >

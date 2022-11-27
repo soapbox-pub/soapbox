@@ -19,12 +19,13 @@ const messages = defineMessages({
 });
 
 interface IEventPreview {
-  status: StatusEntity,
-  className?: string,
-  hideAction?: boolean;
+  status: StatusEntity
+  className?: string
+  hideAction?: boolean
+  floatingAction?: boolean
 }
 
-const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction }) => {
+const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, floatingAction = true }) => {
   const intl = useIntl();
 
   const me = useAppSelector((state) => state.me);
@@ -32,26 +33,37 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction }
   const account = status.account as AccountEntity;
   const event = status.event!;
 
-  const banner = status.media_attachments?.find(({ description }) => description === 'Banner');
+  const banner = event.banner;
+
+  const action = !hideAction && (account.id === me ? (
+    <Button
+      size='sm'
+      theme={floatingAction ? 'secondary' : 'primary'}
+      to={`/@${account.acct}/events/${status.id}`}
+    >
+      <FormattedMessage id='event.manage' defaultMessage='Manage' />
+    </Button>
+  ) : (
+    <EventActionButton
+      status={status}
+      theme={floatingAction ? 'secondary' : 'primary'}
+    />
+  ));
 
   return (
     <div className={classNames('w-full rounded-lg bg-gray-100 dark:bg-primary-800 relative overflow-hidden', className)}>
       <div className='absolute top-28 right-3'>
-        {!hideAction && (account.id === me ? (
-          <Button
-            size='sm'
-            theme='secondary'
-            to={`/@${account.acct}/events/${status.id}`}
-          >
-            <FormattedMessage id='event.manage' defaultMessage='Manage' />
-          </Button>
-        ) : <EventActionButton status={status} />)}
+        {floatingAction && action}
       </div>
       <div className='bg-primary-200 dark:bg-gray-600 h-40'>
         {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.bannerHeader)} />}
       </div>
       <Stack className='p-2.5' space={2}>
-        <Text weight='semibold'>{event.name}</Text>
+        <HStack space={2} alignItems='center' justifyContent='between'>
+          <Text weight='semibold' truncate>{event.name}</Text>
+
+          {!floatingAction && action}
+        </HStack>
 
         <div className='flex gap-y-1 gap-x-2 flex-wrap text-gray-700 dark:text-gray-600'>
           <HStack alignItems='center' space={2}>

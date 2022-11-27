@@ -25,7 +25,6 @@ import { normalizeAttachment, normalizeLocation } from 'soapbox/normalizers';
 import type {
   Attachment as AttachmentEntity,
   Location as LocationEntity,
-  Status as StatusEntity,
 } from 'soapbox/types/entities';
 
 export const ReducerRecord = ImmutableRecord({
@@ -90,11 +89,10 @@ export default function compose_event(state = ReducerRecord(), action: AnyAction
       return ReducerRecord({
         name: action.status.event.name,
         status: action.text,
-        // location: null as LocationEntity | null,
         start_time: new Date(action.status.event.start_time),
         end_time: action.status.event.end_time ? new Date(action.status.event.end_time) : null,
         approval_required: action.status.event.join_mode !== 'free',
-        banner: (action.status as StatusEntity).media_attachments.find(({ description }) => description === 'Banner') || null,
+        banner: action.status.event.banner || null,
         location: action.location ? normalizeLocation(action.location) : null,
         progress: 0,
         is_uploading: false,

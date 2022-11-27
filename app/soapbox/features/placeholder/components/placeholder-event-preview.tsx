@@ -10,9 +10,7 @@ const PlaceholderEventPreview = () => {
 
   return (
     <div className='w-full rounded-lg bg-gray-100 dark:bg-primary-800 relative overflow-hidden animate-pulse text-primary-50 dark:text-primary-800'>
-      <div className='bg-primary-200 dark:bg-gray-600 h-40'>
-        {/* <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.bannerHeader)} />} */}
-      </div>
+      <div className='bg-primary-200 dark:bg-gray-600 h-40' />
       <Stack className='p-2.5' space={2}>
         <Text weight='semibold'>{generateText(eventNameLength)}</Text>
 
