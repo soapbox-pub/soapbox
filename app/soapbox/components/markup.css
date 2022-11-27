@@ -58,9 +58,14 @@
   @apply mb-0;
 }
 
-/* Markdown images */
-[data-markup] img:not(.emojione):not([width][height]) {
-  @apply w-full h-72 object-contain rounded-lg overflow-hidden my-4 block;
+/* Emojis */
+[data-markup] img.emojione {
+  @apply w-5 h-5;
+}
+
+/* Hide Markdown images (Pleroma) */
+[data-markup] img:not(.emojione) {
+  @apply hidden;
 }
 
 /* User setting to underline links */
@@ -68,7 +73,7 @@ body.underline-links [data-markup] a {
   @apply underline;
 }
 
-[data-markup] .big-emoji img.emojione {
+[data-markup].big-emoji img.emojione {
   @apply inline w-9 h-9 p-1;
 }
 

@@ -2,8 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import { Avatar, Card, HStack, Icon, IconButton, Stack, Text } from 'soapbox/components/ui';
 import StatusCard from 'soapbox/features/status/components/card';
 import { useAppSelector } from 'soapbox/hooks';
 import { AdKeys } from 'soapbox/queries/ads';

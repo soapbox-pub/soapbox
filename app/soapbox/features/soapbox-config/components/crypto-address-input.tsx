@@ -2,8 +2,8 @@ import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { HStack, Input } from 'soapbox/components/ui';
-import { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import type { CryptoAddress } from 'soapbox/types/soapbox';
 
 const messages = defineMessages({

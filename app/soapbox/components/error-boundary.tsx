@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
-import { Text, Stack } from 'soapbox/components/ui';
+import { HStack, Text, Stack } from 'soapbox/components/ui';
 import { captureException } from 'soapbox/monitoring';
 import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
@@ -179,7 +179,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
         </main>
 
         <footer className='flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
-          <nav className='flex justify-center space-x-4'>
+          <HStack justifyContent='center' space={4} element='nav'>
             {links.get('status') && (
               <>
                 <a href={links.get('status')} className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'>
@@ -205,7 +205,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                 </a>
               </>
             )}
-          </nav>
+          </HStack>
         </footer>
       </div>
     );

@@ -38,6 +38,7 @@ const messages = defineMessages({
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   followRequests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
 interface ISidebarLink {
@@ -82,7 +83,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
   const features = useFeatures();
   const getAccount = makeGetAccount();
-  const instance = useAppSelector((state) => state.instance);
   const me = useAppSelector((state) => state.me);
   const account = useAppSelector((state) => me ? getAccount(state, me) : null);
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
@@ -134,9 +134,11 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   if (!account) return null;
 
   return (
-    <div className={classNames('sidebar-menu__root', {
-      'sidebar-menu__root--visible': sidebarOpen,
-    })}
+    <div
+      className={classNames('sidebar-menu__root', {
+        'sidebar-menu__root--visible': sidebarOpen,
+      })}
+      aria-expanded={sidebarOpen}
     >
       <div
         className={classNames({
@@ -147,7 +149,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
         onClick={handleClose}
       >
         <IconButton
-          title='close'
+          title={intl.formatMessage(messages.close)}
           onClick={handleClose}
           src={require('@tabler/icons/x.svg')}
           ref={closeButtonRef}
@@ -220,15 +222,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   <SidebarLink
                     to='/timeline/local'
-                    icon={features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg')}
-                    text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                    icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+                    text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
                     onClick={onClose}
                   />
 
                   {features.federating && (
                     <SidebarLink
                       to='/timeline/fediverse'
-                      icon={require('assets/icons/fediverse.svg')}
+                      icon={require('@tabler/icons/topology-star-ring-3.svg')}
                       text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
                       onClick={onClose}
                     />

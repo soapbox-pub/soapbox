@@ -392,17 +392,14 @@
 }
 
 .column__switch .audio-toggle {
-  position: absolute;
-  z-index: 4;
-  top: 12px;
-  right: 14px;
+  @apply absolute top-3 right-[14px] rtl:left-[14px] rtl:right-auto z-10;
 
   .react-toggle-track-check {
-    left: 6px;
+    @apply left-1.5;
   }
 
   .react-toggle-track-x {
-    right: 8px;
+    @apply right-2;
   }
 }
 

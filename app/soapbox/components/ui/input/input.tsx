@@ -90,16 +90,15 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
               ['normal', 'search'].includes(theme),
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
-            'pr-7': isPassword || append,
+            'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,
             'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
             'pl-16': typeof prepend !== 'undefined',
           }, className)}
         />
 
-        {/* eslint-disable-next-line no-nested-ternary */}
         {append ? (
-          <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+          <div className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex items-center pr-3'>
             {append}
           </div>
         ) : null}
@@ -112,7 +111,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 intl.formatMessage(messages.showPassword)
             }
           >
-            <div className='absolute inset-y-0 right-0 flex items-center'>
+            <div className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex items-center'>
               <button
                 type='button'
                 onClick={togglePassword}

@@ -83,7 +83,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [index]);
 
   const getIndex = () => {
     return index !== null ? index : props.index;
@@ -197,7 +197,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           width={width}
           height={height}
           startTime={time}
-          onCloseVideo={onClose}
           detailed
           link={link}
           alt={attachment.description}

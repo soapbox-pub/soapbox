@@ -12,7 +12,7 @@ interface ISidebarNavigationLink {
   /** URL to an SVG icon. */
   icon: string,
   /** Link label. */
-  text: React.ReactElement,
+  text: React.ReactNode,
   /** Route to an internal page. */
   to?: string,
   /** Callback when the link is clicked. */
@@ -39,7 +39,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
       ref={ref}
       onClick={handleClick}
       className={classNames({
-        'flex items-center px-4 py-3.5 text-base font-semibold space-x-4 rounded-full group text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100 hover:bg-primary-200 dark:hover:bg-primary-900': true,
+        'flex items-center px-4 py-3.5 text-base font-semibold space-x-4 rtl:space-x-reverse rounded-full group text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100 hover:bg-primary-200 dark:hover:bg-primary-900': true,
         'dark:text-gray-100 text-gray-900': isActive,
       })}
     >

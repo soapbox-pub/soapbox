@@ -43,6 +43,7 @@ export { default as RadioButton } from './radio-button/radio-button';
 export { default as Select } from './select/select';
 export { default as Spinner } from './spinner/spinner';
 export { default as Stack } from './stack/stack';
+export { default as Streamfield } from './streamfield/streamfield';
 export { default as Tabs } from './tabs/tabs';
 export { default as TagInput } from './tag-input/tag-input';
 export { default as Text } from './text/text';

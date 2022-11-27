@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
-import Icon from 'soapbox/components/ui/icon/icon';
+import { Icon } from 'soapbox/components/ui';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({

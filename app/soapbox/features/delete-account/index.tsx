@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { deleteAccount } from 'soapbox/actions/security';

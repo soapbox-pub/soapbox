@@ -18,7 +18,7 @@ import StatusActionButton from 'soapbox/components/status-action-button';
 import { HStack } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { isLocal } from 'soapbox/utils/accounts';
+import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
@@ -56,6 +56,7 @@ const messages = defineMessages({
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   group_remove_account: { id: 'status.remove_account_from_group', defaultMessage: 'Remove account from group' },
   group_remove_post: { id: 'status.remove_post_from_group', defaultMessage: 'Remove post from group' },
+  external: { id: 'status.external', defaultMessage: 'View post on {domain}' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
   deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
@@ -148,6 +149,10 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
     dispatch(toggleBookmark(status));
+  };
+
+  const handleExternalClick = () => {
+    window.open(status.uri, '_blank');
   };
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
@@ -294,6 +299,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     const mutingConversation = status.muted;
     const ownAccount = status.getIn(['account', 'id']) === me;
     const username = String(status.getIn(['account', 'username']));
+    const account = status.account as Account;
+    const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
 
@@ -312,7 +319,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/link.svg'),
       });
 
-      if (features.embeds && isLocal(status.account as Account)) {
+      if (features.embeds && isLocal(account)) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: handleEmbed,
@@ -330,6 +337,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: handleBookmarkClick,
         icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
+      });
+    }
+
+    if (features.federating && isRemote(account)) {
+      menu.push({
+        text: intl.formatMessage(messages.external, { domain }),
+        action: handleExternalClick,
+        icon: require('@tabler/icons/external-link.svg'),
       });
     }
 

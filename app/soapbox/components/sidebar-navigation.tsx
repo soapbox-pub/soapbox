@@ -17,9 +17,6 @@ const messages = defineMessages({
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
-  dashboard: { id: 'tabs_bar.dashboard', defaultMessage: 'Dashboard' },
-  all: { id: 'tabs_bar.all', defaultMessage: 'All' },
-  fediverse: { id: 'tabs_bar.fediverse', defaultMessage: 'Fediverse' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
@@ -72,35 +69,6 @@ const SidebarNavigation = () => {
           text: intl.formatMessage(messages.developers),
         });
       }
-
-      if (account.staff) {
-        menu.push({
-          to: '/soapbox/admin',
-          icon: require('@tabler/icons/dashboard.svg'),
-          text: intl.formatMessage(messages.dashboard),
-          count: dashboardCount,
-        });
-      }
-
-      if (features.publicTimeline) {
-        menu.push(null);
-      }
-    }
-
-    if (features.publicTimeline) {
-      menu.push({
-        to: '/timeline/local',
-        icon: features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg'),
-        text: features.federating ? instance.title : intl.formatMessage(messages.all),
-      });
-    }
-
-    if (features.publicTimeline && features.federating) {
-      menu.push({
-        to: '/timeline/fediverse',
-        icon: require('assets/icons/fediverse.svg'),
-        text: intl.formatMessage(messages.fediverse),
-      });
     }
 
     return menu;
@@ -172,6 +140,33 @@ const SidebarNavigation = () => {
               icon={require('@tabler/icons/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
             />
+
+            {account.staff && (
+              <SidebarNavigationLink
+                to='/soapbox/admin'
+                icon={require('@tabler/icons/dashboard.svg')}
+                count={dashboardCount}
+                text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+              />
+            )}
+          </>
+        )}
+
+        {features.publicTimeline && (
+          <>
+            <SidebarNavigationLink
+              to='/timeline/local'
+              icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+              text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+            />
+
+            {features.federating && (
+              <SidebarNavigationLink
+                to='/timeline/fediverse'
+                icon={require('@tabler/icons/topology-star-ring-3.svg')}
+                text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+              />
+            )}
           </>
         )}
 
@@ -179,7 +174,6 @@ const SidebarNavigation = () => {
           <DropdownMenu items={menu}>
             <SidebarNavigationLink
               icon={require('@tabler/icons/dots-circle-horizontal.svg')}
-              count={dashboardCount}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
             />
           </DropdownMenu>

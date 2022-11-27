@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -40,9 +41,9 @@ const WaitlistPage = (/* { account } */) => {
               <SiteLogo alt='Logo' className='h-7' />
             </Link>
 
-            <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-3'>
+            <div className='absolute inset-y-0 right-0 flex items-center pr-2'>
               <Button onClick={onClickLogOut} theme='primary' to='/logout'>
-                Sign out
+                <FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' />
               </Button>
             </div>
           </div>
@@ -55,13 +56,17 @@ const WaitlistPage = (/* { account } */) => {
 
               <Stack space={2}>
                 <Text size='lg' theme='muted' align='center' weight='medium'>
-                  Welcome back to {title}! You were previously placed on our
-                  waitlist. Please verify your phone number to receive
-                  immediate access to your account!
+                  <FormattedMessage
+                    id='waitlist.body'
+                    defaultMessage='Welcome back to {title}! You were previously placed on our waitlist. Please verify your phone number to receive immediate access to your account!'
+                    values={{ title }}
+                  />
                 </Text>
 
                 <div className='text-center'>
-                  <Button onClick={openVerifySmsModal} theme='primary'>Verify phone number</Button>
+                  <Button onClick={openVerifySmsModal} theme='primary'>
+                    <FormattedMessage id='waitlist.actions.verify_number' defaultMessage='Verify phone number' />
+                  </Button>
                 </div>
               </Stack>
             </Stack>

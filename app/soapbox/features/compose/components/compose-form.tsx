@@ -16,7 +16,7 @@ import {
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import Icon from 'soapbox/components/icon';
-import { Button, Stack } from 'soapbox/components/ui';
+import { Button, HStack, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
@@ -221,7 +221,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }, [focusDate]);
 
   const renderButtons = useCallback(() => (
-    <div className='flex items-center space-x-2'>
+    <HStack alignItems='center' space={2}>
       {features.media && <UploadButtonContainer composeId={id} />}
       <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
       {features.polls && <PollButton composeId={id} />}
@@ -229,7 +229,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
       {features.richText && <MarkdownButton composeId={id} />}
-    </div>
+    </HStack>
   ), [features, id]);
 
   const condensed = shouldCondense && !composeFocused && isEmpty() && !isUploading;
@@ -335,16 +335,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       >
         {renderButtons()}
 
-        <div className='flex items-center space-x-4 ml-auto'>
+        <HStack space={4} alignItems='center' className='ml-auto rtl:ml-0 rtl:mr-auto'>
           {maxTootChars && (
-            <div className='flex items-center space-x-1'>
+            <HStack space={1} alignItems='center'>
               <TextCharacterCounter max={maxTootChars} text={text} />
               <VisualCharacterCounter max={maxTootChars} text={text} />
-            </div>
+            </HStack>
           )}
 
           <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
-        </div>
+        </HStack>
+        {/* <HStack alignItems='center' space={4}>
+        </HStack> */}
       </div>
     </Stack>
   );

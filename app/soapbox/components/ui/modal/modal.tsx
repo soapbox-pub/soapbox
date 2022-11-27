@@ -1,10 +1,11 @@
 import classNames from 'clsx';
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
 import { ButtonThemes } from '../button/useButtonStyles';
 import IconButton from '../icon-button/icon-button';
+import Stack from '../stack/stack';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -82,7 +83,7 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
+    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           {title && (
@@ -127,7 +128,7 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-          <div className='flex flex-row space-x-2'>
+          <Stack space={2}>
             {secondaryAction && (
               <Button
                 theme='secondary'
@@ -146,7 +147,7 @@ const Modal: React.FC<IModal> = ({
             >
               {confirmationText}
             </Button>
-          </div>
+          </Stack>
         </div>
       )}
     </div>

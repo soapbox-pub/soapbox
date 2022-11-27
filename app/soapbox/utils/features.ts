@@ -49,7 +49,8 @@ export const TRUTHSOCIAL = 'TruthSocial';
  * Rebased, the recommended backend for Soapbox.
  * @see {@link https://gitlab.com/soapbox-pub/rebased}
  */
-export const SOAPBOX = 'soapbox';
+// NOTE: Rebased is named 'soapbox' for legacy reasons.
+export const REBASED = 'soapbox';
 
 /**
  * glitch-soc, fork of Mastodon with a number of experimental features.
@@ -105,7 +106,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see PATCH /api/v1/accounts/update_credentials
      */
     accountLocation: any([
-      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
       v.software === TRUTHSOCIAL,
     ]),
 
@@ -179,7 +180,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/accounts
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    birthdays: v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+    birthdays: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
 
     /** Whether people who blocked you are visible through the API. */
     blockersVisible: features.includes('blockers_visible'),
@@ -409,7 +410,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     mastodonAdmin: any([
       v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
-      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
     ]),
 
     /**
@@ -533,7 +534,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/statuses
      */
     quotePosts: any([
-      v.software === PLEROMA && [SOAPBOX, AKKOMA].includes(v.build!) && gte(v.version, '2.4.50'),
+      v.software === PLEROMA && [REBASED, AKKOMA].includes(v.build!) && gte(v.version, '2.4.50'),
       instance.feature_quote === true,
     ]),
 
@@ -549,7 +550,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     removeFromFollowers: any([
       v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
-      v.software === PLEROMA && v.build === SOAPBOX && gte(v.version, '2.4.50'),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
     ]),
 
     /**
