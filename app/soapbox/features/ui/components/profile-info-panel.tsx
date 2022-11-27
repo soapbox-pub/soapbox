@@ -13,6 +13,7 @@ import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges'
 import { capitalize } from 'soapbox/utils/strings';
 
 import ProfileFamiliarFollowers from './profile-familiar-followers';
+import ProfileField from './profile-field';
 import ProfileStats from './profile-stats';
 
 import type { Account } from 'soapbox/types/entities';
@@ -231,6 +232,14 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
         <ProfileFamiliarFollowers account={account} />
       </Stack>
+
+      {account.fields.size > 0 && (
+        <Stack space={2} className='mt-4 xl:hidden'>
+          {account.fields.map((field, i) => (
+            <ProfileField field={field} key={i} />
+          ))}
+        </Stack>
+      )}
     </div>
   );
 };

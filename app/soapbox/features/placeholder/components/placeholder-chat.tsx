@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { HStack, Stack } from 'soapbox/components/ui';
+
 import { randomIntFromInterval, generateText } from '../utils';
 
 import PlaceholderAvatar from './placeholder-avatar';
@@ -10,20 +12,16 @@ const PlaceholderChat: React.FC = () => {
   const messageLength = randomIntFromInterval(5, 75);
 
   return (
-    <div className='chat-list-item chat-list-item--placeholder'>
-      <div className='account'>
-        <div className='account__wrapper'>
-          <div className='account__display-name'>
-            <div className='account__avatar-wrapper'>
-              <PlaceholderAvatar size={36} />
-            </div>
-            <PlaceholderDisplayName minLength={3} maxLength={25} />
-            <span className='chat__last-message'>
-              {generateText(messageLength)}
-            </span>
-          </div>
-        </div>
-      </div>
+    <div className='account chat-list-item--placeholder'>
+      <HStack space={3}>
+        <PlaceholderAvatar size={36} />
+        <Stack className='overflow-hidden'>
+          <PlaceholderDisplayName minLength={3} maxLength={25} withSuffix={false} />
+          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-primary-50 dark:text-primary-800'>
+            {generateText(messageLength)}
+          </span>
+        </Stack>
+      </HStack>
     </div>
   );
 };

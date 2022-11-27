@@ -63,9 +63,9 @@
   @apply w-5 h-5;
 }
 
-/* Markdown images */
-[data-markup] img:not(.emojione):not([width][height]) {
-  @apply w-full h-72 object-contain rounded-lg overflow-hidden my-4 block;
+/* Hide Markdown images (Pleroma) */
+[data-markup] img:not(.emojione) {
+  @apply hidden;
 }
 
 /* User setting to underline links */
