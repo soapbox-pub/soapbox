@@ -52,10 +52,10 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getNormalizedReacts = () => {
     return reduceEmoji(
       ImmutableList(status.pleroma.get('emoji_reactions') as any),
-      0,
-      false,
+      status.favourites_count,
+      status.favourited,
       allowedEmoji,
-    ).reverse();
+    );
   };
 
   const handleOpenReblogsModal: React.EventHandler<React.MouseEvent> = (e) => {
@@ -142,8 +142,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   return (
     <HStack space={3}>
       {getReposts()}
-      {getFavourites()}
-      {features.emojiReacts && getEmojiReacts()}
+      {features.emojiReacts ? getEmojiReacts() : getFavourites()}
     </HStack>
   );
 };
