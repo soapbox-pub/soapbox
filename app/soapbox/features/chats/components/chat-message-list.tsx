@@ -78,8 +78,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   const account = useOwnAccount();
   const features = useFeatures();
 
-  const lastReadMessageDateString = chat.latest_read_message_by_account.find((latest) => latest.id === chat.account.id)?.date;
-  const myLastReadMessageDateString = chat.latest_read_message_by_account.find((latest) => latest.id === account?.id)?.date;
+  const lastReadMessageDateString = chat.latest_read_message_by_account?.find((latest) => latest.id === chat.account.id)?.date;
+  const myLastReadMessageDateString = chat.latest_read_message_by_account?.find((latest) => latest.id === account?.id)?.date;
   const lastReadMessageTimestamp = lastReadMessageDateString ? new Date(lastReadMessageDateString) : null;
   const myLastReadMessageTimestamp = myLastReadMessageDateString ? new Date(myLastReadMessageDateString) : null;
 
