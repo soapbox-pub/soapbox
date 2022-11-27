@@ -68,10 +68,10 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
         <div className='flex gap-y-1 gap-x-2 flex-wrap text-gray-700 dark:text-gray-600'>
           <HStack alignItems='center' space={2}>
             <Icon src={require('@tabler/icons/user.svg')} />
-            <span>
+            <HStack space={1} alignItems='center' grow>
               <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
               {account.verified && <VerificationBadge />}
-            </span>
+            </HStack>
           </HStack>
 
           <EventDate status={status} />

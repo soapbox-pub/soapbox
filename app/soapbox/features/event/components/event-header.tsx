@@ -405,8 +405,10 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                 values={{
                   name: (
                     <Link className='mention' to={`/@${account.acct}`}>
-                      <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
-                      {account.verified && <VerificationBadge />}
+                      <HStack space={1} alignItems='center' grow>
+                        <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
+                        {account.verified && <VerificationBadge />}
+                      </HStack>
                     </Link>
                   ),
                 }}
