@@ -4,7 +4,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
-import { Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { useInstance } from 'soapbox/hooks';
 
 import type { Map as ImmutableMap } from 'immutable';
@@ -14,6 +14,23 @@ const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean => 
     .get('federation')
     .deleteAll(['accept', 'reject_deletes', 'report_removal'])
     .reduce((acc: boolean, value: boolean) => acc || value, false);
+};
+
+interface IRestriction {
+  icon: string,
+  children: React.ReactNode,
+}
+
+const Restriction: React.FC<IRestriction> = ({ icon, children }) => {
+  return (
+    <HStack space={3}>
+      <Icon className='flex-none w-5 h-5' src={icon} />
+
+      <Text theme='muted'>
+        {children}
+      </Text>
+    </HStack>
+  );
 };
 
 interface IInstanceRestrictions {
@@ -40,57 +57,52 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
 
     if (followers_only) {
       items.push((
-        <Text key='followers_only' className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/lock.svg')} />
+        <Restriction key='followersOnly' icon={require('@tabler/icons/lock.svg')}>
           <FormattedMessage
             id='federation_restriction.followers_only'
             defaultMessage='Hidden except to followers'
           />
-        </Text>
+        </Restriction>
       ));
     } else if (federated_timeline_removal) {
       items.push((
-        <Text key='federated_timeline_removal' className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/lock-open.svg')} />
+        <Restriction key='federatedTimelineRemoval' icon={require('@tabler/icons/lock-open.svg')}>
           <FormattedMessage
             id='federation_restriction.federated_timeline_removal'
             defaultMessage='Fediverse timeline removal'
           />
-        </Text>
+        </Restriction>
       ));
     }
 
     if (fullMediaRemoval) {
       items.push((
-        <Text key='full_media_removal' className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/photo-off.svg')} />
+        <Restriction key='fullMediaRemoval' icon={require('@tabler/icons/photo-off.svg')}>
           <FormattedMessage
             id='federation_restriction.full_media_removal'
             defaultMessage='Full media removal'
           />
-        </Text>
+        </Restriction>
       ));
     } else if (partialMediaRemoval) {
       items.push((
-        <Text key='partial_media_removal' className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/photo-off.svg')} />
+        <Restriction key='partialMediaRemoval' icon={require('@tabler/icons/photo-off.svg')}>
           <FormattedMessage
             id='federation_restriction.partial_media_removal'
             defaultMessage='Partial media removal'
           />
-        </Text>
+        </Restriction>
       ));
     }
 
     if (!fullMediaRemoval && media_nsfw) {
       items.push((
-        <Text key='media_nsfw' className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/eye-off.svg')} />
+        <Restriction key='mediaNsfw' icon={require('@tabler/icons/eye-off.svg')}>
           <FormattedMessage
             id='federation_restriction.media_nsfw'
             defaultMessage='Attachments marked NSFW'
           />
-        </Text>
+        </Restriction>
       ));
     }
 
@@ -105,46 +117,45 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
 
     if (remoteInstance.getIn(['federation', 'reject']) === true) {
       return (
-        <Text className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/x.svg')} />
+        <Restriction icon={require('@tabler/icons/shield-x.svg')}>
           <FormattedMessage
             id='remote_instance.federation_panel.restricted_message'
             defaultMessage='{siteTitle} blocks all activities from {host}.'
             values={{ host, siteTitle }}
           />
-        </Text>
+        </Restriction>
       );
     } else if (hasRestrictions(remoteInstance)) {
-      return [
-        (
-          <Text theme='muted'>
+      return (
+        <>
+          <Restriction icon={require('@tabler/icons/shield-lock.svg')}>
             <FormattedMessage
               id='remote_instance.federation_panel.some_restrictions_message'
               defaultMessage='{siteTitle} has placed some restrictions on {host}.'
               values={{ host, siteTitle }}
             />
-          </Text>
-        ),
-        renderRestrictions(),
-      ];
+          </Restriction>
+
+          {renderRestrictions()}
+        </>
+      );
     } else {
       return (
-        <Text className='flex items-center gap-2' theme='muted'>
-          <Icon src={require('@tabler/icons/check.svg')} />
+        <Restriction icon={require('@tabler/icons/shield-check.svg')}>
           <FormattedMessage
             id='remote_instance.federation_panel.no_restrictions_message'
             defaultMessage='{siteTitle} has placed no restrictions on {host}.'
             values={{ host, siteTitle }}
           />
-        </Text>
+        </Restriction>
       );
     }
   };
 
   return (
-    <div className='py-1 pl-4 mb-4 border-solid border-l-[3px] border-gray-300 dark:border-gray-500'>
+    <Stack space={3}>
       {renderContent()}
-    </div>
+    </Stack>
   );
 };
 
