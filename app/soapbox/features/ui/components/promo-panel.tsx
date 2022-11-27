@@ -2,20 +2,20 @@ import React from 'react';
 
 import Icon from 'soapbox/components/icon';
 import { Widget, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 
 const PromoPanel: React.FC = () => {
+  const instance = useInstance();
   const { promoPanel } = useSoapboxConfig();
   const settings = useSettings();
 
-  const siteTitle = useAppSelector(state => state.instance.title);
   const promoItems = promoPanel.get('items');
   const locale = settings.get('locale');
 
   if (!promoItems || promoItems.isEmpty()) return null;
 
   return (
-    <Widget title={siteTitle}>
+    <Widget title={instance.title}>
       <Stack space={2}>
         {promoItems.map((item, i) => (
           <Text key={i}>

@@ -9,7 +9,7 @@ import {
   RadioGroup,
   RadioItem,
 } from 'soapbox/features/forms';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useInstance } from 'soapbox/hooks';
 
 import type { Instance } from 'soapbox/types/entities';
 
@@ -42,8 +42,9 @@ const modeFromInstance = (instance: Instance): RegistrationMode => {
 const RegistrationModePicker: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
-  const mode = useAppSelector(state => modeFromInstance(state.instance));
+  const mode = modeFromInstance(instance);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const config = generateConfig(e.target.value as RegistrationMode);

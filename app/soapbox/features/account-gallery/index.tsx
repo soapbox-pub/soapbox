@@ -11,9 +11,8 @@ import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
 import LoadMore from 'soapbox/components/load-more';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
-import { getFeatures } from 'soapbox/utils/features';
 
 import MediaItem from './components/media-item';
 
@@ -38,11 +37,11 @@ const LoadMoreMedia: React.FC<ILoadMoreMedia> = ({ maxId, onLoadMore }) => {
 const AccountGallery = () => {
   const dispatch = useAppDispatch();
   const { username } = useParams<{ username: string }>();
+  const features = useFeatures();
 
   const { accountId, unavailable, accountUsername } = useAppSelector((state) => {
     const me = state.me;
     const accountFetchError = (state.accounts.get(-1)?.username || '').toLowerCase() === username.toLowerCase();
-    const features = getFeatures(state.instance);
 
     let accountId: string | -1 | null = -1;
     let accountUsername = username;

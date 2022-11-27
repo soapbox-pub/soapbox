@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { Accordion, Column, Stack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useInstance } from 'soapbox/hooks';
 
 import SiteWallet from './components/site-wallet';
 
@@ -11,9 +11,10 @@ const messages = defineMessages({
 });
 
 const CryptoDonate: React.FC = (): JSX.Element => {
-  const [explanationBoxExpanded, toggleExplanationBox] = useState(true);
-  const siteTitle = useAppSelector((state) => state.instance.title);
   const intl = useIntl();
+  const instance = useInstance();
+
+  const [explanationBoxExpanded, toggleExplanationBox] = useState(true);
 
   return (
     <Column label={intl.formatMessage(messages.heading)} withHeader>
@@ -26,7 +27,7 @@ const CryptoDonate: React.FC = (): JSX.Element => {
           <FormattedMessage
             id='crypto_donate.explanation_box.message'
             defaultMessage='{siteTitle} accepts cryptocurrency donations. You may send a donation to any of the addresses below. Thank you for your support!'
-            values={{ siteTitle }}
+            values={{ siteTitle: instance.title }}
           />
         </Accordion>
 

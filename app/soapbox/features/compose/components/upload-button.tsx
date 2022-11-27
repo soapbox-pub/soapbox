@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useInstance } from 'soapbox/hooks';
 
 import type { List as ImmutableList } from 'immutable';
 
@@ -29,9 +29,10 @@ const UploadButton: React.FC<IUploadButton> = ({
   resetFileKey,
 }) => {
   const intl = useIntl();
+  const { configuration } = useInstance();
 
   const fileElement = useRef<HTMLInputElement>(null);
-  const attachmentTypes = useAppSelector(state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>);
+  const attachmentTypes = configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) {
