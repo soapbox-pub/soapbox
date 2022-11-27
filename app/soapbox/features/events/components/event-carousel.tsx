@@ -40,11 +40,11 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
     setIndex(index % statusIds.size);
   };
 
-  if (isLoading) {
-    return <PlaceholderEventPreview />;
-  }
-
   if (statusIds.size === 0) {
+    if (isLoading) {
+      return <PlaceholderEventPreview />;
+    }
+
     return (
       <Card variant='rounded' size='lg'>
         {emptyMessage}
