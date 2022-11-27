@@ -6,6 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
+import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -14,10 +15,11 @@ const messages = defineMessages({
 });
 
 interface IEventAction {
-  status: StatusEntity,
+  status: StatusEntity
+  theme?: ButtonThemes
 }
 
-const EventActionButton: React.FC<IEventAction> = ({ status }) => {
+const EventActionButton: React.FC<IEventAction> = ({ status, theme = 'secondary' }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
@@ -86,7 +88,7 @@ const EventActionButton: React.FC<IEventAction> = ({ status }) => {
   return (
     <Button
       size='sm'
-      theme='secondary'
+      theme={theme}
       icon={buttonIcon}
       onClick={buttonAction}
       disabled={buttonDisabled}

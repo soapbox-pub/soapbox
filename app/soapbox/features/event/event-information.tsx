@@ -4,8 +4,11 @@ import { FormattedDate, FormattedMessage } from 'react-intl';
 import { openModal } from 'soapbox/actions/modals';
 import { fetchStatus } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
+import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
+import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
@@ -107,10 +110,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   }, [status]);
 
   const renderLinks = useCallback(() => {
-    const links = status?.media_attachments.filter(({ pleroma }) => pleroma.get('mime_type') === 'text/html');
-
-    if (!links?.size) return null;
-
+    if (!status.event?.links.size) return null;
 
     return (
       <Stack space={1}>
@@ -118,11 +118,11 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
           <FormattedMessage id='event.website' defaultMessage='External links' />
         </Text>
 
-        {links.map(link => (
+        {status.event.links.map(link => (
           <HStack space={2} alignItems='center'>
             <Icon src={require('@tabler/icons/link.svg')} />
-            <a href={link.remote_url || link.url} className='text-primary-600 dark:text-accent-blue hover:underline' target='_blank'>
-              {(link.remote_url || link.url).replace(/^https?:\/\//, '')}
+            <a href={link.url} className='text-primary-600 dark:text-accent-blue hover:underline' target='_blank'>
+              {link.url.replace(/^https?:\/\//, '')}
             </a>
           </HStack>
         ))}
@@ -143,20 +143,22 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
           <Text size='xl' weight='bold'>
             <FormattedMessage id='event.description' defaultMessage='Description' />
           </Text>
-          <Text
-            className='break-words status__content'
-            size='sm'
-            dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-          />
+
+          <StatusContent status={status} collapsable={false} translatable />
+
+          <TranslateButton status={status} />
         </Stack>
       )}
 
       <StatusMedia
         status={status}
-        excludeBanner
         showMedia={showMedia}
         onToggleVisibility={handleToggleMediaVisibility}
       />
+
+      {status.quote && status.pleroma.get('quote_visible', true) && (
+        <QuotedStatus statusId={status.quote as string} />
+      )}
 
       {renderEventLocation()}
 

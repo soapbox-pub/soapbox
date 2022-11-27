@@ -22,7 +22,7 @@ const Event = ({ id }: { id: string }) => {
       className='w-full px-1'
       to={`/@${status.getIn(['account', 'acct'])}/events/${status.id}`}
     >
-      <EventPreview status={status} />
+      <EventPreview status={status} floatingAction={false} />
     </Link>
   );
 };
