@@ -44,13 +44,14 @@ const Report: React.FC<IReport> = ({ id }) => {
 
   const makeMenu = () => {
     return [{
-      text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username as string }),
+      text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/user-off.svg'),
+      icon: require('@tabler/icons/hourglass-empty.svg'),
     }, {
-      text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username as string }),
+      text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
       action: handleDeleteUser,
-      icon: require('@tabler/icons/user-minus.svg'),
+      icon: require('@tabler/icons/trash.svg'),
+      destructive: true,
     }];
   };
 
