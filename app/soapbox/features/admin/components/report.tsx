@@ -91,7 +91,7 @@ const Report: React.FC<IReport> = ({ id }) => {
       </HoverRefWrapper>
 
       <Stack space={3} grow>
-        <Text tag='h4' weight='bold' truncate>
+        <Text tag='h4' weight='bold'>
           <FormattedMessage
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
@@ -145,7 +145,7 @@ const Report: React.FC<IReport> = ({ id }) => {
         </Stack>
       </Stack>
 
-      <HStack space={2} alignItems='start'>
+      <HStack space={2} alignItems='start' className='flex-none'>
         <Button onClick={handleCloseReport}>
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
