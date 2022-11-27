@@ -150,7 +150,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
         );
       case Statuses.READY:
         return (
-          <FormGroup labelText='Phone Number'>
+          <FormGroup labelText={<FormattedMessage id='sms_verification.phone.label' defaultMessage='Phone number' />}>
             <PhoneInput
               value={phone}
               onChange={onChange}

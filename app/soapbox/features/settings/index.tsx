@@ -86,9 +86,11 @@ const Settings = () => {
                     <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
                     <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
                     <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
-                      {isMfaEnabled ?
-                        intl.formatMessage(messages.mfaEnabled) :
-                        intl.formatMessage(messages.mfaDisabled)}
+                      <span>
+                        {isMfaEnabled ?
+                          intl.formatMessage(messages.mfaEnabled) :
+                          intl.formatMessage(messages.mfaDisabled)}
+                      </span>
                     </ListItem>
                   </>
                 )}
@@ -116,14 +118,15 @@ const Settings = () => {
 
             <CardBody>
               <List>
-                {features.security && (
-                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
-                )}
                 {features.federating && (features.accountMoving ? (
                   <ListItem label={intl.formatMessage(messages.accountMigration)} onClick={navigateToMoveAccount} />
                 ) : features.accountAliases && (
                   <ListItem label={intl.formatMessage(messages.accountAliases)} onClick={navigateToAliases} />
                 ))}
+
+                {features.security && (
+                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+                )}
               </List>
             </CardBody>
           </>

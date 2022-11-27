@@ -1,5 +1,7 @@
 import classNames from 'clsx';
-import * as React from 'react';
+import React from 'react';
+
+import { HStack } from 'soapbox/components/ui';
 
 import PlaceholderAvatar from './placeholder-avatar';
 import PlaceholderDisplayName from './placeholder-display-name';
@@ -19,7 +21,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
   >
     <div className='w-full animate-pulse overflow-hidden'>
       <div>
-        <div className='flex space-x-3 items-center'>
+        <HStack space={3} alignItems='center'>
           <div className='flex-shrink-0'>
             <PlaceholderAvatar size={42} />
           </div>
@@ -27,7 +29,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
           <div className='min-w-0 flex-1'>
             <PlaceholderDisplayName minLength={3} maxLength={25} />
           </div>
-        </div>
+        </HStack>
       </div>
 
       <div className='mt-4 status__content-wrapper'>

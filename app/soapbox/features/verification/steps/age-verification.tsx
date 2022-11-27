@@ -61,13 +61,21 @@ const AgeVerification = () => {
           <Datepicker onChange={onChange} />
 
           <Text theme='muted' size='sm'>
-            {siteTitle} requires users to be at least {ageMinimum} years old to
-            access its platform. Anyone under the age of {ageMinimum} years old
-            cannot access this platform.
+            <FormattedMessage
+              id='age_verification.body'
+              defaultMessage='{siteTitle} requires users to be at least {ageMinimum} years old to access its platform. Anyone under the age of {ageMinimum} years old cannot access this platform.'
+              values={{
+                siteTitle,
+                ageMinimum,
+              }}
+            />
+
           </Text>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>Next</Button>
+            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            </Button>
           </div>
         </Form>
       </div>

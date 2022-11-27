@@ -13,7 +13,6 @@ import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },
   add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add an answer' },
-  remove_option: { id: 'compose_form.poll.remove_option', defaultMessage: 'Remove this answer' },
   pollDuration: { id: 'compose_form.poll.duration', defaultMessage: 'Duration' },
   removePoll: { id: 'compose_form.poll.remove', defaultMessage: 'Remove poll' },
   switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple answers' },
@@ -95,7 +94,9 @@ const Option: React.FC<IOption> = ({
 
       {index > 1 && (
         <div>
-          <Button theme='danger' size='sm' onClick={handleOptionRemove}>Delete</Button>
+          <Button theme='danger' size='sm' onClick={handleOptionRemove}>
+            <FormattedMessage id='compose_form.poll.remove_option' defaultMessage='Delete' />
+          </Button>
         </div>
       )}
     </HStack>
@@ -168,7 +169,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
 
       <Divider />
 
-      <button type='button' onClick={handleToggleMultiple} className='text-left'>
+      <button type='button' onClick={handleToggleMultiple} className='text-start'>
         <HStack alignItems='center' justifyContent='between'>
           <Stack>
             <Text weight='medium'>

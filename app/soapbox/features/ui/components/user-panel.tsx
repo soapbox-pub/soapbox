@@ -36,13 +36,9 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
     <div className='relative'>
       <Stack space={2}>
         <Stack>
-          <div className='-mt-4 -mx-4 h-24 bg-gray-200 relative'>
+          <div className='-mt-4 -mx-4 h-24 bg-gray-200 relative overflow-hidden'>
             {header && (
-              <StillImage
-                src={account.get('header')}
-                className='absolute inset-0 object-cover'
-                alt=''
-              />
+              <StillImage src={account.header} />
             )}
           </div>
 

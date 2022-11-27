@@ -23,7 +23,7 @@ describe('<EmailVerification />', () => {
     it('successfully submits', async() => {
       render(<EmailVerification />);
 
-      await userEvent.type(screen.getByLabelText('Email Address'), 'foo@bar.com{enter}');
+      await userEvent.type(screen.getByLabelText('E-mail address'), 'foo@bar.com{enter}');
 
       await waitFor(() => {
         fireEvent.submit(
@@ -50,7 +50,7 @@ describe('<EmailVerification />', () => {
     it('renders errors', async() => {
       render(<EmailVerification />);
 
-      await userEvent.type(screen.getByLabelText('Email Address'), 'foo@bar.com{enter}');
+      await userEvent.type(screen.getByLabelText('E-mail address'), 'foo@bar.com{enter}');
 
       await waitFor(() => {
         fireEvent.submit(

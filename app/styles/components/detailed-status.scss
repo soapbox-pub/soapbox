@@ -39,26 +39,12 @@
   // }
 
   &__connector {
-    @apply bg-gray-200 dark:bg-primary-800 absolute w-0.5 left-5 hidden;
+    @apply bg-gray-200 dark:bg-primary-800 absolute w-0.5 left-5 hidden z-[1];
 
     &--bottom {
       @apply block;
       height: calc(100% - 42px - 8px - 1rem);
       top: calc(12px + 42px);
-    }
-  }
-}
-
-.thread {
-  .ptr,
-  .ptr__children {
-    background: var(--foreground-color) !important;
-    border-radius: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-
-    @media screen and (max-width: 580px) {
-      border-radius: 0;
     }
   }
 }

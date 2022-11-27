@@ -13,12 +13,12 @@
   }
 
   .svg-icon {
+    @apply right-4 rtl:left-4 rtl:right-auto;
     @include font-size(16);
     cursor: default;
     display: inline-block;
     position: absolute;
     top: 50%;
-    right: 16px;
     transform: translateY(-50%);
     z-index: 2;
     width: 18px;

@@ -58,25 +58,3 @@
   line-height: #{$px + "px"};
   line-height: #{$rem + "rem"};
 }
-
-// Soapbox icon font
-@font-face {
-  font-family: 'soapbox';
-  src: url('../assets/fonts/soapbox/soapbox.eot?pryg6i');
-  src: url('../assets/fonts/soapbox/soapbox.eot?pryg6i#iefix') format('embedded-opentype'),
-    url('../assets/fonts/soapbox/soapbox.ttf?pryg6i') format('truetype'),
-    url('../assets/fonts/soapbox/soapbox.woff?pryg6i') format('woff'),
-    url('../assets/fonts/soapbox/soapbox.svg?pryg6i#soapbox') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-.fa-fediverse::before {
-  font-family: 'soapbox';
-  content: "\e901";
-}
-
-.fa-spinster::before {
-  font-family: 'soapbox';
-  content: "\e900";
-}

@@ -29,6 +29,7 @@ const isJSONValid = (text: any): boolean => {
 
 const messages = defineMessages({
   heading: { id: 'column.settings_store', defaultMessage: 'Settings store' },
+  advanced: { id: 'developers.settings_store.advanced', defaultMessage: 'Advanced settings' },
   hint: { id: 'developers.settings_store.hint', defaultMessage: 'It is possible to directly edit your user settings here. BE CAREFUL! Editing this section can break your account, and you will only be able to recover through the API.' },
 });
 
@@ -98,7 +99,7 @@ const SettingsStore: React.FC = () => {
       </Form>
 
       <CardHeader>
-        <CardTitle title='Advanced settings' />
+        <CardTitle title={intl.formatMessage(messages.advanced)} />
       </CardHeader>
 
       <List>

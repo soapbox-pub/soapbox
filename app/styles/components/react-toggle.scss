@@ -8,6 +8,10 @@
   user-select: none;
   -webkit-tap-highlight-color: rgba($base-overlay-background, 0);
   -webkit-tap-highlight-color: transparent;
+
+  &:focus-within .react-toggle-track {
+    @apply ring-2 ring-offset-2 ring-primary-500;
+  }
 }
 
 .react-toggle-screenreader-only {

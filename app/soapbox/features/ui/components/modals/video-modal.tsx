@@ -37,7 +37,6 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
         blurhash={media.blurhash}
         src={media.url}
         startTime={time}
-        onCloseVideo={onClose}
         link={link}
         detailed
         alt={media.description}

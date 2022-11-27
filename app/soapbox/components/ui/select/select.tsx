@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 interface ISelect extends React.SelectHTMLAttributes<HTMLSelectElement> {
   children: Iterable<React.ReactNode>,

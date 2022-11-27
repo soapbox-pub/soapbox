@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
 import { useAppSelector, useSettings } from 'soapbox/hooks';

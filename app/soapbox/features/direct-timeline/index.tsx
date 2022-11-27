@@ -5,22 +5,19 @@ import { directComposeById } from 'soapbox/actions/compose';
 import { connectDirectStream } from 'soapbox/actions/streaming';
 import { expandDirectTimeline } from 'soapbox/actions/timelines';
 import AccountSearch from 'soapbox/components/account-search';
-import ColumnHeader from 'soapbox/components/column-header';
 import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
-  title: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  heading: { id: 'column.direct', defaultMessage: 'Direct messages' },
   searchPlaceholder: { id: 'direct.search_placeholder', defaultMessage: 'Send a message to…' },
 });
 
 const DirectTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-
-  const hasUnread = useAppSelector((state) => (state.timelines.get('direct')?.unread || 0) > 0);
 
   useEffect(() => {
     dispatch(expandDirectTimeline());
@@ -40,13 +37,7 @@ const DirectTimeline = () => {
   };
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <ColumnHeader
-        icon='envelope'
-        active={hasUnread}
-        title={intl.formatMessage(messages.title)}
-      />
-
+    <Column label={intl.formatMessage(messages.heading)}>
       <AccountSearch
         placeholder={intl.formatMessage(messages.searchPlaceholder)}
         onSelected={handleSuggestion}
@@ -57,7 +48,7 @@ const DirectTimeline = () => {
         timelineId='direct'
         onLoadMore={handleLoadMore}
         emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
-        divideType='space'
+        divideType='border'
       />
     </Column>
   );

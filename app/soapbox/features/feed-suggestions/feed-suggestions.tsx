@@ -35,7 +35,7 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
             <HStack alignItems='center' justifyContent='center' space={1}>
               <Text
                 weight='semibold'
-                dangerouslySetInnerHTML={{ __html: account.display_name }}
+                dangerouslySetInnerHTML={{ __html: account.display_name_html }}
                 truncate
                 align='center'
                 size='sm'
@@ -78,7 +78,7 @@ const FeedSuggestions = () => {
       </HStack>
 
       <CardBody>
-        <HStack alignItems='center' className='overflow-x-auto lg:overflow-x-hidden space-x-4 md:space-x-0'>
+        <HStack space={4} alignItems='center' className='overflow-x-auto lg:overflow-x-hidden md:space-x-0'>
           {suggestedProfiles.slice(0, 4).map((suggestedProfile) => (
             <SuggestionItem key={suggestedProfile.account} accountId={suggestedProfile.account} />
           ))}

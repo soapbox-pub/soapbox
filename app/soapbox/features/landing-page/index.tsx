@@ -1,14 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { prepareRequest } from 'soapbox/actions/consumer-auth';
+import Markup from 'soapbox/components/markup';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import RegistrationForm from 'soapbox/features/auth-login/components/registration-form';
 import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
-
-import './instance-description.css';
 
 const LandingPage = () => {
   const dispatch = useAppDispatch();
@@ -107,19 +106,17 @@ const LandingPage = () => {
     <main className='mt-16 sm:mt-24' data-testid='homepage'>
       <div className='mx-auto max-w-7xl'>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 py-12'>
-          <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex'>
+          <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-start lg:flex'>
             <div className='w-full'>
               <Stack space={3}>
                 <h1 className='text-5xl font-extrabold text-transparent text-ellipsis overflow-hidden bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
 
-                <Text size='lg'>
-                  <span
-                    className='instance-description'
-                    dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
-                  />
-                </Text>
+                <Markup
+                  size='lg'
+                  dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
+                />
               </Stack>
             </div>
           </div>

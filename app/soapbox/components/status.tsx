@@ -110,6 +110,11 @@ const Status: React.FC<IStatus> = (props) => {
   const handleClick = (e?: React.MouseEvent): void => {
     e?.stopPropagation();
 
+    // If the user is selecting text, don't focus the status.
+    if (getSelection()?.toString().length) {
+      return;
+    }
+
     if (!e || !(e.ctrlKey || e.metaKey)) {
       if (onClick) {
         onClick();

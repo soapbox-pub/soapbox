@@ -6,7 +6,7 @@ import { spring } from 'react-motion';
 import Overlay from 'react-overlays/lib/Overlay';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { IconButton, Counter } from 'soapbox/components/ui';
+import { Counter, IconButton } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import Motion from 'soapbox/features/ui/util/optional-motion';
 
@@ -196,7 +196,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           data-method={isLogout ? 'delete' : undefined}
           title={text}
         >
-          {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none' />}
+          {icon && <SvgIcon src={icon} className='mr-3 rtl:ml-3 rtl:mr-0 h-5 w-5 flex-none' />}
 
           <span className='truncate'>{text}</span>
 
@@ -259,6 +259,7 @@ export interface IDropdown extends RouteComponentProps {
   text?: string,
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   children?: JSX.Element,
+  dropdownMenuStyle?: React.CSSProperties,
 }
 
 interface IDropdownState {
@@ -369,7 +370,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   render() {
-    const { src = require('@tabler/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
+    const { src = require('@tabler/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children, dropdownMenuStyle } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
@@ -403,7 +404,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
         )}
 
         <Overlay show={open} placement={dropdownPlacement} target={this.findTarget}>
-          <RouterDropdownMenu items={items} onClose={this.handleClose} openedViaKeyboard={openedViaKeyboard} />
+          <RouterDropdownMenu items={items} onClose={this.handleClose} openedViaKeyboard={openedViaKeyboard} style={dropdownMenuStyle} />
         </Overlay>
       </>
     );

@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addToAliases } from 'soapbox/actions/aliases';
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display-name';
+import AccountComponent from 'soapbox/components/account';
 import IconButton from 'soapbox/components/icon-button';
+import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
@@ -47,23 +47,17 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
 
   if (!added && accountId !== me) {
     button = (
-      <div className='account__relationship'>
-        <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={handleOnAdd} />
-      </div>
+      <IconButton src={require('@tabler/icons/plus.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={handleOnAdd} />
     );
   }
 
   return (
-    <div className='account'>
-      <div className='account__wrapper'>
-        <div className='account__display-name'>
-          <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-          <DisplayName account={account} />
-        </div>
-
-        {button}
+    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
+      <div className='w-full'>
+        <AccountComponent account={account} withRelationship={false} />
       </div>
-    </div>
+      {button}
+    </HStack>
   );
 };
 

@@ -5,7 +5,7 @@ import { spring } from 'react-motion';
 
 import Icon from 'soapbox/components/icon';
 import StatusContent from 'soapbox/components/status-content';
-import { Stack } from 'soapbox/components/ui';
+import { HStack, Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 
 import Motion from '../../util/optional-motion';
@@ -29,23 +29,24 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
     const { icon = null, text, meta = null, active = false, href = '#', isLogout, destructive } = action;
 
     const Comp = href === '#' ? 'button' : 'a';
-    const compProps = href === '#' ? { onClick: onClick } : { href: href };
+    const compProps = href === '#' ? { onClick: onClick } : { href: href, rel: 'noopener' };
 
     return (
       <li key={`${text}-${i}`}>
-        <Comp
+        <HStack
           {...compProps}
-          rel='noopener'
+          space={2.5}
           data-index={i}
           className={classNames('w-full', { active, destructive })}
           data-method={isLogout ? 'delete' : null}
+          element={Comp}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
           <div>
             <div className={classNames({ 'actions-modal__item-label': !!meta })}>{text}</div>
             <div>{meta}</div>
           </div>
-        </Comp>
+        </HStack>
       </li>
     );
   };

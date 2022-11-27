@@ -160,16 +160,22 @@ const Item: React.FC<IItem> = ({
       </div>
     );
   } else if (attachment.type === 'image') {
-    const letterboxed = shouldLetterbox(attachment);
+    const letterboxed = total === 1 && shouldLetterbox(attachment);
 
     thumbnail = (
       <a
-        className={classNames('media-gallery__item-thumbnail', { letterboxed })}
+        className='media-gallery__item-thumbnail'
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
       >
-        <StillImage src={attachment.url} alt={attachment.description} />
+        <StillImage
+          className='w-full h-full'
+          src={attachment.url}
+          alt={attachment.description}
+          letterboxed={letterboxed}
+          showExt
+        />
       </a>
     );
   } else if (attachment.type === 'gifv') {

@@ -179,6 +179,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
     <Modal
       title={<FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account.acct}</strong> }} />}
       onClose={onClose}
+      cancelText={<FormattedMessage id='common.cancel' defaultMessage='Cancel' />}
       cancelAction={currentStep === Steps.THREE ? undefined : onClose}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}
