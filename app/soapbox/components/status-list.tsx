@@ -189,7 +189,9 @@ const StatusList: React.FC<IStatusList> = ({
         if (statusId === null) {
           acc.push(renderLoadGap(index));
         } else if (statusId.startsWith('末suggestions-')) {
-          acc.push(renderFeedSuggestions());
+          if (soapboxConfig.feedInjection) {
+            acc.push(renderFeedSuggestions());
+          }
         } else if (statusId.startsWith('末pending-')) {
           acc.push(renderPendingStatus(statusId));
         } else {
