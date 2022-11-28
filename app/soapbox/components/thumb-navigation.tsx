@@ -3,8 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link';
 import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const account = useOwnAccount();
@@ -12,7 +11,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
-  const features = getFeatures(useAppSelector((state) => state.instance));
+  const features = useFeatures();
 
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {

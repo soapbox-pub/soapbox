@@ -3,13 +3,13 @@ import { FormattedMessage } from 'react-intl';
 
 import Account from 'soapbox/components/account';
 import { Button, Card, CardBody, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useInstance, useOwnAccount } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const FediverseStep = ({ onNext }: { onNext: () => void }) => {
-  const siteTitle = useAppSelector((state) => state.instance.title);
   const account = useOwnAccount() as AccountEntity;
+  const instance = useInstance();
 
   return (
     <Card variant='rounded' size='xl'>
@@ -22,7 +22,7 @@ const FediverseStep = ({ onNext }: { onNext: () => void }) => {
               id='onboarding.fediverse.title'
               defaultMessage='{siteTitle} is just one part of the Fediverse'
               values={{
-                siteTitle,
+                siteTitle: instance.title,
               }}
             />
           </Text>
@@ -35,7 +35,7 @@ const FediverseStep = ({ onNext }: { onNext: () => void }) => {
                     id='onboarding.fediverse.message'
                     defaultMessage='The Fediverse is a social network made up of thousands of diverse and independently-run social media sites (aka "servers"). You can follow users — and like, repost, and reply to posts — from most other Fediverse servers, because they can communicate with {siteTitle}.'
                     values={{
-                      siteTitle,
+                      siteTitle: instance.title,
                     }}
                   />
                 </Text>

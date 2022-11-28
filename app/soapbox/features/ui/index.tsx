@@ -24,7 +24,8 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { StatProvider } from 'soapbox/contexts/stat-context';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -35,8 +36,6 @@ import StatusPage from 'soapbox/pages/status-page';
 import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-
-import { StatProvider } from '../../contexts/stat-context';
 
 import BackgroundShapes from './components/background-shapes';
 import { supportedPolicyIds } from './components/modals/policy-modal';
@@ -316,6 +315,7 @@ const UI: React.FC = ({ children }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { data: pendingPolicy } = usePendingPolicy();
+  const instance = useInstance();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -332,7 +332,7 @@ const UI: React.FC = ({ children }) => {
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
-  const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
+  const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {

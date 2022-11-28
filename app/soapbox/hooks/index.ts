@@ -6,6 +6,7 @@ export { useCompose } from './useCompose';
 export { useDebounce } from './useDebounce';
 export { useDimensions } from './useDimensions';
 export { useFeatures } from './useFeatures';
+export { useInstance } from './useInstance';
 export { useLocale } from './useLocale';
 export { useOnScreen } from './useOnScreen';
 export { useOwnAccount } from './useOwnAccount';

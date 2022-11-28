@@ -12,7 +12,7 @@ import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday-input';
 import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth-login/components/captcha';
-import { useAppSelector, useAppDispatch, useSettings, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useSettings, useFeatures, useInstance } from 'soapbox/hooks';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
@@ -42,7 +42,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
 
   const settings = useSettings();
   const features = useFeatures();
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
 
   const locale = settings.get('locale');
   const needsConfirmation = !!instance.pleroma.getIn(['metadata', 'account_activation_required']);

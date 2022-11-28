@@ -996,6 +996,8 @@
   "status.in_review_summary.summary": "This post has been sent to Moderation for review and is only visible to you.",
   "status.in_review_summary.contact": "If you believe this is in error please {link}.",
   "status.in_review_summary.link": "Contact Support",
+  "status.interactions.reblogs": "{count, plural, one {Repost} other {Reposts}}",
+  "status.interactions.favourites": "{count, plural, one {Like} other {Likes}}",
   "status.load_more": "Load more",
   "status.media_hidden": "Media hidden",
   "status.mention": "Mention @{name}",

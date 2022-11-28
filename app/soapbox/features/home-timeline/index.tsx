@@ -8,7 +8,7 @@ import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures, useInstance } from 'soapbox/hooks';
 
 import { clearFeedAccountId } from '../../actions/timelines';
 
@@ -20,12 +20,12 @@ const HomeTimeline: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
+  const instance = useInstance();
 
   const polling = useRef<NodeJS.Timer | null>(null);
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
   const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId as string | undefined);
-  const siteTitle = useAppSelector(state => state.instance.title);
   const currentAccountRelationship = useAppSelector(state => currentAccountId ? state.relationships.get(currentAccountId) : null);
 
   const handleLoadMore = (maxId: string) => {
@@ -104,7 +104,7 @@ const HomeTimeline: React.FC = () => {
                 <FormattedMessage
                   id='empty_column.home.subtitle'
                   defaultMessage='{siteTitle} gets more interesting once you follow other users.'
-                  values={{ siteTitle }}
+                  values={{ siteTitle: instance.title }}
                 />
               </Text>
 
@@ -116,7 +116,7 @@ const HomeTimeline: React.FC = () => {
                     values={{
                       public: (
                         <Link to='/timeline/local' className='text-primary-600 dark:text-primary-400 hover:underline'>
-                          <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} />
+                          <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: instance.title }} />
                         </Link>
                       ),
                     }}
