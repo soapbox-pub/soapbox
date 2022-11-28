@@ -47,15 +47,17 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
 
   return (
     <HStack space={2} alignItems='start'>
-      <Stack space={2} grow>
+      <Stack space={2} className='overflow-hidden' grow>
         <StatusContent status={status} />
         <StatusMedia status={status} />
       </Stack>
 
-      <DropdownMenu
-        items={menu}
-        src={require('@tabler/icons/dots-vertical.svg')}
-      />
+      <div className='flex-none'>
+        <DropdownMenu
+          items={menu}
+          src={require('@tabler/icons/dots-vertical.svg')}
+        />
+      </div>
     </HStack>
   );
 };

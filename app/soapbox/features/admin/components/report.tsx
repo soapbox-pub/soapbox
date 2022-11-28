@@ -90,7 +90,7 @@ const Report: React.FC<IReport> = ({ id }) => {
         </Link>
       </HoverRefWrapper>
 
-      <Stack space={3} grow>
+      <Stack space={3} className='overflow-hidden' grow>
         <Text tag='h4' weight='bold'>
           <FormattedMessage
             id='admin.reports.report_title'
