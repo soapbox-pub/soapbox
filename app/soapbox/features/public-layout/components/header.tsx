@@ -8,7 +8,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -34,7 +34,7 @@ const Header = () => {
   const { links } = soapboxConfig;
 
   const features = useFeatures();
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
   const isOpen = features.accountCreation && instance.registrations;
   const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 

@@ -19,7 +19,7 @@ import {
   Textarea,
   Toggle,
 } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
 import resizeImage from 'soapbox/utils/resize-image';
 
@@ -171,10 +171,11 @@ const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, on
 const EditProfile: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const account = useOwnAccount();
   const features = useFeatures();
-  const maxFields = useAppSelector(state => state.instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number);
+  const maxFields = instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number;
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<AccountCredentials>({});

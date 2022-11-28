@@ -17,7 +17,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import Icon from 'soapbox/components/icon';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
@@ -67,11 +67,12 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { configuration } = useInstance();
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
-  const maxTootChars = useAppSelector((state) => state.instance.getIn(['configuration', 'statuses', 'max_characters'])) as number;
+  const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
   const scheduledStatusCount = useAppSelector((state) => state.get('scheduled_statuses').size);
   const features = useFeatures();
 

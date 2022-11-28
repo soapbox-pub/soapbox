@@ -8,11 +8,11 @@ import { openModal } from 'soapbox/actions/modals';
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useInstance, useOwnAccount } from 'soapbox/hooks';
 
-const WaitlistPage = (/* { account } */) => {
+const WaitlistPage = () => {
   const dispatch = useDispatch();
-  const title = useAppSelector((state) => state.instance.title);
+  const instance = useInstance();
 
   const me = useOwnAccount();
   const isSmsVerified = me?.source.get('sms_verified');
@@ -59,7 +59,7 @@ const WaitlistPage = (/* { account } */) => {
                   <FormattedMessage
                     id='waitlist.body'
                     defaultMessage='Welcome back to {title}! You were previously placed on our waitlist. Please verify your phone number to receive immediate access to your account!'
-                    values={{ title }}
+                    values={{ title: instance.title }}
                   />
                 </Text>
 

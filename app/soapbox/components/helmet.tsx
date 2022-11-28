@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
-import { useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useInstance, useSettings } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 import FaviconService from 'soapbox/utils/favicon-service';
 
@@ -16,7 +16,7 @@ const getNotifTotals = (state: RootState): number => {
 };
 
 const Helmet: React.FC = ({ children }) => {
-  const title = useAppSelector((state) => state.instance.title);
+  const instance = useInstance();
   const unreadCount = useAppSelector((state) => getNotifTotals(state));
   const demetricator = useSettings().get('demetricator');
 
@@ -40,8 +40,8 @@ const Helmet: React.FC = ({ children }) => {
 
   return (
     <ReactHelmet
-      titleTemplate={addCounter(`%s | ${title}`)}
-      defaultTitle={addCounter(title)}
+      titleTemplate={addCounter(`%s | ${instance.title}`)}
+      defaultTitle={addCounter(instance.title)}
       defer={false}
     >
       {children}

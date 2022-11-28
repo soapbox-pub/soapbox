@@ -5,9 +5,8 @@ import { addToAliases } from 'soapbox/actions/aliases';
 import AccountComponent from 'soapbox/components/account';
 import IconButton from 'soapbox/components/icon-button';
 import { HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-import { getFeatures } from 'soapbox/utils/features';
 
 import type { List as ImmutableList } from 'immutable';
 
@@ -23,21 +22,19 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const getAccount = useCallback(makeGetAccount(), []);
-
   const account = useAppSelector((state) => getAccount(state, accountId));
-  const added = useAppSelector((state) => {
-    const instance = state.instance;
-    const features = getFeatures(instance);
+  const me = useAppSelector((state) => state.me);
 
+  const added = useAppSelector((state) => {
     const account = getAccount(state, accountId);
     const apId = account?.pleroma.get('ap_id');
     const name = features.accountMoving ? account?.acct : apId;
 
     return aliases.includes(name);
   });
-  const me = useAppSelector((state) => state.me);
 
   const handleOnAdd = () => dispatch(addToAliases(account!));
 

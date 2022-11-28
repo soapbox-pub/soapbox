@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import SiteLogo from 'soapbox/components/site-logo';
 import { Text, Button, Icon, Modal } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({
   download: { id: 'landing_page_modal.download', defaultMessage: 'Download' },
@@ -25,7 +25,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
   const { links } = soapboxConfig;
 
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
   const features = useFeatures();
 
   const isOpen = features.accountCreation && instance.registrations;
