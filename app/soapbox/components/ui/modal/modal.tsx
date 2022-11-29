@@ -3,6 +3,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
+import HStack from '../hstack/hstack';
 import IconButton from '../icon-button/icon-button';
 import Stack from '../stack/stack';
 
@@ -115,7 +116,7 @@ const Modal: React.FC<IModal> = ({
       </div>
 
       {confirmationAction && (
-        <div className='mt-5 flex flex-row justify-between' data-testid='modal-actions'>
+        <HStack className='mt-5' justifyContent='between' data-testid='modal-actions'>
           <div className='flex-grow'>
             {cancelAction && (
               <Button
@@ -127,7 +128,7 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-          <Stack space={2}>
+          <HStack space={2}>
             {secondaryAction && (
               <Button
                 theme='secondary'
@@ -146,8 +147,8 @@ const Modal: React.FC<IModal> = ({
             >
               {confirmationText}
             </Button>
-          </Stack>
-        </div>
+          </HStack>
+        </HStack>
       )}
     </div>
   );

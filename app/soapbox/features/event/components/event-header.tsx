@@ -326,6 +326,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   };
 
   const handleParticipantsClick: React.MouseEventHandler = e => {
+    e.preventDefault();
     e.stopPropagation();
 
     dispatch(openModal('EVENT_PARTICIPANTS', {
@@ -404,7 +405,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                 defaultMessage='Organized by {name}'
                 values={{
                   name: (
-                    <Link className='mention' to={`/@${account.acct}`}>
+                    <Link className='mention inline-block' to={`/@${account.acct}`}>
                       <HStack space={1} alignItems='center' grow>
                         <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
                         {account.verified && <VerificationBadge />}

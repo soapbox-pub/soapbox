@@ -385,7 +385,7 @@ const Status: React.FC<IStatus> = (props) => {
               )}
 
               {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
-                <>
+                <Stack space={4}>
                   <StatusContent
                     status={actualStatus}
                     onClick={handleClick}
@@ -408,7 +408,7 @@ const Status: React.FC<IStatus> = (props) => {
                       {quote}
                     </Stack>
                   )}
-                </>
+                </Stack>
               )}
             </Stack>
 
