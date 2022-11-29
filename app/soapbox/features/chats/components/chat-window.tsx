@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import {
@@ -6,8 +7,8 @@ import {
   toggleChat,
 } from 'soapbox/actions/chats';
 import Avatar from 'soapbox/components/avatar';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import IconButton from 'soapbox/components/icon_button';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
+import IconButton from 'soapbox/components/icon-button';
 import { HStack, Counter } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetChat } from 'soapbox/selectors';
@@ -17,6 +18,10 @@ import { displayFqn as getDisplayFqn } from 'soapbox/utils/state';
 import ChatBox from './chat-box';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
+
+const messages = defineMessages({
+  close: { id: 'chat_window.close', defaultMessage: 'Close chat' },
+});
 
 type WindowState = 'open' | 'minimized';
 
@@ -33,6 +38,7 @@ interface IChatWindow {
 
 /** Floating desktop chat window. */
 const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
+  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const displayFqn = useAppSelector(getDisplayFqn);
@@ -98,7 +104,7 @@ const ChatWindow: React.FC<IChatWindow> = ({ idx, chatId, windowState }) => {
           @{getAcct(account, displayFqn)}
         </button>
         <div className='pane__close'>
-          <IconButton src={require('@tabler/icons/x.svg')} title='Close chat' onClick={handleChatClose(chat.id)} />
+          <IconButton src={require('@tabler/icons/x.svg')} title={intl.formatMessage(messages.close)} onClick={handleChatClose(chat.id)} />
         </div>
       </HStack>
       <div className='pane__content'>

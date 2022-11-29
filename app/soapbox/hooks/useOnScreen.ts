@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 export const useOnScreen = (ref: React.MutableRefObject<HTMLElement>) =>  {
   const [isIntersecting, setIntersecting] = React.useState(false);

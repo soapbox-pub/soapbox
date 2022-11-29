@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
 import Emoji from '../emoji';

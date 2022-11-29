@@ -1,17 +1,17 @@
 import classNames from 'clsx';
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import StatusMedia from 'soapbox/components/status-media';
 import { Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import OutlineBox from './outline-box';
+import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusContent from './status_content';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
@@ -37,7 +37,16 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const settings = useSettings();
   const displayMedia = settings.get('displayMedia');
 
+  const overlay = useRef<HTMLDivElement>(null);
+
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [minHeight, setMinHeight] = useState(208);
+
+  useEffect(() => {
+    if (overlay.current) {
+      setMinHeight(overlay.current.getBoundingClientRect().height);
+    }
+  }, [overlay.current]);
 
   const handleExpandClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (!status) return;
@@ -103,15 +112,16 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
         <StatusReplyMentions status={status} hoverable={false} />
 
-        <Stack className={classNames('relative', {
-          'min-h-[220px]': status.hidden,
-        })}
+        <Stack
+          className='relative z-0'
+          style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
         >
           {(status.hidden) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={handleToggleMediaVisibility}
+              ref={overlay}
             />
           )}
 

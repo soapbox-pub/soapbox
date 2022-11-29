@@ -11,36 +11,33 @@ import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
-import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { openModal } from 'soapbox/actions/modals';
 import { expandNotifications } from 'soapbox/actions/notifications';
-import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
-import { fetchScheduledStatuses } from 'soapbox/actions/scheduled_statuses';
+import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
+import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
-import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
-import AdminPage from 'soapbox/pages/admin_page';
-import DefaultPage from 'soapbox/pages/default_page';
-// import GroupsPage from 'soapbox/pages/groups_page';
-// import GroupPage from 'soapbox/pages/group_page';
-import HomePage from 'soapbox/pages/home_page';
-import ProfilePage from 'soapbox/pages/profile_page';
-import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
-import StatusPage from 'soapbox/pages/status_page';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
+import AdminPage from 'soapbox/pages/admin-page';
+import DefaultPage from 'soapbox/pages/default-page';
+import HomePage from 'soapbox/pages/home-page';
+import ProfilePage from 'soapbox/pages/profile-page';
+import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
+import StatusPage from 'soapbox/pages/status-page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
 
-import BackgroundShapes from './components/background_shapes';
+import BackgroundShapes from './components/background-shapes';
 import Navbar from './components/navbar';
-import BundleContainer from './containers/bundle_container';
+import BundleContainer from './containers/bundle-container';
 import {
   Status,
   CommunityTimeline,
@@ -115,7 +112,7 @@ import {
   Quotes,
   ServiceWorkerInfo,
 } from './util/async-components';
-import { WrappedRoute } from './util/react_router_helpers';
+import { WrappedRoute } from './util/react-router-helpers';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
@@ -190,18 +187,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {(features.conversations && !features.directTimeline) && (
         <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
       )}
-
-      {/* Gab groups */}
-      {/*
-      <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/create' page={GroupsPage} component={Groups} content={children} componentParams={{ showCreateForm: true, activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/browse/member' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'member' }} />
-      <WrappedRoute path='/groups/browse/admin' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'admin' }} />
-      <WrappedRoute path='/groups/:id/members' page={GroupPage} component={GroupMembers} content={children} />
-      <WrappedRoute path='/groups/:id/removed_accounts' page={GroupPage} component={GroupRemovedAccounts} content={children} />
-      <WrappedRoute path='/groups/:id/edit' page={GroupPage} component={GroupEdit} content={children} />
-      <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
-      */}
 
       {/* Mastodon web routes */}
       <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
@@ -333,6 +318,7 @@ const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -349,7 +335,7 @@ const UI: React.FC = ({ children }) => {
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
-  const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
+  const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {

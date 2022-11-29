@@ -9,10 +9,10 @@ import { undoUploadCompose, changeUploadCompose, submitCompose } from 'soapbox/a
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
-import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
+import IconButton from 'soapbox/components/icon-button';
+import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks';
 
-import Motion from '../../ui/util/optional_motion';
+import Motion from '../../ui/util/optional-motion';
 
 const bookIcon = require('@tabler/icons/book.svg');
 const fileCodeIcon = require('@tabler/icons/file-code.svg');
@@ -70,9 +70,9 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { description_limit: descriptionLimit } = useInstance();
 
-  const media = useCompose(composeId).media_attachments.find(item => item.get('id') === id)!;
-  const descriptionLimit = useAppSelector((state) => state.instance.get('description_limit'));
+  const media = useCompose(composeId).media_attachments.find(item => item.id === id)!;
 
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);

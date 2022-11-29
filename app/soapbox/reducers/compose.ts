@@ -56,7 +56,7 @@ import { normalizeAttachment } from '../normalizers/attachment';
 import { unescapeHTML } from '../utils/html';
 
 import type { AnyAction } from 'redux';
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type {
   Account as AccountEntity,
   APIEntity,
@@ -319,10 +319,11 @@ export default function compose(state = initialState, action: AnyAction) {
       }));
     case COMPOSE_QUOTE:
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
+        const author = action.status.getIn(['account', 'acct']);
         const defaultCompose = state.get('default')!;
 
         map.set('quote', action.status.get('id'));
-        map.set('to', ImmutableOrderedSet());
+        map.set('to', ImmutableOrderedSet([author]));
         map.set('text', '');
         map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());

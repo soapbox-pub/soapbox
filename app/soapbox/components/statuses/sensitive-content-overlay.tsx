@@ -1,8 +1,11 @@
 import classNames from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals';
+import { deleteStatus } from 'soapbox/actions/statuses';
+import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
+import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import { Button, HStack, Text } from '../ui';
@@ -10,6 +13,10 @@ import { Button, HStack, Text } from '../ui';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
+  delete: { id: 'status.delete', defaultMessage: 'Delete' },
+  deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
+  deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   hide: { id: 'moderation_overlay.hide', defaultMessage: 'Hide content' },
   sensitiveTitle: { id: 'status.sensitive_warning', defaultMessage: 'Sensitive content' },
   underReviewTitle: { id: 'moderation_overlay.title', defaultMessage: 'Content Under Review' },
@@ -25,16 +32,18 @@ interface ISensitiveContentOverlay {
   visible?: boolean
 }
 
-const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
+const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {
   const { onToggleVisibility, status } = props;
-  const isUnderReview = status.visibility === 'self';
 
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string;
-
+  const account = useOwnAccount();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
-
+  const settings = useSettings();
   const { links } = useSoapboxConfig();
+
+  const isUnderReview = status.visibility === 'self';
+  const isOwnStatus = status.getIn(['account', 'id']) === account?.id;
+  const displayMedia = settings.get('displayMedia') as string;
 
   const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
@@ -47,6 +56,32 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
       setVisible((prevValue) => !prevValue);
     }
   };
+
+  const handleDeleteStatus = () => {
+    const deleteModal = settings.get('deleteModal');
+    if (!deleteModal) {
+      dispatch(deleteStatus(status.id, false));
+    } else {
+      dispatch(openModal('CONFIRM', {
+        icon: require('@tabler/icons/trash.svg'),
+        heading: intl.formatMessage(messages.deleteHeading),
+        message: intl.formatMessage(messages.deleteMessage),
+        confirm: intl.formatMessage(messages.deleteConfirm),
+        onConfirm: () => dispatch(deleteStatus(status.id, false)),
+      }));
+    }
+  };
+
+  const menu = useMemo(() => {
+    return [
+      {
+        text: intl.formatMessage(messages.delete),
+        action: handleDeleteStatus,
+        icon: require('@tabler/icons/trash.svg'),
+        destructive: true,
+      },
+    ];
+  }, []);
 
   useEffect(() => {
     if (typeof props.visible !== 'undefined') {
@@ -72,7 +107,7 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
           size='sm'
         />
       ) : (
-        <div className='text-center w-3/4 mx-auto space-y-4'>
+        <div className='text-center w-3/4 mx-auto space-y-4' ref={ref}>
           <div className='space-y-1'>
             <Text theme='white' weight='semibold'>
               {intl.formatMessage(isUnderReview ? messages.underReviewTitle : messages.sensitiveTitle)}
@@ -84,7 +119,7 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
 
             {status.spoiler_text && (
               <div className='py-4 italic'>
-                <Text theme='white' size='md' weight='medium'>
+                <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
                   &ldquo;<span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} />&rdquo;
                 </Text>
               </div>
@@ -122,11 +157,18 @@ const SensitiveContentOverlay = (props: ISensitiveContentOverlay) => {
             >
               {intl.formatMessage(messages.show)}
             </Button>
+
+            {(isUnderReview && isOwnStatus) ? (
+              <DropdownMenu
+                items={menu}
+                src={require('@tabler/icons/dots.svg')}
+              />
+            ) : null}
           </HStack>
         </div>
       )}
     </div>
   );
-};
+});
 
 export default SensitiveContentOverlay;

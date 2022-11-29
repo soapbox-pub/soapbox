@@ -24,7 +24,7 @@ const DEFAULTS = {
   PATRON_URL: 'http://localhost:3037',
 };
 
-const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build-config'));
 
 const backendEndpoints = [
   '/api',

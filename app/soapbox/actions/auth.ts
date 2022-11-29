@@ -16,7 +16,8 @@ import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { custom } from 'soapbox/custom';
-import KVStore from 'soapbox/storage/kv_store';
+import { queryClient } from 'soapbox/queries/client';
+import KVStore from 'soapbox/storage/kv-store';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
@@ -239,15 +240,25 @@ export const logOut = () =>
       token: state.auth.getIn(['users', account.url, 'access_token']),
     };
 
-    return dispatch(revokeOAuthToken(params)).finally(() => {
-      dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
-      return dispatch(snackbar.success(messages.loggedOut));
-    });
+    return dispatch(revokeOAuthToken(params))
+      .finally(() => {
+        // Clear all stored cache from React Query
+        queryClient.invalidateQueries();
+        queryClient.clear();
+
+        dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
+
+        return dispatch(snackbar.success(messages.loggedOut));
+      });
   };
 
 export const switchAccount = (accountId: string, background = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
+    // Clear all stored cache from React Query
+    queryClient.invalidateQueries();
+    queryClient.clear();
+
     return dispatch({ type: SWITCH_ACCOUNT, account, background });
   };
 

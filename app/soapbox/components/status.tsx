@@ -10,15 +10,15 @@ import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import TranslateButton from 'soapbox/components/translate-button';
-import AccountContainer from 'soapbox/containers/account_container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import AccountContainer from 'soapbox/containers/account-container';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import StatusActionBar from './status-action-bar';
+import StatusContent from './status-content';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
-import StatusContent from './status_content';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import { Card, HStack, Stack, Text } from './ui';
 
@@ -79,8 +79,10 @@ const Status: React.FC<IStatus> = (props) => {
   const displayMedia = settings.get('displayMedia') as string;
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
 
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [minHeight, setMinHeight] = useState(208);
 
   const actualStatus = getActualStatus(status);
 
@@ -95,12 +97,23 @@ const Status: React.FC<IStatus> = (props) => {
     setShowMedia(defaultMediaVisibility(status, displayMedia));
   }, [status.id]);
 
+  useEffect(() => {
+    if (overlay.current) {
+      setMinHeight(overlay.current.getBoundingClientRect().height);
+    }
+  }, [overlay.current]);
+
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);
   };
 
   const handleClick = (e?: React.MouseEvent): void => {
     e?.stopPropagation();
+
+    // If the user is selecting text, don't focus the status.
+    if (getSelection()?.toString().length) {
+      return;
+    }
 
     if (!e || !(e.ctrlKey || e.metaKey)) {
       if (onClick) {
@@ -358,17 +371,15 @@ const Status: React.FC<IStatus> = (props) => {
             <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
 
             <Stack
-              className={
-                classNames('relative', {
-                  'min-h-[220px]': isUnderReview || isSensitive,
-                })
-              }
+              className='relative z-0'
+              style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
             >
               {(isUnderReview || isSensitive) && (
                 <SensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
+                  ref={overlay}
                 />
               )}
 

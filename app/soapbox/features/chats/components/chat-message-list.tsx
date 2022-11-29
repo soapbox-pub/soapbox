@@ -14,14 +14,14 @@ import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
 import { initReportById } from 'soapbox/actions/reports';
 import { Text } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import emojify from 'soapbox/features/emoji/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch, useRefEventHandler } from 'soapbox/hooks';
-import { onlyEmoji } from 'soapbox/utils/rich_content';
+import { onlyEmoji } from 'soapbox/utils/rich-content';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
 const BIG_EMOJI_LIMIT = 1;
@@ -254,6 +254,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
               items={menu}
               src={require('@tabler/icons/dots.svg')}
               title={intl.formatMessage(messages.more)}
+              dropdownMenuStyle={{ zIndex: 1000 }}
             />
           </div>
         </div>

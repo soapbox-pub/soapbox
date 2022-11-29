@@ -42,6 +42,9 @@ module.exports = {
           'mono',
         ],
       },
+      spacing: {
+        '4.5': '1.125rem',
+      },
       colors: parseColorMatrix({
         // Define color matrix (of available colors)
         // Colors are configured at runtime with CSS variables in soapbox.json
@@ -85,6 +88,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('@tailwindcss/line-clamp'),
     require('@tailwindcss/typography'),
   ],
 };

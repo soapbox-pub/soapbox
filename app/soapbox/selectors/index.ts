@@ -9,7 +9,7 @@ import { createSelector } from 'reselect';
 import { getSettings } from 'soapbox/actions/settings';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
-import ConfigDB from 'soapbox/utils/config_db';
+import ConfigDB from 'soapbox/utils/config-db';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ReducerChat } from 'soapbox/reducers/chats';

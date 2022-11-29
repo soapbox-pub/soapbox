@@ -6,7 +6,7 @@ import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Form } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
@@ -191,6 +191,10 @@ const Preferences = () => {
       <List>
         <ListItem label={<FormattedMessage id='preferences.fields.auto_play_gif_label' defaultMessage='Auto-play animated GIFs' />}>
           <SettingToggle settings={settings} settingPath={['autoPlayGif']} onChange={onToggleChange} />
+        </ListItem>
+
+        <ListItem label={<FormattedMessage id='preferences.fields.auto_play_video_label' defaultMessage='Auto-play videos' />}>
+          <SettingToggle settings={settings} settingPath={['autoPlayVideo']} onChange={onToggleChange} />
         </ListItem>
 
         {features.spoilers && <ListItem label={<FormattedMessage id='preferences.fields.expand_spoilers_label' defaultMessage='Always expand posts marked with content warnings' />}>

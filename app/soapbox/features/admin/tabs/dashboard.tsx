@@ -2,14 +2,14 @@ import React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
+import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
 import { Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 import { parseVersion } from 'soapbox/utils/features';
 import { isNumber } from 'soapbox/utils/numbers';
 
-import RegistrationModePicker from '../components/registration_mode_picker';
+import RegistrationModePicker from '../components/registration-mode-picker';
 
 import type { AxiosResponse } from 'axios';
 
@@ -27,7 +27,7 @@ const download = (response: AxiosResponse, filename: string) => {
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
   const features = useFeatures();
   const account = useOwnAccount();
 

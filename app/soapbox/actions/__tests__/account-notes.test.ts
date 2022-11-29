@@ -2,7 +2,7 @@ import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { ReducerRecord, EditRecord } from 'soapbox/reducers/account_notes';
+import { ReducerRecord, EditRecord } from 'soapbox/reducers/account-notes';
 
 import { normalizeAccount, normalizeRelationship } from '../../normalizers';
 import { changeAccountNoteComment, initAccountNoteModal, submitAccountNote } from '../account-notes';

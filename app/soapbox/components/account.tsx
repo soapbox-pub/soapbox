@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
@@ -199,7 +199,7 @@ const Account = ({
                 title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
-                <div className='flex items-center space-x-1 flex-grow' style={style}>
+                <HStack space={1} alignItems='center' grow style={style}>
                   <Text
                     size='sm'
                     weight='semibold'
@@ -208,7 +208,7 @@ const Account = ({
                   />
 
                   {account.verified && <VerificationBadge />}
-                </div>
+                </HStack>
               </LinkEl>
             </ProfilePopper>
 
@@ -255,7 +255,7 @@ const Account = ({
                 <Text
                   size='sm'
                   dangerouslySetInnerHTML={{ __html: account.note_emojified }}
-                  className='mr-2'
+                  className='mr-2 rtl:ml-2 rtl:mr-0'
                 />
               )}
             </Stack>

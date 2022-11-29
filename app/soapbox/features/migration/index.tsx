@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { moveAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useInstance } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.migration', defaultMessage: 'Account migration' },
@@ -21,8 +21,9 @@ const messages = defineMessages({
 const Migration = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
-  const cooldownPeriod = useAppSelector((state) => state.instance.pleroma.getIn(['metadata', 'migration_cooldown_period'])) as number | undefined;
+  const cooldownPeriod = instance.pleroma.getIn(['metadata', 'migration_cooldown_period']) as number | undefined;
 
   const [targetAccount, setTargetAccount] = useState('');
   const [password, setPassword] = useState('');

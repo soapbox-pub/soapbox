@@ -9,7 +9,7 @@ import { useSettings } from 'soapbox/hooks';
 import Reaction from './reaction';
 
 import type { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type { AnnouncementReaction } from 'soapbox/types/entities';
 
 interface IReactionsBar {
