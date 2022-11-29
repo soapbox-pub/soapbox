@@ -5,6 +5,15 @@ import {
 } from 'immutable';
 
 import {
+  STATUS_QUOTES_EXPAND_FAIL,
+  STATUS_QUOTES_EXPAND_REQUEST,
+  STATUS_QUOTES_EXPAND_SUCCESS,
+  STATUS_QUOTES_FETCH_FAIL,
+  STATUS_QUOTES_FETCH_REQUEST,
+  STATUS_QUOTES_FETCH_SUCCESS,
+} from 'soapbox/actions/status-quotes';
+
+import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
   BOOKMARKED_STATUSES_FETCH_SUCCESS,
   BOOKMARKED_STATUSES_FETCH_FAIL,
@@ -51,7 +60,7 @@ import {
 import type { AnyAction } from 'redux';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
-const StatusListRecord = ImmutableRecord({
+export const StatusListRecord = ImmutableRecord({
   next: null as string | null,
   loaded: false,
   isLoading: null as boolean | null,
@@ -168,6 +177,16 @@ export default function statusLists(state = initialState, action: AnyAction) {
     case SCHEDULED_STATUS_CANCEL_REQUEST:
     case SCHEDULED_STATUS_CANCEL_SUCCESS:
       return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.id);
+    case STATUS_QUOTES_FETCH_REQUEST:
+    case STATUS_QUOTES_EXPAND_REQUEST:
+      return setLoading(state, `quotes:${action.statusId}`, true);
+    case STATUS_QUOTES_FETCH_FAIL:
+    case STATUS_QUOTES_EXPAND_FAIL:
+      return setLoading(state, `quotes:${action.statusId}`, false);
+    case STATUS_QUOTES_FETCH_SUCCESS:
+      return normalizeList(state, `quotes:${action.statusId}`, action.statuses, action.next);
+    case STATUS_QUOTES_EXPAND_SUCCESS:
+      return appendToList(state, `quotes:${action.statusId}`, action.statuses, action.next);
     default:
       return state;
   }
