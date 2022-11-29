@@ -127,7 +127,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           </Stack>
         </Stack>
 
-        <HStack justifyContent='between' alignItems='center' className='py-2' wrap>
+        <HStack justifyContent='between' alignItems='center' className='py-3' wrap>
           <StatusInteractionBar status={actualStatus} />
 
           <HStack space={1} alignItems='center'>

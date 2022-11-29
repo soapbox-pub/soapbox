@@ -112,6 +112,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
   displayCta: true,
+  /** Whether to inject suggested profiles into the Home feed. */
+  feedInjection: true,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

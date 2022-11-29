@@ -1,9 +1,9 @@
-import { useAppSelector } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { getFeatures, Features } from 'soapbox/utils/features';
 
-import type { Features } from 'soapbox/utils/features';
+import { useInstance } from './useInstance';
 
-/** Get features for the current instance */
+/** Get features for the current instance. */
 export const useFeatures = (): Features => {
-  return useAppSelector((state) => getFeatures(state.instance));
+  const instance = useInstance();
+  return getFeatures(instance);
 };

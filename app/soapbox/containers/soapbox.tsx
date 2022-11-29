@@ -37,6 +37,7 @@ import {
   useSettings,
   useTheme,
   useLocale,
+  useInstance,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { queryClient } from 'soapbox/queries/client';
@@ -85,7 +86,7 @@ const loadInitial = () => {
 const SoapboxMount = () => {
   useCachedLocationHandler();
   const me = useAppSelector(state => state.me);
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();

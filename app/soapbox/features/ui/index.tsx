@@ -25,19 +25,16 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import DefaultPage from 'soapbox/pages/default-page';
 import EventPage from 'soapbox/pages/event-page';
-// import GroupsPage from 'soapbox/pages/groups_page';
-// import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import StatusPage from 'soapbox/pages/status-page';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background-shapes';
 import Navbar from './components/navbar';
@@ -194,18 +191,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
         <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
       )}
 
-      {/* Gab groups */}
-      {/*
-      <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/create' page={GroupsPage} component={Groups} content={children} componentParams={{ showCreateForm: true, activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/browse/member' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'member' }} />
-      <WrappedRoute path='/groups/browse/admin' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'admin' }} />
-      <WrappedRoute path='/groups/:id/members' page={GroupPage} component={GroupMembers} content={children} />
-      <WrappedRoute path='/groups/:id/removed_accounts' page={GroupPage} component={GroupRemovedAccounts} content={children} />
-      <WrappedRoute path='/groups/:id/edit' page={GroupPage} component={GroupEdit} content={children} />
-      <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
-      */}
-
       {/* Mastodon web routes */}
       <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
       <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
@@ -338,6 +323,7 @@ const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
@@ -354,7 +340,7 @@ const UI: React.FC = ({ children }) => {
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
-  const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
+  const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {

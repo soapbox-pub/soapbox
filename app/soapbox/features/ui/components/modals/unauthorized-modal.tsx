@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig, useInstance } from 'soapbox/hooks';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -29,9 +29,9 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const { singleUserMode } = useSoapboxConfig();
-  const siteTitle = useAppSelector(state => state.instance.title);
   const username = useAppSelector(state => state.accounts.get(accountId)?.display_name);
   const features = useFeatures();
 
@@ -124,7 +124,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
           </div>
           {!singleUserMode && (
             <Text size='lg' weight='medium'>
-              <FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} />
+              <FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: instance.title }} />
             </Text>
           )}
         </div>
@@ -138,7 +138,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
 
   return (
     <Modal
-      title={<FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} />}
+      title={<FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: instance.title }} />}
       onClose={onClickClose}
       confirmationAction={onLogin}
       confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}

@@ -12,7 +12,7 @@ import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
@@ -172,7 +172,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const history = useHistory();
   const intl = useIntl();
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
 
   const type = notification.type;
   const { account, status } = notification;

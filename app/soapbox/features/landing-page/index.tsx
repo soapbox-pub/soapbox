@@ -6,7 +6,7 @@ import Markup from 'soapbox/components/markup';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import RegistrationForm from 'soapbox/features/auth-login/components/registration-form';
-import { useAppDispatch, useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance, useSoapboxConfig } from 'soapbox/hooks';
 import { capitalize } from 'soapbox/utils/strings';
 
 const LandingPage = () => {
@@ -15,7 +15,7 @@ const LandingPage = () => {
   const soapboxConfig = useSoapboxConfig();
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
   const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   /** Registrations are closed */

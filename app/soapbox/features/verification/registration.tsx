@@ -8,7 +8,7 @@ import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import PasswordIndicator from './components/password-indicator';
@@ -32,11 +32,11 @@ const initialState = {
 const Registration = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const instance = useInstance();
   const soapboxConfig = useSoapboxConfig();
   const { links } = soapboxConfig;
 
   const isLoading = useAppSelector((state) => state.verification.isLoading as boolean);
-  const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
@@ -56,7 +56,7 @@ const Registration = () => {
         dispatch(startOnboarding());
         dispatch(
           snackbar.success(
-            intl.formatMessage(messages.success, { siteTitle }),
+            intl.formatMessage(messages.success, { siteTitle: instance.title }),
           ),
         );
       })
