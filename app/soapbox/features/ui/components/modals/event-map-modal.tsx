@@ -1,9 +1,9 @@
 import L from 'leaflet';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Button, Modal, Stack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
@@ -21,12 +21,8 @@ interface IEventMapModal {
   statusId: string,
 }
 
-const messages = defineMessages({
-  osmAttribution: { id: 'event_map.osm_attribution', defaultMessage: '© OpenStreetMap Contributors' },
-});
-
 const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
-  const intl = useIntl();
+  const { tileServer, tileServerAttribution } = useSoapboxConfig();
 
   const getStatus = useCallback(makeGetStatus(), []);
   const status = useAppSelector(state => getStatus(state, { id: statusId })) as StatusEntity;
@@ -43,8 +39,8 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
       title: location.get('name'),
     }).addTo(map.current);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: intl.formatMessage(messages.osmAttribution),
+    L.tileLayer(tileServer, {
+      attribution: tileServerAttribution,
     }).addTo(map.current);
 
     return () => {

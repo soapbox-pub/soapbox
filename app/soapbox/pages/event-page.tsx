@@ -91,12 +91,12 @@ const EventPage: React.FC<IEventPage> = ({ params, children }) => {
         )}
         {features.trends && (
           <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={3} key='trends-panel' />}
+            {Component => <Component limit={5} key='trends-panel' />}
           </BundleContainer>
         )}
         {features.suggestions && (
           <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={5} key='wtf-panel' />}
+            {Component => <Component limit={3} key='wtf-panel' />}
           </BundleContainer>
         )}
         <LinkFooter key='link-footer' />
