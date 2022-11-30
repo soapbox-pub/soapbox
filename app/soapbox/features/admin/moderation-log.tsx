@@ -3,9 +3,8 @@ import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { fetchModerationLog } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
+import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },
@@ -47,7 +46,7 @@ const ModerationLog = () => {
   };
 
   return (
-    <Column icon='balance-scale' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         isLoading={isLoading}
         showLoading={showLoading}

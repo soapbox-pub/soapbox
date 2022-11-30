@@ -5,11 +5,9 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
-import { Text } from 'soapbox/components/ui';
+import { Column, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import sourceCode from 'soapbox/utils/code';
-
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
