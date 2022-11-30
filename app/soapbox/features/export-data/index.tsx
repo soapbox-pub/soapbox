@@ -6,8 +6,7 @@ import {
   exportBlocks,
   exportMutes,
 } from 'soapbox/actions/export-data';
-
-import Column from '../ui/components/column';
+import { Column } from 'soapbox/components/ui';
 
 import CSVExporter from './components/csv-exporter';
 
@@ -38,7 +37,7 @@ const ExportData = () => {
   const intl = useIntl();
 
   return (
-    <Column icon='cloud-download-alt' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <CSVExporter action={exportFollows} messages={followMessages} />
       <CSVExporter action={exportBlocks} messages={blockMessages} />
       <CSVExporter action={exportMutes} messages={muteMessages} />

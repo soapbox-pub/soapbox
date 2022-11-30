@@ -3,8 +3,7 @@ import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
-import Column from 'soapbox/features/ui/components/column';
+import { Column, Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { getBaseURL } from 'soapbox/utils/accounts';
 

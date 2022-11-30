@@ -5,10 +5,8 @@ import { useDispatch } from 'react-redux';
 
 import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Spinner } from 'soapbox/components/ui';
+import { Column, Spinner } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
-
-import Column from '../ui/components/column';
 
 import AccountAuthorize from './components/account-authorize';
 
@@ -42,7 +40,7 @@ const FollowRequests: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.follow_requests' defaultMessage="You don't have any follow requests yet. When you receive one, it will show up here." />;
 
   return (
-    <Column icon='user-plus' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='follow_requests'
         onLoadMore={() => handleLoadMore(dispatch)}
