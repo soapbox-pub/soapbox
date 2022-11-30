@@ -52,7 +52,7 @@ const Stack = React.forwardRef<HTMLDivElement, IStack>((props, ref: React.Legacy
     <Elem
       {...filteredProps}
       ref={ref}
-      className={classNames('flex flex-col items', {
+      className={classNames('flex flex-col', {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
         // @ts-ignore

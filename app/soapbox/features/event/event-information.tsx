@@ -88,7 +88,12 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   const renderEventDate = useCallback(() => {
     const event = status?.event;
 
-    if (!event?.start_time) return null;
+    const startDate = new Date(event.start_time);
+    const endDate = new Date(event.end_time);
+
+    if (!startDate) return null;
+
+    const sameDay = endDate && startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
 
     return (
       <Stack space={1}>
@@ -98,10 +103,26 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
         <HStack space={2} alignItems='center'>
           <Icon src={require('@tabler/icons/calendar.svg')} />
           <Text>
-            <FormattedDate value={event.start_time} year='numeric' month='long' day='2-digit' weekday='long' hour='2-digit' minute='2-digit' />
-            {event.end_time && (<>
+            <FormattedDate
+              value={startDate}
+              year='numeric'
+              month='long'
+              day='2-digit'
+              weekday='long'
+              hour='2-digit'
+              minute='2-digit'
+            />
+            {endDate && (<>
               {' - '}
-              <FormattedDate value={event.end_time} year='numeric' month='long' day='2-digit' weekday='long' hour='2-digit' minute='2-digit' />
+              <FormattedDate
+                value={endDate}
+                year={sameDay ? undefined : 'numeric'}
+                month={sameDay ? undefined : 'long'}
+                day={sameDay ? undefined : '2-digit'}
+                weekday={sameDay ? undefined : 'long'}
+                hour='2-digit'
+                minute='2-digit'
+              />
             </>)}
           </Text>
         </HStack>

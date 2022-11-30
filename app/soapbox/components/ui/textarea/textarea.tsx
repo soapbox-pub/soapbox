@@ -28,7 +28,7 @@ const Textarea = React.forwardRef(
         {...props}
         ref={ref}
         className={classNames({
-          'bg-white dark:bg-gray-900 shadow-sm block w-full sm:text-sm rounded-md text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+          'bg-white dark:bg-transparent shadow-sm block w-full sm:text-sm rounded-md text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
             true,
           'font-mono': isCodeEditor,
           'text-red-600 border-red-600': hasError,
