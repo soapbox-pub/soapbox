@@ -120,6 +120,7 @@ import { WrappedRoute } from './util/react-router-helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
+import { uploadEventBanner } from 'soapbox/actions/events';
 
 const EmptyPage = HomePage;
 
@@ -384,7 +385,9 @@ const UI: React.FC = ({ children }) => {
       if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
         const modals = getState().modals;
         const isModalOpen = modals.last()?.modalType === 'COMPOSE';
-        dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
+        const isEventsModalOpen = modals.last()?.modalType === 'COMPOSE_EVENT';
+        if (isEventsModalOpen) dispatch(uploadEventBanner(e.dataTransfer.files[0], intl));
+        else dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
       }
     });
   };

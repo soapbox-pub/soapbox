@@ -56,9 +56,9 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   };
 
   const renderEventLocation = useCallback(() => {
-    const event = status?.event;
+    const event = status!.event!;
 
-    return event?.location && (
+    return event.location && (
       <Stack space={1}>
         <Text size='xl' weight='bold'>
           <FormattedMessage id='event.location' defaultMessage='Location' />
@@ -86,12 +86,12 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   }, [status]);
 
   const renderEventDate = useCallback(() => {
-    const event = status?.event;
+    const event = status!.event!;
+
+    if (!event.start_time) return null;
 
     const startDate = new Date(event.start_time);
-    const endDate = new Date(event.end_time);
-
-    if (!startDate) return null;
+    const endDate = event.end_time && new Date(event.end_time);
 
     const sameDay = endDate && startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
 

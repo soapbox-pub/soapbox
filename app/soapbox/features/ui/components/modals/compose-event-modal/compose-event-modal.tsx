@@ -16,9 +16,12 @@ import {
   fetchEventParticipationRequests,
   rejectEventParticipationRequest,
   authorizeEventParticipationRequest,
+  cancelEventCompose,
 } from 'soapbox/actions/events';
+import { closeModal, openModal } from 'soapbox/actions/modals';
 import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
 import LocationSearch from 'soapbox/components/location-search';
+import { checkEventComposeContent } from 'soapbox/components/modal-root';
 import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Textarea } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
@@ -38,6 +41,8 @@ const messages = defineMessages({
   pending: { id: 'compose_event.tabs.pending', defaultMessage: 'Manage requests' },
   authorize: { id: 'compose_event.participation_requests.authorize', defaultMessage: 'Authorize' },
   reject: { id: 'compose_event.participation_requests.reject', defaultMessage: 'Reject' },
+  confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
 
@@ -136,7 +141,26 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   };
 
   const onClickClose = () => {
-    onClose('COMPOSE_EVENT');
+    dispatch((dispatch, getState) => {
+      if (checkEventComposeContent(getState().compose_event)) {
+        dispatch(openModal('CONFIRM', {
+          icon: require('@tabler/icons/trash.svg'),
+          heading: id
+            ? <FormattedMessage id='confirmations.cancel_event_editing.heading' defaultMessage='Cancel event editing' />
+            : <FormattedMessage id='confirmations.delete_event.heading' defaultMessage='Delete event' />,
+          message: id
+            ? <FormattedMessage id='confirmations.cancel_event_editing.message' defaultMessage='Are you sure you want to cancel editing this event? All changes will be lost.' />
+            : <FormattedMessage id='confirmations.delete_event.message' defaultMessage='Are you sure you want to delete this event?' />,
+          confirm: intl.formatMessage(messages.confirm),
+          onConfirm: () => {
+            dispatch(closeModal('COMPOSE_EVENT'));
+            dispatch(cancelEventCompose());
+          },
+        }));
+      } else {
+        onClose('COMPOSE_EVENT');
+      }
+    });
   };
 
   const handleFiles = (files: FileList) => {
