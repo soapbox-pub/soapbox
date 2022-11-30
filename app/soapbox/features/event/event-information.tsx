@@ -121,8 +121,8 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
         {status.event.links.map(link => (
           <HStack space={2} alignItems='center'>
             <Icon src={require('@tabler/icons/link.svg')} />
-            <a href={link.remote_url} className='text-primary-600 dark:text-accent-blue hover:underline' target='_blank'>
-              {link.remote_url.replace(/^https?:\/\//, '')}
+            <a href={link.remote_url || link.url} className='text-primary-600 dark:text-accent-blue hover:underline' target='_blank'>
+              {(link.remote_url || link.url).replace(/^https?:\/\//, '')}
             </a>
           </HStack>
         ))}
