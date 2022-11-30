@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { importFetchedStatuses } from 'soapbox/actions/importer';
 import { expandTimelineSuccess } from 'soapbox/actions/timelines';
-import SubNavigation from 'soapbox/components/sub-navigation';
 
 import { Column } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
@@ -40,8 +39,7 @@ const TestTimeline: React.FC = () => {
   }, []);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <SubNavigation message={intl.formatMessage(messages.title)} />
+    <Column label={intl.formatMessage(messages.title)} transparent>
       <Timeline
         scrollKey={`${timelineId}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}

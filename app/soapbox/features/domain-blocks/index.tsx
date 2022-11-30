@@ -6,10 +6,8 @@ import { useDispatch } from 'react-redux';
 import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks';
 import Domain from 'soapbox/components/domain';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Spinner } from 'soapbox/components/ui';
+import { Column, Spinner } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
-
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.domain_blocks', defaultMessage: 'Hidden domains' },
@@ -42,7 +40,7 @@ const DomainBlocks: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.domain_blocks' defaultMessage='There are no hidden domains yet.' />;
 
   return (
-    <Column icon='minus-circle' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='domain_blocks'
         onLoadMore={() => handleLoadMore(dispatch)}

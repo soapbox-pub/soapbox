@@ -6,8 +6,7 @@ import {
   importBlocks,
   importMutes,
 } from 'soapbox/actions/import-data';
-
-import Column from '../ui/components/column';
+import { Column } from 'soapbox/components/ui';
 
 import CSVImporter from './components/csv-importer';
 
@@ -38,7 +37,7 @@ const ImportData = () => {
   const intl = useIntl();
 
   return (
-    <Column icon='cloud-upload-alt' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <CSVImporter action={importFollows} messages={followMessages} />
       <CSVImporter action={importBlocks} messages={blockMessages} />
       <CSVImporter action={importMutes} messages={muteMessages} />

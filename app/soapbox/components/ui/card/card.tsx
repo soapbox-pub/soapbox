@@ -44,13 +44,14 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
 interface ICardHeader {
   backHref?: string,
   onBackClick?: (event: React.MouseEvent) => void
+  className?: string
 }
 
 /**
  * Card header container with back button.
  * Typically holds a CardTitle.
  */
-const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }): JSX.Element => {
+const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBackClick }): JSX.Element => {
   const intl = useIntl();
 
   const renderBackButton = () => {
@@ -70,7 +71,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
   };
 
   return (
-    <HStack alignItems='center' space={2} className='mb-4'>
+    <HStack alignItems='center' space={2} className={classNames('mb-4', className)}>
       {renderBackButton()}
 
       {children}

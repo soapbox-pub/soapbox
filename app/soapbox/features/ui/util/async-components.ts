@@ -506,6 +506,10 @@ export function AnnouncementsPanel() {
   return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }
 
+export function Quotes() {
+  return import(/*webpackChunkName: "features/quotes" */'../../quotes');
+}
+
 export function ComposeEventModal() {
   return import(/* webpackChunkName: "features/compose_event_modal" */'../components/modals/compose-event-modal/compose-event-modal');
 }

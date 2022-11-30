@@ -12,6 +12,7 @@ import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
+import { uploadEventBanner } from 'soapbox/actions/events';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { openModal } from 'soapbox/actions/modals';
@@ -110,9 +111,10 @@ import {
   TestTimeline,
   LogoutPage,
   AuthTokenList,
+  Quotes,
+  ServiceWorkerInfo,
   EventInformation,
   EventDiscussion,
-  ServiceWorkerInfo,
   Events,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -120,7 +122,6 @@ import { WrappedRoute } from './util/react-router-helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
-import { uploadEventBanner } from 'soapbox/actions/events';
 
 const EmptyPage = HomePage;
 
@@ -244,7 +245,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
-      {features.lists && <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />}
+      {features.lists && <WrappedRoute path='/list/:id' page={DefaultPage} component={ListTimeline} content={children} />}
       {features.bookmarks && <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />}
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
@@ -271,6 +272,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
+      <WrappedRoute path='/@:username/posts/:statusId/quotes' publicRoute page={StatusPage} component={Quotes} content={children} />
       <WrappedRoute path='/@:username/events/:statusId' publicRoute exact page={EventPage} component={EventInformation} content={children} />
       <WrappedRoute path='/@:username/events/:statusId/discussion' publicRoute exact page={EventPage} component={EventDiscussion} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
