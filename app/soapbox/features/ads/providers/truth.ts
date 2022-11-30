@@ -1,5 +1,6 @@
 import { getSettings } from 'soapbox/actions/settings';
-import { normalizeCard } from 'soapbox/normalizers';
+import api from 'soapbox/api';
+import { normalizeAd } from 'soapbox/normalizers';
 
 import type { AdProvider } from '.';
 import type { Card } from 'soapbox/types/entities';
@@ -18,21 +19,17 @@ const TruthAdProvider: AdProvider = {
     const state = getState();
     const settings = getSettings(state);
 
-    const response = await fetch('/api/v2/truth/ads?device=desktop', {
-      headers: {
-        'Accept-Language': settings.get('locale', '*') as string,
-      },
-    });
+    try {
+      const { data } = await api(getState).get<TruthAd[]>('/api/v2/truth/ads?device=desktop', {
+        headers: {
+          'Accept-Language': settings.get('locale', '*') as string,
+        },
+      });
 
-    if (response.ok) {
-      const data = await response.json() as TruthAd[];
-      return data.map(item => ({
-        ...item,
-        card: normalizeCard(item.card),
-      }));
+      return data.map(normalizeAd);
+    } catch (e) {
+      return [];
     }
-
-    return [];
   },
 };
 

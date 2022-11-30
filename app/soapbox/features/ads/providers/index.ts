@@ -1,7 +1,7 @@
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 import type { RootState } from 'soapbox/store';
-import type { Card } from 'soapbox/types/entities';
+import type { Account, Card } from 'soapbox/types/entities';
 
 /** Map of available provider modules. */
 const PROVIDERS: Record<string, () => Promise<AdProvider>> = {
@@ -17,6 +17,8 @@ interface AdProvider {
 
 /** Entity representing an advertisement. */
 interface Ad {
+  /** Account associated with the ad. */
+  account: Account | null,
   /** Ad data in Card (OEmbed-ish) format. */
   card: Card,
   /** Impression URL to fetch when displaying the ad. */

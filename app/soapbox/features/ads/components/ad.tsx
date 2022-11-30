@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 
 import { Avatar, Card, HStack, Icon, IconButton, Stack, Text } from 'soapbox/components/ui';
 import StatusCard from 'soapbox/features/status/components/card';
@@ -74,12 +76,29 @@ const Ad: React.FC<IAd> = ({ ad }) => {
       <Card className='py-6 sm:p-5' variant='rounded'>
         <Stack space={4}>
           <HStack alignItems='center' space={3}>
-            <Avatar src={instance.thumbnail} size={42} />
+            {ad.account ? (
+              <HoverRefWrapper accountId={ad.account.id} inline>
+                <Link to={`/@${ad.account.acct}`}>
+                  <Avatar src={ad.account.avatar} size={42} />
+                </Link>
+              </HoverRefWrapper>
+            ) : (
+              <Avatar src={instance.thumbnail} size={42} />
+            )}
 
             <Stack grow>
               <HStack space={1}>
                 <Text size='sm' weight='semibold' truncate>
-                  {instance.title}
+                  {ad.account ? (
+                    <HoverRefWrapper accountId={ad.account.id} inline>
+                      <Link
+                        to={`/@${ad.account.acct}`}
+                        dangerouslySetInnerHTML={{ __html: ad.account.display_name_html }}
+                      />
+                    </HoverRefWrapper>
+                  ) : (
+                    instance.title
+                  )}
                 </Text>
 
                 <Icon
