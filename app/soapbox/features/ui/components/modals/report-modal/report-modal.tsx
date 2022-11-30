@@ -27,6 +27,8 @@ const messages = defineMessages({
   submit: { id: 'report.submit', defaultMessage: 'Submit' },
   reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.' },
   reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },
+  cancel: {  id: 'common.cancel', defaultMessage: 'Cancel' },
+  previous: {  id: 'report.previous', defaultMessage: 'Previous' },
 });
 
 enum Steps {
@@ -124,6 +126,52 @@ const ReportModal = ({ onClose }: IReportModal) => {
     }
   };
 
+  const renderSelectedStatuses = useCallback(() => {
+    switch (selectedStatusIds.size) {
+      case 0:
+        return (
+          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
+            <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
+          </div>
+        );
+      default:
+        return <SelectedStatus statusId={selectedStatusIds.first()} />;
+    }
+  }, [selectedStatusIds.size]);
+
+  const cancelText = useMemo(() => {
+    switch (currentStep) {
+      case Steps.ONE:
+        return intl.formatMessage(messages.cancel);
+      default:
+        return intl.formatMessage(messages.previous);
+    }
+  }, [currentStep]);
+
+  const cancelAction = () => {
+    switch (currentStep) {
+      case Steps.ONE:
+        onClose();
+        break;
+      case Steps.TWO:
+        setCurrentStep(Steps.ONE);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const confirmationText = useMemo(() => {
+    switch (currentStep) {
+      case Steps.TWO:
+        return intl.formatMessage(messages.submit);
+      case Steps.THREE:
+        return intl.formatMessage(messages.done);
+      default:
+        return intl.formatMessage(messages.next);
+    }
+  }, [currentStep]);
+
   const handleNextStep = () => {
     switch (currentStep) {
       case Steps.ONE:
@@ -140,19 +188,6 @@ const ReportModal = ({ onClose }: IReportModal) => {
         break;
     }
   };
-
-  const renderSelectedStatuses = useCallback(() => {
-    switch (selectedStatusIds.size) {
-      case 0:
-        return (
-          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
-            <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
-          </div>
-        );
-      default:
-        return <SelectedStatus statusId={selectedStatusIds.first()} />;
-    }
-  }, [selectedStatusIds.size]);
 
   const renderSelectedChatMessage = () => {
     if (account) {
@@ -198,17 +233,6 @@ const ReportModal = ({ onClose }: IReportModal) => {
     }
   };
 
-  const confirmationText = useMemo(() => {
-    switch (currentStep) {
-      case Steps.TWO:
-        return intl.formatMessage(messages.submit);
-      case Steps.THREE:
-        return intl.formatMessage(messages.done);
-      default:
-        return intl.formatMessage(messages.next);
-    }
-  }, [currentStep]);
-
   const isConfirmationButtonDisabled = useMemo(() => {
     if (currentStep === Steps.THREE) {
       return false;
@@ -246,8 +270,8 @@ const ReportModal = ({ onClose }: IReportModal) => {
     <Modal
       title={renderTitle()}
       onClose={onClose}
-      cancelText={<FormattedMessage id='common.cancel' defaultMessage='Cancel' />}
-      cancelAction={currentStep === Steps.THREE ? undefined : onClose}
+      cancelText={cancelText}
+      cancelAction={currentStep === Steps.THREE ? undefined : cancelAction}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}
       confirmationDisabled={isConfirmationButtonDisabled}

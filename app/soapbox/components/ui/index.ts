@@ -4,7 +4,7 @@ export { default as Banner } from './banner/banner';
 export { default as Button } from './button/button';
 export { Card, CardBody, CardHeader, CardTitle } from './card/card';
 export { default as Checkbox } from './checkbox/checkbox';
-export { default as Column } from './column/column';
+export { Column, ColumnHeader } from './column/column';
 export {
   Combobox,
   ComboboxInput,

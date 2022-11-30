@@ -7,7 +7,7 @@ import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation
 import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Accordion, Button, HStack } from 'soapbox/components/ui';
+import { Accordion, Button, Stack, HStack, Text } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
@@ -44,13 +44,14 @@ const Report: React.FC<IReport> = ({ id }) => {
 
   const makeMenu = () => {
     return [{
-      text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username as string }),
+      text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/user-off.svg'),
+      icon: require('@tabler/icons/hourglass-empty.svg'),
     }, {
-      text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username as string }),
+      text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
       action: handleDeleteUser,
-      icon: require('@tabler/icons/user-minus.svg'),
+      icon: require('@tabler/icons/trash.svg'),
+      destructive: true,
     }];
   };
 
@@ -82,57 +83,76 @@ const Report: React.FC<IReport> = ({ id }) => {
   const reporterAcct = account.acct as string;
 
   return (
-    <div className='admin-report' key={report.id}>
-      <div className='admin-report__avatar'>
-        <HoverRefWrapper accountId={targetAccount.id as string} inline>
-          <Link to={`/@${acct}`} title={acct}>
-            <Avatar account={targetAccount} size={32} />
-          </Link>
-        </HoverRefWrapper>
-      </div>
-      <div className='admin-report__content'>
-        <h4 className='admin-report__title'>
+    <HStack space={3} className='p-3' key={report.id}>
+      <HoverRefWrapper accountId={targetAccount.id} inline>
+        <Link to={`/@${acct}`} title={acct}>
+          <Avatar account={targetAccount} size={32} />
+        </Link>
+      </HoverRefWrapper>
+
+      <Stack space={3} className='overflow-hidden' grow>
+        <Text tag='h4' weight='bold'>
           <FormattedMessage
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
             values={{ acct: (
-              <HoverRefWrapper accountId={account.id as string} inline>
+              <HoverRefWrapper accountId={account.id} inline>
                 <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
               </HoverRefWrapper>
             ) }}
           />
-        </h4>
-        <div className='admin-report__statuses'>
-          {statusCount > 0 && (
-            <Accordion
-              headline={`Reported posts (${statusCount})`}
-              expanded={accordionExpanded}
-              onToggle={handleAccordionToggle}
-            >
-              {statuses.map(status => <ReportStatus report={report} status={status} key={status.id} />)}
-            </Accordion>
-          )}
-        </div>
-        <div className='admin-report__quote'>
+        </Text>
+
+        {statusCount > 0 && (
+          <Accordion
+            headline={`Reported posts (${statusCount})`}
+            expanded={accordionExpanded}
+            onToggle={handleAccordionToggle}
+          >
+            <Stack space={4}>
+              {statuses.map(status => (
+                <ReportStatus
+                  key={status.id}
+                  report={report}
+                  status={status}
+                />
+              ))}
+            </Stack>
+          </Accordion>
+        )}
+
+        <Stack>
           {(report.comment || '').length > 0 && (
-            <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.comment }} />
+            <Text
+              tag='blockquote'
+              dangerouslySetInnerHTML={{ __html: report.comment }}
+            />
           )}
-          <span className='byline'>
-            &mdash;
-            <HoverRefWrapper accountId={account.id as string} inline>
-              <Link to={`/@${reporterAcct}`} title={reporterAcct}>@{reporterAcct}</Link>
+
+          <HStack space={1}>
+            <Text theme='muted' tag='span'>&mdash;</Text>
+
+            <HoverRefWrapper accountId={account.id} inline>
+              <Link
+                to={`/@${reporterAcct}`}
+                title={reporterAcct}
+                className='text-primary-600 dark:text-accent-blue hover:underline'
+              >
+                @{reporterAcct}
+              </Link>
             </HoverRefWrapper>
-          </span>
-        </div>
-      </div>
-      <HStack space={2} alignItems='start'>
+          </HStack>
+        </Stack>
+      </Stack>
+
+      <HStack space={2} alignItems='start' className='flex-none'>
         <Button onClick={handleCloseReport}>
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
 
         <DropdownMenu items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
       </HStack>
-    </div>
+    </HStack>
   );
 };
 

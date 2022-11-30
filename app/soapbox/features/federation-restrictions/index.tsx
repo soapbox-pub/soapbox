@@ -2,12 +2,10 @@ import React, { useState, useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Accordion } from 'soapbox/components/ui';
+import { Column, Accordion } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetHosts } from 'soapbox/selectors';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
-
-import Column from '../ui/components/column';
 
 import RestrictedInstance from './components/restricted-instance';
 
@@ -39,7 +37,7 @@ const FederationRestrictions = () => {
   const emptyMessage = disclosed ? messages.emptyMessage : messages.notDisclosed;
 
   return (
-    <Column icon='gavel' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <Accordion
         headline={intl.formatMessage(messages.boxTitle)}
         expanded={explanationBoxExpanded}

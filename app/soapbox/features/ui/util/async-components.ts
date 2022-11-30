@@ -505,3 +505,7 @@ export function FamiliarFollowersModal() {
 export function AnnouncementsPanel() {
   return import(/* webpackChunkName: "features/announcements" */'../../../components/announcements/announcements-panel');
 }
+
+export function Quotes() {
+  return import(/*webpackChunkName: "features/quotes" */'../../quotes');
+}

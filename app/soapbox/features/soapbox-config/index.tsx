@@ -52,6 +52,8 @@ const messages = defineMessages({
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
+  feedInjectionLabel: { id: 'soapbox_config.feed_injection_label', defaultMessage: 'Feed injection' },
+  feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -258,6 +260,16 @@ const SoapboxConfig: React.FC = () => {
               <Toggle
                 checked={soapbox.greentext === true}
                 onChange={handleChange(['greentext'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+            <ListItem
+              label={intl.formatMessage(messages.feedInjectionLabel)}
+              hint={intl.formatMessage(messages.feedInjectionHint)}
+            >
+              <Toggle
+                checked={soapbox.feedInjection === true}
+                onChange={handleChange(['feedInjection'], (e) => e.target.checked)}
               />
             </ListItem>
 

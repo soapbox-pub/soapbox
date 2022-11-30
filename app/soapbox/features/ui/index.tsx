@@ -105,6 +105,7 @@ import {
   TestTimeline,
   LogoutPage,
   AuthTokenList,
+  Quotes,
   ServiceWorkerInfo,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -235,7 +236,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
-      {features.lists && <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />}
+      {features.lists && <WrappedRoute path='/list/:id' page={DefaultPage} component={ListTimeline} content={children} />}
       {features.bookmarks && <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />}
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
@@ -263,6 +264,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
+      <WrappedRoute path='/@:username/posts/:statusId/quotes' publicRoute page={StatusPage} component={Quotes} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />

@@ -5,9 +5,8 @@ import { useParams } from 'react-router-dom';
 import { fetchPinnedStatuses } from 'soapbox/actions/pin-statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusList from 'soapbox/components/status-list';
+import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.pins', defaultMessage: 'Pinned posts' },
@@ -36,7 +35,7 @@ const PinnedStatuses = () => {
   }
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} transparent withHeader={false}>
+    <Column label={intl.formatMessage(messages.heading)} transparent>
       <StatusList
         statusIds={statusIds}
         scrollKey='pinned_statuses'

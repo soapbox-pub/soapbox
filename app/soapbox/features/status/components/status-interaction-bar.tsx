@@ -3,6 +3,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
@@ -16,6 +17,8 @@ interface IStatusInteractionBar {
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
+  const history = useHistory();
+
   const me = useAppSelector(({ me }) => me);
   const { allowedEmoji } = useSoapboxConfig();
   const dispatch = useDispatch();
@@ -73,6 +76,28 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             id='status.interactions.reblogs'
             defaultMessage='{count, plural, one {Repost} other {Reposts}}'
             values={{ count: status.reblogs_count }}
+          />
+        </InteractionCounter>
+      );
+    }
+
+    return null;
+  };
+
+  const navigateToQuotes: React.EventHandler<React.MouseEvent> = (e) => {
+    e.preventDefault();
+
+    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
+  };
+
+  const getQuotes = () => {
+    if (status.quotes_count) {
+      return (
+        <InteractionCounter count={status.quotes_count} onClick={navigateToQuotes}>
+          <FormattedMessage
+            id='status.interactions.quotes'
+            defaultMessage='{count, plural, one {Quote} other {Quotes}}'
+            values={{ count: status.quotes_count }}
           />
         </InteractionCounter>
       );
@@ -142,6 +167,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   return (
     <HStack space={3}>
       {getReposts()}
+      {getQuotes()}
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
     </HStack>
   );
