@@ -25,6 +25,7 @@ import ReplyIndicatorContainer from '../containers/reply-indicator-container';
 import ScheduleFormContainer from '../containers/schedule-form-container';
 import UploadButtonContainer from '../containers/upload-button-container';
 import WarningContainer from '../containers/warning-container';
+import ComposeEditor from '../editor';
 import { countableText } from '../util/counter';
 
 import EmojiPickerDropdown from './emoji-picker/emoji-picker-dropdown';
@@ -41,13 +42,14 @@ import UploadForm from './upload-form';
 import VisualCharacterCounter from './visual-character-counter';
 import Warning from './warning';
 
+import type { EditorState } from 'lexical';
 import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
-  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -88,6 +90,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const formRef = useRef(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
+  const editorStateRef = useRef<string>(null);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     dispatch(changeCompose(id, e.target.value));
@@ -134,11 +137,14 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleSubmit = (e?: React.FormEvent<Element>) => {
-    if (text !== autosuggestTextareaRef.current?.textarea?.value) {
-      // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
-      // Update the state to match the current text
-      dispatch(changeCompose(id, autosuggestTextareaRef.current!.textarea!.value));
-    }
+    // editorStateRef.current
+    console.log(editorStateRef.current);
+    dispatch(changeCompose(id, editorStateRef.current!));
+    // if (text !== autosuggestTextareaRef.current?.textarea?.value) {
+    //   // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
+    //   // Update the state to match the current text
+    //   dispatch(changeCompose(id, autosuggestTextareaRef.current!.textarea!.value));
+    // }
 
     // Submit disabled:
     const fulltext = [spoilerText, countableText(text)].join('');
@@ -291,6 +297,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {!shouldCondense && <ReplyIndicatorContainer composeId={id} />}
 
       {!shouldCondense && <ReplyMentions composeId={id} />}
+
+      <ComposeEditor ref={editorStateRef} />
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}

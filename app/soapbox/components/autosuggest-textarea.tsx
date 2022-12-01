@@ -260,7 +260,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
 
             <Textarea
               ref={this.setTextarea}
-              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-transparent px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+              className={classNames('hidden transition-[min-height] motion-reduce:transition-none dark:bg-transparent px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
                 'min-h-[40px]': condensed,
                 'min-h-[100px]': !condensed,
               })}
