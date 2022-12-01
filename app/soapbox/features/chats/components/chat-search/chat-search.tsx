@@ -31,7 +31,7 @@ const ChatSearch = () => {
   const { isOpen, changeScreen, toggleChatPane } = useChatContext();
   const { getOrCreateChatByAccountId } = useChats();
 
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>('');
   const debouncedValue = debounce(value as string, 300);
 
   const { data: accounts, isFetching } = useAccountSearch(debouncedValue);

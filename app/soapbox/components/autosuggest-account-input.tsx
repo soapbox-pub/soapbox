@@ -72,6 +72,12 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   };
 
   useEffect(() => {
+    if (rest.autoFocus) {
+      handleAccountSearch('');
+    }
+  }, []);
+
+  useEffect(() => {
     if (value === '') {
       clearResults();
     }
