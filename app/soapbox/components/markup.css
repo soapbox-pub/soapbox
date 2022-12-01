@@ -35,7 +35,8 @@
   @apply py-1 pl-4 mb-4 border-l-4 border-solid border-gray-400 text-gray-500 dark:text-gray-400;
 }
 
-[data-markup] code {
+[data-markup] code,
+[data-markup] pre {
   @apply cursor-text font-mono;
 }
 
