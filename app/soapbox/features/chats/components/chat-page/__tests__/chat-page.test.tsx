@@ -20,12 +20,14 @@ describe('<ChatPage />', () => {
     });
 
     describe('when you complete onboarding', () => {
+      const id = '1';
+
       beforeEach(() => {
         store = {
-          me: '1',
+          me: id,
           accounts: ImmutableMap({
-            '1': normalizeAccount({
-              id: '1',
+            [id]: normalizeAccount({
+              id,
               acct: 'justin-username',
               display_name: 'Justin L',
               avatar: 'test.jpg',
@@ -37,7 +39,7 @@ describe('<ChatPage />', () => {
         __stub((mock) => {
           mock
             .onPatch('/api/v1/accounts/update_credentials')
-            .reply(200, { chats_onboarded: true, id: 1 });
+            .reply(200, { chats_onboarded: true, id });
         });
       });
 
