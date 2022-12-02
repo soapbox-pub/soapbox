@@ -310,7 +310,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 title={getFormattedTimestamp(chatMessage)}
                 className={
                   classNames({
-                    'text-ellipsis break-all relative rounded-md p-2 max-w-full': true,
+                    'text-ellipsis break-all relative rounded-md py-2 px-3 max-w-full': true,
                     'bg-primary-500 text-white': isMyMessage,
                     'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
                     '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
@@ -448,7 +448,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   return (
     <div className='h-full flex flex-col flex-grow space-y-6'>
-      <div className='flex-grow flex flex-col justify-end'>
+      <div className='flex-grow flex flex-col justify-end pb-2'>
         <Virtuoso
           ref={node}
           alignToBottom

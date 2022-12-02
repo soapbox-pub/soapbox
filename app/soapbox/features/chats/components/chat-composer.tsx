@@ -141,7 +141,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   }
 
   return (
-    <div className='mt-auto pt-4 px-4 shadow-3xl'>
+    <div className='mt-auto px-4 shadow-3xl'>
       <HStack alignItems='stretch' justifyContent='between' space={4}>
         <Stack grow>
           <Combobox
