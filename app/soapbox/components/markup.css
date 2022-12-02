@@ -61,7 +61,7 @@
 
 /* Emojis */
 [data-markup] img.emojione {
-  @apply w-5 h-5;
+  @apply w-5 h-5 m-0;
 }
 
 /* Hide Markdown images (Pleroma) */
