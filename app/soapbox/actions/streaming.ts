@@ -1,11 +1,9 @@
-import { InfiniteData } from '@tanstack/react-query';
-
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
-import { normalizeChatMessage } from 'soapbox/normalizers';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { updatePageItem, appendPageItem, removePageItem, flattenPages, PaginatedResult, sortQueryData } from 'soapbox/utils/queries';
+import { updateChatListItem } from 'soapbox/utils/chats';
+import { removePageItem } from 'soapbox/utils/queries';
 // import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
@@ -30,7 +28,7 @@ import {
 } from './timelines';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Chat, ChatMessage } from 'soapbox/types/entities';
+import type { APIEntity, Chat } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
@@ -51,43 +49,6 @@ const updateFollowRelationships = (relationships: APIEntity) =>
       ...relationships,
     });
   };
-
-interface ChatPayload extends Omit<Chat, 'last_message'> {
-  last_message: ChatMessage | null,
-}
-
-const dateComparator = (chatA: IChat, chatB: IChat): number => {
-  const chatADate = new Date(chatA.last_message?.created_at as string);
-  const chatBDate = new Date(chatB.last_message?.created_at as string);
-
-  if (chatBDate < chatADate) return -1;
-  if (chatBDate > chatADate) return 1;
-  return 0;
-};
-
-const updateChat = (payload: ChatPayload) => {
-  const { id: chatId, last_message: lastMessage } = payload;
-
-  const currentChats = flattenPages(
-    queryClient.getQueryData<InfiniteData<PaginatedResult<IChat>>>(ChatKeys.chatSearch()),
-  );
-
-  if (currentChats?.find((chat: any) => chat.id === chatId)) {
-    // If the chat exists in the client, let's update it.
-    updatePageItem<Chat>(ChatKeys.chatSearch(), payload as any, (o, n) => o.id === n.id);
-    // Now that we have the new chat loaded, let's re-sort to put
-    // the most recent on top.
-    sortQueryData<IChat>(ChatKeys.chatSearch(), dateComparator);
-  } else {
-    // If this is a brand-new chat, let's invalid the queries.
-    queryClient.invalidateQueries(ChatKeys.chatSearch());
-  }
-
-  if (lastMessage) {
-    // Update the Chat Messages query data.
-    appendPageItem(ChatKeys.chatMessages(payload.id), normalizeChatMessage(lastMessage));
-  }
-};
 
 const removeChatMessage = (payload: string) => {
   const data = JSON.parse(payload);
@@ -178,7 +139,7 @@ const connectTimelineStream = (
 
             // Don't update own messages from streaming
             if (!messageOwned) {
-              updateChat(chat);
+              updateChatListItem(chat);
               // Temp disable until we support disabling/enabling.
               // play(soundCache.chat);
             }

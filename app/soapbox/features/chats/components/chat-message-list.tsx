@@ -434,7 +434,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   if (isLoading) {
     return (
-      <div className='flex-grow flex flex-col justify-end'>
+      <div className='flex-grow flex flex-col justify-end pb-4'>
         <div className='px-4'>
           <PlaceholderChatMessage isMyMessage />
           <PlaceholderChatMessage />

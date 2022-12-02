@@ -446,10 +446,6 @@ const UI: React.FC = ({ children }) => {
 
     dispatch(fetchAnnouncements());
 
-    if (features.chats) {
-      // dispatch(fetchChats());
-    }
-
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));
       dispatch(fetchUsers(['local', 'need_approval']));
