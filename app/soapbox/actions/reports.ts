@@ -38,17 +38,6 @@ const initReport = (account: Account, entities?: ReportedEntity) => (dispatch: A
   return dispatch(openModal('REPORT'));
 };
 
-// TODO: no longer used. Can be removed.
-const initReportById = (accountId: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch({
-      type: REPORT_INIT,
-      account: getState().accounts.get(accountId),
-    });
-
-    dispatch(openModal('REPORT'));
-  };
-
 const cancelReport = () => ({
   type: REPORT_CANCEL,
 });
@@ -119,7 +108,6 @@ export {
   REPORT_BLOCK_CHANGE,
   REPORT_RULE_CHANGE,
   initReport,
-  initReportById,
   cancelReport,
   toggleStatusReport,
   submitReport,
