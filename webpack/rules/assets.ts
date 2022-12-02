@@ -13,7 +13,6 @@ const rules: RuleSetRule[] = [{
   include: [
     resolve('app', 'assets', 'images'),
     resolve('node_modules', 'emoji-datasource'),
-    resolve('node_modules', 'leaflet'),
   ],
   generator: {
     filename: 'packs/images/[name]-[contenthash:8][ext]',

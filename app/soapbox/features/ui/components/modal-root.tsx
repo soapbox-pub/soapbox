@@ -33,7 +33,6 @@ import {
   ComposeEventModal,
   JoinEventModal,
   AccountModerationModal,
-  EventMapModal,
   EventParticipantsModal,
 } from 'soapbox/features/ui/util/async-components';
 
@@ -75,7 +74,6 @@ const MODAL_COMPONENTS = {
   'COMPOSE_EVENT': ComposeEventModal,
   'JOIN_EVENT': JoinEventModal,
   'ACCOUNT_MODERATION': AccountModerationModal,
-  'EVENT_MAP': EventMapModal,
   'EVENT_PARTICIPANTS': EventParticipantsModal,
 };
 

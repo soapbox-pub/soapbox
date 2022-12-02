@@ -22,7 +22,7 @@ import {
   Toggle,
 } from 'soapbox/components/ui';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
-import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
 import ColorWithPicker from './components/color-with-picker';
@@ -54,8 +54,6 @@ const messages = defineMessages({
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
   feedInjectionLabel: { id: 'soapbox_config.feed_injection_label', defaultMessage: 'Feed injection' },
   feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
-  tileServerLabel: { id: 'soapbox_config.tile_server_label', defaultMessage: 'Map tile server' },
-  tileServerAttributionLabel: { id: 'soapbox_config.tile_server_attribution_label', defaultMessage: 'Map tiles attribution' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -73,8 +71,6 @@ const templates: Record<string, Template> = {
 const SoapboxConfig: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-
-  const features = useFeatures();
 
   const initialData = useAppSelector(state => state.soapbox);
 
@@ -348,32 +344,6 @@ const SoapboxConfig: React.FC = () => {
               onChange={handleChange(['copyright'], (e) => e.target.value)}
             />
           </FormGroup>
-
-          {features.events && (
-            <>
-              <CardHeader>
-                <CardTitle title={<FormattedMessage id='soapbox_config.headings.events' defaultMessage='Events' />} />
-              </CardHeader>
-
-              <FormGroup labelText={intl.formatMessage(messages.tileServerLabel)}>
-                <Input
-                  type='text'
-                  placeholder={intl.formatMessage(messages.tileServerLabel)}
-                  value={soapbox.tileServer}
-                  onChange={handleChange(['tileServer'], (e) => e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup labelText={intl.formatMessage(messages.tileServerAttributionLabel)}>
-                <Input
-                  type='text'
-                  placeholder={intl.formatMessage(messages.tileServerAttributionLabel)}
-                  value={soapbox.tileServerAttribution}
-                  onChange={handleChange(['tileServerAttribution'], (e) => e.target.value)}
-                />
-              </FormGroup>
-            </>
-          )}
 
           <CardHeader>
             <CardTitle title={<FormattedMessage id='soapbox_config.headings.cryptocurrency' defaultMessage='Cryptocurrency' />} />

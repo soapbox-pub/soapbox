@@ -530,10 +530,6 @@ export function EventDiscussion() {
   return import(/* webpackChunkName: "features/event" */'../../event/event-discussion');
 }
 
-export function EventMapModal() {
-  return import(/* webpackChunkName: "modals/event-map-modal" */'../components/modals/event-map-modal');
-}
-
 export function EventParticipantsModal() {
   return import(/* webpackChunkName: "modals/event-participants-modal" */'../components/modals/event-participants-modal');
 }
