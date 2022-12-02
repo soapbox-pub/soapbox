@@ -7,10 +7,10 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-type IColumnHeader = Pick<IColumn, 'label' | 'backHref' |'transparent'>;
+type IColumnHeader = Pick<IColumn, 'label' | 'backHref' |'className'>;
 
 /** Contains the column title with optional back button. */
-const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, transparent }) => {
+const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) => {
   const history = useHistory();
 
   const handleBackClick = () => {
@@ -27,10 +27,7 @@ const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, transparent })
   };
 
   return (
-    <CardHeader
-      className={classNames({ 'px-4 pt-4 sm:p-0': transparent })}
-      onBackClick={handleBackClick}
-    >
+    <CardHeader className={className} onBackClick={handleBackClick}>
       <CardTitle title={label} />
     </CardHeader>
   );
@@ -72,7 +69,11 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
 
       <Card variant={transparent ? undefined : 'rounded'} className={className}>
         {withHeader && (
-          <ColumnHeader label={label} backHref={backHref} transparent={transparent} />
+          <ColumnHeader
+            label={label}
+            backHref={backHref}
+            className={classNames({ 'px-4 pt-4 sm:p-0': transparent })}
+          />
         )}
 
         <CardBody>
