@@ -10,7 +10,6 @@ describe('instance reducer', () => {
     const result = reducer(undefined, {} as any);
 
     const expected = {
-      description_limit: 1500,
       configuration: {
         statuses: {
           max_characters: 500,
@@ -34,7 +33,7 @@ describe('instance reducer', () => {
     it('normalizes Pleroma instance with Mastodon configuration format', () => {
       const action = {
         type: rememberInstance.fulfilled.type,
-        payload: require('soapbox/__fixtures__/pleroma-instance.json'),
+        payload: { instance: require('soapbox/__fixtures__/pleroma-instance.json') },
       };
 
       const result = reducer(undefined, action);
@@ -60,7 +59,7 @@ describe('instance reducer', () => {
     it('normalizes Mastodon instance with retained configuration', () => {
       const action = {
         type: rememberInstance.fulfilled.type,
-        payload: require('soapbox/__fixtures__/mastodon-instance.json'),
+        payload: { instance: require('soapbox/__fixtures__/mastodon-instance.json') },
       };
 
       const result = reducer(undefined, action);
@@ -94,7 +93,7 @@ describe('instance reducer', () => {
     it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
       const action = {
         type: rememberInstance.fulfilled.type,
-        payload: require('soapbox/__fixtures__/mastodon-3.0.0-instance.json'),
+        payload: { instance: require('soapbox/__fixtures__/mastodon-3.0.0-instance.json') },
       };
 
       const result = reducer(undefined, action);
@@ -116,6 +115,40 @@ describe('instance reducer', () => {
 
       expect(result.toJS()).toMatchObject(expected);
     });
+
+    it('normalizes Mastodon 4.0.2 instance fetched with v2 endpoint', () => {
+      const action = {
+        type: rememberInstance.fulfilled.type,
+        payload: { instance: require('soapbox/__fixtures__/mastodon-instance-v2.json') },
+      };
+
+      const result = reducer(undefined, action);
+
+      const expected = {
+        configuration: {
+          statuses: {
+            max_characters: 500,
+            max_media_attachments: 4,
+          },
+          polls: {
+            max_options: 4,
+            max_characters_per_option: 50,
+            min_expiration: 300,
+            max_expiration: 2629746,
+          },
+          translation: {
+            enabled: true,
+          },
+        },
+        registrations: {
+          enabled: false,
+          approval_required: false,
+          message: null,
+        },
+      };
+
+      expect(result.toJS()).toMatchObject(expected);
+    });
   });
 
   describe('ADMIN_CONFIG_UPDATE_REQUEST', () => {
@@ -127,13 +160,13 @@ describe('instance reducer', () => {
         configs,
       };
 
-      // The normalizer has `registrations: closed` by default
+      // The normalizer has `registrations.enabled: closed` by default
       const state = reducer(undefined, {} as any);
-      expect(state.registrations).toBe(false);
+      expect(state.registrations.get('enabled')).toBe(false);
 
       // After importing the configs, registration will be open
       const result = reducer(state, action);
-      expect(result.registrations).toBe(true);
+      expect(result.registrations.get('enabled')).toBe(true);
     });
   });
 });

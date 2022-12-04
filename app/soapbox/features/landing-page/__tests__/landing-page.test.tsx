@@ -12,8 +12,10 @@ describe('<LandingPage />', () => {
     const state = rootReducer(undefined, {
       type: rememberInstance.fulfilled.type,
       payload: {
-        version: '2.7.2 (compatible; Pleroma 2.3.0)',
-        registrations: true,
+        instance: {
+          version: '2.7.2 (compatible; Pleroma 2.3.0)',
+          registrations: true,
+        },
       },
     });
 
@@ -29,8 +31,10 @@ describe('<LandingPage />', () => {
     const state = rootReducer(undefined, {
       type: rememberInstance.fulfilled.type,
       payload: {
-        version: '2.7.2 (compatible; Pleroma 2.3.0)',
-        registrations: false,
+        instance: {
+          version: '2.7.2 (compatible; Pleroma 2.3.0)',
+          registrations: false,
+        },
       },
     });
 
@@ -71,8 +75,10 @@ describe('<LandingPage />', () => {
     const state = applyActions(undefined, [{
       type: rememberInstance.fulfilled.type,
       payload: {
-        version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-        registrations: false,
+        instance: {
+          version: '3.4.1 (compatible; TruthSocial 1.0.0)',
+          registrations: false,
+        },
       },
     }, {
       type: PEPE_FETCH_INSTANCE_SUCCESS,

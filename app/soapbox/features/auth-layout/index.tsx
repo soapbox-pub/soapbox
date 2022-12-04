@@ -32,7 +32,7 @@ const AuthLayout = () => {
   const soapboxConfig = useSoapboxConfig();
 
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-  const isOpen = features.accountCreation && instance.registrations;
+  const isOpen = features.accountCreation && instance.registrations.get('enabled');
   const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
   const isLoginPage = history.location.pathname === '/login';
   const shouldShowRegisterLink = (isLoginPage && (isOpen || (pepeEnabled && pepeOpen)));

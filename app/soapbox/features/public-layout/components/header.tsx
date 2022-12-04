@@ -35,7 +35,7 @@ const Header = () => {
 
   const features = useFeatures();
   const instance = useInstance();
-  const isOpen = features.accountCreation && instance.registrations;
+  const isOpen = features.accountCreation && instance.registrations.get('enabled');
   const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   const [isLoading, setLoading] = React.useState(false);

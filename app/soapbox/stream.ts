@@ -14,7 +14,7 @@ export function connectStream(
   callbacks: (dispatch: AppDispatch, getState: () => RootState) => Record<string, any> = () => ({ onConnect() {}, onDisconnect() {}, onReceive() {} }),
 ) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    const streamingAPIBaseURL = getState().instance.urls.get('streaming_api');
+    const streamingAPIBaseURL = getState().instance.configuration.getIn(['urls', 'streaming']) as string;
     const accessToken = getAccessToken(getState());
     const { onConnect, onDisconnect, onReceive } = callbacks(dispatch, getState);
 
@@ -40,7 +40,7 @@ export function connectStream(
     // If the WebSocket fails to be created, don't crash the whole page,
     // just proceed without a subscription.
     try {
-      subscription = getStream(streamingAPIBaseURL!, accessToken, path, {
+      subscription = getStream(streamingAPIBaseURL, accessToken, path, {
         connected() {
           if (pollingRefresh) {
             clearPolling();

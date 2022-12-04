@@ -34,8 +34,8 @@ const generateConfig = (mode: RegistrationMode) => {
 };
 
 const modeFromInstance = (instance: Instance): RegistrationMode => {
-  if (instance.approval_required && instance.registrations) return 'approval';
-  return instance.registrations ? 'open' : 'closed';
+  if (instance.registrations.get('approval_required') && instance.registrations.get('enabled')) return 'approval';
+  return instance.registrations.get('enabled') ? 'open' : 'closed';
 };
 
 /** Allows changing the registration mode of the instance, eg "open", "closed", "approval" */

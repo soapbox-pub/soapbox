@@ -335,7 +335,7 @@ const UI: React.FC = ({ children }) => {
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
-  const streamingUrl = instance.urls.get('streaming_api');
+  const streamingUrl = instance.configuration.getIn(['urls', 'streaming_api']);
   const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {

@@ -70,7 +70,9 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const { description_limit: descriptionLimit } = useInstance();
+  const { pleroma } = useInstance();
+
+  const descriptionLimit = pleroma.getIn(['metadata', 'description_limit']) as number;
 
   const media = useCompose(composeId).media_attachments.find(item => item.id === id)!;
 

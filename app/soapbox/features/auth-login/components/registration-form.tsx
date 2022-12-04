@@ -46,7 +46,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
 
   const locale = settings.get('locale');
   const needsConfirmation = !!instance.pleroma.getIn(['metadata', 'account_activation_required']);
-  const needsApproval = instance.approval_required;
+  const needsApproval = instance.registrations.get('approval_required');
   const supportsEmailList = features.emailList;
   const supportsAccountLookup = features.accountLookup;
   const birthdayRequired = instance.pleroma.getIn(['metadata', 'birthday_required']);

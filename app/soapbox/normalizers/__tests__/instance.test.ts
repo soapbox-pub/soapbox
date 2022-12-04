@@ -5,8 +5,6 @@ import { normalizeInstance } from '../instance';
 describe('normalizeInstance()', () => {
   it('normalizes an empty Map', () => {
     const expected = {
-      approval_required: false,
-      contact_account: {},
       configuration: {
         media_attachments: {},
         polls: {
@@ -19,20 +17,29 @@ describe('normalizeInstance()', () => {
           max_characters: 500,
           max_media_attachments: 4,
         },
+        translation: {
+          enabled: false,
+        },
+        urls: {
+          streaming: '',
+        },
+      },
+      contact: {
+        account: {},
+        email: '',
       },
       description: '',
-      description_limit: 1500,
+      domain: '',
       email: '',
       feature_quote: false,
       fedibird_capabilities: [],
-      invites_enabled: false,
       languages: [],
-      login_message: '',
       pleroma: {
         metadata: {
           account_activation_required: false,
           birthday_min_age: 0,
           birthday_required: false,
+          description_limit: 1500,
           features: [],
           federation: {
             enabled: true,
@@ -41,18 +48,23 @@ describe('normalizeInstance()', () => {
         },
         stats: {},
       },
-      registrations: false,
-      rules: [],
-      short_description: '',
-      stats: {
-        domain_count: 0,
-        status_count: 0,
-        user_count: 0,
+      registrations: {
+        approval_required: false,
+        enabled: false,
+        message: '',
       },
+      rules: [],
+      source_url: '',
+      stats: {},
       title: '',
-      thumbnail: '',
-      uri: '',
-      urls: {},
+      thumbnail: {
+        url: '',
+      },
+      usage: {
+        users: {
+          active_month: 0,
+        },
+      },
       version: '0.0.0',
     };
 
@@ -139,7 +151,7 @@ describe('normalizeInstance()', () => {
     const result = normalizeInstance(instance);
 
     // Sets description_limit
-    expect(result.description_limit).toEqual(1500);
+    expect(result.pleroma.getIn(['metadata', 'description_limit'])).toEqual(1500);
 
     // Preserves fedibird_capabilities
     expect(result.fedibird_capabilities).toEqual(fromJS(instance.fedibird_capabilities));
@@ -151,7 +163,7 @@ describe('normalizeInstance()', () => {
 
     // Adds configuration and description_limit
     expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
-    expect(result.get('description_limit')).toBe(1500);
+    expect(result.pleroma.getIn(['metadata', 'description_limit'])).toBe(1500);
   });
 
   it('normalizes GoToSocial instance', () => {
@@ -164,7 +176,7 @@ describe('normalizeInstance()', () => {
 
     // Adds configuration and description_limit
     expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
-    expect(result.get('description_limit')).toBe(1500);
+    expect(result.pleroma.getIn(['metadata', 'description_limit'])).toBe(1500);
   });
 
   it('normalizes Friendica instance', () => {
@@ -177,7 +189,7 @@ describe('normalizeInstance()', () => {
 
     // Adds configuration and description_limit
     expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
-    expect(result.get('description_limit')).toBe(1500);
+    expect(result.pleroma.getIn(['metadata', 'description_limit'])).toBe(1500);
   });
 
   it('normalizes a Mastodon RC version', () => {

@@ -65,8 +65,8 @@ const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) 
       const registrationsOpen = getConfigValue(value, ':registrations_open');
       const approvalRequired = getConfigValue(value, ':account_approval_required');
 
-      state.update('registrations', c => typeof registrationsOpen === 'boolean' ? registrationsOpen : c);
-      state.update('approval_required', c => typeof approvalRequired === 'boolean' ? approvalRequired : c);
+      state.updateIn(['registrations', 'enabled'], c => typeof registrationsOpen === 'boolean' ? registrationsOpen : c);
+      state.updateIn(['registrations', 'approval_required'], c => typeof approvalRequired === 'boolean' ? approvalRequired : c);
     }
 
     if (simplePolicy) {
@@ -95,8 +95,7 @@ const getHost = (instance: { uri: string }) => {
   }
 };
 
-const persistInstance = (instance: { uri: string }) => {
-  const host = getHost(instance);
+const persistInstance = (instance: { uri: string }, host: string | null = getHost(instance)) => {
 
   if (host) {
     KVStore.setItem(`instance:${host}`, instance).catch(console.error);
@@ -116,14 +115,14 @@ export default function instance(state = initialState, action: AnyAction) {
     case PLEROMA_PRELOAD_IMPORT:
       return preloadImport(state, action, '/api/v1/instance');
     case rememberInstance.fulfilled.type:
-      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+      return importInstance(state, ImmutableMap(fromJS(action.payload.instance)));
     case fetchInstance.fulfilled.type:
       persistInstance(action.payload);
-      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+      return importInstance(state, ImmutableMap(fromJS(action.payload.instance)));
     case fetchInstance.rejected.type:
       return handleInstanceFetchFail(state, action.error);
     case fetchNodeinfo.fulfilled.type:
-      return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
+      return importNodeinfo(state, ImmutableMap(fromJS(action.payload.instance)));
     case ADMIN_CONFIG_UPDATE_REQUEST:
     case ADMIN_CONFIG_UPDATE_SUCCESS:
       return importConfigs(state, ImmutableList(fromJS(action.configs)));

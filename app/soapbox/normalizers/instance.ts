@@ -17,8 +17,10 @@ import { isNumber } from 'soapbox/utils/numbers';
 // Use Mastodon defaults
 // https://docs.joinmastodon.org/entities/instance/
 export const InstanceRecord = ImmutableRecord({
-  approval_required: false,
-  contact_account: ImmutableMap<string, any>(),
+  contact: ImmutableMap<string, any>({
+    account: ImmutableMap<string, any>(),
+    email: '',
+  }),
   configuration: ImmutableMap<string, any>({
     media_attachments: ImmutableMap<string, any>(),
     polls: ImmutableMap<string, number>({
@@ -31,15 +33,31 @@ export const InstanceRecord = ImmutableRecord({
       max_characters: 500,
       max_media_attachments: 4,
     }),
+    translation: ImmutableMap<string, any>({ enabled: false }),
+    urls: ImmutableMap<string, string>(),
   }),
   description: '',
-  description_limit: 1500,
+  domain: '',
   email: '',
-  feature_quote: false,
-  fedibird_capabilities: ImmutableList(),
-  invites_enabled: false,
   languages: ImmutableList(),
-  login_message: '',
+  registrations: ImmutableMap<string, any>({
+    approval_required: false,
+    enabled: false,
+    message: '',
+
+  }),
+  rules: ImmutableList(),
+  source_url: '',
+  stats: ImmutableMap<string, number>(),
+  title: '',
+  thumbnail: ImmutableMap<string, any>(),
+  usage: ImmutableMap<string, any>({
+    users: ImmutableMap<string, number>({
+      active_month: 0,
+    }),
+  }),
+  version: '0.0.0',
+
   pleroma: ImmutableMap<string, any>({
     metadata: ImmutableMap<string, any>({
       account_activation_required: false,
@@ -50,22 +68,13 @@ export const InstanceRecord = ImmutableRecord({
         enabled: true,
         exclusions: false,
       }),
+      description_limit: 1500,
     }),
     stats: ImmutableMap(),
   }),
-  registrations: false,
-  rules: ImmutableList(),
-  short_description: '',
-  stats: ImmutableMap<string, number>({
-    domain_count: 0,
-    status_count: 0,
-    user_count: 0,
-  }),
-  title: '',
-  thumbnail: '',
-  uri: '',
-  urls: ImmutableMap<string, string>(),
-  version: '0.0.0',
+
+  feature_quote: false,
+  fedibird_capabilities: ImmutableList(),
 });
 
 // Build Mastodon configuration from Pleroma instance
@@ -109,10 +118,39 @@ const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   }
 };
 
+const fixInstanceV1 = (instance: ImmutableMap<string, any>) => {
+  instance.setIn(['configuration', 'urls', 'streaming'], instance.getIn(['urls', 'streaming_api'], ''));
+
+  instance.set('contact', ImmutableMap({
+    account: instance.get('contact_account'),
+    email: instance.get('email'),
+  }));
+
+  instance.set('description', instance.get('short_description') || instance.get('description'));
+
+  instance.set('registrations', ImmutableMap({
+    approval_required: instance.get('approval_required'),
+    enabled: instance.get('registrations'),
+    message: instance.get('login_message'),
+  }));
+
+  instance.set('thumbnail', ImmutableMap({
+    url: instance.get('thumbnail', ''),
+  }));
+
+  if (instance.has('pleroma')) {
+    instance.setIn(['pleroma', 'metadata', 'description_limit'], instance.get('description_limit'));
+  }
+};
+
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
 export const normalizeInstance = (instance: Record<string, any>) => {
   return InstanceRecord(
     ImmutableMap(fromJS(instance)).withMutations((instance: ImmutableMap<string, any>) => {
+      const version = instance.has('domain') ? 'v2' : 'v1';
+
+      if (version === 'v1') fixInstanceV1(instance);
+
       const { software } = parseVersion(instance.get('version'));
       const mastodonConfig = pleromaToMastodonConfig(instance);
 

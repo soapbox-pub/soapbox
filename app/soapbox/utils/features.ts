@@ -628,7 +628,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can translate statuses.
      * @see POST /api/v1/statuses/:id/translate
      */
-    translations: features.includes('translation'),
+    translations: features.includes('translation') || instance.configuration.getIn(['translation', 'enabled']),
 
     /**
      * Trending statuses.

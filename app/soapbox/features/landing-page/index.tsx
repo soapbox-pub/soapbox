@@ -89,13 +89,15 @@ const LandingPage = () => {
     );
   };
 
+  console.log(instance.registrations.toJS());
+
   // Render registration flow depending on features
   const renderBody = () => {
     if (soapboxConfig.authProvider) {
       return renderProvider();
     } else if (pepeEnabled && pepeOpen) {
       return renderPepe();
-    } else if (features.accountCreation && instance.registrations) {
+    } else if (features.accountCreation && instance.registrations.get('enabled')) {
       return renderOpen();
     } else {
       return renderClosed();
@@ -115,7 +117,7 @@ const LandingPage = () => {
 
                 <Markup
                   size='lg'
-                  dangerouslySetInnerHTML={{ __html: instance.short_description || instance.description }}
+                  dangerouslySetInnerHTML={{ __html: instance.description }}
                 />
               </Stack>
             </div>
