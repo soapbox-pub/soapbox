@@ -29,6 +29,10 @@ export const getNextLink = (response: AxiosResponse): string | undefined => {
   return getLinks(response).refs.find(link => link.rel === 'next')?.uri;
 };
 
+export const getPrevLink = (response: AxiosResponse): string | undefined => {
+  return getLinks(response).refs.find(link => link.rel === 'prev')?.uri;
+};
+
 const getToken = (state: RootState, authType: string) => {
   return authType === 'app' ? getAppToken(state) : getAccessToken(state);
 };

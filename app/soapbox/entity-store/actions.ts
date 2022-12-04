@@ -1,4 +1,4 @@
-import type { Entity } from './types';
+import type { Entity, EntityListState } from './types';
 
 const ENTITIES_IMPORT = 'ENTITIES_IMPORT' as const;
 const ENTITIES_FETCH_REQUEST = 'ENTITIES_FETCH_REQUEST' as const;
@@ -23,20 +23,22 @@ function entitiesFetchRequest(entityType: string, listKey?: string) {
   };
 }
 
-function entitiesFetchSuccess(entities: Entity[], entityType: string, listKey?: string) {
+function entitiesFetchSuccess(entities: Entity[], entityType: string, listKey?: string, newState?: EntityListState) {
   return {
     type: ENTITIES_FETCH_SUCCESS,
     entityType,
     entities,
     listKey,
+    newState,
   };
 }
 
-function entitiesFetchFail(entityType: string, listKey?: string) {
+function entitiesFetchFail(entityType: string, listKey: string | undefined, error: any) {
   return {
     type: ENTITIES_FETCH_FAIL,
     entityType,
     listKey,
+    error,
   };
 }
 

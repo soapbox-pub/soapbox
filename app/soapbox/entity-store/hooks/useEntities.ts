@@ -1,12 +1,13 @@
+import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import { importEntities } from '../actions';
+import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
 
 import type { Entity } from '../types';
 
 type EntityPath = [entityType: string, listKey: string]
 
-function useEntities<TEntity extends Entity>(path: EntityPath, url: string) {
+function useEntities<TEntity extends Entity>(path: EntityPath, endpoint: string) {
   const api = useApi();
   const dispatch = useAppDispatch();
 
@@ -32,26 +33,38 @@ function useEntities<TEntity extends Entity>(path: EntityPath, url: string) {
   const hasNextPage = Boolean(list?.state.next);
   const hasPreviousPage = Boolean(list?.state.prev);
 
-  const fetchEntities = async() => {
-    const { data } = await api.get(url);
-    dispatch(importEntities(data, entityType, listKey));
-  };
-
-  const fetchNextPage = async() => {
-    const next = list?.state.next;
-
-    if (next) {
-      const { data } = await api.get(next);
-      dispatch(importEntities(data, entityType, listKey));
+  const fetchPage = async(url: string): Promise<void> => {
+    dispatch(entitiesFetchRequest(entityType, listKey));
+    try {
+      const response = await api.get(url);
+      dispatch(entitiesFetchSuccess(response.data, entityType, listKey, {
+        next: getNextLink(response),
+        prev: getPrevLink(response),
+        fetching: false,
+        error: null,
+      }));
+    } catch (error) {
+      dispatch(entitiesFetchFail(entityType, listKey, error));
     }
   };
 
-  const fetchPreviousPage = async() => {
+  const fetchEntities = async(): Promise<void> => {
+    await fetchPage(endpoint);
+  };
+
+  const fetchNextPage = async(): Promise<void> => {
+    const next = list?.state.next;
+
+    if (next) {
+      await fetchPage(next);
+    }
+  };
+
+  const fetchPreviousPage = async(): Promise<void> => {
     const prev = list?.state.prev;
 
     if (prev) {
-      const { data } = await api.get(prev);
-      dispatch(importEntities(data, entityType, listKey));
+      await fetchPage(prev);
     }
   };
 
