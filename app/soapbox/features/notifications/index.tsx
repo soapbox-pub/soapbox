@@ -17,6 +17,7 @@ import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useNotifications } from 'soapbox/hooks/useNotifications';
 
 import FilterBar from './components/filter-bar';
 import Notification from './components/notification';
@@ -50,24 +51,24 @@ const Notifications = () => {
   const intl = useIntl();
   const settings = useSettings();
 
+  const {
+    entities: notifications,
+    isLoading,
+    isFetching,
+    hasNextPage: hasMore,
+    fetchEntities,
+  } = useNotifications();
+
   const showFilterBar = settings.getIn(['notifications', 'quickFilter', 'show']);
   const activeFilter = settings.getIn(['notifications', 'quickFilter', 'active']);
-  const notifications = useAppSelector(state => getNotifications(state));
-  const isLoading = useAppSelector(state => state.notifications.isLoading);
-  // const isUnread = useAppSelector(state => state.notifications.unread > 0);
-  const hasMore = useAppSelector(state => state.notifications.hasMore);
   const totalQueuedNotificationsCount = useAppSelector(state => state.notifications.totalQueuedNotificationsCount || 0);
 
   const node = useRef<VirtuosoHandle>(null);
   const column = useRef<HTMLDivElement>(null);
-  const scrollableContentRef = useRef<ImmutableList<JSX.Element> | null>(null);
-
-  // const handleLoadGap = (maxId) => {
-  //   dispatch(expandNotifications({ maxId }));
-  // };
+  const scrollableContentRef = useRef<Iterable<JSX.Element> | null>(null);
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const last = notifications.last();
+    const last = notifications[notifications.length];
     dispatch(expandNotifications({ maxId: last && last.get('id') }));
   }, 300, { leading: true }), [notifications]);
 
@@ -113,6 +114,12 @@ const Notifications = () => {
   };
 
   useEffect(() => {
+    if (!isFetching) {
+      fetchEntities();
+    }
+  }, []);
+
+  useEffect(() => {
     handleDequeueNotifications();
     dispatch(scrollTopNotifications(true));
 
@@ -128,7 +135,7 @@ const Notifications = () => {
     ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
     : <FormattedMessage id='empty_column.notifications_filtered' defaultMessage="You don't have any notifications of this type yet." />;
 
-  let scrollableContent: ImmutableList<JSX.Element> | null = null;
+  let scrollableContent: Iterable<JSX.Element> | null = null;
 
   const filterBarContainer = showFilterBar
     ? (<FilterBar />)
@@ -136,7 +143,7 @@ const Notifications = () => {
 
   if (isLoading && scrollableContentRef.current) {
     scrollableContent = scrollableContentRef.current;
-  } else if (notifications.size > 0 || hasMore) {
+  } else if (notifications.length > 0 || hasMore) {
     scrollableContent = notifications.map((item) => (
       <Notification
         key={item.id}
@@ -156,7 +163,7 @@ const Notifications = () => {
       ref={node}
       scrollKey='notifications'
       isLoading={isLoading}
-      showLoading={isLoading && notifications.size === 0}
+      showLoading={isLoading && notifications.length === 0}
       hasMore={hasMore}
       emptyMessage={emptyMessage}
       placeholderComponent={PlaceholderNotification}
@@ -165,8 +172,8 @@ const Notifications = () => {
       onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
       className={classNames({
-        'divide-y divide-gray-200 dark:divide-primary-800 divide-solid': notifications.size > 0,
-        'space-y-2': notifications.size === 0,
+        'divide-y divide-gray-200 dark:divide-primary-800 divide-solid': notifications.length > 0,
+        'space-y-2': notifications.length === 0,
       })}
     >
       {scrollableContent as ImmutableList<JSX.Element>}

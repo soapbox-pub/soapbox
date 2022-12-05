@@ -14,30 +14,32 @@ import type { Entity, EntityCache, EntityListState } from './types';
 enableMapSet();
 
 /** Entity reducer state. */
-type State = Map<string, EntityCache>;
+interface State {
+  [entityType: string]: EntityCache | undefined
+}
 
 /** Import entities into the cache. */
 const importEntities = (
-  state: Readonly<State>,
+  state: State,
   entityType: string,
   entities: Entity[],
   listKey?: string,
   newState?: EntityListState,
 ): State => {
   return produce(state, draft => {
-    const cache = draft.get(entityType) ?? createCache();
+    const cache = draft[entityType] ?? createCache();
     cache.store = updateStore(cache.store, entities);
 
-    if (listKey) {
-      let list = cache.lists.get(listKey) ?? createList();
+    if (typeof listKey === 'string') {
+      let list = { ...(cache.lists[listKey] ?? createList()) };
       list = updateList(list, entities);
       if (newState) {
         list.state = newState;
       }
-      cache.lists.set(listKey, list);
+      cache.lists[listKey] = list;
     }
 
-    return draft.set(entityType, cache);
+    draft[entityType] = cache;
   });
 };
 
@@ -48,20 +50,20 @@ const setFetching = (
   isFetching: boolean,
 ) => {
   return produce(state, draft => {
-    const cache = draft.get(entityType) ?? createCache();
+    const cache = draft[entityType] ?? createCache();
 
-    if (listKey) {
-      const list = cache.lists.get(listKey) ?? createList();
+    if (typeof listKey === 'string') {
+      const list = cache.lists[listKey] ?? createList();
       list.state.fetching = isFetching;
-      cache.lists.set(listKey, list);
+      cache.lists[listKey] = list;
     }
 
-    return draft.set(entityType, cache);
+    draft[entityType] = cache;
   });
 };
 
 /** Stores various entity data and lists in a one reducer. */
-function reducer(state: Readonly<State> = new Map(), action: EntityAction): State {
+function reducer(state: Readonly<State> = {}, action: EntityAction): State {
   switch (action.type) {
     case ENTITIES_IMPORT:
       return importEntities(state, action.entityType, action.entities, action.listKey);

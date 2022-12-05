@@ -5,7 +5,9 @@ interface Entity {
 }
 
 /** Store of entities by ID. */
-type EntityStore = Map<string, Entity>
+interface EntityStore {
+  [id: string]: Entity | undefined
+}
 
 /** List of entity IDs and fetch state. */
 interface EntityList {
@@ -32,7 +34,9 @@ interface EntityCache {
   /** Map of entities of this type. */
   store: EntityStore
   /** Lists of entity IDs for a particular purpose. */
-  lists: Map<string, EntityList>
+  lists: {
+    [listKey: string]: EntityList | undefined
+  }
 }
 
 export {

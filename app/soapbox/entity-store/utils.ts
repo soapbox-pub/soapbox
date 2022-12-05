@@ -3,8 +3,9 @@ import type { Entity, EntityStore, EntityList, EntityCache } from './types';
 /** Insert the entities into the store. */
 const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {
   return entities.reduce<EntityStore>((store, entity) => {
-    return store.set(entity.id, entity);
-  }, new Map(store));
+    store[entity.id] = entity;
+    return store;
+  }, { ...store });
 };
 
 /** Update the list with new entity IDs. */
@@ -18,8 +19,8 @@ const updateList = (list: EntityList, entities: Entity[]): EntityList => {
 
 /** Create an empty entity cache. */
 const createCache = (): EntityCache => ({
-  store: new Map(),
-  lists: new Map(),
+  store: {},
+  lists: {},
 });
 
 /** Create an empty entity list. */

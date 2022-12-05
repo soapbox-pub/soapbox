@@ -13,7 +13,7 @@ function useEntity<TEntity extends Entity>(path: EntityPath, endpoint: string) {
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;
-  const entity = useAppSelector(state => state.entities.get(entityType)?.store.get(entityId)) as TEntity | undefined;
+  const entity = useAppSelector(state => state.entities[entityType]?.store[entityId]) as TEntity | undefined;
 
   const [isFetching, setIsFetching] = useState(false);
   const isLoading = isFetching && !entity;

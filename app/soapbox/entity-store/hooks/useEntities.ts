@@ -13,14 +13,14 @@ function useEntities<TEntity extends Entity>(path: EntityPath, endpoint: string)
 
   const [entityType, listKey] = path;
 
-  const cache = useAppSelector(state => state.entities.get(entityType));
-  const list = cache?.lists.get(listKey);
+  const cache = useAppSelector(state => state.entities[entityType]);
+  const list = cache?.lists[listKey];
 
   const entityIds = list?.ids;
 
   const entities: readonly TEntity[] = entityIds ? (
     Array.from(entityIds).reduce<TEntity[]>((result, id) => {
-      const entity = cache?.store.get(id) as TEntity | undefined;
+      const entity = cache?.store[id] as TEntity | undefined;
       if (entity) {
         result.push(entity);
       }
