@@ -3,6 +3,7 @@
  * Converts API statuses into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/status/}
  */
+import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -10,12 +11,15 @@ import {
   fromJS,
 } from 'immutable';
 
+import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
+import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+import { buildSearchContent, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
@@ -24,6 +28,8 @@ export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 's
 
 /** Maximum number of times to recurse sub-entities. */
 const MAX_DEPTH = 1;
+
+const domParser = new DOMParser();
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
@@ -190,6 +196,19 @@ const normalizeReblogQuote = (status: ImmutableMap<string, any>, depth = 0) => {
   });
 };
 
+const addInternalFields = (status: ImmutableMap<string, any>) => {
+  const spoilerText   = status.get('spoiler_text');
+  const searchContent = buildSearchContent(status);
+  const emojiMap      = makeEmojiMap(status.get('emojis'));
+
+  return status.merge({
+    search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
+    contentHtml: stripCompatibilityFeatures(emojify(status.get('content'), emojiMap)),
+    spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
+    // hidden: expandSpoilers ? false : spoilerText.length > 0 || status.get('sensitive'),
+  });
+};
+
 export const normalizeStatus = (status: Record<string, any>, depth = 0) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -205,6 +224,7 @@ export const normalizeStatus = (status: Record<string, any>, depth = 0) => {
       fixFiltered(status);
       fixSensitivity(status);
       normalizeReblogQuote(status, depth);
+      addInternalFields(status);
     }),
   );
 };
