@@ -57,6 +57,7 @@ const Notifications = () => {
     isFetching,
     hasNextPage: hasMore,
     fetchEntities,
+    fetchNextPage,
   } = useNotifications();
 
   const showFilterBar = settings.getIn(['notifications', 'quickFilter', 'show']);
@@ -68,8 +69,7 @@ const Notifications = () => {
   const scrollableContentRef = useRef<Iterable<JSX.Element> | null>(null);
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const last = notifications[notifications.length];
-    dispatch(expandNotifications({ maxId: last && last.get('id') }));
+    fetchNextPage();
   }, 300, { leading: true }), [notifications]);
 
   const handleScrollToTop = useCallback(debounce(() => {

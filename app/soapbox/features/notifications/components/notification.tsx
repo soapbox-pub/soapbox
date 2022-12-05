@@ -9,9 +9,9 @@ import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
+import Status from 'soapbox/components/status';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import StatusContainer from 'soapbox/containers/status-container';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
@@ -147,14 +147,9 @@ interface INotificaton {
 }
 
 const Notification: React.FC<INotificaton> = (props) => {
-  const { hidden = false, onMoveUp, onMoveDown } = props;
+  const { notification, hidden = false, onMoveUp, onMoveDown } = props;
 
   const dispatch = useAppDispatch();
-
-  const getNotification = useCallback(makeGetNotification(), []);
-
-  const notification = useAppSelector((state) => getNotification(state, props.notification));
-
   const history = useHistory();
   const intl = useIntl();
   const instance = useInstance();
@@ -303,8 +298,8 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'update':
       case 'pleroma:emoji_reaction':
         return status && typeof status === 'object' ? (
-          <StatusContainer
-            id={status.id}
+          <Status
+            status={status}
             withDismiss
             hidden={hidden}
             onMoveDown={handleMoveDown}

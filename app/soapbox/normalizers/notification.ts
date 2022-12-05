@@ -9,6 +9,9 @@ import {
   fromJS,
 } from 'immutable';
 
+import { normalizeAccount } from './account';
+import { normalizeStatus } from './status';
+
 import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities';
 
 // https://docs.joinmastodon.org/entities/notification/
@@ -26,6 +29,14 @@ export const NotificationRecord = ImmutableRecord({
 
 export const normalizeNotification = (notification: Record<string, any>) => {
   return NotificationRecord(
-    ImmutableMap(fromJS(notification)),
+    ImmutableMap(fromJS(notification)).withMutations(notification => {
+      if (notification.get('status')) {
+        notification.set('status', normalizeStatus(notification.get('status') as any) as any);
+      }
+
+      if (notification.get('account')) {
+        notification.set('account', normalizeAccount(notification.get('account') as any) as any);
+      }
+    }),
   );
 };

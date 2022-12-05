@@ -10,6 +10,7 @@ import {
   fromJS,
 } from 'immutable';
 
+import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
@@ -66,6 +67,11 @@ export const StatusRecord = ImmutableRecord({
   spoilerHtml: '',
   translation: null as ImmutableMap<string, string> | null,
 });
+
+const normalizeStatusAccount = (status: ImmutableMap<string, any>) => {
+  const account = normalizeAccount(status.get('account'));
+  return status.set('account', account);
+};
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
   return status.update('media_attachments', ImmutableList(), attachments => {
@@ -160,9 +166,25 @@ const fixSensitivity = (status: ImmutableMap<string, any>) => {
   }
 };
 
+const normalizeReblogQuote = (status: ImmutableMap<string, any>) => {
+  const reblog = status.get('reblog');
+  const quote = status.get('quote');
+
+  return status.withMutations(status => {
+    if (reblog) {
+      status.set('reblog', normalizeStatus(reblog));
+    }
+
+    if (quote) {
+      status.set('quote', normalizeStatus(quote));
+    }
+  });
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
+      normalizeStatusAccount(status);
       normalizeAttachments(status);
       normalizeMentions(status);
       normalizeEmojis(status);
@@ -173,6 +195,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixQuote(status);
       fixFiltered(status);
       fixSensitivity(status);
+      normalizeReblogQuote(status);
     }),
   );
 };
