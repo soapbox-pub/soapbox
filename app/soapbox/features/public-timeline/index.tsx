@@ -60,7 +60,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent>
       <PinnedHostsPicker />
 
       {showExplanationBox && <div className='mb-4'>

@@ -1,7 +1,5 @@
 [data-reach-menu-popover] {
-  @apply origin-top-right absolute mt-2 rounded-md shadow-lg bg-white dark:bg-gray-900 dark:ring-2 dark:ring-primary-700 focus:outline-none;
-
-  z-index: 1003;
+  @apply origin-top-right rtl:origin-top-left absolute mt-2 rounded-md shadow-lg bg-white dark:bg-gray-900 dark:ring-2 dark:ring-primary-700 focus:outline-none z-[1003];
 }
 
 [data-reach-menu-button] {
