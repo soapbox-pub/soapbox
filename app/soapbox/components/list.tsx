@@ -68,7 +68,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick }) => {
         <HStack space={1} alignItems='center' className='text-gray-700 dark:text-gray-600'>
           {children}
 
-          <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1' />
+          <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1 rtl:rotate-180' />
         </HStack>
       ) : renderChildren()}
     </Comp>
