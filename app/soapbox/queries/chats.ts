@@ -169,7 +169,10 @@ const useChats = (search?: string) => {
     },
   });
 
-  const data = flattenPages(queryInfo.data);
+  const data = queryInfo.data?.pages.reduce<IChat[]>(
+    (prev: IChat[], curr) => [...prev, ...curr.result],
+    [],
+  );
 
   const chatsQuery = {
     ...queryInfo,
