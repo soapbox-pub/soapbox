@@ -22,6 +22,9 @@ import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } 
 
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
 
+/** Maximum number of times to recurse sub-entities. */
+const MAX_DEPTH = 1;
+
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
@@ -166,22 +169,28 @@ const fixSensitivity = (status: ImmutableMap<string, any>) => {
   }
 };
 
-const normalizeReblogQuote = (status: ImmutableMap<string, any>) => {
+const normalizeReblogQuote = (status: ImmutableMap<string, any>, depth = 0) => {
+  if (depth >= MAX_DEPTH) {
+    return status;
+  } else {
+    depth++;
+  }
+
   const reblog = status.get('reblog');
   const quote = status.get('quote');
 
   return status.withMutations(status => {
     if (reblog) {
-      status.set('reblog', normalizeStatus(reblog));
+      status.set('reblog', normalizeStatus(reblog, depth));
     }
 
     if (quote) {
-      status.set('quote', normalizeStatus(quote));
+      status.set('quote', normalizeStatus(quote, depth));
     }
   });
 };
 
-export const normalizeStatus = (status: Record<string, any>) => {
+export const normalizeStatus = (status: Record<string, any>, depth = 0) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
       normalizeStatusAccount(status);
@@ -195,7 +204,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixQuote(status);
       fixFiltered(status);
       fixSensitivity(status);
-      normalizeReblogQuote(status);
+      normalizeReblogQuote(status, depth);
     }),
   );
 };
