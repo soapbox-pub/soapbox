@@ -329,9 +329,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    dispatch(openModal('EVENT_PARTICIPANTS', {
-      statusId: status.id,
-    }));
+    if (!ownAccount) {
+      dispatch(openModal('UNAUTHORIZED'));
+    } else {
+      dispatch(openModal('EVENT_PARTICIPANTS', {
+        statusId: status.id,
+      }));
+    }
   };
 
   return (
