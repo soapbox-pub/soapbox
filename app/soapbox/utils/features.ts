@@ -215,7 +215,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    chats: v.software === TRUTHSOCIAL || (v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA),
+    chats: any([
+      v.software === TRUTHSOCIAL,
+      v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA,
+    ]),
 
     /**
      * Ability to delete a chat.
@@ -239,7 +242,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Paginated chats API.
      * @see GET /api/v2/chats
      */
-    chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
+    chatsV2: any([
+      v.software === TRUTHSOCIAL,
+      v.software === PLEROMA && gte(v.version, '2.3.0'),
+    ]),
 
     /**
      * Ability to only chat with people that follow you.
