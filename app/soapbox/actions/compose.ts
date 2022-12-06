@@ -35,6 +35,7 @@ const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST';
 const COMPOSE_SUBMIT_SUCCESS  = 'COMPOSE_SUBMIT_SUCCESS';
 const COMPOSE_SUBMIT_FAIL     = 'COMPOSE_SUBMIT_FAIL';
 const COMPOSE_REPLY           = 'COMPOSE_REPLY';
+const COMPOSE_EVENT_REPLY     = 'COMPOSE_EVENT_REPLY';
 const COMPOSE_REPLY_CANCEL    = 'COMPOSE_REPLY_CANCEL';
 const COMPOSE_QUOTE           = 'COMPOSE_QUOTE';
 const COMPOSE_QUOTE_CANCEL    = 'COMPOSE_QUOTE_CANCEL';
@@ -713,6 +714,21 @@ const removeFromMentions = (composeId: string, accountId: string) =>
     });
   };
 
+const eventDiscussionCompose = (composeId: string, status: Status) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState();
+    const instance = state.instance;
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: COMPOSE_EVENT_REPLY,
+      id: composeId,
+      status: status,
+      account: state.accounts.get(state.me),
+      explicitAddressing,
+    });
+  };
+
 export {
   COMPOSE_CHANGE,
   COMPOSE_SUBMIT_REQUEST,
@@ -720,6 +736,7 @@ export {
   COMPOSE_SUBMIT_FAIL,
   COMPOSE_REPLY,
   COMPOSE_REPLY_CANCEL,
+  COMPOSE_EVENT_REPLY,
   COMPOSE_QUOTE,
   COMPOSE_QUOTE_CANCEL,
   COMPOSE_DIRECT,
@@ -806,4 +823,5 @@ export {
   openComposeWithText,
   addToMentions,
   removeFromMentions,
+  eventDiscussionCompose,
 };

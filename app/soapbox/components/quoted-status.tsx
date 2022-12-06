@@ -9,6 +9,7 @@ import AccountContainer from 'soapbox/containers/account-container';
 import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import EventPreview from './event-preview';
 import OutlineBox from './outline-box';
 import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
@@ -112,35 +113,37 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
         <StatusReplyMentions status={status} hoverable={false} />
 
-        <Stack
-          className='relative z-0'
-          style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
-        >
-          {(status.hidden) && (
-            <SensitiveContentOverlay
-              status={status}
-              visible={showMedia}
-              onToggleVisibility={handleToggleMediaVisibility}
-              ref={overlay}
-            />
-          )}
-
-          <Stack space={4}>
-            <StatusContent
-              status={status}
-              collapsable
-            />
-
-            {(status.card || status.media_attachments.size > 0) && (
-              <StatusMedia
+        {status.event ? <EventPreview status={status} hideAction /> : (
+          <Stack
+            className='relative z-0'
+            style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
+          >
+            {(status.hidden) && (
+              <SensitiveContentOverlay
                 status={status}
-                muted={compose}
-                showMedia={showMedia}
+                visible={showMedia}
                 onToggleVisibility={handleToggleMediaVisibility}
+                ref={overlay}
               />
             )}
+
+            <Stack space={4}>
+              <StatusContent
+                status={status}
+                collapsable
+              />
+
+              {(status.card || status.media_attachments.size > 0) && (
+                <StatusMedia
+                  status={status}
+                  muted={compose}
+                  showMedia={showMedia}
+                  onToggleVisibility={handleToggleMediaVisibility}
+                />
+              )}
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </OutlineBox>
   );

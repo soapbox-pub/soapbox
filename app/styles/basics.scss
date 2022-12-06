@@ -100,7 +100,7 @@ noscript {
 }
 
 .emojione {
-  @apply w-5 h-5 -mt-[3px] inline;
+  @apply w-4 h-4 -mt-[0.2ex] mb-[0.2ex] inline-block align-middle object-contain;
 }
 
 // Virtuoso empty placeholder fix.

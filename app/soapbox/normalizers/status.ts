@@ -31,6 +31,21 @@ const MAX_DEPTH = 1;
 
 const domParser = new DOMParser();
 
+export type EventJoinMode = 'free' | 'restricted' | 'invite';
+export type EventJoinState = 'pending' | 'reject' | 'accept';
+
+export const EventRecord = ImmutableRecord({
+  name: '',
+  start_time: null as string | null,
+  end_time: null as string | null,
+  join_mode: null as EventJoinMode | null,
+  participants_count: 0,
+  location: null as ImmutableMap<string, any> | null,
+  join_state: null as EventJoinState | null,
+  banner: null as Attachment | null,
+  links: ImmutableList<Attachment>(),
+});
+
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
@@ -66,6 +81,7 @@ export const StatusRecord = ImmutableRecord({
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
+  event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields
   contentHtml: '',
@@ -209,6 +225,33 @@ const addInternalFields = (status: ImmutableMap<string, any>) => {
   });
 };
 
+// Normalize event
+const normalizeEvent = (status: ImmutableMap<string, any>) => {
+  if (status.getIn(['pleroma', 'event'])) {
+    const firstAttachment = status.get('media_attachments').first();
+    let banner = null;
+    let mediaAttachments = status.get('media_attachments');
+
+    if (firstAttachment && firstAttachment.description === 'Banner' && firstAttachment.type === 'image') {
+      banner = normalizeAttachment(firstAttachment);
+      mediaAttachments = mediaAttachments.shift();
+    }
+
+    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') === 'text/html');
+    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') !== 'text/html');
+
+    const event = EventRecord(
+      (status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>)
+        .set('banner', banner)
+        .set('links', links),
+    );
+
+    status
+      .set('event', event)
+      .set('media_attachments', mediaAttachments);
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>, depth = 0) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -225,6 +268,7 @@ export const normalizeStatus = (status: Record<string, any>, depth = 0) => {
       fixSensitivity(status);
       normalizeReblogQuote(status, depth);
       addInternalFields(status);
+      normalizeEvent(status);
     }),
   );
 };

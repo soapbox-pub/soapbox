@@ -5,15 +5,18 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
+import { cancelEventCompose } from 'soapbox/actions/events';
 import { openModal, closeModal } from 'soapbox/actions/modals';
-import { useAppDispatch, useAppSelector, usePrevious } from 'soapbox/hooks';
+import { useAppDispatch, usePrevious } from 'soapbox/hooks';
 
 import type { UnregisterCallback } from 'history';
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
+import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
 export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>) => {
@@ -22,6 +25,15 @@ export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>)
     compose.spoiler_text.length > 0,
     compose.media_attachments.size > 0,
     compose.poll !== null,
+  ].some(check => check === true);
+};
+
+export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComposeEvent>) => {
+  return !!compose && [
+    compose.name.length > 0,
+    compose.status.length > 0,
+    compose.location !== null,
+    compose.banner !== null,
   ].some(check => check === true);
 };
 
@@ -46,8 +58,6 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   const prevChildren = usePrevious(children);
   const prevType = usePrevious(type);
 
-  const isEditing = useAppSelector(state => state.compose.get('compose-modal')?.id !== null);
-
   const visible = !!children;
 
   const handleKeyUp = (e: KeyboardEvent) => {
@@ -58,13 +68,20 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const handleOnClose = () => {
     dispatch((_, getState) => {
-      const hasComposeContent = checkComposeContent(getState().compose.get('compose-modal'));
+      const compose = getState().compose.get('compose-modal');
+      const hasComposeContent = checkComposeContent(compose);
+      const hasEventComposeContent = checkEventComposeContent(getState().compose_event);
 
       if (hasComposeContent && type === 'COMPOSE') {
+        const isEditing = compose!.id !== null;
         dispatch(openModal('CONFIRM', {
           icon: require('@tabler/icons/trash.svg'),
-          heading: isEditing ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' /> : <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
-          message: isEditing ? <FormattedMessage id='confirmations.cancel_editing.message' defaultMessage='Are you sure you want to cancel editing this post? All changes will be lost.' /> : <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
+          heading: isEditing
+            ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' />
+            : <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
+          message: isEditing
+            ? <FormattedMessage id='confirmations.cancel_editing.message' defaultMessage='Are you sure you want to cancel editing this post? All changes will be lost.' />
+            : <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
           confirm: intl.formatMessage(messages.confirm),
           onConfirm: () => {
             dispatch(closeModal('COMPOSE'));
@@ -74,7 +91,26 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
             dispatch(closeModal('CONFIRM'));
           },
         }));
-      } else if (hasComposeContent && type === 'CONFIRM') {
+      } else if (hasEventComposeContent && type === 'COMPOSE_EVENT') {
+        const isEditing = getState().compose_event.id !== null;
+        dispatch(openModal('CONFIRM', {
+          icon: require('@tabler/icons/trash.svg'),
+          heading: isEditing
+            ? <FormattedMessage id='confirmations.cancel_event_editing.heading' defaultMessage='Cancel event editing' />
+            : <FormattedMessage id='confirmations.delete_event.heading' defaultMessage='Delete event' />,
+          message: isEditing
+            ? <FormattedMessage id='confirmations.cancel_event_editing.message' defaultMessage='Are you sure you want to cancel editing this event? All changes will be lost.' />
+            : <FormattedMessage id='confirmations.delete_event.message' defaultMessage='Are you sure you want to delete this event?' />,
+          confirm: intl.formatMessage(isEditing ? messages.cancelEditing : messages.confirm),
+          onConfirm: () => {
+            dispatch(closeModal('COMPOSE_EVENT'));
+            dispatch(cancelEventCompose());
+          },
+          onCancel: () => {
+            dispatch(closeModal('CONFIRM'));
+          },
+        }));
+      } else if ((hasComposeContent || hasEventComposeContent) && type === 'CONFIRM') {
         dispatch(closeModal('CONFIRM'));
       } else {
         onClose();

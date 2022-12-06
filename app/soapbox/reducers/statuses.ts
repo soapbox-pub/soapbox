@@ -11,6 +11,12 @@ import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,
 } from '../actions/emoji-reacts';
+import {
+  EVENT_JOIN_REQUEST,
+  EVENT_JOIN_FAIL,
+  EVENT_LEAVE_REQUEST,
+  EVENT_LEAVE_FAIL,
+} from '../actions/events';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,
@@ -281,6 +287,13 @@ export default function statuses(state = initialState, action: AnyAction): State
       return deleteTranslation(state, action.id);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
+    case EVENT_JOIN_REQUEST:
+      return state.setIn([action.id, 'event', 'join_state'], 'pending');
+    case EVENT_JOIN_FAIL:
+    case EVENT_LEAVE_REQUEST:
+      return state.setIn([action.id, 'event', 'join_state'], null);
+    case EVENT_LEAVE_FAIL:
+      return state.setIn([action.id, 'event', 'join_state'], action.previousState);
     default:
       return state;
   }
