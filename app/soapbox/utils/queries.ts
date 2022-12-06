@@ -8,10 +8,17 @@ export interface PaginatedResult<T> {
   link?: string,
 }
 
+interface Entity {
+  id: string,
+}
+
+const isEntity = <T = unknown>(object: T): object is T & Entity => {
+  return object && typeof object === 'object' && 'id' in object;
+};
+
 /** Deduplicate an array of entities by their ID. */
-const deduplicate = <T>(entities: T[]): T[] => {
+const deduplicateById = <T extends Entity>(entities: T[]): T[] => {
   const map = entities.reduce<Map<string, T>>((result, entity) => {
-    // @ts-expect-error Entity might not have an ID... but it probably does.
     return result.set(entity.id, entity);
   }, new Map());
 
@@ -26,8 +33,10 @@ const flattenPages = <T>(queryData: InfiniteData<PaginatedResult<T>> | undefined
     [],
   );
 
-  if (data) {
-    return deduplicate<T>(data);
+  if (data && data.every(isEntity)) {
+    return deduplicateById(data);
+  } else if (data) {
+    return data;
   }
 };
 
