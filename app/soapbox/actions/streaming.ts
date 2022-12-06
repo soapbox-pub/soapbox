@@ -4,7 +4,7 @@ import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { updateChatListItem } from 'soapbox/utils/chats';
 import { removePageItem } from 'soapbox/utils/queries';
-// import { play, soundCache } from 'soapbox/utils/sounds';
+import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
 
@@ -136,12 +136,15 @@ const connectTimelineStream = (
             const chat = JSON.parse(data.payload);
             const me = getState().me;
             const messageOwned = chat.last_message?.account_id === me;
+            const settings = getSettings(getState());
 
             // Don't update own messages from streaming
             if (!messageOwned) {
               updateChatListItem(chat);
-              // Temp disable until we support disabling/enabling.
-              // play(soundCache.chat);
+
+              if (settings.getIn(['chats', 'sound'])) {
+                play(soundCache.chat);
+              }
             }
           });
           break;
