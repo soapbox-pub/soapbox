@@ -12,6 +12,7 @@ import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
+import { uploadEventBanner } from 'soapbox/actions/events';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { openModal } from 'soapbox/actions/modals';
@@ -28,6 +29,7 @@ import { Layout } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import DefaultPage from 'soapbox/pages/default-page';
+import EventPage from 'soapbox/pages/event-page';
 import HomePage from 'soapbox/pages/home-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
@@ -111,6 +113,9 @@ import {
   AuthTokenList,
   Quotes,
   ServiceWorkerInfo,
+  EventInformation,
+  EventDiscussion,
+  Events,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
 
@@ -248,6 +253,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
+      {features.events && <WrappedRoute path='/events' page={DefaultPage} component={Events} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />}
       {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
@@ -267,6 +273,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId/quotes' publicRoute page={StatusPage} component={Quotes} content={children} />
+      <WrappedRoute path='/@:username/events/:statusId' publicRoute exact page={EventPage} component={EventInformation} content={children} />
+      <WrappedRoute path='/@:username/events/:statusId/discussion' publicRoute exact page={EventPage} component={EventDiscussion} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
@@ -379,7 +387,9 @@ const UI: React.FC = ({ children }) => {
       if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
         const modals = getState().modals;
         const isModalOpen = modals.last()?.modalType === 'COMPOSE';
-        dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
+        const isEventsModalOpen = modals.last()?.modalType === 'COMPOSE_EVENT';
+        if (isEventsModalOpen) dispatch(uploadEventBanner(e.dataTransfer.files[0], intl));
+        else dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
       }
     });
   };

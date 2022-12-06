@@ -61,6 +61,7 @@ export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputEl
   maxLength?: number,
   menu?: Menu,
   resultsPosition: string,
+  renderSuggestion?: React.FC<{ id: string }>,
   theme?: InputThemes,
 }
 
@@ -203,7 +204,11 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     const { selectedSuggestion } = this.state;
     let inner, key;
 
-    if (typeof suggestion === 'object') {
+    if (this.props.renderSuggestion && typeof suggestion === 'string') {
+      const RenderSuggestion = this.props.renderSuggestion;
+      inner = <RenderSuggestion id={suggestion} />;
+      key = suggestion;
+    } else if (typeof suggestion === 'object') {
       inner = <AutosuggestEmoji emoji={suggestion} />;
       key = suggestion.id;
     } else if (suggestion[0] === '#') {

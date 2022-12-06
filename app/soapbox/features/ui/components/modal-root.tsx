@@ -30,7 +30,10 @@ import {
   CompareHistoryModal,
   VerifySmsModal,
   FamiliarFollowersModal,
+  ComposeEventModal,
+  JoinEventModal,
   AccountModerationModal,
+  EventParticipantsModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle-container';
@@ -68,7 +71,10 @@ const MODAL_COMPONENTS = {
   'COMPARE_HISTORY': CompareHistoryModal,
   'VERIFY_SMS': VerifySmsModal,
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
+  'COMPOSE_EVENT': ComposeEventModal,
+  'JOIN_EVENT': JoinEventModal,
   'ACCOUNT_MODERATION': AccountModerationModal,
+  'EVENT_PARTICIPANTS': EventParticipantsModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;

@@ -15,6 +15,7 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted-status-conta
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
+import EventPreview from './event-preview';
 import StatusActionBar from './status-action-bar';
 import StatusContent from './status-content';
 import StatusMedia from './status-media';
@@ -28,7 +29,7 @@ import type {
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
-// Defined in components/scrollable_list
+// Defined in components/scrollable-list
 export type ScrollPosition = { height: number, top: number };
 
 const messages = defineMessages({
@@ -383,30 +384,32 @@ const Status: React.FC<IStatus> = (props) => {
                 />
               )}
 
-              <Stack space={4}>
-                <StatusContent
-                  status={actualStatus}
-                  onClick={handleClick}
-                  collapsable
-                  translatable
-                />
+              {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
+                <Stack space={4}>
+                  <StatusContent
+                    status={actualStatus}
+                    onClick={handleClick}
+                    collapsable
+                    translatable
+                  />
 
-                <TranslateButton status={actualStatus} />
+                  <TranslateButton status={actualStatus} />
 
-                {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
-                  <Stack space={4}>
-                    <StatusMedia
-                      status={actualStatus}
-                      muted={muted}
-                      onClick={handleClick}
-                      showMedia={showMedia}
-                      onToggleVisibility={handleToggleMediaVisibility}
-                    />
+                  {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                    <Stack space={4}>
+                      <StatusMedia
+                        status={actualStatus}
+                        muted={muted}
+                        onClick={handleClick}
+                        showMedia={showMedia}
+                        onToggleVisibility={handleToggleMediaVisibility}
+                      />
 
-                    {quote}
-                  </Stack>
-                )}
-              </Stack>
+                      {quote}
+                    </Stack>
+                  )}
+                </Stack>
+              )}
             </Stack>
 
             {(!hideActionBar && !isUnderReview) && (

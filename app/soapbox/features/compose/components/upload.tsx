@@ -149,7 +149,7 @@ const Upload: React.FC<IUpload> = ({ composeId, id }) => {
       <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
         {({ scale }) => (
           <div
-            className={classNames('compose-form__upload-thumbnail',  `${mediaType}`)}
+            className={classNames('compose-form__upload-thumbnail',  mediaType)}
             style={{
               transform: `scale(${scale})`,
               backgroundImage: mediaType === 'image' ? `url(${media.preview_url})` : undefined,

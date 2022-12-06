@@ -91,6 +91,7 @@ describe('compose reducer', () => {
   it('uses \'public\' scope as default', () => {
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({})(),
       account: ImmutableRecord({})(),
     };
@@ -101,6 +102,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'direct' })(),
       account: ImmutableRecord({})(),
     };
@@ -111,6 +113,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'private' })(),
       account: ImmutableRecord({})(),
     };
@@ -121,6 +124,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'unlisted' })(),
       account: ImmutableRecord({})(),
     };
@@ -131,6 +135,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'private' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'public' })(),
       account: ImmutableRecord({})(),
     };
@@ -141,6 +146,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'unlisted' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'public' })(),
       account: ImmutableRecord({})(),
     };
