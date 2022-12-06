@@ -4,11 +4,12 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
-import { IconButton, Stack } from 'soapbox/components/ui';
+import { Stack } from 'soapbox/components/ui';
+import Upload from 'soapbox/components/upload';
 import UploadProgress from 'soapbox/components/upload-progress';
 import { useAppDispatch } from 'soapbox/hooks';
+import { normalizeAttachment } from 'soapbox/normalizers';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
-import { truncateFilename } from 'soapbox/utils/media';
 
 import ChatComposer from './chat-composer';
 import ChatMessageList from './chat-message-list';
@@ -144,29 +145,11 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
     data.append('file', files[0]);
 
     dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
-      setAttachment(response.data);
+      setAttachment(normalizeAttachment(response.data));
       setIsUploading(false);
     }).catch(() => {
       setIsUploading(false);
     });
-  };
-
-  const renderAttachment = () => {
-    if (!attachment) return null;
-
-    return (
-      <div className='chat-box__attachment'>
-        <div className='chat-box__filename'>
-          {truncateFilename(attachment.preview_url, 20)}
-        </div>
-        <div className='chat-box__remove-attachment'>
-          <IconButton
-            src={require('@tabler/icons/x.svg')}
-            onClick={handleRemoveFile}
-          />
-        </div>
-      </div>
-    );
   };
 
   useEffect(() => {
@@ -181,7 +164,15 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         <ChatMessageList chat={chat} />
       </div>
 
-      {renderAttachment()}
+      {attachment && (
+        <div className='relative h-48'>
+          <Upload
+            media={attachment}
+            onDelete={handleRemoveFile}
+            withPreview
+          />
+        </div>
+      )}
 
       {isUploading && (
         <div className='p-4'>
