@@ -75,6 +75,8 @@ export const InstanceRecord = ImmutableRecord({
 
   feature_quote: false,
   fedibird_capabilities: ImmutableList(),
+
+  login_message: '',
 });
 
 // Build Mastodon configuration from Pleroma instance
@@ -131,7 +133,7 @@ const fixInstanceV1 = (instance: ImmutableMap<string, any>) => {
   instance.set('registrations', ImmutableMap({
     approval_required: instance.get('approval_required'),
     enabled: instance.get('registrations'),
-    message: instance.get('login_message'),
+    message: '',
   }));
 
   instance.set('thumbnail', ImmutableMap({
