@@ -233,8 +233,8 @@ const useChatActions = (chatId: string) => {
 
   const createChatMessage = useMutation(
     (
-      {  chatId, content }: { chatId: string, content: string },
-    ) => api.post<IChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, { content }),
+      {  chatId, content, mediaId }: { chatId: string, content: string, mediaId?: string },
+    ) => api.post<IChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, { content, media_id: mediaId }),
     {
       retry: false,
       onMutate: async (variables) => {

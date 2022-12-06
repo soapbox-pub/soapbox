@@ -39,6 +39,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   errorMessage: string | undefined
   onSelectFile: (files: FileList, intl: IntlShape) => void
   resetFileKey: number | null
+  hasAttachment?: boolean
 }
 
 /** Textarea input for chats. */
@@ -52,6 +53,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onSelectFile,
   resetFileKey,
   onPaste,
+  hasAttachment,
 }, ref) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
@@ -66,7 +68,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const isSuggestionsAvailable = suggestions.list.length > 0;
 
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
-  const isSubmitDisabled = disabled || isOverCharacterLimit || value.length === 0;
+  const isSubmitDisabled = disabled || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
 
   const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
 

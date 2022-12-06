@@ -61,7 +61,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const isSubmitDisabled = content.length === 0 && !attachment;
 
   const submitMessage = () => {
-    createChatMessage.mutate({ chatId: chat.id, content }, {
+    createChatMessage.mutate({ chatId: chat.id, content, mediaId: attachment?.id }, {
       onSuccess: () => {
         setErrorMessage(undefined);
       },
@@ -197,6 +197,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onSelectFile={handleFiles}
         resetFileKey={resetFileKey}
         onPaste={handlePaste}
+        hasAttachment={!!attachment}
       />
     </Stack>
   );
