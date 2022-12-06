@@ -136,9 +136,9 @@ const useChats = (search?: string) => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || endpoint;
     const response = await api.get<IChat[]>(uri, {
-      params: {
+      params: search ? {
         search,
-      },
+      } : undefined,
     });
     const { data } = response;
 

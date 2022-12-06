@@ -8,12 +8,27 @@ export interface PaginatedResult<T> {
   link?: string,
 }
 
+/** Deduplicate an array of entities by their ID. */
+const deduplicate = <T>(entities: T[]): T[] => {
+  const map = entities.reduce<Map<string, T>>((result, entity) => {
+    // @ts-expect-error Entity might not have an ID... but it probably does.
+    return result.set(entity.id, entity);
+  }, new Map());
+
+  return Array.from(map.values());
+};
+
 /** Flatten paginated results into a single array. */
 const flattenPages = <T>(queryData: InfiniteData<PaginatedResult<T>> | undefined) => {
-  return queryData?.pages.reduce<T[]>(
+  const data = queryData?.pages.reduce<T[]>(
+    // FIXME: Pleroma wants these to be reversed for Chats.
     (prev: T[], curr) => [...curr.result, ...prev],
     [],
   );
+
+  if (data) {
+    return deduplicate<T>(data);
+  }
 };
 
 /** Traverse pages and update the item inside if found. */
