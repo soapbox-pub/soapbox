@@ -184,7 +184,9 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       {renderAttachment()}
 
       {isUploading && (
-        <UploadProgress progress={uploadProgress * 100} />
+        <div className='p-4'>
+          <UploadProgress progress={uploadProgress * 100} />
+        </div>
       )}
 
       <ChatComposer
