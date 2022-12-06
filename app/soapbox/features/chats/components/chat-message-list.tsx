@@ -183,18 +183,15 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
     const { attachment } = chatMessage;
     if (!attachment) return null;
     return (
-      <div className='chat-message__media'>
-        <Bundle fetchComponent={MediaGallery}>
-          {(Component: any) => (
-            <Component
-              media={ImmutableList([attachment])}
-              height={120}
-              onOpenMedia={onOpenMedia}
-              visible
-            />
-          )}
-        </Bundle>
-      </div>
+      <Bundle fetchComponent={MediaGallery}>
+        {(Component: any) => (
+          <Component
+            media={ImmutableList([attachment])}
+            onOpenMedia={onOpenMedia}
+            visible
+          />
+        )}
+      </Bundle>
     );
   };
 
@@ -310,7 +307,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 title={getFormattedTimestamp(chatMessage)}
                 className={
                   classNames({
-                    'text-ellipsis break-all relative rounded-md py-2 px-3 max-w-full': true,
+                    'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2': true,
                     'bg-primary-500 text-white': isMyMessage,
                     'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
                     '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,

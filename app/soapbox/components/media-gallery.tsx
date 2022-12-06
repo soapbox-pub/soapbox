@@ -262,7 +262,7 @@ const Item: React.FC<IItem> = ({
 interface IMediaGallery {
   sensitive?: boolean,
   media: ImmutableList<Attachment>,
-  height: number,
+  height?: number,
   onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void,
   defaultWidth?: number,
   cacheWidth?: (width: number) => void,
