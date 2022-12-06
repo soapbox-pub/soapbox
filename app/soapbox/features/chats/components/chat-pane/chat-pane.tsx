@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Stack } from 'soapbox/components/ui';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
@@ -91,7 +92,7 @@ const ChatPane = () => {
   return (
     <Pane isOpen={isOpen} index={0} main>
       <ChatPaneHeader
-        title='Messages'
+        title={<FormattedMessage id='column.chats' defaultMessage='Chats' />}
         unreadCount={unreadChatsCount}
         isOpen={isOpen}
         onToggle={toggleChatPane}
