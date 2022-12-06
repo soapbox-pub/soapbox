@@ -87,10 +87,10 @@ const SidebarNavigation = () => {
       return (
         <SidebarNavigationLink
           to='/chats'
-          icon={require('@tabler/icons/mail.svg')}
+          icon={require('@tabler/icons/messages.svg')}
           count={unreadChatsCount}
           countMax={9}
-          text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
+          text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
         />
       );
     }
