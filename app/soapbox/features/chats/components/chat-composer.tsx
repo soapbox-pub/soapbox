@@ -7,7 +7,7 @@ import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, Combobox
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 const messages = defineMessages({
@@ -55,8 +55,9 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onPaste,
   hasAttachment,
 }, ref) => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
+  const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const { chat } = useChatContext();
 
@@ -151,14 +152,16 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   return (
     <div className='mt-auto px-4 shadow-3xl'>
       <HStack alignItems='stretch' justifyContent='between' space={4}>
-        <Stack justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
-          <UploadButton
-            onSelectFile={onSelectFile}
-            resetFileKey={resetFileKey}
-            iconClassName='w-5 h-5'
-            className='text-primary-500'
-          />
-        </Stack>
+        {features.chatsMedia && (
+          <Stack justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
+            <UploadButton
+              onSelectFile={onSelectFile}
+              resetFileKey={resetFileKey}
+              iconClassName='w-5 h-5'
+              className='text-primary-500'
+            />
+          </Stack>
+        )}
 
         <Stack grow>
           <Combobox

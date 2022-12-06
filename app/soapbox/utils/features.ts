@@ -233,6 +233,12 @@ const getInstanceFeatures = (instance: Instance) => {
     chatsExpiration: v.software === TRUTHSOCIAL,
 
     /**
+     * Whether chat messages can accept a `media_id` attachment.
+     * @see POST /api/v1/pleroma/chats/:id/messages
+     */
+    chatsMedia: v.software !== TRUTHSOCIAL,
+
+    /**
      * Ability to search among chats.
      * @see GET /api/v1/pleroma/chats
      */
