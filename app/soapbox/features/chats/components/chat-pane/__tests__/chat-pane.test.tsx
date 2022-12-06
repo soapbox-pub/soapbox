@@ -5,8 +5,7 @@ import { __stub } from 'soapbox/api';
 import { ChatContext } from 'soapbox/contexts/chat-context';
 import { StatProvider } from 'soapbox/contexts/stat-context';
 import chats from 'soapbox/jest/fixtures/chats.json';
-import { render, rootState, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
 
 import ChatPane from '../chat-pane';
 
@@ -22,30 +21,7 @@ const renderComponentWithChatContext = (store = {}) => render(
   store,
 );
 
-const store = rootState
-  .set('instance', normalizeInstance({
-    version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-  }));
-
 describe('<ChatPane />', () => {
-  describe('when there are chats', () => {
-    beforeEach(() => {
-      __stub((mock) => {
-        mock.onGet('/api/v1/pleroma/chats').reply(200, chats, {
-          link: '<https://example.com/api/v1/pleroma/chats?since_id=2>; rel=\'prev\'',
-        });
-      });
-    });
-
-    it('renders the chats', async () => {
-      renderComponentWithChatContext();
-
-      await waitFor(() => {
-        expect(screen.getAllByTestId('chat-list-item')).toHaveLength(chats.length);
-      });
-    });
-  });
-
   describe('when there are no chats', () => {
     beforeEach(() => {
       __stub((mock) => {
@@ -60,24 +36,6 @@ describe('<ChatPane />', () => {
 
       await waitFor(() => {
         expect(screen.getByTestId('chat-pane-blankslate')).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe('when the software is Truth Social', () => {
-    beforeEach(() => {
-      __stub((mock) => {
-        mock.onGet('/api/v1/pleroma/chats').reply(200, chats, {
-          link: '<https://example.com/api/v1/pleroma/chats?since_id=2>; rel=\'prev\'',
-        });
-      });
-    });
-
-    it('renders the search input', async () => {
-      renderComponentWithChatContext(store);
-
-      await waitFor(() => {
-        expect(screen.getByTestId('chat-search-input')).toBeInTheDocument();
       });
     });
   });
