@@ -1,14 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useApi } from 'soapbox/hooks';
 
-type Avatar = {
+export type Avatar = {
   account_id: string
   account_avatar: string
-  username: string
+  acct: string
+  seen: boolean
 }
 
-export default function useCarouselAvatars() {
+const CarouselKeys = {
+  avatars: ['carouselAvatars'] as const,
+};
+
+function useCarouselAvatars() {
   const api = useApi();
 
   const getCarouselAvatars = async() => {
@@ -16,8 +21,9 @@ export default function useCarouselAvatars() {
     return data;
   };
 
-  const result = useQuery<Avatar[]>(['carouselAvatars'], getCarouselAvatars, {
+  const result = useQuery<Avatar[]>(CarouselKeys.avatars, getCarouselAvatars, {
     placeholderData: [],
+    keepPreviousData: true,
   });
 
   const avatars = result.data;
@@ -27,3 +33,13 @@ export default function useCarouselAvatars() {
     data: avatars || [],
   };
 }
+
+function useMarkAsSeen() {
+  const api = useApi();
+
+  return useMutation((account_id: string) => api.post('/api/v1/truth/carousels/avatars/seen', {
+    account_id,
+  }));
+}
+
+export { useCarouselAvatars, useMarkAsSeen };
