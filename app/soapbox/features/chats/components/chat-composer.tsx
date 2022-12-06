@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import { unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
+import UploadButton from 'soapbox/features/compose/components/upload-button';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
@@ -32,10 +33,12 @@ interface Suggestion {
   token: string,
 }
 
-interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'disabled'> {
+interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'onPaste' | 'disabled'> {
   value: string
   onSubmit: () => void
   errorMessage: string | undefined
+  onSelectFile: (files: FileList, intl: IntlShape) => void
+  resetFileKey: number | null
 }
 
 /** Textarea input for chats. */
@@ -46,6 +49,9 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onSubmit,
   errorMessage = false,
   disabled = false,
+  onSelectFile,
+  resetFileKey,
+  onPaste,
 }, ref) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
@@ -143,6 +149,10 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   return (
     <div className='mt-auto px-4 shadow-3xl'>
       <HStack alignItems='stretch' justifyContent='between' space={4}>
+        <Stack justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
+          <UploadButton onSelectFile={onSelectFile} resetFileKey={resetFileKey} />
+        </Stack>
+
         <Stack grow>
           <Combobox
             aria-labelledby='demo'
@@ -156,6 +166,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               onKeyDown={handleKeyDown}
               value={value}
               onChange={handleChange}
+              onPaste={onPaste}
               isResizeable={false}
               autoGrow
               maxRows={5}

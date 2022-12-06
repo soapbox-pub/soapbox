@@ -3,16 +3,17 @@ import classNames from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Stack } from 'soapbox/components/ui';
-// import UploadProgress from 'soapbox/components/upload-progress';
-// import UploadButton from 'soapbox/features/compose/components/upload_button';
+import { uploadMedia } from 'soapbox/actions/media';
+import { IconButton, Stack } from 'soapbox/components/ui';
+import UploadProgress from 'soapbox/components/upload-progress';
+import { useAppDispatch } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
-// import { truncateFilename } from 'soapbox/utils/media';
+import { truncateFilename } from 'soapbox/utils/media';
 
 import ChatComposer from './chat-composer';
 import ChatMessageList from './chat-message-list';
 
-// const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
+const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
 const messages = defineMessages({
   failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
@@ -46,14 +47,15 @@ const clearNativeInputValue = (element: HTMLTextAreaElement) => {
  */
 const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
 
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
 
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any>(undefined);
-  // const [isUploading, setIsUploading] = useState(false);
-  // const [uploadProgress, setUploadProgress] = useState(0);
-  // const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const isSubmitDisabled = content.length === 0 && !attachment;
@@ -79,10 +81,9 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
     }
     setContent('');
     setAttachment(undefined);
-    // setIsUploading(false);
-    // setUploadProgress(0);
-    // setResetFileKey(fileKeyGen());
-    // setErrorSubmittingMessage(false);
+    setIsUploading(false);
+    setUploadProgress(0);
+    setResetFileKey(fileKeyGen());
   };
 
   const sendMessage = () => {
@@ -113,11 +114,11 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
     setContent(event.target.value);
   };
 
-  // const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
-  //   if (isSubmitDisabled && e.clipboardData && e.clipboardData.files.length === 1) {
-  //     handleFiles(e.clipboardData.files);
-  //   }
-  // };
+  const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
+    if (isSubmitDisabled && e.clipboardData && e.clipboardData.files.length === 1) {
+      handleFiles(e.clipboardData.files);
+    }
+  };
 
   const markRead = () => {
     // markAsRead.mutate();
@@ -126,59 +127,47 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   const handleMouseOver = () => markRead();
 
-  // const handleRemoveFile = () => {
-  //   setAttachment(undefined);
-  //   setResetFileKey(fileKeyGen());
-  // };
+  const handleRemoveFile = () => {
+    setAttachment(undefined);
+    setResetFileKey(fileKeyGen());
+  };
 
-  // const onUploadProgress = (e: ProgressEvent) => {
-  //   const { loaded, total } = e;
-  //   setUploadProgress(loaded / total);
-  // };
+  const onUploadProgress = (e: ProgressEvent) => {
+    const { loaded, total } = e;
+    setUploadProgress(loaded / total);
+  };
 
-  // const handleFiles = (files: FileList) => {
-  //   setIsUploading(true);
+  const handleFiles = (files: FileList) => {
+    setIsUploading(true);
 
-  //   const data = new FormData();
-  //   data.append('file', files[0]);
+    const data = new FormData();
+    data.append('file', files[0]);
 
-  //   dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
-  //     setAttachment(response.data);
-  //     setIsUploading(false);
-  //   }).catch(() => {
-  //     setIsUploading(false);
-  //   });
-  // };
+    dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
+      setAttachment(response.data);
+      setIsUploading(false);
+    }).catch(() => {
+      setIsUploading(false);
+    });
+  };
 
-  // const renderAttachment = () => {
-  //   if (!attachment) return null;
+  const renderAttachment = () => {
+    if (!attachment) return null;
 
-  //   return (
-  //     <div className='chat-box__attachment'>
-  //       <div className='chat-box__filename'>
-  //         {truncateFilename(attachment.preview_url, 20)}
-  //       </div>
-  //       <div className='chat-box__remove-attachment'>
-  //         <IconButton
-  //           src={require('@tabler/icons/x.svg')}
-  //           onClick={handleRemoveFile}
-  //         />
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // const renderActionButton = () => {
-  //   return canSubmit() ? (
-  //     <IconButton
-  //       src={require('@tabler/icons/send.svg')}
-  //       title={intl.formatMessage(messages.send)}
-  //       onClick={sendMessage}
-  //     />
-  //   ) : (
-  //     <UploadButton onSelectFile={handleFiles} resetFileKey={resetFileKey} />
-  //   );
-  // };
+    return (
+      <div className='chat-box__attachment'>
+        <div className='chat-box__filename'>
+          {truncateFilename(attachment.preview_url, 20)}
+        </div>
+        <div className='chat-box__remove-attachment'>
+          <IconButton
+            src={require('@tabler/icons/x.svg')}
+            onClick={handleRemoveFile}
+          />
+        </div>
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (inputRef?.current) {
@@ -192,6 +181,12 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         <ChatMessageList chat={chat} />
       </div>
 
+      {renderAttachment()}
+
+      {isUploading && (
+        <UploadProgress progress={uploadProgress * 100} />
+      )}
+
       <ChatComposer
         ref={inputRef}
         onKeyDown={handleKeyDown}
@@ -199,26 +194,11 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onChange={handleContentChange}
         onSubmit={sendMessage}
         errorMessage={errorMessage}
+        onSelectFile={handleFiles}
+        resetFileKey={resetFileKey}
+        onPaste={handlePaste}
       />
     </Stack>
-    //   {renderAttachment()}
-    //   {isUploading && (
-    //     <UploadProgress progress={uploadProgress * 100} />
-    //   )}
-    //   <div className='chat-box__actions simple_form'>
-    //     <div className='chat-box__send'>
-    //       {renderActionButton()}
-    //     </div>
-    //     <textarea
-    //       rows={1}
-    //
-    //
-    //       onPaste={handlePaste}
-    //       value={content}
-    //       ref={setInputRef}
-    //     />
-    //   </div>
-    // </div>
   );
 };
 
