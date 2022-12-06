@@ -7,6 +7,7 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
+import { editEvent } from 'soapbox/actions/events';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -203,7 +204,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleEditClick: React.EventHandler<React.MouseEvent> = () => {
-    dispatch(editStatus(status.id));
+    if (status.event) dispatch(editEvent(status.id));
+    else dispatch(editStatus(status.id));
   };
 
   const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {

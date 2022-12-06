@@ -14,6 +14,7 @@ const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  events: { id: 'column.events', defaultMessage: 'Events' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
 });
 
@@ -55,6 +56,14 @@ const SidebarNavigation = () => {
           to: '/lists',
           text: intl.formatMessage(messages.lists),
           icon: require('@tabler/icons/list.svg'),
+        });
+      }
+
+      if (features.events) {
+        menu.push({
+          to: '/events',
+          text: intl.formatMessage(messages.events),
+          icon: require('@tabler/icons/calendar-event.svg'),
         });
       }
 

@@ -34,6 +34,7 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  events: { id: 'column.events', defaultMessage: 'Events' },
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
@@ -204,6 +205,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     to='/lists'
                     icon={require('@tabler/icons/list.svg')}
                     text={intl.formatMessage(messages.lists)}
+                    onClick={onClose}
+                  />
+                )}
+
+                {features.events && (
+                  <SidebarLink
+                    to='/events'
+                    icon={require('@tabler/icons/calendar-event.svg')}
+                    text={intl.formatMessage(messages.events)}
                     onClick={onClose}
                   />
                 )}

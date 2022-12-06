@@ -15,7 +15,7 @@ const messages = defineMessages({
 
 interface IUnauthorizedModal {
   /** Unauthorized action type. */
-  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'POLL_VOTE',
+  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'POLL_VOTE' | 'JOIN',
   /** Close event handler. */
   onClose: (modalType: string) => void,
   /** ActivityPub ID of the account OR status being acted upon. */
@@ -89,6 +89,9 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     } else if (action === 'POLL_VOTE') {
       header = <FormattedMessage id='remote_interaction.poll_vote_title' defaultMessage='Vote in a poll remotely' />;
       button = <FormattedMessage id='remote_interaction.poll_vote' defaultMessage='Proceed to vote' />;
+    } else if (action === 'JOIN') {
+      header = <FormattedMessage id='remote_interaction.event_join_title' defaultMessage='Join an event remotely' />;
+      button = <FormattedMessage id='remote_interaction.event_join' defaultMessage='Proceed to join' />;
     }
 
     return (

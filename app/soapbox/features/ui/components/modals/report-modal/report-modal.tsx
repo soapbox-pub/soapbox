@@ -22,8 +22,6 @@ const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
   done: { id: 'report.done', defaultMessage: 'Done' },
   next: { id: 'report.next', defaultMessage: 'Next' },
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
-  placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
   submit: { id: 'report.submit', defaultMessage: 'Submit' },
   reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.' },
   reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },

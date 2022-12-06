@@ -509,3 +509,31 @@ export function AnnouncementsPanel() {
 export function Quotes() {
   return import(/*webpackChunkName: "features/quotes" */'../../quotes');
 }
+
+export function ComposeEventModal() {
+  return import(/* webpackChunkName: "features/compose_event_modal" */'../components/modals/compose-event-modal/compose-event-modal');
+}
+
+export function JoinEventModal() {
+  return import(/* webpackChunkName: "features/join_event_modal" */'../components/modals/join-event-modal');
+}
+
+export function EventHeader() {
+  return import(/* webpackChunkName: "features/event" */'../../event/components/event-header');
+}
+
+export function EventInformation() {
+  return import(/* webpackChunkName: "features/event" */'../../event/event-information');
+}
+
+export function EventDiscussion() {
+  return import(/* webpackChunkName: "features/event" */'../../event/event-discussion');
+}
+
+export function EventParticipantsModal() {
+  return import(/* webpackChunkName: "modals/event-participants-modal" */'../components/modals/event-participants-modal');
+}
+
+export function Events() {
+  return import(/* webpackChunkName: "features/events" */'../../events');
+}

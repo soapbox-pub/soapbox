@@ -24,6 +24,7 @@ const alignItemsOptions = {
   bottom: 'items-end',
   center: 'items-center',
   start: 'items-start',
+  end: 'items-end',
 };
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {

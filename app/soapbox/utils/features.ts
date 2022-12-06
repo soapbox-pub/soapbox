@@ -310,6 +310,22 @@ const getInstanceFeatures = (instance: Instance) => {
     ethereumLogin: v.software === MITRA,
 
     /**
+     * Ability to create and perform actions on events.
+     * @see POST /api/v1/pleroma/events
+     * @see GET /api/v1/pleroma/events/joined_events
+     * @see PUT /api/v1/pleroma/events/:id
+     * @see GET /api/v1/pleroma/events/:id/participations
+     * @see GET /api/v1/pleroma/events/:id/participation_requests
+     * @see POST /api/v1/pleroma/events/:id/participation_requests/:participant_id/authorize
+     * @see POST /api/v1/pleroma/events/:id/participation_requests/:participant_id/reject
+     * @see POST /api/v1/pleroma/events/:id/join
+     * @see POST /api/v1/pleroma/events/:id/leave
+     * @see GET /api/v1/pleroma/events/:id/ics
+     * @see GET /api/v1/pleroma/search/location
+     */
+    events: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+
+    /**
      * Ability to address recipients of a status explicitly (with `to`).
      * @see POST /api/v1/statuses
      */
