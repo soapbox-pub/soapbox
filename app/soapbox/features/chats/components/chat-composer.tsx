@@ -152,7 +152,12 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
     <div className='mt-auto px-4 shadow-3xl'>
       <HStack alignItems='stretch' justifyContent='between' space={4}>
         <Stack justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
-          <UploadButton onSelectFile={onSelectFile} resetFileKey={resetFileKey} />
+          <UploadButton
+            onSelectFile={onSelectFile}
+            resetFileKey={resetFileKey}
+            iconClassName='w-5 h-5'
+            className='text-primary-500'
+          />
         </Stack>
 
         <Stack grow>
