@@ -37,7 +37,7 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
         <div className='block mx-auto relative w-14 h-14 rounded-full'>
           {isSelected && (
             <div className='absolute inset-0 bg-primary-600 bg-opacity-50 rounded-full flex items-center justify-center'>
-              <Icon src={require('@tabler/icons/x.svg')} className='text-white h-6 w-6' />
+              <Icon src={require('@tabler/icons/check.svg')} className='text-white h-6 w-6' />
             </div>
           )}
 
