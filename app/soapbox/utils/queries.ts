@@ -28,8 +28,7 @@ const deduplicateById = <T extends Entity>(entities: T[]): T[] => {
 /** Flatten paginated results into a single array. */
 const flattenPages = <T>(queryData: InfiniteData<PaginatedResult<T>> | undefined) => {
   const data = queryData?.pages.reduce<T[]>(
-    // FIXME: Pleroma wants these to be reversed for Chats.
-    (prev: T[], curr) => [...curr.result, ...prev],
+    (prev: T[], curr) => [...prev, ...curr.result],
     [],
   );
 

@@ -8,7 +8,6 @@ import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
-import { compareId } from 'soapbox/utils/comparators';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
@@ -80,8 +79,6 @@ const isLastMessage = (chatMessageId: string): boolean => {
   return !!chat;
 };
 
-const reverseOrder = (a: IChat, b: IChat): number => compareId(a.id, b.id);
-
 const useChatMessages = (chat: IChat) => {
   const api = useApi();
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
@@ -89,12 +86,12 @@ const useChatMessages = (chat: IChat) => {
   const getChatMessages = async (chatId: string, pageParam?: any): Promise<PaginatedResult<IChatMessage>> => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || `/api/v1/pleroma/chats/${chatId}/messages`;
-    const response = await api.get(uri);
+    const response = await api.get<any[]>(uri);
     const { data } = response;
 
     const link = getNextLink(response);
     const hasMore = !!link;
-    const result = data.sort(reverseOrder).map(normalizeChatMessage);
+    const result = data.map(normalizeChatMessage);
 
     return {
       result,
@@ -116,7 +113,7 @@ const useChatMessages = (chat: IChat) => {
     },
   });
 
-  const data = flattenPages(queryInfo.data);
+  const data = flattenPages(queryInfo.data)?.reverse();
 
   return {
     ...queryInfo,
@@ -169,10 +166,7 @@ const useChats = (search?: string) => {
     },
   });
 
-  const data = queryInfo.data?.pages.reduce<IChat[]>(
-    (prev: IChat[], curr) => [...prev, ...curr.result],
-    [],
-  );
+  const data = flattenPages(queryInfo.data);
 
   const chatsQuery = {
     ...queryInfo,
