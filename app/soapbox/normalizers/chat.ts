@@ -8,7 +8,7 @@ export const ChatRecord = ImmutableRecord({
   id: '',
   unread: 0,
   last_message: '' as string || null,
-  updated_at: new Date(),
+  updated_at: '',
 });
 
 export const normalizeChat = (chat: Record<string, any>) => {

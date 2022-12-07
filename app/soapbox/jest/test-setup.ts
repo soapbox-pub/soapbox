@@ -6,6 +6,9 @@ import { __clear as clearApiMocks } from '../api/__mocks__';
 jest.mock('soapbox/api');
 afterEach(() => clearApiMocks());
 
+// Query mocking
+jest.mock('soapbox/queries/client');
+
 // Mock IndexedDB
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
 require('fake-indexeddb/auto');

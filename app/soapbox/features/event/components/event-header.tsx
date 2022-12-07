@@ -170,13 +170,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, status));
+        dispatch(initReport(account, { status }));
       },
     }));
   };
 
   const handleReport = () => {
-    dispatch(initReport(account, status));
+    dispatch(initReport(account, { status }));
   };
 
   const handleModerate = () => {

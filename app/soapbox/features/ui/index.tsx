@@ -1,7 +1,6 @@
 'use strict';
 
-import debounce from 'lodash/debounce';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
@@ -9,7 +8,6 @@ import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
-import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { uploadEventBanner } from 'soapbox/actions/events';
@@ -26,18 +24,22 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
+import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
 import EventPage from 'soapbox/pages/event-page';
 import HomePage from 'soapbox/pages/home-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import StatusPage from 'soapbox/pages/status-page';
+import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import BackgroundShapes from './components/background-shapes';
+import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle-container';
 import {
@@ -63,15 +65,9 @@ import {
   Filters,
   PinnedStatuses,
   Search,
-  // Groups,
-  // GroupTimeline,
   ListTimeline,
   Lists,
   Bookmarks,
-  // GroupMembers,
-  // GroupRemovedAccounts,
-  // GroupCreate,
-  // GroupEdit,
   Settings,
   MediaDisplay,
   EditProfile,
@@ -85,8 +81,7 @@ import {
   // Backups,
   MfaForm,
   ChatIndex,
-  ChatRoom,
-  ChatPanes,
+  ChatWidget,
   ServerInfo,
   Dashboard,
   ModerationLog,
@@ -124,8 +119,6 @@ import { WrappedRoute } from './util/react-router-helpers';
 import 'soapbox/components/status';
 
 const EmptyPage = HomePage;
-
-const isMobile = (width: number): boolean => width <= 1190;
 
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
@@ -255,8 +248,10 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
       {features.events && <WrappedRoute path='/events' page={DefaultPage} component={Events} content={children} />}
 
-      {features.chats && <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
+      {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/new' page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/settings' page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatIndex} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
@@ -326,10 +321,11 @@ const UI: React.FC = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { data: pendingPolicy } = usePendingPolicy();
   const instance = useInstance();
+  const statContext = useStatContext();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
-  const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
 
   const dragTargets = useRef<EventTarget[]>([]);
   const disconnect = useRef<any>(null);
@@ -425,7 +421,7 @@ const UI: React.FC = ({ children }) => {
 
   const connectStreaming = () => {
     if (!disconnect.current && accessToken && streamingUrl) {
-      disconnect.current = dispatch(connectUserStream());
+      disconnect.current = dispatch(connectUserStream({ statContext }));
     }
   };
 
@@ -435,12 +431,6 @@ const UI: React.FC = ({ children }) => {
       disconnect.current = null;
     }
   };
-
-  const handleResize = useCallback(debounce(() => {
-    setMobile(isMobile(window.innerWidth));
-  }, 500, {
-    trailing: true,
-  }), [setMobile]);
 
   /** Load initial data when a user is logged in */
   const loadAccountData = () => {
@@ -456,10 +446,6 @@ const UI: React.FC = ({ children }) => {
       .catch(console.error);
 
     dispatch(fetchAnnouncements());
-
-    if (features.chats) {
-      dispatch(fetchChats());
-    }
 
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));
@@ -480,7 +466,6 @@ const UI: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize, { passive: true });
     document.addEventListener('dragenter', handleDragEnter, false);
     document.addEventListener('dragover', handleDragOver, false);
     document.addEventListener('drop', handleDrop, false);
@@ -495,7 +480,6 @@ const UI: React.FC = ({ children }) => {
     }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       document.removeEventListener('dragenter', handleDragEnter);
       document.removeEventListener('dragover', handleDragOver);
       document.removeEventListener('drop', handleDrop);
@@ -517,6 +501,14 @@ const UI: React.FC = ({ children }) => {
   useEffect(() => {
     dispatch(registerPushNotifications());
   }, [vapidKey]);
+
+  useEffect(() => {
+    if (account && pendingPolicy && supportedPolicyIds.includes(pendingPolicy.pending_policy_id)) {
+      setTimeout(() => {
+        dispatch(openModal('POLICY'));
+      }, 500);
+    }
+  }, [pendingPolicy, !!account]);
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
@@ -679,9 +671,14 @@ const UI: React.FC = ({ children }) => {
               {Component => <Component />}
             </BundleContainer>
           )}
-          {me && features.chats && !mobile && (
-            <BundleContainer fetchComponent={ChatPanes}>
-              {Component => <Component />}
+
+          {me && features.chats && (
+            <BundleContainer fetchComponent={ChatWidget}>
+              {Component => (
+                <div className='hidden xl:block'>
+                  <Component />
+                </div>
+              )}
             </BundleContainer>
           )}
           <ThumbNavigation />

@@ -5,6 +5,14 @@ export { default as Button } from './button/button';
 export { Card, CardBody, CardHeader, CardTitle } from './card/card';
 export { default as Checkbox } from './checkbox/checkbox';
 export { Column, ColumnHeader } from './column/column';
+export {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+  ComboboxOptionText,
+} from './combobox/combobox';
 export { default as Counter } from './counter/counter';
 export { default as Datepicker } from './datepicker/datepicker';
 export { default as Divider } from './divider/divider';

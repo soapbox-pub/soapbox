@@ -204,9 +204,7 @@ export const rememberAuthAccount = (accountUrl: string) =>
 
 export const loadCredentials = (token: string, accountUrl: string) =>
   (dispatch: AppDispatch) => dispatch(rememberAuthAccount(accountUrl))
-    .then(() => {
-      dispatch(verifyCredentials(token, accountUrl));
-    })
+    .then(() => dispatch(verifyCredentials(token, accountUrl)))
     .catch(() => dispatch(verifyCredentials(token, accountUrl)));
 
 export const logIn = (username: string, password: string) =>

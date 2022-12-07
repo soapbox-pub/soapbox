@@ -4,7 +4,7 @@ import { openModal } from './modals';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Account, ChatMessage, Status } from 'soapbox/types/entities';
 
 const REPORT_INIT   = 'REPORT_INIT';
 const REPORT_CANCEL = 'REPORT_CANCEL';
@@ -20,26 +20,23 @@ const REPORT_BLOCK_CHANGE   = 'REPORT_BLOCK_CHANGE';
 
 const REPORT_RULE_CHANGE    = 'REPORT_RULE_CHANGE';
 
-const initReport = (account: Account, status?: Status) =>
-  (dispatch: AppDispatch) => {
-    dispatch({
-      type: REPORT_INIT,
-      account,
-      status,
-    });
+type ReportedEntity = {
+  status?: Status,
+  chatMessage?: ChatMessage
+}
 
-    return dispatch(openModal('REPORT'));
-  };
+const initReport = (account: Account, entities?: ReportedEntity) => (dispatch: AppDispatch) => {
+  const { status, chatMessage } = entities || {};
 
-const initReportById = (accountId: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch({
-      type: REPORT_INIT,
-      account: getState().accounts.get(accountId),
-    });
+  dispatch({
+    type: REPORT_INIT,
+    account,
+    status,
+    chatMessage,
+  });
 
-    dispatch(openModal('REPORT'));
-  };
+  return dispatch(openModal('REPORT'));
+};
 
 const cancelReport = () => ({
   type: REPORT_CANCEL,
@@ -59,6 +56,7 @@ const submitReport = () =>
     return api(getState).post('/api/v1/reports', {
       account_id: reports.getIn(['new', 'account_id']),
       status_ids: reports.getIn(['new', 'status_ids']),
+      message_ids: [reports.getIn(['new', 'chat_message', 'id'])],
       rule_ids: reports.getIn(['new', 'rule_ids']),
       comment: reports.getIn(['new', 'comment']),
       forward: reports.getIn(['new', 'forward']),
@@ -110,7 +108,6 @@ export {
   REPORT_BLOCK_CHANGE,
   REPORT_RULE_CHANGE,
   initReport,
-  initReportById,
   cancelReport,
   toggleStatusReport,
   submitReport,

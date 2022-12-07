@@ -9,41 +9,12 @@ import Icon from 'soapbox/components/icon';
 import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
 import { isRtl } from 'soapbox/rtl';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { InputThemes } from 'soapbox/components/ui/input/input';
 
-type CursorMatch = [
-  tokenStart: number | null,
-  token: string | null,
-];
-
 export type AutoSuggestion = string | Emoji;
-
-const textAtCursorMatchesToken = (str: string, caretPosition: number, searchTokens: string[]): CursorMatch => {
-  let word: string;
-
-  const left: number = str.slice(0, caretPosition).search(/\S+$/);
-  const right: number = str.slice(caretPosition).search(/\s/);
-
-  if (right < 0) {
-    word = str.slice(left);
-  } else {
-    word = str.slice(left, right + caretPosition);
-  }
-
-  if (!word || word.trim().length < 3 || !searchTokens.includes(word[0])) {
-    return [null, null];
-  }
-
-  word = word.trim().toLowerCase();
-
-  if (word.length > 0) {
-    return [left + 1, word];
-  } else {
-    return [null, null];
-  }
-};
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
   value: string,
@@ -62,6 +33,7 @@ export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputEl
   menu?: Menu,
   resultsPosition: string,
   renderSuggestion?: React.FC<{ id: string }>,
+  hidePortal?: boolean,
   theme?: InputThemes,
 }
 
@@ -89,7 +61,11 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   input: HTMLInputElement | null = null;
 
   onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const [tokenStart, token] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart || 0, this.props.searchTokens);
+    const [tokenStart, token] = textAtCursorMatchesToken(
+      e.target.value,
+      e.target.selectionStart || 0,
+      this.props.searchTokens,
+    );
 
     if (token !== null && this.state.lastToken !== token) {
       this.setState({ lastToken: token, selectedSuggestion: 0, tokenStart });
@@ -292,11 +268,11 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   }
 
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
+    const { hidePortal, value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
     const style: React.CSSProperties = { direction: 'ltr' };
 
-    const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
+    const visible = !hidePortal && !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
 
     if (isRtl(value)) {
       style.direction = 'rtl';

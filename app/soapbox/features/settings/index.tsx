@@ -10,6 +10,8 @@ import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
 
+import MessagesSettings from './components/messages-settings';
+
 const messages = defineMessages({
   settings: { id: 'settings.settings', defaultMessage: 'Settings' },
   profile: { id: 'settings.profile', defaultMessage: 'Profile' },
@@ -100,6 +102,18 @@ const Settings = () => {
             </CardBody>
           </>
         )}
+
+        {features.chats ? (
+          <>
+            <CardHeader>
+              <CardTitle title='Direct Messages' />
+            </CardHeader>
+
+            <CardBody>
+              <MessagesSettings />
+            </CardBody>
+          </>
+        ) : null}
 
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />

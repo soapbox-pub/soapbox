@@ -34,6 +34,7 @@ import {
   JoinEventModal,
   AccountModerationModal,
   EventParticipantsModal,
+  PolicyModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle-container';
@@ -75,6 +76,7 @@ const MODAL_COMPONENTS = {
   'JOIN_EVENT': JoinEventModal,
   'ACCOUNT_MODERATION': AccountModerationModal,
   'EVENT_PARTICIPANTS': EventParticipantsModal,
+  'POLICY': PolicyModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;

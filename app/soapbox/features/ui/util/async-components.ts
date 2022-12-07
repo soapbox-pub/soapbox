@@ -110,6 +110,10 @@ export function AccountModerationModal() {
   return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal/account-moderation-modal');
 }
 
+export function PolicyModal() {
+  return import(/* webpackChunkName: "modals/policy-modal" */'../components/modals/policy-modal');
+}
+
 export function MediaGallery() {
   return import(/* webpackChunkName: "status/media_gallery" */'../../../components/media-gallery');
 }
@@ -290,12 +294,8 @@ export function ChatIndex() {
   return import(/* webpackChunkName: "features/chats" */'../../chats');
 }
 
-export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
-}
-
-export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
+export function ChatWidget() {
+  return import(/* webpackChunkName: "features/chats/components/chat-widget" */'../../chats/components/chat-widget/chat-widget');
 }
 
 export function ServerInfo() {

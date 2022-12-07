@@ -1,12 +1,13 @@
 'use strict';
 
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -24,6 +25,8 @@ import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { ChatKeys, useChats } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/types/entities';
 import { isRemote } from 'soapbox/utils/accounts';
 
@@ -81,6 +84,21 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+
+  const { getOrCreateChatByAccountId } = useChats();
+
+  const createAndNavigateToChat = useMutation((accountId: string) => {
+    return getOrCreateChatByAccountId(accountId);
+  }, {
+    onError: (error: AxiosError) => {
+      const data = error.response?.data as any;
+      dispatch(snackbar.error(data?.error));
+    },
+    onSuccess: (response) => {
+      history.push(`/chats/${response.data.id}`);
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
+    },
+  });
 
   if (!account) {
     return (
@@ -141,11 +159,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
     if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
         .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .catch(() => { });
     } else {
       dispatch(pinAccount(account.id))
         .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .catch(() => { });
     }
   };
 
@@ -183,10 +201,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(openModal('LIST_ADDER', {
       accountId: account.id,
     }));
-  };
-
-  const onChat = () => {
-    dispatch(launchChat(account.id, history));
   };
 
   const onModerate = () => {
@@ -304,13 +318,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
-        menu.push({
-          text: intl.formatMessage(messages.chat, { name: account.username }),
-          action: onChat,
-          icon: require('@tabler/icons/messages.svg'),
-        });
-      } else if (features.privacyScopes) {
+      if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,
@@ -494,34 +502,43 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return info;
   };
 
-  // const renderMessageButton = () => {
-  //   if (!ownAccount || !account || account.id === ownAccount?.id) {
-  //     return null;
-  //   }
+  const renderMessageButton = () => {
+    if (features.chatsWithFollowers) { // Truth Social
+      if (!ownAccount || !account || account.id === ownAccount?.id) {
+        return null;
+      }
 
-  //   const canChat = account.getIn(['pleroma', 'accepts_chat_messages']) === true;
+      const canChat = account.relationship?.followed_by;
+      if (!canChat) {
+        return null;
+      }
 
-  //   if (canChat) {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/messages.svg')}
-  //         onClick={onChat}
-  //         title={intl.formatMessage(messages.chat, { name: account.username })}
-  //       />
-  //     );
-  //   } else {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/mail.svg')}
-  //         onClick={onDirect}
-  //         title={intl.formatMessage(messages.direct, { name: account.username })}
-  //         theme='outlined'
-  //         className='px-2'
-  //         iconClassName='w-4 h-4'
-  //       />
-  //     );
-  //   }
-  // };
+      return (
+        <IconButton
+          src={require('@tabler/icons/messages.svg')}
+          onClick={() => createAndNavigateToChat.mutate(account.id)}
+          title={intl.formatMessage(messages.chat, { name: account.username })}
+          theme='outlined'
+          className='px-2'
+          iconClassName='w-4 h-4'
+          disabled={createAndNavigateToChat.isLoading}
+        />
+      );
+    } else if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
+      return (
+        <IconButton
+          src={require('@tabler/icons/messages.svg')}
+          onClick={() => createAndNavigateToChat.mutate(account.id)}
+          title={intl.formatMessage(messages.chat, { name: account.username })}
+          theme='outlined'
+          className='px-2'
+          iconClassName='w-4 h-4'
+        />
+      );
+    } else {
+      return null;
+    }
+  };
 
   const renderShareButton = () => {
     const canShare = 'share' in navigator;
@@ -585,6 +602,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
           <div className='mt-6 flex justify-end w-full sm:pb-1'>
             <HStack space={2} className='mt-10'>
               <SubscriptionButton account={account} />
+              {renderMessageButton()}
+              {renderShareButton()}
 
               {ownAccount && (
                 <Menu>
@@ -597,7 +616,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                     children={null}
                   />
 
-                  <MenuList>
+                  <MenuList className='w-56'>
                     {menu.map((menuItem, idx) => {
                       if (typeof menuItem?.text === 'undefined') {
                         return <MenuDivider key={idx} />;
@@ -621,9 +640,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
                   </MenuList>
                 </Menu>
               )}
-
-              {renderShareButton()}
-              {/* {renderMessageButton()} */}
 
               <ActionButton account={account} />
             </HStack>

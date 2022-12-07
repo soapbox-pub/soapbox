@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
-import Icon from 'soapbox/components/icon';
+
+import SvgIcon from './ui/icon/svg-icon';
+import { InputThemes } from './ui/input/input';
 
 const messages = defineMessages({
   placeholder: { id: 'account_search.placeholder', defaultMessage: 'Search for an account' },
@@ -16,10 +18,18 @@ interface IAccountSearch {
   placeholder?: string,
   /** Position of results relative to the input. */
   resultsPosition?: 'above' | 'below',
+  /** Optional class for the input */
+  className?: string,
+  autoFocus?: boolean,
+  hidePortal?: boolean,
+  theme?: InputThemes,
+  showButtons?: boolean,
+  /** Search only among people who follow you (TruthSocial). */
+  followers?: boolean,
 }
 
 /** Input to search for accounts. */
-const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
+const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, showButtons = true, ...rest }) => {
   const intl = useIntl();
 
   const [value, setValue] = useState('');
@@ -56,11 +66,12 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
   };
 
   return (
-    <div className='search search--account'>
-      <label>
-        <span style={{ display: 'none' }}>{intl.formatMessage(messages.placeholder)}</span>
+    <div className='w-full'>
+      <label className='sr-only'>{intl.formatMessage(messages.placeholder)}</label>
+
+      <div className='relative'>
         <AutosuggestAccountInput
-          className='rounded-full'
+          className={classNames('rounded-full', className)}
           placeholder={intl.formatMessage(messages.placeholder)}
           value={value}
           onChange={handleChange}
@@ -68,10 +79,26 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
           onKeyDown={handleKeyDown}
           {...rest}
         />
-      </label>
-      <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-        <Icon src={require('@tabler/icons/search.svg')} className={classNames('svg-icon--search', { active: isEmpty() })} />
-        <Icon src={require('@tabler/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
+
+        {showButtons && (
+          <div
+            role='button'
+            tabIndex={0}
+            className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
+            onClick={handleClear}
+          >
+            <SvgIcon
+              src={require('@tabler/icons/search.svg')}
+              className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+            />
+
+            <SvgIcon
+              src={require('@tabler/icons/x.svg')}
+              className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+              aria-label={intl.formatMessage(messages.placeholder)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

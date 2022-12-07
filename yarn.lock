@@ -2055,6 +2055,18 @@
   dependencies:
     "@reach/utils" "0.18.0"
 
+"@reach/combobox@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@reach/combobox/-/combobox-0.18.0.tgz#8b3879b7c2dc426cddf0941b041d1ddc6d9adee6"
+  integrity sha512-x60PiPOIB4azeyh+FZ/svh0kXZRCneGCXVLL6htWs1VmaKq+TWR/48V03yQX5cSKjvRM8UFDVn47mpcg5ZSFtg==
+  dependencies:
+    "@reach/auto-id" "0.18.0"
+    "@reach/descendants" "0.18.0"
+    "@reach/polymorphic" "0.18.0"
+    "@reach/popover" "0.18.0"
+    "@reach/portal" "0.18.0"
+    "@reach/utils" "0.18.0"
+
 "@reach/descendants@0.18.0":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@reach/descendants/-/descendants-0.18.0.tgz#16fe52a5154da262994b0b8768baff4f670922d1"
