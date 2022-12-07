@@ -4,8 +4,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Stack, Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
-  title: { id: 'chat_search.blankslate.title', defaultMessage: 'Search followers' },
-  body: { id: 'chat_search.blankslate.body', defaultMessage: 'You can start a chat with anyone that follows you.' },
+  title: { id: 'chat_search.blankslate.title', defaultMessage: 'Start a chat' },
+  body: { id: 'chat_search.blankslate.body', defaultMessage: 'Search for someone to chat with.' },
 });
 
 const Blankslate = () => {
