@@ -28,7 +28,7 @@ const BlankslateEmpty: React.FC<IBlankslate> = () => {
         <Text size='sm' theme='muted' align='center'>
           <FormattedMessage
             id='chats.main.blankslate.subtitle'
-            defaultMessage='You can start a chat with anyone that follows you'
+            defaultMessage='Search for someone to chat with'
           />
         </Text>
       </Stack>

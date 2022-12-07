@@ -13,7 +13,7 @@ type FormData = {
 
 const messages = defineMessages({
   title: { id: 'chat.welcome.title', defaultMessage: 'Welcome to {br} Chats!' },
-  subtitle: { id: 'chat.welcome.subtitle', defaultMessage: 'Exchange private messages with other users.' },
+  subtitle: { id: 'chat.welcome.subtitle', defaultMessage: 'Exchange direct messages with other users.' },
   acceptingMessageLabel: { id: 'chat.welcome.accepting_messages.label', defaultMessage: 'Allow users to start a new chat with you' },
   notice: { id: 'chat.welcome.notice', defaultMessage: 'You can change these settings later.' },
   submit: { id: 'chat.welcome.submit', defaultMessage: 'Save & Continue' },
