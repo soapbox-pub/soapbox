@@ -57,7 +57,7 @@ const appendPageItem = <T>(queryKey: QueryKey, newItem: T) => {
   queryClient.setQueryData<InfiniteData<PaginatedResult<T>>>(queryKey, (data) => {
     if (data) {
       const pages = [...data.pages];
-      pages[0] = { ...pages[0], result: [...pages[0].result, newItem] };
+      pages[0] = { ...pages[0], result: [newItem, ...pages[0].result] };
       return { ...data, pages };
     }
   });
