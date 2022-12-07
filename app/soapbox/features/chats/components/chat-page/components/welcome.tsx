@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, CardBody, CardTitle, Form, Stack, Text, Toggle } from 'soapbox/components/ui';
@@ -12,9 +12,9 @@ type FormData = {
 }
 
 const messages = defineMessages({
-  title: { id: 'chat.welcome.title', defaultMessage: 'Welcome to {br} Direct Messages!' },
-  subtitle: { id: 'chat.welcome.subtitle', defaultMessage: 'By default, all messages are automatically deleted after 14 days for your security.' },
-  acceptingMessageLabel: { id: 'chat.welcome.accepting_messages.label', defaultMessage: 'Allow users you follow to start a new chat with you' },
+  title: { id: 'chat.welcome.title', defaultMessage: 'Welcome to {br} Chats!' },
+  subtitle: { id: 'chat.welcome.subtitle', defaultMessage: 'Exchange private messages with other users.' },
+  acceptingMessageLabel: { id: 'chat.welcome.accepting_messages.label', defaultMessage: 'Allow users to start a new chat with you' },
   notice: { id: 'chat.welcome.notice', defaultMessage: 'You can change these settings later.' },
   submit: { id: 'chat.welcome.submit', defaultMessage: 'Save & Continue' },
 });
@@ -37,12 +37,6 @@ const Welcome = () => {
 
   return (
     <Stack className='py-20 px-4 sm:px-0' data-testid='chats-welcome'>
-      <img
-        src='/instance/images/chats/welcome.svg'
-        className='mx-auto w-32 md:w-40 h-auto mb-10'
-        alt='Chats'
-      />
-
       <div className='w-full sm:w-3/5 xl:w-2/5 mx-auto mb-10'>
         <Text align='center' weight='bold' className='mb-6 text-2xl md:text-3xl leading-8'>
           {intl.formatMessage(messages.title, { br: <br /> })}
@@ -55,7 +49,7 @@ const Welcome = () => {
 
       <Form onSubmit={handleSubmit} className='space-y-8 w-full sm:w-2/3 lg:w-3/5 sm:mx-auto'>
         <Stack space={2}>
-          <CardTitle title='Privacy' />
+          <CardTitle title={<FormattedMessage id='chat.page_settings.privacy' defaultMessage='Privacy' />} />
 
           <CardBody>
             <List>
