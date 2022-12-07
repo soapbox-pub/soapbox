@@ -1,4 +1,5 @@
 import { InfiniteData } from '@tanstack/react-query';
+import sumBy from 'lodash/sumBy';
 
 import { normalizeChatMessage } from 'soapbox/normalizers';
 import { ChatKeys } from 'soapbox/queries/chats';
@@ -71,4 +72,13 @@ const updateChatListItem = (newChat: ChatPayload) => {
   }
 };
 
-export { updateChatListItem };
+/** Get unread chats count. */
+const getUnreadChatsCount = (): number => {
+  const chats = flattenPages(
+    queryClient.getQueryData<InfiniteData<PaginatedResult<Chat>>>(ChatKeys.chatSearch()),
+  );
+
+  return sumBy(chats, chat => chat.unread);
+};
+
+export { updateChatListItem, getUnreadChatsCount };

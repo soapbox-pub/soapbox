@@ -24,7 +24,7 @@ import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { StatProvider } from 'soapbox/contexts/stat-context';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
@@ -323,6 +323,7 @@ const UI: React.FC = ({ children }) => {
   const dispatch = useAppDispatch();
   const { data: pendingPolicy } = usePendingPolicy();
   const instance = useInstance();
+  const statContext = useStatContext();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
 
@@ -420,7 +421,7 @@ const UI: React.FC = ({ children }) => {
 
   const connectStreaming = () => {
     if (!disconnect.current && accessToken && streamingUrl) {
-      disconnect.current = dispatch(connectUserStream());
+      disconnect.current = dispatch(connectUserStream({ statContext }));
     }
   };
 
@@ -642,58 +643,56 @@ const UI: React.FC = ({ children }) => {
   };
 
   return (
-    <StatProvider>
-      <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
-        <div ref={node} style={style}>
-          <BackgroundShapes />
+    <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
+      <div ref={node} style={style}>
+        <BackgroundShapes />
 
-          <div className='z-10 flex flex-col'>
-            <Navbar />
+        <div className='z-10 flex flex-col'>
+          <Navbar />
 
-            <Layout>
-              <Layout.Sidebar>
-                {!standalone && <SidebarNavigation />}
-              </Layout.Sidebar>
+          <Layout>
+            <Layout.Sidebar>
+              {!standalone && <SidebarNavigation />}
+            </Layout.Sidebar>
 
-              <SwitchingColumnsArea>
-                {children}
-              </SwitchingColumnsArea>
-            </Layout>
+            <SwitchingColumnsArea>
+              {children}
+            </SwitchingColumnsArea>
+          </Layout>
 
-            {me && floatingActionButton}
+          {me && floatingActionButton}
 
-            <BundleContainer fetchComponent={UploadArea}>
-              {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
-            </BundleContainer>
+          <BundleContainer fetchComponent={UploadArea}>
+            {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
+          </BundleContainer>
 
-            {me && (
-              <BundleContainer fetchComponent={SidebarMenu}>
-                {Component => <Component />}
-              </BundleContainer>
-            )}
-
-            {me && features.chats && (
-              <BundleContainer fetchComponent={ChatWidget}>
-                {Component => (
-                  <div className='hidden xl:block'>
-                    <Component />
-                  </div>
-                )}
-              </BundleContainer>
-            )}
-            <ThumbNavigation />
-
-            <BundleContainer fetchComponent={ProfileHoverCard}>
+          {me && (
+            <BundleContainer fetchComponent={SidebarMenu}>
               {Component => <Component />}
             </BundleContainer>
+          )}
 
-            <BundleContainer fetchComponent={StatusHoverCard}>
-              {Component => <Component />}
+          {me && features.chats && (
+            <BundleContainer fetchComponent={ChatWidget}>
+              {Component => (
+                <div className='hidden xl:block'>
+                  <Component />
+                </div>
+              )}
             </BundleContainer>
-          </div>
+          )}
+          <ThumbNavigation />
+
+          <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={StatusHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
         </div>
-      </HotKeys>
-    </StatProvider>
+      </div>
+    </HotKeys>
   );
 };
 

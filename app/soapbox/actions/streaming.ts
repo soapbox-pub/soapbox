@@ -2,7 +2,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { updateChatListItem } from 'soapbox/utils/chats';
+import { getUnreadChatsCount, updateChatListItem } from 'soapbox/utils/chats';
 import { removePageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -27,6 +27,7 @@ import {
   processTimelineUpdate,
 } from './timelines';
 
+import type { IStatContext } from 'soapbox/contexts/stat-context';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Chat } from 'soapbox/types/entities';
 
@@ -79,11 +80,16 @@ const updateChatQuery = (chat: IChat) => {
   queryClient.setQueryData<Chat>(ChatKeys.chat(chat.id), newChat as any);
 };
 
+interface StreamOpts {
+  statContext?: IStatContext,
+}
+
 const connectTimelineStream = (
   timelineId: string,
   path: string,
   pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
   accept: ((status: APIEntity) => boolean) | null = null,
+  opts?: StreamOpts,
 ) => connectStream(path, pollingRefresh, (dispatch: AppDispatch, getState: () => RootState) => {
   const locale = getLocale(getState());
 
@@ -145,6 +151,9 @@ const connectTimelineStream = (
               if (settings.getIn(['chats', 'sound'])) {
                 play(soundCache.chat);
               }
+
+              // Increment unread counter
+              opts?.statContext?.setUnreadChatsCount(getUnreadChatsCount());
             }
           });
           break;
@@ -186,8 +195,8 @@ const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => 
     dispatch(expandNotifications({}, () =>
       dispatch(fetchAnnouncements(done))))));
 
-const connectUserStream      = () =>
-  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification);
+const connectUserStream      = (opts?: StreamOpts) =>
+  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
 
 const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);

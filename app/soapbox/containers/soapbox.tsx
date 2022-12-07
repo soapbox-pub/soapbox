@@ -17,6 +17,7 @@ import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import { StatProvider } from 'soapbox/contexts/stat-context';
 import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public-layout';
@@ -296,11 +297,13 @@ const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <SoapboxHead>
-          <SoapboxLoad>
-            <SoapboxMount />
-          </SoapboxLoad>
-        </SoapboxHead>
+        <StatProvider>
+          <SoapboxHead>
+            <SoapboxLoad>
+              <SoapboxMount />
+            </SoapboxLoad>
+          </SoapboxHead>
+        </StatProvider>
       </QueryClientProvider>
     </Provider>
   );
