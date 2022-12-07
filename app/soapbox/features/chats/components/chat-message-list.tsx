@@ -348,7 +348,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                   {intl.formatTime(chatMessage.created_at)}
                 </Text>
 
-                {isMyMessage ? (
+                {(isMyMessage && features.chatsReadReceipts) ? (
                   <>
                     {isRead ? (
                       <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-primary-500 text-white dark:bg-primary-400 dark:text-primary-900 border border-solid border-primary-500 dark:border-primary-400'>

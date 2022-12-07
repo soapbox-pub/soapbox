@@ -239,6 +239,12 @@ const getInstanceFeatures = (instance: Instance) => {
     chatsMedia: v.software !== TRUTHSOCIAL,
 
     /**
+     * Whether chat messages have read receipts.
+     * @see GET /api/v1/pleroma/chats/:id/messages
+     */
+    chatsReadReceipts: v.software === TRUTHSOCIAL,
+
+    /**
      * Ability to search among chats.
      * @see GET /api/v1/pleroma/chats
      */
