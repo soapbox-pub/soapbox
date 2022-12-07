@@ -1,7 +1,6 @@
 'use strict';
 
-import debounce from 'lodash/debounce';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
@@ -120,8 +119,6 @@ import { WrappedRoute } from './util/react-router-helpers';
 import 'soapbox/components/status';
 
 const EmptyPage = HomePage;
-
-const isMobile = (width: number): boolean => width <= 1190;
 
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
@@ -328,7 +325,6 @@ const UI: React.FC = ({ children }) => {
   const instance = useInstance();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
-  const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
 
   const dragTargets = useRef<EventTarget[]>([]);
   const disconnect = useRef<any>(null);
@@ -435,12 +431,6 @@ const UI: React.FC = ({ children }) => {
     }
   };
 
-  const handleResize = useCallback(debounce(() => {
-    setMobile(isMobile(window.innerWidth));
-  }, 500, {
-    trailing: true,
-  }), [setMobile]);
-
   /** Load initial data when a user is logged in */
   const loadAccountData = () => {
     if (!account) return;
@@ -475,7 +465,6 @@ const UI: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize, { passive: true });
     document.addEventListener('dragenter', handleDragEnter, false);
     document.addEventListener('dragover', handleDragOver, false);
     document.addEventListener('drop', handleDrop, false);
@@ -490,7 +479,6 @@ const UI: React.FC = ({ children }) => {
     }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       document.removeEventListener('dragenter', handleDragEnter);
       document.removeEventListener('dragover', handleDragOver);
       document.removeEventListener('drop', handleDrop);
@@ -684,9 +672,13 @@ const UI: React.FC = ({ children }) => {
               </BundleContainer>
             )}
 
-            {me && features.chats && !mobile && (
+            {me && features.chats && (
               <BundleContainer fetchComponent={ChatWidget}>
-                {Component => <Component />}
+                {Component => (
+                  <div className='hidden xl:block'>
+                    <Component />
+                  </div>
+                )}
               </BundleContainer>
             )}
             <ThumbNavigation />
