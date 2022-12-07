@@ -253,7 +253,6 @@ const useChatActions = (chatId: string) => {
               return {
                 ...page,
                 result: [
-                  ...page.result,
                   normalizeChatMessage({
                     content: variables.content,
                     id: String(Number(new Date())),
@@ -262,6 +261,7 @@ const useChatActions = (chatId: string) => {
                     pending: true,
                     unread: true,
                   }),
+                  ...page.result,
                 ],
               };
             }
