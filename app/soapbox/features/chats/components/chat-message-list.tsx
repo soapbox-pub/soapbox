@@ -307,7 +307,9 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 title={getFormattedTimestamp(chatMessage)}
                 className={
                   classNames({
-                    'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2': true,
+                    'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
+                    '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
+                    '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
                     'bg-primary-500 text-white': isMyMessage,
                     'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
                     '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
