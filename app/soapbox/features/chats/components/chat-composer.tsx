@@ -181,7 +181,6 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               autoGrow
               maxRows={5}
               disabled={disabled}
-              autoComplete='off'
             />
             {isSuggestionsAvailable ? (
               <ComboboxPopover>
