@@ -8,7 +8,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -202,10 +201,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(openModal('LIST_ADDER', {
       accountId: account.id,
     }));
-  };
-
-  const onChat = () => {
-    dispatch(launchChat(account.id, history));
   };
 
   const onModerate = () => {
@@ -520,7 +515,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       return (
         <IconButton
-          src={require('@tabler/icons/mail.svg')}
+          src={require('@tabler/icons/messages.svg')}
           onClick={() => createAndNavigateToChat.mutate(account.id)}
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
@@ -529,20 +524,20 @@ const Header: React.FC<IHeader> = ({ account }) => {
           disabled={createAndNavigateToChat.isLoading}
         />
       );
+    } else if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
+      return (
+        <IconButton
+          src={require('@tabler/icons/messages.svg')}
+          onClick={() => createAndNavigateToChat.mutate(account.id)}
+          title={intl.formatMessage(messages.chat, { name: account.username })}
+          theme='outlined'
+          className='px-2'
+          iconClassName='w-4 h-4'
+        />
+      );
+    } else {
+      return null;
     }
-
-    if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
-      <IconButton
-        src={require('@tabler/icons/mail.svg')}
-        onClick={onChat}
-        title={intl.formatMessage(messages.chat, { name: account.username })}
-        theme='outlined'
-        className='px-2'
-        iconClassName='w-4 h-4'
-      />;
-    }
-
-    return null;
   };
 
   const renderShareButton = () => {
@@ -607,6 +602,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
           <div className='mt-6 flex justify-end w-full sm:pb-1'>
             <HStack space={2} className='mt-10'>
               <SubscriptionButton account={account} />
+              {renderMessageButton()}
+              {renderShareButton()}
 
               {ownAccount && (
                 <Menu>
@@ -643,9 +640,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
                   </MenuList>
                 </Menu>
               )}
-
-              {renderShareButton()}
-              {renderMessageButton()}
 
               <ActionButton account={account} />
             </HStack>
