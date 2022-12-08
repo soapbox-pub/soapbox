@@ -13,7 +13,7 @@ const EmptyResultsBlankslate = () => {
 
   return (
     <Stack justifyContent='center' alignItems='center' space={2} className='h-full w-2/3 mx-auto'>
-      <Text weight='bold' size='lg' align='center'>
+      <Text weight='bold' size='lg' align='center' data-testid='no-results'>
         {intl.formatMessage(messages.title)}
       </Text>
 
