@@ -114,6 +114,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   displayCta: true,
   /** Whether to inject suggested profiles into the Home feed. */
   feedInjection: true,
+  tileServer: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  tileServerAttribution: '© OpenStreetMap Contributors',
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

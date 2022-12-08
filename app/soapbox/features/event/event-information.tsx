@@ -46,6 +46,14 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
     setShowMedia(!showMedia);
   };
 
+  const handleShowMap: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+
+    dispatch(openModal('EVENT_MAP', {
+      statusId: status.id,
+    }));
+  };
+
   const renderEventLocation = useCallback(() => {
     const event = status!.event!;
 
@@ -64,6 +72,12 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
               <br />
             </>)}
             {[event.location.get('postalCode'), event.location.get('locality'), event.location.get('country')].filter(text => text).join(', ')}
+            {event.location.get('latitude') && (<>
+              <br />
+              <a href='#' className='text-primary-600 dark:text-accent-blue hover:underline' onClick={handleShowMap}>
+                <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
+              </a>
+            </>)}
           </Text>
         </HStack>
       </Stack>
