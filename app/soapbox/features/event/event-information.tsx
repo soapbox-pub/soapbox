@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
+import { openModal } from 'soapbox/actions/modals';
 import { fetchStatus } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusContent from 'soapbox/components/status-content';
