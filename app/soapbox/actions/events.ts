@@ -249,6 +249,7 @@ const submitEvent = () =>
       status,
       start_time: startTime,
       join_mode: joinMode,
+      content_type: 'text/markdown',
     };
 
     if (endTime)  params.end_time    = endTime;

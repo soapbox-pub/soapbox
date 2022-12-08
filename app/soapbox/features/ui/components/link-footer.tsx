@@ -43,9 +43,6 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {features.profileDirectory && (
             <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>
           )}
-          {features.events && (
-            <FooterLink to='/events'><FormattedMessage id='navigation_bar.events' defaultMessage='Events' /></FooterLink>
-          )}
           <FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink>
           <FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink>
           {features.filters && (

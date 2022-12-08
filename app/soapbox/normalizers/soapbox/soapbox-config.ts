@@ -114,6 +114,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   displayCta: true,
   /** Whether to inject suggested profiles into the Home feed. */
   feedInjection: true,
+  tileServer: '',
+  tileServerAttribution: '',
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

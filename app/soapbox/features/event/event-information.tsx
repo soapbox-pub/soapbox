@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
+import { openModal } from 'soapbox/actions/modals';
 import { fetchStatus } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusContent from 'soapbox/components/status-content';
@@ -8,7 +9,7 @@ import StatusMedia from 'soapbox/components/status-media';
 import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
@@ -26,6 +27,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
   const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as StatusEntity;
 
+  const { tileServer } = useSoapboxConfig();
   const settings = useSettings();
   const displayMedia = settings.get('displayMedia') as string;
 
@@ -46,6 +48,14 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
     setShowMedia(!showMedia);
   };
 
+  const handleShowMap: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+
+    dispatch(openModal('EVENT_MAP', {
+      statusId: status.id,
+    }));
+  };
+
   const renderEventLocation = useCallback(() => {
     const event = status!.event!;
 
@@ -64,6 +74,12 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
               <br />
             </>)}
             {[event.location.get('postalCode'), event.location.get('locality'), event.location.get('country')].filter(text => text).join(', ')}
+            {tileServer && event.location.get('latitude') && (<>
+              <br />
+              <a href='#' className='text-primary-600 dark:text-accent-blue hover:underline' onClick={handleShowMap}>
+                <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
+              </a>
+            </>)}
           </Text>
         </HStack>
       </Stack>
