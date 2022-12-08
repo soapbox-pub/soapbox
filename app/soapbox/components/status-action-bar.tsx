@@ -20,6 +20,7 @@ import { HStack } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
+import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
@@ -267,21 +268,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
     const { uri } = status;
-    const textarea = document.createElement('textarea');
 
-    textarea.textContent = uri;
-    textarea.style.position = 'fixed';
-
-    document.body.appendChild(textarea);
-
-    try {
-      textarea.select();
-      document.execCommand('copy');
-    } catch {
-      // Do nothing
-    } finally {
-      document.body.removeChild(textarea);
-    }
+    copy(uri);
   };
 
   const onModerate: React.MouseEventHandler = (e) => {

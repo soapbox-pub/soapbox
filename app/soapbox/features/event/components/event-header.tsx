@@ -19,6 +19,8 @@ import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, Me
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { isRemote } from 'soapbox/utils/accounts';
+import copy from 'soapbox/utils/copy';
 import { download } from 'soapbox/utils/download';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
@@ -33,6 +35,7 @@ const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
   exportIcs: { id: 'event.export_ics', defaultMessage: 'Export to your calendar' },
   copy: { id: 'event.copy', defaultMessage: 'Copy link to event' },
+  external: { id: 'event.external', defaultMessage: 'View event on {domain}' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
@@ -105,21 +108,12 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleCopy = () => {
     const { uri }  = status;
-    const textarea = document.createElement('textarea');
 
-    textarea.textContent    = uri;
-    textarea.style.position = 'fixed';
+    copy(uri);
+  };
 
-    document.body.appendChild(textarea);
-
-    try {
-      textarea.select();
-      document.execCommand('copy');
-    } catch {
-      // Do nothing
-    } finally {
-      document.body.removeChild(textarea);
-    }
+  const handleExternalClick = () => {
+    window.open(status.uri, '_blank');
   };
 
   const handleBookmarkClick = () => {
@@ -196,6 +190,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   };
 
   const makeMenu = (): MenuType => {
+    const domain = account.fqn.split('@')[1];
+
     const menu: MenuType = [
       {
         text: intl.formatMessage(messages.exportIcs),
@@ -208,6 +204,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
         icon: require('@tabler/icons/link.svg'),
       },
     ];
+
+    if (features.federating && isRemote(account)) {
+      menu.push({
+        text: intl.formatMessage(messages.external, { domain }),
+        action: handleExternalClick,
+        icon: require('@tabler/icons/external-link.svg'),
+      });
+    }
 
     if (!ownAccount) return menu;
 
@@ -329,9 +333,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    dispatch(openModal('EVENT_PARTICIPANTS', {
-      statusId: status.id,
-    }));
+    if (!ownAccount) {
+      dispatch(openModal('UNAUTHORIZED'));
+    } else {
+      dispatch(openModal('EVENT_PARTICIPANTS', {
+        statusId: status.id,
+      }));
+    }
   };
 
   return (
