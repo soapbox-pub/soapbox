@@ -63,8 +63,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
             <div className='px-2'>
               <ChatListItem chat={chat} onClick={onClickChat} />
             </div>
-          )
-          }
+          )}
           components={{
             ScrollSeekPlaceholder: () => <PlaceholderChat />,
             Footer: () => hasNextPage ? <Spinner withText={false} /> : null,

@@ -8,7 +8,7 @@ import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
-import { Avatar, Button, Divider, HStack, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, Button, Divider, HStack, Icon, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import emojify from 'soapbox/features/emoji/emoji';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
@@ -286,11 +286,14 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 })}
                 data-testid='chat-message-menu'
               >
-                <DropdownMenuContainer
-                  items={menu}
-                  src={require('@tabler/icons/dots.svg')}
-                  title={intl.formatMessage(messages.more)}
-                />
+                <DropdownMenuContainer items={menu}>
+                  <IconButton
+                    src={require('@tabler/icons/dots.svg')}
+                    title={intl.formatMessage(messages.more)}
+                    className='text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
+                    iconClassName='w-4 h-4'
+                  />
+                </DropdownMenuContainer>
               </div>
             )}
 
