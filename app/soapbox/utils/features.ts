@@ -224,7 +224,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to delete a chat.
      * @see DELETE /api/v1/pleroma/chats/:id
      */
-    chatsDelete: v.software === TRUTHSOCIAL,
+    chatsDelete: any([
+      v.software === TRUTHSOCIAL,
+      v.build === REBASED,
+    ]),
 
     /**
      * Ability to set disappearing messages on chats.
