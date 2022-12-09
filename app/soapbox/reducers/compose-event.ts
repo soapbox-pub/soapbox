@@ -71,7 +71,9 @@ export default function compose_event(state = ReducerRecord(), action: AnyAction
     case EVENT_BANNER_UPLOAD_REQUEST:
       return state.set('is_uploading', true);
     case EVENT_BANNER_UPLOAD_SUCCESS:
-      return state.set('banner', normalizeAttachment(fromJS(action.media)));
+      return state
+        .set('banner', normalizeAttachment(fromJS(action.media)))
+        .set('is_uploading', false);
     case EVENT_BANNER_UPLOAD_FAIL:
       return state.set('is_uploading', false);
     case EVENT_BANNER_UPLOAD_UNDO:
