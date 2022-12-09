@@ -450,7 +450,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   return (
     <div className='h-full flex flex-col flex-grow space-y-6'>
-      <div className='flex-grow flex flex-col justify-end pb-2'>
+      <div className='flex-grow flex flex-col justify-end'>
         <Virtuoso
           ref={node}
           alignToBottom
