@@ -48,7 +48,7 @@ const DomainBlocks: React.FC = () => {
         emptyMessage={emptyMessage}
         className='divide-y divide-gray-200 dark:divide-gray-800'
       >
-        {['gab.com', 'gab.ai'].map((domain) =>
+        {domains.map((domain) =>
           <Domain key={domain} domain={domain} />,
         )}
       </ScrollableList>
