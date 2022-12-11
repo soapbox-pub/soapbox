@@ -13,9 +13,9 @@ import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 type ChatMessageRecord = ReturnType<typeof normalizeChatMessage>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ChatMessageRecord>;

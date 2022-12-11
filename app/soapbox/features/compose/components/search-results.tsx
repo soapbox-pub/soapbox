@@ -22,6 +22,7 @@ import type { SearchFilter } from 'soapbox/reducers/search';
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
   statuses: { id: 'search_results.statuses', defaultMessage: 'Posts' },
+  groups: { id: 'search_results.groups', defaultMessage: 'Groups' },
   hashtags: { id: 'search_results.hashtags', defaultMessage: 'Hashtags' },
 });
 
@@ -58,6 +59,11 @@ const SearchResults = () => {
         text: intl.formatMessage(messages.statuses),
         action: () => selectFilter('statuses'),
         name: 'statuses',
+      },
+      {
+        text: intl.formatMessage(messages.groups),
+        action: () => selectFilter('groups'),
+        name: 'groups',
       },
       {
         text: intl.formatMessage(messages.hashtags),
@@ -163,6 +169,39 @@ const SearchResults = () => {
           <FormattedMessage
             id='empty_column.search.statuses'
             defaultMessage='There are no posts results for "{term}"'
+            values={{ term: value }}
+          />
+        </div>
+      );
+    }
+  }
+
+  if (selectedFilter === 'groups') {
+    hasMore = results.groupsHasMore;
+    loaded = results.groupsLoaded;
+
+    if (results.groups && results.groups.size > 0) {
+      searchResults = results.groups.map((groupId: string) => (
+        <></>
+      ));
+      resultsIds = results.groups;
+    } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
+      // searchResults = trendingStatuses.map((statusId: string) => (
+      //   // @ts-ignore
+      //   <StatusContainer
+      //     key={statusId}
+      //     id={statusId}
+      //     onMoveUp={handleMoveUp}
+      //     onMoveDown={handleMoveDown}
+      //   />
+      // ));
+      // resultsIds = trendingStatuses;
+    } else if (loaded) {
+      noResultsMessage = (
+        <div className='empty-column-indicator'>
+          <FormattedMessage
+            id='empty_column.search.groups'
+            defaultMessage='There are no groups results for "{term}"'
             values={{ term: value }}
           />
         </div>

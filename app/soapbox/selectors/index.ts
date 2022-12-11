@@ -144,12 +144,13 @@ export const makeGetStatus = () => {
       (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || ''),
+      (state: RootState, { id }: APIStatus) => state.groups.get(state.statuses.get(id)?.group || ''),
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
       (state: RootState) => state.me,
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, username, filters, me) => {
+    (statusBase, statusReblog, accountBase, accountReblog, group, username, filters, me) => {
       if (!statusBase || !accountBase) return null;
 
       const accountUsername = accountBase.acct;
@@ -172,6 +173,8 @@ export const makeGetStatus = () => {
         map.set('reblog', statusReblog || null);
         // @ts-ignore :(
         map.set('account', accountBase || null);
+        // @ts-ignore
+        map.set('group', group || null);
         map.set('filtered', Boolean(filtered));
       });
     },

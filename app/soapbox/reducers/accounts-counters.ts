@@ -8,6 +8,7 @@ import { ACCOUNT_IMPORT, ACCOUNTS_IMPORT } from 'soapbox/actions/importer';
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const CounterRecord = ImmutableRecord({
   followers_count: 0,
@@ -17,7 +18,6 @@ const CounterRecord = ImmutableRecord({
 
 type Counter = ReturnType<typeof CounterRecord>;
 type State = ImmutableMap<string, Counter>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 const normalizeAccount = (state: State, account: APIEntity) => state.set(account.id, CounterRecord({

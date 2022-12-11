@@ -17,7 +17,7 @@ import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
-import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
 
@@ -48,7 +48,7 @@ export const StatusRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
-  group: null as EmbeddedEntity<any>,
+  group: null as EmbeddedEntity<Group>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',

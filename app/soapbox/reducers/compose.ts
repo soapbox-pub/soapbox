@@ -78,6 +78,7 @@ export const ReducerCompose = ImmutableRecord({
   caretPosition: null as number | null,
   content_type: 'text/plain',
   focusDate: null as Date | null,
+  group_id: null as string | null,
   idempotencyKey: '',
   id: null as string | null,
   in_reply_to: null as string | null,
@@ -202,6 +203,9 @@ const insertEmoji = (compose: Compose, position: number, emojiData: Emoji, needs
 
 const privacyPreference = (a: string, b: string) => {
   const order = ['public', 'unlisted', 'private', 'direct'];
+
+  if (a === 'group') return a;
+
   return order[Math.max(order.indexOf(a), order.indexOf(b), 0)];
 };
 
@@ -309,6 +313,7 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         const defaultCompose = state.get('default')!;
 
+        map.set('group_id', action.status.getIn(['group', 'id']) || action.status.get('group'));
         map.set('in_reply_to', action.status.get('id'));
         map.set('to', action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : ImmutableOrderedSet<string>());
         map.set('text', !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '');
@@ -427,6 +432,7 @@ export default function compose(state = initialState, action: AnyAction) {
         map.set('idempotencyKey', uuid());
         map.set('content_type', action.contentType || 'text/plain');
         map.set('quote', action.status.get('quote'));
+        map.set('group_id', action.status.get('group'));
 
         if (action.v?.software === PLEROMA && action.withRedraft && hasIntegerMediaIds(action.status)) {
           map.set('media_attachments', ImmutableList());

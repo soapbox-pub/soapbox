@@ -286,6 +286,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       poll: compose.poll,
       scheduled_at: compose.schedule,
       to,
+      group_id: compose.privacy === 'group' ? compose.group_id : null,
     };
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
