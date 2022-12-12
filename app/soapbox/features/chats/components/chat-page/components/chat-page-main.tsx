@@ -184,11 +184,6 @@ const ChatPageMain = () => {
                     hint={intl.formatMessage(messages.autoDeleteHint)}
                   />
                   <ListItem
-                    label={intl.formatMessage(messages.autoDelete2Minutes)}
-                    onSelect={() => handleUpdateChat(MessageExpirationValues.TWO_MINUTES)}
-                    isSelected={chat.message_expiration === MessageExpirationValues.TWO_MINUTES}
-                  />
-                  <ListItem
                     label={intl.formatMessage(messages.autoDelete7Days)}
                     onSelect={() => handleUpdateChat(MessageExpirationValues.SEVEN)}
                     isSelected={chat.message_expiration === MessageExpirationValues.SEVEN}

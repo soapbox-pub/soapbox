@@ -15,14 +15,13 @@ import { useFetchRelationships } from './relationships';
 
 import type { IAccount } from './accounts';
 
-export const messageExpirationOptions = [120, 604800, 1209600, 2592000, 7776000];
+export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
 
 export enum MessageExpirationValues {
-  'TWO_MINUTES' = messageExpirationOptions[0],
-  'SEVEN' = messageExpirationOptions[1],
-  'FOURTEEN' = messageExpirationOptions[2],
-  'THIRTY' = messageExpirationOptions[3],
-  'NINETY' = messageExpirationOptions[4]
+  'SEVEN' = messageExpirationOptions[0],
+  'FOURTEEN' = messageExpirationOptions[1],
+  'THIRTY' = messageExpirationOptions[2],
+  'NINETY' = messageExpirationOptions[3]
 }
 
 export interface IChat {

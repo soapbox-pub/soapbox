@@ -31,7 +31,6 @@ export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputEl
   searchTokens: string[],
   maxLength?: number,
   menu?: Menu,
-  resultsPosition: string,
   renderSuggestion?: React.FC<{ id: string }>,
   hidePortal?: boolean,
   theme?: InputThemes,
@@ -43,7 +42,6 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     autoFocus: false,
     autoSelect: true,
     searchTokens: ImmutableList(['@', ':', '#']),
-    resultsPosition: 'below',
   };
 
   getFirstIndex = () => {
@@ -260,19 +258,15 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
     const { top, height, left, width } = this.input.getBoundingClientRect();
 
-    if (this.props.resultsPosition === 'below') {
-      return { left, width, top: top + height };
-    }
-
-    return { left, width, top, transform: 'translate(0, -100%)' };
+    return { left, width, top: top + height };
   }
 
   render() {
-    const { hidePortal, value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
     const style: React.CSSProperties = { direction: 'ltr' };
 
-    const visible = !hidePortal && !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
+    const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
 
     if (isRtl(value)) {
       style.direction = 'rtl';

@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { __stub } from 'soapbox/api';
 import { ChatProvider } from 'soapbox/contexts/chat-context';
@@ -8,36 +9,24 @@ import { render, screen, waitFor } from '../../../../../jest/test-helpers';
 import ChatSearch from '../chat-search';
 
 const renderComponent = () => render(
-  <ChatProvider>
-    <ChatSearch />
-  </ChatProvider>,
+  <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>
+    <ChatProvider>
+      <ChatSearch />
+    </ChatProvider>,
+  </VirtuosoMockContext.Provider>,
 );
 
 describe('<ChatSearch />', () => {
-  it('renders correctly', () => {
+  beforeEach(async() => {
     renderComponent();
-
-    expect(screen.getByTestId('pane-header')).toHaveTextContent('Messages');
   });
 
-  describe('when the pane is closed', () => {
-    it('does not render the search input', () => {
-      renderComponent();
-      expect(screen.queryAllByTestId('search')).toHaveLength(0);
-    });
+  it('renders the search input', () => {
+    expect(screen.getByTestId('search')).toBeInTheDocument();
   });
 
-  describe('when the pane is open', () => {
-    beforeEach(async() => {
-      renderComponent();
-      await userEvent.click(screen.getByTestId('icon-button'));
-    });
-
-    it('renders the search input', () => {
-      expect(screen.getByTestId('search')).toBeInTheDocument();
-    });
-
-    describe('when searching', () => {
+  describe('when searching', () => {
+    describe('with results', () => {
       beforeEach(() => {
         __stub((mock) => {
           mock.onGet('/api/v1/accounts/search').reply(200, [{
@@ -51,13 +40,28 @@ describe('<ChatSearch />', () => {
       });
 
       it('renders accounts', async() => {
-        renderComponent();
-
         const user = userEvent.setup();
         await user.type(screen.getByTestId('search'), 'ste');
 
         await waitFor(() => {
           expect(screen.queryAllByTestId('account')).toHaveLength(1);
+        });
+      });
+    });
+
+    describe('without results', () => {
+      beforeEach(() => {
+        __stub((mock) => {
+          mock.onGet('/api/v1/accounts/search').reply(200, []);
+        });
+      });
+
+      it('renders accounts', async() => {
+        const user = userEvent.setup();
+        await user.type(screen.getByTestId('search'), 'ste');
+
+        await waitFor(() => {
+          expect(screen.getByTestId('no-results')).toBeInTheDocument();
         });
       });
     });
