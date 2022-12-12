@@ -24,8 +24,8 @@ const DEFAULT_HEADERS = [
 ];
 
 /** Check if the avatar is a default avatar */
-const isDefaultHeader = (url: string) => {
-  return DEFAULT_HEADERS.every(header => url.endsWith(header));
+export const isDefaultHeader = (url: string) => {
+  return DEFAULT_HEADERS.some(header => url.endsWith(header));
 };
 
 const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {

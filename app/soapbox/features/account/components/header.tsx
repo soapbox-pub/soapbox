@@ -21,6 +21,7 @@ import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
+import { isDefaultHeader } from 'soapbox/features/onboarding/steps/cover-photo-selection-step';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
@@ -502,6 +503,29 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return info;
   };
 
+  const renderHeader = () => {
+    let header: React.ReactNode;
+
+    if (account.header) {
+      header = (
+        <StillImage
+          src={account.header}
+          alt={intl.formatMessage(messages.header)}
+        />
+      );
+
+      if (!isDefaultHeader(account.header)) {
+        header = (
+          <a href={account.header} onClick={handleHeaderClick} target='_blank'>
+            {header}
+          </a>
+        );
+      }
+    }
+
+    return header;
+  };
+
   const renderMessageButton = () => {
     if (features.chatsWithFollowers) { // Truth Social
       if (!ownAccount || !account || account.id === ownAccount?.id) {
@@ -570,14 +594,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       <div>
         <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
-          {account.header && (
-            <a href={account.header} onClick={handleHeaderClick} target='_blank'>
-              <StillImage
-                src={account.header}
-                alt={intl.formatMessage(messages.header)}
-              />
-            </a>
-          )}
+          {renderHeader()}
 
           <div className='absolute top-2 left-2'>
             <HStack alignItems='center' space={1}>
