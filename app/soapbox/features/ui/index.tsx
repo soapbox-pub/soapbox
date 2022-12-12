@@ -30,6 +30,7 @@ import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
 import EventPage from 'soapbox/pages/event-page';
+import GroupPage from 'soapbox/pages/group-page';
 import HomePage from 'soapbox/pages/home-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
@@ -111,6 +112,7 @@ import {
   EventInformation,
   EventDiscussion,
   Events,
+  GroupTimeline,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
 
@@ -271,6 +273,8 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/events/:statusId' publicRoute exact page={EventPage} component={EventInformation} content={children} />
       <WrappedRoute path='/@:username/events/:statusId/discussion' publicRoute exact page={EventPage} component={EventDiscussion} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
+
+      <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />

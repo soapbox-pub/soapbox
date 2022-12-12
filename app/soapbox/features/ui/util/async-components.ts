@@ -541,3 +541,11 @@ export function EventParticipantsModal() {
 export function Events() {
   return import(/* webpackChunkName: "features/events" */'../../events');
 }
+
+export function GroupTimeline() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
+}
+
+export function GroupInfoPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/components/group-info-panel');
+}

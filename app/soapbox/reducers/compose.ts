@@ -11,6 +11,7 @@ import {
   COMPOSE_REPLY_CANCEL,
   COMPOSE_QUOTE,
   COMPOSE_QUOTE_CANCEL,
+  COMPOSE_GROUP_POST,
   COMPOSE_DIRECT,
   COMPOSE_MENTION,
   COMPOSE_SUBMIT_REQUEST,
@@ -382,6 +383,14 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
         map.update('text', text => [text.trim(), `@${action.account.get('acct')} `].filter((str) => str.length !== 0).join(' '));
         map.set('privacy', 'direct');
+        map.set('focusDate', new Date());
+        map.set('caretPosition', null);
+        map.set('idempotencyKey', uuid());
+      }));
+    case COMPOSE_GROUP_POST:
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
+        map.set('privacy', 'group');
+        map.set('group_id', action.group_id);
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());

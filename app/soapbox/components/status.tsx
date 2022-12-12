@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { NavLink, useHistory } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
@@ -26,6 +26,7 @@ import { Card, HStack, Stack, Text } from './ui';
 import type { Map as ImmutableMap } from 'immutable';
 import type {
   Account as AccountEntity,
+  Group as GroupEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -299,6 +300,8 @@ const Status: React.FC<IStatus> = (props) => {
     }
   }
 
+  const group = actualStatus.group as GroupEntity | null;
+
   const handlers = muted ? undefined : {
     reply: handleHotkeyReply,
     favourite: handleHotkeyFavourite,
@@ -337,6 +340,26 @@ const Status: React.FC<IStatus> = (props) => {
 
               <Text size='sm' theme='muted' weight='medium'>
                 <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+              </Text>
+            </HStack>
+          </div>
+        )}
+
+        {group && (
+          <div className='pt-4 px-4'>
+            <HStack alignItems='center' space={1}>
+              <Icon src={require('@tabler/icons/users.svg')} className='text-gray-600 dark:text-gray-400' />
+
+              <Text size='sm' theme='muted' weight='medium'>
+                <FormattedMessage
+                  id='status.group'
+                  defaultMessage='Posted in {group}'
+                  values={{ group: (
+                    <Link className='hover:underline' to={`/groups/${group.id}`} onClick={(e) => e.stopPropagation()}>
+                      <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                    </Link>
+                  ) }}
+                />
               </Text>
             </HStack>
           </div>

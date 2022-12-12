@@ -63,9 +63,10 @@ interface IComposeForm<ID extends string> {
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
   event?: string,
+  group?: string,
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -228,7 +229,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.media && <UploadButtonContainer composeId={id} />}
       <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
       {features.polls && <PollButton composeId={id} />}
-      {features.privacyScopes && <PrivacyDropdown composeId={id} />}
+      {features.privacyScopes && !group && <PrivacyDropdown composeId={id} />}
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
       {features.richText && <MarkdownButton composeId={id} />}
@@ -278,7 +279,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   return (
     <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
-      {scheduledStatusCount > 0 && !event && (
+      {scheduledStatusCount > 0 && !event && !group && (
         <Warning
           message={(
             <FormattedMessage
@@ -299,9 +300,9 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && !event && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && !group && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && !event && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
@@ -357,8 +358,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
           <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
         </HStack>
-        {/* <HStack alignItems='center' space={4}>
-        </HStack> */}
       </div>
     </Stack>
   );

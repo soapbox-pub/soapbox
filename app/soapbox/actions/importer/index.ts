@@ -65,6 +65,9 @@ const importFetchedAccounts = (accounts: APIEntity[], args = { should_refetch: f
   return importAccounts(normalAccounts);
 };
 
+const importFetchedGroup = (group: APIEntity) =>
+  importFetchedGroups([group]);
+
 const importFetchedGroups = (groups: APIEntity[]) => {
   const normalGroups: APIEntity[] = [];
 
@@ -110,6 +113,10 @@ const importFetchedStatus = (status: APIEntity, idempotencyKey?: string) =>
 
     if (status.poll?.id) {
       dispatch(importFetchedPoll(status.poll));
+    }
+
+    if (status.group?.id) {
+      dispatch(importFetchedGroup(status.group));
     }
 
     dispatch(importFetchedAccount(status.account));
@@ -161,6 +168,10 @@ const importFetchedStatuses = (statuses: APIEntity[]) =>
       if (status.poll?.id) {
         polls.push(status.poll);
       }
+
+      if (status.group?.id) {
+        dispatch(importFetchedGroup(status.group));
+      }
     }
 
     statuses.forEach(processStatus);
@@ -196,6 +207,7 @@ export {
   importPolls,
   importFetchedAccount,
   importFetchedAccounts,
+  importFetchedGroup,
   importFetchedGroups,
   importFetchedStatus,
   importFetchedStatuses,
