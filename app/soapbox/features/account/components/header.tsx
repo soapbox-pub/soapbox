@@ -21,7 +21,6 @@ import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
-import { isDefaultHeader } from 'soapbox/features/onboarding/steps/cover-photo-selection-step';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
@@ -29,7 +28,7 @@ import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/types/entities';
-import { isRemote } from 'soapbox/utils/accounts';
+import { isDefaultHeader, isRemote } from 'soapbox/utils/accounts';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 

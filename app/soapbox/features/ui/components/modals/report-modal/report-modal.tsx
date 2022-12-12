@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-
 import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';

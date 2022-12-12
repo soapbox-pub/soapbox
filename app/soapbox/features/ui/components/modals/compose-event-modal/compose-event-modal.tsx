@@ -45,7 +45,6 @@ const messages = defineMessages({
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
-
 interface IAccount {
   eventId: string,
   id: string,
