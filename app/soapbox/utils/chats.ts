@@ -30,7 +30,7 @@ const reOrderChatListItems = () => {
       chatA.last_message?.created_at as string,
       chatB.last_message?.created_at as string,
     );
-  }, 'default');
+  });
 };
 
 /**
