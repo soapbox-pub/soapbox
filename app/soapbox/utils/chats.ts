@@ -81,4 +81,4 @@ const getUnreadChatsCount = (): number => {
   return sumBy(chats, chat => chat.unread);
 };
 
-export { updateChatListItem, getUnreadChatsCount };
+export { updateChatListItem, getUnreadChatsCount, reOrderChatListItems };
