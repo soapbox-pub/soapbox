@@ -208,7 +208,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
     return emojify(formatted, emojiMap.toJS());
   };
 
-  const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='sm' />;
+  const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='xs' />;
 
   const handleCopyText = (chatMessage: ChatMessageEntity) => {
     if (navigator.clipboard) {
