@@ -26,8 +26,11 @@ const updateChatInChatSearchQuery = (newChat: ChatPayload) => {
  */
 const reOrderChatListItems = () => {
   sortQueryData<ChatPayload>(ChatKeys.chatSearch(), (chatA, chatB) => {
-    return compareDate(chatA.last_message?.created_at as string, chatB.last_message?.created_at as string);
-  });
+    return compareDate(
+      chatA.last_message?.created_at as string,
+      chatB.last_message?.created_at as string,
+    );
+  }, 'default');
 };
 
 /**

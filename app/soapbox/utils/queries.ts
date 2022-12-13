@@ -25,10 +25,21 @@ const deduplicateById = <T extends Entity>(entities: T[]): T[] => {
   return Array.from(map.values());
 };
 
+export type SortOrder = 'reverse' | 'default'
+
 /** Flatten paginated results into a single array. */
-const flattenPages = <T>(queryData: InfiniteData<PaginatedResult<T>> | undefined) => {
+const flattenPages = <T>(
+  queryData: InfiniteData<PaginatedResult<T>> | undefined,
+  order: SortOrder = 'reverse',
+) => {
   const data = queryData?.pages.reduce<T[]>(
-    (prev: T[], curr) => [...prev, ...curr.result],
+    (prev: T[], curr) => {
+      if (order === 'reverse') {
+        return [...curr.result, ...prev];
+      } else {
+        return [...prev, ...curr.result];
+      }
+    },
     [],
   );
 
@@ -90,11 +101,15 @@ const paginateQueryData = <T>(array: T[] | undefined) => {
   }, []);
 };
 
-const sortQueryData = <T>(queryKey: QueryKey, comparator: (a: T, b: T) => number) => {
+const sortQueryData = <T>(
+  queryKey: QueryKey,
+  comparator: (a: T, b: T) => number,
+  order: SortOrder = 'reverse',
+) => {
   queryClient.setQueryData<InfiniteData<PaginatedResult<T>>>(queryKey, (prevResult) => {
     if (prevResult) {
       const nextResult = { ...prevResult };
-      const flattenedQueryData = flattenPages(nextResult);
+      const flattenedQueryData = flattenPages(nextResult, order);
       const sortedQueryData = flattenedQueryData?.sort(comparator);
       const paginatedPages = paginateQueryData(sortedQueryData);
       const newPages = paginatedPages.map((page: T, idx: number) => ({
