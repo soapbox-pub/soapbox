@@ -3,6 +3,7 @@ import { Record as ImmutableRecord } from 'immutable';
 import {
   GROUP_EDITOR_RESET,
   GROUP_EDITOR_TITLE_CHANGE,
+  GROUP_EDITOR_DESCRIPTION_CHANGE,
   GROUP_CREATE_REQUEST,
   GROUP_CREATE_FAIL,
   GROUP_CREATE_SUCCESS,
@@ -12,12 +13,14 @@ import type { AnyAction } from 'redux';
 
 const ReducerRecord = ImmutableRecord({
   groupId: null as string | null,
+  isUploading: false,
   isSubmitting: false,
   isChanged: false,
   displayName: '',
   note: '',
   avatar: null,
   header: null,
+  locked: false,
 });
 
 type State = ReturnType<typeof ReducerRecord>;
@@ -29,6 +32,11 @@ export default function groupEditor(state: State = ReducerRecord(), action: AnyA
     case GROUP_EDITOR_TITLE_CHANGE:
       return state.withMutations(map => {
         map.set('displayName', action.value);
+        map.set('isChanged', true);
+      });
+    case GROUP_EDITOR_DESCRIPTION_CHANGE:
+      return state.withMutations(map => {
+        map.set('note', action.value);
         map.set('isChanged', true);
       });
     case GROUP_CREATE_REQUEST:

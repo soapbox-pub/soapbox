@@ -112,6 +112,7 @@ import {
   EventInformation,
   EventDiscussion,
   Events,
+  Groups,
   GroupTimeline,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -274,6 +275,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/events/:statusId/discussion' publicRoute exact page={EventPage} component={EventDiscussion} content={children} />
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
+      <WrappedRoute path='/groups' exact page={DefaultPage} component={Groups} content={children} />
       <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />

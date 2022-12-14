@@ -1,11 +1,11 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import StillImage from 'soapbox/components/still-image';
-import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
+import { Avatar, Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
@@ -83,7 +83,24 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     return menu;
   };
 
+  const makeActionButton = () => {
+    if (group.relationship?.role === 'admin') {
+      return (
+        <Button
+          size='sm'
+          theme='primary'
+          // to={`/@${account.acct}/events/${status.id}`}
+        >
+          <FormattedMessage  id='group.manage' defaultMessage='Manage' />
+        </Button>
+      );
+    }
+
+    return null;
+  };
+
   const menu = makeMenu();
+  const actionButton = makeActionButton();
 
   return (
     <div className='-mt-4 -mx-4'>
@@ -155,6 +172,8 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
                   </MenuList>
                 </Menu>
               )}
+
+              {actionButton}
             </HStack>
           </div>
         </HStack>

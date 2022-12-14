@@ -4,6 +4,7 @@ import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
+import { closeModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
 import type { AxiosError } from 'axios';
@@ -95,13 +96,14 @@ const GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS = 'GROUP_MEMBERSHIP_REQUEST_REJECT
 const GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL    = 'GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL';
 
 const GROUP_EDITOR_TITLE_CHANGE = 'GROUP_EDITOR_TITLE_CHANGE';
+const GROUP_EDITOR_DESCRIPTION_CHANGE = 'GROUP_EDITOR_DESCRIPTION_CHANGE';
 const GROUP_EDITOR_RESET        = 'GROUP_EDITOR_RESET';
 
-const createGroup = (displayName: string, shouldReset?: boolean) =>
+const createGroup = (displayName: string, note: string, shouldReset?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(createGroupRequest());
 
-    api(getState).post('/api/v1/groups', { display_name: displayName })
+    api(getState).post('/api/v1/groups', { display_name: displayName, note })
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(createGroupSuccess(data));
@@ -109,6 +111,7 @@ const createGroup = (displayName: string, shouldReset?: boolean) =>
         if (shouldReset) {
           dispatch(resetGroupEditor());
         }
+        dispatch(closeModal('MANAGE_GROUP'));
       }).catch(err => dispatch(createGroupFail(err)));
   };
 
@@ -760,6 +763,11 @@ const changeGroupEditorTitle = (value: string) => ({
   value,
 });
 
+const changeGroupEditorDescription = (value: string) => ({
+  type: GROUP_EDITOR_DESCRIPTION_CHANGE,
+  value,
+});
+
 const resetGroupEditor = () => ({
   type: GROUP_EDITOR_RESET,
 });
@@ -767,9 +775,10 @@ const resetGroupEditor = () => ({
 const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, getState: () => RootState) => {
   const groupId     = getState().group_editor.groupId;
   const displayName = getState().group_editor.displayName;
+  const note        = getState().group_editor.note;
 
   if (groupId === null) {
-    dispatch(createGroup(displayName, shouldReset));
+    dispatch(createGroup(displayName, note, shouldReset));
   } else {
     // TODO: dispatch(updateList(listId, title, shouldReset));
   }
@@ -840,6 +849,7 @@ export {
   GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS,
   GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL,
   GROUP_EDITOR_TITLE_CHANGE,
+  GROUP_EDITOR_DESCRIPTION_CHANGE,
   GROUP_EDITOR_RESET,
   createGroup,
   createGroupRequest,
@@ -926,6 +936,7 @@ export {
   rejectGroupMembershipRequestSuccess,
   rejectGroupMembershipRequestFail,
   changeGroupEditorTitle,
+  changeGroupEditorDescription,
   resetGroupEditor,
   submitGroupEditor,
 };
