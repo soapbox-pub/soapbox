@@ -37,11 +37,9 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
         data-testid='title'
         {...buttonProps}
       >
-        {typeof title === 'string' ? (
-          <Text weight='semibold'>
-            {title}
-          </Text>
-        ) : (title)}
+        <Text weight='semibold' tag='div'>
+          {title}
+        </Text>
 
         {(typeof unreadCount !== 'undefined' && unreadCount > 0) && (
           <HStack alignItems='center' space={2}>
