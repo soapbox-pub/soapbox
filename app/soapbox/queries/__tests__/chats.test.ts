@@ -11,8 +11,6 @@ import { flattenPages } from 'soapbox/utils/queries';
 import { IAccount } from '../accounts';
 import { ChatKeys, IChat, IChatMessage, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
 
-jest.mock('soapbox/utils/queries');
-
 const chat: IChat = {
   accepted: true,
   account: {

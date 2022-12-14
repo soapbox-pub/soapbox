@@ -8,6 +8,7 @@ import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import { reOrderChatListItems } from 'soapbox/utils/chats';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
@@ -280,6 +281,7 @@ const useChatActions = (chatId: string) => {
       onSuccess: (response, variables) => {
         const nextChat = { ...chat, last_message: response.data };
         updatePageItem(ChatKeys.chatSearch(), nextChat, (o, n) => o.id === n.id);
+        reOrderChatListItems();
 
         queryClient.invalidateQueries(ChatKeys.chatMessages(variables.chatId));
       },
