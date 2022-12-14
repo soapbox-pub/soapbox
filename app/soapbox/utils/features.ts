@@ -213,6 +213,12 @@ const getInstanceFeatures = (instance: Instance) => {
     carousel: v.software === TRUTHSOCIAL,
 
     /**
+     * Ability to mark a carousel avatar as "seen."
+     * @see POST /api/v1/truth/carousels/avatars/seen
+     */
+    carouselSeen: v.software === TRUTHSOCIAL,
+
+    /**
      * Ability to accept a chat.
      * POST /api/v1/pleroma/chats/:id/accept
      */
