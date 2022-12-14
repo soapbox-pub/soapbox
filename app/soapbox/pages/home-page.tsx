@@ -59,7 +59,7 @@ const HomePage: React.FC = ({ children }) => {
           </Card>
         )}
 
-        {features.feedUserFiltering && <FeedCarousel />}
+        {features.carousel && <FeedCarousel />}
 
         {children}
 

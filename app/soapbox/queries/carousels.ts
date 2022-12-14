@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks';
+import { useApi, useFeatures } from 'soapbox/hooks';
 
 export type Avatar = {
   account_id: string
   account_avatar: string
   acct: string
-  seen: boolean
+  seen?: boolean
 }
 
 const CarouselKeys = {
@@ -36,10 +36,15 @@ function useCarouselAvatars() {
 
 function useMarkAsSeen() {
   const api = useApi();
+  const features = useFeatures();
 
-  return useMutation((account_id: string) => api.post('/api/v1/truth/carousels/avatars/seen', {
-    account_id,
-  }));
+  return useMutation(async (accountId: string) => {
+    if (features.carouselSeen) {
+      await void api.post('/api/v1/truth/carousels/avatars/seen', {
+        account_id: accountId,
+      });
+    }
+  });
 }
 
 export { useCarouselAvatars, useMarkAsSeen };

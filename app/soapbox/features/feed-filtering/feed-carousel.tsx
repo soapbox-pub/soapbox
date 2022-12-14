@@ -96,7 +96,7 @@ const FeedCarousel = () => {
     if (avatars.length > 0) {
       setSeenAccountIds(
         avatars
-          .filter((avatar) => avatar.seen)
+          .filter((avatar) => avatar.seen !== false)
           .map((avatar) => avatar.account_id),
       );
     }
