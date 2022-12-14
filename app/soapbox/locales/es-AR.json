@@ -834,7 +834,7 @@
   "preferences.fields.underline_links_label": "Always underline links in posts",
   "preferences.fields.unfollow_modal_label": "Show confirmation dialog before unfollowing someone",
   "preferences.hints.demetricator": "Decrease social media anxiety by hiding all numbers from the site.",
-  "preferences.hints.feed": "In your home feed",
+  "preferences.hints.feed": "In feeds",
   "preferences.notifications.advanced": "Show all notification categories",
   "preferences.options.content_type_markdown": "Markdown",
   "preferences.options.content_type_plaintext": "Plain text",
