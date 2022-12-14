@@ -1,3 +1,7 @@
+[data-markup] {
+  @apply whitespace-pre-wrap;
+}
+
 [data-markup] p {
   @apply mb-4 whitespace-pre-wrap;
 }
