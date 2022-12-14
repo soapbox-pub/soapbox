@@ -21,7 +21,7 @@ jest.mock('../../../hooks/useDimensions', () => ({
 describe('<FeedCarousel />', () => {
   let store: any;
 
-  describe('with "feedUserFiltering" disabled', () => {
+  describe('with "carousel" disabled', () => {
     beforeEach(() => {
       store = {
         instance: {
@@ -42,7 +42,7 @@ describe('<FeedCarousel />', () => {
     });
   });
 
-  describe('with "feedUserFiltering" enabled', () => {
+  describe('with "carousel" enabled', () => {
     beforeEach(() => {
       store = {
         instance: {
