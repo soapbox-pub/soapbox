@@ -2,8 +2,8 @@ import classNames from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 
-import StatusContainer from 'soapbox/containers/status_container';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import StatusContainer from 'soapbox/containers/status-container';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IThreadStatus {

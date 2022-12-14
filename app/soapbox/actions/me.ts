@@ -1,4 +1,4 @@
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 
 import api from '../api';

@@ -21,6 +21,9 @@ export const InstanceRecord = ImmutableRecord({
   contact_account: ImmutableMap<string, any>(),
   configuration: ImmutableMap<string, any>({
     media_attachments: ImmutableMap<string, any>(),
+    chats: ImmutableMap<string, number>({
+      max_characters: 500,
+    }),
     polls: ImmutableMap<string, number>({
       max_options: 4,
       max_characters_per_option: 25,

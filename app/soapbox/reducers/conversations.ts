@@ -9,7 +9,7 @@ import {
   CONVERSATIONS_UPDATE,
   CONVERSATIONS_READ,
 } from '../actions/conversations';
-import compareId from '../compare_id';
+import { compareId } from '../utils/comparators';
 
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';

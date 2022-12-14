@@ -8,34 +8,11 @@ import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 import { PaginatedResult, removePageItem } from '../utils/queries';
 
-type Account = {
-  acct: string
-  avatar: string
-  avatar_static: string
-  bot: boolean
-  created_at: string
-  discoverable: boolean
-  display_name: string
-  followers_count: number
-  following_count: number
-  group: boolean
-  header: string
-  header_static: string
-  id: string
-  last_status_at: string
-  location: string
-  locked: boolean
-  note: string
-  statuses_count: number
-  url: string
-  username: string
-  verified: boolean
-  website: string
-}
+import type { IAccount } from './accounts';
 
 type Suggestion = {
   source: 'staff'
-  account: Account
+  account: IAccount
 }
 
 type TruthSuggestion = {
@@ -55,7 +32,7 @@ type PageParam = {
   link?: string
 }
 
-const suggestionKeys = {
+const SuggestionKeys = {
   suggestions: ['suggestions'] as const,
 };
 
@@ -117,7 +94,7 @@ const useSuggestions = () => {
   };
 
   const result = useInfiniteQuery(
-    suggestionKeys.suggestions,
+    SuggestionKeys.suggestions,
     ({ pageParam }: any) => getSuggestions(pageParam),
     {
       keepPreviousData: true,
@@ -146,7 +123,7 @@ const useDismissSuggestion = () => {
 
   return useMutation((accountId: string) => api.delete(`/api/v1/suggestions/${accountId}`), {
     onMutate(accountId: string) {
-      removePageItem(suggestionKeys.suggestions, accountId, (o: any, n: any) => o.account_id === n);
+      removePageItem(SuggestionKeys.suggestions, accountId, (o: any, n: any) => o.account_id === n);
     },
   });
 };

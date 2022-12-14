@@ -14,6 +14,7 @@ import {
   HistoryRecord,
   InstanceRecord,
   ListRecord,
+  LocationRecord,
   MentionRecord,
   NotificationRecord,
   PollRecord,
@@ -40,6 +41,7 @@ type Filter = ReturnType<typeof FilterRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
+type Location = ReturnType<typeof LocationRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
@@ -80,6 +82,7 @@ export {
   History,
   Instance,
   List,
+  Location,
   Mention,
   Notification,
   Poll,

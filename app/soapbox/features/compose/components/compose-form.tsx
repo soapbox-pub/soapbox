@@ -1,6 +1,6 @@
 import classNames from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -13,41 +13,42 @@ import {
   insertEmojiCompose,
   uploadCompose,
 } from 'soapbox/actions/compose';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest_input';
-import AutosuggestTextarea from 'soapbox/components/autosuggest_textarea';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
+import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import Icon from 'soapbox/components/icon';
-import { Button, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is_mobile';
+import { Button, HStack, Stack } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
+import { isMobile } from 'soapbox/is-mobile';
 
-import EmojiPickerDropdown from '../components/emoji-picker/emoji-picker-dropdown';
-import MarkdownButton from '../components/markdown_button';
-import PollButton from '../components/poll_button';
-import PollForm from '../components/polls/poll-form';
-import PrivacyDropdown from '../components/privacy_dropdown';
-import ReplyMentions from '../components/reply_mentions';
-import ScheduleButton from '../components/schedule_button';
-import SpoilerButton from '../components/spoiler_button';
-import UploadForm from '../components/upload_form';
-import Warning from '../components/warning';
-import QuotedStatusContainer from '../containers/quoted_status_container';
-import ReplyIndicatorContainer from '../containers/reply_indicator_container';
-import ScheduleFormContainer from '../containers/schedule_form_container';
-import UploadButtonContainer from '../containers/upload_button_container';
-import WarningContainer from '../containers/warning_container';
+import QuotedStatusContainer from '../containers/quoted-status-container';
+import ReplyIndicatorContainer from '../containers/reply-indicator-container';
+import ScheduleFormContainer from '../containers/schedule-form-container';
+import UploadButtonContainer from '../containers/upload-button-container';
+import WarningContainer from '../containers/warning-container';
 import { countableText } from '../util/counter';
 
+import EmojiPickerDropdown from './emoji-picker/emoji-picker-dropdown';
+import MarkdownButton from './markdown-button';
+import PollButton from './poll-button';
+import PollForm from './polls/poll-form';
+import PrivacyDropdown from './privacy-dropdown';
+import ReplyMentions from './reply-mentions';
+import ScheduleButton from './schedule-button';
+import SpoilerButton from './spoiler-button';
 import SpoilerInput from './spoiler-input';
-import TextCharacterCounter from './text_character_counter';
-import VisualCharacterCounter from './visual_character_counter';
+import TextCharacterCounter from './text-character-counter';
+import UploadForm from './upload-form';
+import VisualCharacterCounter from './visual-character-counter';
+import Warning from './warning';
 
-import type { Emoji } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
-  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
+  eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -61,17 +62,19 @@ interface IComposeForm<ID extends string> {
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
+  event?: string,
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { configuration } = useInstance();
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
-  const maxTootChars = useAppSelector((state) => state.instance.getIn(['configuration', 'statuses', 'max_characters'])) as number;
+  const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
   const scheduledStatusCount = useAppSelector((state) => state.get('scheduled_statuses').size);
   const features = useFeatures();
 
@@ -221,7 +224,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }, [focusDate]);
 
   const renderButtons = useCallback(() => (
-    <div className='flex items-center space-x-2'>
+    <HStack alignItems='center' space={2}>
       {features.media && <UploadButtonContainer composeId={id} />}
       <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
       {features.polls && <PollButton composeId={id} />}
@@ -229,7 +232,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
       {features.richText && <MarkdownButton composeId={id} />}
-    </div>
+    </HStack>
   ), [features, id]);
 
   const condensed = shouldCondense && !composeFocused && isEmpty() && !isUploading;
@@ -239,6 +242,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
   let publishText: string | JSX.Element = '';
+  let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
@@ -264,9 +268,17 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     publishText = intl.formatMessage(messages.schedule);
   }
 
+  if (event) {
+    textareaPlaceholder = messages.eventPlaceholder;
+  } else if (hasPoll) {
+    textareaPlaceholder = messages.pollPlaceholder;
+  } else {
+    textareaPlaceholder = messages.placeholder;
+  }
+
   return (
     <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
-      {scheduledStatusCount > 0 && (
+      {scheduledStatusCount > 0 && !event && (
         <Warning
           message={(
             <FormattedMessage
@@ -287,13 +299,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !event && <ReplyMentions composeId={id} />}
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
-        placeholder={intl.formatMessage(hasPoll ? messages.pollPlaceholder : messages.placeholder)}
+        placeholder={intl.formatMessage(textareaPlaceholder)}
         disabled={disabled}
         value={text}
         onChange={handleChange}
@@ -335,16 +347,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       >
         {renderButtons()}
 
-        <div className='flex items-center space-x-4 ml-auto'>
+        <HStack space={4} alignItems='center' className='ml-auto rtl:ml-0 rtl:mr-auto'>
           {maxTootChars && (
-            <div className='flex items-center space-x-1'>
+            <HStack space={1} alignItems='center'>
               <TextCharacterCounter max={maxTootChars} text={text} />
               <VisualCharacterCounter max={maxTootChars} text={text} />
-            </div>
+            </HStack>
           )}
 
           <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
-        </div>
+        </HStack>
+        {/* <HStack alignItems='center' space={4}>
+        </HStack> */}
       </div>
     </Stack>
   );

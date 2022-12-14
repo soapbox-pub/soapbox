@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+
 import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import StatusContent from 'soapbox/components/status_content';
-import { Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import List, { ListItem } from 'soapbox/components/list';
+import StatusContent from 'soapbox/components/status-content';
+import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import ConfirmationStep from './steps/confirmation-step';
@@ -20,9 +22,11 @@ const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
   done: { id: 'report.done', defaultMessage: 'Done' },
   next: { id: 'report.next', defaultMessage: 'Next' },
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
-  placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
   submit: { id: 'report.submit', defaultMessage: 'Submit' },
+  reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.' },
+  reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },
+  cancel: {  id: 'common.cancel', defaultMessage: 'Cancel' },
+  previous: {  id: 'report.previous', defaultMessage: 'Previous' },
 });
 
 enum Steps {
@@ -73,6 +77,12 @@ interface IReportModal {
   onClose: () => void
 }
 
+enum ReportedEntities {
+  Account = 'Account',
+  Status = 'Status',
+  ChatMessage = 'ChatMessage'
+}
+
 const ReportModal = ({ onClose }: IReportModal) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
@@ -85,9 +95,22 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const rules = useAppSelector((state) => state.rules.items);
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
+  const selectedChatMessage = useAppSelector((state) => state.reports.new.chat_message);
 
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
   const shouldRequireRule = rules.length > 0;
+
+  const reportedEntity = useMemo(() => {
+    if (selectedStatusIds.size === 0 && !selectedChatMessage) {
+      return ReportedEntities.Account;
+    } else if (selectedChatMessage) {
+      return ReportedEntities.ChatMessage;
+    } else {
+      return ReportedEntities.Status;
+    }
+  }, []);
+
+  const isReportingAccount = reportedEntity === ReportedEntities.Account;
+  const isReportingStatus = reportedEntity === ReportedEntities.Status;
 
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
 
@@ -100,6 +123,52 @@ const ReportModal = ({ onClose }: IReportModal) => {
       dispatch(blockAccount(account.id));
     }
   };
+
+  const renderSelectedStatuses = useCallback(() => {
+    switch (selectedStatusIds.size) {
+      case 0:
+        return (
+          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
+            <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
+          </div>
+        );
+      default:
+        return <SelectedStatus statusId={selectedStatusIds.first()} />;
+    }
+  }, [selectedStatusIds.size]);
+
+  const cancelText = useMemo(() => {
+    switch (currentStep) {
+      case Steps.ONE:
+        return intl.formatMessage(messages.cancel);
+      default:
+        return intl.formatMessage(messages.previous);
+    }
+  }, [currentStep]);
+
+  const cancelAction = () => {
+    switch (currentStep) {
+      case Steps.ONE:
+        onClose();
+        break;
+      case Steps.TWO:
+        setCurrentStep(Steps.ONE);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const confirmationText = useMemo(() => {
+    switch (currentStep) {
+      case Steps.TWO:
+        return intl.formatMessage(messages.submit);
+      case Steps.THREE:
+        return intl.formatMessage(messages.done);
+      default:
+        return intl.formatMessage(messages.next);
+    }
+  }, [currentStep]);
 
   const handleNextStep = () => {
     switch (currentStep) {
@@ -118,37 +187,57 @@ const ReportModal = ({ onClose }: IReportModal) => {
     }
   };
 
-  const renderSelectedStatuses = useCallback(() => {
-    switch (selectedStatusIds.size) {
-      case 0:
-        return (
-          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
-            <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
-          </div>
-        );
-      default:
-        return <SelectedStatus statusId={selectedStatusIds.first()} />;
-    }
-  }, [selectedStatusIds.size]);
+  const renderSelectedChatMessage = () => {
+    if (account) {
+      return (
+        <Stack space={4}>
+          <HStack alignItems='center' space={4} className='rounded-md border dark:border-2 border-solid border-gray-400 dark:border-gray-800 p-4'>
+            <div>
+              <Avatar src={account.avatar} className='w-8 h-8' />
+            </div>
 
-  const confirmationText = useMemo(() => {
-    switch (currentStep) {
-      case Steps.TWO:
-        return intl.formatMessage(messages.submit);
-      case Steps.THREE:
-        return intl.formatMessage(messages.done);
-      default:
-        return intl.formatMessage(messages.next);
+            <div className='bg-gray-200 dark:bg-primary-800 rounded-md p-4 flex-grow'>
+              <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
+            </div>
+          </HStack>
+
+          <List>
+            <ListItem
+              label={<Icon src={require('@tabler/icons/info-circle.svg')} className='text-gray-600' />}
+            >
+              <Text size='sm'>{intl.formatMessage(messages.reportContext)}</Text>
+            </ListItem>
+          </List>
+        </Stack>
+      );
     }
-  }, [currentStep]);
+  };
+
+  const renderSelectedEntity = () => {
+    switch (reportedEntity) {
+      case ReportedEntities.Status:
+        return renderSelectedStatuses();
+      case ReportedEntities.ChatMessage:
+        return renderSelectedChatMessage();
+    }
+  };
+
+  const renderTitle = () => {
+    switch (reportedEntity) {
+      case ReportedEntities.ChatMessage:
+        return intl.formatMessage(messages.reportMessage);
+      default:
+        return <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account?.acct}</strong> }} />;
+    }
+  };
 
   const isConfirmationButtonDisabled = useMemo(() => {
     if (currentStep === Steps.THREE) {
       return false;
     }
 
-    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (!isReportingAccount && selectedStatusIds.size === 0);
-  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingAccount]);
+    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (isReportingStatus && selectedStatusIds.size === 0);
+  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingStatus]);
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {
@@ -177,9 +266,10 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
   return (
     <Modal
-      title={<FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account.acct}</strong> }} />}
+      title={renderTitle()}
       onClose={onClose}
-      cancelAction={currentStep === Steps.THREE ? undefined : onClose}
+      cancelText={cancelText}
+      cancelAction={currentStep === Steps.THREE ? undefined : cancelAction}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}
       confirmationDisabled={isConfirmationButtonDisabled}
@@ -188,7 +278,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       <Stack space={4}>
         <ProgressBar progress={calculateProgress()} />
 
-        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedStatuses()}
+        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedEntity()}
 
         <StepToRender account={account} />
       </Stack>

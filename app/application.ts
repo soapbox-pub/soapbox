@@ -1,10 +1,10 @@
-import loadPolyfills from './soapbox/load_polyfills';
+import loadPolyfills from './soapbox/load-polyfills';
 
 // Load iframe event listener
 require('./soapbox/iframe');
 
 // @ts-ignore
-require.context('./images/', true);
+require.context('./assets/images/', true);
 
 // Load stylesheet
 require('react-datepicker/dist/react-datepicker.css');

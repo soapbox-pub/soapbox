@@ -4,6 +4,8 @@ import { FormattedNumber } from 'react-intl';
 /** Check if a value is REALLY a number. */
 export const isNumber = (value: unknown): value is number => typeof value === 'number' && !isNaN(value);
 
+export const secondsToDays = (seconds: number) => Math.floor(seconds / (3600 * 24));
+
 const roundDown = (num: number) => {
   if (num >= 100 && num < 1000) {
     num = Math.floor(num);
@@ -14,7 +16,7 @@ const roundDown = (num: number) => {
 };
 
 /** Display a number nicely for the UI, eg 1000 becomes 1K. */
-export const shortNumberFormat = (number: any): React.ReactNode => {
+export const shortNumberFormat = (number: any, max?: number): React.ReactNode => {
   if (!isNumber(number)) return '•';
 
   let value = number;
@@ -25,6 +27,10 @@ export const shortNumberFormat = (number: any): React.ReactNode => {
   } else if (number >= 1000000) {
     factor = 'M';
     value = roundDown(value / 1000000);
+  }
+
+  if (max && value > max) {
+    return <span>{max}+</span>;
   }
 
   return (

@@ -4,8 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import StatusList from 'soapbox/components/status_list';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
@@ -36,10 +35,7 @@ const Bookmarks: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 
   return (
-    <Column transparent withHeader={false}>
-      <div className='px-4 pt-4 sm:p-0'>
-        <SubNavigation message={intl.formatMessage(messages.heading)} />
-      </div>
+    <Column label={intl.formatMessage(messages.heading)} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
         <StatusList
           statusIds={statusIds}

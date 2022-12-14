@@ -1,10 +1,13 @@
 'use strict';
 
-import { __clear as clearApiMocks } from '../__mocks__/api';
+import { __clear as clearApiMocks } from '../api/__mocks__';
 
 // API mocking
 jest.mock('soapbox/api');
 afterEach(() => clearApiMocks());
+
+// Query mocking
+jest.mock('soapbox/queries/client');
 
 // Mock IndexedDB
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17

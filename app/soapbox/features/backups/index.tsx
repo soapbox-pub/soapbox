@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchBackups, createBackup } from 'soapbox/actions/backups';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
+import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-
-import Column from '../ui/components/better_column';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },
@@ -52,7 +51,11 @@ const Backups = () => {
   );
 
   return (
-    <Column icon='cloud-download' label={intl.formatMessage(messages.heading)} menu={makeColumnMenu()}>
+    <Column
+      label={intl.formatMessage(messages.heading)}
+      // @ts-ignore FIXME: make this menu available.
+      menu={makeColumnMenu()}
+    >
       <ScrollableList
         isLoading={isLoading}
         showLoading={showLoading}

@@ -5,7 +5,7 @@ const { join } = require('path');
 const {
   FE_BUILD_DIR,
   FE_SUBDIRECTORY,
-} = require(join(__dirname, 'app', 'soapbox', 'build_config'));
+} = require(join(__dirname, 'app', 'soapbox', 'build-config'));
 
 module.exports = {
   plugins: [],

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
@@ -10,6 +10,7 @@ import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { List as ImmutableList } from 'immutable';
+import type VideoType from 'soapbox/features/video';
 import type { Status, Attachment } from 'soapbox/types/entities';
 
 interface IStatusMedia {
@@ -42,7 +43,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   const size = status.media_attachments.size;
   const firstAttachment = status.media_attachments.first();
 
-  let media = null;
+  let media: JSX.Element | null = null;
 
   const setRef = (c: HTMLDivElement): void => {
     if (c) {
@@ -64,10 +65,6 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
   const openMedia = (media: ImmutableList<Attachment>, index: number) => {
     dispatch(openModal('MEDIA', { media, status, index }));
-  };
-
-  const openVideo = (media: Attachment, time: number): void => {
-    dispatch(openModal('VIDEO', { media, time }));
   };
 
   if (size > 0 && firstAttachment) {
@@ -105,20 +102,17 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         );
       } else {
         media = (
-          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer} >
-            {(Component: any) => (
+          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer}>
+            {(Component: typeof VideoType) => (
               <Component
                 preview={video.preview_url}
                 blurhash={video.blurhash}
                 src={video.url}
                 alt={video.description}
-                aspectRatio={video.meta.getIn(['original', 'aspect'])}
+                aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
                 height={285}
-                inline
-                sensitive={status.sensitive}
-                onOpenVideo={openVideo}
                 visible={showMedia}
-                onToggleVisibility={onToggleVisibility}
+                inline
               />
             )}
           </Bundle>
@@ -128,7 +122,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
       const attachment = firstAttachment;
 
       media = (
-        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer} >
+        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer}>
           {(Component: any) => (
             <Component
               src={attachment.url}
@@ -173,7 +167,16 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     );
   }
 
-  return media;
+  if (media) {
+    return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div onClick={e => e.stopPropagation()}>
+        {media}
+      </div>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default StatusMedia;

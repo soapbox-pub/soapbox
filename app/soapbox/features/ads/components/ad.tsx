@@ -2,10 +2,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Stack, HStack, Card, Avatar, Text, Icon } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import { Avatar, Card, HStack, Icon, IconButton, Stack, Text } from 'soapbox/components/ui';
 import StatusCard from 'soapbox/features/status/components/card';
-import { useAppSelector } from 'soapbox/hooks';
+import { useInstance } from 'soapbox/hooks';
+import { AdKeys } from 'soapbox/queries/ads';
 
 import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
@@ -16,7 +16,7 @@ interface IAd {
 /** Displays an ad in sponsored post format. */
 const Ad: React.FC<IAd> = ({ ad }) => {
   const queryClient = useQueryClient();
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
 
   const timer = useRef<NodeJS.Timeout | undefined>(undefined);
   const infobox = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
 
   /** Invalidate query cache for ads. */
   const bustCache = (): void => {
-    queryClient.invalidateQueries(['ads']);
+    queryClient.invalidateQueries(AdKeys.ads);
   };
 
   /** Toggle the info box on click. */
@@ -107,7 +107,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
             </Stack>
           </HStack>
 
-          <StatusCard card={ad.card} onOpenMedia={() => {}} horizontal />
+          <StatusCard card={ad.card} onOpenMedia={() => { }} horizontal />
         </Stack>
       </Card>
 

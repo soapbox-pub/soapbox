@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Text, IconButton } from 'soapbox/components/ui';
-import HStack from 'soapbox/components/ui/hstack/hstack';
-import Stack from 'soapbox/components/ui/stack/stack';
+import { HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 
 interface IWidgetTitle {
   /** Title text for the widget. */

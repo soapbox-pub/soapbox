@@ -10,6 +10,7 @@ const spaces = {
   3: 'space-y-3',
   4: 'space-y-4',
   5: 'space-y-5',
+  6: 'space-y-6',
   10: 'space-y-10',
 };
 
@@ -23,6 +24,7 @@ const alignItemsOptions = {
   bottom: 'items-end',
   center: 'items-center',
   start: 'items-start',
+  end: 'items-end',
 };
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {

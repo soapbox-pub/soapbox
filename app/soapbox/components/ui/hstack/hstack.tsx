@@ -14,6 +14,7 @@ const alignItemsOptions = {
   bottom: 'items-end',
   center: 'items-center',
   start: 'items-start',
+  stretch: 'items-stretch',
 };
 
 const spaces = {
@@ -21,13 +22,15 @@ const spaces = {
   1: 'space-x-1',
   1.5: 'space-x-1.5',
   2: 'space-x-2',
+  2.5: 'space-x-2.5',
   3: 'space-x-3',
   4: 'space-x-4',
+  5: 'space-x-5',
   6: 'space-x-6',
   8: 'space-x-8',
 };
 
-interface IHStack {
+interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   /** Vertical alignment of children. */
   alignItems?: keyof typeof alignItemsOptions
   /** Extra class names on the <div> element. */
@@ -58,7 +61,7 @@ const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
     <Elem
       {...filteredProps}
       ref={ref}
-      className={classNames('flex', {
+      className={classNames('flex rtl:space-x-reverse', {
         // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore

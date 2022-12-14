@@ -1,24 +1,13 @@
-.status__display-name,
-.detailed-status__display-name,
 .account__display-name {
   text-decoration: none;
 }
 
-.status__display-name,
 .account__display-name {
   strong {
     @apply text-gray-800 dark:text-gray-200;
   }
 }
 
-.muted {
-  .emojione {
-    opacity: 0.5;
-  }
-}
-
-.status__display-name,
-.detailed-status__display-name,
 a.account__display-name {
   &:hover strong {
     text-decoration: underline;

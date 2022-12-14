@@ -11,8 +11,9 @@ const rules: RuleSetRule[] = [{
   test: /\.(png|svg)/,
   type: 'asset/resource',
   include: [
-    resolve('app', 'images'),
+    resolve('app', 'assets', 'images'),
     resolve('node_modules', 'emoji-datasource'),
+    resolve('node_modules', 'leaflet'),
   ],
   generator: {
     filename: 'packs/images/[name]-[contenthash:8][ext]',
@@ -21,7 +22,7 @@ const rules: RuleSetRule[] = [{
   test: /\.(ttf|eot|svg|woff|woff2)/,
   type: 'asset/resource',
   include: [
-    resolve('app', 'fonts'),
+    resolve('app', 'assets', 'fonts'),
     resolve('node_modules', 'fork-awesome'),
     resolve('node_modules', 'line-awesome'),
     resolve('node_modules', '@fontsource'),
@@ -32,7 +33,7 @@ const rules: RuleSetRule[] = [{
 }, {
   test: /\.(ogg|oga|mp3)/,
   type: 'asset/resource',
-  include: resolve('app', 'sounds'),
+  include: resolve('app', 'assets', 'sounds'),
   generator: {
     filename: 'packs/sounds/[name]-[contenthash:8][ext]',
   },
@@ -46,7 +47,7 @@ const rules: RuleSetRule[] = [{
 }, {
   test: /\.svg$/,
   type: 'asset/resource',
-  include: resolve('app', 'icons'),
+  include: resolve('app', 'assets', 'icons'),
   generator: {
     filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },

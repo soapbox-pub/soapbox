@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchReports } from 'soapbox/actions/admin';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Report from '../components/report';
@@ -35,6 +35,7 @@ const Reports: React.FC = () => {
       showLoading={showLoading}
       scrollKey='admin-reports'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
+      className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
       {reports.map(report => report && <Report id={report} key={report} />)}
     </ScrollableList>

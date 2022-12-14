@@ -10,9 +10,9 @@ import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import StatusContainer from 'soapbox/containers/status_container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import AccountContainer from 'soapbox/containers/account-container';
+import StatusContainer from 'soapbox/containers/status-container';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
@@ -51,6 +51,9 @@ const icons: Record<NotificationType, string> = {
   'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
+  'pleroma:event_reminder': require('@tabler/icons/calendar-time.svg'),
+  'pleroma:participation_request': require('@tabler/icons/calendar-event.svg'),
+  'pleroma:participation_accepted': require('@tabler/icons/calendar-event.svg'),
 };
 
 const nameMessage = defineMessage({
@@ -107,6 +110,18 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
     id: 'notification.update',
     defaultMessage: '{name} edited a post you interacted with',
   },
+  'pleroma:event_reminder': {
+    id: 'notification.pleroma:event_reminder',
+    defaultMessage: 'An event you are participating in starts soon',
+  },
+  'pleroma:participation_request': {
+    id: 'notification.pleroma:participation_request',
+    defaultMessage: '{name} wants to join your event',
+  },
+  'pleroma:participation_accepted': {
+    id: 'notification.pleroma:participation_accepted',
+    defaultMessage: 'You were accepted to join the event',
+  },
 });
 
 const buildMessage = (
@@ -157,7 +172,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const history = useHistory();
   const intl = useIntl();
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
 
   const type = notification.type;
   const { account, status } = notification;
@@ -302,6 +317,9 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'update':
       case 'pleroma:emoji_reaction':
+      case 'pleroma:event_reminder':
+      case 'pleroma:participation_accepted':
+      case 'pleroma:participation_request':
         return status && typeof status === 'object' ? (
           <StatusContainer
             id={status.id}

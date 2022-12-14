@@ -25,7 +25,7 @@ import { normalizeId } from 'soapbox/utils/normalizers';
 
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
-import type { Config } from 'soapbox/utils/config_db';
+import type { Config } from 'soapbox/utils/config-db';
 
 const ReducerRecord = ImmutableRecord({
   reports: ImmutableMap<string, ReducerAdminReport>(),

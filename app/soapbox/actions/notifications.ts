@@ -3,9 +3,9 @@ import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
-import compareId from 'soapbox/compare_id';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { compareId } from 'soapbox/utils/comparators';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';
@@ -89,6 +89,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!notification.type) return; // drop invalid notifications
     if (notification.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
+    if (notification.type === 'chat') return; // Drop Truth Social chat notifications.
 
     const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
     const filters = getFilters(getState(), { contextType: 'notifications' });
