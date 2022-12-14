@@ -46,7 +46,7 @@ const HomePage: React.FC = ({ children }) => {
                   <Avatar src={avatar} size={46} />
                 </Link>
 
-                <div className='pt-0.5'>
+                <div className='translate-y-0.5 w-full'>
                   <ComposeForm
                     id='home'
                     shouldCondense
