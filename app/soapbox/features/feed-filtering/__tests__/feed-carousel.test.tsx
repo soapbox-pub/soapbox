@@ -70,6 +70,8 @@ describe('<FeedCarousel />', () => {
           mock.onGet('/api/v1/accounts/1/statuses').reply(200, [], {
             link: '<https://example.com/api/v1/accounts/1/statuses?since_id=1>; rel=\'prev\'',
           });
+
+          mock.onPost('/api/v1/truth/carousels/avatars/seen').reply(200);
         });
       });
 
