@@ -310,6 +310,26 @@ const EditProfile: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.header)}>
       <Form onSubmit={handleSubmit}>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <ProfilePreview account={previewAccount} />
+
+          <div className='space-y-4'>
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
+            >
+              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
+            </FormGroup>
+
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
+            >
+              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
+            </FormGroup>
+          </div>
+        </div>
+
         <FormGroup
           labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
         >
@@ -368,26 +388,6 @@ const EditProfile: React.FC = () => {
             placeholder={intl.formatMessage(messages.bioPlaceholder)}
           />
         </FormGroup>
-
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <ProfilePreview account={previewAccount} />
-
-          <div className='space-y-4'>
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
-            >
-              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
-            </FormGroup>
-
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-            >
-              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
-            </FormGroup>
-          </div>
-        </div>
 
         <List>
           {features.followRequests && (

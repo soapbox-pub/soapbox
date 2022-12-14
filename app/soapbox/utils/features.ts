@@ -206,6 +206,19 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Whether to show the Feed Carousel for suggested Statuses.
+     * @see GET /api/v1/truth/carousels/avatars
+     * @see GET /api/v1/truth/carousels/suggestions
+     */
+    carousel: v.software === TRUTHSOCIAL,
+
+    /**
+     * Ability to mark a carousel avatar as "seen."
+     * @see POST /api/v1/truth/carousels/avatars/seen
+     */
+    carouselSeen: v.software === TRUTHSOCIAL,
+
+    /**
      * Ability to accept a chat.
      * POST /api/v1/pleroma/chats/:id/accept
      */
@@ -370,9 +383,6 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
-
-    /** Whether or not to show the Feed Carousel for suggested Statuses */
-    feedUserFiltering: v.software === TRUTHSOCIAL,
 
     /**
      * Can edit and manage timeline filters (aka "muted words").
