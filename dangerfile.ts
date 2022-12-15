@@ -11,7 +11,7 @@ if (docs.edited) {
 const changelog = danger.git.fileMatch('CHANGELOG.md');
 
 if (!changelog.edited) {
-  warn('You have not updated `CHANGELOG.md`. If this change directly impacts users, you should update the changelog. Otherwise you can ignore this message. See: https://keepachangelog.com');
+  warn('You have not updated `CHANGELOG.md`. If this change directly impacts admins or users, please update the changelog. Otherwise you can ignore this message. See: https://keepachangelog.com');
 }
 
 // UI components
