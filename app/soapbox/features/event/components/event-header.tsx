@@ -95,6 +95,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const username = account.username;
 
   const handleHeaderClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
     e.stopPropagation();
 
     dispatch(openModal('MEDIA', { media: ImmutableList([event.banner]) }));

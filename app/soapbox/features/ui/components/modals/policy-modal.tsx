@@ -56,7 +56,6 @@ const DirectMessageUpdates = () => {
             </defs>
           </svg>
 
-
           <Text weight='bold'>Privacy Policy Updates</Text>
         </HStack>
 

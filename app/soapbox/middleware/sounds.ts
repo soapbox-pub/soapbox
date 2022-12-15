@@ -7,7 +7,6 @@ import { play, soundCache } from 'soapbox/utils/sounds';
 import type { ThunkMiddleware } from 'redux-thunk';
 import type { Sounds } from 'soapbox/utils/sounds';
 
-
 interface Action extends AnyAction {
   meta: {
     sound: Sounds
