@@ -404,6 +404,8 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     frontendConfigurations: v.software === PLEROMA,
 
+    groups: v.software === MASTODON,
+
     /**
      * Can hide follows/followers lists and counts.
      * @see PATCH /api/v1/accounts/update_credentials

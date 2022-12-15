@@ -134,6 +134,14 @@ const SidebarNavigation = () => {
 
             {renderMessagesLink()}
 
+            {features.groups && (
+              <SidebarNavigationLink
+                to='/groups'
+                icon={require('@tabler/icons/circles.svg')}
+                text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
+              />
+            )}
+
             <SidebarNavigationLink
               to={`/@${account.acct}`}
               icon={require('@tabler/icons/user.svg')}

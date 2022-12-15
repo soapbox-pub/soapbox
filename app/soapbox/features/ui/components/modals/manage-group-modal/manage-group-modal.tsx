@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import {
-  changeGroupEditorTitle,
-  changeGroupEditorDescription,
-  submitGroupEditor,
-} from 'soapbox/actions/groups';
-import { Form, FormGroup, Input, Modal, Stack, Textarea } from 'soapbox/components/ui';
+import { submitGroupEditor } from 'soapbox/actions/groups';
+import { Modal, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
+import DetailsStep from './steps/details-step';
+import PrivacyStep from './steps/privacy-step';
+
 const messages = defineMessages({
-  groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Name' },
-  groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
+  next: { id: 'manage_group.next', defaultMessage: 'Next' },
+  create: { id: 'manage_group.create', defaultMessage: 'Create' },
+  update: { id: 'manage_group.update', defaultMessage: 'Update' },
 });
+
+enum Steps {
+  ONE = 'ONE',
+  TWO = 'TWO',
+}
+
+const manageGroupSteps = {
+  ONE: PrivacyStep,
+  TWO: DetailsStep,
+};
 
 interface IManageGroupModal {
   onClose: (type?: string) => void,
@@ -22,20 +32,11 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const name = useAppSelector((state) => state.group_editor.displayName);
-  const description = useAppSelector((state) => state.group_editor.note);
-
   const id = useAppSelector((state) => state.group_editor.groupId);
 
   const isSubmitting = useAppSelector((state) => state.group_editor.isSubmitting);
 
-  const onChangeName: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    dispatch(changeGroupEditorTitle(target.value));
-  };
-
-  const onChangeDescription: React.ChangeEventHandler<HTMLTextAreaElement> = ({ target }) => {
-    dispatch(changeGroupEditorDescription(target.value));
-  };
+  const [currentStep, setCurrentStep] = useState<Steps>(id ? Steps.TWO : Steps.ONE);
 
   const onClickClose = () => {
     onClose('manage_group');
@@ -45,45 +46,44 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
     dispatch(submitGroupEditor(true));
   };
 
-  const body = (
-    <Form>
-      <FormGroup
-        labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name' />}
-      >
-        <Input
-          type='text'
-          placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
-          value={name}
-          onChange={onChangeName}
-        />
-      </FormGroup>
-      <FormGroup
-        labelText={<FormattedMessage id='manage_group.fields.description_label' defaultMessage='Group description' />}
-      >
-        <Textarea
-          autoComplete='off'
-          placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
-          value={description}
-          onChange={onChangeDescription}
-        />
-      </FormGroup>
-    </Form>
-  );
+  const confirmationText = useMemo(() => {
+    switch (currentStep) {
+      case Steps.TWO:
+        return intl.formatMessage(id ? messages.update : messages.create);
+      default:
+        return intl.formatMessage(messages.next);
+    }
+  }, [currentStep]);
+
+  const handleNextStep = () => {
+    switch (currentStep) {
+      case Steps.ONE:
+        setCurrentStep(Steps.TWO);
+        break;
+      case Steps.TWO:
+        handleSubmit();
+        onClose();
+        break;
+      default:
+        break;
+    }
+  };
+
+  const StepToRender = manageGroupSteps[currentStep];
 
   return (
     <Modal
       title={id
-        ? <FormattedMessage id='navigation_bar.manage_group' defaultMessage='Manage group' />
-        : <FormattedMessage id='navigation_bar.create_group' defaultMessage='Create new group' />}
-      confirmationAction={handleSubmit}
-      confirmationText={id
-        ? <FormattedMessage id='manage_group.update' defaultMessage='Update' />
-        : <FormattedMessage id='manage_group.create' defaultMessage='Create' />}
+        ? <FormattedMessage id='navigation_bar.manage_group' defaultMessage='Manage Group' />
+        : <FormattedMessage id='navigation_bar.create_group' defaultMessage='Create Group' />}
+      confirmationAction={handleNextStep}
+      confirmationText={confirmationText}
       confirmationDisabled={isSubmitting}
+      confirmationFullWidth
       onClose={onClickClose}
     >
       <Stack space={2}>
-        {body}
+        <StepToRender />
       </Stack>
     </Modal>
   );

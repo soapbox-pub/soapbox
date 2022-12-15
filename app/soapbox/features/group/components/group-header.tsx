@@ -1,16 +1,13 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import StillImage from 'soapbox/components/still-image';
-import { Avatar, Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 
-import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 import type { Group } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -24,8 +21,6 @@ interface IGroupHeader {
 const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-
-  const ownAccount = useOwnAccount();
 
   if (!group) {
     return (
@@ -77,21 +72,14 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     }
   };
 
-  const makeMenu = () => {
-    const menu: MenuType = [];
-
-    return menu;
-  };
-
   const makeActionButton = () => {
     if (group.relationship?.role === 'admin') {
       return (
         <Button
-          size='sm'
-          theme='primary'
+          theme='secondary'
           // to={`/@${account.acct}/events/${status.id}`}
         >
-          <FormattedMessage  id='group.manage' defaultMessage='Manage' />
+          <FormattedMessage  id='group.manage' defaultMessage='Edit group' />
         </Button>
       );
     }
@@ -99,13 +87,12 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     return null;
   };
 
-  const menu = makeMenu();
   const actionButton = makeActionButton();
 
   return (
     <div className='-mt-4 -mx-4'>
-      <div>
-        <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
+      <div className='relative'>
+        <div className='relative flex flex-col justify-center h-32 w-full lg:h-[200px] md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
           {group.header && (
             <a href={group.header} onClick={handleHeaderClick} target='_blank'>
               <StillImage
@@ -114,70 +101,43 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
               />
             </a>
           )}
-
-          <div className='absolute top-2 left-2'>
-            <HStack alignItems='center' space={1}>
-              {/* {info} */}
-            </HStack>
-          </div>
+        </div>
+        <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
+          <a href={group.avatar} onClick={handleAvatarClick} target='_blank'>
+            <Avatar className='ring-[3px] ring-white dark:ring-primary-900' src={group.avatar} size={72} />
+          </a>
         </div>
       </div>
 
-      <div className='px-4 sm:px-6'>
-        <HStack className='-mt-12' alignItems='bottom' space={5}>
-          <div className='flex'>
-            <a href={group.avatar} onClick={handleAvatarClick} target='_blank'>
-              <Avatar
-                src={group.avatar}
-                size={96}
-                className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900'
-              />
-            </a>
-          </div>
-
-          <div className='mt-6 flex justify-end w-full sm:pb-1'>
-            <HStack space={2} className='mt-10'>
-              {ownAccount && (
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
-                    src={require('@tabler/icons/dots.svg')}
-                    theme='outlined'
-                    className='px-2'
-                    iconClassName='w-4 h-4'
-                    children={null}
-                  />
-
-                  <MenuList className='w-56'>
-                    {menu.map((menuItem, idx) => {
-                      if (typeof menuItem?.text === 'undefined') {
-                        return <MenuDivider key={idx} />;
-                      } else {
-                        const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                        const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.newTab ? '_blank' : '_self' };
-
-                        return (
-                          <Comp key={idx} {...itemProps} className='group'>
-                            <HStack space={3} alignItems='center'>
-                              {menuItem.icon && (
-                                <SvgIcon src={menuItem.icon} className='h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
-                              )}
-
-                              <div className='truncate'>{menuItem.text}</div>
-                            </HStack>
-                          </Comp>
-                        );
-                      }
-                    })}
-                  </MenuList>
-                </Menu>
-              )}
-
-              {actionButton}
+      <Stack className='p-3 pt-12' alignItems='center' space={2}>
+        <Text className='mb-1' size='xl' weight='bold' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+        <HStack className='text-gray-700 dark:text-gray-600' space={3} wrap>
+          {group.relationship?.role === 'admin' ? (
+            <HStack space={1} alignItems='center'>
+              <Icon className='h-4 w-4' src={require('@tabler/icons/users.svg')} />
+              <span>Owner</span>
             </HStack>
-          </div>
+          ) : group.relationship?.role === 'moderator' && (
+            <HStack space={1} alignItems='center'>
+              <Icon className='h-4 w-4' src={require('@tabler/icons/gavel.svg')} />
+              <span>Moderator</span>
+            </HStack>
+          )}
+          {group.locked ? (
+            <HStack space={1} alignItems='center'>
+              <Icon className='h-4 w-4' src={require('@tabler/icons/lock.svg')} />
+              <span>Private</span>
+            </HStack>
+          ) : (
+            <HStack space={1} alignItems='center'>
+              <Icon className='h-4 w-4' src={require('@tabler/icons/world.svg')} />
+              <span>Public</span>
+            </HStack>
+          )}
         </HStack>
-      </div>
+        <Text theme='muted' dangerouslySetInnerHTML={{ __html: group.note_emojified }} />
+        {actionButton}
+      </Stack>
     </div>
   );
 };

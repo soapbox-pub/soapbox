@@ -2,6 +2,7 @@ import { Map as ImmutableMap } from 'immutable';
 
 import {
   GROUP_CREATE_SUCCESS,
+  GROUP_UPDATE_SUCCESS,
   GROUP_DELETE_SUCCESS,
   GROUP_RELATIONSHIPS_FETCH_SUCCESS,
   GROUP_JOIN_REQUEST,
@@ -32,6 +33,7 @@ const normalizeRelationships = (state: State, relationships: APIEntities) => {
 export default function groupRelationships(state: State = ImmutableMap(), action: AnyAction) {
   switch (action.type) {
     case GROUP_CREATE_SUCCESS:
+    case GROUP_UPDATE_SUCCESS:
       return state.set(action.group.id, normalizeGroupRelationship({ id: action.group.id, member: true, requested: false, role: 'admin' }));
     case GROUP_DELETE_SUCCESS:
       return state.delete(action.id);

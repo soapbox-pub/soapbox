@@ -26,7 +26,7 @@ import { Card, HStack, Stack, Text } from './ui';
 import type { Map as ImmutableMap } from 'immutable';
 import type {
   Account as AccountEntity,
-  Group as GroupEntity,
+  // Group as GroupEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -300,7 +300,7 @@ const Status: React.FC<IStatus> = (props) => {
     }
   }
 
-  const group = actualStatus.group as GroupEntity | null;
+  // const group = actualStatus.group as GroupEntity | null;
 
   const handlers = muted ? undefined : {
     reply: handleHotkeyReply,
@@ -345,10 +345,10 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
         )}
 
-        {group && (
+        {/* {group && (
           <div className='pt-4 px-4'>
             <HStack alignItems='center' space={1}>
-              <Icon src={require('@tabler/icons/users.svg')} className='text-gray-600 dark:text-gray-400' />
+              <Icon src={require('@tabler/icons/circles.svg')} className='text-gray-600 dark:text-gray-400' />
 
               <Text size='sm' theme='muted' weight='medium'>
                 <FormattedMessage
@@ -363,7 +363,7 @@ const Status: React.FC<IStatus> = (props) => {
               </Text>
             </HStack>
           </div>
-        )}
+        )} */}
 
         <Card
           variant={variant}

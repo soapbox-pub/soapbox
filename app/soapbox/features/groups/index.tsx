@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { fetchGroups } from 'soapbox/actions/groups';
-import { openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
+import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
+import { Column, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
+import type { List as ImmutableList } from 'immutable';
 import type { RootState } from 'soapbox/store';
-
-const messages = defineMessages({
-  heading: { id: 'column.groups', defaultMessage: 'Groups' },
-});
+import type { Group as GroupEntity } from 'soapbox/types/entities';
 
 const getOrderedGroups = createSelector([
   (state: RootState) => state.groups,
@@ -25,22 +22,22 @@ const getOrderedGroups = createSelector([
     return groups;
   }
 
-  return groups.toList().filter(item => !!item && group_relationships.get(item.id)?.member).sort((a, b) => a.display_name.localeCompare(b.display_name));
+  return (groups
+    .toList()
+    .filter((item: GroupEntity | false) => !!item) as ImmutableList<GroupEntity>)
+    .map((item) => item.set('relationship', group_relationships.get(item.id) || null))
+    .filter((item) => item.relationship?.member)
+    .sort((a, b) => a.display_name.localeCompare(b.display_name));
 });
 
 const Lists: React.FC = () => {
   const dispatch = useDispatch();
-  const intl = useIntl();
 
   const groups = useAppSelector((state) => getOrderedGroups(state));
 
   useEffect(() => {
     dispatch(fetchGroups());
   }, []);
-
-  const onCreateGroup = () => {
-    dispatch(openModal('MANAGE_GROUP'));
-  };
 
   if (!groups) {
     return (
@@ -50,35 +47,38 @@ const Lists: React.FC = () => {
     );
   }
 
-  const emptyMessage = <FormattedMessage id='empty_column.groups' defaultMessage='You are not in any group yet. When you join one, it will show up here.' />;
+  const emptyMessage = (
+    <Stack space={6} alignItems='center' justifyContent='center' className='p-6 h-full'>
+      <Stack space={2} className='max-w-sm'>
+        <Text size='2xl' weight='bold' tag='h2' align='center'>
+          <FormattedMessage
+            id='groups.empty.title'
+            defaultMessage='No Groups yet'
+          />
+        </Text>
+
+        <Text size='sm' theme='muted' align='center'>
+          <FormattedMessage
+            id='groups.empty.subtitle'
+            defaultMessage='Start discovering groups to join or create your own.'
+          />
+        </Text>
+      </Stack>
+    </Stack>
+  );
 
   return (
-    <Column label={intl.formatMessage(messages.heading)}>
-      <HStack>
-        <Button
-          className='ml-auto'
-          theme='primary'
-          size='sm'
-          onClick={onCreateGroup}
-        >
-          <FormattedMessage id='groups.create_group' defaultMessage='Create group' />
-        </Button>
-      </HStack>
-      <div className='space-y-4'>
-        <ScrollableList
-          scrollKey='lists'
-          emptyMessage={emptyMessage}
-          itemClassName='py-2'
-        >
-          {groups.map((group: any) => (
-            <Link key={group.id} to={`/groups/${group.id}`} className='flex items-center gap-1.5 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'>
-              <Icon src={require('@tabler/icons/users.svg')} fixedWidth />
-              <span className='flex-grow' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
-            </Link>
-          ))}
-        </ScrollableList>
-      </div>
-    </Column>
+    <ScrollableList
+      scrollKey='lists'
+      emptyMessage={emptyMessage}
+      itemClassName='py-3 last:pb-0'
+    >
+      {groups.map((group) => (
+        <Link to={`/groups/${group.id}`}>
+          <GroupCard group={group as GroupEntity} />
+        </Link>
+      ))}
+    </ScrollableList>
   );
 };
 

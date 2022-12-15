@@ -11,9 +11,15 @@ import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
+type GroupMedia = 'header' | 'avatar';
+
 const GROUP_CREATE_REQUEST = 'GROUP_CREATE_REQUEST';
 const GROUP_CREATE_SUCCESS = 'GROUP_CREATE_SUCCESS';
 const GROUP_CREATE_FAIL    = 'GROUP_CREATE_FAIL';
+
+const GROUP_UPDATE_REQUEST = 'GROUP_UPDATE_REQUEST';
+const GROUP_UPDATE_SUCCESS = 'GROUP_UPDATE_SUCCESS';
+const GROUP_UPDATE_FAIL    = 'GROUP_UPDATE_FAIL';
 
 const GROUP_DELETE_REQUEST = 'GROUP_DELETE_REQUEST';
 const GROUP_DELETE_SUCCESS = 'GROUP_DELETE_SUCCESS';
@@ -95,15 +101,22 @@ const GROUP_MEMBERSHIP_REQUEST_REJECT_REQUEST = 'GROUP_MEMBERSHIP_REQUEST_REJECT
 const GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS = 'GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS';
 const GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL    = 'GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL';
 
-const GROUP_EDITOR_TITLE_CHANGE = 'GROUP_EDITOR_TITLE_CHANGE';
+const GROUP_EDITOR_TITLE_CHANGE       = 'GROUP_EDITOR_TITLE_CHANGE';
 const GROUP_EDITOR_DESCRIPTION_CHANGE = 'GROUP_EDITOR_DESCRIPTION_CHANGE';
-const GROUP_EDITOR_RESET        = 'GROUP_EDITOR_RESET';
+const GROUP_EDITOR_PRIVACY_CHANGE     = 'GROUP_EDITOR_PRIVACY_CHANGE';
+const GROUP_EDITOR_MEDIA_CHANGE       = 'GROUP_EDITOR_MEDIA_CHANGE';
 
-const createGroup = (displayName: string, note: string, shouldReset?: boolean) =>
+const GROUP_EDITOR_RESET = 'GROUP_EDITOR_RESET';
+
+const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(createGroupRequest());
 
-    api(getState).post('/api/v1/groups', { display_name: displayName, note })
+    api(getState).post('/api/v1/groups', params, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(createGroupSuccess(data));
@@ -126,6 +139,36 @@ const createGroupSuccess = (group: APIEntity) => ({
 
 const createGroupFail = (error: AxiosError) => ({
   type: GROUP_CREATE_FAIL,
+  error,
+});
+
+const updateGroup = (id: string, params: Record<string, any>, shouldReset?: boolean) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(updateGroupRequest());
+
+    api(getState).put(`/api/v1/groups/${id}`, params)
+      .then(({ data }) => {
+        dispatch(importFetchedGroups([data]));
+        dispatch(updateGroupSuccess(data));
+
+        if (shouldReset) {
+          dispatch(resetGroupEditor());
+        }
+        dispatch(closeModal('MANAGE_GROUP'));
+      }).catch(err => dispatch(updateGroupFail(err)));
+  };
+
+const updateGroupRequest = () => ({
+  type: GROUP_UPDATE_REQUEST,
+});
+
+const updateGroupSuccess = (group: APIEntity) => ({
+  type: GROUP_UPDATE_SUCCESS,
+  group,
+});
+
+const updateGroupFail = (error: AxiosError) => ({
+  type: GROUP_UPDATE_FAIL,
   error,
 });
 
@@ -768,6 +811,17 @@ const changeGroupEditorDescription = (value: string) => ({
   value,
 });
 
+const changeGroupEditorPrivacy = (value: boolean) => ({
+  type: GROUP_EDITOR_PRIVACY_CHANGE,
+  value,
+});
+
+const changeGroupEditorMedia = (mediaType: GroupMedia, file: File) => ({
+  type: GROUP_EDITOR_MEDIA_CHANGE,
+  mediaType,
+  value: file,
+});
+
 const resetGroupEditor = () => ({
   type: GROUP_EDITOR_RESET,
 });
@@ -776,9 +830,19 @@ const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, get
   const groupId     = getState().group_editor.groupId;
   const displayName = getState().group_editor.displayName;
   const note        = getState().group_editor.note;
+  const avatar      = getState().group_editor.avatar;
+  const header      = getState().group_editor.header;
+
+  const params: Record<string, any> = {
+    display_name: displayName,
+    note,
+  };
+
+  if (avatar) params.avatar = avatar;
+  if (header) params.header = header;
 
   if (groupId === null) {
-    dispatch(createGroup(displayName, note, shouldReset));
+    dispatch(createGroup(params, shouldReset));
   } else {
     // TODO: dispatch(updateList(listId, title, shouldReset));
   }
@@ -788,6 +852,9 @@ export {
   GROUP_CREATE_REQUEST,
   GROUP_CREATE_SUCCESS,
   GROUP_CREATE_FAIL,
+  GROUP_UPDATE_REQUEST,
+  GROUP_UPDATE_SUCCESS,
+  GROUP_UPDATE_FAIL,
   GROUP_DELETE_REQUEST,
   GROUP_DELETE_SUCCESS,
   GROUP_DELETE_FAIL,
@@ -850,11 +917,17 @@ export {
   GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL,
   GROUP_EDITOR_TITLE_CHANGE,
   GROUP_EDITOR_DESCRIPTION_CHANGE,
+  GROUP_EDITOR_PRIVACY_CHANGE,
+  GROUP_EDITOR_MEDIA_CHANGE,
   GROUP_EDITOR_RESET,
   createGroup,
   createGroupRequest,
   createGroupSuccess,
   createGroupFail,
+  updateGroup,
+  updateGroupRequest,
+  updateGroupSuccess,
+  updateGroupFail,
   deleteGroup,
   deleteGroupRequest,
   deleteGroupSuccess,
@@ -937,6 +1010,8 @@ export {
   rejectGroupMembershipRequestFail,
   changeGroupEditorTitle,
   changeGroupEditorDescription,
+  changeGroupEditorPrivacy,
+  changeGroupEditorMedia,
   resetGroupEditor,
   submitGroupEditor,
 };

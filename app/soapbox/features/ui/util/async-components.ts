@@ -550,10 +550,10 @@ export function GroupTimeline() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
 }
 
-export function GroupInfoPanel() {
-  return import(/* webpackChunkName: "features/groups" */'../../group/components/group-info-panel');
-}
-
 export function ManageGroupModal() {
   return import(/* webpackChunkName: "features/manage_group_modal" */'../components/modals/manage-group-modal/manage-group-modal');
+}
+
+export function NewGroupPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/panels/new-group-panel');
 }

@@ -214,7 +214,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.banner_label' defaultMessage='Event banner' />}
       >
-        <div className='flex items-center justify-center bg-gray-200 dark:bg-gray-900/50 rounded-lg text-black dark:text-white sm:shadow dark:sm:shadow-inset overflow-hidden h-24 sm:h-32 relative'>
+        <div className='flex items-center justify-center bg-primary-100 dark:bg-gray-800 rounded-lg text-primary-500 dark:text-white sm:shadow dark:sm:shadow-inset overflow-hidden h-24 sm:h-32 relative'>
           {banner ? (
             <>
               <img className='h-full w-full object-cover' src={banner.url} alt='' />
@@ -223,7 +223,6 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           ) : (
             <UploadButton disabled={isUploading} onSelectFile={handleFiles} />
           )}
-
         </div>
       </FormGroup>
       <FormGroup

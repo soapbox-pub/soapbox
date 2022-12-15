@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
 import { fetchGroup } from 'soapbox/actions/groups';
 import MissingIndicator from 'soapbox/components/missing-indicator';
@@ -7,12 +8,13 @@ import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
-  GroupInfoPanel,
   SignUpPanel,
   CtaBanner,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetGroup } from 'soapbox/selectors';
+
+import { Tabs } from '../components/ui';
 
 interface IGroupPage {
   params?: {
@@ -21,21 +23,21 @@ interface IGroupPage {
 }
 
 /** Page to display a group. */
-const ProfilePage: React.FC<IGroupPage> = ({ params, children }) => {
-  const id = params?.id || '';
-
+const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
+  const match = useRouteMatch();
   const dispatch = useAppDispatch();
+
+  const id = params?.id || '';
 
   const getGroup = useCallback(makeGetGroup(), []);
   const group = useAppSelector(state => getGroup(state, id));
-
   const me = useAppSelector(state => state.me);
 
   useEffect(() => {
     dispatch(fetchGroup(id));
   }, [id]);
 
-  if (group === false) {
+  if ((group as any) === false) {
     return (
       <MissingIndicator />
     );
@@ -45,17 +47,25 @@ const ProfilePage: React.FC<IGroupPage> = ({ params, children }) => {
     <>
       <Layout.Main>
         <Column label={group ? group.display_name : ''} withHeader={false}>
-          <div className='space-y-4'>
-            <GroupHeader group={group} />
+          <GroupHeader group={group} />
 
-            {group && (
-              <BundleContainer fetchComponent={GroupInfoPanel}>
-                {Component => <Component group={group} />}
-              </BundleContainer>
-            )}
+          <Tabs
+            items={[
+              {
+                text: 'All',
+                to: `/groups/${group?.id}`,
+                name: '/groups/:id',
+              },
+              {
+                text: 'Members',
+                to: `/groups/${group?.id}/members`,
+                name: '/groups/:id/members',
+              },
+            ]}
+            activeItem={match.path}
+          />
 
-            {children}
-          </div>
+          {children}
         </Column>
 
         {!me && (
@@ -77,4 +87,4 @@ const ProfilePage: React.FC<IGroupPage> = ({ params, children }) => {
   );
 };
 
-export default ProfilePage;
+export default GroupPage;
