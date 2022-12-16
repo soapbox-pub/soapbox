@@ -43,38 +43,6 @@
   }
 }
 
-.account__wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.account__avatar-wrapper {
-  float: left;
-  margin-right: 12px;
-}
-
-a .account__avatar {
-  cursor: pointer;
-}
-
-.account__avatar-overlay {
-  @include avatar-size(48px);
-
-  &-base {
-    @include avatar-radius;
-    @include avatar-size(36px);
-  }
-
-  &-overlay {
-    @include avatar-radius;
-    @include avatar-size(24px);
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-  }
-}
-
 .account-authorize__avatar {
   float: left;
   margin-right: 10px;
