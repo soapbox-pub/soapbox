@@ -29,6 +29,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
       className='rounded-full'
       value={value}
       onChange={onChange}
+      outerClassName='mt-0'
       theme='search'
       append={
         <button onClick={onClear}>

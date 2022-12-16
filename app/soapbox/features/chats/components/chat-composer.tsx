@@ -151,6 +151,9 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
   return (
     <div className='mt-auto px-4 shadow-3xl'>
+      {/* Spacer */}
+      <div className='h-5' />
+
       <HStack alignItems='stretch' justifyContent='between' space={4}>
         {features.chatsMedia && (
           <Stack justifyContent='end' alignItems='center' className='w-10 mb-1.5'>

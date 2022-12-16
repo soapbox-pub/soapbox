@@ -28,7 +28,7 @@ import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/types/entities';
-import { isRemote } from 'soapbox/utils/accounts';
+import { isDefaultHeader, isRemote } from 'soapbox/utils/accounts';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 
@@ -502,6 +502,29 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return info;
   };
 
+  const renderHeader = () => {
+    let header: React.ReactNode;
+
+    if (account.header) {
+      header = (
+        <StillImage
+          src={account.header}
+          alt={intl.formatMessage(messages.header)}
+        />
+      );
+
+      if (!isDefaultHeader(account.header)) {
+        header = (
+          <a href={account.header} onClick={handleHeaderClick} target='_blank'>
+            {header}
+          </a>
+        );
+      }
+    }
+
+    return header;
+  };
+
   const renderMessageButton = () => {
     if (features.chatsWithFollowers) { // Truth Social
       if (!ownAccount || !account || account.id === ownAccount?.id) {
@@ -570,14 +593,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       <div>
         <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
-          {account.header && (
-            <a href={account.header} onClick={handleHeaderClick} target='_blank'>
-              <StillImage
-                src={account.header}
-                alt={intl.formatMessage(messages.header)}
-              />
-            </a>
-          )}
+          {renderHeader()}
 
           <div className='absolute top-2 left-2'>
             <HStack alignItems='center' space={1}>
@@ -594,7 +610,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <Avatar
                 src={account.avatar}
                 size={96}
-                className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900'
+                className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900'
               />
             </a>
           </div>

@@ -34,14 +34,14 @@ const Events = () => {
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <HStack className='mb-4' space={2} justifyContent='between'>
-        <CardTitle title='Recent events' />
+        <CardTitle title={<FormattedMessage id='events.recent_events' defaultMessage='Recent events' />} />
         <Button
           className='ml-auto'
           theme='primary'
           size='sm'
           onClick={onComposeEvent}
         >
-          Create event
+          <FormattedMessage id='events.create_event' defaultMessage='Create event' />
         </Button>
       </HStack>
       <CardBody className='mb-2'>
@@ -52,7 +52,7 @@ const Events = () => {
         />
       </CardBody>
       <CardHeader>
-        <CardTitle title='Joined events' />
+        <CardTitle title={<FormattedMessage id='events.joined_events' defaultMessage='Joined events' />} />
       </CardHeader>
       <CardBody>
         <EventCarousel

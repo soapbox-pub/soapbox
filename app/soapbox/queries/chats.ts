@@ -8,6 +8,7 @@ import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import { reOrderChatListItems } from 'soapbox/utils/chats';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
 import { queryClient } from './client';
@@ -15,14 +16,13 @@ import { useFetchRelationships } from './relationships';
 
 import type { IAccount } from './accounts';
 
-export const messageExpirationOptions = [120, 604800, 1209600, 2592000, 7776000];
+export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
 
 export enum MessageExpirationValues {
-  'TWO_MINUTES' = messageExpirationOptions[0],
-  'SEVEN' = messageExpirationOptions[1],
-  'FOURTEEN' = messageExpirationOptions[2],
-  'THIRTY' = messageExpirationOptions[3],
-  'NINETY' = messageExpirationOptions[4]
+  'SEVEN' = messageExpirationOptions[0],
+  'FOURTEEN' = messageExpirationOptions[1],
+  'THIRTY' = messageExpirationOptions[2],
+  'NINETY' = messageExpirationOptions[3]
 }
 
 export interface IChat {
@@ -281,6 +281,7 @@ const useChatActions = (chatId: string) => {
       onSuccess: (response, variables) => {
         const nextChat = { ...chat, last_message: response.data };
         updatePageItem(ChatKeys.chatSearch(), nextChat, (o, n) => o.id === n.id);
+        reOrderChatListItems();
 
         queryClient.invalidateQueries(ChatKeys.chatMessages(variables.chatId));
       },

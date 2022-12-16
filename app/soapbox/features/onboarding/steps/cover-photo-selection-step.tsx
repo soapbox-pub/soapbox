@@ -8,6 +8,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
+import { isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
@@ -16,17 +17,6 @@ const messages = defineMessages({
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
-
-/** Default header filenames from various backends */
-const DEFAULT_HEADERS = [
-  '/headers/original/missing.png', // Mastodon
-  '/images/banner.png', // Pleroma
-];
-
-/** Check if the avatar is a default avatar */
-const isDefaultHeader = (url: string) => {
-  return DEFAULT_HEADERS.every(header => url.endsWith(header));
-};
 
 const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const intl = useIntl();

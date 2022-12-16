@@ -3,7 +3,7 @@ import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
 
 import { useOnboardingSuggestions } from '../suggestions';
 
-describe('useCarouselAvatars', () => {
+describe('useOnboardingSuggestions', () => {
   describe('with a successful query', () => {
     beforeEach(() => {
       __stub((mock) => {

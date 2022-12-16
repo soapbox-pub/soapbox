@@ -4,15 +4,17 @@ import { FormattedMessage } from 'react-intl';
 
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
 import { useAppDispatch, useAppSelector, useDimensions } from 'soapbox/hooks';
-import useCarouselAvatars from 'soapbox/queries/carousels';
+import { Avatar, useCarouselAvatars, useMarkAsSeen } from 'soapbox/queries/carousels';
 
 import { Card, HStack, Icon, Stack, Text } from '../../components/ui';
 import PlaceholderAvatar from '../placeholder/components/placeholder-avatar';
 
-const CarouselItem = ({ avatar }: { avatar: any }) => {
+const CarouselItem = ({ avatar, seen, onViewed }: { avatar: Avatar, seen: boolean, onViewed: (account_id: string) => void }) => {
   const dispatch = useAppDispatch();
 
-  const selectedAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId);
+  const markAsSeen = useMarkAsSeen();
+
+  const selectedAccountId = useAppSelector(state => state.timelines.getIn(['home', 'feedAccountId']) as string);
   const isSelected = avatar.account_id === selectedAccountId;
 
   const [isFetching, setLoading] = useState<boolean>(false);
@@ -27,17 +29,25 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
     if (isSelected) {
       dispatch(replaceHomeTimeline(null, { maxId: null }, () => setLoading(false)));
     } else {
+      onViewed(avatar.account_id);
+      markAsSeen.mutate(avatar.account_id);
       dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }, () => setLoading(false)));
     }
   };
 
   return (
-    <div aria-disabled={isFetching} onClick={handleClick} className='cursor-pointer' role='filter-feed-by-user'>
+    <div
+      aria-disabled={isFetching}
+      onClick={handleClick}
+      className='cursor-pointer'
+      role='filter-feed-by-user'
+      data-testid='carousel-item'
+    >
       <Stack className='w-16 h-auto' space={3}>
         <div className='block mx-auto relative w-14 h-14 rounded-full'>
           {isSelected && (
             <div className='absolute inset-0 bg-primary-600 bg-opacity-50 rounded-full flex items-center justify-center'>
-              <Icon src={require('@tabler/icons/x.svg')} className='text-white h-6 w-6' />
+              <Icon src={require('@tabler/icons/check.svg')} className='text-white h-6 w-6' />
             </div>
           )}
 
@@ -45,10 +55,12 @@ const CarouselItem = ({ avatar }: { avatar: any }) => {
             src={avatar.account_avatar}
             className={classNames({
               'w-14 h-14 min-w-[56px] rounded-full ring-2 ring-offset-4 dark:ring-offset-primary-900': true,
-              'ring-transparent': !isSelected,
+              'ring-transparent': !isSelected && seen,
               'ring-primary-600': isSelected,
+              'ring-accent-500': !seen && !isSelected,
             })}
             alt={avatar.acct}
+            data-testid='carousel-item-avatar'
           />
         </div>
 
@@ -63,6 +75,7 @@ const FeedCarousel = () => {
 
   const [cardRef, setCardRef, { width }] = useDimensions();
 
+  const [seenAccountIds, setSeenAccountIds] = useState<string[]>([]);
   const [pageSize, setPageSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -74,6 +87,20 @@ const FeedCarousel = () => {
 
   const handleNextPage = () => setCurrentPage((prevPage) => prevPage + 1);
   const handlePrevPage = () => setCurrentPage((prevPage) => prevPage - 1);
+
+  const markAsSeen = (account_id: string) => {
+    setSeenAccountIds((prev) => [...prev, account_id]);
+  };
+
+  useEffect(() => {
+    if (avatars.length > 0) {
+      setSeenAccountIds(
+        avatars
+          .filter((avatar) => avatar.seen !== false)
+          .map((avatar) => avatar.account_id),
+      );
+    }
+  }, [avatars]);
 
   useEffect(() => {
     if (width) {
@@ -130,6 +157,8 @@ const FeedCarousel = () => {
               <CarouselItem
                 key={avatar.account_id}
                 avatar={avatar}
+                seen={seenAccountIds?.includes(avatar.account_id)}
+                onViewed={markAsSeen}
               />
             ))
           )}

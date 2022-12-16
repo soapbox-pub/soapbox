@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -196,7 +197,7 @@ const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, chi
     >
       <HStack space={1} alignItems='center'>
         <Text theme='primary' weight='bold'>
-          <FormattedNumber value={count} />
+          {shortNumberFormat(count)}
         </Text>
 
         <Text tag='div' theme='muted'>

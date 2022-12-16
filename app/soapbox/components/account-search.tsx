@@ -5,7 +5,6 @@ import { defineMessages, useIntl } from 'react-intl';
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
 
 import SvgIcon from './ui/icon/svg-icon';
-import { InputThemes } from './ui/input/input';
 
 const messages = defineMessages({
   placeholder: { id: 'account_search.placeholder', defaultMessage: 'Search for an account' },
@@ -16,20 +15,10 @@ interface IAccountSearch {
   onSelected: (accountId: string) => void,
   /** Override the default placeholder of the input. */
   placeholder?: string,
-  /** Position of results relative to the input. */
-  resultsPosition?: 'above' | 'below',
-  /** Optional class for the input */
-  className?: string,
-  autoFocus?: boolean,
-  hidePortal?: boolean,
-  theme?: InputThemes,
-  showButtons?: boolean,
-  /** Search only among people who follow you (TruthSocial). */
-  followers?: boolean,
 }
 
 /** Input to search for accounts. */
-const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, showButtons = true, ...rest }) => {
+const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
   const intl = useIntl();
 
   const [value, setValue] = useState('');
@@ -71,7 +60,7 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, showBu
 
       <div className='relative'>
         <AutosuggestAccountInput
-          className={classNames('rounded-full', className)}
+          className='rounded-full'
           placeholder={intl.formatMessage(messages.placeholder)}
           value={value}
           onChange={handleChange}
@@ -80,25 +69,23 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, className, showBu
           {...rest}
         />
 
-        {showButtons && (
-          <div
-            role='button'
-            tabIndex={0}
-            className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
-            onClick={handleClear}
-          >
-            <SvgIcon
-              src={require('@tabler/icons/search.svg')}
-              className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
-            />
+        <div
+          role='button'
+          tabIndex={0}
+          className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
+          onClick={handleClear}
+        >
+          <SvgIcon
+            src={require('@tabler/icons/search.svg')}
+            className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+          />
 
-            <SvgIcon
-              src={require('@tabler/icons/x.svg')}
-              className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
-              aria-label={intl.formatMessage(messages.placeholder)}
-            />
-          </div>
-        )}
+          <SvgIcon
+            src={require('@tabler/icons/x.svg')}
+            className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+            aria-label={intl.formatMessage(messages.placeholder)}
+          />
+        </div>
       </div>
     </div>
   );
