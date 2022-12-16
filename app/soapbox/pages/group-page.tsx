@@ -61,7 +61,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
       to: `/groups/${group?.id}/members`,
       name: '/groups/:id/members',
     },
-  ]
+  ];
 
   return (
     <>

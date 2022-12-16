@@ -8,6 +8,8 @@ import { CardHeader, CardTitle } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
+import PlaceholderAccount from '../placeholder/components/placeholder-account';
+
 import type { List } from 'soapbox/reducers/group-memberships';
 
 type RouteParams = { id: string };
@@ -61,6 +63,10 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
           hasMore={!!memberships?.next}
           onLoadMore={handler}
           isLoading={memberships?.isLoading}
+          showLoading={memberships?.isLoading && !memberships?.items?.count()}
+          placeholderComponent={PlaceholderAccount}
+          placeholderCount={3}
+          itemClassName='pb-4 last:pb-0'
         >
           {memberships?.items?.map(accountId => <AccountContainer key={accountId} id={accountId} withRelationship={false} />)}
         </ScrollableList>
