@@ -10,6 +10,7 @@ import {
 import Icon from 'soapbox/components/icon';
 import { Avatar, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { List as ImmutableList } from 'immutable';
@@ -140,8 +141,8 @@ const DetailsStep = () => {
     dispatch((_, getState) => {
       const group = getState().groups.get(groupId);
       if (!group) return;
-      if (group.avatar) setAvatarSrc(group.avatar);
-      if (group.header) setHeaderSrc(group.header);
+      if (group.avatar && !isDefaultAvatar(group.avatar)) setAvatarSrc(group.avatar);
+      if (group.header && !isDefaultHeader(group.header)) setHeaderSrc(group.header);
     });
   }, [groupId]);
 

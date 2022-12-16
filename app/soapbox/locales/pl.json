@@ -383,7 +383,7 @@
   "compose_event.tabs.edit": "Edytuj szczegóły",
   "compose_event.tabs.pending": "Zarządzaj prośbami",
   "compose_event.update": "Aktualizuj",
-  "compose_event.upload_banner": "Wyślij baner wydarzenia",
+  "compose_event.upload_banner": "Wyślij obraz",
   "compose_form.direct_message_warning": "Ten wpis będzie widoczny tylko dla wszystkich wspomnianych użytkowników.",
   "compose_form.event_placeholder": "Opublikuj dla tego wydarzenia",
   "compose_form.hashtag_warning": "Ten wpis nie będzie widoczny pod podanymi hashtagami, ponieważ jest oznaczony jako niewidoczny. Tylko publiczne wpisy mogą zostać znalezione z użyciem hashtagów.",
