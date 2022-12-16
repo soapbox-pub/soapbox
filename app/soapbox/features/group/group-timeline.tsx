@@ -32,16 +32,14 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
     dispatch(fetchGroup(groupId));
     dispatch(expandGroupTimeline(groupId));
 
+    dispatch(groupCompose(`group:${groupId}`, groupId));
+
     const disconnect = dispatch(connectGroupStream(groupId));
 
     return () => {
       disconnect();
     };
-  }, []);
-
-  useEffect(() => {
-    dispatch(groupCompose(`group:${groupId}`, groupId));
-  }, []);
+  }, [groupId]);
 
   return (
     <Stack space={2}>

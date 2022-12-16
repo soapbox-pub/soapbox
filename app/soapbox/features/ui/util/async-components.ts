@@ -546,6 +546,10 @@ export function Groups() {
   return import(/* webpackChunkName: "features/groups" */'../../groups');
 }
 
+export function GroupMembers() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
+}
+
 export function GroupTimeline() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
 }

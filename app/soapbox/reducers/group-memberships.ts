@@ -30,11 +30,11 @@ const ReducerRecord = ImmutableRecord({
 });
 
 export type GroupRole = 'admin' | 'moderator' | 'user';
-type List = ReturnType<typeof ListRecord>;
+export type List = ReturnType<typeof ListRecord>;
 type State = ReturnType<typeof ReducerRecord>;
 
 const normalizeList = (state: State, path: string[], memberships: APIEntity[], next: string | null) => {
-  return state.setIn(path, ImmutableMap({
+  return state.setIn(path, ListRecord({
     next,
     items: ImmutableOrderedSet(memberships.map(item => item.account.id)),
     isLoading: false,
