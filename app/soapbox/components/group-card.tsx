@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Avatar, HStack, Icon, Stack, Text } from './ui';
 
@@ -31,23 +31,23 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
             {group.relationship?.role === 'admin' ? (
               <HStack space={1} alignItems='center'>
                 <Icon className='h-4 w-4' src={require('@tabler/icons/users.svg')} />
-                <span>Owner</span>
+                <span><FormattedMessage id='group.role.owner' defaultMessage='Owner' /></span>
               </HStack>
             ) : group.relationship?.role === 'moderator' && (
               <HStack space={1} alignItems='center'>
                 <Icon className='h-4 w-4' src={require('@tabler/icons/gavel.svg')} />
-                <span>Moderator</span>
+                <span><FormattedMessage id='group.role.moderator' defaultMessage='Moderator' /></span>
               </HStack>
             )}
             {group.locked ? (
               <HStack space={1} alignItems='center'>
                 <Icon className='h-4 w-4' src={require('@tabler/icons/lock.svg')} />
-                <span>Private</span>
+                <span><FormattedMessage id='group.privacy.locked' defaultMessage='Private' /></span>
               </HStack>
             ) : (
               <HStack space={1} alignItems='center'>
                 <Icon className='h-4 w-4' src={require('@tabler/icons/world.svg')} />
-                <span>Public</span>
+                <span><FormattedMessage id='group.privacy.public' defaultMessage='Public' /></span>
               </HStack>
             )}
           </HStack>

@@ -13,6 +13,9 @@ import type { Group } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   header: { id: 'group.header.alt', defaultMessage: 'Group header' },
+  confirmationHeading: { id: 'confirmations.leave_group.heading', defaultMessage: 'Leave group' },
+  confirmationMessage: { id: 'confirmations.leave_group.message', defaultMessage: 'You are about to leave the group. Do you want to continue?' },
+  confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },
 });
 
 interface IGroupHeader {
@@ -49,9 +52,9 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
 
   const onLeaveGroup = () => {
     dispatch(openModal('CONFIRM', {
-      heading: 'Leave group',
-      message: 'You are about to leave the group. Do you want to continue?',
-      confirm: 'Leave',
+      heading: intl.formatMessage(messages.confirmationHeading),
+      message: intl.formatMessage(messages.confirmationMessage),
+      confirm: intl.formatMessage(messages.confirmationConfirm),
       onConfirm: () => {
         dispatch(leaveGroup(group.id));
       },
@@ -99,7 +102,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           theme='primary'
           onClick={onJoinGroup}
         >
-          {group.locked ? 'Request to join group' : 'Join group'}
+          {group.locked ? <FormattedMessage id='group.request_join' defaultMessage='Request to join group' /> : <FormattedMessage id='group.join' defaultMessage='Join group' />}
         </Button>
       );
     }
@@ -110,7 +113,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           theme='secondary'
           onClick={onEditGroup}
         >
-          <FormattedMessage  id='group.manage' defaultMessage='Edit group' />
+          <FormattedMessage id='group.manage' defaultMessage='Edit group' />
         </Button>
       );
     }
@@ -120,7 +123,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
         theme='secondary'
         onClick={onLeaveGroup}
       >
-        <FormattedMessage  id='group.leave' defaultMessage='Leave group' />
+        <FormattedMessage id='group.leave' defaultMessage='Leave group' />
       </Button>
     );
   };
@@ -153,23 +156,23 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           {group.relationship?.role === 'admin' ? (
             <HStack space={1} alignItems='center'>
               <Icon className='h-4 w-4' src={require('@tabler/icons/users.svg')} />
-              <span>Owner</span>
+              <span><FormattedMessage id='group.role.owner' defaultMessage='Owner' /></span>
             </HStack>
           ) : group.relationship?.role === 'moderator' && (
             <HStack space={1} alignItems='center'>
               <Icon className='h-4 w-4' src={require('@tabler/icons/gavel.svg')} />
-              <span>Moderator</span>
+              <span><FormattedMessage id='group.role.moderator' defaultMessage='Moderator' /></span>
             </HStack>
           )}
           {group.locked ? (
             <HStack space={1} alignItems='center'>
               <Icon className='h-4 w-4' src={require('@tabler/icons/lock.svg')} />
-              <span>Private</span>
+              <span><FormattedMessage id='group.privacy.locked' defaultMessage='Private' /></span>
             </HStack>
           ) : (
             <HStack space={1} alignItems='center'>
               <Icon className='h-4 w-4' src={require('@tabler/icons/world.svg')} />
-              <span>Public</span>
+              <span><FormattedMessage id='group.privacy.public' defaultMessage='Public' /></span>
             </HStack>
           )}
         </HStack>

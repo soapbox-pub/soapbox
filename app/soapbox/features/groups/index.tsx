@@ -30,7 +30,7 @@ const getOrderedGroups = createSelector([
     .sort((a, b) => a.display_name.localeCompare(b.display_name));
 });
 
-const Lists: React.FC = () => {
+const Groups: React.FC = () => {
   const dispatch = useDispatch();
 
   const groups = useAppSelector((state) => getOrderedGroups(state));
@@ -69,7 +69,7 @@ const Lists: React.FC = () => {
 
   return (
     <ScrollableList
-      scrollKey='lists'
+      scrollKey='groups'
       emptyMessage={emptyMessage}
       itemClassName='py-3 last:pb-0'
     >
@@ -82,4 +82,4 @@ const Lists: React.FC = () => {
   );
 };
 
-export default Lists;
+export default Groups;

@@ -27,25 +27,27 @@ const PrivacyStep = () => {
       </Stack>
       <Form>
         <FormGroup
-          labelText='Privacy settings'
+          labelText={<FormattedMessage id='manage_group.privacy.label' defaultMessage='Privacy settings' />}
         >
           <List>
             <ListItem
-              label='Public'
-              hint='Discoverable. Anyone can join.'
+              label={<FormattedMessage id='manage_group.privacy.public.label' defaultMessage='Public' />}
+              hint={<FormattedMessage id='manage_group.privacy.public.hint' defaultMessage='Discoverable. Anyone can join.' />}
               onSelect={() => onChangePrivacy(false)}
               isSelected={!locked}
             />
 
             <ListItem
-              label='Private (Owner approval required)'
-              hint='Discoverable. Users can join after their request is approved.'
+              label={<FormattedMessage id='manage_group.privacy.private.label' defaultMessage='Private (Owner approval required)' />}
+              hint={<FormattedMessage id='manage_group.privacy.private.hint' defaultMessage='Discoverable. Users can join after their request is approved.' />}
               onSelect={() => onChangePrivacy(true)}
               isSelected={locked}
             />
           </List>
         </FormGroup>
-        <Text size='sm' theme='muted' align='center'>These settings cannot be changed later.</Text>
+        <Text size='sm' theme='muted' align='center'>
+          <FormattedMessage id='manage_group.privacy.hint' defaultMessage='These settings cannot be changed later.' />
+        </Text>
       </Form>
     </>
   );

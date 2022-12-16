@@ -17,7 +17,6 @@ interface IGroupMembers {
 }
 
 const messages = defineMessages({
-  heading: { id: 'column.group_members', defaultMessage: 'Group members' },
   adminSubheading: { id: 'groups.admin_subheading', defaultMessage: 'Group administrators' },
   moderatorSubheading: { id: 'groups.moderator_subheading', defaultMessage: 'Group moderators' },
   userSubheading: { id: 'groups.user_subheading', defaultMessage: 'Users' },

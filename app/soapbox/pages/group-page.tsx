@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
 import { fetchGroup } from 'soapbox/actions/groups';
@@ -16,6 +17,11 @@ import { makeGetGroup } from 'soapbox/selectors';
 
 import { Tabs } from '../components/ui';
 
+const messages = defineMessages({
+  all: { id: 'group.tabs.all', defaultMessage: 'All' },
+  members: { id: 'group.tabs.members', defaultMessage: 'Members' },
+});
+
 interface IGroupPage {
   params?: {
     id?: string,
@@ -24,6 +30,7 @@ interface IGroupPage {
 
 /** Page to display a group. */
 const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
+  const intl = useIntl();
   const match = useRouteMatch();
   const dispatch = useAppDispatch();
 
@@ -43,6 +50,19 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
     );
   }
 
+  const items = [
+    {
+      text: intl.formatMessage(messages.all),
+      to: `/groups/${group?.id}`,
+      name: '/groups/:id',
+    },
+    {
+      text: intl.formatMessage(messages.members),
+      to: `/groups/${group?.id}/members`,
+      name: '/groups/:id/members',
+    },
+  ]
+
   return (
     <>
       <Layout.Main>
@@ -50,18 +70,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
           <GroupHeader group={group} />
 
           <Tabs
-            items={[
-              {
-                text: 'All',
-                to: `/groups/${group?.id}`,
-                name: '/groups/:id',
-              },
-              {
-                text: 'Members',
-                to: `/groups/${group?.id}/members`,
-                name: '/groups/:id/members',
-              },
-            ]}
+            items={items}
             activeItem={match.path}
           />
 
