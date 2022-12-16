@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import classNames from 'clsx';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -7,21 +8,95 @@ import {
   changeGroupEditorMedia,
 } from 'soapbox/actions/groups';
 import Icon from 'soapbox/components/icon';
-import { Avatar, Form, FormGroup, HStack, IconButton, Input, Text, Textarea } from 'soapbox/components/ui';
+import { Avatar, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { List as ImmutableList } from 'immutable';
+
+interface IMediaInput {
+  src: string | null,
+  accept: string,
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  disabled: boolean
+}
 
 const messages = defineMessages({
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
 });
 
+const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
+  return (
+    <label
+      className='h-24 sm:h-36 w-full text-primary-500 dark:text-accent-blue bg-primary-100 dark:bg-gray-800 cursor-pointer relative rounded-lg sm:shadow dark:sm:shadow-inset overflow-hidden'
+    >
+      {src && <img className='h-full w-full object-cover' src={src} alt='' />}
+      <HStack
+        className={classNames('h-full w-full top-0 absolute transition-opacity', {
+          'opacity-0 hover:opacity-90 bg-primary-100 dark:bg-gray-800': src,
+        })}
+        space={3}
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Icon
+          src={require('@tabler/icons/photo-plus.svg')}
+          className='h-7 w-7'
+        />
+
+        <Text size='sm' theme='primary' weight='semibold' transform='uppercase'>
+          <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
+        </Text>
+
+        <input
+          name='header'
+          type='file'
+          accept={accept}
+          onChange={onChange}
+          disabled={disabled}
+          className='hidden'
+        />
+      </HStack>
+    </label>
+  );
+};
+
+const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
+  return (
+    <label className='h-[72px] w-[72px] bg-primary-500 cursor-pointer rounded-full absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 ring-2 ring-white dark:ring-primary-900'>
+      {src && <Avatar src={src} size={72} />}
+      <HStack
+        alignItems='center'
+        justifyContent='center'
+
+        className={classNames('h-full w-full left-0 top-0 rounded-full absolute transition-opacity', {
+          'opacity-0 hover:opacity-90 bg-primary-500': src,
+        })}
+      >
+        <Icon
+          src={require('@tabler/icons/camera-plus.svg')}
+          className='h-7 w-7 text-white'
+        />
+      </HStack>
+      <span className='sr-only'>Upload avatar</span>
+      <input
+        name='avatar'
+        type='file'
+        accept={accept}
+        onChange={onChange}
+        disabled={disabled}
+        className='hidden'
+      />
+    </label>
+  );
+};
+
 const DetailsStep = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const groupId = useAppSelector((state) => state.group_editor.groupId);
   const isUploading = useAppSelector((state) => state.group_editor.isUploading);
   const name = useAppSelector((state) => state.group_editor.displayName);
   const description = useAppSelector((state) => state.group_editor.note);
@@ -29,7 +104,9 @@ const DetailsStep = () => {
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
   const [headerSrc, setHeaderSrc] = useState<string | null>(null);
 
-  const attachmentTypes = useAppSelector(state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>)?.filter(type => type.startsWith('image/'));
+  const attachmentTypes = useAppSelector(
+    state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
+  )?.filter(type => type.startsWith('image/')).toArray().join(',');
 
   const onChangeName: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     dispatch(changeGroupEditorTitle(target.value));
@@ -56,55 +133,24 @@ const DetailsStep = () => {
       }).catch(console.error);
     }
   };
+
+  useEffect(() => {
+    if (!groupId) return;
+
+    dispatch((_, getState) => {
+      const group = getState().groups.get(groupId);
+      if (!group) return;
+      if (group.avatar) setAvatarSrc(group.avatar);
+      if (group.header) setHeaderSrc(group.header);
+    });
+  }, [groupId]);
+
+
   return (
     <Form>
-      <div className='flex items-center justify-center mb-12 bg-primary-100 dark:bg-gray-800 rounded-lg text-black dark:text-white sm:shadow dark:sm:shadow-inset h-24 sm:h-36 relative'>
-        {headerSrc ? (
-          <>
-            <img className='h-full w-full object-cover' src={headerSrc} alt='' />
-            <IconButton className='absolute top-2 right-2' src={require('@tabler/icons/x.svg')} onClick={() => {}} />
-          </>
-        ) : (
-          <HStack className='h-full w-full text-primary-500 dark:text-accent-blue cursor-pointer' space={3} alignItems='center' justifyContent='center' element='label'>
-            <Icon
-              src={require('@tabler/icons/photo-plus.svg')}
-              className='h-7 w-7'
-            />
-
-            <Text size='sm' theme='primary' weight='semibold' transform='uppercase'>
-              <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
-            </Text>
-            <input
-              name='header'
-              type='file'
-              accept={attachmentTypes && attachmentTypes.toArray().join(',')}
-              onChange={handleFileChange}
-              disabled={isUploading}
-              className='hidden'
-            />
-          </HStack>
-        )}
-        <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
-          {avatarSrc ? (
-            <Avatar className='ring-2 ring-white dark:ring-primary-900' src={avatarSrc} size={72} />
-          ) : (
-            <label className='flex items-center justify-center h-[72px] w-[72px] bg-primary-500 rounded-full ring-2 ring-white dark:ring-primary-900'>
-              <Icon
-                src={require('@tabler/icons/camera-plus.svg')}
-                className='h-7 w-7 text-white'
-              />
-              <span className='sr-only'>Upload avatar</span>
-              <input
-                name='avatar'
-                type='file'
-                accept={attachmentTypes && attachmentTypes.toArray().join(',')}
-                onChange={handleFileChange}
-                disabled={isUploading}
-                className='hidden'
-              />
-            </label>
-          )}
-        </div>
+      <div className='flex mb-12 relative'>
+        <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
+        <AvatarPicker src={avatarSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
       </div>
       <FormGroup
         labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}

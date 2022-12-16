@@ -4,14 +4,16 @@ import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
-import { closeModal } from './modals';
+import { closeModal, openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Group } from 'soapbox/types/entities';
 
 type GroupMedia = 'header' | 'avatar';
+
+const GROUP_EDITOR_SET = 'GROUP_EDITOR_SET';
 
 const GROUP_CREATE_REQUEST = 'GROUP_CREATE_REQUEST';
 const GROUP_CREATE_SUCCESS = 'GROUP_CREATE_SUCCESS';
@@ -107,6 +109,14 @@ const GROUP_EDITOR_PRIVACY_CHANGE     = 'GROUP_EDITOR_PRIVACY_CHANGE';
 const GROUP_EDITOR_MEDIA_CHANGE       = 'GROUP_EDITOR_MEDIA_CHANGE';
 
 const GROUP_EDITOR_RESET = 'GROUP_EDITOR_RESET';
+
+const editGroup = (group: Group) => (dispatch: AppDispatch) => {
+  dispatch({
+    type: GROUP_EDITOR_SET,
+    group,
+  });
+  dispatch(openModal('MANAGE_GROUP'));
+};
 
 const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -844,11 +854,12 @@ const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, get
   if (groupId === null) {
     dispatch(createGroup(params, shouldReset));
   } else {
-    // TODO: dispatch(updateList(listId, title, shouldReset));
+    dispatch(updateGroup(groupId, params, shouldReset));
   }
 };
 
 export {
+  GROUP_EDITOR_SET,
   GROUP_CREATE_REQUEST,
   GROUP_CREATE_SUCCESS,
   GROUP_CREATE_FAIL,
@@ -920,6 +931,7 @@ export {
   GROUP_EDITOR_PRIVACY_CHANGE,
   GROUP_EDITOR_MEDIA_CHANGE,
   GROUP_EDITOR_RESET,
+  editGroup,
   createGroup,
   createGroupRequest,
   createGroupSuccess,

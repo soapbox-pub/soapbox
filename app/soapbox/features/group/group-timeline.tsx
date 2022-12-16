@@ -24,8 +24,8 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
 
   const groupId = props.params.id;
 
-  const handleLoadMore = () => {
-    return dispatch(expandGroupTimeline(groupId));
+  const handleLoadMore = (maxId: string) => {
+    dispatch(expandGroupTimeline(groupId, { maxId }));
   };
 
   useEffect(() => {

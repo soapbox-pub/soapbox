@@ -2,6 +2,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { editGroup, joinGroup, leaveGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
@@ -42,6 +43,25 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     );
   }
 
+  const onJoinGroup = () => {
+    dispatch(joinGroup(group.id));
+  };
+
+  const onLeaveGroup = () => {
+    dispatch(openModal('CONFIRM', {
+      heading: 'Leave group',
+      message: 'You are about to leave the group. Do you want to continue?',
+      confirm: 'Leave',
+      onConfirm: () => {
+        dispatch(leaveGroup(group.id));
+      },
+    }));
+  };
+
+  const onEditGroup = () => {
+    dispatch(editGroup(group));
+  };
+
   const onAvatarClick = () => {
     const avatar = normalizeAttachment({
       type: 'image',
@@ -73,18 +93,36 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   };
 
   const makeActionButton = () => {
+    if (!group.relationship || !group.relationship.member) {
+      return (
+        <Button
+          theme='primary'
+          onClick={onJoinGroup}
+        >
+          {group.locked ? 'Request to join group' : 'Join group'}
+        </Button>
+      );
+    }
+
     if (group.relationship?.role === 'admin') {
       return (
         <Button
           theme='secondary'
-          // to={`/@${account.acct}/events/${status.id}`}
+          onClick={onEditGroup}
         >
           <FormattedMessage  id='group.manage' defaultMessage='Edit group' />
         </Button>
       );
     }
 
-    return null;
+    return (
+      <Button
+        theme='secondary'
+        onClick={onLeaveGroup}
+      >
+        <FormattedMessage  id='group.leave' defaultMessage='Leave group' />
+      </Button>
+    );
   };
 
   const actionButton = makeActionButton();

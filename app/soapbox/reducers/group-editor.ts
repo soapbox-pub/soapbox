@@ -12,6 +12,7 @@ import {
   GROUP_UPDATE_REQUEST,
   GROUP_UPDATE_FAIL,
   GROUP_UPDATE_SUCCESS,
+  GROUP_EDITOR_SET,
 } from 'soapbox/actions/groups';
 
 import type { AnyAction } from 'redux';
@@ -35,6 +36,12 @@ export default function groupEditor(state: State = ReducerRecord(), action: AnyA
   switch (action.type) {
     case GROUP_EDITOR_RESET:
       return ReducerRecord();
+    case GROUP_EDITOR_SET:
+      return state.withMutations(map => {
+        map.set('groupId', action.group.id);
+        map.set('displayName', action.group.display_name);
+        map.set('note', action.group.note);
+      });
     case GROUP_EDITOR_TITLE_CHANGE:
       return state.withMutations(map => {
         map.set('displayName', action.value);
