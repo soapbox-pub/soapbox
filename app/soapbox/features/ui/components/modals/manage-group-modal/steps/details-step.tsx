@@ -139,7 +139,7 @@ const DetailsStep = () => {
     if (!groupId) return;
 
     dispatch((_, getState) => {
-      const group = getState().groups.get(groupId);
+      const group = getState().groups.items.get(groupId);
       if (!group) return;
       if (group.avatar && !isDefaultAvatar(group.avatar)) setAvatarSrc(group.avatar);
       if (group.header && !isDefaultHeader(group.header)) setHeaderSrc(group.header);
