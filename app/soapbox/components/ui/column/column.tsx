@@ -1,3 +1,4 @@
+import classNames from 'clsx';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -5,6 +6,32 @@ import Helmet from 'soapbox/components/helmet';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
+
+type IColumnHeader = Pick<IColumn, 'label' | 'backHref' |'className'>;
+
+/** Contains the column title with optional back button. */
+const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) => {
+  const history = useHistory();
+
+  const handleBackClick = () => {
+    if (backHref) {
+      history.push(backHref);
+      return;
+    }
+
+    if (history.length === 1) {
+      history.push('/');
+    } else {
+      history.goBack();
+    }
+  };
+
+  return (
+    <CardHeader className={className} onBackClick={handleBackClick}>
+      <CardTitle title={label} />
+    </CardHeader>
+  );
+};
 
 export interface IColumn {
   /** Route the back button goes to. */
@@ -24,36 +51,7 @@ export interface IColumn {
 /** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
   const { backHref, children, label, transparent = false, withHeader = true, className } = props;
-
-  const history = useHistory();
   const soapboxConfig = useSoapboxConfig();
-
-  const handleBackClick = () => {
-    if (backHref) {
-      history.push(backHref);
-      return;
-    }
-
-    if (history.length === 1) {
-      history.push('/');
-    } else {
-      history.goBack();
-    }
-  };
-
-  const renderChildren = () => (
-    <Card variant={transparent ? undefined : 'rounded'} className={className}>
-      {withHeader ? (
-        <CardHeader onBackClick={handleBackClick}>
-          <CardTitle title={label} />
-        </CardHeader>
-      ) : null}
-
-      <CardBody>
-        {children}
-      </CardBody>
-    </Card>
-  );
 
   return (
     <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
@@ -69,9 +67,24 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
         )}
       </Helmet>
 
-      {renderChildren()}
+      <Card variant={transparent ? undefined : 'rounded'} className={className}>
+        {withHeader && (
+          <ColumnHeader
+            label={label}
+            backHref={backHref}
+            className={classNames({ 'px-4 pt-4 sm:p-0': transparent })}
+          />
+        )}
+
+        <CardBody>
+          {children}
+        </CardBody>
+      </Card>
     </div>
   );
 });
 
-export default Column;
+export {
+  Column,
+  ColumnHeader,
+};

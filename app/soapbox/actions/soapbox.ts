@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { getHost } from 'soapbox/actions/instance';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { removeVS16s } from 'soapbox/utils/emoji';
 import { getFeatures } from 'soapbox/utils/features';
 

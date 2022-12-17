@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { RootState } from 'soapbox/store';
 import { getAuthUserUrl } from 'soapbox/utils/auth';
 import { parseVersion } from 'soapbox/utils/features';
@@ -66,7 +66,5 @@ export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
 
 export const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
   'nodeinfo/fetch',
-  async(_arg, { getState }) => {
-    return await api(getState).get('/nodeinfo/2.1.json');
-  },
+  async(_arg, { getState }) => await api(getState).get('/nodeinfo/2.1.json'),
 );

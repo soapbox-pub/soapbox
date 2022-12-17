@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
+import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
@@ -9,11 +9,10 @@ import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
-import Permalink from 'soapbox/components/permalink';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import StatusContainer from 'soapbox/containers/status_container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import AccountContainer from 'soapbox/containers/account-container';
+import StatusContainer from 'soapbox/containers/status-container';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
@@ -30,9 +29,8 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
 
 const buildLink = (account: Account): JSX.Element => (
   <bdi>
-    <Permalink
+    <Link
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
-      href={`/@${account.acct}`}
       title={account.acct}
       to={`/@${account.acct}`}
       dangerouslySetInnerHTML={{ __html: account.display_name_html }}
@@ -53,7 +51,15 @@ const icons: Record<NotificationType, string> = {
   'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
+  'pleroma:event_reminder': require('@tabler/icons/calendar-time.svg'),
+  'pleroma:participation_request': require('@tabler/icons/calendar-event.svg'),
+  'pleroma:participation_accepted': require('@tabler/icons/calendar-event.svg'),
 };
+
+const nameMessage = defineMessage({
+  id: 'notification.name',
+  defaultMessage: '{link}{others}',
+});
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
@@ -104,6 +110,18 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
     id: 'notification.update',
     defaultMessage: '{name} edited a post you interacted with',
   },
+  'pleroma:event_reminder': {
+    id: 'notification.pleroma:event_reminder',
+    defaultMessage: 'An event you are participating in starts soon',
+  },
+  'pleroma:participation_request': {
+    id: 'notification.pleroma:participation_request',
+    defaultMessage: '{name} wants to join your event',
+  },
+  'pleroma:participation_accepted': {
+    id: 'notification.pleroma:participation_accepted',
+    defaultMessage: 'You were accepted to join the event',
+  },
 });
 
 const buildMessage = (
@@ -115,10 +133,7 @@ const buildMessage = (
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
-  const name = intl.formatMessage({
-    id: 'notification.name',
-    defaultMessage: '{link}{others}',
-  }, {
+  const name = intl.formatMessage(nameMessage, {
     link,
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
@@ -157,7 +172,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const history = useHistory();
   const intl = useIntl();
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
 
   const type = notification.type;
   const { account, status } = notification;
@@ -268,7 +283,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   };
 
   const renderContent = () => {
-    switch (type) {
+    switch (type as NotificationType) {
       case 'follow':
       case 'user_approved':
         return account && typeof account === 'object' ? (
@@ -302,6 +317,9 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'update':
       case 'pleroma:emoji_reaction':
+      case 'pleroma:event_reminder':
+      case 'pleroma:participation_accepted':
+      case 'pleroma:participation_request':
         return status && typeof status === 'object' ? (
           <StatusContainer
             id={status.id}

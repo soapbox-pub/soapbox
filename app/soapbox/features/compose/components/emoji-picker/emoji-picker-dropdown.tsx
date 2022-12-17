@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import EmojiPickerMenu from './emoji-picker-menu';
 
-import type { Emoji as EmojiType } from 'soapbox/components/autosuggest_emoji';
+import type { Emoji as EmojiType } from 'soapbox/components/autosuggest-emoji';
 import type { RootState } from 'soapbox/store';
 
 let EmojiPicker: any, Emoji: any; // load asynchronously

@@ -1,4 +1,3 @@
-import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -8,6 +7,7 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
+import { editEvent } from 'soapbox/actions/events';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -16,12 +16,14 @@ import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { HStack } from 'soapbox/components/ui';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { isLocal } from 'soapbox/utils/accounts';
-import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
+import { isLocal, isRemote } from 'soapbox/utils/accounts';
+import copy from 'soapbox/utils/copy';
+import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { Account, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -56,6 +58,7 @@ const messages = defineMessages({
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   group_remove_account: { id: 'status.remove_account_from_group', defaultMessage: 'Remove account from group' },
   group_remove_post: { id: 'status.remove_post_from_group', defaultMessage: 'Remove post from group' },
+  external: { id: 'status.external', defaultMessage: 'View post on {domain}' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
   deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
@@ -127,8 +130,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
-
-    e.stopPropagation();
   };
 
   const handleShareClick = () => {
@@ -146,18 +147,17 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
-
-    e.stopPropagation();
   };
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(toggleBookmark(status));
   };
 
-  const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
-    e.stopPropagation();
+  const handleExternalClick = () => {
+    window.open(status.uri, '_blank');
+  };
 
+  const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     if (me) {
       const modalReblog = () => dispatch(toggleReblog(status));
       const boostModal = settings.get('boostModal');
@@ -172,8 +172,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleQuoteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
-
     if (me) {
       dispatch(quoteCompose(status));
     } else {
@@ -199,49 +197,42 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleDeleteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     doDeleteStatus();
   };
 
   const handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     doDeleteStatus(true);
   };
 
   const handleEditClick: React.EventHandler<React.MouseEvent> = () => {
-    dispatch(editStatus(status.id));
+    if (status.event) dispatch(editEvent(status.id));
+    else dispatch(editStatus(status.id));
   };
 
   const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(togglePin(status));
   };
 
   const handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(mentionCompose(status.account as Account));
   };
 
   const handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(directCompose(status.account as Account));
   };
 
   const handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     const account = status.account as Account;
     dispatch(launchChat(account.id, history));
   };
 
   const handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(initMuteModal(status.account as Account));
   };
 
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
-
     const account = status.get('account') as Account;
+
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
       heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
@@ -251,13 +242,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, status));
+        dispatch(initReport(account, { status }));
       },
     }));
   };
 
   const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
   };
 
@@ -269,49 +259,29 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
-    dispatch(initReport(status.account as Account, status));
+    dispatch(initReport(status.account as Account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(toggleMuteStatus(status));
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
-    const { uri }  = status;
-    const textarea = document.createElement('textarea');
+    const { uri } = status;
 
-    e.stopPropagation();
-
-    textarea.textContent    = uri;
-    textarea.style.position = 'fixed';
-
-    document.body.appendChild(textarea);
-
-    try {
-      textarea.select();
-      document.execCommand('copy');
-    } catch {
-      // Do nothing
-    } finally {
-      document.body.removeChild(textarea);
-    }
+    copy(uri);
   };
 
   const onModerate: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
     const account = status.account as Account;
     dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
 
   const handleDeleteStatus: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(deleteStatusModal(intl, status.id));
   };
 
   const handleToggleStatusSensitivity: React.EventHandler<React.MouseEvent> = (e) => {
-    e.stopPropagation();
     dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
   };
 
@@ -319,6 +289,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     const mutingConversation = status.muted;
     const ownAccount = status.getIn(['account', 'id']) === me;
     const username = String(status.getIn(['account', 'username']));
+    const account = status.account as Account;
+    const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
 
@@ -337,7 +309,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/link.svg'),
       });
 
-      if (features.embeds && isLocal(status.account as Account)) {
+      if (features.embeds && isLocal(account)) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: handleEmbed,
@@ -355,6 +327,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: handleBookmarkClick,
         icon: status.bookmarked ? require('@tabler/icons/bookmark-off.svg') : require('@tabler/icons/bookmark.svg'),
+      });
+    }
+
+    if (features.federating && isRemote(account)) {
+      menu.push({
+        text: intl.formatMessage(messages.external, { domain }),
+        action: handleExternalClick,
+        icon: require('@tabler/icons/external-link.svg'),
       });
     }
 
@@ -459,7 +439,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.id}/`,
           icon: require('@tabler/icons/pencil.svg'),
-          action: (event) => event.stopPropagation(),
         });
       }
 
@@ -551,73 +530,75 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const canShare = ('share' in navigator) && status.visibility === 'public';
 
   return (
-    <div
-      className={classNames('flex flex-row', {
-        'justify-between': space === 'expand',
-        'space-x-2': space === 'compact',
-      })}
-    >
-      <StatusActionButton
-        title={replyTitle}
-        icon={require('@tabler/icons/message-circle-2.svg')}
-        onClick={handleReplyClick}
-        count={replyCount}
-        text={withLabels ? intl.formatMessage(messages.reply) : undefined}
-      />
+    <HStack data-testid='status-action-bar'>
+      <HStack
+        justifyContent={space === 'expand' ? 'between' : undefined}
+        space={space === 'compact' ? 2 : undefined}
+        grow={space === 'expand'}
+        onClick={e => e.stopPropagation()}
+      >
+        <StatusActionButton
+          title={replyTitle}
+          icon={require('@tabler/icons/message-circle-2.svg')}
+          onClick={handleReplyClick}
+          count={replyCount}
+          text={withLabels ? intl.formatMessage(messages.reply) : undefined}
+        />
 
-      {(features.quotePosts && me) ? (
-        <DropdownMenuContainer
-          items={reblogMenu}
-          disabled={!publicStatus}
-          onShiftClick={handleReblogClick}
-        >
-          {reblogButton}
-        </DropdownMenuContainer>
-      ) : (
-        reblogButton
-      )}
+        {(features.quotePosts && me) ? (
+          <DropdownMenuContainer
+            items={reblogMenu}
+            disabled={!publicStatus}
+            onShiftClick={handleReblogClick}
+          >
+            {reblogButton}
+          </DropdownMenuContainer>
+        ) : (
+          reblogButton
+        )}
 
-      {features.emojiReacts ? (
-        <EmojiButtonWrapper statusId={status.id}>
+        {features.emojiReacts ? (
+          <EmojiButtonWrapper statusId={status.id}>
+            <StatusActionButton
+              title={meEmojiTitle}
+              icon={require('@tabler/icons/heart.svg')}
+              filled
+              color='accent'
+              active={Boolean(meEmojiReact)}
+              count={emojiReactCount}
+              emoji={meEmojiReact}
+              text={withLabels ? meEmojiTitle : undefined}
+            />
+          </EmojiButtonWrapper>
+        ) : (
           <StatusActionButton
-            title={meEmojiTitle}
+            title={intl.formatMessage(messages.favourite)}
             icon={require('@tabler/icons/heart.svg')}
-            filled
             color='accent'
+            filled
+            onClick={handleFavouriteClick}
             active={Boolean(meEmojiReact)}
-            count={emojiReactCount}
-            emoji={meEmojiReact}
+            count={favouriteCount}
             text={withLabels ? meEmojiTitle : undefined}
           />
-        </EmojiButtonWrapper>
-      ) : (
-        <StatusActionButton
-          title={intl.formatMessage(messages.favourite)}
-          icon={require('@tabler/icons/heart.svg')}
-          color='accent'
-          filled
-          onClick={handleFavouriteClick}
-          active={Boolean(meEmojiReact)}
-          count={favouriteCount}
-          text={withLabels ? meEmojiTitle : undefined}
-        />
-      )}
+        )}
 
-      {canShare && (
-        <StatusActionButton
-          title={intl.formatMessage(messages.share)}
-          icon={require('@tabler/icons/upload.svg')}
-          onClick={handleShareClick}
-        />
-      )}
+        {canShare && (
+          <StatusActionButton
+            title={intl.formatMessage(messages.share)}
+            icon={require('@tabler/icons/upload.svg')}
+            onClick={handleShareClick}
+          />
+        )}
 
-      <DropdownMenuContainer items={menu} status={status}>
-        <StatusActionButton
-          title={intl.formatMessage(messages.more)}
-          icon={require('@tabler/icons/dots.svg')}
-        />
-      </DropdownMenuContainer>
-    </div>
+        <DropdownMenuContainer items={menu} status={status}>
+          <StatusActionButton
+            title={intl.formatMessage(messages.more)}
+            icon={require('@tabler/icons/dots.svg')}
+          />
+        </DropdownMenuContainer>
+      </HStack>
+    </HStack>
   );
 };
 

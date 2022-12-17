@@ -10,6 +10,7 @@ const spaces = {
   3: 'space-y-3',
   4: 'space-y-4',
   5: 'space-y-5',
+  6: 'space-y-6',
   10: 'space-y-10',
 };
 
@@ -19,28 +20,36 @@ const justifyContentOptions = {
 };
 
 const alignItemsOptions = {
+  top: 'items-start',
+  bottom: 'items-end',
   center: 'items-center',
+  start: 'items-start',
+  end: 'items-end',
 };
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
-  /** Size of the gap between elements. */
-  space?: keyof typeof spaces
   /** Horizontal alignment of children. */
-  alignItems?: 'center'
+  alignItems?: keyof typeof alignItemsOptions
+  /** Extra class names on the element. */
+  className?: string
   /** Vertical alignment of children. */
   justifyContent?: keyof typeof justifyContentOptions
-  /** Extra class names on the <div> element. */
-  className?: string
+  /** Size of the gap between elements. */
+  space?: keyof typeof spaces
   /** Whether to let the flexbox grow. */
   grow?: boolean
+  /** HTML element to use for container. */
+  element?: keyof JSX.IntrinsicElements,
 }
 
 /** Vertical stack of child elements. */
 const Stack = React.forwardRef<HTMLDivElement, IStack>((props, ref: React.LegacyRef<HTMLDivElement> | undefined) => {
-  const { space, alignItems, justifyContent, className, grow, ...filteredProps } = props;
+  const { space, alignItems, justifyContent, className, grow, element = 'div', ...filteredProps } = props;
+
+  const Elem = element as 'div';
 
   return (
-    <div
+    <Elem
       {...filteredProps}
       ref={ref}
       className={classNames('flex flex-col', {

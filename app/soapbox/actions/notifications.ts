@@ -1,17 +1,14 @@
-import {
-  List as ImmutableList,
-  Map as ImmutableMap,
-} from 'immutable';
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
-import compareId from 'soapbox/compare_id';
 import { getFilters, regexFromFilters } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { compareId } from 'soapbox/utils/comparators';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { unescapeHTML } from 'soapbox/utils/html';
+import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';
 import { joinPublicPath } from 'soapbox/utils/static';
 
 import { fetchRelationships } from './accounts';
@@ -92,6 +89,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!notification.type) return; // drop invalid notifications
     if (notification.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
+    if (notification.type === 'chat') return; // Drop Truth Social chat notifications.
 
     const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
     const filters = getFilters(getState(), { contextType: 'notifications' });
@@ -149,13 +147,13 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
 
 const dequeueNotifications = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const queuedNotifications = getState().notifications.get('queuedNotifications');
-    const totalQueuedNotificationsCount = getState().notifications.get('totalQueuedNotificationsCount');
+    const queuedNotifications = getState().notifications.queuedNotifications;
+    const totalQueuedNotificationsCount = getState().notifications.totalQueuedNotificationsCount;
 
     if (totalQueuedNotificationsCount === 0) {
       return;
     } else if (totalQueuedNotificationsCount > 0 && totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
-      queuedNotifications.forEach((block: APIEntity) => {
+      queuedNotifications.forEach((block) => {
         dispatch(updateNotifications(block.notification));
       });
     } else {
@@ -168,11 +166,8 @@ const dequeueNotifications = () =>
     dispatch(markReadNotifications());
   };
 
-// const excludeTypesFromSettings = (getState: () => RootState) => (getSettings(getState()).getIn(['notifications', 'shows']) as ImmutableMap<string, boolean>).filter(enabled => !enabled).keySeq().toJS();
-
 const excludeTypesFromFilter = (filter: string) => {
-  const allTypes = ImmutableList(['follow', 'follow_request', 'favourite', 'reblog', 'mention', 'status', 'poll', 'move', 'pleroma:emoji_reaction']);
-  return allTypes.filterNot(item => item === filter).toJS();
+  return NOTIFICATION_TYPES.filter(item => item !== filter);
 };
 
 const noOp = () => new Promise(f => f(undefined));
@@ -182,11 +177,12 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
     if (!isLoggedIn(getState)) return dispatch(noOp);
 
     const state = getState();
+    const features = getFeatures(state.instance);
     const activeFilter = getSettings(state).getIn(['notifications', 'quickFilter', 'active']) as string;
     const notifications = state.notifications;
     const isLoadingMore = !!maxId;
 
-    if (notifications.get('isLoading')) {
+    if (notifications.isLoading) {
       done();
       return dispatch(noOp);
     }
@@ -195,10 +191,13 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
       max_id: maxId,
     };
 
-    if (activeFilter !== 'all') {
-      const instance = state.instance;
-      const features = getFeatures(instance);
-
+    if (activeFilter === 'all') {
+      if (features.notificationsIncludeTypes) {
+        params.types = NOTIFICATION_TYPES.filter(type => !EXCLUDE_TYPES.includes(type as any));
+      } else {
+        params.exclude_types = EXCLUDE_TYPES;
+      }
+    } else {
       if (features.notificationsIncludeTypes) {
         params.types = [activeFilter];
       } else {
@@ -206,7 +205,7 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
       }
     }
 
-    if (!maxId && notifications.get('items').size > 0) {
+    if (!maxId && notifications.items.size > 0) {
       params.since_id = notifications.getIn(['items', 0, 'id']);
     }
 
@@ -305,8 +304,8 @@ const markReadNotifications = () =>
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const topNotificationId: string | undefined = state.notifications.get('items').first(ImmutableMap()).get('id');
-    const lastReadId: string | -1 = state.notifications.get('lastRead');
+    const topNotificationId = state.notifications.items.first()?.id;
+    const lastReadId = state.notifications.lastRead;
     const v = parseVersion(state.instance.version);
 
     if (topNotificationId && (lastReadId === -1 || compareId(topNotificationId, lastReadId) > 0)) {

@@ -3,8 +3,8 @@ import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account, Status } from 'soapbox/types/entities';
@@ -50,7 +50,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   // The typical case with a reply-to and a list of mentions.
   const accounts = to.slice(0, 2).map(account => {
     const link = (
-      <Link to={`/@${account.acct}`} className='reply-mentions__account'>@{account.username}</Link>
+      <Link to={`/@${account.acct}`} className='reply-mentions__account' onClick={(e) => e.stopPropagation()}>@{account.username}</Link>
     );
 
     if (hoverable) {
@@ -66,7 +66,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
 
   if (to.size > 2) {
     accounts.push(
-      <span key='more' className='hover:underline cursor-pointer' role='presentation' onClick={handleOpenMentionsModal}>
+      <span key='more' className='hover:underline cursor-pointer' role='button' onClick={handleOpenMentionsModal} tabIndex={0}>
         <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />
       </span>,
     );
@@ -75,7 +75,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   return (
     <div className='reply-mentions'>
       <FormattedMessage
-        id='reply_mentions.reply'
+        id='reply_mentions.reply.hoverable'
         defaultMessage='<hover>Replying to</hover> {accounts}'
         values={{
           accounts: <FormattedList type='conjunction' value={accounts} />,

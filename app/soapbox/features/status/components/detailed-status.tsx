@@ -1,15 +1,15 @@
-import classNames from 'clsx';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
+import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import StatusContent from 'soapbox/components/status_content';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
+import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import AccountContainer from 'soapbox/containers/account-container';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';
@@ -29,17 +29,22 @@ interface IDetailedStatus {
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onToggleHidden,
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
 }) => {
   const intl = useIntl();
-  const node = useRef<HTMLDivElement>(null);
 
-  const handleExpandedToggle = () => {
-    onToggleHidden(status);
-  };
+  const node = useRef<HTMLDivElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
+
+  const [minHeight, setMinHeight] = useState(208);
+
+  useEffect(() => {
+    if (overlay.current) {
+      setMinHeight(overlay.current.getBoundingClientRect().height);
+    }
+  }, [overlay.current]);
 
   const handleOpenCompareHistoryModal = () => {
     onOpenCompareHistoryModal(status);
@@ -51,7 +56,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (!account || typeof account !== 'object') return null;
 
   const isUnderReview = actualStatus.visibility === 'self';
-  const isSensitive = actualStatus.sensitive;
+  const isSensitive = actualStatus.hidden;
 
   let statusTypeIcon = null;
 
@@ -91,36 +96,38 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <StatusReplyMentions status={actualStatus} />
 
         <Stack
-          className={
-            classNames('relative', {
-              'min-h-[220px]': isUnderReview || isSensitive,
-            })
-          }
+          className='relative z-0'
+          style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
         >
-          {(isUnderReview || isSensitive) ? (
+          {(isUnderReview || isSensitive) && (
             <SensitiveContentOverlay
               status={status}
               visible={showMedia}
               onToggleVisibility={onToggleMediaVisibility}
+              ref={overlay}
             />
-          ) : null}
+          )}
 
-          <StatusContent
-            status={actualStatus}
-            expanded={!actualStatus.hidden}
-            onExpandedToggle={handleExpandedToggle}
-          />
+          <Stack space={4}>
+            <StatusContent status={actualStatus} translatable />
 
-          <StatusMedia
-            status={actualStatus}
-            showMedia={showMedia}
-            onToggleVisibility={onToggleMediaVisibility}
-          />
+            <TranslateButton status={actualStatus} />
 
-          {quote}
+            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+              <Stack space={4}>
+                <StatusMedia
+                  status={actualStatus}
+                  showMedia={showMedia}
+                  onToggleVisibility={onToggleMediaVisibility}
+                />
+
+                {quote}
+              </Stack>
+            )}
+          </Stack>
         </Stack>
 
-        <HStack justifyContent='between' alignItems='center' className='py-2' wrap>
+        <HStack justifyContent='between' alignItems='center' className='py-3' wrap>
           <StatusInteractionBar status={actualStatus} />
 
           <HStack space={1} alignItems='center'>

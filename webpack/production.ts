@@ -12,7 +12,7 @@ import sharedConfig from './shared';
 
 import type { Configuration } from 'webpack';
 
-const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build-config'));
 const joinPublicPath = (...paths: string[]) => join(FE_SUBDIRECTORY, ...paths);
 
 const configuration: Configuration = {
@@ -95,7 +95,7 @@ const configuration: Configuration = {
       ],
       ServiceWorker: {
         cacheName: 'soapbox',
-        entry: join(__dirname, '../app/soapbox/service_worker/entry.ts'),
+        entry: join(__dirname, '../app/soapbox/service-worker/entry.ts'),
         events: true,
         minify: true,
       },

@@ -6,7 +6,7 @@ import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Form } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
@@ -77,9 +77,9 @@ const languages = {
 
 const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
-  display_media_default: { id: 'preferences.fields.display_media.default', defaultMessage: 'Hide media marked as sensitive' },
-  display_media_hide_all: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide media' },
-  display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
+  displayPostsDefault: { id: 'preferences.fields.display_media.default', defaultMessage: 'Hide posts marked as sensitive' },
+  displayPostsHideAll: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide posts' },
+  displayPostsShowAll: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show posts' },
   privacy_public: { id: 'preferences.options.privacy_public', defaultMessage: 'Public' },
   privacy_unlisted: { id: 'preferences.options.privacy_unlisted', defaultMessage: 'Unlisted' },
   privacy_followers_only: { id: 'preferences.options.privacy_followers_only', defaultMessage: 'Followers-only' },
@@ -102,9 +102,9 @@ const Preferences = () => {
   };
 
   const displayMediaOptions = React.useMemo(() => ({
-    default: intl.formatMessage(messages.display_media_default),
-    hide_all: intl.formatMessage(messages.display_media_hide_all),
-    show_all: intl.formatMessage(messages.display_media_show_all),
+    default: intl.formatMessage(messages.displayPostsDefault),
+    hide_all: intl.formatMessage(messages.displayPostsHideAll),
+    show_all: intl.formatMessage(messages.displayPostsShowAll),
   }), []);
 
   const defaultPrivacyOptions = React.useMemo(() => ({
@@ -149,7 +149,7 @@ const Preferences = () => {
           />
         </ListItem>
 
-        <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Media display' />}>
+        <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Sensitive content' />}>
           <SelectDropdown
             items={displayMediaOptions}
             defaultValue={settings.get('displayMedia') as string | undefined}
@@ -191,6 +191,10 @@ const Preferences = () => {
       <List>
         <ListItem label={<FormattedMessage id='preferences.fields.auto_play_gif_label' defaultMessage='Auto-play animated GIFs' />}>
           <SettingToggle settings={settings} settingPath={['autoPlayGif']} onChange={onToggleChange} />
+        </ListItem>
+
+        <ListItem label={<FormattedMessage id='preferences.fields.auto_play_video_label' defaultMessage='Auto-play videos' />}>
+          <SettingToggle settings={settings} settingPath={['autoPlayVideo']} onChange={onToggleChange} />
         </ListItem>
 
         {features.spoilers && <ListItem label={<FormattedMessage id='preferences.fields.expand_spoilers_label' defaultMessage='Always expand posts marked with content warnings' />}>

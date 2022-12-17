@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filters';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import {
   FieldsGroup,

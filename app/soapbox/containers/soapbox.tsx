@@ -13,14 +13,15 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import AuthLayout from 'soapbox/features/auth_layout';
+import { StatProvider } from 'soapbox/contexts/stat-context';
+import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
-import PublicLayout from 'soapbox/features/public_layout';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import PublicLayout from 'soapbox/features/public-layout';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
   NotificationsContainer,
@@ -37,6 +38,7 @@ import {
   useSettings,
   useTheme,
   useLocale,
+  useInstance,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { queryClient } from 'soapbox/queries/client';
@@ -45,9 +47,11 @@ import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
-import ErrorBoundary from '../components/error_boundary';
+import ErrorBoundary from '../components/error-boundary';
 import UI from '../features/ui';
 import { store } from '../store';
+
+const RTL_LOCALES = ['ar', 'ckb', 'fa', 'he'];
 
 // Configure global functions for developers
 createGlobals(store);
@@ -82,8 +86,9 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
+
   const me = useAppSelector(state => state.me);
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
@@ -276,7 +281,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     <>
       <Helmet>
         <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-        <body className={bodyClass} />
+        <body className={bodyClass} dir={RTL_LOCALES.includes(locale) ? 'rtl' : undefined} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
@@ -292,11 +297,13 @@ const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <SoapboxHead>
-          <SoapboxLoad>
-            <SoapboxMount />
-          </SoapboxLoad>
-        </SoapboxHead>
+        <StatProvider>
+          <SoapboxHead>
+            <SoapboxLoad>
+              <SoapboxMount />
+            </SoapboxLoad>
+          </SoapboxHead>
+        </StatProvider>
       </QueryClientProvider>
     </Provider>
   );

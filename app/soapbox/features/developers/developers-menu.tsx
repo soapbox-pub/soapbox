@@ -5,11 +5,9 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
-import { Text } from 'soapbox/components/ui';
+import { Column, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import sourceCode from 'soapbox/utils/code';
-
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
@@ -86,6 +84,14 @@ const Developers: React.FC = () => {
 
             <Text>
               <FormattedMessage id='developers.navigation.network_error_label' defaultMessage='Network error' />
+            </Text>
+          </DashWidget>
+
+          <DashWidget to='/developers/sw'>
+            <SvgIcon src={require('@tabler/icons/script.svg')} className='text-gray-700 dark:text-gray-600' />
+
+            <Text>
+              <FormattedMessage id='developers.navigation.service_worker_label' defaultMessage='Service Worker' />
             </Text>
           </DashWidget>
 

@@ -2,8 +2,8 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import trim from 'lodash/trim';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { FE_SUBDIRECTORY } from 'soapbox/build_config';
-import KVStore from 'soapbox/storage/kv_store';
+import { FE_SUBDIRECTORY } from 'soapbox/build-config';
+import KVStore from 'soapbox/storage/kv-store';
 import { validId, isURL } from 'soapbox/utils/auth';
 
 import {
@@ -38,7 +38,7 @@ const getSessionUser = () => {
 };
 
 const sessionUser = getSessionUser();
-const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+export const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
 
 // Checks if the user has an ID and access token
 const validUser = user => {

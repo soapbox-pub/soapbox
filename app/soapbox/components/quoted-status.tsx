@@ -1,15 +1,19 @@
 import classNames from 'clsx';
-import React, { useState } from 'react';
-import { defineMessages, useIntl, FormattedMessage, FormattedList } from 'react-intl';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import StatusMedia from 'soapbox/components/status-media';
-import { Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
+import { Stack } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import EventPreview from './event-preview';
 import OutlineBox from './outline-box';
+import StatusContent from './status-content';
+import StatusReplyMentions from './status-reply-mentions';
+import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -34,14 +38,28 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const settings = useSettings();
   const displayMedia = settings.get('displayMedia');
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const overlay = useRef<HTMLDivElement>(null);
 
-  const handleExpandClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  const [minHeight, setMinHeight] = useState(208);
+
+  useEffect(() => {
+    if (overlay.current) {
+      setMinHeight(overlay.current.getBoundingClientRect().height);
+    }
+  }, [overlay.current]);
+
+  const handleExpandClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (!status) return;
     const account = status.account as AccountEntity;
 
     if (!compose && e.button === 0) {
-      history.push(`/@${account.acct}/posts/${status.id}`);
+      const statusUrl = `/@${account.acct}/posts/${status.id}`;
+      if (!(e.ctrlKey || e.metaKey)) {
+        history.push(statusUrl);
+      } else {
+        window.open(statusUrl, '_blank');
+      }
       e.stopPropagation();
       e.preventDefault();
     }
@@ -55,57 +73,6 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
   const handleToggleMediaVisibility = () => {
     setShowMedia(!showMedia);
-  };
-
-  const renderReplyMentions = () => {
-    if (!status?.in_reply_to_id) {
-      return null;
-    }
-
-    const account = status.account as AccountEntity;
-    const to = status.mentions || [];
-
-    if (to.size === 0) {
-      if (status.in_reply_to_account_id === account.id) {
-        return (
-          <div className='reply-mentions'>
-            <FormattedMessage
-              id='reply_mentions.reply'
-              defaultMessage='Replying to {accounts}'
-              values={{
-                accounts: `@${account.username}`,
-              }}
-            />
-          </div>
-        );
-      } else {
-        return (
-          <div className='reply-mentions'>
-            <FormattedMessage id='reply_mentions.reply_empty' defaultMessage='Replying to post' />
-          </div>
-        );
-      }
-    }
-
-    const accounts = to.slice(0, 2).map(account => <>@{account.username}</>).toArray();
-
-    if (to.size > 2) {
-      accounts.push(
-        <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />,
-      );
-    }
-
-    return (
-      <div className='reply-mentions'>
-        <FormattedMessage
-          id='reply_mentions.reply'
-          defaultMessage='Replying to {accounts}'
-          values={{
-            accounts: <FormattedList type='conjunction' value={accounts} />,
-          }}
-        />
-      </div>
-    );
   };
 
   if (!status) {
@@ -127,7 +94,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   return (
     <OutlineBox
       data-testid='quoted-status'
-      className={classNames('mt-3 cursor-pointer', {
+      className={classNames('cursor-pointer', {
         'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
       })}
     >
@@ -144,20 +111,39 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
           withLinkToProfile={!compose}
         />
 
-        {renderReplyMentions()}
+        <StatusReplyMentions status={status} hoverable={false} />
 
-        <Text
-          className='break-words status__content status__content--quote'
-          size='sm'
-          dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-        />
+        {status.event ? <EventPreview status={status} hideAction /> : (
+          <Stack
+            className='relative z-0'
+            style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
+          >
+            {(status.hidden) && (
+              <SensitiveContentOverlay
+                status={status}
+                visible={showMedia}
+                onToggleVisibility={handleToggleMediaVisibility}
+                ref={overlay}
+              />
+            )}
 
-        <StatusMedia
-          status={status}
-          muted={compose}
-          showMedia={showMedia}
-          onToggleVisibility={handleToggleMediaVisibility}
-        />
+            <Stack space={4}>
+              <StatusContent
+                status={status}
+                collapsable
+              />
+
+              {(status.card || status.media_attachments.size > 0) && (
+                <StatusMedia
+                  status={status}
+                  muted={compose}
+                  showMedia={showMedia}
+                  onToggleVisibility={handleToggleMediaVisibility}
+                />
+              )}
+            </Stack>
+          </Stack>
+        )}
       </Stack>
     </OutlineBox>
   );

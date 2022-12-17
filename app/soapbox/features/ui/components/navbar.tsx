@@ -8,7 +8,7 @@ import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
-import { Avatar, Button, Form, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -78,9 +78,10 @@ const Navbar = () => {
             </div>
           )}
 
-          <div
-            className={classNames({
-              'flex-1 flex items-center lg:items-stretch space-x-4': true,
+          <HStack
+            space={4}
+            alignItems='center'
+            className={classNames('flex-1 enter lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
@@ -97,9 +98,9 @@ const Navbar = () => {
                 </div>
               </div>
             )}
-          </div>
+          </HStack>
 
-          <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>
+          <HStack space={3} alignItems='center' className='absolute inset-y-0 right-0 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0'>
             {account ? (
               <div className='hidden relative lg:flex items-center'>
                 <ProfileDropdown account={account}>
@@ -108,7 +109,7 @@ const Navbar = () => {
               </div>
             ) : (
               <>
-                <Form className='hidden lg:flex space-x-2 items-center' onSubmit={handleSubmit}>
+                <Form className='hidden lg:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
                   <Input
                     required
                     value={username}
@@ -159,7 +160,7 @@ const Navbar = () => {
                 </div>
               </>
             )}
-          </div>
+          </HStack>
         </div>
       </div>
     </nav>

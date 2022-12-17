@@ -1,0 +1,105 @@
+{
+  "approval_required": false,
+  "avatar_upload_limit": 2000000,
+  "background_image": "https://fe.disroot.org/images/city.jpg",
+  "background_upload_limit": 4000000,
+  "banner_upload_limit": 4000000,
+  "description": "FEDIsroot - Federated social network powered by Pleroma (open beta)",
+  "description_limit": 5000,
+  "email": "admin@example.lan",
+  "languages": [
+    "en"
+  ],
+  "max_toot_chars": 5000,
+  "pleroma": {
+    "metadata": {
+      "account_activation_required": false,
+      "features": [
+        "pleroma_api",
+        "akkoma_api",
+        "mastodon_api",
+        "mastodon_api_streaming",
+        "polls",
+        "v2_suggestions",
+        "pleroma_explicit_addressing",
+        "shareable_emoji_packs",
+        "multifetch",
+        "pleroma:api/v1/notifications:include_types_filter",
+        "editing",
+        "media_proxy",
+        "relay",
+        "pleroma_emoji_reactions",
+        "exposable_reactions",
+        "profile_directory",
+        "custom_emoji_reactions",
+        "pleroma:get:main/ostatus"
+      ],
+      "federation": {
+        "enabled": true,
+        "exclusions": false,
+        "mrf_hashtag": {
+          "federated_timeline_removal": [],
+          "reject": [],
+          "sensitive": [
+            "nsfw"
+          ]
+        },
+        "mrf_object_age": {
+          "actions": [
+            "delist",
+            "strip_followers"
+          ],
+          "threshold": 604800
+        },
+        "mrf_policies": [
+          "ObjectAgePolicy",
+          "TagPolicy",
+          "HashtagPolicy",
+          "InlineQuotePolicy"
+        ],
+        "quarantined_instances": [],
+        "quarantined_instances_info": {
+          "quarantined_instances": {}
+        }
+      },
+      "fields_limits": {
+        "max_fields": 10,
+        "max_remote_fields": 20,
+        "name_length": 512,
+        "value_length": 2048
+      },
+      "post_formats": [
+        "text/plain",
+        "text/html",
+        "text/markdown",
+        "text/bbcode",
+        "text/x.misskeymarkdown"
+      ],
+      "privileged_staff": false
+    },
+    "stats": {
+      "mau": 83
+    },
+    "vapid_public_key": null
+  },
+  "poll_limits": {
+    "max_expiration": 31536000,
+    "max_option_chars": 200,
+    "max_options": 20,
+    "min_expiration": 0
+  },
+  "registrations": false,
+  "stats": {
+    "domain_count": 6972,
+    "status_count": 8081,
+    "user_count": 357
+  },
+  "thumbnail": "https://fe.disroot.org/instance/thumbnail.jpeg",
+  "title": "FEDIsroot",
+  "upload_limit": 16000000,
+  "uri": "https://fe.disroot.org",
+  "urls": {
+    "streaming_api": "wss://fe.disroot.org"
+  },
+  "version": "2.7.2 (compatible; Akkoma 3.3.1-0-gaf90a4e51)"
+}

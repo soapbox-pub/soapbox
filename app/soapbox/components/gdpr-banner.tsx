@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 const acceptedGdpr = !!localStorage.getItem('soapbox:gdpr');
 
@@ -13,9 +13,9 @@ const GdprBanner: React.FC = () => {
   const [shown, setShown] = useState<boolean>(acceptedGdpr);
   const [slideout, setSlideout] = useState(false);
 
+  const instance = useInstance();
   const soapbox = useSoapboxConfig();
   const isLoggedIn = useAppSelector(state => !!state.me);
-  const siteTitle = useAppSelector(state => state.instance.title);
 
   const handleAccept = () => {
     localStorage.setItem('soapbox:gdpr', 'true');
@@ -31,17 +31,17 @@ const GdprBanner: React.FC = () => {
 
   return (
     <Banner theme='opaque' className={classNames('transition-transform', { 'translate-y-full': slideout })}>
-      <div className='flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 lg:flex-row lg:items-center lg:justify-between'>
+      <div className='flex flex-col space-y-4 lg:space-y-0 lg:space-x-4 rtl:space-x-reverse lg:flex-row lg:items-center lg:justify-between'>
         <Stack space={2}>
           <Text size='xl' weight='bold'>
-            <FormattedMessage id='gdpr.title' defaultMessage='{siteTitle} uses cookies' values={{ siteTitle }} />
+            <FormattedMessage id='gdpr.title' defaultMessage='{siteTitle} uses cookies' values={{ siteTitle: instance.title }} />
           </Text>
 
           <Text weight='medium' className='opacity-60'>
             <FormattedMessage
               id='gdpr.message'
               defaultMessage="{siteTitle} uses session cookies, which are essential to the website's functioning."
-              values={{ siteTitle }}
+              values={{ siteTitle: instance.title }}
             />
           </Text>
         </Stack>

@@ -110,7 +110,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
         {menu.map((menuItem, idx) => {
           if (menuItem.toggle) {
             return (
-              <div key={idx} className='flex flex-row items-center justify-between px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
+              <div key={idx} className='flex flex-row items-center justify-between space-x-4 px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
                 <span>{menuItem.text}</span>
 
                 {menuItem.toggle}

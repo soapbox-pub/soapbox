@@ -91,6 +91,7 @@ describe('compose reducer', () => {
   it('uses \'public\' scope as default', () => {
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({})(),
       account: ImmutableRecord({})(),
     };
@@ -101,6 +102,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'direct' })(),
       account: ImmutableRecord({})(),
     };
@@ -111,6 +113,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'private' })(),
       account: ImmutableRecord({})(),
     };
@@ -121,6 +124,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'public' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'unlisted' })(),
       account: ImmutableRecord({})(),
     };
@@ -131,6 +135,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'private' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'public' })(),
       account: ImmutableRecord({})(),
     };
@@ -141,6 +146,7 @@ describe('compose reducer', () => {
     const state = initialState.set('default', ReducerCompose({ privacy: 'unlisted' }));
     const action = {
       type: actions.COMPOSE_REPLY,
+      id: 'compose-modal',
       status: ImmutableRecord({ visibility: 'public' })(),
       account: ImmutableRecord({})(),
     };
@@ -181,30 +187,8 @@ describe('compose reducer', () => {
     });
   });
 
-  it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
-    const state = initialState.set('home', ReducerCompose({ spoiler: true, sensitive: true, idempotencyKey: '' }));
-    const action = {
-      type: actions.COMPOSE_SENSITIVITY_CHANGE,
-      id: 'home',
-    };
-    expect(reducer(state, action).toJS().home).toMatchObject({
-      sensitive: true,
-    });
-  });
-
-  it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, toggle if spoiler inactive', () => {
-    const state = initialState.set('home', ReducerCompose({ spoiler: false, sensitive: true }));
-    const action = {
-      type: actions.COMPOSE_SENSITIVITY_CHANGE,
-      id: 'home',
-    };
-    expect(reducer(state, action).toJS().home).toMatchObject({
-      sensitive: false,
-    });
-  });
-
   it('should handle COMPOSE_SPOILERNESS_CHANGE on CW button click', () => {
-    const state = initialState.set('home', ReducerCompose({ spoiler_text: 'spoiler text', spoiler: true, media_attachments: ImmutableList() }));
+    const state = initialState.set('home', ReducerCompose({ spoiler_text: 'spoiler text', spoiler: true, sensitive: true, media_attachments: ImmutableList() }));
     const action = {
       type: actions.COMPOSE_SPOILERNESS_CHANGE,
       id: 'home',
@@ -212,6 +196,7 @@ describe('compose reducer', () => {
     expect(reducer(state, action).toJS().home).toMatchObject({
       spoiler: false,
       spoiler_text: '',
+      sensitive: false,
     });
   });
 

@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display-name';
 import Icon from 'soapbox/components/icon';
-import Permalink from 'soapbox/components/permalink';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -38,13 +38,13 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   return (
     <div className='account'>
       <div className='account__wrapper'>
-        <Permalink className='account__display-name' title={account.acct} href={`/@${account.acct}`} to={`/@${account.acct}`}>
+        <Link className='account__display-name' title={account.get('acct')} to={`/@${account.get('acct')}`}>
           <div className='account__display-name'>
             <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
             <DisplayName account={account} />
 
           </div>
-        </Permalink>
+        </Link>
         <div
           className='flex items-center gap-0.5'
           title={intl.formatMessage(messages.birthday, {

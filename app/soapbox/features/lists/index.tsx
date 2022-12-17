@@ -7,11 +7,11 @@ import { createSelector } from 'reselect';
 import { deleteList, fetchLists } from 'soapbox/actions/lists';
 import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, IconButton, Spinner } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import NewListForm from './components/new_list_form';
+import NewListForm from './components/new-list-form';
 
 import type { RootState } from 'soapbox/store';
 

@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import React from 'react';
 
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 
 import type { Account } from 'soapbox/types/entities';
 

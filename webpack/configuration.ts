@@ -4,7 +4,7 @@ import { env } from 'process';
 const {
   FE_SUBDIRECTORY,
   FE_BUILD_DIR,
-} = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+} = require(join(__dirname, '..', 'app', 'soapbox', 'build-config'));
 
 const settings = {
   source_path: 'app',

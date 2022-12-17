@@ -12,6 +12,15 @@ const NOTIFICATION_TYPES = [
   'pleroma:emoji_reaction',
   'user_approved',
   'update',
+  'pleroma:event_reminder',
+  'pleroma:participation_request',
+  'pleroma:participation_accepted',
+] as const;
+
+/** Notification types to exclude from the "All" filter by default. */
+const EXCLUDE_TYPES = [
+  'pleroma:chat_mention',
+  'chat', // TruthSocial
 ] as const;
 
 type NotificationType = typeof NOTIFICATION_TYPES[number];
@@ -21,6 +30,7 @@ const validType = (type: string): type is NotificationType => NOTIFICATION_TYPES
 
 export {
   NOTIFICATION_TYPES,
+  EXCLUDE_TYPES,
   NotificationType,
   validType,
 };

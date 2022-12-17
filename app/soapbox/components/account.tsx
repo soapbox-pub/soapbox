@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import VerificationBadge from 'soapbox/components/verification_badge';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
@@ -22,7 +22,13 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
 
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    history.push(`/timeline/${account.domain}`);
+
+    const timelineUrl = `/timeline/${account.domain}`;
+    if (!(e.ctrlKey || e.metaKey)) {
+      history.push(timelineUrl);
+    } else {
+      window.open(timelineUrl, '_blank');
+    }
   };
 
   return (
@@ -63,6 +69,7 @@ interface IAccount {
   withRelationship?: boolean,
   showEdit?: boolean,
   emoji?: string,
+  note?: string,
 }
 
 const Account = ({
@@ -86,6 +93,7 @@ const Account = ({
   withRelationship = true,
   showEdit = false,
   emoji,
+  note,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
@@ -163,7 +171,7 @@ const Account = ({
   return (
     <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
+        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3}>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -193,7 +201,7 @@ const Account = ({
                 title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
-                <div className='flex items-center space-x-1 flex-grow' style={style}>
+                <HStack space={1} alignItems='center' grow style={style}>
                   <Text
                     size='sm'
                     weight='semibold'
@@ -202,11 +210,11 @@ const Account = ({
                   />
 
                   {account.verified && <VerificationBadge />}
-                </div>
+                </HStack>
               </LinkEl>
             </ProfilePopper>
 
-            <Stack space={withAccountNote ? 1 : 0}>
+            <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1} style={style}>
                 <Text theme='muted' size='sm' truncate>@{username}</Text>
 
@@ -219,7 +227,7 @@ const Account = ({
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
                     {timestampUrl ? (
-                      <Link to={timestampUrl} className='hover:underline'>
+                      <Link to={timestampUrl} className='hover:underline' onClick={(event) => event.stopPropagation()}>
                         <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' futureDate={futureTimestamp} />
                       </Link>
                     ) : (
@@ -235,13 +243,28 @@ const Account = ({
                     <Icon className='h-5 w-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/pencil.svg')} />
                   </>
                 ) : null}
+
+                {actionType === 'muting' && account.mute_expires_at ? (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text theme='muted' size='sm'><RelativeTimestamp timestamp={account.mute_expires_at} futureDate /></Text>
+                  </>
+                ) : null}
               </HStack>
 
-              {withAccountNote && (
+              {note ? (
+                <Text
+                  size='sm'
+                  className='mr-2'
+                >
+                  {note}
+                </Text>
+              ) : withAccountNote && (
                 <Text
                   size='sm'
                   dangerouslySetInnerHTML={{ __html: account.note_emojified }}
-                  className='mr-2'
+                  className='mr-2 rtl:ml-2 rtl:mr-0'
                 />
               )}
             </Stack>

@@ -21,11 +21,13 @@ import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/e
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
+  accepts_chat_messages: false,
   acct: '',
   avatar: '',
   avatar_static: '',
   birthday: '',
   bot: false,
+  chats_onboarded: true,
   created_at: '',
   discoverable: false,
   display_name: '',
@@ -42,6 +44,7 @@ export const AccountRecord = ImmutableRecord({
   location: '',
   locked: false,
   moved: null as EmbeddedEntity<any>,
+  mute_expires_at: null as string | null,
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
@@ -97,7 +100,7 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
 const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   const avatar = account.get('avatar');
   const avatarStatic = account.get('avatar_static');
-  const missing = require('images/avatar-missing.png');
+  const missing = require('assets/images/avatar-missing.png');
 
   return account.withMutations(account => {
     account.set('avatar', avatar || avatarStatic || missing);
@@ -109,7 +112,7 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
 const normalizeHeader = (account: ImmutableMap<string, any>) => {
   const header = account.get('header');
   const headerStatic = account.get('header_static');
-  const missing = require('images/header-missing.png');
+  const missing = require('assets/images/header-missing.png');
 
   return account.withMutations(account => {
     account.set('header', header || headerStatic || missing);
@@ -262,10 +265,25 @@ const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
   return account.set('discoverable', discoverable);
 };
 
+/** Normalize message acceptance between Pleroma and Truth Social. */
+const normalizeMessageAcceptance = (account: ImmutableMap<string, any>) => {
+  const acceptance = Boolean(account.getIn(['pleroma', 'accepts_chat_messages']) || account.get('accepting_messages'));
+  return account.set('accepts_chat_messages', acceptance);
+};
+
 /** Normalize undefined/null birthday to empty string. */
 const fixBirthday = (account: ImmutableMap<string, any>) => {
   const birthday = account.get('birthday');
   return account.set('birthday', birthday || '');
+};
+
+/** Rewrite `<p></p>` to empty string. */
+const fixNote = (account: ImmutableMap<string, any>) => {
+  if (account.get('note') === '<p></p>') {
+    return account.set('note', '');
+  } else {
+    return account;
+  }
 };
 
 export const normalizeAccount = (account: Record<string, any>) => {
@@ -283,11 +301,13 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeFqn(account);
       normalizeFavicon(account);
       normalizeDiscoverable(account);
+      normalizeMessageAcceptance(account);
       addDomain(account);
       addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
       fixBirthday(account);
+      fixNote(account);
       addInternalFields(account);
     }),
   );

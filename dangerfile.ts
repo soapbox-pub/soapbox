@@ -7,6 +7,13 @@ if (docs.edited) {
   message('Thanks - We :heart: our [documentarians](http://www.writethedocs.org/)!');
 }
 
+// Enforce CHANGELOG.md additions
+const changelog = danger.git.fileMatch('CHANGELOG.md');
+
+if (!changelog.edited) {
+  warn('You have not updated `CHANGELOG.md`. If this change directly impacts admins or users, please update the changelog. Otherwise you can ignore this message. See: https://keepachangelog.com');
+}
+
 // UI components
 const uiCode = danger.git.fileMatch('app/soapbox/components/ui/**');
 const uiTests = danger.git.fileMatch('app/soapbox/components/ui/**/__tests__/**');

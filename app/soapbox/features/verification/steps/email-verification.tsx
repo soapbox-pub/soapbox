@@ -1,12 +1,20 @@
 import { AxiosError } from 'axios';
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { checkEmailVerification, postEmailVerification, requestEmailVerification } from 'soapbox/actions/verification';
 import Icon from 'soapbox/components/icon';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+
+const messages = defineMessages({
+  verificationSuccess: { id: 'email_verification.success', defaultMessage: 'Verification email sent successfully.' },
+  verificationFail: { id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' },
+  verificationFailTakenAlert: { id: 'email_verifilcation.exists', defaultMessage: 'This email has already been taken.' },
+  verificationFailTaken: { id: 'email_verification.taken', defaultMessage: 'is taken' },
+  emailLabel: { id: 'email_verification.email.label', defaultMessage: 'E-mail address' },
+});
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -77,26 +85,23 @@ const EmailVerification = () => {
 
         dispatch(
           snackbar.success(
-            intl.formatMessage({
-              id: 'email_verification.exists',
-              defaultMessage: 'Verification email sent successfully.',
-            }),
+            intl.formatMessage(messages.verificationSuccess),
           ),
         );
       })
       .catch((error: AxiosError) => {
         const errorMessage = (error.response?.data as any)?.error;
         const isEmailTaken = errorMessage === 'email_taken';
-        let message = intl.formatMessage({ id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' });
+        let message = intl.formatMessage(messages.verificationFail);
 
         if (isEmailTaken) {
-          message = intl.formatMessage({ id: 'email_verification.exists', defaultMessage: 'This email has already been taken.' });
+          message = intl.formatMessage(messages.verificationFailTakenAlert);
         } else if (errorMessage) {
           message = errorMessage;
         }
 
         if (isEmailTaken) {
-          setErrors([intl.formatMessage({ id: 'email_verification.taken', defaultMessage: 'is taken' })]);
+          setErrors([intl.formatMessage(messages.verificationFailTaken)]);
         }
 
         dispatch(snackbar.error(message));
@@ -111,12 +116,14 @@ const EmailVerification = () => {
   return (
     <div>
       <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>{intl.formatMessage({ id: 'email_verification.header', defaultMessage: 'Enter your email address' })}</h1>
+        <h1 className='text-center font-bold text-2xl'>
+          <FormattedMessage id='email_verification.header' defaultMessage='Enter your email address' />
+        </h1>
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Email Address' errors={errors}>
+          <FormGroup labelText={intl.formatMessage(messages.emailLabel)} errors={errors}>
             <Input
               type='email'
               value={email}
@@ -128,7 +135,9 @@ const EmailVerification = () => {
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>Next</Button>
+            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            </Button>
           </div>
         </Form>
       </div>
