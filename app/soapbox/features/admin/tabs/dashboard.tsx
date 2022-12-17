@@ -1,15 +1,13 @@
 import React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
-import { Text } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 import { download } from 'soapbox/utils/download';
 import { parseVersion } from 'soapbox/utils/features';
-import { isNumber } from 'soapbox/utils/numbers';
 
+import { DashCounter, DashCounters } from '../components/dashcounter';
 import RegistrationModePicker from '../components/registration-mode-picker';
 
 const Dashboard: React.FC = () => {
@@ -46,64 +44,37 @@ const Dashboard: React.FC = () => {
   const domainCount = instance.stats.get('domain_count');
 
   const mau = instance.pleroma.getIn(['stats', 'mau']) as number | undefined;
-  const retention = (userCount && mau) ? Math.round(mau / userCount * 100) : null;
+  const retention = (userCount && mau) ? Math.round(mau / userCount * 100) : undefined;
 
   if (!account) return null;
 
   return (
     <>
-      <div className='dashcounters mt-8'>
-        {isNumber(mau) && (
-          <div className='dashcounter'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={mau} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />
-            </Text>
-          </div>
-        )}
-        {isNumber(userCount) && (
-          <Link className='dashcounter' to='/soapbox/admin/users'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={userCount} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />
-            </Text>
-          </Link>
-        )}
-        {isNumber(retention) && (
-          <div className='dashcounter'>
-            <Text align='center' size='2xl' weight='medium'>
-              {retention}%
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
-            </Text>
-          </div>
-        )}
-        {isNumber(statusCount) && (
-          <Link className='dashcounter' to='/timeline/local'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={statusCount} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />
-            </Text>
-          </Link>
-        )}
-        {isNumber(domainCount) && (
-          <div className='dashcounter'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={domainCount} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />
-            </Text>
-          </div>
-        )}
-      </div>
+      <DashCounters>
+        <DashCounter
+          count={mau}
+          label={<FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />}
+        />
+        <DashCounter
+          to='/soapbox/admin/users'
+          count={userCount}
+          label={<FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />}
+        />
+        <DashCounter
+          count={retention}
+          label={<FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />}
+          percent
+        />
+        <DashCounter
+          to='/timeline/local'
+          count={statusCount}
+          label={<FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />}
+        />
+        <DashCounter
+          count={domainCount}
+          label={<FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />}
+        />
+      </DashCounters>
 
       {account.admin && <RegistrationModePicker />}
 
