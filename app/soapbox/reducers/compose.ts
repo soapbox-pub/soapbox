@@ -357,6 +357,10 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, action.id, () => state.get('default')!.withMutations(map => {
         map.set('idempotencyKey', uuid());
         map.set('in_reply_to', action.id.startsWith('reply:') ? action.id.slice(6) : null);
+        if (action.id.startsWith('group:')) {
+          map.set('privacy', 'group');
+          map.set('group_id', action.id.slice(6));
+        }
       }));
     case COMPOSE_SUBMIT_FAIL:
       return updateCompose(state, action.id, compose => compose.set('is_submitting', false));
