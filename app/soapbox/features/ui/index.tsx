@@ -277,9 +277,9 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.events && <WrappedRoute path='/@:username/events/:statusId/discussion' publicRoute exact page={EventPage} component={EventDiscussion} content={children} />}
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
-      <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} />
-      <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />
-      <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />
+      {features.groups && <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
