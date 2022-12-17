@@ -20,13 +20,3 @@
     }
   }
 }
-
-.logentry {
-  padding: 15px;
-
-  &__timestamp {
-    color: var(--primary-text-color--faint);
-    font-size: 13px;
-    text-align: right;
-  }
-}
