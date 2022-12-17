@@ -58,7 +58,6 @@ module.exports = {
         'accent-blue': true,
         'gradient-start': true,
         'gradient-end': true,
-        'sea-blue': true,
         'greentext': true,
       }),
       animation: {
