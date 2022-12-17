@@ -1,5 +1,8 @@
 import { danger, warn, message } from 'danger';
 
+// App changes
+const app = danger.git.fileMatch('app/soapbox/**');
+
 // Docs changes
 const docs = danger.git.fileMatch('docs/**/*.md');
 
@@ -10,7 +13,7 @@ if (docs.edited) {
 // Enforce CHANGELOG.md additions
 const changelog = danger.git.fileMatch('CHANGELOG.md');
 
-if (!changelog.edited) {
+if (app.edited && !changelog.edited) {
   warn('You have not updated `CHANGELOG.md`. If this change directly impacts admins or users, please update the changelog. Otherwise you can ignore this message. See: https://keepachangelog.com');
 }
 

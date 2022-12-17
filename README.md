@@ -28,7 +28,7 @@ busybox unzip soapbox.zip -o -d /opt/pleroma/instance
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
-***For OTP releases,*** *unpack to /var/lib/pleroma instead.*
+**_For OTP releases,_** _unpack to /var/lib/pleroma instead._
 
 To remove Soapbox and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
@@ -150,15 +150,19 @@ NODE_ENV=development
 ```
 
 #### Local dev server
+
 - `yarn dev` - Run the local dev server.
 
 #### Building
+
 - `yarn build` - Compile without a dev server, into `/static` directory.
 
 #### Translations
+
 - `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
 
 #### Tests
+
 - `yarn test:all` - Runs all tests and linters.
 
 - `yarn test` - Runs Jest for frontend unit tests.
@@ -173,6 +177,9 @@ NODE_ENV=development
 
 We welcome contributions to this project.
 To contribute, see [Contributing to Soapbox](docs/contributing.md).
+
+Translators can help by providing [translations through Weblate](http://hosted.weblate.org/soapbox-pub/soapbox/).
+Native speakers from all around the world are welcome!
 
 # Customization
 
@@ -205,8 +212,8 @@ the Free Software Foundation, either version 3 of the License, or
 
 Soapbox is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Soapbox.  If not, see <https://www.gnu.org/licenses/>.
+along with Soapbox. If not, see <https://www.gnu.org/licenses/>.
