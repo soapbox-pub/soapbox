@@ -1,7 +1,7 @@
 import React from 'react';
 
-import compareId from 'soapbox/compare_id';
 import { HStack } from 'soapbox/components/ui';
+import { compareId } from 'soapbox/utils/comparators';
 
 import Color from './color';
 
