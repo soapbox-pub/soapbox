@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { NavLink, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
@@ -23,10 +23,9 @@ import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import { Card, HStack, Stack, Text } from './ui';
 
-import type { Map as ImmutableMap } from 'immutable';
 import type {
   Account as AccountEntity,
-  // Group as GroupEntity,
+  Group as GroupEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -46,12 +45,12 @@ export interface IStatus {
   unread?: boolean,
   onMoveUp?: (statusId: string, featured?: boolean) => void,
   onMoveDown?: (statusId: string, featured?: boolean) => void,
-  group?: ImmutableMap<string, any>,
   focusable?: boolean,
   featured?: boolean,
   hideActionBar?: boolean,
   hoverable?: boolean,
   variant?: 'default' | 'rounded',
+  showGroup?: boolean,
   withDismiss?: boolean,
   accountAction?: React.ReactElement,
 }
@@ -70,6 +69,7 @@ const Status: React.FC<IStatus> = (props) => {
     unread,
     hideActionBar,
     variant = 'rounded',
+    showGroup = true,
     withDismiss,
   } = props;
 
@@ -235,7 +235,7 @@ const Status: React.FC<IStatus> = (props) => {
     const displayNameHtml = { __html: String(status.getIn(['account', 'display_name_html'])) };
 
     reblogElement = (
-      <NavLink
+      <Link
         to={`/@${status.getIn(['account', 'acct'])}`}
         onClick={(event) => event.stopPropagation()}
         className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
@@ -253,12 +253,12 @@ const Status: React.FC<IStatus> = (props) => {
             }}
           />
         </HStack>
-      </NavLink>
+      </Link>
     );
 
     reblogElementMobile = (
       <div className='pb-5 -mt-2 sm:hidden truncate'>
-        <NavLink
+        <Link
           to={`/@${status.getIn(['account', 'acct'])}`}
           onClick={(event) => event.stopPropagation()}
           className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
@@ -276,7 +276,7 @@ const Status: React.FC<IStatus> = (props) => {
               }}
             />
           </span>
-        </NavLink>
+        </Link>
       </div>
     );
 
@@ -300,7 +300,7 @@ const Status: React.FC<IStatus> = (props) => {
     }
   }
 
-  // const group = actualStatus.group as GroupEntity | null;
+  const group = actualStatus.group as GroupEntity | null;
 
   const handlers = muted ? undefined : {
     reply: handleHotkeyReply,
@@ -345,26 +345,6 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
         )}
 
-        {/* {group && (
-          <div className='pt-4 px-4'>
-            <HStack alignItems='center' space={1}>
-              <Icon src={require('@tabler/icons/circles.svg')} className='text-gray-600 dark:text-gray-400' />
-
-              <Text size='sm' theme='muted' weight='medium'>
-                <FormattedMessage
-                  id='status.group'
-                  defaultMessage='Posted in {group}'
-                  values={{ group: (
-                    <Link className='hover:underline' to={`/groups/${group.id}`} onClick={(e) => e.stopPropagation()}>
-                      <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
-                    </Link>
-                  ) }}
-                />
-              </Text>
-            </HStack>
-          </div>
-        )} */}
-
         <Card
           variant={variant}
           className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
@@ -375,6 +355,26 @@ const Status: React.FC<IStatus> = (props) => {
           })}
           data-id={status.id}
         >
+          {showGroup && group && (
+            <div className='mb-4'>
+              <HStack alignItems='center' space={1}>
+                <Icon src={require('@tabler/icons/circles.svg')} className='text-gray-600 dark:text-gray-400' />
+
+                <Text size='sm' theme='muted' weight='medium'>
+                  <FormattedMessage
+                    id='status.group'
+                    defaultMessage='Posted in {group}'
+                    values={{ group: (
+                      <Link className='hover:underline' to={`/groups/${group.id}`} onClick={(e) => e.stopPropagation()}>
+                        <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                      </Link>
+                    ) }}
+                  />
+                </Text>
+              </HStack>
+            </div>
+          )}
+
           {reblogElementMobile}
 
           <div className='mb-4'>

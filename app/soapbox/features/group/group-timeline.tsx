@@ -64,7 +64,8 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
         timelineId={`group:${groupId}`}
         onLoadMore={handleLoadMore}
         emptyMessage={<FormattedMessage id='empty_column.group' defaultMessage='There are no posts in this group yet.' />}
-        divideType='space'
+        divideType='border'
+        showGroup={false}
       />
     </Stack>
   );

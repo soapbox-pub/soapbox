@@ -1,17 +1,17 @@
-import { GroupRole } from 'soapbox/reducers/group-memberships';
+import { defineMessages } from 'react-intl';
 
 import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
 import { closeModal, openModal } from './modals';
+import snackbar from './snackbar';
 import { deleteFromTimelines } from './timelines';
 
 import type { AxiosError } from 'axios';
+import type { GroupRole } from 'soapbox/reducers/group-memberships';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Group } from 'soapbox/types/entities';
-
-type GroupMedia = 'header' | 'avatar';
 
 const GROUP_EDITOR_SET = 'GROUP_EDITOR_SET';
 
@@ -110,6 +110,15 @@ const GROUP_EDITOR_MEDIA_CHANGE       = 'GROUP_EDITOR_MEDIA_CHANGE';
 
 const GROUP_EDITOR_RESET = 'GROUP_EDITOR_RESET';
 
+const messages = defineMessages({
+  success: { id: 'manage_group.submit_success', defaultMessage: 'The group was created' },
+  editSuccess: { id: 'manage_group.edit_success', defaultMessage: 'The group was edited' },
+  joinSuccess: { id: 'group.join.success', defaultMessage: 'Joined the group' },
+  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
+  leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
+  view: { id: 'snackbar.view', defaultMessage: 'View' },
+});
+
 const editGroup = (group: Group) => (dispatch: AppDispatch) => {
   dispatch({
     type: GROUP_EDITOR_SET,
@@ -130,6 +139,7 @@ const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(createGroupSuccess(data));
+        dispatch(snackbar.success(messages.success, messages.view, `/groups/${data.id}`));
 
         if (shouldReset) {
           dispatch(resetGroupEditor());
@@ -160,6 +170,7 @@ const updateGroup = (id: string, params: Record<string, any>, shouldReset?: bool
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(updateGroupSuccess(data));
+        dispatch(snackbar.success(messages.editSuccess));
 
         if (shouldReset) {
           dispatch(resetGroupEditor());
@@ -305,6 +316,7 @@ const joinGroup = (id: string) =>
 
     api(getState).post(`/api/v1/groups/${id}/join`).then(response => {
       dispatch(joinGroupSuccess(response.data));
+      dispatch(snackbar.success(locked ? messages.joinRequestSuccess : messages.joinSuccess));
     }).catch(error => {
       dispatch(joinGroupFail(error, locked));
     });
@@ -316,6 +328,7 @@ const leaveGroup = (id: string) =>
 
     api(getState).post(`/api/v1/groups/${id}/leave`).then(response => {
       dispatch(leaveGroupSuccess(response.data));
+      dispatch(snackbar.success(messages.leaveSuccess));
     }).catch(error => {
       dispatch(leaveGroupFail(error));
     });
@@ -826,7 +839,7 @@ const changeGroupEditorPrivacy = (value: boolean) => ({
   value,
 });
 
-const changeGroupEditorMedia = (mediaType: GroupMedia, file: File) => ({
+const changeGroupEditorMedia = (mediaType: 'header' | 'avatar', file: File) => ({
   type: GROUP_EDITOR_MEDIA_CHANGE,
   mediaType,
   value: file,
