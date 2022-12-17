@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Events: ability to create, view, and comment on Events (on Rebased).
 - Onboarding: display an introduction wizard to newly registered accounts.
 - Posts: translate foreign language posts into your native language (on Rebased, Mastodon; if configured by the admin).
+- Posts: ability to view quotes of a post (on Rebased).
 - Posts: hover the "replying to" line to see a preview card of the parent post.
 - Chats: ability to leave a chat (on Rebased, Truth Social).
 - Chats: ability to disable chats for yourself.
@@ -32,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: changed the thumbs-up icon to a heart.
 - Posts: move instance favicon beside username instead of post timestamp.
 - Posts: changed the behavior of content warnings. CWs and sensitive media are unified into one design.
+- Posts: redesigned interaction counters to use text instead of icons.
 - Profile: overhauled user profiles to be consistent with the rest of the UI.
 - Composer: move emoji button alongside other composer buttons, add numerical counter.
 - Birthdays: move today's birthdays out of notifications into right sidebar.
