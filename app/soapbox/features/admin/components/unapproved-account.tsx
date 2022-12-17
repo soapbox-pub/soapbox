@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { approveUsers } from 'soapbox/actions/admin';
 import { rejectUserModal } from 'soapbox/actions/moderation';
 import snackbar from 'soapbox/actions/snackbar';
-import IconButton from 'soapbox/components/icon-button';
+import { Stack, HStack, Text, IconButton } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -45,16 +45,31 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   };
 
   return (
-    <div className='unapproved-account'>
-      <div className='unapproved-account__bio'>
-        <div className='unapproved-account__nickname'>@{account.get('acct')}</div>
-        <blockquote className='md'>{adminAccount?.invite_request || ''}</blockquote>
-      </div>
-      <div className='unapproved-account__actions'>
-        <IconButton src={require('@tabler/icons/check.svg')} onClick={handleApprove} />
-        <IconButton src={require('@tabler/icons/x.svg')} onClick={handleReject} />
-      </div>
-    </div>
+    <HStack space={4} justifyContent='between'>
+      <Stack space={1}>
+        <Text weight='semibold'>
+          @{account.get('acct')}
+        </Text>
+        <Text tag='blockquote' size='sm'>
+          {adminAccount?.invite_request || ''}
+        </Text>
+      </Stack>
+
+      <HStack space={2} alignItems='center'>
+        <IconButton
+          src={require('@tabler/icons/check.svg')}
+          onClick={handleApprove}
+          theme='outlined'
+          iconClassName='p-1 text-gray-600 dark:text-gray-400'
+        />
+        <IconButton
+          src={require('@tabler/icons/x.svg')}
+          onClick={handleReject}
+          theme='outlined'
+          iconClassName='p-1 text-gray-600 dark:text-gray-400'
+        />
+      </HStack>
+    </HStack>
   );
 };
 

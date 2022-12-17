@@ -25,6 +25,7 @@ deps:
   cache:
     <<: *cache
     policy: push
+  interruptible: true
 
 danger:
   stage: test

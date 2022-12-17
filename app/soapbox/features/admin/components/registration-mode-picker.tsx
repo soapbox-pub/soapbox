@@ -3,12 +3,7 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { updateConfig } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
-import {
-  SimpleForm,
-  FieldsGroup,
-  RadioGroup,
-  RadioItem,
-} from 'soapbox/features/forms';
+import { RadioGroup, RadioItem } from 'soapbox/components/radio';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 
 import type { Instance } from 'soapbox/types/entities';
@@ -54,33 +49,26 @@ const RegistrationModePicker: React.FC = () => {
   };
 
   return (
-    <SimpleForm>
-      <FieldsGroup>
-        <RadioGroup
-          label={<FormattedMessage id='admin.dashboard.registration_mode_label' defaultMessage='Registrations' />}
-          onChange={onChange}
-        >
-          <RadioItem
-            label={<FormattedMessage id='admin.dashboard.registration_mode.open_label' defaultMessage='Open' />}
-            hint={<FormattedMessage id='admin.dashboard.registration_mode.open_hint' defaultMessage='Anyone can join.' />}
-            checked={mode === 'open'}
-            value='open'
-          />
-          <RadioItem
-            label={<FormattedMessage id='admin.dashboard.registration_mode.approval_label' defaultMessage='Approval Required' />}
-            hint={<FormattedMessage id='admin.dashboard.registration_mode.approval_hint' defaultMessage='Users can sign up, but their account only gets activated when an admin approves it.' />}
-            checked={mode === 'approval'}
-            value='approval'
-          />
-          <RadioItem
-            label={<FormattedMessage id='admin.dashboard.registration_mode.closed_label' defaultMessage='Closed' />}
-            hint={<FormattedMessage id='admin.dashboard.registration_mode.closed_hint' defaultMessage='Nobody can sign up. You can still invite people.' />}
-            checked={mode === 'closed'}
-            value='closed'
-          />
-        </RadioGroup>
-      </FieldsGroup>
-    </SimpleForm>
+    <RadioGroup onChange={onChange}>
+      <RadioItem
+        label={<FormattedMessage id='admin.dashboard.registration_mode.open_label' defaultMessage='Open' />}
+        hint={<FormattedMessage id='admin.dashboard.registration_mode.open_hint' defaultMessage='Anyone can join.' />}
+        checked={mode === 'open'}
+        value='open'
+      />
+      <RadioItem
+        label={<FormattedMessage id='admin.dashboard.registration_mode.approval_label' defaultMessage='Approval Required' />}
+        hint={<FormattedMessage id='admin.dashboard.registration_mode.approval_hint' defaultMessage='Users can sign up, but their account only gets activated when an admin approves it.' />}
+        checked={mode === 'approval'}
+        value='approval'
+      />
+      <RadioItem
+        label={<FormattedMessage id='admin.dashboard.registration_mode.closed_label' defaultMessage='Closed' />}
+        hint={<FormattedMessage id='admin.dashboard.registration_mode.closed_hint' defaultMessage='Nobody can sign up. You can still invite people.' />}
+        checked={mode === 'closed'}
+        value='closed'
+      />
+    </RadioGroup>
   );
 };
 
