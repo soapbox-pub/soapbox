@@ -45,7 +45,7 @@ class Bundle extends React.PureComponent<BundleProps, BundleState> {
     this.load(this.props);
   }
 
-  componentWillReceiveProps(nextProps: BundleProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: BundleProps) {
     if (nextProps.fetchComponent !== this.props.fetchComponent) {
       this.load(nextProps);
     }
