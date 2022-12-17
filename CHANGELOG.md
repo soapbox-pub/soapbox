@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Composer: move emoji button alongside other composer buttons, add numerical counter.
 - Birthdays: move today's birthdays out of notifications into right sidebar.
 - Performance: improve scrolling/navigation between feeds by using a virtual window library.
+- Admin: admin UI into 3-column layout.
 
 ### Removed
 - Theme: Halloween theme.
