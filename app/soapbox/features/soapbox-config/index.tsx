@@ -2,7 +2,7 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { updateConfig } from 'soapbox/actions/admin';
+import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
@@ -99,18 +99,8 @@ const SoapboxConfig: React.FC = () => {
     setJsonValid(true);
   };
 
-  const getParams = () => {
-    return [{
-      group: ':pleroma',
-      key: ':frontend_configurations',
-      value: [{
-        tuple: [':soapbox_fe', data.toJS()],
-      }],
-    }];
-  };
-
   const handleSubmit: React.FormEventHandler = (e) => {
-    dispatch(updateConfig(getParams())).then(() => {
+    dispatch(updateSoapboxConfig(data.toJS())).then(() => {
       setLoading(false);
       dispatch(snackbar.success(intl.formatMessage(messages.saved)));
     }).catch(() => {
