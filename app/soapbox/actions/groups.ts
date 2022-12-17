@@ -406,7 +406,7 @@ const groupKick = (groupId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(groupKickRequest(groupId, accountId));
 
-    api(getState).post(`/api/v1/groups/${groupId}/kick`, { account_ids: [accountId] })
+    return api(getState).post(`/api/v1/groups/${groupId}/kick`, { account_ids: [accountId] })
       .then(() => dispatch(groupKickSuccess(groupId, accountId)))
       .catch(err => dispatch(groupKickFail(groupId, accountId, err)));
   };
@@ -506,7 +506,7 @@ const groupBlock = (groupId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(groupBlockRequest(groupId, accountId));
 
-    api(getState).post(`/api/v1/groups/${groupId}/blocks`, { account_ids: [accountId] })
+    return api(getState).post(`/api/v1/groups/${groupId}/blocks`, { account_ids: [accountId] })
       .then(() => dispatch(groupBlockSuccess(groupId, accountId)))
       .catch(err => dispatch(groupBlockFail(groupId, accountId, err)));
   };
@@ -534,7 +534,7 @@ const groupUnblock = (groupId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(groupUnblockRequest(groupId, accountId));
 
-    api(getState).delete(`/api/v1/groups/${groupId}/blocks?account_ids[]=${accountId}`)
+    return api(getState).delete(`/api/v1/groups/${groupId}/blocks?account_ids[]=${accountId}`)
       .then(() => dispatch(groupUnblockSuccess(groupId, accountId)))
       .catch(err => dispatch(groupUnblockFail(groupId, accountId, err)));
   };
@@ -562,7 +562,7 @@ const groupPromoteAccount = (groupId: string, accountId: string, role: GroupRole
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(groupPromoteAccountRequest(groupId, accountId));
 
-    api(getState).post(`/api/v1/groups/${groupId}/promote`, { account_ids: [accountId], role: role })
+    return api(getState).post(`/api/v1/groups/${groupId}/promote`, { account_ids: [accountId], role: role })
       .then((response) => dispatch(groupPromoteAccountSuccess(groupId, accountId, response.data)))
       .catch(err => dispatch(groupPromoteAccountFail(groupId, accountId, err)));
   };
@@ -591,7 +591,7 @@ const groupDemoteAccount = (groupId: string, accountId: string, role: GroupRole)
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(groupDemoteAccountRequest(groupId, accountId));
 
-    api(getState).post(`/api/v1/groups/${groupId}/demote`, { account_ids: [accountId], role: role })
+    return api(getState).post(`/api/v1/groups/${groupId}/demote`, { account_ids: [accountId], role: role })
       .then((response) => dispatch(groupDemoteAccountSuccess(groupId, accountId, response.data)))
       .catch(err => dispatch(groupDemoteAccountFail(groupId, accountId, err)));
   };

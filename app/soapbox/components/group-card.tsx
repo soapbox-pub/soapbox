@@ -31,7 +31,7 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
             {group.relationship?.role === 'admin' ? (
               <HStack space={1} alignItems='center'>
                 <Icon className='h-4 w-4' src={require('@tabler/icons/users.svg')} />
-                <span><FormattedMessage id='group.role.owner' defaultMessage='Owner' /></span>
+                <span><FormattedMessage id='group.role.admin' defaultMessage='Admin' /></span>
               </HStack>
             ) : group.relationship?.role === 'moderator' && (
               <HStack space={1} alignItems='center'>
