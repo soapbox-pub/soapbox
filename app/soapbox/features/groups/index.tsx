@@ -70,13 +70,13 @@ const Groups: React.FC = () => {
       scrollKey='groups'
       emptyMessage={emptyMessage}
       itemClassName='py-3 last:pb-0'
-      isLoading
-      showLoading
+      isLoading={isLoading}
+      showLoading={isLoading && !groups.count()}
       placeholderComponent={PlaceholderGroupCard}
       placeholderCount={3}
     >
       {groups.map((group) => (
-        <Link to={`/groups/${group.id}`}>
+        <Link key={group.id} to={`/groups/${group.id}`}>
           <GroupCard group={group as GroupEntity} />
         </Link>
       ))}
