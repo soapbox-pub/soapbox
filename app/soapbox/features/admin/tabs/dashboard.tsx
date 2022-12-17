@@ -78,7 +78,15 @@ const Dashboard: React.FC = () => {
         />
       </DashCounters>
 
-      {account.admin && <RegistrationModePicker />}
+      {account.admin && (
+        <>
+          <CardTitle
+            title={<FormattedMessage id='admin.dashboard.registration_mode_label' defaultMessage='Registrations' />}
+          />
+
+          <RegistrationModePicker />
+        </>
+      )}
 
       <CardTitle
         title={<FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' />}
