@@ -2,6 +2,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
+import List, { ListItem } from 'soapbox/components/list';
+import { CardTitle, IconButton, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 import { download } from 'soapbox/utils/download';
@@ -49,7 +51,7 @@ const Dashboard: React.FC = () => {
   if (!account) return null;
 
   return (
-    <>
+    <Stack space={6} className='mt-4'>
       <DashCounters>
         <DashCounter
           count={mau}
@@ -78,26 +80,54 @@ const Dashboard: React.FC = () => {
 
       {account.admin && <RegistrationModePicker />}
 
-      <div className='dashwidgets'>
-        <div className='dashwidget'>
-          <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
-          <ul>
-            <li>{sourceCode.displayName} <span className='pull-right'>{sourceCode.version}</span></li>
-            <li>{v.software + (v.build ? `+${v.build}` : '')} <span className='pull-right'>{v.version}</span></li>
-          </ul>
-        </div>
-        {features.emailList && account.admin && (
-          <div className='dashwidget'>
-            <h4><FormattedMessage id='admin.dashwidgets.email_list_header' defaultMessage='Email list' /></h4>
-            <ul>
-              <li><a href='#' onClick={handleSubscribersClick} target='_blank'>subscribers.csv</a></li>
-              <li><a href='#' onClick={handleUnsubscribersClick} target='_blank'>unsubscribers.csv</a></li>
-              <li><a href='#' onClick={handleCombinedClick} target='_blank'>combined.csv</a></li>
-            </ul>
-          </div>
-        )}
-      </div>
-    </>
+      <CardTitle
+        title={<FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' />}
+      />
+
+      <List>
+        <ListItem label={<FormattedMessage id='admin.software.frontend' defaultMessage='Frontend' />}>
+          <span>{sourceCode.displayName} {sourceCode.version}</span>
+        </ListItem>
+
+        <ListItem label={<FormattedMessage id='admin.software.backend' defaultMessage='Backend' />}>
+          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span>
+        </ListItem>
+      </List>
+
+      {(features.emailList && account.admin) && (
+        <>
+          <CardTitle
+            title={<FormattedMessage id='admin.dashwidgets.email_list_header' defaultMessage='Email list' />}
+          />
+
+          <List>
+            <ListItem label='subscribers.csv'>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                onClick={handleSubscribersClick}
+                iconClassName='w-5 h-5'
+              />
+            </ListItem>
+
+            <ListItem label='unsubscribers.csv'>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                onClick={handleUnsubscribersClick}
+                iconClassName='w-5 h-5'
+              />
+            </ListItem>
+
+            <ListItem label='combined.csv'>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                onClick={handleCombinedClick}
+                iconClassName='w-5 h-5'
+              />
+            </ListItem>
+          </List>
+        </>
+      )}
+    </Stack>
   );
 };
 
