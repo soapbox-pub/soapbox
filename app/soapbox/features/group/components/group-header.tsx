@@ -8,6 +8,7 @@ import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { isDefaultHeader } from 'soapbox/utils/accounts';
 
 import type { Group } from 'soapbox/types/entities';
 
@@ -95,6 +96,29 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     }
   };
 
+  const renderHeader = () => {
+    let header: React.ReactNode;
+
+    if (group.header) {
+      header = (
+        <StillImage
+          src={group.header}
+          alt={intl.formatMessage(messages.header)}
+        />
+      );
+
+      if (!isDefaultHeader(group.header)) {
+        header = (
+          <a href={group.header} onClick={handleHeaderClick} target='_blank'>
+            {header}
+          </a>
+        );
+      }
+    }
+
+    return header;
+  };
+
   const makeActionButton = () => {
     if (!group.relationship || !group.relationship.member) {
       return (
@@ -134,14 +158,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     <div className='-mt-4 -mx-4'>
       <div className='relative'>
         <div className='relative flex flex-col justify-center h-32 w-full lg:h-[200px] md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
-          {group.header && (
-            <a href={group.header} onClick={handleHeaderClick} target='_blank'>
-              <StillImage
-                src={group.header}
-                alt={intl.formatMessage(messages.header)}
-              />
-            </a>
-          )}
+          {renderHeader()}
         </div>
         <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
           <a href={group.avatar} onClick={handleAvatarClick} target='_blank'>
