@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
 import List, { ListItem } from 'soapbox/components/list';
-import { CardTitle, IconButton, Stack } from 'soapbox/components/ui';
+import { CardTitle, Icon, IconButton, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 import { download } from 'soapbox/utils/download';
@@ -113,7 +113,18 @@ const Dashboard: React.FC = () => {
 
       <List>
         <ListItem label={<FormattedMessage id='admin.software.frontend' defaultMessage='Frontend' />}>
-          <span>{sourceCode.displayName} {sourceCode.version}</span>
+          <a
+            href={sourceCode.ref ? `${sourceCode.url}/tree/${sourceCode.ref}` : sourceCode.url}
+            className='flex space-x-1 items-center truncate'
+            target='_blank'
+          >
+            <span>{sourceCode.displayName} {sourceCode.version}</span>
+
+            <Icon
+              className='w-4 h-4'
+              src={require('@tabler/icons/external-link.svg')}
+            />
+          </a>
         </ListItem>
 
         <ListItem label={<FormattedMessage id='admin.software.backend' defaultMessage='Backend' />}>
