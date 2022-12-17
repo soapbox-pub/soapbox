@@ -144,7 +144,7 @@ export const makeGetStatus = () => {
       (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || ''),
-      (state: RootState, { id }: APIStatus) => state.groups.get(state.statuses.get(id)?.group || ''),
+      (state: RootState, { id }: APIStatus) => state.groups.items.get(state.statuses.get(id)?.group || ''),
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
       (state: RootState) => state.me,
@@ -356,7 +356,7 @@ export const makeGetStatusIds = () => createSelector([
 
 export const makeGetGroup = () => {
   return createSelector([
-    (state: RootState, id: string) => state.groups.get(id),
+    (state: RootState, id: string) => state.groups.items.get(id),
     (state: RootState, id: string) => state.group_relationships.get(id),
   ], (base, relationship) => {
     if (!base) return null;

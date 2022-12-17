@@ -10,30 +10,28 @@ import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
+import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
+
 import type { List as ImmutableList } from 'immutable';
 import type { RootState } from 'soapbox/store';
 import type { Group as GroupEntity } from 'soapbox/types/entities';
 
 const getOrderedGroups = createSelector([
-  (state: RootState) => state.groups,
+  (state: RootState) => state.groups.items,
+  (state: RootState) => state.groups.isLoading,
   (state: RootState) => state.group_relationships,
-], (groups, group_relationships) => {
-  if (!groups) {
-    return groups;
-  }
-
-  return (groups
-    .toList()
-    .filter((item: GroupEntity | false) => !!item) as ImmutableList<GroupEntity>)
+], (groups, isLoading, group_relationships) => ({
+  groups: (groups.toList().filter((item: GroupEntity | false) => !!item) as ImmutableList<GroupEntity>)
     .map((item) => item.set('relationship', group_relationships.get(item.id) || null))
     .filter((item) => item.relationship?.member)
-    .sort((a, b) => a.display_name.localeCompare(b.display_name));
-});
+    .sort((a, b) => a.display_name.localeCompare(b.display_name)),
+  isLoading,
+}));
 
 const Groups: React.FC = () => {
   const dispatch = useDispatch();
 
-  const groups = useAppSelector((state) => getOrderedGroups(state));
+  const { groups, isLoading } = useAppSelector((state) => getOrderedGroups(state));
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -72,6 +70,10 @@ const Groups: React.FC = () => {
       scrollKey='groups'
       emptyMessage={emptyMessage}
       itemClassName='py-3 last:pb-0'
+      isLoading
+      showLoading
+      placeholderComponent={PlaceholderGroupCard}
+      placeholderCount={3}
     >
       {groups.map((group) => (
         <Link to={`/groups/${group.id}`}>

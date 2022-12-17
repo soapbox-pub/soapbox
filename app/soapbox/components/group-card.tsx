@@ -21,7 +21,7 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
       <Stack className='bg-white dark:bg-primary-900 border border-solid border-gray-300 dark:border-primary-800 rounded-lg sm:rounded-xl'>
         <div className='bg-primary-100 dark:bg-gray-800 h-[120px] relative -m-[1px] mb-0 rounded-t-lg sm:rounded-t-xl'>
           {group.header && <img className='h-full w-full object-cover rounded-t-lg sm:rounded-t-xl' src={group.header} alt={intl.formatMessage(messages.groupHeader)} />}
-          <div className='absolute left-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
             <Avatar className='ring-2 ring-white dark:ring-primary-900' src={group.avatar} size={64} />
           </div>
         </div>

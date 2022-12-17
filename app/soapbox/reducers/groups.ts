@@ -1,6 +1,6 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 
-import { GROUP_FETCH_FAIL, GROUP_DELETE_SUCCESS } from 'soapbox/actions/groups';
+import { GROUP_FETCH_FAIL, GROUP_DELETE_SUCCESS, GROUP_FETCH_REQUEST } from 'soapbox/actions/groups';
 import { GROUPS_IMPORT } from 'soapbox/actions/importer';
 import { normalizeGroup } from 'soapbox/normalizers';
 
@@ -10,23 +10,30 @@ import type { APIEntity } from 'soapbox/types/entities';
 type GroupRecord = ReturnType<typeof normalizeGroup>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string, GroupRecord | false>;
+const ReducerRecord = ImmutableRecord({
+  isLoading: true,
+  items: ImmutableMap<string, GroupRecord | false>({}),
+});
 
-const normalizeGroups = (state: State, relationships: APIEntities) => {
-  relationships.forEach(relationship => {
-    state = state.set(relationship.id, normalizeGroup(relationship));
-  });
+type State = ReturnType<typeof ReducerRecord>;
 
-  return state;
-};
+const normalizeGroups = (state: State, groups: APIEntities) =>
+  state.update('items', items =>
+    groups.reduce((items: ImmutableMap<string, GroupRecord | false>, group) =>
+      items.set(group.id, normalizeGroup(group)), items),
+  ).set('isLoading', false);
 
-export default function groups(state: State = ImmutableMap(), action: AnyAction) {
+export default function groups(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
     case GROUPS_IMPORT:
       return normalizeGroups(state, action.groups);
+    case GROUP_FETCH_REQUEST:
+      return state.set('isLoading', true);
     case GROUP_DELETE_SUCCESS:
     case GROUP_FETCH_FAIL:
-      return state.set(action.id, false);
+      return state
+        .setIn(['items', action.id], false)
+        .set('isLoading', false);
     default:
       return state;
   }
