@@ -526,11 +526,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const renderMessageButton = () => {
-    if (features.chatsWithFollowers) { // Truth Social
-      if (!ownAccount || !account || account.id === ownAccount?.id) {
-        return null;
-      }
+    if (!ownAccount || !account || account.id === ownAccount?.id) {
+      return null;
+    }
 
+    if (features.chatsWithFollowers) { // Truth Social
       const canChat = account.relationship?.followed_by;
       if (!canChat) {
         return null;
