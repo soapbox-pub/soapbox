@@ -57,7 +57,7 @@ const Slider: React.FC<ISlider> = ({ value, onChange }) => {
       onMouseDown={handleMouseDown}
       ref={node}
     >
-      <div className='w-full h-1 bg-white/30 absolute top-1/2 -translate-y-1/2 rounded-full' />
+      <div className='w-full h-1 bg-primary-200 dark:bg-primary-700 absolute top-1/2 -translate-y-1/2 rounded-full' />
       <div className='h-1 bg-accent-500 absolute top-1/2 -translate-y-1/2 rounded-full' style={{ width: `${value * 100}%` }} />
       <span
         className='bg-accent-500 absolute rounded-full w-3 h-3 -ml-1.5 top-1/2 -translate-y-1/2 z-10 shadow'

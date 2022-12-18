@@ -165,7 +165,9 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
             onChange={updateColors('danger')}
             resetKey={resetKey}
           />
+        </List>
 
+        <List>
           <ColorListItem
             label='Greentext'
             value={colors.greentext}
