@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatibility: added compatibility with Truth Social, Fedibird, Pixelfed, Akkoma, and Glitch.
 - Developers: added Test feed, Service Worker debugger, and Network Error preview.
 - Reports: display server rules in reports. Let users select rule violations when submitting a report.
+- Admin: added Theme Editor, a GUI for customizing the color scheme.
 - Admin: custom badges. Admins can add non-federating badges to any user's profile (on Rebased, Pleroma).
 - Admin: consolidated user dropdown actions (verify/suggest/etc) into a unified "Moderate User" modal.
 

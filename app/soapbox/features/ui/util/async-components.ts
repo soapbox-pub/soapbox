@@ -310,6 +310,10 @@ export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation-log');
 }
 
+export function ThemeEditor() {
+  return import(/* webpackChunkName: "features/theme-editor" */'../../theme-editor');
+}
+
 export function UserPanel() {
   return import(/* webpackChunkName: "features/ui" */'../components/user-panel');
 }

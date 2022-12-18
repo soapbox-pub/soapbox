@@ -21,22 +21,22 @@ const Dashboard: React.FC = () => {
   const account = useOwnAccount();
 
   const handleSubscribersClick: React.MouseEventHandler = e => {
-    dispatch(getSubscribersCsv()).then((response) => {
-      download(response, 'subscribers.csv');
+    dispatch(getSubscribersCsv()).then(({ data }) => {
+      download(data, 'subscribers.csv');
     }).catch(() => {});
     e.preventDefault();
   };
 
   const handleUnsubscribersClick: React.MouseEventHandler = e => {
-    dispatch(getUnsubscribersCsv()).then((response) => {
-      download(response, 'unsubscribers.csv');
+    dispatch(getUnsubscribersCsv()).then(({ data }) => {
+      download(data, 'unsubscribers.csv');
     }).catch(() => {});
     e.preventDefault();
   };
 
   const handleCombinedClick: React.MouseEventHandler = e => {
-    dispatch(getCombinedCsv()).then((response) => {
-      download(response, 'combined.csv');
+    dispatch(getCombinedCsv()).then(({ data }) => {
+      download(data, 'combined.csv');
     }).catch(() => {});
     e.preventDefault();
   };
