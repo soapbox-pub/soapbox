@@ -18,6 +18,7 @@ import Palette, { ColorGroup } from './components/palette';
 const messages = defineMessages({
   title: { id: 'admin.theme.title', defaultMessage: 'Theme' },
   saved: { id: 'theme_editor.saved', defaultMessage: 'Theme updated!' },
+  restore: { id: 'theme_editor.restore', defaultMessage: 'Restore default theme' },
   export: { id: 'theme_editor.export', defaultMessage: 'Export theme' },
   import: { id: 'theme_editor.import', defaultMessage: 'Import theme' },
   importSuccess: { id: 'theme_editor.import_success', defaultMessage: 'Theme was successfully imported!' },
@@ -53,14 +54,23 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
     };
   };
 
-  const resetTheme = () => {
+  const setTheme = (theme: any) => {
     setResetKey(uuidv4());
-    setTimeout(() => setColors(soapbox.colors.toJS() as any));
+    setTimeout(() => setColors(theme));
+  };
+
+  const resetTheme = () => {
+    setTheme(soapbox.colors.toJS() as any);
   };
 
   const updateTheme = async () => {
     const params = rawConfig.set('colors', colors).toJS();
     await dispatch(updateSoapboxConfig(params));
+  };
+
+  const restoreDefaultTheme = () => {
+    const colors = normalizeSoapboxConfig({ brandColor: '#0482d8' }).colors.toJS();
+    setTheme(colors);
   };
 
   const exportTheme = () => {
@@ -80,7 +90,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
       const json = JSON.parse(text);
       const colors = normalizeSoapboxConfig({ colors: json }).colors.toJS();
 
-      setColors(colors);
+      setTheme(colors);
       dispatch(snackbar.success(intl.formatMessage(messages.importSuccess)));
     }
   };
@@ -148,6 +158,10 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         <FormActions>
           <DropdownMenuContainer
             items={[{
+              text: intl.formatMessage(messages.restore),
+              action: restoreDefaultTheme,
+              icon: require('@tabler/icons/refresh.svg'),
+            },{
               text: intl.formatMessage(messages.import),
               action: importTheme,
               icon: require('@tabler/icons/upload.svg'),
