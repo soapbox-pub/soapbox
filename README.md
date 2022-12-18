@@ -73,10 +73,9 @@ One disadvantage of this approach is that it does not help the software spread. 
 
 # License & Credits
 
-Soapbox is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
-
-- `app/assets/sounds/chat.mp3` and `app/assets/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561), licensed under CC BY 4.0.
-- `soapbox-screenshot.png` was created using [Vectary 3D](https://help.vectary.com/figma-plugin) with assets licensed under CC0. The resulting file is licensed under CC BY 4.0.
+© Alex Gleason & other Soapbox contributors  
+© Eugen Rochko & other Mastodon contributors  
+© Gab AI, Inc.  
 
 Soapbox is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
