@@ -43,7 +43,7 @@ const rgbToHsl = (value: Rgb): Hsl => {
 };
 
 // https://stackoverflow.com/a/44134328
-function hslToHex(color: Hsl): string {
+export function hslToHex(color: Hsl): string {
   const { h, s } = color;
   let { l } = color;
 
@@ -117,17 +117,22 @@ export const generateThemeCss = (soapboxConfig: SoapboxConfig): string => {
   return colorsToCss(soapboxConfig.colors.toJS() as TailwindColorPalette);
 };
 
-const hexToHsl = (hex: string): Hsl | null => {
+export const hexToHsl = (hex: string): Hsl | null => {
   const rgb = hexToRgb(hex);
   return rgb ? rgbToHsl(rgb) : null;
 };
 
-export const hslShift = (hex: string, delta: Hsl): string => {
-  const { h, s, l } = hexToHsl(hex)!;
+export const isHsl = (value: any): value is Hsl => {
+  return typeof value === 'object'
+    && typeof value.h === 'number'
+    && typeof value.s === 'number'
+    && typeof value.l === 'number';
+};
 
-  return hslToHex({
+export const hslShift = ({ h, s, l }: Hsl, delta: Hsl): Hsl => {
+  return {
     h: (h + delta.h) % 360,
     s: Math.max(Math.min(s + delta.s, 100), 0),
     l: Math.max(Math.min(l + delta.l, 100), 0),
-  });
+  };
 };

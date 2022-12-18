@@ -1,9 +1,9 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import tintify from 'soapbox/utils/colors';
-import { generateAccent, generateNeutral } from 'soapbox/utils/theme';
+import { generateAccent, generateNeutral, hexToHsl } from 'soapbox/utils/theme';
 
-import type { TailwindColorPalette } from 'soapbox/types/colors';
+import type { HslColorPalette, TailwindColorPalette } from 'soapbox/types/colors';
 
 type SoapboxConfig = ImmutableMap<string, any>;
 type SoapboxColors = ImmutableMap<string, any>;
@@ -53,4 +53,19 @@ export const toTailwind = (soapboxConfig: SoapboxConfig): SoapboxConfig => {
   const legacyColors: SoapboxColors = ImmutableMap(fromJS(fromLegacyColors(soapboxConfig)));
 
   return soapboxConfig.set('colors', legacyColors.mergeDeep(colors));
+};
+
+export const hexToHslPalette = (palette: TailwindColorPalette): HslColorPalette => {
+  return Object.entries(palette).reduce<HslColorPalette>((result, [key, value]) => {
+    if (typeof value === 'string') {
+      const hsl = hexToHsl(value);
+      if (hsl) {
+        result[key] = hsl;
+      }
+    } else {
+      result[key] = hexToHslPalette(value);
+    }
+
+    return result;
+  }, {});
 };

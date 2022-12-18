@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
+import { updateSoapboxConfig } from 'soapbox/actions/admin';
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';

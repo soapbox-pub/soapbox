@@ -8,3 +8,7 @@ export type TailwindColorObject = {
 export type TailwindColorPalette = {
   [key: string]: TailwindColorObject | string,
 }
+
+export type HslColorPalette = {
+  [key: string]: HslColorPalette | Hsl,
+}

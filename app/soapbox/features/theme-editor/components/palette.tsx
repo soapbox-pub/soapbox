@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { HStack, Stack, Slider } from 'soapbox/components/ui';
 import { usePrevious } from 'soapbox/hooks';
+import { Hsl, HslColorPalette } from 'soapbox/types/colors';
 import { compareId } from 'soapbox/utils/comparators';
-import { hslShift } from 'soapbox/utils/theme';
+import { hexToHsl, hslShift, hslToHex } from 'soapbox/utils/theme';
 
 import Color from './color';
 import HSLToggler from './hsl-toggler';
@@ -13,8 +14,8 @@ interface ColorGroup {
 }
 
 interface IPalette {
-  palette: ColorGroup,
-  onChange: (palette: ColorGroup) => void,
+  palette: HslColorPalette,
+  onChange: (palette: HslColorPalette) => void,
   resetKey?: string,
 }
 
@@ -29,10 +30,10 @@ const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
   const skipUpdate = useRef(false);
 
   const handleChange = (tint: string) => {
-    return (color: string) => {
+    return (hex: string) => {
       onChange({
         ...palette,
-        [tint]: color,
+        [tint]: hexToHsl(hex)!,
       });
     };
   };
@@ -45,8 +46,8 @@ const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
 
     const delta = slider - (lastSlider || 0);
 
-    const adjusted = Object.entries(palette).reduce<ColorGroup>((result, [tint, hex]) => {
-      result[tint] = hslShift(hex, {
+    const adjusted = Object.entries(palette).reduce<HslColorPalette>((result, [tint, hsl]) => {
+      result[tint] = hslShift(hsl as Hsl, {
         h: hslKey === 'h' ? delta * 360 : 0,
         s: hslKey === 's' ? delta * 200 : 0,
         l: hslKey === 'l' ? delta * 200 : 0,
@@ -70,7 +71,7 @@ const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
     <Stack space={1} className='w-full'>
       <HStack className='h-8 rounded-md overflow-hidden'>
         {tints.map(tint => (
-          <Color color={palette[tint]} onChange={handleChange(tint)} />
+          <Color color={hslToHex(palette[tint] as Hsl)} onChange={handleChange(tint)} />
         ))}
       </HStack>
 

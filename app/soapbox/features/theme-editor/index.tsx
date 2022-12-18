@@ -13,10 +13,13 @@ import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-wi
 import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { download } from 'soapbox/utils/download';
+import { hexToHslPalette } from 'soapbox/utils/tailwind';
+import { hexToHsl, hslToHex } from 'soapbox/utils/theme';
 
-import Palette, { ColorGroup } from './components/palette';
+import Palette from './components/palette';
 
 import type { ColorChangeHandler } from 'react-color';
+import type { Hsl, HslColorPalette } from 'soapbox/types/colors';
 
 const messages = defineMessages({
   title: { id: 'admin.theme.title', defaultMessage: 'Theme' },
@@ -39,14 +42,14 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   const host = useAppSelector(state => getHost(state));
   const rawConfig = useAppSelector(state => state.soapbox);
 
-  const [colors, setColors] = useState(soapbox.colors.toJS() as any);
+  const [colors, setColors] = useState(hexToHslPalette(soapbox.colors.toJS() as any));
   const [submitting, setSubmitting] = useState(false);
   const [resetKey, setResetKey] = useState(uuidv4());
 
   const fileInput = useRef<HTMLInputElement>(null);
 
   const updateColors = (key: string) => {
-    return (newColors: ColorGroup) => {
+    return (newColors: HslColorPalette) => {
       setColors({
         ...colors,
         [key]: {
@@ -61,7 +64,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
     return (hex: string) => {
       setColors({
         ...colors,
-        [key]: hex,
+        [key]: hexToHsl(hex)!,
       });
     };
   };
@@ -72,16 +75,19 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   };
 
   const resetTheme = () => {
-    setTheme(soapbox.colors.toJS() as any);
+    setTheme(hexToHslPalette(soapbox.colors.toJS() as any));
   };
 
+  dispatch(updateSoapboxConfig(rawConfig.set('colors', {})));
+
   const updateTheme = async () => {
-    const params = rawConfig.set('colors', colors).toJS();
-    await dispatch(updateSoapboxConfig(params));
+    // FIXME: convert HSL back to Hex
+    // const params = rawConfig.set('colors', colors).toJS();
+    // await dispatch(updateSoapboxConfig(params));
   };
 
   const restoreDefaultTheme = () => {
-    const colors = normalizeSoapboxConfig({ brandColor: '#0482d8' }).colors.toJS();
+    const colors = hexToHslPalette(normalizeSoapboxConfig({ brandColor: '#0482d8' }).colors.toJS() as any);
     setTheme(colors);
   };
 
@@ -126,42 +132,42 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         <List>
           <PaletteListItem
             label='Primary'
-            palette={colors.primary}
+            palette={colors.primary as HslColorPalette}
             onChange={updateColors('primary')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Secondary'
-            palette={colors.secondary}
+            palette={colors.secondary as HslColorPalette}
             onChange={updateColors('secondary')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Accent'
-            palette={colors.accent}
+            palette={colors.accent as HslColorPalette}
             onChange={updateColors('accent')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Gray'
-            palette={colors.gray}
+            palette={colors.gray as HslColorPalette}
             onChange={updateColors('gray')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Success'
-            palette={colors.success}
+            palette={colors.success as HslColorPalette}
             onChange={updateColors('success')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Danger'
-            palette={colors.danger}
+            palette={colors.danger as HslColorPalette}
             onChange={updateColors('danger')}
             resetKey={resetKey}
           />
@@ -170,25 +176,25 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         <List>
           <ColorListItem
             label='Greentext'
-            value={colors.greentext}
+            value={hslToHex(colors.greentext as Hsl)}
             onChange={updateColor('greentext')}
           />
 
           <ColorListItem
             label='Accent Blue'
-            value={colors['accent-blue']}
+            value={hslToHex(colors['accent-blue'] as Hsl)}
             onChange={updateColor('accent-blue')}
           />
 
           <ColorListItem
             label='Gradient Start'
-            value={colors['gradient-start']}
+            value={hslToHex(colors['gradient-start'] as Hsl)}
             onChange={updateColor('gradient-start')}
           />
 
           <ColorListItem
             label='Gradient End'
-            value={colors['gradient-end']}
+            value={hslToHex(colors['gradient-end'] as Hsl)}
             onChange={updateColor('gradient-end')}
           />
         </List>
@@ -233,8 +239,8 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 
 interface IPaletteListItem {
   label: React.ReactNode,
-  palette: ColorGroup,
-  onChange: (palette: ColorGroup) => void,
+  palette: HslColorPalette,
+  onChange: (palette: HslColorPalette) => void,
   resetKey?: string,
 }
 
