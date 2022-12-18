@@ -414,7 +414,33 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     frontendConfigurations: v.software === PLEROMA,
 
-    groups: v.software === MASTODON,
+    /**
+     * Groups.
+     * @see POST /api/v1/groups
+     * @see GET /api/v1/groups
+     * @see GET /api/v1/groups/:id
+     * @see POST /api/v1/groups/:id/join
+     * @see POST /api/v1/groups/:id/leave
+     * @see GET /api/v1/groups/:id/memberships
+     * @see PUT /api/v1/groups/:group_id
+     * @see DELETE /api/v1/groups/:group_id
+     * @see GET /api/v1/groups/:group_id/membership_requests
+     * @see POST /api/v1/groups/:group_id/membership_requests/:account_id/authorize
+     * @see POST /api/v1/groups/:group_id/membership_requests/:account_id/reject
+     * @see DELETE /api/v1/groups/:group_id/statuses/:id
+     * @see POST /api/v1/groups/:group_id/kick?account_ids[]=…
+     * @see GET /api/v1/groups/:group_id/blocks
+     * @see POST /api/v1/groups/:group_id/blocks?account_ids[]=…
+     * @see DELETE /api/v1/groups/:group_id/blocks?account_ids[]=…
+     * @see POST /api/v1/groups/:group_id/promote?role=new_role&account_ids[]=…
+     * @see POST /api/v1/groups/:group_id/demote?role=new_role&account_ids[]=…
+     * @see GET /api/v1/admin/groups
+     * @see GET /api/v1/admin/groups/:group_id
+     * @see POST /api/v1/admin/groups/:group_id/suspend
+     * @see POST /api/v1/admin/groups/:group_id/unsuspend
+     * @see DELETE /api/v1/admin/groups/:group_id
+     */
+    groups: v.software === MASTODON && gte(v.compatVersion, '3.5.3'), // '4.1.0' ?
 
     /**
      * Can hide follows/followers lists and counts.
