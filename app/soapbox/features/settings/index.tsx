@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -106,7 +106,7 @@ const Settings = () => {
         {features.chats ? (
           <>
             <CardHeader>
-              <CardTitle title='Direct Messages' />
+              <CardTitle title={<FormattedMessage id='column.chats' defaultMessage='Chats' />} />
             </CardHeader>
 
             <CardBody>
