@@ -9,11 +9,14 @@ import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, Column, Form, FormActions } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
+import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker';
 import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { download } from 'soapbox/utils/download';
 
 import Palette, { ColorGroup } from './components/palette';
+
+import type { ColorChangeHandler } from 'react-color';
 
 const messages = defineMessages({
   title: { id: 'admin.theme.title', defaultMessage: 'Theme' },
@@ -50,6 +53,15 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
           ...colors[key],
           ...newColors,
         },
+      });
+    };
+  };
+
+  const updateColor = (key: string) => {
+    return (hex: string) => {
+      setColors({
+        ...colors,
+        [key]: hex,
       });
     };
   };
@@ -153,6 +165,30 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
             onChange={updateColors('danger')}
             resetKey={resetKey}
           />
+
+          <ColorListItem
+            label='Greentext'
+            value={colors.greentext}
+            onChange={updateColor('greentext')}
+          />
+
+          <ColorListItem
+            label='Accent Blue'
+            value={colors['accent-blue']}
+            onChange={updateColor('accent-blue')}
+          />
+
+          <ColorListItem
+            label='Gradient Start'
+            value={colors['gradient-start']}
+            onChange={updateColor('gradient-start')}
+          />
+
+          <ColorListItem
+            label='Gradient End'
+            value={colors['gradient-end']}
+            onChange={updateColor('gradient-end')}
+          />
         </List>
 
         <FormActions>
@@ -205,6 +241,29 @@ const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette, onChange,
   return (
     <ListItem label={<div className='w-20'>{label}</div>}>
       <Palette palette={palette} onChange={onChange} resetKey={resetKey} />
+    </ListItem>
+  );
+};
+
+interface IColorListItem {
+  label: React.ReactNode,
+  value: string,
+  onChange: (hex: string) => void,
+}
+
+/** Single-color picker. */
+const ColorListItem: React.FC<IColorListItem> = ({ label, value, onChange }) => {
+  const handleChange: ColorChangeHandler = (color, _e) => {
+    onChange(color.hex);
+  };
+
+  return (
+    <ListItem label={label}>
+      <ColorWithPicker
+        value={value}
+        onChange={handleChange}
+        className='w-10 h-8 rounded-md overflow-hidden'
+      />
     </ListItem>
   );
 };
