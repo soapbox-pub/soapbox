@@ -19,7 +19,6 @@ Soapbox is the **frontend** (what users see) while Mastodon is the **backend** (
 Want to give Soapbox a shot? Here are some suggested servers:
 
 - [gleasonator.com](https://gleasonator.com/) - operated by the lead developer of Soapbox
-- [pl.fediverse.pl](https://pl.fediverse.pl/) - Polish server run by a Soapbox maintainer
 - [social.teci.world](https://social.teci.world/) - free speech server run by a Soapbox contributor
 - [spinster.xyz](https://spinster.xyz/) - one of the largest feminist communities on the internet
 - [poa.st](https://poa.st/) - the largest Soapbox server on the network
