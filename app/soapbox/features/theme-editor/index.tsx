@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,6 +10,7 @@ import List, { ListItem } from 'soapbox/components/list';
 import { Button, Column, Form, FormActions } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { download } from 'soapbox/utils/download';
 
 import Palette, { ColorGroup } from './components/palette';
@@ -18,6 +19,8 @@ const messages = defineMessages({
   title: { id: 'admin.theme.title', defaultMessage: 'Theme' },
   saved: { id: 'theme_editor.saved', defaultMessage: 'Theme updated!' },
   export: { id: 'theme_editor.export', defaultMessage: 'Export theme' },
+  import: { id: 'theme_editor.import', defaultMessage: 'Import theme' },
+  importSuccess: { id: 'theme_editor.import_success', defaultMessage: 'Theme was successfully imported!' },
 });
 
 interface IThemeEditor {
@@ -35,6 +38,8 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   const [colors, setColors] = useState(soapbox.colors.toJS() as any);
   const [submitting, setSubmitting] = useState(false);
   const [resetKey, setResetKey] = useState(uuidv4());
+
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const updateColors = (key: string) => {
     return (newColors: ColorGroup) => {
@@ -61,6 +66,23 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   const exportTheme = () => {
     const data = JSON.stringify(colors, null, 2);
     download(data, 'theme.json');
+  };
+
+  const importTheme = () => {
+    fileInput.current?.click();
+  };
+
+  const handleSelectFile: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const file = e.target.files?.item(0);
+
+    if (file) {
+      const text = await file.text();
+      const json = JSON.parse(text);
+      const colors = normalizeSoapboxConfig({ colors: json }).colors.toJS();
+
+      setColors(colors);
+      dispatch(snackbar.success(intl.formatMessage(messages.importSuccess)));
+    }
   };
 
   const handleSubmit = async() => {
@@ -126,8 +148,13 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         <FormActions>
           <DropdownMenuContainer
             items={[{
+              text: intl.formatMessage(messages.import),
+              action: importTheme,
+              icon: require('@tabler/icons/upload.svg'),
+            }, {
               text: intl.formatMessage(messages.export),
               action: exportTheme,
+              icon: require('@tabler/icons/download.svg'),
             }]}
           />
           <Button theme='secondary' onClick={resetTheme}>
@@ -139,6 +166,15 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
           </Button>
         </FormActions>
       </Form>
+
+      <input
+        type='file'
+        ref={fileInput}
+        multiple
+        accept='application/json'
+        className='hidden'
+        onChange={handleSelectFile}
+      />
     </Column>
   );
 };
