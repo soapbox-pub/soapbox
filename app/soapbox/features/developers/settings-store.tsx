@@ -103,6 +103,13 @@ const SettingsStore: React.FC = () => {
       </CardHeader>
 
       <List>
+        <ListItem
+          label={<FormattedMessage id='preferences.fields.demo_label' defaultMessage='Demo mode' />}
+          hint={<FormattedMessage id='preferences.fields.demo_hint' defaultMessage='Use the default Soapbox logo and color scheme. Useful for taking screenshots.' />}
+        >
+          <SettingToggle settings={settings} settingPath={['demo']} onChange={onToggleChange} />
+        </ListItem>
+
         <ListItem label={<FormattedMessage id='preferences.notifications.advanced' defaultMessage='Show all notification categories' />}>
           <SettingToggle settings={settings} settingPath={['notifications', 'quickFilter', 'advanced']} onChange={onToggleChange} />
         </ListItem>
