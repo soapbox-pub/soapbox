@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: hover the "replying to" line to see a preview card of the parent post.
 - Chats: ability to leave a chat (on Rebased, Truth Social).
 - Chats: ability to disable chats for yourself.
+- Layout: added right-to-left support for Arabic, Hebrew, Persian, and Central Kurdish languages.
 - Composer: support custom emoji categories.
 - Search: ability to search posts from a specific account (on Pleroma, Rebased).
 - Theme: auto-detect system theme by default.
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: added Theme Editor, a GUI for customizing the color scheme.
 - Admin: custom badges. Admins can add non-federating badges to any user's profile (on Rebased, Pleroma).
 - Admin: consolidated user dropdown actions (verify/suggest/etc) into a unified "Moderate User" modal.
+- i18n: updated translations for Italian, Polish, Arabic, Hebrew, and German.
 
 ### Changed
 - UI: the whole UI has been overhauled both inside and out. 97% of the codebase has been rewritten to TypeScript, and a new component library has been introduced with Tailwind CSS.
@@ -69,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatibility: improved support for Mastodon, added support for Mitra.
 - Ethereum: Metamask sign-in with Mitra.
 - i18n: added Shavian alphabet (`en-Shaw`) transliteration.
+- i18n: added Icelandic translation.
 
 ### Changed
 - Feeds: added gaps between posts in feeds.
