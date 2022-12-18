@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { v4 as uuidv4 } from 'uuid';
 
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { getHost } from 'soapbox/actions/instance';
@@ -30,6 +31,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 
   const [colors, setColors] = useState(soapbox.colors.toJS() as any);
   const [submitting, setSubmitting] = useState(false);
+  const [resetKey, setResetKey] = useState(uuidv4());
 
   const updateColors = (key: string) => {
     return (newColors: ColorGroup) => {
@@ -41,6 +43,11 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         },
       });
     };
+  };
+
+  const resetTheme = () => {
+    setResetKey(uuidv4());
+    setTimeout(() => setColors(soapbox.colors.toJS() as any));
   };
 
   const updateTheme = async () => {
@@ -69,40 +76,50 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
             label='Primary'
             palette={colors.primary}
             onChange={updateColors('primary')}
+            resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Secondary'
             palette={colors.secondary}
             onChange={updateColors('secondary')}
+            resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Accent'
             palette={colors.accent}
             onChange={updateColors('accent')}
+            resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Gray'
             palette={colors.gray}
             onChange={updateColors('gray')}
+            resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Success'
             palette={colors.success}
             onChange={updateColors('success')}
+            resetKey={resetKey}
           />
 
           <PaletteListItem
             label='Danger'
             palette={colors.danger}
             onChange={updateColors('danger')}
+            resetKey={resetKey}
           />
         </List>
 
         <FormActions>
+          <Button theme='secondary' onClick={resetTheme}>
+            <FormattedMessage id='theme_editor.Reset' defaultMessage='Reset' />
+          </Button>
+
           <Button type='submit' theme='primary' disabled={submitting}>
             <FormattedMessage id='theme_editor.save' defaultMessage='Save theme' />
           </Button>
@@ -116,13 +133,14 @@ interface IPaletteListItem {
   label: React.ReactNode,
   palette: ColorGroup,
   onChange: (palette: ColorGroup) => void,
+  resetKey?: string,
 }
 
 /** Palette editor inside a ListItem. */
-const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette, onChange }) => {
+const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette, onChange, resetKey }) => {
   return (
     <ListItem label={<div className='w-20'>{label}</div>}>
-      <Palette palette={palette} onChange={onChange} />
+      <Palette palette={palette} onChange={onChange} resetKey={resetKey} />
     </ListItem>
   );
 };

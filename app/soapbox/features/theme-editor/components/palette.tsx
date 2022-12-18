@@ -14,10 +14,11 @@ interface ColorGroup {
 interface IPalette {
   palette: ColorGroup,
   onChange: (palette: ColorGroup) => void,
+  resetKey?: string,
 }
 
 /** Editable color palette. */
-const Palette: React.FC<IPalette> = ({ palette, onChange }) => {
+const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
   const tints = Object.keys(palette).sort(compareId);
 
   const [hue, setHue] = useState(0);
@@ -42,6 +43,10 @@ const Palette: React.FC<IPalette> = ({ palette, onChange }) => {
 
     onChange(adjusted);
   }, [hue]);
+
+  useEffect(() => {
+    setHue(0);
+  }, [resetKey]);
 
   return (
     <Stack className='w-full'>
