@@ -53,7 +53,7 @@ const Slider: React.FC<ISlider> = ({ value, onChange }) => {
 
   return (
     <div
-      className='inline-flex cursor-pointer h-6 relative transition'
+      className='inline-flex w-full cursor-pointer h-6 relative transition'
       onMouseDown={handleMouseDown}
       ref={node}
     >

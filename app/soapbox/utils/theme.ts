@@ -122,12 +122,12 @@ const hexToHsl = (hex: string): Hsl | null => {
   return rgb ? rgbToHsl(rgb) : null;
 };
 
-export const hueShift = (hex: string, delta: number): string => {
+export const hslShift = (hex: string, delta: Hsl): string => {
   const { h, s, l } = hexToHsl(hex)!;
 
   return hslToHex({
-    h: (h + delta) % 360,
-    s,
-    l,
+    h: (h + delta.h) % 360,
+    s: Math.max(Math.min(s + delta.s, 100), 0),
+    l: Math.max(Math.min(l + delta.l, 100), 0),
   });
 };
