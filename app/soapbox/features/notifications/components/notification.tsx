@@ -8,16 +8,16 @@ import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/intera
 import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
+import Account from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -27,7 +27,7 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
   return output.join(', ');
 };
 
-const buildLink = (account: Account): JSX.Element => (
+const buildLink = (account: AccountEntity): JSX.Element => (
   <bdi>
     <Link
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
@@ -127,7 +127,7 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
 const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
-  account: Account,
+  account: AccountEntity,
   totalCount: number | null,
   targetName: string,
   instanceTitle: string,
@@ -287,16 +287,16 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'follow':
       case 'user_approved':
         return account && typeof account === 'object' ? (
-          <AccountContainer
-            id={account.id}
+          <Account
+            account={account}
             hidden={hidden}
             avatarSize={48}
           />
         ) : null;
       case 'follow_request':
         return account && typeof account === 'object' ? (
-          <AccountContainer
-            id={account.id}
+          <Account
+            account={account}
             hidden={hidden}
             avatarSize={48}
             actionType='follow_request'
@@ -304,8 +304,8 @@ const Notification: React.FC<INotificaton> = (props) => {
         ) : null;
       case 'move':
         return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
-          <AccountContainer
-            id={notification.target.id}
+          <Account
+            account={notification.target}
             hidden={hidden}
             avatarSize={48}
           />

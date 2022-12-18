@@ -74,7 +74,7 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   return (
     <Modal
       title={id
-        ? <FormattedMessage id='navigation_bar.manage_group' defaultMessage='Manage Group' />
+        ? <FormattedMessage id='navigation_bar.edit_group' defaultMessage='Edit Group' />
         : <FormattedMessage id='navigation_bar.create_group' defaultMessage='Create Group' />}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}

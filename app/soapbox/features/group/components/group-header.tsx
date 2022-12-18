@@ -2,7 +2,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { editGroup, joinGroup, leaveGroup } from 'soapbox/actions/groups';
+import { joinGroup, leaveGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
@@ -47,24 +47,15 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
     );
   }
 
-  const onJoinGroup = () => {
-    dispatch(joinGroup(group.id));
-  };
+  const onJoinGroup = () => dispatch(joinGroup(group.id));
 
-  const onLeaveGroup = () => {
+  const onLeaveGroup = () =>
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.confirmationHeading),
       message: intl.formatMessage(messages.confirmationMessage),
       confirm: intl.formatMessage(messages.confirmationConfirm),
-      onConfirm: () => {
-        dispatch(leaveGroup(group.id));
-      },
+      onConfirm: () => dispatch(leaveGroup(group.id)),
     }));
-  };
-
-  const onEditGroup = () => {
-    dispatch(editGroup(group));
-  };
 
   const onAvatarClick = () => {
     const avatar = normalizeAttachment({
@@ -131,13 +122,24 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       );
     }
 
+    if (group.relationship.requested) {
+      return (
+        <Button
+          theme='secondary'
+          onClick={onLeaveGroup}
+        >
+          <FormattedMessage id='group.cancel_request' defaultMessage='Cancel request' />
+        </Button>
+      );
+    }
+
     if (group.relationship?.role === 'admin') {
       return (
         <Button
           theme='secondary'
-          onClick={onEditGroup}
+          to={`/groups/${group.id}/manage`}
         >
-          <FormattedMessage id='group.manage' defaultMessage='Edit group' />
+          <FormattedMessage id='group.manage' defaultMessage='Manage group' />
         </Button>
       );
     }

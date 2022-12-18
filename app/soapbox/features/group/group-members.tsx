@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import { expandGroupMemberships, fetchGroup, fetchGroupMemberships, groupBlock, groupDemoteAccount, groupKick, groupPromoteAccount } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import snackbar from 'soapbox/actions/snackbar';
+import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { CardHeader, CardTitle, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -161,7 +161,7 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
   return (
     <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
       <div className='w-full'>
-        <AccountContainer id={accountId} withRelationship={false} />
+        <Account account={account} withRelationship={false} />
       </div>
       {menu.length > 0 && (
         <Menu>

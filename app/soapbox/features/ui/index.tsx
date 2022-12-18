@@ -116,6 +116,9 @@ import {
   Groups,
   GroupMembers,
   GroupTimeline,
+  ManageGroup,
+  GroupBlockedMembers,
+  GroupMembershipRequests,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
 
@@ -280,6 +283,9 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.groups && <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:id/manage' exact page={DefaultPage} component={ManageGroup} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:id/manage/blocks' exact page={DefaultPage} component={GroupBlockedMembers} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:id/manage/requests' exact page={DefaultPage} component={GroupMembershipRequests} content={children} />}
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />

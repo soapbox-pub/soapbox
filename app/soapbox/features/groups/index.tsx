@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { fetchGroups } from 'soapbox/actions/groups';
+import { openModal } from 'soapbox/actions/modals';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Button, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
@@ -36,6 +37,10 @@ const Groups: React.FC = () => {
   useEffect(() => {
     dispatch(fetchGroups());
   }, []);
+
+  const createGroup = () => {
+    dispatch(openModal('MANAGE_GROUP'));
+  };
 
   if (!groups) {
     return (
@@ -66,21 +71,32 @@ const Groups: React.FC = () => {
   );
 
   return (
-    <ScrollableList
-      scrollKey='groups'
-      emptyMessage={emptyMessage}
-      itemClassName='py-3 last:pb-0'
-      isLoading={isLoading}
-      showLoading={isLoading && !groups.count()}
-      placeholderComponent={PlaceholderGroupCard}
-      placeholderCount={3}
-    >
-      {groups.map((group) => (
-        <Link key={group.id} to={`/groups/${group.id}`}>
-          <GroupCard group={group as GroupEntity} />
-        </Link>
-      ))}
-    </ScrollableList>
+    <Stack className='gap-4'>
+      <Button
+        className='sm:w-fit sm:self-end xl:hidden'
+        icon={require('@tabler/icons/circles.svg')}
+        onClick={createGroup}
+        theme='secondary'
+        block
+      >
+        <FormattedMessage id='new_group_panel.action' defaultMessage='Create group' />
+      </Button>
+      <ScrollableList
+        scrollKey='groups'
+        emptyMessage={emptyMessage}
+        itemClassName='py-3 first:pt-0 last:pb-0'
+        isLoading={isLoading}
+        showLoading={isLoading && !groups.count()}
+        placeholderComponent={PlaceholderGroupCard}
+        placeholderCount={3}
+      >
+        {groups.map((group) => (
+          <Link key={group.id} to={`/groups/${group.id}`}>
+            <GroupCard group={group as GroupEntity} />
+          </Link>
+        ))}
+      </ScrollableList>
+    </Stack>
   );
 };
 

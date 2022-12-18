@@ -19,6 +19,7 @@ import { normalizePoll } from 'soapbox/normalizers/poll';
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
+export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
 
 export type EventJoinMode = 'free' | 'restricted' | 'invite';
@@ -40,6 +41,7 @@ export const EventRecord = ImmutableRecord({
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
   application: null as ImmutableMap<string, any> | null,
+  approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
   card: null as Card | null,
   content: '',

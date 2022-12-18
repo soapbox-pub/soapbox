@@ -9,8 +9,10 @@ import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { HStack, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
+import GroupContainer from 'soapbox/containers/group-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
+import PlaceholderGroupCard from 'soapbox/features/placeholder/components/placeholder-group-card';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -179,23 +181,15 @@ const SearchResults = () => {
   if (selectedFilter === 'groups') {
     hasMore = results.groupsHasMore;
     loaded = results.groupsLoaded;
+    placeholderComponent = PlaceholderGroupCard;
 
     if (results.groups && results.groups.size > 0) {
       searchResults = results.groups.map((groupId: string) => (
-        <></>
+        <GroupContainer id={groupId} />
       ));
       resultsIds = results.groups;
     } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
-      // searchResults = trendingStatuses.map((statusId: string) => (
-      //   // @ts-ignore
-      //   <StatusContainer
-      //     key={statusId}
-      //     id={statusId}
-      //     onMoveUp={handleMoveUp}
-      //     onMoveDown={handleMoveDown}
-      //   />
-      // ));
-      // resultsIds = trendingStatuses;
+      searchResults = null;
     } else if (loaded) {
       noResultsMessage = (
         <div className='empty-column-indicator'>

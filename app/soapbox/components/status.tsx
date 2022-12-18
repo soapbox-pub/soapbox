@@ -388,6 +388,7 @@ const Status: React.FC<IStatus> = (props) => {
               showEdit={!!actualStatus.edited_at}
               showProfileHoverCard={hoverable}
               withLinkToProfile={hoverable}
+              approvalStatus={actualStatus.approval_status}
             />
           </div>
 

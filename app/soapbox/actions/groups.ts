@@ -131,7 +131,7 @@ const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(createGroupRequest());
 
-    api(getState).post('/api/v1/groups', params, {
+    return api(getState).post('/api/v1/groups', params, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -166,7 +166,7 @@ const updateGroup = (id: string, params: Record<string, any>, shouldReset?: bool
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(updateGroupRequest());
 
-    api(getState).put(`/api/v1/groups/${id}`, params)
+    return api(getState).put(`/api/v1/groups/${id}`, params)
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(updateGroupSuccess(data));
@@ -196,7 +196,7 @@ const updateGroupFail = (error: AxiosError) => ({
 const deleteGroup = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch(deleteGroupRequest(id));
 
-  api(getState).delete(`/api/v1/groups/${id}`)
+  return api(getState).delete(`/api/v1/groups/${id}`)
     .then(() => dispatch(deleteGroupSuccess(id)))
     .catch(err => dispatch(deleteGroupFail(id, err)));
 };
@@ -221,7 +221,7 @@ const fetchGroup = (id: string) => (dispatch: AppDispatch, getState: () => RootS
   dispatch(fetchGroupRelationships([id]));
   dispatch(fetchGroupRequest(id));
 
-  api(getState).get(`/api/v1/groups/${id}`)
+  return api(getState).get(`/api/v1/groups/${id}`)
     .then(({ data }) => {
       dispatch(importFetchedGroups([data]));
       dispatch(fetchGroupSuccess(data));
@@ -248,7 +248,7 @@ const fetchGroupFail = (id: string, error: AxiosError) => ({
 const fetchGroups = () => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch(fetchGroupsRequest());
 
-  api(getState).get('/api/v1/groups')
+  return api(getState).get('/api/v1/groups')
     .then(({ data }) => {
       dispatch(importFetchedGroups(data));
       dispatch(fetchGroupsSuccess(data));
@@ -282,7 +282,7 @@ const fetchGroupRelationships = (groupIds: string[]) =>
 
     dispatch(fetchGroupRelationshipsRequest(newGroupIds));
 
-    api(getState).get(`/api/v1/groups/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
+    return api(getState).get(`/api/v1/groups/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
       dispatch(fetchGroupRelationshipsSuccess(response.data));
     }).catch(error => {
       dispatch(fetchGroupRelationshipsFail(error));
@@ -314,7 +314,7 @@ const joinGroup = (id: string) =>
 
     dispatch(joinGroupRequest(id, locked));
 
-    api(getState).post(`/api/v1/groups/${id}/join`).then(response => {
+    return api(getState).post(`/api/v1/groups/${id}/join`).then(response => {
       dispatch(joinGroupSuccess(response.data));
       dispatch(snackbar.success(locked ? messages.joinRequestSuccess : messages.joinSuccess));
     }).catch(error => {
@@ -326,7 +326,7 @@ const leaveGroup = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(leaveGroupRequest(id));
 
-    api(getState).post(`/api/v1/groups/${id}/leave`).then(response => {
+    return api(getState).post(`/api/v1/groups/${id}/leave`).then(response => {
       dispatch(leaveGroupSuccess(response.data));
       dispatch(snackbar.success(messages.leaveSuccess));
     }).catch(error => {
@@ -376,7 +376,7 @@ const groupDeleteStatus = (groupId: string, statusId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(groupDeleteStatusRequest(groupId, statusId));
 
-    api(getState).delete(`/api/v1/groups/${groupId}/statuses/${statusId}`)
+    return api(getState).delete(`/api/v1/groups/${groupId}/statuses/${statusId}`)
       .then(() => {
         dispatch(deleteFromTimelines(statusId));
         dispatch(groupDeleteStatusSuccess(groupId, statusId));
@@ -434,7 +434,7 @@ const fetchGroupBlocks = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchGroupBlocksRequest(id));
 
-    api(getState).get(`/api/v1/groups/${id}/blocks`).then(response => {
+    return api(getState).get(`/api/v1/groups/${id}/blocks`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data));
@@ -473,7 +473,7 @@ const expandGroupBlocks = (id: string) =>
 
     dispatch(expandGroupBlocksRequest(id));
 
-    api(getState).get(url).then(response => {
+    return api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data));
@@ -620,7 +620,7 @@ const fetchGroupMemberships = (id: string, role: GroupRole) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchGroupMembershipsRequest(id, role));
 
-    api(getState).get(`/api/v1/groups/${id}/memberships`, { params: { role } }).then(response => {
+    return api(getState).get(`/api/v1/groups/${id}/memberships`, { params: { role } }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data.map((membership: APIEntity) => membership.account)));
@@ -662,7 +662,7 @@ const expandGroupMemberships = (id: string, role: GroupRole) =>
 
     dispatch(expandGroupMembershipsRequest(id, role));
 
-    api(getState).get(url).then(response => {
+    return api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data.map((membership: APIEntity) => membership.account)));
@@ -698,7 +698,7 @@ const fetchGroupMembershipRequests = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchGroupMembershipRequestsRequest(id));
 
-    api(getState).get(`/api/v1/groups/${id}/membership_requests`).then(response => {
+    return api(getState).get(`/api/v1/groups/${id}/membership_requests`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data));
@@ -737,7 +737,7 @@ const expandGroupMembershipRequests = (id: string) =>
 
     dispatch(expandGroupMembershipRequestsRequest(id));
 
-    api(getState).get(url).then(response => {
+    return api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data));
@@ -770,7 +770,7 @@ const authorizeGroupMembershipRequest = (groupId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(authorizeGroupMembershipRequestRequest(groupId, accountId));
 
-    api(getState)
+    return api(getState)
       .post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/authorize`)
       .then(() => dispatch(authorizeGroupMembershipRequestSuccess(groupId, accountId)))
       .catch(error => dispatch(authorizeGroupMembershipRequestFail(groupId, accountId, error)));
@@ -799,7 +799,7 @@ const rejectGroupMembershipRequest = (groupId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(rejectGroupMembershipRequestRequest(groupId, accountId));
 
-    api(getState)
+    return api(getState)
       .post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/reject`)
       .then(() => dispatch(rejectGroupMembershipRequestSuccess(groupId, accountId)))
       .catch(error => dispatch(rejectGroupMembershipRequestFail(groupId, accountId, error)));

@@ -554,6 +554,18 @@ export function GroupTimeline() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
 }
 
+export function ManageGroup() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/manage-group');
+}
+
+export function GroupBlockedMembers() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-blocked-members');
+}
+
+export function GroupMembershipRequests() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-membership-requests');
+}
+
 export function ManageGroupModal() {
   return import(/* webpackChunkName: "features/manage_group_modal" */'../components/modals/manage-group-modal/manage-group-modal');
 }

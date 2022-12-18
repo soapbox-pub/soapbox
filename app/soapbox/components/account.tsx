@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
@@ -11,6 +12,7 @@ import { displayFqn } from 'soapbox/utils/state';
 import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
+import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
@@ -68,6 +70,7 @@ interface IAccount {
   withLinkToProfile?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
+  approvalStatus?: StatusApprovalStatus,
   emoji?: string,
   note?: string,
 }
@@ -92,6 +95,7 @@ const Account = ({
   withLinkToProfile = true,
   withRelationship = true,
   showEdit = false,
+  approvalStatus,
   emoji,
   note,
 }: IAccount) => {
@@ -235,6 +239,18 @@ const Account = ({
                     )}
                   </>
                 ) : null}
+
+                {approvalStatus && ['pending', 'rejected'].includes(approvalStatus) && (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text tag='span' theme='muted' size='sm'>
+                      {approvalStatus === 'pending'
+                        ? <FormattedMessage id='status.pending' defaultMessage='Pending approval' />
+                        : <FormattedMessage id='status.rejected' defaultMessage='Rejected' />}
+                    </Text>
+                  </>
+                )}
 
                 {showEdit ? (
                   <>
