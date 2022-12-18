@@ -8,13 +8,16 @@ import snackbar from 'soapbox/actions/snackbar';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, Column, Form, FormActions } from 'soapbox/components/ui';
+import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { download } from 'soapbox/utils/download';
 
 import Palette, { ColorGroup } from './components/palette';
 
 const messages = defineMessages({
   title: { id: 'admin.theme.title', defaultMessage: 'Theme' },
   saved: { id: 'theme_editor.saved', defaultMessage: 'Theme updated!' },
+  export: { id: 'theme_editor.export', defaultMessage: 'Export theme' },
 });
 
 interface IThemeEditor {
@@ -53,6 +56,11 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   const updateTheme = async () => {
     const params = rawConfig.set('colors', colors).toJS();
     await dispatch(updateSoapboxConfig(params));
+  };
+
+  const exportTheme = () => {
+    const data = JSON.stringify(colors, null, 2);
+    download(data, 'theme.json');
   };
 
   const handleSubmit = async() => {
@@ -116,6 +124,12 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         </List>
 
         <FormActions>
+          <DropdownMenuContainer
+            items={[{
+              text: intl.formatMessage(messages.export),
+              action: exportTheme,
+            }]}
+          />
           <Button theme='secondary' onClick={resetTheme}>
             <FormattedMessage id='theme_editor.Reset' defaultMessage='Reset' />
           </Button>
