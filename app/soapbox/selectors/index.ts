@@ -218,6 +218,25 @@ export const getAccountGallery = createSelector([
   }, ImmutableList());
 });
 
+export const getGroupGallery = createSelector([
+  (state: RootState, id: string) => state.timelines.get(`group:${id}:media`)?.items || ImmutableOrderedSet<string>(),
+  (state: RootState) => state.statuses,
+  (state: RootState) => state.accounts,
+], (statusIds, statuses, accounts) => {
+
+  return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
+    const status = statuses.get(statusId);
+    if (!status) return medias;
+    if (status.reblog) return medias;
+    if (typeof status.account !== 'string') return medias;
+
+    const account = accounts.get(status.account);
+
+    return medias.concat(
+      status.media_attachments.map(media => media.merge({ status, account })));
+  }, ImmutableList());
+});
+
 type APIChat = { id: string, last_message: string };
 
 export const makeGetChat = () => {

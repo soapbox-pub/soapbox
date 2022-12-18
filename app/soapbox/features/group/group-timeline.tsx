@@ -8,7 +8,7 @@ import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
 import { Avatar, HStack, Stack } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
@@ -23,6 +23,8 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   const dispatch = useAppDispatch();
 
   const groupId = props.params.id;
+
+  const relationship = useAppSelector((state) => state.group_relationships.get(groupId));
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandGroupTimeline(groupId, { maxId }));
@@ -43,7 +45,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
 
   return (
     <Stack space={2}>
-      {!!account && (
+      {!!account && relationship?.member && (
         <div className='px-2 py-4 border-b border-solid border-gray-200 dark:border-gray-800'>
           <HStack alignItems='start' space={4}>
             <Link to={`/@${account.acct}`}>

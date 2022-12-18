@@ -9,8 +9,9 @@ import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
-  SignUpPanel,
   CtaBanner,
+  GroupMediaPanel,
+  SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetGroup } from 'soapbox/selectors';
@@ -90,6 +91,9 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
             {Component => <Component key='sign-up-panel' />}
           </BundleContainer>
         )}
+        <BundleContainer fetchComponent={GroupMediaPanel}>
+          {Component => <Component group={group} />}
+        </BundleContainer>
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>

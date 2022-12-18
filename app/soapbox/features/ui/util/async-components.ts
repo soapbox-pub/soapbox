@@ -561,3 +561,7 @@ export function ManageGroupModal() {
 export function NewGroupPanel() {
   return import(/* webpackChunkName: "features/groups" */'../components/panels/new-group-panel');
 }
+
+export function GroupMediaPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/group-media-panel');
+}
