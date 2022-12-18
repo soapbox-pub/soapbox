@@ -9,7 +9,8 @@ import { openModal } from 'soapbox/actions/modals';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
 
@@ -31,6 +32,7 @@ const getOrderedGroups = createSelector([
 
 const Groups: React.FC = () => {
   const dispatch = useDispatch();
+  const account = useOwnAccount();
 
   const { groups, isLoading } = useAppSelector((state) => getOrderedGroups(state));
 
@@ -72,15 +74,17 @@ const Groups: React.FC = () => {
 
   return (
     <Stack className='gap-4'>
-      <Button
-        className='sm:w-fit sm:self-end xl:hidden'
-        icon={require('@tabler/icons/circles.svg')}
-        onClick={createGroup}
-        theme='secondary'
-        block
-      >
-        <FormattedMessage id='new_group_panel.action' defaultMessage='Create group' />
-      </Button>
+      {hasPermission(account, PERMISSION_CREATE_GROUPS) && (
+        <Button
+          className='sm:w-fit sm:self-end xl:hidden'
+          icon={require('@tabler/icons/circles.svg')}
+          onClick={createGroup}
+          theme='secondary'
+          block
+        >
+          <FormattedMessage id='new_group_panel.action' defaultMessage='Create group' />
+        </Button>
+      )}
       <ScrollableList
         scrollKey='groups'
         emptyMessage={emptyMessage}

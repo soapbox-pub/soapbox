@@ -3,14 +3,18 @@ import { FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 const NewGroupPanel = () => {
   const dispatch = useAppDispatch();
+  const account = useOwnAccount();
 
   const createGroup = () => {
     dispatch(openModal('MANAGE_GROUP'));
   };
+
+  if (!hasPermission(account, PERMISSION_CREATE_GROUPS)) return null;
 
   return (
     <Stack space={2}>
