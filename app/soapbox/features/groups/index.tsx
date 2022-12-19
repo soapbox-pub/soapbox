@@ -9,7 +9,7 @@ import { openModal } from 'soapbox/actions/modals';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
@@ -32,9 +32,9 @@ const getOrderedGroups = createSelector([
 
 const Groups: React.FC = () => {
   const dispatch = useDispatch();
-  const account = useOwnAccount();
 
   const { groups, isLoading } = useAppSelector((state) => getOrderedGroups(state));
+  const canCreateGroup = useAppSelector((state) => hasPermission(state, PERMISSION_CREATE_GROUPS));
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -74,7 +74,7 @@ const Groups: React.FC = () => {
 
   return (
     <Stack className='gap-4'>
-      {hasPermission(account, PERMISSION_CREATE_GROUPS) && (
+      {canCreateGroup && (
         <Button
           className='sm:w-fit sm:self-end xl:hidden'
           icon={require('@tabler/icons/circles.svg')}

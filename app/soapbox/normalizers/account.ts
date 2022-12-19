@@ -47,7 +47,6 @@ export const AccountRecord = ImmutableRecord({
   mute_expires_at: null as string | null,
   note: '',
   pleroma: ImmutableMap<string, any>(),
-  role: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
   statuses_count: 0,
   uri: '',

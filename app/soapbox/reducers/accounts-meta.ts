@@ -12,10 +12,11 @@ import type { AnyAction } from 'redux';
 
 const MetaRecord = ImmutableRecord({
   pleroma: ImmutableMap<string, any>(),
+  role: null as ImmutableMap<string, any> | null,
   source: ImmutableMap<string, any>(),
 });
 
-type Meta = ReturnType<typeof MetaRecord>;
+export type Meta = ReturnType<typeof MetaRecord>;
 type State = ImmutableMap<string, Meta>;
 
 const importAccount = (state: State, account: ImmutableMap<string, any>) => {
@@ -23,6 +24,7 @@ const importAccount = (state: State, account: ImmutableMap<string, any>) => {
 
   return state.set(accountId, MetaRecord({
     pleroma: account.get('pleroma', ImmutableMap()).delete('settings_store'),
+    role: account.get('role', null),
     source: account.get('source', ImmutableMap()),
   }));
 };
