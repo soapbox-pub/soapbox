@@ -15,7 +15,6 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
@@ -93,7 +92,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   }, {
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
-      dispatch(snackbar.error(data?.error));
+      toast.error(data?.error);
     },
     onSuccess: (response) => {
       history.push(`/chats/${response.data.id}`);

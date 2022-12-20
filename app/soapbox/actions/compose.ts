@@ -3,7 +3,6 @@ import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import api from 'soapbox/api';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { tagHistory } from 'soapbox/settings';
@@ -249,7 +248,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     let to         = compose.to;
 
     if (!validateSchedule(state, composeId)) {
-      dispatch(snackbar.error(messages.scheduleError));
+      toast.error(messages.scheduleError);
       return;
     }
 
@@ -350,18 +349,18 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
       if (isImage && maxImageSize && (f.size > maxImageSize)) {
         const limit = formatBytes(maxImageSize);
         const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-        dispatch(snackbar.error(message));
+        toast.error(message);
         dispatch(uploadComposeFail(composeId, true));
         return;
       } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
         const limit = formatBytes(maxVideoSize);
         const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
-        dispatch(snackbar.error(message));
+        toast.error(message);
         dispatch(uploadComposeFail(composeId, true));
         return;
       } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
         const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
-        dispatch(snackbar.error(message));
+        toast.error(message);
         dispatch(uploadComposeFail(composeId, true));
         return;
       }

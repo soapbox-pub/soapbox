@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeEmail } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -44,7 +43,7 @@ const EditEmail = () => {
       setLoading(false);
     }).catch(() => {
       setState((prevState) => ({ ...prevState, password: '' }));
-      dispatch(snackbar.error(intl.formatMessage(messages.updateEmailFail)));
+      toast.error(intl.formatMessage(messages.updateEmailFail));
     });
   }, [email, password, dispatch, intl]);
 

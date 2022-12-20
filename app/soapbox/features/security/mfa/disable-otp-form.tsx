@@ -3,7 +3,6 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { disableMfa } from 'soapbox/actions/mfa';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormGroup, Input, FormActions, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -31,7 +30,7 @@ const DisableOtpForm: React.FC = () => {
     }).finally(() => {
       setIsLoading(false);
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.disableFail)));
+      toast.error(intl.formatMessage(messages.disableFail));
     });
   }, [password, dispatch, intl]);
 

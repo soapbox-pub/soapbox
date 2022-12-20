@@ -8,7 +8,6 @@ import resizeImage from 'soapbox/utils/resize-image';
 import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
 import { fetchMedia, uploadMedia } from './media';
 import { closeModal, openModal } from './modals';
-import snackbar from './snackbar';
 import {
   STATUS_FETCH_SOURCE_FAIL,
   STATUS_FETCH_SOURCE_REQUEST,
@@ -164,7 +163,7 @@ const uploadEventBanner = (file: File, intl: IntlShape) =>
     if (maxImageSize && (file.size > maxImageSize)) {
       const limit = formatBytes(maxImageSize);
       const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-      dispatch(snackbar.error(message));
+      toast.error(message);
       dispatch(uploadEventBannerFail(true));
       return;
     }

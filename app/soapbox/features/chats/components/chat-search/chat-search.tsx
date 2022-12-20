@@ -3,13 +3,13 @@ import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { Icon, Input, Stack } from 'soapbox/components/ui';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useDebounce } from 'soapbox/hooks';
+import { useDebounce } from 'soapbox/hooks';
 import { useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import useAccountSearch from 'soapbox/queries/search';
+import toast from 'soapbox/toast';
 
 import { ChatKeys } from '../../../../queries/chats';
 
@@ -25,7 +25,6 @@ const ChatSearch = (props: IChatSearch) => {
   const { isMainPage = false } = props;
 
   const debounce = useDebounce;
-  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const { changeScreen } = useChatContext();
@@ -45,7 +44,7 @@ const ChatSearch = (props: IChatSearch) => {
   }, {
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
-      dispatch(snackbar.error(data?.error));
+      toast.error(data?.error);
     },
     onSuccess: (response) => {
       if (isMainPage) {

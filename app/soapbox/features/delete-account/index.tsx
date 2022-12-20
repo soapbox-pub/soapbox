@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { deleteAccount } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -40,7 +39,7 @@ const DeleteAccount = () => {
       setLoading(false);
     }).catch(() => {
       setPassword('');
-      dispatch(snackbar.error(intl.formatMessage(messages.deleteAccountFail)));
+      toast.error(intl.formatMessage(messages.deleteAccountFail));
     });
   }, [password, dispatch, intl]);
 

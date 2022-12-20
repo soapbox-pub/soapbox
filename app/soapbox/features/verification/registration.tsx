@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom';
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
-import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
@@ -61,17 +60,9 @@ const Registration = () => {
       })
       .catch((error: AxiosError) => {
         if (error?.response?.status === 422) {
-          dispatch(
-            snackbar.error(
-              intl.formatMessage(messages.usernameTaken),
-            ),
-          );
+          toast.error(intl.formatMessage(messages.usernameTaken));
         } else {
-          dispatch(
-            snackbar.error(
-              intl.formatMessage(messages.error),
-            ),
-          );
+          toast.error(intl.formatMessage(messages.error));
         }
       });
   }, [username, password]);

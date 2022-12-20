@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory, useParams } from 'react-router-dom';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
 import { Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -145,7 +144,7 @@ const EmailPassThru = () => {
             }
           }
 
-          dispatch(snackbar.error(message));
+          toast.error(message);
         });
     }
   }, [token]);

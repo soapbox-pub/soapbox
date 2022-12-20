@@ -14,7 +14,6 @@ import { createApp } from 'soapbox/actions/apps';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import { startOnboarding } from 'soapbox/actions/onboarding';
-import snackbar from 'soapbox/actions/snackbar';
 import { custom } from 'soapbox/custom';
 import { queryClient } from 'soapbox/queries/client';
 import KVStore from 'soapbox/storage/kv-store';
@@ -217,7 +216,7 @@ export const logIn = (username: string, password: string) =>
       throw error;
     } else {
       // Return "wrong password" message.
-      dispatch(snackbar.error(messages.invalidCredentials));
+      toast.error(messages.invalidCredentials);
     }
     throw error;
   });

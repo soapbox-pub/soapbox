@@ -3,7 +3,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { moveAccount } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -53,7 +52,7 @@ const Migration = () => {
         message = intl.formatMessage(messages.moveAccountFailCooldownPeriod);
       }
 
-      dispatch(snackbar.error(message));
+      toast.error(message);
     }).then(() => {
       setIsLoading(false);
     });

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
 import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { AxiosError } from 'axios';
 
@@ -39,9 +39,9 @@ const ExternalLoginForm: React.FC = () => {
         const status = error.response?.status;
 
         if (status) {
-          dispatch(snackbar.error(intl.formatMessage(messages.instanceFailed)));
+          toast.error(intl.formatMessage(messages.instanceFailed));
         } else if (!status && error.code === 'ERR_NETWORK') {
-          dispatch(snackbar.error(intl.formatMessage(messages.networkFailed)));
+          toast.error(intl.formatMessage(messages.networkFailed));
         }
 
         setLoading(false);

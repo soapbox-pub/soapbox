@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changePassword } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -51,7 +50,7 @@ const EditPassword = () => {
       setLoading(false);
     }).catch(() => {
       resetState();
-      dispatch(snackbar.error(intl.formatMessage(messages.updatePasswordFail)));
+      toast.error(intl.formatMessage(messages.updatePasswordFail));
     });
   }, [currentPassword, newPassword, newPasswordConfirmation, dispatch, intl]);
 

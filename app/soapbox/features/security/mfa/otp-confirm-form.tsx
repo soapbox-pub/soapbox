@@ -7,7 +7,6 @@ import {
   setupMfa,
   confirmMfa,
 } from 'soapbox/actions/mfa';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -39,7 +38,7 @@ const OtpConfirmForm: React.FC = () => {
     dispatch(setupMfa('totp')).then((data: any) => {
       setState((prevState) => ({ ...prevState, qrCodeURI: data.provisioning_uri, confirmKey: data.key }));
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.qrFail)));
+      toast.error(intl.formatMessage(messages.qrFail));
     });
   }, []);
 
@@ -56,7 +55,7 @@ const OtpConfirmForm: React.FC = () => {
       toast.success(intl.formatMessage(messages.mfaConfirmSuccess));
       history.push('../auth/edit');
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.confirmFail)));
+      toast.error(intl.formatMessage(messages.confirmFail));
       setState((prevState) => ({ ...prevState, isLoading: false }));
     });
 

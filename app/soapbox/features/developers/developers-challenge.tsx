@@ -3,7 +3,6 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
 import { Column, Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import toast from 'soapbox/toast';
 
@@ -30,7 +29,7 @@ const DevelopersChallenge = () => {
       dispatch(changeSettingImmediate(['isDeveloper'], true));
       toast.success(intl.formatMessage(messages.success));
     } else {
-      dispatch(snackbar.error(intl.formatMessage(messages.fail)));
+      toast.error(intl.formatMessage(messages.fail));
     }
   };
 
