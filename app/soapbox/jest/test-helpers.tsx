@@ -4,6 +4,7 @@ import { render, RenderOptions } from '@testing-library/react';
 import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import { merge } from 'immutable';
 import React, { FC, ReactElement } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
@@ -60,6 +61,7 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
                 {children}
 
                 <NotificationsContainer />
+                <Toaster />
               </IntlProvider>
             </ChatProvider>
           </QueryClientProvider>

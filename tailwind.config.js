@@ -65,6 +65,8 @@ module.exports = {
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
         'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
         'sonar-scale-1': 'sonar-scale-1 3s 1.5s linear infinite',
+        'enter': 'enter 200ms ease-out',
+        'leave': 'leave 150ms ease-in forwards',
       },
       keyframes: {
         'sonar-scale-4': {
@@ -82,6 +84,14 @@ module.exports = {
         'sonar-scale-1': {
           from: { opacity: '0.4', transform: 'scale(1)' },
           to: { opacity: '0', transform: 'scale(2.5)' },
+        },
+        enter: {
+          from: { transform: 'scale(0.9)', opacity: '0' },
+          to: { transform: 'scale(1)', opacity: '1' },
+        },
+        leave: {
+          from: { transform: 'scale(1)', opacity: '1' },
+          to: { transform: 'scale(0.9)', opacity: '0' },
         },
       },
     },
