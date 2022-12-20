@@ -1016,7 +1016,7 @@
   "sms_verification.sent.body": "We sent you a 6-digit code via SMS. Enter it below.",
   "sms_verification.sent.header": "Verification code",
   "sms_verification.success": "A verification code has been sent to your phone number.",
-  "snackbar.view": "View",
+  "toast.view": "View",
   "soapbox_config.authenticated_profile_hint": "𐑿𐑟𐑼𐑟 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑤𐑪𐑜𐑛-𐑦𐑯 𐑑 𐑝𐑿 𐑮𐑦𐑐𐑤𐑲𐑟 𐑯 𐑥𐑰𐑛𐑾 𐑪𐑯 𐑿𐑟𐑼 𐑐𐑮𐑴𐑓𐑲𐑤𐑟.",
   "soapbox_config.authenticated_profile_label": "𐑐𐑮𐑴𐑓𐑲𐑤𐑟 𐑮𐑦𐑒𐑢𐑲𐑼 𐑷𐑔𐑧𐑯𐑑𐑦𐑒𐑱𐑖𐑩𐑯",
   "soapbox_config.copyright_footer.meta_fields.label_placeholder": "Copyright footer",

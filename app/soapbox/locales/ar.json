@@ -1016,7 +1016,7 @@
   "sms_verification.sent.body": "لقد أرسلنا لك رمزًا مكونًا من 6 أرقام عبر رسالة نصية قصيرة. رجاءً أدخله في الأسفل.",
   "sms_verification.sent.header": "تأكيد الرمز",
   "sms_verification.success": "تم إرسال رمز التحقق إلى رقم هاتفك.",
-  "snackbar.view": "عرض",
+  "toast.view": "عرض",
   "soapbox_config.authenticated_profile_hint": "على المستخدمين أن يُسجلوا دخولهم كي يتمكنوا من عرض الردود والوسائط على الحسابات الشخصية للمستخدمين.",
   "soapbox_config.authenticated_profile_label": "حسابات شخصية تتطلب تسجيل الدخول لتصفحها",
   "soapbox_config.copyright_footer.meta_fields.label_placeholder": "حاشية حقوق الطبع والنشر",

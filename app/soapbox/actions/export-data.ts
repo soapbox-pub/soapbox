@@ -4,7 +4,6 @@ import api, { getLinks } from 'soapbox/api';
 import { normalizeAccount } from 'soapbox/normalizers';
 import toast from 'soapbox/toast';
 
-import type { SnackbarAction } from './snackbar';
 import type { AxiosResponse } from 'axios';
 import type { RootState } from 'soapbox/store';
 
@@ -37,7 +36,7 @@ type ExportDataActions = {
   | typeof EXPORT_MUTES_SUCCESS
   | typeof EXPORT_MUTES_FAIL,
   error?: any,
-} | SnackbarAction
+}
 
 function fileExport(content: string, fileName: string) {
   const fileToDownload = document.createElement('a');

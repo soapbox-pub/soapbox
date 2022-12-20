@@ -26,7 +26,6 @@ import PublicLayout from 'soapbox/features/public-layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
-  NotificationsContainer,
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
@@ -186,10 +185,6 @@ const SoapboxMount = () => {
 
             <Route>
               {renderBody()}
-
-              <BundleContainer fetchComponent={NotificationsContainer}>
-                {(Component) => <Component />}
-              </BundleContainer>
 
               <BundleContainer fetchComponent={ModalContainer}>
                 {Component => <Component />}

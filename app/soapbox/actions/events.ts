@@ -91,7 +91,7 @@ const messages = defineMessages({
   editSuccess: { id: 'compose_event.edit_success', defaultMessage: 'Your event was edited' },
   joinSuccess: { id: 'join_event.success', defaultMessage: 'Joined the event' },
   joinRequestSuccess: { id: 'join_event.request_success', defaultMessage: 'Requested to join the event' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
   authorized: { id: 'compose_event.participation_requests.authorize_success', defaultMessage: 'User accepted' },
   rejected: { id: 'compose_event.participation_requests.reject_success', defaultMessage: 'User rejected' },
 });

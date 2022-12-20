@@ -63,7 +63,7 @@ const REMOTE_INTERACTION_FAIL    = 'REMOTE_INTERACTION_FAIL';
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
 });
 
 const reblog = (status: StatusEntity) =>

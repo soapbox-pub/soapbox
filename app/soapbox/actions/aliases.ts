@@ -6,7 +6,6 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import api from '../api';
 
-import { showAlertForError } from './alerts';
 import { importFetchedAccounts } from './importer';
 import { patchMeSuccess } from './me';
 
@@ -80,7 +79,7 @@ const fetchAliasesSuggestions = (q: string) =>
     api(getState).get('/api/v1/accounts/search', { params }).then(({ data }) => {
       dispatch(importFetchedAccounts(data));
       dispatch(fetchAliasesSuggestionsReady(q, data));
-    }).catch(error => dispatch(showAlertForError(error)));
+    }).catch(error => toast.showAlertForError(error));
   };
 
 const fetchAliasesSuggestionsReady = (query: string, accounts: APIEntity[]) => ({

@@ -1016,7 +1016,7 @@
   "sms_verification.sent.body": "We sent you a 6-digit code via SMS. Enter it below.",
   "sms_verification.sent.header": "Verification code",
   "sms_verification.success": "A verification code has been sent to your phone number.",
-  "snackbar.view": "Mostra",
+  "toast.view": "Mostra",
   "soapbox_config.authenticated_profile_hint": "Users must be logged-in to view replies and media on user profiles.",
   "soapbox_config.authenticated_profile_label": "Profiles require authentication",
   "soapbox_config.copyright_footer.meta_fields.label_placeholder": "Copyright nel fondo",

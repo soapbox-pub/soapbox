@@ -1161,7 +1161,7 @@
   "sms_verification.sent.body": "Wysłaliśmy Ci 6-cyfrowy kod SMS-em. Wprowadź go poniżej.",
   "sms_verification.sent.header": "Kod weryfikujący",
   "sms_verification.success": "Kod weryfikujący został wysłany na Twój numer telefonu.",
-  "snackbar.view": "Wyświetl",
+  "toast.view": "Wyświetl",
   "soapbox_config.authenticated_profile_hint": "Użytkownicy muszą być zalogowani, aby zobaczyć odpowiedzi i media na profilach użytkowników.",
   "soapbox_config.authenticated_profile_label": "Profile wymagają uwierzytelniania",
   "soapbox_config.copyright_footer.meta_fields.label_placeholder": "Stopka praw autorskich",

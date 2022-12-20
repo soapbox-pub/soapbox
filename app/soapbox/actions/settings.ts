@@ -7,8 +7,6 @@ import { patchMe } from 'soapbox/actions/me';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
-import { showAlertForError } from './alerts';
-
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 const SETTING_CHANGE = 'SETTING_CHANGE';
@@ -225,7 +223,7 @@ const saveSettingsImmediate = (opts?: SettingOpts) =>
         toast.success(messages.saveSuccess);
       }
     }).catch(error => {
-      dispatch(showAlertForError(error));
+      toast.showAlertForError(error);
     });
   };
 

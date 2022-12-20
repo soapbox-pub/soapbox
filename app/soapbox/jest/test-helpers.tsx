@@ -16,7 +16,6 @@ import { ChatProvider } from 'soapbox/contexts/chat-context';
 import { StatProvider } from 'soapbox/contexts/stat-context';
 import { queryClient } from 'soapbox/queries/client';
 
-import NotificationsContainer from '../features/ui/containers/notifications-container';
 import { default as rootReducer } from '../reducers';
 
 import type { AnyAction } from 'redux';
@@ -60,7 +59,6 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
               <IntlProvider locale={props.locale}>
                 {children}
 
-                <NotificationsContainer />
                 <Toaster />
               </IntlProvider>
             </ChatProvider>

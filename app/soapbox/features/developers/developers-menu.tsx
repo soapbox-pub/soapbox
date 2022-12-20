@@ -43,7 +43,7 @@ const Developers: React.FC = () => {
     history.push('/');
   };
 
-  const showSnackbar = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const showToast = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     toast.success('Hello world!', {
@@ -112,11 +112,11 @@ const Developers: React.FC = () => {
             </Text>
           </DashWidget>
 
-          <DashWidget onClick={showSnackbar}>
+          <DashWidget onClick={showToast}>
             <SvgIcon src={require('@tabler/icons/urgent.svg')} className='text-gray-700 dark:text-gray-600' />
 
             <Text>
-              <FormattedMessage id='developers.navigation.show_snackbar' defaultMessage='Trigger Snackbar' />
+              <FormattedMessage id='developers.navigation.show_toast' defaultMessage='Trigger Toast' />
             </Text>
           </DashWidget>
         </div>

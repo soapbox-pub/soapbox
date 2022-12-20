@@ -12,7 +12,6 @@ import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
 
-import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { uploadMedia, fetchMedia, updateMedia } from './media';
@@ -93,7 +92,7 @@ const messages = defineMessages({
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll: { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
   replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
   replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
 });
@@ -333,7 +332,7 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     const mediaCount = media ? media.size : 0;
 
     if (files.length + mediaCount > attachmentLimit) {
-      dispatch(showAlert(undefined, messages.uploadErrorLimit, 'error'));
+      toast.error(messages.uploadErrorLimit);
       return;
     }
 
@@ -499,7 +498,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
     dispatch(readyComposeSuggestionsAccounts(composeId, token, response.data));
   }).catch(error => {
     if (!isCancel(error)) {
-      dispatch(showAlertForError(error));
+      toast.showAlertForError(error);
     }
   });
 }, 200, { leading: true, trailing: true });

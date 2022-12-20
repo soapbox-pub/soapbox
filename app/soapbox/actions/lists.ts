@@ -1,8 +1,8 @@
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
 import api from '../api';
 
-import { showAlertForError } from './alerts';
 import { importFetchedAccounts } from './importer';
 
 import type { AxiosError } from 'axios';
@@ -265,7 +265,7 @@ const fetchListSuggestions = (q: string) => (dispatch: AppDispatch, getState: ()
   api(getState).get('/api/v1/accounts/search', { params }).then(({ data }) => {
     dispatch(importFetchedAccounts(data));
     dispatch(fetchListSuggestionsReady(q, data));
-  }).catch(error => dispatch(showAlertForError(error)));
+  }).catch(error => toast.showAlertForError(error));
 };
 
 const fetchListSuggestionsReady = (query: string, accounts: APIEntity[]) => ({

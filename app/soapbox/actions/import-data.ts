@@ -4,7 +4,6 @@ import toast from 'soapbox/toast';
 
 import api from '../api';
 
-import type { SnackbarAction } from './snackbar';
 import type { RootState } from 'soapbox/store';
 
 export const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';
@@ -31,7 +30,7 @@ type ImportDataActions = {
   | typeof IMPORT_MUTES_FAIL,
   error?: any,
   config?: string
-} | SnackbarAction
+}
 
 const messages = defineMessages({
   blocksSuccess: { id: 'import_data.success.blocks', defaultMessage: 'Blocks imported successfully' },

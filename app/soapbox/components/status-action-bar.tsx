@@ -4,7 +4,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
-import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { editEvent } from 'soapbox/actions/events';
@@ -19,6 +18,7 @@ import StatusActionButton from 'soapbox/components/status-action-button';
 import { HStack } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
@@ -254,7 +254,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
       url: status.get('url'),
-      onError: (error: any) => dispatch(showAlertForError(error)),
+      onError: (error: any) => toast.showAlertForError(error),
     }));
   };
 

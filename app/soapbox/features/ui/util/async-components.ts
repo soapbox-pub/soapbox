@@ -374,10 +374,6 @@ export function UploadArea() {
   return import(/* webpackChunkName: "features/compose" */'../components/upload-area');
 }
 
-export function NotificationsContainer() {
-  return import(/* webpackChunkName: "features/ui" */'../containers/notifications-container');
-}
-
 export function ModalContainer() {
   return import(/* webpackChunkName: "features/ui" */'../containers/modal-container');
 }
