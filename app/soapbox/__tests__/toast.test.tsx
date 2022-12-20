@@ -23,13 +23,7 @@ beforeAll(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-beforeEach(() => {
-  jest.useFakeTimers();
-});
-
 afterEach(() => {
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
   (console.error as any).mockClear();
 });
 
@@ -47,10 +41,6 @@ describe('toasts', () =>{
 
     expect(screen.getByTestId('toast')).toBeInTheDocument();
     expect(screen.getByTestId('toast-message')).toHaveTextContent('hello');
-
-    act(() => {
-      jest.advanceTimersByTime(4000);
-    });
   });
 
   describe('actionable button', () => {
@@ -62,10 +52,6 @@ describe('toasts', () =>{
       });
 
       expect(screen.getByTestId('toast-action')).toHaveTextContent('click me');
-
-      act(() => {
-        jest.advanceTimersByTime(4000);
-      });
     });
 
     it('does not render the button', async() => {
@@ -76,10 +62,6 @@ describe('toasts', () =>{
       });
 
       expect(screen.queryAllByTestId('toast-action')).toHaveLength(0);
-
-      act(() => {
-        jest.advanceTimersByTime(4000);
-      });
     });
   });
 
@@ -106,10 +88,6 @@ describe('toasts', () =>{
 
         expect(screen.getByTestId('toast')).toBeInTheDocument();
         expect(screen.getByTestId('toast-message')).toHaveTextContent('The server is down');
-
-        act(() => {
-          jest.advanceTimersByTime(4000);
-        });
       });
     });
 
@@ -123,10 +101,6 @@ describe('toasts', () =>{
         });
 
         expect(screen.queryAllByTestId('toast')).toHaveLength(0);
-
-        act(() => {
-          jest.advanceTimersByTime(4000);
-        });
       });
     });
 
@@ -140,10 +114,6 @@ describe('toasts', () =>{
         });
 
         expect(screen.queryAllByTestId('toast')).toHaveLength(0);
-
-        act(() => {
-          jest.advanceTimersByTime(4000);
-        });
       });
     });
 
@@ -160,10 +130,6 @@ describe('toasts', () =>{
 
           expect(screen.getByTestId('toast')).toBeInTheDocument();
           expect(screen.getByTestId('toast-message')).toHaveTextContent(message);
-
-          act(() => {
-            jest.advanceTimersByTime(4000);
-          });
         });
       });
 
@@ -179,10 +145,6 @@ describe('toasts', () =>{
 
           expect(screen.getByTestId('toast')).toBeInTheDocument();
           expect(screen.getByTestId('toast-message')).toHaveTextContent(message);
-
-          act(() => {
-            jest.advanceTimersByTime(4000);
-          });
         });
       });
     });
@@ -198,10 +160,6 @@ describe('toasts', () =>{
 
         expect(screen.getByTestId('toast')).toBeInTheDocument();
         expect(screen.getByTestId('toast-message')).toHaveTextContent('An unexpected error occurred.');
-
-        act(() => {
-          jest.advanceTimersByTime(4000);
-        });
       });
     });
   });
