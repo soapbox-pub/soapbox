@@ -3,7 +3,6 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { approveUsers } from 'soapbox/actions/admin';
 import { rejectUserModal } from 'soapbox/actions/moderation';
-import snackbar from 'soapbox/actions/snackbar';
 import { Stack, HStack, Text, IconButton } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -41,7 +40,7 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   const handleReject = () => {
     dispatch(rejectUserModal(intl, account.id, () => {
       const message = intl.formatMessage(messages.rejected, { acct: `@${account.acct}` });
-      dispatch(snackbar.info(message));
+      toast.info(message);
     }));
   };
 
