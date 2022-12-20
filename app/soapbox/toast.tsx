@@ -38,8 +38,8 @@ const buildToast = (t: Toast, message: ToastText, type: ToastType, opts: Omit<IT
       case 'success':
         return (
           <Icon
-            src={require('@tabler/icons/checks.svg')}
-            className='w-6 h-6 text-success-500'
+            src={require('@tabler/icons/circle-check.svg')}
+            className='w-6 h-6 text-success-500 dark:text-success-400'
             aria-hidden
           />
         );
@@ -54,7 +54,7 @@ const buildToast = (t: Toast, message: ToastText, type: ToastType, opts: Omit<IT
       case 'error':
         return (
           <Icon
-            src={require('@tabler/icons/info-circle.svg')}
+            src={require('@tabler/icons/alert-circle.svg')}
             className='w-6 h-6 text-danger-600'
             aria-hidden
           />
@@ -116,7 +116,7 @@ const buildToast = (t: Toast, message: ToastText, type: ToastType, opts: Omit<IT
                 {renderIcon()}
               </div>
 
-              <p className='ml-3 pt-0.5 text-sm font-medium text-gray-900 dark:text-gray-100' data-testid='toast-message'>
+              <p className='ml-3 pt-0.5 text-sm text-gray-900 dark:text-gray-100' data-testid='toast-message'>
                 {renderText(message)}
               </p>
             </div>
@@ -129,7 +129,7 @@ const buildToast = (t: Toast, message: ToastText, type: ToastType, opts: Omit<IT
           <div className='ml-4 flex flex-shrink-0 pt-0.5'>
             <button
               type='button'
-              className='inline-flex rounded-md text-gray-400 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
+              className='inline-flex rounded-md text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
               onClick={dismissToast}
               data-testid='toast-dismiss'
             >
