@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
+import toast from 'soapbox/toast';
 
 import api from '../api';
 
@@ -45,7 +45,7 @@ export const importFollows = (params: FormData) =>
     return api(getState)
       .post('/api/pleroma/follow_import', params)
       .then(response => {
-        dispatch(snackbar.success(messages.followersSuccess));
+        toast.success(messages.followersSuccess);
         dispatch({ type: IMPORT_FOLLOWS_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_FOLLOWS_FAIL, error });
@@ -58,7 +58,7 @@ export const importBlocks = (params: FormData) =>
     return api(getState)
       .post('/api/pleroma/blocks_import', params)
       .then(response => {
-        dispatch(snackbar.success(messages.blocksSuccess));
+        toast.success(messages.blocksSuccess);
         dispatch({ type: IMPORT_BLOCKS_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_BLOCKS_FAIL, error });
@@ -71,7 +71,7 @@ export const importMutes = (params: FormData) =>
     return api(getState)
       .post('/api/pleroma/mutes_import', params)
       .then(response => {
-        dispatch(snackbar.success(messages.mutesSuccess));
+        toast.success(messages.mutesSuccess);
         dispatch({ type: IMPORT_MUTES_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_MUTES_FAIL, error });

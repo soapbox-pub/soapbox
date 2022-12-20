@@ -5,6 +5,7 @@ import { deleteAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   passwordFieldLabel: { id: 'security.fields.password.label', defaultMessage: 'Password' },
@@ -34,7 +35,7 @@ const DeleteAccount = () => {
     setLoading(true);
     dispatch(deleteAccount(password)).then(() => {
       setPassword('');
-      dispatch(snackbar.success(intl.formatMessage(messages.deleteAccountSuccess)));
+      toast.success(intl.formatMessage(messages.deleteAccountSuccess));
     }).finally(() => {
       setLoading(false);
     }).catch(() => {

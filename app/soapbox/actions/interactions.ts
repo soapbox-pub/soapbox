@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
 import api from '../api';
@@ -222,7 +222,10 @@ const bookmark = (status: StatusEntity) =>
     api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
-      dispatch(snackbar.success(messages.bookmarkAdded, messages.view, '/bookmarks'));
+      toast.success(messages.bookmarkAdded, {
+        actionLabel: messages.view,
+        actionLink: '/bookmarks',
+      });
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
     });
@@ -235,7 +238,7 @@ const unbookmark = (status: StatusEntity) =>
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unbookmarkSuccess(status, response.data));
-      dispatch(snackbar.success(messages.bookmarkRemoved));
+      toast.success(messages.bookmarkRemoved);
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
     });

@@ -27,6 +27,7 @@ import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
+import toast from 'soapbox/toast';
 import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isRemote } from 'soapbox/utils/accounts';
 
@@ -158,11 +159,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const onEndorseToggle = () => {
     if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
-        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
+        .then(() => toast.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct })))
         .catch(() => { });
     } else {
       dispatch(pinAccount(account.id))
-        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
+        .then(() => toast.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct })))
         .catch(() => { });
     }
   };

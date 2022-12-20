@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { Column, Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
@@ -27,7 +28,7 @@ const DevelopersChallenge = () => {
   const handleSubmit = () => {
     if (answer === 'boxsoap') {
       dispatch(changeSettingImmediate(['isDeveloper'], true));
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      toast.success(intl.formatMessage(messages.success));
     } else {
       dispatch(snackbar.error(intl.formatMessage(messages.fail)));
     }

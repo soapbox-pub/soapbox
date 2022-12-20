@@ -7,6 +7,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { Stack, HStack, Text, IconButton } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   approved: { id: 'admin.awaiting_approval.approved_message', defaultMessage: '{acct} was approved!' },
@@ -32,7 +33,7 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
     dispatch(approveUsers([account.id]))
       .then(() => {
         const message = intl.formatMessage(messages.approved, { acct: `@${account.acct}` });
-        dispatch(snackbar.success(message));
+        toast.success(message);
       })
       .catch(() => {});
   };

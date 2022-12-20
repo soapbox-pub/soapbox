@@ -6,6 +6,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
 import { Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import { ChallengeTypes } from './index';
 
@@ -121,7 +122,7 @@ const EmailPassThru = () => {
       dispatch(confirmEmailVerification(token))
         .then(() => {
           setStatus(Statuses.SUCCESS);
-          dispatch(snackbar.success(intl.formatMessage(messages.emailConfirmed)));
+          toast.success(intl.formatMessage(messages.emailConfirmed));
         })
         .catch((error: AxiosError<any>) => {
           const errorKey = error?.response?.data?.error;

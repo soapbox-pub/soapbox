@@ -8,6 +8,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { reConfirmPhoneVerification, reRequestPhoneVerification } from 'soapbox/actions/verification';
 import { FormGroup, PhoneInput, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { getAccessToken } from 'soapbox/utils/auth';
 
 const messages = defineMessages({
@@ -85,10 +86,8 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
     }
 
     dispatch(reRequestPhoneVerification(phone!)).then(() => {
-      dispatch(
-        snackbar.success(
-          intl.formatMessage(messages.verificationSuccess),
-        ),
+      toast.success(
+        intl.formatMessage(messages.verificationSuccess),
       );
     })
       .finally(() => setStatus(Statuses.REQUESTED))

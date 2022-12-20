@@ -6,6 +6,7 @@ import { moveAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.migration', defaultMessage: 'Account migration' },
@@ -43,7 +44,7 @@ const Migration = () => {
     setIsLoading(true);
     return dispatch(moveAccount(targetAccount, password)).then(() => {
       clearForm();
-      dispatch(snackbar.success(intl.formatMessage(messages.moveAccountSuccess)));
+      toast.success(intl.formatMessage(messages.moveAccountSuccess));
     }).catch(error => {
       let message = intl.formatMessage(messages.moveAccountFail);
 

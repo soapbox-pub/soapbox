@@ -18,6 +18,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { custom } from 'soapbox/custom';
 import { queryClient } from 'soapbox/queries/client';
 import KVStore from 'soapbox/storage/kv-store';
+import toast from 'soapbox/toast';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
@@ -246,7 +247,7 @@ export const logOut = () =>
 
         dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
 
-        return dispatch(snackbar.success(messages.loggedOut));
+        toast.success(messages.loggedOut);
       });
   };
 

@@ -21,6 +21,7 @@ import {
 } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
@@ -217,7 +218,7 @@ const EditProfile: React.FC = () => {
 
     Promise.all(promises).then(() => {
       setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      toast.success(intl.formatMessage(messages.success));
     }).catch(() => {
       setLoading(false);
       dispatch(snackbar.error(intl.formatMessage(messages.error)));

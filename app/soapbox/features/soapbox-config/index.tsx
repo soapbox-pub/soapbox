@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
-import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
 import {
   Accordion,
@@ -25,6 +24,7 @@ import {
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 
 import CryptoAddressInput from './components/crypto-address-input';
 import FooterLinkInput from './components/footer-link-input';
@@ -102,7 +102,7 @@ const SoapboxConfig: React.FC = () => {
   const handleSubmit: React.FormEventHandler = (e) => {
     dispatch(updateSoapboxConfig(data.toJS())).then(() => {
       setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.saved)));
+      toast.success(intl.formatMessage(messages.saved));
     }).catch(() => {
       setLoading(false);
     });

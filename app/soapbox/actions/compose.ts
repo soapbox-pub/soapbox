@@ -7,6 +7,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import api from 'soapbox/api';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { tagHistory } from 'soapbox/settings';
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
@@ -211,7 +212,10 @@ const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, c
 
   dispatch(insertIntoTagHistory(composeId, data.tags || [], status));
   dispatch(submitComposeSuccess(composeId, { ...data }));
-  dispatch(snackbar.success(edit ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
+  toast.success(edit ? messages.editSuccess : messages.success, {
+    actionLabel: messages.view,
+    actionLink: `/@${data.account.acct}/posts/${data.id}`,
+  });
 };
 
 const needsDescriptions = (state: RootState, composeId: string) => {

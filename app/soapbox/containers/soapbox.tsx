@@ -3,11 +3,13 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import classNames from 'clsx';
 import React, { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
+
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
@@ -194,6 +196,7 @@ const SoapboxMount = () => {
               </BundleContainer>
 
               <GdprBanner />
+              <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
             </Route>
           </Switch>
         </ScrollContext>

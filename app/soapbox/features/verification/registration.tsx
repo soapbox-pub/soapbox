@@ -9,6 +9,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import PasswordIndicator from './components/password-indicator';
@@ -54,10 +55,8 @@ const Registration = () => {
         setShouldRedirect(true);
         removeStoredVerification();
         dispatch(startOnboarding());
-        dispatch(
-          snackbar.success(
-            intl.formatMessage(messages.success, { siteTitle: instance.title }),
-          ),
+        toast.success(
+          intl.formatMessage(messages.success, { siteTitle: instance.title }),
         );
       })
       .catch((error: AxiosError) => {

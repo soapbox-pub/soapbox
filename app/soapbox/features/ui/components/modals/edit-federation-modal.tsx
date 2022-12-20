@@ -4,11 +4,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import Toggle from 'react-toggle';
 
 import { updateMrf } from 'soapbox/actions/mrf';
-import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
 import { Modal } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   mediaRemoval: { id: 'edit_federation.media_removal', defaultMessage: 'Strip media' },
@@ -56,7 +56,7 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
 
   const handleSubmit = () => {
     dispatch(updateMrf(host, data))
-      .then(() => dispatch(snackbar.success(intl.formatMessage(messages.success, { host }))))
+      .then(() => toast.success(intl.formatMessage(messages.success, { host })))
       .catch(() => {});
 
     onClose();

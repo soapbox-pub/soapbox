@@ -1,6 +1,7 @@
 import { defineMessages, IntlShape } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
+import toast from 'soapbox/toast';
 import { formatBytes } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
 
@@ -264,7 +265,13 @@ const submitEvent = () =>
       dispatch(closeModal('COMPOSE_EVENT'));
       dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
-      dispatch(snackbar.success(id ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/events/${data.id}`));
+      toast.success(
+        id ? messages.editSuccess : messages.success,
+        {
+          actionLabel: messages.view,
+          actionLink: `/@${data.account.acct}/events/${data.id}`,
+        },
+      );
     }).catch(function(error) {
       dispatch(submitEventFail(error));
     });
@@ -299,11 +306,13 @@ const joinEvent = (id: string, participationMessage?: string) =>
     }).then(({ data }) => {
       dispatch(importFetchedStatus(data));
       dispatch(joinEventSuccess(data));
-      dispatch(snackbar.success(
+      toast.success(
         data.pleroma.event?.join_state === 'pending' ? messages.joinRequestSuccess : messages.joinSuccess,
-        messages.view,
-        `/@${data.account.acct}/events/${data.id}`,
-      ));
+        {
+          actionLabel: messages.view,
+          actionLink: `/@${data.account.acct}/events/${data.id}`,
+        },
+      );
     }).catch(function(error) {
       dispatch(joinEventFail(error, status, status?.event?.join_state || null));
     });
@@ -504,7 +513,7 @@ const authorizeEventParticipationRequest = (id: string, accountId: string) =>
       .post(`/api/v1/pleroma/events/${id}/participation_requests/${accountId}/authorize`)
       .then(() => {
         dispatch(authorizeEventParticipationRequestSuccess(id, accountId));
-        dispatch(snackbar.success(messages.authorized));
+        toast.success(messages.authorized);
       })
       .catch(error => dispatch(authorizeEventParticipationRequestFail(id, accountId, error)));
   };
@@ -536,7 +545,7 @@ const rejectEventParticipationRequest = (id: string, accountId: string) =>
       .post(`/api/v1/pleroma/events/${id}/participation_requests/${accountId}/reject`)
       .then(() => {
         dispatch(rejectEventParticipationRequestSuccess(id, accountId));
-        dispatch(snackbar.success(messages.rejected));
+        toast.success(messages.rejected);
       })
       .catch(error => dispatch(rejectEventParticipationRequestFail(id, accountId, error)));
   };
