@@ -1,12 +1,4 @@
 .filter-settings-panel {
-  .item-list article {
-    border-bottom: 1px solid var(--primary-text-color--faint);
-
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-
   .fields-group .two-col {
     display: flex;
     align-items: flex-start;

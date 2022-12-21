@@ -1,14 +1,7 @@
 body.rtl {
   direction: rtl;
 
-  .column-header > button {
-    text-align: right;
-    padding-left: 0;
-    padding-right: 15px;
-  }
-
-  .column-link__icon,
-  .column-header__icon {
+  .column-link__icon {
     margin-right: 0;
     margin-left: 5px;
   }
@@ -16,28 +9,6 @@ body.rtl {
   .search__icon .fa {
     right: auto;
     left: 10px;
-  }
-
-  .column-header__buttons {
-    left: 0;
-    right: auto;
-    margin-left: 0;
-    margin-right: -15px;
-  }
-
-  .column-inline-form .icon-button {
-    margin-left: 0;
-    margin-right: 5px;
-  }
-
-  .column-header__links .text-btn {
-    margin-left: 10px;
-    margin-right: 0;
-  }
-
-  .setting-toggle__label {
-    margin-left: 0;
-    margin-right: 8px;
   }
 
   .status {
@@ -110,21 +81,6 @@ body.rtl {
         padding-right: 10px;
       }
     }
-  }
-
-  .public-layout {
-    .header {
-      .nav-button {
-        margin-left: 8px;
-        margin-right: 0;
-      }
-    }
-  }
-
-  .card__bar .display-name {
-    margin-left: 0;
-    margin-right: 15px;
-    text-align: right;
   }
 
   .fa-chevron-left::before {

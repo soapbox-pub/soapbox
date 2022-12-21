@@ -2,12 +2,6 @@
   &__accounts {
     overflow-y: auto;
 
-    .account__display-name {
-      &:hover strong {
-        text-decoration: none;
-      }
-    }
-
     &.empty-column-indicator {
       min-height: unset;
       overflow-y: unset;
@@ -17,16 +11,4 @@
 
 .aliases-settings-panel {
   flex: 1;
-
-  .item-list article {
-    border-bottom: 1px solid var(--primary-text-color--faint);
-
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-
-  .slist--flex {
-    height: 100%;
-  }
 }

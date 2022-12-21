@@ -37,7 +37,7 @@ const Welcome = () => {
 
   return (
     <Stack className='py-20 px-4 sm:px-0' data-testid='chats-welcome'>
-      <div className='w-full sm:w-3/5 xl:w-2/5 mx-auto mb-10'>
+      <div className='w-full sm:w-3/5 xl:w-2/5 mx-auto mb-2.5'>
         <Text align='center' weight='bold' className='mb-6 text-2xl md:text-3xl leading-8'>
           {intl.formatMessage(messages.title, { br: <br /> })}
         </Text>

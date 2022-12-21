@@ -10,14 +10,6 @@
     @media screen and (max-width: $no-gap-breakpoint) {
       box-shadow: none;
     }
-
-    &:hover,
-    &:active,
-    &:focus {
-      .card__bar {
-        background-color: var(--brand-color--faint);
-      }
-    }
   }
 }
 
@@ -27,19 +19,6 @@
 
   &:not(:last-of-type) {
     border-bottom: 1px solid var(--brand-color--med);
-  }
-
-  .account__display-name {
-    flex: 1 1 auto;
-    display: block;
-    color: var(--primary-text-color--faint);
-    overflow: hidden;
-    text-decoration: none;
-    font-size: 14px;
-
-    .display-name__name {
-      display: flex;
-    }
   }
 }
 
