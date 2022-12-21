@@ -40,11 +40,12 @@ const Success = () => {
   const history = useHistory();
   const currentChallenge = useAppSelector((state) => state.verification.currentChallenge as ChallengeTypes);
 
-  // Bypass the user straight to the next step.
-  if (currentChallenge === ChallengeTypes.SMS) {
-    history.push('/verify');
-    return null;
-  }
+  React.useEffect(() => {
+    // Bypass the user straight to the next step.
+    if (currentChallenge === ChallengeTypes.SMS) {
+      history.push('/verify');
+    }
+  }, [currentChallenge]);
 
   return (
     <Stack space={4} alignItems='center'>
