@@ -231,7 +231,7 @@ select {
   input[type=password],
   textarea,
   .rfipbtn {
-    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
+    @apply border border-solid border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);
@@ -241,7 +241,6 @@ select {
     font-family: inherit;
     resize: vertical;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--input-border-color);
     border-radius: 6px;
     padding: 8px 12px;
     transition: 0.2s;

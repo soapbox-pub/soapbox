@@ -20,12 +20,12 @@
 }
 
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
-  border-top-right-radius: var(--border-radius-lg);
+  @apply rounded-tr-lg;
 }
 
 .react-datepicker__header {
   @apply bg-white dark:bg-gray-900 border-b-0 py-1 px-0;
-  // border-top-left-radius: var(--border-radius-lg);
+  @apply rounded-tl-lg;
 }
 
 .react-datepicker__current-month,
