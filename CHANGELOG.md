@@ -4,6 +4,87 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Editing: ability to edit posts and view edit history (on Rebased, Pleroma, and Mastodon).
+- Events: ability to create, view, and comment on Events (on Rebased).
+- Onboarding: display an introduction wizard to newly registered accounts.
+- Posts: translate foreign language posts into your native language (on Rebased, Mastodon; if configured by the admin).
+- Posts: ability to view quotes of a post (on Rebased).
+- Posts: hover the "replying to" line to see a preview card of the parent post.
+- Chats: ability to leave a chat (on Rebased, Truth Social).
+- Chats: ability to disable chats for yourself.
+- Layout: added right-to-left support for Arabic, Hebrew, Persian, and Central Kurdish languages.
+- Composer: support custom emoji categories.
+- Search: ability to search posts from a specific account (on Pleroma, Rebased).
+- Theme: auto-detect system theme by default.
+- Profile: remove a specific user from your followers (on Rebased, Mastodon).
+- Suggestions: ability to view all suggested profiles.
+- Compatibility: added compatibility with Truth Social, Fedibird, Pixelfed, Akkoma, and Glitch.
+- Developers: added Test feed, Service Worker debugger, and Network Error preview.
+- Reports: display server rules in reports. Let users select rule violations when submitting a report.
+- Admin: added Theme Editor, a GUI for customizing the color scheme.
+- Admin: custom badges. Admins can add non-federating badges to any user's profile (on Rebased, Pleroma).
+- Admin: consolidated user dropdown actions (verify/suggest/etc) into a unified "Moderate User" modal.
+- i18n: updated translations for Italian, Polish, Arabic, Hebrew, and German.
+
+### Changed
+- UI: the whole UI has been overhauled both inside and out. 97% of the codebase has been rewritten to TypeScript, and a new component library has been introduced with Tailwind CSS.
+- Chats: redesigned chats. Includes an improved desktop UI, unified chat widget, expanding textarea, and autosuggestions.
+- Lists: ability to edit and delete a list.
+- Settings: unified settings under one path with separate sections.
+- Posts: changed the thumbs-up icon to a heart.
+- Posts: move instance favicon beside username instead of post timestamp.
+- Posts: changed the behavior of content warnings. CWs and sensitive media are unified into one design.
+- Posts: redesigned interaction counters to use text instead of icons.
+- Profile: overhauled user profiles to be consistent with the rest of the UI.
+- Composer: move emoji button alongside other composer buttons, add numerical counter.
+- Birthdays: move today's birthdays out of notifications into right sidebar.
+- Performance: improve scrolling/navigation between feeds by using a virtual window library.
+- Admin: reorganize UI into 3-column layout.
+- Admin: include external link to frontend repo for the running commit.
+
+### Removed
+- Theme: Halloween theme.
+- Settings: advanced notification settings.
+- Settings: dyslexic mode.
+- Settings: demetricator.
+- Profile: ability to set and view private notes on an account.
+- Feeds: per-feed filters for replies, media, etc.
+- Backup and export functionality (for now).
+- Posts: hide non-emoji images embedded in post content.
+
+### Security
+- Glitch Social: fixed XSS vulnerability on Glitch Social where custom emojis could be exploited to embed a script tag.
+
+## [2.0.0] - 2022-05-01
+### Added
+- Quote Posting: repost with comment on Fedibird and Rebased.
+- Profile: ability to feature other users on your profile (on Rebased, Mastodon).
+- Profile: ability to add location to the user's profile (on Rebased, Truth Social).
+- Birthdays: ability to add a birthday to your profile (on Rebased, Pleroma).
+- Birthdays: support for age-gated registration if configured by the admin (on Rebased, Pleroma).
+- Birthdays: display today's birthdays in notifications.
+- Notifications: added unread badge to favicon when user has notifications.
+- Notifications: display full attachments in notifications instead of links.
+- Search: added a dedicated search page with prefilled suggestions.
+- Compatibility: improved support for Mastodon, added support for Mitra.
+- Ethereum: Metamask sign-in with Mitra.
+- i18n: added Shavian alphabet (`en-Shaw`) transliteration.
+- i18n: added Icelandic translation.
+
+### Changed
+- Feeds: added gaps between posts in feeds.
+- Feeds: automatically load new posts when scrolled to the top of the feed.
+- Layout: improved design of top navigation bar.
+- Layout: add left sidebar navigation.
+- Icons: replaced Fork Awesome icons with Tabler icons.
+- Posts: moved mentions out of the post content into an area above the post for replies (on Pleroma and Rebased - Mastodon falls back to the old behavior).
+- Composer: use graphical ring counter for character count.
+
+### Fixed
+- Multi-Account: fix switching between profiles on different servers with the same local username.
+
 ## [1.3.0] - 2021-07-02
 ### Changed
 - Layout: show right sidebar on all pages.

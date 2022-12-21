@@ -103,6 +103,19 @@ const updateConfig = (configs: Record<string, any>[]) =>
       });
   };
 
+const updateSoapboxConfig = (data: Record<string, any>) =>
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    const params = [{
+      group: ':pleroma',
+      key: ':frontend_configurations',
+      value: [{
+        tuple: [':soapbox_fe', data],
+      }],
+    }];
+
+    return dispatch(updateConfig(params));
+  };
+
 const fetchMastodonReports = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState)
@@ -585,6 +598,7 @@ export {
   ADMIN_USERS_UNSUGGEST_FAIL,
   fetchConfig,
   updateConfig,
+  updateSoapboxConfig,
   fetchReports,
   closeReports,
   fetchUsers,

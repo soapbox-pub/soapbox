@@ -102,8 +102,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   };
 
   const handleExportClick = () => {
-    dispatch(fetchEventIcs(status.id)).then((response) => {
-      download(response, 'calendar.ics');
+    dispatch(fetchEventIcs(status.id)).then(({ data }) => {
+      download(data, 'calendar.ics');
     }).catch(() => {});
   };
 

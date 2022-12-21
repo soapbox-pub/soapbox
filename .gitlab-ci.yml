@@ -25,6 +25,7 @@ deps:
   cache:
     <<: *cache
     policy: push
+  interruptible: true
 
 danger:
   stage: test
@@ -33,6 +34,7 @@ danger:
     - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
     - npx danger ci
   allow_failure: true
+  interruptible: true
 
 lint-js:
   stage: test
@@ -45,6 +47,7 @@ lint-js:
       - "**/*.tsx"
       - ".eslintignore"
       - ".eslintrc.js"
+  interruptible: true
 
 lint-sass:
   stage: test
@@ -54,6 +57,7 @@ lint-sass:
       - "**/*.scss"
       - "**/*.css"
       - ".stylelintrc.json"
+  interruptible: true
 
 jest:
   stage: test
@@ -76,6 +80,7 @@ jest:
       coverage_report:
         coverage_format: cobertura
         path: .coverage/cobertura-coverage.xml
+  interruptible: true
 
 nginx-test:
   stage: test
@@ -85,6 +90,7 @@ nginx-test:
   only:
     changes:
       - "installation/mastodon.conf"
+  interruptible: true
 
 build-production:
   stage: test
@@ -94,6 +100,7 @@ build-production:
   artifacts:
     paths:
      - static
+  interruptible: true
 
 docs-deploy:
   stage: deploy
@@ -107,6 +114,7 @@ docs-deploy:
       - develop
     changes:
       - "docs/**/*"
+  interruptible: true
 
 # Supposed to fail when translations are outdated, instead always passes
 #
@@ -127,6 +135,7 @@ review:
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
+  interruptible: true
 
 pages:
   stage: deploy
@@ -142,6 +151,7 @@ pages:
   only:
     refs:
       - develop
+  interruptible: true
 
 docker:
   stage: deploy
@@ -158,3 +168,4 @@ docker:
   only:
     refs:
       - develop
+  interruptible: true

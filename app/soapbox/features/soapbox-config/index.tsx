@@ -1,8 +1,9 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
-import { updateConfig } from 'soapbox/actions/admin';
+import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
@@ -25,13 +26,10 @@ import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
 import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
-import ColorWithPicker from './components/color-with-picker';
 import CryptoAddressInput from './components/crypto-address-input';
 import FooterLinkInput from './components/footer-link-input';
 import PromoPanelInput from './components/promo-panel-input';
 import SitePreview from './components/site-preview';
-
-import type { ColorChangeHandler, ColorResult } from 'react-color';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -59,7 +57,6 @@ const messages = defineMessages({
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
-type ColorValueGetter = (color: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => any;
 type Template = ImmutableMap<string, any>;
 type ConfigPath = Array<string | number>;
 type ThemeChangeHandler = (theme: string) => void;
@@ -72,6 +69,7 @@ const templates: Record<string, Template> = {
 
 const SoapboxConfig: React.FC = () => {
   const intl = useIntl();
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
   const features = useFeatures();
@@ -83,6 +81,8 @@ const SoapboxConfig: React.FC = () => {
   const [jsonEditorExpanded, setJsonEditorExpanded] = useState(false);
   const [rawJSON, setRawJSON] = useState<string>(JSON.stringify(initialData, null, 2));
   const [jsonValid, setJsonValid] = useState(true);
+
+  const navigateToThemeEditor = () => history.push('/soapbox/admin/theme');
 
   const soapbox = useMemo(() => {
     return normalizeSoapboxConfig(data);
@@ -99,18 +99,8 @@ const SoapboxConfig: React.FC = () => {
     setJsonValid(true);
   };
 
-  const getParams = () => {
-    return [{
-      group: ':pleroma',
-      key: ':frontend_configurations',
-      value: [{
-        tuple: [':soapbox_fe', data.toJS()],
-      }],
-    }];
-  };
-
   const handleSubmit: React.FormEventHandler = (e) => {
-    dispatch(updateConfig(getParams())).then(() => {
+    dispatch(updateSoapboxConfig(data.toJS())).then(() => {
       setLoading(false);
       dispatch(snackbar.success(intl.formatMessage(messages.saved)));
     }).catch(() => {
@@ -129,12 +119,6 @@ const SoapboxConfig: React.FC = () => {
   const handleThemeChange = (path: ConfigPath): ThemeChangeHandler => {
     return theme => {
       setConfig(path, theme);
-    };
-  };
-
-  const handleColorChange = (path: ConfigPath, getValue: ColorValueGetter): ColorChangeHandler => {
-    return (color, event) => {
-      setConfig(path, getValue(color, event));
     };
   };
 
@@ -224,21 +208,10 @@ const SoapboxConfig: React.FC = () => {
               />
             </ListItem>
 
-            <ListItem label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}>
-              <ColorWithPicker
-                buttonId='brandColor'
-                value={soapbox.brandColor}
-                onChange={handleColorChange(['brandColor'], (color) => color.hex)}
-              />
-            </ListItem>
-
-            <ListItem label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}>
-              <ColorWithPicker
-                buttonId='accentColor'
-                value={soapbox.accentColor}
-                onChange={handleColorChange(['accentColor'], (color) => color.hex)}
-              />
-            </ListItem>
+            <ListItem
+              label={<FormattedMessage id='soapbox_config.fields.edit_theme_label' defaultMessage='Edit theme' />}
+              onClick={navigateToThemeEditor}
+            />
           </List>
 
           <CardHeader>

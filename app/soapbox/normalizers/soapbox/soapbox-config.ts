@@ -43,7 +43,6 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     800: '#991b1b',
     900: '#7f1d1d',
   }),
-  'sea-blue': '#2feecc',
   'greentext': '#789922',
 });
 

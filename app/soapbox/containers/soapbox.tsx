@@ -41,6 +41,7 @@ import {
   useInstance,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
@@ -267,8 +268,9 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
+  const demo = !!settings.get('demo');
   const darkMode = useTheme() === 'dark';
-  const themeCss = generateThemeCss(soapboxConfig);
+  const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
 
   const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),

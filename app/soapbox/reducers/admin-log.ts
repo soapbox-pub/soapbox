@@ -9,7 +9,7 @@ import { ADMIN_LOG_FETCH_SUCCESS } from 'soapbox/actions/admin';
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const LogEntryRecord = ImmutableRecord({
+export const LogEntryRecord = ImmutableRecord({
   data: ImmutableMap<string, any>(),
   id: 0,
   message: '',
