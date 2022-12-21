@@ -165,8 +165,8 @@
 }
 
 .error-modal {
+  @apply text-gray-900;
   background: var(--background-color);
-  color: var(--primary-text-color);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -231,35 +231,30 @@
     &:hover,
     &:focus,
     &:active {
-      color: var(--primary-text-color--faint);
+      @apply text-gray-400;
       background-color: var(--background-color);
     }
 
     &.onboarding-modal__done,
     &.onboarding-modal__next {
-      color: var(--primary-text-color);
+      @apply text-gray-900;
 
       &:hover,
       &:focus,
       &:active {
-        color: var(--primary-text-color);
+        @apply text-gray-900;
       }
     }
   }
 }
 
 .actions-modal {
-  position: relative;
-  flex-direction: column;
-  overflow: hidden;
+  @apply flex-col relative text-gray-400 overflow-hidden;
   border-radius: 10px;
   border: 1px solid var(--background-color);
-  color: var(--primary-text-color--faint);
 
   .status__display-name {
-    display: block;
-    max-width: 100%;
-    padding-right: 25px;
+    @apply block w-full pr-6;
   }
 
   .dropdown-menu__separator {

@@ -29,14 +29,12 @@ body,
   // Primary variables
   --brand-color: hsl(var(--brand-color_hsl));
   --accent-color: hsl(var(--accent-color_hsl));
-  --primary-text-color: var(--gray-900);
   --background-color: hsl(var(--background-color_hsl));
   --foreground-color: hsl(var(--foreground-color_hsl));
 
   // Meta-variables
   --brand-color_hsl: var(--brand-color_h), var(--brand-color_s), var(--brand-color_l);
   --accent-color_hsl: var(--accent-color_h), var(--accent-color_s), var(--accent-color_l);
-  --primary-text-color_hsl: var(--primary-text-color_h), var(--primary-text-color_s), var(--primary-text-color_l);
   --background-color_hsl: var(--background-color_h), var(--background-color_s), var(--background-color_l);
   --foreground-color_hsl: var(--foreground-color_h), var(--foreground-color_s), var(--foreground-color_l);
   --accent-color_h: calc(var(--brand-color_h) - 15);
@@ -52,11 +50,6 @@ body,
     var(--accent-color_s),
     calc(var(--accent-color_l) + 3%)
   );
-  --primary-text-color--faint: var(--gray-400);
-
-  // Colors
-  --gray-900: #08051b;
-  --gray-400: #868393;
 }
 
 .theme-mode-light {
@@ -68,9 +61,6 @@ body,
   );
 
   // Meta-variables
-  --primary-text-color_h: 0;
-  --primary-text-color_s: 0%;
-  --primary-text-color_l: 0%;
   --background-color_h: 0;
   --background-color_s: 0%;
   --background-color_l: 94.9%;

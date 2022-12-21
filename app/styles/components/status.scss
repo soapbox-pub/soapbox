@@ -17,16 +17,16 @@
   &.light {
     .display-name {
       strong {
-        color: var(--primary-text-color);
+        @apply text-gray-900;
       }
 
       span {
-        color: var(--primary-text-color--faint);
+        @apply text-gray-400;
       }
     }
 
     .status__content {
-      color: var(--primary-text-color);
+      @apply text-gray-900;
 
       a {
         color: var(--highlight-text-color);
@@ -35,8 +35,7 @@
   }
 
   &__meta {
-    font-size: 14px;
-    color: var(--primary-text-color--faint);
+    @apply text-gray-400 text-sm;
 
     a {
       color: var(--brand-color);

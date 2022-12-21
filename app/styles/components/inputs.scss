@@ -1,15 +1,15 @@
 input[type='text'],
 textarea {
   &.standard {
+    @apply border-gray-400;
     @include font-size(16);
     @include line-height(18);
-    @include input-placeholder(var(--primary-text-color--faint));
+    @include input-placeholder(#868393);
     box-sizing: border-box;
     padding: 7px 10px;
     border: 1px solid;
     border-radius: 4px;
     color: var(--brand-color);
-    border-color: var(--primary-text-color--faint);
     background: var(--foreground-color);
     &:focus { outline: none; }
   }

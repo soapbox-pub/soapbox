@@ -87,9 +87,9 @@
   border-bottom: 1px solid var(--brand-color--med);
 
   &__message {
+    @apply text-gray-900;
     position: relative;
     margin-left: 58px;
-    color: var(--primary-text-color);
     padding: 8px 0;
     padding-top: 0;
     padding-bottom: 4px;
@@ -109,12 +109,12 @@
 }
 
 .account__joined-at {
+  @apply text-gray-400;
   padding-left: 3px;
   font-size: 14px;
   display: flex;
   white-space: nowrap;
   flex-shrink: 0;
-  color: var(--primary-text-color--faint);
 
   .svg-icon {
     padding-right: 3px;
