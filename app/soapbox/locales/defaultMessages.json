@@ -74,7 +74,7 @@
       },
       {
         "defaultMessage": "View",
-        "id": "snackbar.view"
+        "id": "toast.view"
       },
       {
         "defaultMessage": "Reply",
@@ -146,7 +146,7 @@
       },
       {
         "defaultMessage": "View",
-        "id": "snackbar.view"
+        "id": "toast.view"
       }
     ],
     "path": "app/soapbox/actions/interactions.json"

@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { getHost } from 'soapbox/actions/instance';
-import snackbar from 'soapbox/actions/snackbar';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, Column, Form, FormActions } from 'soapbox/components/ui';
@@ -12,6 +11,7 @@ import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker';
 import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 import { download } from 'soapbox/utils/download';
 
 import Palette, { ColorGroup } from './components/palette';
@@ -103,7 +103,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
       const colors = normalizeSoapboxConfig({ colors: json }).colors.toJS();
 
       setTheme(colors);
-      dispatch(snackbar.success(intl.formatMessage(messages.importSuccess)));
+      toast.success(intl.formatMessage(messages.importSuccess));
     }
   };
 
@@ -113,7 +113,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
     try {
       await dispatch(fetchSoapboxConfig(host));
       await updateTheme();
-      dispatch(snackbar.success(intl.formatMessage(messages.saved)));
+      toast.success(intl.formatMessage(messages.saved));
       setSubmitting(false);
     } catch (e) {
       setSubmitting(false);
@@ -199,7 +199,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
               text: intl.formatMessage(messages.restore),
               action: restoreDefaultTheme,
               icon: require('@tabler/icons/refresh.svg'),
-            },{
+            }, {
               text: intl.formatMessage(messages.import),
               action: importTheme,
               icon: require('@tabler/icons/upload.svg'),

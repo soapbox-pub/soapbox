@@ -1,5 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
+import { toast } from 'react-hot-toast';
 
 import { __stub } from 'soapbox/api';
 import { fireEvent, render, screen, waitFor } from 'soapbox/jest/test-helpers';
@@ -38,6 +40,10 @@ describe('<SmsVerification />', () => {
       expect(screen.getByRole('heading')).toHaveTextContent('Verification code');
       expect(screen.getByTestId('toast')).toHaveTextContent('A verification code has been sent to your phone number.');
 
+      act(() => {
+        toast.remove();
+      });
+
       await userEvent.type(screen.getByLabelText('Please enter verification code. Digit 1'), '1');
       await userEvent.type(screen.getByLabelText('Digit 2'), '2');
       await userEvent.type(screen.getByLabelText('Digit 3'), '3');
@@ -64,6 +70,10 @@ describe('<SmsVerification />', () => {
 
       expect(screen.getByRole('heading')).toHaveTextContent('Verification code');
       expect(screen.getByTestId('toast')).toHaveTextContent('A verification code has been sent to your phone number.');
+
+      act(() => {
+        toast.remove();
+      });
 
       await userEvent.type(screen.getByLabelText('Please enter verification code. Digit 1'), '1');
       await userEvent.type(screen.getByLabelText('Digit 2'), '2');

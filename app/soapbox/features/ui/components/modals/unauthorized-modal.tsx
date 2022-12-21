@@ -3,9 +3,9 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -55,7 +55,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       })
       .catch(error => {
         if (error.message === 'Couldn\'t find user') {
-          dispatch(snackbar.error(intl.formatMessage(messages.userNotFoundError)));
+          toast.error(intl.formatMessage(messages.userNotFoundError));
         }
       });
   };

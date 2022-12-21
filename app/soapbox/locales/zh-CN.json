@@ -1016,7 +1016,7 @@
   "sms_verification.sent.body": "We sent you a 6-digit code via SMS. Enter it below.",
   "sms_verification.sent.header": "Verification code",
   "sms_verification.success": "A verification code has been sent to your phone number.",
-  "snackbar.view": "浏览",
+  "toast.view": "浏览",
   "soapbox_config.authenticated_profile_hint": "用户必须登录后才能查看用户个人资料上的回复和媒体。",
   "soapbox_config.authenticated_profile_label": "个人资料需要授权才能查看",
   "soapbox_config.copyright_footer.meta_fields.label_placeholder": "版权页底",

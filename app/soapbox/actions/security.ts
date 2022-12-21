@@ -4,7 +4,7 @@
  * @see module:soapbox/actions/auth
  */
 
-import snackbar from 'soapbox/actions/snackbar';
+import toast from 'soapbox/toast';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
 import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
 import { normalizeUsername } from 'soapbox/utils/input';
@@ -152,7 +152,7 @@ const deleteAccount = (password: string) =>
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
       dispatch({ type: AUTH_LOGGED_OUT, account });
-      dispatch(snackbar.success(messages.loggedOut));
+      toast.success(messages.loggedOut);
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;

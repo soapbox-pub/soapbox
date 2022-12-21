@@ -49,6 +49,7 @@ export { default as Tabs } from './tabs/tabs';
 export { default as TagInput } from './tag-input/tag-input';
 export { default as Text } from './text/text';
 export { default as Textarea } from './textarea/textarea';
+export { default as Toast } from './toast/toast';
 export { default as Toggle } from './toggle/toggle';
 export { default as Tooltip } from './tooltip/tooltip';
 export { default as Widget } from './widget/widget';

@@ -3,16 +3,15 @@ import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import api from 'soapbox/api';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { tagHistory } from 'soapbox/settings';
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
 
-import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { uploadMedia, fetchMedia, updateMedia } from './media';
@@ -93,7 +92,7 @@ const messages = defineMessages({
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll: { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
   replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
   replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
 });
@@ -211,7 +210,10 @@ const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, c
 
   dispatch(insertIntoTagHistory(composeId, data.tags || [], status));
   dispatch(submitComposeSuccess(composeId, { ...data }));
-  dispatch(snackbar.success(edit ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
+  toast.success(edit ? messages.editSuccess : messages.success, {
+    actionLabel: messages.view,
+    actionLink: `/@${data.account.acct}/posts/${data.id}`,
+  });
 };
 
 const needsDescriptions = (state: RootState, composeId: string) => {
@@ -245,7 +247,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     let to         = compose.to;
 
     if (!validateSchedule(state, composeId)) {
-      dispatch(snackbar.error(messages.scheduleError));
+      toast.error(messages.scheduleError);
       return;
     }
 
@@ -330,7 +332,7 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     const mediaCount = media ? media.size : 0;
 
     if (files.length + mediaCount > attachmentLimit) {
-      dispatch(showAlert(undefined, messages.uploadErrorLimit, 'error'));
+      toast.error(messages.uploadErrorLimit);
       return;
     }
 
@@ -346,18 +348,18 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
       if (isImage && maxImageSize && (f.size > maxImageSize)) {
         const limit = formatBytes(maxImageSize);
         const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-        dispatch(snackbar.error(message));
+        toast.error(message);
         dispatch(uploadComposeFail(composeId, true));
         return;
       } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
         const limit = formatBytes(maxVideoSize);
         const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
-        dispatch(snackbar.error(message));
+        toast.error(message);
         dispatch(uploadComposeFail(composeId, true));
         return;
       } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
         const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
-        dispatch(snackbar.error(message));
+        toast.error(message);
         dispatch(uploadComposeFail(composeId, true));
         return;
       }
@@ -496,7 +498,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
     dispatch(readyComposeSuggestionsAccounts(composeId, token, response.data));
   }).catch(error => {
     if (!isCancel(error)) {
-      dispatch(showAlertForError(error));
+      toast.showAlertForError(error);
     }
   });
 }, 200, { leading: true, trailing: true });
