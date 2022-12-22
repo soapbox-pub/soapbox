@@ -360,7 +360,9 @@ export default function timelines(state: State = initialState, action: AnyAction
             oldIdsArray = oldIdsArray.slice(1);
           }
           const positionInTimeline = sample([5, 6, 7, 8, 9]) as number;
-          oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
+          if (oldIds.last()) {
+            oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
+          }
           return ImmutableOrderedSet(oldIdsArray);
         });
       }));
