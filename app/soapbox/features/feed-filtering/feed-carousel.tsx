@@ -83,7 +83,7 @@ const CarouselItem = React.forwardRef((
 });
 
 const FeedCarousel = () => {
-  const { data: avatars, isFetching, isError } = useCarouselAvatars();
+  const { data: avatars, isFetching, isFetched, isError } = useCarouselAvatars();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_ref, setContainerRef, { width }] = useDimensions();
@@ -139,6 +139,10 @@ const FeedCarousel = () => {
         </Text>
       </Card>
     );
+  }
+
+  if (isFetched && avatars.length === 0) {
+    return null;
   }
 
   return (
