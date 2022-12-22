@@ -4,9 +4,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
-import { showAlertForError } from 'soapbox/actions/alerts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
+import { editEvent } from 'soapbox/actions/events';
 import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -18,7 +18,9 @@ import StatusActionButton from 'soapbox/components/status-action-button';
 import { HStack } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
+import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
@@ -203,7 +205,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleEditClick: React.EventHandler<React.MouseEvent> = () => {
-    dispatch(editStatus(status.id));
+    if (status.event) dispatch(editEvent(status.id));
+    else dispatch(editStatus(status.id));
   };
 
   const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -239,7 +242,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, status));
+        dispatch(initReport(account, { status }));
       },
     }));
   };
@@ -251,12 +254,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
       url: status.get('url'),
-      onError: (error: any) => dispatch(showAlertForError(error)),
+      onError: (error: any) => toast.showAlertForError(error),
     }));
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(status.account as Account, status));
+    dispatch(initReport(status.account as Account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -265,21 +268,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
     const { uri } = status;
-    const textarea = document.createElement('textarea');
 
-    textarea.textContent = uri;
-    textarea.style.position = 'fixed';
-
-    document.body.appendChild(textarea);
-
-    try {
-      textarea.select();
-      document.execCommand('copy');
-    } catch {
-      // Do nothing
-    } finally {
-      document.body.removeChild(textarea);
-    }
+    copy(uri);
   };
 
   const onModerate: React.MouseEventHandler = (e) => {

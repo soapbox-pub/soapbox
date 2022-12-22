@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,6 +9,8 @@ import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/component
 import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
+
+import MessagesSettings from './components/messages-settings';
 
 const messages = defineMessages({
   settings: { id: 'settings.settings', defaultMessage: 'Settings' },
@@ -100,6 +102,18 @@ const Settings = () => {
             </CardBody>
           </>
         )}
+
+        {features.chats ? (
+          <>
+            <CardHeader>
+              <CardTitle title={<FormattedMessage id='column.chats' defaultMessage='Chats' />} />
+            </CardHeader>
+
+            <CardBody>
+              <MessagesSettings />
+            </CardBody>
+          </>
+        ) : null}
 
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />

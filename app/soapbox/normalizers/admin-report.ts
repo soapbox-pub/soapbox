@@ -24,7 +24,7 @@ export const AdminReportRecord = ImmutableRecord({
   rules: ImmutableList<string>(),
   statuses: ImmutableList<EmbeddedEntity<Status>>(),
   target_account: null as EmbeddedEntity<Account | ReducerAccount>,
-  updated_at:  new Date(),
+  updated_at: new Date(),
 });
 
 const normalizePleromaReport = (report: ImmutableMap<string, any>) => {

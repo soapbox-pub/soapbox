@@ -3,11 +3,13 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import classNames from 'clsx';
 import React, { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
+
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
@@ -17,13 +19,13 @@ import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import { StatProvider } from 'soapbox/contexts/stat-context';
 import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public-layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
-  NotificationsContainer,
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
@@ -40,6 +42,7 @@ import {
   useInstance,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
@@ -85,6 +88,7 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
+
   const me = useAppSelector(state => state.me);
   const instance = useInstance();
   const account = useOwnAccount();
@@ -182,15 +186,12 @@ const SoapboxMount = () => {
             <Route>
               {renderBody()}
 
-              <BundleContainer fetchComponent={NotificationsContainer}>
-                {(Component) => <Component />}
-              </BundleContainer>
-
               <BundleContainer fetchComponent={ModalContainer}>
                 {Component => <Component />}
               </BundleContainer>
 
               <GdprBanner />
+              <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
             </Route>
           </Switch>
         </ScrollContext>
@@ -265,8 +266,9 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
+  const demo = !!settings.get('demo');
   const darkMode = useTheme() === 'dark';
-  const themeCss = generateThemeCss(soapboxConfig);
+  const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
 
   const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
@@ -295,11 +297,13 @@ const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <SoapboxHead>
-          <SoapboxLoad>
-            <SoapboxMount />
-          </SoapboxLoad>
-        </SoapboxHead>
+        <StatProvider>
+          <SoapboxHead>
+            <SoapboxLoad>
+              <SoapboxMount />
+            </SoapboxLoad>
+          </SoapboxHead>
+        </StatProvider>
       </QueryClientProvider>
     </Provider>
   );

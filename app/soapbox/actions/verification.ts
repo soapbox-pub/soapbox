@@ -32,13 +32,14 @@ export type Challenge = 'age' | 'sms' | 'email'
 
 type Challenges = {
   email?: 0 | 1,
-  sms?: number,
-  age?: number,
+  sms?: 0 | 1,
+  age?: 0 | 1,
 }
 
 type Verification = {
   token?: string,
   challenges?: Challenges,
+  challengeTypes?: Array<'age' | 'sms' | 'email'>
 };
 
 /**
@@ -78,6 +79,18 @@ const fetchStoredChallenges = () => {
   try {
     const verification: Verification | null = fetchStoredVerification();
     return verification!.challenges;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Fetch and return the state of the verification challenge types.
+ */
+const fetchStoredChallengeTypes = () => {
+  try {
+    const verification: Verification | null = fetchStoredVerification();
+    return verification!.challengeTypes;
   } catch {
     return null;
   }
@@ -131,7 +144,10 @@ function saveChallenges(challenges: Array<'age' | 'sms' | 'email'>) {
     }
   }
 
-  updateStorage({ challenges: currentChallenges });
+  updateStorage({
+    challenges: currentChallenges,
+    challengeTypes: challenges,
+  });
 }
 
 /**
@@ -267,12 +283,28 @@ const confirmEmailVerification = (emailToken: string) =>
     return api(getState).post('/api/v1/pepe/verify_email/confirm', { token: emailToken }, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then(() => {
-        finishChallenge(EMAIL);
-        dispatchNextChallenge(dispatch);
+      .then((response) => {
+        updateStorageFromEmailConfirmation(dispatch, response.data.token);
       })
       .finally(() => dispatch({ type: SET_LOADING, value: false }));
   };
+
+const updateStorageFromEmailConfirmation = (dispatch: AppDispatch, token: string) => {
+  const challengeTypes = fetchStoredChallengeTypes();
+  if (!challengeTypes) {
+    return;
+  }
+
+  const indexOfEmail = challengeTypes.indexOf('email');
+  const challenges: Challenges = {};
+  challengeTypes?.forEach((challengeType, idx) => {
+    const value = idx <= indexOfEmail ? 1 : 0;
+    challenges[challengeType] = value;
+  });
+
+  updateStorage({ token, challengeTypes, challenges });
+  dispatchNextChallenge(dispatch);
+};
 
 const postEmailVerification = () =>
   (dispatch: AppDispatch) => {

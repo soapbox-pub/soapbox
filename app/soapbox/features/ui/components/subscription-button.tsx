@@ -6,9 +6,9 @@ import {
   subscribeAccount,
   unsubscribeAccount,
 } from 'soapbox/actions/accounts';
-import snackbar from 'soapbox/actions/snackbar';
 import { IconButton } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -40,16 +40,16 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
     intl.formatMessage(messages.subscribe, { name: account.get('username') });
 
   const onSubscribeSuccess = () =>
-    dispatch(snackbar.success(intl.formatMessage(messages.subscribeSuccess)));
+    toast.success(intl.formatMessage(messages.subscribeSuccess));
 
   const onSubscribeFailure = () =>
-    dispatch(snackbar.error(intl.formatMessage(messages.subscribeFailure)));
+    toast.error(intl.formatMessage(messages.subscribeFailure));
 
   const onUnsubscribeSuccess = () =>
-    dispatch(snackbar.success(intl.formatMessage(messages.unsubscribeSuccess)));
+    toast.success(intl.formatMessage(messages.unsubscribeSuccess));
 
   const onUnsubscribeFailure = () =>
-    dispatch(snackbar.error(intl.formatMessage(messages.unsubscribeFailure)));
+    toast.error(intl.formatMessage(messages.unsubscribeFailure));
 
   const onNotifyToggle = () => {
     if (account.relationship?.notifying) {

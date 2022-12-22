@@ -116,3 +116,18 @@ export const colorsToCss = (colors: TailwindColorPalette): string => {
 export const generateThemeCss = (soapboxConfig: SoapboxConfig): string => {
   return colorsToCss(soapboxConfig.colors.toJS() as TailwindColorPalette);
 };
+
+const hexToHsl = (hex: string): Hsl | null => {
+  const rgb = hexToRgb(hex);
+  return rgb ? rgbToHsl(rgb) : null;
+};
+
+export const hueShift = (hex: string, delta: number): string => {
+  const { h, s, l } = hexToHsl(hex)!;
+
+  return hslToHex({
+    h: (h + delta) % 360,
+    s,
+    l,
+  });
+};

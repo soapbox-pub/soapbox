@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "unread": 0,
+    "created_by_account": "2",
+    "last_message": {
+      "account_id": "2",
+      "chat_id": "85",
+      "content": "last message content",
+      "created_at": "2022-09-28T17:43:01.432Z",
+      "id": "1166",
+      "unread": false,
+      "discarded_at": "2022-09-29T19:09:30.253Z"
+    },
+    "created_at": "2022-08-26T14:49:16.360Z",
+    "updated_at": "2022-09-29T19:09:30.257Z",
+    "accepted": true,
+    "discarded_at": null,
+    "account": {
+      "id": "2",
+      "username": "leonard",
+      "acct": "leonard",
+      "display_name": "leonard",
+      "created_at": "2021-10-19T00:00:00.000Z",
+      "avatar": "original.jpg",
+      "avatar_static": "original.jpg",
+      "verified": false,
+      "accepting_messages": true,
+      "chats_onboarded": true
+    }
+  },
+  {
+    "id": "2",
+    "unread": 0,
+    "created_by_account": "3",
+    "last_message": {
+      "account_id": "3",
+      "chat_id": "125",
+      "content": "\u003cp\u003eInventore enim numquam nihil facilis nostrum eum natus provident quis veritatis esse dolorem praesentium rem cumque.\u003c/p\u003e",
+      "created_at": "2022-09-23T14:09:29.625Z",
+      "id": "1033",
+      "unread": false,
+      "discarded_at": null
+    },
+    "created_at": "2022-09-22T15:06:49.675Z",
+    "updated_at": "2022-09-23T14:09:29.628Z",
+    "accepted": true,
+    "discarded_at": null,
+    "account": {
+      "id": "3",
+      "username": "sheldon",
+      "acct": "sheldon",
+      "display_name": "sheldon",
+      "created_at": "2022-09-22T00:00:00.000Z",
+      "avatar": "original.jpg",
+      "avatar_static": "original.jpg",
+      "verified": false,
+      "accepting_messages": true,
+      "chats_onboarded": true
+    }
+  }
+]

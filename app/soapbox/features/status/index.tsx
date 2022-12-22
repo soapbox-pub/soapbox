@@ -1,10 +1,10 @@
 import classNames from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import {
@@ -82,7 +82,7 @@ const getAncestorsIds = createSelector([
   return ancestorsIds;
 });
 
-const getDescendantsIds = createSelector([
+export const getDescendantsIds = createSelector([
   (_: RootState, statusId: string) => statusId,
   (state: RootState) => state.contexts.replies,
 ], (statusId, contextReplies) => {
@@ -424,6 +424,12 @@ const Thread: React.FC<IThread> = (props) => {
 
   const hasAncestors = ancestorsIds.size > 0;
   const hasDescendants = descendantsIds.size > 0;
+
+  if (status?.event) {
+    return (
+      <Redirect to={`/@${status.getIn(['account', 'acct'])}/events/${status.id}`} />
+    );
+  }
 
   if (!status && isLoaded) {
     return (

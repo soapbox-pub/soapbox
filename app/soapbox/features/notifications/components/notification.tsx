@@ -51,6 +51,9 @@ const icons: Record<NotificationType, string> = {
   'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
+  'pleroma:event_reminder': require('@tabler/icons/calendar-time.svg'),
+  'pleroma:participation_request': require('@tabler/icons/calendar-event.svg'),
+  'pleroma:participation_accepted': require('@tabler/icons/calendar-event.svg'),
 };
 
 const nameMessage = defineMessage({
@@ -106,6 +109,18 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   update: {
     id: 'notification.update',
     defaultMessage: '{name} edited a post you interacted with',
+  },
+  'pleroma:event_reminder': {
+    id: 'notification.pleroma:event_reminder',
+    defaultMessage: 'An event you are participating in starts soon',
+  },
+  'pleroma:participation_request': {
+    id: 'notification.pleroma:participation_request',
+    defaultMessage: '{name} wants to join your event',
+  },
+  'pleroma:participation_accepted': {
+    id: 'notification.pleroma:participation_accepted',
+    defaultMessage: 'You were accepted to join the event',
   },
 });
 
@@ -302,6 +317,9 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'update':
       case 'pleroma:emoji_reaction':
+      case 'pleroma:event_reminder':
+      case 'pleroma:participation_accepted':
+      case 'pleroma:participation_request':
         return status && typeof status === 'object' ? (
           <StatusContainer
             id={status.id}

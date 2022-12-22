@@ -2,11 +2,11 @@ import { AxiosError } from 'axios';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { checkEmailVerification, postEmailVerification, requestEmailVerification } from 'soapbox/actions/verification';
 import Icon from 'soapbox/components/icon';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   verificationSuccess: { id: 'email_verification.success', defaultMessage: 'Verification email sent successfully.' },
@@ -83,11 +83,7 @@ const EmailVerification = () => {
       .then(() => {
         setStatus(Statuses.REQUESTED);
 
-        dispatch(
-          snackbar.success(
-            intl.formatMessage(messages.verificationSuccess),
-          ),
-        );
+        toast.success(intl.formatMessage(messages.verificationSuccess));
       })
       .catch((error: AxiosError) => {
         const errorMessage = (error.response?.data as any)?.error;
@@ -104,7 +100,7 @@ const EmailVerification = () => {
           setErrors([intl.formatMessage(messages.verificationFailTaken)]);
         }
 
-        dispatch(snackbar.error(message));
+        toast.error(message);
         setStatus(Statuses.FAIL);
       });
   };

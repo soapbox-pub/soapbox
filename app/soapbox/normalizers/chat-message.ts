@@ -15,13 +15,12 @@ export const ChatMessageRecord = ImmutableRecord({
   card: null as Card | null,
   chat_id: '',
   content: '',
-  created_at: new Date(),
+  created_at: '',
   emojis: ImmutableList<Emoji>(),
   id: '',
   unread: false,
-
   deleting: false,
-  pending: false,
+  pending: false as boolean | undefined,
 });
 
 const normalizeMedia = (status: ImmutableMap<string, any>) => {

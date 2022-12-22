@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
-import { MIMETYPE_ICONS } from 'soapbox/features/compose/components/upload';
+import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 import { useSettings } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
@@ -262,7 +262,7 @@ const Item: React.FC<IItem> = ({
 interface IMediaGallery {
   sensitive?: boolean,
   media: ImmutableList<Attachment>,
-  height: number,
+  height?: number,
   onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void,
   defaultWidth?: number,
   cacheWidth?: (width: number) => void,

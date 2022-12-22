@@ -14,6 +14,7 @@ const noOp = () => { };
 interface IAutosuggestAccountInput {
   onChange: React.ChangeEventHandler<HTMLInputElement>,
   onSelected: (accountId: string) => void,
+  autoFocus?: boolean,
   value: string,
   limit?: number,
   className?: string,
@@ -66,6 +67,12 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
       onSelected(suggestion);
     }
   };
+
+  useEffect(() => {
+    if (rest.autoFocus) {
+      handleAccountSearch('');
+    }
+  }, []);
 
   useEffect(() => {
     if (value === '') {

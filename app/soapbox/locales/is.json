@@ -1016,7 +1016,7 @@
   "sms_verification.sent.body": "We sent you a 6-digit code via SMS. Enter it below.",
   "sms_verification.sent.header": "Verification code",
   "sms_verification.success": "A verification code has been sent to your phone number.",
-  "snackbar.view": "Skoða",
+  "toast.view": "Skoða",
   "soapbox_config.authenticated_profile_hint": "Notendur verða að vera skráðir inn til að sjá svör og myndefni á notandasniðum.",
   "soapbox_config.authenticated_profile_label": "Snið krefst auðkenningar",
   "soapbox_config.copyright_footer.meta_fields.label_placeholder": "Höfundarréttarfótur",
