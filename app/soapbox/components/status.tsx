@@ -237,7 +237,7 @@ const Status: React.FC<IStatus> = (props) => {
       <NavLink
         to={`/@${status.getIn(['account', 'acct'])}`}
         onClick={(event) => event.stopPropagation()}
-        className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
+        className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 rtl:space-x-reverse hover:underline'
       >
         <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
 
@@ -246,7 +246,7 @@ const Status: React.FC<IStatus> = (props) => {
             id='status.reblogged_by'
             defaultMessage='{name} reposted'
             values={{
-              name: <bdi className='max-w-[100px] truncate pr-1'>
+              name: <bdi className='max-w-[100px] truncate pr-1 rtl:px-1'>
                 <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
               </bdi>,
             }}
