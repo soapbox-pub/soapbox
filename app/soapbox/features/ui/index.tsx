@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
@@ -20,7 +20,6 @@ import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
@@ -39,6 +38,7 @@ import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import BackgroundShapes from './components/background-shapes';
+import FloatingActionButton from './components/floating-action-button';
 import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle-container';
@@ -120,11 +120,6 @@ import { WrappedRoute } from './util/react-router-helpers';
 import 'soapbox/components/status';
 
 const EmptyPage = HomePage;
-
-const messages = defineMessages({
-  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
-  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
-});
 
 const keyMap = {
   help: '?',
@@ -597,10 +592,6 @@ const UI: React.FC = ({ children }) => {
     history.push('/follow_requests');
   };
 
-  const handleOpenComposeModal = () => {
-    dispatch(openModal('COMPOSE'));
-  };
-
   const shouldHideFAB = (): boolean => {
     const path = location.pathname;
     return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
@@ -627,19 +618,6 @@ const UI: React.FC = ({ children }) => {
     goToRequests: handleHotkeyGoToRequests,
   };
 
-  const fabElem = (
-    <button
-      key='floating-action-button'
-      onClick={handleOpenComposeModal}
-      className='floating-action-button'
-      aria-label={intl.formatMessage(messages.publish)}
-    >
-      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-    </button>
-  );
-
-  const floatingActionButton = shouldHideFAB() ? null : fabElem;
-
   const style: React.CSSProperties = {
     pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
   };
@@ -662,7 +640,9 @@ const UI: React.FC = ({ children }) => {
             </SwitchingColumnsArea>
           </Layout>
 
-          {me && floatingActionButton}
+          {(me && !shouldHideFAB()) && (
+            <FloatingActionButton />
+          )}
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
