@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { ToastText, ToastType } from 'soapbox/toast';
 
+import HStack from '../hstack/hstack';
 import Icon from '../icon/icon';
 
 const renderText = (text: ToastText) => {
@@ -63,7 +64,7 @@ const Toast = (props: IToast) => {
   };
 
   const renderAction = () => {
-    const classNames = 'ml-3 mt-0.5 flex-shrink-0 rounded-full text-sm font-medium text-primary-600 dark:text-accent-blue hover:underline focus:outline-none';
+    const classNames = 'mt-0.5 flex-shrink-0 rounded-full text-sm font-medium text-primary-600 dark:text-accent-blue hover:underline focus:outline-none';
 
     if (action && actionLabel) {
       return (
@@ -109,24 +110,24 @@ const Toast = (props: IToast) => {
       }
     >
       <div className='p-4'>
-        <div className='flex items-start'>
-          <div className='flex w-0 flex-1 justify-between items-start'>
-            <div className='w-0 flex-1 flex items-start'>
+        <HStack space={4} alignItems='start'>
+          <HStack space={3} justifyContent='between' alignItems='start' className='w-0 flex-1'>
+            <HStack space={3} alignItems='start' className='w-0 flex-1'>
               <div className='flex-shrink-0'>
                 {renderIcon()}
               </div>
 
-              <p className='ml-3 pt-0.5 text-sm text-gray-900 dark:text-gray-100' data-testid='toast-message'>
+              <p className='pt-0.5 text-sm text-gray-900 dark:text-gray-100' data-testid='toast-message'>
                 {renderText(message)}
               </p>
-            </div>
+            </HStack>
 
             {/* Action */}
             {renderAction()}
-          </div>
+          </HStack>
 
           {/* Dismiss Button */}
-          <div className='ml-4 flex flex-shrink-0 pt-0.5'>
+          <div className='flex flex-shrink-0 pt-0.5'>
             <button
               type='button'
               className='inline-flex rounded-md text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
@@ -137,7 +138,7 @@ const Toast = (props: IToast) => {
               <Icon src={require('@tabler/icons/x.svg')} className='w-5 h-5' />
             </button>
           </div>
-        </div>
+        </HStack>
       </div>
     </div>
   );
