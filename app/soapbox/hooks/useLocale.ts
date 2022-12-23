@@ -2,15 +2,38 @@ import MESSAGES from 'soapbox/locales/messages';
 
 import { useSettings } from './useSettings';
 
+import type { CSSProperties } from 'react';
+
+/** Locales which should be presented in right-to-left. */
+const RTL_LOCALES = ['ar', 'ckb', 'fa', 'he'];
+
 /** Ensure the given locale exists in our codebase */
 const validLocale = (locale: string): boolean => Object.keys(MESSAGES).includes(locale);
 
-/** Get valid locale from settings. */
-const useLocale = (fallback = 'en') => {
-  const settings = useSettings();
-  const locale = settings.get('locale');
+interface UseLocaleResult {
+  locale: string
+  direction: CSSProperties['direction']
+}
 
-  return validLocale(locale) ? locale : fallback;
+/** Get valid locale from settings. */
+const useLocale = (fallback = 'en'): UseLocaleResult => {
+  const settings = useSettings();
+  const userLocale = settings.get('locale') as unknown;
+
+  const locale =
+    (typeof userLocale === 'string' && validLocale(userLocale))
+      ? userLocale
+      : fallback;
+
+  const direction: CSSProperties['direction'] =
+    RTL_LOCALES.includes(locale)
+      ? 'rtl'
+      : undefined;
+
+  return {
+    locale,
+    direction,
+  };
 };
 
 export { useLocale };
