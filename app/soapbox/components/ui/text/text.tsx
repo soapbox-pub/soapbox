@@ -1,6 +1,8 @@
 import classNames from 'clsx';
 import React from 'react';
 
+import { useLocale } from 'soapbox/hooks';
+
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
   danger: 'text-danger-600',
@@ -103,6 +105,8 @@ const Text = React.forwardRef<any, IText>(
       ...filteredProps
     } = props;
 
+    const locale = useLocale();
+
     const Comp: React.ElementType = tag;
 
     const alignmentClass = typeof align === 'string' ? alignments[align] : '';
@@ -122,7 +126,8 @@ const Text = React.forwardRef<any, IText>(
           [themes[theme]]: true,
           [weights[weight]]: true,
           [trackingSizes[tracking]]: true,
-          [families[family]]: true,
+          'font-arabic': family === 'sans' && locale.direction === 'rtl',
+          [families[family]]: family !== 'sans' || locale.direction !== 'rtl',
           [alignmentClass]: typeof align !== 'undefined',
           [transformProperties[transform]]: typeof transform !== 'undefined',
         }, className)}

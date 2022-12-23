@@ -1404,6 +1404,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.0.tgz#d6f925668ba6af46707f1040c43aff498ba204bb"
   integrity sha512-ja4XYw/9kNRFM5Ndk9vwzHWsdBMXczyBazFkTXJQ74QQBnT0BbSsHn0pF60AU0Iznig1Wt9x3rADfG8LANvMpw==
 
+"@fontsource/tajawal@^4.5.9":
+  version "4.5.9"
+  resolved "https://registry.yarnpkg.com/@fontsource/tajawal/-/tajawal-4.5.9.tgz#1a795f24a430cb4b021dd44488f0054ed920c9af"
+  integrity sha512-hAsD6SkhnMP9g8WE/uS2q4GwWWq3HB6OEJ+6ImbsTZsszs4Insu/39G8hlE+BtvwI8bg5f8uuhpM0Re4FDbrPw==
+
 "@formatjs/ecma402-abstract@1.11.4":
   version "1.11.4"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.11.4.tgz#b962dfc4ae84361f9f08fbce411b4e4340930eda"

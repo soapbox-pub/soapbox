@@ -42,6 +42,9 @@ module.exports = {
           'ui-monospace',
           'mono',
         ],
+        'arabic': [
+          'Tajawal',
+        ],
       },
       spacing: {
         '4.5': '1.125rem',

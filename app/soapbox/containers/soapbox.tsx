@@ -241,6 +241,17 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (locale === 'ar') {
+      import('@fontsource/tajawal/200.css');
+      import('@fontsource/tajawal/300.css');
+      import('@fontsource/tajawal/400.css');
+      import('@fontsource/tajawal/500.css');
+      import('@fontsource/tajawal/700.css');
+      import('@fontsource/tajawal/900.css');
+    }
+  }, [locale]);
+
   // intl is part of loading.
   // It's important nothing in here depends on intl.
   if (showLoading) {
