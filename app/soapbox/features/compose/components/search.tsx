@@ -127,6 +127,7 @@ const Search = (props: ISearch) => {
     onFocus: handleFocus,
     autoFocus: autoFocus,
     theme: 'search',
+    className: 'pr-10 rtl:pl-10 rtl:pr-3',
   };
 
   if (autosuggest) {
