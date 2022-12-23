@@ -103,43 +103,41 @@ const Toast = (props: IToast) => {
       data-testid='toast'
       className={
         classNames({
-          'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white dark:bg-gray-900 shadow-lg dark:ring-2 dark:ring-gray-800': true,
+          'p-4 pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white dark:bg-gray-900 shadow-lg dark:ring-2 dark:ring-gray-800': true,
           'animate-enter': t.visible,
           'animate-leave': !t.visible,
         })
       }
     >
-      <div className='p-4'>
-        <HStack space={4} alignItems='start'>
-          <HStack space={3} justifyContent='between' alignItems='start' className='w-0 flex-1'>
-            <HStack space={3} alignItems='start' className='w-0 flex-1'>
-              <div className='flex-shrink-0'>
-                {renderIcon()}
-              </div>
+      <HStack space={4} alignItems='start'>
+        <HStack space={3} justifyContent='between' alignItems='start' className='w-0 flex-1'>
+          <HStack space={3} alignItems='start' className='w-0 flex-1'>
+            <div className='flex-shrink-0'>
+              {renderIcon()}
+            </div>
 
-              <p className='pt-0.5 text-sm text-gray-900 dark:text-gray-100' data-testid='toast-message'>
-                {renderText(message)}
-              </p>
-            </HStack>
-
-            {/* Action */}
-            {renderAction()}
+            <p className='pt-0.5 text-sm text-gray-900 dark:text-gray-100' data-testid='toast-message'>
+              {renderText(message)}
+            </p>
           </HStack>
 
-          {/* Dismiss Button */}
-          <div className='flex flex-shrink-0 pt-0.5'>
-            <button
-              type='button'
-              className='inline-flex rounded-md text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
-              onClick={dismissToast}
-              data-testid='toast-dismiss'
-            >
-              <span className='sr-only'>Close</span>
-              <Icon src={require('@tabler/icons/x.svg')} className='w-5 h-5' />
-            </button>
-          </div>
+          {/* Action */}
+          {renderAction()}
         </HStack>
-      </div>
+
+        {/* Dismiss Button */}
+        <div className='flex flex-shrink-0 pt-0.5'>
+          <button
+            type='button'
+            className='inline-flex rounded-md text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
+            onClick={dismissToast}
+            data-testid='toast-dismiss'
+          >
+            <span className='sr-only'>Close</span>
+            <Icon src={require('@tabler/icons/x.svg')} className='w-5 h-5' />
+          </button>
+        </div>
+      </HStack>
     </div>
   );
 };
