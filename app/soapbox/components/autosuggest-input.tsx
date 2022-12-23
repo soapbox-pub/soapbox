@@ -269,7 +269,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
 
     // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
-    if (isRtl(value) || (placeholder && isRtl(placeholder))) {
+    if (isRtl(value) || (placeholder && isRtl(placeholder) && !value)) {
       style.direction = 'rtl';
     }
 

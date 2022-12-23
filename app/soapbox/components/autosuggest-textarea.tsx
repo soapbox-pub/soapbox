@@ -230,7 +230,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     const style = { direction: 'ltr', minRows: 10 };
 
     // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
-    if (isRtl(value) || (placeholder && isRtl(placeholder))) {
+    if (isRtl(value) || (placeholder && isRtl(placeholder) && !value)) {
       style.direction = 'rtl';
     }
 
