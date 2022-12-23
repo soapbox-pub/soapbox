@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Theme: auto-detect system theme by default.
 - Profile: remove a specific user from your followers (on Rebased, Mastodon).
 - Suggestions: ability to view all suggested profiles.
+- Feeds: display suggested accounts in Home feed (optional by admin).
 - Compatibility: added compatibility with Truth Social, Fedibird, Pixelfed, Akkoma, and Glitch.
 - Developers: added Test feed, Service Worker debugger, and Network Error preview.
 - Reports: display server rules in reports. Let users select rule violations when submitting a report.
@@ -27,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: custom badges. Admins can add non-federating badges to any user's profile (on Rebased, Pleroma).
 - Admin: consolidated user dropdown actions (verify/suggest/etc) into a unified "Moderate User" modal.
 - i18n: updated translations for Italian, Polish, Arabic, Hebrew, and German.
-- Toast: added the ability to dismiss toast notifications
+- Toast: added the ability to dismiss toast notifications.
 
 ### Changed
 - UI: the whole UI has been overhauled both inside and out. 97% of the codebase has been rewritten to TypeScript, and a new component library has been introduced with Tailwind CSS.
@@ -44,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance: improve scrolling/navigation between feeds by using a virtual window library.
 - Admin: reorganize UI into 3-column layout.
 - Admin: include external link to frontend repo for the running commit.
-- Toast: redesigned toast notifications
+- Toast: redesigned toast notifications.
 
 ### Removed
 - Theme: Halloween theme.
