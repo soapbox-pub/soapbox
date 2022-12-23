@@ -8,6 +8,7 @@ import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
 import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
+import { isRtl } from 'soapbox/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
@@ -263,7 +264,14 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   render() {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
+    const style: React.CSSProperties = { direction: 'ltr' };
+
     const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
+
+    // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
+    if (isRtl(value) || (placeholder && isRtl(placeholder))) {
+      style.direction = 'rtl';
+    }
 
     return [
       <div key='input' className='relative w-full'>
@@ -283,6 +291,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
           onKeyUp={onKeyUp}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          style={style}
           aria-autocomplete='list'
           id={id}
           maxLength={maxLength}
