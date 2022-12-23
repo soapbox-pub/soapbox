@@ -28,7 +28,7 @@ const useLocale = (fallback = 'en'): UseLocaleResult => {
   const direction: CSSProperties['direction'] =
     RTL_LOCALES.includes(locale)
       ? 'rtl'
-      : undefined;
+      : 'ltr';
 
   return {
     locale,

@@ -216,7 +216,7 @@ const Account = ({
 
             <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1} style={style}>
-                <Text theme='muted' size='sm' truncate>@{username}</Text>
+                <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (
                   <InstanceFavicon account={account} />
