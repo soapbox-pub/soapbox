@@ -7,7 +7,6 @@ import Textarea from 'react-textarea-autosize';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../features/compose/components/autosuggest-account';
-import { isRtl } from '../rtl';
 
 import AutosuggestEmoji, { Emoji } from './autosuggest-emoji';
 
@@ -227,11 +226,6 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
   render() {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children, condensed, id } = this.props;
     const { suggestionsHidden } = this.state;
-    const style = { direction: 'ltr', minRows: 10 };
-
-    if (isRtl(value)) {
-      style.direction = 'rtl';
-    }
 
     return [
       <div key='textarea'>
@@ -256,7 +250,6 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
               onFocus={this.onFocus}
               onBlur={this.onBlur}
               onPaste={this.onPaste}
-              style={style as any}
               aria-autocomplete='list'
             />
           </label>

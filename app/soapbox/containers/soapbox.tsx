@@ -53,8 +53,6 @@ import ErrorBoundary from '../components/error-boundary';
 import UI from '../features/ui';
 import { store } from '../store';
 
-const RTL_LOCALES = ['ar', 'ckb', 'fa', 'he'];
-
 // Configure global functions for developers
 createGlobals(store);
 
@@ -211,7 +209,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const swUpdating = useAppSelector(state => state.meta.swUpdating);
-  const locale = useLocale();
+  const { locale } = useLocale();
 
   const [messages, setMessages] = useState<Record<string, string>>({});
   const [localeLoading, setLocaleLoading] = useState(true);
@@ -262,7 +260,7 @@ interface ISoapboxHead {
 
 /** Injects metadata into site head with Helmet. */
 const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
-  const locale = useLocale();
+  const { locale, direction } = useLocale();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
@@ -281,7 +279,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     <>
       <Helmet>
         <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-        <body className={bodyClass} dir={RTL_LOCALES.includes(locale) ? 'rtl' : undefined} />
+        <body className={bodyClass} dir={direction} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
