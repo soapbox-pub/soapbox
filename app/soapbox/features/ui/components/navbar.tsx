@@ -71,7 +71,7 @@ const Navbar = () => {
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden'>
+            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:right-0 rtl:left-auto'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
