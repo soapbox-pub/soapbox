@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -24,12 +25,15 @@ const FloatingActionButton: React.FC<IFloatingActionButton> = () => {
   return (
     <button
       onClick={handleOpenComposeModal}
-      className='z-40 lg:hidden transition-all fixed bottom-24 right-4 p-4 text-white bg-accent-300 hover:bg-accent-500 rounded-full'
+      className={clsx(
+        'p-4 inline-flex items-center border font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 appearance-none transition-all',
+        'bg-primary-500 hover:bg-primary-400 dark:hover:bg-primary-600 border-transparent focus:bg-primary-500 text-gray-100 focus:ring-primary-300',
+      )}
       aria-label={intl.formatMessage(messages.publish)}
     >
       <Icon
         src={require('@tabler/icons/pencil-plus.svg')}
-        className='w-6 h-6 stroke-[1.5px]'
+        className='w-6 h-6'
       />
     </button>
   );

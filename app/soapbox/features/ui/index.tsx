@@ -641,7 +641,9 @@ const UI: React.FC = ({ children }) => {
           </Layout>
 
           {(me && !shouldHideFAB()) && (
-            <FloatingActionButton />
+            <div className='z-40 lg:hidden transition-all fixed bottom-24 right-4'>
+              <FloatingActionButton />
+            </div>
           )}
 
           <BundleContainer fetchComponent={UploadArea}>
