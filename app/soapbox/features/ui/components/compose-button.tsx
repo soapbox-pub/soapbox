@@ -10,11 +10,15 @@ const ComposeButton = () => {
   const onOpenCompose = () => dispatch(openModal('COMPOSE'));
 
   return (
-    <div className='mt-4'>
-      <Button theme='accent' icon={require('@tabler/icons/pencil-plus.svg')} block size='lg' onClick={onOpenCompose}>
-        <span><FormattedMessage id='navigation.compose' defaultMessage='Compose' /></span>
-      </Button>
-    </div>
+    <Button
+      theme='accent'
+      icon={require('@tabler/icons/pencil-plus.svg')}
+      size='lg'
+      onClick={onOpenCompose}
+      block
+    >
+      <FormattedMessage id='navigation.compose' defaultMessage='Compose' />
+    </Button>
   );
 };
 

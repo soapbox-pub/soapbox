@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { Stack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
@@ -109,8 +110,8 @@ const SidebarNavigation = () => {
   };
 
   return (
-    <div>
-      <div className='flex flex-col space-y-2'>
+    <Stack space={4}>
+      <Stack space={2}>
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/home.svg')}
@@ -183,12 +184,12 @@ const SidebarNavigation = () => {
             />
           </DropdownMenu>
         )}
-      </div>
+      </Stack>
 
       {account && (
         <ComposeButton />
       )}
-    </div>
+    </Stack>
   );
 };
 
