@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: move instance favicon beside username instead of post timestamp.
 - Posts: changed the behavior of content warnings. CWs and sensitive media are unified into one design.
 - Posts: redesigned interaction counters to use text instead of icons.
+- Posts: letterbox images taller than 1:1.
 - Profile: overhauled user profiles to be consistent with the rest of the UI.
 - Composer: move emoji button alongside other composer buttons, add numerical counter.
 - Birthdays: move today's birthdays out of notifications into right sidebar.
