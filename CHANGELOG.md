@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chats: ability to disable chats for yourself.
 - Layout: added right-to-left support for Arabic, Hebrew, Persian, and Central Kurdish languages.
 - Composer: support custom emoji categories.
+- Composer: ability to quote posts by adding link to a post.
 - Search: ability to search posts from a specific account (on Pleroma, Rebased).
 - Theme: auto-detect system theme by default.
 - Profile: remove a specific user from your followers (on Rebased, Mastodon).
