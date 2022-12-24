@@ -357,7 +357,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/pleroma/events/:id/ics
      * @see GET /api/v1/pleroma/search/location
      */
-    events: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+    events: features.includes('events'),
 
     /**
      * Ability to address recipients of a status explicitly (with `to`).
