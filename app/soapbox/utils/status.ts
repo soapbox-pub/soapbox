@@ -79,7 +79,7 @@ export const getActualStatus: {
   }
 };
 
-export const getStatusIdsFromContent = (content: string): string[] => {
+export const getStatusIdsFromLinksInContent = (content: string): string[] => {
   const urls = content.match(RegExp(`${window.location.origin}/@([a-z\\d_-]+(?:@[^@\\s]+)?)/posts/[a-z0-9]+(?!\\S)`, 'gi'));
 
   if (!urls) return [];

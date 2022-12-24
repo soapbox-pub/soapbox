@@ -11,7 +11,7 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
-import { getStatusIdsFromContent } from 'soapbox/utils/status';
+import { getStatusIdsFromLinksInContent } from 'soapbox/utils/status';
 
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
@@ -276,7 +276,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     }
 
     if (!quoteId && quotePosts) {
-      const ids = getStatusIdsFromContent(status);
+      const ids = getStatusIdsFromLinksInContent(status);
 
       for (const id of ids) {
         if (state.statuses.get(id)) {
