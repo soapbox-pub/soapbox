@@ -17,7 +17,7 @@ import { importFetchedAccounts } from './importer';
 import { uploadMedia, fetchMedia, updateMedia } from './media';
 import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
-import { createStatus } from './statuses';
+import { createStatus, fetchStatus } from './statuses';
 
 import type { History } from 'history';
 import type { Emoji } from 'soapbox/components/autosuggest-emoji';
@@ -235,9 +235,11 @@ const validateSchedule = (state: RootState, composeId: string) => {
 };
 
 const submitCompose = (composeId: string, routerHistory?: History, force = false) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const state = getState();
+    const instance = state.instance;
+    const { quotePosts } = getFeatures(instance);
 
     const compose = state.compose.get(composeId)!;
 
@@ -245,6 +247,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     const media    = compose.media_attachments;
     const statusId = compose.id;
     let to         = compose.to;
+    let quoteId    = compose.quote;
 
     if (!validateSchedule(state, composeId)) {
       toast.error(messages.scheduleError);
@@ -271,6 +274,29 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       to = to.union(mentions.map(mention => mention.trim().slice(1)));
     }
 
+    if (!quoteId && quotePosts) {
+      const urls = status.match(RegExp(`${window.location.origin}/@([a-z\\d_-]+(?:@[^@\\s]+)?)/posts/[a-z0-9]+(?!\\S)`, 'gi'));
+
+      if (urls) {
+        for (const url of Array.from(new Set(urls))) {
+          const id = url.split('/').at(-1);
+          if (!id) continue;
+
+          if (state.statuses.get(id)) {
+            quoteId = id;
+            break;
+          }
+
+          const status: APIEntity = await dispatch(fetchStatus(id));
+
+          if (status) {
+            quoteId = status.id;
+            break;
+          }
+        }
+      }
+    }
+
     dispatch(submitComposeRequest(composeId));
     dispatch(closeModal());
 
@@ -279,7 +305,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     const params = {
       status,
       in_reply_to_id: compose.in_reply_to,
-      quote_id: compose.quote,
+      quote_id: quoteId,
       media_ids: media.map(item => item.id),
       sensitive: compose.sensitive,
       spoiler_text: compose.spoiler_text,
