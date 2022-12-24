@@ -11,6 +11,7 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
+import { getStatusIdsFromContent } from 'soapbox/utils/status';
 
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
@@ -275,24 +276,19 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     }
 
     if (!quoteId && quotePosts) {
-      const urls = status.match(RegExp(`${window.location.origin}/@([a-z\\d_-]+(?:@[^@\\s]+)?)/posts/[a-z0-9]+(?!\\S)`, 'gi'));
+      const ids = getStatusIdsFromContent(status);
 
-      if (urls) {
-        for (const url of Array.from(new Set(urls))) {
-          const id = url.split('/').at(-1);
-          if (!id) continue;
+      for (const id of ids) {
+        if (state.statuses.get(id)) {
+          quoteId = id;
+          break;
+        }
 
-          if (state.statuses.get(id)) {
-            quoteId = id;
-            break;
-          }
+        const status: APIEntity = await dispatch(fetchStatus(id));
 
-          const status: APIEntity = await dispatch(fetchStatus(id));
-
-          if (status) {
-            quoteId = status.id;
-            break;
-          }
+        if (status) {
+          quoteId = status.id;
+          break;
         }
       }
     }
