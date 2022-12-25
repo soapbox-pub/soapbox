@@ -269,16 +269,16 @@ export const makeGetReport = () => {
 };
 
 const getAuthUserIds = createSelector([
-  (state: RootState) => state.auth.get('users', ImmutableMap()),
+  (state: RootState) => state.auth.users,
 ], authUsers => {
-  return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser: ImmutableMap<string, any>) => {
+  return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser) => {
     try {
       const id = authUser.get('id');
       return validId(id) ? ids.add(id) : ids;
     } catch {
       return ids;
     }
-  }, ImmutableOrderedSet());
+  }, ImmutableOrderedSet<string>());
 });
 
 export const makeGetOtherAccounts = () => {

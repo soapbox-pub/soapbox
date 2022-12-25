@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
 import {
   AUTH_APP_CREATED,
@@ -10,12 +10,13 @@ import {
 } from 'soapbox/actions/auth';
 import { ME_FETCH_SKIP } from 'soapbox/actions/me';
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { ReducerRecord } from 'soapbox/reducers/auth';
 
 import reducer from '../auth';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap({
       app: ImmutableMap(),
       users: ImmutableMap(),
       tokens: ImmutableMap(),
@@ -47,9 +48,9 @@ describe('auth reducer', () => {
     });
 
     it('should merge the token with existing state', () => {
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         tokens: { 'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' } },
-      });
+      })));
 
       const expected = fromJS({
         'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' },
@@ -73,12 +74,12 @@ describe('auth reducer', () => {
         account: fromJS({ url: 'https://gleasonator.com/users/alex' }),
       };
 
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         users: {
           'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
           'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-      });
+      })));
 
       const expected = fromJS({
         'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
@@ -89,13 +90,13 @@ describe('auth reducer', () => {
     });
 
     it('sets `me` to the next available user', () => {
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         me: 'https://gleasonator.com/users/alex',
         users: {
           'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
           'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-      });
+      })));
 
       const action = {
         type: AUTH_LOGGED_OUT,
@@ -130,9 +131,9 @@ describe('auth reducer', () => {
         account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         tokens: { 'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' } },
-      });
+      })));
 
       const expected = fromJS({
         'ABCDEFG': {
@@ -165,7 +166,7 @@ describe('auth reducer', () => {
         account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
-      const state = fromJS({ me: 'https://gleasonator.com/users/benis' });
+      const state = ReducerRecord(ImmutableMap(fromJS({ me: 'https://gleasonator.com/users/benis' })));
 
       const result = reducer(state, action);
       expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
@@ -178,13 +179,13 @@ describe('auth reducer', () => {
         account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         users: {
           'https://gleasonator.com/users/mk':     { id: '4567', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/mk' },
           'https://gleasonator.com/users/curtis': { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/curtis' },
           'https://gleasonator.com/users/benis':  { id: '5432', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-      });
+      })));
 
       const expected = fromJS({
         'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
@@ -202,7 +203,7 @@ describe('auth reducer', () => {
         account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
       };
 
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         me: '1234',
         users: {
           '1234': { id: '1234', access_token: 'ABCDEFG' },
@@ -211,9 +212,9 @@ describe('auth reducer', () => {
         tokens: {
           'ABCDEFG': { access_token: 'ABCDEFG', account: '1234' },
         },
-      });
+      })));
 
-      const expected = fromJS({
+      const expected = ImmutableRecord(fromJS({
         me: 'https://gleasonator.com/users/alex',
         users: {
           'https://gleasonator.com/users/alex': { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
@@ -222,7 +223,7 @@ describe('auth reducer', () => {
         tokens: {
           'ABCDEFG': { access_token: 'ABCDEFG', account: '1234', me: 'https://gleasonator.com/users/alex' },
         },
-      });
+      }));
 
       const result = reducer(state, action);
       expect(result).toEqual(expected);
@@ -231,12 +232,12 @@ describe('auth reducer', () => {
 
   describe('VERIFY_CREDENTIALS_FAIL', () => {
     it('should delete the failed token if it 403\'d', () => {
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         tokens: {
           'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' },
           'HIJKLMN': { token_type: 'Bearer', access_token: 'HIJKLMN' },
         },
-      });
+      })));
 
       const expected = fromJS({
         'HIJKLMN': { token_type: 'Bearer', access_token: 'HIJKLMN' },
@@ -253,12 +254,12 @@ describe('auth reducer', () => {
     });
 
     it('should delete any users associated with the failed token', () => {
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         users: {
           'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
           'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-      });
+      })));
 
       const expected = fromJS({
         'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
@@ -275,13 +276,13 @@ describe('auth reducer', () => {
     });
 
     it('should reassign `me` to the next in line', () => {
-      const state = fromJS({
+      const state = ReducerRecord(ImmutableMap(fromJS({
         me: 'https://gleasonator.com/users/alex',
         users: {
           'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
           'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-      });
+      })));
 
       const action = {
         type: VERIFY_CREDENTIALS_FAIL,
@@ -308,7 +309,7 @@ describe('auth reducer', () => {
 
   describe('ME_FETCH_SKIP', () => {
     it('sets `me` to null', () => {
-      const state = fromJS({ me: 'https://gleasonator.com/users/alex' });
+      const state = ReducerRecord(ImmutableMap(fromJS({ me: 'https://gleasonator.com/users/alex' })));
       const action = { type: ME_FETCH_SKIP };
       const result = reducer(state, action);
       expect(result.get('me')).toEqual(null);

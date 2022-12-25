@@ -10,6 +10,7 @@ import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_log from './admin-log';
+import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
@@ -118,6 +119,7 @@ const reducers = {
   history,
   announcements,
   compose_event,
+  admin_user_index,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

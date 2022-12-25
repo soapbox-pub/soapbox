@@ -10,7 +10,7 @@ interface IIconButton extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>
   pressed?: boolean
   size?: number
   src: string
-  text: React.ReactNode
+  text?: React.ReactNode
 }
 
 const IconButton: React.FC<IIconButton> = ({

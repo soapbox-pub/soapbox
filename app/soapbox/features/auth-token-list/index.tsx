@@ -75,7 +75,7 @@ const AuthTokenList: React.FC = () => {
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());
   const currentTokenId = useAppSelector(state => {
-    const currentToken = state.auth.get('tokens').valueSeq().find((token: ImmutableMap<string, any>) => token.get('me') === state.auth.get('me'));
+    const currentToken = state.auth.tokens.valueSeq().find((token) => token.me === state.auth.me);
 
     return currentToken?.get('id');
   });

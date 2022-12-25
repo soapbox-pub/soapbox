@@ -29,7 +29,6 @@ import api, { baseClient } from '../api';
 import { importFetchedAccount } from './importer';
 
 import type { AxiosError } from 'axios';
-import type { Map as ImmutableMap } from 'immutable';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
@@ -94,11 +93,11 @@ const createAuthApp = () =>
 
 const createAppToken = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const app = getState().auth.get('app');
+    const app = getState().auth.app;
 
     const params = {
-      client_id:     app.get('client_id'),
-      client_secret: app.get('client_secret'),
+      client_id:     app.client_id,
+      client_secret: app.client_secret,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
       scope:         getScopes(getState()),
@@ -111,11 +110,11 @@ const createAppToken = () =>
 
 const createUserToken = (username: string, password: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const app = getState().auth.get('app');
+    const app = getState().auth.app;
 
     const params = {
-      client_id:     app.get('client_id'),
-      client_secret: app.get('client_secret'),
+      client_id:     app.client_id,
+      client_secret: app.client_secret,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'password',
       username:      username,
@@ -127,32 +126,12 @@ const createUserToken = (username: string, password: string) =>
       .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
   };
 
-export const refreshUserToken = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const refreshToken = getState().auth.getIn(['user', 'refresh_token']);
-    const app = getState().auth.get('app');
-
-    if (!refreshToken) return dispatch(noOp);
-
-    const params = {
-      client_id:     app.get('client_id'),
-      client_secret: app.get('client_secret'),
-      refresh_token: refreshToken,
-      redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
-      grant_type:    'refresh_token',
-      scope:         getScopes(getState()),
-    };
-
-    return dispatch(obtainOAuthToken(params))
-      .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
-  };
-
 export const otpVerify = (code: string, mfa_token: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const app = getState().auth.get('app');
+    const app = getState().auth.app;
     return api(getState, 'app').post('/oauth/mfa/challenge', {
-      client_id: app.get('client_id'),
-      client_secret: app.get('client_secret'),
+      client_id: app.client_id,
+      client_secret: app.client_secret,
       mfa_token: mfa_token,
       code: code,
       challenge_type: 'totp',
@@ -233,9 +212,9 @@ export const logOut = () =>
     if (!account) return dispatch(noOp);
 
     const params = {
-      client_id: state.auth.getIn(['app', 'client_id']),
-      client_secret: state.auth.getIn(['app', 'client_secret']),
-      token: state.auth.getIn(['users', account.url, 'access_token']),
+      client_id: state.auth.app.client_id,
+      client_secret: state.auth.app.client_secret,
+      token: state.auth.users.get(account.url)?.access_token!,
     };
 
     return dispatch(revokeOAuthToken(params))
@@ -263,10 +242,10 @@ export const switchAccount = (accountId: string, background = false) =>
 export const fetchOwnAccounts = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    return state.auth.get('users').forEach((user: ImmutableMap<string, string>) => {
-      const account = state.accounts.get(user.get('id'));
+    return state.auth.users.forEach((user) => {
+      const account = state.accounts.get(user.id);
       if (!account) {
-        dispatch(verifyCredentials(user.get('access_token')!, user.get('url')));
+        dispatch(verifyCredentials(user.access_token!, user.url));
       }
     });
   };

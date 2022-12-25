@@ -3,6 +3,7 @@ import { Map as ImmutableMap } from 'immutable';
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 
+import { AuthUserRecord, ReducerRecord } from '../../reducers/auth';
 import {
   fetchMe, patchMe,
 } from '../me';
@@ -38,10 +39,10 @@ describe('fetchMe()', () => {
 
     beforeEach(() => {
       const state = rootState
-        .set('auth', ImmutableMap({
+        .set('auth', ReducerRecord({
           me: accountUrl,
           users: ImmutableMap({
-            [accountUrl]: ImmutableMap({
+            [accountUrl]: AuthUserRecord({
               'access_token': token,
             }),
           }),
