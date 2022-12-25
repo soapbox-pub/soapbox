@@ -1,11 +1,11 @@
 import classNames from 'clsx';
 import React from 'react';
 
+import Account from 'soapbox/components/account';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import { HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import PollPreview from 'soapbox/features/ui/components/poll-preview';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -31,9 +31,9 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
       <div className={classNames('status', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })} data-id={status.id}>
         <div className='mb-4'>
           <HStack justifyContent='between' alignItems='start'>
-            <AccountContainer
+            <Account
               key={account.id}
-              id={account.id}
+              account={account}
               timestamp={status.created_at}
               futureTimestamp
             />

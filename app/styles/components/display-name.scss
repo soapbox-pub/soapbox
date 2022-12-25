@@ -1,25 +1,3 @@
-.account__display-name {
-  text-decoration: none;
-}
-
-.account__display-name {
-  strong {
-    @apply text-gray-800 dark:text-gray-200;
-  }
-}
-
-a.account__display-name {
-  &:hover strong {
-    text-decoration: underline;
-  }
-}
-
-.account__display-name strong {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .display-name {
   display: block;
   max-width: 100%;
@@ -31,11 +9,6 @@ a.account__display-name {
   bdi {
     min-width: 0;
   }
-}
-
-.display-name__html {
-  font-weight: 600;
-  padding-right: 4px;
 }
 
 .display-name__account {

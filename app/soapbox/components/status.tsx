@@ -45,7 +45,6 @@ export interface IStatus {
   unread?: boolean,
   onMoveUp?: (statusId: string, featured?: boolean) => void,
   onMoveDown?: (statusId: string, featured?: boolean) => void,
-  group?: ImmutableMap<string, any>,
   focusable?: boolean,
   featured?: boolean,
   hideActionBar?: boolean,
