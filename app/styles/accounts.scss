@@ -22,11 +22,6 @@
   }
 }
 
-.account-authorize__avatar {
-  float: left;
-  margin-right: 10px;
-}
-
 .account-gallery__container {
   display: flex;
   flex-wrap: wrap;
@@ -65,47 +60,12 @@
   }
 }
 
-.account--panel {
-  background: var(--brand-color--faint);
-  border-top: 1px solid var(--brand-color--med);
-  border-bottom: 1px solid var(--brand-color--med);
-  display: flex;
-  flex-direction: row;
-  padding: 10px 0;
-
-  &__button .svg-icon {
-    height: 20px;
-    width: 20px;
-  }
-}
-
 .account__moved-note {
   padding: 14px 10px;
   padding-bottom: 16px;
   background: var(--brand-color--faint);
   border-top: 1px solid var(--brand-color--med);
   border-bottom: 1px solid var(--brand-color--med);
-
-  &__message {
-    position: relative;
-    margin-left: 58px;
-    color: var(--primary-text-color);
-    padding: 8px 0;
-    padding-top: 0;
-    padding-bottom: 4px;
-    font-size: 14px;
-
-    > span {
-      display: block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  &__icon-wrapper {
-    left: -26px;
-    position: absolute;
-  }
 }
 
 .account__joined-at {

@@ -13,41 +13,6 @@
   }
   opacity: 1;
   animation: fade 150ms linear;
-
-  &.light {
-    .display-name {
-      strong {
-        color: var(--primary-text-color);
-      }
-
-      span {
-        color: var(--primary-text-color--faint);
-      }
-    }
-
-    .status__content {
-      color: var(--primary-text-color);
-
-      a {
-        color: var(--highlight-text-color);
-      }
-    }
-  }
-
-  &__meta {
-    font-size: 14px;
-    color: var(--primary-text-color--faint);
-
-    a {
-      color: var(--brand-color);
-      font-weight: bold;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
 }
 
 [column-type=filled] .status__wrapper,
@@ -93,12 +58,6 @@
 .focusable-within:focus-within {
   outline: 0; /* Required b/c HotKeys lib sets this outline */
   @apply ring-2 ring-primary-300;
-
-  .status.status-direct {
-    &.muted {
-      background: transparent;
-    }
-  }
 }
 
 .status-card {
@@ -109,32 +68,11 @@ a.status-card {
   @apply cursor-pointer hover:bg-gray-100 dark:hover:bg-primary-800/30 hover:no-underline;
 }
 
-.status-card-photo {
-  @apply cursor-zoom-in block no-underline w-full h-auto;
-}
-
 .status-card-video,
 .status-card-audio {
   iframe {
     width: 100% !important;
     height: 100% !important;
-  }
-}
-
-.status-card__host {
-  @apply text-primary-600 dark:text-accent-blue;
-  display: flex;
-  margin-top: 10px;
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  align-items: center;
-
-  .svg-icon {
-    height: 15px;
-    width: 15px;
-    margin-right: 3px;
   }
 }
 
@@ -165,10 +103,6 @@ a.status-card {
 
 .status-card.horizontal {
   display: block;
-
-  .status-card__title {
-    white-space: inherit;
-  }
 }
 
 .status-card.compact {
@@ -177,10 +111,6 @@ a.status-card {
 
 .status-card__image-image {
   @apply block w-full h-full object-cover bg-cover bg-center;
-}
-
-.status-card--link {
-  @apply flex flex-col md:flex-row;
 }
 
 .material-status {
@@ -194,26 +124,8 @@ a.status-card {
   .status {
     padding: 8px 10px;
 
-    &__avatar {
-      position: relative;
-      margin-right: 10px;
-      top: 0;
-      left: 0;
-    }
-
-    &__profile {
-      display: flex;
-      align-items: center;
-    }
-
     &__content {
       padding-top: 10px;
-    }
-
-    &__display-name {
-      .display-name__account {
-        display: block;
-      }
     }
   }
 }

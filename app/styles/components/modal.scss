@@ -256,12 +256,6 @@
   border: 1px solid var(--background-color);
   color: var(--primary-text-color--faint);
 
-  .status__display-name {
-    display: block;
-    max-width: 100%;
-    padding-right: 25px;
-  }
-
   .dropdown-menu__separator {
     @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
   }
