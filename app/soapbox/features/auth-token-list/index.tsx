@@ -7,8 +7,6 @@ import { Button, Card, CardBody, CardHeader, CardTitle, Column, Spinner, Stack, 
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Token } from 'soapbox/reducers/security';
 
-import type { Map as ImmutableMap } from 'immutable';
-
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
   revoke: { id: 'security.tokens.revoke', defaultMessage: 'Revoke' },

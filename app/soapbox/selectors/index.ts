@@ -274,7 +274,7 @@ const getAuthUserIds = createSelector([
   return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser) => {
     try {
       const id = authUser.get('id');
-      return validId(id) ? ids.add(id) : ids;
+      return validId(id) ? ids.add(id!) : ids;
     } catch {
       return ids;
     }

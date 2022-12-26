@@ -96,8 +96,8 @@ const createAppToken = () =>
     const app = getState().auth.app;
 
     const params = {
-      client_id:     app.client_id,
-      client_secret: app.client_secret,
+      client_id:     app.client_id!,
+      client_secret: app.client_secret!,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
       scope:         getScopes(getState()),
@@ -113,8 +113,8 @@ const createUserToken = (username: string, password: string) =>
     const app = getState().auth.app;
 
     const params = {
-      client_id:     app.client_id,
-      client_secret: app.client_secret,
+      client_id:     app.client_id!,
+      client_secret: app.client_secret!,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'password',
       username:      username,
@@ -190,7 +190,7 @@ export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
     return dispatch(createUserToken(normalizeUsername(username), password));
   }).catch((error: AxiosError) => {
-    if ((error.response?.data as any).error === 'mfa_required') {
+    if ((error.response?.data as any)?.error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
     } else {
@@ -212,8 +212,8 @@ export const logOut = () =>
     if (!account) return dispatch(noOp);
 
     const params = {
-      client_id: state.auth.app.client_id,
-      client_secret: state.auth.app.client_secret,
+      client_id: state.auth.app.client_id!,
+      client_secret: state.auth.app.client_secret!,
       token: state.auth.users.get(account.url)?.access_token!,
     };
 
@@ -245,7 +245,7 @@ export const fetchOwnAccounts = () =>
     return state.auth.users.forEach((user) => {
       const account = state.accounts.get(user.id);
       if (!account) {
-        dispatch(verifyCredentials(user.access_token!, user.url));
+        dispatch(verifyCredentials(user.access_token!, user.url!));
       }
     });
   };

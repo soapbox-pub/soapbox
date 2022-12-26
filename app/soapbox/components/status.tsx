@@ -23,7 +23,6 @@ import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import { Card, HStack, Stack, Text } from './ui';
 
-import type { Map as ImmutableMap } from 'immutable';
 import type {
   Account as AccountEntity,
   Status as StatusEntity,

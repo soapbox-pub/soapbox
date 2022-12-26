@@ -16,9 +16,9 @@ const AdminPage: React.FC = ({ children }) => {
       </Layout.Main>
 
       <Layout.Aside>
-        {/* <BundleContainer fetchComponent={LatestAccountsPanel}>
+        <BundleContainer fetchComponent={LatestAccountsPanel}>
           {Component => <Component limit={5} />}
-        </BundleContainer> */}
+        </BundleContainer>
 
         <LinkFooter />
       </Layout.Aside>

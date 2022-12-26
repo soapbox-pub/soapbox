@@ -22,32 +22,33 @@ import type { AnyAction } from 'redux';
 import type { APIEntity, Account as AccountEntity } from 'soapbox/types/entities';
 
 export const AuthAppRecord = ImmutableRecord({
-  access_token: '',
-  client_id: '',
-  client_secret: '',
-  id: '',
-  name: '',
-  redirect_uri: '',
-  vapid_key: '',
-  website: '',
-});
-
-export const AuthUserRecord = ImmutableRecord({
-  access_token: '',
-  id: '',
-  url: '',
+  access_token: null as string | null,
+  client_id: null as string | null,
+  client_secret: null as string | null,
+  id: null as string | null,
+  name: null as string | null,
+  redirect_uri: null as string | null,
+  token_type: null as string | null,
+  vapid_key: null as string | null,
+  website: null as string | null,
 });
 
 export const AuthTokenRecord = ImmutableRecord({
-  access_token: '',
-  account: '',
+  access_token: null as string | null,
+  account: null as string | null,
   created_at: null as number | null,
   expires_in: null as number | null,
   id: null as number | null,
-  me: '',
+  me: null as string | null,
   refresh_token: null as string | null,
-  scope: '',
-  token_type: '',
+  scope: null as string | null,
+  token_type: null as string | null,
+});
+
+export const AuthUserRecord = ImmutableRecord({
+  access_token: null as string | null,
+  id: null as string | null,
+  url: null as string | null,
 });
 
 export const ReducerRecord = ImmutableRecord({
@@ -126,7 +127,6 @@ const setSessionUser = (state: State) => state.update('me', me => {
 const migrateLegacy = (state: State) => {
   if (localState) return state;
   return state.withMutations(state => {
-    console.log(localStorage.getItem('soapbox:auth:app'));
     const app = AuthAppRecord(JSON.parse(localStorage.getItem('soapbox:auth:app')!));
     const user = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:user')!)) as ImmutableMap<string, any>;
     if (!user) return;
@@ -186,7 +186,6 @@ const persistState = (state: State) => {
 };
 
 const initialize = (state: State) => {
-  console.log(JSON.stringify(state.toJS()), JSON.stringify(localState?.toJS()));
   return state.withMutations(state => {
     maybeShiftMe(state);
     setSessionUser(state);
@@ -199,7 +198,7 @@ const initialize = (state: State) => {
 const initialState = initialize(ReducerRecord().merge(localState as any));
 
 const importToken = (state: State, token: APIEntity) => {
-  return state.setIn(['tokens', token.access_token], AuthTokenRecord(ImmutableMap(fromJS(token))));
+  return state.setIn(['tokens', token.access_token], AuthTokenRecord(token));
 };
 
 // Upgrade the `_legacy` placeholder ID with a real account
@@ -238,7 +237,7 @@ const userMismatch = (token: string, account: APIEntity) => {
 
 const importCredentials = (state: State, token: string, account: APIEntity) => {
   return state.withMutations(state => {
-    state.setIn(['users', account.url], ImmutableMap({
+    state.setIn(['users', account.url], AuthUserRecord({
       id: account.id,
       access_token: token,
       url: account.url,
@@ -261,7 +260,7 @@ const deleteToken = (state: State, token: string) => {
 };
 
 const deleteUser = (state: State, account: AccountEntity) => {
-  const accountUrl = account.url;
+  const accountUrl = account.get('url');
 
   return state.withMutations(state => {
     state.update('users', users => users.delete(accountUrl));
@@ -272,24 +271,24 @@ const deleteUser = (state: State, account: AccountEntity) => {
 
 const importMastodonPreload = (state: State, data: ImmutableMap<string, any>) => {
   return state.withMutations(state => {
-    const accountId   = data.getIn(['meta', 'me']);
+    const accountId   = data.getIn(['meta', 'me']) as string;
     const accountUrl  = data.getIn(['accounts', accountId, 'url']) as string;
-    const accessToken = data.getIn(['meta', 'access_token']);
+    const accessToken = data.getIn(['meta', 'access_token']) as string;
 
     if (validId(accessToken) && validId(accountId) && isURL(accountUrl)) {
-      state.setIn(['tokens', accessToken], AuthTokenRecord(ImmutableMap(fromJS({
+      state.setIn(['tokens', accessToken], AuthTokenRecord({
         access_token: accessToken,
         account: accountId,
         me: accountUrl,
         scope: 'read write follow push',
         token_type: 'Bearer',
-      }))));
+      }));
 
-      state.setIn(['users', accountUrl], AuthUserRecord(ImmutableMap(fromJS({
+      state.setIn(['users', accountUrl], AuthUserRecord({
         id: accountId,
         access_token: accessToken,
         url: accountUrl,
-      }))));
+      }));
     }
 
     maybeShiftMe(state);
@@ -322,10 +321,8 @@ const deleteForbiddenToken = (state: State, error: AxiosError, token: string) =>
 const reducer = (state: State, action: AnyAction) => {
   switch (action.type) {
     case AUTH_APP_CREATED:
-      console.log(action.app, AuthAppRecord(action.app));
       return state.set('app', AuthAppRecord(action.app));
     case AUTH_APP_AUTHORIZED:
-      console.log(state.app, state.app.merge(action.token));
       return state.update('app', app => app.merge(action.token));
     case AUTH_LOGGED_IN:
       return importToken(state, action.token);
