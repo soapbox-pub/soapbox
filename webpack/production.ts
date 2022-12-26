@@ -131,6 +131,11 @@ const configuration: Configuration = {
             '/socket',
             '/static',
             '/unsubscribe',
+            '/images',
+            '/favicon.ico',
+            '/apple-touch-icon.png',
+            '/browserconfig.xml',
+            '/robots.txt',
           ];
 
           if (backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed')) {
