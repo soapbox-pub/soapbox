@@ -75,8 +75,21 @@ const getSessionUser = () => {
   return validId(id) ? id : undefined;
 };
 
+const getLocalState = () => {
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
+
+  if (!state) return undefined;
+
+  return ReducerRecord({
+    app: AuthAppRecord(state.app),
+    tokens: ImmutableMap(Object.entries(state.tokens).map(([key, value]) => [key, AuthTokenRecord(value as any)])),
+    users: ImmutableMap(Object.entries(state.users).map(([key, value]) => [key, AuthUserRecord(value as any)])),
+    me: state.me,
+  });
+};
+
 const sessionUser = getSessionUser();
-export const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)!));
+export const localState = getLocalState(); fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)!));
 
 // Checks if the user has an ID and access token
 const validUser = (user?: AuthUser) => {
