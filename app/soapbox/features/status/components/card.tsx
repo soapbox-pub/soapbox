@@ -241,11 +241,7 @@ const Card: React.FC<ICard> = ({
       </div>
     );
   } else {
-    embed = (
-      <div className='status-card__image status-card__image--empty'>
-        <Icon src={require('@tabler/icons/file-text.svg')} />
-      </div>
-    );
+    embed = null;
   }
 
   return (
