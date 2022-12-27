@@ -9,8 +9,10 @@
   bdi {
     min-width: 0;
   }
-}
 
-.display-name__account {
-  font-size: 14px;
+  &__account {
+    position: relative;
+    font-weight: 600;
+    font-size: 14px;
+  }
 }
