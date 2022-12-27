@@ -133,6 +133,7 @@ const configuration: Configuration = {
             '/unsubscribe',
             '/images',
             '/favicon.ico',
+            '/favicon.png',
             '/apple-touch-icon.png',
             '/browserconfig.xml',
             '/robots.txt',
