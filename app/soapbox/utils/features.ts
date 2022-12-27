@@ -64,6 +64,12 @@ export const GLITCH = 'glitch';
  */
 export const AKKOMA = 'akkoma';
 
+/**
+ * Takahē, backend with support for serving multiple domains.
+ * @see {@link https://jointakahe.org/}
+ */
+export const TAKAHE = 'takahe';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -288,6 +294,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
+      v.software === TAKAHE,
     ]),
 
     /**
@@ -297,6 +304,14 @@ const getInstanceFeatures = (instance: Instance) => {
     directTimeline: any([
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    editProfile: any([
+      v.software === MASTODON,
+      v.software === MITRA,
+      v.software === PIXELFED,
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     editStatuses: any([
@@ -574,6 +589,7 @@ const getInstanceFeatures = (instance: Instance) => {
     publicTimeline: any([
       v.software === MASTODON,
       v.software === PLEROMA,
+      v.software === TAKAHE,
     ]),
 
     /**

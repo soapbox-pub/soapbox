@@ -102,6 +102,17 @@ const normalizeVersion = (instance: ImmutableMap<string, any>) => {
 };
 
 /** Rename Akkoma to Pleroma+akkoma */
+const fixTakahe = (instance: ImmutableMap<string, any>) => {
+  const version: string = instance.get('version', '');
+
+  if (version.startsWith('takahe/')) {
+    return instance.set('version', `0.0.0 (compatible; takahe ${version.slice(7)})`);
+  } else {
+    return instance;
+  }
+};
+
+/** Rename Akkoma to Pleroma+akkoma */
 const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   const version: string = instance.get('version', '');
 
@@ -131,6 +142,7 @@ export const normalizeInstance = (instance: Record<string, any>) => {
 
       // Normalize version
       normalizeVersion(instance);
+      fixTakahe(instance);
       fixAkkoma(instance);
 
       // Merge defaults

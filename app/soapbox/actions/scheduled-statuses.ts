@@ -1,3 +1,5 @@
+import { getFeatures } from 'soapbox/utils/features';
+
 import api, { getLinks } from '../api';
 
 import type { AxiosError } from 'axios';
@@ -18,9 +20,16 @@ const SCHEDULED_STATUS_CANCEL_FAIL    = 'SCHEDULED_STATUS_CANCEL_FAIL';
 
 const fetchScheduledStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (getState().status_lists.get('scheduled_statuses')?.isLoading) {
+    const state = getState();
+
+    if (state.status_lists.get('scheduled_statuses')?.isLoading) {
       return;
     }
+
+    const instance = state.instance;
+    const features = getFeatures(instance);
+
+    if (!features.scheduledStatuses) return;
 
     dispatch(fetchScheduledStatusesRequest());
 
