@@ -68,7 +68,7 @@ export const AKKOMA = 'akkoma';
  * Takahē, backend with support for serving multiple domains.
  * @see {@link https://jointakahe.org/}
  */
-export const TAKAHE = 'takahe';
+export const TAKAHE = 'Takahe';
 
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {

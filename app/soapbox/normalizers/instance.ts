@@ -102,22 +102,22 @@ const normalizeVersion = (instance: ImmutableMap<string, any>) => {
 };
 
 /** Rename Akkoma to Pleroma+akkoma */
-const fixTakahe = (instance: ImmutableMap<string, any>) => {
-  const version: string = instance.get('version', '');
-
-  if (version.startsWith('takahe/')) {
-    return instance.set('version', `0.0.0 (compatible; takahe ${version.slice(7)})`);
-  } else {
-    return instance;
-  }
-};
-
-/** Rename Akkoma to Pleroma+akkoma */
 const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   const version: string = instance.get('version', '');
 
   if (version.includes('Akkoma')) {
     return instance.set('version', '2.7.2 (compatible; Pleroma 2.4.50+akkoma)');
+  } else {
+    return instance;
+  }
+};
+
+/** Set Takahe version to a Pleroma-like string */
+const fixTakahe = (instance: ImmutableMap<string, any>) => {
+  const version: string = instance.get('version', '');
+
+  if (version.startsWith('takahe/')) {
+    return instance.set('version', `0.0.0 (compatible; Takahe ${version.slice(7)})`);
   } else {
     return instance;
   }
