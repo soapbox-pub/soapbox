@@ -2,9 +2,8 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Avatar from 'soapbox/components/avatar';
 import StillImage from 'soapbox/components/still-image';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -48,10 +47,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
               title={acct}
               className='-mt-12 block'
             >
-              <Avatar
-                account={account}
-                className='h-20 w-20 bg-gray-50 ring-2 ring-white'
-              />
+              <Avatar src={account.avatar} className='h-20 w-20 bg-gray-50 ring-2 ring-white overflow-hidden' />
             </Link>
 
             {action && (
