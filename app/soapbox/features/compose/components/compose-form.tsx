@@ -1,6 +1,6 @@
 import classNames from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -47,7 +47,8 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
-  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
+  eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -61,9 +62,10 @@ interface IComposeForm<ID extends string> {
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
+  event?: string,
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -240,6 +242,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
   let publishText: string | JSX.Element = '';
+  let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
@@ -265,9 +268,17 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     publishText = intl.formatMessage(messages.schedule);
   }
 
+  if (event) {
+    textareaPlaceholder = messages.eventPlaceholder;
+  } else if (hasPoll) {
+    textareaPlaceholder = messages.pollPlaceholder;
+  } else {
+    textareaPlaceholder = messages.placeholder;
+  }
+
   return (
     <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
-      {scheduledStatusCount > 0 && (
+      {scheduledStatusCount > 0 && !event && (
         <Warning
           message={(
             <FormattedMessage
@@ -288,13 +299,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !event && <ReplyMentions composeId={id} />}
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
-        placeholder={intl.formatMessage(hasPoll ? messages.pollPlaceholder : messages.placeholder)}
+        placeholder={intl.formatMessage(textareaPlaceholder)}
         disabled={disabled}
         value={text}
         onChange={handleChange}

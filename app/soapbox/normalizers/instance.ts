@@ -23,6 +23,9 @@ export const InstanceRecord = ImmutableRecord({
   }),
   configuration: ImmutableMap<string, any>({
     media_attachments: ImmutableMap<string, any>(),
+    chats: ImmutableMap<string, number>({
+      max_characters: 500,
+    }),
     polls: ImmutableMap<string, number>({
       max_options: 4,
       max_characters_per_option: 25,
@@ -120,6 +123,18 @@ const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   }
 };
 
+/** Set Takahe version to a Pleroma-like string */
+const fixTakahe = (instance: ImmutableMap<string, any>) => {
+  const version: string = instance.get('version', '');
+
+  if (version.startsWith('takahe/')) {
+    return instance.set('version', `0.0.0 (compatible; Takahe ${version.slice(7)})`);
+  } else {
+    return instance;
+  }
+};
+
+/** Convert /api/v1/instance format to v2 */
 const fixInstanceV1 = (instance: ImmutableMap<string, any>) => {
   instance.setIn(['configuration', 'urls', 'streaming'], instance.getIn(['urls', 'streaming_api'], ''));
 
@@ -168,6 +183,7 @@ export const normalizeInstance = (instance: Record<string, any>) => {
 
       // Normalize version
       normalizeVersion(instance);
+      fixTakahe(instance);
       fixAkkoma(instance);
 
       // Merge defaults

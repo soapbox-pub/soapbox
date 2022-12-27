@@ -7,6 +7,9 @@ describe('normalizeInstance()', () => {
     const expected = {
       configuration: {
         media_attachments: {},
+        chats: {
+          max_characters: 500,
+        },
         polls: {
           max_options: 4,
           max_characters_per_option: 25,

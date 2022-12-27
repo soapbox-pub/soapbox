@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { Avatar, Card, HStack, Icon, IconButton, Stack, Text } from 'soapbox/components/ui';
 import StatusCard from 'soapbox/features/status/components/card';
 import { useInstance } from 'soapbox/hooks';
+import { AdKeys } from 'soapbox/queries/ads';
 
 import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
@@ -31,7 +32,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
 
   /** Invalidate query cache for ads. */
   const bustCache = (): void => {
-    queryClient.invalidateQueries(['ads']);
+    queryClient.invalidateQueries(AdKeys.ads);
   };
 
   /** Toggle the info box on click. */
@@ -106,7 +107,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
             </Stack>
           </HStack>
 
-          <StatusCard card={ad.card} onOpenMedia={() => {}} horizontal />
+          <StatusCard card={ad.card} onOpenMedia={() => { }} horizontal />
         </Stack>
       </Card>
 

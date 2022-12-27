@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { showAlertForError } from 'soapbox/actions/alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
@@ -17,6 +16,7 @@ import {
 } from 'soapbox/components/ui';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const isJSONValid = (text: any): boolean => {
   try {
@@ -65,7 +65,7 @@ const SettingsStore: React.FC = () => {
       dispatch({ type: SETTINGS_UPDATE, settings });
       setLoading(false);
     }).catch(error => {
-      dispatch(showAlertForError(error));
+      toast.showAlertForError(error);
       setLoading(false);
     });
   };
@@ -103,6 +103,13 @@ const SettingsStore: React.FC = () => {
       </CardHeader>
 
       <List>
+        <ListItem
+          label={<FormattedMessage id='preferences.fields.demo_label' defaultMessage='Demo mode' />}
+          hint={<FormattedMessage id='preferences.fields.demo_hint' defaultMessage='Use the default Soapbox logo and color scheme. Useful for taking screenshots.' />}
+        >
+          <SettingToggle settings={settings} settingPath={['demo']} onChange={onToggleChange} />
+        </ListItem>
+
         <ListItem label={<FormattedMessage id='preferences.notifications.advanced' defaultMessage='Show all notification categories' />}>
           <SettingToggle settings={settings} settingPath={['notifications', 'quickFilter', 'advanced']} onChange={onToggleChange} />
         </ListItem>

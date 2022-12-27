@@ -7,6 +7,8 @@ import { Icon, Text } from './ui';
 interface ISidebarNavigationLink {
   /** Notification count, if any. */
   count?: number,
+  /** Optional max to cap count (ie: N+) */
+  countMax?: number
   /** URL to an SVG icon. */
   icon: string,
   /** Link label. */
@@ -19,7 +21,7 @@ interface ISidebarNavigationLink {
 
 /** Desktop sidebar navigation link. */
 const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, ref: React.ForwardedRef<HTMLAnchorElement>): JSX.Element => {
-  const { icon, text, to = '', count, onClick } = props;
+  const { icon, text, to = '', count, countMax, onClick } = props;
   const isActive = location.pathname === to;
 
   const handleClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -45,6 +47,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
         <Icon
           src={icon}
           count={count}
+          countMax={countMax}
           className={classNames('h-5 w-5', {
             'text-gray-600 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400': !isActive,
             'text-primary-500 dark:text-primary-400': isActive,

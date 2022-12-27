@@ -2055,6 +2055,18 @@
   dependencies:
     "@reach/utils" "0.18.0"
 
+"@reach/combobox@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@reach/combobox/-/combobox-0.18.0.tgz#8b3879b7c2dc426cddf0941b041d1ddc6d9adee6"
+  integrity sha512-x60PiPOIB4azeyh+FZ/svh0kXZRCneGCXVLL6htWs1VmaKq+TWR/48V03yQX5cSKjvRM8UFDVn47mpcg5ZSFtg==
+  dependencies:
+    "@reach/auto-id" "0.18.0"
+    "@reach/descendants" "0.18.0"
+    "@reach/polymorphic" "0.18.0"
+    "@reach/popover" "0.18.0"
+    "@reach/portal" "0.18.0"
+    "@reach/utils" "0.18.0"
+
 "@reach/descendants@0.18.0":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@reach/descendants/-/descendants-0.18.0.tgz#16fe52a5154da262994b0b8768baff4f670922d1"
@@ -2538,6 +2550,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/geojson@*":
+  version "7946.0.10"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
+  integrity sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==
+
 "@types/graceful-fs@^4.1.3":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.5.tgz#21ffba0d98da4350db64891f92a9e5db3cdb4e15"
@@ -2645,6 +2662,13 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
+
+"@types/leaflet@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.8.0.tgz#dc92d3e868fb6d5067b4b59fa08cd4441f84fabe"
+  integrity sha512-+sXFmiJTFdhaXXIGFlV5re9AdqtAODoXbGAvxx02e5SHXL3ir7ClP5J7pahO8VmzKY3dth4RUS1nf2BTT+DW1A==
+  dependencies:
+    "@types/geojson" "*"
 
 "@types/lodash@^4.14.180":
   version "4.14.180"
@@ -6333,6 +6357,11 @@ gonzales-pe@^4.3.0:
   dependencies:
     minimist "^1.2.5"
 
+goober@^2.1.10:
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.11.tgz#bbd71f90d2df725397340f808dbe7acc3118e610"
+  integrity sha512-5SS2lmxbhqH0u9ABEWq7WPU69a4i2pYcHeCxqaNq6Cw3mnrF0ghWNM4tEGid4dKy8XNIAUbuThuozDHHKJVh3A==
+
 graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.4, graceful-fs@^4.2.6:
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
@@ -7940,6 +7969,11 @@ language-tags@^1.0.5:
   integrity sha1-0yHbxNowuovzAk4ED6XBRmH5GTo=
   dependencies:
     language-subtag-registry "~0.3.2"
+
+leaflet@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.8.0.tgz#4615db4a22a304e8e692cae9270b983b38a2055e"
+  integrity sha512-gwhMjFCQiYs3x/Sf+d49f10ERXaEFCPr+nVTryhAW8DWbMGqJqt9G4XuIaHmFW08zYvhgdzqXGr8AlW8v8dQkA==
 
 leven@^3.1.0:
   version "3.1.0"
@@ -9830,6 +9864,13 @@ react-helmet@^6.1.0:
     react-fast-compare "^3.1.1"
     react-side-effect "^2.1.0"
 
+react-hot-toast@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-hot-toast/-/react-hot-toast-2.4.0.tgz#b91e7a4c1b6e3068fc599d3d83b4fb48668ae51d"
+  integrity sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==
+  dependencies:
+    goober "^2.1.10"
+
 react-hotkeys@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-1.1.4.tgz#a0712aa2e0c03a759fd7885808598497a4dace72"
@@ -9915,13 +9956,6 @@ react-motion@^0.5.2:
     performance-now "^0.2.0"
     prop-types "^15.5.8"
     raf "^3.1.0"
-
-react-notification@^6.8.5:
-  version "6.8.5"
-  resolved "https://registry.yarnpkg.com/react-notification/-/react-notification-6.8.5.tgz#7ea90a633bb2a280d899e30c93cf372265cce4f0"
-  integrity sha512-3pJPhSsWNYizpyeMeWuC+jVthqE9WKqQ6rHq2naiiP4fLGN4irwL2Xp2Q8Qn7agW/e4BIDxarab6fJOUp1cKUw==
-  dependencies:
-    prop-types "^15.6.2"
 
 react-onclickoutside@^6.12.0:
   version "6.12.1"

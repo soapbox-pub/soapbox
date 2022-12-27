@@ -111,7 +111,7 @@ const Card: React.FC<ICard> = ({
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
-    return Math.min(Math.max(9 / 16, ratio), 4);
+    return Math.min(Math.max(1, ratio), 4);
   };
 
   const interactive = card.type !== 'link';

@@ -2,8 +2,11 @@ import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
+
+import HStack from '../hstack/hstack';
+import Icon from '../icon/icon';
+import Text from '../text/text';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
 

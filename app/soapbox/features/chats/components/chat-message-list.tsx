@@ -1,44 +1,52 @@
+import { useMutation } from '@tanstack/react-query';
 import classNames from 'clsx';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-} from 'immutable';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import escape from 'lodash/escape';
-import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { createSelector } from 'reselect';
+import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
-import { initReportById } from 'soapbox/actions/reports';
-import { Text } from 'soapbox/components/ui';
+import { initReport } from 'soapbox/actions/reports';
+import { Avatar, Button, Divider, HStack, Icon, IconButton, Spinner, Stack, Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import emojify from 'soapbox/features/emoji/emoji';
+import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch, useRefEventHandler } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { normalizeAccount } from 'soapbox/normalizers';
+import { ChatKeys, IChat, IChatMessage, useChatActions, useChatMessages } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
+import { stripHTML } from 'soapbox/utils/html';
 import { onlyEmoji } from 'soapbox/utils/rich-content';
+
+import ChatMessageListIntro from './chat-message-list-intro';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
-const BIG_EMOJI_LIMIT = 1;
+const BIG_EMOJI_LIMIT = 3;
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
-  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete message' },
-  report: { id: 'chats.actions.report', defaultMessage: 'Report user' },
+  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete for both' },
+  copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
+  report: { id: 'chats.actions.report', defaultMessage: 'Report' },
+  deleteForMe: { id: 'chats.actions.deleteForMe', defaultMessage: 'Delete for me' },
+  blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
+  networkFailureTitle: { id: 'chat_message_list.network_failure.title', defaultMessage: 'Whoops!' },
+  networkFailureSubtitle: { id: 'chat_message_list.network_failure.subtitle', defaultMessage: 'We encountered a network failure.' },
+  networkFailureAction: { id: 'chat_message_list.network_failure.action', defaultMessage: 'Try again' },
 });
 
 type TimeFormat = 'today' | 'date';
 
-const timeChange = (prev: ChatMessageEntity, curr: ChatMessageEntity): TimeFormat | null => {
+const timeChange = (prev: IChatMessage, curr: IChatMessage): TimeFormat | null => {
   const prevDate = new Date(prev.created_at).getDate();
   const currDate = new Date(curr.created_at).getDate();
-  const nowDate  = new Date().getDate();
+  const nowDate = new Date().getDate();
 
   if (prevDate !== currDate) {
     return currDate === nowDate ? 'today' : 'date';
@@ -51,58 +59,102 @@ const makeEmojiMap = (record: any) => record.get('emojis', ImmutableList()).redu
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
 }, ImmutableMap());
 
-const getChatMessages = createSelector(
-  [(chatMessages: ImmutableMap<string, ChatMessageEntity>, chatMessageIds: ImmutableOrderedSet<string>) => (
-    chatMessageIds.reduce((acc, curr) => {
-      const chatMessage = chatMessages.get(curr);
-      return chatMessage ? acc.push(chatMessage) : acc;
-    }, ImmutableList<ChatMessageEntity>())
-  )],
-  chatMessages => chatMessages,
-);
+const START_INDEX = 10000;
+
+const List: Components['List'] = React.forwardRef((props, ref) => {
+  const { context, ...rest } = props;
+  return <div ref={ref} {...rest} className='mb-2' />;
+});
 
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
-  chatId: string,
-  /** Message IDs to render. */
-  chatMessageIds: ImmutableOrderedSet<string>,
-  /** Whether to make the chatbox fill the height of the screen. */
-  autosize?: boolean,
+  chat: IChat,
 }
 
 /** Scrollable list of chat messages. */
-const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, autosize }) => {
+const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const account = useOwnAccount();
+  const features = useFeatures();
 
-  const me = useAppSelector(state => state.me);
-  const chatMessages = useAppSelector(state => getChatMessages(state.chat_messages, chatMessageIds));
+  const lastReadMessageDateString = chat.latest_read_message_by_account?.find((latest) => latest.id === chat.account.id)?.date;
+  const myLastReadMessageDateString = chat.latest_read_message_by_account?.find((latest) => latest.id === account?.id)?.date;
+  const lastReadMessageTimestamp = lastReadMessageDateString ? new Date(lastReadMessageDateString) : null;
+  const myLastReadMessageTimestamp = myLastReadMessageDateString ? new Date(myLastReadMessageDateString) : null;
 
-  const [initialLoad, setInitialLoad] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const node = useRef<VirtuosoHandle>(null);
+  const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX - 20);
 
-  const node = useRef<HTMLDivElement>(null);
-  const messagesEnd = useRef<HTMLDivElement>(null);
-  const lastComputedScroll = useRef<number | undefined>(undefined);
-  const scrollBottom = useRef<number | undefined>(undefined);
+  const { deleteChatMessage, markChatAsRead } = useChatActions(chat.id);
+  const {
+    data: chatMessages,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useChatMessages(chat);
 
-  const initialCount = useMemo(() => chatMessages.count(), []);
+  const formattedChatMessages = chatMessages || [];
 
-  const scrollToBottom = () => {
-    messagesEnd.current?.scrollIntoView(false);
-  };
+  const me = useAppSelector((state) => state.me);
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
+
+  const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
+    onSettled: () => {
+      queryClient.invalidateQueries(ChatKeys.chatMessages(chat.id));
+    },
+  });
+
+  const lastChatMessage = chatMessages ? chatMessages[chatMessages.length - 1] : null;
+
+  const cachedChatMessages = useMemo(() => {
+    if (!chatMessages) {
+      return [];
+    }
+
+    const nextFirstItemIndex = START_INDEX - chatMessages.length;
+    setFirstItemIndex(nextFirstItemIndex);
+    return chatMessages.reduce((acc: any, curr: any, idx: number) => {
+      const lastMessage = formattedChatMessages[idx - 1];
+
+      if (lastMessage) {
+        switch (timeChange(lastMessage, curr)) {
+          case 'today':
+            acc.push({
+              type: 'divider',
+              text: intl.formatMessage(messages.today),
+            });
+            break;
+          case 'date':
+            acc.push({
+              type: 'divider',
+              text: intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' }),
+            });
+            break;
+        }
+      }
+
+      acc.push(curr);
+      return acc;
+    }, []);
+
+  }, [chatMessages?.length, lastChatMessage]);
+
+  const initialTopMostItemIndex = process.env.NODE_ENV === 'test' ? 0 : cachedChatMessages.length - 1;
 
   const getFormattedTimestamp = (chatMessage: ChatMessageEntity) => {
-    return intl.formatDate(
-      new Date(chatMessage.created_at), {
-        hour12: false,
-        year: 'numeric',
-        month: 'short',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      },
-    );
+    return intl.formatDate(new Date(chatMessage.created_at), {
+      hour12: false,
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   };
 
   const setBubbleRef = (c: HTMLDivElement) => {
@@ -114,54 +166,14 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
       link.setAttribute('rel', 'ugc nofollow noopener');
       link.setAttribute('target', '_blank');
     });
-
-    if (onlyEmoji(c, BIG_EMOJI_LIMIT, false)) {
-      c.classList.add('chat-message__bubble--onlyEmoji');
-    } else {
-      c.classList.remove('chat-message__bubble--onlyEmoji');
-    }
   };
 
-  const isNearBottom = (): boolean => {
-    const elem = node.current;
-    if (!elem) return false;
-
-    const scrollBottom = elem.scrollHeight - elem.offsetHeight - elem.scrollTop;
-    return scrollBottom < elem.offsetHeight * 1.5;
-  };
-
-  const handleResize = throttle(() => {
-    if (isNearBottom()) {
-      scrollToBottom();
+  const handleStartReached = useCallback(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
     }
-  }, 150);
-
-  const restoreScrollPosition = () => {
-    if (node.current && scrollBottom.current) {
-      lastComputedScroll.current = node.current.scrollHeight - scrollBottom.current;
-      node.current.scrollTop = lastComputedScroll.current;
-    }
-  };
-
-  const handleLoadMore = () => {
-    const maxId = chatMessages.getIn([0, 'id']) as string;
-    dispatch(fetchChatMessages(chatId, maxId as any));
-    setIsLoading(true);
-  };
-
-  const handleScroll = useRefEventHandler(throttle(() => {
-    if (node.current) {
-      const { scrollTop, offsetHeight } = node.current;
-      const computedScroll = lastComputedScroll.current === scrollTop;
-      const nearTop = scrollTop < offsetHeight * 2;
-
-      if (nearTop && !isLoading && !initialLoad && !computedScroll) {
-        handleLoadMore();
-      }
-    }
-  }, 150, {
-    trailing: true,
-  }));
+    return false;
+  }, [firstItemIndex, hasNextPage, isFetching]);
 
   const onOpenMedia = (media: any, index: number) => {
     dispatch(openModal('MEDIA', { media, index }));
@@ -171,18 +183,15 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
     const { attachment } = chatMessage;
     if (!attachment) return null;
     return (
-      <div className='chat-message__media'>
-        <Bundle fetchComponent={MediaGallery}>
-          {(Component: any) => (
-            <Component
-              media={ImmutableList([attachment])}
-              height={120}
-              onOpenMedia={onOpenMedia}
-              visible
-            />
-          )}
-        </Bundle>
-      </div>
+      <Bundle fetchComponent={MediaGallery}>
+        {(Component: any) => (
+          <Component
+            media={ImmutableList([attachment])}
+            onOpenMedia={onOpenMedia}
+            visible
+          />
+        )}
+      </Bundle>
     );
   };
 
@@ -199,137 +208,284 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, a
     return emojify(formatted, emojiMap.toJS());
   };
 
-  const renderDivider = (key: React.Key, text: string) => (
-    <div className='chat-messages__divider' key={key}>{text}</div>
-  );
+  const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='xs' />;
 
-  const handleDeleteMessage = (chatId: string, messageId: string) => {
-    return () => {
-      dispatch(deleteChatMessage(chatId, messageId));
-    };
-  };
-
-  const handleReportUser = (userId: string) => {
-    return () => {
-      dispatch(initReportById(userId));
-    };
+  const handleCopyText = (chatMessage: ChatMessageEntity) => {
+    if (navigator.clipboard) {
+      const text = stripHTML(chatMessage.content);
+      navigator.clipboard.writeText(text);
+    }
   };
 
   const renderMessage = (chatMessage: ChatMessageEntity) => {
-    const menu: Menu = [
-      {
+    const content = parseContent(chatMessage);
+    const hiddenEl = document.createElement('div');
+    hiddenEl.innerHTML = content;
+    const isOnlyEmoji = onlyEmoji(hiddenEl, BIG_EMOJI_LIMIT, false);
+
+    const isMyMessage = chatMessage.account_id === me;
+    // did this occur before this time?
+    const isRead = isMyMessage
+      && lastReadMessageTimestamp
+      && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
+
+    const menu: Menu = [];
+
+    if (navigator.clipboard) {
+      menu.push({
+        text: intl.formatMessage(messages.copy),
+        action: () => handleCopyText(chatMessage),
+        icon: require('@tabler/icons/copy.svg'),
+      });
+    }
+
+    if (isMyMessage) {
+      menu.push({
         text: intl.formatMessage(messages.delete),
-        action: handleDeleteMessage(chatMessage.chat_id, chatMessage.id),
+        action: () => handleDeleteMessage.mutate(chatMessage.id),
         icon: require('@tabler/icons/trash.svg'),
         destructive: true,
-      },
-    ];
-
-    if (chatMessage.account_id !== me) {
+      });
+    } else {
+      if (features.reportChats) {
+        menu.push({
+          text: intl.formatMessage(messages.report),
+          action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage } as any)),
+          icon: require('@tabler/icons/flag.svg'),
+        });
+      }
       menu.push({
-        text: intl.formatMessage(messages.report),
-        action: handleReportUser(chatMessage.account_id),
-        icon: require('@tabler/icons/flag.svg'),
+        text: intl.formatMessage(messages.deleteForMe),
+        action: () => handleDeleteMessage.mutate(chatMessage.id),
+        icon: require('@tabler/icons/trash.svg'),
+        destructive: true,
       });
     }
 
     return (
-      <div
-        className={classNames('chat-message', {
-          'chat-message--me': chatMessage.account_id === me,
-          'chat-message--pending': chatMessage.pending,
-        })}
-        key={chatMessage.id}
-      >
-        <div
-          title={getFormattedTimestamp(chatMessage)}
-          className='chat-message__bubble'
-          ref={setBubbleRef}
-          tabIndex={0}
+      <div key={chatMessage.id} className='group' data-testid='chat-message'>
+        <Stack
+          space={1.5}
+          className={classNames({
+            'ml-auto': isMyMessage,
+          })}
         >
-          {maybeRenderMedia(chatMessage)}
-          <Text size='sm' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
-          <div className='chat-message__menu'>
-            <DropdownMenuContainer
-              items={menu}
-              src={require('@tabler/icons/dots.svg')}
-              title={intl.formatMessage(messages.more)}
-              dropdownMenuStyle={{ zIndex: 1000 }}
-            />
-          </div>
-        </div>
+          <HStack
+            alignItems='center'
+            justifyContent={isMyMessage ? 'end' : 'start'}
+            className={classNames({
+              'opacity-50': chatMessage.pending,
+            })}
+          >
+            {menu.length > 0 && (
+              <div
+                className={classNames({
+                  'hidden focus:block group-hover:block text-gray-500': true,
+                  'mr-2 order-1': isMyMessage,
+                  'ml-2 order-2': !isMyMessage,
+                })}
+                data-testid='chat-message-menu'
+              >
+                <DropdownMenuContainer items={menu}>
+                  <IconButton
+                    src={require('@tabler/icons/dots.svg')}
+                    title={intl.formatMessage(messages.more)}
+                    className='text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
+                    iconClassName='w-4 h-4'
+                  />
+                </DropdownMenuContainer>
+              </div>
+            )}
+
+            <HStack
+              alignItems='bottom'
+              className={classNames({
+                'max-w-[85%]': true,
+                'order-2': isMyMessage,
+                'order-1': !isMyMessage,
+              })}
+              justifyContent={isMyMessage ? 'end' : 'start'}
+            >
+              <div
+                title={getFormattedTimestamp(chatMessage)}
+                className={
+                  classNames({
+                    'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
+                    '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
+                    '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
+                    'bg-primary-500 text-white': isMyMessage,
+                    'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
+                    '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
+                  })
+                }
+                ref={setBubbleRef}
+                tabIndex={0}
+              >
+                {maybeRenderMedia(chatMessage)}
+                <Text
+                  size='sm'
+                  theme='inherit'
+                  className='break-word-nested'
+                  dangerouslySetInnerHTML={{ __html: content }}
+                />
+              </div>
+            </HStack>
+          </HStack>
+
+          <HStack
+            alignItems='center'
+            space={2}
+            className={classNames({
+              'ml-auto': isMyMessage,
+            })}
+          >
+            <div
+              className={classNames({
+                'text-right': isMyMessage,
+                'order-2': !isMyMessage,
+              })}
+            >
+              <span className='flex items-center space-x-1.5'>
+                <Text
+                  theme='muted'
+                  size='xs'
+                >
+                  {intl.formatTime(chatMessage.created_at)}
+                </Text>
+
+                {(isMyMessage && features.chatsReadReceipts) ? (
+                  <>
+                    {isRead ? (
+                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-primary-500 text-white dark:bg-primary-400 dark:text-primary-900 border border-solid border-primary-500 dark:border-primary-400'>
+                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
+                      </span>
+                    ) : (
+                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-transparent text-primary-500 dark:text-primary-400 border border-solid border-primary-500 dark:border-primary-400'>
+                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
+                      </span>
+                    )}
+                  </>
+                ) : null}
+              </span>
+            </div>
+          </HStack>
+        </Stack>
       </div>
     );
   };
 
   useEffect(() => {
-    dispatch(fetchChatMessages(chatId));
-
-    node.current?.addEventListener('scroll', e => handleScroll.current(e));
-    window.addEventListener('resize', handleResize);
-    scrollToBottom();
-
-    return () => {
-      node.current?.removeEventListener('scroll', e => handleScroll.current(e));
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // Store the scroll position.
-  useLayoutEffect(() => {
-    if (node.current) {
-      const { scrollHeight, scrollTop } = node.current;
-      scrollBottom.current = scrollHeight - scrollTop;
-    }
-  });
-
-  // Stick scrollbar to bottom.
-  useEffect(() => {
-    if (isNearBottom()) {
-      scrollToBottom();
+    const lastMessage = formattedChatMessages[formattedChatMessages.length - 1];
+    if (!lastMessage) {
+      return;
     }
 
-    // First load.
-    if (chatMessages.count() !== initialCount) {
-      setInitialLoad(false);
-      setIsLoading(false);
-      scrollToBottom();
-    }
-  }, [chatMessages.count()]);
+    const lastMessageId = lastMessage.id;
+    const isMessagePending = lastMessage.pending;
+    const isAlreadyRead = myLastReadMessageTimestamp ? myLastReadMessageTimestamp >= new Date(lastMessage.created_at) : false;
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messagesEnd.current]);
-
-  // History added.
-  useEffect(() => {
-    // Restore scroll bar position when loading old messages.
-    if (!initialLoad) {
-      restoreScrollPosition();
+    /**
+     * Only "mark the message as read" if..
+     * 1) it is not pending and
+     * 2) it has not already been read
+    */
+    if (!isMessagePending && !isAlreadyRead) {
+      markChatAsRead(lastMessageId);
     }
-  }, [chatMessageIds.first()]);
+  }, [formattedChatMessages.length]);
+
+  if (isBlocked) {
+    return (
+      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+        <Stack alignItems='center' space={2}>
+          <Avatar src={chat.account.avatar} size={75} />
+          <Text align='center'>
+            <>
+              <Text tag='span'>{intl.formatMessage(messages.blockedBy)}</Text>
+              {' '}
+              <Text tag='span' theme='primary'>@{chat.account.acct}</Text>
+            </>
+          </Text>
+        </Stack>
+      </Stack>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+        <Stack space={4}>
+          <Stack space={1}>
+            <Text size='lg' weight='bold' align='center'>
+              {intl.formatMessage(messages.networkFailureTitle)}
+            </Text>
+            <Text theme='muted' align='center'>
+              {intl.formatMessage(messages.networkFailureSubtitle)}
+            </Text>
+          </Stack>
+
+          <div className='mx-auto'>
+            <Button theme='primary' onClick={() => refetch()}>
+              {intl.formatMessage(messages.networkFailureAction)}
+            </Button>
+          </div>
+        </Stack>
+      </Stack>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className='flex-grow flex flex-col justify-end pb-4'>
+        <div className='px-4'>
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage />
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage />
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className='chat-messages' style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} ref={node}>
-      {chatMessages.reduce((acc, curr, idx) => {
-        const lastMessage = chatMessages.get(idx - 1);
+    <div className='h-full flex flex-col flex-grow space-y-6'>
+      <div className='flex-grow flex flex-col justify-end'>
+        <Virtuoso
+          ref={node}
+          alignToBottom
+          firstItemIndex={Math.max(0, firstItemIndex)}
+          initialTopMostItemIndex={initialTopMostItemIndex}
+          data={cachedChatMessages}
+          startReached={handleStartReached}
+          followOutput='auto'
+          itemContent={(index, chatMessage) => {
+            if (chatMessage.type === 'divider') {
+              return renderDivider(index, chatMessage.text);
+            } else {
+              return (
+                <div className='px-4 py-2'>
+                  {renderMessage(chatMessage)}
+                </div>
+              );
+            }
+          }}
+          components={{
+            List,
+            Header: () => {
+              if (hasNextPage || isFetchingNextPage) {
+                return <Spinner withText={false} />;
+              }
 
-        if (lastMessage) {
-          const key = `${curr.id}_divider`;
-          switch (timeChange(lastMessage, curr)) {
-            case 'today':
-              acc.push(renderDivider(key, intl.formatMessage(messages.today)));
-              break;
-            case 'date':
-              acc.push(renderDivider(key, new Date(curr.created_at).toDateString()));
-              break;
-          }
-        }
+              if (!hasNextPage && !isLoading) {
+                return <ChatMessageListIntro />;
+              }
 
-        acc.push(renderMessage(curr));
-        return acc;
-      }, [] as React.ReactNode[])}
-      <div style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
+              return null;
+            },
+          }}
+        />
+      </div>
     </div>
   );
 };

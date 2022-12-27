@@ -43,7 +43,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   const size = status.media_attachments.size;
   const firstAttachment = status.media_attachments.first();
 
-  let media = null;
+  let media: JSX.Element | null = null;
 
   const setRef = (c: HTMLDivElement): void => {
     if (c) {
@@ -122,7 +122,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
       const attachment = firstAttachment;
 
       media = (
-        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer} >
+        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer}>
           {(Component: any) => (
             <Component
               src={attachment.url}

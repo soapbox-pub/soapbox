@@ -11,6 +11,9 @@ describe('instance reducer', () => {
 
     const expected = {
       configuration: {
+        chats: {
+          max_characters: 500,
+        },
         statuses: {
           max_characters: 500,
           max_media_attachments: 4,

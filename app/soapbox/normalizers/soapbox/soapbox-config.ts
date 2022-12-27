@@ -43,7 +43,6 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     800: '#991b1b',
     900: '#7f1d1d',
   }),
-  'sea-blue': '#2feecc',
   'greentext': '#789922',
 });
 
@@ -114,6 +113,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
   displayCta: true,
   /** Whether to inject suggested profiles into the Home feed. */
   feedInjection: true,
+  tileServer: '',
+  tileServerAttribution: '',
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

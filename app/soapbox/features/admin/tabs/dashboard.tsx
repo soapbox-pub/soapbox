@@ -1,56 +1,48 @@
 import React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
-import { Text } from 'soapbox/components/ui';
+import List, { ListItem } from 'soapbox/components/list';
+import { CardTitle, Icon, IconButton, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
+import { download } from 'soapbox/utils/download';
 import { parseVersion } from 'soapbox/utils/features';
-import { isNumber } from 'soapbox/utils/numbers';
 
+import { DashCounter, DashCounters } from '../components/dashcounter';
 import RegistrationModePicker from '../components/registration-mode-picker';
-
-import type { AxiosResponse } from 'axios';
-
-/** Download the file from the response instead of opening it in a tab. */
-// https://stackoverflow.com/a/53230807
-const download = (response: AxiosResponse, filename: string) => {
-  const url = URL.createObjectURL(new Blob([response.data]));
-  const link = document.createElement('a');
-  link.href = url;
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-};
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const instance = useInstance();
   const features = useFeatures();
   const account = useOwnAccount();
 
   const handleSubscribersClick: React.MouseEventHandler = e => {
-    dispatch(getSubscribersCsv()).then((response) => {
-      download(response, 'subscribers.csv');
+    dispatch(getSubscribersCsv()).then(({ data }) => {
+      download(data, 'subscribers.csv');
     }).catch(() => {});
     e.preventDefault();
   };
 
   const handleUnsubscribersClick: React.MouseEventHandler = e => {
-    dispatch(getUnsubscribersCsv()).then((response) => {
-      download(response, 'unsubscribers.csv');
+    dispatch(getUnsubscribersCsv()).then(({ data }) => {
+      download(data, 'unsubscribers.csv');
     }).catch(() => {});
     e.preventDefault();
   };
 
   const handleCombinedClick: React.MouseEventHandler = e => {
-    dispatch(getCombinedCsv()).then((response) => {
-      download(response, 'combined.csv');
+    dispatch(getCombinedCsv()).then(({ data }) => {
+      download(data, 'combined.csv');
     }).catch(() => {});
     e.preventDefault();
   };
+
+  const navigateToSoapboxConfig = () => history.push('/soapbox/config');
+  const navigateToModerationLog = () => history.push('/soapbox/admin/log');
 
   const v = parseVersion(instance.version);
 
@@ -59,87 +51,121 @@ const Dashboard: React.FC = () => {
   const domainCount = instance.stats.get('domain_count');
 
   const mau = instance.pleroma.getIn(['stats', 'mau']) as number | undefined;
-  const retention = (userCount && mau) ? Math.round(mau / userCount * 100) : null;
+  const retention = (userCount && mau) ? Math.round(mau / userCount * 100) : undefined;
 
   if (!account) return null;
 
   return (
-    <>
-      <div className='dashcounters mt-8'>
-        {isNumber(mau) && (
-          <div className='dashcounter'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={mau} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />
-            </Text>
-          </div>
-        )}
-        {isNumber(userCount) && (
-          <Link className='dashcounter' to='/soapbox/admin/users'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={userCount} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />
-            </Text>
-          </Link>
-        )}
-        {isNumber(retention) && (
-          <div className='dashcounter'>
-            <Text align='center' size='2xl' weight='medium'>
-              {retention}%
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
-            </Text>
-          </div>
-        )}
-        {isNumber(statusCount) && (
-          <Link className='dashcounter' to='/timeline/local'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={statusCount} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />
-            </Text>
-          </Link>
-        )}
-        {isNumber(domainCount) && (
-          <div className='dashcounter'>
-            <Text align='center' size='2xl' weight='medium'>
-              <FormattedNumber value={domainCount} />
-            </Text>
-            <Text align='center'>
-              <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />
-            </Text>
-          </div>
-        )}
-      </div>
+    <Stack space={6} className='mt-4'>
+      <DashCounters>
+        <DashCounter
+          count={mau}
+          label={<FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />}
+        />
+        <DashCounter
+          to='/soapbox/admin/users'
+          count={userCount}
+          label={<FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />}
+        />
+        <DashCounter
+          count={retention}
+          label={<FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />}
+          percent
+        />
+        <DashCounter
+          to='/timeline/local'
+          count={statusCount}
+          label={<FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />}
+        />
+        <DashCounter
+          count={domainCount}
+          label={<FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />}
+        />
+      </DashCounters>
 
-      {account.admin && <RegistrationModePicker />}
-
-      <div className='dashwidgets'>
-        <div className='dashwidget'>
-          <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
-          <ul>
-            <li>{sourceCode.displayName} <span className='pull-right'>{sourceCode.version}</span></li>
-            <li>{v.software + (v.build ? `+${v.build}` : '')} <span className='pull-right'>{v.version}</span></li>
-          </ul>
-        </div>
-        {features.emailList && account.admin && (
-          <div className='dashwidget'>
-            <h4><FormattedMessage id='admin.dashwidgets.email_list_header' defaultMessage='Email list' /></h4>
-            <ul>
-              <li><a href='#' onClick={handleSubscribersClick} target='_blank'>subscribers.csv</a></li>
-              <li><a href='#' onClick={handleUnsubscribersClick} target='_blank'>unsubscribers.csv</a></li>
-              <li><a href='#' onClick={handleCombinedClick} target='_blank'>combined.csv</a></li>
-            </ul>
-          </div>
+      <List>
+        {account.admin && (
+          <ListItem
+            onClick={navigateToSoapboxConfig}
+            label={<FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' />}
+          />
         )}
-      </div>
-    </>
+
+        <ListItem
+          onClick={navigateToModerationLog}
+          label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
+        />
+      </List>
+
+      {account.admin && (
+        <>
+          <CardTitle
+            title={<FormattedMessage id='admin.dashboard.registration_mode_label' defaultMessage='Registrations' />}
+          />
+
+          <RegistrationModePicker />
+        </>
+      )}
+
+      <CardTitle
+        title={<FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' />}
+      />
+
+      <List>
+        <ListItem label={<FormattedMessage id='admin.software.frontend' defaultMessage='Frontend' />}>
+          <a
+            href={sourceCode.ref ? `${sourceCode.url}/tree/${sourceCode.ref}` : sourceCode.url}
+            className='flex space-x-1 items-center truncate'
+            target='_blank'
+          >
+            <span>{sourceCode.displayName} {sourceCode.version}</span>
+
+            <Icon
+              className='w-4 h-4'
+              src={require('@tabler/icons/external-link.svg')}
+            />
+          </a>
+        </ListItem>
+
+        <ListItem label={<FormattedMessage id='admin.software.backend' defaultMessage='Backend' />}>
+          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span>
+        </ListItem>
+      </List>
+
+      {(features.emailList && account.admin) && (
+        <>
+          <CardTitle
+            title={<FormattedMessage id='admin.dashwidgets.email_list_header' defaultMessage='Email list' />}
+          />
+
+          <List>
+            <ListItem label='subscribers.csv'>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                onClick={handleSubscribersClick}
+                iconClassName='w-5 h-5'
+              />
+            </ListItem>
+
+            <ListItem label='unsubscribers.csv'>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                onClick={handleUnsubscribersClick}
+                iconClassName='w-5 h-5'
+              />
+            </ListItem>
+
+            <ListItem label='combined.csv'>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                onClick={handleCombinedClick}
+                iconClassName='w-5 h-5'
+              />
+            </ListItem>
+          </List>
+        </>
+      )}
+    </Stack>
   );
 };
 

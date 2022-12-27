@@ -1,5 +1,5 @@
 .dropdown-menu {
-  @apply absolute bg-white dark:bg-gray-900 z-40 rounded-md shadow-lg py-1 w-56 dark:ring-2 dark:ring-primary-700 focus:outline-none;
+  @apply absolute bg-white dark:bg-gray-900 z-[1001] rounded-md shadow-lg py-1 w-56 dark:ring-2 dark:ring-primary-700 focus:outline-none;
 
   &.left { transform-origin: 100% 50%; }
   &.top { transform-origin: 50% 100%; }

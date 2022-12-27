@@ -32,3 +32,25 @@ export const isLocal = (account: Account): boolean => {
 };
 
 export const isRemote = (account: Account): boolean => !isLocal(account);
+
+/** Default header filenames from various backends */
+const DEFAULT_HEADERS = [
+  '/headers/original/missing.png', // Mastodon
+  '/images/banner.png', // Pleroma
+];
+
+/** Check if the avatar is a default avatar */
+export const isDefaultHeader = (url: string) => {
+  return DEFAULT_HEADERS.some(header => url.endsWith(header));
+};
+
+/** Default avatar filenames from various backends */
+const DEFAULT_AVATARS = [
+  '/avatars/original/missing.png', // Mastodon
+  '/images/avi.png', // Pleroma
+];
+
+/** Check if the avatar is a default avatar */
+export const isDefaultAvatar = (url: string) => {
+  return DEFAULT_AVATARS.some(avatar => url.endsWith(avatar));
+};
