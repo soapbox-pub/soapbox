@@ -98,15 +98,12 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
     timeline.set('isPartial', isPartial);
     timeline.set('next', next);
 
-    if (!next && !isLoadingRecent) {
-      timeline.set('hasMore', false);
-    } else {
-      timeline.set('hasMore', true);
-    }
+    if (!next && !isLoadingRecent) timeline.set('hasMore', false);
 
     // Pinned timelines can be replaced entirely
     if (timelineId.endsWith(':pinned')) {
       timeline.set('items', newIds);
+      timeline.set('next', null);
       return;
     }
 
@@ -355,7 +352,8 @@ export default function timelines(state: State = initialState, action: AnyAction
           timeline.set('items', ImmutableOrderedSet([]));
         }))
         .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId))
-        .update('home', TimelineRecord(), timeline => timeline.set('next', null));
+        .update('home', TimelineRecord(), timeline => timeline.set('next', null))
+        .update('home', TimelineRecord(), timeline => timeline.set('hasMore', true));
     case TIMELINE_INSERT:
       return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
         timeline.update('items', oldIds => {
