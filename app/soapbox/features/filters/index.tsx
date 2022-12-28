@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filters';
-import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import {
   FieldsGroup,
   Checkbox,
 } from 'soapbox/features/forms';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.filters', defaultMessage: 'Muted words' },
@@ -81,7 +81,7 @@ const Filters = () => {
     dispatch(createFilter(phrase, expiresAt, context, wholeWord, irreversible)).then(() => {
       return dispatch(fetchFilters());
     }).catch(error => {
-      dispatch(snackbar.error(intl.formatMessage(messages.create_error)));
+      toast.error(intl.formatMessage(messages.create_error));
     });
   };
 
@@ -89,7 +89,7 @@ const Filters = () => {
     dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));
+      toast.error(intl.formatMessage(messages.delete_error));
     });
   };
 

@@ -2,12 +2,12 @@
   @apply text-gray-700 dark:text-gray-600 mb-1 text-sm;
 
   &__account {
-    @apply text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue no-underline hover:underline;
+    @apply text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue no-underline hover:underline inline-block;
+    direction: ltr;
   }
 }
 
-.status__wrapper,
-.detailed-status {
+.status__wrapper {
   .reply-mentions {
     display: block;
 

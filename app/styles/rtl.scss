@@ -13,11 +13,6 @@ body.rtl {
     margin-left: 5px;
   }
 
-  .search__input {
-    padding-right: 10px;
-    padding-left: 30px;
-  }
-
   .search__icon .fa {
     right: auto;
     left: 10px;
@@ -67,16 +62,6 @@ body.rtl {
   .privacy-dropdown__option__icon {
     margin-left: 10px;
     margin-right: 0;
-  }
-
-  .detailed-status__display-name .display-name {
-    text-align: right;
-  }
-
-  .detailed-status__display-avatar {
-    margin-right: 0;
-    margin-left: 10px;
-    float: right;
   }
 
   .fa-ul {
@@ -132,13 +117,6 @@ body.rtl {
       &:first-child {
         padding-left: 5px;
         padding-right: 10px;
-      }
-    }
-
-    .columns-area > div {
-      .column {
-        padding-left: 5px;
-        padding-right: 5px;
       }
     }
   }

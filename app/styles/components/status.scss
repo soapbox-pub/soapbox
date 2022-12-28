@@ -218,21 +218,6 @@ a.status-card {
   }
 }
 
-@media screen and (min-width: 630px) {
-  .columns-area .material-status .status {
-    padding: 15px;
-
-    &__avatar {
-      top: 0;
-      left: 0;
-    }
-
-    &__content {
-      padding-top: 10px;
-    }
-  }
-}
-
 .attachment-thumbs {
   position: relative;
 

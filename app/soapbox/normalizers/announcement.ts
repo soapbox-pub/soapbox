@@ -14,7 +14,7 @@ import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
-import { normalizeAnnouncementReaction } from './announcement_reaction';
+import { normalizeAnnouncementReaction } from './announcement-reaction';
 import { normalizeMention } from './mention';
 
 import type { AnnouncementReaction, Emoji, Mention } from 'soapbox/types/entities';

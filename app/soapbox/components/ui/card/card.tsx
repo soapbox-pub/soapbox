@@ -3,7 +3,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Text } from 'soapbox/components/ui';
+import { HStack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 
 const sizes = {
@@ -44,13 +44,14 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
 interface ICardHeader {
   backHref?: string,
   onBackClick?: (event: React.MouseEvent) => void
+  className?: string
 }
 
 /**
  * Card header container with back button.
  * Typically holds a CardTitle.
  */
-const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }): JSX.Element => {
+const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBackClick }): JSX.Element => {
   const intl = useIntl();
 
   const renderBackButton = () => {
@@ -62,19 +63,19 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
     const backAttributes = backHref ? { to: backHref } : { onClick: onBackClick };
 
     return (
-      <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
-        <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6' />
+      <Comp {...backAttributes} className='text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
+        <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6 rtl:rotate-180' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
     );
   };
 
   return (
-    <div className='mb-4 flex flex-row items-center'>
+    <HStack alignItems='center' space={2} className={classNames('mb-4', className)}>
       {renderBackButton()}
 
       {children}
-    </div>
+    </HStack>
   );
 };
 
@@ -87,9 +88,14 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
   <Text size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
 );
 
+interface ICardBody {
+  /** Classnames for the <div> element. */
+  className?: string
+}
+
 /** A card's body. */
-const CardBody: React.FC = ({ children }): JSX.Element => (
-  <div data-testid='card-body'>{children}</div>
+const CardBody: React.FC<ICardBody> = ({ className, children }): JSX.Element => (
+  <div data-testid='card-body' className={className}>{children}</div>
 );
 
 export { Card, CardHeader, CardTitle, CardBody };

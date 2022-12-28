@@ -15,7 +15,7 @@ import DeadCodePlugin from 'webpack-deadcode-plugin';
 import { env, settings, output } from './configuration';
 import rules from './rules';
 
-const { FE_SUBDIRECTORY, FE_INSTANCE_SOURCE_DIR } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+const { FE_SUBDIRECTORY, FE_INSTANCE_SOURCE_DIR } = require(join(__dirname, '..', 'app', 'soapbox', 'build-config'));
 
 /** Return file as string, or return empty string. */
 const readFile = (filename: string) => {
@@ -114,7 +114,7 @@ const configuration: Configuration = {
         '**/__*__/*',
         '**/(LICENSE|README|COPYING)(.md|.txt)?',
         // This file is imported with @preval
-        'app/soapbox/features/emoji/emoji_map.json',
+        'app/soapbox/features/emoji/emoji-map.json',
       ],
     }),
     // https://github.com/jantimon/html-webpack-plugin#options

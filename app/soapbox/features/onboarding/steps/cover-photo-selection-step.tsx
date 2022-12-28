@@ -1,29 +1,25 @@
 import classNames from 'clsx';
-import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import React from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
-import resizeImage from 'soapbox/utils/resize_image';
+import toast from 'soapbox/toast';
+import { isDefaultHeader } from 'soapbox/utils/accounts';
+import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
 
-/** Default header filenames from various backends */
-const DEFAULT_HEADERS = [
-  '/headers/original/missing.png', // Mastodon
-  '/images/banner.png', // Pleroma
-];
-
-/** Check if the avatar is a default avatar */
-const isDefaultHeader = (url: string) => {
-  return DEFAULT_HEADERS.every(header => url.endsWith(header));
-};
+const messages = defineMessages({
+  header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
+  error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
+});
 
 const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
+  const intl = useIntl();
   const dispatch = useDispatch();
   const account = useOwnAccount();
 
@@ -63,9 +59,9 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
         setSelectedFile(null);
 
         if (error.response?.status === 422) {
-          dispatch(snackbar.error((error.response.data as any).error.replace('Validation failed: ', '')));
+          toast.error((error.response.data as any).error.replace('Validation failed: ', ''));
         } else {
-          dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
+          toast.error(messages.error);
         }
       });
     }).catch(console.error);
@@ -90,7 +86,6 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
           <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
             <Stack space={10}>
               <div className='border border-solid border-gray-200 dark:border-gray-800 rounded-lg'>
-                {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
                 <div
                   role='button'
                   className='relative h-24 bg-gray-200 dark:bg-gray-800 rounded-t-md flex items-center justify-center'
@@ -98,7 +93,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
                   {selectedFile || account?.header && (
                     <StillImage
                       src={selectedFile || account.header}
-                      alt='Profile Header'
+                      alt={intl.formatMessage(messages.header)}
                       className='absolute inset-0 object-cover rounded-t-md'
                     />
                   )}
@@ -138,7 +133,11 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
               <Stack justifyContent='center' space={2}>
                 <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
-                  {isSubmitting ? 'Saving…' : 'Next'}
+                  {isSubmitting ? (
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
+                  ) : (
+                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+                  )}
                 </Button>
 
                 {isDisabled && (

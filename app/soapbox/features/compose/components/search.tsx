@@ -14,7 +14,7 @@ import {
   showSearch,
   submitSearch,
 } from 'soapbox/actions/search';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
 import { Input } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppSelector } from 'soapbox/hooks';
@@ -127,6 +127,7 @@ const Search = (props: ISearch) => {
     onFocus: handleFocus,
     autoFocus: autoFocus,
     theme: 'search',
+    className: 'pr-10 rtl:pl-10 rtl:pr-3',
   };
 
   if (autosuggest) {
@@ -149,7 +150,7 @@ const Search = (props: ISearch) => {
         <div
           role='button'
           tabIndex={0}
-          className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
+          className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto px-3 flex items-center cursor-pointer'
           onClick={handleClear}
         >
           <SvgIcon

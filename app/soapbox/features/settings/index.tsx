@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
 import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
+
+import MessagesSettings from './components/messages-settings';
 
 const messages = defineMessages({
   settings: { id: 'settings.settings', defaultMessage: 'Settings' },
@@ -36,7 +37,7 @@ const Settings = () => {
   const intl = useIntl();
 
   const mfa = useAppSelector((state) => state.security.get('mfa'));
-  const features = useAppSelector((state) => getFeatures(state.instance));
+  const features = useFeatures();
   const account = useOwnAccount();
 
   const navigateToChangeEmail = () => history.push('/settings/email');
@@ -51,7 +52,7 @@ const Settings = () => {
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
   useEffect(() => {
-    dispatch(fetchMfa());
+    if (features.security) dispatch(fetchMfa());
   }, [dispatch]);
 
   if (!account) return null;
@@ -86,9 +87,11 @@ const Settings = () => {
                     <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
                     <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
                     <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
-                      {isMfaEnabled ?
-                        intl.formatMessage(messages.mfaEnabled) :
-                        intl.formatMessage(messages.mfaDisabled)}
+                      <span>
+                        {isMfaEnabled ?
+                          intl.formatMessage(messages.mfaEnabled) :
+                          intl.formatMessage(messages.mfaDisabled)}
+                      </span>
                     </ListItem>
                   </>
                 )}
@@ -99,6 +102,18 @@ const Settings = () => {
             </CardBody>
           </>
         )}
+
+        {features.chats ? (
+          <>
+            <CardHeader>
+              <CardTitle title={<FormattedMessage id='column.chats' defaultMessage='Chats' />} />
+            </CardHeader>
+
+            <CardBody>
+              <MessagesSettings />
+            </CardBody>
+          </>
+        ) : null}
 
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />
@@ -116,14 +131,15 @@ const Settings = () => {
 
             <CardBody>
               <List>
-                {features.security && (
-                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
-                )}
                 {features.federating && (features.accountMoving ? (
                   <ListItem label={intl.formatMessage(messages.accountMigration)} onClick={navigateToMoveAccount} />
                 ) : features.accountAliases && (
                   <ListItem label={intl.formatMessage(messages.accountAliases)} onClick={navigateToAliases} />
                 ))}
+
+                {features.security && (
+                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+                )}
               </List>
             </CardBody>
           </>

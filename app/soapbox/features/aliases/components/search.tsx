@@ -53,7 +53,7 @@ const Search: React.FC = () => {
           placeholder={intl.formatMessage(messages.search)}
         />
 
-        <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
+        <div role='button' tabIndex={hasValue ? 0 : -1} className='search__icon' onClick={handleClear}>
           <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
         </div>
       </label>

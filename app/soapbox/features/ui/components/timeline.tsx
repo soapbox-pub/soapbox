@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';
 import ScrollTopButton from 'soapbox/components/scroll-top-button';
-import StatusList, { IStatusList } from 'soapbox/components/status_list';
+import StatusList, { IStatusList } from 'soapbox/components/status-list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatusIds } from 'soapbox/selectors';
 
@@ -16,19 +16,22 @@ const messages = defineMessages({
 interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
   /** ID of the timeline in Redux. */
   timelineId: string,
+  /** Settings path to use instead of the timelineId. */
+  prefix?: string,
 }
 
 /** Scrollable list of statuses from a timeline in the Redux store. */
 const Timeline: React.FC<ITimeline> = ({
   timelineId,
   onLoadMore,
+  prefix,
   ...rest
 }) => {
   const dispatch = useAppDispatch();
   const getStatusIds = useCallback(makeGetStatusIds(), []);
 
   const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
-  const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId }));
+  const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId, prefix }));
   const isLoading = useAppSelector(state => (state.timelines.get(timelineId) || { isLoading: true }).isLoading === true);
   const isPartial = useAppSelector(state => (state.timelines.get(timelineId)?.isPartial || false) === true);
   const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);

@@ -2,34 +2,35 @@ import { Record as ImmutableRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 
-import account_notes from './account_notes';
+import account_notes from './account-notes';
 import accounts from './accounts';
-import accounts_counters from './accounts_counters';
-import accounts_meta from './accounts_meta';
+import accounts_counters from './accounts-counters';
+import accounts_meta from './accounts-meta';
 import admin from './admin';
-import admin_log from './admin_log';
-import alerts from './alerts';
+import admin_log from './admin-log';
 import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
 import backups from './backups';
-import chat_message_lists from './chat_message_lists';
-import chat_messages from './chat_messages';
+import chat_message_lists from './chat-message-lists';
+import chat_messages from './chat-messages';
 import chats from './chats';
 import compose from './compose';
+import compose_event from './compose-event';
 import contexts from './contexts';
 import conversations from './conversations';
-import custom_emojis from './custom_emojis';
-import domain_lists from './domain_lists';
-import dropdown_menu from './dropdown_menu';
+import custom_emojis from './custom-emojis';
+import domain_lists from './domain-lists';
+import dropdown_menu from './dropdown-menu';
 import filters from './filters';
 import history from './history';
 import instance from './instance';
-import listAdder from './list_adder';
-import listEditor from './list_editor';
+import listAdder from './list-adder';
+import listEditor from './list-editor';
 import lists from './lists';
+import locations from './locations';
 import me from './me';
 import meta from './meta';
 import modals from './modals';
@@ -37,34 +38,33 @@ import mutes from './mutes';
 import notifications from './notifications';
 import onboarding from './onboarding';
 import patron from './patron';
-import pending_statuses from './pending_statuses';
+import pending_statuses from './pending-statuses';
 import polls from './polls';
-import profile_hover_card from './profile_hover_card';
-import push_notifications from './push_notifications';
+import profile_hover_card from './profile-hover-card';
+import push_notifications from './push-notifications';
 import relationships from './relationships';
 import reports from './reports';
 import rules from './rules';
-import scheduled_statuses from './scheduled_statuses';
+import scheduled_statuses from './scheduled-statuses';
 import search from './search';
 import security from './security';
 import settings from './settings';
 import sidebar from './sidebar';
 import soapbox from './soapbox';
 import status_hover_card from './status-hover-card';
-import status_lists from './status_lists';
+import status_lists from './status-lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
 import timelines from './timelines';
-import trending_statuses from './trending_statuses';
+import trending_statuses from './trending-statuses';
 import trends from './trends';
-import user_lists from './user_lists';
+import user_lists from './user-lists';
 import verification from './verification';
 
 const reducers = {
   dropdown_menu,
   timelines,
   meta,
-  alerts,
   modals,
   user_lists,
   domain_lists,
@@ -86,6 +86,7 @@ const reducers = {
   lists,
   listEditor,
   listAdder,
+  locations,
   filters,
   conversations,
   suggestions,
@@ -116,6 +117,7 @@ const reducers = {
   rules,
   history,
   announcements,
+  compose_event,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

@@ -2,17 +2,18 @@ import { AxiosError } from 'axios';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { checkEmailVerification, postEmailVerification, requestEmailVerification } from 'soapbox/actions/verification';
 import Icon from 'soapbox/components/icon';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   verificationSuccess: { id: 'email_verification.success', defaultMessage: 'Verification email sent successfully.' },
   verificationFail: { id: 'email_verification.fail', defaultMessage: 'Failed to request email verification.' },
-  verificationFailTakenAlert: { id: 'emai_verifilcation.exists', defaultMessage: 'This email has already been taken.' },
+  verificationFailTakenAlert: { id: 'email_verifilcation.exists', defaultMessage: 'This email has already been taken.' },
   verificationFailTaken: { id: 'email_verification.taken', defaultMessage: 'is taken' },
+  emailLabel: { id: 'email_verification.email.label', defaultMessage: 'E-mail address' },
 });
 
 const Statuses = {
@@ -82,11 +83,7 @@ const EmailVerification = () => {
       .then(() => {
         setStatus(Statuses.REQUESTED);
 
-        dispatch(
-          snackbar.success(
-            intl.formatMessage(messages.verificationSuccess),
-          ),
-        );
+        toast.success(intl.formatMessage(messages.verificationSuccess));
       })
       .catch((error: AxiosError) => {
         const errorMessage = (error.response?.data as any)?.error;
@@ -103,7 +100,7 @@ const EmailVerification = () => {
           setErrors([intl.formatMessage(messages.verificationFailTaken)]);
         }
 
-        dispatch(snackbar.error(message));
+        toast.error(message);
         setStatus(Statuses.FAIL);
       });
   };
@@ -122,7 +119,7 @@ const EmailVerification = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Email Address' errors={errors}>
+          <FormGroup labelText={intl.formatMessage(messages.emailLabel)} errors={errors}>
             <Input
               type='email'
               value={email}
@@ -134,7 +131,9 @@ const EmailVerification = () => {
           </FormGroup>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>Next</Button>
+            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            </Button>
           </div>
         </Form>
       </div>

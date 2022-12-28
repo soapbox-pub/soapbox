@@ -1,9 +1,10 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
 import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import { merge } from 'immutable';
 import React, { FC, ReactElement } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
@@ -11,7 +12,10 @@ import { Action, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 
-import NotificationsContainer from '../features/ui/containers/notifications_container';
+import { ChatProvider } from 'soapbox/contexts/chat-context';
+import { StatProvider } from 'soapbox/contexts/stat-context';
+import { queryClient } from 'soapbox/queries/client';
+
 import { default as rootReducer } from '../reducers';
 
 import type { AnyAction } from 'redux';
@@ -27,29 +31,14 @@ const applyActions = (state: any, actions: any, reducer: any) => {
   return actions.reduce((state: any, action: any) => reducer(state, action), state);
 };
 
-/** React Query client for tests. */
-const queryClient = new QueryClient({
-  logger: {
-    // eslint-disable-next-line no-console
-    log: console.log,
-    warn: console.warn,
-    error: () => { },
-  },
-  defaultOptions: {
-    queries: {
-      staleTime: 0,
-      cacheTime: Infinity,
-      retry: false,
-    },
-  },
-});
-
 const createTestStore = (initialState: any) => createStore(rootReducer, initialState, applyMiddleware(thunk));
 const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   let store: ReturnType<typeof createTestStore>;
   let appState = rootState;
 
-  if (storeProps) {
+  if (storeProps && typeof storeProps.getState !== 'undefined') { // storeProps is a store
+    store = storeProps;
+  } else if (storeProps) { // storeProps is state
     appState = merge(rootState, storeProps);
     store = createTestStore(appState);
   } else {
@@ -63,15 +52,19 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
 
   return (
     <Provider store={props.store}>
-      <QueryClientProvider client={queryClient}>
-        <IntlProvider locale={props.locale}>
-          <MemoryRouter {...routerProps}>
-            {children}
+      <MemoryRouter {...routerProps}>
+        <StatProvider>
+          <QueryClientProvider client={queryClient}>
+            <ChatProvider>
+              <IntlProvider locale={props.locale}>
+                {children}
 
-            <NotificationsContainer />
-          </MemoryRouter>
-        </IntlProvider>
-      </QueryClientProvider>
+                <Toaster />
+              </IntlProvider>
+            </ChatProvider>
+          </QueryClientProvider>
+        </StatProvider>
+      </MemoryRouter>
     </Provider>
   );
 };

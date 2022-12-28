@@ -24,11 +24,6 @@ select {
 
 $no-columns-breakpoint: 600px;
 
-code {
-  font-family: var(--font-monospace), monospace;
-  font-weight: 400;
-}
-
 .form-container {
   max-width: 400px;
   padding: 20px;
@@ -586,38 +581,6 @@ code {
     margin-bottom: 14px;
     font-weight: bold;
   }
-
-  .showable-password {
-    position: relative;
-
-    input {
-      padding-right: 36px;
-    }
-
-    .icon-button {
-      @apply text-black dark:text-white;
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 38px;
-      width: 36px;
-      padding: 0;
-      margin: 0;
-      background: transparent;
-
-      .svg-icon {
-        height: 20px;
-        width: 20px;
-      }
-    }
-  }
-}
-
-.block-icon {
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 10px;
-  font-size: 24px;
 }
 
 .simple_form {
@@ -657,14 +620,6 @@ code {
         font-weight: 400;
       }
     }
-  }
-}
-
-.columns-area {
-  form.simple_form--public {
-    @include standard-panel;
-    margin-top: 20px;
-    padding: 60px 30px;
   }
 }
 

@@ -137,6 +137,10 @@
   @apply bg-primary-50 hover:bg-primary-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-primary-600 dark:text-primary-400;
 }
 
+.react-datepicker__close-icon {
+  @apply rtl:left-0 rtl:right-auto rtl:pr-0 rtl:pl-[6px];
+}
+
 .react-datepicker__close-icon::after {
   @apply bg-transparent text-gray-600 dark:text-gray-400 text-base;
   font-family: 'Font Awesome 5 Free';

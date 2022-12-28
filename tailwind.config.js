@@ -12,9 +12,10 @@ module.exports = {
       xl: '1280px',
     },
     extend: {
-      boxShadow: {
+      boxShadow: ({ theme }) => ({
         '3xl': '0 25px 75px -15px rgba(0, 0, 0, 0.25)',
-      },
+        'inset-ring': `inset 0 0 0 2px ${theme('colors.accent-blue')}`,
+      }),
       fontSize: {
         base: '0.9375rem',
       },
@@ -42,6 +43,9 @@ module.exports = {
           'mono',
         ],
       },
+      spacing: {
+        '4.5': '1.125rem',
+      },
       colors: parseColorMatrix({
         // Define color matrix (of available colors)
         // Colors are configured at runtime with CSS variables in soapbox.json
@@ -54,7 +58,6 @@ module.exports = {
         'accent-blue': true,
         'gradient-start': true,
         'gradient-end': true,
-        'sea-blue': true,
         'greentext': true,
       }),
       animation: {
@@ -62,6 +65,8 @@ module.exports = {
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
         'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
         'sonar-scale-1': 'sonar-scale-1 3s 1.5s linear infinite',
+        'enter': 'enter 200ms ease-out',
+        'leave': 'leave 150ms ease-in forwards',
       },
       keyframes: {
         'sonar-scale-4': {
@@ -80,11 +85,20 @@ module.exports = {
           from: { opacity: '0.4', transform: 'scale(1)' },
           to: { opacity: '0', transform: 'scale(2.5)' },
         },
+        enter: {
+          from: { transform: 'scale(0.9)', opacity: '0' },
+          to: { transform: 'scale(1)', opacity: '1' },
+        },
+        leave: {
+          from: { transform: 'scale(1)', opacity: '1' },
+          to: { transform: 'scale(0.9)', opacity: '0' },
+        },
       },
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('@tailwindcss/line-clamp'),
     require('@tailwindcss/typography'),
   ],
 };

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, Card, CardBody, Icon, Stack, Text } from 'soapbox/components/ui';

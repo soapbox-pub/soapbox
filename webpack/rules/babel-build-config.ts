@@ -4,11 +4,11 @@ import { env } from '../configuration';
 
 import type { RuleSetRule } from 'webpack';
 
-// This is a hack, used to force build_config @preval to recompile
+// This is a hack, used to force build-config @preval to recompile
 // https://github.com/kentcdodds/babel-plugin-preval/issues/19
 
 const rule: RuleSetRule = {
-  test: resolve(__dirname, '../../app/soapbox/build_config.js'),
+  test: resolve(__dirname, '../../app/soapbox/build-config.js'),
   use: [
     {
       loader: 'babel-loader',

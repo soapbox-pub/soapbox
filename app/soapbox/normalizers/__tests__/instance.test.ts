@@ -9,6 +9,9 @@ describe('normalizeInstance()', () => {
       contact_account: {},
       configuration: {
         media_attachments: {},
+        chats: {
+          max_characters: 500,
+        },
         polls: {
           max_options: 4,
           max_characters_per_option: 25,
@@ -197,7 +200,7 @@ describe('normalizeInstance()', () => {
     const instance = require('soapbox/__fixtures__/akkoma-instance.json');
     const result = normalizeInstance(instance);
 
-    expect(result.version).toEqual('2.7.2 (compatible; Pleroma 2.4.5+akkoma)');
+    expect(result.version).toEqual('2.7.2 (compatible; Pleroma 2.4.50+akkoma)');
 
   });
 });

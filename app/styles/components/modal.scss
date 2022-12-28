@@ -6,18 +6,6 @@
   overflow-y: hidden;
 }
 
-.video-modal {
-  max-width: 100vw;
-  max-height: 100vh;
-  position: relative;
-}
-
-.video-modal {
-  .video-player video {
-    height: auto;
-  }
-}
-
 .media-modal {
   width: 100%;
   height: 100%;
@@ -176,7 +164,6 @@
   }
 }
 
-.onboarding-modal,
 .error-modal {
   background: var(--background-color);
   color: var(--primary-text-color);
@@ -229,7 +216,6 @@
     min-width: 33px;
   }
 
-  .onboarding-modal__nav,
   .error-modal__nav {
     color: var(--highlight-text-color);
     border: 0;
@@ -266,12 +252,9 @@
   position: relative;
   flex-direction: column;
   overflow: hidden;
-  width: 480px;
-  max-width: 90vw;
   border-radius: 10px;
   border: 1px solid var(--background-color);
   color: var(--primary-text-color--faint);
-  background: var(--foreground-color);
 
   .status__display-name {
     display: block;
@@ -311,7 +294,7 @@
         }
 
         .svg-icon:first-child {
-          @apply min-w-[1.25rem] w-5 h-5 mr-2.5;
+          @apply min-w-[1.25rem] w-5 h-5;
 
           svg {
             stroke-width: 1.5;

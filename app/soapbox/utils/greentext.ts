@@ -1,4 +1,4 @@
-import { processHtml } from './tiny_post_html_processor';
+import { processHtml } from './tiny-post-html-processor';
 
 export const addGreentext = (html: string): string => {
   // Copied from Pleroma FE

@@ -23,17 +23,17 @@ describe('<EmailVerification />', () => {
     it('successfully submits', async() => {
       render(<EmailVerification />);
 
-      await userEvent.type(screen.getByLabelText('Email Address'), 'foo@bar.com{enter}');
+      await userEvent.type(screen.getByLabelText('E-mail address'), 'foo@bar.com{enter}');
 
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByTestId('button'), {
             preventDefault: () => {},
           },
         );
       });
 
-      expect(screen.getByRole('button')).toHaveTextContent('Resend verification email');
+      expect(screen.getByTestId('button')).toHaveTextContent('Resend verification email');
     });
   });
 
@@ -50,11 +50,11 @@ describe('<EmailVerification />', () => {
     it('renders errors', async() => {
       render(<EmailVerification />);
 
-      await userEvent.type(screen.getByLabelText('Email Address'), 'foo@bar.com{enter}');
+      await userEvent.type(screen.getByLabelText('E-mail address'), 'foo@bar.com{enter}');
 
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByTestId('button'), {
             preventDefault: () => {},
           },
         );

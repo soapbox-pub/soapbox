@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 /** Possible theme names for an Input. */
-type InputThemes = 'normal' | 'search' | 'transparent';
+type InputThemes = 'normal' | 'search'
 
 interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
@@ -61,9 +61,11 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     return (
       <div
         className={
-          classNames('mt-1 relative shadow-sm', outerClassName, {
+          classNames('relative', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
+            'mt-1': !String(outerClassName).includes('mt-'),
+            [String(outerClassName)]: typeof outerClassName !== 'undefined',
           })
         }
       >
@@ -83,22 +85,20 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           {...filteredProps}
           type={revealed ? 'text' : type}
           ref={ref}
-          className={classNames({
-            'text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+          className={classNames('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
+            'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
-            'bg-transparent border-none': theme === 'transparent',
-            'pr-7': isPassword || append,
+            'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,
             'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
             'pl-16': typeof prepend !== 'undefined',
           }, className)}
         />
 
-        {/* eslint-disable-next-line no-nested-ternary */}
         {append ? (
-          <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+          <div className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex items-center pr-3'>
             {append}
           </div>
         ) : null}
@@ -111,7 +111,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 intl.formatMessage(messages.showPassword)
             }
           >
-            <div className='absolute inset-y-0 right-0 flex items-center'>
+            <div className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex items-center'>
               <button
                 type='button'
                 onClick={togglePassword}

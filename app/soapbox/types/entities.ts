@@ -14,6 +14,7 @@ import {
   HistoryRecord,
   InstanceRecord,
   ListRecord,
+  LocationRecord,
   MentionRecord,
   NotificationRecord,
   PollRecord,
@@ -23,10 +24,12 @@ import {
   StatusRecord,
   TagRecord,
 } from 'soapbox/normalizers';
+import { LogEntryRecord } from 'soapbox/reducers/admin-log';
 
 import type { Record as ImmutableRecord } from 'immutable';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
+type AdminLog = ReturnType<typeof LogEntryRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Announcement = ReturnType<typeof AnnouncementRecord>;
 type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
@@ -40,6 +43,7 @@ type Filter = ReturnType<typeof FilterRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
+type Location = ReturnType<typeof LocationRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
@@ -66,6 +70,7 @@ type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableReco
 
 export {
   AdminAccount,
+  AdminLog,
   AdminReport,
   Account,
   Announcement,
@@ -80,6 +85,7 @@ export {
   History,
   Instance,
   List,
+  Location,
   Mention,
   Notification,
   Poll,

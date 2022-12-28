@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { showAlertForError } from 'soapbox/actions/alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
@@ -15,8 +14,9 @@ import {
   FormGroup,
   Textarea,
 } from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const isJSONValid = (text: any): boolean => {
   try {
@@ -29,6 +29,7 @@ const isJSONValid = (text: any): boolean => {
 
 const messages = defineMessages({
   heading: { id: 'column.settings_store', defaultMessage: 'Settings store' },
+  advanced: { id: 'developers.settings_store.advanced', defaultMessage: 'Advanced settings' },
   hint: { id: 'developers.settings_store.hint', defaultMessage: 'It is possible to directly edit your user settings here. BE CAREFUL! Editing this section can break your account, and you will only be able to recover through the API.' },
 });
 
@@ -64,7 +65,7 @@ const SettingsStore: React.FC = () => {
       dispatch({ type: SETTINGS_UPDATE, settings });
       setLoading(false);
     }).catch(error => {
-      dispatch(showAlertForError(error));
+      toast.showAlertForError(error);
       setLoading(false);
     });
   };
@@ -98,10 +99,17 @@ const SettingsStore: React.FC = () => {
       </Form>
 
       <CardHeader>
-        <CardTitle title='Advanced settings' />
+        <CardTitle title={intl.formatMessage(messages.advanced)} />
       </CardHeader>
 
       <List>
+        <ListItem
+          label={<FormattedMessage id='preferences.fields.demo_label' defaultMessage='Demo mode' />}
+          hint={<FormattedMessage id='preferences.fields.demo_hint' defaultMessage='Use the default Soapbox logo and color scheme. Useful for taking screenshots.' />}
+        >
+          <SettingToggle settings={settings} settingPath={['demo']} onChange={onToggleChange} />
+        </ListItem>
+
         <ListItem label={<FormattedMessage id='preferences.notifications.advanced' defaultMessage='Show all notification categories' />}>
           <SettingToggle settings={settings} settingPath={['notifications', 'quickFilter', 'advanced']} onChange={onToggleChange} />
         </ListItem>
@@ -131,13 +139,6 @@ const SettingsStore: React.FC = () => {
             <SettingToggle settings={settings} settingPath={['dyslexicFont']} onChange={onToggleChange} />
           </ListItem>
         </div>
-
-        {/* <ListItem
-          label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
-          hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Supports light/dark toggle.' />}
-        >
-          <SettingToggle settings={settings} settingPath={['halloween']} onChange={onToggleChange} />
-        </ListItem> */}
 
         <ListItem
           label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}

@@ -41,7 +41,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
   const renderIcon = () => {
     if (emoji) {
       return (
-        <span className='block w-6 h-6 flex items-center justify-center'>
+        <span className='flex w-6 h-6 items-center justify-center'>
           <Emoji className='w-full h-full p-0.5' emoji={emoji} />
         </span>
       );
@@ -79,7 +79,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
       ref={ref}
       type='button'
       className={classNames(
-        'flex items-center p-1 rounded-full',
+        'flex items-center p-1 rounded-full rtl:space-x-reverse',
         'text-gray-600 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',
         'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:ring-offset-0',

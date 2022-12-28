@@ -4,7 +4,7 @@
  */
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 import { isPrerendered } from 'soapbox/precheck';
 import { isURL } from 'soapbox/utils/auth';
 

@@ -4,12 +4,10 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
-import { Text } from 'soapbox/components/ui';
+import { Column, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import toast from 'soapbox/toast';
 import sourceCode from 'soapbox/utils/code';
-
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
@@ -41,8 +39,17 @@ const Developers: React.FC = () => {
     e.preventDefault();
 
     dispatch(changeSettingImmediate(['isDeveloper'], false));
-    dispatch(snackbar.success(intl.formatMessage(messages.leave)));
+    toast.success(intl.formatMessage(messages.leave));
     history.push('/');
+  };
+
+  const showToast = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    toast.success('Hello world!', {
+      action: () => alert('hi'),
+      actionLabel: 'Click me',
+    });
   };
 
   return (
@@ -102,6 +109,14 @@ const Developers: React.FC = () => {
 
             <Text>
               <FormattedMessage id='developers.navigation.leave_developers_label' defaultMessage='Leave developers' />
+            </Text>
+          </DashWidget>
+
+          <DashWidget onClick={showToast}>
+            <SvgIcon src={require('@tabler/icons/urgent.svg')} className='text-gray-700 dark:text-gray-600' />
+
+            <Text>
+              <FormattedMessage id='developers.navigation.show_toast' defaultMessage='Trigger Toast' />
             </Text>
           </DashWidget>
         </div>

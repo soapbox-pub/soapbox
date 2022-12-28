@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { verifyAge } from 'soapbox/actions/verification';
 import { Button, Datepicker, Form, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   fail: {
@@ -24,10 +24,10 @@ function meetsAgeMinimum(birthday: Date, ageMinimum: number) {
 const AgeVerification = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const isLoading = useAppSelector((state) => state.verification.isLoading) as boolean;
   const ageMinimum = useAppSelector((state) => state.verification.ageMinimum) as any;
-  const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [date, setDate] = React.useState('');
   const isValid = typeof date === 'object';
@@ -42,9 +42,7 @@ const AgeVerification = () => {
     if (meetsAgeMinimum(birthday, ageMinimum)) {
       dispatch(verifyAge(birthday));
     } else {
-      dispatch(
-        snackbar.error(intl.formatMessage(messages.fail, { ageMinimum })),
-      );
+      toast.error(intl.formatMessage(messages.fail, { ageMinimum }));
     }
   }, [date, ageMinimum]);
 
@@ -61,13 +59,21 @@ const AgeVerification = () => {
           <Datepicker onChange={onChange} />
 
           <Text theme='muted' size='sm'>
-            {siteTitle} requires users to be at least {ageMinimum} years old to
-            access its platform. Anyone under the age of {ageMinimum} years old
-            cannot access this platform.
+            <FormattedMessage
+              id='age_verification.body'
+              defaultMessage='{siteTitle} requires users to be at least {ageMinimum} years old to access its platform. Anyone under the age of {ageMinimum} years old cannot access this platform.'
+              values={{
+                siteTitle: instance.title,
+                ageMinimum,
+              }}
+            />
+
           </Text>
 
           <div className='text-center'>
-            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>Next</Button>
+            <Button block theme='primary' type='submit' disabled={isLoading || !isValid}>
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            </Button>
           </div>
         </Form>
       </div>

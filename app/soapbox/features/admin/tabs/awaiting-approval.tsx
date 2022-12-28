@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchUsers } from 'soapbox/actions/admin';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
-import UnapprovedAccount from '../components/unapproved_account';
+import UnapprovedAccount from '../components/unapproved-account';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.awaiting_approval', defaultMessage: 'Awaiting Approval' },
@@ -33,9 +33,12 @@ const AwaitingApproval: React.FC = () => {
       showLoading={showLoading}
       scrollKey='awaiting-approval'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
+      className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
       {accountIds.map(id => (
-        <UnapprovedAccount accountId={id} key={id} />
+        <div key={id} className='py-4 px-5'>
+          <UnapprovedAccount accountId={id} />
+        </div>
       ))}
     </ScrollableList>
   );

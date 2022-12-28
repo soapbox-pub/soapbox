@@ -1,6 +1,6 @@
 'use strict';
 
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 
 //
 // Tools for performance debugging, only enabled in development mode.

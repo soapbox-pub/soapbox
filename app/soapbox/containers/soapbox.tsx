@@ -3,27 +3,29 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import classNames from 'clsx';
 import React, { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
+
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import AuthLayout from 'soapbox/features/auth_layout';
+import { StatProvider } from 'soapbox/contexts/stat-context';
+import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
-import PublicLayout from 'soapbox/features/public_layout';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import PublicLayout from 'soapbox/features/public-layout';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
-  NotificationsContainer,
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
@@ -37,15 +39,17 @@ import {
   useSettings,
   useTheme,
   useLocale,
+  useInstance,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
-import ErrorBoundary from '../components/error_boundary';
+import ErrorBoundary from '../components/error-boundary';
 import UI from '../features/ui';
 import { store } from '../store';
 
@@ -82,8 +86,9 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
+
   const me = useAppSelector(state => state.me);
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
@@ -179,15 +184,12 @@ const SoapboxMount = () => {
             <Route>
               {renderBody()}
 
-              <BundleContainer fetchComponent={NotificationsContainer}>
-                {(Component) => <Component />}
-              </BundleContainer>
-
               <BundleContainer fetchComponent={ModalContainer}>
                 {Component => <Component />}
               </BundleContainer>
 
               <GdprBanner />
+              <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
             </Route>
           </Switch>
         </ScrollContext>
@@ -207,7 +209,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const swUpdating = useAppSelector(state => state.meta.swUpdating);
-  const locale = useLocale();
+  const { locale } = useLocale();
 
   const [messages, setMessages] = useState<Record<string, string>>({});
   const [localeLoading, setLocaleLoading] = useState(true);
@@ -258,12 +260,13 @@ interface ISoapboxHead {
 
 /** Injects metadata into site head with Helmet. */
 const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
-  const locale = useLocale();
+  const { locale, direction } = useLocale();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
+  const demo = !!settings.get('demo');
   const darkMode = useTheme() === 'dark';
-  const themeCss = generateThemeCss(soapboxConfig);
+  const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
 
   const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
@@ -276,7 +279,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     <>
       <Helmet>
         <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-        <body className={bodyClass} />
+        <body className={bodyClass} dir={direction} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
@@ -292,11 +295,13 @@ const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <SoapboxHead>
-          <SoapboxLoad>
-            <SoapboxMount />
-          </SoapboxLoad>
-        </SoapboxHead>
+        <StatProvider>
+          <SoapboxHead>
+            <SoapboxLoad>
+              <SoapboxMount />
+            </SoapboxLoad>
+          </SoapboxHead>
+        </StatProvider>
       </QueryClientProvider>
     </Provider>
   );

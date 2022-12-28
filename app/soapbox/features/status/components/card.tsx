@@ -5,7 +5,9 @@ import React, { useState, useEffect } from 'react';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { useSettings } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
 
@@ -17,30 +19,6 @@ const trim = (text: string, len: number): string => {
   }
 
   return text.substring(0, cut) + (text.length > len ? '…' : '');
-};
-
-const domParser = new DOMParser();
-
-const addAutoPlay = (html: string): string => {
-  const document = domParser.parseFromString(html, 'text/html').documentElement;
-  const iframe = document.querySelector('iframe');
-
-  if (iframe) {
-    if (iframe.src.includes('?')) {
-      iframe.src += '&';
-    } else {
-      iframe.src += '?';
-    }
-
-    iframe.src += 'autoplay=1&auto_play=1';
-    iframe.allow = 'autoplay';
-
-    // DOM parser creates html/body elements around original HTML fragment,
-    // so we need to get innerHTML out of the body and not the entire document
-    return (document.querySelector('body') as HTMLBodyElement).innerHTML;
-  }
-
-  return html;
 };
 
 interface ICard {
@@ -64,6 +42,9 @@ const Card: React.FC<ICard> = ({
   onOpenMedia,
   horizontal,
 }): JSX.Element => {
+  const settings = useSettings();
+  const shouldAutoPlayVideo = settings.get('autoPlayVideo');
+
   const [width, setWidth] = useState(defaultWidth);
   const [embedded, setEmbedded] = useState(false);
 
@@ -111,7 +92,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const renderVideo = () => {
-    const content = { __html: addAutoPlay(card.html) };
+    const content = { __html: shouldAutoPlayVideo ? addAutoPlay(card.html) : card.html };
     const ratio = getRatio(card);
     const height = width / ratio;
 
@@ -130,7 +111,7 @@ const Card: React.FC<ICard> = ({
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
-    return Math.min(Math.max(9 / 16, ratio), 4);
+    return Math.min(Math.max(1, ratio), 4);
   };
 
   const interactive = card.type !== 'link';

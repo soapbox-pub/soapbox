@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Text, IconButton } from 'soapbox/components/ui';
-import HStack from 'soapbox/components/ui/hstack/hstack';
-import Stack from 'soapbox/components/ui/stack/stack';
+import { HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 
 interface IWidgetTitle {
   /** Title text for the widget. */
@@ -46,7 +44,7 @@ const Widget: React.FC<IWidget> = ({
         <WidgetTitle title={title} />
         {action || (onActionClick && (
           <IconButton
-            className='w-6 h-6 ml-2 text-black dark:text-white'
+            className='w-6 h-6 ml-2 text-black dark:text-white rtl:rotate-180'
             src={actionIcon}
             onClick={onActionClick}
             title={actionTitle}
