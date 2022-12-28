@@ -151,11 +151,11 @@ const FeedCarousel = () => {
       data-testid='feed-carousel'
     >
       <HStack alignItems='stretch'>
-        <div className='z-10 rounded-l-xl bg-white dark:bg-gray-900 w-8 flex self-stretch items-center justify-center'>
+        <div className='z-10 rounded-l-xl bg-white dark:bg-primary-900 w-8 flex self-stretch items-center justify-center'>
           <button
             data-testid='prev-page'
             onClick={handlePrevPage}
-            className='h-7 w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasPrevPage}
           >
             <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-5 w-5' />
@@ -227,11 +227,11 @@ const FeedCarousel = () => {
           </HStack>
         </div>
 
-        <div className='z-10 rounded-r-xl bg-white dark:bg-gray-900 w-8 self-stretch flex items-center justify-center'>
+        <div className='z-10 rounded-r-xl bg-white dark:bg-primary-900 w-8 self-stretch flex items-center justify-center'>
           <button
             data-testid='next-page'
             onClick={handleNextPage}
-            className='h-7 w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='w-7 h-full flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasNextPage}
           >
             <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-5 w-5' />
