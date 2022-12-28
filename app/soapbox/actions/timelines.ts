@@ -83,7 +83,7 @@ const updateTimelineQueue = (timeline: string, statusId: string, accept: ((statu
     });
   };
 
-const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string) => void, optionalExpandArgs?: any) =>
+const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string) => void) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const queuedCount = state.timelines.get(timelineId)?.totalQueuedItemsCount || 0;
@@ -102,10 +102,10 @@ const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string)
     } else {
       if (timelineId === 'home') {
         dispatch(clearTimeline(timelineId));
-        dispatch(expandHomeTimeline(optionalExpandArgs));
+        dispatch(expandHomeTimeline());
       } else if (timelineId === 'community') {
         dispatch(clearTimeline(timelineId));
-        dispatch(expandCommunityTimeline(optionalExpandArgs));
+        dispatch(expandCommunityTimeline());
       }
     }
   };
@@ -140,11 +140,10 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
 
 const replaceHomeTimeline = (
   accountId: string | null,
-  { maxId }: Record<string, any> = {},
   done?: () => void,
 ) => (dispatch: AppDispatch, _getState: () => RootState) => {
   dispatch({ type: TIMELINE_REPLACE, accountId });
-  dispatch(expandHomeTimeline({ accountId, maxId }, () => {
+  return dispatch(expandHomeTimeline({ accountId }, () => {
     dispatch(insertSuggestionsIntoTimeline());
     if (done) {
       done();
@@ -155,6 +154,7 @@ const replaceHomeTimeline = (
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
+    const url = getState().timelines.getIn([timelineId, 'next']) as string || path;
     const isLoadingMore = !!params.max_id;
 
     if (timeline.isLoading) {
@@ -170,7 +170,7 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
 
     dispatch(expandTimelineRequest(timelineId, isLoadingMore));
 
-    return api(getState).get(path, { params }).then(response => {
+    return api(getState).get(url, { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
       dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingRecent, isLoadingMore));
@@ -181,15 +181,15 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     });
   };
 
-const expandHomeTimeline = ({ accountId, maxId }: Record<string, any> = {}, done = noOp) => {
+const expandHomeTimeline = ({ accountId, maxId }: Record<string, any> = {}, done = noOp): any => (dispatch: AppDispatch, getState: () => RootState) => {
   const endpoint = accountId ? `/api/v1/accounts/${accountId}/statuses` : '/api/v1/timelines/home';
-  const params: any = { max_id: maxId };
+  const params: any = {};
   if (accountId) {
     params.exclude_replies = true;
     params.with_muted = true;
   }
 
-  return expandTimeline('home', endpoint, params, done);
+  return dispatch(expandTimeline('home', endpoint, params, done));
 };
 
 const expandPublicTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>

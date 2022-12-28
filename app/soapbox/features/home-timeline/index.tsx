@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
-import { expandHomeTimeline } from 'soapbox/actions/timelines';
+import { expandHomeTimeline, replaceHomeTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
@@ -28,8 +28,8 @@ const HomeTimeline: React.FC = () => {
   const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId as string | undefined);
   const currentAccountRelationship = useAppSelector(state => currentAccountId ? state.relationships.get(currentAccountId) : null);
 
-  const handleLoadMore = (maxId: string) => {
-    dispatch(expandHomeTimeline({ maxId, accountId: currentAccountId }));
+  const handleLoadMore = () => {
+    dispatch(expandHomeTimeline({ accountId: currentAccountId }));
   };
 
   // Mastodon generates the feed in Redis, and can return a partial timeline
@@ -52,7 +52,7 @@ const HomeTimeline: React.FC = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
+    return dispatch(replaceHomeTimeline(currentAccountId || null));
   };
 
   useEffect(() => {

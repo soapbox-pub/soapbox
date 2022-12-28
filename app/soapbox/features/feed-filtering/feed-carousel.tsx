@@ -30,7 +30,7 @@ const CarouselItem = React.forwardRef((
     setLoading(true);
 
     if (isSelected) {
-      dispatch(replaceHomeTimeline(null, { maxId: null }, () => setLoading(false)));
+      dispatch(replaceHomeTimeline(null, () => setLoading(false)));
 
       if (onPinned) {
         onPinned(null);
@@ -42,7 +42,7 @@ const CarouselItem = React.forwardRef((
 
       onViewed(avatar.account_id);
       markAsSeen.mutate(avatar.account_id);
-      dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }, () => setLoading(false)));
+      dispatch(replaceHomeTimeline(avatar.account_id, () => setLoading(false)));
     }
   };
 

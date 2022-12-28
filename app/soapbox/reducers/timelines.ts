@@ -47,6 +47,7 @@ const TimelineRecord = ImmutableRecord({
   top: true,
   isLoading: false,
   hasMore: true,
+  next: null as string | null,
   items: ImmutableOrderedSet<string>(),
   queuedItems: ImmutableOrderedSet<string>(), //max= MAX_QUEUED_ITEMS
   feedAccountId: null,
@@ -95,8 +96,13 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
     timeline.set('isLoading', false);
     timeline.set('loadingFailed', false);
     timeline.set('isPartial', isPartial);
+    timeline.set('next', next);
 
-    if (!next && !isLoadingRecent) timeline.set('hasMore', false);
+    if (!next && !isLoadingRecent) {
+      timeline.set('hasMore', false);
+    } else {
+      timeline.set('hasMore', true);
+    }
 
     // Pinned timelines can be replaced entirely
     if (timelineId.endsWith(':pinned')) {
@@ -348,7 +354,8 @@ export default function timelines(state: State = initialState, action: AnyAction
         .update('home', TimelineRecord(), timeline => timeline.withMutations(timeline => {
           timeline.set('items', ImmutableOrderedSet([]));
         }))
-        .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId));
+        .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId))
+        .update('home', TimelineRecord(), timeline => timeline.set('next', null));
     case TIMELINE_INSERT:
       return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
         timeline.update('items', oldIds => {
