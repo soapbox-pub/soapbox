@@ -116,16 +116,14 @@ docs-deploy:
       - "docs/**/*"
   interruptible: true
 
-# Supposed to fail when translations are outdated, instead always passes
-#
-# i18n:
-#   stage: build
-#   script: yarn manage:translations
-#   variables:
-#     NODE_ENV: development
-#   before_script:
-#     - yarn
-#     - yarn build
+i18n:
+  stage: deploy
+  script:
+    - yarn manage:translations en
+    # Fail if files got changed.
+    # https://stackoverflow.com/a/9066385
+    - git diff --quiet
+  interruptible: true
 
 review:
   stage: deploy
