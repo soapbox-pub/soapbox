@@ -3,6 +3,7 @@ import path from 'path';
 
 import * as parser from 'intl-messageformat-parser';
 import manageTranslations, { readMessageFiles, ExtractedDescriptor } from 'react-intl-translations-manager';
+import yargs from 'yargs';
 
 type Validator = (language: string) => void;
 
@@ -68,14 +69,15 @@ Available languages:
 ${availableLanguages.join(', ')}
 `;
 
-const { argv } = require('yargs')
+const argv = yargs
   .usage(usage)
   .option('f', {
     alias: 'force',
     default: false,
     describe: 'force using the provided languages. create files if not exists.',
     type: 'boolean',
-  });
+  })
+  .parseSync();
 
 // check if message directory exists
 if (!fs.existsSync(messagesDirectory)) {
@@ -87,7 +89,7 @@ Try to run "yarn build" first`);
 }
 
 // determine the languages list
-const languages: string[] = (argv._.length > 0) ? argv._ : availableLanguages;
+const languages: string[] = (argv._.length > 0) ? argv._.map(String) : availableLanguages;
 
 const validators: Validator[] = [
   testRFC5646,
