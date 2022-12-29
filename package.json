@@ -246,6 +246,6 @@
     "tailwindcss": "^3.2.1",
     "ts-jest": "^28.0.5",
     "webpack-dev-server": "^4.9.1",
-    "yargs": "^16.0.3"
+    "yargs": "^17.6.2"
   }
 }
