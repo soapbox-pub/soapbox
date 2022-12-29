@@ -53,8 +53,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
         setAccountIds(ImmutableOrderedSet(accountIds));
       })
       .catch(noOp);
-
-  }, 900, { leading: true, trailing: true }), [limit]);
+  }, 900, { leading: false, trailing: true }), [limit]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     refreshCancelToken();
