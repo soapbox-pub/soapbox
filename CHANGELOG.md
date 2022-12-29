@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatibility: rudimentary support for Takahē.
 
 ### Changed
+- Posts: letterbox images to 19:6 again.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
