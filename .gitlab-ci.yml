@@ -15,6 +15,7 @@ stages:
   - deps
   - test
   - deploy
+  - release
 
 deps:
   stage: deps
@@ -169,3 +170,33 @@ docker:
     refs:
       - develop
   interruptible: true
+
+# https://docs.gitlab.com/ee/user/project/releases/release_cicd_examples.html#create-release-metadata-in-a-custom-script
+prepare-release:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "EXTRA_DESCRIPTION=$(npx ts-node ./scripts/changelog.ts $CI_COMMIT_TAG)" >> variables.env
+  artifacts:
+    reports:
+      dotenv: variables.env 
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: prepare-release
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "running release"
+  release:
+    tag_name: '$CI_COMMIT_TAG'
+    description: '$EXTRA_DESCRIPTION'
+    assets:
+      links:
+        - name: Build
+          url: 'https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/$CI_COMMIT_TAG/download?job=build-production'
+          link_type: package
