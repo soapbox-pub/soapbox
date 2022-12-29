@@ -13,7 +13,7 @@ import Video from 'soapbox/features/video';
 import ImageLoader from '../image-loader';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Account, Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
