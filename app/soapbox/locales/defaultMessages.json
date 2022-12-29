@@ -2,19 +2,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Oops!",
-        "id": "alert.unexpected.title"
-      },
-      {
-        "defaultMessage": "An unexpected error occurred.",
-        "id": "alert.unexpected.message"
-      }
-    ],
-    "path": "app/soapbox/actions/alerts.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Account alias created successfully",
         "id": "aliases.success.add"
       },
@@ -86,6 +73,43 @@
       }
     ],
     "path": "app/soapbox/actions/compose.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Image exceeds the current file size limit ({limit})",
+        "id": "upload_error.image_size_limit"
+      },
+      {
+        "defaultMessage": "Your event was created",
+        "id": "compose_event.submit_success"
+      },
+      {
+        "defaultMessage": "Your event was edited",
+        "id": "compose_event.edit_success"
+      },
+      {
+        "defaultMessage": "Joined the event",
+        "id": "join_event.success"
+      },
+      {
+        "defaultMessage": "Requested to join the event",
+        "id": "join_event.request_success"
+      },
+      {
+        "defaultMessage": "View",
+        "id": "toast.view"
+      },
+      {
+        "defaultMessage": "User accepted",
+        "id": "compose_event.participation_requests.authorize_success"
+      },
+      {
+        "defaultMessage": "User rejected",
+        "id": "compose_event.participation_requests.reject_success"
+      }
+    ],
+    "path": "app/soapbox/actions/events.json"
   },
   {
     "descriptors": [
@@ -388,6 +412,27 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Event banner",
+        "id": "event.banner"
+      },
+      {
+        "defaultMessage": "Leave event",
+        "id": "confirmations.leave_event.confirm"
+      },
+      {
+        "defaultMessage": "If you want to rejoin the event, the request will be manually reviewed again. Are you sure you want to proceed?",
+        "id": "confirmations.leave_event.message"
+      },
+      {
+        "defaultMessage": "Manage",
+        "id": "event.manage"
+      }
+    ],
+    "path": "app/soapbox/components/event-preview.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "{siteTitle} uses cookies",
         "id": "gdpr.title"
       },
@@ -436,6 +481,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Find an address",
+        "id": "location_search.placeholder"
+      }
+    ],
+    "path": "app/soapbox/components/location-search.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Not found",
         "id": "missing_indicator.label"
       },
@@ -453,6 +507,10 @@
         "id": "confirmations.delete.confirm"
       },
       {
+        "defaultMessage": "Cancel editing",
+        "id": "confirmations.cancel_editing.confirm"
+      },
+      {
         "defaultMessage": "Cancel post editing",
         "id": "confirmations.cancel_editing.heading"
       },
@@ -467,6 +525,22 @@
       {
         "defaultMessage": "Are you sure you want to delete this post?",
         "id": "confirmations.delete.message"
+      },
+      {
+        "defaultMessage": "Cancel event editing",
+        "id": "confirmations.cancel_event_editing.heading"
+      },
+      {
+        "defaultMessage": "Delete event",
+        "id": "confirmations.delete_event.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to cancel editing this event? All changes will be lost.",
+        "id": "confirmations.cancel_event_editing.message"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this event?",
+        "id": "confirmations.delete_event.message"
       }
     ],
     "path": "app/soapbox/components/modal-root.json"
@@ -656,6 +730,10 @@
         "id": "column.lists"
       },
       {
+        "defaultMessage": "Events",
+        "id": "column.events"
+      },
+      {
         "defaultMessage": "Invites",
         "id": "navigation_bar.invites"
       },
@@ -709,12 +787,16 @@
         "id": "column.lists"
       },
       {
+        "defaultMessage": "Events",
+        "id": "column.events"
+      },
+      {
         "defaultMessage": "Developers",
         "id": "navigation.developers"
       },
       {
         "defaultMessage": "Chats",
-        "id": "tabs_bar.chats"
+        "id": "navigation.chats"
       },
       {
         "defaultMessage": "Messages",
@@ -1104,15 +1186,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Back",
-        "id": "column_back_button.label"
-      }
-    ],
-    "path": "app/soapbox/components/sub-navigation.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Chats",
         "id": "navigation.chats"
       },
@@ -1260,6 +1333,23 @@
       }
     ],
     "path": "app/soapbox/components/upload-progress.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Describe for the visually impaired",
+        "id": "upload_form.description"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "upload_form.undo"
+      },
+      {
+        "defaultMessage": "Preview",
+        "id": "upload_form.preview"
+      }
+    ],
+    "path": "app/soapbox/components/upload.json"
   },
   {
     "descriptors": [
@@ -1565,10 +1655,6 @@
         "id": "admin.dashboard.settings_saved"
       },
       {
-        "defaultMessage": "Registrations",
-        "id": "admin.dashboard.registration_mode_label"
-      },
-      {
         "defaultMessage": "Open",
         "id": "admin.dashboard.registration_mode.open_label"
       },
@@ -1704,8 +1790,28 @@
         "id": "admin.dashcounters.domain_count_label"
       },
       {
+        "defaultMessage": "Soapbox config",
+        "id": "navigation_bar.soapbox_config"
+      },
+      {
+        "defaultMessage": "Moderation Log",
+        "id": "column.admin.moderation_log"
+      },
+      {
+        "defaultMessage": "Registrations",
+        "id": "admin.dashboard.registration_mode_label"
+      },
+      {
         "defaultMessage": "Software",
         "id": "admin.dashwidgets.software_header"
+      },
+      {
+        "defaultMessage": "Frontend",
+        "id": "admin.software.frontend"
+      },
+      {
+        "defaultMessage": "Backend",
+        "id": "admin.software.backend"
       },
       {
         "defaultMessage": "Email list",
@@ -2158,37 +2264,105 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Audio notification on",
-        "id": "chats.audio_toggle_on"
-      },
-      {
-        "defaultMessage": "Audio notification off",
-        "id": "chats.audio_toggle_off"
-      }
-    ],
-    "path": "app/soapbox/features/chats/components/audio-toggle.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Send a message…",
-        "id": "chat_box.input.placeholder"
+        "defaultMessage": "Type a message",
+        "id": "chat.input.placeholder"
       },
       {
         "defaultMessage": "Send",
-        "id": "chat_box.actions.send"
+        "id": "chat.actions.send"
+      },
+      {
+        "defaultMessage": "Retry?",
+        "id": "chat.retry"
+      },
+      {
+        "defaultMessage": "You blocked this user",
+        "id": "chat_message_list.blocked"
+      },
+      {
+        "defaultMessage": "Unblock",
+        "id": "chat_composer.unblock"
+      },
+      {
+        "defaultMessage": "Unblocking will allow this profile to direct message you and view your content.",
+        "id": "chat_settings.unblock.message"
+      },
+      {
+        "defaultMessage": "Unblock @{acct}",
+        "id": "chat_settings.unblock.heading"
+      },
+      {
+        "defaultMessage": "Unblock",
+        "id": "chat_settings.unblock.confirm"
       }
     ],
-    "path": "app/soapbox/features/chats/components/chat-box.json"
+    "path": "app/soapbox/features/chats/components/chat-composer.json"
   },
   {
     "descriptors": [
       {
-        "defaultMessage": "No chats found. To start a chat, visit a user's profile",
-        "id": "chat_panels.main_window.empty"
+        "defaultMessage": "This user has blocked you",
+        "id": "chat_list_item.blocked_you"
+      },
+      {
+        "defaultMessage": "You have blocked this user",
+        "id": "chat_list_item.blocking"
+      },
+      {
+        "defaultMessage": "Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.",
+        "id": "chat_settings.leave.message"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.leave.heading"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.leave.confirm"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.options.leave_chat"
       }
     ],
-    "path": "app/soapbox/features/chats/components/chat-list.json"
+    "path": "app/soapbox/features/chats/components/chat-list-item.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_message_list_intro.leave_chat.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.",
+        "id": "chat_message_list_intro.leave_chat.message"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_message_list_intro.leave_chat.confirm"
+      },
+      {
+        "defaultMessage": "wants to start a chat with you",
+        "id": "chat_message_list_intro.intro"
+      },
+      {
+        "defaultMessage": "Accept",
+        "id": "chat_message_list_intro.actions.accept"
+      },
+      {
+        "defaultMessage": "Leave chat",
+        "id": "chat_message_list_intro.actions.leave_chat"
+      },
+      {
+        "defaultMessage": "Report",
+        "id": "chat_message_list_intro.actions.report"
+      },
+      {
+        "defaultMessage": "Messages older than {day} days are deleted.",
+        "id": "chat_message_list_intro.actions.message_lifespan"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-message-list-intro.json"
   },
   {
     "descriptors": [
@@ -2201,12 +2375,36 @@
         "id": "chats.actions.more"
       },
       {
-        "defaultMessage": "Delete message",
+        "defaultMessage": "Delete for both",
         "id": "chats.actions.delete"
       },
       {
-        "defaultMessage": "Report user",
+        "defaultMessage": "Copy",
+        "id": "chats.actions.copy"
+      },
+      {
+        "defaultMessage": "Report",
         "id": "chats.actions.report"
+      },
+      {
+        "defaultMessage": "Delete for me",
+        "id": "chats.actions.deleteForMe"
+      },
+      {
+        "defaultMessage": "You are blocked by",
+        "id": "chat_message_list.blockedBy"
+      },
+      {
+        "defaultMessage": "Whoops!",
+        "id": "chat_message_list.network_failure.title"
+      },
+      {
+        "defaultMessage": "We encountered a network failure.",
+        "id": "chat_message_list.network_failure.subtitle"
+      },
+      {
+        "defaultMessage": "Try again",
+        "id": "chat_message_list.network_failure.action"
       }
     ],
     "path": "app/soapbox/features/chats/components/chat-message-list.json"
@@ -2214,50 +2412,353 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Start a chat with…",
-        "id": "chats.search_placeholder"
+        "defaultMessage": "No messages yet",
+        "id": "chats.main.blankslate.title"
       },
       {
-        "defaultMessage": "Chats",
-        "id": "chat_panels.main_window.title"
+        "defaultMessage": "Search for someone to chat with",
+        "id": "chats.main.blankslate.subtitle"
+      },
+      {
+        "defaultMessage": "Message someone",
+        "id": "chats.main.blankslate.new_chat"
       }
     ],
-    "path": "app/soapbox/features/chats/components/chat-panes.json"
+    "path": "app/soapbox/features/chats/components/chat-page/components/blankslate-empty.json"
   },
   {
     "descriptors": [
       {
-        "defaultMessage": "Close chat",
-        "id": "chat_window.close"
+        "defaultMessage": "Select a chat",
+        "id": "chats.main.blankslate_with_chats.title"
+      },
+      {
+        "defaultMessage": "Select from one of your open chats or create a new message.",
+        "id": "chats.main.blankslate_with_chats.subtitle"
+      },
+      {
+        "defaultMessage": "Message someone",
+        "id": "chats.main.blankslate.new_chat"
       }
     ],
-    "path": "app/soapbox/features/chats/components/chat-window.json"
+    "path": "app/soapbox/features/chats/components/chat-page/components/blankslate-with-chats.json"
   },
   {
     "descriptors": [
       {
-        "defaultMessage": "Image",
-        "id": "chats.attachment_image"
+        "defaultMessage": "Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.",
+        "id": "chat_settings.block.message"
       },
       {
-        "defaultMessage": "Attachment",
-        "id": "chats.attachment"
+        "defaultMessage": "Block @{acct}",
+        "id": "chat_settings.block.heading"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "chat_settings.block.confirm"
+      },
+      {
+        "defaultMessage": "Unblocking will allow this profile to direct message you and view your content.",
+        "id": "chat_settings.unblock.message"
+      },
+      {
+        "defaultMessage": "Unblock @{acct}",
+        "id": "chat_settings.unblock.heading"
+      },
+      {
+        "defaultMessage": "Unblock",
+        "id": "chat_settings.unblock.confirm"
+      },
+      {
+        "defaultMessage": "Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.",
+        "id": "chat_settings.leave.message"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.leave.heading"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.leave.confirm"
+      },
+      {
+        "defaultMessage": "Block @{acct}",
+        "id": "chat_settings.options.block_user"
+      },
+      {
+        "defaultMessage": "Unblock @{acct}",
+        "id": "chat_settings.options.unblock_user"
+      },
+      {
+        "defaultMessage": "Report @{acct}",
+        "id": "chat_settings.options.report_user"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.options.leave_chat"
+      },
+      {
+        "defaultMessage": "Auto-delete messages",
+        "id": "chat_settings.auto_delete.label"
+      },
+      {
+        "defaultMessage": "Sent messages will auto-delete after the time period selected",
+        "id": "chat_settings.auto_delete.hint"
+      },
+      {
+        "defaultMessage": "2 minutes",
+        "id": "chat_settings.auto_delete.2minutes"
+      },
+      {
+        "defaultMessage": "7 days",
+        "id": "chat_settings.auto_delete.7days"
+      },
+      {
+        "defaultMessage": "14 days",
+        "id": "chat_settings.auto_delete.14days"
+      },
+      {
+        "defaultMessage": "30 days",
+        "id": "chat_settings.auto_delete.30days"
+      },
+      {
+        "defaultMessage": "90 days",
+        "id": "chat_settings.auto_delete.90days"
+      },
+      {
+        "defaultMessage": "Auto-delete after {day} days",
+        "id": "chat_window.auto_delete_label"
+      },
+      {
+        "defaultMessage": "Chat messages are set to auto-delete after {day} days upon sending.",
+        "id": "chat_window.auto_delete_tooltip"
       }
     ],
-    "path": "app/soapbox/features/chats/components/chat.json"
+    "path": "app/soapbox/features/chats/components/chat-page/components/chat-page-main.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Message Settings",
+        "id": "chat.page_settings.title"
+      },
+      {
+        "defaultMessage": "Preferences",
+        "id": "chat.page_settings.preferences"
+      },
+      {
+        "defaultMessage": "Privacy",
+        "id": "chat.page_settings.privacy"
+      },
+      {
+        "defaultMessage": "Allow users to start a new chat with you",
+        "id": "chat.page_settings.accepting_messages.label"
+      },
+      {
+        "defaultMessage": "Play a sound when you receive a message",
+        "id": "chat.page_settings.play_sounds.label"
+      },
+      {
+        "defaultMessage": "Save",
+        "id": "chat.page_settings.submit"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-page/components/chat-page-settings.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Messages",
+        "id": "column.chats"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-page/components/chat-page-sidebar.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Welcome to {br} Chats!",
+        "id": "chat.welcome.title"
+      },
+      {
+        "defaultMessage": "Exchange direct messages with other users.",
+        "id": "chat.welcome.subtitle"
+      },
+      {
+        "defaultMessage": "Allow users to start a new chat with you",
+        "id": "chat.welcome.accepting_messages.label"
+      },
+      {
+        "defaultMessage": "You can change these settings later.",
+        "id": "chat.welcome.notice"
+      },
+      {
+        "defaultMessage": "Save & Continue",
+        "id": "chat.welcome.submit"
+      },
+      {
+        "defaultMessage": "Privacy",
+        "id": "chat.page_settings.privacy"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-page/components/welcome.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "No messages yet",
+        "id": "chat_search.empty_results_blankslate.title"
+      },
+      {
+        "defaultMessage": "Search for someone to chat with.",
+        "id": "chat_search.empty_results_blankslate.body"
+      },
+      {
+        "defaultMessage": "Message someone",
+        "id": "chat_search.empty_results_blankslate.action"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-pane/blankslate.json"
   },
   {
     "descriptors": [
       {
         "defaultMessage": "Chats",
         "id": "column.chats"
-      },
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-pane/chat-pane.json"
+  },
+  {
+    "descriptors": [
       {
-        "defaultMessage": "Start a chat with…",
+        "defaultMessage": "Search inbox",
         "id": "chats.search_placeholder"
       }
     ],
-    "path": "app/soapbox/features/chats/index.json"
+    "path": "app/soapbox/features/chats/components/chat-search-input.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Start a chat",
+        "id": "chat_search.blankslate.title"
+      },
+      {
+        "defaultMessage": "Search for someone to chat with.",
+        "id": "chat_search.blankslate.body"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-search/blankslate.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "No matches found",
+        "id": "chat_search.empty_results_blankslate.title"
+      },
+      {
+        "defaultMessage": "Try searching for another name.",
+        "id": "chat_search.empty_results_blankslate.body"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-search/empty-results-blankslate.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.",
+        "id": "chat_settings.block.message"
+      },
+      {
+        "defaultMessage": "Block @{acct}",
+        "id": "chat_settings.block.heading"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "chat_settings.block.confirm"
+      },
+      {
+        "defaultMessage": "Unblocking will allow this profile to direct message you and view your content.",
+        "id": "chat_settings.unblock.message"
+      },
+      {
+        "defaultMessage": "Unblock @{acct}",
+        "id": "chat_settings.unblock.heading"
+      },
+      {
+        "defaultMessage": "Unblock",
+        "id": "chat_settings.unblock.confirm"
+      },
+      {
+        "defaultMessage": "Are you sure you want to leave this chat? Messages will be deleted for you and this chat will be removed from your inbox.",
+        "id": "chat_settings.leave.message"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.leave.heading"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.leave.confirm"
+      },
+      {
+        "defaultMessage": "Chat Details",
+        "id": "chat_settings.title"
+      },
+      {
+        "defaultMessage": "Block @{acct}",
+        "id": "chat_settings.options.block_user"
+      },
+      {
+        "defaultMessage": "Unblock @{acct}",
+        "id": "chat_settings.options.unblock_user"
+      },
+      {
+        "defaultMessage": "Leave Chat",
+        "id": "chat_settings.options.leave_chat"
+      },
+      {
+        "defaultMessage": "Auto-delete messages",
+        "id": "chat_settings.auto_delete.label"
+      },
+      {
+        "defaultMessage": "{day} days",
+        "id": "chat_settings.auto_delete.days"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-widget/chat-settings.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Auto-delete after {day} days",
+        "id": "chat_window.auto_delete_label"
+      },
+      {
+        "defaultMessage": "Chat messages are set to auto-delete after {day} days upon sending.",
+        "id": "chat_window.auto_delete_tooltip"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-widget/chat-window.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Messages",
+        "id": "chat_search.title"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat-widget/headers/chat-search-header.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Message failed to send.",
+        "id": "chat.failed_to_send"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat.json"
   },
   {
     "descriptors": [
@@ -2279,8 +2780,12 @@
         "id": "compose_form.placeholder"
       },
       {
-        "defaultMessage": "Add a poll topic...",
+        "defaultMessage": "Add a poll topic…",
         "id": "compose_form.poll_placeholder"
+      },
+      {
+        "defaultMessage": "Post to this event",
+        "id": "compose_form.event_placeholder"
       },
       {
         "defaultMessage": "Write your warning here (optional)",
@@ -2711,23 +3216,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Describe for the visually impaired",
-        "id": "upload_form.description"
-      },
-      {
-        "defaultMessage": "Delete",
-        "id": "upload_form.undo"
-      },
-      {
-        "defaultMessage": "Preview",
-        "id": "upload_form.preview"
-      }
-    ],
-    "path": "app/soapbox/features/compose/components/upload.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Used {chars} out of {maxChars} characters",
         "id": "compose.character_counter.title"
       }
@@ -2971,6 +3459,10 @@
       {
         "defaultMessage": "Leave developers",
         "id": "developers.navigation.leave_developers_label"
+      },
+      {
+        "defaultMessage": "Trigger Toast",
+        "id": "developers.navigation.show_toast"
       }
     ],
     "path": "app/soapbox/features/developers/developers-menu.json"
@@ -3033,6 +3525,14 @@
       {
         "defaultMessage": "Save",
         "id": "soapbox_config.save"
+      },
+      {
+        "defaultMessage": "Demo mode",
+        "id": "preferences.fields.demo_label"
+      },
+      {
+        "defaultMessage": "Use the default Soapbox logo and color scheme. Useful for taking screenshots.",
+        "id": "preferences.fields.demo_hint"
       },
       {
         "defaultMessage": "Show all notification categories",
@@ -3278,6 +3778,22 @@
         "id": "common.cancel"
       },
       {
+        "defaultMessage": "Choose Background Picture",
+        "id": "edit_profile.fields.header_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
+        "id": "edit_profile.hints.header"
+      },
+      {
+        "defaultMessage": "Choose Profile Picture",
+        "id": "edit_profile.fields.avatar_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
+        "id": "edit_profile.hints.avatar"
+      },
+      {
         "defaultMessage": "Display name",
         "id": "edit_profile.fields.display_name_label"
       },
@@ -3296,22 +3812,6 @@
       {
         "defaultMessage": "Bio",
         "id": "edit_profile.fields.bio_label"
-      },
-      {
-        "defaultMessage": "Choose Profile Picture",
-        "id": "edit_profile.fields.avatar_label"
-      },
-      {
-        "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
-        "id": "edit_profile.hints.avatar"
-      },
-      {
-        "defaultMessage": "Choose Background Picture",
-        "id": "edit_profile.fields.header_label"
-      },
-      {
-        "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
-        "id": "edit_profile.hints.header"
       },
       {
         "defaultMessage": "Lock account",
@@ -3384,6 +3884,235 @@
       }
     ],
     "path": "app/soapbox/features/email-confirmation/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Leave event",
+        "id": "confirmations.leave_event.confirm"
+      },
+      {
+        "defaultMessage": "If you want to rejoin the event, the request will be manually reviewed again. Are you sure you want to proceed?",
+        "id": "confirmations.leave_event.message"
+      },
+      {
+        "defaultMessage": "Going",
+        "id": "event.join_state.accept"
+      },
+      {
+        "defaultMessage": "Pending",
+        "id": "event.join_state.pending"
+      },
+      {
+        "defaultMessage": "Going",
+        "id": "event.join_state.rejected"
+      },
+      {
+        "defaultMessage": "Participate",
+        "id": "event.join_state.empty"
+      }
+    ],
+    "path": "app/soapbox/features/event/components/event-action-button.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Event banner",
+        "id": "event.banner"
+      },
+      {
+        "defaultMessage": "Export to your calendar",
+        "id": "event.export_ics"
+      },
+      {
+        "defaultMessage": "Copy link to event",
+        "id": "event.copy"
+      },
+      {
+        "defaultMessage": "View event on {domain}",
+        "id": "event.external"
+      },
+      {
+        "defaultMessage": "Bookmark",
+        "id": "status.bookmark"
+      },
+      {
+        "defaultMessage": "Remove bookmark",
+        "id": "status.unbookmark"
+      },
+      {
+        "defaultMessage": "Quote post",
+        "id": "status.quote"
+      },
+      {
+        "defaultMessage": "Pin on profile",
+        "id": "status.pin"
+      },
+      {
+        "defaultMessage": "Unpin from profile",
+        "id": "status.unpin"
+      },
+      {
+        "defaultMessage": "Repost to original audience",
+        "id": "status.reblog_private"
+      },
+      {
+        "defaultMessage": "Un-repost",
+        "id": "status.cancel_reblog_private"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "status.delete"
+      },
+      {
+        "defaultMessage": "Mention @{name}",
+        "id": "status.mention"
+      },
+      {
+        "defaultMessage": "Chat with @{name}",
+        "id": "status.chat"
+      },
+      {
+        "defaultMessage": "Direct message @{name}",
+        "id": "status.direct"
+      },
+      {
+        "defaultMessage": "Mute @{name}",
+        "id": "account.mute"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "account.block"
+      },
+      {
+        "defaultMessage": "Report @{name}",
+        "id": "status.report"
+      },
+      {
+        "defaultMessage": "Moderate @{name}",
+        "id": "status.admin_account"
+      },
+      {
+        "defaultMessage": "Open this post in the moderation interface",
+        "id": "status.admin_status"
+      },
+      {
+        "defaultMessage": "Mark post sensitive",
+        "id": "admin.statuses.actions.mark_status_sensitive"
+      },
+      {
+        "defaultMessage": "Mark post not sensitive",
+        "id": "admin.statuses.actions.mark_status_not_sensitive"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "admin.statuses.actions.delete_status"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "confirmations.block.confirm"
+      },
+      {
+        "defaultMessage": "Block & Report",
+        "id": "confirmations.block.block_and_report"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "confirmations.delete_event.confirm"
+      },
+      {
+        "defaultMessage": "Delete event",
+        "id": "confirmations.delete_event.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this event?",
+        "id": "confirmations.delete_event.message"
+      },
+      {
+        "defaultMessage": "Block @{name}",
+        "id": "confirmations.block.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to block {name}?",
+        "id": "confirmations.block.message"
+      },
+      {
+        "defaultMessage": "Manage",
+        "id": "event.manage"
+      },
+      {
+        "defaultMessage": "Organized by {name}",
+        "id": "event.organized_by"
+      },
+      {
+        "defaultMessage": "{count} {rawCount, plural, one {person} other {people}} going",
+        "id": "event.participants"
+      }
+    ],
+    "path": "app/soapbox/features/event/components/event-header.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "No one has commented this event yet. When someone does, they will appear here.",
+        "id": "event.discussion.empty"
+      }
+    ],
+    "path": "app/soapbox/features/event/event-discussion.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Location",
+        "id": "event.location"
+      },
+      {
+        "defaultMessage": "Show on map",
+        "id": "event.show_on_map"
+      },
+      {
+        "defaultMessage": "Date",
+        "id": "event.date"
+      },
+      {
+        "defaultMessage": "External links",
+        "id": "event.website"
+      },
+      {
+        "defaultMessage": "Description",
+        "id": "event.description"
+      }
+    ],
+    "path": "app/soapbox/features/event/event-information.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Events",
+        "id": "column.events"
+      },
+      {
+        "defaultMessage": "Recent events",
+        "id": "events.recent_events"
+      },
+      {
+        "defaultMessage": "Create event",
+        "id": "events.create_event"
+      },
+      {
+        "defaultMessage": "There are no public events yet.",
+        "id": "events.recent_events.empty"
+      },
+      {
+        "defaultMessage": "Joined events",
+        "id": "events.joined_events"
+      },
+      {
+        "defaultMessage": "You haven't joined any event yet.",
+        "id": "events.joined_events.empty"
+      }
+    ],
+    "path": "app/soapbox/features/events/index.json"
   },
   {
     "descriptors": [
@@ -4201,6 +4930,18 @@
         "id": "notification.update"
       },
       {
+        "defaultMessage": "An event you are participating in starts soon",
+        "id": "notification.pleroma:event_reminder"
+      },
+      {
+        "defaultMessage": "{name} wants to join your event",
+        "id": "notification.pleroma:participation_request"
+      },
+      {
+        "defaultMessage": "You were accepted to join the event",
+        "id": "notification.pleroma:participation_accepted"
+      },
+      {
         "defaultMessage": " + {count} {count, plural, one {other} other {others}}",
         "id": "notification.others"
       }
@@ -4495,10 +5236,6 @@
         "id": "home.column_settings.show_reblogs"
       },
       {
-        "defaultMessage": "In your home feed",
-        "id": "preferences.hints.feed"
-      },
-      {
         "defaultMessage": "Show replies",
         "id": "home.column_settings.show_replies"
       },
@@ -4622,6 +5359,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Post quotes",
+        "id": "column.quotes"
+      },
+      {
+        "defaultMessage": "This post has not been quoted yet.",
+        "id": "empty_column.quotes"
+      }
+    ],
+    "path": "app/soapbox/features/quotes/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "You've been invited to join {siteTitle}!",
         "id": "register_invite.title"
       },
@@ -4634,10 +5384,6 @@
   },
   {
     "descriptors": [
-      {
-        "defaultMessage": "Federated timeline",
-        "id": "column.remote"
-      },
       {
         "defaultMessage": "You are viewing the timeline of {instance}.",
         "id": "remote_timeline.filter_message"
@@ -4837,6 +5583,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Allow users to start a new chat with you",
+        "id": "settings.messages.label"
+      }
+    ],
+    "path": "app/soapbox/features/settings/components/messages-settings.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Settings",
         "id": "settings.settings"
       },
@@ -4895,6 +5650,10 @@
       {
         "defaultMessage": "Disabled",
         "id": "mfa.disabled"
+      },
+      {
+        "defaultMessage": "Chats",
+        "id": "column.chats"
       }
     ],
     "path": "app/soapbox/features/settings/index.json"
@@ -5093,6 +5852,14 @@
         "id": "soapbox_config.feed_injection_hint"
       },
       {
+        "defaultMessage": "Map tile server",
+        "id": "soapbox_config.tile_server_label"
+      },
+      {
+        "defaultMessage": "Map tiles attribution",
+        "id": "soapbox_config.tile_server_attribution_label"
+      },
+      {
         "defaultMessage": "Logo",
         "id": "soapbox_config.fields.logo_label"
       },
@@ -5109,12 +5876,8 @@
         "id": "soapbox_config.fields.theme_label"
       },
       {
-        "defaultMessage": "Brand color",
-        "id": "soapbox_config.fields.brand_color_label"
-      },
-      {
-        "defaultMessage": "Accent color",
-        "id": "soapbox_config.fields.accent_color_label"
+        "defaultMessage": "Edit theme",
+        "id": "soapbox_config.fields.edit_theme_label"
       },
       {
         "defaultMessage": "Options",
@@ -5139,6 +5902,10 @@
       {
         "defaultMessage": "You can have custom defined links displayed on the footer of your static pages",
         "id": "soapbox_config.hints.home_footer_fields"
+      },
+      {
+        "defaultMessage": "Events",
+        "id": "soapbox_config.headings.events"
       },
       {
         "defaultMessage": "Cryptocurrency",
@@ -5181,6 +5948,10 @@
       {
         "defaultMessage": "{count, plural, one {Repost} other {Reposts}}",
         "id": "status.interactions.reblogs"
+      },
+      {
+        "defaultMessage": "{count, plural, one {Quote} other {Quotes}}",
+        "id": "status.interactions.quotes"
       },
       {
         "defaultMessage": "{count, plural, one {Like} other {Likes}}",
@@ -5291,6 +6062,43 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Theme",
+        "id": "admin.theme.title"
+      },
+      {
+        "defaultMessage": "Theme updated!",
+        "id": "theme_editor.saved"
+      },
+      {
+        "defaultMessage": "Restore default theme",
+        "id": "theme_editor.restore"
+      },
+      {
+        "defaultMessage": "Export theme",
+        "id": "theme_editor.export"
+      },
+      {
+        "defaultMessage": "Import theme",
+        "id": "theme_editor.import"
+      },
+      {
+        "defaultMessage": "Theme was successfully imported!",
+        "id": "theme_editor.import_success"
+      },
+      {
+        "defaultMessage": "Reset",
+        "id": "theme_editor.Reset"
+      },
+      {
+        "defaultMessage": "Save theme",
+        "id": "theme_editor.save"
+      }
+    ],
+    "path": "app/soapbox/features/theme-editor/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Block @{name}",
         "id": "account.block"
       },
@@ -5365,7 +6173,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Something went wrong while loading this page.",
+        "defaultMessage": "Something went wrong while loading this modal.",
         "id": "bundle_modal_error.message"
       },
       {
@@ -5421,6 +6229,15 @@
       }
     ],
     "path": "app/soapbox/features/ui/components/cta-banner.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Publish",
+        "id": "compose_form.publish"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/floating-action-button.json"
   },
   {
     "descriptors": [
@@ -5697,6 +6514,136 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Name",
+        "id": "compose_event.fields.name_placeholder"
+      },
+      {
+        "defaultMessage": "Description",
+        "id": "compose_event.fields.description_placeholder"
+      },
+      {
+        "defaultMessage": "Event begins on…",
+        "id": "compose_event.fields.start_time_placeholder"
+      },
+      {
+        "defaultMessage": "Event ends on…",
+        "id": "compose_event.fields.end_time_placeholder"
+      },
+      {
+        "defaultMessage": "Reset location",
+        "id": "compose_event.reset_location"
+      },
+      {
+        "defaultMessage": "Edit details",
+        "id": "compose_event.tabs.edit"
+      },
+      {
+        "defaultMessage": "Manage requests",
+        "id": "compose_event.tabs.pending"
+      },
+      {
+        "defaultMessage": "Authorize",
+        "id": "compose_event.participation_requests.authorize"
+      },
+      {
+        "defaultMessage": "Reject",
+        "id": "compose_event.participation_requests.reject"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "confirmations.delete.confirm"
+      },
+      {
+        "defaultMessage": "Cancel editing",
+        "id": "confirmations.cancel_editing.confirm"
+      },
+      {
+        "defaultMessage": "Cancel event editing",
+        "id": "confirmations.cancel_event_editing.heading"
+      },
+      {
+        "defaultMessage": "Delete event",
+        "id": "confirmations.delete_event.heading"
+      },
+      {
+        "defaultMessage": "Are you sure you want to cancel editing this event? All changes will be lost.",
+        "id": "confirmations.cancel_event_editing.message"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this event?",
+        "id": "confirmations.delete_event.message"
+      },
+      {
+        "defaultMessage": "Event banner",
+        "id": "compose_event.fields.banner_label"
+      },
+      {
+        "defaultMessage": "Event name",
+        "id": "compose_event.fields.name_label"
+      },
+      {
+        "defaultMessage": "Event description",
+        "id": "compose_event.fields.description_label"
+      },
+      {
+        "defaultMessage": "Markdown syntax is supported",
+        "id": "compose_event.fields.description_hint"
+      },
+      {
+        "defaultMessage": "Event location",
+        "id": "compose_event.fields.location_label"
+      },
+      {
+        "defaultMessage": "Event start date",
+        "id": "compose_event.fields.start_time_label"
+      },
+      {
+        "defaultMessage": "The event has end date",
+        "id": "compose_event.fields.has_end_time"
+      },
+      {
+        "defaultMessage": "Event end date",
+        "id": "compose_event.fields.end_time_label"
+      },
+      {
+        "defaultMessage": "I want to approve participation requests manually",
+        "id": "compose_event.fields.approval_required"
+      },
+      {
+        "defaultMessage": "There are no pending event participation requests.",
+        "id": "empty_column.event_participant_requests"
+      },
+      {
+        "defaultMessage": "Manage event",
+        "id": "navigation_bar.compose_event"
+      },
+      {
+        "defaultMessage": "Create new event",
+        "id": "navigation_bar.create_event"
+      },
+      {
+        "defaultMessage": "Update",
+        "id": "compose_event.update"
+      },
+      {
+        "defaultMessage": "Create",
+        "id": "compose_event.create"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/modals/compose-event-modal/compose-event-modal.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Upload event banner",
+        "id": "compose_event.upload_banner"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/modals/compose-event-modal/upload-button.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Close",
         "id": "lightbox.close"
       },
@@ -5801,6 +6748,32 @@
       }
     ],
     "path": "app/soapbox/features/ui/components/modals/embed-modal.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Event location",
+        "id": "column.event_map"
+      },
+      {
+        "defaultMessage": "Navigate",
+        "id": "event_map.navigate"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/modals/event-map-modal.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "No one joined this event yet. When someone does, they will show up here.",
+        "id": "empty_column.event_participants"
+      },
+      {
+        "defaultMessage": "Event participants",
+        "id": "column.event_participants"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/modals/event-participants-modal.json"
   },
   {
     "descriptors": [
@@ -5948,6 +6921,27 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "You can tell the organizer why do you want to participate in this event:",
+        "id": "join_event.hint"
+      },
+      {
+        "defaultMessage": "Message to organizer",
+        "id": "join_event.placeholder"
+      },
+      {
+        "defaultMessage": "Request join",
+        "id": "join_event.join"
+      },
+      {
+        "defaultMessage": "Join event",
+        "id": "join_event.title"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/modals/join-event-modal.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Download",
         "id": "landing_page_modal.download"
       },
@@ -6053,6 +7047,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "You’ve scored the latest version of {siteTitle}! Take a moment to review the exciting new things we’ve been working on.",
+        "id": "modals.policy.updateTitle"
+      },
+      {
+        "defaultMessage": "Accept & Continue",
+        "id": "modals.policy.submit"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/modals/policy-modal.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Close",
         "id": "lightbox.close"
       },
@@ -6108,16 +7115,16 @@
         "id": "report.next"
       },
       {
-        "defaultMessage": "Close",
-        "id": "lightbox.close"
-      },
-      {
-        "defaultMessage": "Additional comments",
-        "id": "report.placeholder"
-      },
-      {
         "defaultMessage": "Submit",
         "id": "report.submit"
+      },
+      {
+        "defaultMessage": "When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.",
+        "id": "report.chatMessage.context"
+      },
+      {
+        "defaultMessage": "Report message",
+        "id": "report.chatMessage.title"
       },
       {
         "defaultMessage": "Cancel",
@@ -6258,6 +7265,14 @@
       {
         "defaultMessage": "Proceed to vote",
         "id": "remote_interaction.poll_vote"
+      },
+      {
+        "defaultMessage": "Join an event remotely",
+        "id": "remote_interaction.event_join_title"
+      },
+      {
+        "defaultMessage": "Proceed to join",
+        "id": "remote_interaction.event_join"
       },
       {
         "defaultMessage": "Log in",
@@ -6616,19 +7631,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Your draft will be lost if you leave.",
-        "id": "ui.beforeunload"
-      },
-      {
-        "defaultMessage": "Publish",
-        "id": "compose_form.publish"
-      }
-    ],
-    "path": "app/soapbox/features/ui/index.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "8 characters",
         "id": "registration.validation.minimum_characters"
       },
@@ -6939,5 +7941,14 @@
       }
     ],
     "path": "app/soapbox/pages/profile-page.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "An unexpected error occurred.",
+        "id": "alert.unexpected.message"
+      }
+    ],
+    "path": "app/soapbox/toast.json"
   }
 ]
