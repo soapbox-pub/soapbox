@@ -169,3 +169,6 @@ docker:
     refs:
       - develop
   interruptible: true
+
+include:
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
