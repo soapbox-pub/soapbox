@@ -107,7 +107,7 @@ manageTranslations({
   messagesDirectory,
   translationsDirectory,
   detectDuplicateIds: false,
-  singleMessagesFile: true,
+  singleMessagesFile: false,
   languages,
   jsonOptions: {
     trailingNewline: true,
