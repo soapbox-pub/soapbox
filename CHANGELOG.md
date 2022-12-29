@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Compatibility: rudimentary support for Takahē.
 
 ### Changed
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
+- ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
 
 ## [3.0.0] - 2022-12-25
 
