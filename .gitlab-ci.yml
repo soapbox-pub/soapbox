@@ -94,7 +94,12 @@ nginx-test:
 
 build-production:
   stage: test
-  script: yarn build
+  script:
+    - yarn build
+    - yarn manage:translations en
+    # Fail if files got changed.
+    # https://stackoverflow.com/a/9066385
+    - git diff --quiet
   variables:
     NODE_ENV: production
   artifacts:
@@ -114,15 +119,6 @@ docs-deploy:
       - develop
     changes:
       - "docs/**/*"
-  interruptible: true
-
-i18n:
-  stage: deploy
-  script:
-    - yarn manage:translations en
-    # Fail if files got changed.
-    # https://stackoverflow.com/a/9066385
-    - git diff --quiet
   interruptible: true
 
 review:
