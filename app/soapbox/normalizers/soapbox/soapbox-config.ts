@@ -115,6 +115,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   feedInjection: true,
   tileServer: '',
   tileServerAttribution: '',
+  redirectRootNoLogin: '/',
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
