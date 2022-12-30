@@ -116,7 +116,7 @@ docs-deploy:
     - curl -X POST -F"token=$CI_JOB_TOKEN" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
   only:
     refs:
-      - develop
+      - $CI_DEFAULT_BRANCH
     changes:
       - "docs/**/*"
   interruptible: true
@@ -144,7 +144,7 @@ pages:
     - public
   only:
     refs:
-      - develop
+      - $CI_DEFAULT_BRANCH
   interruptible: true
 
 docker:
@@ -161,7 +161,7 @@ docker:
     - docker push $CI_REGISTRY_IMAGE
   only:
     refs:
-      - develop
+      - $CI_DEFAULT_BRANCH
   interruptible: true
 
 include:
