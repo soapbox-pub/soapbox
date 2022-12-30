@@ -236,7 +236,7 @@
     "husky": "^7.0.2",
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
-    "jest-junit": "^14.0.0",
+    "jest-junit": "^15.0.0",
     "lint-staged": ">=10",
     "raf": "^3.4.1",
     "react-intl-translations-manager": "^5.0.3",
