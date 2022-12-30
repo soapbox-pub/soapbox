@@ -234,17 +234,6 @@
       color: var(--primary-text-color--faint);
       background-color: var(--background-color);
     }
-
-    &.onboarding-modal__done,
-    &.onboarding-modal__next {
-      color: var(--primary-text-color);
-
-      &:hover,
-      &:focus,
-      &:active {
-        color: var(--primary-text-color);
-      }
-    }
   }
 }
 

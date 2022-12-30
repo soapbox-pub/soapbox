@@ -54,18 +54,10 @@ export interface ReducerAdminReport extends AdminReportRecord {
   statuses: ImmutableList<string | null>,
 }
 
-// Umm... based?
-// https://itnext.io/typescript-extract-unpack-a-type-from-a-generic-baca7af14e51
-// type InnerRecord<R> = R extends ImmutableRecord<infer TProps> ? TProps : never;
-
-// type InnerState = InnerRecord<State>;
-
 // Lol https://javascript.plainenglish.io/typescript-essentials-conditionally-filter-types-488705bfbf56
-// type FilterConditionally<Source, Condition> = Pick<Source, {[K in keyof Source]: Source[K] extends Condition ? K : never}[keyof Source]>;
+type FilterConditionally<Source, Condition> = Pick<Source, {[K in keyof Source]: Source[K] extends Condition ? K : never}[keyof Source]>;
 
-// type SetKeys = keyof FilterConditionally<InnerState, ImmutableOrderedSet<string>>;
-
-type SetKeys = 'openReports' | 'latestUsers' | 'awaitingApproval';
+type SetKeys = keyof FilterConditionally<State, ImmutableOrderedSet<string>>;
 
 type APIReport = { id: string, state: string, statuses: any[] };
 type APIUser = { id: string, email: string, nickname: string, registration_reason: string };
