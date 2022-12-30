@@ -5199,10 +5199,10 @@ emittery@^0.10.2:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.10.2.tgz#902eec8aedb8c41938c46e9385e9db7e03182933"
   integrity sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==
 
-emoji-datasource@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-5.0.0.tgz#1522fdba3c52223a1cf5a1c1fc282935400eaa06"
-  integrity sha512-LuvLWFnxznTH++GytEzpzOPUo1SB+6CUFqIlVETJJ3x9fpyMCKFfyqberbhMLOpT1qcNe+km+zoyBeUSC3u5Rw==
+emoji-datasource@5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-5.0.1.tgz#31eaaff7caa6640929327b4f4ff66f2bf313df0a"
+  integrity sha512-RXokuCv4o8RFLiigN1skAdZwJuJWqtBvcK3GVKpvAL/7BeH95enmKsli7cG8YZ85RTjyEe3+GAdpJJOV43KLKQ==
 
 "emoji-mart@npm:emoji-mart-lazyload":
   version "3.0.1-j"
