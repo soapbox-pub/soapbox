@@ -36,6 +36,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
               account={account}
               timestamp={status.created_at}
               futureTimestamp
+              hideActions
             />
           </HStack>
         </div>
