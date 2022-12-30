@@ -2732,11 +2732,6 @@
   resolved "https://registry.yarnpkg.com/@types/object-assign/-/object-assign-4.0.30.tgz#8949371d5a99f4381ee0f1df0a9b7a187e07e652"
   integrity sha1-iUk3HVqZ9Dge4PHfCpt6GH4H5lI=
 
-"@types/object-fit-images@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@types/object-fit-images/-/object-fit-images-3.2.3.tgz#aa17a1cb4ac113ba81ce62f901177c9ccd5194f5"
-  integrity sha512-kpBPy4HIzbM1o3v+DJrK4V5NgUpcUg/ayzjixOVHQNukpdEUYDIaeDrnYJUSemQXWX5mKeEnxDRU1nACAWYnvg==
-
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -8707,11 +8702,6 @@ object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
-
-object-fit-images@^3.2.3:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/object-fit-images/-/object-fit-images-3.2.4.tgz#6c299d38fdf207746e5d2d46c2877f6f25d15b52"
-  integrity sha512-G+7LzpYfTfqUyrZlfrou/PLLLAPNC52FTy5y1CBywX+1/FkxIloOyQXBmZ3Zxa2AWO+lMF0JTuvqbr7G5e5CWg==
 
 object-hash@^3.0.0:
   version "3.0.0"
