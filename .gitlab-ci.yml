@@ -3,6 +3,9 @@ image: node:18
 variables:
   NODE_ENV: test
 
+default:
+  interruptible: true
+
 cache: &cache
   key:
     files:
@@ -25,7 +28,6 @@ deps:
   cache:
     <<: *cache
     policy: push
-  interruptible: true
 
 danger:
   stage: test
@@ -37,7 +39,6 @@ danger:
     refs:
       - $CI_DEFAULT_BRANCH
   allow_failure: true
-  interruptible: true
 
 lint-js:
   stage: test
@@ -50,7 +51,6 @@ lint-js:
       - "**/*.tsx"
       - ".eslintignore"
       - ".eslintrc.js"
-  interruptible: true
 
 lint-sass:
   stage: test
@@ -60,7 +60,6 @@ lint-sass:
       - "**/*.scss"
       - "**/*.css"
       - ".stylelintrc.json"
-  interruptible: true
 
 jest:
   stage: test
@@ -83,7 +82,6 @@ jest:
       coverage_report:
         coverage_format: cobertura
         path: .coverage/cobertura-coverage.xml
-  interruptible: true
 
 nginx-test:
   stage: test
@@ -94,7 +92,6 @@ nginx-test:
   only:
     changes:
       - "installation/mastodon.conf"
-  interruptible: true
 
 build-production:
   stage: test
@@ -109,7 +106,6 @@ build-production:
   artifacts:
     paths:
      - static
-  interruptible: true
 
 docs-deploy:
   stage: deploy
@@ -123,7 +119,6 @@ docs-deploy:
       - $CI_DEFAULT_BRANCH
     changes:
       - "docs/**/*"
-  interruptible: true
 
 review:
   stage: deploy
@@ -133,7 +128,6 @@ review:
   script:
     - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
-  interruptible: true
 
 pages:
   stage: deploy
@@ -149,7 +143,6 @@ pages:
   only:
     refs:
       - $CI_DEFAULT_BRANCH
-  interruptible: true
 
 docker:
   stage: deploy
@@ -166,14 +159,7 @@ docker:
   only:
     refs:
       - $CI_DEFAULT_BRANCH
-  interruptible: true
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
   - template: Security/License-Scanning.gitlab-ci.yml
-
-gemnasium-dependency_scanning:
-  interruptible: true
-
-license_scanning:
-  interruptible: true
