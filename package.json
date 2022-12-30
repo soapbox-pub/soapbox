@@ -20,6 +20,7 @@
     "dev": "${npm_execpath} run start",
     "build": "npx webpack",
     "jsdoc": "npx jsdoc -c jsdoc.conf.js",
+    "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
     "test": "npx cross-env NODE_ENV=test npx jest",
     "test:coverage": "${npm_execpath} run test --coverage",
