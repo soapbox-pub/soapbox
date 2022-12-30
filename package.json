@@ -84,7 +84,7 @@
     "@types/react-color": "^3.0.6",
     "@types/react-datepicker": "^4.4.2",
     "@types/react-helmet": "^6.1.5",
-    "@types/react-motion": "^0.0.32",
+    "@types/react-motion": "^0.0.33",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-sparklines": "^1.7.2",
     "@types/react-swipeable-views": "^0.13.1",
