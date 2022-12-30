@@ -104,6 +104,7 @@ build-production:
   variables:
     NODE_ENV: production
   artifacts:
+    expose_as: Build
     paths:
      - static
 
