@@ -214,7 +214,7 @@ export const logOut = () =>
     const params = {
       client_id: state.auth.app.client_id!,
       client_secret: state.auth.app.client_secret!,
-      token: state.auth.users.get(account.url)?.access_token!,
+      token: state.auth.users.get(account.url)!.access_token,
     };
 
     return dispatch(revokeOAuthToken(params))
@@ -245,7 +245,7 @@ export const fetchOwnAccounts = () =>
     return state.auth.users.forEach((user) => {
       const account = state.accounts.get(user.id);
       if (!account) {
-        dispatch(verifyCredentials(user.access_token!, user.url!));
+        dispatch(verifyCredentials(user.access_token, user.url));
       }
     });
   };

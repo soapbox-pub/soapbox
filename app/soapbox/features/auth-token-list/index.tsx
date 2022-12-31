@@ -75,7 +75,7 @@ const AuthTokenList: React.FC = () => {
   const currentTokenId = useAppSelector(state => {
     const currentToken = state.auth.tokens.valueSeq().find((token) => token.me === state.auth.me);
 
-    return currentToken?.get('id');
+    return currentToken?.id;
   });
 
   useEffect(() => {

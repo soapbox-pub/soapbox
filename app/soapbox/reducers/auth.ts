@@ -34,21 +34,21 @@ export const AuthAppRecord = ImmutableRecord({
 });
 
 export const AuthTokenRecord = ImmutableRecord({
-  access_token: null as string | null,
+  access_token: '',
   account: null as string | null,
-  created_at: null as number | null,
+  created_at: 0,
   expires_in: null as number | null,
   id: null as number | null,
   me: null as string | null,
   refresh_token: null as string | null,
-  scope: null as string | null,
-  token_type: null as string | null,
+  scope: '',
+  token_type: '',
 });
 
 export const AuthUserRecord = ImmutableRecord({
-  access_token: null as string | null,
-  id: null as string | null,
-  url: null as string | null,
+  access_token: '',
+  id: '',
+  url: '',
 });
 
 export const ReducerRecord = ImmutableRecord({
