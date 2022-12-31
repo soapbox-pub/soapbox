@@ -113,6 +113,10 @@ a.status-card {
   @apply block w-full h-full object-cover bg-cover bg-center;
 }
 
+.status-card--link {
+  @apply flex flex-col md:flex-row;
+}
+
 .material-status {
   padding-bottom: 10px;
 
