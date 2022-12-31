@@ -25,6 +25,9 @@ const rule: RuleSetRule = {
         cacheDirectory: join(settings.cache_path, 'babel-loader'),
         cacheCompression: env.NODE_ENV === 'production',
         compact: env.NODE_ENV === 'production',
+        plugins: [
+          'react-refresh/babel',
+        ],
       },
     },
   ],
