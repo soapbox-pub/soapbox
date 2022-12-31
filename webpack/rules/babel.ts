@@ -4,6 +4,8 @@ import { env, settings } from '../configuration';
 
 import type { RuleSetRule } from 'webpack';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const rule: RuleSetRule = {
   test: /\.(js|jsx|mjs|ts|tsx)$/,
   include: [
@@ -25,9 +27,7 @@ const rule: RuleSetRule = {
         cacheDirectory: join(settings.cache_path, 'babel-loader'),
         cacheCompression: env.NODE_ENV === 'production',
         compact: env.NODE_ENV === 'production',
-        plugins: [
-          'react-refresh/babel',
-        ],
+        plugins: isDevelopment ? ['react-refresh/babel'] : [],
       },
     },
   ],
