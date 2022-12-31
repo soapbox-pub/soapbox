@@ -3,7 +3,7 @@ import React from 'react';
 
 import { __stub } from 'soapbox/api';
 
-import { render, screen } from '../../../../jest/test-helpers';
+import { render, screen, waitFor } from '../../../../jest/test-helpers';
 import Search from '../search';
 
 describe('<Search />', () => {
@@ -22,7 +22,9 @@ describe('<Search />', () => {
 
     await user.type(screen.getByLabelText('Search'), '@jus');
 
-    expect(screen.getByLabelText('Search')).toHaveValue('@jus');
-    expect(screen.getByTestId('account')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText('Search')).toHaveValue('@jus');
+      expect(screen.getByTestId('account')).toBeInTheDocument();
+    });
   });
 });

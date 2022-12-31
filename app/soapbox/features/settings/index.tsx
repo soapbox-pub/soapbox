@@ -52,7 +52,7 @@ const Settings = () => {
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
   useEffect(() => {
-    dispatch(fetchMfa());
+    if (features.security) dispatch(fetchMfa());
   }, [dispatch]);
 
   if (!account) return null;
