@@ -62,7 +62,6 @@ export const baseClient = (accessToken?: string | null, baseURL: string = ''): A
     headers: Object.assign(accessToken ? {
       'Authorization': `Bearer ${accessToken}`,
     } : {}),
-
     transformResponse: [maybeParseJSON],
   });
 };

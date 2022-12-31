@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
@@ -136,218 +137,234 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
   return (
     <div
-      className={classNames('sidebar-menu__root', {
-        'sidebar-menu__root--visible': sidebarOpen,
-      })}
       aria-expanded={sidebarOpen}
+      className={
+        classNames({
+          'z-[1000]': sidebarOpen,
+          hidden: !sidebarOpen,
+        })
+      }
     >
       <div
-        className={classNames({
-          'fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90 z-1000': true,
-          'hidden': !sidebarOpen,
-        })}
+        className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90'
         role='button'
         onClick={handleClose}
-      >
-        <IconButton
-          title={intl.formatMessage(messages.close)}
-          onClick={handleClose}
-          src={require('@tabler/icons/x.svg')}
-          ref={closeButtonRef}
-          iconClassName='h-6 w-6'
-          className='fixed top-5 right-5 text-gray-600 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
-        />
-      </div>
+      />
 
-      <div className='sidebar-menu'>
-        <div className='relative overflow-y-scroll overflow-auto h-full w-full'>
-          <div className='p-4'>
-            <Stack space={4}>
-              <Link to={`/@${account.acct}`} onClick={onClose}>
-                <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} />
-              </Link>
+      <div className='fixed inset-0 z-[1000] flex'>
+        <div
+          className={
+            classNames({
+              'flex flex-col flex-1 bg-white dark:bg-primary-900 -translate-x-full rtl:translate-x-full w-full max-w-xs': true,
+              '!translate-x-0': sidebarOpen,
+            })
+          }
+        >
+          <IconButton
+            title={intl.formatMessage(messages.close)}
+            onClick={handleClose}
+            src={require('@tabler/icons/x.svg')}
+            ref={closeButtonRef}
+            iconClassName='h-6 w-6'
+            className='absolute top-0 right-0 -mr-11 mt-2 text-gray-600 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+          />
 
-              <ProfileStats
-                account={account}
-                onClickHandler={handleClose}
-              />
-
+          <div className='relative overflow-y-scroll overflow-auto h-full w-full'>
+            <div className='p-4'>
               <Stack space={4}>
-                <Divider />
+                <Link to={`/@${account.acct}`} onClick={onClose}>
+                  <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} />
+                </Link>
 
-                <SidebarLink
-                  to={`/@${account.acct}`}
-                  icon={require('@tabler/icons/user.svg')}
-                  text={intl.formatMessage(messages.profile)}
-                  onClick={onClose}
+                <ProfileStats
+                  account={account}
+                  onClickHandler={handleClose}
                 />
 
-                {(account.locked || followRequestsCount > 0) && (
-                  <SidebarLink
-                    to='/follow_requests'
-                    icon={require('@tabler/icons/user-plus.svg')}
-                    text={intl.formatMessage(messages.followRequests)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.bookmarks && (
-                  <SidebarLink
-                    to='/bookmarks'
-                    icon={require('@tabler/icons/bookmark.svg')}
-                    text={intl.formatMessage(messages.bookmarks)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.lists && (
-                  <SidebarLink
-                    to='/lists'
-                    icon={require('@tabler/icons/list.svg')}
-                    text={intl.formatMessage(messages.lists)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.events && (
-                  <SidebarLink
-                    to='/events'
-                    icon={require('@tabler/icons/calendar-event.svg')}
-                    text={intl.formatMessage(messages.events)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {settings.get('isDeveloper') && (
-                  <SidebarLink
-                    to='/developers'
-                    icon={require('@tabler/icons/code.svg')}
-                    text={intl.formatMessage(messages.developers)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.publicTimeline && <>
+                <Stack space={4}>
                   <Divider />
 
                   <SidebarLink
-                    to='/timeline/local'
-                    icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
-                    text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                    to={`/@${account.acct}`}
+                    icon={require('@tabler/icons/user.svg')}
+                    text={intl.formatMessage(messages.profile)}
+                    onClick={onClose}
+                  />
+
+                  {(account.locked || followRequestsCount > 0) && (
+                    <SidebarLink
+                      to='/follow_requests'
+                      icon={require('@tabler/icons/user-plus.svg')}
+                      text={intl.formatMessage(messages.followRequests)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.bookmarks && (
+                    <SidebarLink
+                      to='/bookmarks'
+                      icon={require('@tabler/icons/bookmark.svg')}
+                      text={intl.formatMessage(messages.bookmarks)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.lists && (
+                    <SidebarLink
+                      to='/lists'
+                      icon={require('@tabler/icons/list.svg')}
+                      text={intl.formatMessage(messages.lists)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.events && (
+                    <SidebarLink
+                      to='/events'
+                      icon={require('@tabler/icons/calendar-event.svg')}
+                      text={intl.formatMessage(messages.events)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {settings.get('isDeveloper') && (
+                    <SidebarLink
+                      to='/developers'
+                      icon={require('@tabler/icons/code.svg')}
+                      text={intl.formatMessage(messages.developers)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.publicTimeline && <>
+                    <Divider />
+
+                    <SidebarLink
+                      to='/timeline/local'
+                      icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+                      text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                      onClick={onClose}
+                    />
+
+                    {features.federating && (
+                      <SidebarLink
+                        to='/timeline/fediverse'
+                        icon={require('@tabler/icons/topology-star-ring-3.svg')}
+                        text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                        onClick={onClose}
+                      />
+                    )}
+                  </>}
+
+                  <Divider />
+
+                  <SidebarLink
+                    to='/blocks'
+                    icon={require('@tabler/icons/ban.svg')}
+                    text={intl.formatMessage(messages.blocks)}
+                    onClick={onClose}
+                  />
+
+                  <SidebarLink
+                    to='/mutes'
+                    icon={require('@tabler/icons/circle-x.svg')}
+                    text={intl.formatMessage(messages.mutes)}
+                    onClick={onClose}
+                  />
+
+                  <SidebarLink
+                    to='/settings/preferences'
+                    icon={require('@tabler/icons/settings.svg')}
+                    text={intl.formatMessage(messages.preferences)}
                     onClick={onClose}
                   />
 
                   {features.federating && (
                     <SidebarLink
-                      to='/timeline/fediverse'
-                      icon={require('@tabler/icons/topology-star-ring-3.svg')}
-                      text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                      to='/domain_blocks'
+                      icon={require('@tabler/icons/ban.svg')}
+                      text={intl.formatMessage(messages.domainBlocks)}
                       onClick={onClose}
                     />
                   )}
-                </>}
 
-                <Divider />
-
-                <SidebarLink
-                  to='/blocks'
-                  icon={require('@tabler/icons/ban.svg')}
-                  text={intl.formatMessage(messages.blocks)}
-                  onClick={onClose}
-                />
-
-                <SidebarLink
-                  to='/mutes'
-                  icon={require('@tabler/icons/circle-x.svg')}
-                  text={intl.formatMessage(messages.mutes)}
-                  onClick={onClose}
-                />
-
-                <SidebarLink
-                  to='/settings/preferences'
-                  icon={require('@tabler/icons/settings.svg')}
-                  text={intl.formatMessage(messages.preferences)}
-                  onClick={onClose}
-                />
-
-                {features.federating && (
-                  <SidebarLink
-                    to='/domain_blocks'
-                    icon={require('@tabler/icons/ban.svg')}
-                    text={intl.formatMessage(messages.domainBlocks)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.filters && (
-                  <SidebarLink
-                    to='/filters'
-                    icon={require('@tabler/icons/filter.svg')}
-                    text={intl.formatMessage(messages.filters)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {account.admin && (
-                  <SidebarLink
-                    to='/soapbox/config'
-                    icon={require('@tabler/icons/settings.svg')}
-                    text={intl.formatMessage(messages.soapboxConfig)}
-                    onClick={onClose}
-                  />
-                )}
-
-                {features.import && (
-                  <SidebarLink
-                    to='/settings/import'
-                    icon={require('@tabler/icons/cloud-upload.svg')}
-                    text={intl.formatMessage(messages.importData)}
-                    onClick={onClose}
-                  />
-                )}
-
-                <Divider />
-
-                <SidebarLink
-                  to='/logout'
-                  icon={require('@tabler/icons/logout.svg')}
-                  text={intl.formatMessage(messages.logout)}
-                  onClick={onClickLogOut}
-                />
-
-                <Divider />
-
-                <Stack space={4}>
-                  <button type='button' onClick={handleSwitcherClick} className='py-1'>
-                    <HStack alignItems='center' justifyContent='between'>
-                      <Text tag='span'>
-                        <FormattedMessage id='profile_dropdown.switch_account' defaultMessage='Switch accounts' />
-                      </Text>
-
-                      <Icon
-                        src={require('@tabler/icons/chevron-down.svg')}
-                        className={classNames('w-4 h-4 text-gray-900 dark:text-gray-100 transition-transform', {
-                          'rotate-180': switcher,
-                        })}
-                      />
-                    </HStack>
-                  </button>
-
-                  {switcher && (
-                    <div className='border-t-2 border-gray-100 dark:border-gray-800 border-solid'>
-                      {otherAccounts.map(account => renderAccount(account))}
-
-                      <NavLink className='flex items-center py-2 space-x-1' to='/login/add' onClick={handleClose}>
-                        <Icon className='text-primary-500 w-4 h-4' src={require('@tabler/icons/plus.svg')} />
-                        <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
-                      </NavLink>
-                    </div>
+                  {features.filters && (
+                    <SidebarLink
+                      to='/filters'
+                      icon={require('@tabler/icons/filter.svg')}
+                      text={intl.formatMessage(messages.filters)}
+                      onClick={onClose}
+                    />
                   )}
+
+                  {account.admin && (
+                    <SidebarLink
+                      to='/soapbox/config'
+                      icon={require('@tabler/icons/settings.svg')}
+                      text={intl.formatMessage(messages.soapboxConfig)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.import && (
+                    <SidebarLink
+                      to='/settings/import'
+                      icon={require('@tabler/icons/cloud-upload.svg')}
+                      text={intl.formatMessage(messages.importData)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  <Divider />
+
+                  <SidebarLink
+                    to='/logout'
+                    icon={require('@tabler/icons/logout.svg')}
+                    text={intl.formatMessage(messages.logout)}
+                    onClick={onClickLogOut}
+                  />
+
+                  <Divider />
+
+                  <Stack space={4}>
+                    <button type='button' onClick={handleSwitcherClick} className='py-1'>
+                      <HStack alignItems='center' justifyContent='between'>
+                        <Text tag='span'>
+                          <FormattedMessage id='profile_dropdown.switch_account' defaultMessage='Switch accounts' />
+                        </Text>
+
+                        <Icon
+                          src={require('@tabler/icons/chevron-down.svg')}
+                          className={classNames('w-4 h-4 text-gray-900 dark:text-gray-100 transition-transform', {
+                            'rotate-180': switcher,
+                          })}
+                        />
+                      </HStack>
+                    </button>
+
+                    {switcher && (
+                      <div className='border-t-2 border-gray-100 dark:border-gray-800 border-solid'>
+                        {otherAccounts.map(account => renderAccount(account))}
+
+                        <NavLink className='flex items-center py-2 space-x-1' to='/login/add' onClick={handleClose}>
+                          <Icon className='text-primary-500 w-4 h-4' src={require('@tabler/icons/plus.svg')} />
+                          <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
+                        </NavLink>
+                      </div>
+                    )}
+                  </Stack>
                 </Stack>
               </Stack>
-            </Stack>
+            </div>
           </div>
         </div>
+
+        {/* Dummy element to keep Close Icon visible */}
+        <div
+          aria-hidden
+          className='w-14 flex-shrink-0'
+          onClick={handleClose}
+        />
       </div>
     </div>
   );
