@@ -64,6 +64,12 @@ export const GLITCH = 'glitch';
  */
 export const AKKOMA = 'akkoma';
 
+/**
+ * Takahē, backend with support for serving multiple domains.
+ * @see {@link https://jointakahe.org/}
+ */
+export const TAKAHE = 'Takahe';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -206,16 +212,79 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Whether to show the Feed Carousel for suggested Statuses.
+     * @see GET /api/v1/truth/carousels/avatars
+     * @see GET /api/v1/truth/carousels/suggestions
+     */
+    carousel: v.software === TRUTHSOCIAL,
+
+    /**
+     * Ability to mark a carousel avatar as "seen."
+     * @see POST /api/v1/truth/carousels/avatars/seen
+     */
+    carouselSeen: v.software === TRUTHSOCIAL,
+
+    /**
+     * Ability to accept a chat.
+     * POST /api/v1/pleroma/chats/:id/accept
+     */
+    chatAcceptance: v.software === TRUTHSOCIAL,
+
+    /**
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
-    chats: v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA,
+    chats: any([
+      v.software === TRUTHSOCIAL,
+      v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA,
+    ]),
+
+    /**
+     * Ability to delete a chat.
+     * @see DELETE /api/v1/pleroma/chats/:id
+     */
+    chatsDelete: any([
+      v.software === TRUTHSOCIAL,
+      v.build === REBASED,
+    ]),
+
+    /**
+     * Ability to set disappearing messages on chats.
+     * @see PATCH /api/v1/pleroma/chats/:id
+     */
+    chatsExpiration: v.software === TRUTHSOCIAL,
+
+    /**
+     * Whether chat messages can accept a `media_id` attachment.
+     * @see POST /api/v1/pleroma/chats/:id/messages
+     */
+    chatsMedia: v.software !== TRUTHSOCIAL,
+
+    /**
+     * Whether chat messages have read receipts.
+     * @see GET /api/v1/pleroma/chats/:id/messages
+     */
+    chatsReadReceipts: v.software === TRUTHSOCIAL,
+
+    /**
+     * Ability to search among chats.
+     * @see GET /api/v1/pleroma/chats
+     */
+    chatsSearch: v.software === TRUTHSOCIAL,
 
     /**
      * Paginated chats API.
      * @see GET /api/v2/chats
      */
-    chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
+    chatsV2: any([
+      v.software === TRUTHSOCIAL,
+      v.software === PLEROMA && gte(v.version, '2.3.0'),
+    ]),
+
+    /**
+     * Ability to only chat with people that follow you.
+     */
+    chatsWithFollowers: v.software === TRUTHSOCIAL,
 
     /**
      * Mastodon's newer solution for direct messaging.
@@ -225,6 +294,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
+      v.software === TAKAHE,
     ]),
 
     /**
@@ -234,6 +304,14 @@ const getInstanceFeatures = (instance: Instance) => {
     directTimeline: any([
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    editProfile: any([
+      v.software === MASTODON,
+      v.software === MITRA,
+      v.software === PIXELFED,
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     editStatuses: any([
@@ -281,6 +359,22 @@ const getInstanceFeatures = (instance: Instance) => {
     ethereumLogin: v.software === MITRA,
 
     /**
+     * Ability to create and perform actions on events.
+     * @see POST /api/v1/pleroma/events
+     * @see GET /api/v1/pleroma/events/joined_events
+     * @see PUT /api/v1/pleroma/events/:id
+     * @see GET /api/v1/pleroma/events/:id/participations
+     * @see GET /api/v1/pleroma/events/:id/participation_requests
+     * @see POST /api/v1/pleroma/events/:id/participation_requests/:participant_id/authorize
+     * @see POST /api/v1/pleroma/events/:id/participation_requests/:participant_id/reject
+     * @see POST /api/v1/pleroma/events/:id/join
+     * @see POST /api/v1/pleroma/events/:id/leave
+     * @see GET /api/v1/pleroma/events/:id/ics
+     * @see GET /api/v1/pleroma/search/location
+     */
+    events: features.includes('events'),
+
+    /**
      * Ability to address recipients of a status explicitly (with `to`).
      * @see POST /api/v1/statuses
      */
@@ -304,9 +398,6 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
-
-    /** Whether or not to show the Feed Carousel for suggested Statuses */
-    feedUserFiltering: v.software === TRUTHSOCIAL,
 
     /**
      * Can edit and manage timeline filters (aka "muted words").
@@ -498,6 +589,7 @@ const getInstanceFeatures = (instance: Instance) => {
     publicTimeline: any([
       v.software === MASTODON,
       v.software === PLEROMA,
+      v.software === TAKAHE,
     ]),
 
     /**
@@ -524,10 +616,17 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
     ]),
 
-    reportMultipleStatuses: any([
-      v.software === MASTODON,
-      v.software === PLEROMA,
-    ]),
+    /**
+     * Ability to report chat messages.
+     * @see POST /api/v1/reports
+     */
+    reportChats: v.software === TRUTHSOCIAL,
+
+    /**
+     * Ability to select more than one status when reporting.
+     * @see POST /api/v1/reports
+     */
+    reportMultipleStatuses: v.software !== TRUTHSOCIAL,
 
     /**
      * Can request a password reset email through the API.
@@ -650,6 +749,13 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
+
+    /**
+     * Truth Social policies.
+     * @see GET /api/v1/truth/policies/pending
+     * @see PATCH /api/v1/truth/policies/:policyId/accept
+     */
+    truthPolicies: v.software === TRUTHSOCIAL,
 
     /**
      * Supports Truth suggestions.

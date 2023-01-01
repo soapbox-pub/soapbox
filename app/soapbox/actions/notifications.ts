@@ -89,6 +89,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!notification.type) return; // drop invalid notifications
     if (notification.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
+    if (notification.type === 'chat') return; // Drop Truth Social chat notifications.
 
     const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
     const filters = getFilters(getState(), { contextType: 'notifications' });

@@ -1,10 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { verifyAge } from 'soapbox/actions/verification';
 import { Button, Datepicker, Form, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   fail: {
@@ -42,9 +42,7 @@ const AgeVerification = () => {
     if (meetsAgeMinimum(birthday, ageMinimum)) {
       dispatch(verifyAge(birthday));
     } else {
-      dispatch(
-        snackbar.error(intl.formatMessage(messages.fail, { ageMinimum })),
-      );
+      toast.error(intl.formatMessage(messages.fail, { ageMinimum }));
     }
   }, [date, ageMinimum]);
 

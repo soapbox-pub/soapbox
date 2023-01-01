@@ -33,9 +33,12 @@ const AwaitingApproval: React.FC = () => {
       showLoading={showLoading}
       scrollKey='awaiting-approval'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
+      className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
       {accountIds.map(id => (
-        <UnapprovedAccount accountId={id} key={id} />
+        <div key={id} className='py-4 px-5'>
+          <UnapprovedAccount accountId={id} />
+        </div>
       ))}
     </ScrollableList>
   );

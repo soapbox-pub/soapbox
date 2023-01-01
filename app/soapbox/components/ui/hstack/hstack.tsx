@@ -14,6 +14,7 @@ const alignItemsOptions = {
   bottom: 'items-end',
   center: 'items-center',
   start: 'items-start',
+  stretch: 'items-stretch',
 };
 
 const spaces = {

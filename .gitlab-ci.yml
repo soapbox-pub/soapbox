@@ -3,6 +3,9 @@ image: node:18
 variables:
   NODE_ENV: test
 
+default:
+  interruptible: true
+
 cache: &cache
   key:
     files:
@@ -32,6 +35,9 @@ danger:
     # https://github.com/danger/danger-js/issues/1029#issuecomment-998915436
     - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
     - npx danger ci
+  except:
+    variables:
+      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
   allow_failure: true
 
 lint-js:
@@ -80,7 +86,8 @@ jest:
 nginx-test:
   stage: test
   image: nginx:latest
-  before_script: cp installation/mastodon.conf /etc/nginx/conf.d/default.conf
+  before_script:
+    - cp installation/mastodon.conf /etc/nginx/conf.d/default.conf
   script: nginx -t
   only:
     changes:
@@ -88,7 +95,12 @@ nginx-test:
 
 build-production:
   stage: test
-  script: yarn build
+  script:
+    - yarn build
+    - yarn manage:translations en
+    # Fail if files got changed.
+    # https://stackoverflow.com/a/9066385
+    - git diff --quiet
   variables:
     NODE_ENV: production
   artifacts:
@@ -103,21 +115,10 @@ docs-deploy:
   script:
     - curl -X POST -F"token=$CI_JOB_TOKEN" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
   only:
-    refs:
-      - develop
+    variables:
+      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
     changes:
       - "docs/**/*"
-
-# Supposed to fail when translations are outdated, instead always passes
-#
-# i18n:
-#   stage: build
-#   script: yarn manage:translations
-#   variables:
-#     NODE_ENV: development
-#   before_script:
-#     - yarn
-#     - yarn build
 
 review:
   stage: deploy
@@ -140,8 +141,8 @@ pages:
     paths:
     - public
   only:
-    refs:
-      - develop
+    variables:
+      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
 
 docker:
   stage: deploy
@@ -156,5 +157,9 @@ docker:
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
   only:
-    refs:
-      - develop
+    variables:
+      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+
+include:
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml

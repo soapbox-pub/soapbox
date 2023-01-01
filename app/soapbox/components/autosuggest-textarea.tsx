@@ -4,37 +4,14 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
+
 import AutosuggestAccount from '../features/compose/components/autosuggest-account';
 import { isRtl } from '../rtl';
 
 import AutosuggestEmoji, { Emoji } from './autosuggest-emoji';
 
 import type { List as ImmutableList } from 'immutable';
-
-const textAtCursorMatchesToken = (str: string, caretPosition: number) => {
-  let word;
-
-  const left = str.slice(0, caretPosition).search(/\S+$/);
-  const right = str.slice(caretPosition).search(/\s/);
-
-  if (right < 0) {
-    word = str.slice(left);
-  } else {
-    word = str.slice(left, right + caretPosition);
-  }
-
-  if (!word || word.trim().length < 3 || !['@', ':', '#'].includes(word[0])) {
-    return [null, null];
-  }
-
-  word = word.trim().toLowerCase();
-
-  if (word.length > 0) {
-    return [left + 1, word];
-  } else {
-    return [null, null];
-  }
-};
 
 interface IAutosuggesteTextarea {
   id?: string,
@@ -72,7 +49,11 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
   };
 
   onChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    const [tokenStart, token] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart);
+    const [tokenStart, token] = textAtCursorMatchesToken(
+      e.target.value,
+      e.target.selectionStart,
+      ['@', ':', '#'],
+    );
 
     if (token !== null && this.state.lastToken !== token) {
       this.setState({ lastToken: token, selectedSuggestion: 0, tokenStart });
@@ -248,7 +229,8 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr', minRows: 10 };
 
-    if (isRtl(value)) {
+    // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
+    if (isRtl(value) || (!value && placeholder && isRtl(placeholder))) {
       style.direction = 'rtl';
     }
 

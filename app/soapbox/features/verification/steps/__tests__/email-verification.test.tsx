@@ -27,13 +27,13 @@ describe('<EmailVerification />', () => {
 
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByTestId('button'), {
             preventDefault: () => {},
           },
         );
       });
 
-      expect(screen.getByRole('button')).toHaveTextContent('Resend verification email');
+      expect(screen.getByTestId('button')).toHaveTextContent('Resend verification email');
     });
   });
 
@@ -54,7 +54,7 @@ describe('<EmailVerification />', () => {
 
       await waitFor(() => {
         fireEvent.submit(
-          screen.getByRole('button'), {
+          screen.getByTestId('button'), {
             preventDefault: () => {},
           },
         );

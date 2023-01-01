@@ -40,11 +40,12 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
+          prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
           divideType='space'

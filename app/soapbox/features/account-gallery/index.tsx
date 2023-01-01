@@ -95,7 +95,7 @@ const AccountGallery = () => {
       const media = (attachment.status as Status).media_attachments;
       const index = media.findIndex((x) => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status, account: attachment.account }));
+      dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
     }
   };
 

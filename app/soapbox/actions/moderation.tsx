@@ -4,10 +4,10 @@ import { defineMessages, IntlShape } from 'react-intl';
 import { fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
 import { openModal } from 'soapbox/actions/modals';
-import snackbar from 'soapbox/actions/snackbar';
 import OutlineBox from 'soapbox/components/outline-box';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
+import toast from 'soapbox/toast';
 import { isLocal } from 'soapbox/utils/accounts';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -65,7 +65,7 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
       onConfirm: () => {
         dispatch(deactivateUsers([accountId])).then(() => {
           const message = intl.formatMessage(messages.userDeactivated, { acct });
-          dispatch(snackbar.success(message));
+          toast.success(message);
           afterConfirm();
         }).catch(() => {});
       },
@@ -105,7 +105,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
         dispatch(deleteUsers([accountId])).then(() => {
           const message = intl.formatMessage(messages.userDeleted, { acct });
           dispatch(fetchAccountByUsername(acct));
-          dispatch(snackbar.success(message));
+          toast.success(message);
           afterConfirm();
         }).catch(() => {});
       },
@@ -147,7 +147,7 @@ const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensiti
       onConfirm: () => {
         dispatch(toggleStatusSensitivity(statusId, sensitive)).then(() => {
           const message = intl.formatMessage(sensitive === false ? messages.statusMarkedSensitive : messages.statusMarkedNotSensitive, { acct });
-          dispatch(snackbar.success(message));
+          toast.success(message);
         }).catch(() => {});
         afterConfirm();
       },
@@ -168,7 +168,7 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
       onConfirm: () => {
         dispatch(deleteStatus(statusId)).then(() => {
           const message = intl.formatMessage(messages.statusDeleted, { acct });
-          dispatch(snackbar.success(message));
+          toast.success(message);
         }).catch(() => {});
         afterConfirm();
       },

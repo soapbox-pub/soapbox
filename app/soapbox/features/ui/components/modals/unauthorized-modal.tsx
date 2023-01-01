@@ -3,9 +3,9 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -15,7 +15,7 @@ const messages = defineMessages({
 
 interface IUnauthorizedModal {
   /** Unauthorized action type. */
-  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'POLL_VOTE',
+  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'POLL_VOTE' | 'JOIN',
   /** Close event handler. */
   onClose: (modalType: string) => void,
   /** ActivityPub ID of the account OR status being acted upon. */
@@ -55,7 +55,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       })
       .catch(error => {
         if (error.message === 'Couldn\'t find user') {
-          dispatch(snackbar.error(intl.formatMessage(messages.userNotFoundError)));
+          toast.error(intl.formatMessage(messages.userNotFoundError));
         }
       });
   };
@@ -89,6 +89,9 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     } else if (action === 'POLL_VOTE') {
       header = <FormattedMessage id='remote_interaction.poll_vote_title' defaultMessage='Vote in a poll remotely' />;
       button = <FormattedMessage id='remote_interaction.poll_vote' defaultMessage='Proceed to vote' />;
+    } else if (action === 'JOIN') {
+      header = <FormattedMessage id='remote_interaction.event_join_title' defaultMessage='Join an event remotely' />;
+      button = <FormattedMessage id='remote_interaction.event_join' defaultMessage='Proceed to join' />;
     }
 
     return (

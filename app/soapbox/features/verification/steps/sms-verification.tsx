@@ -3,10 +3,10 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, PhoneInput, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   verificationInvalid: { id: 'sms_verification.invalid', defaultMessage: 'Please enter a valid phone number.' },
@@ -44,25 +44,17 @@ const SmsVerification = () => {
 
     if (!isValid) {
       setStatus(Statuses.IDLE);
-      dispatch(
-        snackbar.error(
-          intl.formatMessage(messages.verificationInvalid),
-        ),
-      );
+      toast.error(intl.formatMessage(messages.verificationInvalid));
       return;
     }
 
     dispatch(requestPhoneVerification(phone!)).then(() => {
-      dispatch(
-        snackbar.success(
-          intl.formatMessage(messages.verificationSuccess),
-        ),
-      );
+      toast.success(intl.formatMessage(messages.verificationSuccess));
       setStatus(Statuses.REQUESTED);
     }).catch((error: AxiosError) => {
       const message = (error.response?.data as any)?.message || intl.formatMessage(messages.verificationFail);
 
-      dispatch(snackbar.error(message));
+      toast.error(message);
       setStatus(Statuses.FAIL);
     });
   }, [phone, isValid]);
@@ -75,11 +67,9 @@ const SmsVerification = () => {
   const submitVerification = () => {
     // TODO: handle proper validation from Pepe -- expired vs invalid
     dispatch(confirmPhoneVerification(verificationCode))
-      .catch(() => dispatch(
-        snackbar.error(
-          intl.formatMessage(messages.verificationExpired),
-        ),
-      ));
+      .catch(() => {
+        toast.error(intl.formatMessage(messages.verificationExpired));
+      });
   };
 
   React.useEffect(() => {

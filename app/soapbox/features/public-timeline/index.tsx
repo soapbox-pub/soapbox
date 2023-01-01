@@ -60,7 +60,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent>
+    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent>
       <PinnedHostsPicker />
 
       {showExplanationBox && <div className='mb-4'>
@@ -92,6 +92,7 @@ const CommunityTimeline = () => {
         <Timeline
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
+          prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
           divideType='space'

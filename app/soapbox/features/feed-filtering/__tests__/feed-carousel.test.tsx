@@ -8,7 +8,7 @@ import { render, screen, waitFor } from '../../../jest/test-helpers';
 import FeedCarousel from '../feed-carousel';
 
 jest.mock('../../../hooks/useDimensions', () => ({
-  useDimensions: () => [{ scrollWidth: 190 }, null, { width: 100 }],
+  useDimensions: () => [{ scrollWidth: 190 }, null, { width: 300 }],
 }));
 
 (window as any).ResizeObserver = class ResizeObserver {
@@ -21,28 +21,7 @@ jest.mock('../../../hooks/useDimensions', () => ({
 describe('<FeedCarousel />', () => {
   let store: any;
 
-  describe('with "feedUserFiltering" disabled', () => {
-    beforeEach(() => {
-      store = {
-        instance: {
-          version: '2.7.2 (compatible; Pleroma 2.4.52-1337-g4779199e.gleasonator+soapbox)',
-          pleroma: ImmutableMap({
-            metadata: ImmutableMap({
-              features: [],
-            }),
-          }),
-        },
-      };
-    });
-
-    it('should render nothing', () => {
-      render(<FeedCarousel />, undefined, store);
-
-      expect(screen.queryAllByTestId('feed-carousel')).toHaveLength(0);
-    });
-  });
-
-  describe('with "feedUserFiltering" enabled', () => {
+  describe('with "carousel" enabled', () => {
     beforeEach(() => {
       store = {
         instance: {
@@ -61,11 +40,17 @@ describe('<FeedCarousel />', () => {
         __stub((mock) => {
           mock.onGet('/api/v1/truth/carousels/avatars')
             .reply(200, [
-              { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg' },
-              { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg' },
-              { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg' },
-              { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg' },
+              { account_id: '1', acct: 'a', account_avatar: 'https://example.com/some.jpg', seen: false },
+              { account_id: '2', acct: 'b', account_avatar: 'https://example.com/some.jpg', seen: false },
+              { account_id: '3', acct: 'c', account_avatar: 'https://example.com/some.jpg', seen: false },
+              { account_id: '4', acct: 'd', account_avatar: 'https://example.com/some.jpg', seen: false },
             ]);
+
+          mock.onGet('/api/v1/accounts/1/statuses').reply(200, [], {
+            link: '<https://example.com/api/v1/accounts/1/statuses?since_id=1>; rel=\'prev\'',
+          });
+
+          mock.onPost('/api/v1/truth/carousels/avatars/seen').reply(200);
         });
       });
 
@@ -74,6 +59,29 @@ describe('<FeedCarousel />', () => {
 
         await waitFor(() => {
           expect(screen.queryAllByTestId('feed-carousel')).toHaveLength(1);
+          expect(screen.queryAllByTestId('carousel-item')).toHaveLength(4);
+        });
+      });
+
+      it('should handle the "seen" state', async() => {
+        render(<FeedCarousel />, undefined, store);
+
+        // Unseen
+        await waitFor(() => {
+          expect(screen.queryAllByTestId('carousel-item')).toHaveLength(4);
+        });
+        expect(screen.getAllByTestId('carousel-item-avatar')[0]).toHaveClass('ring-accent-500');
+
+        // Selected
+        await userEvent.click(screen.getAllByTestId('carousel-item-avatar')[0]);
+        await waitFor(() => {
+          expect(screen.getAllByTestId('carousel-item-avatar')[0]).toHaveClass('ring-primary-600');
+        });
+
+        // Marked as seen, not selected
+        await userEvent.click(screen.getAllByTestId('carousel-item-avatar')[0]);
+        await waitFor(() => {
+          expect(screen.getAllByTestId('carousel-item-avatar')[0]).toHaveClass('ring-transparent');
         });
       });
     });
@@ -138,15 +146,15 @@ describe('<FeedCarousel />', () => {
         render(<FeedCarousel />, undefined, store);
 
         await waitFor(() => {
-          expect(screen.getByTestId('next-page')).toBeInTheDocument();
-          expect(screen.queryAllByTestId('prev-page')).toHaveLength(0);
+          expect(screen.getByTestId('prev-page')).toHaveAttribute('disabled');
+          expect(screen.getByTestId('next-page')).not.toHaveAttribute('disabled');
         });
 
         await user.click(screen.getByTestId('next-page'));
 
         await waitFor(() => {
-          expect(screen.getByTestId('prev-page')).toBeInTheDocument();
-          expect(screen.queryAllByTestId('next-page')).toHaveLength(0);
+          expect(screen.getByTestId('prev-page')).not.toHaveAttribute('disabled');
+          expect(screen.getByTestId('next-page')).toHaveAttribute('disabled');
         });
       });
     });

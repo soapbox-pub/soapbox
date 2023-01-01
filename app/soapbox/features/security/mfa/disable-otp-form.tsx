@@ -3,9 +3,9 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { disableMfa } from 'soapbox/actions/mfa';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormGroup, Input, FormActions, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   mfa_setup_disable_button: { id: 'column.mfa_disable_button', defaultMessage: 'Disable' },
@@ -25,12 +25,12 @@ const DisableOtpForm: React.FC = () => {
   const handleSubmit = useCallback(() => {
     setIsLoading(true);
     dispatch(disableMfa('totp', password)).then(() => {
-      dispatch(snackbar.success(intl.formatMessage(messages.mfaDisableSuccess)));
+      toast.success(intl.formatMessage(messages.mfaDisableSuccess));
       history.push('../auth/edit');
     }).finally(() => {
       setIsLoading(false);
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.disableFail)));
+      toast.error(intl.formatMessage(messages.disableFail));
     });
   }, [password, dispatch, intl]);
 

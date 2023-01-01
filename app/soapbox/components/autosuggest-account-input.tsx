@@ -14,6 +14,7 @@ const noOp = () => { };
 interface IAutosuggestAccountInput {
   onChange: React.ChangeEventHandler<HTMLInputElement>,
   onSelected: (accountId: string) => void,
+  autoFocus?: boolean,
   value: string,
   limit?: number,
   className?: string,
@@ -52,8 +53,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
         setAccountIds(ImmutableOrderedSet(accountIds));
       })
       .catch(noOp);
-
-  }, 900, { leading: true, trailing: true }), [limit]);
+  }, 900, { leading: false, trailing: true }), [limit]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     refreshCancelToken();
@@ -66,6 +66,12 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
       onSelected(suggestion);
     }
   };
+
+  useEffect(() => {
+    if (rest.autoFocus) {
+      handleAccountSearch('');
+    }
+  }, []);
 
   useEffect(() => {
     if (value === '') {

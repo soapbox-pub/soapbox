@@ -4,9 +4,10 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useOwnAccount } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
+import { isDefaultAvatar } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
@@ -14,17 +15,6 @@ import type { AxiosError } from 'axios';
 const messages = defineMessages({
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
-
-/** Default avatar filenames from various backends */
-const DEFAULT_AVATARS = [
-  '/avatars/original/missing.png', // Mastodon
-  '/images/avi.png', // Pleroma
-];
-
-/** Check if the avatar is a default avatar */
-const isDefaultAvatar = (url: string) => {
-  return DEFAULT_AVATARS.every(avatar => url.endsWith(avatar));
-};
 
 const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
@@ -66,9 +56,9 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
         setSelectedFile(null);
 
         if (error.response?.status === 422) {
-          dispatch(snackbar.error((error.response.data as any).error.replace('Validation failed: ', '')));
+          toast.error((error.response.data as any).error.replace('Validation failed: ', ''));
         } else {
-          dispatch(snackbar.error(messages.error));
+          toast.error(messages.error);
         }
       });
     }).catch(console.error);

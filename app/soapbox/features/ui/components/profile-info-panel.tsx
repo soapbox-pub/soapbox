@@ -121,7 +121,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
-              <Text size='sm' theme='muted'>
+              <Text size='sm' theme='muted' direction='ltr'>
                 @{username}
               </Text>
             </HStack>
@@ -157,7 +157,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           </HStack>
 
           <HStack alignItems='center' space={0.5}>
-            <Text size='sm' theme='muted'>
+            <Text size='sm' theme='muted' direction='ltr'>
               @{displayFqn ? account.fqn : account.acct}
             </Text>
 
