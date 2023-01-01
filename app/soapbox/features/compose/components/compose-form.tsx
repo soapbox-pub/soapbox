@@ -29,7 +29,6 @@ import ComposeEditor from '../editor';
 import { countableText } from '../util/counter';
 
 import EmojiPickerDropdown from './emoji-picker/emoji-picker-dropdown';
-import MarkdownButton from './markdown-button';
 import PollButton from './poll-button';
 import PollForm from './polls/poll-form';
 import PrivacyDropdown from './privacy-dropdown';
@@ -42,7 +41,6 @@ import UploadForm from './upload-form';
 import VisualCharacterCounter from './visual-character-counter';
 import Warning from './warning';
 
-import type { EditorState } from 'lexical';
 import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
@@ -139,8 +137,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleSubmit = (e?: React.FormEvent<Element>) => {
-    // editorStateRef.current
-    console.log(editorStateRef.current);
     dispatch(changeCompose(id, editorStateRef.current!));
     // if (text !== autosuggestTextareaRef.current?.textarea?.value) {
     //   // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
@@ -237,7 +233,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.privacyScopes && <PrivacyDropdown composeId={id} />}
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
-      {features.richText && <MarkdownButton composeId={id} />}
     </HStack>
   ), [features, id]);
 
@@ -248,24 +243,17 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
   let publishText: string | JSX.Element = '';
+  let publishIcon: string | undefined = undefined;
   let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishText = (
-      <>
-        <Icon src={require('@tabler/icons/mail.svg')} />
-        {intl.formatMessage(messages.message)}
-      </>
-    );
+    publishIcon = require('@tabler/icons/mail.svg');
+    publishText = intl.formatMessage(messages.message);
   } else if (privacy === 'private') {
-    publishText = (
-      <>
-        <Icon src={require('@tabler/icons/lock.svg')} />
-        {intl.formatMessage(messages.publish)}
-      </>
-    );
+    publishIcon = require('@tabler/icons/lock.svg');
+    publishText = intl.formatMessage(messages.publish);
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
   }
@@ -309,7 +297,29 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       {!shouldCondense && !event && <ReplyMentions composeId={id} />}
 
-      <ComposeEditor ref={editorStateRef} />
+      <div>
+        <ComposeEditor
+          ref={editorStateRef}
+          condensed={condensed}
+          onFocus={handleComposeFocus}
+        />
+        {
+          !condensed &&
+          <Stack space={4} className='compose-form__modifiers'>
+            <UploadForm composeId={id} />
+            <PollForm composeId={id} />
+            <ScheduleFormContainer composeId={id} />
+
+            <SpoilerInput
+              composeId={id}
+              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={onSuggestionsClearRequested}
+              onSuggestionSelected={onSpoilerSuggestionSelected}
+              ref={spoilerTextRef}
+            />
+          </Stack>
+        }
+      </div>
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
@@ -327,24 +337,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
         autoFocus={shouldAutoFocus}
         condensed={condensed}
         id='compose-textarea'
-      >
-        {
-          !condensed &&
-          <Stack space={4} className='compose-form__modifiers'>
-            <UploadForm composeId={id} />
-            <PollForm composeId={id} />
-            <ScheduleFormContainer composeId={id} />
-
-            <SpoilerInput
-              composeId={id}
-              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-              onSuggestionsClearRequested={onSuggestionsClearRequested}
-              onSuggestionSelected={onSpoilerSuggestionSelected}
-              ref={spoilerTextRef}
-            />
-          </Stack>
-        }
-      </AutosuggestTextarea>
+      />
 
       <QuotedStatusContainer composeId={id} />
 
@@ -363,7 +356,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             </HStack>
           )}
 
-          <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
+          <Button type='submit' theme='primary' icon={publishIcon} text={publishText} disabled={disabledButton} />
         </HStack>
         {/* <HStack alignItems='center' space={4}>
         </HStack> */}
