@@ -455,7 +455,7 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_POLL_REMOVE:
       return updateCompose(state, action.id, compose => compose.set('poll', null));
     case COMPOSE_SCHEDULE_ADD:
-      return updateCompose(state, action.id, compose => compose.set('schedule', new Date()));
+      return updateCompose(state, action.id, compose => compose.set('schedule', new Date(Date.now() + 10 * 60 * 1000)));
     case COMPOSE_SCHEDULE_SET:
       return updateCompose(state, action.id, compose => compose.set('schedule', action.date));
     case COMPOSE_SCHEDULE_REMOVE:
