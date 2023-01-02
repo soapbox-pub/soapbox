@@ -49,7 +49,7 @@ export const getAuthUserId = (state: RootState) => {
   return ImmutableList([
     state.auth.users.get(me!)?.id,
     me,
-  ]).find(validId);
+  ].filter(id => id)).find(validId);
 };
 
 export const getAuthUserUrl = (state: RootState) => {

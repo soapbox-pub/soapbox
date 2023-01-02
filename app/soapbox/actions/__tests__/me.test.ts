@@ -2,6 +2,7 @@ import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { AccountRecord } from 'soapbox/normalizers';
 
 import { AuthUserRecord, ReducerRecord } from '../../reducers/auth';
 import {
@@ -48,9 +49,9 @@ describe('fetchMe()', () => {
           }),
         }))
         .set('accounts', ImmutableMap({
-          [accountUrl]: {
+          [accountUrl]: AccountRecord({
             url: accountUrl,
-          },
+          }),
         }) as any);
       store = mockStore(state);
     });
