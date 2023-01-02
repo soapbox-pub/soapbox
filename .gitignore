@@ -7,6 +7,8 @@
 /.env
 /deploy.sh
 /.vs/
+/.yarn/
+/.yarnrc.yml
 yarn-error.log*
 /junit.xml
 

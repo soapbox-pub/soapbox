@@ -25,7 +25,11 @@ const sanitizeURL = url => {
 };
 
 const sanitizeBasename = path => {
+  if (path && path.length > 0) {
   return `/${trim(path, '/')}`;
+  } else {
+    return '';
+  }
 };
 
 const sanitizePath = path => {

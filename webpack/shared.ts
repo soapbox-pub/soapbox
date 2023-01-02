@@ -58,7 +58,7 @@ const configuration: Configuration = {
     chunkFilename: 'packs/js/[name].chunk.js',
     hotUpdateChunkFilename: 'packs/js/[id].hot-update.js',
     path: output.path,
-    publicPath: join(FE_SUBDIRECTORY, '/'),
+    publicPath: FE_SUBDIRECTORY.length > 0 ? join(FE_SUBDIRECTORY, '/') : '/',
   },
 
   optimization: {
@@ -76,7 +76,7 @@ const configuration: Configuration = {
           chunks: 'all',
           minChunks: 2,
           minSize: 0,
-          test: /^(?!.*[\\\/]node_modules[\\\/]react-intl[\\\/]).+$/,
+          test: /^(?!.*[\\/]node_modules[\\/]react-intl[\\/]).+$/,
         },
       },
     },

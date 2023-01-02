@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 // @ts-ignore
-import Picker from 'emoji-mart/dist-es/components/picker/picker';
+import Picker from 'emoji-mart-lazyload/dist-es/components/picker/picker';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 

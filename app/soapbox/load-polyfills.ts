@@ -34,7 +34,8 @@ function loadPolyfills() {
     window.IntersectionObserver &&
     window.IntersectionObserverEntry &&
     'isIntersecting' in IntersectionObserverEntry.prototype &&
-    window.requestIdleCallback
+    (typeof (window.requestIdleCallback) === 'function') &&
+    'object-fit' in (new Image()).style
   );
 
   return Promise.all([
