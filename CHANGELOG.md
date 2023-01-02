@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Compatibility: rudimentary support for Takahē.
+- UI: added backdrop blur behind modals.
 
 ### Changed
 - Posts: letterbox images to 19:6 again.
