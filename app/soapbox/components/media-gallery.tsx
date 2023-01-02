@@ -171,7 +171,7 @@ const Item: React.FC<IItem> = ({
       >
         <StillImage
           className='w-full h-full'
-          src={attachment.url}
+          src={attachment.preview_url}
           alt={attachment.description}
           letterboxed={letterboxed}
           showExt
