@@ -27,7 +27,7 @@ const FloatingActionButton: React.FC<IFloatingActionButton> = () => {
       onClick={handleOpenComposeModal}
       className={clsx(
         'p-4 inline-flex items-center border font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 appearance-none transition-all',
-        'bg-primary-500 hover:bg-primary-400 dark:hover:bg-primary-600 border-transparent focus:bg-primary-500 text-gray-100 focus:ring-primary-300',
+        'border-transparent bg-secondary-500 hover:bg-secondary-400 focus:bg-secondary-500 text-gray-100 focus:ring-secondary-300',
       )}
       aria-label={intl.formatMessage(messages.publish)}
     >

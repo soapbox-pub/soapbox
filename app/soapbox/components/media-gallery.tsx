@@ -295,7 +295,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']) as number | undefined;
 
     const getHeight = () => {
-      if (!aspectRatio) return w;
+      if (!aspectRatio) return w * 9 / 16;
       if (isPanoramic(aspectRatio)) return Math.floor(w / maximumAspectRatio);
       if (isPortrait(aspectRatio)) return Math.floor(w / minimumAspectRatio);
       return Math.floor(w / aspectRatio);

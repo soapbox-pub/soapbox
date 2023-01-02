@@ -29,7 +29,7 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
     let itemsDimensions: Record<string, string>[] = [];
 
     if (size === 1) {
-      style.height = width;
+      style.height = width! * 9 / 16;
 
       itemsDimensions = [
         { w: '100%', h: '100%' },
