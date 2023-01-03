@@ -117,7 +117,7 @@
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.10",
     "detect-passive-events": "^2.0.0",
-    "dotenv": "^8.0.0",
+    "dotenv": "^16.0.0",
     "emoji-datasource": "5.0.1",
     "emoji-mart": "npm:emoji-mart-lazyload",
     "es6-symbol": "^3.1.1",
