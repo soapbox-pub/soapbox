@@ -50,6 +50,8 @@ const messages = defineMessages({
   singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
   singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
   singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
+  mediaPreviewLabel: { id: 'soapbox_config.media_preview_label', defaultMessage: 'Prefer preview media for thumbnails' },
+  mediaPreviewHint: { id: 'soapbox_config.media_preview_hint', defaultMessage: 'Some backends provide an optimized version of media for display in timelines. However, these preview images may be too small without additional configuration.' },
   feedInjectionLabel: { id: 'soapbox_config.feed_injection_label', defaultMessage: 'Feed injection' },
   feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
   tileServerLabel: { id: 'soapbox_config.tile_server_label', defaultMessage: 'Map tile server' },
@@ -247,6 +249,16 @@ const SoapboxConfig: React.FC = () => {
               <Toggle
                 checked={soapbox.feedInjection === true}
                 onChange={handleChange(['feedInjection'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
+            <ListItem
+              label={intl.formatMessage(messages.mediaPreviewLabel)}
+              hint={intl.formatMessage(messages.mediaPreviewHint)}
+            >
+              <Toggle
+                checked={soapbox.mediaPreview === true}
+                onChange={handleChange(['mediaPreview'], (e) => e.target.checked)}
               />
             </ListItem>
 
