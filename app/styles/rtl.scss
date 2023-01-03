@@ -1,57 +1,14 @@
 body.rtl {
   direction: rtl;
 
-  .column-header > button {
-    text-align: right;
-    padding-left: 0;
-    padding-right: 15px;
-  }
-
-  .column-link__icon,
-  .column-header__icon {
+  .column-link__icon {
     margin-right: 0;
     margin-left: 5px;
-  }
-
-  .search__icon .fa {
-    right: auto;
-    left: 10px;
-  }
-
-  .column-header__buttons {
-    left: 0;
-    right: auto;
-    margin-left: 0;
-    margin-right: -15px;
-  }
-
-  .column-inline-form .icon-button {
-    margin-left: 0;
-    margin-right: 5px;
-  }
-
-  .column-header__links .text-btn {
-    margin-left: 10px;
-    margin-right: 0;
-  }
-
-  .account__avatar-wrapper {
-    float: right;
-  }
-
-  .setting-toggle__label {
-    margin-left: 0;
-    margin-right: 8px;
   }
 
   .status {
     padding-left: 10px;
     padding-right: 68px;
-  }
-
-  .account__avatar-overlay-overlay {
-    right: auto;
-    left: 0;
   }
 
   .privacy-dropdown__dropdown {
@@ -62,16 +19,6 @@ body.rtl {
   .privacy-dropdown__option__icon {
     margin-left: 10px;
     margin-right: 0;
-  }
-
-  .fa-ul {
-    margin-left: 0;
-    margin-left: 2.14285714em;
-  }
-
-  .fa-li {
-    left: auto;
-    right: -2.14285714em;
   }
 
   .simple_form .input.with_label.boolean label.checkbox {
@@ -119,29 +66,6 @@ body.rtl {
         padding-right: 10px;
       }
     }
-  }
-
-  .public-layout {
-    .header {
-      .nav-button {
-        margin-left: 8px;
-        margin-right: 0;
-      }
-    }
-  }
-
-  .card__bar .display-name {
-    margin-left: 0;
-    margin-right: 15px;
-    text-align: right;
-  }
-
-  .fa-chevron-left::before {
-    content: "\F054";
-  }
-
-  .fa-chevron-right::before {
-    content: "\F053";
   }
 
   .simple_form .input.radio_buttons .radio > label input {

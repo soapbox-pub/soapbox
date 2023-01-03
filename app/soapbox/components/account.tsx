@@ -46,7 +46,7 @@ interface IProfilePopper {
 const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
   condition ? wrapper(children) : children;
 
-interface IAccount {
+export interface IAccount {
   account: AccountEntity,
   action?: React.ReactElement,
   actionAlignment?: 'center' | 'top',

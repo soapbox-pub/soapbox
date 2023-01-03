@@ -7,7 +7,6 @@
   }
 
   &--pending {
-    font-style: italic;
-    color: var(--primary-text-color--faint);
+    @apply text-gray-400 italic;
   }
 }

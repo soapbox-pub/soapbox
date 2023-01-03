@@ -59,14 +59,6 @@ const rules: RuleSetRule[] = [{
     filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
 }, {
-
-  test: /\.svg$/,
-  type: 'asset/resource',
-  include: resolve('node_modules', 'feather-icons'),
-  generator: {
-    filename: 'packs/icons/[name]-[contenthash:8][ext]',
-  },
-}, {
   test: /\.svg$/,
   type: 'asset/resource',
   include: [

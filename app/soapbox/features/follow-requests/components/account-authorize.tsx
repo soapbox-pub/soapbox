@@ -1,13 +1,10 @@
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display-name';
-import IconButton from 'soapbox/components/icon-button';
-import { Text } from 'soapbox/components/ui';
+import Account from 'soapbox/components/account';
+import { Button, HStack } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -38,24 +35,28 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
 
   if (!account) return null;
 
-  const content = { __html: account.note_emojified };
-
   return (
-    <div className='account-authorize__wrapper'>
-      <div className='account-authorize'>
-        <Link to={`/@${account.acct}`}>
-          <div className='account-authorize__avatar'><Avatar account={account} size={48} /></div>
-          <DisplayName account={account} />
-        </Link>
-
-        <Text className='account__header__content' dangerouslySetInnerHTML={content} />
+    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
+      <div className='w-full'>
+        <Account account={account} withRelationship={false} />
       </div>
-
-      <div className='account--panel'>
-        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/check.svg')} onClick={onAuthorize} /></div>
-        <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/x.svg')} onClick={onReject} /></div>
-      </div>
-    </div>
+      <HStack space={2}>
+        <Button
+          theme='secondary'
+          size='sm'
+          text={intl.formatMessage(messages.authorize)}
+          icon={require('@tabler/icons/check.svg')}
+          onClick={onAuthorize}
+        />
+        <Button
+          theme='danger'
+          size='sm'
+          text={intl.formatMessage(messages.reject)}
+          icon={require('@tabler/icons/x.svg')}
+          onClick={onReject}
+        />
+      </HStack>
+    </HStack>
   );
 };
 
