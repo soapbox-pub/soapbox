@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
@@ -11,7 +11,7 @@ import PlaceholderAvatar from '../placeholder/components/placeholder-avatar';
 
 const CarouselItem = React.forwardRef((
   { avatar, seen, onViewed, onPinned }: { avatar: Avatar, seen: boolean, onViewed: (account_id: string) => void, onPinned?: (avatar: null | Avatar) => void },
-  ref: any,
+  ref: React.ForwardedRef<HTMLDivElement>,
 ) => {
   const dispatch = useAppDispatch();
 
@@ -40,8 +40,11 @@ const CarouselItem = React.forwardRef((
         onPinned(avatar);
       }
 
-      onViewed(avatar.account_id);
-      markAsSeen.mutate(avatar.account_id);
+      if (!seen) {
+        onViewed(avatar.account_id);
+        markAsSeen.mutate(avatar.account_id);
+      }
+
       dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }, () => setLoading(false)));
     }
   };
@@ -51,7 +54,7 @@ const CarouselItem = React.forwardRef((
       ref={ref}
       aria-disabled={isFetching}
       onClick={handleClick}
-      className='cursor-pointer snap-start py-4'
+      className='cursor-pointer py-4'
       role='filter-feed-by-user'
       data-testid='carousel-item'
     >
@@ -87,6 +90,7 @@ const FeedCarousel = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_ref, setContainerRef, { width }] = useDimensions();
+  const carouselItemRef = useRef<HTMLDivElement>(null);
 
   const [seenAccountIds, setSeenAccountIds] = useState<string[]>([]);
   const [pageSize, setPageSize] = useState<number>(0);
@@ -151,18 +155,18 @@ const FeedCarousel = () => {
       data-testid='feed-carousel'
     >
       <HStack alignItems='stretch'>
-        <div className='z-10 rounded-l-xl bg-white dark:bg-gray-900 w-8 flex self-stretch items-center justify-center'>
+        <div className='z-10 rounded-l-xl bg-white dark:bg-primary-900 w-8 flex self-stretch items-center justify-center'>
           <button
             data-testid='prev-page'
             onClick={handlePrevPage}
-            className='h-7 w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasPrevPage}
           >
             <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-5 w-5' />
           </button>
         </div>
 
-        <div className='overflow-hidden relative'>
+        <div className='overflow-hidden relative w-full'>
           {pinnedAvatar ? (
             <div
               className='z-10 flex items-center justify-center absolute left-0 top-0 bottom-0 bg-white dark:bg-primary-900'
@@ -175,6 +179,7 @@ const FeedCarousel = () => {
                 seen={seenAccountIds?.includes(pinnedAvatar.account_id)}
                 onViewed={markAsSeen}
                 onPinned={(avatar) => setPinnedAvatar(avatar)}
+                ref={carouselItemRef}
               />
             </div>
           ) : null}
@@ -203,7 +208,11 @@ const FeedCarousel = () => {
                   }}
                 >
                   {avatar === null ? (
-                    <Stack className='w-14 snap-start py-4 h-auto' space={3}>
+                    <Stack
+                      className='w-14 py-4 h-auto'
+                      space={3}
+                      style={{ height: carouselItemRef.current?.clientHeight }}
+                    >
                       <div className='block mx-auto relative w-16 h-16 rounded-full'>
                         <div className='w-16 h-16' />
                       </div>
@@ -227,11 +236,11 @@ const FeedCarousel = () => {
           </HStack>
         </div>
 
-        <div className='z-10 rounded-r-xl bg-white dark:bg-gray-900 w-8 self-stretch flex items-center justify-center'>
+        <div className='z-10 rounded-r-xl bg-white dark:bg-primary-900 w-8 self-stretch flex items-center justify-center'>
           <button
             data-testid='next-page'
             onClick={handleNextPage}
-            className='h-7 w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasNextPage}
           >
             <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-5 w-5' />
