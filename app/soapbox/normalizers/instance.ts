@@ -112,7 +112,7 @@ const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   }
 };
 
-/** Set Takahe version to a Pleroma-like string */
+/** Set Takahē version to a Pleroma-like string */
 const fixTakahe = (instance: ImmutableMap<string, any>) => {
   const version: string = instance.get('version', '');
 
