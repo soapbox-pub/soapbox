@@ -1191,6 +1191,8 @@
   "soapbox_config.hints.promo_panel_icons.link": "Soapbox Icons List",
   "soapbox_config.home_footer.meta_fields.label_placeholder": "Label",
   "soapbox_config.home_footer.meta_fields.url_placeholder": "URL",
+  "soapbox_config.media_preview_hint": "Some backends provide an optimized version of media for display in timelines. However, these preview images may be too small without additional configuration.",
+  "soapbox_config.media_preview_label": "Prefer preview media for thumbnails",
   "soapbox_config.promo_panel.meta_fields.icon_placeholder": "Icon",
   "soapbox_config.promo_panel.meta_fields.label_placeholder": "Label",
   "soapbox_config.promo_panel.meta_fields.url_placeholder": "URL",
