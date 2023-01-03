@@ -98,13 +98,21 @@ const FeedCarousel = () => {
   const [pinnedAvatar, setPinnedAvatar] = useState<Avatar | null>(null);
 
   const avatarsToList = useMemo(() => {
-    const list = avatars.filter((avatar) => avatar.account_id !== pinnedAvatar?.account_id);
+    let list: (Avatar | null)[] = avatars.filter((avatar) => avatar.account_id !== pinnedAvatar?.account_id);
+
+    // If we have an Avatar pinned, let's create a new array with "null"
+    // in the first position of each page.
     if (pinnedAvatar) {
-      return [null, ...list];
+      const index = (currentPage - 1) * pageSize;
+      list = [
+        ...list.slice(0, index),
+        null,
+        ...list.slice(index),
+      ];
     }
 
     return list;
-  }, [avatars, pinnedAvatar]);
+  }, [avatars, pinnedAvatar, currentPage, pageSize]);
 
   const numberOfPages = Math.ceil(avatars.length / pageSize);
   const widthPerAvatar = width / (Math.floor(width / 80));
