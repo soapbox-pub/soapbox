@@ -290,7 +290,7 @@
         }
       }
 
-      button[type="button"] {
+      button[type='button'] {
         @apply w-full justify-center text-center;
       }
     }
@@ -332,7 +332,7 @@
     &::before,
     &::after {
       @apply border-b border-gray-300 dark:border-gray-600;
-      content: "";
+      content: '';
       flex: 1;
     }
   }
