@@ -2,18 +2,21 @@
   "name": "soapbox",
   "displayName": "Soapbox",
   "version": "3.1.0",
-  "description": "Soapbox frontend for the Fediverse.",
+  "description": "Soapbox frontend for the Fediverse - modified for purg.com",
   "homepage": "https://soapbox.pub/",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/soapbox-pub/soapbox"
+    "url": "https://github.com/purg-com/soapbox"
   },
   "keywords": [
     "fediverse",
-    "pleroma"
+    "pleroma",
+    "rebased",
+    "soapbox",
+    "purg"
   ],
   "bugs": {
-    "url": "https://gitlab.com/soapbox-pub/soapbox/-/issues"
+    "url": "https://github.com/purg-com/soapbox/issues"
   },
   "scripts": {
     "start": "npx webpack-dev-server",

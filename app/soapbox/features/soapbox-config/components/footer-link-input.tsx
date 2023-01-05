@@ -11,7 +11,7 @@ const messages = defineMessages({
   url: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
 });
 
-const PromoPanelInput: StreamfieldComponent<FooterItem> = ({ value, onChange }) => {
+const FooterLinkInput: StreamfieldComponent<FooterItem> = ({ value, onChange }) => {
   const intl = useIntl();
 
   const handleChange = (key: 'title' | 'url'): React.ChangeEventHandler<HTMLInputElement> => {
@@ -40,4 +40,4 @@ const PromoPanelInput: StreamfieldComponent<FooterItem> = ({ value, onChange }) 
   );
 };
 
-export default PromoPanelInput;
+export default FooterLinkInput;
