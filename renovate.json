@@ -3,8 +3,5 @@
     "config:base",
     ":preserveSemverRanges"
   ],
-  "lockFileMaintenance": {
-    "enabled": true
-  },
   "rebaseWhen": "conflicted"
 }
