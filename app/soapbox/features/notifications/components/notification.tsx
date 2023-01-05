@@ -17,7 +17,7 @@ import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -27,7 +27,7 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
   return output.join(', ');
 };
 
-const buildLink = (account: Account): JSX.Element => (
+const buildLink = (account: AccountEntity): JSX.Element => (
   <bdi>
     <Link
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
@@ -127,7 +127,7 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
 const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
-  account: Account,
+  account: AccountEntity,
   totalCount: number | null,
   targetName: string,
   instanceTitle: string,
