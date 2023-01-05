@@ -78,6 +78,9 @@ describe('<FeedCarousel />', () => {
           expect(screen.getAllByTestId('carousel-item-avatar')[0]).toHaveClass('ring-primary-600');
         });
 
+        // HACK: wait for state change
+        await new Promise((r) => setTimeout(r, 0));
+
         // Marked as seen, not selected
         await userEvent.click(screen.getAllByTestId('carousel-item-avatar')[0]);
         await waitFor(() => {
