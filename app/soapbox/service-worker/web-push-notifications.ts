@@ -134,8 +134,10 @@ const htmlToPlainText = (html: string): string =>
 
 /** ServiceWorker `push` event callback. */
 const handlePush = (event: PushEvent) => {
-  // If event has no data, stop here.
-  if (!event.data) return;
+  if (!event.data) {
+    console.error('An empty web push event was received.', { event });
+    return;
+  }
 
   const { access_token, notification_id, preferred_locale, title, body, icon } = event.data.json();
 
