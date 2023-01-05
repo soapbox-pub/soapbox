@@ -208,6 +208,7 @@
     "wicg-inert": "^3.1.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "@jedmao/redux-mock-store": "^3.0.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@testing-library/jest-dom": "^5.16.4",
@@ -215,11 +216,10 @@
     "@testing-library/user-event": "^14.0.3",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
-    "babel-eslint": "^10.1.0",
     "babel-jest": "^29.0.0",
     "cross-env": "^7.0.3",
     "danger": "^11.0.7",
-    "eslint": "^7.0.0",
+    "eslint": "^8.0.0",
     "eslint-plugin-compat": "^4.0.2",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsdoc": "^39.6.2",
