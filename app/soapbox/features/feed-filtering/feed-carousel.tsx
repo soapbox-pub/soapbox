@@ -159,7 +159,7 @@ const FeedCarousel = () => {
           <button
             data-testid='prev-page'
             onClick={handlePrevPage}
-            className='w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='h-full w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasPrevPage}
           >
             <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-5 w-5' />
@@ -171,7 +171,7 @@ const FeedCarousel = () => {
             <div
               className='z-10 flex items-center justify-center absolute left-0 top-0 bottom-0 bg-white dark:bg-primary-900'
               style={{
-                width: widthPerAvatar,
+                width: widthPerAvatar || 'auto',
               }}
             >
               <CarouselItem
@@ -194,7 +194,11 @@ const FeedCarousel = () => {
           >
             {isFetching ? (
               new Array(20).fill(0).map((_, idx) => (
-                <div className='flex flex-shrink-0 justify-center' style={{ width: widthPerAvatar }} key={idx}>
+                <div
+                  className='flex flex-shrink-0 justify-center'
+                  style={{ width: widthPerAvatar || 'auto' }}
+                  key={idx}
+                >
                   <PlaceholderAvatar size={56} withText />
                 </div>
               ))
@@ -204,7 +208,7 @@ const FeedCarousel = () => {
                   key={avatar?.account_id || index}
                   className='flex flex-shrink-0 justify-center'
                   style={{
-                    width: widthPerAvatar,
+                    width: widthPerAvatar || 'auto',
                   }}
                 >
                   {avatar === null ? (
@@ -240,7 +244,7 @@ const FeedCarousel = () => {
           <button
             data-testid='next-page'
             onClick={handleNextPage}
-            className='w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='h-full w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasNextPage}
           >
             <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-5 w-5' />
