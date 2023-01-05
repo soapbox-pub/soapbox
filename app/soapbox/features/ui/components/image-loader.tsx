@@ -26,7 +26,7 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
     loading: true,
     error: false,
     width: null,
-  }
+  };
 
   removers: EventRemover[] = [];
   canvas: HTMLCanvasElement | null = null;
@@ -87,7 +87,7 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
     image.addEventListener('load', handleLoad);
     image.src = previewSrc || '';
     this.removers.push(removeEventListeners);
-  })
+  });
 
   clearPreviewCanvas() {
     if (this.canvas && this.canvasContext) {
@@ -129,7 +129,7 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
   setCanvasRef = (c: HTMLCanvasElement) => {
     this.canvas = c;
     if (c) this.setState({ width: c.offsetWidth });
-  }
+  };
 
   render() {
     const { alt, src, width, height, onClick } = this.props;
