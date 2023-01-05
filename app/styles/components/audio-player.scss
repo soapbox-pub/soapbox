@@ -14,23 +14,23 @@
 
   .video-player__volume::before,
   .video-player__seek::before {
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.15;
   }
 
   .video-player__seek__buffer {
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.2;
   }
 
   .video-player__buttons button {
-    color: currentColor;
+    color: currentcolor;
     opacity: 0.75;
 
     &:active,
     &:hover,
     &:focus {
-      color: currentColor;
+      color: currentcolor;
       opacity: 1;
     }
   }
@@ -38,7 +38,7 @@
   .video-player__time-sep,
   .video-player__time-total,
   .video-player__time-current {
-    color: currentColor;
+    color: currentcolor;
   }
 
   .video-player__seek::before,

@@ -15,7 +15,7 @@
 
   &--active {
     &.svg-icon--home svg {
-      fill: currentColor;
+      fill: currentcolor;
     }
 
     svg.icon-tabler-search,
@@ -26,14 +26,14 @@
     svg.icon-tabler-bell,
     svg.icon-tabler-messages {
       path:nth-child(2) {
-        fill: currentColor;
+        fill: currentcolor;
       }
     }
 
     svg.icon-tabler-users {
       circle,
       circle + path {
-        fill: currentColor;
+        fill: currentcolor;
       }
     }
 
@@ -41,8 +41,8 @@
       stroke: var(--background-color);
 
       rect {
-        fill: currentColor;
-        stroke: currentColor;
+        fill: currentcolor;
+        stroke: currentcolor;
       }
     }
   }
