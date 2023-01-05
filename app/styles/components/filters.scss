@@ -39,7 +39,7 @@
         @apply static;
       }
 
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         position: absolute;
         top: 3px;
         left: 0;
@@ -68,12 +68,12 @@
       @apply pr-1 capitalize;
 
       &::after {
-        content: ",";
+        content: ',';
       }
 
       &:last-of-type {
         &::after {
-          content: "";
+          content: '';
         }
       }
     }

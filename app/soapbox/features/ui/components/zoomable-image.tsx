@@ -31,7 +31,7 @@ class ZoomableImage extends React.PureComponent<IZoomableImage> {
 
   state = {
     scale: MIN_SCALE,
-  }
+  };
 
   container: HTMLDivElement | null = null;
   image: HTMLImageElement | null = null;
@@ -54,7 +54,7 @@ class ZoomableImage extends React.PureComponent<IZoomableImage> {
     const [p1, p2] = Array.from(e.touches);
 
     this.lastDistance = getDistance(p1, p2);
-  }
+  };
 
   handleTouchMove = (e: TouchEvent) => {
     if (!this.container) return;
@@ -78,7 +78,7 @@ class ZoomableImage extends React.PureComponent<IZoomableImage> {
     this.zoom(scale, midpoint);
 
     this.lastDistance = distance;
-  }
+  };
 
   zoom(nextScale: number, midpoint: Point) {
     if (!this.container) return;
@@ -107,15 +107,15 @@ class ZoomableImage extends React.PureComponent<IZoomableImage> {
     e.stopPropagation();
     const handler = this.props.onClick;
     if (handler) handler(e);
-  }
+  };
 
   setContainerRef = (c: HTMLDivElement) => {
     this.container = c;
-  }
+  };
 
   setImageRef = (c: HTMLImageElement) => {
     this.image = c;
-  }
+  };
 
   render() {
     const { alt, src } = this.props;
