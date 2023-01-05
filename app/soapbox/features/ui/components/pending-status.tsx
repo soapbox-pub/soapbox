@@ -1,10 +1,10 @@
 import classNames from 'clsx';
 import React from 'react';
 
+import Account from 'soapbox/components/account';
 import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import { Card, HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder-media-gallery';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
@@ -65,9 +65,9 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
         >
           <div className='mb-4'>
             <HStack justifyContent='between' alignItems='start'>
-              <AccountContainer
+              <Account
                 key={account.id}
-                id={account.id}
+                account={account}
                 timestamp={status.created_at}
                 hideActions
               />

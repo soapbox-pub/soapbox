@@ -7,8 +7,6 @@ import { Button, Card, CardBody, CardHeader, CardTitle, Column, Spinner, Stack, 
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Token } from 'soapbox/reducers/security';
 
-import type { Map as ImmutableMap } from 'immutable';
-
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
   revoke: { id: 'security.tokens.revoke', defaultMessage: 'Revoke' },
@@ -75,9 +73,9 @@ const AuthTokenList: React.FC = () => {
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());
   const currentTokenId = useAppSelector(state => {
-    const currentToken = state.auth.get('tokens').valueSeq().find((token: ImmutableMap<string, any>) => token.get('me') === state.auth.get('me'));
+    const currentToken = state.auth.tokens.valueSeq().find((token) => token.me === state.auth.me);
 
-    return currentToken?.get('id');
+    return currentToken?.id;
   });
 
   useEffect(() => {

@@ -77,6 +77,16 @@ const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
 const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
 const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
 
+const ADMIN_USER_INDEX_EXPAND_FAIL   = 'ADMIN_USER_INDEX_EXPAND_FAIL';
+const ADMIN_USER_INDEX_EXPAND_REQUEST = 'ADMIN_USER_INDEX_EXPAND_REQUEST';
+const ADMIN_USER_INDEX_EXPAND_SUCCESS = 'ADMIN_USER_INDEX_EXPAND_SUCCESS';
+
+const ADMIN_USER_INDEX_FETCH_FAIL   = 'ADMIN_USER_INDEX_FETCH_FAIL';
+const ADMIN_USER_INDEX_FETCH_REQUEST = 'ADMIN_USER_INDEX_FETCH_REQUEST';
+const ADMIN_USER_INDEX_FETCH_SUCCESS = 'ADMIN_USER_INDEX_FETCH_SUCCESS';
+
+const ADMIN_USER_INDEX_QUERY_SET = 'ADMIN_USER_INDEX_QUERY_SET';
+
 const nicknamesFromIds = (getState: () => RootState, ids: string[]) => ids.map(id => getState().accounts.get(id)!.acct);
 
 const fetchConfig = () =>
@@ -544,6 +554,50 @@ const unsuggestUsers = (accountIds: string[]) =>
       });
   };
 
+const setUserIndexQuery = (query: string) => ({ type: ADMIN_USER_INDEX_QUERY_SET, query });
+
+const fetchUserIndex = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const { filters, page, query, pageSize, isLoading } = getState().admin_user_index;
+
+    if (isLoading) return;
+
+    dispatch({ type: ADMIN_USER_INDEX_FETCH_REQUEST });
+
+    dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize))
+      .then((data: any) => {
+        if (data.error) {
+          dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
+        } else {
+          const { users, count, next } = (data);
+          dispatch({ type: ADMIN_USER_INDEX_FETCH_SUCCESS, users, count, next });
+        }
+      }).catch(() => {
+        dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
+      });
+  };
+
+const expandUserIndex = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const { filters, page, query, pageSize, isLoading, next, loaded } = getState().admin_user_index;
+
+    if (!loaded || isLoading) return;
+
+    dispatch({ type: ADMIN_USER_INDEX_EXPAND_REQUEST });
+
+    dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize, next))
+      .then((data: any) => {
+        if (data.error) {
+          dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
+        } else {
+          const { users, count, next } = (data);
+          dispatch({ type: ADMIN_USER_INDEX_EXPAND_SUCCESS, users, count, next });
+        }
+      }).catch(() => {
+        dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
+      });
+  };
+
 export {
   ADMIN_CONFIG_FETCH_REQUEST,
   ADMIN_CONFIG_FETCH_SUCCESS,
@@ -596,6 +650,13 @@ export {
   ADMIN_USERS_UNSUGGEST_REQUEST,
   ADMIN_USERS_UNSUGGEST_SUCCESS,
   ADMIN_USERS_UNSUGGEST_FAIL,
+  ADMIN_USER_INDEX_EXPAND_FAIL,
+  ADMIN_USER_INDEX_EXPAND_REQUEST,
+  ADMIN_USER_INDEX_EXPAND_SUCCESS,
+  ADMIN_USER_INDEX_FETCH_FAIL,
+  ADMIN_USER_INDEX_FETCH_REQUEST,
+  ADMIN_USER_INDEX_FETCH_SUCCESS,
+  ADMIN_USER_INDEX_QUERY_SET,
   fetchConfig,
   updateConfig,
   updateSoapboxConfig,
@@ -622,4 +683,7 @@ export {
   setRole,
   suggestUsers,
   unsuggestUsers,
+  setUserIndexQuery,
+  fetchUserIndex,
+  expandUserIndex,
 };
