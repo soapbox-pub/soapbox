@@ -54,6 +54,9 @@ const messages = defineMessages({
   feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
   tileServerLabel: { id: 'soapbox_config.tile_server_label', defaultMessage: 'Map tile server' },
   tileServerAttributionLabel: { id: 'soapbox_config.tile_server_attribution_label', defaultMessage: 'Map tiles attribution' },
+  redirectRootNoLoginLabel: { id: 'soapbox_config.redirect_root_no_login_label', defaultMessage: 'Redirect root (no login)' },
+  redirectRootNoLoginHint: { id: 'soapbox_config.redirect_root_no_login_hint', defaultMessage: 'Path to redirect a user to from the homepage when he is not logged in.' },
+  redirectRootNoLoginPlaceholder: { id: 'soapbox_config.redirect_root_no_login_placeholder', defaultMessage: '/timeline/local' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -287,6 +290,18 @@ const SoapboxConfig: React.FC = () => {
                 />
               </ListItem>
             )}
+
+            <ListItem
+              label={intl.formatMessage(messages.redirectRootNoLoginLabel)}
+              hint={intl.formatMessage(messages.redirectRootNoLoginHint)}
+            >
+              <Input
+                type='text'
+                placeholder={intl.formatMessage(messages.redirectRootNoLoginPlaceholder)}
+                value={soapbox.redirectRootNoLogin}
+                onChange={handleChange(['redirectRootNoLogin'], (e) => e.target.value)}
+              />
+            </ListItem>
           </List>
 
           <CardHeader>
