@@ -3,6 +3,7 @@ import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
+import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
@@ -58,6 +59,15 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
 
+  const timestampEl = (
+    <RelativeTimestamp
+      timestamp={actualStatus.created_at}
+      theme='muted'
+      size='sm'
+      className='whitespace-nowrap'
+    />
+  );
+
   let statusTypeIcon = null;
 
   let quote;
@@ -87,7 +97,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           <Account
             key={account.id}
             account={account}
-            timestamp={actualStatus.created_at}
+            action={timestampEl}
             avatarSize={42}
             hideActions
           />
