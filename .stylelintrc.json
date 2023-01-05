@@ -1,6 +1,5 @@
 {
   "extends": ["stylelint-config-standard"],
-  "ignoreFiles": ["app/styles/reset.scss"],
   "plugins": ["stylelint-scss"],
   "rules": {
     "at-rule-no-unknown": null,
@@ -10,7 +9,8 @@
     "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["ForkAwesome", "Font Awesome 5 Free", "OpenDyslexic", "soapbox"] }],
     "no-descending-specificity": null,
     "no-duplicate-selectors": null,
-    "scss/at-rule-no-unknown": [true, { "ignoreAtRules": ["/tailwind/", "layer"]}],
-    "no-invalid-position-at-import-rule": null
+    "no-invalid-position-at-import-rule": null,
+    "scss/at-rule-no-unknown": [true, { "ignoreAtRules": ["tailwind", "apply", "layer", "config"]}],
+    "selector-class-pattern": null
   }
 }
