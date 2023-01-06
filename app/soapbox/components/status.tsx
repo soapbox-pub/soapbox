@@ -59,6 +59,7 @@ export interface IStatus {
 const Status: React.FC<IStatus> = (props) => {
   const {
     status,
+    accountAction,
     avatarSize = 42,
     focusable = true,
     hoverable = true,
@@ -309,8 +310,6 @@ const Status: React.FC<IStatus> = (props) => {
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
   };
-
-  const accountAction = props.accountAction;
 
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
