@@ -59,15 +59,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
 
-  const timestampEl = (
-    <RelativeTimestamp
-      timestamp={actualStatus.created_at}
-      theme='muted'
-      size='sm'
-      className='whitespace-nowrap'
-    />
-  );
-
   let statusTypeIcon = null;
 
   let quote;
@@ -97,7 +88,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           <Account
             key={account.id}
             account={account}
-            action={timestampEl}
+            timestamp={actualStatus.created_at}
             avatarSize={42}
             hideActions
           />

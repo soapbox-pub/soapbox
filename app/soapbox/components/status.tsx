@@ -310,13 +310,7 @@ const Status: React.FC<IStatus> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const timestampEl = (
-    <Link to={statusUrl} className='hover:underline' onClick={(event) => event.stopPropagation()}>
-      <RelativeTimestamp timestamp={actualStatus.created_at} theme='muted' size='sm' className='whitespace-nowrap' />
-    </Link>
-  );
-
-  const accountAction = props.accountAction || timestampEl;
+  const accountAction = props.accountAction;
 
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
@@ -347,6 +341,8 @@ const Status: React.FC<IStatus> = (props) => {
           <AccountContainer
             key={String(actualStatus.getIn(['account', 'id']))}
             id={String(actualStatus.getIn(['account', 'id']))}
+            timestamp={actualStatus.created_at}
+            timestampUrl={statusUrl}
             action={accountAction}
             hideActions={!accountAction}
             showEdit={!!actualStatus.edited_at}
