@@ -4611,7 +4611,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.x":
+"axios@npm:^1.2.2":
   version: 1.2.2
   resolution: "axios@npm:1.2.2"
   dependencies:
@@ -13664,7 +13664,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.15.0
     array-includes: ^3.1.5
     autoprefixer: ^10.4.2
-    axios: ^1.x
+    axios: ^1.2.2
     axios-mock-adapter: ^1.21.1
     babel-jest: ^29.0.0
     babel-loader: ^8.2.5
