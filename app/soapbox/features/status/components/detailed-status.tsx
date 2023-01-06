@@ -3,7 +3,6 @@ import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
-import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
