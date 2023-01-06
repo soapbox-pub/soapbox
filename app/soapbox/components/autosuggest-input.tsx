@@ -46,7 +46,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
   getFirstIndex = () => {
     return this.props.autoSelect ? 0 : -1;
-  }
+  };
 
   state = {
     suggestionsHidden: true,
@@ -76,7 +76,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     if (this.props.onChange) {
       this.props.onChange(e);
     }
-  }
+  };
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     const { suggestions, menu, disabled } = this.props;
@@ -145,15 +145,15 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     if (this.props.onKeyDown) {
       this.props.onKeyDown(e);
     }
-  }
+  };
 
   onBlur = () => {
     this.setState({ suggestionsHidden: true, focused: false });
-  }
+  };
 
   onFocus = () => {
     this.setState({ focused: true });
-  }
+  };
 
   onSuggestionClick: React.EventHandler<React.MouseEvent | React.TouchEvent> = (e) => {
     const index = Number(e.currentTarget?.getAttribute('data-index'));
@@ -161,7 +161,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.input?.focus();
     e.preventDefault();
-  }
+  };
 
   componentDidUpdate(prevProps: IAutosuggestInput, prevState: any) {
     const { suggestions } = this.props;
@@ -172,7 +172,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
   setInput = (c: HTMLInputElement) => {
     this.input = c;
-  }
+  };
 
   renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
     const { selectedSuggestion } = this.state;
@@ -209,21 +209,21 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         {inner}
       </div>
     );
-  }
+  };
 
   handleMenuItemAction = (item: MenuItem | null, e: React.MouseEvent | React.KeyboardEvent) => {
     this.onBlur();
     if (item?.action) {
       item.action(e);
     }
-  }
+  };
 
   handleMenuItemClick = (item: MenuItem | null): React.MouseEventHandler => {
     return e => {
       e.preventDefault();
       this.handleMenuItemAction(item, e);
     };
-  }
+  };
 
   renderMenu = () => {
     const { menu, suggestions } = this.props;

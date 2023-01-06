@@ -15,9 +15,6 @@ jest.mock('soapbox/queries/client');
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
 require('fake-indexeddb/auto');
 
-// Mock external dependencies
-jest.mock('uuid', () => ({ v4: jest.fn(() => '1') }));
-
 // Clear toasts after each test.
 afterEach(() => {
   toast.remove();

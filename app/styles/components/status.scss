@@ -15,8 +15,8 @@
   animation: fade 150ms linear;
 }
 
-[column-type=filled] .status__wrapper,
-[column-type=filled] .status-placeholder {
+[column-type='filled'] .status__wrapper,
+[column-type='filled'] .status-placeholder {
   @apply rounded-none shadow-none p-4;
 }
 
