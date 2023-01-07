@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Scheduled posts: fix page crashing on deleting a scheduled post.
 - Events: don't crash when searching for a location.
 - Search: fixes an abort error when using the navbar search component.
+- Posts: fix monospace font in Markdown code blocks.
 
 ## [3.0.0] - 2022-12-25
 
