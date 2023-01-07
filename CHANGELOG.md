@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Search: fixes an abort error when using the navbar search component.
 - Posts: fix monospace font in Markdown code blocks.
 - Modals: fix action buttons overflow
+- Editing: don't insert edited posts to the top of the feed.
 
 ## [3.0.0] - 2022-12-25
 
