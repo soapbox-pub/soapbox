@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatibility: rudimentary support for Takahē.
 - UI: added backdrop blur behind modals.
 - Admin: let admins configure media preview for attachment thumbnails.
+- Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
 
 ### Changed
 - Posts: letterbox images to 19:6 again.
