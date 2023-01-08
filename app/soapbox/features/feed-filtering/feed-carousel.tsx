@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
@@ -11,7 +11,7 @@ import PlaceholderAvatar from '../placeholder/components/placeholder-avatar';
 
 const CarouselItem = React.forwardRef((
   { avatar, seen, onViewed, onPinned }: { avatar: Avatar, seen: boolean, onViewed: (account_id: string) => void, onPinned?: (avatar: null | Avatar) => void },
-  ref: any,
+  ref: React.ForwardedRef<HTMLDivElement>,
 ) => {
   const dispatch = useAppDispatch();
 
@@ -40,8 +40,11 @@ const CarouselItem = React.forwardRef((
         onPinned(avatar);
       }
 
-      onViewed(avatar.account_id);
-      markAsSeen.mutate(avatar.account_id);
+      if (!seen) {
+        onViewed(avatar.account_id);
+        markAsSeen.mutate(avatar.account_id);
+      }
+
       dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }, () => setLoading(false)));
     }
   };
@@ -51,7 +54,7 @@ const CarouselItem = React.forwardRef((
       ref={ref}
       aria-disabled={isFetching}
       onClick={handleClick}
-      className='cursor-pointer snap-start py-4'
+      className='cursor-pointer py-4'
       role='filter-feed-by-user'
       data-testid='carousel-item'
     >
@@ -87,6 +90,7 @@ const FeedCarousel = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_ref, setContainerRef, { width }] = useDimensions();
+  const carouselItemRef = useRef<HTMLDivElement>(null);
 
   const [seenAccountIds, setSeenAccountIds] = useState<string[]>([]);
   const [pageSize, setPageSize] = useState<number>(0);
@@ -94,13 +98,21 @@ const FeedCarousel = () => {
   const [pinnedAvatar, setPinnedAvatar] = useState<Avatar | null>(null);
 
   const avatarsToList = useMemo(() => {
-    const list = avatars.filter((avatar) => avatar.account_id !== pinnedAvatar?.account_id);
+    let list: (Avatar | null)[] = avatars.filter((avatar) => avatar.account_id !== pinnedAvatar?.account_id);
+
+    // If we have an Avatar pinned, let's create a new array with "null"
+    // in the first position of each page.
     if (pinnedAvatar) {
-      return [null, ...list];
+      const index = (currentPage - 1) * pageSize;
+      list = [
+        ...list.slice(0, index),
+        null,
+        ...list.slice(index),
+      ];
     }
 
     return list;
-  }, [avatars, pinnedAvatar]);
+  }, [avatars, pinnedAvatar, currentPage, pageSize]);
 
   const numberOfPages = Math.ceil(avatars.length / pageSize);
   const widthPerAvatar = width / (Math.floor(width / 80));
@@ -151,23 +163,23 @@ const FeedCarousel = () => {
       data-testid='feed-carousel'
     >
       <HStack alignItems='stretch'>
-        <div className='z-10 rounded-l-xl bg-white dark:bg-gray-900 w-8 flex self-stretch items-center justify-center'>
+        <div className='z-10 rounded-l-xl bg-white dark:bg-primary-900 w-8 flex self-stretch items-center justify-center'>
           <button
             data-testid='prev-page'
             onClick={handlePrevPage}
-            className='h-7 w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='h-full w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasPrevPage}
           >
             <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-5 w-5' />
           </button>
         </div>
 
-        <div className='overflow-hidden relative'>
+        <div className='overflow-hidden relative w-full'>
           {pinnedAvatar ? (
             <div
               className='z-10 flex items-center justify-center absolute left-0 top-0 bottom-0 bg-white dark:bg-primary-900'
               style={{
-                width: widthPerAvatar,
+                width: widthPerAvatar || 'auto',
               }}
             >
               <CarouselItem
@@ -175,6 +187,7 @@ const FeedCarousel = () => {
                 seen={seenAccountIds?.includes(pinnedAvatar.account_id)}
                 onViewed={markAsSeen}
                 onPinned={(avatar) => setPinnedAvatar(avatar)}
+                ref={carouselItemRef}
               />
             </div>
           ) : null}
@@ -189,7 +202,11 @@ const FeedCarousel = () => {
           >
             {isFetching ? (
               new Array(20).fill(0).map((_, idx) => (
-                <div className='flex flex-shrink-0 justify-center' style={{ width: widthPerAvatar }} key={idx}>
+                <div
+                  className='flex flex-shrink-0 justify-center'
+                  style={{ width: widthPerAvatar || 'auto' }}
+                  key={idx}
+                >
                   <PlaceholderAvatar size={56} withText />
                 </div>
               ))
@@ -199,11 +216,15 @@ const FeedCarousel = () => {
                   key={avatar?.account_id || index}
                   className='flex flex-shrink-0 justify-center'
                   style={{
-                    width: widthPerAvatar,
+                    width: widthPerAvatar || 'auto',
                   }}
                 >
                   {avatar === null ? (
-                    <Stack className='w-14 snap-start py-4 h-auto' space={3}>
+                    <Stack
+                      className='w-14 py-4 h-auto'
+                      space={3}
+                      style={{ height: carouselItemRef.current?.clientHeight }}
+                    >
                       <div className='block mx-auto relative w-16 h-16 rounded-full'>
                         <div className='w-16 h-16' />
                       </div>
@@ -227,11 +248,11 @@ const FeedCarousel = () => {
           </HStack>
         </div>
 
-        <div className='z-10 rounded-r-xl bg-white dark:bg-gray-900 w-8 self-stretch flex items-center justify-center'>
+        <div className='z-10 rounded-r-xl bg-white dark:bg-primary-900 w-8 self-stretch flex items-center justify-center'>
           <button
             data-testid='next-page'
             onClick={handleNextPage}
-            className='h-7 w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            className='h-full w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
             disabled={!hasNextPage}
           >
             <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-5 w-5' />

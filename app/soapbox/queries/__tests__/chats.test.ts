@@ -178,7 +178,8 @@ describe('useChats', () => {
 
   describe('with a successful request', () => {
     beforeEach(() => {
-      store = mockStore(rootState);
+      const state = rootState.setIn(['instance', 'version'], '2.7.2 (compatible; Pleroma 2.2.0)');
+      store = mockStore(state);
 
       __stub((mock) => {
         mock.onGet('/api/v1/pleroma/chats')

@@ -5,7 +5,7 @@ import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';
-import { useSettings } from 'soapbox/hooks';
+import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -72,6 +72,7 @@ const Item: React.FC<IItem> = ({
 }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif') === true;
+  const { mediaPreview } = useSoapboxConfig();
 
   const handleMouseEnter: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {
     if (hoverToPlay()) {
@@ -171,7 +172,7 @@ const Item: React.FC<IItem> = ({
       >
         <StillImage
           className='w-full h-full'
-          src={attachment.url}
+          src={mediaPreview ? attachment.preview_url : attachment.url}
           alt={attachment.description}
           letterboxed={letterboxed}
           showExt
@@ -294,7 +295,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']) as number | undefined;
 
     const getHeight = () => {
-      if (!aspectRatio) return w;
+      if (!aspectRatio) return w * 9 / 16;
       if (isPanoramic(aspectRatio)) return Math.floor(w / maximumAspectRatio);
       if (isPortrait(aspectRatio)) return Math.floor(w / minimumAspectRatio);
       return Math.floor(w / aspectRatio);

@@ -3,6 +3,7 @@
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "stylelint.vscode-stylelint",
-        "wix.vscode-import-cost"
+        "wix.vscode-import-cost",
+        "redhat.vscode-yaml"
     ]
 }

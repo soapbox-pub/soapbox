@@ -12,6 +12,7 @@ import {
   STATUS_QUOTES_FETCH_REQUEST,
   STATUS_QUOTES_FETCH_SUCCESS,
 } from 'soapbox/actions/status-quotes';
+import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
 
 import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
@@ -66,7 +67,7 @@ import {
 } from '../actions/scheduled-statuses';
 
 import type { AnyAction } from 'redux';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities';
 
 export const StatusListRecord = ImmutableRecord({
   next: null as string | null,
@@ -77,8 +78,6 @@ export const StatusListRecord = ImmutableRecord({
 
 type State = ImmutableMap<string, StatusList>;
 type StatusList = ReturnType<typeof StatusListRecord>;
-type Status = string | StatusEntity;
-type Statuses = Array<string | StatusEntity>;
 
 const initialState: State = ImmutableMap({
   favourites: StatusListRecord(),
@@ -89,15 +88,15 @@ const initialState: State = ImmutableMap({
   joined_events: StatusListRecord(),
 });
 
-const getStatusId = (status: string | StatusEntity) => typeof status === 'string' ? status : status.id;
+const getStatusId = (status: string | APIEntity) => typeof status === 'string' ? status : status.id;
 
-const getStatusIds = (statuses: Statuses = []) => (
+const getStatusIds = (statuses: APIEntity[] = []) => (
   ImmutableOrderedSet(statuses.map(getStatusId))
 );
 
 const setLoading = (state: State, listType: string, loading: boolean) => state.setIn([listType, 'isLoading'], loading);
 
-const normalizeList = (state: State, listType: string, statuses: Statuses, next: string | null) => {
+const normalizeList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
   return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
     map.set('next', next);
     map.set('loaded', true);
@@ -106,7 +105,7 @@ const normalizeList = (state: State, listType: string, statuses: Statuses, next:
   }));
 };
 
-const appendToList = (state: State, listType: string, statuses: Statuses, next: string | null) => {
+const appendToList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
   const newIds = getStatusIds(statuses);
 
   return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
@@ -116,16 +115,21 @@ const appendToList = (state: State, listType: string, statuses: Statuses, next: 
   }));
 };
 
-const prependOneToList = (state: State, listType: string, status: Status) => {
+const prependOneToList = (state: State, listType: string, status: APIEntity) => {
   const statusId = getStatusId(status);
   return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => {
     return ImmutableOrderedSet([statusId]).union(items as ImmutableOrderedSet<string>);
   });
 };
 
-const removeOneFromList = (state: State, listType: string, status: Status) => {
+const removeOneFromList = (state: State, listType: string, status: APIEntity) => {
   const statusId = getStatusId(status);
   return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => (items as ImmutableOrderedSet<string>).delete(statusId));
+};
+
+const maybeAppendScheduledStatus = (state: State, status: APIEntity) => {
+  if (!status.scheduled_at) return state;
+  return prependOneToList(state, 'scheduled_statuses', getStatusId(status));
 };
 
 export default function statusLists(state = initialState, action: AnyAction) {
@@ -209,6 +213,8 @@ export default function statusLists(state = initialState, action: AnyAction) {
       return setLoading(state, 'joined_events', false);
     case JOINED_EVENTS_FETCH_SUCCESS:
       return normalizeList(state, 'joined_events', action.statuses, action.next);
+    case STATUS_CREATE_SUCCESS:
+      return maybeAppendScheduledStatus(state, action.status);
     default:
       return state;
   }

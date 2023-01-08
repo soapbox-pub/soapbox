@@ -68,7 +68,7 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
       }
 
       dispatch(importFetchedStatus(status, idempotencyKey));
-      dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+      dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey, editing: !!statusId });
 
       // Poll the backend for the updated card
       if (status.expectsCard) {
