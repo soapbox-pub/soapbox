@@ -1,8 +1,7 @@
 import fs from 'fs';
 import { join } from 'path';
 
-const version = process.argv[2].replace('v', '');
-
+/** Parse the changelog into an object. */
 function parseChangelog(changelog: string): Record<string, string> {
   const result: Record<string, string> = {};
 
@@ -19,12 +18,15 @@ function parseChangelog(changelog: string): Record<string, string> {
   return result;
 }
 
-const changelog = fs.readFileSync(join(__dirname, '..', 'CHANGELOG.md'), 'utf8');
-const parsed = parseChangelog(changelog);
+/** Get Markdown changes for a specific version. */
+function getChanges(version: string) {
+  version = version.replace('v', '');
+  const content = fs.readFileSync(join(__dirname, '..', '..', 'CHANGELOG.md'), 'utf8');
+  const parsed = parseChangelog(content);
+  return (parsed[version] || '').trim();
+}
 
-// Log to stdout so we can redirect it in CI.
-// eslint-disable-next-line no-console
-console.log((parsed[version] || '').trim());
-
-
-
+export {
+  parseChangelog,
+  getChanges,
+};
