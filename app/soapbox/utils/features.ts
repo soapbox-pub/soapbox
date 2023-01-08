@@ -64,6 +64,12 @@ export const GLITCH = 'glitch';
  */
 export const AKKOMA = 'akkoma';
 
+/**
+ * Takahē, backend with support for serving multiple domains.
+ * @see {@link https://jointakahe.org/}
+ */
+export const TAKAHE = 'Takahe';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -117,6 +123,7 @@ const getInstanceFeatures = (instance: Instance) => {
     accountLookup: any([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
     ]),
 
@@ -288,6 +295,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
+      v.software === TAKAHE,
     ]),
 
     /**
@@ -297,6 +305,14 @@ const getInstanceFeatures = (instance: Instance) => {
     directTimeline: any([
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    editProfile: any([
+      v.software === MASTODON,
+      v.software === MITRA,
+      v.software === PIXELFED,
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     editStatuses: any([
@@ -357,7 +373,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/pleroma/events/:id/ics
      * @see GET /api/v1/pleroma/search/location
      */
-    events: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+    events: features.includes('events'),
 
     /**
      * Ability to address recipients of a status explicitly (with `to`).
@@ -371,6 +387,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
       v.software === MASTODON,
+      v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
       features.includes('exposable_reactions'),
     ]),
@@ -379,7 +396,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can see accounts' followers you know
      * @see GET /api/v1/accounts/familiar_followers
      */
-    familiarFollowers: v.software === MASTODON && gte(v.version, '3.5.0'),
+    familiarFollowers: any([
+      v.software === MASTODON && gte(v.version, '3.5.0'),
+      v.software === TAKAHE,
+    ]),
 
     /** Whether the instance federates. */
     federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
@@ -509,6 +529,7 @@ const getInstanceFeatures = (instance: Instance) => {
     notificationsIncludeTypes: any([
       v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === TAKAHE && gte(v.version, '0.6.2'),
     ]),
 
     /**
@@ -574,6 +595,7 @@ const getInstanceFeatures = (instance: Instance) => {
     publicTimeline: any([
       v.software === MASTODON,
       v.software === PLEROMA,
+      v.software === TAKAHE,
     ]),
 
     /**

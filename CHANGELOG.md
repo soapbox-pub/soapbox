@@ -5,6 +5,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+- Compatibility: rudimentary support for Takahē.
+- UI: added backdrop blur behind modals.
+- Admin: let admins configure media preview for attachment thumbnails.
+
+### Changed
+- Posts: letterbox images to 19:6 again.
+
+### Fixed
+- Layout: use accent color for "floating action button" (mobile compose button).
+- ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
+- Datepicker: correctly default to the current year.
+- Scheduled posts: fix page crashing on deleting a scheduled post.
+- Events: don't crash when searching for a location.
+- Search: fixes an abort error when using the navbar search component.
+- Posts: fix monospace font in Markdown code blocks.
+
+## [3.0.0] - 2022-12-25
+
 ### Added
 - Editing: ability to edit posts and view edit history (on Rebased, Pleroma, and Mastodon).
 - Events: ability to create, view, and comment on Events (on Rebased).
@@ -20,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Theme: auto-detect system theme by default.
 - Profile: remove a specific user from your followers (on Rebased, Mastodon).
 - Suggestions: ability to view all suggested profiles.
+- Feeds: display suggested accounts in Home feed (optional by admin).
 - Compatibility: added compatibility with Truth Social, Fedibird, Pixelfed, Akkoma, and Glitch.
 - Developers: added Test feed, Service Worker debugger, and Network Error preview.
 - Reports: display server rules in reports. Let users select rule violations when submitting a report.
@@ -27,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: custom badges. Admins can add non-federating badges to any user's profile (on Rebased, Pleroma).
 - Admin: consolidated user dropdown actions (verify/suggest/etc) into a unified "Moderate User" modal.
 - i18n: updated translations for Italian, Polish, Arabic, Hebrew, and German.
-- Toast: added the ability to dismiss toast notifications
+- Toast: added the ability to dismiss toast notifications.
 
 ### Changed
 - UI: the whole UI has been overhauled both inside and out. 97% of the codebase has been rewritten to TypeScript, and a new component library has been introduced with Tailwind CSS.
@@ -38,13 +59,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: move instance favicon beside username instead of post timestamp.
 - Posts: changed the behavior of content warnings. CWs and sensitive media are unified into one design.
 - Posts: redesigned interaction counters to use text instead of icons.
+- Posts: letterbox images taller than 1:1.
 - Profile: overhauled user profiles to be consistent with the rest of the UI.
 - Composer: move emoji button alongside other composer buttons, add numerical counter.
 - Birthdays: move today's birthdays out of notifications into right sidebar.
 - Performance: improve scrolling/navigation between feeds by using a virtual window library.
 - Admin: reorganize UI into 3-column layout.
 - Admin: include external link to frontend repo for the running commit.
-- Toast: redesigned toast notifications
+- Toast: redesigned toast notifications.
 
 ### Removed
 - Theme: Halloween theme.

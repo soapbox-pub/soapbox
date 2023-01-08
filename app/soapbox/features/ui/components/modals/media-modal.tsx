@@ -13,7 +13,7 @@ import Video from 'soapbox/features/video';
 import ImageLoader from '../image-loader';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Account, Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -24,7 +24,6 @@ const messages = defineMessages({
 interface IMediaModal {
   media: ImmutableList<Attachment>,
   status?: Status,
-  account: Account,
   index: number,
   time?: number,
   onClose: () => void,
@@ -34,7 +33,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const {
     media,
     status,
-    account,
     onClose,
     time = 0,
   } = props;
@@ -94,9 +92,9 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   };
 
   const handleStatusClick: React.MouseEventHandler = e => {
-    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (status && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      history.push(`/@${account.acct}/posts/${status?.id}`);
+      history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status?.id}`);
       onClose();
     }
   };
@@ -170,7 +168,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
     const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
 
-    const link = (status && account && (
+    const link = (status && (
       <a href={status.url} onClick={handleStatusClick}>
         <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
       </a>

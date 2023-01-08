@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { replaceHomeTimeline } from 'soapbox/actions/timelines';
@@ -9,7 +9,10 @@ import { Avatar, useCarouselAvatars, useMarkAsSeen } from 'soapbox/queries/carou
 import { Card, HStack, Icon, Stack, Text } from '../../components/ui';
 import PlaceholderAvatar from '../placeholder/components/placeholder-avatar';
 
-const CarouselItem = ({ avatar, seen, onViewed }: { avatar: Avatar, seen: boolean, onViewed: (account_id: string) => void }) => {
+const CarouselItem = React.forwardRef((
+  { avatar, seen, onViewed, onPinned }: { avatar: Avatar, seen: boolean, onViewed: (account_id: string) => void, onPinned?: (avatar: null | Avatar) => void },
+  ref: React.ForwardedRef<HTMLDivElement>,
+) => {
   const dispatch = useAppDispatch();
 
   const markAsSeen = useMarkAsSeen();
@@ -28,23 +31,35 @@ const CarouselItem = ({ avatar, seen, onViewed }: { avatar: Avatar, seen: boolea
 
     if (isSelected) {
       dispatch(replaceHomeTimeline(null, { maxId: null }, () => setLoading(false)));
+
+      if (onPinned) {
+        onPinned(null);
+      }
     } else {
-      onViewed(avatar.account_id);
-      markAsSeen.mutate(avatar.account_id);
+      if (onPinned) {
+        onPinned(avatar);
+      }
+
+      if (!seen) {
+        onViewed(avatar.account_id);
+        markAsSeen.mutate(avatar.account_id);
+      }
+
       dispatch(replaceHomeTimeline(avatar.account_id, { maxId: null }, () => setLoading(false)));
     }
   };
 
   return (
     <div
+      ref={ref}
       aria-disabled={isFetching}
       onClick={handleClick}
-      className='cursor-pointer'
+      className='cursor-pointer py-4'
       role='filter-feed-by-user'
       data-testid='carousel-item'
     >
-      <Stack className='w-16 h-auto' space={3}>
-        <div className='block mx-auto relative w-14 h-14 rounded-full'>
+      <Stack className='w-14 h-auto' space={3}>
+        <div className='block mx-auto relative w-12 h-12 rounded-full'>
           {isSelected && (
             <div className='absolute inset-0 bg-primary-600 bg-opacity-50 rounded-full flex items-center justify-center'>
               <Icon src={require('@tabler/icons/check.svg')} className='text-white h-6 w-6' />
@@ -54,7 +69,7 @@ const CarouselItem = ({ avatar, seen, onViewed }: { avatar: Avatar, seen: boolea
           <img
             src={avatar.account_avatar}
             className={classNames({
-              'w-14 h-14 min-w-[56px] rounded-full ring-2 ring-offset-4 dark:ring-offset-primary-900': true,
+              'w-12 h-12 min-w-[48px] rounded-full ring-2 ring-offset-4 dark:ring-offset-primary-900': true,
               'ring-transparent': !isSelected && seen,
               'ring-primary-600': isSelected,
               'ring-accent-500': !seen && !isSelected,
@@ -68,19 +83,39 @@ const CarouselItem = ({ avatar, seen, onViewed }: { avatar: Avatar, seen: boolea
       </Stack>
     </div>
   );
-};
+});
 
 const FeedCarousel = () => {
-  const { data: avatars, isFetching, isError } = useCarouselAvatars();
+  const { data: avatars, isFetching, isFetched, isError } = useCarouselAvatars();
 
-  const [cardRef, setCardRef, { width }] = useDimensions();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_ref, setContainerRef, { width }] = useDimensions();
+  const carouselItemRef = useRef<HTMLDivElement>(null);
 
   const [seenAccountIds, setSeenAccountIds] = useState<string[]>([]);
   const [pageSize, setPageSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pinnedAvatar, setPinnedAvatar] = useState<Avatar | null>(null);
+
+  const avatarsToList = useMemo(() => {
+    let list: (Avatar | null)[] = avatars.filter((avatar) => avatar.account_id !== pinnedAvatar?.account_id);
+
+    // If we have an Avatar pinned, let's create a new array with "null"
+    // in the first position of each page.
+    if (pinnedAvatar) {
+      const index = (currentPage - 1) * pageSize;
+      list = [
+        ...list.slice(0, index),
+        null,
+        ...list.slice(index),
+      ];
+    }
+
+    return list;
+  }, [avatars, pinnedAvatar, currentPage, pageSize]);
 
   const numberOfPages = Math.ceil(avatars.length / pageSize);
-  const widthPerAvatar = (cardRef?.scrollWidth || 0) / avatars.length;
+  const widthPerAvatar = width / (Math.floor(width / 80));
 
   const hasNextPage = currentPage < numberOfPages && numberOfPages > 1;
   const hasPrevPage = currentPage > 1 && numberOfPages > 1;
@@ -118,67 +153,113 @@ const FeedCarousel = () => {
     );
   }
 
-  if (avatars.length === 0) {
+  if (isFetched && avatars.length === 0) {
     return null;
   }
 
   return (
-    <Card variant='rounded' size='lg' className='relative' data-testid='feed-carousel'>
-      <div>
-        {hasPrevPage && (
-          <div>
-            <div className='z-10 absolute left-5 top-1/2 -mt-4'>
-              <button
-                data-testid='prev-page'
-                onClick={handlePrevPage}
-                className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
-              >
-                <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-6 w-6' />
-              </button>
-            </div>
-          </div>
-        )}
+    <div
+      className='rounded-xl bg-white dark:bg-primary-900 shadow-lg dark:shadow-none overflow-hidden'
+      data-testid='feed-carousel'
+    >
+      <HStack alignItems='stretch'>
+        <div className='z-10 rounded-l-xl bg-white dark:bg-primary-900 w-8 flex self-stretch items-center justify-center'>
+          <button
+            data-testid='prev-page'
+            onClick={handlePrevPage}
+            className='h-full w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            disabled={!hasPrevPage}
+          >
+            <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-5 w-5' />
+          </button>
+        </div>
 
-        <HStack
-          alignItems='center'
-          space={8}
-          className='z-0 flex transition-all duration-200 ease-linear scroll'
-          style={{ transform: `translateX(-${(currentPage - 1) * 100}%)` }}
-          ref={setCardRef}
-        >
-          {isFetching ? (
-            new Array(pageSize).fill(0).map((_, idx) => (
-              <div className='w-16 text-center' key={idx}>
-                <PlaceholderAvatar size={56} withText />
-              </div>
-            ))
-          ) : (
-            avatars.map((avatar) => (
+        <div className='overflow-hidden relative w-full'>
+          {pinnedAvatar ? (
+            <div
+              className='z-10 flex items-center justify-center absolute left-0 top-0 bottom-0 bg-white dark:bg-primary-900'
+              style={{
+                width: widthPerAvatar || 'auto',
+              }}
+            >
               <CarouselItem
-                key={avatar.account_id}
-                avatar={avatar}
-                seen={seenAccountIds?.includes(avatar.account_id)}
+                avatar={pinnedAvatar}
+                seen={seenAccountIds?.includes(pinnedAvatar.account_id)}
                 onViewed={markAsSeen}
+                onPinned={(avatar) => setPinnedAvatar(avatar)}
+                ref={carouselItemRef}
               />
-            ))
-          )}
-        </HStack>
-
-        {hasNextPage && (
-          <div>
-            <div className='z-10 absolute right-5 top-1/2 -mt-4'>
-              <button
-                data-testid='next-page'
-                onClick={handleNextPage}
-                className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
-              >
-                <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-6 w-6' />
-              </button>
             </div>
-          </div>
-        )}
-      </div>
-    </Card>
+          ) : null}
+
+          <HStack
+            alignItems='center'
+            style={{
+              transform: `translateX(-${(currentPage - 1) * 100}%)`,
+            }}
+            className='transition-all ease-out duration-500'
+            ref={setContainerRef}
+          >
+            {isFetching ? (
+              new Array(20).fill(0).map((_, idx) => (
+                <div
+                  className='flex flex-shrink-0 justify-center'
+                  style={{ width: widthPerAvatar || 'auto' }}
+                  key={idx}
+                >
+                  <PlaceholderAvatar size={56} withText />
+                </div>
+              ))
+            ) : (
+              avatarsToList.map((avatar: any, index) => (
+                <div
+                  key={avatar?.account_id || index}
+                  className='flex flex-shrink-0 justify-center'
+                  style={{
+                    width: widthPerAvatar || 'auto',
+                  }}
+                >
+                  {avatar === null ? (
+                    <Stack
+                      className='w-14 py-4 h-auto'
+                      space={3}
+                      style={{ height: carouselItemRef.current?.clientHeight }}
+                    >
+                      <div className='block mx-auto relative w-16 h-16 rounded-full'>
+                        <div className='w-16 h-16' />
+                      </div>
+                    </Stack>
+                  ) : (
+                    <CarouselItem
+                      avatar={avatar}
+                      seen={seenAccountIds?.includes(avatar.account_id)}
+                      onPinned={(avatar) => {
+                        setPinnedAvatar(null);
+                        setTimeout(() => {
+                          setPinnedAvatar(avatar);
+                        }, 1);
+                      }}
+                      onViewed={markAsSeen}
+                    />
+                  )}
+                </div>
+              ))
+            )}
+          </HStack>
+        </div>
+
+        <div className='z-10 rounded-r-xl bg-white dark:bg-primary-900 w-8 self-stretch flex items-center justify-center'>
+          <button
+            data-testid='next-page'
+            onClick={handleNextPage}
+            className='h-full w-7 flex items-center justify-center disabled:opacity-25 transition-opacity duration-500'
+            disabled={!hasNextPage}
+          >
+            <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-5 w-5' />
+          </button>
+        </div>
+      </HStack>
+    </div>
   );
 };
 

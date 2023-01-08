@@ -37,7 +37,7 @@ const SettingsStore: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const settings = useSettings();
-  const settingsStore = useAppSelector(state => state.get('settings'));
+  const settingsStore = useAppSelector(state => state.settings);
 
   const [rawJSON, setRawJSON] = useState<string>(JSON.stringify(settingsStore, null, 2));
   const [jsonValid, setJsonValid] = useState(true);

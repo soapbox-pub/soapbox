@@ -44,7 +44,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     setAccountIds(ImmutableOrderedSet());
   };
 
-  const handleAccountSearch = useCallback(throttle(q => {
+  const handleAccountSearch = useCallback(throttle((q) => {
     const params = { q, limit, resolve: false };
 
     dispatch(accountSearch(params, controller.current.signal))
@@ -53,7 +53,6 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
         setAccountIds(ImmutableOrderedSet(accountIds));
       })
       .catch(noOp);
-
   }, 900, { leading: true, trailing: true }), [limit]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {

@@ -74,6 +74,7 @@ One disadvantage of this approach is that it does not help the software spread. 
 
 © Alex Gleason & other Soapbox contributors  
 © Eugen Rochko & other Mastodon contributors  
+© Trump Media & Technology Group  
 © Gab AI, Inc.  
 
 Soapbox is free software: you can redistribute it and/or modify

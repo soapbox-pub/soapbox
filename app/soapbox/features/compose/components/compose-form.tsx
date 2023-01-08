@@ -75,7 +75,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
   const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
-  const scheduledStatusCount = useAppSelector((state) => state.get('scheduled_statuses').size);
+  const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
   const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt } = compose;

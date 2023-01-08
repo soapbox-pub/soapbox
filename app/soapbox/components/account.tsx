@@ -53,7 +53,7 @@ interface IProfilePopper {
 const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
   condition ? wrapper(children) : children;
 
-interface IAccount {
+export interface IAccount {
   account: AccountEntity,
   action?: React.ReactElement,
   actionAlignment?: 'center' | 'top',
@@ -223,7 +223,7 @@ const Account = ({
 
             <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1} style={style}>
-                <Text theme='muted' size='sm' truncate>@{username}</Text>
+                <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (
                   <InstanceFavicon account={account} disabled={!withLinkToProfile} />
