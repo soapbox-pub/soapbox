@@ -56,7 +56,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
   const width  = `${Math.floor((displayWidth - 4) / 3) - 4}px`;
   const height = width;
   const status = attachment.get('status');
-  const title = status.get('spoiler_text') || attachment.get('description');
+  const title  = status.get('spoiler_text') || attachment.get('description');
 
   let thumbnail: React.ReactNode = '';
   let icon;
