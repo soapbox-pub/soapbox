@@ -69,7 +69,7 @@ const Navbar = () => {
   return (
     <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node}>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
-        <div className='relative flex justify-between h-12 lg:h-16'>
+        <div className='relative flex justify-between h-12'>
           {account && (
             <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:right-0 rtl:left-auto'>
               <button onClick={onOpenSidebar}>
@@ -87,7 +87,7 @@ const Navbar = () => {
             })}
           >
             <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-              <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
+              <SiteLogo alt='Logo' className='h-10 w-auto cursor-pointer' />
               <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
             </Link>
 

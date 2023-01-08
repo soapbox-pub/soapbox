@@ -7,7 +7,8 @@ import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
-import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import ProfileDropdown from 'soapbox/features/ui/components/profile-dropdown';
 import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance } from 'soapbox/hooks';
 
 import Sonar from './sonar';
@@ -106,7 +107,7 @@ const Header = () => {
                   </a>
                 )}
               </HStack>
-
+              {(!account) && (
               <HStack space={2} className='xl:hidden shrink-0'>
                 <Button to='/login' theme='tertiary'>
                   {intl.formatMessage(messages.login)}
@@ -121,8 +122,16 @@ const Header = () => {
                   </Button>
                 )}
               </HStack>
+              )}
             </HStack>
-
+            {account ? (
+              <div className='hidden relative lg:flex items-center'>
+                <ProfileDropdown account={account}>
+                  <Avatar src={account.avatar} size={34} />
+                </ProfileDropdown>
+              </div>
+            ) : (
+              <>
             <Form className='hidden xl:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
               <Input
                 required
@@ -166,6 +175,8 @@ const Header = () => {
                 {intl.formatMessage(messages.login)}
               </Button>
             </Form>
+              </>
+            )}
           </HStack>
         </div>
       </nav>
