@@ -50,7 +50,7 @@ const makeHtmlConfig = (params = {}): HtmlWebpackPlugin.Options => {
 
 const configuration: Configuration = {
   entry: {
-    application: resolve('app/application.ts'),
+    application: resolve('app/soapbox/main.tsx'),
   },
 
   output: {
