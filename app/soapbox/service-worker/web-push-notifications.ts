@@ -159,7 +159,7 @@ const handlePush = (event: PushEvent) => {
         options.data.hiddenImage = notification.status?.media_attachments[0]?.preview_url;
 
         if (notification.status?.spoiler_text) {
-          options.body = notification.status.spoiler_text;
+          options.body    = notification.status.spoiler_text;
         }
 
         options.image   = undefined;

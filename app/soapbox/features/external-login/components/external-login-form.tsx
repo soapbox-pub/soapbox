@@ -17,14 +17,12 @@ const messages = defineMessages({
 
 /** Form for logging into a remote instance */
 const ExternalLoginForm: React.FC = () => {
-  const query = new URLSearchParams(window.location.search);
-  const code = query.get('code');
-  const server = query.get('server');
+  const code = new URLSearchParams(window.location.search).get('code');
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [host, setHost] = useState(server || '');
+  const [host, setHost] = useState('');
   const [isLoading, setLoading] = useState(false);
 
   const handleHostChange: React.ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
@@ -46,12 +44,6 @@ const ExternalLoginForm: React.FC = () => {
           toast.error(intl.formatMessage(messages.networkFailed));
         }
 
-        // If the server was invalid, clear it from the URL.
-        // https://stackoverflow.com/a/40592892
-        if (server) {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-
         setLoading(false);
       });
   };
@@ -62,13 +54,7 @@ const ExternalLoginForm: React.FC = () => {
     }
   }, [code]);
 
-  useEffect(() => {
-    if (server && !code) {
-      handleSubmit();
-    }
-  }, [server]);
-
-  if (code || server) {
+  if (code) {
     return <Spinner />;
   }
 

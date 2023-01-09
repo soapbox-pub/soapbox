@@ -152,10 +152,8 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const handleModalOpen = () => {
     modalHistoryKey.current = Date.now();
-    unlistenHistory.current = history.listen(({ state }, action) => {
-      if (!(state as any)?.soapboxModalKey) {
-        onClose();
-      } else if (action === 'POP') {
+    unlistenHistory.current = history.listen((_, action) => {
+      if (action === 'POP') {
         handleOnClose();
 
         if (onCancel) onCancel();
@@ -167,9 +165,11 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     if (unlistenHistory.current) {
       unlistenHistory.current();
     }
-    const { state } = history.location;
-    if (state && (state as any).soapboxModalKey === modalHistoryKey.current) {
-      history.goBack();
+    if (!['FAVOURITES', 'MENTIONS', 'REACTIONS', 'REBLOGS', 'MEDIA'].includes(type)) {
+      const { state } = history.location;
+      if (state && (state as any).soapboxModalKey === modalHistoryKey.current) {
+        history.goBack();
+      }
     }
   };
 
@@ -221,7 +221,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
       ensureHistoryBuffer();
     }
-  }, [children]);
+  });
 
   if (!visible) {
     return (

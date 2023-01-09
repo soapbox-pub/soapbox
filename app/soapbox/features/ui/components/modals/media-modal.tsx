@@ -9,7 +9,6 @@ import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon-button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
-import { useAppDispatch } from 'soapbox/hooks';
 
 import ImageLoader from '../image-loader';
 
@@ -40,7 +39,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
   const intl = useIntl();
   const history = useHistory();
-  const dispatch = useAppDispatch();
 
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
@@ -96,14 +94,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const handleStatusClick: React.MouseEventHandler = e => {
     if (status && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-
-      dispatch((_, getState) => {
-        const account = typeof status.account === 'string' ? getState().accounts.get(status.account) : status.account;
-        if (!account) return;
-
-        history.push(`/@${account.acct}/posts/${status?.id}`);
-        onClose();
-      });
+      history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status?.id}`);
+      onClose();
     }
   };
 
@@ -121,7 +113,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
   let pagination: React.ReactNode[] = [];
 
-  const leftNav = media.size > 1 && (
+  const leftNav  = media.size > 1 && (
     <button
       tabIndex={0}
       className='media-modal__nav media-modal__nav--left'
