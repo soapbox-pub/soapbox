@@ -117,14 +117,14 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
 
   if (!visible) {
     icon = (
-      <span className='account-gallery__item__icons'>
+      <span className='media-gallery__item__icons'>
         <Icon src={require('@tabler/icons/eye-off.svg')} />
       </span>
     );
   }
 
   return (
-    <div className='account-gallery__item' style={{ width, height }}>
+    <div style={{ width, height }}>
       <a className='media-gallery__item-thumbnail' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
           hash={attachment.get('blurhash')}

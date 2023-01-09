@@ -13,7 +13,7 @@ interface IMovedNote {
 }
 
 const MovedNote: React.FC<IMovedNote> = ({ from, to }) => (
-  <div className='account__moved-note'>
+  <div className='p-4'>
     <HStack className='mb-2' alignItems='center' space={1.5}>
       <Icon
         src={require('@tabler/icons/briefcase.svg')}
