@@ -209,6 +209,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
+    "@gitbeaker/node": "^35.8.0",
     "@jedmao/redux-mock-store": "^3.0.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@testing-library/jest-dom": "^5.16.4",
