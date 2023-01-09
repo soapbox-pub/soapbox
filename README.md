@@ -31,9 +31,11 @@ Built / Transpiled / Compiled application will be in the ```./static``` director
 
 ## Contributing
 
-We welcome contributions to this project.  To contribute, see [Contributing to Soapbox](docs/contributing.md).
+We welcome contributions to this project.
+To contribute, see [Contributing to Soapbox](docs/contributing.md).
 
-Translators can help by providing [translations through Weblate](https://hosted.weblate.org/projects/soapbox-pub/soapbox/).  Native speakers from all around the world are welcome!
+Translators can help by providing [translations through Weblate](https://hosted.weblate.org/projects/soapbox-pub/soapbox/).
+Native speakers from all around the world are welcome!
 
 <br>
 
