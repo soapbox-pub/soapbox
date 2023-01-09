@@ -1,11 +1,10 @@
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
 import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isDefaultAvatar } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
@@ -17,7 +16,7 @@ const messages = defineMessages({
 });
 
 const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const account = useOwnAccount();
 
   const fileInput = React.useRef<HTMLInputElement>(null);

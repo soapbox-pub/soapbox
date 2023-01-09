@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import { Column, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import sourceCode from 'soapbox/utils/code';
 
@@ -31,7 +31,7 @@ const DashWidget: React.FC<IDashWidget> = ({ to, onClick, children }) => {
 };
 
 const Developers: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
 

@@ -1,12 +1,11 @@
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
 import { Button } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },
@@ -14,7 +13,7 @@ const messages = defineMessages({
 });
 
 const Search: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const value = useAppSelector(state => state.aliases.suggestions.value);

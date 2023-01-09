@@ -1,12 +1,11 @@
 import classNames from 'clsx';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import { endOnboarding } from 'soapbox/actions/onboarding';
 import LandingGradient from 'soapbox/components/landing-gradient';
 import { HStack } from 'soapbox/components/ui';
-import { useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 import AvatarSelectionStep from './steps/avatar-selection-step';
 import BioStep from './steps/bio-step';
@@ -17,7 +16,7 @@ import FediverseStep from './steps/fediverse-step';
 import SuggestedAccountsStep from './steps/suggested-accounts-step';
 
 const OnboardingWizard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
 
   const [currentStep, setCurrentStep] = React.useState<number>(0);
