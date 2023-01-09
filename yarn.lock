@@ -1557,10 +1557,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/roboto-mono@npm:^4.5.8":
+"@fontsource/roboto@npm:^4.5.0":
   version: 4.5.8
-  resolution: "@fontsource/roboto-mono@npm:4.5.8"
-  checksum: 0912b468ae5285d992f81f27c1b59dabf7a7a0a6ab050b5af38947985ba7fe776de8050b89361aa7c3c4730def2567cb305e83bd631d1a4c12791dda7faab21e
+  resolution: "@fontsource/roboto@npm:4.5.8"
+  checksum: 460b6de2c9f7a172192c3f5bdd3aa11f78f0b6660dca9dc2b9d8207272b50c55b5a8f2da68e11e7fbaf44c7d3cf4191030eecce9def79fab75d4cc1de39754e2
   languageName: node
   linkType: hard
 
@@ -13608,7 +13608,7 @@ __metadata:
     "@babel/preset-typescript": ^7.17.12
     "@babel/runtime": ^7.18.3
     "@fontsource/inter": ^4.5.1
-    "@fontsource/roboto-mono": ^4.5.8
+    "@fontsource/roboto": ^4.5.0
     "@gamestdio/websocket": ^0.3.2
     "@jedmao/redux-mock-store": ^3.0.5
     "@jest/globals": ^29.0.0
