@@ -961,7 +961,6 @@
   "preferences.fields.display_media.default": "Hide posts marked as sensitive",
   "preferences.fields.display_media.hide_all": "Always hide posts",
   "preferences.fields.display_media.show_all": "Always show posts",
-  "preferences.fields.dyslexic_font_label": "Dyslexic mode",
   "preferences.fields.expand_spoilers_label": "Always expand posts marked with content warnings",
   "preferences.fields.language_label": "Display Language",
   "preferences.fields.media_display_label": "Sensitive content",

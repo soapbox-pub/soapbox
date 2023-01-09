@@ -9,7 +9,7 @@
     "declaration-block-no-redundant-longhand-properties": null,
     "declaration-colon-newline-after": null,
     "declaration-empty-line-before": "never",
-    "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["ForkAwesome", "Font Awesome 5 Free", "OpenDyslexic", "soapbox"] }],
+    "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["ForkAwesome", "Font Awesome 5 Free"] }],
     "max-line-length": null,
     "no-descending-specificity": null,
     "no-duplicate-selectors": null,
