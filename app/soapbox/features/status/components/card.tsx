@@ -153,7 +153,7 @@ const Card: React.FC<ICard> = ({
     </Stack>
   );
 
-  let embed: React.ReactNode = '';
+  let embed: React.ReactNode = null;
 
   const canvas = (
     <Blurhash
@@ -240,8 +240,6 @@ const Card: React.FC<ICard> = ({
         {thumbnail}
       </div>
     );
-  } else {
-    embed = null;
   }
 
   return (
