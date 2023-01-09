@@ -2,7 +2,6 @@
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
@@ -11,7 +10,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
@@ -81,7 +80,7 @@ const getOtherAccounts = makeGetOtherAccounts();
 
 const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const features = useFeatures();
   const getAccount = makeGetAccount();

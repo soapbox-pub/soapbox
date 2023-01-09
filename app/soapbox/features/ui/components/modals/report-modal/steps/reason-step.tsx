@@ -1,12 +1,11 @@
 import classNames from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changeReportComment, changeReportRule } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
@@ -22,7 +21,7 @@ interface IReasonStep {
 const RULES_HEIGHT = 385;
 
 const ReasonStep = (_props: IReasonStep) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const rulesListRef = useRef(null);
