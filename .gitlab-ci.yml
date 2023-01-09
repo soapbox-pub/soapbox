@@ -27,7 +27,7 @@ deps:
       - yarn.lock
   cache:
     <<: *cache
-    policy: push
+    policy: pull-push
 
 danger:
   stage: test
