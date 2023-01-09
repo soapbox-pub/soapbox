@@ -200,6 +200,7 @@
     "typescript": "^4.4.4",
     "util": "^0.12.4",
     "uuid": "^9.0.0",
+    "vite-plugin-require": "^1.1.10",
     "webpack": "^5.72.1",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-bundle-analyzer": "^4.5.0",
