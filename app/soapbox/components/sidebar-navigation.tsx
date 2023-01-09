@@ -1,6 +1,9 @@
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { Stack } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useStatContext } from 'soapbox/contexts/stat-context';
@@ -10,6 +13,7 @@ import { useAppSelector, useFeatures, useOwnAccount, useSettings } from 'soapbox
 import SidebarNavigationLink from './sidebar-navigation-link';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
+import type { FooterItem } from 'soapbox/types/soapbox';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
@@ -30,6 +34,15 @@ const SidebarNavigation = () => {
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+
+  const { navlinks, locale } = useAppSelector((state) => {
+    const soapboxConfig = getSoapboxConfig(state);
+
+    return {
+      navlinks: (soapboxConfig.navlinks.get('homeFooter') || ImmutableList()) as ImmutableList<FooterItem>,
+      locale: getSettings(state).get('locale') as string,
+    };
+  });
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];
@@ -77,6 +90,19 @@ const SidebarNavigation = () => {
       }
     }
 
+    if (navlinks.count() > 0) {
+      menu.push(null); // divider
+      navlinks.forEach(function(linkItem) {
+        const url = linkItem.get('url');
+        const isExternal = url.startsWith('http');
+        menu.push({
+          to: url,
+          text: (linkItem.getIn(['titleLocales', locale]) || linkItem.get('title')) as string,
+          newTab: isExternal,
+        });
+      });
+    }
+
     return menu;
   };
 
@@ -118,6 +144,24 @@ const SidebarNavigation = () => {
           text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
         />
 
+        {features.publicTimeline && (
+          <>
+            <SidebarNavigationLink
+              to='/timeline/local'
+              icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+              text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+            />
+
+            {features.federating && (
+              <SidebarNavigationLink
+                to='/timeline/fediverse'
+                icon={require('@tabler/icons/topology-star-ring-3.svg')}
+                text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+              />
+            )}
+          </>
+        )}
+
         <SidebarNavigationLink
           to='/search'
           icon={require('@tabler/icons/search.svg')}
@@ -158,23 +202,7 @@ const SidebarNavigation = () => {
           </>
         )}
 
-        {features.publicTimeline && (
-          <>
-            <SidebarNavigationLink
-              to='/timeline/local'
-              icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
-              text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
-            />
 
-            {features.federating && (
-              <SidebarNavigationLink
-                to='/timeline/fediverse'
-                icon={require('@tabler/icons/topology-star-ring-3.svg')}
-                text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
-              />
-            )}
-          </>
-        )}
 
         {menu.length > 0 && (
           <DropdownMenu items={menu}>

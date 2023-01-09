@@ -51,8 +51,8 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {features.federating && (
             <FooterLink to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></FooterLink>
           )}
-          {account.admin && (
-            <FooterLink to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></FooterLink>
+          {account.staff && (
+            <FooterLink to='/soapbox/admin'><FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' /></FooterLink>
           )}
           {account.locked && (
             <FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink>

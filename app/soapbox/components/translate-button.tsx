@@ -4,10 +4,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
+import { isLocal } from 'soapbox/utils/accounts';
 
 import { Stack } from './ui';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Account, Status } from 'soapbox/types/entities';
 
 interface ITranslateButton {
   status: Status,
@@ -21,10 +22,13 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   const me = useAppSelector((state) => state.me);
 
+  const allowUnauthenticated = instance.pleroma.getIn(['metadata', 'translation', 'allow_unauthenticated'], false);
+  const allowRemote = instance.pleroma.getIn(['metadata', 'translation', 'allow_remote'], true);
+
   const sourceLanguages = instance.pleroma.getIn(['metadata', 'translation', 'source_languages']) as ImmutableList<string>;
   const targetLanguages = instance.pleroma.getIn(['metadata', 'translation', 'target_languages']) as ImmutableList<string>;
 
-  const renderTranslate = me && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
+  const renderTranslate = (me || allowUnauthenticated) && (allowRemote || isLocal(status.account as Account)) && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
 
   const supportsLanguages = (!sourceLanguages || sourceLanguages.includes(status.language!)) && (!targetLanguages || targetLanguages.includes(intl.locale));
 
