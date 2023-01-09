@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
@@ -16,7 +16,6 @@ import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import EventPreview from './event-preview';
-import RelativeTimestamp from './relative-timestamp';
 import StatusActionBar from './status-action-bar';
 import StatusContent from './status-content';
 import StatusMedia from './status-media';
