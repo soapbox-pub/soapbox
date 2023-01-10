@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -533,7 +533,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     />
   ));
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (node.current) {
       const { offsetWidth } = node.current;
 

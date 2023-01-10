@@ -4,7 +4,7 @@ import React from 'react';
 
 import { __stub } from 'soapbox/api';
 
-import { render, screen } from '../../../../../../jest/test-helpers';
+import { render, screen, waitFor } from '../../../../../../jest/test-helpers';
 import { normalizeAccount, normalizeStatus } from '../../../../../../normalizers';
 import ReportModal from '../report-modal';
 
@@ -64,6 +64,9 @@ describe('<ReportModal />', () => {
     await user.click(screen.getByTestId('rule-1'));
     await user.click(screen.getByText(/Next/));
     await user.click(screen.getByText(/Submit/));
-    expect(screen.getByText(/Thanks for submitting your report/)).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByText(/Thanks for submitting your report/)).toBeInTheDocument();
+    });
   });
 });

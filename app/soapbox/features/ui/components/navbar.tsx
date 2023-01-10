@@ -1,7 +1,6 @@
 import classNames from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -10,7 +9,7 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -24,7 +23,7 @@ const messages = defineMessages({
 });
 
 const Navbar = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const node = useRef(null);

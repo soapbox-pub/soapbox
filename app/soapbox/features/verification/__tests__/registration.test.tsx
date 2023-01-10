@@ -30,7 +30,10 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/welcome to/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/welcome to/i);
+      });
+
       expect(screen.queryAllByRole('heading')).toHaveLength(0);
     });
   });
@@ -47,7 +50,9 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/this username has already been taken/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/this username has already been taken/i);
+      });
     });
 
     it('handles generic errors', async() => {
@@ -61,7 +66,9 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/failed to register your account/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/failed to register your account/i);
+      });
     });
   });
 
