@@ -236,6 +236,7 @@
     "yargs": "^17.6.2"
   },
   "resolutions": {
+    "jsonwebtoken": "^9.0.0",
     "loader-utils": "^2.0.3"
   }
 }
