@@ -84,7 +84,7 @@ const Lists: React.FC = () => {
         >
           {lists.map((list: any) => (
             <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'>
-              <Icon src={require('@tabler/icons/list.svg')} fixedWidth />
+              <Icon src={require('@tabler/icons/list.svg')} />
               <span className='flex-grow'>
                 {list.title}
               </span>
