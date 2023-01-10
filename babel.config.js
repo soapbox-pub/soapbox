@@ -29,13 +29,9 @@ module.exports = (api) => {
       config.plugins.push(...[
         'lodash',
         [
-          'transform-react-remove-prop-types',
           {
             mode: 'remove',
             removeImport: true,
-            additionalLibraries: [
-              'react-immutable-proptypes',
-            ],
           },
         ],
         '@babel/transform-react-inline-elements',
