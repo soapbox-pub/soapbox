@@ -11,7 +11,6 @@ import { useAppDispatch, usePrevious } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
-import type { UnregisterCallback } from 'history';
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
 import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event';
@@ -55,7 +54,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   const ref = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLDivElement | null>(revealed ? document.activeElement as HTMLDivElement | null : null);
   const modalHistoryKey = useRef<number>();
-  const unlistenHistory = useRef<UnregisterCallback>();
+  const unlistenHistory = useRef<ReturnType<typeof history.listen>>();
 
   const prevChildren = usePrevious(children);
   const prevType = usePrevious(type);

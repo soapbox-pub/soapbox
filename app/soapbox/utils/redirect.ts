@@ -1,9 +1,10 @@
-import { Location } from 'history';
 import { useEffect } from 'react';
+
+import type { Location } from 'soapbox/types/history';
 
 const LOCAL_STORAGE_REDIRECT_KEY = 'soapbox:redirect-uri';
 
-const cacheCurrentUrl = (location: Location<unknown>) => {
+const cacheCurrentUrl = (location: Location) => {
   const actualUrl = encodeURIComponent(`${location.pathname}${location.search}`);
   localStorage.setItem(LOCAL_STORAGE_REDIRECT_KEY, actualUrl);
   return actualUrl;
