@@ -233,6 +233,7 @@
     "yargs": "^17.6.2"
   },
   "resolutions": {
+    "glob-parent": "^6.0.1",
     "jsonwebtoken": "^9.0.0",
     "loader-utils": "^2.0.3"
   }
