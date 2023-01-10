@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -9,7 +8,7 @@ import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import ProfileDropdown from 'soapbox/features/ui/components/profile-dropdown';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance, useAppDispatch } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -26,7 +25,7 @@ const messages = defineMessages({
 });
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const account = useOwnAccount();

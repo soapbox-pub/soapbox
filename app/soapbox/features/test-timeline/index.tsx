@@ -1,9 +1,9 @@
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { importFetchedStatuses } from 'soapbox/actions/importer';
 import { expandTimelineSuccess } from 'soapbox/actions/timelines';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import { Column } from '../../components/ui';
 import Timeline from '../ui/components/timeline';
@@ -31,7 +31,7 @@ const onlyMedia = false;
 
 const TestTimeline: React.FC = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     dispatch(importFetchedStatuses(MOCK_STATUSES));

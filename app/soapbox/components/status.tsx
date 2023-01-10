@@ -2,7 +2,7 @@ import classNames from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
@@ -21,7 +21,8 @@ import StatusContent from './status-content';
 import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
-import { Card, HStack, Stack, Text } from './ui';
+import StatusInfo from './statuses/status-info';
+import { Card, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
@@ -37,6 +38,7 @@ const messages = defineMessages({
 
 export interface IStatus {
   id?: string,
+  avatarSize?: number,
   status: StatusEntity,
   onClick?: () => void,
   muted?: boolean,
@@ -56,6 +58,8 @@ export interface IStatus {
 const Status: React.FC<IStatus> = (props) => {
   const {
     status,
+    accountAction,
+    avatarSize = 42,
     focusable = true,
     hoverable = true,
     onClick,
@@ -84,7 +88,7 @@ const Status: React.FC<IStatus> = (props) => {
   const [minHeight, setMinHeight] = useState(208);
 
   const actualStatus = getActualStatus(status);
-
+  const isReblog = status.reblog && typeof status.reblog === 'object';
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
 
   // Track height changes we know about to compensate scrolling.
@@ -201,8 +205,49 @@ const Status: React.FC<IStatus> = (props) => {
     firstEmoji?.focus();
   };
 
+  const renderStatusInfo = () => {
+    if (isReblog) {
+      return (
+        <StatusInfo
+          avatarSize={avatarSize}
+          to={`/@${status.getIn(['account', 'acct'])}`}
+          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />}
+          text={
+            <FormattedMessage
+              id='status.reblogged_by'
+              defaultMessage='{name} reposted'
+              values={{
+                name: (
+                  <bdi className='truncate pr-1 rtl:pl-1'>
+                    <strong
+                      className='text-gray-800 dark:text-gray-200'
+                      dangerouslySetInnerHTML={{
+                        __html: String(status.getIn(['account', 'display_name_html'])),
+                      }}
+                    />
+                  </bdi>
+                ),
+              }}
+            />
+          }
+        />
+      );
+    } else if (featured) {
+      return (
+        <StatusInfo
+          avatarSize={avatarSize}
+          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />}
+          text={
+            <Text size='xs' theme='muted' weight='medium'>
+              <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+            </Text>
+          }
+        />
+      );
+    }
+  };
+
   if (!status) return null;
-  let rebloggedByText, reblogElement, reblogElementMobile;
 
   if (hidden) {
     return (
@@ -228,55 +273,8 @@ const Status: React.FC<IStatus> = (props) => {
     );
   }
 
+  let rebloggedByText;
   if (status.reblog && typeof status.reblog === 'object') {
-    const displayNameHtml = { __html: String(status.getIn(['account', 'display_name_html'])) };
-
-    reblogElement = (
-      <NavLink
-        to={`/@${status.getIn(['account', 'acct'])}`}
-        onClick={(event) => event.stopPropagation()}
-        className='hidden sm:flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 rtl:space-x-reverse hover:underline'
-      >
-        <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
-
-        <HStack alignItems='center'>
-          <FormattedMessage
-            id='status.reblogged_by'
-            defaultMessage='{name} reposted'
-            values={{
-              name: <bdi className='max-w-[100px] truncate pr-1 rtl:px-1'>
-                <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
-              </bdi>,
-            }}
-          />
-        </HStack>
-      </NavLink>
-    );
-
-    reblogElementMobile = (
-      <div className='pb-5 -mt-2 sm:hidden truncate'>
-        <NavLink
-          to={`/@${status.getIn(['account', 'acct'])}`}
-          onClick={(event) => event.stopPropagation()}
-          className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-1 hover:underline'
-        >
-          <Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />
-
-          <span>
-            <FormattedMessage
-              id='status.reblogged_by'
-              defaultMessage='{name} reposted'
-              values={{
-                name: <bdi>
-                  <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
-                </bdi>,
-              }}
-            />
-          </span>
-        </NavLink>
-      </div>
-    );
-
     rebloggedByText = intl.formatMessage(
       messages.reblogged_by,
       { name: String(status.getIn(['account', 'acct'])) },
@@ -312,8 +310,6 @@ const Status: React.FC<IStatus> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const accountAction = props.accountAction || reblogElement;
-
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
 
@@ -328,21 +324,9 @@ const Status: React.FC<IStatus> = (props) => {
         onClick={handleClick}
         role='link'
       >
-        {featured && (
-          <div className='pt-4 px-4'>
-            <HStack alignItems='center' space={1}>
-              <Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
-
-              <Text size='sm' theme='muted' weight='medium'>
-                <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
-              </Text>
-            </HStack>
-          </div>
-        )}
-
         <Card
           variant={variant}
-          className={classNames('status__wrapper', `status-${actualStatus.visibility}`, {
+          className={classNames('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
             'py-6 sm:p-5': variant === 'rounded',
             'status-reply': !!status.in_reply_to_id,
             muted,
@@ -350,21 +334,20 @@ const Status: React.FC<IStatus> = (props) => {
           })}
           data-id={status.id}
         >
-          {reblogElementMobile}
+          {renderStatusInfo()}
 
-          <div className='mb-4'>
-            <AccountContainer
-              key={String(actualStatus.getIn(['account', 'id']))}
-              id={String(actualStatus.getIn(['account', 'id']))}
-              timestamp={actualStatus.created_at}
-              timestampUrl={statusUrl}
-              action={accountAction}
-              hideActions={!accountAction}
-              showEdit={!!actualStatus.edited_at}
-              showProfileHoverCard={hoverable}
-              withLinkToProfile={hoverable}
-            />
-          </div>
+          <AccountContainer
+            key={String(actualStatus.getIn(['account', 'id']))}
+            id={String(actualStatus.getIn(['account', 'id']))}
+            timestamp={actualStatus.created_at}
+            timestampUrl={statusUrl}
+            action={accountAction}
+            hideActions={!accountAction}
+            showEdit={!!actualStatus.edited_at}
+            showProfileHoverCard={hoverable}
+            withLinkToProfile={hoverable}
+            avatarSize={avatarSize}
+          />
 
           <div className='status__content-wrapper'>
             <StatusReplyMentions status={actualStatus} hoverable={hoverable} />

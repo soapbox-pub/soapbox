@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
@@ -9,7 +8,7 @@ import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, IconButton, Spinner } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import NewListForm from './components/new-list-form';
 
@@ -35,7 +34,7 @@ const getOrderedLists = createSelector([(state: RootState) => state.lists], list
 });
 
 const Lists: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const lists = useAppSelector((state) => getOrderedLists(state));

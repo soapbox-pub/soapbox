@@ -151,6 +151,8 @@ const buildMessage = (
   });
 };
 
+const avatarSize = 48;
+
 interface INotificaton {
   hidden?: boolean,
   notification: NotificationEntity,
@@ -290,7 +292,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={account.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
           />
         ) : null;
       case 'follow_request':
@@ -298,7 +300,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={account.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
             actionType='follow_request'
           />
         ) : null;
@@ -307,7 +309,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={notification.target.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
           />
         ) : null;
       case 'favourite':
@@ -327,6 +329,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             hidden={hidden}
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
+            avatarSize={avatarSize}
           />
         ) : null;
       default:
@@ -358,13 +361,18 @@ const Notification: React.FC<INotificaton> = (props) => {
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>
-            <HStack alignItems='center' space={1.5}>
-              {renderIcon()}
+            <HStack alignItems='center' space={3}>
+              <div
+                className='flex justify-end'
+                style={{ flexBasis: avatarSize }}
+              >
+                {renderIcon()}
+              </div>
 
               <div className='truncate'>
                 <Text
                   theme='muted'
-                  size='sm'
+                  size='xs'
                   truncate
                   data-testid='message'
                 >

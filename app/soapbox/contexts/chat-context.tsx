@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { toggleMainWindow } from 'soapbox/actions/chats';
-import { useOwnAccount, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { IChat, useChat } from 'soapbox/queries/chats';
 
 type WindowState = 'open' | 'minimized';
@@ -22,7 +21,7 @@ enum ChatWidgetScreens {
 
 const ChatProvider: React.FC = ({ children }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const settings = useSettings();
   const account = useOwnAccount();
 
