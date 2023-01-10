@@ -37,8 +37,10 @@ describe('<SmsVerification />', () => {
         );
       });
 
-      expect(screen.getByRole('heading')).toHaveTextContent('Verification code');
-      expect(screen.getByTestId('toast')).toHaveTextContent('A verification code has been sent to your phone number.');
+      await waitFor(() => {
+        expect(screen.getByRole('heading')).toHaveTextContent('Verification code');
+        expect(screen.getByTestId('toast')).toHaveTextContent('A verification code has been sent to your phone number.');
+      });
 
       act(() => {
         toast.remove();
@@ -68,8 +70,10 @@ describe('<SmsVerification />', () => {
         );
       });
 
-      expect(screen.getByRole('heading')).toHaveTextContent('Verification code');
-      expect(screen.getByTestId('toast')).toHaveTextContent('A verification code has been sent to your phone number.');
+      await waitFor(() => {
+        expect(screen.getByRole('heading')).toHaveTextContent('Verification code');
+        expect(screen.getByTestId('toast')).toHaveTextContent('A verification code has been sent to your phone number.');
+      });
 
       act(() => {
         toast.remove();
@@ -82,7 +86,9 @@ describe('<SmsVerification />', () => {
       await userEvent.type(screen.getByLabelText('Digit 5'), '5');
       await userEvent.type(screen.getByLabelText('Digit 6'), '6');
 
-      expect(screen.getByTestId('toast')).toHaveTextContent('Your SMS token has expired.');
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent('Your SMS token has expired.');
+      });
     });
   });
 
@@ -106,7 +112,9 @@ describe('<SmsVerification />', () => {
         );
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent('Failed to send SMS message to your phone number.');
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent('Failed to send SMS message to your phone number.');
+      });
     });
   });
 });

@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -159,7 +159,7 @@ const Video: React.FC<IVideo> = ({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setDimensions();
   }, [player.current]);
 

@@ -3,7 +3,7 @@
 import './precheck';
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { defineMessages } from 'react-intl';
 
 import { setSwUpdating } from 'soapbox/actions/sw';
@@ -34,9 +34,10 @@ function main() {
   }
 
   ready(() => {
-    const mountNode = document.getElementById('soapbox') as HTMLElement;
+    const container = document.getElementById('soapbox') as HTMLElement;
+    const root = createRoot(container);
 
-    ReactDOM.render(<Soapbox />, mountNode);
+    root.render(<Soapbox />);
 
     if (BuildConfig.NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug

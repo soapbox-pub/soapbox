@@ -1,5 +1,6 @@
 'use strict';
 
+import { act } from '@testing-library/react';
 import { toast } from 'react-hot-toast';
 
 import { __clear as clearApiMocks } from '../api/__mocks__';
@@ -17,7 +18,9 @@ require('fake-indexeddb/auto');
 
 // Clear toasts after each test.
 afterEach(() => {
-  toast.remove();
+  act(() => {
+    toast.remove();
+  });
 });
 
 const intersectionObserverMock = () => ({ observe: () => null, disconnect: () => null });

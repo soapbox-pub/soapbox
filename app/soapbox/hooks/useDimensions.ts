@@ -25,7 +25,7 @@ const useDimensions = (): UseDimensionsResult => {
   );
 
   useEffect((): any => {
-    if (!element) return null;
+    if (!element) return;
     observer.observe(element);
 
     return () => {

@@ -30,7 +30,7 @@ describe('useFetchRelationships()', () => {
       });
 
       it('is successful', async() => {
-        const { result } = renderHook(() => {
+        renderHook(() => {
           const fetchRelationships = useFetchRelationships();
 
           useEffect(() => {
@@ -40,11 +40,11 @@ describe('useFetchRelationships()', () => {
           return fetchRelationships;
         }, undefined, store);
 
-        await waitFor(() => expect(result.current.isLoading).toBe(false));
-
-        expect(store.getState().relationships.size).toBe(1);
-        expect(store.getState().relationships.getIn([id, 'id'])).toBe(id);
-        expect(store.getState().relationships.getIn([id, 'blocked_by'])).toBe(true);
+        await waitFor(() => {
+          expect(store.getState().relationships.size).toBe(1);
+          expect(store.getState().relationships.getIn([id, 'id'])).toBe(id);
+          expect(store.getState().relationships.getIn([id, 'blocked_by'])).toBe(true);
+        });
       });
     });
 
@@ -60,7 +60,7 @@ describe('useFetchRelationships()', () => {
       });
 
       it('is successful', async() => {
-        const { result } = renderHook(() => {
+        renderHook(() => {
           const fetchRelationships = useFetchRelationships();
 
           useEffect(() => {
@@ -70,11 +70,11 @@ describe('useFetchRelationships()', () => {
           return fetchRelationships;
         }, undefined, store);
 
-        await waitFor(() => expect(result.current.isLoading).toBe(false));
-
-        expect(store.getState().relationships.size).toBe(2);
-        expect(store.getState().relationships.getIn([ids[0], 'id'])).toBe(ids[0]);
-        expect(store.getState().relationships.getIn([ids[1], 'id'])).toBe(ids[1]);
+        await waitFor(() => {
+          expect(store.getState().relationships.size).toBe(2);
+          expect(store.getState().relationships.getIn([ids[0], 'id'])).toBe(ids[0]);
+          expect(store.getState().relationships.getIn([ids[1], 'id'])).toBe(ids[1]);
+        });
       });
     });
   });
