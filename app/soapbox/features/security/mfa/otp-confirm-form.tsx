@@ -42,7 +42,7 @@ const OtpConfirmForm: React.FC = () => {
     });
   }, []);
 
-  const handleInputChange = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));

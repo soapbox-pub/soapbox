@@ -32,7 +32,7 @@ const PasswordResetConfirm = () => {
 
   const isLoading = status === Statuses.LOADING;
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     setStatus(Statuses.LOADING);
@@ -41,7 +41,7 @@ const PasswordResetConfirm = () => {
       .catch(() => setStatus(Statuses.FAIL));
   }, [password]);
 
-  const onChange = React.useCallback((event) => {
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     setPassword(event.target.value);
   }, []);
 

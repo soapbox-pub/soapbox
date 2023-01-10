@@ -29,15 +29,15 @@ const AgeVerification = () => {
   const isLoading = useAppSelector((state) => state.verification.isLoading) as boolean;
   const ageMinimum = useAppSelector((state) => state.verification.ageMinimum) as any;
 
-  const [date, setDate] = React.useState('');
+  const [date, setDate] = React.useState<Date>();
   const isValid = typeof date === 'object';
 
-  const onChange = React.useCallback((date) => setDate(date), []);
+  const onChange = React.useCallback((date: Date) => setDate(date), []);
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
-    const birthday = new Date(date);
+    const birthday = new Date(date!);
 
     if (meetsAgeMinimum(birthday, ageMinimum)) {
       dispatch(verifyAge(birthday));

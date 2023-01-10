@@ -16,6 +16,7 @@ interface IDisplayName {
   account: Account
   withSuffix?: boolean
   withDate?: boolean
+  children?: React.ReactNode
 }
 
 const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = true, withDate = false }) => {
