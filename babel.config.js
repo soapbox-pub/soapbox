@@ -28,12 +28,6 @@ module.exports = (api) => {
     case 'production':
       config.plugins.push(...[
         'lodash',
-        [
-          {
-            mode: 'remove',
-            removeImport: true,
-          },
-        ],
         '@babel/transform-react-inline-elements',
         [
           '@babel/transform-runtime',
