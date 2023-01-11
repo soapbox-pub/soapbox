@@ -78,7 +78,7 @@ import {
   SoapboxConfig,
   // ExportData,
   ImportData,
-  // Backups,
+  Backups,
   MfaForm,
   ChatIndex,
   ChatWidget,
@@ -278,6 +278,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
+      {features.backups && <WrappedRoute path='/settings/backups' page={DefaultPage} component={Backups} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
@@ -285,7 +286,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
-      {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />

@@ -27,6 +27,7 @@ const messages = defineMessages({
   other: { id: 'settings.other', defaultMessage: 'Other options' },
   mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
+  backups: { id: 'column.backups', defaultMessage: 'Backups' },
 });
 
 /** User settings page. */
@@ -47,6 +48,7 @@ const Settings = () => {
   const navigateToDeleteAccount = () => history.push('/settings/account');
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
+  const navigateToBackups = () => history.push('/settings/backups');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -135,6 +137,10 @@ const Settings = () => {
                 ) : features.accountAliases && (
                   <ListItem label={intl.formatMessage(messages.accountAliases)} onClick={navigateToAliases} />
                 ))}
+
+                {features.backups && (
+                  <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                )}
 
                 {features.security && (
                   <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
