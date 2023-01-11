@@ -238,7 +238,7 @@ const ChatPageMain = () => {
 
       <div className='h-full overflow-hidden'>
         <Chat
-          className='h-full overflow-hidden'
+          className='h-full'
           chat={chat}
           inputRef={inputRef}
         />
