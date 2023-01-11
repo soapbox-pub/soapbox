@@ -70,6 +70,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
                 account={account}
                 timestamp={status.created_at}
                 hideActions
+                withLinkToProfile={false}
               />
             </HStack>
           </div>
