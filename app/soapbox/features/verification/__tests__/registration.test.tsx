@@ -75,7 +75,10 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/this username is unavailable/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/this username is unavailable/i);
+      });
+
     });
 
     it('handles generic errors', async() => {
