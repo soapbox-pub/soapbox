@@ -24,13 +24,13 @@ type SavedScrollPosition = {
 // NOTE: It's crucial to space lists with **padding** instead of margin!
 // Pass an `itemClassName` like `pb-3`, NOT a `space-y-3` className
 // https://virtuoso.dev/troubleshooting#list-does-not-scroll-to-the-bottom--items-jump-around
-const Item: Components<JSX.Element, Context>['Item'] = ({ context, ...rest }) => (
+const Item: Components<Context>['Item'] = ({ context, ...rest }) => (
   <div className={context?.itemClassName} {...rest} />
 );
 
 /** Custom Virtuoso List component for the outer container. */
 // Ensure the className winds up here
-const List: Components<JSX.Element, Context>['List'] = React.forwardRef((props, ref) => {
+const List: Components<Context>['List'] = React.forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} className={context?.listClassName} {...rest} />;
 });

@@ -48,8 +48,6 @@ describe('<UI />', () => {
 
         await waitFor(() => {
           expect(screen.getByTestId('cta-banner')).toHaveTextContent('Sign up now to discuss');
-        }, {
-          timeout: 2000,
         });
       });
     });
