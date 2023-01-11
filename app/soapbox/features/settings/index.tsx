@@ -28,6 +28,7 @@ const messages = defineMessages({
   mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
   backups: { id: 'column.backups', defaultMessage: 'Backups' },
+  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
 });
 
 /** User settings page. */
@@ -49,6 +50,7 @@ const Settings = () => {
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
   const navigateToBackups = () => history.push('/settings/backups');
+  const navigateToImportData = () => history.push('/settings/import');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -140,6 +142,10 @@ const Settings = () => {
 
                 {features.backups && (
                   <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                )}
+
+                {features.importData && (
+                  <ListItem label={intl.formatMessage(messages.importData)} onClick={navigateToImportData} />
                 )}
 
                 {features.security && (
