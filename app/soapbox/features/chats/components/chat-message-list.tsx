@@ -66,6 +66,21 @@ const List: Components['List'] = React.forwardRef((props, ref) => {
   return <div ref={ref} {...rest} className='mb-2' />;
 });
 
+const Scroller: Components['Scroller'] = React.forwardRef((props, ref) => {
+  const { style, context, ...rest } = props;
+
+  return (
+    <div
+      {...rest}
+      ref={ref}
+      style={{
+        ...style,
+        scrollbarGutter: 'stable',
+      }}
+    />
+  );
+});
+
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
   chat: IChat,
@@ -472,6 +487,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
           }}
           components={{
             List,
+            Scroller,
             Header: () => {
               if (hasNextPage || isFetchingNextPage) {
                 return <Spinner withText={false} />;
