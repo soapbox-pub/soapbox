@@ -1,7 +1,7 @@
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { createRoot } from 'react-dom/client';
+import { render } from 'react-dom';
 import { defineMessages } from 'react-intl';
 
 import { setSwUpdating } from 'soapbox/actions/sw';
@@ -36,9 +36,8 @@ if (BuildConfig.NODE_ENV === 'production') {
 
 ready(() => {
   const container = document.getElementById('soapbox') as HTMLElement;
-  const root = createRoot(container);
 
-  root.render(<Soapbox />);
+  render(<Soapbox />, container);
 
   if (BuildConfig.NODE_ENV === 'production') {
     // avoid offline in dev mode because it's harder to debug
