@@ -108,7 +108,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
     // Desktop notifications
     try {
       // eslint-disable-next-line compat/compat
-      const isNotificationsEnabled = typeof window.Notification !== 'undefined' && Notification.permission === 'granted';
+      const isNotificationsEnabled = window.Notification?.permission === 'granted';
 
       if (showAlert && !filtered && isNotificationsEnabled) {
         const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
