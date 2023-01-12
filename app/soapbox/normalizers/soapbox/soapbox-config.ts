@@ -220,7 +220,7 @@ const normalizeRedirectRootNoLogin = (soapboxConfig: SoapboxConfigMap): SoapboxC
 
   try {
     // Basically just get the pathname with a leading slash.
-    const normalized = new URL(redirectRootNoLogin, 'a://').pathname;
+    const normalized = new URL(redirectRootNoLogin, 'http://a').pathname;
 
     if (normalized !== '/') {
       return soapboxConfig.set('redirectRootNoLogin', normalized);
