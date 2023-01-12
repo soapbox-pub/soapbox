@@ -1,5 +1,6 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
+
+import { normalizeInstance } from 'soapbox/normalizers';
 
 import { render, screen } from '../../../../jest/test-helpers';
 import CtaBanner from '../cta-banner';
@@ -19,9 +20,9 @@ describe('<CtaBanner />', () => {
     });
   });
 
-  describe('with singleUserMode enabled', () => {
+  describe('with registrations closed', () => {
     it('renders empty', () => {
-      const store = { soapbox: ImmutableMap({ singleUserMode: true }) };
+      const store = { instance: normalizeInstance({ registrations: false }) };
 
       render(<CtaBanner />, undefined, store);
       expect(screen.queryAllByTestId('cta-banner')).toHaveLength(0);

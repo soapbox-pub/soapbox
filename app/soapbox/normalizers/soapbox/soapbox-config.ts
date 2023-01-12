@@ -106,8 +106,6 @@ export const SoapboxConfigRecord = ImmutableRecord({
   }),
   aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
   authenticatedProfile: true,
-  singleUserMode: false,
-  singleUserModeProfile: '',
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
   displayCta: true,
@@ -115,7 +113,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   feedInjection: true,
   tileServer: '',
   tileServerAttribution: '',
-  redirectRootNoLogin: '/',
+  redirectRootNoLogin: '',
   /**
    * Whether to use the preview URL for media thumbnails.
    * On some platforms this can be too blurry without additional configuration.
@@ -198,6 +196,45 @@ const normalizeAdsAlgorithm = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   }
 };
 
+/** Single user mode is now managed by `redirectRootNoLogin`. */
+const upgradeSingleUserMode = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const singleUserMode = soapboxConfig.get('singleUserMode');
+  const singleUserModeProfile = soapboxConfig.get('singleUserModeProfile');
+  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin');
+
+  if (!redirectRootNoLogin && singleUserMode && singleUserModeProfile) {
+    return soapboxConfig
+      .set('redirectRootNoLogin', `/@${singleUserModeProfile}`)
+      .deleteAll(['singleUserMode', 'singleUserModeProfile']);
+  } else {
+    return soapboxConfig
+      .deleteAll(['singleUserMode', 'singleUserModeProfile']);
+  }
+};
+
+/** Ensure a valid path is used. */
+const normalizeRedirectRootNoLogin = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin');
+
+  if (!redirectRootNoLogin) return soapboxConfig;
+
+  try {
+    // Basically just get the pathname with a leading slash.
+    const normalized = new URL(redirectRootNoLogin, 'a://').pathname;
+
+    if (normalized !== '/') {
+      return soapboxConfig.set('redirectRootNoLogin', normalized);
+    } else {
+      // Prevent infinite redirect(?)
+      return soapboxConfig.delete('redirectRootNoLogin');
+    }
+  } catch (e) {
+    console.error('You have configured an invalid redirect in Soapbox Config.');
+    console.error(e);
+    return soapboxConfig.delete('redirectRootNoLogin');
+  }
+};
+
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
@@ -210,6 +247,8 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeCryptoAddresses(soapboxConfig);
       normalizeAds(soapboxConfig);
       normalizeAdsAlgorithm(soapboxConfig);
+      upgradeSingleUserMode(soapboxConfig);
+      normalizeRedirectRootNoLogin(soapboxConfig);
     }),
   );
 };

@@ -96,7 +96,7 @@ const SoapboxMount = () => {
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
-  const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
+  const { redirectRootNoLogin } = soapboxConfig;
 
   const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
@@ -134,8 +134,8 @@ const SoapboxMount = () => {
         />
       )}
 
-      {!me && (singleUserMode
-        ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+      {!me && (redirectRootNoLogin
+        ? <Redirect exact from='/' to={redirectRootNoLogin} />
         : <Route exact path='/' component={PublicLayout} />)}
 
       {!me && (

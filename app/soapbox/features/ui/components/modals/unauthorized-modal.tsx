@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig, useInstance } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures, useInstance } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
@@ -31,7 +31,6 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const dispatch = useAppDispatch();
   const instance = useInstance();
 
-  const { singleUserMode } = useSoapboxConfig();
   const username = useAppSelector(state => state.accounts.get(accountId)?.display_name);
   const features = useFeatures();
 
@@ -98,7 +97,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       <Modal
         title={header}
         onClose={onClickClose}
-        confirmationAction={!singleUserMode ? onLogin : undefined}
+        confirmationAction={instance.registrations ? onLogin : undefined}
         confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
         secondaryAction={onRegister}
         secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
@@ -122,7 +121,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
               <FormattedMessage id='remote_interaction.divider' defaultMessage='or' />
             </Text>
           </div>
-          {!singleUserMode && (
+          {instance.registrations && (
             <Text size='lg' weight='medium'>
               <FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: instance.title }} />
             </Text>

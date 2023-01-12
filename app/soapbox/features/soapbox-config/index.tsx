@@ -47,10 +47,6 @@ const messages = defineMessages({
   authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
   authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
   displayCtaLabel: { id: 'soapbox_config.cta_label', defaultMessage: 'Display call to action panels if not authenticated' },
-  singleUserModeLabel: { id: 'soapbox_config.single_user_mode_label', defaultMessage: 'Single user mode' },
-  singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
-  singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
-  singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
   mediaPreviewLabel: { id: 'soapbox_config.media_preview_label', defaultMessage: 'Prefer preview media for thumbnails' },
   mediaPreviewHint: { id: 'soapbox_config.media_preview_hint', defaultMessage: 'Some backends provide an optimized version of media for display in timelines. However, these preview images may be too small without additional configuration.' },
   feedInjectionLabel: { id: 'soapbox_config.feed_injection_label', defaultMessage: 'Feed injection' },
@@ -282,27 +278,6 @@ const SoapboxConfig: React.FC = () => {
                 onChange={handleChange(['authenticatedProfile'], (e) => e.target.checked)}
               />
             </ListItem>
-
-            <ListItem
-              label={intl.formatMessage(messages.singleUserModeLabel)}
-              hint={intl.formatMessage(messages.singleUserModeHint)}
-            >
-              <Toggle
-                checked={soapbox.singleUserMode === true}
-                onChange={handleChange(['singleUserMode'], (e) => e.target.checked)}
-              />
-            </ListItem>
-
-            {soapbox.get('singleUserMode') && (
-              <ListItem label={intl.formatMessage(messages.singleUserModeProfileLabel)}>
-                <Input
-                  type='text'
-                  placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
-                  value={soapbox.singleUserModeProfile}
-                  onChange={handleChange(['singleUserModeProfile'], (e) => e.target.value)}
-                />
-              </ListItem>
-            )}
 
             <ListItem
               label={intl.formatMessage(messages.redirectRootNoLoginLabel)}

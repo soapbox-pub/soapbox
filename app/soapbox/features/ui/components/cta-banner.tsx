@@ -6,10 +6,10 @@ import { useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 const CtaBanner = () => {
   const instance = useInstance();
-  const { displayCta, singleUserMode } = useSoapboxConfig();
+  const { displayCta } = useSoapboxConfig();
   const me = useAppSelector((state) => state.me);
 
-  if (me || !displayCta || singleUserMode) return null;
+  if (me || !displayCta || !instance.registrations) return null;
 
   return (
     <div data-testid='cta-banner' className='hidden lg:block'>
