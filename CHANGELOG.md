@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: letterbox images to 19:6 again.
 - Status Info: moved context (repost, pinned) to improve UX.
 - Posts: remove file icon from empty link previews.
+- ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
