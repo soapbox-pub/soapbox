@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
@@ -8,10 +7,10 @@ import { openModal } from 'soapbox/actions/modals';
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useInstance, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
 
 const WaitlistPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const instance = useInstance();
 
   const me = useOwnAccount();

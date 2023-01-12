@@ -94,10 +94,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to create accounts.
      * @see POST /api/v1/accounts
      */
-    accountCreation: any([
-      v.software === MASTODON,
-      v.software === PLEROMA,
-    ]),
+    accountCreation: v.software !== TRUTHSOCIAL,
 
     /**
      * Ability to pin other accounts on one's profile.

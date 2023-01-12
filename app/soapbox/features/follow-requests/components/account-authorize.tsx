@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import Account from 'soapbox/components/account';
 import { Button, HStack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
@@ -19,7 +18,7 @@ interface IAccountAuthorize {
 
 const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const getAccount = useCallback(makeGetAccount(), []);
 

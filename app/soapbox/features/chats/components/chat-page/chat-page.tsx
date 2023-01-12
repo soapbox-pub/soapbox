@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
 import { Stack } from 'soapbox/components/ui';
@@ -44,7 +44,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
     setHeight(fullHeight - top + offset);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     calculateHeight();
   }, [containerRef.current]);
 
