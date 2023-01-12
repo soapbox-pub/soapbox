@@ -29,7 +29,7 @@ const messages = defineMessages({
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
   backups: { id: 'column.backups', defaultMessage: 'Backups' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
-  exportData: { id: 'settings.export_data', defaultMessage: 'Export data' },
+  exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
 });
 
 /** User settings page. */
