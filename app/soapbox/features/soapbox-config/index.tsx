@@ -53,8 +53,8 @@ const messages = defineMessages({
   feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
   tileServerLabel: { id: 'soapbox_config.tile_server_label', defaultMessage: 'Map tile server' },
   tileServerAttributionLabel: { id: 'soapbox_config.tile_server_attribution_label', defaultMessage: 'Map tiles attribution' },
-  redirectRootNoLoginLabel: { id: 'soapbox_config.redirect_root_no_login_label', defaultMessage: 'Redirect root (no login)' },
-  redirectRootNoLoginHint: { id: 'soapbox_config.redirect_root_no_login_hint', defaultMessage: 'Path to redirect a user to from the homepage when he is not logged in.' },
+  redirectRootNoLoginLabel: { id: 'soapbox_config.redirect_root_no_login_label', defaultMessage: 'Redirect homepage' },
+  redirectRootNoLoginHint: { id: 'soapbox_config.redirect_root_no_login_hint', defaultMessage: 'Path to redirect the homepage when a user is not logged in.' },
   redirectRootNoLoginPlaceholder: { id: 'soapbox_config.redirect_root_no_login_placeholder', defaultMessage: '/timeline/local' },
 });
 
