@@ -7,7 +7,9 @@ import CtaBanner from '../cta-banner';
 
 describe('<CtaBanner />', () => {
   it('renders the banner', () => {
-    render(<CtaBanner />);
+    const store = { instance: normalizeInstance({ registrations: true }) };
+
+    render(<CtaBanner />, undefined, store);
     expect(screen.getByTestId('cta-banner')).toHaveTextContent(/sign up/i);
   });
 
