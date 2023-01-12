@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import LandingGradient from 'soapbox/components/landing-gradient';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { isStandalone } from 'soapbox/utils/state';
 
 import AboutPage from '../about';
@@ -13,9 +13,6 @@ import Header from './components/header';
 
 const PublicLayout = () => {
   const standalone = useAppSelector((state) => isStandalone(state));
-  const soapboxConfig = useSoapboxConfig();
-
-  const shouldRedirectFromRoot = soapboxConfig.redirectRootNoLogin && !soapboxConfig.redirectRootNoLogin.match(/^\/?$/);
 
   if (standalone) {
     return <Redirect to='/login/external' />;
@@ -31,11 +28,7 @@ const PublicLayout = () => {
 
           <div className='relative'>
             <Switch>
-              {shouldRedirectFromRoot ? (
-                <Redirect exact path='/' to={soapboxConfig.redirectRootNoLogin} />
-              ) : (
-                <Route exact path='/' component={LandingPage} />
-              )}
+              <Route exact path='/' component={LandingPage} />
               <Route exact path='/about/:slug?' component={AboutPage} />
             </Switch>
           </div>
