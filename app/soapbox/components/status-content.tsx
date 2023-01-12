@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -119,7 +119,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();
