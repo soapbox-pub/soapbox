@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: added backdrop blur behind modals.
 - Admin: let admins configure media preview for attachment thumbnails.
 - Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
+- Admin: redirect the homepage to any URL.
 
 ### Changed
 - Posts: letterbox images to 19:6 again.
@@ -31,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modals: fix "View context" button in media modal.
 - Posts: let unauthenticated users to translate posts if allowed by backend.
 - Chats: fix jumpy scrollbar.
+
+### Removed
+- Admin: single user mode. Now the homepage can be redirected to any URL.
 
 ## [3.0.0] - 2022-12-25
 
