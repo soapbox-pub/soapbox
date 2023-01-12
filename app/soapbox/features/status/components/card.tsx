@@ -111,7 +111,7 @@ const Card: React.FC<ICard> = ({
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
-    return Math.min(Math.max(1, ratio), 4);
+    return Math.min(Math.max(9 / 16, ratio), 4);
   };
 
   const interactive = card.type !== 'link';
@@ -153,7 +153,7 @@ const Card: React.FC<ICard> = ({
     </Stack>
   );
 
-  let embed: React.ReactNode = '';
+  let embed: React.ReactNode = null;
 
   const canvas = (
     <Blurhash
@@ -238,12 +238,6 @@ const Card: React.FC<ICard> = ({
       >
         {canvas}
         {thumbnail}
-      </div>
-    );
-  } else {
-    embed = (
-      <div className='status-card__image status-card__image--empty'>
-        <Icon src={require('@tabler/icons/file-text.svg')} />
       </div>
     );
   }

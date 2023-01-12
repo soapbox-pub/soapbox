@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
@@ -397,7 +397,7 @@ const Audio: React.FC<IAudio> = (props) => {
 
   const progress = Math.min((currentTime / getDuration()) * 100, 100);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (player.current) {
       _setDimensions();
     }

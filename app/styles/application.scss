@@ -7,6 +7,7 @@
 @import '~@fontsource/inter/600.css';
 @import '~@fontsource/inter/700.css';
 @import '~@fontsource/inter/900.css';
+@import '~@fontsource/roboto-mono/400.css';
 
 @import 'mixins';
 @import 'themes';
@@ -14,15 +15,11 @@
 @import 'fonts';
 @import 'basics';
 @import 'accounts';
-@import 'boost';
 @import 'loading';
 @import 'ui';
-// @import 'introduction';
 @import 'emoji-picker';
 @import 'rtl';
 @import 'accessibility';
-@import 'dyslexic';
-@import 'chats';
 @import 'navigation';
 @import 'placeholder';
 @import 'autosuggest';
@@ -32,7 +29,6 @@
 @import 'components/inputs';
 @import 'components/dropdown-menu';
 @import 'components/modal';
-@import 'components/account-header';
 @import 'components/compose-form';
 @import 'components/emoji-reacts';
 @import 'components/status';
@@ -46,7 +42,6 @@
 @import 'components/react-toggle';
 @import 'components/video-player';
 @import 'components/audio-player';
-@import 'components/profile-hover-card';
 @import 'components/filters';
 @import 'components/backups';
 @import 'components/crypto-donate';

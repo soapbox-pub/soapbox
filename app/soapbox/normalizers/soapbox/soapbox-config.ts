@@ -116,6 +116,11 @@ export const SoapboxConfigRecord = ImmutableRecord({
   tileServer: '',
   tileServerAttribution: '',
   redirectRootNoLogin: '/',
+  /**
+   * Whether to use the preview URL for media thumbnails.
+   * On some platforms this can be too blurry without additional configuration.
+   */
+  mediaPreview: false,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

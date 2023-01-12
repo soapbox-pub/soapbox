@@ -37,7 +37,7 @@ const SettingsStore: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const settings = useSettings();
-  const settingsStore = useAppSelector(state => state.get('settings'));
+  const settingsStore = useAppSelector(state => state.settings);
 
   const [rawJSON, setRawJSON] = useState<string>(JSON.stringify(settingsStore, null, 2));
   const [jsonValid, setJsonValid] = useState(true);
@@ -133,12 +133,6 @@ const SettingsStore: React.FC = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.system_font_label' defaultMessage="Use system's default font" />}>
           <SettingToggle settings={settings} settingPath={['systemFont']} onChange={onToggleChange} />
         </ListItem>
-
-        <div className='dyslexic'>
-          <ListItem label={<FormattedMessage id='preferences.fields.dyslexic_font_label' defaultMessage='Dyslexic mode' />}>
-            <SettingToggle settings={settings} settingPath={['dyslexicFont']} onChange={onToggleChange} />
-          </ListItem>
-        </div>
 
         <ListItem
           label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}

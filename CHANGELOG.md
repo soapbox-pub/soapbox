@@ -8,12 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Compatibility: rudimentary support for Takahē.
+- UI: added backdrop blur behind modals.
+- Admin: let admins configure media preview for attachment thumbnails.
+- Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
 
 ### Changed
+- Posts: letterbox images to 19:6 again.
+- Status Info: moved context (repost, pinned) to improve UX.
+- Posts: remove file icon from empty link previews.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
 - ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
+- Datepicker: correctly default to the current year.
+- Scheduled posts: fix page crashing on deleting a scheduled post.
+- Events: don't crash when searching for a location.
+- Search: fixes an abort error when using the navbar search component.
+- Posts: fix monospace font in Markdown code blocks.
+- Modals: fix action buttons overflow
+- Editing: don't insert edited posts to the top of the feed.
+- Modals: close modal when navigating to a different page.
+- Modals: fix "View context" button in media modal.
+- Posts: let unauthenticated users to translate posts if allowed by backend.
+- Chats: fix jumpy scrollbar.
 
 ## [3.0.0] - 2022-12-25
 

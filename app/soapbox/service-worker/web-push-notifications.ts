@@ -134,7 +134,12 @@ const htmlToPlainText = (html: string): string =>
 
 /** ServiceWorker `push` event callback. */
 const handlePush = (event: PushEvent) => {
-  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
+  if (!event.data) {
+    console.error('An empty web push event was received.', { event });
+    return;
+  }
+
+  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data.json();
 
   // Placeholder until more information can be loaded
   event.waitUntil(
@@ -154,7 +159,7 @@ const handlePush = (event: PushEvent) => {
         options.data.hiddenImage = notification.status?.media_attachments[0]?.preview_url;
 
         if (notification.status?.spoiler_text) {
-          options.body    = notification.status.spoiler_text;
+          options.body = notification.status.spoiler_text;
         }
 
         options.image   = undefined;

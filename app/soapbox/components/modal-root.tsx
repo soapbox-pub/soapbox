@@ -11,7 +11,6 @@ import { useAppDispatch, usePrevious } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
-import type { UnregisterCallback } from 'history';
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
 import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event';
@@ -55,7 +54,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   const ref = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLDivElement | null>(revealed ? document.activeElement as HTMLDivElement | null : null);
   const modalHistoryKey = useRef<number>();
-  const unlistenHistory = useRef<UnregisterCallback>();
+  const unlistenHistory = useRef<ReturnType<typeof history.listen>>();
 
   const prevChildren = usePrevious(children);
   const prevType = usePrevious(type);
@@ -152,8 +151,10 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const handleModalOpen = () => {
     modalHistoryKey.current = Date.now();
-    unlistenHistory.current = history.listen((_, action) => {
-      if (action === 'POP') {
+    unlistenHistory.current = history.listen(({ state }, action) => {
+      if (!(state as any)?.soapboxModalKey) {
+        onClose();
+      } else if (action === 'POP') {
         handleOnClose();
 
         if (onCancel) onCancel();
@@ -165,11 +166,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     if (unlistenHistory.current) {
       unlistenHistory.current();
     }
-    if (!['FAVOURITES', 'MENTIONS', 'REACTIONS', 'REBLOGS', 'MEDIA'].includes(type)) {
-      const { state } = history.location;
-      if (state && (state as any).soapboxModalKey === modalHistoryKey.current) {
-        history.goBack();
-      }
+    const { state } = history.location;
+    if (state && (state as any).soapboxModalKey === modalHistoryKey.current) {
+      history.goBack();
     }
   };
 
@@ -221,7 +220,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
       ensureHistoryBuffer();
     }
-  });
+  }, [children]);
 
   if (!visible) {
     return (
@@ -241,7 +240,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       <div
         role='presentation'
         id='modal-overlay'
-        className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90'
+        className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90 backdrop-blur'
         onClick={handleOnClose}
       />
 

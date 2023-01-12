@@ -1,13 +1,12 @@
 import classNames from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
 import { Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
-import { useSoapboxConfig, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 
 interface IFooterLink {
@@ -29,7 +28,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onClickLogOut: React.EventHandler<React.MouseEvent> = (e) => {
     dispatch(logOut());
@@ -76,7 +75,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
             defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
             values={{
               code_name: sourceCode.displayName,
-              code_link: <Text theme='subtle'><a className='underline' href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a></Text>,
+              code_link: <Text theme='subtle' tag='span'><a className='underline' href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a></Text>,
               code_version: sourceCode.version,
             }}
           />

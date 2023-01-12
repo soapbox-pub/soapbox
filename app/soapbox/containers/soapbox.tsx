@@ -271,7 +271,6 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
-    'dyslexic': settings.get('dyslexicFont'),
     'demetricator': settings.get('demetricator'),
   });
 

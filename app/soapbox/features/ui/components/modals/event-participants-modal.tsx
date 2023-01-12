@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchEventParticipations } from 'soapbox/actions/events';
-import { Modal, Spinner, Stack } from 'soapbox/components/ui';
+import ScrollableList from 'soapbox/components/scrollable-list';
+import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -33,16 +34,19 @@ const EventParticipantsModal: React.FC<IEventParticipantsModal> = ({ onClose, st
   if (!accountIds) {
     body = <Spinner />;
   } else {
+    const emptyMessage = <FormattedMessage id='empty_column.event_participants' defaultMessage='No one joined this event yet. When someone does, they will show up here.' />;
+
     body = (
-      <Stack space={3}>
-        {accountIds.size > 0 ? (
-          accountIds.map((id) =>
-            <AccountContainer key={id} id={id} />,
-          )
-        ) : (
-          <FormattedMessage id='empty_column.event_participants' defaultMessage='No one joined this event yet. When someone does, they will show up here.' />
+      <ScrollableList
+        scrollKey='event_participations'
+        emptyMessage={emptyMessage}
+        className='max-w-full'
+        itemClassName='pb-3'
+      >
+        {accountIds.map(id =>
+          <AccountContainer key={id} id={id} />,
         )}
-      </Stack>
+      </ScrollableList>
     );
   }
 

@@ -13,45 +13,10 @@
   }
   opacity: 1;
   animation: fade 150ms linear;
-
-  &.light {
-    .display-name {
-      strong {
-        color: var(--primary-text-color);
-      }
-
-      span {
-        color: var(--primary-text-color--faint);
-      }
-    }
-
-    .status__content {
-      color: var(--primary-text-color);
-
-      a {
-        color: var(--highlight-text-color);
-      }
-    }
-  }
-
-  &__meta {
-    font-size: 14px;
-    color: var(--primary-text-color--faint);
-
-    a {
-      color: var(--brand-color);
-      font-weight: bold;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
 }
 
-[column-type=filled] .status__wrapper,
-[column-type=filled] .status-placeholder {
+[column-type='filled'] .status__wrapper,
+[column-type='filled'] .status-placeholder {
   @apply rounded-none shadow-none p-4;
 }
 
@@ -93,24 +58,14 @@
 .focusable-within:focus-within {
   outline: 0; /* Required b/c HotKeys lib sets this outline */
   @apply ring-2 ring-primary-300;
-
-  .status.status-direct {
-    &.muted {
-      background: transparent;
-    }
-  }
 }
 
 .status-card {
-  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-800 rounded-lg text-gray-800 dark:text-gray-200 min-h-[150px] no-underline overflow-hidden;
+  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-800 rounded-lg text-gray-800 dark:text-gray-200 no-underline overflow-hidden;
 }
 
 a.status-card {
   @apply cursor-pointer hover:bg-gray-100 dark:hover:bg-primary-800/30 hover:no-underline;
-}
-
-.status-card-photo {
-  @apply cursor-zoom-in block no-underline w-full h-auto;
 }
 
 .status-card-video,
@@ -118,23 +73,6 @@ a.status-card {
   iframe {
     width: 100% !important;
     height: 100% !important;
-  }
-}
-
-.status-card__host {
-  @apply text-primary-600 dark:text-accent-blue;
-  display: flex;
-  margin-top: 10px;
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  align-items: center;
-
-  .svg-icon {
-    height: 15px;
-    width: 15px;
-    margin-right: 3px;
   }
 }
 
@@ -157,18 +95,10 @@ a.status-card {
       stroke-width: 1px;
     }
   }
-
-  &--empty {
-    flex: 0 0 80px;
-  }
 }
 
 .status-card.horizontal {
   display: block;
-
-  .status-card__title {
-    white-space: inherit;
-  }
 }
 
 .status-card.compact {
@@ -194,26 +124,8 @@ a.status-card {
   .status {
     padding: 8px 10px;
 
-    &__avatar {
-      position: relative;
-      margin-right: 10px;
-      top: 0;
-      left: 0;
-    }
-
-    &__profile {
-      display: flex;
-      align-items: center;
-    }
-
     &__content {
       padding-top: 10px;
-    }
-
-    &__display-name {
-      .display-name__account {
-        display: block;
-      }
     }
   }
 }

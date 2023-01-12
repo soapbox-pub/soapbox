@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { Icon, Input, Stack } from 'soapbox/components/ui';
@@ -17,11 +18,16 @@ import Blankslate from './blankslate';
 import EmptyResultsBlankslate from './empty-results-blankslate';
 import Results from './results';
 
+const messages = defineMessages({
+  placeholder: { id: 'chat_search.placeholder', defaultMessage: 'Type a name' },
+});
+
 interface IChatSearch {
   isMainPage?: boolean
 }
 
 const ChatSearch = (props: IChatSearch) => {
+  const intl = useIntl();
   const { isMainPage = false } = props;
 
   const debounce = useDebounce;
@@ -88,7 +94,7 @@ const ChatSearch = (props: IChatSearch) => {
           data-testid='search'
           type='text'
           autoFocus
-          placeholder='Type a name'
+          placeholder={intl.formatMessage(messages.placeholder)}
           value={value || ''}
           onChange={(event) => setValue(event.target.value)}
           outerClassName='mt-0'

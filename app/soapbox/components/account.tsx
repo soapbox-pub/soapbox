@@ -15,13 +15,16 @@ import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
   account: AccountEntity,
+  disabled?: boolean,
 }
 
-const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
+const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
   const history = useHistory();
 
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
+
+    if (disabled) return;
 
     const timelineUrl = `/timeline/${account.domain}`;
     if (!(e.ctrlKey || e.metaKey)) {
@@ -32,7 +35,11 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
   };
 
   return (
-    <button className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2' onClick={handleClick}>
+    <button
+      className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2'
+      onClick={handleClick}
+      disabled={disabled}
+    >
       <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
     </button>
   );
@@ -46,7 +53,7 @@ interface IProfilePopper {
 const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
   condition ? wrapper(children) : children;
 
-interface IAccount {
+export interface IAccount {
   account: AccountEntity,
   action?: React.ReactElement,
   actionAlignment?: 'center' | 'top',
@@ -219,7 +226,7 @@ const Account = ({
                 <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (
-                  <InstanceFavicon account={account} />
+                  <InstanceFavicon account={account} disabled={!withLinkToProfile} />
                 )}
 
                 {(timestamp) ? (

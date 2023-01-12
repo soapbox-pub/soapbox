@@ -1,12 +1,11 @@
 import classNames from 'clsx';
 import React, { useState, useEffect, useRef } from 'react';
 import { usePopper } from 'react-popper';
-import { useDispatch } from 'react-redux';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts';
 import { openModal } from 'soapbox/actions/modals';
 import { EmojiSelector } from 'soapbox/components/ui';
-import { useAppSelector, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji-reacts';
 
@@ -17,7 +16,7 @@ interface IEmojiButtonWrapper {
 
 /** Provides emoji reaction functionality to the underlying button component */
 const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children }): JSX.Element | null => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ownAccount = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
   const soapboxConfig = useSoapboxConfig();
