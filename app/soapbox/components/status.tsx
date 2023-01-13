@@ -252,8 +252,10 @@ const Status: React.FC<IStatus> = (props) => {
   if (hidden) {
     return (
       <div ref={node}>
-        {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
-        {actualStatus.content}
+        <>
+          {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
+          {actualStatus.content}
+        </>
       </div>
     );
   }

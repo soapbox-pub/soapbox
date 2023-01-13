@@ -80,8 +80,10 @@
     "@types/lodash": "^4.14.180",
     "@types/object-assign": "^4.0.30",
     "@types/qrcode.react": "^1.0.2",
+    "@types/react": "^18.0.26",
     "@types/react-color": "^3.0.6",
     "@types/react-datepicker": "^4.4.2",
+    "@types/react-dom": "^18.0.10",
     "@types/react-helmet": "^6.1.5",
     "@types/react-motion": "^0.0.33",
     "@types/react-router-dom": "^5.3.3",
@@ -233,6 +235,8 @@
     "yargs": "^17.6.2"
   },
   "resolutions": {
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
     "glob-parent": "^6.0.1",
     "jsonwebtoken": "^9.0.0",
     "loader-utils": "^2.0.3"

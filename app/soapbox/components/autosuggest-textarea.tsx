@@ -30,6 +30,7 @@ interface IAutosuggesteTextarea {
   onFocus: () => void,
   onBlur?: () => void,
   condensed?: boolean,
+  children: React.ReactNode,
 }
 
 class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {

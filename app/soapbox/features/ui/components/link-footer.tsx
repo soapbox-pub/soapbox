@@ -13,6 +13,7 @@ interface IFooterLink {
   to: string,
   className?: string,
   onClick?: React.EventHandler<React.MouseEvent>,
+  children: React.ReactNode,
 }
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {

@@ -46,6 +46,8 @@ export interface IColumn {
   className?: string,
   /** Ref forwarded to column. */
   ref?: React.Ref<HTMLDivElement>
+  /** Children to display in the column. */
+  children?: React.ReactNode
 }
 
 /** A backdrop for the main section of the UI. */

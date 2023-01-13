@@ -21,6 +21,7 @@ interface IEventPage {
   params?: {
     statusId?: string,
   },
+  children: React.ReactNode,
 }
 
 const EventPage: React.FC<IEventPage> = ({ params, children }) => {

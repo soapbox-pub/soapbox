@@ -2,10 +2,21 @@ import classNames from 'clsx';
 import React from 'react';
 import StickyBox from 'react-sticky-box';
 
-interface LayoutComponent extends React.FC {
-  Sidebar: React.FC,
+interface ISidebar {
+  children: React.ReactNode
+}
+interface IAside {
+  children?: React.ReactNode
+}
+
+interface ILayout {
+  children: React.ReactNode
+}
+
+interface LayoutComponent extends React.FC<ILayout> {
+  Sidebar: React.FC<ISidebar>,
   Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC,
+  Aside: React.FC<IAside>,
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
@@ -18,7 +29,7 @@ const Layout: LayoutComponent = ({ children }) => (
 );
 
 /** Left sidebar container in the UI. */
-const Sidebar: React.FC = ({ children }) => (
+const Sidebar: React.FC<ISidebar> = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3'>
     <StickyBox offsetTop={80} className='pb-4'>
       {children}
@@ -38,7 +49,7 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC = ({ children }) => (
+const Aside: React.FC<IAside> = ({ children }) => (
   <aside className='hidden xl:block xl:col-span-3'>
     <StickyBox offsetTop={80} className='space-y-6 pb-12'>
       {children}

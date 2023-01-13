@@ -19,8 +19,8 @@ const ModifierPickerMenu: React.FC<IModifierPickerMenu> = ({ active, onSelect, o
     onSelect(+e.currentTarget.getAttribute('data-index')! * 1);
   };
 
-  const handleDocumentClick = useCallback((e => {
-    if (node.current && !node.current.contains(e.target)) {
+  const handleDocumentClick = useCallback(((e: MouseEvent | TouchEvent) => {
+    if (node.current && !node.current.contains(e.target as Node)) {
       onClose();
     }
   }), []);

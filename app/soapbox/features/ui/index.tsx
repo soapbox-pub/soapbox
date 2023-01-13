@@ -149,7 +149,11 @@ const keyMap = {
   openMedia: 'a',
 };
 
-const SwitchingColumnsArea: React.FC = ({ children }) => {
+interface ISwitchingColumnsArea {
+  children: React.ReactNode
+}
+
+const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
   const features = useFeatures();
   const { search } = useLocation();
 
@@ -314,7 +318,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   );
 };
 
-const UI: React.FC = ({ children }) => {
+interface IUI {
+  children?: React.ReactNode
+}
+
+const UI: React.FC<IUI> = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();

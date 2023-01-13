@@ -47,11 +47,17 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
 
 interface IProfilePopper {
   condition: boolean,
-  wrapper: (children: any) => React.ReactElement<any, any>
+  wrapper: (children: React.ReactNode) => React.ReactNode
+  children: React.ReactNode
 }
 
-const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
-  condition ? wrapper(children) : children;
+const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }) => {
+  return (
+    <>
+      {condition ? wrapper(children) : children}
+    </>
+  );
+};
 
 export interface IAccount {
   account: AccountEntity,
