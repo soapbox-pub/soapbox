@@ -480,7 +480,7 @@ const UI: React.FC<IUI> = ({ children }) => {
       navigator.serviceWorker.addEventListener('message', handleServiceWorkerPostMessage);
     }
 
-    if (typeof window.Notification !== 'undefined' && Notification.permission === 'default') {
+    if (window.Notification?.permission === 'default') {
       window.setTimeout(() => Notification.requestPermission(), 120 * 1000);
     }
 

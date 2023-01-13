@@ -239,7 +239,6 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
               pattern='^[a-zA-Z\d_-]+'
               onChange={onUsernameChange}
               value={params.get('username', '')}
-              hasError={usernameUnavailable}
               required
             />
           </FormGroup>

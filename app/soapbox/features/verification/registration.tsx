@@ -58,9 +58,11 @@ const Registration = () => {
           intl.formatMessage(messages.success, { siteTitle: instance.title }),
         );
       })
-      .catch((error: AxiosError) => {
-        if (error?.response?.status === 422) {
-          toast.error(intl.formatMessage(messages.usernameTaken));
+      .catch((errorResponse: AxiosError<{ error: string, message: string }>) => {
+        const error = errorResponse.response?.data?.error;
+
+        if (error) {
+          toast.error(errorResponse.response?.data?.message || intl.formatMessage(messages.usernameTaken));
         } else {
           toast.error(intl.formatMessage(messages.error));
         }
