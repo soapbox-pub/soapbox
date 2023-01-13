@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modals: fix "View context" button in media modal.
 - Posts: let unauthenticated users to translate posts if allowed by backend.
 - Chats: fix jumpy scrollbar.
+- Composer: fix alignment of icon in submit button.
 
 ## [3.0.0] - 2022-12-25
 
