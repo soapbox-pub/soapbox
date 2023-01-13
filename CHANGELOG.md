@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: let unauthenticated users to translate posts if allowed by backend.
 - Chats: fix jumpy scrollbar.
 - Composer: fix alignment of icon in submit button.
+- Login: add a border around QR codes.
 
 ## [3.0.0] - 2022-12-25
 
