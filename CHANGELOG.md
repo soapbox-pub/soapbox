@@ -11,11 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: added backdrop blur behind modals.
 - Admin: let admins configure media preview for attachment thumbnails.
 - Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
+- Backups: restored Pleroma backups functionality.
+- Export: restored "Export data" to CSV.
 
 ### Changed
 - Posts: letterbox images to 19:6 again.
 - Status Info: moved context (repost, pinned) to improve UX.
 - Posts: remove file icon from empty link previews.
+- Settings: moved "Import data" under settings.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
