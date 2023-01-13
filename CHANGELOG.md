@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Fixed
+
+## [3.1.0] - 2023-01-13
+
+### Added
 - Compatibility: rudimentary support for Takahē.
 - UI: added backdrop blur behind modals.
 - Admin: let admins configure media preview for attachment thumbnails.
