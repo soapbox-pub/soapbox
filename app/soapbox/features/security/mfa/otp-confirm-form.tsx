@@ -75,7 +75,7 @@ const OtpConfirmForm: React.FC = () => {
           </Text>
         </Stack>
 
-        <QRCode value={state.qrCodeURI} />
+        <QRCode className='rounded-lg' value={state.qrCodeURI} includeMargin />
         {state.confirmKey}
 
         <Text weight='semibold' size='lg'>
