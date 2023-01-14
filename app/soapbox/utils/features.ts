@@ -667,13 +667,6 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * List of OAuth scopes supported by both Soapbox and the backend.
-     * @see POST /api/v1/apps
-     * @see POST /oauth/token
-     */
-    scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
-
-    /**
      * Ability to search statuses from the given account.
      * @see {@link https://docs.joinmastodon.org/methods/search/}
      * @see POST /api/v2/search
