@@ -120,6 +120,8 @@ export const SoapboxConfigRecord = ImmutableRecord({
    * On some platforms this can be too blurry without additional configuration.
    */
   mediaPreview: false,
+  /** Features overrides. */
+  features: ImmutableMap<string, boolean>(),
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

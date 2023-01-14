@@ -310,6 +310,10 @@ export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation-log');
 }
 
+export function FeaturesEditor() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/features-editor');
+}
+
 export function ThemeEditor() {
   return import(/* webpackChunkName: "features/theme-editor" */'../../theme-editor');
 }
@@ -472,10 +476,6 @@ export function TestTimeline() {
 
 export function ServiceWorkerInfo() {
   return import(/* webpackChunkName: "features/developers" */'../../developers/service-worker-info');
-}
-
-export function DevelopersFeaturesEditor() {
-  return import(/* webpackChunkName: "features/developers" */'../../developers/features-editor');
 }
 
 export function DatePicker() {

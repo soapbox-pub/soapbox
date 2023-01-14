@@ -109,7 +109,7 @@ import {
   ThemeEditor,
   Quotes,
   ServiceWorkerInfo,
-  DevelopersFeaturesEditor,
+  FeaturesEditor,
   EventInformation,
   EventDiscussion,
   Events,
@@ -297,13 +297,13 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
-      <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/theme' adminOnly page={AdminPage} component={ThemeEditor} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/features' adminOnly page={AdminPage} component={FeaturesEditor} content={children} />
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
       <WrappedRoute path='/developers/settings_store' developerOnly page={DefaultPage} component={SettingsStore} content={children} />
       <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
-      <WrappedRoute path='/developers/features' developerOnly page={DefaultPage} component={DevelopersFeaturesEditor} content={children} />
       <WrappedRoute path='/developers/sw' developerOnly page={DefaultPage} component={ServiceWorkerInfo} content={children} />
       <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
       <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={() => new Promise((_resolve, reject) => reject())} content={children} />
