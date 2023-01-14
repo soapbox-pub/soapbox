@@ -4,7 +4,7 @@ import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-ro
 
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance } from 'soapbox/hooks';
+import { useOwnAccount, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 
 import { Button, Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth-login/components/login-page';
@@ -28,14 +28,8 @@ const AuthLayout = () => {
 
   const account = useOwnAccount();
   const instance = useInstance();
-  const features = useFeatures();
-  const soapboxConfig = useSoapboxConfig();
-
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
+  const { isOpen } = useRegistrationStatus();
   const isLoginPage = history.location.pathname === '/login';
-  const shouldShowRegisterLink = (isLoginPage && (isOpen || (pepeEnabled && pepeOpen)));
 
   return (
     <div className='h-full'>
@@ -50,7 +44,7 @@ const AuthLayout = () => {
               </Link>
             </div>
 
-            {shouldShowRegisterLink && (
+            {(isLoginPage && isOpen) && (
               <div className='relative z-10 ml-auto flex items-center'>
                 <Button
                   theme='tertiary'

@@ -9,7 +9,7 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -25,11 +25,9 @@ const messages = defineMessages({
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-
-  const node = useRef(null);
-
+  const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
-  const instance = useInstance();
+  const node = useRef(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -150,7 +148,7 @@ const Navbar = () => {
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 
-                  {!instance.registrations && (
+                  {!isOpen && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>

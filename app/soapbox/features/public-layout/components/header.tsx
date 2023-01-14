@@ -7,7 +7,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance, useAppDispatch } from 'soapbox/hooks';
+import { useSoapboxConfig, useOwnAccount, useAppDispatch, useRegistrationStatus } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -29,13 +29,8 @@ const Header = () => {
 
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { isOpen } = useRegistrationStatus();
   const { links } = soapboxConfig;
-
-  const features = useFeatures();
-  const instance = useInstance();
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   const [isLoading, setLoading] = React.useState(false);
   const [username, setUsername] = React.useState('');
@@ -111,7 +106,7 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {(isOpen || pepeEnabled && pepeOpen) && (
+                {isOpen && (
                   <Button
                     to='/signup'
                     theme='primary'

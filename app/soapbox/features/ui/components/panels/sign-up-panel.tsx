@@ -2,13 +2,14 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useInstance } from 'soapbox/hooks';
+import { useAppSelector, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 
 const SignUpPanel = () => {
   const instance = useInstance();
+  const { isOpen } = useRegistrationStatus();
   const me = useAppSelector((state) => state.me);
 
-  if (me || !instance.registrations) return null;
+  if (me || !isOpen) return null;
 
   return (
     <Stack space={2}>
