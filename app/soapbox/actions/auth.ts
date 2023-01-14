@@ -20,8 +20,8 @@ import KVStore from 'soapbox/storage/kv-store';
 import toast from 'soapbox/toast';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
-import { getFeatures } from 'soapbox/utils/features';
 import { normalizeUsername } from 'soapbox/utils/input';
+import { getScopes } from 'soapbox/utils/scopes';
 import { isStandalone } from 'soapbox/utils/state';
 
 import api, { baseClient } from '../api';
@@ -54,12 +54,6 @@ export const messages = defineMessages({
 });
 
 const noOp = () => new Promise(f => f(undefined));
-
-const getScopes = (state: RootState) => {
-  const instance = state.instance;
-  const { scopes } = getFeatures(instance);
-  return scopes;
-};
 
 const createAppAndToken = () =>
   (dispatch: AppDispatch) =>
