@@ -10,11 +10,12 @@ const messages = defineMessages({
 });
 
 interface IFeaturesPanel {
-  features: Record<string, any>,
+  features: Record<string, boolean>,
+  onChange?: (features: Record<string, boolean>) => void,
 }
 
 /** A UI for managing conditional feature flags. */
-const FeaturesPanel: React.FC<IFeaturesPanel> = ({ features: userFeatures }) => {
+const FeaturesPanel: React.FC<IFeaturesPanel> = ({ features: userFeatures, onChange }) => {
   const intl = useIntl();
   const autoFeatures = useFeatures();
 
@@ -22,12 +23,20 @@ const FeaturesPanel: React.FC<IFeaturesPanel> = ({ features: userFeatures }) => 
     return Object.assign({ ...autoFeatures }, { ...userFeatures });
   }, [userFeatures, autoFeatures]);
 
+  const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
+    return (e) => {
+      if (onChange) {
+        onChange({ ...userFeatures, [key]: e.target.checked });
+      }
+    };
+  };
+
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <List>
         {Object.keys(autoFeatures).map(key => (
           <ListItem label={key}>
-            <Toggle checked={features[key]} />
+            <Toggle checked={features[key]} onChange={handleChange(key)} />
           </ListItem>
         ))}
       </List>
