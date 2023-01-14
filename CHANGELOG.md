@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Admin: redirect the homepage to any URL.
 
 ### Changed
 
 ### Fixed
+
+### Removed
+- Admin: single user mode. Now the homepage can be redirected to any URL.
 
 ## [3.1.0] - 2023-01-13
 
@@ -19,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: added backdrop blur behind modals.
 - Admin: let admins configure media preview for attachment thumbnails.
 - Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
-- Admin: redirect the homepage to any URL.
 - Backups: restored Pleroma backups functionality.
 - Export: restored "Export data" to CSV.
 
@@ -45,9 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chats: fix jumpy scrollbar.
 - Composer: fix alignment of icon in submit button.
 - Login: add a border around QR codes.
-
-### Removed
-- Admin: single user mode. Now the homepage can be redirected to any URL.
 
 ## [3.0.0] - 2022-12-25
 
