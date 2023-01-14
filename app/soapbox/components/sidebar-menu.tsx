@@ -28,7 +28,6 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
-  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
@@ -301,15 +300,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/soapbox/config'
                       icon={require('@tabler/icons/settings.svg')}
                       text={intl.formatMessage(messages.soapboxConfig)}
-                      onClick={onClose}
-                    />
-                  )}
-
-                  {features.import && (
-                    <SidebarLink
-                      to='/settings/import'
-                      icon={require('@tabler/icons/cloud-upload.svg')}
-                      text={intl.formatMessage(messages.importData)}
                       onClick={onClose}
                     />
                   )}

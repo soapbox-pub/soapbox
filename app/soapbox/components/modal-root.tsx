@@ -42,6 +42,7 @@ interface IModalRoot {
   onCancel?: () => void,
   onClose: (type?: ModalType) => void,
   type: ModalType,
+  children: React.ReactNode,
 }
 
 const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) => {
@@ -128,10 +129,10 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     });
   };
 
-  const handleKeyDown = useCallback((e) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Tab') {
       const focusable = Array.from(ref.current!.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((x) => window.getComputedStyle(x).display !== 'none');
-      const index = focusable.indexOf(e.target);
+      const index = focusable.indexOf(e.target as Element);
 
       let element;
 

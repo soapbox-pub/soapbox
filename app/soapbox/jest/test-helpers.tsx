@@ -80,7 +80,7 @@ const customRender = (
 });
 
 /** Like renderHook, but with access to the Redux store. */
-const customRenderHook = <T extends {}>(
+const customRenderHook = <T extends { children?: React.ReactNode }>(
   callback: (props?: any) => any,
   options?: Omit<RenderHookOptions<T>, 'wrapper'>,
   store?: any,

@@ -5,11 +5,13 @@ interface IForm {
   onSubmit?: (event: React.FormEvent) => void,
   /** Class name override for the <form> element. */
   className?: string,
+  /** Elements to display within the Form. */
+  children: React.ReactNode,
 }
 
 /** Form element with custom styles. */
 const Form: React.FC<IForm> = ({ onSubmit, children, ...filteredProps }) => {
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     if (onSubmit) {

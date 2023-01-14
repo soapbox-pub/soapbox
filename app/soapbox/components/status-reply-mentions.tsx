@@ -79,6 +79,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
         defaultMessage='<hover>Replying to</hover> {accounts}'
         values={{
           accounts: <FormattedList type='conjunction' value={accounts} />,
+          // @ts-ignore wtf?
           hover: (children: React.ReactNode) => {
             if (hoverable) {
               return (
