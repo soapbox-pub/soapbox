@@ -6,8 +6,8 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
 
-import type { History } from 'history';
 import type { AppDispatch, RootState } from 'soapbox/store';
+import type { History } from 'soapbox/types/history';
 
 const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';

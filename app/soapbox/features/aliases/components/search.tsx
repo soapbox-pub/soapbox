@@ -1,12 +1,11 @@
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
 import { Button } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },
@@ -14,7 +13,7 @@ const messages = defineMessages({
 });
 
 const Search: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const value = useAppSelector(state => state.aliases.suggestions.value);
@@ -53,7 +52,7 @@ const Search: React.FC = () => {
           placeholder={intl.formatMessage(messages.search)}
         />
 
-        <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
+        <div role='button' tabIndex={hasValue ? 0 : -1} className='search__icon' onClick={handleClear}>
           <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
         </div>
       </label>

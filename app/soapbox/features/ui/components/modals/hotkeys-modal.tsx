@@ -2,8 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Modal } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useFeatures } from 'soapbox/hooks';
 
 interface IHotkeysModal {
   onClose: () => void,
@@ -22,7 +21,7 @@ const TableCell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
-  const features = useAppSelector((state) => getFeatures(state.instance));
+  const features = useFeatures();
 
   return (
     <Modal

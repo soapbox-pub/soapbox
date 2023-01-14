@@ -4,10 +4,10 @@ import OtpInput from 'react-otp-input';
 
 import { verifyCredentials } from 'soapbox/actions/auth';
 import { closeModal } from 'soapbox/actions/modals';
-import snackbar from 'soapbox/actions/snackbar';
 import { reConfirmPhoneVerification, reRequestPhoneVerification } from 'soapbox/actions/verification';
 import { FormGroup, PhoneInput, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { getAccessToken } from 'soapbox/utils/auth';
 
 const messages = defineMessages({
@@ -56,8 +56,8 @@ enum Statuses {
 const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const instance = useInstance();
   const accessToken = useAppSelector((state) => getAccessToken(state));
-  const title = useAppSelector((state) => state.instance.title);
   const isLoading = useAppSelector((state) => state.verification.isLoading);
 
   const [status, setStatus] = useState<Statuses>(Statuses.IDLE);
@@ -76,28 +76,18 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
 
     if (!isValid) {
       setStatus(Statuses.IDLE);
-      dispatch(
-        snackbar.error(
-          intl.formatMessage(messages.verificationInvalid),
-        ),
-      );
+      toast.error(intl.formatMessage(messages.verificationInvalid));
       return;
     }
 
     dispatch(reRequestPhoneVerification(phone!)).then(() => {
-      dispatch(
-        snackbar.success(
-          intl.formatMessage(messages.verificationSuccess),
-        ),
+      toast.success(
+        intl.formatMessage(messages.verificationSuccess),
       );
     })
       .finally(() => setStatus(Statuses.REQUESTED))
       .catch(() => {
-        dispatch(
-          snackbar.error(
-            intl.formatMessage(messages.verificationFail),
-          ),
-        );
+        toast.error(intl.formatMessage(messages.verificationFail));
       });
   };
 
@@ -143,14 +133,14 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
               id='sms_verification.modal.verify_help_text'
               defaultMessage='Verify your phone number to start using {instance}.'
               values={{
-                instance: title,
+                instance: instance.title,
               }}
             />
           </Text>
         );
       case Statuses.READY:
         return (
-          <FormGroup labelText='Phone Number'>
+          <FormGroup labelText={<FormattedMessage id='sms_verification.phone.label' defaultMessage='Phone number' />}>
             <PhoneInput
               value={phone}
               onChange={onChange}
@@ -196,11 +186,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
           .then(() => dispatch(closeModal('VERIFY_SMS')));
 
       })
-      .catch(() => dispatch(
-        snackbar.error(
-          intl.formatMessage(messages.verificationExpired),
-        ),
-      ));
+      .catch(() => toast.error(intl.formatMessage(messages.verificationExpired)));
   };
 
   useEffect(() => {

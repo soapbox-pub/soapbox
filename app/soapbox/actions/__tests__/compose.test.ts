@@ -46,13 +46,6 @@ describe('uploadCompose()', () => {
 
       const expectedActions = [
         { type: 'COMPOSE_UPLOAD_REQUEST', id: 'home', skipLoading: true },
-        {
-          type: 'ALERT_SHOW',
-          message: 'Image exceeds the current file size limit (10 Bytes)',
-          actionLabel: undefined,
-          actionLink: undefined,
-          severity: 'error',
-        },
         { type: 'COMPOSE_UPLOAD_FAIL', id: 'home', error: true, skipLoading: true },
       ];
 
@@ -99,13 +92,6 @@ describe('uploadCompose()', () => {
 
       const expectedActions = [
         { type: 'COMPOSE_UPLOAD_REQUEST', id: 'home', skipLoading: true },
-        {
-          type: 'ALERT_SHOW',
-          message: 'Video exceeds the current file size limit (10 Bytes)',
-          actionLabel: undefined,
-          actionLink: undefined,
-          severity: 'error',
-        },
         { type: 'COMPOSE_UPLOAD_FAIL', id: 'home', error: true, skipLoading: true },
       ];
 

@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +17,7 @@ interface IHoverStatusWrapper {
   statusId: any,
   inline: boolean,
   className?: string,
+  children: React.ReactNode,
 }
 
 /** Makes a status hover card appear when the wrapped element is hovered. */

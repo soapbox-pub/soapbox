@@ -1,12 +1,11 @@
 import classNames from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changeReportComment, changeReportRule } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
@@ -22,7 +21,7 @@ interface IReasonStep {
 const RULES_HEIGHT = 385;
 
 const ReasonStep = (_props: IReasonStep) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const rulesListRef = useRef(null);
@@ -108,7 +107,7 @@ const ReasonStep = (_props: IReasonStep) => {
                     data-testid={`rule-${rule.id}`}
                     onClick={() => dispatch(changeReportRule(rule.id))}
                     className={classNames({
-                      'relative border border-solid border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-primary-800/30 text-left w-full p-4 flex justify-between items-center cursor-pointer': true,
+                      'relative border border-solid border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-primary-800/30 text-start w-full p-4 flex justify-between items-center cursor-pointer': true,
                       'rounded-tl-lg rounded-tr-lg': idx === 0,
                       'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
                       'bg-gray-200 hover:bg-gray-200 dark:bg-primary-800/50': isSelected,

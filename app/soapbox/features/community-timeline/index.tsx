@@ -4,7 +4,6 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { connectCommunityStream } from 'soapbox/actions/streaming';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import SubNavigation from 'soapbox/components/sub-navigation';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
@@ -41,15 +40,12 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
-      <div className='px-4 sm:p-0'>
-        <SubNavigation message={intl.formatMessage(messages.title)} />
-      </div>
-
+    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
+          prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
           divideType='space'

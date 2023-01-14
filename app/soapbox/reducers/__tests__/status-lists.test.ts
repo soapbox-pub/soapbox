@@ -27,6 +27,18 @@ describe('status_lists reducer', () => {
         isLoading: null,
         items: [],
       },
+      joined_events: {
+        next: null,
+        loaded: false,
+        isLoading: null,
+        items: [],
+      },
+      recent_events: {
+        next: null,
+        loaded: false,
+        isLoading: null,
+        items: [],
+      },
     });
   });
 });

@@ -134,13 +134,18 @@ const htmlToPlainText = (html: string): string =>
 
 /** ServiceWorker `push` event callback. */
 const handlePush = (event: PushEvent) => {
-  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
+  if (!event.data) {
+    console.error('An empty web push event was received.', { event });
+    return;
+  }
+
+  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data.json();
 
   // Placeholder until more information can be loaded
   event.waitUntil(
     fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token).then(notification => {
       const options: ExtendedNotificationOptions = {
-        title: formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
+        title:     formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
         body:      notification.status && htmlToPlainText(notification.status.content),
         icon:      notification.account.avatar_static,
         timestamp: notification.created_at && Number(new Date(notification.created_at)),
@@ -154,7 +159,7 @@ const handlePush = (event: PushEvent) => {
         options.data.hiddenImage = notification.status?.media_attachments[0]?.preview_url;
 
         if (notification.status?.spoiler_text) {
-          options.body    = notification.status.spoiler_text;
+          options.body = notification.status.spoiler_text;
         }
 
         options.image   = undefined;

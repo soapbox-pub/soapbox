@@ -4,16 +4,16 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose';
 import AutosuggestInput from 'soapbox/components/autosuggest-input';
 import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
+import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks';
 
 import DurationSelector from './duration-selector';
 
+import type { Map as ImmutableMap } from 'immutable';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },
   add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add an answer' },
-  remove_option: { id: 'compose_form.poll.remove_option', defaultMessage: 'Remove this answer' },
   pollDuration: { id: 'compose_form.poll.duration', defaultMessage: 'Duration' },
   removePoll: { id: 'compose_form.poll.remove', defaultMessage: 'Remove poll' },
   switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple answers' },
@@ -95,7 +95,9 @@ const Option: React.FC<IOption> = ({
 
       {index > 1 && (
         <div>
-          <Button theme='danger' size='sm' onClick={handleOptionRemove}>Delete</Button>
+          <Button theme='danger' size='sm' onClick={handleOptionRemove}>
+            <FormattedMessage id='compose_form.poll.remove_option' defaultMessage='Delete' />
+          </Button>
         </div>
       )}
     </HStack>
@@ -109,16 +111,17 @@ interface IPollForm {
 const PollForm: React.FC<IPollForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const { configuration } = useInstance();
 
   const compose = useCompose(composeId);
 
-  const pollLimits = useAppSelector((state) => state.instance.getIn(['configuration', 'polls']) as any);
+  const pollLimits = configuration.get('polls') as ImmutableMap<string, number>;
   const options = compose.poll?.options;
   const expiresIn = compose.poll?.expires_in;
   const isMultiple = compose.poll?.multiple;
 
-  const maxOptions = pollLimits.get('max_options');
-  const maxOptionChars = pollLimits.get('max_characters_per_option');
+  const maxOptions = pollLimits.get('max_options') as number;
+  const maxOptionChars = pollLimits.get('max_characters_per_option') as number;
 
   const onRemoveOption = (index: number) => dispatch(removePollOption(composeId, index));
   const onChangeOption = (index: number, title: string) => dispatch(changePollOption(composeId, index, title));
@@ -168,7 +171,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
 
       <Divider />
 
-      <button type='button' onClick={handleToggleMultiple} className='text-left'>
+      <button type='button' onClick={handleToggleMultiple} className='text-start'>
         <HStack alignItems='center' justifyContent='between'>
           <Stack>
             <Text weight='medium'>

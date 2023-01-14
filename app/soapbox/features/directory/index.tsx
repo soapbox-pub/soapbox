@@ -1,14 +1,12 @@
 import classNames from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load-more';
 import { Column, RadioButton, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 
 import AccountCard from './components/account-card';
 
@@ -22,14 +20,14 @@ const messages = defineMessages({
 
 const Directory = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { search } = useLocation();
   const params = new URLSearchParams(search);
+  const instance = useInstance();
+  const features = useFeatures();
 
   const accountIds = useAppSelector((state) => state.user_lists.directory.items);
   const isLoading = useAppSelector((state) => state.user_lists.directory.isLoading);
-  const title = useAppSelector((state) => state.instance.get('title'));
-  const features = useAppSelector((state) => getFeatures(state.instance));
 
   const [order, setOrder] = useState(params.get('order') || 'active');
   const [local, setLocal] = useState(!!params.get('local'));
@@ -71,7 +69,7 @@ const Directory = () => {
               <fieldset className='mt-3'>
                 <legend className='sr-only'>Fediverse filter</legend>
                 <div className='space-y-2'>
-                  <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: title })} checked={local} onChange={handleChangeLocal} />
+                  <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: instance.title })} checked={local} onChange={handleChangeLocal} />
                   <RadioButton name='local' value='0' label={intl.formatMessage(messages.federated)} checked={!local} onChange={handleChangeLocal} />
                 </div>
               </fieldset>

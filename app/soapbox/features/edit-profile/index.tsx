@@ -3,7 +3,6 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import BirthdayInput from 'soapbox/components/birthday-input';
 import List, { ListItem } from 'soapbox/components/list';
 import {
@@ -15,16 +14,18 @@ import {
   FormGroup,
   HStack,
   Input,
+  Streamfield,
   Textarea,
   Toggle,
 } from 'soapbox/components/ui';
-import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
 
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import type { Account } from 'soapbox/types/entities';
 
 /**
@@ -170,10 +171,11 @@ const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, on
 const EditProfile: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const account = useOwnAccount();
   const features = useFeatures();
-  const maxFields = useAppSelector(state => state.instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number);
+  const maxFields = instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number;
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<AccountCredentials>({});
@@ -198,7 +200,10 @@ const EditProfile: React.FC = () => {
   const handleSubmit: React.FormEventHandler = (event) => {
     const promises = [];
 
-    promises.push(dispatch(patchMe(data, true)));
+    const params = { ...data };
+    if (params.fields_attributes?.length === 0) params.fields_attributes = [{ name: '', value: '' }];
+
+    promises.push(dispatch(patchMe(params, true)));
 
     if (features.muteStrangers) {
       promises.push(
@@ -212,10 +217,10 @@ const EditProfile: React.FC = () => {
 
     Promise.all(promises).then(() => {
       setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      toast.success(intl.formatMessage(messages.success));
     }).catch(() => {
       setLoading(false);
-      dispatch(snackbar.error(intl.formatMessage(messages.error)));
+      toast.error(intl.formatMessage(messages.error));
     });
 
     event.preventDefault();
@@ -239,7 +244,6 @@ const EditProfile: React.FC = () => {
 
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
-
     setData(prevData => {
       return {
         ...prevData,
@@ -305,6 +309,26 @@ const EditProfile: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.header)}>
       <Form onSubmit={handleSubmit}>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <ProfilePreview account={previewAccount} />
+
+          <div className='space-y-4'>
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
+            >
+              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
+            </FormGroup>
+
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
+            >
+              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
+            </FormGroup>
+          </div>
+        </div>
+
         <FormGroup
           labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
         >
@@ -364,26 +388,6 @@ const EditProfile: React.FC = () => {
           />
         </FormGroup>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <ProfilePreview account={previewAccount} />
-
-          <div className='space-y-4'>
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
-            >
-              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
-            </FormGroup>
-
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-            >
-              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
-            </FormGroup>
-          </div>
-        </div>
-
         <List>
           {features.followRequests && (
             <ListItem
@@ -403,7 +407,7 @@ const EditProfile: React.FC = () => {
               hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
             >
               <Toggle
-                checked={account ? hidesNetwork(account) : false}
+                checked={account ? (data.hide_followers && data.hide_follows && data.hide_followers_count && data.hide_follows_count) : false}
                 onChange={handleHideNetworkChange}
               />
             </ListItem>

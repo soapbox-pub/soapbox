@@ -30,94 +30,95 @@
     font-family: inherit;
     font-size: 14px;
     background: var(--background-color);
-    .compose-form__upload-wrapper { overflow: hidden; }
+  }
+}
 
-    .compose-form__uploads-wrapper {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+.compose-form__upload-wrapper { overflow: hidden; }
 
-      &.contains-media {
-        padding: 5px;
-        border-top: 1px solid var(--foreground-color);
-      }
+.compose-form__uploads-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &.contains-media {
+    padding: 5px;
+    border-top: 1px solid var(--foreground-color);
+  }
+}
+
+.compose-form__upload {
+  flex: 1 1 0;
+  min-width: 40%;
+  margin: 5px;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+
+  &__actions {
+    @apply bg-gradient-to-b from-gray-900/80 via-gray-900/50 to-transparent flex items-start justify-between opacity-0 transition-opacity duration-100 ease-linear;
+
+    &.active {
+      @apply opacity-100;
     }
 
-    .compose-form__upload {
-      flex: 1 1 0;
-      min-width: 40%;
-      margin: 5px;
-      position: relative;
-      border-radius: 4px;
-      overflow: hidden;
+    .icon-button {
+      @apply text-gray-200 hover:text-white text-sm font-medium p-2.5 space-x-1 rtl:space-x-reverse flex items-center;
+    }
+  }
 
-      &__actions {
-        @apply bg-gradient-to-b from-gray-900/80 via-gray-900/50 to-transparent flex items-start justify-between opacity-0 transition-opacity duration-100 ease-linear;
+  &-description {
+    @apply bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900/80 absolute z-[2px] bottom-0 left-0 right-0 p-2.5 opacity-0 transition-opacity duration-100 ease-linear;
 
-        &.active {
-          @apply opacity-100;
-        }
-
-        .icon-button {
-          @apply text-gray-200 hover:text-white text-sm font-medium p-2.5 space-x-1 flex items-center;
-        }
-      }
-
-      &-description {
-        @apply bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900/80 absolute z-[2px] bottom-0 left-0 right-0 p-2.5 opacity-0 transition-opacity duration-100 ease-linear;
-
-        &.active {
-          @apply opacity-100;
-        }
-
-        textarea {
-          @apply bg-transparent text-white border-solid border border-white/25 p-2.5 rounded-md text-sm w-full m-0;
-
-          &::placeholder {
-            @apply text-white/60;
-          }
-        }
-      }
-
-      &-preview {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-
-        video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
+    &.active {
+      @apply opacity-100;
     }
 
-    .compose-form__upload-thumbnail {
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-      height: 160px;
+    textarea {
+      @apply bg-transparent text-white border-solid border border-white/25 p-2.5 rounded-md text-sm w-full m-0;
+
+      &::placeholder {
+        @apply text-white/60;
+      }
+    }
+  }
+
+  &-preview {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+
+    video {
       width: 100%;
-      overflow: hidden;
-      position: relative;
-
-      &.video {
-        background-image: url('../assets/images/video-placeholder.png');
-        background-size: cover;
-      }
-
-      &.audio {
-        background-image: url('../assets/images/audio-placeholder.png');
-        background-size: cover;
-      }
+      height: 100%;
+      object-fit: cover;
     }
-  } // end .compose-form .compose-form__modifiers
-} // end .compose-form
+  }
+}
+
+.compose-form__upload-thumbnail {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 160px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  &.video {
+    background-image: url('../assets/images/video-placeholder.png');
+    background-size: cover;
+  }
+
+  &.audio {
+    background-image: url('../assets/images/audio-placeholder.png');
+    background-size: cover;
+  }
+}
 
 .privacy-dropdown__dropdown {
   @apply absolute bg-white dark:bg-gray-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;

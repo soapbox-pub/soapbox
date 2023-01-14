@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -11,9 +11,8 @@ import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
 import LoadMore from 'soapbox/components/load-more';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
-import { getFeatures } from 'soapbox/utils/features';
 
 import MediaItem from './components/media-item';
 
@@ -38,11 +37,11 @@ const LoadMoreMedia: React.FC<ILoadMoreMedia> = ({ maxId, onLoadMore }) => {
 const AccountGallery = () => {
   const dispatch = useAppDispatch();
   const { username } = useParams<{ username: string }>();
+  const features = useFeatures();
 
   const { accountId, unavailable, accountUsername } = useAppSelector((state) => {
     const me = state.me;
     const accountFetchError = (state.accounts.get(-1)?.username || '').toLowerCase() === username.toLowerCase();
-    const features = getFeatures(state.instance);
 
     let accountId: string | -1 | null = -1;
     let accountUsername = username;
@@ -67,10 +66,7 @@ const AccountGallery = () => {
   const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
 
   const [width, setWidth] = useState(323);
-
-  const handleRef = (c: HTMLDivElement) => {
-    if (c) setWidth(c.offsetWidth);
-  };
+  const node = useRef<HTMLDivElement>(null);
 
   const handleScrollToBottom = () => {
     if (hasMore) {
@@ -96,9 +92,15 @@ const AccountGallery = () => {
       const media = (attachment.status as Status).media_attachments;
       const index = media.findIndex((x) => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status, account: attachment.account }));
+      dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
     }
   };
+
+  useLayoutEffect(() => {
+    if (node.current) {
+      setWidth(node.current.offsetWidth);
+    }
+  }, [node.current]);
 
   useEffect(() => {
     if (accountId && accountId !== -1) {
@@ -141,7 +143,7 @@ const AccountGallery = () => {
 
   return (
     <Column label={`@${accountUsername}`} transparent withHeader={false}>
-      <div role='feed' className='account-gallery__container' ref={handleRef}>
+      <div role='feed' className='account-gallery__container' ref={node}>
         {attachments.map((attachment, index) => attachment === null ? (
           <LoadMoreMedia key={'more:' + attachments.get(index + 1)?.id} maxId={index > 0 ? (attachments.get(index - 1)?.id || null) : null} onLoadMore={handleLoadMore} />
         ) : (

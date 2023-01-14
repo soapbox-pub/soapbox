@@ -1,21 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { connectRemoteStream } from 'soapbox/actions/streaming';
 import { expandRemoteTimeline } from 'soapbox/actions/timelines';
 import IconButton from 'soapbox/components/icon-button';
-import { HStack, Text } from 'soapbox/components/ui';
-import Column from 'soapbox/features/ui/components/column';
+import { Column, HStack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
 import PinnedHostsPicker from './components/pinned-hosts-picker';
-
-const messages = defineMessages({
-  title: { id: 'column.remote', defaultMessage: 'Federated timeline' },
-});
 
 interface IRemoteTimeline {
   params?: {
@@ -25,7 +20,6 @@ interface IRemoteTimeline {
 
 /** View statuses from a remote instance. */
 const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
-  const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
 
@@ -65,18 +59,22 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   }, [onlyMedia]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} heading={instance} transparent withHeader={false}>
+    <Column label={instance} transparent>
       {instance && <PinnedHostsPicker host={instance} />}
-      {!pinned && <HStack className='mb-4 px-2' space={2}>
-        <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleCloseClick} />
-        <Text>
-          <FormattedMessage
-            id='remote_timeline.filter_message'
-            defaultMessage='You are viewing the timeline of {instance}.'
-            values={{ instance }}
-          />
-        </Text>
-      </HStack>}
+
+      {!pinned && (
+        <HStack className='mb-4 px-2' space={2}>
+          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleCloseClick} />
+          <Text>
+            <FormattedMessage
+              id='remote_timeline.filter_message'
+              defaultMessage='You are viewing the timeline of {instance}.'
+              values={{ instance }}
+            />
+          </Text>
+        </HStack>
+      )}
+
       <Timeline
         scrollKey={`${timelineId}_${instance}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}

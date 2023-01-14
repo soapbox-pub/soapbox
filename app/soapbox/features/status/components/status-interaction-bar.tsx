@@ -1,13 +1,15 @@
 import classNames from 'clsx';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { FormattedNumber } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
-import { HStack, IconButton, Text, Emoji } from 'soapbox/components/ui';
+import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -16,6 +18,8 @@ interface IStatusInteractionBar {
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
+  const history = useHistory();
+
   const me = useAppSelector(({ me }) => me);
   const { allowedEmoji } = useSoapboxConfig();
   const dispatch = useDispatch();
@@ -42,11 +46,10 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     }));
   };
 
-  const onOpenReactionsModal = (username: string, statusId: string, reaction: string): void => {
+  const onOpenReactionsModal = (username: string, statusId: string): void => {
     dispatch(openModal('REACTIONS', {
       username,
       statusId,
-      reaction,
     }));
   };
 
@@ -56,7 +59,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       status.favourites_count,
       status.favourited,
       allowedEmoji,
-    ).reverse();
+    );
   };
 
   const handleOpenReblogsModal: React.EventHandler<React.MouseEvent> = (e) => {
@@ -69,22 +72,39 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getReposts = () => {
     if (status.reblogs_count) {
       return (
-        <HStack space={0.5} alignItems='center'>
-          <IconButton
-            className='text-success-600 cursor-pointer'
-            src={require('@tabler/icons/repeat.svg')}
-            role='presentation'
-            onClick={handleOpenReblogsModal}
+        <InteractionCounter count={status.reblogs_count} onClick={handleOpenReblogsModal}>
+          <FormattedMessage
+            id='status.interactions.reblogs'
+            defaultMessage='{count, plural, one {Repost} other {Reposts}}'
+            values={{ count: status.reblogs_count }}
           />
-
-          <Text theme='muted' size='sm'>
-            <FormattedNumber value={status.reblogs_count} />
-          </Text>
-        </HStack>
+        </InteractionCounter>
       );
     }
 
-    return '';
+    return null;
+  };
+
+  const navigateToQuotes: React.EventHandler<React.MouseEvent> = (e) => {
+    e.preventDefault();
+
+    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
+  };
+
+  const getQuotes = () => {
+    if (status.quotes_count) {
+      return (
+        <InteractionCounter count={status.quotes_count} onClick={navigateToQuotes}>
+          <FormattedMessage
+            id='status.interactions.quotes'
+            defaultMessage='{count, plural, one {Quote} other {Quotes}}'
+            values={{ count: status.quotes_count }}
+          />
+        </InteractionCounter>
+      );
+    }
+
+    return null;
   };
 
   const handleOpenFavouritesModal: React.EventHandler<React.MouseEvent<HTMLButtonElement>> = (e) => {
@@ -97,31 +117,25 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getFavourites = () => {
     if (status.favourites_count) {
       return (
-        <HStack space={0.5} alignItems='center'>
-          <IconButton
-            className={classNames({
-              'text-accent-300': true,
-              'cursor-default': !features.exposableReactions,
-            })}
-            src={require('@tabler/icons/heart.svg')}
-            iconClassName='fill-accent-300'
-            role='presentation'
-            onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}
+        <InteractionCounter count={status.favourites_count} onClick={features.exposableReactions ? handleOpenFavouritesModal : undefined}>
+          <FormattedMessage
+            id='status.interactions.favourites'
+            defaultMessage='{count, plural, one {Like} other {Likes}}'
+            values={{ count: status.favourites_count }}
           />
-
-          <Text theme='muted' size='sm'>
-            <FormattedNumber value={status.favourites_count} />
-          </Text>
-        </HStack>
+        </InteractionCounter>
       );
     }
 
-    return '';
+    return null;
   };
 
-  const handleOpenReactionsModal = (reaction: ImmutableMap<string, any>) => () => {
-    if (!me) onOpenUnauthorizedModal();
-    else onOpenReactionsModal(account.acct, status.id, String(reaction.get('name')));
+  const handleOpenReactionsModal = () => {
+    if (!me) {
+      return onOpenUnauthorizedModal();
+    }
+
+    onOpenReactionsModal(account.acct, status.id);
   };
 
   const getEmojiReacts = () => {
@@ -130,42 +144,67 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       acc + cur.get('count')
     ), 0);
 
-    if (count > 0) {
+    if (count) {
       return (
-        <HStack space={0.5} className='emoji-reacts-container' alignItems='center'>
-          <div className='emoji-reacts'>
-            {emojiReacts.map((e, i) => {
+        <InteractionCounter count={count} onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}>
+          <HStack space={0.5} alignItems='center'>
+            {emojiReacts.take(3).map((e, i) => {
               return (
-                <HStack space={0.5} className='emoji-react p-1' alignItems='center' key={i}>
-                  <Emoji
-                    className={classNames('emoji-react__emoji w-5 h-5 flex-none', { 'cursor-pointer': features.exposableReactions })}
-                    emoji={e.get('name')}
-                    onClick={features.exposableReactions ? handleOpenReactionsModal(e) : undefined}
-                  />
-                  <Text theme='muted' size='sm' className='emoji-react__count'>
-                    <FormattedNumber value={e.get('count')} />
-                  </Text>
-                </HStack>
+                <Emoji
+                  key={i}
+                  className='w-4.5 h-4.5 flex-none'
+                  emoji={e.get('name')}
+                />
               );
             })}
-          </div>
-
-          <Text theme='muted' size='sm' className='emoji-reacts__count'>
-            <FormattedNumber value={count} />
-          </Text>
-        </HStack>
+          </HStack>
+        </InteractionCounter>
       );
     }
 
-    return '';
+    return null;
   };
 
   return (
     <HStack space={3}>
       {getReposts()}
-
+      {getQuotes()}
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
     </HStack>
+  );
+};
+
+interface IInteractionCounter {
+  count: number,
+  onClick?: React.MouseEventHandler<HTMLButtonElement>,
+  children: React.ReactNode,
+}
+
+const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, children }) => {
+  const features = useFeatures();
+
+  return (
+    <button
+      type='button'
+      onClick={onClick}
+      className={
+        classNames({
+          'text-gray-600 dark:text-gray-700': true,
+          'hover:underline': features.exposableReactions,
+          'cursor-default': !features.exposableReactions,
+        })
+      }
+    >
+      <HStack space={1} alignItems='center'>
+        <Text theme='primary' weight='bold'>
+          {shortNumberFormat(count)}
+        </Text>
+
+        <Text tag='div' theme='muted'>
+          {children}
+        </Text>
+      </HStack>
+    </button>
   );
 };
 

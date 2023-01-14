@@ -2,12 +2,12 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Card, CardTitle, Text, Stack, Button } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 /** Prompts logged-out users to log in when viewing a thread. */
 const ThreadLoginCta: React.FC = () => {
+  const instance = useInstance();
   const { displayCta } = useSoapboxConfig();
-  const siteTitle = useAppSelector(state => state.instance.title);
 
   if (!displayCta) return null;
 
@@ -19,7 +19,7 @@ const ThreadLoginCta: React.FC = () => {
           <FormattedMessage
             id='thread_login.message'
             defaultMessage='Join {siteTitle} to get the full story and details.'
-            values={{ siteTitle }}
+            values={{ siteTitle: instance.title }}
           />
         </Text>
       </Stack>

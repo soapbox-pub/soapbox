@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
 import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { AxiosError } from 'axios';
 
@@ -17,12 +17,14 @@ const messages = defineMessages({
 
 /** Form for logging into a remote instance */
 const ExternalLoginForm: React.FC = () => {
-  const code = new URLSearchParams(window.location.search).get('code');
+  const query = new URLSearchParams(window.location.search);
+  const code = query.get('code');
+  const server = query.get('server');
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [host, setHost] = useState('');
+  const [host, setHost] = useState(server || '');
   const [isLoading, setLoading] = useState(false);
 
   const handleHostChange: React.ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
@@ -39,9 +41,15 @@ const ExternalLoginForm: React.FC = () => {
         const status = error.response?.status;
 
         if (status) {
-          dispatch(snackbar.error(intl.formatMessage(messages.instanceFailed)));
+          toast.error(intl.formatMessage(messages.instanceFailed));
         } else if (!status && error.code === 'ERR_NETWORK') {
-          dispatch(snackbar.error(intl.formatMessage(messages.networkFailed)));
+          toast.error(intl.formatMessage(messages.networkFailed));
+        }
+
+        // If the server was invalid, clear it from the URL.
+        // https://stackoverflow.com/a/40592892
+        if (server) {
+          window.history.pushState(null, '', window.location.pathname);
         }
 
         setLoading(false);
@@ -54,7 +62,13 @@ const ExternalLoginForm: React.FC = () => {
     }
   }, [code]);
 
-  if (code) {
+  useEffect(() => {
+    if (server && !code) {
+      handleSubmit();
+    }
+  }, [server]);
+
+  if (code || server) {
     return <Spinner />;
   }
 

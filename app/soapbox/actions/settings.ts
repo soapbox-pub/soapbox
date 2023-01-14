@@ -4,10 +4,8 @@ import { createSelector } from 'reselect';
 import { v4 as uuid } from 'uuid';
 
 import { patchMe } from 'soapbox/actions/me';
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
-
-import { showAlertForError } from './alerts';
-import snackbar from './snackbar';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
@@ -49,7 +47,6 @@ const defaultSettings = ImmutableMap({
   autoloadMore: true,
 
   systemFont: false,
-  dyslexicFont: false,
   demetricator: false,
 
   isDeveloper: false,
@@ -222,10 +219,10 @@ const saveSettingsImmediate = (opts?: SettingOpts) =>
       dispatch({ type: SETTING_SAVE });
 
       if (opts?.showAlert) {
-        dispatch(snackbar.success(messages.saveSuccess));
+        toast.success(messages.saveSuccess);
       }
     }).catch(error => {
-      dispatch(showAlertForError(error));
+      toast.showAlertForError(error);
     });
   };
 

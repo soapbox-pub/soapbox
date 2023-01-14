@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { useSoapboxConfig } from 'soapbox/hooks';
@@ -7,16 +7,19 @@ import { getAcct } from '../utils/accounts';
 
 import Icon from './icon';
 import RelativeTimestamp from './relative-timestamp';
+import { HStack, Text } from './ui';
 import VerificationBadge from './verification-badge';
 
 import type { Account } from 'soapbox/types/entities';
 
 interface IDisplayName {
   account: Account
+  withSuffix?: boolean
   withDate?: boolean
+  children?: React.ReactNode
 }
 
-const DisplayName: React.FC<IDisplayName> = ({ account, children, withDate = false }) => {
+const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = true, withDate = false }) => {
   const { displayFqn = false } = useSoapboxConfig();
   const { created_at: createdAt, verified } = account;
 
@@ -28,11 +31,17 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withDate = fal
   ) : null;
 
   const displayName = (
-    <span className='display-name__name'>
-      <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }} /></bdi>
+    <HStack space={1} alignItems='center' grow>
+      <Text
+        size='sm'
+        weight='semibold'
+        truncate
+        dangerouslySetInnerHTML={{ __html: account.display_name_html }}
+      />
+
       {verified && <VerificationBadge />}
       {withDate && joinedAt}
-    </span>
+    </HStack>
   );
 
   const suffix = (<span className='display-name__account'>@{getAcct(account, displayFqn)}</span>);
@@ -42,7 +51,7 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withDate = fal
       <HoverRefWrapper accountId={account.get('id')} inline>
         {displayName}
       </HoverRefWrapper>
-      {suffix}
+      {withSuffix && suffix}
       {children}
     </span>
   );

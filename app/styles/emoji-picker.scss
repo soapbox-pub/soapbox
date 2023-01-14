@@ -9,7 +9,7 @@
 }
 
 .emoji-mart .emoji-mart-emoji {
-  @apply p-1.5;
+  @apply p-1.5 align-middle;
 }
 
 .emoji-mart-bar {
@@ -59,7 +59,7 @@
 
 .emoji-mart-anchors svg,
 .emoji-mart-anchors img {
-  fill: currentColor;
+  fill: currentcolor;
   height: 18px;
   width: 18px;
 }

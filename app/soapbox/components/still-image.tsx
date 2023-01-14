@@ -12,10 +12,14 @@ interface IStillImage {
   src: string,
   /** Extra CSS styles on the outer <div> element. */
   style?: React.CSSProperties,
+  /** Whether to display the image contained vs filled in its container. */
+  letterboxed?: boolean,
+  /** Whether to show the file extension in the corner. */
+  showExt?: boolean,
 }
 
 /** Renders images on a canvas, only playing GIFs if autoPlayGif is enabled. */
-const StillImage: React.FC<IStillImage> = ({ alt, className, src, style }) => {
+const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterboxed = false, showExt = false }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif');
 
@@ -34,10 +38,56 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style }) => {
     }
   };
 
+  /** ClassNames shared between the `<img>` and `<canvas>` elements. */
+  const baseClassName = classNames('w-full h-full block', {
+    'object-contain': letterboxed,
+    'object-cover': !letterboxed,
+  });
+
   return (
-    <div data-testid='still-image-container' className={classNames(className, 'still-image', { 'still-image--play-on-hover': hoverToPlay })} style={style}>
-      <img src={src} alt={alt} ref={img} onLoad={handleImageLoad} />
-      {hoverToPlay && <canvas ref={canvas} />}
+    <div
+      data-testid='still-image-container'
+      className={classNames(className, 'relative group overflow-hidden isolate')}
+      style={style}
+    >
+      <img
+        src={src}
+        alt={alt}
+        ref={img}
+        onLoad={handleImageLoad}
+        className={classNames(baseClassName, {
+          'invisible group-hover:visible': hoverToPlay,
+        })}
+      />
+
+      {hoverToPlay && (
+        <canvas
+          ref={canvas}
+          className={classNames(baseClassName, {
+            'group-hover:invisible': hoverToPlay,
+          })}
+        />
+      )}
+
+      {(hoverToPlay && showExt) && (
+        <div className='group-hover:hidden absolute opacity-90 left-2 bottom-2 pointer-events-none'>
+          <ExtensionBadge ext='GIF' />
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface IExtensionBadge {
+  /** File extension. */
+  ext: string,
+}
+
+/** Badge displaying a file extension. */
+const ExtensionBadge: React.FC<IExtensionBadge> = ({ ext }) => {
+  return (
+    <div className='inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'>
+      {ext}
     </div>
   );
 };

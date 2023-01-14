@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
+import Account from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
 import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
@@ -8,7 +9,6 @@ import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
 import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { getActualStatus } from 'soapbox/utils/status';
 
@@ -84,9 +84,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     <div className='border-box'>
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
         <div className='mb-4'>
-          <AccountContainer
+          <Account
             key={account.id}
-            id={account.id}
+            account={account}
             timestamp={actualStatus.created_at}
             avatarSize={42}
             hideActions
@@ -127,7 +127,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           </Stack>
         </Stack>
 
-        <HStack justifyContent='between' alignItems='center' className='py-2' wrap>
+        <HStack justifyContent='between' alignItems='center' className='py-3' wrap>
           <StatusInteractionBar status={actualStatus} />
 
           <HStack space={1} alignItems='center'>

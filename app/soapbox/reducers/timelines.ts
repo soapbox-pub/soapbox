@@ -314,7 +314,7 @@ export default function timelines(state: State = initialState, action: AnyAction
       if (action.params.scheduled_at) return state;
       return importPendingStatus(state, action.params, action.idempotencyKey);
     case STATUS_CREATE_SUCCESS:
-      if (action.status.scheduled_at) return state;
+      if (action.status.scheduled_at || action.editing) return state;
       return importStatus(state, action.status, action.idempotencyKey);
     case TIMELINE_EXPAND_REQUEST:
       return setLoading(state, action.timeline, true);
@@ -360,7 +360,9 @@ export default function timelines(state: State = initialState, action: AnyAction
             oldIdsArray = oldIdsArray.slice(1);
           }
           const positionInTimeline = sample([5, 6, 7, 8, 9]) as number;
-          oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
+          if (oldIds.last()) {
+            oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
+          }
           return ImmutableOrderedSet(oldIdsArray);
         });
       }));

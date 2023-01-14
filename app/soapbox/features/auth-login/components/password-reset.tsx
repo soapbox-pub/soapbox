@@ -3,9 +3,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { resetPassword } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'Email or username' },
@@ -25,7 +25,7 @@ const PasswordReset = () => {
     dispatch(resetPassword(nicknameOrEmail)).then(() => {
       setIsLoading(false);
       setSuccess(true);
-      dispatch(snackbar.info(intl.formatMessage(messages.confirmation)));
+      toast.info(intl.formatMessage(messages.confirmation));
     }).catch(() => {
       setIsLoading(false);
     });

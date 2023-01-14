@@ -4,11 +4,11 @@ import { createSelector } from 'reselect';
 
 import { setupListAdder, resetListAdder } from 'soapbox/actions/lists';
 import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import NewListForm from '../lists/components/new-list-form';
 
-import Account from './components/account';
 import List from './components/list';
 
 import type { List as ImmutableList } from 'immutable';
@@ -58,7 +58,7 @@ const ListAdder: React.FC<IListAdder> = ({ accountId, onClose }) => {
       title={<FormattedMessage id='list_adder.header_title' defaultMessage='Add or Remove from Lists' />}
       onClose={onClickClose}
     >
-      <Account accountId={accountId} />
+      <AccountContainer id={accountId} withRelationship={false} />
 
       <br />
 

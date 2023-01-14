@@ -1,7 +1,7 @@
 import { __stub } from 'soapbox/api';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
 
-import useCarouselAvatars from '../carousels';
+import { useCarouselAvatars } from '../carousels';
 
 describe('useCarouselAvatars', () => {
   describe('with a successful query', () => {

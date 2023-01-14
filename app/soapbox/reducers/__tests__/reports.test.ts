@@ -7,6 +7,7 @@ describe('reports reducer', () => {
         isSubmitting: false,
         account_id: null,
         status_ids: [],
+        chat_message: null,
         comment: '',
         forward: false,
         block: false,

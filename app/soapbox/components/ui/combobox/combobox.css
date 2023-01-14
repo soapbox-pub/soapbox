@@ -1,0 +1,31 @@
+:root {
+	--reach-combobox: 1;
+}
+
+[data-reach-combobox-popover] {
+  @apply rounded-md shadow-lg bg-white dark:bg-gray-900 dark:ring-2 dark:ring-primary-700 z-[100];
+}
+
+[data-reach-combobox-list] {
+  @apply list-none m-0 py-1 px-0 select-none;
+}
+
+[data-reach-combobox-option] {
+  @apply block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 cursor-pointer;
+}
+
+[data-reach-combobox-option][aria-selected="true"] {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+[data-reach-combobox-option]:hover {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+[data-reach-combobox-option][aria-selected="true"]:hover {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+[data-suggested-value] {
+  @apply font-bold;
+}

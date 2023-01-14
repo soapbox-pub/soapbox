@@ -3,7 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Card, HStack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useInstance } from 'soapbox/hooks';
 
 import ConsumerButton from './consumer-button';
 
@@ -12,7 +12,8 @@ interface IConsumersList {
 
 /** Displays OAuth consumers to log in with. */
 const ConsumersList: React.FC<IConsumersList> = () => {
-  const providers = useAppSelector(state => ImmutableList<string>(state.instance.pleroma.get('oauth_consumer_strategies')));
+  const instance = useInstance();
+  const providers = ImmutableList<string>(instance.pleroma.get('oauth_consumer_strategies'));
 
   if (providers.size > 0) {
     return (

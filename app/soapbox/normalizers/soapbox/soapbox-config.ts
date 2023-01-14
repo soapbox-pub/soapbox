@@ -43,7 +43,6 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     800: '#991b1b',
     900: '#7f1d1d',
   }),
-  'sea-blue': '#2feecc',
   'greentext': '#789922',
 });
 
@@ -112,6 +111,15 @@ export const SoapboxConfigRecord = ImmutableRecord({
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
   displayCta: true,
+  /** Whether to inject suggested profiles into the Home feed. */
+  feedInjection: true,
+  tileServer: '',
+  tileServerAttribution: '',
+  /**
+   * Whether to use the preview URL for media thumbnails.
+   * On some platforms this can be too blurry without additional configuration.
+   */
+  mediaPreview: false,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

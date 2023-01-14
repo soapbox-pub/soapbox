@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
-import { Text, Stack } from 'soapbox/components/ui';
+import { HStack, Text, Stack } from 'soapbox/components/ui';
 import { captureException } from 'soapbox/monitoring';
 import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
@@ -26,7 +26,9 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-type Props = ReturnType<typeof mapStateToProps>;
+interface Props extends ReturnType<typeof mapStateToProps> {
+  children: React.ReactNode
+}
 
 type State = {
   hasError: boolean,
@@ -42,7 +44,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     error: undefined,
     componentStack: undefined,
     browser: undefined,
-  }
+  };
 
   textarea: HTMLTextAreaElement | null = null;
 
@@ -71,7 +73,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
   setTextareaRef: React.RefCallback<HTMLTextAreaElement> = c => {
     this.textarea = c;
-  }
+  };
 
   handleCopy: React.MouseEventHandler = () => {
     if (!this.textarea) return;
@@ -80,12 +82,12 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     this.textarea.setSelectionRange(0, 99999);
 
     document.execCommand('copy');
-  }
+  };
 
   getErrorText = (): string => {
     const { error, componentStack } = this.state;
     return error + componentStack;
-  }
+  };
 
   clearCookies: React.MouseEventHandler = (e) => {
     localStorage.clear();
@@ -96,7 +98,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
       e.preventDefault();
       unregisterSw().then(goHome).catch(goHome);
     }
-  }
+  };
 
   render() {
     const { browser, hasError } = this.state;
@@ -179,7 +181,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
         </main>
 
         <footer className='flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
-          <nav className='flex justify-center space-x-4'>
+          <HStack justifyContent='center' space={4} element='nav'>
             {links.get('status') && (
               <>
                 <a href={links.get('status')} className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'>
@@ -205,7 +207,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                 </a>
               </>
             )}
-          </nav>
+          </HStack>
         </footer>
       </div>
     );
@@ -213,4 +215,4 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
 }
 
-export default connect(mapStateToProps)(ErrorBoundary as any);
+export default connect(mapStateToProps)(ErrorBoundary);

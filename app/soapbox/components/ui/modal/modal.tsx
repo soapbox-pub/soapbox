@@ -1,8 +1,10 @@
 import classNames from 'clsx';
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
+import { ButtonThemes } from '../button/useButtonStyles';
+import HStack from '../hstack/hstack';
 import IconButton from '../icon-button/icon-button';
 
 const messages = defineMessages({
@@ -37,7 +39,7 @@ interface IModal {
   /** Confirmation button text. */
   confirmationText?: React.ReactNode,
   /** Confirmation button theme. */
-  confirmationTheme?: 'danger',
+  confirmationTheme?: ButtonThemes,
   /** Callback when the modal is closed. */
   onClose?: () => void,
   /** Callback when the secondary action is chosen. */
@@ -50,6 +52,7 @@ interface IModal {
   /** Title text for the modal. */
   title?: React.ReactNode,
   width?: keyof typeof widths,
+  children?: React.ReactNode,
 }
 
 /** Displays a modal dialog box. */
@@ -81,7 +84,7 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-left align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
+    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           {title && (
@@ -99,7 +102,7 @@ const Modal: React.FC<IModal> = ({
                   src={closeIcon}
                   title={intl.formatMessage(messages.close)}
                   onClick={onClose}
-                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
+                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
                 />
               )}
             </div>
@@ -114,7 +117,7 @@ const Modal: React.FC<IModal> = ({
       </div>
 
       {confirmationAction && (
-        <div className='mt-5 flex flex-row justify-between' data-testid='modal-actions'>
+        <HStack className='mt-5' justifyContent='between' data-testid='modal-actions'>
           <div className='flex-grow'>
             {cancelAction && (
               <Button
@@ -126,7 +129,7 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-          <div className='flex flex-row space-x-2'>
+          <HStack space={2}>
             {secondaryAction && (
               <Button
                 theme='secondary'
@@ -145,8 +148,8 @@ const Modal: React.FC<IModal> = ({
             >
               {confirmationText}
             </Button>
-          </div>
-        </div>
+          </HStack>
+        </HStack>
       )}
     </div>
   );

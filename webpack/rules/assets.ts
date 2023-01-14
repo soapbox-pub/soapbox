@@ -13,6 +13,7 @@ const rules: RuleSetRule[] = [{
   include: [
     resolve('app', 'assets', 'images'),
     resolve('node_modules', 'emoji-datasource'),
+    resolve('node_modules', 'leaflet'),
   ],
   generator: {
     filename: 'packs/images/[name]-[contenthash:8][ext]',
@@ -54,14 +55,6 @@ const rules: RuleSetRule[] = [{
   test: /\.svg$/,
   type: 'asset/resource',
   include: resolve('node_modules', 'bootstrap-icons'),
-  generator: {
-    filename: 'packs/icons/[name]-[contenthash:8][ext]',
-  },
-}, {
-
-  test: /\.svg$/,
-  type: 'asset/resource',
-  include: resolve('node_modules', 'feather-icons'),
   generator: {
     filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },

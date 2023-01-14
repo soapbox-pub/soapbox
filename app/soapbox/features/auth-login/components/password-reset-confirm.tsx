@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ const token = new URLSearchParams(window.location.search).get('reset_password_to
 
 const messages = defineMessages({
   resetPasswordFail: { id: 'reset_password.fail', defaultMessage: 'Expired token, please try again.' },
+  passwordPlaceholder: { id: 'reset_password.password.placeholder', defaultMessage: 'Placeholder' },
 });
 
 const Statuses = {
@@ -31,7 +32,7 @@ const PasswordResetConfirm = () => {
 
   const isLoading = status === Statuses.LOADING;
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     setStatus(Statuses.LOADING);
@@ -40,7 +41,7 @@ const PasswordResetConfirm = () => {
       .catch(() => setStatus(Statuses.FAIL));
   }, [password]);
 
-  const onChange = React.useCallback((event) => {
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     setPassword(event.target.value);
   }, []);
 
@@ -66,11 +67,11 @@ const PasswordResetConfirm = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Password' errors={renderErrors()}>
+          <FormGroup labelText={<FormattedMessage id='reset_password.password.label' defaultMessage='Password' />} errors={renderErrors()}>
             <Input
               type='password'
               name='password'
-              placeholder='Password'
+              placeholder={intl.formatMessage(messages.passwordPlaceholder)}
               onChange={onChange}
               required
             />

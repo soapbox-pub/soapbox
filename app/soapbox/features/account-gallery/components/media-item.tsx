@@ -56,7 +56,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
   const width  = `${Math.floor((displayWidth - 4) / 3) - 4}px`;
   const height = width;
   const status = attachment.get('status');
-  const title = status.get('spoiler_text') || attachment.get('description');
+  const title  = status.get('spoiler_text') || attachment.get('description');
 
   let thumbnail: React.ReactNode = '';
   let icon;
@@ -74,6 +74,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
         src={attachment.preview_url}
         alt={attachment.description}
         style={{ objectPosition: `${x}% ${y}%` }}
+        className='w-full h-full rounded-lg overflow-hidden'
       />
     );
   } else if (['gifv', 'video'].indexOf(attachment.type) !== -1) {

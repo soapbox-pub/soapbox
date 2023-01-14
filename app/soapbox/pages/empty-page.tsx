@@ -2,7 +2,11 @@ import React from 'react';
 
 import { Layout } from '../components/ui';
 
-const EmptyPage: React.FC = ({ children }) => {
+interface IEmptyPage {
+  children: React.ReactNode
+}
+
+const EmptyPage: React.FC<IEmptyPage> = ({ children }) => {
   return (
     <>
       <Layout.Main>

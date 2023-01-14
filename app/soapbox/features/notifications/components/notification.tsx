@@ -12,12 +12,12 @@ import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -27,7 +27,7 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
   return output.join(', ');
 };
 
-const buildLink = (account: Account): JSX.Element => (
+const buildLink = (account: AccountEntity): JSX.Element => (
   <bdi>
     <Link
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
@@ -51,6 +51,9 @@ const icons: Record<NotificationType, string> = {
   'pleroma:emoji_reaction': require('@tabler/icons/mood-happy.svg'),
   user_approved: require('@tabler/icons/user-plus.svg'),
   update: require('@tabler/icons/pencil.svg'),
+  'pleroma:event_reminder': require('@tabler/icons/calendar-time.svg'),
+  'pleroma:participation_request': require('@tabler/icons/calendar-event.svg'),
+  'pleroma:participation_accepted': require('@tabler/icons/calendar-event.svg'),
 };
 
 const nameMessage = defineMessage({
@@ -107,12 +110,24 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
     id: 'notification.update',
     defaultMessage: '{name} edited a post you interacted with',
   },
+  'pleroma:event_reminder': {
+    id: 'notification.pleroma:event_reminder',
+    defaultMessage: 'An event you are participating in starts soon',
+  },
+  'pleroma:participation_request': {
+    id: 'notification.pleroma:participation_request',
+    defaultMessage: '{name} wants to join your event',
+  },
+  'pleroma:participation_accepted': {
+    id: 'notification.pleroma:participation_accepted',
+    defaultMessage: 'You were accepted to join the event',
+  },
 });
 
 const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
-  account: Account,
+  account: AccountEntity,
   totalCount: number | null,
   targetName: string,
   instanceTitle: string,
@@ -136,6 +151,8 @@ const buildMessage = (
   });
 };
 
+const avatarSize = 48;
+
 interface INotificaton {
   hidden?: boolean,
   notification: NotificationEntity,
@@ -157,7 +174,7 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const history = useHistory();
   const intl = useIntl();
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
 
   const type = notification.type;
   const { account, status } = notification;
@@ -275,7 +292,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={account.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
           />
         ) : null;
       case 'follow_request':
@@ -283,7 +300,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={account.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
             actionType='follow_request'
           />
         ) : null;
@@ -292,7 +309,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={notification.target.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
           />
         ) : null;
       case 'favourite':
@@ -302,6 +319,9 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'poll':
       case 'update':
       case 'pleroma:emoji_reaction':
+      case 'pleroma:event_reminder':
+      case 'pleroma:participation_accepted':
+      case 'pleroma:participation_request':
         return status && typeof status === 'object' ? (
           <StatusContainer
             id={status.id}
@@ -309,6 +329,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             hidden={hidden}
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
+            avatarSize={avatarSize}
           />
         ) : null;
       default:
@@ -340,13 +361,18 @@ const Notification: React.FC<INotificaton> = (props) => {
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>
-            <HStack alignItems='center' space={1.5}>
-              {renderIcon()}
+            <HStack alignItems='center' space={3}>
+              <div
+                className='flex justify-end'
+                style={{ flexBasis: avatarSize }}
+              >
+                {renderIcon()}
+              </div>
 
               <div className='truncate'>
                 <Text
                   theme='muted'
-                  size='sm'
+                  size='xs'
                   truncate
                   data-testid='message'
                 >

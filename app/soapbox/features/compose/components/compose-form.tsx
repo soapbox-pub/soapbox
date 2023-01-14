@@ -1,6 +1,6 @@
 import classNames from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -15,9 +15,8 @@ import {
 } from 'soapbox/actions/compose';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
-import Icon from 'soapbox/components/icon';
-import { Button, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures, usePrevious } from 'soapbox/hooks';
+import { Button, HStack, Stack } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
@@ -47,7 +46,8 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
-  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic...' },
+  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
+  eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -61,18 +61,20 @@ interface IComposeForm<ID extends string> {
   shouldCondense?: boolean,
   autoFocus?: boolean,
   clickableAreaRef?: React.RefObject<HTMLDivElement>,
+  event?: string,
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { configuration } = useInstance();
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
-  const maxTootChars = useAppSelector((state) => state.instance.getIn(['configuration', 'statuses', 'max_characters'])) as number;
-  const scheduledStatusCount = useAppSelector((state) => state.get('scheduled_statuses').size);
+  const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
+  const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
   const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt } = compose;
@@ -221,7 +223,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }, [focusDate]);
 
   const renderButtons = useCallback(() => (
-    <div className='flex items-center space-x-2'>
+    <HStack alignItems='center' space={2}>
       {features.media && <UploadButtonContainer composeId={id} />}
       <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
       {features.polls && <PollButton composeId={id} />}
@@ -229,7 +231,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
       {features.richText && <MarkdownButton composeId={id} />}
-    </div>
+    </HStack>
   ), [features, id]);
 
   const condensed = shouldCondense && !composeFocused && isEmpty() && !isUploading;
@@ -238,24 +240,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const disabledButton = disabled || isUploading || isChangingUpload || length(countedText) > maxTootChars || (countedText.length !== 0 && countedText.trim().length === 0 && !anyMedia);
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
-  let publishText: string | JSX.Element = '';
+  let publishText: string = '';
+  let publishIcon: string | undefined;
+  let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishText = (
-      <>
-        <Icon src={require('@tabler/icons/mail.svg')} />
-        {intl.formatMessage(messages.message)}
-      </>
-    );
+    publishText = intl.formatMessage(messages.message);
+    publishIcon = require('@tabler/icons/mail.svg');
   } else if (privacy === 'private') {
-    publishText = (
-      <>
-        <Icon src={require('@tabler/icons/lock.svg')} />
-        {intl.formatMessage(messages.publish)}
-      </>
-    );
+    publishText = intl.formatMessage(messages.publish);
+    publishIcon = require('@tabler/icons/lock.svg');
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
   }
@@ -264,9 +260,17 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     publishText = intl.formatMessage(messages.schedule);
   }
 
+  if (event) {
+    textareaPlaceholder = messages.eventPlaceholder;
+  } else if (hasPoll) {
+    textareaPlaceholder = messages.pollPlaceholder;
+  } else {
+    textareaPlaceholder = messages.placeholder;
+  }
+
   return (
     <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
-      {scheduledStatusCount > 0 && (
+      {scheduledStatusCount > 0 && !event && (
         <Warning
           message={(
             <FormattedMessage
@@ -287,13 +291,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !event && <ReplyMentions composeId={id} />}
 
       <AutosuggestTextarea
         ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
-        placeholder={intl.formatMessage(hasPoll ? messages.pollPlaceholder : messages.placeholder)}
+        placeholder={intl.formatMessage(textareaPlaceholder)}
         disabled={disabled}
         value={text}
         onChange={handleChange}
@@ -335,16 +339,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       >
         {renderButtons()}
 
-        <div className='flex items-center space-x-4 ml-auto'>
+        <HStack space={4} alignItems='center' className='ml-auto rtl:ml-0 rtl:mr-auto'>
           {maxTootChars && (
-            <div className='flex items-center space-x-1'>
+            <HStack space={1} alignItems='center'>
               <TextCharacterCounter max={maxTootChars} text={text} />
               <VisualCharacterCounter max={maxTootChars} text={text} />
-            </div>
+            </HStack>
           )}
 
-          <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
-        </div>
+          <Button type='submit' theme='primary' text={publishText} icon={publishIcon} disabled={disabledButton} />
+        </HStack>
+        {/* <HStack alignItems='center' space={4}>
+        </HStack> */}
       </div>
     </Stack>
   );

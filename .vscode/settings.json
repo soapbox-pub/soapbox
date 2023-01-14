@@ -5,5 +5,15 @@
     "*.conf.template": "properties"
   },
   "files.eol": "\n",
-  "files.insertFinalNewline": false
+  "files.insertFinalNewline": false,
+  "json.schemas": [
+    {
+      "fileMatch": [".lintstagedrc.json"],
+      "url": "https://json.schemastore.org/lintstagedrc.schema.json"
+    },
+    {
+      "fileMatch": ["renovate.json"],
+      "url": "https://docs.renovatebot.com/renovate-schema.json"
+    }
+  ]
 }

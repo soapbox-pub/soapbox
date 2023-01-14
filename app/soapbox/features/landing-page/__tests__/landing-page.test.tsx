@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import LandingPage from '..';
 import { rememberInstance } from '../../../actions/instance';

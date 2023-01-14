@@ -1,8 +1,8 @@
 import classNames from 'clsx';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Text, Select } from '../../components/ui';
+import { Select } from '../../components/ui';
 
 interface IInputContainer {
   label?: React.ReactNode,
@@ -11,6 +11,7 @@ interface IInputContainer {
   type?: string,
   extraClass?: string,
   error?: boolean,
+  children: React.ReactNode,
 }
 
 export const InputContainer: React.FC<IInputContainer> = (props) => {
@@ -32,6 +33,7 @@ export const InputContainer: React.FC<IInputContainer> = (props) => {
 interface ILabelInputContainer {
   label?: React.ReactNode,
   hint?: React.ReactNode,
+  children: React.ReactNode,
 }
 
 export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hint, children }) => {
@@ -128,6 +130,7 @@ interface ISimpleForm {
   onSubmit?: React.FormEventHandler,
   acceptCharset?: string,
   style?: React.CSSProperties,
+  children: React.ReactNode,
 }
 
 export const SimpleForm: React.FC<ISimpleForm> = (props) => {
@@ -157,7 +160,11 @@ export const SimpleForm: React.FC<ISimpleForm> = (props) => {
   );
 };
 
-export const FieldsGroup: React.FC = ({ children }) => (
+interface IFieldsGroup {
+  children: React.ReactNode,
+}
+
+export const FieldsGroup: React.FC<IFieldsGroup> = ({ children }) => (
   <div className='fields-group'>{children}</div>
 );
 
@@ -174,52 +181,6 @@ interface ICheckbox {
 export const Checkbox: React.FC<ICheckbox> = (props) => (
   <SimpleInput type='checkbox' {...props} />
 );
-
-interface IRadioGroup {
-  label?: React.ReactNode,
-  onChange?: React.ChangeEventHandler,
-}
-
-export const RadioGroup: React.FC<IRadioGroup> = (props) => {
-  const { label, children, onChange } = props;
-
-  const childrenWithProps = React.Children.map(children, child =>
-    // @ts-ignore
-    React.cloneElement(child, { onChange }),
-  );
-
-  return (
-    <div className='input with_floating_label radio_buttons'>
-      <div className='label_input'>
-        <label>{label}</label>
-        <ul>{childrenWithProps}</ul>
-      </div>
-    </div>
-  );
-};
-
-interface IRadioItem {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  value: string,
-  checked: boolean,
-  onChange?: React.ChangeEventHandler,
-}
-
-export const RadioItem: React.FC<IRadioItem> = (props) => {
-  const { current: id } = useRef<string>(uuidv4());
-  const { label, hint, checked = false, ...rest } = props;
-
-  return (
-    <li className='radio'>
-      <label htmlFor={id}>
-        <input id={id} type='radio' checked={checked} {...rest} />
-        <Text>{label}</Text>
-        {hint && <span className='hint'>{hint}</span>}
-      </label>
-    </li>
-  );
-};
 
 interface ISelectDropdown {
   label?: React.ReactNode,

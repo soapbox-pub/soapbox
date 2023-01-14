@@ -30,7 +30,7 @@ const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {
 
   return (
     <Modal
-      title='Repost?'
+      title={<FormattedMessage id='boost_modal.title' defaultMessage='Repost?' />}
       confirmationAction={handleReblog}
       confirmationText={intl.formatMessage(buttonText)}
     >

@@ -1,17 +1,16 @@
 'use strict';
 
-import debounce from 'lodash/debounce';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
-import { fetchChats } from 'soapbox/actions/chats';
 import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
+import { uploadEventBanner } from 'soapbox/actions/events';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { openModal } from 'soapbox/actions/modals';
@@ -21,24 +20,26 @@ import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
+import { useStatContext } from 'soapbox/contexts/stat-context';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
+import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
-// import GroupsPage from 'soapbox/pages/groups_page';
-// import GroupPage from 'soapbox/pages/group_page';
+import EventPage from 'soapbox/pages/event-page';
 import HomePage from 'soapbox/pages/home-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import StatusPage from 'soapbox/pages/status-page';
+import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background-shapes';
+import FloatingActionButton from './components/floating-action-button';
+import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle-container';
 import {
@@ -64,15 +65,9 @@ import {
   Filters,
   PinnedStatuses,
   Search,
-  // Groups,
-  // GroupTimeline,
   ListTimeline,
   Lists,
   Bookmarks,
-  // GroupMembers,
-  // GroupRemovedAccounts,
-  // GroupCreate,
-  // GroupEdit,
   Settings,
   MediaDisplay,
   EditProfile,
@@ -81,13 +76,12 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  // ExportData,
+  ExportData,
   ImportData,
-  // Backups,
+  Backups,
   MfaForm,
   ChatIndex,
-  ChatRoom,
-  ChatPanes,
+  ChatWidget,
   ServerInfo,
   Dashboard,
   ModerationLog,
@@ -112,8 +106,13 @@ import {
   TestTimeline,
   LogoutPage,
   AuthTokenList,
+  ThemeEditor,
+  Quotes,
   ServiceWorkerInfo,
   DevelopersFeaturesEditor,
+  EventInformation,
+  EventDiscussion,
+  Events,
 } from './util/async-components';
 import { WrappedRoute } from './util/react-router-helpers';
 
@@ -122,13 +121,6 @@ import { WrappedRoute } from './util/react-router-helpers';
 import 'soapbox/components/status';
 
 const EmptyPage = HomePage;
-
-const isMobile = (width: number): boolean => width <= 1190;
-
-const messages = defineMessages({
-  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
-  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
-});
 
 const keyMap = {
   help: '?',
@@ -158,7 +150,11 @@ const keyMap = {
   openMedia: 'a',
 };
 
-const SwitchingColumnsArea: React.FC = ({ children }) => {
+interface ISwitchingColumnsArea {
+  children: React.ReactNode
+}
+
+const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
   const features = useFeatures();
   const { search } = useLocation();
 
@@ -190,18 +186,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {(features.conversations && !features.directTimeline) && (
         <WrappedRoute path='/messages' page={DefaultPage} component={Conversations} content={children} />
       )}
-
-      {/* Gab groups */}
-      {/*
-      <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/create' page={GroupsPage} component={Groups} content={children} componentParams={{ showCreateForm: true, activeTab: 'featured' }} />
-      <WrappedRoute path='/groups/browse/member' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'member' }} />
-      <WrappedRoute path='/groups/browse/admin' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'admin' }} />
-      <WrappedRoute path='/groups/:id/members' page={GroupPage} component={GroupMembers} content={children} />
-      <WrappedRoute path='/groups/:id/removed_accounts' page={GroupPage} component={GroupRemovedAccounts} content={children} />
-      <WrappedRoute path='/groups/:id/edit' page={GroupPage} component={GroupEdit} content={children} />
-      <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
-      */}
 
       {/* Mastodon web routes */}
       <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
@@ -255,7 +239,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
-      {features.lists && <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />}
+      {features.lists && <WrappedRoute path='/list/:id' page={DefaultPage} component={ListTimeline} content={children} />}
       {features.bookmarks && <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />}
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
@@ -263,9 +247,12 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
+      {features.events && <WrappedRoute path='/events' page={DefaultPage} component={Events} content={children} />}
 
-      {features.chats && <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />}
-      {features.chats && <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />}
+      {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/new' page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/settings' page={ChatsPage} component={ChatIndex} content={children} />}
+      {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatIndex} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
@@ -281,6 +268,9 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
+      <WrappedRoute path='/@:username/posts/:statusId/quotes' publicRoute page={StatusPage} component={Quotes} content={children} />
+      {features.events && <WrappedRoute path='/@:username/events/:statusId' publicRoute exact page={EventPage} component={EventInformation} content={children} />}
+      {features.events && <WrappedRoute path='/@:username/events/:statusId/discussion' publicRoute exact page={EventPage} component={EventDiscussion} content={children} />}
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
@@ -288,11 +278,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      {/* FIXME: this could DDoS our API? :\ */}
-      {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
+      {features.exportData && <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />}
       {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
+      {features.backups && <WrappedRoute path='/settings/backups' page={DefaultPage} component={Backups} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
@@ -300,7 +290,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
-      {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
@@ -308,6 +297,7 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
@@ -329,13 +319,19 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   );
 };
 
-const UI: React.FC = ({ children }) => {
+interface IUI {
+  children?: React.ReactNode
+}
+
+const UI: React.FC<IUI> = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { data: pendingPolicy } = usePendingPolicy();
+  const instance = useInstance();
+  const statContext = useStatContext();
 
   const [draggingOver, setDraggingOver] = useState<boolean>(false);
-  const [mobile, setMobile] = useState<boolean>(isMobile(window.innerWidth));
 
   const dragTargets = useRef<EventTarget[]>([]);
   const disconnect = useRef<any>(null);
@@ -349,7 +345,7 @@ const UI: React.FC = ({ children }) => {
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
   const accessToken = useAppSelector(state => getAccessToken(state));
-  const streamingUrl = useAppSelector(state => state.instance.urls.get('streaming_api'));
+  const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
 
   const handleDragEnter = (e: DragEvent) => {
@@ -393,7 +389,9 @@ const UI: React.FC = ({ children }) => {
       if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
         const modals = getState().modals;
         const isModalOpen = modals.last()?.modalType === 'COMPOSE';
-        dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
+        const isEventsModalOpen = modals.last()?.modalType === 'COMPOSE_EVENT';
+        if (isEventsModalOpen) dispatch(uploadEventBanner(e.dataTransfer.files[0], intl));
+        else dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
       }
     });
   };
@@ -429,7 +427,7 @@ const UI: React.FC = ({ children }) => {
 
   const connectStreaming = () => {
     if (!disconnect.current && accessToken && streamingUrl) {
-      disconnect.current = dispatch(connectUserStream());
+      disconnect.current = dispatch(connectUserStream({ statContext }));
     }
   };
 
@@ -439,12 +437,6 @@ const UI: React.FC = ({ children }) => {
       disconnect.current = null;
     }
   };
-
-  const handleResize = useCallback(debounce(() => {
-    setMobile(isMobile(window.innerWidth));
-  }, 500, {
-    trailing: true,
-  }), [setMobile]);
 
   /** Load initial data when a user is logged in */
   const loadAccountData = () => {
@@ -460,10 +452,6 @@ const UI: React.FC = ({ children }) => {
       .catch(console.error);
 
     dispatch(fetchAnnouncements());
-
-    if (features.chats) {
-      dispatch(fetchChats());
-    }
 
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));
@@ -484,7 +472,6 @@ const UI: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize, { passive: true });
     document.addEventListener('dragenter', handleDragEnter, false);
     document.addEventListener('dragover', handleDragOver, false);
     document.addEventListener('drop', handleDrop, false);
@@ -494,12 +481,11 @@ const UI: React.FC = ({ children }) => {
       navigator.serviceWorker.addEventListener('message', handleServiceWorkerPostMessage);
     }
 
-    if (typeof window.Notification !== 'undefined' && Notification.permission === 'default') {
+    if (window.Notification?.permission === 'default') {
       window.setTimeout(() => Notification.requestPermission(), 120 * 1000);
     }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       document.removeEventListener('dragenter', handleDragEnter);
       document.removeEventListener('dragover', handleDragOver);
       document.removeEventListener('drop', handleDrop);
@@ -521,6 +507,14 @@ const UI: React.FC = ({ children }) => {
   useEffect(() => {
     dispatch(registerPushNotifications());
   }, [vapidKey]);
+
+  useEffect(() => {
+    if (account && pendingPolicy && supportedPolicyIds.includes(pendingPolicy.pending_policy_id)) {
+      setTimeout(() => {
+        dispatch(openModal('POLICY'));
+      }, 500);
+    }
+  }, [pendingPolicy, !!account]);
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
@@ -607,10 +601,6 @@ const UI: React.FC = ({ children }) => {
     history.push('/follow_requests');
   };
 
-  const handleOpenComposeModal = () => {
-    dispatch(openModal('COMPOSE'));
-  };
-
   const shouldHideFAB = (): boolean => {
     const path = location.pathname;
     return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
@@ -637,19 +627,6 @@ const UI: React.FC = ({ children }) => {
     goToRequests: handleHotkeyGoToRequests,
   };
 
-  const fabElem = (
-    <button
-      key='floating-action-button'
-      onClick={handleOpenComposeModal}
-      className='floating-action-button'
-      aria-label={intl.formatMessage(messages.publish)}
-    >
-      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-    </button>
-  );
-
-  const floatingActionButton = shouldHideFAB() ? null : fabElem;
-
   const style: React.CSSProperties = {
     pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
   };
@@ -672,7 +649,11 @@ const UI: React.FC = ({ children }) => {
             </SwitchingColumnsArea>
           </Layout>
 
-          {me && floatingActionButton}
+          {(me && !shouldHideFAB()) && (
+            <div className='z-40 lg:hidden transition-all fixed bottom-24 right-4 rtl:left-4 rtl:right-auto'>
+              <FloatingActionButton />
+            </div>
+          )}
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
@@ -683,9 +664,14 @@ const UI: React.FC = ({ children }) => {
               {Component => <Component />}
             </BundleContainer>
           )}
-          {me && features.chats && !mobile && (
-            <BundleContainer fetchComponent={ChatPanes}>
-              {Component => <Component />}
+
+          {me && features.chats && (
+            <BundleContainer fetchComponent={ChatWidget}>
+              {Component => (
+                <div className='hidden xl:block'>
+                  <Component />
+                </div>
+              )}
             </BundleContainer>
           )}
           <ThumbNavigation />
