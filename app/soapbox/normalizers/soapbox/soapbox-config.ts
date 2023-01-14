@@ -198,13 +198,13 @@ const normalizeAdsAlgorithm = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
 
 /** Single user mode is now managed by `redirectRootNoLogin`. */
 const upgradeSingleUserMode = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const singleUserMode = soapboxConfig.get('singleUserMode');
-  const singleUserModeProfile = soapboxConfig.get('singleUserModeProfile');
-  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin');
+  const singleUserMode = soapboxConfig.get('singleUserMode') as boolean | undefined;
+  const singleUserModeProfile = soapboxConfig.get('singleUserModeProfile') as string | undefined;
+  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin') as string | undefined;
 
   if (!redirectRootNoLogin && singleUserMode && singleUserModeProfile) {
     return soapboxConfig
-      .set('redirectRootNoLogin', `/@${singleUserModeProfile}`)
+      .set('redirectRootNoLogin', `/@${singleUserModeProfile.replaceAll('@', '')}`)
       .deleteAll(['singleUserMode', 'singleUserModeProfile']);
   } else {
     return soapboxConfig

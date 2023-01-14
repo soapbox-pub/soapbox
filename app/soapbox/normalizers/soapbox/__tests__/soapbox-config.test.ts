@@ -37,6 +37,7 @@ describe('normalizeSoapboxConfig()', () => {
 
   it('upgrades singleUserModeProfile to redirectRootNoLogin', () => {
     expect(normalizeSoapboxConfig({ singleUserMode: true, singleUserModeProfile: 'alex' }).redirectRootNoLogin).toBe('/@alex');
+    expect(normalizeSoapboxConfig({ singleUserMode: true, singleUserModeProfile: '@alex' }).redirectRootNoLogin).toBe('/@alex');
     expect(normalizeSoapboxConfig({ singleUserMode: false, singleUserModeProfile: 'alex' }).redirectRootNoLogin).toBe('');
   });
 
