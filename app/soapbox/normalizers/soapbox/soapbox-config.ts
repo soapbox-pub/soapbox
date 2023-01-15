@@ -6,6 +6,7 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
+import { normalizeUsername } from 'soapbox/utils/input';
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
 
@@ -204,7 +205,7 @@ const upgradeSingleUserMode = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
 
   if (!redirectRootNoLogin && singleUserMode && singleUserModeProfile) {
     return soapboxConfig
-      .set('redirectRootNoLogin', `/@${singleUserModeProfile.replaceAll('@', '')}`)
+      .set('redirectRootNoLogin', `/@${normalizeUsername(singleUserModeProfile)}`)
       .deleteAll(['singleUserMode', 'singleUserModeProfile']);
   } else {
     return soapboxConfig
