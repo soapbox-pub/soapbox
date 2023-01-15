@@ -32,6 +32,7 @@ const locales: string[] = [
   'bg',
   'bn',
   'br',
+  'bs',
   'ca',
   'co',
   'cs',

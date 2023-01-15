@@ -16,6 +16,7 @@ const languages = {
   ast: 'Asturianu',
   bg: 'Български',
   bn: 'বাংলা',
+  bs: 'Bosanski',
   ca: 'Català',
   co: 'Corsu',
   cs: 'Čeština',
