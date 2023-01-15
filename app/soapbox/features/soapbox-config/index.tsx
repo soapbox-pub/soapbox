@@ -286,7 +286,7 @@ const SoapboxConfig: React.FC = () => {
               <Input
                 type='text'
                 placeholder={intl.formatMessage(messages.redirectRootNoLoginPlaceholder)}
-                value={soapbox.redirectRootNoLogin}
+                value={String(data.get('redirectRootNoLogin', ''))}
                 onChange={handleChange(['redirectRootNoLogin'], (e) => e.target.value)}
               />
             </ListItem>
