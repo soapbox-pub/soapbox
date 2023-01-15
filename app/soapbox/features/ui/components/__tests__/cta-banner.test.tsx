@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable';
 import React from 'react';
 
 import { normalizeInstance } from 'soapbox/normalizers';
@@ -28,6 +29,19 @@ describe('<CtaBanner />', () => {
 
       render(<CtaBanner />, undefined, store);
       expect(screen.queryAllByTestId('cta-banner')).toHaveLength(0);
+    });
+  });
+
+  describe('with Pepe enabled', () => {
+    it('renders the banner', () => {
+      const store = {
+        instance: normalizeInstance({ registrations: false }),
+        soapbox: fromJS({ extensions: { pepe: { enabled: true } } }),
+        verification: { instance: fromJS({ registrations: true }) },
+      };
+
+      render(<CtaBanner />, undefined, store);
+      expect(screen.getByTestId('cta-banner')).toHaveTextContent(/sign up/i);
     });
   });
 });
