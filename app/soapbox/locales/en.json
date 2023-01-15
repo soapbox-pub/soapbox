@@ -1200,7 +1200,6 @@
   "soapbox_config.raw_json_label": "Advanced: Edit raw JSON data",
   "soapbox_config.redirect_root_no_login_hint": "Path to redirect the homepage when a user is not logged in.",
   "soapbox_config.redirect_root_no_login_label": "Redirect homepage",
-  "soapbox_config.redirect_root_no_login_placeholder": "/timeline/local",
   "soapbox_config.save": "Save",
   "soapbox_config.saved": "Soapbox config saved!",
   "soapbox_config.tile_server_attribution_label": "Map tiles attribution",
