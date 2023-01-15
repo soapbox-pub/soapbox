@@ -1037,7 +1037,6 @@
   "soapbox_config.raw_json_label": "Advanced: Edit raw JSON data",
   "soapbox_config.save": "保存",
   "soapbox_config.saved": "Soapbox config saved!",
-  "soapbox_config.single_user_mode_label": "Single user mode",
   "soapbox_config.single_user_mode_profile_label": "Main user handle",
   "soapbox_config.verified_can_edit_name_label": "Allow verified users to edit their own display name.",
   "sponsored.info.message": "{siteTitle} displays ads to help fund our service.",

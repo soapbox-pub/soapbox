@@ -1170,7 +1170,6 @@
   "soapbox_config.raw_json_label": "متقدم: تحرير ملف JSON",
   "soapbox_config.save": "حفظ",
   "soapbox_config.saved": "تم حفظ إعدادات Soapbox",
-  "soapbox_config.single_user_mode_label": "وضع المستخدم الوحيد",
   "soapbox_config.single_user_mode_profile_label": "اسم المستخدم الأساسي",
   "soapbox_config.verified_can_edit_name_label": "السماح للحسابات الموثّقة بتغيير أسمائهم.",
   "sponsored.info.message": "{siteTitle} يعرض اعلانات لتمويل الخدمة",

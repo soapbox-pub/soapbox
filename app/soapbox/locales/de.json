@@ -1037,7 +1037,6 @@
   "soapbox_config.raw_json_label": "Advanced: Edit raw JSON data",
   "soapbox_config.save": "Speichern",
   "soapbox_config.saved": "Soapbox-Konfiruation gespeichert!",
-  "soapbox_config.single_user_mode_label": "Einzelnutzer-Modus",
   "soapbox_config.single_user_mode_profile_label": "Primäres Profil",
   "soapbox_config.verified_can_edit_name_label": "Verifizierten Nutzern die Änderung des Anzeigenamens gestatten.",
   "sponsored.info.message": "{siteTitle} displays ads to help fund our service.",
