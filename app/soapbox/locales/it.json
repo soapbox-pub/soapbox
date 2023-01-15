@@ -1198,7 +1198,6 @@
   "soapbox_config.raw_json_label": "Modifica avanzata dei dati in formato JSON",
   "soapbox_config.save": "Salva",
   "soapbox_config.saved": "Hai salvato la configurazione di Soapbox!",
-  "soapbox_config.single_user_mode_profile_label": "Nome utente del profilo principale",
   "soapbox_config.tile_server_attribution_label": "Diritti della mappa",
   "soapbox_config.tile_server_label": "Indirizzo del tile server",
   "soapbox_config.verified_can_edit_name_label": "Permetti ai profili verificati di modificare il proprio username.",

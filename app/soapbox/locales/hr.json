@@ -1197,7 +1197,6 @@
   "soapbox_config.raw_json_label": "Advanced: Edit raw JSON data",
   "soapbox_config.save": "Save",
   "soapbox_config.saved": "Soapbox config saved!",
-  "soapbox_config.single_user_mode_profile_label": "Main user handle",
   "soapbox_config.tile_server_attribution_label": "Atribucija pločica karte",
   "soapbox_config.tile_server_label": "Poslužitelj pločica karte",
   "soapbox_config.verified_can_edit_name_label": "Allow verified users to edit their own display name.",
