@@ -1037,7 +1037,6 @@
   "soapbox_config.raw_json_label": "高級: 編輯原始JSON",
   "soapbox_config.save": "儲存更改",
   "soapbox_config.saved": "Soapbox配置已儲存！",
-  "soapbox_config.single_user_mode_profile_label": "主帳户的帳户名稱",
   "soapbox_config.verified_can_edit_name_label": "允許經過驗證的用户編輯自己的顯示名稱。",
   "sponsored.info.message": "{siteTitle} 展示廣告以使實例可持續運行",
   "sponsored.info.title": "為什麼我會看到這條廣告？",
