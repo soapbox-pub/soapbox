@@ -1,3 +1,12 @@
+/*
+MIT License
+
+Copyright (c) Meta Platforms, Inc. and affiliates.
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the /app/soapbox/features/compose/editor directory.
+*/
+
 import {
   $convertToMarkdownString,
   TRANSFORMERS,
@@ -18,8 +27,6 @@ import { useFeatures } from 'soapbox/hooks';
 import nodes from './nodes';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
-
-// import type { EditorState } from 'lexical';
 
 const initialConfig: InitialConfigType = {
   namespace: 'ComposeForm',

@@ -1,10 +1,11 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
+/*
+MIT License
+
+Copyright (c) Meta Platforms, Inc. and affiliates.
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the /app/soapbox/features/compose/editor directory.
+*/
 
 export const sanitizeUrl = (url: string): string => {
   /** A pattern that matches safe  URLs. */
