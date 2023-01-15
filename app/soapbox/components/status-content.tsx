@@ -103,7 +103,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
 
-    if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
+    if (collapsable && onClick && !collapsed) {
       if (node.current.clientHeight > MAX_HEIGHT) {
         setCollapsed(true);
       }
