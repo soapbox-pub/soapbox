@@ -148,7 +148,7 @@ const Navbar = () => {
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 
-                  {!isOpen && (
+                  {isOpen && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>
