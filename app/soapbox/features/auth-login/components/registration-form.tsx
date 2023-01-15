@@ -237,6 +237,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
               autoCorrect='off'
               autoCapitalize='off'
               pattern='^[a-zA-Z\d_-]+'
+              icon={require('@tabler/icons/at.svg')}
               onChange={onUsernameChange}
               value={params.get('username', '')}
               required

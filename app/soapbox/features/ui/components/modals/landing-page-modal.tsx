@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import SiteLogo from 'soapbox/components/site-logo';
 import { Text, Button, Icon, Modal } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import { useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({
   download: { id: 'landing_page_modal.download', defaultMessage: 'Download' },
@@ -22,14 +22,8 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const intl = useIntl();
 
   const soapboxConfig = useSoapboxConfig();
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { isOpen } = useRegistrationStatus();
   const { links } = soapboxConfig;
-
-  const instance = useInstance();
-  const features = useFeatures();
-
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   return (
     <Modal
@@ -63,7 +57,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
             {intl.formatMessage(messages.login)}
           </Button>
 
-          {(isOpen || pepeEnabled && pepeOpen) && (
+          {isOpen && (
             <Button to='/signup' theme='primary' block>
               {intl.formatMessage(messages.register)}
             </Button>

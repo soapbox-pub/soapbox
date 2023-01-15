@@ -47,16 +47,14 @@ const messages = defineMessages({
   authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
   authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
   displayCtaLabel: { id: 'soapbox_config.cta_label', defaultMessage: 'Display call to action panels if not authenticated' },
-  singleUserModeLabel: { id: 'soapbox_config.single_user_mode_label', defaultMessage: 'Single user mode' },
-  singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
-  singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
-  singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
   mediaPreviewLabel: { id: 'soapbox_config.media_preview_label', defaultMessage: 'Prefer preview media for thumbnails' },
   mediaPreviewHint: { id: 'soapbox_config.media_preview_hint', defaultMessage: 'Some backends provide an optimized version of media for display in timelines. However, these preview images may be too small without additional configuration.' },
   feedInjectionLabel: { id: 'soapbox_config.feed_injection_label', defaultMessage: 'Feed injection' },
   feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
   tileServerLabel: { id: 'soapbox_config.tile_server_label', defaultMessage: 'Map tile server' },
   tileServerAttributionLabel: { id: 'soapbox_config.tile_server_attribution_label', defaultMessage: 'Map tiles attribution' },
+  redirectRootNoLoginLabel: { id: 'soapbox_config.redirect_root_no_login_label', defaultMessage: 'Redirect homepage' },
+  redirectRootNoLoginHint: { id: 'soapbox_config.redirect_root_no_login_hint', defaultMessage: 'Path to redirect the homepage when a user is not logged in.' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -281,25 +279,16 @@ const SoapboxConfig: React.FC = () => {
             </ListItem>
 
             <ListItem
-              label={intl.formatMessage(messages.singleUserModeLabel)}
-              hint={intl.formatMessage(messages.singleUserModeHint)}
+              label={intl.formatMessage(messages.redirectRootNoLoginLabel)}
+              hint={intl.formatMessage(messages.redirectRootNoLoginHint)}
             >
-              <Toggle
-                checked={soapbox.singleUserMode === true}
-                onChange={handleChange(['singleUserMode'], (e) => e.target.checked)}
+              <Input
+                type='text'
+                placeholder='/timeline/local'
+                value={String(data.get('redirectRootNoLogin', ''))}
+                onChange={handleChange(['redirectRootNoLogin'], (e) => e.target.value)}
               />
             </ListItem>
-
-            {soapbox.get('singleUserMode') && (
-              <ListItem label={intl.formatMessage(messages.singleUserModeProfileLabel)}>
-                <Input
-                  type='text'
-                  placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
-                  value={soapbox.singleUserModeProfile}
-                  onChange={handleChange(['singleUserModeProfile'], (e) => e.target.value)}
-                />
-              </ListItem>
-            )}
           </List>
 
           <CardHeader>

@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Admin: redirect the homepage to any URL.
 
 ### Changed
 
 ### Fixed
+
+### Removed
+- Admin: single user mode. Now the homepage can be redirected to any URL.
 
 ## [3.1.0] - 2023-01-13
 
