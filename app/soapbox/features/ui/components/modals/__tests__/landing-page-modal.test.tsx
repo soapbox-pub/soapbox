@@ -1,8 +1,7 @@
-import { fromJS } from 'immutable';
 import React from 'react';
 
+import { storeOpen, storePepeOpen } from 'soapbox/jest/mock-stores';
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
 
 import LandingPageModal from '../landing-page-modal';
 
@@ -19,21 +18,14 @@ describe('<LandingPageModal />', () => {
 
   describe('with registrations enabled', () => {
     it('displays the signup button', () => {
-      const store = { instance: normalizeInstance({ registrations: true }) };
-      render(<LandingPageModal onClose={jest.fn} />, undefined, store);
+      render(<LandingPageModal onClose={jest.fn} />, undefined, storeOpen);
       expect(screen.getByText('Register')).toBeInTheDocument();
     });
   });
 
   describe('with registrations closed, Pepe enabled', () => {
     it('displays the signup button', () => {
-      const store = {
-        instance: normalizeInstance({ registrations: false }),
-        soapbox: fromJS({ extensions: { pepe: { enabled: true } } }),
-        verification: { instance: fromJS({ registrations: true }) },
-      };
-
-      render(<LandingPageModal onClose={jest.fn} />, undefined, store);
+      render(<LandingPageModal onClose={jest.fn} />, undefined, storePepeOpen);
       expect(screen.getByText('Register')).toBeInTheDocument();
     });
   });

@@ -1,8 +1,7 @@
-import { fromJS } from 'immutable';
 import React from 'react';
 
+import { storeOpen, storePepeOpen } from 'soapbox/jest/mock-stores';
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
 
 import Navbar from '../navbar';
 
@@ -19,21 +18,14 @@ describe('<Navbar />', () => {
 
   describe('with registrations enabled', () => {
     it('displays the signup button', () => {
-      const store = { instance: normalizeInstance({ registrations: true }) };
-      render(<Navbar />, undefined, store);
+      render(<Navbar />, undefined, storeOpen);
       expect(screen.getByText('Sign up')).toBeInTheDocument();
     });
   });
 
   describe('with registrations closed, Pepe enabled', () => {
     it('displays the signup button', () => {
-      const store = {
-        instance: normalizeInstance({ registrations: false }),
-        soapbox: fromJS({ extensions: { pepe: { enabled: true } } }),
-        verification: { instance: fromJS({ registrations: true }) },
-      };
-
-      render(<Navbar />, undefined, store);
+      render(<Navbar />, undefined, storePepeOpen);
       expect(screen.getByText('Sign up')).toBeInTheDocument();
     });
   });

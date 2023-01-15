@@ -1,14 +1,11 @@
-import { fromJS } from 'immutable';
-
+import { storeClosed, storeOpen, storePepeClosed, storePepeOpen } from 'soapbox/jest/mock-stores';
 import { renderHook } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
 
 import { useRegistrationStatus } from '../useRegistrationStatus';
 
 describe('useRegistrationStatus()', () => {
   test('Registrations open', () => {
-    const store = { instance: normalizeInstance({ registrations: true }) };
-    const { result } = renderHook(useRegistrationStatus, undefined, store);
+    const { result } = renderHook(useRegistrationStatus, undefined, storeOpen);
 
     expect(result.current).toMatchObject({
       isOpen: true,
@@ -18,8 +15,7 @@ describe('useRegistrationStatus()', () => {
   });
 
   test('Registrations closed', () => {
-    const store = { instance: normalizeInstance({ registrations: false }) };
-    const { result } = renderHook(useRegistrationStatus, undefined, store);
+    const { result } = renderHook(useRegistrationStatus, undefined, storeClosed);
 
     expect(result.current).toMatchObject({
       isOpen: false,
@@ -29,13 +25,7 @@ describe('useRegistrationStatus()', () => {
   });
 
   test('Registrations closed, Pepe enabled & open', () => {
-    const store = {
-      instance: normalizeInstance({ registrations: false }),
-      soapbox: fromJS({ extensions: { pepe: { enabled: true } } }),
-      verification: { instance: fromJS({ registrations: true }) },
-    };
-
-    const { result } = renderHook(useRegistrationStatus, undefined, store);
+    const { result } = renderHook(useRegistrationStatus, undefined, storePepeOpen);
 
     expect(result.current).toMatchObject({
       isOpen: true,
@@ -45,13 +35,7 @@ describe('useRegistrationStatus()', () => {
   });
 
   test('Registrations closed, Pepe enabled & closed', () => {
-    const store = {
-      instance: normalizeInstance({ registrations: false }),
-      soapbox: fromJS({ extensions: { pepe: { enabled: true } } }),
-      verification: { instance: fromJS({ registrations: false }) },
-    };
-
-    const { result } = renderHook(useRegistrationStatus, undefined, store);
+    const { result } = renderHook(useRegistrationStatus, undefined, storePepeClosed);
 
     expect(result.current).toMatchObject({
       isOpen: false,

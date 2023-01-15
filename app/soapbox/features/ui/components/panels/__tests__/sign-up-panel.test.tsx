@@ -1,8 +1,7 @@
-import { fromJS } from 'immutable';
 import React from 'react';
 
+import { storeOpen, storePepeOpen } from 'soapbox/jest/mock-stores';
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
 
 import SignUpPanel from '../sign-up-panel';
 
@@ -14,21 +13,14 @@ describe('<SignUpPanel />', () => {
 
   describe('with registrations enabled', () => {
     it('successfully renders', () => {
-      const store = { instance: normalizeInstance({ registrations: true }) };
-      render(<SignUpPanel />, undefined, store);
+      render(<SignUpPanel />, undefined, storeOpen);
       expect(screen.getByTestId('sign-up-panel')).toBeInTheDocument();
     });
   });
 
   describe('with registrations closed, Pepe enabled', () => {
     it('successfully renders', () => {
-      const store = {
-        instance: normalizeInstance({ registrations: false }),
-        soapbox: fromJS({ extensions: { pepe: { enabled: true } } }),
-        verification: { instance: fromJS({ registrations: true }) },
-      };
-
-      render(<SignUpPanel />, undefined, store);
+      render(<SignUpPanel />, undefined, storePepeOpen);
       expect(screen.getByTestId('sign-up-panel')).toBeInTheDocument();
     });
   });
