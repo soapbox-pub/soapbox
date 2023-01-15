@@ -40,6 +40,7 @@ import {
   useTheme,
   useLocale,
   useInstance,
+  useRegistrationStatus,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -92,13 +93,12 @@ const SoapboxMount = () => {
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
+  const { pepeEnabled } = useRegistrationStatus();
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
   const { redirectRootNoLogin } = soapboxConfig;
-
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
