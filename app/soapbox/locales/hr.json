@@ -1195,6 +1195,8 @@
   "soapbox_config.raw_json_hint": "Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click Save to apply your changes.",
   "soapbox_config.raw_json_invalid": "netočno je",
   "soapbox_config.raw_json_label": "Advanced: Edit raw JSON data",
+  "soapbox_config.redirect_root_no_login_hint": "Put za preusmjeravanje početne stranice kada korisnik nije prijavljen.",
+  "soapbox_config.redirect_root_no_login_label": "Preusmjeri početnu stranicu",
   "soapbox_config.save": "Save",
   "soapbox_config.saved": "Soapbox config saved!",
   "soapbox_config.tile_server_attribution_label": "Atribucija pločica karte",
