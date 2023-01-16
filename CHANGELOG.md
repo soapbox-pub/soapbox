@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Status Info: moved context (repost, pinned) to improve UX.
 - Posts: remove file icon from empty link previews.
 - Settings: moved "Import data" under settings.
+- Composer: add more descriptive discard confirmation message.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
@@ -42,12 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: fix monospace font in Markdown code blocks.
 - Modals: fix action buttons overflow
 - Editing: don't insert edited posts to the top of the feed.
+- Editing: don't display edited posts as pending posts.
 - Modals: close modal when navigating to a different page.
 - Modals: fix "View context" button in media modal.
 - Posts: let unauthenticated users to translate posts if allowed by backend.
 - Chats: fix jumpy scrollbar.
 - Composer: fix alignment of icon in submit button.
 - Login: add a border around QR codes.
+- Composer: don't display action button in reply indicator
 
 ## [3.0.0] - 2022-12-25
 
