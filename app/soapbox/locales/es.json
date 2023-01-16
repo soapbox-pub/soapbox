@@ -273,7 +273,7 @@
   "column.aliases.create_error": "Error al crear alias",
   "column.aliases.delete": "Delete",
   "column.aliases.delete_error": "Error al eliminar el alias",
-  "column.aliases.subheading_add_new": "Añadir nuevo alias",
+  "column.aliases.subheading_add_new": "Añadir un nuevo alias",
   "column.aliases.subheading_aliases": "Alias actuales",
   "column.app_create": "Crear aplicación",
   "column.backups": "Copias de seguridad",
