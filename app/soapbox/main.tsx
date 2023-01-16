@@ -1,6 +1,5 @@
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 import { createRoot } from 'react-dom/client';
 import { defineMessages } from 'react-intl';
 
@@ -8,6 +7,17 @@ import { setSwUpdating } from 'soapbox/actions/sw';
 import * as BuildConfig from 'soapbox/build-config';
 import { store } from 'soapbox/store';
 import { printConsoleWarning } from 'soapbox/utils/console';
+
+import '@fontsource/inter/200.css';
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/900.css';
+import '@fontsource/roboto-mono/400.css';
+import 'line-awesome/dist/font-awesome-line-awesome/css/all.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import '../soapbox/iframe';
 import '../styles/application.scss';
