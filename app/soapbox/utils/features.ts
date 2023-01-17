@@ -279,7 +279,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Paginated chats API.
-     * @see GET /api/v2/chats
+     * @see GET /api/v2/pleroma/chats
      */
     chatsV2: any([
       v.software === TRUTHSOCIAL,
