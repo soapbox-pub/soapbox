@@ -312,39 +312,45 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
               </div>
             )}
 
-            <HStack
-              alignItems='bottom'
+            <Stack
+              space={0.5}
               className={classNames({
                 'max-w-[85%]': true,
+                'flex-1': chatMessage.attachment,
                 'order-2': isMyMessage,
                 'order-1': !isMyMessage,
               })}
-              justifyContent={isMyMessage ? 'end' : 'start'}
+              alignItems={isMyMessage ? 'end' : 'start'}
             >
-              <div
-                title={getFormattedTimestamp(chatMessage)}
-                className={
-                  classNames({
-                    'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
-                    '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
-                    '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
-                    'bg-primary-500 text-white': isMyMessage,
-                    'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
-                    '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
-                  })
-                }
-                ref={setBubbleRef}
-                tabIndex={0}
-              >
-                {maybeRenderMedia(chatMessage)}
-                <Text
-                  size='sm'
-                  theme='inherit'
-                  className='break-word-nested'
-                  dangerouslySetInnerHTML={{ __html: content }}
-                />
-              </div>
-            </HStack>
+              {maybeRenderMedia(chatMessage)}
+
+              {content && (
+                <HStack alignItems='bottom'>
+                  <div
+                    title={getFormattedTimestamp(chatMessage)}
+                    className={
+                      classNames({
+                        'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
+                        '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
+                        '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
+                        'bg-primary-500 text-white': isMyMessage,
+                        'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
+                        '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
+                      })
+                    }
+                    ref={setBubbleRef}
+                    tabIndex={0}
+                  >
+                    <Text
+                      size='sm'
+                      theme='inherit'
+                      className='break-word-nested'
+                      dangerouslySetInnerHTML={{ __html: content }}
+                    />
+                  </div>
+                </HStack>
+              )}
+            </Stack>
           </HStack>
 
           <HStack
