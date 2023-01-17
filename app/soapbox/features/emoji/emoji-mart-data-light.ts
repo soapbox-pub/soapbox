@@ -1,8 +1,10 @@
 // The output of this module is designed to mimic emoji-mart's
 // "data" object, such that we can use it for a light version of emoji-mart's
 // emojiIndex.search functionality.
-import emojiCompressed from './emoji-compressed';
+// import emojiCompressed from './emoji-compressed';
 import { unicodeToUnifiedName } from './unicode-to-unified-name';
+
+const emojiCompressed: any[] = [{}, {}, {}, {}];
 
 const [ shortCodesToEmojiData, skins, categories, short_names ] = emojiCompressed;
 

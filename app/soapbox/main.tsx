@@ -25,7 +25,7 @@ import '../styles/application.scss';
 import './precheck';
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
-import * as perf from './performance';
+// import * as perf from './performance';
 import ready from './ready';
 import toast from './toast';
 
@@ -34,7 +34,7 @@ const messages = defineMessages({
   updateText: { id: 'sw.update_text', defaultMessage: 'An update is available.' },
 });
 
-perf.start('main()');
+// perf.start('main()');
 
 // Sentry
 monitoring.start();
@@ -69,5 +69,5 @@ ready(() => {
       },
     });
   }
-  perf.stop('main()');
+  // perf.stop('main()');
 });

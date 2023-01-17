@@ -1,16 +1,17 @@
 // @preval
-const { execSync } = require('child_process');
+// const { execSync } = require('child_process');
 
 const pkg = require('../../../package.json');
 
-const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;
+const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = {};
 
 const shortRepoName = url => new URL(url).pathname.substring(1);
 const trimHash = hash => hash.substring(0, 7);
 
 const tryGit = cmd => {
   try {
-    return String(execSync(cmd));
+    throw cmd;
+    // return String(execSync(cmd));
   } catch (e) {
     return undefined;
   }
@@ -36,7 +37,7 @@ const version = pkg => {
   return pkg.version;
 };
 
-module.exports = {
+export default {
   name: pkg.name,
   displayName: pkg.displayName,
   url: pkg.repository.url,

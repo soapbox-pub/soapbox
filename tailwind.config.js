@@ -1,4 +1,4 @@
-const { parseColorMatrix } = require('./tailwind/colors');
+import { parseColorMatrix } from './tailwind/colors';
 
 /** @type {import('tailwindcss').Config} */
 export default {

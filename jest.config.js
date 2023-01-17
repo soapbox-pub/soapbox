@@ -1,6 +1,6 @@
 const ASSET_EXTS = 'css|styl|less|sass|scss|png|jpg|svg|ogg|oga|mp3|ttf|woff|woff2';
 
-module.exports = {
+export default {
   'testPathIgnorePatterns': [
     '<rootDir>/node_modules/',
     '<rootDir>/vendor/',

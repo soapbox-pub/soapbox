@@ -14,7 +14,7 @@ const {
   FE_BUILD_DIR,
   FE_INSTANCE_SOURCE_DIR,
   SENTRY_DSN,
-} = process.env;
+} = {};
 
 const sanitizeURL = url => {
   try {
@@ -36,7 +36,7 @@ const sanitizePath = path => {
 // inconsistent behavior in dev mode
 const sanitize = obj => JSON.parse(JSON.stringify(obj));
 
-module.exports = sanitize({
+export default sanitize({
   NODE_ENV: NODE_ENV || 'development',
   BACKEND_URL: sanitizeURL(BACKEND_URL),
   FE_SUBDIRECTORY: sanitizeBasename(FE_SUBDIRECTORY),
