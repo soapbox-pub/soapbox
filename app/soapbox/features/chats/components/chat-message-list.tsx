@@ -246,7 +246,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
     const menu: Menu = [];
 
-    if (navigator.clipboard) {
+    if (navigator.clipboard && chatMessage.content) {
       menu.push({
         text: intl.formatMessage(messages.copy),
         action: () => handleCopyText(chatMessage),
