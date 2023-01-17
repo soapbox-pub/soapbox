@@ -52,6 +52,7 @@ interface IModal {
   /** Title text for the modal. */
   title?: React.ReactNode,
   width?: keyof typeof widths,
+  children?: React.ReactNode,
 }
 
 /** Displays a modal dialog box. */

@@ -94,10 +94,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to create accounts.
      * @see POST /api/v1/accounts
      */
-    accountCreation: any([
-      v.software === MASTODON,
-      v.software === PLEROMA,
-    ]),
+    accountCreation: v.software !== TRUTHSOCIAL,
 
     /**
      * Ability to pin other accounts on one's profile.
@@ -180,6 +177,13 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/announcements/}
      */
     announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+
+    /**
+     * Pleroma backups.
+     * @see GET /api/v1/pleroma/backups
+     * @see POST /api/v1/pleroma/backups
+     */
+    backups: v.software === PLEROMA,
 
     /**
      * Set your birthday and view upcoming birthdays.
@@ -383,6 +387,9 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '1.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
+
+    /** Whether to allow exporting follows/blocks/mutes to CSV by paginating the API. */
+    exportData: true,
 
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
@@ -658,13 +665,6 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.version, '2.7.0'),
       v.software === PLEROMA,
     ]),
-
-    /**
-     * List of OAuth scopes supported by both Soapbox and the backend.
-     * @see POST /api/v1/apps
-     * @see POST /oauth/token
-     */
-    scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
 
     /**
      * Ability to search statuses from the given account.

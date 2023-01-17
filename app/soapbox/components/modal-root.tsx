@@ -11,7 +11,6 @@ import { useAppDispatch, usePrevious } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
-import type { UnregisterCallback } from 'history';
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
 import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event';
@@ -43,6 +42,7 @@ interface IModalRoot {
   onCancel?: () => void,
   onClose: (type?: ModalType) => void,
   type: ModalType,
+  children: React.ReactNode,
 }
 
 const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) => {
@@ -55,7 +55,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   const ref = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLDivElement | null>(revealed ? document.activeElement as HTMLDivElement | null : null);
   const modalHistoryKey = useRef<number>();
-  const unlistenHistory = useRef<UnregisterCallback>();
+  const unlistenHistory = useRef<ReturnType<typeof history.listen>>();
 
   const prevChildren = usePrevious(children);
   const prevType = usePrevious(type);
@@ -129,10 +129,10 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     });
   };
 
-  const handleKeyDown = useCallback((e) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Tab') {
       const focusable = Array.from(ref.current!.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((x) => window.getComputedStyle(x).display !== 'none');
-      const index = focusable.indexOf(e.target);
+      const index = focusable.indexOf(e.target as Element);
 
       let element;
 

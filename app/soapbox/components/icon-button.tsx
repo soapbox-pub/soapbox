@@ -90,7 +90,7 @@ const IconButton: React.FC<IIconButton> = ({
       type='button'
     >
       <div>
-        <Icon className={iconClassName} src={src} fixedWidth aria-hidden='true' />
+        <Icon className={iconClassName} src={src} aria-hidden='true' />
       </div>
       {text && <span className='icon-button__text'>{text}</span>}
     </button>

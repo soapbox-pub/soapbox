@@ -1,13 +1,12 @@
 import classNames from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load-more';
 import { Column, RadioButton, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 
 import AccountCard from './components/account-card';
 
@@ -21,7 +20,7 @@ const messages = defineMessages({
 
 const Directory = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const instance = useInstance();

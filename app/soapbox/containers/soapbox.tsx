@@ -40,6 +40,7 @@ import {
   useTheme,
   useLocale,
   useInstance,
+  useRegistrationStatus,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -92,13 +93,12 @@ const SoapboxMount = () => {
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
+  const { pepeEnabled } = useRegistrationStatus();
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
-  const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
-
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { redirectRootNoLogin } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
@@ -134,8 +134,8 @@ const SoapboxMount = () => {
         />
       )}
 
-      {!me && (singleUserMode
-        ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+      {!me && (redirectRootNoLogin
+        ? <Redirect exact from='/' to={redirectRootNoLogin} />
         : <Route exact path='/' component={PublicLayout} />)}
 
       {!me && (
@@ -271,7 +271,6 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
-    'dyslexic': settings.get('dyslexicFont'),
     'demetricator': settings.get('demetricator'),
   });
 

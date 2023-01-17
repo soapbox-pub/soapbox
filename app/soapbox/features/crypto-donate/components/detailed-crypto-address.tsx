@@ -36,7 +36,7 @@ const DetailedCryptoAddress: React.FC<IDetailedCryptoAddress> = ({ address, tick
       </div>
       {note && <div className='crypto-address__note'>{note}</div>}
       <div className='crypto-address__qrcode'>
-        <QRCode value={address} />
+        <QRCode className='rounded-lg' value={address} includeMargin />
       </div>
 
       <CopyableInput value={address} />

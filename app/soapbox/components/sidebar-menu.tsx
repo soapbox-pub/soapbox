@@ -2,7 +2,6 @@
 import classNames from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
@@ -11,7 +10,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
@@ -29,7 +28,6 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
-  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
@@ -81,7 +79,7 @@ const getOtherAccounts = makeGetOtherAccounts();
 
 const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const features = useFeatures();
   const getAccount = makeGetAccount();
@@ -302,15 +300,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/soapbox/config'
                       icon={require('@tabler/icons/settings.svg')}
                       text={intl.formatMessage(messages.soapboxConfig)}
-                      onClick={onClose}
-                    />
-                  )}
-
-                  {features.import && (
-                    <SidebarLink
-                      to='/settings/import'
-                      icon={require('@tabler/icons/cloud-upload.svg')}
-                      text={intl.formatMessage(messages.importData)}
                       onClick={onClose}
                     />
                   )}

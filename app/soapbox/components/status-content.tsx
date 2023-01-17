@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
+    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} />
   </button>
 );
 
@@ -103,7 +103,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
 
-    if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
+    if (collapsable && onClick && !collapsed) {
       if (node.current.clientHeight > MAX_HEIGHT) {
         setCollapsed(true);
       }
@@ -119,7 +119,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();

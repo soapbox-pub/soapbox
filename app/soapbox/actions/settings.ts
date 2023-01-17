@@ -47,7 +47,6 @@ const defaultSettings = ImmutableMap({
   autoloadMore: true,
 
   systemFont: false,
-  dyslexicFont: false,
   demetricator: false,
 
   isDeveloper: false,

@@ -1,12 +1,11 @@
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
 import { Spinner, Text, Widget } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getAccountGallery } from 'soapbox/selectors';
 
 import MediaItem from '../../account-gallery/components/media-item';
@@ -18,7 +17,7 @@ interface IProfileMediaPanel {
 }
 
 const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(true);
 

@@ -15,7 +15,6 @@ import {
 } from 'soapbox/actions/compose';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
-import Icon from 'soapbox/components/icon';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
@@ -241,25 +240,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const disabledButton = disabled || isUploading || isChangingUpload || length(countedText) > maxTootChars || (countedText.length !== 0 && countedText.trim().length === 0 && !anyMedia);
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
-  let publishText: string | JSX.Element = '';
+  let publishText: string = '';
+  let publishIcon: string | undefined;
   let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishText = (
-      <>
-        <Icon src={require('@tabler/icons/mail.svg')} />
-        {intl.formatMessage(messages.message)}
-      </>
-    );
+    publishText = intl.formatMessage(messages.message);
+    publishIcon = require('@tabler/icons/mail.svg');
   } else if (privacy === 'private') {
-    publishText = (
-      <>
-        <Icon src={require('@tabler/icons/lock.svg')} />
-        {intl.formatMessage(messages.publish)}
-      </>
-    );
+    publishText = intl.formatMessage(messages.publish);
+    publishIcon = require('@tabler/icons/lock.svg');
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
   }
@@ -355,7 +347,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             </HStack>
           )}
 
-          <Button type='submit' theme='primary' text={publishText} disabled={disabledButton} />
+          <Button type='submit' theme='primary' text={publishText} icon={publishIcon} disabled={disabledButton} />
         </HStack>
         {/* <HStack alignItems='center' space={4}>
         </HStack> */}

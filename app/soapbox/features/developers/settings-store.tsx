@@ -134,12 +134,6 @@ const SettingsStore: React.FC = () => {
           <SettingToggle settings={settings} settingPath={['systemFont']} onChange={onToggleChange} />
         </ListItem>
 
-        <div className='dyslexic'>
-          <ListItem label={<FormattedMessage id='preferences.fields.dyslexic_font_label' defaultMessage='Dyslexic mode' />}>
-            <SettingToggle settings={settings} settingPath={['dyslexicFont']} onChange={onToggleChange} />
-          </ListItem>
-        </div>
-
         <ListItem
           label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}
           hint={<FormattedMessage id='preferences.hints.demetricator' defaultMessage='Decrease social media anxiety by hiding all numbers from the site.' />}
