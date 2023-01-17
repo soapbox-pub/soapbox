@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: redirect the homepage to any URL.
 
 ### Changed
+- Chats: improved display of media attachments.
 
 ### Fixed
+- Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
+- Chats: don't display "copy" button for messages without text.
 
 ### Removed
 - Admin: single user mode. Now the homepage can be redirected to any URL.
