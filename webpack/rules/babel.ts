@@ -7,7 +7,7 @@ import type { RuleSetRule } from 'webpack';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const rule: RuleSetRule = {
-  test: /\.(js|jsx|mjs|ts|tsx)$/,
+  test: /\.(js|jsx|cjs|mjs|ts|tsx)$/,
   include: [
     settings.source_path,
     ...settings.resolved_paths,

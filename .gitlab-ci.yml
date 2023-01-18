@@ -48,10 +48,12 @@ lint-js:
     changes:
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.cjs"
+      - "**/*.mjs"
       - "**/*.ts"
       - "**/*.tsx"
       - ".eslintignore"
-      - ".eslintrc.js"
+      - ".eslintrc.cjs"
 
 lint-sass:
   stage: test
@@ -72,7 +74,7 @@ jest:
       - "app/soapbox/**/*"
       - "webpack/**/*"
       - "custom/**/*"
-      - "jest.config.js"
+      - "jest.config.cjs"
       - "package.json"
       - "yarn.lock"
       - ".gitlab-ci.yml"
