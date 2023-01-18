@@ -624,6 +624,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/timelines/public
      */
     publicTimeline: any([
+      v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === PLEROMA,
       v.software === TAKAHE,
@@ -739,7 +740,6 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
      */
     suggestions: any([
-      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
@@ -750,6 +750,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v2/suggestions
      */
     suggestionsV2: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
@@ -830,9 +831,9 @@ export const parseVersion = (version: string): Backend => {
   const regex = /^([\w+.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
-  const semver = match ? semverParse(semverCoerce(match[3] || match[1], { loose: true })) : null;
-  const compat = match ? semverParse(match[1]) : null;
-
+  const semverString = match && (match[3] || match[1]);
+  const semver = match ? semverParse(semverString) || semverCoerce(semverString) : null;
+  const compat = match ? semverParse(match[1]) || semverCoerce(match[1]) : null;
 
   if (match && semver && compat) {
     return {
