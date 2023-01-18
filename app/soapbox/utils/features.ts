@@ -70,6 +70,11 @@ export const AKKOMA = 'akkoma';
  */
 export const TAKAHE = 'Takahe';
 
+/**
+ * Wildebeest, backend running on top of Cloudflare Pages.
+ */
+export const WILDEBEEST = 'Wildebeest';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -311,12 +316,17 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
 
+    /**
+     * Ability to edit profile information.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
     editProfile: any([
       v.software === MASTODON,
       v.software === MITRA,
       v.software === PIXELFED,
       v.software === PLEROMA,
       v.software === TRUTHSOCIAL,
+      v.software === WILDEBEEST,
     ]),
 
     editStatuses: any([
@@ -500,6 +510,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
+      v.software === WILDEBEEST,
       // Even though Pleroma supports these endpoints, it has disadvantages
       // v.software === PLEROMA && gte(v.version, '2.1.0'),
     ]),
@@ -603,6 +614,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON,
       v.software === PLEROMA,
       v.software === TAKAHE,
+      v.software === WILDEBEEST,
     ]),
 
     /**
