@@ -21,6 +21,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import '../soapbox/iframe';
 import '../styles/application.scss';
+import '../styles/tailwind.css';
 
 import './precheck';
 import { default as Soapbox } from './containers/soapbox';
