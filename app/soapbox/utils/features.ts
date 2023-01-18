@@ -325,6 +325,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MITRA,
       v.software === PIXELFED,
       v.software === PLEROMA,
+      v.software === TAKAHE && gte(v.version, '0.7.0'),
       v.software === TRUTHSOCIAL,
       v.software === WILDEBEEST,
     ]),
