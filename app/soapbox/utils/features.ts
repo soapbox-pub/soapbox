@@ -17,7 +17,7 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
- * Friendica.
+ * Friendica, decentralized social platform implementing multiple federation protocols.
  * @see {@link https://friendi.ca/}
  */
 export const FRIENDICA = 'Friendica';
