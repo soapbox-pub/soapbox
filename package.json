@@ -175,7 +175,7 @@
     "sass": "^1.20.3",
     "sass-loader": "^13.0.0",
     "seedrandom": "^3.0.5",
-    "semver": "^7.3.2",
+    "semver": "^7.3.8",
     "stringz": "^2.0.0",
     "substring-trie": "^1.0.2",
     "terser-webpack-plugin": "^5.2.3",
