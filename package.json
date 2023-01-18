@@ -2,6 +2,7 @@
   "name": "soapbox",
   "displayName": "Soapbox",
   "version": "3.1.0",
+  "type": "module",
   "description": "Soapbox frontend for the Fediverse.",
   "homepage": "https://soapbox.pub/",
   "repository": {
@@ -16,9 +17,9 @@
     "url": "https://gitlab.com/soapbox-pub/soapbox/-/issues"
   },
   "scripts": {
-    "start": "npx webpack-dev-server",
+    "start": "npx vite serve",
     "dev": "${npm_execpath} run start",
-    "build": "npx webpack",
+    "build": "npx vite build",
     "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
     "test": "npx cross-env NODE_ENV=test npx jest",
@@ -96,6 +97,7 @@
     "@types/webpack-assets-manifest": "^5.1.0",
     "@types/webpack-bundle-analyzer": "^4.6.0",
     "@types/webpack-deadcode-plugin": "^0.1.2",
+    "@vitejs/plugin-react": "^3.0.1",
     "autoprefixer": "^10.4.2",
     "axios": "^1.2.2",
     "axios-mock-adapter": "^1.21.1",
@@ -187,6 +189,9 @@
     "typescript": "^4.4.4",
     "util": "^0.12.4",
     "uuid": "^9.0.0",
+    "vite": "^4.0.4",
+    "vite-plugin-html": "^3.2.0",
+    "vite-plugin-require": "^1.1.10",
     "webpack": "^5.72.1",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-bundle-analyzer": "^4.5.0",
