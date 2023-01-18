@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Admin: redirect the homepage to any URL.
+- Compatibility: added compatibility with Friendica.
 
 ### Changed
 
@@ -52,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chats: fix jumpy scrollbar.
 - Composer: fix alignment of icon in submit button.
 - Login: add a border around QR codes.
-- Composer: don't display action button in reply indicator
+- Composer: don't display action button in reply indicator.
 
 ## [3.0.0] - 2022-12-25
 
