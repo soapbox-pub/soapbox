@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Posts: don't have to click the play button twice for embedded videos.
+- index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
 
 ### Removed
 - Admin: single user mode. Now the homepage can be redirected to any URL.
