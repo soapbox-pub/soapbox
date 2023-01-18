@@ -1,3 +1,4 @@
+import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -125,7 +126,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     display_name: account.display_name,
     note: account.source.get('note'),
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', []).toJS()],
+    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', ImmutableList()).toJS()],
     stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
     accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
     hide_followers: hideNetwork,
