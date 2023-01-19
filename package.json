@@ -33,7 +33,6 @@
   "browserslist": [
     "> 0.5%",
     "last 2 versions",
-    "not IE 11",
     "not dead"
   ],
   "dependencies": {
