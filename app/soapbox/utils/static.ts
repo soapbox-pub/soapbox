@@ -3,7 +3,7 @@
  * @module soapbox/utils/static
  */
 
-import { join } from 'path';
+import { join } from 'path-browserify';
 
 import * as BuildConfig from 'soapbox/build-config';
 

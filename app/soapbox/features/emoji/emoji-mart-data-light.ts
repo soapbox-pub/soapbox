@@ -3,7 +3,8 @@
 // emojiIndex.search functionality.
 import { unicodeToUnifiedName } from './unicode-to-unified-name';
 
-const [ shortCodesToEmojiData, skins, categories, short_names ] = import.meta.compileTime<any[]>('./emoji-compressed.ts');
+// @ts-ignore
+const [ shortCodesToEmojiData, skins, categories, short_names ] = import.meta.compileTime('./emoji-compressed.ts');
 
 const emojis: Record<string, any> = {};
 

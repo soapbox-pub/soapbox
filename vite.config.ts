@@ -20,9 +20,9 @@ export default defineConfig({
       // Use React plugin in all *.jsx and *.tsx files
       include: '**/*.{jsx,tsx}',
     }),
-    compileTime(),
     // @ts-ignore
     vitePluginRequire.default(),
+    compileTime(),
   ],
   resolve: {
     alias: [

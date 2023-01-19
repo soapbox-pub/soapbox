@@ -5,18 +5,19 @@
 // It's designed to be emitted in an array format to take up less space
 // over the wire.
 
-import { emojiIndex } from 'emoji-mart';
-import allJson from 'emoji-mart/data/all.json';
-import { uncompress as emojiMartUncompress } from 'emoji-mart/dist/utils/data';
+import allJson from 'emoji-mart/data/all.json' assert { type: 'json' };
+import { uncompress as emojiMartUncompress } from 'emoji-mart/dist/utils/data.js';
+import wtf from 'emoji-mart/dist/utils/emoji-index/emoji-index.js';
 
-import emojiMap from './emoji-map.json';
-import { unicodeToFilename } from './unicode-to-filename';
-import { unicodeToUnifiedName } from './unicode-to-unified-name';
+import emojiMap from './emoji-map.json' assert { type: 'json' };
+import { unicodeToFilename } from './unicode-to-filename.js';
+import { unicodeToUnifiedName } from './unicode-to-unified-name.js';
 
-let data = allJson;
+const data = { ...allJson };
+const emojiIndex = wtf.default;
 
 if (data.compressed) {
-  data = emojiMartUncompress(data);
+  emojiMartUncompress(data);
 }
 
 const emojiMartData = data;
