@@ -1,7 +1,6 @@
 import { Portal } from '@reach/portal';
 import classNames from 'clsx';
 import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
@@ -33,7 +32,7 @@ interface IAutosuggesteTextarea {
   children: React.ReactNode,
 }
 
-class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {
+class AutosuggestTextarea extends React.PureComponent<IAutosuggesteTextarea> {
 
   textarea: HTMLTextAreaElement | null = null;
 

@@ -2,7 +2,6 @@ import { Portal } from '@reach/portal';
 import classNames from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
@@ -36,7 +35,7 @@ export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputEl
   theme?: InputThemes,
 }
 
-export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {
+export default class AutosuggestInput extends React.PureComponent<IAutosuggestInput> {
 
   static defaultProps = {
     autoFocus: false,
