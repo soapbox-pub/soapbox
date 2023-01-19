@@ -400,8 +400,6 @@ const Thread: React.FC<IThread> = (props) => {
       index: ancestorsIds.size,
       offset: -80,
     });
-
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
   }, [props.params.statusId, status?.id, ancestorsIds.size, isLoaded]);
 
   const handleRefresh = () => {
