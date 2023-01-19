@@ -33,6 +33,7 @@
   "browserslist": [
     "> 0.5%",
     "last 2 versions",
+    "not IE 11",
     "not dead"
   ],
   "dependencies": {
@@ -148,6 +149,7 @@
     "react-helmet": "^6.1.0",
     "react-hot-toast": "^2.4.0",
     "react-hotkeys": "^1.1.4",
+    "react-immutable-pure-component": "^2.2.2",
     "react-inlinesvg": "^3.0.0",
     "react-intl": "^5.0.0",
     "react-motion": "^0.5.2",

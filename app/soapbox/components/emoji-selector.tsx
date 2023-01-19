@@ -1,6 +1,7 @@
 // import classNames from 'clsx';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -21,7 +22,7 @@ interface IEmojiSelector {
   focused?: boolean,
 }
 
-class EmojiSelector extends React.PureComponent<IEmojiSelector> {
+class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
 
   static defaultProps: Partial<IEmojiSelector> = {
     onReact: () => { },
