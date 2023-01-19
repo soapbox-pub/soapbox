@@ -56,6 +56,7 @@ import status_hover_card from './status-hover-card';
 import status_lists from './status-lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
+import tags from './tags';
 import timelines from './timelines';
 import trending_statuses from './trending-statuses';
 import trends from './trends';
@@ -120,6 +121,7 @@ const reducers = {
   announcements,
   compose_event,
   admin_user_index,
+  tags,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

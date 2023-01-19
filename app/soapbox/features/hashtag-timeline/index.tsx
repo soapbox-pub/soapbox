@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { connectHashtagStream } from 'soapbox/actions/streaming';
+import { fetchHashtag, followHashtag, unfollowHashtag } from 'soapbox/actions/tags';
 import { expandHashtagTimeline, clearTimeline } from 'soapbox/actions/timelines';
 import { Column } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Tag as TagEntity } from 'soapbox/types/entities';
 
@@ -18,6 +19,8 @@ const messages = defineMessages({
   any: { id: 'hashtag.column_header.tag_mode.any', defaultMessage: 'or {additional}' },
   all: { id: 'hashtag.column_header.tag_mode.all', defaultMessage: 'and {additional}' },
   none: { id: 'hashtag.column_header.tag_mode.none', defaultMessage: 'without {additional}' },
+  followHashtag: { id: 'hashtag.follow', defaultMessage: 'Follow hashtag' },
+  unfollowHashtag: { id: 'hashtag.unfollow', defaultMessage: 'Unfollow hashtag' },
   empty: { id: 'empty_column.hashtag', defaultMessage: 'There is nothing in this hashtag yet.' },
 });
 
@@ -32,9 +35,11 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const intl = useIntl();
   const id = params?.id || '';
   const tags = params?.tags || { any: [], all: [], none: [] };
-
+  
+  const features = useFeatures();
   const dispatch = useAppDispatch();
   const disconnects = useRef<(() => void)[]>([]);
+  const tag = useAppSelector((state) => state.tags.get(id));
 
   // Mastodon supports displaying results from multiple hashtags.
   // https://github.com/mastodon/mastodon/issues/6359
@@ -88,9 +93,18 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
     dispatch(expandHashtagTimeline(id, { maxId, tags }));
   };
 
+  const handleFollow = () => {
+    if (tag?.following) {
+      dispatch(unfollowHashtag(id));
+    } else {
+      dispatch(followHashtag(id));
+    }
+  };
+
   useEffect(() => {
     subscribe();
     dispatch(expandHashtagTimeline(id, { tags }));
+    dispatch(fetchHashtag(id));
 
     return () => {
       unsubscribe();
@@ -105,7 +119,13 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   }, [id]);
 
   return (
-    <Column label={title()} transparent>
+    <Column
+      label={title()}
+      transparent
+      onActionClick={features.followHashtags ? handleFollow : undefined}
+      actionIcon={tag?.following ? require('@tabler/icons/bell-ringing.svg') : require('@tabler/icons/bell.svg')}
+      actionTitle={intl.formatMessage(tag?.following ? messages.unfollowHashtag : messages.followHashtag)}
+    >
       <Timeline
         scrollKey='hashtag_timeline'
         timelineId={`hashtag:${id}`}

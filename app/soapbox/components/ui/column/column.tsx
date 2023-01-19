@@ -7,10 +7,10 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-type IColumnHeader = Pick<IColumn, 'label' | 'backHref' |'className'>;
+type IColumnHeader = Pick<IColumn, 'label' | 'backHref' | 'className' | 'onActionClick' | 'actionIcon' | 'actionTitle'>;
 
 /** Contains the column title with optional back button. */
-const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) => {
+const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className, onActionClick, actionIcon, actionTitle }) => {
   const history = useHistory();
 
   const handleBackClick = () => {
@@ -27,7 +27,13 @@ const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) =
   };
 
   return (
-    <CardHeader className={className} onBackClick={handleBackClick}>
+    <CardHeader
+      className={className}
+      onBackClick={handleBackClick}
+      onActionClick={onActionClick}
+      actionIcon={actionIcon}
+      actionTitle={actionTitle}
+    >
       <CardTitle title={label} />
     </CardHeader>
   );
@@ -46,13 +52,19 @@ export interface IColumn {
   className?: string,
   /** Ref forwarded to column. */
   ref?: React.Ref<HTMLDivElement>
+  /** Callback when the column action is clicked. */
+  onActionClick?: () => void,
+  /** URL to the svg icon for the column action. */
+  actionIcon?: string,
+  /** Text for the action. */
+  actionTitle?: string,
   /** Children to display in the column. */
   children?: React.ReactNode
 }
 
 /** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className } = props;
+  const { backHref, children, label, transparent = false, withHeader = true, onActionClick, actionIcon, actionTitle, className } = props;
   const soapboxConfig = useSoapboxConfig();
 
   return (
@@ -75,6 +87,9 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
             label={label}
             backHref={backHref}
             className={classNames({ 'px-4 pt-4 sm:p-0': transparent })}
+            onActionClick={onActionClick}
+            actionIcon={actionIcon}
+            actionTitle={actionTitle}
           />
         )}
 

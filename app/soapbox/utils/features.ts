@@ -448,6 +448,13 @@ const getInstanceFeatures = (instance: Instance) => {
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
 
     /**
+     * Ability to follow hashtags.
+     * @see POST /api/v1/tags/:name/follow
+     * @see POST /api/v1/tags/:name/unfollow
+     */
+    followHashtags: v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+
+    /**
      * Ability to lock accounts and manually approve followers.
      * @see PATCH /api/v1/accounts/update_credentials
      */

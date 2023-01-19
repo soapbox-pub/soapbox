@@ -45,6 +45,12 @@ interface ICardHeader {
   backHref?: string,
   onBackClick?: (event: React.MouseEvent) => void
   className?: string
+  /** Callback when the card action is clicked. */
+  onActionClick?: () => void,
+  /** URL to the svg icon for the card action. */
+  actionIcon?: string,
+  /** Text for the action. */
+  actionTitle?: string,
   children?: React.ReactNode
 }
 
@@ -52,7 +58,7 @@ interface ICardHeader {
  * Card header container with back button.
  * Typically holds a CardTitle.
  */
-const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBackClick }): JSX.Element => {
+const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBackClick, onActionClick, actionIcon, actionTitle }): JSX.Element => {
   const intl = useIntl();
 
   const renderBackButton = () => {
@@ -64,7 +70,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
     const backAttributes = backHref ? { to: backHref } : { onClick: onBackClick };
 
     return (
-      <Comp {...backAttributes} className='text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
+      <Comp {...backAttributes} className='p-0.5 -m-0.5 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2 rounded-full' aria-label={intl.formatMessage(messages.back)}>
         <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6 rtl:rotate-180' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
@@ -76,6 +82,12 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
       {renderBackButton()}
 
       {children}
+
+      {onActionClick && actionIcon && (
+        <button className='p-0.5 -m-0.5 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2 rounded-full' onClick={onActionClick} title={actionTitle}>
+          <SvgIcon src={actionIcon} className='h-6 w-6' />
+        </button>
+      )}
     </HStack>
   );
 };
@@ -86,7 +98,7 @@ interface ICardTitle {
 
 /** A card's title. */
 const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
-  <Text size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
+  <Text className='grow' size='xl' weight='bold' tag='h1' data-testid='card-title' truncate>{title}</Text>
 );
 
 interface ICardBody {
