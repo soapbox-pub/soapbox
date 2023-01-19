@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 import compileTime from 'vite-plugin-compile-time';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import vitePluginRequire from 'vite-plugin-require';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   root: 'app',
@@ -24,6 +25,12 @@ export default defineConfig({
     // @ts-ignore
     vitePluginRequire.default(),
     compileTime(),
+    viteStaticCopy({
+      targets: [{
+        src: '../node_modules/twemoji/assets/svg/*',
+        dest: 'packs/emoji/',
+      }],
+    }),
   ],
   resolve: {
     alias: [
