@@ -11,6 +11,7 @@ export default defineConfig({
   build: {
     // Relative to the root
     outDir: '../static',
+    assetsDir: 'packs',
   },
   plugins: [
     createHtmlPlugin({
