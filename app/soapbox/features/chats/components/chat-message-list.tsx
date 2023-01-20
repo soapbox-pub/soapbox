@@ -325,7 +325,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
               {maybeRenderMedia(chatMessage)}
 
               {content && (
-                <HStack alignItems='bottom'>
+                <HStack alignItems='bottom' className='max-w-full'>
                   <div
                     title={getFormattedTimestamp(chatMessage)}
                     className={
