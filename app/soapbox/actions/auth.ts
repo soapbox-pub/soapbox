@@ -50,6 +50,7 @@ const customApp = custom('app');
 
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
+  awaitingApproval: { id: 'auth.awaiting_approval', defaultMessage: 'Your account is awaiting approval' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
 });
 
@@ -187,6 +188,8 @@ export const logIn = (username: string, password: string) =>
     if ((error.response?.data as any)?.error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
+    } else if ((error.response?.data as any)?.identifier === 'awaiting_approval') {
+      toast.error(messages.awaitingApproval);
     } else {
       // Return "wrong password" message.
       toast.error(messages.invalidCredentials);
