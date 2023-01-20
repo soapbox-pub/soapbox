@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Admin: redirect the homepage to any URL.
 - Compatibility: added compatibility with Friendica.
+- Posts: bot badge on statuses from bot accounts.
 
 ### Changed
 
