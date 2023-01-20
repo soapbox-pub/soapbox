@@ -1,6 +1,7 @@
 /* eslint sort-keys: "error" */
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
+import semverCoerce from 'semver/functions/coerce';
 import gte from 'semver/functions/gte';
 import lt from 'semver/functions/lt';
 import semverParse from 'semver/functions/parse';
@@ -16,16 +17,16 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
+ * Friendica, decentralized social platform implementing multiple federation protocols.
+ * @see {@link https://friendi.ca/}
+ */
+export const FRIENDICA = 'Friendica';
+
+/**
  * Mastodon, the software upon which this is all based.
  * @see {@link https://joinmastodon.org/}
  */
 export const MASTODON = 'Mastodon';
-
-/**
- * Pleroma, a feature-rich alternative written in Elixir.
- * @see {@link https://pleroma.social/}
- */
-export const PLEROMA = 'Pleroma';
 
 /**
  * Mitra, a Rust backend with deep Ethereum integrations.
@@ -40,23 +41,27 @@ export const MITRA = 'Mitra';
 export const PIXELFED = 'Pixelfed';
 
 /**
+ * Pleroma, a feature-rich alternative written in Elixir.
+ * @see {@link https://pleroma.social/}
+ */
+export const PLEROMA = 'Pleroma';
+
+/**
+ * Takahē, backend with support for serving multiple domains.
+ * @see {@link https://jointakahe.org/}
+ */
+export const TAKAHE = 'Takahe';
+
+/**
  * Truth Social, the Mastodon fork powering truthsocial.com
  * @see {@link https://help.truthsocial.com/open-source}
  */
 export const TRUTHSOCIAL = 'TruthSocial';
 
 /**
- * Rebased, the recommended backend for Soapbox.
- * @see {@link https://gitlab.com/soapbox-pub/rebased}
+ * Wildebeest, backend running on top of Cloudflare Pages.
  */
-// NOTE: Rebased is named 'soapbox' for legacy reasons.
-export const REBASED = 'soapbox';
-
-/**
- * glitch-soc, fork of Mastodon with a number of experimental features.
- * @see {@link https://glitch-soc.github.io/docs/}
- */
-export const GLITCH = 'glitch';
+export const WILDEBEEST = 'Wildebeest';
 
 /**
  * Akkoma, a Pleroma fork.
@@ -65,10 +70,17 @@ export const GLITCH = 'glitch';
 export const AKKOMA = 'akkoma';
 
 /**
- * Takahē, backend with support for serving multiple domains.
- * @see {@link https://jointakahe.org/}
+ * glitch-soc, fork of Mastodon with a number of experimental features.
+ * @see {@link https://glitch-soc.github.io/docs/}
  */
-export const TAKAHE = 'Takahe';
+export const GLITCH = 'glitch';
+
+/**
+ * Rebased, the recommended backend for Soapbox.
+ * @see {@link https://gitlab.com/soapbox-pub/rebased}
+ */
+// NOTE: Rebased is named 'soapbox' for legacy reasons.
+export const REBASED = 'soapbox';
 
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
@@ -202,6 +214,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/bookmarks
      */
     bookmarks: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
@@ -279,7 +292,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Paginated chats API.
-     * @see GET /api/v2/chats
+     * @see GET /api/v2/pleroma/chats
      */
     chatsV2: any([
       v.software === TRUTHSOCIAL,
@@ -296,6 +309,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/timelines/conversations/}
      */
     conversations: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
@@ -307,16 +321,24 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/timelines/direct
      */
     directTimeline: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
 
+    /**
+     * Ability to edit profile information.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
     editProfile: any([
+      v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === MITRA,
       v.software === PIXELFED,
       v.software === PLEROMA,
+      v.software === TAKAHE && gte(v.version, '0.7.0'),
       v.software === TRUTHSOCIAL,
+      v.software === WILDEBEEST,
     ]),
 
     editStatuses: any([
@@ -469,6 +491,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/timelines/list/:list_id
      */
     lists: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
@@ -500,6 +523,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
+      v.software === WILDEBEEST,
       // Even though Pleroma supports these endpoints, it has disadvantages
       // v.software === PLEROMA && gte(v.version, '2.1.0'),
     ]),
@@ -581,6 +605,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/instance/directory/}
      */
     profileDirectory: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       features.includes('profile_directory'),
     ]),
@@ -600,9 +625,11 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/timelines/public
      */
     publicTimeline: any([
+      v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === PLEROMA,
       v.software === TAKAHE,
+      v.software === WILDEBEEST,
     ]),
 
     /**
@@ -724,6 +751,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v2/suggestions
      */
     suggestionsV2: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
@@ -804,8 +832,9 @@ export const parseVersion = (version: string): Backend => {
   const regex = /^([\w+.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
-  const semver = match ? semverParse(match[3] || match[1]) : null;
-  const compat = match ? semverParse(match[1]) : null;
+  const semverString = match && (match[3] || match[1]);
+  const semver = match ? semverParse(semverString) || semverCoerce(semverString) : null;
+  const compat = match ? semverParse(match[1]) || semverCoerce(match[1]) : null;
 
   if (match && semver && compat) {
     return {

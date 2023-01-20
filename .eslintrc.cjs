@@ -43,7 +43,7 @@ module.exports = {
     react: {
       version: 'detect',
     },
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+    'import/extensions': ['.js', '.jsx', '.cjs', '.mjs', '.ts', '.tsx'],
     'import/ignore': [
       'node_modules',
       '\\.(css|scss|json)$',

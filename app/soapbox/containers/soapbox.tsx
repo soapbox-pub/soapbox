@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
@@ -173,26 +174,28 @@ const SoapboxMount = () => {
   return (
     <ErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-        <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-          <Switch>
-            <Route
-              path='/embed/:statusId'
-              render={(props) => <EmbeddedStatus params={props.match.params} />}
-            />
-            <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
+        <CompatRouter>
+          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+            <Switch>
+              <Route
+                path='/embed/:statusId'
+                render={(props) => <EmbeddedStatus params={props.match.params} />}
+              />
+              <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
-            <Route>
-              {renderBody()}
+              <Route>
+                {renderBody()}
 
-              <BundleContainer fetchComponent={ModalContainer}>
-                {Component => <Component />}
-              </BundleContainer>
+                <BundleContainer fetchComponent={ModalContainer}>
+                  {Component => <Component />}
+                </BundleContainer>
 
-              <GdprBanner />
-              <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
-            </Route>
-          </Switch>
-        </ScrollContext>
+                <GdprBanner />
+                <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
+              </Route>
+            </Switch>
+          </ScrollContext>
+        </CompatRouter>
       </BrowserRouter>
     </ErrorBoundary>
   );

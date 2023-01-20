@@ -140,6 +140,9 @@ export const normalizeInstance = (instance: Record<string, any>) => {
         return isNumber(value) ? value : getAttachmentLimit(software);
       });
 
+      // Urls can't be null, fix for Friendica
+      if (instance.get('urls') === null) instance.delete('urls');
+
       // Normalize version
       normalizeVersion(instance);
       fixTakahe(instance);
