@@ -33,7 +33,6 @@ const messages = defineMessages({
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
-  admin: { id: 'account.badges.admin', defaultMessage: 'Admin' },
 });
 
 interface IProfileInfoPanel {
