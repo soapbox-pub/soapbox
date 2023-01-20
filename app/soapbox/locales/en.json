@@ -169,6 +169,7 @@
   "app_create.scopes_placeholder": "e.g. 'read write follow'",
   "app_create.submit": "Create app",
   "app_create.website_label": "Website",
+  "auth.awaiting_approval": "Your account is awaiting approval",
   "auth.invalid_credentials": "Wrong username or password",
   "auth.logged_out": "Logged out.",
   "auth_layout.register": "Create an account",
