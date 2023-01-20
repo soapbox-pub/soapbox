@@ -1,4 +1,5 @@
 import React from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
@@ -8,6 +9,7 @@ import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
+import Badge from './badge';
 import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
@@ -17,6 +19,10 @@ interface IInstanceFavicon {
   account: AccountEntity,
   disabled?: boolean,
 }
+
+const messages = defineMessages({
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
+});
 
 const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
   const history = useHistory();
@@ -151,6 +157,8 @@ const Account = ({
     return null;
   };
 
+  const intl = useIntl();
+
   React.useEffect(() => {
     const style: React.CSSProperties = {};
     const actionWidth = actionRef.current?.clientWidth || 0;
@@ -223,6 +231,8 @@ const Account = ({
                   />
 
                   {account.verified && <VerificationBadge />}
+
+                  {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
                 </HStack>
               </LinkEl>
             </ProfilePopper>
