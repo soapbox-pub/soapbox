@@ -12,8 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: bot badge on statuses from bot accounts.
 
 ### Changed
+- Chats: improved display of media attachments.
 
 ### Fixed
+- Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
+- Chats: don't display "copy" button for messages without text.
 - Posts: don't have to click the play button twice for embedded videos.
 - index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
 

@@ -22,6 +22,7 @@ export interface IUploadButton {
   resetFileKey: number | null,
   className?: string,
   iconClassName?: string,
+  icon?: string,
 }
 
 const UploadButton: React.FC<IUploadButton> = ({
@@ -31,6 +32,7 @@ const UploadButton: React.FC<IUploadButton> = ({
   resetFileKey,
   className = 'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500',
   iconClassName,
+  icon,
 }) => {
   const intl = useIntl();
   const { configuration } = useInstance();
@@ -52,9 +54,11 @@ const UploadButton: React.FC<IUploadButton> = ({
     return null;
   }
 
-  const src = onlyImages(attachmentTypes)
-    ? require('@tabler/icons/photo.svg')
-    : require('@tabler/icons/paperclip.svg');
+  const src = icon || (
+    onlyImages(attachmentTypes)
+      ? require('@tabler/icons/photo.svg')
+      : require('@tabler/icons/paperclip.svg')
+  );
 
   return (
     <div>
