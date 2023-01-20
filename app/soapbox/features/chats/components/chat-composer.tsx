@@ -162,6 +162,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               resetFileKey={resetFileKey}
               iconClassName='w-5 h-5'
               className='text-primary-500'
+              icon={require('@tabler/icons/plus.svg')}
             />
           </Stack>
         )}
