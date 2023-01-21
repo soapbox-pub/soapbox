@@ -499,6 +499,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
       );
     }
 
+    if (account.verified) {
+      info.push(
+        <Badge
+          key='verified'
+          slug='opaque'
+          title={<FormattedMessage id='account.verified' defaultMessage='Verified Account' />}
+        />,
+      );
+    }
+
     return info;
   };
 
