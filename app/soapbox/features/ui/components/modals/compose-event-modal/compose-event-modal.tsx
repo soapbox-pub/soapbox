@@ -1,4 +1,6 @@
+import { enUS, it } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
+import { registerLocale } from 'react-datepicker';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import Toggle from 'react-toggle';
 
@@ -93,6 +95,13 @@ interface IComposeEventModal {
 
 const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   const intl = useIntl();
+
+  if ('it' === intl.locale) {
+    registerLocale(intl.locale, it);
+  } else {
+    registerLocale(intl.locale, enUS);
+  }
+
   const dispatch = useAppDispatch();
 
   const [tab, setTab] = useState<'edit' | 'pending'>('edit');
@@ -261,8 +270,9 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       >
         <BundleContainer fetchComponent={DatePicker}>
           {Component => (<Component
+            locale={intl.locale}
             showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
+            dateFormat='PPPPp'
             timeIntervals={15}
             wrapperClassName='react-datepicker-wrapper'
             placeholderText={intl.formatMessage(messages.eventStartTimePlaceholder)}
@@ -288,8 +298,9 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
         >
           <BundleContainer fetchComponent={DatePicker}>
             {Component => (<Component
+              locale={intl.locale}
               showTimeSelect
-              dateFormat='MMMM d, yyyy h:mm aa'
+              dateFormat='PPPPp'
               timeIntervals={15}
               wrapperClassName='react-datepicker-wrapper'
               placeholderText={intl.formatMessage(messages.eventEndTimePlaceholder)}

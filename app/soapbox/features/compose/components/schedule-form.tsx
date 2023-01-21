@@ -1,7 +1,9 @@
 'use strict';
 
 import classNames from 'clsx';
+import { enUS, it } from 'date-fns/locale';
 import React from 'react';
+import { registerLocale } from 'react-datepicker';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { setSchedule, removeSchedule } from 'soapbox/actions/compose';
@@ -10,6 +12,7 @@ import { HStack, Stack, Text } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
+
 
 export const isCurrentOrFutureDate = (date: Date) => {
   return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
@@ -35,6 +38,12 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
+  if ('it' === intl.locale) {
+    registerLocale(intl.locale, it);
+  } else {
+    registerLocale(intl.locale, enUS);
+  }
+
   const scheduledAt = useCompose(composeId).schedule;
   const active = !!scheduledAt;
 
@@ -59,9 +68,10 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
       <HStack space={2} alignItems='center'>
         <BundleContainer fetchComponent={DatePicker}>
           {Component => (<Component
+            locale={intl.locale}
             selected={scheduledAt}
             showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
+            dateFormat='PPPPp'
             timeIntervals={15}
             wrapperClassName='react-datepicker-wrapper'
             onChange={onSchedule}

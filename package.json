@@ -115,6 +115,7 @@
     "cryptocurrency-icons": "^0.18.1",
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.10",
+    "date-fns": "^2.29.3",
     "detect-passive-events": "^2.0.0",
     "dotenv": "^16.0.0",
     "emoji-datasource": "5.0.1",
