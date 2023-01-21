@@ -1,7 +1,8 @@
 import classNames from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Emoji, HStack } from 'soapbox/components/ui';
+import { Emoji, HStack, IconButton } from 'soapbox/components/ui';
+import { Picker } from 'soapbox/features/emoji/emoji-picker';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
@@ -32,10 +33,19 @@ interface IEmojiSelector {
   visible?: boolean,
   /** Whether the selector should be focused. */
   focused?: boolean,
+  /** Whether to allow any emoji to be chosen. */
+  all?: boolean,
 }
 
 /** Panel with a row of emoji buttons. */
-const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = false, focused = false }): JSX.Element => {
+const EmojiSelector: React.FC<IEmojiSelector> = ({
+  emojis,
+  onReact,
+  visible = false,
+  focused = false,
+  all = true,
+}): JSX.Element => {
+  const [expanded, setExpanded] = useState(false);
 
   const handleReact = (emoji: string): React.EventHandler<React.MouseEvent> => {
     return (e) => {
@@ -44,6 +54,18 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
       e.stopPropagation();
     };
   };
+
+  const handleExpand: React.MouseEventHandler = () => {
+    setExpanded(true);
+  };
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [visible, focused]);
+
+  if (expanded) {
+    return <Picker />;
+  }
 
   return (
     <HStack
@@ -57,6 +79,13 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
           tabIndex={(visible || focused) ? 0 : -1}
         />
       ))}
+
+      {all && (
+        <IconButton
+          src={require('@tabler/icons/dots.svg')}
+          onClick={handleExpand}
+        />
+      )}
     </HStack>
   );
 };
