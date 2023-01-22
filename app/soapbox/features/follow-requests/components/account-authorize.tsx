@@ -35,25 +35,23 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   if (!account) return null;
 
   return (
-    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
-      <div className='w-full'>
+    <HStack space={1} alignItems='bottom' justifyContent='between' className='p-2.5'>
+      <div className='max-sm:overflow-x-auto max-sm:w-2/3 w-full'>
         <Account account={account} withRelationship={false} />
       </div>
       <HStack space={2}>
         <Button
           theme='secondary'
           size='sm'
-          text={intl.formatMessage(messages.authorize)}
           icon={require('@tabler/icons/check.svg')}
           onClick={onAuthorize}
-        />
+        ><span className='max-sm:hidden'>{intl.formatMessage(messages.authorize)}</span></Button>
         <Button
           theme='danger'
           size='sm'
-          text={intl.formatMessage(messages.reject)}
           icon={require('@tabler/icons/x.svg')}
           onClick={onReject}
-        />
+        ><span className='max-sm:hidden'>{intl.formatMessage(messages.reject)}</span></Button>
       </HStack>
     </HStack>
   );
