@@ -45,7 +45,7 @@ const Report: React.FC<IReport> = ({ id }) => {
     return [{
       text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/hourglass-empty.svg'),
+      icon: require('@tabler/icons/hourglass-low.svg'),
     }, {
       text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
       action: handleDeleteUser,
@@ -95,7 +95,7 @@ const Report: React.FC<IReport> = ({ id }) => {
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
             values={{ acct: (
-              <HoverRefWrapper accountId={account.id} inline>
+              <HoverRefWrapper accountId={targetAccount.id} inline>
                 <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
               </HoverRefWrapper>
             ) }}
@@ -104,7 +104,11 @@ const Report: React.FC<IReport> = ({ id }) => {
 
         {statusCount > 0 && (
           <Accordion
-            headline={`Reported posts (${statusCount})`}
+            headline={<FormattedMessage
+              id='admin.reports.reported_posts'
+              defaultMessage='Reported {count} {count, plural, one {post} other {posts}}'
+              values={{ count: statusCount }}
+            />}
             expanded={accordionExpanded}
             onToggle={handleAccordionToggle}
           >
@@ -144,12 +148,9 @@ const Report: React.FC<IReport> = ({ id }) => {
         </Stack>
       </Stack>
 
-      <HStack space={2} alignItems='start' className='flex-none'>
-        <Button onClick={handleCloseReport}>
-          <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
-        </Button>
-
-        <DropdownMenu items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
+      <HStack space={2} alignItems='top' className='flex-none'>
+        <DropdownMenu  items={menu} src={require('@tabler/icons/gavel.svg')} />
+        <Button theme='danger' icon={require('@tabler/icons/x.svg')} onClick={handleCloseReport} />
       </HStack>
     </HStack>
   );
