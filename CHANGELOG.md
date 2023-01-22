@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chats: don't display "copy" button for messages without text.
 - Posts: don't have to click the play button twice for embedded videos.
 - index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
+- Modals: fix media modal automatically switching to video.
 
 ### Removed
 - Admin: single user mode. Now the homepage can be redirected to any URL.
