@@ -1,3 +1,5 @@
+import './polyfills';
+
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -20,7 +22,6 @@ import '../soapbox/iframe';
 import '../styles/application.scss';
 import '../styles/tailwind.css';
 
-import './polyfills';
 import './precheck';
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
