@@ -57,7 +57,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
       <span className='hover:underline cursor-pointer' role='presentation' onClick={openFamiliarFollowersModal}>
         <FormattedMessage
           id='account.familiar_followers.more'
-          defaultMessage='{count} {count, plural, one {other} other {others}} you follow'
+          defaultMessage='{count, plural, one {# other} other {# others}} you follow'
           values={{ count: familiarFollowerIds.size - familiarFollowers.size }}
         />
       </span>,

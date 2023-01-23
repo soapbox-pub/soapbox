@@ -47,7 +47,7 @@ const MAX_QUEUED_NOTIFICATIONS = 40;
 
 defineMessages({
   mention: { id: 'notification.mention', defaultMessage: '{name} mentioned you' },
-  group: { id: 'notifications.group', defaultMessage: '{count} notifications' },
+  group: { id: 'notifications.group', defaultMessage: '{count, plural, one {# notification} other {# notifications}}' },
 });
 
 const fetchRelatedRelationships = (dispatch: AppDispatch, notifications: APIEntity[]) => {
