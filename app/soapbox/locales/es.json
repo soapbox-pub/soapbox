@@ -169,6 +169,7 @@
   "app_create.scopes_placeholder": "por ejemplo, 'read write follow'",
   "app_create.submit": "Crear aplicación",
   "app_create.website_label": "Website",
+  "auth.awaiting_approval": "Tú cuenta está pendiente de aprobación",
   "auth.invalid_credentials": "Nombre de usuario o contraseña incorrectos",
   "auth.logged_out": "Desconectado.",
   "auth_layout.register": "Crear una cuenta",
