@@ -31,9 +31,9 @@
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
-    "> 0.5%",
+    "> 0.2%",
     "last 2 versions",
-    "not IE 11",
+    "last 4 years",
     "not dead"
   ],
   "dependencies": {
