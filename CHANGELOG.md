@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: remove file icon from empty link previews.
 - Settings: moved "Import data" under settings.
 - Composer: add more descriptive discard confirmation message.
+- ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).

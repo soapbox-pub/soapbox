@@ -40,6 +40,7 @@ const configuration: Configuration = {
     }),
     new OfflinePlugin({
       autoUpdate: true,
+      responseStrategy: 'network-first',
       caches: {
         main: [':rest:'],
         additional: [
@@ -146,7 +147,6 @@ const configuration: Configuration = {
         requestTypes: ['navigate'],
       }],
       safeToUseOptionalCaches: true,
-      appShell: join(FE_SUBDIRECTORY, '/'),
     }),
   ],
 };
