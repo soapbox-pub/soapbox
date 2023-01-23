@@ -137,6 +137,7 @@ const configuration: Configuration = {
             '/apple-touch-icon.png',
             '/browserconfig.xml',
             '/robots.txt',
+            '/report.html',
           ];
 
           if (backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed')) {
