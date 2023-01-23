@@ -50,7 +50,6 @@ const configuration: Configuration = {
         ],
         optional: [
           '**/locale_*.js', // don't fetch every locale; the user only needs one
-          '**/*_polyfills-*.js', // the user may not need polyfills
           '**/*.chunk.js', // only cache chunks when needed
           '**/*.chunk.css',
           '**/*.woff2', // the user may have system-fonts enabled

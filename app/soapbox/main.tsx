@@ -20,6 +20,7 @@ import '../soapbox/iframe';
 import '../styles/application.scss';
 import '../styles/tailwind.css';
 
+import './polyfills';
 import './precheck';
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';

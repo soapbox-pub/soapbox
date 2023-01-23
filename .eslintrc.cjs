@@ -54,12 +54,12 @@ module.exports = {
       },
     },
     polyfills: [
-      'es:all',
-      'fetch',
-      'IntersectionObserver',
-      'Promise',
-      'URL',
-      'URLSearchParams',
+      'es:all', // core-js
+      'IntersectionObserver', // npm:intersection-observer
+      'Promise', // core-js
+      'ResizeObserver', // npm:resize-observer-polyfill
+      'URL', // core-js
+      'URLSearchParams', // core-js
     ],
   },
 
