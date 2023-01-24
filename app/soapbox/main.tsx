@@ -1,3 +1,5 @@
+import './polyfills';
+
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
