@@ -45,17 +45,19 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
       <Stack space={2}>
         <Stack>
           <Text size='md' weight='medium'>{token.app_name}</Text>
-          <Text size='sm' theme='muted'>
-            <FormattedDate
-              value={new Date(token.valid_until)}
-              hour12
-              year='numeric'
-              month='short'
-              day='2-digit'
-              hour='numeric'
-              minute='2-digit'
-            />
-          </Text>
+          {token.valid_until && (
+            <Text size='sm' theme='muted'>
+              <FormattedDate
+                value={token.valid_until}
+                hour12
+                year='numeric'
+                month='short'
+                day='2-digit'
+                hour='numeric'
+                minute='2-digit'
+              />
+            </Text>
+          )}
         </Stack>
 
         <div className='flex justify-end'>
