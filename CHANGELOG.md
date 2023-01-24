@@ -1,4 +1,5 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -7,25 +8,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Admin: redirect the homepage to any URL.
 - Compatibility: added compatibility with Friendica.
 - Posts: bot badge on statuses from bot accounts.
 
 ### Changed
+
 - Chats: improved display of media attachments.
 
 ### Fixed
+
+- Reports dashboard: usability improvement (see #1329)
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
 - Chats: don't display "copy" button for messages without text.
 - Posts: don't have to click the play button twice for embedded videos.
 - index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
 
 ### Removed
+
 - Admin: single user mode. Now the homepage can be redirected to any URL.
 
 ## [3.1.0] - 2023-01-13
 
 ### Added
+
 - Compatibility: rudimentary support for Takahē.
 - UI: added backdrop blur behind modals.
 - Admin: let admins configure media preview for attachment thumbnails.
@@ -34,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Export: restored "Export data" to CSV.
 
 ### Changed
+
 - Posts: letterbox images to 19:6 again.
 - Status Info: moved context (repost, pinned) to improve UX.
 - Posts: remove file icon from empty link previews.
@@ -41,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Composer: add more descriptive discard confirmation message.
 
 ### Fixed
+
 - Layout: use accent color for "floating action button" (mobile compose button).
 - ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
 - Datepicker: correctly default to the current year.
@@ -62,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.0.0] - 2022-12-25
 
 ### Added
+
 - Editing: ability to edit posts and view edit history (on Rebased, Pleroma, and Mastodon).
 - Events: ability to create, view, and comment on Events (on Rebased).
 - Onboarding: display an introduction wizard to newly registered accounts.
@@ -87,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Toast: added the ability to dismiss toast notifications.
 
 ### Changed
+
 - UI: the whole UI has been overhauled both inside and out. 97% of the codebase has been rewritten to TypeScript, and a new component library has been introduced with Tailwind CSS.
 - Chats: redesigned chats. Includes an improved desktop UI, unified chat widget, expanding textarea, and autosuggestions.
 - Lists: ability to edit and delete a list.
@@ -105,6 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Toast: redesigned toast notifications.
 
 ### Removed
+
 - Theme: Halloween theme.
 - Settings: advanced notification settings.
 - Settings: dyslexic mode.
@@ -115,10 +127,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: hide non-emoji images embedded in post content.
 
 ### Security
+
 - Glitch Social: fixed XSS vulnerability on Glitch Social where custom emojis could be exploited to embed a script tag.
 
 ## [2.0.0] - 2022-05-01
+
 ### Added
+
 - Quote Posting: repost with comment on Fedibird and Rebased.
 - Profile: ability to feature other users on your profile (on Rebased, Mastodon).
 - Profile: ability to add location to the user's profile (on Rebased, Truth Social).
@@ -134,6 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - i18n: added Icelandic translation.
 
 ### Changed
+
 - Feeds: added gaps between posts in feeds.
 - Feeds: automatically load new posts when scrolled to the top of the feed.
 - Layout: improved design of top navigation bar.
@@ -143,16 +159,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Composer: use graphical ring counter for character count.
 
 ### Fixed
+
 - Multi-Account: fix switching between profiles on different servers with the same local username.
 
 ## [1.3.0] - 2021-07-02
+
 ### Changed
+
 - Layout: show right sidebar on all pages.
 - Statuses: improve display of multiple rich media items.
 - Statuses: let media be cropped less (when dimensions are provided).
 - Profile metadata: show only 4 by default, let items be added and removed.
 
 ### Fixed
+
 - Performance: fixed various performance issues, especially related to the post composer and chats.
 - Composer: fixed upload form style on light theme.
 - Composer: fixed emoji search when a custom emoji was invalid.
@@ -168,6 +188,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Various iOS fixes.
 
 ### Added
+
 - Statuses: added greentext support, configurable site-wide by admin.
 - Statuses: added Mastodon's audio player.
 - Statuses: indicate > 4 attachments.
@@ -185,31 +206,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: add user retention % to dashboard.
 
 ## [1.2.3] - 2021-04-18
+
 ### Changed
+
 - Twemoji now bundled
 
 ### Fixed
+
 - Redirect user after registration
 - Delete invalid auth users from browser
 - Uploaded files ending in .blob
 
 ## [1.2.2] - 2021-04-13
+
 ### Fixed
+
 - verify_credentials infinite loop bug
 - Emoji reacts not being sent through notifications
 - Contrast of Polls
 
 ### Added
+
 - Configurable FQN for local accounts
 - Polish translations
 
 ## [1.2.1] - 2021-04-06
+
 ### Fixed
+
 - "View context" button on videos
 - Login page successfully redirects Home
 
 ## [1.2.0] - 2021-04-02
+
 ### Added
+
 - Remote follow button
 - Display "Bot" tag for bot users
 - Ability to view remote timelines
@@ -225,11 +256,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Portuguese translations
 
 ### Fixed
+
 - Heart reaction works on Pleroma >= 2.3.0
 - Pagination of Blocks and Mutes
 
 ## [1.1.0] - 2020-10-05
+
 ### Fixed
+
 - General user interface and ease-of-use improvements for both mobile and desktop
 - General loading and performance improvements, including shrinking bundle size
 - GIF handling: AutoPlayGif Preference support, including avatars and profile banners
@@ -249,29 +283,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Composer: Forcing the scope to default after settings save.
 
 ### Added
+
 - Chats, currently one-to-one, evolving with Pleroma BE capabilities, including:
-    - Initiate chat via `Message` button on profile
-    - Up to 4 open foreground chat windows in desktop, with open/minimize/close and notification counter
-    - Browser tab notification counter includes total chat and post notifications
-    - Chats list with total chats notification counter and audio notification toggle
-    - Unique chat audio notification
-    - Add attachment
-    - Delete chat message
-    - Report chat account
-    - Chats icon with notification counter in top navbar in mobile view
-    - Chats marked read on chat hover or on chat key event
+  - Initiate chat via `Message` button on profile
+  - Up to 4 open foreground chat windows in desktop, with open/minimize/close and notification counter
+  - Browser tab notification counter includes total chat and post notifications
+  - Chats list with total chats notification counter and audio notification toggle
+  - Unique chat audio notification
+  - Add attachment
+  - Delete chat message
+  - Report chat account
+  - Chats icon with notification counter in top navbar in mobile view
+  - Chats marked read on chat hover or on chat key event
 - Audio player for audio uploads, including ogg, oga, and wav support
 - Integration with Patron recurring donations platform
 - Profile hover panels, with click to Follow/Unfollow
 - Posts: Favicon of user's home instance included on post
 - Soapbox configuration page, including:
-    - Site preview, including light/dark theme toggle rendering
-    - Logo
-    - Brand color using color picker
-    - Copyright footer
-    - Promo panel custom links for timeline pages
-    - Home footer custom links for static pages
-    - Editable JSON based configuration option
+  - Site preview, including light/dark theme toggle rendering
+  - Logo
+  - Brand color using color picker
+  - Copyright footer
+  - Promo panel custom links for timeline pages
+  - Home footer custom links for static pages
+  - Editable JSON based configuration option
 - Themes: Light/dark theme toggle in top navbar
 - Themes: Halloween mode in Preferences page
 - Markdown support in post composer, as default
@@ -298,6 +333,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Renovate.json](https://docs.renovatebot.com/configuration-options/) support
 
 ### Changed
+
 - Revoke OAuth token on logout
 - Home sidebar rearrangement
 - Compose form icons
@@ -309,12 +345,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Redux update
 
 ### Removed
+
 - FontAwesome dependencies, with full switch to ForkAwesome
 - Requirement for use of soapbox.json for configuration
 - Direct Message links from menus, partial deprecation due to chats
 
 ## [1.0.0] - 2020-06-15
+
 ### Added
+
 - Emoji reactions.
 - Ability to set brand color in soapbox.json.
 - Security UI.
@@ -325,6 +364,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Many new automated tests.
 
 ### Changed
+
 - Overhauled theming system to use native CSS variables.
 - Reorganized folder structure.
 - Redesigned post composer.
@@ -335,6 +375,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Force media to have a static height, fixing jumpy timelines.
 
 ### Fixed
+
 - Composer: Move cursor to end of text.
 - Composer: Tagging yourself in replies.
 - Composer: State issues between compose modal and inline composer.
@@ -349,10 +390,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hide reposted media from account media tab.
 
 ## [0.9.0] - 2020-04-30
+
 ### Added
+
 - Initial beta release.
 
-[Unreleased]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v1.0.0...develop
-[Unreleased patch]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v1.0.0...stable/1.0.x
+[unreleased]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v1.0.0...develop
+[unreleased patch]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v1.0.0...stable/1.0.x
 [1.0.0]: https://gitlab.com/soapbox-pub/soapbox/-/compare/v0.9.0...v1.0.0
 [0.9.0]: https://gitlab.com/soapbox-pub/soapbox/-/tags/v0.9.0

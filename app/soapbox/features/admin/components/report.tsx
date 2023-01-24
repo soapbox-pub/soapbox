@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
+import { Accordion, Avatar, IconButton, Stack, HStack, Text } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
@@ -106,7 +106,7 @@ const Report: React.FC<IReport> = ({ id }) => {
           <Accordion
             headline={<FormattedMessage
               id='admin.reports.reported_posts'
-              defaultMessage='Reported {count} {count, plural, one {post} other {posts}}'
+              defaultMessage='Has been reported {count} {count, plural, one {post} other {posts}}'
               values={{ count: statusCount }}
             />}
             expanded={accordionExpanded}
@@ -149,8 +149,13 @@ const Report: React.FC<IReport> = ({ id }) => {
       </Stack>
 
       <HStack space={2} alignItems='top' className='flex-none'>
-        <DropdownMenu  items={menu} src={require('@tabler/icons/gavel.svg')} />
-        <Button theme='danger' icon={require('@tabler/icons/x.svg')} onClick={handleCloseReport} />
+        <DropdownMenu  items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
+        <IconButton
+          src={require('@tabler/icons/x.svg')}
+          onClick={handleCloseReport}
+          theme='outlined'
+          iconClassName='p-1 text-red-600 dark:text-red-600'
+        />
       </HStack>
     </HStack>
   );

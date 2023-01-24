@@ -55,7 +55,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
       <div className='flex-none'>
         <DropdownMenu
           items={menu}
-          src={require('@tabler/icons/gavel.svg')}
+          src={require('@tabler/icons/dots-vertical.svg')}
         />
       </div>
     </HStack>
