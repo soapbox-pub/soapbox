@@ -3,12 +3,15 @@ import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import { unblockAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text, Textarea } from 'soapbox/components/ui';
+import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { Attachment } from 'soapbox/types/entities';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
+
+import ChatTextarea from './chat-textarea';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
@@ -39,7 +42,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   errorMessage: string | undefined
   onSelectFile: (files: FileList, intl: IntlShape) => void
   resetFileKey: number | null
-  hasAttachment?: boolean
+  attachments?: Attachment[]
 }
 
 /** Textarea input for chats. */
@@ -53,7 +56,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onSelectFile,
   resetFileKey,
   onPaste,
-  hasAttachment,
+  attachments = [],
 }, ref) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -68,6 +71,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const [suggestions, setSuggestions] = useState<Suggestion>(initialSuggestionState);
   const isSuggestionsAvailable = suggestions.list.length > 0;
 
+  const hasAttachment = attachments.length > 0;
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
   const isSubmitDisabled = disabled || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
 
@@ -167,12 +171,9 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
         )}
 
         <Stack grow>
-          <Combobox
-            aria-labelledby='demo'
-            onSelect={onSelectComboboxOption}
-          >
+          <Combobox onSelect={onSelectComboboxOption}>
             <ComboboxInput
-              as={Textarea}
+              as={ChatTextarea}
               autoFocus
               ref={ref}
               placeholder={intl.formatMessage(messages.placeholder)}
@@ -184,6 +185,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               autoGrow
               maxRows={5}
               disabled={disabled}
+              attachments={attachments}
             />
             {isSuggestionsAvailable ? (
               <ComboboxPopover>

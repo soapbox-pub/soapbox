@@ -26,6 +26,8 @@ interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElemen
   hasError?: boolean,
   /** Whether or not you can resize the teztarea */
   isResizeable?: boolean,
+  /** Textarea theme. */
+  theme?: 'default' | 'transparent',
 }
 
 /** Textarea with custom styles. */
@@ -37,6 +39,7 @@ const Textarea = React.forwardRef(({
   autoGrow = false,
   maxRows = 10,
   minRows = 1,
+  theme = 'default',
   ...props
 }: ITextarea, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
   const [rows, setRows] = useState<number>(autoGrow ? 1 : 4);
@@ -72,9 +75,10 @@ const Textarea = React.forwardRef(({
       ref={ref}
       rows={rows}
       onChange={handleChange}
-      className={classNames({
-        'bg-white dark:bg-transparent shadow-sm block w-full sm:text-sm rounded-md text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600 border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
-          true,
+      className={classNames('block w-full rounded-md sm:text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-600 dark:placeholder:text-gray-600', {
+        'bg-white dark:bg-transparent shadow-sm border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+          theme === 'default',
+        'bg-transparent border-0 focus:border-0 focus:ring-0': theme === 'transparent',
         'font-mono': isCodeEditor,
         'text-red-600 border-red-600': hasError,
         'resize-none': !isResizeable,

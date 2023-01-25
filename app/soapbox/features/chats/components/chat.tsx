@@ -164,16 +164,6 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         <ChatMessageList chat={chat} />
       </div>
 
-      {attachment && (
-        <div className='relative h-48'>
-          <Upload
-            media={attachment}
-            onDelete={handleRemoveFile}
-            withPreview
-          />
-        </div>
-      )}
-
       {isUploading && (
         <div className='p-4'>
           <UploadProgress progress={uploadProgress * 100} />
@@ -190,7 +180,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onSelectFile={handleFiles}
         resetFileKey={resetFileKey}
         onPaste={handlePaste}
-        hasAttachment={!!attachment}
+        attachments={attachment ? [attachment] : []}
       />
     </Stack>
   );
