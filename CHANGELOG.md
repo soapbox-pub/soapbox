@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatibility: added compatibility with Friendica.
 - Posts: bot badge on statuses from bot accounts.
 - Compatibility: improved browser support for older browsers.
+- Events: allow to repost events in event menu.
 
 ### Changed
 - Chats: improved display of media attachments.
