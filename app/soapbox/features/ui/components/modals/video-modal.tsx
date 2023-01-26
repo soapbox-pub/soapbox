@@ -39,6 +39,7 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
         startTime={time}
         link={link}
         detailed
+        autoFocus
         alt={media.description}
         visible
       />

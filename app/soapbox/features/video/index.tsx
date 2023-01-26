@@ -106,6 +106,7 @@ interface IVideo {
   height?: number,
   startTime?: number,
   detailed?: boolean,
+  autoFocus?: boolean,
   inline?: boolean,
   cacheWidth?: (width: number) => void,
   visible?: boolean,
@@ -119,6 +120,7 @@ const Video: React.FC<IVideo> = ({
   width,
   visible = false,
   detailed = false,
+  autoFocus = false,
   cacheWidth,
   startTime,
   src,
@@ -518,7 +520,7 @@ const Video: React.FC<IVideo> = ({
               aria-label={intl.formatMessage(paused ? messages.play : messages.pause)}
               className='player-button'
               onClick={togglePlay}
-              autoFocus={detailed}
+              autoFocus={autoFocus}
             >
               <Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} />
             </button>

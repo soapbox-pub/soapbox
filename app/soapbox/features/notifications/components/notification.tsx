@@ -138,7 +138,7 @@ const buildMessage = (
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
         id='notification.others'
-        defaultMessage=' + {count} {count, plural, one {other} other {others}}'
+        defaultMessage=' + {count, plural, one {# other} other {# others}}'
         values={{ count: totalCount - 1 }}
       />
     ) : '',

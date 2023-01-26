@@ -85,9 +85,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     };
   }, [index]);
 
-  const getIndex = () => {
-    return index !== null ? index : props.index;
-  };
+  const getIndex = () => index !== null ? index : props.index;
 
   const toggleNavigation = () => {
     setNavigationHidden(!navigationHidden);
@@ -164,15 +162,9 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     });
   }
 
-  const isMultiMedia = media.map((image) => {
-    if (image.type !== 'image') {
-      return true;
-    }
+  const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
 
-    return false;
-  }).toArray();
-
-  const content = media.map(attachment => {
+  const content = media.map((attachment, i) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
     const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
 
@@ -204,6 +196,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           height={height}
           startTime={time}
           detailed
+          autoFocus={i === getIndex()}
           link={link}
           alt={attachment.description}
           key={attachment.url}
