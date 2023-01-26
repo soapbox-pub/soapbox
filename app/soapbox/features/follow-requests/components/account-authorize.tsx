@@ -3,9 +3,11 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import Account from 'soapbox/components/account';
-import { Button, HStack } from 'soapbox/components/ui';
+import { IconButton, HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { isMobile } from 'soapbox/is-mobile';
 import { makeGetAccount } from 'soapbox/selectors';
+
 
 const messages = defineMessages({
   authorize: { id: 'follow_request.authorize', defaultMessage: 'Authorize' },
@@ -36,22 +38,26 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
 
   return (
     <HStack space={1} alignItems='bottom' justifyContent='between' className='p-2.5'>
-      <div className='max-sm:overflow-x-auto max-sm:w-2/3 w-full'>
+      <div className='max-sm:overflow-auto w-full'>
         <Account account={account} withRelationship={false} />
+
+
       </div>
       <HStack space={2}>
-        <Button
-          theme='secondary'
-          size='sm'
-          icon={require('@tabler/icons/check.svg')}
+        <IconButton
+          theme='outlined'
+          className='text-green-600 dark:text-green-600 md:pr-2.5'
+          src={require('@tabler/icons/check.svg')}
           onClick={onAuthorize}
-        ><span className='max-sm:hidden'>{intl.formatMessage(messages.authorize)}</span></Button>
-        <Button
-          theme='danger'
-          size='sm'
-          icon={require('@tabler/icons/x.svg')}
+          text={!isMobile(window.innerWidth) ? intl.formatMessage(messages.authorize) : ''}
+        />
+        <IconButton
+          theme='outlined'
+          className='text-red-600 dark:text-red-600 md:pr-2.5'
+          src={require('@tabler/icons/x.svg')}
           onClick={onReject}
-        ><span className='max-sm:hidden'>{intl.formatMessage(messages.reject)}</span></Button>
+          text={!isMobile(window.innerWidth) ? intl.formatMessage(messages.reject) : ''}
+        />
       </HStack>
     </HStack>
   );
