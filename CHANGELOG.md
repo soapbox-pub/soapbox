@@ -12,10 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: redirect the homepage to any URL.
 - Compatibility: added compatibility with Friendica.
 - Posts: bot badge on statuses from bot accounts.
+- Compatibility: improved browser support for older browsers.
+- Events: allow to repost events in event menu.
 
 ### Changed
 
 - Chats: improved display of media attachments.
+- ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
 
 ### Fixed
 
@@ -24,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chats: don't display "copy" button for messages without text.
 - Posts: don't have to click the play button twice for embedded videos.
 - index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
+- Modals: fix media modal automatically switching to video.
 
 ### Removed
 

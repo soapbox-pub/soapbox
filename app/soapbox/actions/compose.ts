@@ -86,7 +86,7 @@ const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS';
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
   exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
-  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit} seconds)' },
+  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit, plural, one {# second} other {# seconds}})' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },

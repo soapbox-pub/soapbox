@@ -7,7 +7,7 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
 import { editEvent, fetchEventIcs } from 'soapbox/actions/events';
-import { toggleBookmark, togglePin } from 'soapbox/actions/interactions';
+import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
@@ -18,7 +18,7 @@ import StillImage from 'soapbox/components/still-image';
 import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { download } from 'soapbox/utils/download';
@@ -38,11 +38,11 @@ const messages = defineMessages({
   external: { id: 'event.external', defaultMessage: 'View event on {domain}' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
-  quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
+  quotePost: { id: 'event.quote', defaultMessage: 'Quote event' },
+  reblog: { id: 'event.reblog', defaultMessage: 'Repost event' },
+  unreblog: { id: 'event.unreblog', defaultMessage: 'Un-repost event' },
   pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
-  reblog_private: { id: 'status.reblog_private', defaultMessage: 'Repost to original audience' },
-  cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
   chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
@@ -72,6 +72,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const history = useHistory();
 
   const features = useFeatures();
+  const settings = useSettings();
   const ownAccount = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
@@ -119,6 +120,16 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleBookmarkClick = () => {
     dispatch(toggleBookmark(status));
+  };
+
+  const handleReblogClick = () => {
+    const modalReblog = () => dispatch(toggleReblog(status));
+    const boostModal = settings.get('boostModal');
+    if (!boostModal) {
+      modalReblog();
+    } else {
+      dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
+    }
   };
 
   const handleQuoteClick = () => {
@@ -224,12 +235,20 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       });
     }
 
-    if (features.quotePosts) {
+    if (['public', 'unlisted'].includes(status.visibility)) {
       menu.push({
-        text: intl.formatMessage(messages.quotePost),
-        action: handleQuoteClick,
-        icon: require('@tabler/icons/quote.svg'),
+        text: intl.formatMessage(status.reblogged ? messages.unreblog : messages.reblog),
+        action: handleReblogClick,
+        icon: require('@tabler/icons/repeat.svg'),
       });
+
+      if (features.quotePosts) {
+        menu.push({
+          text: intl.formatMessage(messages.quotePost),
+          action: handleQuoteClick,
+          icon: require('@tabler/icons/quote.svg'),
+        });
+      }
     }
 
     menu.push(null);

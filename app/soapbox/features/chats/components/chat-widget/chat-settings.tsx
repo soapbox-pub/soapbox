@@ -27,7 +27,7 @@ const messages = defineMessages({
   unblockUser: { id: 'chat_settings.options.unblock_user', defaultMessage: 'Unblock @{acct}' },
   leaveChat: { id: 'chat_settings.options.leave_chat', defaultMessage: 'Leave Chat' },
   autoDeleteLabel: { id: 'chat_settings.auto_delete.label', defaultMessage: 'Auto-delete messages' },
-  autoDeleteDays: { id: 'chat_settings.auto_delete.days', defaultMessage: '{day} days' },
+  autoDeleteDays: { id: 'chat_settings.auto_delete.days', defaultMessage: '{day, plural, one {# day} other {# days}}' },
 });
 
 const ChatSettings = () => {
