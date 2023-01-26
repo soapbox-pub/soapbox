@@ -6,7 +6,7 @@ import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 
-import { Stack } from './ui';
+import { Icon, Stack } from './ui';
 
 import type { Account, Status } from 'soapbox/types/entities';
 
@@ -53,7 +53,8 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
       <Stack className='text-gray-700 dark:text-gray-600 text-sm' alignItems='start'>
         <FormattedMessage id='status.translated_from_with' defaultMessage='Translated from {lang} using {provider}' values={{ lang: languageName, provider }} />
 
-        <button className='text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue hover:underline' onClick={handleTranslate}>
+        <button className='flex items-center gap-0.5 text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue hover:underline' onClick={handleTranslate}>
+          <Icon className='h-5 w-5 stroke-[1.25]' src={require('@tabler/icons/language.svg')} strokeWidth={1.25} />
           <FormattedMessage id='status.show_original' defaultMessage='Show original' />
         </button>
       </Stack>
@@ -61,7 +62,8 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   }
 
   return (
-    <button className='text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue text-start text-sm hover:underline' onClick={handleTranslate}>
+    <button className='flex items-center gap-0.5 text-primary-600 dark:text-accent-blue hover:text-primary-700 dark:hover:text-accent-blue text-start text-sm hover:underline' onClick={handleTranslate}>
+      <Icon className='h-5 w-5' src={require('@tabler/icons/language.svg')} strokeWidth={1.25} />
       <FormattedMessage id='status.translate' defaultMessage='Translate' />
     </button>
   );
