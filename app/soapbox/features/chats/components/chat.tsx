@@ -5,7 +5,6 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
 import { Stack } from 'soapbox/components/ui';
-import Upload from 'soapbox/components/upload';
 import UploadProgress from 'soapbox/components/upload-progress';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
@@ -181,6 +180,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         resetFileKey={resetFileKey}
         onPaste={handlePaste}
         attachments={attachment ? [attachment] : []}
+        onDeleteAttachment={handleRemoveFile}
       />
     </Stack>
   );

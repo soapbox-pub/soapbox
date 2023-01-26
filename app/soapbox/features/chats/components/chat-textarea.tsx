@@ -3,12 +3,15 @@ import React from 'react';
 import { Textarea } from 'soapbox/components/ui';
 import { Attachment } from 'soapbox/types/entities';
 
+import ChatUpload from './chat-upload';
+
 interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
   attachments?: Attachment[]
+  onDeleteAttachment?: () => void
 }
 
 /** Custom textarea for chats. */
-const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, ...rest }) => {
+const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, onDeleteAttachment, ...rest }) => {
   return (
     <div className={`
       bg-white
@@ -22,14 +25,17 @@ const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, ...rest }) => {
       dark:focus-within:ring-primary-500 dark:focus-within:border-primary-500
     `}
     >
-      {attachments?.map(attachment => (
-        <img
-          className='w-8 h-8'
-          key={attachment.id}
-          src={attachment.url}
-          alt=''
-        />
-      ))}
+      {(!!attachments?.length) && (
+        <div className='p-3 pb-0'>
+          {attachments?.map(attachment => (
+            <ChatUpload
+              key={attachment.id}
+              attachment={attachment}
+              onDelete={onDeleteAttachment}
+            />
+          ))}
+        </div>
+      )}
 
       <Textarea theme='transparent' {...rest} />
     </div>
