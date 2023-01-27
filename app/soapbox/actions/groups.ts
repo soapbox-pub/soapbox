@@ -117,7 +117,7 @@ const messages = defineMessages({
   joinSuccess: { id: 'group.join.success', defaultMessage: 'Joined the group' },
   joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
   leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
 });
 
 const editGroup = (group: Group) => (dispatch: AppDispatch) => {
