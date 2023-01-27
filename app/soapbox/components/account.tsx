@@ -268,8 +268,8 @@ const Account = ({
 
                     <Text tag='span' theme='muted' size='sm'>
                       {approvalStatus === 'pending'
-                        ? <FormattedMessage id='status.pending' defaultMessage='Pending approval' />
-                        : <FormattedMessage id='status.rejected' defaultMessage='Rejected' />}
+                        ? <FormattedMessage id='status.approval.pending' defaultMessage='Pending approval' />
+                        : <FormattedMessage id='status.approval.rejected' defaultMessage='Rejected' />}
                     </Text>
                   </>
                 )}
