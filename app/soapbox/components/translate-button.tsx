@@ -44,7 +44,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   if (!features.translations || !renderTranslate || !supportsLanguages) return null;
 
-  const buttonClassName = 'flex items-center gap-0.5 w-fit px-2 py-1 border-gray-600 hover:border-gray-700 dark:hover:border-gray-500 border-solid border text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 text-start text-sm hover:underline rounded-full';
+  const buttonClassName = 'flex items-center gap-0.5 w-fit px-2 py-1 border-gray-600 hover:border-gray-700 dark:hover:border-gray-500 border-solid border text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 text-start text-sm rounded-full';
 
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
