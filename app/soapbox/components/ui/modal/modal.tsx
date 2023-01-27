@@ -54,6 +54,7 @@ interface IModal {
   /** Title text for the modal. */
   title?: React.ReactNode,
   width?: keyof typeof widths,
+  children?: React.ReactNode,
 }
 
 /** Displays a modal dialog box. */
@@ -104,7 +105,7 @@ const Modal: React.FC<IModal> = ({
                   src={closeIcon}
                   title={intl.formatMessage(messages.close)}
                   onClick={onClose}
-                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200'
+                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
                 />
               )}
             </div>

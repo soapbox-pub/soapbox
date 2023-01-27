@@ -13,8 +13,8 @@ import ChatPaneHeader from './chat-pane-header';
 import ChatSettings from './chat-settings';
 
 const messages = defineMessages({
-  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day} days' },
-  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day} days upon sending.' },
+  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day, plural, one {# day} other {# days}}' },
+  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day, plural, one {# day} other {# days}} upon sending.' },
 });
 
 const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, children: React.ReactNode }): JSX.Element => {

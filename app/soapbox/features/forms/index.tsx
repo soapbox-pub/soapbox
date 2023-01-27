@@ -11,6 +11,7 @@ interface IInputContainer {
   type?: string,
   extraClass?: string,
   error?: boolean,
+  children: React.ReactNode,
 }
 
 export const InputContainer: React.FC<IInputContainer> = (props) => {
@@ -32,6 +33,7 @@ export const InputContainer: React.FC<IInputContainer> = (props) => {
 interface ILabelInputContainer {
   label?: React.ReactNode,
   hint?: React.ReactNode,
+  children: React.ReactNode,
 }
 
 export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hint, children }) => {
@@ -128,6 +130,7 @@ interface ISimpleForm {
   onSubmit?: React.FormEventHandler,
   acceptCharset?: string,
   style?: React.CSSProperties,
+  children: React.ReactNode,
 }
 
 export const SimpleForm: React.FC<ISimpleForm> = (props) => {
@@ -157,7 +160,11 @@ export const SimpleForm: React.FC<ISimpleForm> = (props) => {
   );
 };
 
-export const FieldsGroup: React.FC = ({ children }) => (
+interface IFieldsGroup {
+  children: React.ReactNode,
+}
+
+export const FieldsGroup: React.FC<IFieldsGroup> = ({ children }) => (
   <div className='fields-group'>{children}</div>
 );
 

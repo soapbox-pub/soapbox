@@ -67,10 +67,6 @@
 .column-header__setting-btn {
   &--link {
     text-decoration: none;
-
-    .fa {
-      @apply ml-2.5;
-    }
   }
 
   &:hover {

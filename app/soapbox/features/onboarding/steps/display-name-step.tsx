@@ -1,11 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { AxiosError } from 'axios';
 
@@ -16,7 +15,7 @@ const messages = defineMessages({
 
 const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const account = useOwnAccount();
   const [value, setValue] = React.useState<string>(account?.display_name || '');
@@ -49,7 +48,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
         if (error.response?.status === 422) {
           setErrors([(error.response.data as any).error.replace('Validation failed: ', '')]);
         } else {
-          dispatch(snackbar.error(messages.error));
+          toast.error(messages.error);
         }
       });
   };

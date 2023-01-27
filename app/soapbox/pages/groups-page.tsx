@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useRouteMatch } from 'react-router-dom';
 
 import { Column, Layout } from 'soapbox/components/ui';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
@@ -10,10 +9,12 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector } from 'soapbox/hooks';
 
-// import { Tabs } from '../components/ui';
+interface IGroupsPage {
+  children: React.ReactNode
+}
 
 /** Page to display groups. */
-const GroupsPage: React.FC = ({ children }) => {
+const GroupsPage: React.FC<IGroupsPage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   // const match = useRouteMatch();
 
@@ -22,22 +23,6 @@ const GroupsPage: React.FC = ({ children }) => {
       <Layout.Main>
         <Column withHeader={false}>
           <div className='space-y-4'>
-            {/* <Tabs
-              items={[
-                {
-                  text: 'My Groups',
-                  to: '/groups',
-                  name: '/groups',
-                },
-                {
-                  text: 'Find Groups',
-                  to: '/groups/explore',
-                  name: '/groups/explore',
-                },
-              ]}
-              activeItem={match.path}
-            /> */}
-
             {children}
           </div>
         </Column>

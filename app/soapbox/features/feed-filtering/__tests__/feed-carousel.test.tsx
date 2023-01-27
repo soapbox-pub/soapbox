@@ -8,7 +8,7 @@ import { render, screen, waitFor } from '../../../jest/test-helpers';
 import FeedCarousel from '../feed-carousel';
 
 jest.mock('../../../hooks/useDimensions', () => ({
-  useDimensions: () => [{ scrollWidth: 190 }, null, { width: 100 }],
+  useDimensions: () => [{ scrollWidth: 190 }, null, { width: 300 }],
 }));
 
 (window as any).ResizeObserver = class ResizeObserver {
@@ -20,27 +20,6 @@ jest.mock('../../../hooks/useDimensions', () => ({
 
 describe('<FeedCarousel />', () => {
   let store: any;
-
-  describe('with "carousel" disabled', () => {
-    beforeEach(() => {
-      store = {
-        instance: {
-          version: '2.7.2 (compatible; Pleroma 2.4.52-1337-g4779199e.gleasonator+soapbox)',
-          pleroma: ImmutableMap({
-            metadata: ImmutableMap({
-              features: [],
-            }),
-          }),
-        },
-      };
-    });
-
-    it('should render nothing', () => {
-      render(<FeedCarousel />, undefined, store);
-
-      expect(screen.queryAllByTestId('feed-carousel')).toHaveLength(0);
-    });
-  });
 
   describe('with "carousel" enabled', () => {
     beforeEach(() => {
@@ -98,6 +77,9 @@ describe('<FeedCarousel />', () => {
         await waitFor(() => {
           expect(screen.getAllByTestId('carousel-item-avatar')[0]).toHaveClass('ring-primary-600');
         });
+
+        // HACK: wait for state change
+        await new Promise((r) => setTimeout(r, 0));
 
         // Marked as seen, not selected
         await userEvent.click(screen.getAllByTestId('carousel-item-avatar')[0]);
@@ -167,15 +149,15 @@ describe('<FeedCarousel />', () => {
         render(<FeedCarousel />, undefined, store);
 
         await waitFor(() => {
-          expect(screen.getByTestId('next-page')).toBeInTheDocument();
-          expect(screen.queryAllByTestId('prev-page')).toHaveLength(0);
+          expect(screen.getByTestId('prev-page')).toHaveAttribute('disabled');
+          expect(screen.getByTestId('next-page')).not.toHaveAttribute('disabled');
         });
 
         await user.click(screen.getByTestId('next-page'));
 
         await waitFor(() => {
-          expect(screen.getByTestId('prev-page')).toBeInTheDocument();
-          expect(screen.queryAllByTestId('next-page')).toHaveLength(0);
+          expect(screen.getByTestId('prev-page')).not.toHaveAttribute('disabled');
+          expect(screen.getByTestId('next-page')).toHaveAttribute('disabled');
         });
       });
     });

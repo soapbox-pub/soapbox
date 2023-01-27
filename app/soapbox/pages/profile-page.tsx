@@ -23,6 +23,7 @@ interface IProfilePage {
   params?: {
     username?: string,
   },
+  children: React.ReactNode,
 }
 
 const getAccount = makeGetAccount();

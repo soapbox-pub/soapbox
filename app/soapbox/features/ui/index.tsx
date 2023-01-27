@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
@@ -20,7 +20,6 @@ import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import Icon from 'soapbox/components/icon';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
@@ -41,6 +40,7 @@ import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import BackgroundShapes from './components/background-shapes';
+import FloatingActionButton from './components/floating-action-button';
 import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle-container';
@@ -78,9 +78,9 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  // ExportData,
+  ExportData,
   ImportData,
-  // Backups,
+  Backups,
   MfaForm,
   ChatIndex,
   ChatWidget,
@@ -129,11 +129,6 @@ import 'soapbox/components/status';
 
 const EmptyPage = HomePage;
 
-const messages = defineMessages({
-  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
-  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
-});
-
 const keyMap = {
   help: '?',
   new: 'n',
@@ -162,7 +157,11 @@ const keyMap = {
   openMedia: 'a',
 };
 
-const SwitchingColumnsArea: React.FC = ({ children }) => {
+interface ISwitchingColumnsArea {
+  children: React.ReactNode
+}
+
+const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
   const features = useFeatures();
   const { search } = useLocation();
 
@@ -293,11 +292,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      {/* FIXME: this could DDoS our API? :\ */}
-      {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
+      {features.exportData && <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />}
       {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
+      {features.backups && <WrappedRoute path='/settings/backups' page={DefaultPage} component={Backups} content={children} />}
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
@@ -305,7 +304,6 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
-      {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
@@ -334,7 +332,11 @@ const SwitchingColumnsArea: React.FC = ({ children }) => {
   );
 };
 
-const UI: React.FC = ({ children }) => {
+interface IUI {
+  children?: React.ReactNode
+}
+
+const UI: React.FC<IUI> = ({ children }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -492,7 +494,7 @@ const UI: React.FC = ({ children }) => {
       navigator.serviceWorker.addEventListener('message', handleServiceWorkerPostMessage);
     }
 
-    if (typeof window.Notification !== 'undefined' && Notification.permission === 'default') {
+    if (window.Notification?.permission === 'default') {
       window.setTimeout(() => Notification.requestPermission(), 120 * 1000);
     }
 
@@ -612,10 +614,6 @@ const UI: React.FC = ({ children }) => {
     history.push('/follow_requests');
   };
 
-  const handleOpenComposeModal = () => {
-    dispatch(openModal('COMPOSE'));
-  };
-
   const shouldHideFAB = (): boolean => {
     const path = location.pathname;
     return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
@@ -642,19 +640,6 @@ const UI: React.FC = ({ children }) => {
     goToRequests: handleHotkeyGoToRequests,
   };
 
-  const fabElem = (
-    <button
-      key='floating-action-button'
-      onClick={handleOpenComposeModal}
-      className='floating-action-button'
-      aria-label={intl.formatMessage(messages.publish)}
-    >
-      <Icon src={require('@tabler/icons/pencil-plus.svg')} />
-    </button>
-  );
-
-  const floatingActionButton = shouldHideFAB() ? null : fabElem;
-
   const style: React.CSSProperties = {
     pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
   };
@@ -677,7 +662,11 @@ const UI: React.FC = ({ children }) => {
             </SwitchingColumnsArea>
           </Layout>
 
-          {me && floatingActionButton}
+          {(me && !shouldHideFAB()) && (
+            <div className='z-40 lg:hidden transition-all fixed bottom-24 right-4 rtl:left-4 rtl:right-auto'>
+              <FloatingActionButton />
+            </div>
+          )}
 
           <BundleContainer fetchComponent={UploadArea}>
             {Component => <Component active={draggingOver} onClose={closeUploadModal} />}

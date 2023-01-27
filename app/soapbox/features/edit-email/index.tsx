@@ -2,9 +2,9 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeEmail } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   header: { id: 'edit_email.header', defaultMessage: 'Change Email' },
@@ -28,7 +28,7 @@ const EditEmail = () => {
 
   const { email, password } = state;
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -38,12 +38,12 @@ const EditEmail = () => {
     setLoading(true);
     dispatch(changeEmail(email, password)).then(() => {
       setState(initialState);
-      dispatch(snackbar.success(intl.formatMessage(messages.updateEmailSuccess)));
+      toast.success(intl.formatMessage(messages.updateEmailSuccess));
     }).finally(() => {
       setLoading(false);
     }).catch(() => {
       setState((prevState) => ({ ...prevState, password: '' }));
-      dispatch(snackbar.error(intl.formatMessage(messages.updateEmailFail)));
+      toast.error(intl.formatMessage(messages.updateEmailFail));
     });
   }, [email, password, dispatch, intl]);
 

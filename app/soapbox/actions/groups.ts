@@ -1,11 +1,12 @@
 import { defineMessages } from 'react-intl';
 
+import toast from 'soapbox/toast';
+
 import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
 import { closeModal, openModal } from './modals';
-import snackbar from './snackbar';
 import { deleteFromTimelines } from './timelines';
 
 import type { AxiosError } from 'axios';
@@ -139,7 +140,10 @@ const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(createGroupSuccess(data));
-        dispatch(snackbar.success(messages.success, messages.view, `/groups/${data.id}`));
+        toast.success(messages.success, {
+          actionLabel: messages.view,
+          actionLink: `/groups/${data.id}`,
+        });
 
         if (shouldReset) {
           dispatch(resetGroupEditor());
@@ -170,7 +174,7 @@ const updateGroup = (id: string, params: Record<string, any>, shouldReset?: bool
       .then(({ data }) => {
         dispatch(importFetchedGroups([data]));
         dispatch(updateGroupSuccess(data));
-        dispatch(snackbar.success(messages.editSuccess));
+        toast.success(messages.editSuccess);
 
         if (shouldReset) {
           dispatch(resetGroupEditor());
@@ -316,7 +320,7 @@ const joinGroup = (id: string) =>
 
     return api(getState).post(`/api/v1/groups/${id}/join`).then(response => {
       dispatch(joinGroupSuccess(response.data));
-      dispatch(snackbar.success(locked ? messages.joinRequestSuccess : messages.joinSuccess));
+      toast.success(locked ? messages.joinRequestSuccess : messages.joinSuccess);
     }).catch(error => {
       dispatch(joinGroupFail(error, locked));
     });
@@ -328,7 +332,7 @@ const leaveGroup = (id: string) =>
 
     return api(getState).post(`/api/v1/groups/${id}/leave`).then(response => {
       dispatch(leaveGroupSuccess(response.data));
-      dispatch(snackbar.success(messages.leaveSuccess));
+      toast.success(messages.leaveSuccess);
     }).catch(error => {
       dispatch(leaveGroupFail(error));
     });

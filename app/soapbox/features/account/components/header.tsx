@@ -15,7 +15,6 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
@@ -27,6 +26,7 @@ import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
+import toast from 'soapbox/toast';
 import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isRemote } from 'soapbox/utils/accounts';
 
@@ -92,7 +92,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   }, {
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
-      dispatch(snackbar.error(data?.error));
+      toast.error(data?.error);
     },
     onSuccess: (response) => {
       history.push(`/chats/${response.data.id}`);
@@ -158,11 +158,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const onEndorseToggle = () => {
     if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
-        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
+        .then(() => toast.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct })))
         .catch(() => { });
     } else {
       dispatch(pinAccount(account.id))
-        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
+        .then(() => toast.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct })))
         .catch(() => { });
     }
   };

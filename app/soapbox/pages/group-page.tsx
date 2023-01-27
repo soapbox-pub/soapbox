@@ -25,8 +25,9 @@ const messages = defineMessages({
 
 interface IGroupPage {
   params?: {
-    id?: string,
-  },
+    id?: string
+  }
+  children: React.ReactNode
 }
 
 /** Page to display a group. */

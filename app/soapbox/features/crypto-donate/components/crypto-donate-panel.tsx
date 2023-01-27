@@ -8,7 +8,7 @@ import { useInstance, useSoapboxConfig } from 'soapbox/hooks';
 import SiteWallet from './site-wallet';
 
 const messages = defineMessages({
-  actionTitle: { id: 'crypto_donate_panel.actions.view', defaultMessage: 'Click to see {count} {count, plural, one {wallet} other {wallets}}' },
+  actionTitle: { id: 'crypto_donate_panel.actions.view', defaultMessage: 'Click to see {count, plural, one {# wallet} other {# wallets}}' },
 });
 
 interface ICryptoDonatePanel {

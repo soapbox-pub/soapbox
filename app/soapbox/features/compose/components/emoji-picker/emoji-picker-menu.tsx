@@ -72,8 +72,8 @@ const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
 
   categoriesSort.splice(1, 0, ...Array.from(categoriesFromEmojis(customEmojis) as Set<string>).sort());
 
-  const handleDocumentClick = useCallback(e => {
-    if (node.current && !node.current.contains(e.target)) {
+  const handleDocumentClick = useCallback((e: MouseEvent | TouchEvent) => {
+    if (node.current && !node.current.contains(e.target as Node)) {
       onClose();
     }
   }, []);

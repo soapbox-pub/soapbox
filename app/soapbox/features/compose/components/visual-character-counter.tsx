@@ -5,7 +5,7 @@ import { length } from 'stringz';
 import ProgressCircle from 'soapbox/components/progress-circle';
 
 const messages = defineMessages({
-  title: { id: 'compose.character_counter.title', defaultMessage: 'Used {chars} out of {maxChars} characters' },
+  title: { id: 'compose.character_counter.title', defaultMessage: 'Used {chars} out of {maxChars} {maxChars, plural, one {character} other {characters}}' },
 });
 
 interface IVisualCharacterCounter {

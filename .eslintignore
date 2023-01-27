@@ -5,4 +5,4 @@
 /tmp/**
 /coverage/**
 /custom/**
-!.eslintrc.js
+!.eslintrc.cjs

@@ -14,14 +14,14 @@ import { createApp } from 'soapbox/actions/apps';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import { startOnboarding } from 'soapbox/actions/onboarding';
-import snackbar from 'soapbox/actions/snackbar';
 import { custom } from 'soapbox/custom';
 import { queryClient } from 'soapbox/queries/client';
 import KVStore from 'soapbox/storage/kv-store';
+import toast from 'soapbox/toast';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
-import { getFeatures } from 'soapbox/utils/features';
 import { normalizeUsername } from 'soapbox/utils/input';
+import { getScopes } from 'soapbox/utils/scopes';
 import { isStandalone } from 'soapbox/utils/state';
 
 import api, { baseClient } from '../api';
@@ -29,7 +29,6 @@ import api, { baseClient } from '../api';
 import { importFetchedAccount } from './importer';
 
 import type { AxiosError } from 'axios';
-import type { Map as ImmutableMap } from 'immutable';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
@@ -51,16 +50,11 @@ const customApp = custom('app');
 
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
+  awaitingApproval: { id: 'auth.awaiting_approval', defaultMessage: 'Your account is awaiting approval' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
 });
 
 const noOp = () => new Promise(f => f(undefined));
-
-const getScopes = (state: RootState) => {
-  const instance = state.instance;
-  const { scopes } = getFeatures(instance);
-  return scopes;
-};
 
 const createAppAndToken = () =>
   (dispatch: AppDispatch) =>
@@ -94,11 +88,11 @@ const createAuthApp = () =>
 
 const createAppToken = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const app = getState().auth.get('app');
+    const app = getState().auth.app;
 
     const params = {
-      client_id:     app.get('client_id'),
-      client_secret: app.get('client_secret'),
+      client_id:     app.client_id!,
+      client_secret: app.client_secret!,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
       scope:         getScopes(getState()),
@@ -111,11 +105,11 @@ const createAppToken = () =>
 
 const createUserToken = (username: string, password: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const app = getState().auth.get('app');
+    const app = getState().auth.app;
 
     const params = {
-      client_id:     app.get('client_id'),
-      client_secret: app.get('client_secret'),
+      client_id:     app.client_id!,
+      client_secret: app.client_secret!,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'password',
       username:      username,
@@ -127,32 +121,12 @@ const createUserToken = (username: string, password: string) =>
       .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
   };
 
-export const refreshUserToken = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const refreshToken = getState().auth.getIn(['user', 'refresh_token']);
-    const app = getState().auth.get('app');
-
-    if (!refreshToken) return dispatch(noOp);
-
-    const params = {
-      client_id:     app.get('client_id'),
-      client_secret: app.get('client_secret'),
-      refresh_token: refreshToken,
-      redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
-      grant_type:    'refresh_token',
-      scope:         getScopes(getState()),
-    };
-
-    return dispatch(obtainOAuthToken(params))
-      .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
-  };
-
 export const otpVerify = (code: string, mfa_token: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const app = getState().auth.get('app');
+    const app = getState().auth.app;
     return api(getState, 'app').post('/oauth/mfa/challenge', {
-      client_id: app.get('client_id'),
-      client_secret: app.get('client_secret'),
+      client_id: app.client_id,
+      client_secret: app.client_secret,
       mfa_token: mfa_token,
       code: code,
       challenge_type: 'totp',
@@ -211,12 +185,14 @@ export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
     return dispatch(createUserToken(normalizeUsername(username), password));
   }).catch((error: AxiosError) => {
-    if ((error.response?.data as any).error === 'mfa_required') {
+    if ((error.response?.data as any)?.error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
+    } else if ((error.response?.data as any)?.identifier === 'awaiting_approval') {
+      toast.error(messages.awaitingApproval);
     } else {
       // Return "wrong password" message.
-      dispatch(snackbar.error(messages.invalidCredentials));
+      toast.error(messages.invalidCredentials);
     }
     throw error;
   });
@@ -233,9 +209,9 @@ export const logOut = () =>
     if (!account) return dispatch(noOp);
 
     const params = {
-      client_id: state.auth.getIn(['app', 'client_id']),
-      client_secret: state.auth.getIn(['app', 'client_secret']),
-      token: state.auth.getIn(['users', account.url, 'access_token']),
+      client_id: state.auth.app.client_id!,
+      client_secret: state.auth.app.client_secret!,
+      token: state.auth.users.get(account.url)!.access_token,
     };
 
     return dispatch(revokeOAuthToken(params))
@@ -246,7 +222,7 @@ export const logOut = () =>
 
         dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
 
-        return dispatch(snackbar.success(messages.loggedOut));
+        toast.success(messages.loggedOut);
       });
   };
 
@@ -263,10 +239,10 @@ export const switchAccount = (accountId: string, background = false) =>
 export const fetchOwnAccounts = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    return state.auth.get('users').forEach((user: ImmutableMap<string, string>) => {
-      const account = state.accounts.get(user.get('id'));
+    return state.auth.users.forEach((user) => {
+      const account = state.accounts.get(user.id);
       if (!account) {
-        dispatch(verifyCredentials(user.get('access_token')!, user.get('url')));
+        dispatch(verifyCredentials(user.access_token, user.url));
       }
     });
   };

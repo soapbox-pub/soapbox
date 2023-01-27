@@ -1,7 +1,6 @@
 import classNames from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -10,7 +9,7 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -24,14 +23,11 @@ const messages = defineMessages({
 });
 
 const Navbar = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
-
-  const node = useRef(null);
-
+  const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
-  const soapboxConfig = useSoapboxConfig();
-  const singleUserMode = soapboxConfig.get('singleUserMode');
+  const node = useRef(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -67,11 +63,11 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node}>
+    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node} data-testid='navbar'>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden'>
+            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:right-0 rtl:left-auto'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
@@ -152,7 +148,7 @@ const Navbar = () => {
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 
-                  {!singleUserMode && (
+                  {isOpen && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>

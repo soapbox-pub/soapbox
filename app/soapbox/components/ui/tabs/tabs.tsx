@@ -21,6 +21,7 @@ interface IAnimatedInterface {
   onChange(index: number): void,
   /** Default tab index. */
   defaultIndex: number
+  children: React.ReactNode
 }
 
 /** Tabs with a sliding active state. */

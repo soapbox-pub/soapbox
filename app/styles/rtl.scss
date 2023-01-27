@@ -6,11 +6,6 @@ body.rtl {
     margin-left: 5px;
   }
 
-  .search__icon .fa {
-    right: auto;
-    left: 10px;
-  }
-
   .status {
     padding-left: 10px;
     padding-right: 68px;
@@ -24,16 +19,6 @@ body.rtl {
   .privacy-dropdown__option__icon {
     margin-left: 10px;
     margin-right: 0;
-  }
-
-  .fa-ul {
-    margin-left: 0;
-    margin-left: 2.14285714em;
-  }
-
-  .fa-li {
-    left: auto;
-    right: -2.14285714em;
   }
 
   .simple_form .input.with_label.boolean label.checkbox {
@@ -81,14 +66,6 @@ body.rtl {
         padding-right: 10px;
       }
     }
-  }
-
-  .fa-chevron-left::before {
-    content: "\F054";
-  }
-
-  .fa-chevron-right::before {
-    content: "\F053";
   }
 
   .simple_form .input.radio_buttons .radio > label input {

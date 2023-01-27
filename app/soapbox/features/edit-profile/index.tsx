@@ -1,9 +1,9 @@
+import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import BirthdayInput from 'soapbox/components/birthday-input';
 import List, { ListItem } from 'soapbox/components/list';
 import {
@@ -21,6 +21,7 @@ import {
 } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
@@ -125,7 +126,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     display_name: account.display_name,
     note: account.source.get('note'),
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', []).toJS()],
+    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', ImmutableList()).toJS()],
     stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
     accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
     hide_followers: hideNetwork,
@@ -217,10 +218,10 @@ const EditProfile: React.FC = () => {
 
     Promise.all(promises).then(() => {
       setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      toast.success(intl.formatMessage(messages.success));
     }).catch(() => {
       setLoading(false);
-      dispatch(snackbar.error(intl.formatMessage(messages.error)));
+      toast.error(intl.formatMessage(messages.error));
     });
 
     event.preventDefault();

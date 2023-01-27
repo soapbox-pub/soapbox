@@ -45,6 +45,7 @@ interface ICardHeader {
   backHref?: string,
   onBackClick?: (event: React.MouseEvent) => void
   className?: string
+  children?: React.ReactNode
 }
 
 /**
@@ -64,7 +65,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
 
     return (
       <Comp {...backAttributes} className='text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
-        <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6' />
+        <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6 rtl:rotate-180' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
     );
@@ -91,6 +92,8 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
 interface ICardBody {
   /** Classnames for the <div> element. */
   className?: string
+  /** Children to appear inside the card. */
+  children: React.ReactNode
 }
 
 /** A card's body. */

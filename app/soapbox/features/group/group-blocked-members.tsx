@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchGroup, fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups';
-import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount, makeGetGroup } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
@@ -36,7 +36,7 @@ const BlockedMember: React.FC<IBlockedMember> = ({ accountId, groupId }) => {
 
   const handleUnblock = () =>
     dispatch(groupUnblock(groupId, accountId)).then(() => {
-      dispatch(snackbar.success(intl.formatMessage(messages.unblocked, { name: account.acct })));
+      toast.success(intl.formatMessage(messages.unblocked, { name: account.acct }));
     });
 
   return (

@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { patchMeSuccess } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import { useApi, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 export type IAccount = {
   acct: string
@@ -48,10 +48,10 @@ const useUpdateCredentials = () => {
     },
     onSuccess(response) {
       dispatch(patchMeSuccess(response.data));
-      dispatch(snackbar.success('Chat Settings updated successfully'));
+      toast.success('Chat Settings updated successfully');
     },
     onError(_error, _variables, context: any) {
-      dispatch(snackbar.error('Chat Settings failed to update.'));
+      toast.error('Chat Settings failed to update.');
       dispatch(patchMeSuccess(context.cachedAccount));
     },
   });

@@ -49,6 +49,8 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     className,
   } = props;
 
+  const body = text || children;
+
   const themeClass = useButtonStyles({
     theme,
     block,
@@ -61,10 +63,10 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       return null;
     }
 
-    return <Icon src={icon} className='mr-2 w-4 h-4' />;
+    return <Icon src={icon} className='w-4 h-4' />;
   };
 
-  const handleClick = React.useCallback((event) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((event) => {
     if (onClick && !disabled) {
       onClick(event);
     }
@@ -72,7 +74,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
 
   const renderButton = () => (
     <button
-      className={classNames(themeClass, className)}
+      className={classNames('space-x-2 rtl:space-x-reverse', themeClass, className)}
       disabled={disabled}
       onClick={handleClick}
       ref={ref}
@@ -80,7 +82,10 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       data-testid='button'
     >
       {renderIcon()}
-      {text || children}
+
+      {body && (
+        <span>{body}</span>
+      )}
     </button>
   );
 

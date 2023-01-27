@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { authorizeGroupMembershipRequest, fetchGroup, fetchGroupMembershipRequests, rejectGroupMembershipRequest } from 'soapbox/actions/groups';
-import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount, makeGetGroup } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
@@ -38,12 +38,12 @@ const MembershipRequest: React.FC<IMembershipRequest> = ({ accountId, groupId })
 
   const handleAuthorize = () =>
     dispatch(authorizeGroupMembershipRequest(groupId, accountId)).then(() => {
-      dispatch(snackbar.success(intl.formatMessage(messages.authorized, { name: account.acct })));
+      toast.success(intl.formatMessage(messages.authorized, { name: account.acct }));
     });
 
   const handleReject = () =>
     dispatch(rejectGroupMembershipRequest(groupId, accountId)).then(() => {
-      dispatch(snackbar.success(intl.formatMessage(messages.rejected, { name: account.acct })));
+      toast.success(intl.formatMessage(messages.rejected, { name: account.acct }));
     });
 
   return (

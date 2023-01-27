@@ -5,6 +5,67 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+- Admin: redirect the homepage to any URL.
+- Compatibility: added compatibility with Friendica.
+- Posts: bot badge on statuses from bot accounts.
+- Compatibility: improved browser support for older browsers.
+- Events: allow to repost events in event menu.
+- Groups: Initial support for groups.
+
+### Changed
+- Chats: improved display of media attachments.
+- ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
+
+### Fixed
+- Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
+- Chats: don't display "copy" button for messages without text.
+- Posts: don't have to click the play button twice for embedded videos.
+- index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
+- Modals: fix media modal automatically switching to video.
+
+### Removed
+- Admin: single user mode. Now the homepage can be redirected to any URL.
+
+## [3.1.0] - 2023-01-13
+
+### Added
+- Compatibility: rudimentary support for Takahē.
+- UI: added backdrop blur behind modals.
+- Admin: let admins configure media preview for attachment thumbnails.
+- Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
+- Backups: restored Pleroma backups functionality.
+- Export: restored "Export data" to CSV.
+
+### Changed
+- Posts: letterbox images to 19:6 again.
+- Status Info: moved context (repost, pinned) to improve UX.
+- Posts: remove file icon from empty link previews.
+- Settings: moved "Import data" under settings.
+- Composer: add more descriptive discard confirmation message.
+
+### Fixed
+- Layout: use accent color for "floating action button" (mobile compose button).
+- ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
+- Datepicker: correctly default to the current year.
+- Scheduled posts: fix page crashing on deleting a scheduled post.
+- Events: don't crash when searching for a location.
+- Search: fixes an abort error when using the navbar search component.
+- Posts: fix monospace font in Markdown code blocks.
+- Modals: fix action buttons overflow
+- Editing: don't insert edited posts to the top of the feed.
+- Editing: don't display edited posts as pending posts.
+- Modals: close modal when navigating to a different page.
+- Modals: fix "View context" button in media modal.
+- Posts: let unauthenticated users to translate posts if allowed by backend.
+- Chats: fix jumpy scrollbar.
+- Composer: fix alignment of icon in submit button.
+- Login: add a border around QR codes.
+- Composer: don't display action button in reply indicator.
+
+## [3.0.0] - 2022-12-25
+
 ### Added
 - Editing: ability to edit posts and view edit history (on Rebased, Pleroma, and Mastodon).
 - Events: ability to create, view, and comment on Events (on Rebased).
@@ -20,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Theme: auto-detect system theme by default.
 - Profile: remove a specific user from your followers (on Rebased, Mastodon).
 - Suggestions: ability to view all suggested profiles.
+- Feeds: display suggested accounts in Home feed (optional by admin).
 - Compatibility: added compatibility with Truth Social, Fedibird, Pixelfed, Akkoma, and Glitch.
 - Developers: added Test feed, Service Worker debugger, and Network Error preview.
 - Reports: display server rules in reports. Let users select rule violations when submitting a report.
@@ -27,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin: custom badges. Admins can add non-federating badges to any user's profile (on Rebased, Pleroma).
 - Admin: consolidated user dropdown actions (verify/suggest/etc) into a unified "Moderate User" modal.
 - i18n: updated translations for Italian, Polish, Arabic, Hebrew, and German.
+- Toast: added the ability to dismiss toast notifications.
 
 ### Changed
 - UI: the whole UI has been overhauled both inside and out. 97% of the codebase has been rewritten to TypeScript, and a new component library has been introduced with Tailwind CSS.
@@ -37,12 +100,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: move instance favicon beside username instead of post timestamp.
 - Posts: changed the behavior of content warnings. CWs and sensitive media are unified into one design.
 - Posts: redesigned interaction counters to use text instead of icons.
+- Posts: letterbox images taller than 1:1.
 - Profile: overhauled user profiles to be consistent with the rest of the UI.
 - Composer: move emoji button alongside other composer buttons, add numerical counter.
 - Birthdays: move today's birthdays out of notifications into right sidebar.
 - Performance: improve scrolling/navigation between feeds by using a virtual window library.
 - Admin: reorganize UI into 3-column layout.
 - Admin: include external link to frontend repo for the running commit.
+- Toast: redesigned toast notifications.
 
 ### Removed
 - Theme: Halloween theme.

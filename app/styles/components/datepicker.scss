@@ -10,12 +10,12 @@
   }
 }
 
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before,
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
+.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
   @apply border-b-white dark:border-b-gray-900;
 }
 
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
+.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before {
   @apply border-b-gray-200 dark:border-b-gray-700;
 }
 
@@ -25,7 +25,6 @@
 
 .react-datepicker__header {
   @apply bg-white dark:bg-gray-900 border-b-0 py-1 px-0;
-  @apply rounded-tl-lg;
 }
 
 .react-datepicker__current-month,
@@ -137,9 +136,13 @@
   @apply bg-primary-50 hover:bg-primary-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-primary-600 dark:text-primary-400;
 }
 
+.react-datepicker__close-icon {
+  @apply rtl:left-0 rtl:right-auto rtl:pr-0 rtl:pl-[6px];
+}
+
 .react-datepicker__close-icon::after {
   @apply bg-transparent text-gray-600 dark:text-gray-400 text-base;
   font-family: 'Font Awesome 5 Free';
-  content: "";
+  content: '';
   font-weight: 900;
 }

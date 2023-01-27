@@ -5,10 +5,10 @@ import { Redirect } from 'react-router-dom';
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
-import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import PasswordIndicator from './components/password-indicator';
@@ -43,7 +43,7 @@ const Registration = () => {
   const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     dispatch(createAccount(username, password))
@@ -54,30 +54,22 @@ const Registration = () => {
         setShouldRedirect(true);
         removeStoredVerification();
         dispatch(startOnboarding());
-        dispatch(
-          snackbar.success(
-            intl.formatMessage(messages.success, { siteTitle: instance.title }),
-          ),
+        toast.success(
+          intl.formatMessage(messages.success, { siteTitle: instance.title }),
         );
       })
-      .catch((error: AxiosError) => {
-        if (error?.response?.status === 422) {
-          dispatch(
-            snackbar.error(
-              intl.formatMessage(messages.usernameTaken),
-            ),
-          );
+      .catch((errorResponse: AxiosError<{ error: string, message: string }>) => {
+        const error = errorResponse.response?.data?.error;
+
+        if (error) {
+          toast.error(errorResponse.response?.data?.message || intl.formatMessage(messages.usernameTaken));
         } else {
-          dispatch(
-            snackbar.error(
-              intl.formatMessage(messages.error),
-            ),
-          );
+          toast.error(intl.formatMessage(messages.error));
         }
       });
   }, [username, password]);
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));

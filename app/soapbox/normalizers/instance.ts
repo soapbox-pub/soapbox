@@ -112,6 +112,17 @@ const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   }
 };
 
+/** Set Takahē version to a Pleroma-like string */
+const fixTakahe = (instance: ImmutableMap<string, any>) => {
+  const version: string = instance.get('version', '');
+
+  if (version.startsWith('takahe/')) {
+    return instance.set('version', `0.0.0 (compatible; Takahe ${version.slice(7)})`);
+  } else {
+    return instance;
+  }
+};
+
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
 export const normalizeInstance = (instance: Record<string, any>) => {
   return InstanceRecord(
@@ -129,8 +140,12 @@ export const normalizeInstance = (instance: Record<string, any>) => {
         return isNumber(value) ? value : getAttachmentLimit(software);
       });
 
+      // Urls can't be null, fix for Friendica
+      if (instance.get('urls') === null) instance.delete('urls');
+
       // Normalize version
       normalizeVersion(instance);
+      fixTakahe(instance);
       fixAkkoma(instance);
 
       // Merge defaults

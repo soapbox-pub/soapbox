@@ -3,8 +3,6 @@ import React from 'react';
 import { render, screen } from '../../../../jest/test-helpers';
 import FormGroup from '../form-group';
 
-jest.mock('uuid', () => jest.requireActual('uuid'));
-
 describe('<FormGroup />', () => {
   it('connects the label and input', () => {
     render(

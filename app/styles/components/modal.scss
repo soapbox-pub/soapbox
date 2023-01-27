@@ -7,8 +7,8 @@
 }
 
 .media-modal {
-  width: 100%;
-  height: 100%;
+  // https://stackoverflow.com/a/8468131
+  @apply w-full h-full absolute inset-0;
 
   .audio-player.detailed,
   .extended-video-player {
@@ -234,17 +234,6 @@
       @apply text-gray-400;
       background-color: var(--background-color);
     }
-
-    &.onboarding-modal__done,
-    &.onboarding-modal__next {
-      @apply text-gray-900;
-
-      &:hover,
-      &:focus,
-      &:active {
-        @apply text-gray-900;
-      }
-    }
   }
 }
 
@@ -252,10 +241,6 @@
   @apply flex-col relative text-gray-400 overflow-hidden;
   border-radius: 10px;
   border: 1px solid var(--background-color);
-
-  .status__display-name {
-    @apply block w-full pr-6;
-  }
 
   .dropdown-menu__separator {
     @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
@@ -302,7 +287,7 @@
         }
       }
 
-      button[type="button"] {
+      button[type='button'] {
         @apply w-full justify-center text-center;
       }
     }
@@ -344,7 +329,7 @@
     &::before,
     &::after {
       @apply border-b border-gray-300 dark:border-gray-600;
-      content: "";
+      content: '';
       flex: 1;
     }
   }

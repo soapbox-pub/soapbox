@@ -7,7 +7,11 @@ import { SelectDropdown } from '../features/forms';
 import Icon from './icon';
 import { HStack, Select } from './ui';
 
-const List: React.FC = ({ children }) => (
+interface IList {
+  children: React.ReactNode
+}
+
+const List: React.FC<IList> = ({ children }) => (
   <div className='space-y-0.5'>{children}</div>
 );
 
@@ -17,6 +21,7 @@ interface IListItem {
   onClick?(): void,
   onSelect?(): void
   isSelected?: boolean
+  children?: React.ReactNode
 }
 
 const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelect, isSelected }) => {
@@ -70,7 +75,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
         <HStack space={1} alignItems='center' className='text-gray-700 dark:text-gray-600'>
           {children}
 
-          <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1' />
+          <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1 rtl:rotate-180' />
         </HStack>
       ) : null}
 

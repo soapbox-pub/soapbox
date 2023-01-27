@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
 import { Column, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import sourceCode from 'soapbox/utils/code';
 
 const messages = defineMessages({
@@ -31,7 +31,7 @@ const DashWidget: React.FC<IDashWidget> = ({ to, onClick, children }) => {
 };
 
 const Developers: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
 
@@ -39,8 +39,17 @@ const Developers: React.FC = () => {
     e.preventDefault();
 
     dispatch(changeSettingImmediate(['isDeveloper'], false));
-    dispatch(snackbar.success(intl.formatMessage(messages.leave)));
+    toast.success(intl.formatMessage(messages.leave));
     history.push('/');
+  };
+
+  const showToast = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    toast.success('Hello world!', {
+      action: () => alert('hi'),
+      actionLabel: 'Click me',
+    });
   };
 
   return (
@@ -100,6 +109,14 @@ const Developers: React.FC = () => {
 
             <Text>
               <FormattedMessage id='developers.navigation.leave_developers_label' defaultMessage='Leave developers' />
+            </Text>
+          </DashWidget>
+
+          <DashWidget onClick={showToast}>
+            <SvgIcon src={require('@tabler/icons/urgent.svg')} className='text-gray-700 dark:text-gray-600' />
+
+            <Text>
+              <FormattedMessage id='developers.navigation.show_toast' defaultMessage='Trigger Toast' />
             </Text>
           </DashWidget>
         </div>

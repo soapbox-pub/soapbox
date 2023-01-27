@@ -1,11 +1,11 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';
-import { useSettings } from 'soapbox/hooks';
+import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
 
@@ -72,6 +72,7 @@ const Item: React.FC<IItem> = ({
 }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif') === true;
+  const { mediaPreview } = useSoapboxConfig();
 
   const handleMouseEnter: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {
     if (hoverToPlay()) {
@@ -171,7 +172,7 @@ const Item: React.FC<IItem> = ({
       >
         <StillImage
           className='w-full h-full'
-          src={attachment.url}
+          src={mediaPreview ? attachment.preview_url : attachment.url}
           alt={attachment.description}
           letterboxed={letterboxed}
           showExt
@@ -532,7 +533,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     />
   ));
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (node.current) {
       const { offsetWidth } = node.current;
 

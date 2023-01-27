@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
@@ -9,7 +8,7 @@ import { openModal } from 'soapbox/actions/modals';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
@@ -31,7 +30,7 @@ const getOrderedGroups = createSelector([
 }));
 
 const Groups: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { groups, isLoading } = useAppSelector((state) => getOrderedGroups(state));
   const canCreateGroup = useAppSelector((state) => hasPermission(state, PERMISSION_CREATE_GROUPS));

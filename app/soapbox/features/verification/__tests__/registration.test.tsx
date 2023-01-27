@@ -30,7 +30,10 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/welcome to/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/welcome to/i);
+      });
+
       expect(screen.queryAllByRole('heading')).toHaveLength(0);
     });
   });
@@ -38,7 +41,11 @@ describe('<Registration />', () => {
   describe('with invalid data', () => {
     it('handles 422 errors', async() => {
       __stub(mock => {
-        mock.onPost('/api/v1/pepe/accounts').reply(422, {});
+        mock.onPost('/api/v1/pepe/accounts').reply(
+          422, {
+            error: 'user_taken',
+          },
+        );
       });
 
       render(<Registration />);
@@ -47,7 +54,31 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/this username has already been taken/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/this username has already been taken/i);
+      });
+    });
+
+    it('handles 422 errors with messages', async() => {
+      __stub(mock => {
+        mock.onPost('/api/v1/pepe/accounts').reply(
+          422, {
+            error: 'user_vip',
+            message: 'This username is unavailable.',
+          },
+        );
+      });
+
+      render(<Registration />);
+
+      await waitFor(() => {
+        fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/this username is unavailable/i);
+      });
+
     });
 
     it('handles generic errors', async() => {
@@ -61,7 +92,9 @@ describe('<Registration />', () => {
         fireEvent.submit(screen.getByTestId('button'), { preventDefault: () => {} });
       });
 
-      expect(screen.getByTestId('toast')).toHaveTextContent(/failed to register your account/i);
+      await waitFor(() => {
+        expect(screen.getByTestId('toast')).toHaveTextContent(/failed to register your account/i);
+      });
     });
   });
 

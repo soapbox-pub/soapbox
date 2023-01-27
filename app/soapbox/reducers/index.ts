@@ -10,7 +10,7 @@ import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_log from './admin-log';
-import alerts from './alerts';
+import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
@@ -70,7 +70,6 @@ const reducers = {
   dropdown_menu,
   timelines,
   meta,
-  alerts,
   modals,
   user_lists,
   domain_lists,
@@ -124,6 +123,7 @@ const reducers = {
   history,
   announcements,
   compose_event,
+  admin_user_index,
   groups,
   group_relationships,
   group_memberships,

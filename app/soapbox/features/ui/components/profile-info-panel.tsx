@@ -48,9 +48,9 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
-      return <Badge slug='admin' title='Admin' key='staff' />;
+      return <Badge slug='admin' title={<FormattedMessage id='account_moderation_modal.roles.admin' defaultMessage='Admin' />} key='staff' />;
     } else if (account?.moderator) {
-      return <Badge slug='moderator' title='Moderator' key='staff' />;
+      return <Badge slug='moderator' title={<FormattedMessage id='account_moderation_modal.roles.moderator' defaultMessage='Moderator' />} key='staff' />;
     } else {
       return null;
     }
@@ -121,7 +121,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
-              <Text size='sm' theme='muted'>
+              <Text size='sm' theme='muted' direction='ltr'>
                 @{username}
               </Text>
             </HStack>
@@ -157,7 +157,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           </HStack>
 
           <HStack alignItems='center' space={0.5}>
-            <Text size='sm' theme='muted'>
+            <Text size='sm' theme='muted' direction='ltr'>
               @{displayFqn ? account.fqn : account.acct}
             </Text>
 

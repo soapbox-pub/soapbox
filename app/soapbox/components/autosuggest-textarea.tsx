@@ -30,6 +30,7 @@ interface IAutosuggesteTextarea {
   onFocus: () => void,
   onBlur?: () => void,
   condensed?: boolean,
+  children: React.ReactNode,
 }
 
 class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {
@@ -64,7 +65,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     }
 
     this.props.onChange(e);
-  }
+  };
 
   onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
     const { suggestions, disabled } = this.props;
@@ -122,7 +123,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     }
 
     this.props.onKeyDown(e);
-  }
+  };
 
   onBlur = () => {
     this.setState({ suggestionsHidden: true, focused: false });
@@ -130,7 +131,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (this.props.onBlur) {
       this.props.onBlur();
     }
-  }
+  };
 
   onFocus = () => {
     this.setState({ focused: true });
@@ -138,14 +139,14 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (this.props.onFocus) {
       this.props.onFocus();
     }
-  }
+  };
 
   onSuggestionClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     const suggestion = this.props.suggestions.get(e.currentTarget.getAttribute('data-index') as any);
     e.preventDefault();
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.textarea?.focus();
-  }
+  };
 
   shouldComponentUpdate(nextProps: IAutosuggesteTextarea, nextState: any) {
     // Skip updating when only the lastToken changes so the
@@ -156,7 +157,8 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (lastTokenUpdated && !valueUpdated) {
       return false;
     } else {
-      return super.shouldComponentUpdate!(nextProps, nextState, undefined);
+      // https://stackoverflow.com/a/35962835
+      return super.shouldComponentUpdate!.bind(this)(nextProps, nextState, undefined);
     }
   }
 
@@ -169,14 +171,14 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
 
   setTextarea: React.Ref<HTMLTextAreaElement> = (c) => {
     this.textarea = c;
-  }
+  };
 
   onPaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
     if (e.clipboardData && e.clipboardData.files.length === 1) {
       this.props.onPaste(e.clipboardData.files);
       e.preventDefault();
     }
-  }
+  };
 
   renderSuggestion = (suggestion: string | Emoji, i: number) => {
     const { selectedSuggestion } = this.state;
@@ -208,7 +210,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
         {inner}
       </div>
     );
-  }
+  };
 
   setPortalPosition() {
     if (!this.textarea) {
@@ -229,7 +231,8 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr', minRows: 10 };
 
-    if (isRtl(value)) {
+    // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
+    if (isRtl(value) || (!value && placeholder && isRtl(placeholder))) {
       style.direction = 'rtl';
     }
 

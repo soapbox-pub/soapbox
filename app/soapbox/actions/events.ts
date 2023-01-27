@@ -1,13 +1,13 @@
 import { defineMessages, IntlShape } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
+import toast from 'soapbox/toast';
 import { formatBytes } from 'soapbox/utils/media';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
 import { fetchMedia, uploadMedia } from './media';
 import { closeModal, openModal } from './modals';
-import snackbar from './snackbar';
 import {
   STATUS_FETCH_SOURCE_FAIL,
   STATUS_FETCH_SOURCE_REQUEST,
@@ -91,7 +91,7 @@ const messages = defineMessages({
   editSuccess: { id: 'compose_event.edit_success', defaultMessage: 'Your event was edited' },
   joinSuccess: { id: 'join_event.success', defaultMessage: 'Joined the event' },
   joinRequestSuccess: { id: 'join_event.request_success', defaultMessage: 'Requested to join the event' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
   authorized: { id: 'compose_event.participation_requests.authorize_success', defaultMessage: 'User accepted' },
   rejected: { id: 'compose_event.participation_requests.reject_success', defaultMessage: 'User rejected' },
 });
@@ -163,7 +163,7 @@ const uploadEventBanner = (file: File, intl: IntlShape) =>
     if (maxImageSize && (file.size > maxImageSize)) {
       const limit = formatBytes(maxImageSize);
       const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-      dispatch(snackbar.error(message));
+      toast.error(message);
       dispatch(uploadEventBannerFail(true));
       return;
     }
@@ -264,7 +264,13 @@ const submitEvent = () =>
       dispatch(closeModal('COMPOSE_EVENT'));
       dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
-      dispatch(snackbar.success(id ? messages.editSuccess : messages.success, messages.view, `/@${data.account.acct}/events/${data.id}`));
+      toast.success(
+        id ? messages.editSuccess : messages.success,
+        {
+          actionLabel: messages.view,
+          actionLink: `/@${data.account.acct}/events/${data.id}`,
+        },
+      );
     }).catch(function(error) {
       dispatch(submitEventFail(error));
     });
@@ -299,11 +305,13 @@ const joinEvent = (id: string, participationMessage?: string) =>
     }).then(({ data }) => {
       dispatch(importFetchedStatus(data));
       dispatch(joinEventSuccess(data));
-      dispatch(snackbar.success(
+      toast.success(
         data.pleroma.event?.join_state === 'pending' ? messages.joinRequestSuccess : messages.joinSuccess,
-        messages.view,
-        `/@${data.account.acct}/events/${data.id}`,
-      ));
+        {
+          actionLabel: messages.view,
+          actionLink: `/@${data.account.acct}/events/${data.id}`,
+        },
+      );
     }).catch(function(error) {
       dispatch(joinEventFail(error, status, status?.event?.join_state || null));
     });
@@ -504,7 +512,7 @@ const authorizeEventParticipationRequest = (id: string, accountId: string) =>
       .post(`/api/v1/pleroma/events/${id}/participation_requests/${accountId}/authorize`)
       .then(() => {
         dispatch(authorizeEventParticipationRequestSuccess(id, accountId));
-        dispatch(snackbar.success(messages.authorized));
+        toast.success(messages.authorized);
       })
       .catch(error => dispatch(authorizeEventParticipationRequestFail(id, accountId, error)));
   };
@@ -536,7 +544,7 @@ const rejectEventParticipationRequest = (id: string, accountId: string) =>
       .post(`/api/v1/pleroma/events/${id}/participation_requests/${accountId}/reject`)
       .then(() => {
         dispatch(rejectEventParticipationRequestSuccess(id, accountId));
-        dispatch(snackbar.success(messages.rejected));
+        toast.success(messages.rejected);
       })
       .catch(error => dispatch(rejectEventParticipationRequestFail(id, accountId, error)));
   };

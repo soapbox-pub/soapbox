@@ -2,12 +2,12 @@ import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack
 import sumBy from 'lodash/sumBy';
 
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
-import snackbar from 'soapbox/actions/snackbar';
 import { getNextLink } from 'soapbox/api';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 import { reOrderChatListItems } from 'soapbox/utils/chats';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
@@ -157,6 +157,7 @@ const useChats = (search?: string) => {
 
   const queryInfo = useInfiniteQuery(ChatKeys.chatSearch(search), ({ pageParam }) => getChats(pageParam), {
     keepPreviousData: true,
+    enabled: features.chats,
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };
@@ -203,7 +204,7 @@ const useChat = (chatId?: string) => {
 const useChatActions = (chatId: string) => {
   const account = useOwnAccount();
   const api = useApi();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const { setUnreadChatsCount } = useStatContext();
 
@@ -307,12 +308,12 @@ const useChatActions = (chatId: string) => {
     onError: (_error: any, _newData: any, context: any) => {
       changeScreen(ChatWidgetScreens.CHAT, context.prevChat.id);
       queryClient.setQueryData(ChatKeys.chat(chatId), context.prevChat);
-      dispatch(snackbar.error('Chat Settings failed to update.'));
+      toast.error('Chat Settings failed to update.');
     },
     onSuccess() {
       queryClient.invalidateQueries(ChatKeys.chat(chatId));
       queryClient.invalidateQueries(ChatKeys.chatSearch());
-      dispatch(snackbar.success('Chat Settings updated successfully'));
+      toast.success('Chat Settings updated successfully');
     },
   });
 

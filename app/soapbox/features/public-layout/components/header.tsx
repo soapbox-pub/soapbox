@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -8,7 +7,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance } from 'soapbox/hooks';
+import { useSoapboxConfig, useOwnAccount, useAppDispatch, useRegistrationStatus } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -25,18 +24,13 @@ const messages = defineMessages({
 });
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { isOpen } = useRegistrationStatus();
   const { links } = soapboxConfig;
-
-  const features = useFeatures();
-  const instance = useInstance();
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   const [isLoading, setLoading] = React.useState(false);
   const [username, setUsername] = React.useState('');
@@ -71,7 +65,7 @@ const Header = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <header>
+    <header data-testid='public-layout-header'>
       <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' aria-label='Header'>
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
           <div className='flex items-center sm:justify-center relative w-36'>
@@ -112,7 +106,7 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {(isOpen || pepeEnabled && pepeOpen) && (
+                {isOpen && (
                   <Button
                     to='/signup'
                     theme='primary'

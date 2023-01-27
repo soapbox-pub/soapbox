@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 
 import { expandGroupMemberships, fetchGroup, fetchGroupMemberships, groupBlock, groupDemoteAccount, groupKick, groupPromoteAccount } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
-import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { CardHeader, CardTitle, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account';
 
@@ -65,7 +65,7 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
       message: intl.formatMessage(messages.kickFromGroupMessage, { name: account.username }),
       confirm: intl.formatMessage(messages.kickConfirm),
       onConfirm: () => dispatch(groupKick(groupId, account.id)).then(() =>
-        dispatch(snackbar.success(intl.formatMessage(messages.kicked, { name: account.acct }))),
+        toast.success(intl.formatMessage(messages.kicked, { name: account.acct })),
       ),
     }));
   };
@@ -75,7 +75,7 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
       message: intl.formatMessage(messages.blockFromGroupMessage, { name: account.username }),
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(groupBlock(groupId, account.id)).then(() =>
-        dispatch(snackbar.success(intl.formatMessage(messages.blocked, { name: account.acct }))),
+        toast.success(intl.formatMessage(messages.blocked, { name: account.acct })),
       ),
     }));
   };
@@ -86,12 +86,12 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
         message: intl.formatMessage(messages.promoteConfirmMessage, { name: account.username }),
         confirm: intl.formatMessage(messages.promoteConfirm),
         onConfirm: () => dispatch(groupPromoteAccount(groupId, account.id, role)).then(() =>
-          dispatch(snackbar.success(intl.formatMessage(role === 'admin' ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct }))),
+          toast.success(intl.formatMessage(role === 'admin' ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct })),
         ),
       }));
     } else {
       return dispatch(groupPromoteAccount(groupId, account.id, role)).then(() =>
-        dispatch(snackbar.success(intl.formatMessage(role === 'admin' ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct }))),
+        toast.success(intl.formatMessage(role === 'admin' ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct })),
       );
     }
   };
@@ -106,7 +106,7 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
 
   const handleDemote = () => {
     dispatch(groupDemoteAccount(groupId, account.id, 'user')).then(() =>
-      dispatch(snackbar.success(intl.formatMessage(messages.demotedToUser, { name: account.acct }))),
+      toast.success(intl.formatMessage(messages.demotedToUser, { name: account.acct })),
     ).catch(() => {});
   };
 

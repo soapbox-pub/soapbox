@@ -15,7 +15,11 @@ const getNotifTotals = (state: RootState): number => {
   return notifications + reports + approvals;
 };
 
-const Helmet: React.FC = ({ children }) => {
+interface IHelmet {
+  children: React.ReactNode
+}
+
+const Helmet: React.FC<IHelmet> = ({ children }) => {
   const instance = useInstance();
   const { unreadChatsCount } = useStatContext();
   const unreadCount = useAppSelector((state) => getNotifTotals(state) + unreadChatsCount);

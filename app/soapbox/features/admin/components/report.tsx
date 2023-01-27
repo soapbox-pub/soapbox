@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 
 import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import snackbar from 'soapbox/actions/snackbar';
-import Avatar from 'soapbox/components/avatar';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Accordion, Button, Stack, HStack, Text } from 'soapbox/components/ui';
+import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
 import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 
 import ReportStatus from './report-status';
 
@@ -58,7 +57,7 @@ const Report: React.FC<IReport> = ({ id }) => {
   const handleCloseReport = () => {
     dispatch(closeReports([report.id])).then(() => {
       const message = intl.formatMessage(messages.reportClosed, { name: targetAccount.username as string });
-      dispatch(snackbar.success(message));
+      toast.success(message);
     }).catch(() => {});
   };
 
@@ -86,7 +85,7 @@ const Report: React.FC<IReport> = ({ id }) => {
     <HStack space={3} className='p-3' key={report.id}>
       <HoverRefWrapper accountId={targetAccount.id} inline>
         <Link to={`/@${acct}`} title={acct}>
-          <Avatar account={targetAccount} size={32} />
+          <Avatar src={targetAccount.avatar} size={32} className='overflow-hidden' />
         </Link>
       </HoverRefWrapper>
 

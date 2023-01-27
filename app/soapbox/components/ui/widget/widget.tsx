@@ -12,8 +12,12 @@ const WidgetTitle = ({ title }: IWidgetTitle): JSX.Element => (
   <Text size='xl' weight='bold' tag='h1'>{title}</Text>
 );
 
+interface IWidgetBody {
+  children: React.ReactNode
+}
+
 /** Body of a widget. */
-const WidgetBody: React.FC = ({ children }): JSX.Element => (
+const WidgetBody: React.FC<IWidgetBody> = ({ children }): JSX.Element => (
   <Stack space={3}>{children}</Stack>
 );
 
@@ -27,6 +31,7 @@ interface IWidget {
   /** Text for the action. */
   actionTitle?: string,
   action?: JSX.Element,
+  children?: React.ReactNode,
 }
 
 /** Sidebar widget. */
@@ -44,7 +49,7 @@ const Widget: React.FC<IWidget> = ({
         <WidgetTitle title={title} />
         {action || (onActionClick && (
           <IconButton
-            className='w-6 h-6 ml-2 text-black dark:text-white'
+            className='w-6 h-6 ml-2 text-black dark:text-white rtl:rotate-180'
             src={actionIcon}
             onClick={onActionClick}
             title={actionTitle}

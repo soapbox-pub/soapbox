@@ -1,34 +1,9 @@
 @use 'sass:math';
 
-// OpenDyslexic
-@font-face {
-  font-family: 'OpenDyslexic';
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'OpenDyslexic';
-  font-weight: bold;
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'OpenDyslexic';
-  font-weight: bold;
-  font-style: italic;
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Bold-Italic.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'OpenDyslexic';
-  font-style: italic;
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Italic.woff2') format('woff2');
-}
-
 // TYPEOGRAPHY MIXINS
 
 // declare the font family using these shortcuts
-@mixin font-inter { font-family: 'Inter', Arial, sans-serif !important; }
+@mixin font-inter { font-family: Inter, Arial, sans-serif !important; }
 
 // Declare font weights as a numerical value in rendered output
 // Prevents certain browsers which do not play nice with "light, medium" textual declarations
@@ -48,13 +23,13 @@
 @mixin font-size($size) {
   $rem: math.div($size, 10);
   $px: $size;
-  font-size: #{$px + "px"};
-  font-size: #{$rem + "rem"};
+  font-size: #{$px + 'px'};
+  font-size: #{$rem + 'rem'};
 }
 
 @mixin line-height($size) {
   $rem: math.div($size, 10);
   $px: $size;
-  line-height: #{$px + "px"};
-  line-height: #{$rem + "rem"};
+  line-height: #{$px + 'px'};
+  line-height: #{$rem + 'rem'};
 }

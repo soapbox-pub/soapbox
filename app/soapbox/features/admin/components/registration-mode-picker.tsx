@@ -2,9 +2,9 @@ import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { updateConfig } from 'soapbox/actions/admin';
-import snackbar from 'soapbox/actions/snackbar';
 import { RadioGroup, RadioItem } from 'soapbox/components/radio';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { Instance } from 'soapbox/types/entities';
 
@@ -44,7 +44,7 @@ const RegistrationModePicker: React.FC = () => {
   const onChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const config = generateConfig(e.target.value as RegistrationMode);
     dispatch(updateConfig(config)).then(() => {
-      dispatch(snackbar.success(intl.formatMessage(messages.saved)));
+      toast.success(intl.formatMessage(messages.saved));
     }).catch(() => {});
   };
 

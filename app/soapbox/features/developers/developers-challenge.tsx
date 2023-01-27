@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
 import { Column, Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 const DevelopersChallenge = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const [answer, setAnswer] = useState('');
@@ -27,9 +27,9 @@ const DevelopersChallenge = () => {
   const handleSubmit = () => {
     if (answer === 'boxsoap') {
       dispatch(changeSettingImmediate(['isDeveloper'], true));
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      toast.success(intl.formatMessage(messages.success));
     } else {
-      dispatch(snackbar.error(intl.formatMessage(messages.fail)));
+      toast.error(intl.formatMessage(messages.fail));
     }
   };
 

@@ -15,7 +15,7 @@ import PlaceholderAccount from 'soapbox/features/placeholder/components/placehol
 import PlaceholderGroupCard from 'soapbox/features/placeholder/components/placeholder-group-card';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -33,6 +33,7 @@ const SearchResults = () => {
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const value = useAppSelector((state) => state.search.submittedValue);
   const results = useAppSelector((state) => state.search.results);
@@ -51,7 +52,8 @@ const SearchResults = () => {
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
   const renderFilterBar = () => {
-    const items = [
+    const items = [];
+    items.push(
       {
         text: intl.formatMessage(messages.accounts),
         action: () => selectFilter('accounts'),
@@ -62,17 +64,23 @@ const SearchResults = () => {
         action: () => selectFilter('statuses'),
         name: 'statuses',
       },
+    );
+
+    if (features.groups) items.push(
       {
         text: intl.formatMessage(messages.groups),
         action: () => selectFilter('groups'),
         name: 'groups',
       },
+    );
+
+    items.push(
       {
         text: intl.formatMessage(messages.hashtags),
         action: () => selectFilter('hashtags'),
         name: 'hashtags',
       },
-    ];
+    );
 
     return <Tabs items={items} activeItem={selectedFilter} />;
   };

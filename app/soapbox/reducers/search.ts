@@ -53,7 +53,7 @@ type State = ReturnType<typeof ReducerRecord>;
 type APIEntities = Array<APIEntity>;
 export type SearchFilter = 'accounts' | 'statuses' | 'groups' | 'hashtags';
 
-const toIds = (items: APIEntities) => {
+const toIds = (items: APIEntities = []) => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
@@ -67,7 +67,7 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
         hashtags: ImmutableOrderedSet(results.hashtags.map(normalizeTag)), // it's a list of records
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
-        groupsHasMore: results.groups.length >= 20,
+        groupsHasMore: results.groups?.length >= 20,
         hashtagsHasMore: results.hashtags.length >= 20,
         accountsLoaded: true,
         statusesLoaded: true,
