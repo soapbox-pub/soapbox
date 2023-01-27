@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Chats: improved display of media attachments.
 - ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
+- Posts: increased font size of focused status in threads.
 
 ### Fixed
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.

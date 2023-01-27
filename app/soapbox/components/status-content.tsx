@@ -13,6 +13,7 @@ import { isRtl } from '../rtl';
 import Markup from './markup';
 import Poll from './polls/poll';
 
+import type { Sizes } from 'soapbox/components/ui/text/text';
 import type { Status, Mention } from 'soapbox/types/entities';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
@@ -35,10 +36,17 @@ interface IStatusContent {
   onClick?: () => void,
   collapsable?: boolean,
   translatable?: boolean,
+  size?: Sizes,
 }
 
 /** Renders the text content of a status */
-const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable = false, translatable }) => {
+const StatusContent: React.FC<IStatusContent> = ({
+  status,
+  onClick,
+  collapsable = false,
+  translatable,
+  size = 'md',
+}) => {
   const history = useHistory();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -162,6 +170,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
         direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
+        size={size}
       />,
     ];
 
@@ -187,6 +196,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
         direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
+        size={size}
       />,
     ];
 
