@@ -8,9 +8,9 @@ import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/intera
 import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
+import Account from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
@@ -289,16 +289,16 @@ const Notification: React.FC<INotificaton> = (props) => {
       case 'follow':
       case 'user_approved':
         return account && typeof account === 'object' ? (
-          <AccountContainer
-            id={account.id}
+          <Account
+            account={account}
             hidden={hidden}
             avatarSize={avatarSize}
           />
         ) : null;
       case 'follow_request':
         return account && typeof account === 'object' ? (
-          <AccountContainer
-            id={account.id}
+          <Account
+            account={account}
             hidden={hidden}
             avatarSize={avatarSize}
             actionType='follow_request'
@@ -306,8 +306,8 @@ const Notification: React.FC<INotificaton> = (props) => {
         ) : null;
       case 'move':
         return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
-          <AccountContainer
-            id={notification.target.id}
+          <Account
+            account={notification.target}
             hidden={hidden}
             avatarSize={avatarSize}
           />

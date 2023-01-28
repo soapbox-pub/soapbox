@@ -26,9 +26,8 @@
   }
 
   &__modifiers {
-    color: var(--primary-text-color);
+    @apply text-gray-900 text-sm;
     font-family: inherit;
-    font-size: 14px;
     background: var(--background-color);
   }
 }
@@ -184,7 +183,7 @@
       background: var(--brand-color);
 
       .icon-button {
-        color: var(--primary-text-color);
+        @apply text-gray-900;
       }
     }
   }

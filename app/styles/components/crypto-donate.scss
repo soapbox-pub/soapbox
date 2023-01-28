@@ -1,64 +1,47 @@
 .crypto-address {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col p-5;
 
   &__head {
-    display: flex;
-    align-items: center;
-    margin-bottom: 6px;
+    @apply flex items-center mb-1.5;
   }
 
   &__title {
-    font-weight: bold;
+    @apply font-bold;
   }
 
   &__icon {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    width: 24px;
-    margin-right: 10px;
+    @apply flex items-start justify-center w-6 mr-2.5;
 
     img {
-      width: 100%;
+      @apply w-full;
     }
   }
 
   &__actions {
-    margin-left: auto;
-    display: flex;
+    @apply flex ml-auto;
 
     a {
-      color: var(--primary-text-color--faint);
-      margin-left: 8px;
+      @apply text-gray-400 ml-2;
     }
 
     .svg-icon {
-      width: 18px;
-      height: 18px;
+      @apply h-4.5 w-4.5;
     }
   }
 
   &__note {
-    margin-bottom: 10px;
+    @apply mb-2.5;
   }
 
   &__qrcode {
-    margin-bottom: 12px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @apply flex items-center justify-center mb-3 p-2.5;
   }
 
   &__address {
-    margin-top: auto;
+    @apply mt-auto;
   }
 }
 
-.crypto-donate-modal {
-  .crypto-address {
-    padding: 0;
-  }
+.crypto-donate-modal .crypto-address {
+  @apply p-0;
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const ComposeButton = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onOpenCompose = () => dispatch(openModal('COMPOSE'));
 
   return (

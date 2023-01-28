@@ -13,7 +13,7 @@ import VerificationBadge from './verification-badge';
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
+  eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },
   leaveConfirm: { id: 'confirmations.leave_event.confirm', defaultMessage: 'Leave event' },
   leaveMessage: { id: 'confirmations.leave_event.message', defaultMessage: 'If you want to rejoin the event, the request will be manually reviewed again. Are you sure you want to proceed?' },
 });
@@ -56,7 +56,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
         {floatingAction && action}
       </div>
       <div className='bg-primary-200 dark:bg-gray-600 h-40'>
-        {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.bannerHeader)} />}
+        {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.eventBanner)} />}
       </div>
       <Stack className='p-2.5' space={2}>
         <HStack space={2} alignItems='center' justifyContent='between'>

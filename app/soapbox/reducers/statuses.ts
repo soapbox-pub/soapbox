@@ -42,11 +42,11 @@ import {
 import { TIMELINE_DELETE } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const domParser = new DOMParser();
 
 type StatusRecord = ReturnType<typeof normalizeStatus>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ReducerStatus>;
@@ -56,6 +56,7 @@ export interface ReducerStatus extends StatusRecord {
   reblog: string | null,
   poll: string | null,
   quote: string | null,
+  group: string | null,
 }
 
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
@@ -64,6 +65,7 @@ const minifyStatus = (status: StatusRecord): ReducerStatus => {
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
+    group: normalizeId(status.getIn(['group', 'id'])),
   }) as ReducerStatus;
 };
 
