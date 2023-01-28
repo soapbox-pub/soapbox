@@ -39,10 +39,10 @@ import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeId } from 'soapbox/utils/normalizers';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 type AccountRecord = ReturnType<typeof normalizeAccount>;
 type AccountMap = ImmutableMap<string, any>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 export interface ReducerAccount extends AccountRecord {

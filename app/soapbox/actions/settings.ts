@@ -156,6 +156,8 @@ const defaultSettings = ImmutableMap({
     }),
   }),
 
+  groups: ImmutableMap({}),
+
   trends: ImmutableMap({
     show: true,
   }),

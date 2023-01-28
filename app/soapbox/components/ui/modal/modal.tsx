@@ -40,6 +40,8 @@ interface IModal {
   confirmationText?: React.ReactNode,
   /** Confirmation button theme. */
   confirmationTheme?: ButtonThemes,
+  /** Whether to use full width style for confirmation button. */
+  confirmationFullWidth?: boolean,
   /** Callback when the modal is closed. */
   onClose?: () => void,
   /** Callback when the secondary action is chosen. */
@@ -66,6 +68,7 @@ const Modal: React.FC<IModal> = ({
   confirmationDisabled,
   confirmationText,
   confirmationTheme,
+  confirmationFullWidth,
   onClose,
   secondaryAction,
   secondaryDisabled = false,
@@ -118,7 +121,7 @@ const Modal: React.FC<IModal> = ({
 
       {confirmationAction && (
         <HStack className='mt-5' justifyContent='between' data-testid='modal-actions'>
-          <div className='flex-grow'>
+          <div className={classNames({ 'flex-grow': !confirmationFullWidth })}>
             {cancelAction && (
               <Button
                 theme='tertiary'
@@ -129,7 +132,7 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-          <HStack space={2}>
+          <HStack space={2} className={classNames({ 'flex-grow': confirmationFullWidth })}>
             {secondaryAction && (
               <Button
                 theme='secondary'
@@ -145,6 +148,7 @@ const Modal: React.FC<IModal> = ({
               onClick={confirmationAction}
               disabled={confirmationDisabled}
               ref={buttonRef}
+              block={confirmationFullWidth}
             >
               {confirmationText}
             </Button>

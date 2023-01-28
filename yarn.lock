@@ -2362,10 +2362,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tabler/icons@^1.113.0":
-  version "1.113.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.113.0.tgz#aeee5f38284d9996abec1bda46c237ef53cde8d4"
-  integrity sha512-DjxsvR/0HFHD/utQlM+q3wpl1W2n+jgEZkyfkCkc295rCoAfeXHIBfz/9ROrSHkr205Kq/M8KpQR0Nd4kjwODQ==
+"@tabler/icons@^1.117.0":
+  version "1.117.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.117.0.tgz#2ffafca94f868940cf84a839e284c243e095c45a"
+  integrity sha512-4UGF8fMcROiy++CCNlzTz6p22rxFQD/fAMfaw/8Uanopl41X2SCZTmpnotS3C6Qdrk99m8eMZySa5w1y99gFqQ==
 
 "@tailwindcss/forms@^0.5.3":
   version "0.5.3"
@@ -9704,10 +9704,10 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-virtuoso@^4.0.0:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.0.3.tgz#0dc8b10978095852d985b064157639b9fb9d9b1e"
-  integrity sha512-tyqt8FBWxO+smve/kUgJbhCI2MEOvH2hHgFYPKWBMA2cJmV+cHIDDh1BL/6w4pg/dcCdlHCNVwi6aiztPxWttw==
+react-virtuoso@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.0.6.tgz#5ee8a72bf0b57d31063cef6343b26e6cde5529e3"
+  integrity sha512-TJ4fyTbre0uTpXE0AXaMG2BOX9PgKfDC7wLhnSmDvBU0WoEUrIAcNJACLJvqyWZMDAuEv3v+b4OyK6jiSkFL9Q==
 
 react@^18.0.0:
   version "18.2.0"

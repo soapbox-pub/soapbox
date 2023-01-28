@@ -90,6 +90,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             timestamp={actualStatus.created_at}
             avatarSize={42}
             hideActions
+            approvalStatus={actualStatus.approval_status}
           />
         </div>
 

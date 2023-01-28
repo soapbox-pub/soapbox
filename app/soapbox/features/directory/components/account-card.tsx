@@ -3,10 +3,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
+import Account from 'soapbox/components/account';
 import Badge from 'soapbox/components/badge';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -51,8 +51,8 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
       </div>
 
       <Stack space={4} className='p-3'>
-        <AccountContainer
-          id={account.id}
+        <Account
+          account={account}
           withRelationship={false}
         />
 
