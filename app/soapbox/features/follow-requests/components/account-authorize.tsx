@@ -46,14 +46,14 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
       <HStack space={2}>
         <IconButton
           theme='outlined'
-          className='text-green-600 dark:text-green-600 md:pr-2.5'
+          className='bg-accent text-success-600 dark:text-success-600 md:pr-2.5'
           src={require('@tabler/icons/check.svg')}
           onClick={onAuthorize}
           text={!isMobile(window.innerWidth) ? intl.formatMessage(messages.authorize) : ''}
         />
         <IconButton
-          theme='outlined'
-          className='text-red-600 dark:text-red-600 md:pr-2.5'
+          theme='seamless'
+          className='text-danger-600 dark:text-danger-600'
           src={require('@tabler/icons/x.svg')}
           onClick={onReject}
           text={!isMobile(window.innerWidth) ? intl.formatMessage(messages.reject) : ''}
