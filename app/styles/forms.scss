@@ -101,7 +101,7 @@ select {
   }
 
   .hint {
-    color: var(--primary-text-color--faint);
+    @apply text-gray-400;
 
     a {
       color: var(--highlight-text-color);
@@ -120,8 +120,8 @@ select {
   }
 
   p.hint {
+    @apply text-gray-400;
     margin-bottom: 15px;
-    color: var(--primary-text-color--faint);
 
     &.subtle-hint {
       text-align: center;
@@ -151,9 +151,9 @@ select {
       display: flex;
 
       & > label {
+        @apply text-gray-900;
         font-family: inherit;
         font-size: 14px;
-        color: var(--primary-text-color);
         font-weight: 500;
         min-width: 150px;
         flex: 0 0 auto;
@@ -204,10 +204,10 @@ select {
   }
 
   .input.radio_buttons .radio label {
+    @apply text-gray-900;
     margin-bottom: 5px;
     font-family: inherit;
     font-size: 14px;
-    color: var(--primary-text-color);
     display: block;
     width: auto;
   }
@@ -219,8 +219,7 @@ select {
     input[type=url],
     input[type=password],
     textarea {
-      color: var(--primary-text-color--faint);
-      border-color: var(--primary-text-color--faint);
+      @apply text-gray-400 border-gray-400;
     }
   }
 
@@ -231,17 +230,15 @@ select {
   input[type=password],
   textarea,
   .rfipbtn {
-    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
+    @apply border border-solid border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
     box-sizing: border-box;
     font-size: 16px;
-    color: var(--primary-text-color);
     display: block;
     width: 100%;
     outline: 0;
     font-family: inherit;
     resize: vertical;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--input-border-color);
     border-radius: 6px;
     padding: 8px 12px;
     transition: 0.2s;
@@ -280,8 +277,7 @@ select {
   input[type=url][disabled],
   input[type=password][disabled],
   textarea[disabled] {
-    color: var(--primary-text-color--faint);
-    border-color: var(--primary-text-color--faint);
+    @apply text-gray-400 border-gray-400;
   }
 
   .input.field_with_errors {
@@ -403,6 +399,10 @@ select {
   //   padding-top: 0.5rem;
   // }
 
+  .label_input__wrapper {
+    position: relative;
+  }
+
   h2 {
     font-size: 20px;
     line-height: normal;
@@ -413,9 +413,9 @@ select {
 
 .simple_form {
   .warning {
+    @apply text-gray-900;
     box-sizing: border-box;
     background: rgba($error-value-color, 0.5);
-    color: var(--primary-text-color);
     text-shadow: 1px 1px 0 rgba($base-shadow-color, 0.3);
     box-shadow: 0 2px 6px rgba($base-shadow-color, 0.4);
     border-radius: 4px;
@@ -423,13 +423,12 @@ select {
     margin-bottom: 15px;
 
     a {
-      color: var(--primary-text-color);
-      text-decoration: underline;
+      @apply text-gray-900 underline;
 
       &:hover,
       &:focus,
       &:active {
-        text-decoration: none;
+        @apply no-underline;
       }
     }
 

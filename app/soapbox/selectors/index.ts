@@ -144,12 +144,13 @@ export const makeGetStatus = () => {
       (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || ''),
+      (state: RootState, { id }: APIStatus) => state.groups.items.get(state.statuses.get(id)?.group || ''),
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
       (state: RootState) => state.me,
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, username, filters, me) => {
+    (statusBase, statusReblog, accountBase, accountReblog, group, username, filters, me) => {
       if (!statusBase || !accountBase) return null;
 
       const accountUsername = accountBase.acct;
@@ -172,6 +173,8 @@ export const makeGetStatus = () => {
         map.set('reblog', statusReblog || null);
         // @ts-ignore :(
         map.set('account', accountBase || null);
+        // @ts-ignore
+        map.set('group', group || null);
         map.set('filtered', Boolean(filtered));
       });
     },
@@ -200,6 +203,25 @@ export const getAccountGallery = createSelector([
   (state: RootState, id: string) => state.timelines.get(`account:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState)       => state.statuses,
   (state: RootState)       => state.accounts,
+], (statusIds, statuses, accounts) => {
+
+  return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
+    const status = statuses.get(statusId);
+    if (!status) return medias;
+    if (status.reblog) return medias;
+    if (typeof status.account !== 'string') return medias;
+
+    const account = accounts.get(status.account);
+
+    return medias.concat(
+      status.media_attachments.map(media => media.merge({ status, account })));
+  }, ImmutableList());
+});
+
+export const getGroupGallery = createSelector([
+  (state: RootState, id: string) => state.timelines.get(`group:${id}:media`)?.items || ImmutableOrderedSet<string>(),
+  (state: RootState) => state.statuses,
+  (state: RootState) => state.accounts,
 ], (statusIds, statuses, accounts) => {
 
   return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
@@ -350,3 +372,16 @@ export const makeGetStatusIds = () => createSelector([
     return !shouldFilter(status, columnSettings);
   });
 });
+
+export const makeGetGroup = () => {
+  return createSelector([
+    (state: RootState, id: string) => state.groups.items.get(id),
+    (state: RootState, id: string) => state.group_relationships.get(id),
+  ], (base, relationship) => {
+    if (!base) return null;
+
+    return base.withMutations(map => {
+      if (relationship) map.set('relationship', relationship);
+    });
+  });
+};

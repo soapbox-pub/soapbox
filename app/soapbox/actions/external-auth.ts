@@ -15,7 +15,7 @@ import sourceCode from 'soapbox/utils/code';
 import { getWalletAndSign } from 'soapbox/utils/ethereum';
 import { getFeatures } from 'soapbox/utils/features';
 import { getQuirks } from 'soapbox/utils/quirks';
-import { getScopes } from 'soapbox/utils/scopes';
+import { getInstanceScopes } from 'soapbox/utils/scopes';
 
 import { baseClient } from '../api';
 
@@ -38,7 +38,7 @@ const fetchExternalInstance = (baseURL?: string) => {
 };
 
 const createExternalApp = (instance: Instance, baseURL?: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  (dispatch: AppDispatch, _getState: () => RootState) => {
     // Mitra: skip creating the auth app
     if (getQuirks(instance).noApps) return new Promise(f => f({}));
 
@@ -46,15 +46,15 @@ const createExternalApp = (instance: Instance, baseURL?: string) =>
       client_name: sourceCode.displayName,
       redirect_uris: `${window.location.origin}/login/external`,
       website: sourceCode.homepage,
-      scopes: getScopes(getState()),
+      scopes: getInstanceScopes(instance),
     };
 
     return dispatch(createApp(params, baseURL));
   };
 
 const externalAuthorize = (instance: Instance, baseURL: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const scopes = getScopes(getState());
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    const scopes = getInstanceScopes(instance);
 
     return dispatch(createExternalApp(instance, baseURL)).then((app) => {
       const { client_id, redirect_uri } = app as Record<string, string>;
@@ -88,7 +88,7 @@ const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
           client_secret: client_secret,
           password: signature as string,
           redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-          scope: getScopes(getState()),
+          scope: getInstanceScopes(instance),
         };
 
         return dispatch(obtainOAuthToken(params, baseURL))

@@ -1,14 +1,11 @@
 import React, { useRef } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { IconButton } from 'soapbox/components/ui';
+import Icon from 'soapbox/components/icon';
+import { HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import type { List as ImmutableList } from 'immutable';
-
-const messages = defineMessages({
-  upload: { id: 'compose_event.upload_banner', defaultMessage: 'Upload event banner' },
-});
 
 interface IUploadButton {
   disabled?: boolean,
@@ -16,8 +13,6 @@ interface IUploadButton {
 }
 
 const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
-  const intl = useIntl();
-
   const fileElement = useRef<HTMLInputElement>(null);
   const attachmentTypes = useAppSelector(state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>)?.filter(type => type.startsWith('image/'));
 
@@ -32,27 +27,25 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
   };
 
   return (
-    <div>
-      <IconButton
+    <HStack className='h-full w-full text-primary-500 dark:text-accent-blue cursor-pointer' space={3} alignItems='center' justifyContent='center' element='label'>
+      <Icon
         src={require('@tabler/icons/photo-plus.svg')}
-        className='h-8 w-8 text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
-        title={intl.formatMessage(messages.upload)}
-        disabled={disabled}
+        className='h-7 w-7'
         onClick={handleClick}
       />
 
-      <label>
-        <span className='sr-only'>{intl.formatMessage(messages.upload)}</span>
-        <input
-          ref={fileElement}
-          type='file'
-          accept={attachmentTypes && attachmentTypes.toArray().join(',')}
-          onChange={handleChange}
-          disabled={disabled}
-          className='hidden'
-        />
-      </label>
-    </div>
+      <Text size='sm' theme='primary' weight='semibold' transform='uppercase'>
+        <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
+      </Text>
+      <input
+        ref={fileElement}
+        type='file'
+        accept={attachmentTypes && attachmentTypes.toArray().join(',')}
+        onChange={handleChange}
+        disabled={disabled}
+        className='hidden'
+      />
+    </HStack>
   );
 };
 

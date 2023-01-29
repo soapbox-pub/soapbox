@@ -33,10 +33,10 @@ import {
 } from '../actions/importer';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 type Relationship = ReturnType<typeof normalizeRelationship>;
 type State = ImmutableMap<string, Relationship>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 const normalizeRelationships = (state: State, relationships: APIEntities) => {

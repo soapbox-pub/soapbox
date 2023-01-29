@@ -3,7 +3,6 @@
   display: inline-flex;
   align-items: center;
   padding: 0;
-  color: var(--primary-text-color);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -130,20 +129,13 @@
 }
 
 .setting-text {
-  color: var(--primary-text-color--faint);
-  background: transparent;
-  border: 0;
-  border-bottom: 2px solid var(--brand-color);
-  box-sizing: border-box;
-  display: block;
+  @apply block w-full mb-2.5 border-0 border-b-2 border-solid box-border text-gray-400 bg-transparent;
   font-family: inherit;
-  margin-bottom: 10px;
   padding: 7px 0;
-  width: 100%;
 
   &:focus,
   &:active {
-    color: var(--primary-text-color);
+    @apply text-gray-900;
     border-bottom-color: var(--highlight-text-color);
   }
 
@@ -171,12 +163,4 @@
   0% { opacity: 1; }
   30% { opacity: 0.75; }
   100% { opacity: 1; }
-}
-
-.text-muted {
-  color: var(--gray-500);
-}
-
-.mb-10 {
-  margin-bottom: 10px;
 }

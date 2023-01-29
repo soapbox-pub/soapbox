@@ -46,6 +46,8 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   divideType?: 'space' | 'border',
   /** Whether to display ads. */
   showAds?: boolean,
+  /** Whether to show group information. */
+  showGroup?: boolean,
 }
 
 /** Feed of statuses, built atop ScrollableList. */
@@ -59,6 +61,7 @@ const StatusList: React.FC<IStatusList> = ({
   isLoading,
   isPartial,
   showAds = false,
+  showGroup = true,
   ...other
 }) => {
   const { data: ads } = useAds();
@@ -135,6 +138,7 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
         contextType={timelineId}
+        showGroup={showGroup}
       />
     );
   };
@@ -167,6 +171,7 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
         contextType={timelineId}
+        showGroup={showGroup}
       />
     ));
   };
