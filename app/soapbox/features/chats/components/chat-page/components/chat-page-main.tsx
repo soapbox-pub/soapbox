@@ -38,8 +38,8 @@ const messages = defineMessages({
   autoDelete14Days: { id: 'chat_settings.auto_delete.14days', defaultMessage: '14 days' },
   autoDelete30Days: { id: 'chat_settings.auto_delete.30days', defaultMessage: '30 days' },
   autoDelete90Days: { id: 'chat_settings.auto_delete.90days', defaultMessage: '90 days' },
-  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day} days' },
-  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day} days upon sending.' },
+  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day, plural, one {# day} other {# days}}' },
+  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day, plural, one {# day} other {# days}} upon sending.' },
 });
 
 const ChatPageMain = () => {

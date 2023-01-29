@@ -69,12 +69,12 @@
 }
 
 .account__joined-at {
+  @apply text-gray-400;
   padding-left: 3px;
   font-size: 14px;
   display: flex;
   white-space: nowrap;
   flex-shrink: 0;
-  color: var(--primary-text-color--faint);
 
   .svg-icon {
     padding-right: 3px;

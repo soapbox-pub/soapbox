@@ -19,7 +19,7 @@ const messages = defineMessages({
   accept: { id: 'chat_message_list_intro.actions.accept', defaultMessage: 'Accept' },
   leaveChat: { id: 'chat_message_list_intro.actions.leave_chat', defaultMessage: 'Leave chat' },
   report: { id: 'chat_message_list_intro.actions.report', defaultMessage: 'Report' },
-  messageLifespan: { id: 'chat_message_list_intro.actions.message_lifespan', defaultMessage: 'Messages older than {day} days are deleted.' },
+  messageLifespan: { id: 'chat_message_list_intro.actions.message_lifespan', defaultMessage: 'Messages older than {day, plural, one {# day} other {# days}} are deleted.' },
 });
 
 const ChatMessageListIntro = () => {

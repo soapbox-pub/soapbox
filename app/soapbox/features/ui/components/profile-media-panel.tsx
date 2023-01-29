@@ -51,7 +51,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
 
     if (!nineAttachments.isEmpty()) {
       return (
-        <div className='flex flex-wrap'>
+        <div className='flex flex-wrap -m-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
               key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
@@ -74,7 +74,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
   return (
     <Widget title={<FormattedMessage id='media_panel.title' defaultMessage='Media' />}>
       {account && (
-        <div className='w-full py-2'>
+        <div className='w-full'>
           {loading ? (
             <Spinner />
           ) : (

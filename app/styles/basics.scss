@@ -39,9 +39,9 @@ body {
   }
 
   &.error {
+    @apply text-gray-400;
     position: absolute;
     text-align: center;
-    color: var(--primary-text-color--faint);
     background: var(--brand-color--med);
     width: 100%;
     height: 100%;
@@ -83,9 +83,9 @@ noscript {
   }
 
   div {
+    @apply text-gray-400;
     font-size: 14px;
     margin: 30px auto;
-    color: var(--primary-text-color--faint);
     max-width: 400px;
 
     a {

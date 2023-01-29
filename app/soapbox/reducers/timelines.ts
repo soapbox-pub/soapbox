@@ -35,7 +35,6 @@ import {
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
-import type { StatusVisibility } from 'soapbox/normalizers/status';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const TRUNCATE_LIMIT = 40;
@@ -242,8 +241,10 @@ const timelineDisconnect = (state: State, timelineId: string) => {
   }));
 };
 
-const getTimelinesByVisibility = (visibility: StatusVisibility) => {
-  switch (visibility) {
+const getTimelinesForStatus = (status: APIEntity) => {
+  switch (status.visibility) {
+    case 'group':
+      return [`group:${status.group?.id || status.group_id}`];
     case 'direct':
       return ['direct'];
     case 'public':
@@ -269,7 +270,7 @@ const importPendingStatus = (state: State, params: APIEntity, idempotencyKey: st
   const statusId = `末pending-${idempotencyKey}`;
 
   return state.withMutations(state => {
-    const timelineIds = getTimelinesByVisibility(params.visibility);
+    const timelineIds = getTimelinesForStatus(params);
 
     timelineIds.forEach(timelineId => {
       updateTimelineQueue(state, timelineId, statusId);
@@ -293,7 +294,7 @@ const importStatus = (state: State, status: APIEntity, idempotencyKey: string) =
   return state.withMutations(state => {
     replacePendingStatus(state, idempotencyKey, status.id);
 
-    const timelineIds = getTimelinesByVisibility(status.visibility);
+    const timelineIds = getTimelinesForStatus(status);
 
     timelineIds.forEach(timelineId => {
       updateTimeline(state, timelineId, status.id);
