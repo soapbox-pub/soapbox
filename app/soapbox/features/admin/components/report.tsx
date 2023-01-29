@@ -20,6 +20,7 @@ const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
+  reportedPosts: { id: 'admin.reports.reported_posts', defaultMessage: '{count} {count, plural, one {post} other {posts}} reported' },
 });
 
 interface IReport {
@@ -104,11 +105,7 @@ const Report: React.FC<IReport> = ({ id }) => {
 
         {statusCount > 0 && (
           <Accordion
-            headline={<FormattedMessage
-              id='admin.reports.reported_posts'
-              defaultMessage='Has been reported {count} {count, plural, one {post} other {posts}}'
-              values={{ count: statusCount }}
-            />}
+            headline={intl.formatMessage(messages.reportedPosts, { count: statusCount as number })}
             expanded={accordionExpanded}
             onToggle={handleAccordionToggle}
           >
@@ -148,15 +145,15 @@ const Report: React.FC<IReport> = ({ id }) => {
         </Stack>
       </Stack>
 
-      <HStack space={2} alignItems='top' className='flex-none'>
+      <Stack space={2} alignItems='top' className='flex-none'>
         <DropdownMenu  items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
         <IconButton
           src={require('@tabler/icons/x.svg')}
           onClick={handleCloseReport}
           theme='outlined'
-          iconClassName='p-1 text-red-600 dark:text-red-600'
+          iconClassName='p-1 text-gray-600 dark:text-gray-400'
         />
-      </HStack>
+      </Stack>
     </HStack>
   );
 };
