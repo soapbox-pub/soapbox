@@ -6,7 +6,6 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
@@ -135,7 +134,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const deactivated = !account.pleroma.get('is_active', true) === true;
   const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
-  const verified = account.verified;
   const badges = getBadges();
 
   return (
@@ -144,8 +142,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack>
           <HStack space={1} alignItems='center'>
             <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
-
-            {verified && <VerificationBadge />}
 
             {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
 

@@ -19,6 +19,7 @@ import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
@@ -499,16 +500,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
       );
     }
 
-    if (account.verified) {
-      info.push(
-        <Badge
-          key='verified'
-          slug='opaque'
-          title={<FormattedMessage id='account.verified' defaultMessage='Verified Account' />}
-        />,
-      );
-    }
-
     return info;
   };
 
@@ -623,6 +614,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                 className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900'
               />
             </a>
+            {account.verified && <VerificationBadge className='w-6 h-6 -ml-6 mt-16 rounded-full ring-2 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900' />}
           </div>
 
           <div className='mt-6 flex justify-end w-full sm:pb-1'>
