@@ -51,12 +51,11 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
 
     if (!nineAttachments.isEmpty()) {
       return (
-        <div className='flex flex-wrap -m-1'>
+        <div className='grid grid-cols-3 gap-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
               key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
               attachment={attachment}
-              displayWidth={255}
               onOpenMedia={handleOpenMedia}
             />
           ))}

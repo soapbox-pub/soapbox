@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -65,7 +65,6 @@ const AccountGallery = () => {
   const isLoading = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.isLoading);
   const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
 
-  const [width, setWidth] = useState(323);
   const node = useRef<HTMLDivElement>(null);
 
   const handleScrollToBottom = () => {
@@ -95,12 +94,6 @@ const AccountGallery = () => {
       dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
     }
   };
-
-  useLayoutEffect(() => {
-    if (node.current) {
-      setWidth(node.current.offsetWidth);
-    }
-  }, [node.current]);
 
   useEffect(() => {
     if (accountId && accountId !== -1) {
@@ -143,14 +136,13 @@ const AccountGallery = () => {
 
   return (
     <Column label={`@${accountUsername}`} transparent withHeader={false}>
-      <div role='feed' className='flex flex-wrap gap-2' ref={node}>
+      <div role='feed' className='grid grid-cols-2 gap-2 sm:grid-cols-3' ref={node}>
         {attachments.map((attachment, index) => attachment === null ? (
           <LoadMoreMedia key={'more:' + attachments.get(index + 1)?.id} maxId={index > 0 ? (attachments.get(index - 1)?.id || null) : null} onLoadMore={handleLoadMore} />
         ) : (
           <MediaItem
             key={`${attachment.status.id}+${attachment.id}`}
             attachment={attachment}
-            displayWidth={width}
             onOpenMedia={handleOpenMedia}
           />
         ))}

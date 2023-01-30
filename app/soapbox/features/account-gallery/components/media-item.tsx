@@ -11,11 +11,10 @@ import type { Attachment } from 'soapbox/types/entities';
 
 interface IMediaItem {
   attachment: Attachment,
-  displayWidth: number,
   onOpenMedia: (attachment: Attachment) => void,
 }
 
-const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia }) => {
+const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif');
   const displayMedia = settings.get('displayMedia');
@@ -53,8 +52,6 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
     }
   };
 
-  const width  = `${Math.floor((displayWidth - 4) / 3) - 4}px`;
-  const height = width;
   const status = attachment.get('status');
   const title  = status.get('spoiler_text') || attachment.get('description');
 
@@ -124,8 +121,8 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
   }
 
   return (
-    <div style={{ width, height }}>
-      <a className='media-gallery__item-thumbnail' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
+    <div className='col-span-1'>
+      <a className='media-gallery__item-thumbnail aspect-square' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
           hash={attachment.get('blurhash')}
           className={classNames('media-gallery__preview', {
