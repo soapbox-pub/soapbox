@@ -1,6 +1,6 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
@@ -19,11 +19,6 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   const intl = useIntl();
   const features = useFeatures();
   const instance = useInstance();
-
-  const messages = defineMessages({
-    translate: { id: 'status.translate', defaultMessage: 'Translate' },
-    showOriginal: { id: 'status.show_original', defaultMessage: 'Show original' },
-  });
 
   const me = useAppSelector((state) => state.me);
 
@@ -58,7 +53,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
       <Stack space={3} alignItems='start'>
         <Button
           theme='muted'
-          text={intl.formatMessage(messages.showOriginal)}
+          text={<FormattedMessage id='status.show_original' defaultMessage='Show original' />}
           icon={require('@tabler/icons/language.svg')}
           onClick={handleTranslate}
         />
@@ -73,7 +68,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
     <div>
       <Button
         theme='muted'
-        text={intl.formatMessage(messages.translate)}
+        text={<FormattedMessage id='status.translate' defaultMessage='Translate' />}
         icon={require('@tabler/icons/language.svg')}
         onClick={handleTranslate}
       />
