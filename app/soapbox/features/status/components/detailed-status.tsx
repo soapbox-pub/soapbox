@@ -110,8 +110,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
           <Stack space={4}>
             <StatusContent
-              size='lg'
               status={actualStatus}
+              textSize='lg'
               translatable
             />
 

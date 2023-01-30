@@ -36,7 +36,7 @@ interface IStatusContent {
   onClick?: () => void,
   collapsable?: boolean,
   translatable?: boolean,
-  size?: Sizes,
+  textSize?: Sizes,
 }
 
 /** Renders the text content of a status */
@@ -45,7 +45,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   onClick,
   collapsable = false,
   translatable,
-  size = 'md',
+  textSize = 'md',
 }) => {
   const history = useHistory();
 
@@ -170,7 +170,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
-        size={size}
+        size={textSize}
       />,
     ];
 
@@ -196,7 +196,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
-        size={size}
+        size={textSize}
       />,
     ];
 
