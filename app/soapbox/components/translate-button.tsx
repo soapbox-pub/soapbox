@@ -6,7 +6,7 @@ import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 
-import { IconButton, HStack } from './ui';
+import { Stack, Button, Text } from './ui';
 
 import type { Account, Status } from 'soapbox/types/entities';
 
@@ -49,39 +49,32 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   if (!features.translations || !renderTranslate || !supportsLanguages) return null;
 
-  const textStyle = 'text-gray-700 dark:text-gray-600 text-sm';
-  const iconStyle = 'text-gray-600 dark:text-gray-400 p-0.5';
-
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
     const languageName = languageNames.of(status.language!);
     const provider     = status.translation.get('provider');
 
     return (
-      <HStack className={textStyle} space={3} alignItems='center'>
-        <IconButton
-          className={'pr-3'}
-          iconClassName={iconStyle}
-          theme='outlined'
+      <Stack space={3} alignItems='start'>
+        <Button
+          theme='muted'
           text={intl.formatMessage(messages.showOriginal)}
-          src={require('@tabler/icons/language.svg')}
+          icon={require('@tabler/icons/language.svg')}
           onClick={handleTranslate}
         />
-        <span>
+        <Text theme='muted'>
           <FormattedMessage id='status.translated_from_with' defaultMessage='Translated from {lang} using {provider}' values={{ lang: languageName, provider }} />
-        </span>
-      </HStack>
+        </Text>
+      </Stack>
     );
   }
 
   return (
-    <div className={textStyle}>
-      <IconButton
-        className={'pr-3'}
-        iconClassName={iconStyle}
-        theme='outlined'
+    <div>
+      <Button
+        theme='muted'
         text={intl.formatMessage(messages.translate)}
-        src={require('@tabler/icons/language.svg')}
+        icon={require('@tabler/icons/language.svg')}
         onClick={handleTranslate}
       />
     </div>
