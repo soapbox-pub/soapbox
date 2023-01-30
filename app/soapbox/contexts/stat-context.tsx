@@ -9,7 +9,11 @@ const StatContext = createContext<any>({
   unreadChatsCount: 0,
 });
 
-const StatProvider: React.FC = ({ children }) => {
+interface IStatProvider {
+  children: React.ReactNode
+}
+
+const StatProvider: React.FC<IStatProvider> = ({ children }) => {
   const [unreadChatsCount, setUnreadChatsCount] = useState<number>(0);
 
   const value = useMemo(() => ({

@@ -1,12 +1,11 @@
 import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import AccountAuthorize from './components/account-authorize';
 
@@ -19,7 +18,7 @@ const handleLoadMore = debounce((dispatch) => {
 }, 300, { leading: true });
 
 const FollowRequests: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const accountIds = useAppSelector((state) => state.user_lists.follow_requests.items);

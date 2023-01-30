@@ -1,7 +1,7 @@
 import classNames from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -106,6 +106,7 @@ interface IVideo {
   height?: number,
   startTime?: number,
   detailed?: boolean,
+  autoFocus?: boolean,
   inline?: boolean,
   cacheWidth?: (width: number) => void,
   visible?: boolean,
@@ -119,6 +120,7 @@ const Video: React.FC<IVideo> = ({
   width,
   visible = false,
   detailed = false,
+  autoFocus = false,
   cacheWidth,
   startTime,
   src,
@@ -159,7 +161,7 @@ const Video: React.FC<IVideo> = ({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setDimensions();
   }, [player.current]);
 
@@ -518,7 +520,7 @@ const Video: React.FC<IVideo> = ({
               aria-label={intl.formatMessage(paused ? messages.play : messages.pause)}
               className='player-button'
               onClick={togglePlay}
-              autoFocus={detailed}
+              autoFocus={autoFocus}
             >
               <Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} />
             </button>

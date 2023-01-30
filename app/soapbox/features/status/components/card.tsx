@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { useSettings } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { addAutoPlay } from 'soapbox/utils/media';
 
@@ -42,9 +41,6 @@ const Card: React.FC<ICard> = ({
   onOpenMedia,
   horizontal,
 }): JSX.Element => {
-  const settings = useSettings();
-  const shouldAutoPlayVideo = settings.get('autoPlayVideo');
-
   const [width, setWidth] = useState(defaultWidth);
   const [embedded, setEmbedded] = useState(false);
 
@@ -92,7 +88,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const renderVideo = () => {
-    const content = { __html: shouldAutoPlayVideo ? addAutoPlay(card.html) : card.html };
+    const content = { __html: addAutoPlay(card.html) };
     const ratio = getRatio(card);
     const height = width / ratio;
 
@@ -111,7 +107,7 @@ const Card: React.FC<ICard> = ({
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
-    return Math.min(Math.max(1, ratio), 4);
+    return Math.min(Math.max(9 / 16, ratio), 4);
   };
 
   const interactive = card.type !== 'link';
@@ -153,7 +149,7 @@ const Card: React.FC<ICard> = ({
     </Stack>
   );
 
-  let embed: React.ReactNode = '';
+  let embed: React.ReactNode = null;
 
   const canvas = (
     <Blurhash
@@ -238,12 +234,6 @@ const Card: React.FC<ICard> = ({
       >
         {canvas}
         {thumbnail}
-      </div>
-    );
-  } else {
-    embed = (
-      <div className='status-card__image status-card__image--empty'>
-        <Icon src={require('@tabler/icons/file-text.svg')} />
       </div>
     );
   }

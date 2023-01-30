@@ -7,11 +7,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Admin: redirect the homepage to any URL.
+- Compatibility: added compatibility with Friendica.
+- Posts: bot badge on statuses from bot accounts.
+- Compatibility: improved browser support for older browsers.
+- Events: allow to repost events in event menu.
+- Groups: Initial support for groups.
 
 ### Changed
+- Chats: improved display of media attachments.
+- ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
+- Posts: increased font size of focused status in threads.
+
+### Fixed
+- Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
+- Chats: don't display "copy" button for messages without text.
+- Posts: don't have to click the play button twice for embedded videos.
+- index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
+- Modals: fix media modal automatically switching to video.
+
+### Removed
+- Admin: single user mode. Now the homepage can be redirected to any URL.
+
+## [3.1.0] - 2023-01-13
+
+### Added
+- Compatibility: rudimentary support for Takahē.
+- UI: added backdrop blur behind modals.
+- Admin: let admins configure media preview for attachment thumbnails.
+- Login: accept `?server` param in external login, eg `fe.soapbox.pub/login/external?server=gleasonator.com`.
+- Backups: restored Pleroma backups functionality.
+- Export: restored "Export data" to CSV.
+
+### Changed
+- Posts: letterbox images to 19:6 again.
+- Status Info: moved context (repost, pinned) to improve UX.
+- Posts: remove file icon from empty link previews.
+- Settings: moved "Import data" under settings.
+- Composer: add more descriptive discard confirmation message.
 
 ### Fixed
 - Layout: use accent color for "floating action button" (mobile compose button).
+- ServiceWorker: don't serve favicon, robots.txt, and others from ServiceWorker.
+- Datepicker: correctly default to the current year.
+- Scheduled posts: fix page crashing on deleting a scheduled post.
+- Events: don't crash when searching for a location.
+- Search: fixes an abort error when using the navbar search component.
+- Posts: fix monospace font in Markdown code blocks.
+- Modals: fix action buttons overflow
+- Editing: don't insert edited posts to the top of the feed.
+- Editing: don't display edited posts as pending posts.
+- Modals: close modal when navigating to a different page.
+- Modals: fix "View context" button in media modal.
+- Posts: let unauthenticated users to translate posts if allowed by backend.
+- Chats: fix jumpy scrollbar.
+- Composer: fix alignment of icon in submit button.
+- Login: add a border around QR codes.
+- Composer: don't display action button in reply indicator.
 
 ## [3.0.0] - 2022-12-25
 

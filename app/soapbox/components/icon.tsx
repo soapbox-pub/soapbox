@@ -1,27 +1,28 @@
 /**
- * Icon: abstract icon class that can render icons from multiple sets.
+ * Icon: abstact component to render SVG icons.
  * @module soapbox/components/icon
- * @see soapbox/components/fork_awesome_icon
- * @see soapbox/components/svg_icon
  */
 
+import classNames from 'clsx';
 import React from 'react';
+import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
-import ForkAwesomeIcon, { IForkAwesomeIcon } from './fork-awesome-icon';
-import SvgIcon, { ISvgIcon } from './svg-icon';
+export interface IIcon extends React.HTMLAttributes<HTMLDivElement> {
+  src: string,
+  id?: string,
+  alt?: string,
+  className?: string,
+}
 
-export type IIcon = IForkAwesomeIcon | ISvgIcon;
-
-const Icon: React.FC<IIcon> = (props) => {
-  if ((props as ISvgIcon).src) {
-    const { src, ...rest } = (props as ISvgIcon);
-
-    return <SvgIcon src={src} {...rest} />;
-  } else {
-    const { id, fixedWidth, ...rest } = (props as IForkAwesomeIcon);
-
-    return <ForkAwesomeIcon id={id} fixedWidth={fixedWidth} {...rest} />;
-  }
+const Icon: React.FC<IIcon> = ({ src, alt, className, ...rest }) => {
+  return (
+    <div
+      className={classNames('svg-icon', className)}
+      {...rest}
+    >
+      <InlineSVG src={src} title={alt} loader={<></>} />
+    </div>
+  );
 };
 
 export default Icon;

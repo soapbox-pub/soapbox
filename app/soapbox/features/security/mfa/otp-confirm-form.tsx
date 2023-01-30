@@ -42,7 +42,7 @@ const OtpConfirmForm: React.FC = () => {
     });
   }, []);
 
-  const handleInputChange = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -75,7 +75,7 @@ const OtpConfirmForm: React.FC = () => {
           </Text>
         </Stack>
 
-        <QRCode value={state.qrCodeURI} />
+        <QRCode className='rounded-lg' value={state.qrCodeURI} includeMargin />
         {state.confirmKey}
 
         <Text weight='semibold' size='lg'>

@@ -50,7 +50,7 @@ const MOVE_ACCOUNT_FAIL    = 'MOVE_ACCOUNT_FAIL';
 const fetchOAuthTokens = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FETCH_TOKENS_REQUEST });
-    return api(getState).get('/api/oauth_tokens.json').then(({ data: tokens }) => {
+    return api(getState).get('/api/oauth_tokens').then(({ data: tokens }) => {
       dispatch({ type: FETCH_TOKENS_SUCCESS, tokens });
     }).catch(() => {
       dispatch({ type: FETCH_TOKENS_FAIL });

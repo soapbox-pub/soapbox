@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig, useInstance } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
@@ -30,8 +30,8 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const history = useHistory();
   const dispatch = useAppDispatch();
   const instance = useInstance();
+  const { isOpen } = useRegistrationStatus();
 
-  const { singleUserMode } = useSoapboxConfig();
   const username = useAppSelector(state => state.accounts.get(accountId)?.display_name);
   const features = useFeatures();
 
@@ -98,10 +98,10 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       <Modal
         title={header}
         onClose={onClickClose}
-        confirmationAction={!singleUserMode ? onLogin : undefined}
+        confirmationAction={onLogin}
         confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
-        secondaryAction={onRegister}
-        secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
+        secondaryAction={isOpen ? onRegister : undefined}
+        secondaryText={isOpen ? <FormattedMessage id='account.register' defaultMessage='Sign up' /> : undefined}
       >
         <div className='remote-interaction-modal__content'>
           <form className='simple_form remote-interaction-modal__fields' onSubmit={onSubmit}>
@@ -122,7 +122,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
               <FormattedMessage id='remote_interaction.divider' defaultMessage='or' />
             </Text>
           </div>
-          {!singleUserMode && (
+          {isOpen && (
             <Text size='lg' weight='medium'>
               <FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: instance.title }} />
             </Text>
@@ -142,8 +142,8 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       onClose={onClickClose}
       confirmationAction={onLogin}
       confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
-      secondaryAction={onRegister}
-      secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
+      secondaryAction={isOpen ? onRegister : undefined}
+      secondaryText={isOpen ? <FormattedMessage id='account.register' defaultMessage='Sign up' /> : undefined}
     >
       <Stack>
         <Text>

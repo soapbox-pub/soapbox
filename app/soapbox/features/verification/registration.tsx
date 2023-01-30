@@ -43,7 +43,7 @@ const Registration = () => {
   const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     dispatch(createAccount(username, password))
@@ -58,16 +58,18 @@ const Registration = () => {
           intl.formatMessage(messages.success, { siteTitle: instance.title }),
         );
       })
-      .catch((error: AxiosError) => {
-        if (error?.response?.status === 422) {
-          toast.error(intl.formatMessage(messages.usernameTaken));
+      .catch((errorResponse: AxiosError<{ error: string, message: string }>) => {
+        const error = errorResponse.response?.data?.error;
+
+        if (error) {
+          toast.error(errorResponse.response?.data?.message || intl.formatMessage(messages.usernameTaken));
         } else {
           toast.error(intl.formatMessage(messages.error));
         }
       });
   }, [username, password]);
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));

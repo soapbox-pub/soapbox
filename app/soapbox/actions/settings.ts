@@ -47,7 +47,6 @@ const defaultSettings = ImmutableMap({
   autoloadMore: true,
 
   systemFont: false,
-  dyslexicFont: false,
   demetricator: false,
 
   isDeveloper: false,
@@ -156,6 +155,8 @@ const defaultSettings = ImmutableMap({
       direct: false,
     }),
   }),
+
+  groups: ImmutableMap({}),
 
   trends: ImmutableMap({
     show: true,

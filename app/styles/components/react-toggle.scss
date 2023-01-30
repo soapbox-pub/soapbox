@@ -32,8 +32,7 @@
 }
 
 .react-toggle-track {
-  @apply bg-gray-500 dark:bg-gray-700 w-[50px] p-0 rounded-full transition-colors;
-  height: var(--input-height);
+  @apply bg-gray-500 dark:bg-gray-700 h-[30px] w-[50px] p-0 rounded-full transition-colors;
 }
 
 .react-toggle--checked .react-toggle-track {

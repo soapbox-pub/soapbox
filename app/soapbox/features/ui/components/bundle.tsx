@@ -32,14 +32,14 @@ class Bundle extends React.PureComponent<BundleProps, BundleState> {
     onFetch: noop,
     onFetchSuccess: noop,
     onFetchFail: noop,
-  }
+  };
 
-  static cache = new Map
+  static cache = new Map;
 
   state = {
     mod: undefined,
     forceRender: false,
-  }
+  };
 
   componentDidMount() {
     this.load(this.props);
@@ -91,7 +91,7 @@ class Bundle extends React.PureComponent<BundleProps, BundleState> {
         this.setState({ mod: null });
         onFetchFail(error);
       });
-  }
+  };
 
   render() {
     const { loading: Loading, error: Error, children, renderDelay } = this.props;

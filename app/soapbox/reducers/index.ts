@@ -10,6 +10,7 @@ import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_log from './admin-log';
+import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
@@ -25,6 +26,10 @@ import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
+import group_editor from './group-editor';
+import group_memberships from './group-memberships';
+import group_relationships from './group-relationships';
+import groups from './groups';
 import history from './history';
 import instance from './instance';
 import listAdder from './list-adder';
@@ -118,6 +123,11 @@ const reducers = {
   history,
   announcements,
   compose_event,
+  admin_user_index,
+  groups,
+  group_relationships,
+  group_memberships,
+  group_editor,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

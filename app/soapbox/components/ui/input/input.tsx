@@ -33,8 +33,6 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
   value?: string | number,
   /** Change event handler for the input. */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  /** Whether to display the input in red. */
-  hasError?: boolean,
   /** An element to display as prefix to input. Cannot be used with icon. */
   prepend?: React.ReactElement,
   /** An element to display as suffix to input. Cannot be used with password type. */
@@ -48,7 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, outerClassName, hasError, append, prepend, theme = 'normal', ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, append, prepend, theme = 'normal', ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -91,7 +89,6 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
             'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,
-            'text-red-600 border-red-600': hasError,
             'pl-8': typeof icon !== 'undefined',
             'pl-16': typeof prepend !== 'undefined',
           }, className)}

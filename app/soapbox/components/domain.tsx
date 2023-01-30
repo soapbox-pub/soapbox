@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { unblockDomain } from 'soapbox/actions/domain-blocks';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import { HStack, IconButton, Text } from './ui';
 
@@ -16,7 +16,7 @@ interface IDomain {
 }
 
 const Domain: React.FC<IDomain> = ({ domain }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   // const onBlockDomain = () => {

@@ -157,6 +157,7 @@ const useChats = (search?: string) => {
 
   const queryInfo = useInfiniteQuery(ChatKeys.chatSearch(search), ({ pageParam }) => getChats(pageParam), {
     keepPreviousData: true,
+    enabled: features.chats,
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };

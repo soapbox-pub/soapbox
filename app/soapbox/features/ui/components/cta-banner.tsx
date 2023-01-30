@@ -2,14 +2,15 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useInstance, useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
 
 const CtaBanner = () => {
   const instance = useInstance();
-  const { displayCta, singleUserMode } = useSoapboxConfig();
+  const { isOpen } = useRegistrationStatus();
+  const { displayCta } = useSoapboxConfig();
   const me = useAppSelector((state) => state.me);
 
-  if (me || !displayCta || singleUserMode) return null;
+  if (me || !displayCta || !isOpen) return null;
 
   return (
     <div data-testid='cta-banner' className='hidden lg:block'>

@@ -11,12 +11,12 @@ import api from '../api';
 
 const getMeUrl = (state: RootState) => {
   const me = state.me;
-  return state.accounts.getIn([me, 'url']);
+  return state.accounts.get(me)?.url;
 };
 
 /** Figure out the appropriate instance to fetch depending on the state */
 export const getHost = (state: RootState) => {
-  const accountUrl = getMeUrl(state) || getAuthUserUrl(state);
+  const accountUrl = getMeUrl(state) || getAuthUserUrl(state) as string;
 
   try {
     return new URL(accountUrl).host;

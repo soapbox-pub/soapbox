@@ -10,10 +10,10 @@ import {
 } from './importer';
 
 import type { AxiosError, CancelToken } from 'axios';
-import type { History } from 'history';
 import type { Map as ImmutableMap } from 'immutable';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { History } from 'soapbox/types/history';
 
 const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';

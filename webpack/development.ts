@@ -3,6 +3,7 @@ console.log('Running in development mode'); // eslint-disable-line no-console
 
 import { join } from 'path';
 
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import { merge } from 'webpack-merge';
 
 import sharedConfig from './shared';
@@ -78,7 +79,7 @@ const devServer: DevServerConfiguration = {
   host: devServerUrl.hostname,
   port: devServerUrl.port,
   https: devServerUrl.protocol === 'https:',
-  hot: false,
+  hot: true,
   allowedHosts: 'all',
   historyApiFallback: {
     disableDotRule: true,
@@ -115,6 +116,10 @@ const configuration: Configuration = {
     { ignored: '**/node_modules/**' },
     watchOptions,
   ),
+
+  plugins: [
+    new ReactRefreshWebpackPlugin(),
+  ],
 
   devServer,
 };

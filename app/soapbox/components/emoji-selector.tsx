@@ -28,7 +28,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     onReact: () => { },
     onUnfocus: () => { },
     visible: false,
-  }
+  };
 
   node?: HTMLDivElement = undefined;
 
@@ -38,7 +38,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     if (focused && (!e.currentTarget || !e.currentTarget.classList.contains('emoji-react-selector__emoji'))) {
       onUnfocus();
     }
-  }
+  };
 
   _selectPreviousEmoji = (i: number): void => {
     if (!this.node) return;
@@ -85,7 +85,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
         onUnfocus();
         break;
     }
-  }
+  };
 
   handleReact = (emoji: string) => (): void => {
     const { onReact, focused, onUnfocus } = this.props;
@@ -95,7 +95,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     if (focused) {
       onUnfocus();
     }
-  }
+  };
 
   handlers = {
     open: () => { },
@@ -103,7 +103,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
 
   setRef = (c: HTMLDivElement): void => {
     this.node = c;
-  }
+  };
 
   render() {
     const { visible, focused, allowedEmoji, onReact } = this.props;

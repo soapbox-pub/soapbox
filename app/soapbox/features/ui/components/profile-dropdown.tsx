@@ -1,13 +1,12 @@
 import throttle from 'lodash/throttle';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import Account from 'soapbox/components/account';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import ThemeToggle from './theme-toggle';
@@ -22,6 +21,7 @@ const messages = defineMessages({
 
 interface IProfileDropdown {
   account: AccountEntity
+  children: React.ReactNode
 }
 
 type IMenuItem = {
@@ -35,12 +35,12 @@ type IMenuItem = {
 const getAccount = makeGetAccount();
 
 const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 
-  const authUsers = useAppSelector((state) => state.auth.get('users'));
-  const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));
+  const authUsers = useAppSelector((state) => state.auth.users);
+  const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.id)!));
 
   const handleLogOut = () => {
     dispatch(logOut());

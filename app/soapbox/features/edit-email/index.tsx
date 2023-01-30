@@ -28,7 +28,7 @@ const EditEmail = () => {
 
   const { email, password } = state;
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));

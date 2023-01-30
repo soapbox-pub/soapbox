@@ -34,4 +34,17 @@ describe('normalizeSoapboxConfig()', () => {
     expect(ImmutableRecord.isRecord(result.promoPanel.items.get(0))).toBe(true);
     expect(result.promoPanel.items.get(2)?.icon).toBe('question-circle');
   });
+
+  it('upgrades singleUserModeProfile to redirectRootNoLogin', () => {
+    expect(normalizeSoapboxConfig({ singleUserMode: true, singleUserModeProfile: 'alex' }).redirectRootNoLogin).toBe('/@alex');
+    expect(normalizeSoapboxConfig({ singleUserMode: true, singleUserModeProfile: '@alex' }).redirectRootNoLogin).toBe('/@alex');
+    expect(normalizeSoapboxConfig({ singleUserMode: true, singleUserModeProfile: 'alex@gleasonator.com' }).redirectRootNoLogin).toBe('/@alex@gleasonator.com');
+    expect(normalizeSoapboxConfig({ singleUserMode: false, singleUserModeProfile: 'alex' }).redirectRootNoLogin).toBe('');
+  });
+
+  it('normalizes redirectRootNoLogin', () => {
+    expect(normalizeSoapboxConfig({ redirectRootNoLogin: 'benis' }).redirectRootNoLogin).toBe('/benis');
+    expect(normalizeSoapboxConfig({ redirectRootNoLogin: '/benis' }).redirectRootNoLogin).toBe('/benis');
+    expect(normalizeSoapboxConfig({ redirectRootNoLogin: '/' }).redirectRootNoLogin).toBe('');
+  });
 });

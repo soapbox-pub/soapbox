@@ -17,7 +17,7 @@ import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -27,7 +27,7 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
   return output.join(', ');
 };
 
-const buildLink = (account: Account): JSX.Element => (
+const buildLink = (account: AccountEntity): JSX.Element => (
   <bdi>
     <Link
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
@@ -127,7 +127,7 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
 const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
-  account: Account,
+  account: AccountEntity,
   totalCount: number | null,
   targetName: string,
   instanceTitle: string,
@@ -138,7 +138,7 @@ const buildMessage = (
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
         id='notification.others'
-        defaultMessage=' + {count} {count, plural, one {other} other {others}}'
+        defaultMessage=' + {count, plural, one {# other} other {# others}}'
         values={{ count: totalCount - 1 }}
       />
     ) : '',
@@ -150,6 +150,8 @@ const buildMessage = (
     instance: instanceTitle,
   });
 };
+
+const avatarSize = 48;
 
 interface INotificaton {
   hidden?: boolean,
@@ -290,7 +292,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={account.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
           />
         ) : null;
       case 'follow_request':
@@ -298,7 +300,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={account.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
             actionType='follow_request'
           />
         ) : null;
@@ -307,7 +309,7 @@ const Notification: React.FC<INotificaton> = (props) => {
           <AccountContainer
             id={notification.target.id}
             hidden={hidden}
-            avatarSize={48}
+            avatarSize={avatarSize}
           />
         ) : null;
       case 'favourite':
@@ -327,6 +329,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             hidden={hidden}
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
+            avatarSize={avatarSize}
           />
         ) : null;
       default:
@@ -358,13 +361,18 @@ const Notification: React.FC<INotificaton> = (props) => {
       >
         <div className='p-4 focusable'>
           <div className='mb-2'>
-            <HStack alignItems='center' space={1.5}>
-              {renderIcon()}
+            <HStack alignItems='center' space={3}>
+              <div
+                className='flex justify-end'
+                style={{ flexBasis: avatarSize }}
+              >
+                {renderIcon()}
+              </div>
 
               <div className='truncate'>
                 <Text
                   theme='muted'
-                  size='sm'
+                  size='xs'
                   truncate
                   data-testid='message'
                 >

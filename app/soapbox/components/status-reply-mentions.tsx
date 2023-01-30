@@ -50,7 +50,14 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   // The typical case with a reply-to and a list of mentions.
   const accounts = to.slice(0, 2).map(account => {
     const link = (
-      <Link to={`/@${account.acct}`} className='reply-mentions__account' onClick={(e) => e.stopPropagation()}>@{account.username}</Link>
+      <Link
+        key={account.id}
+        to={`/@${account.acct}`}
+        className='reply-mentions__account'
+        onClick={(e) => e.stopPropagation()}
+      >
+        @{account.username}
+      </Link>
     );
 
     if (hoverable) {
@@ -79,6 +86,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
         defaultMessage='<hover>Replying to</hover> {accounts}'
         values={{
           accounts: <FormattedList type='conjunction' value={accounts} />,
+          // @ts-ignore wtf?
           hover: (children: React.ReactNode) => {
             if (hoverable) {
               return (

@@ -1,15 +1,21 @@
 import React from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui';
 
 import ChatSearch from '../../chat-search/chat-search';
 
+const messages = defineMessages({
+  title: { id: 'chat.new_message.title', defaultMessage: 'New Message' },
+});
+
 interface IChatPageNew {
 }
 
 /** New message form to create a chat. */
 const ChatPageNew: React.FC<IChatPageNew> = () => {
+  const intl = useIntl();
   const history = useHistory();
 
   return (
@@ -22,7 +28,7 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
             onClick={() => history.push('/chats')}
           />
 
-          <CardTitle title='New Message' />
+          <CardTitle title={intl.formatMessage(messages.title)} />
         </HStack>
       </Stack>
 

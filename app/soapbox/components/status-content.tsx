@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -13,6 +13,7 @@ import { isRtl } from '../rtl';
 import Markup from './markup';
 import Poll from './polls/poll';
 
+import type { Sizes } from 'soapbox/components/ui/text/text';
 import type { Status, Mention } from 'soapbox/types/entities';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
@@ -26,7 +27,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
+    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} />
   </button>
 );
 
@@ -35,10 +36,17 @@ interface IStatusContent {
   onClick?: () => void,
   collapsable?: boolean,
   translatable?: boolean,
+  textSize?: Sizes,
 }
 
 /** Renders the text content of a status */
-const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable = false, translatable }) => {
+const StatusContent: React.FC<IStatusContent> = ({
+  status,
+  onClick,
+  collapsable = false,
+  translatable,
+  textSize = 'md',
+}) => {
   const history = useHistory();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -103,7 +111,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
 
-    if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
+    if (collapsable && onClick && !collapsed) {
       if (node.current.clientHeight > MAX_HEIGHT) {
         setCollapsed(true);
       }
@@ -119,7 +127,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();
@@ -162,6 +170,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
         direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
+        size={textSize}
       />,
     ];
 
@@ -187,6 +196,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
         direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
+        size={textSize}
       />,
     ];
 

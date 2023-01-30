@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -24,9 +25,9 @@ const Ad: React.FC<IAd> = ({ ad }) => {
 
   // Fetch the impression URL (if any) upon displaying the ad.
   // Don't fetch it more than once.
-  useQuery(['ads', 'impression', ad.impression], () => {
+  useQuery(['ads', 'impression', ad.impression], async () => {
     if (ad.impression) {
-      return fetch(ad.impression);
+      return await axios.get(ad.impression);
     }
   }, { cacheTime: Infinity, staleTime: Infinity });
 

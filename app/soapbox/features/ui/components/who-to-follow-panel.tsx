@@ -37,8 +37,10 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
     <Widget
       title={<FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />}
       action={
-        <Link to='/suggestions'>
-          <Text tag='span' theme='primary' size='sm' className='hover:underline'>View all</Text>
+        <Link className='text-right' to='/suggestions'>
+          <Text tag='span' theme='primary' size='sm' className='hover:underline'>
+            <FormattedMessage id='feed_suggestions.view_all' defaultMessage='View all' />
+          </Text>
         </Link>
       }
     >
