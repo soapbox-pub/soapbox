@@ -6,7 +6,7 @@ import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 
-import { Icon, Stack } from './ui';
+import { Stack, Button, Text } from './ui';
 
 import type { Account, Status } from 'soapbox/types/entities';
 
@@ -44,32 +44,36 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   if (!features.translations || !renderTranslate || !supportsLanguages) return null;
 
-  const buttonClassName = 'flex items-center gap-0.5 w-fit px-2 py-1 border-gray-600 hover:border-gray-700 dark:hover:border-gray-500 border-solid border text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 text-start text-sm rounded-full';
-
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
     const languageName = languageNames.of(status.language!);
     const provider     = status.translation.get('provider');
 
     return (
-      <Stack className='text-gray-700 dark:text-gray-600 text-sm' space={1} alignItems='start'>
-        <span>
+      <Stack space={3} alignItems='start'>
+        <Button
+          theme='muted'
+          text={<FormattedMessage id='status.show_original' defaultMessage='Show original' />}
+          icon={require('@tabler/icons/language.svg')}
+          onClick={handleTranslate}
+        />
+        <Text theme='muted'>
           <FormattedMessage id='status.translated_from_with' defaultMessage='Translated from {lang} using {provider}' values={{ lang: languageName, provider }} />
-        </span>
-
-        <button className={buttonClassName} onClick={handleTranslate}>
-          <Icon className='h-5 w-5 stroke-[1.25]' src={require('@tabler/icons/language.svg')} strokeWidth={1.25} />
-          <FormattedMessage id='status.show_original' defaultMessage='Show original' />
-        </button>
+        </Text>
       </Stack>
     );
   }
 
   return (
-    <button className={buttonClassName} onClick={handleTranslate}>
-      <Icon className='h-5 w-5' src={require('@tabler/icons/language.svg')} strokeWidth={1.25} />
-      <FormattedMessage id='status.translate' defaultMessage='Translate' />
-    </button>
+    <div>
+      <Button
+        theme='muted'
+        text={<FormattedMessage id='status.translate' defaultMessage='Translate' />}
+        icon={require('@tabler/icons/language.svg')}
+        onClick={handleTranslate}
+      />
+    </div>
+
   );
 };
 
