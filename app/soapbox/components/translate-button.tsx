@@ -49,10 +49,8 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   if (!features.translations || !renderTranslate || !supportsLanguages) return null;
 
-  const theStyle = {
-    text: 'text-gray-700 dark:text-gray-600 text-sm',
-    icon: 'p-0.5 text-gray-600 dark:text-gray-400',
-  };
+  const textStyle = 'text-gray-700 dark:text-gray-600 text-sm';
+  const iconStyle = 'text-gray-600 dark:text-gray-400 p-0.5';
 
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
@@ -60,10 +58,10 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
     const provider     = status.translation.get('provider');
 
     return (
-      <HStack className={theStyle.text} space={1} alignItems='center'>
+      <HStack className={textStyle} space={3} alignItems='center'>
         <IconButton
-          className={theStyle.text + ' pr-3'}
-          iconClassName={theStyle.icon}
+          className={'pr-3'}
+          iconClassName={iconStyle}
           theme='outlined'
           text={intl.formatMessage(messages.showOriginal)}
           src={require('@tabler/icons/language.svg')}
@@ -77,10 +75,10 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   }
 
   return (
-    <div>
+    <div className={textStyle}>
       <IconButton
-        className={theStyle.text + ' pr-3'}
-        iconClassName={theStyle.icon}
+        className={'pr-3'}
+        iconClassName={iconStyle}
         theme='outlined'
         text={intl.formatMessage(messages.translate)}
         src={require('@tabler/icons/language.svg')}
