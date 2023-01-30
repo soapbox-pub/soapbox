@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const TrendsPanel = ({ limit }: ITrendsPanel) => {
     <Widget
       title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}
       action={
-        <Link to='/search' onClick={setHashtagsFilter}>
+        <Link className='text-right' to='/search' onClick={setHashtagsFilter}>
           <Text tag='span' theme='primary' size='sm' className='hover:underline'>
             {intl.formatMessage(messages.viewAll)}
           </Text>

@@ -1,17 +1,14 @@
 import classNames from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { useSettings } from 'soapbox/hooks';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
 
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
-
-import type { Attachment } from 'soapbox/types/entities';
 
 const DEFAULT_HEIGHT = 300;
 
@@ -107,15 +104,12 @@ interface IVideo {
   alt?: string,
   width?: number,
   height?: number,
-  sensitive?: boolean,
   startTime?: number,
-  onOpenVideo?: (attachment: Attachment, time: number) => void,
-  onCloseVideo?: () => void,
   detailed?: boolean,
+  autoFocus?: boolean,
   inline?: boolean,
   cacheWidth?: (width: number) => void,
   visible?: boolean,
-  onToggleVisibility?: () => void,
   blurhash?: string,
   link?: React.ReactNode,
   aspectRatio?: number,
@@ -125,23 +119,19 @@ interface IVideo {
 const Video: React.FC<IVideo> = ({
   width,
   visible = false,
-  sensitive = false,
   detailed = false,
+  autoFocus = false,
   cacheWidth,
-  onToggleVisibility,
   startTime,
   src,
   height,
   alt,
-  onCloseVideo,
   inline,
   aspectRatio = 16 / 9,
   link,
   blurhash,
 }) => {
   const intl = useIntl();
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string | undefined;
 
   const player = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -157,7 +147,6 @@ const Video: React.FC<IVideo> = ({
   const [fullscreen, setFullscreen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [revealed, setRevealed] = useState<boolean>(visible !== undefined ? visible : (displayMedia !== 'hide_all' && !sensitive || displayMedia === 'show_all'));
   const [buffer, setBuffer] = useState(0);
 
   const setDimensions = () => {
@@ -172,7 +161,7 @@ const Video: React.FC<IVideo> = ({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setDimensions();
   }, [player.current]);
 
@@ -342,7 +331,6 @@ const Video: React.FC<IVideo> = ({
 
     // If we are in fullscreen mode, we don't want any hotkeys
     // interacting with the UI that's not visible
-
     if (fullscreen) {
       e.preventDefault();
       e.stopPropagation();
@@ -411,16 +399,6 @@ const Video: React.FC<IVideo> = ({
     }
   };
 
-  const toggleReveal: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
-
-    if (onToggleVisibility) {
-      onToggleVisibility();
-    } else {
-      setRevealed(!revealed);
-    }
-  };
-
   const handleLoadedData = () => {
     if (video.current && startTime) {
       video.current.currentTime = startTime;
@@ -459,14 +437,6 @@ const Video: React.FC<IVideo> = ({
     playerStyle.height = height || DEFAULT_HEIGHT;
   }
 
-  let warning;
-
-  if (sensitive) {
-    warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
-  } else {
-    warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
-  }
-
   useEffect(() => {
     document.addEventListener('fullscreenchange', handleFullscreenChange, true);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange, true);
@@ -488,21 +458,15 @@ const Video: React.FC<IVideo> = ({
   }, []);
 
   useEffect(() => {
-    if (visible) {
-      setRevealed(true);
-    }
-  }, [visible]);
-
-  useEffect(() => {
-    if (!revealed) {
+    if (!visible) {
       video.current?.pause();
     }
-  }, [revealed]);
+  }, [visible]);
 
   return (
     <div
       role='menuitem'
-      className={classNames('video-player', { 'video-player--inactive': !revealed, detailed, 'video-player--inline': inline && !fullscreen, fullscreen })}
+      className={classNames('video-player', { detailed, 'video-player--inline': inline && !fullscreen, fullscreen })}
       style={playerStyle}
       ref={player}
       onMouseEnter={handleMouseEnter}
@@ -511,40 +475,29 @@ const Video: React.FC<IVideo> = ({
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
-      <Blurhash
-        hash={blurhash}
-        className={classNames('media-gallery__preview', {
-          'media-gallery__preview--hidden': revealed,
-        })}
-      />
-
-      {revealed && (
-        <video
-          ref={video}
-          src={src}
-          loop
-          role='button'
-          tabIndex={0}
-          aria-label={alt}
-          title={alt}
-          width={width}
-          height={height || DEFAULT_HEIGHT}
-          onClick={togglePlay}
-          onKeyDown={handleVideoKeyDown}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onTimeUpdate={handleTimeUpdate}
-          onLoadedData={handleLoadedData}
-          onProgress={handleProgress}
-          onVolumeChange={handleVolumeChange}
-        />
+      {!fullscreen && (
+        <Blurhash hash={blurhash} className='media-gallery__preview' />
       )}
 
-      <div className={classNames('spoiler-button', { 'spoiler-button--hidden': !sensitive || revealed })}>
-        <button type='button' className='spoiler-button__overlay' onClick={toggleReveal}>
-          <span className='spoiler-button__overlay__label'>{warning}</span>
-        </button>
-      </div>
+      <video
+        ref={video}
+        src={src}
+        loop
+        role='button'
+        tabIndex={0}
+        aria-label={alt}
+        title={alt}
+        width={width}
+        height={height || DEFAULT_HEIGHT}
+        onClick={togglePlay}
+        onKeyDown={handleVideoKeyDown}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedData={handleLoadedData}
+        onProgress={handleProgress}
+        onVolumeChange={handleVolumeChange}
+      />
 
       <div className={classNames('video-player__controls', { active: paused || hovered })}>
         <div className='video-player__seek' onMouseDown={handleMouseDown} ref={seek}>
@@ -567,7 +520,7 @@ const Video: React.FC<IVideo> = ({
               aria-label={intl.formatMessage(paused ? messages.play : messages.pause)}
               className='player-button'
               onClick={togglePlay}
-              autoFocus={detailed}
+              autoFocus={autoFocus}
             >
               <Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} />
             </button>
@@ -605,18 +558,6 @@ const Video: React.FC<IVideo> = ({
           </div>
 
           <div className='video-player__buttons right'>
-            {(sensitive && !onCloseVideo) && (
-              <button
-                type='button'
-                title={intl.formatMessage(messages.hide)}
-                aria-label={intl.formatMessage(messages.hide)}
-                className='player-button'
-                onClick={toggleReveal}
-              >
-                <Icon src={require('@tabler/icons/eye-off.svg')} />
-              </button>
-            )}
-
             <button
               type='button'
               title={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)}

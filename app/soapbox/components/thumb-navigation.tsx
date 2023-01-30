@@ -2,15 +2,16 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useStatContext } from 'soapbox/contexts/stat-context';
+import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const account = useOwnAccount();
+  const { unreadChatsCount } = useStatContext();
+
   const notificationCount = useAppSelector((state) => state.notifications.unread);
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
-  const features = getFeatures(useAppSelector((state) => state.instance));
+  const features = useFeatures();
 
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {
@@ -21,7 +22,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
           text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
           to='/chats'
           exact
-          count={chatsCount}
+          count={unreadChatsCount}
+          countMax={9}
         />
       );
     }

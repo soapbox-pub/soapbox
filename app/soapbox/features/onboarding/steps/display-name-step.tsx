@@ -1,16 +1,21 @@
-import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { AxiosError } from 'axios';
 
+const messages = defineMessages({
+  usernamePlaceholder: { id: 'onboarding.display_name.placeholder', defaultMessage: 'Eg. John Smith' },
+  error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
+});
+
 const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
-  const dispatch = useDispatch();
+  const intl = useIntl();
+  const dispatch = useAppDispatch();
 
   const account = useOwnAccount();
   const [value, setValue] = React.useState<string>(account?.display_name || '');
@@ -43,7 +48,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
         if (error.response?.status === 422) {
           setErrors([(error.response.data as any).error.replace('Validation failed: ', '')]);
         } else {
-          dispatch(snackbar.error('An unexpected error occurred. Please try again or skip this step.'));
+          toast.error(messages.error);
         }
       });
   };
@@ -68,12 +73,12 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
             <Stack space={5}>
               <FormGroup
                 hintText={hintText}
-                labelText='Display name'
+                labelText={<FormattedMessage id='onboarding.display_name.label' defaultMessage='Display name' />}
                 errors={errors}
               >
                 <Input
                   onChange={(event) => setValue(event.target.value)}
-                  placeholder='Eg. John Smith'
+                  placeholder={intl.formatMessage(messages.usernamePlaceholder)}
                   type='text'
                   value={value}
                   maxLength={30}
@@ -88,7 +93,11 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
                   disabled={isDisabled || isSubmitting}
                   onClick={handleSubmit}
                 >
-                  {isSubmitting ? 'Saving…' : 'Next'}
+                  {isSubmitting ? (
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
+                  ) : (
+                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+                  )}
                 </Button>
 
                 <Button block theme='tertiary' type='button' onClick={onNext}>

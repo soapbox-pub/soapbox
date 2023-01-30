@@ -22,19 +22,6 @@ select {
   margin-left: -1px;
 }
 
-$no-columns-breakpoint: 600px;
-
-code {
-  font-family: var(--font-monospace), monospace;
-  font-weight: 400;
-}
-
-.form-container {
-  max-width: 400px;
-  padding: 20px;
-  margin: 0 auto;
-}
-
 .simple_form {
   .input {
     &.hidden {
@@ -114,7 +101,7 @@ code {
   }
 
   .hint {
-    color: var(--primary-text-color--faint);
+    @apply text-gray-400;
 
     a {
       color: var(--highlight-text-color);
@@ -133,8 +120,8 @@ code {
   }
 
   p.hint {
+    @apply text-gray-400;
     margin-bottom: 15px;
-    color: var(--primary-text-color--faint);
 
     &.subtle-hint {
       text-align: center;
@@ -164,9 +151,9 @@ code {
       display: flex;
 
       & > label {
+        @apply text-gray-900;
         font-family: inherit;
         font-size: 14px;
-        color: var(--primary-text-color);
         font-weight: 500;
         min-width: 150px;
         flex: 0 0 auto;
@@ -199,31 +186,6 @@ code {
     }
   }
 
-  .input.font_icon_picker {
-    width: 52px;
-  }
-
-  .input.with_block_label {
-    max-width: none;
-
-    & > label {
-      font-family: inherit;
-      font-size: 16px;
-      color: var(--primary-text-color);
-      display: block;
-      font-weight: 500;
-      padding-top: 5px;
-    }
-
-    .hint {
-      margin-bottom: 15px;
-    }
-
-    ul {
-      columns: 2;
-    }
-  }
-
   .required abbr {
     text-decoration: none;
     color: lighten($error-value-color, 12%);
@@ -241,53 +203,11 @@ code {
     }
   }
 
-  .fields-row {
-    display: flex;
-    margin: 0 -10px;
-    padding-top: 5px;
-    margin-bottom: 25px;
-
-    .input {
-      max-width: none;
-    }
-
-    &__column {
-      box-sizing: border-box;
-      padding: 0 10px;
-      flex: 1 1 auto;
-      min-height: 1px;
-
-      &-6 {
-        max-width: 50%;
-      }
-    }
-
-    .fields-group:last-child,
-    .fields-row__column.fields-group {
-      margin-bottom: 0;
-    }
-
-    @media screen and (max-width: $no-columns-breakpoint) {
-      display: block;
-      margin-bottom: 0;
-
-      &__column {
-        max-width: none;
-      }
-
-      .fields-group:last-child,
-      .fields-row__column.fields-group,
-      .fields-row__column {
-        margin-bottom: 25px;
-      }
-    }
-  }
-
   .input.radio_buttons .radio label {
+    @apply text-gray-900;
     margin-bottom: 5px;
     font-family: inherit;
     font-size: 14px;
-    color: var(--primary-text-color);
     display: block;
     width: auto;
   }
@@ -299,8 +219,7 @@ code {
     input[type=url],
     input[type=password],
     textarea {
-      color: var(--primary-text-color--faint);
-      border-color: var(--primary-text-color--faint);
+      @apply text-gray-400 border-gray-400;
     }
   }
 
@@ -311,17 +230,15 @@ code {
   input[type=password],
   textarea,
   .rfipbtn {
-    @apply border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
+    @apply border border-solid border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white;
     box-sizing: border-box;
     font-size: 16px;
-    color: var(--primary-text-color);
     display: block;
     width: 100%;
     outline: 0;
     font-family: inherit;
     resize: vertical;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--input-border-color);
     border-radius: 6px;
     padding: 8px 12px;
     transition: 0.2s;
@@ -360,8 +277,7 @@ code {
   input[type=url][disabled],
   input[type=password][disabled],
   textarea[disabled] {
-    color: var(--primary-text-color--faint);
-    border-color: var(--primary-text-color--faint);
+    @apply text-gray-400 border-gray-400;
   }
 
   .input.field_with_errors {
@@ -395,11 +311,6 @@ code {
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;
-
-    &.actions--top {
-      margin-top: 0;
-      margin-bottom: 30px;
-    }
   }
 
   // button,
@@ -488,96 +399,8 @@ code {
   //   padding-top: 0.5rem;
   // }
 
-  .select-wrapper {
-    display: flex;
-    align-items: center;
-
-    &::after {
-      display: flex;
-      align-items: center;
-      font-family: 'Font Awesome 5 Free';
-      content: "";
-      position: absolute;
-      right: 12px;
-      height: calc(100% - 8px);
-      padding-left: 12px;
-      pointer-events: none;
-      margin-top: 8px;
-      font-weight: 900;
-    }
-  }
-
-  .label_input {
-    &__color {
-      display: inline-flex;
-      font-size: 14px;
-
-      .color-swatch {
-        width: 32px;
-        height: 16px;
-        margin-left: 12px;
-      }
-    }
-
-    &__wrapper {
-      position: relative;
-    }
-
-    &__append {
-      position: absolute;
-      right: 3px;
-      top: 1px;
-      padding: 10px;
-      padding-bottom: 9px;
-      font-size: 16px;
-      color: var(--primary-text-color);
-      font-family: inherit;
-      pointer-events: none;
-      cursor: default;
-      max-width: 140px;
-      white-space: nowrap;
-      overflow: hidden;
-
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 1px;
-        width: 5px;
-        background-image: linear-gradient(to right, hsla(var(--background-color_hsl), 0), var(--background-color));
-      }
-    }
-  }
-
-  &__overlay-area {
+  .label_input__wrapper {
     position: relative;
-
-    &__overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: var(--background-color);
-      backdrop-filter: blur(2px);
-      border-radius: 4px;
-
-      &__content {
-        text-align: center;
-
-        &.rich-formatting {
-          &,
-          p {
-            color: var(--primary-text-color);
-          }
-        }
-      }
-    }
   }
 
   h2 {
@@ -590,9 +413,9 @@ code {
 
 .simple_form {
   .warning {
+    @apply text-gray-900;
     box-sizing: border-box;
     background: rgba($error-value-color, 0.5);
-    color: var(--primary-text-color);
     text-shadow: 1px 1px 0 rgba($base-shadow-color, 0.3);
     box-shadow: 0 2px 6px rgba($base-shadow-color, 0.4);
     border-radius: 4px;
@@ -600,13 +423,12 @@ code {
     margin-bottom: 15px;
 
     a {
-      color: var(--primary-text-color);
-      text-decoration: underline;
+      @apply text-gray-900 underline;
 
       &:hover,
       &:focus,
       &:active {
-        text-decoration: none;
+        @apply no-underline;
       }
     }
 
@@ -642,52 +464,6 @@ code {
   }
 }
 
-.file-picker img {
-  max-width: 100px;
-  max-height: 100px;
-}
-
-.code-editor {
-  textarea {
-    font-family: monospace;
-    white-space: pre;
-  }
-
-  &--invalid textarea {
-    border-color: $error-red !important;
-    color: $error-red;
-  }
-
-  .input {
-    margin-bottom: 0;
-  }
-
-  .hint {
-    margin-top: 10px;
-  }
-}
-
-.delete-account {
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-}
-
-.input .row > .svg-icon.delete-field {
-  height: 20px;
-  width: 20px;
-  position: absolute;
-  right: 13px;
-  cursor: pointer;
-  color: $error-red;
-  transform: translateY(-11px);
-}
-
-.input .row > .input.with_label + .svg-icon.delete-field {
-  right: 5px;
-  transform: translateY(7px);
-}
-
 .input.with_label.toggle .label_input {
   display: flex;
   font-size: 14px;
@@ -695,50 +471,5 @@ code {
 
   .theme-toggle {
     margin-left: 10px;
-  }
-}
-
-.actions.add-row {
-  margin: 10px 0 0;
-
-  .button {
-    display: flex;
-    align-items: center;
-    border: 0;
-    background: transparent;
-
-    &:hover {
-      color: var(--primary-text-color);
-    }
-
-    .svg-icon {
-      height: 20px;
-      width: 20px;
-    }
-  }
-}
-
-.copyable-input {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-
-  input {
-    flex: 1;
-    font-size: 14px !important;
-    border-radius: 4px 0 0 4px !important;
-    height: 100%;
-  }
-
-  button {
-    width: auto;
-    font-size: 14px;
-    margin: 0;
-    border-radius: 0 4px 4px 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }

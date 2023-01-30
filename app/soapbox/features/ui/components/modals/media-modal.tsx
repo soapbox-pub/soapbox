@@ -9,11 +9,12 @@ import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon-button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import ImageLoader from '../image-loader';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Account, Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -24,7 +25,6 @@ const messages = defineMessages({
 interface IMediaModal {
   media: ImmutableList<Attachment>,
   status?: Status,
-  account: Account,
   index: number,
   time?: number,
   onClose: () => void,
@@ -34,13 +34,13 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const {
     media,
     status,
-    account,
     onClose,
     time = 0,
   } = props;
 
   const intl = useIntl();
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
@@ -83,21 +83,25 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [index]);
 
-  const getIndex = () => {
-    return index !== null ? index : props.index;
-  };
+  const getIndex = () => index !== null ? index : props.index;
 
   const toggleNavigation = () => {
     setNavigationHidden(!navigationHidden);
   };
 
   const handleStatusClick: React.MouseEventHandler = e => {
-    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (status && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      history.push(`/@${account.acct}/posts/${status?.id}`);
-      onClose();
+
+      dispatch((_, getState) => {
+        const account = typeof status.account === 'string' ? getState().accounts.get(status.account) : status.account;
+        if (!account) return;
+
+        history.push(`/@${account.acct}/posts/${status?.id}`);
+        onClose();
+      });
     }
   };
 
@@ -115,7 +119,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
   let pagination: React.ReactNode[] = [];
 
-  const leftNav  = media.size > 1 && (
+  const leftNav = media.size > 1 && (
     <button
       tabIndex={0}
       className='media-modal__nav media-modal__nav--left'
@@ -158,19 +162,13 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     });
   }
 
-  const isMultiMedia = media.map((image) => {
-    if (image.type !== 'image') {
-      return true;
-    }
+  const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
 
-    return false;
-  }).toArray();
-
-  const content = media.map(attachment => {
+  const content = media.map((attachment, i) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
     const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
 
-    const link = (status && account && (
+    const link = (status && (
       <a href={status.url} onClick={handleStatusClick}>
         <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
       </a>
@@ -197,8 +195,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           width={width}
           height={height}
           startTime={time}
-          onCloseVideo={onClose}
           detailed
+          autoFocus={i === getIndex()}
           link={link}
           alt={attachment.description}
           key={attachment.url}

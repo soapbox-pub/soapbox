@@ -20,6 +20,11 @@ describe('<SensitiveContentOverlay />', () => {
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Sensitive content');
     });
 
+    it('does not allow user to delete the status', () => {
+      render(<SensitiveContentOverlay status={status} />);
+      expect(screen.queryAllByTestId('icon-button')).toHaveLength(0);
+    });
+
     it('can be toggled', () => {
       render(<SensitiveContentOverlay status={status} />);
 
@@ -41,6 +46,11 @@ describe('<SensitiveContentOverlay />', () => {
     it('displays the "Under review" warning', () => {
       render(<SensitiveContentOverlay status={status} />);
       expect(screen.getByTestId('sensitive-overlay')).toHaveTextContent('Content Under Review');
+    });
+
+    it('allows the user to delete the status', () => {
+      render(<SensitiveContentOverlay status={status} />);
+      expect(screen.getByTestId('icon-button')).toBeInTheDocument();
     });
 
     it('can be toggled', () => {

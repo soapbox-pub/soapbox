@@ -1,14 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { startOnboarding } from 'soapbox/actions/onboarding';
-import snackbar from 'soapbox/actions/snackbar';
 import { createAccount, removeStoredVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, Input, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 
 import PasswordIndicator from './components/password-indicator';
@@ -16,22 +16,12 @@ import PasswordIndicator from './components/password-indicator';
 import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
-  success: {
-    id: 'registrations.success',
-    defaultMessage: 'Welcome to {siteTitle}!',
-  },
-  usernameHint: {
-    id: 'registrations.username.hint',
-    defaultMessage: 'May only contain A-Z, 0-9, and underscores',
-  },
-  usernameTaken: {
-    id: 'registrations.unprocessable_entity',
-    defaultMessage: 'This username has already been taken.',
-  },
-  error: {
-    id: 'registrations.error',
-    defaultMessage: 'Failed to register your account.',
-  },
+  success: { id: 'registrations.success', defaultMessage: 'Welcome to {siteTitle}!' },
+  usernameLabel: { id: 'registrations.username.label', defaultMessage: 'Your username' },
+  usernameHint: { id: 'registrations.username.hint', defaultMessage: 'May only contain A-Z, 0-9, and underscores' },
+  usernameTaken: { id: 'registrations.unprocessable_entity', defaultMessage: 'This username has already been taken.' },
+  passwordLabel: { id: 'registrations.password.label', defaultMessage: 'Password' },
+  error: { id: 'registrations.error', defaultMessage: 'Failed to register your account.' },
 });
 
 const initialState = {
@@ -42,18 +32,18 @@ const initialState = {
 const Registration = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const instance = useInstance();
   const soapboxConfig = useSoapboxConfig();
   const { links } = soapboxConfig;
 
   const isLoading = useAppSelector((state) => state.verification.isLoading as boolean);
-  const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
   const [hasValidPassword, setHasValidPassword] = React.useState<boolean>(false);
   const { username, password } = state;
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     dispatch(createAccount(username, password))
@@ -64,30 +54,22 @@ const Registration = () => {
         setShouldRedirect(true);
         removeStoredVerification();
         dispatch(startOnboarding());
-        dispatch(
-          snackbar.success(
-            intl.formatMessage(messages.success, { siteTitle }),
-          ),
+        toast.success(
+          intl.formatMessage(messages.success, { siteTitle: instance.title }),
         );
       })
-      .catch((error: AxiosError) => {
-        if (error?.response?.status === 422) {
-          dispatch(
-            snackbar.error(
-              intl.formatMessage(messages.usernameTaken),
-            ),
-          );
+      .catch((errorResponse: AxiosError<{ error: string, message: string }>) => {
+        const error = errorResponse.response?.data?.error;
+
+        if (error) {
+          toast.error(errorResponse.response?.data?.message || intl.formatMessage(messages.usernameTaken));
         } else {
-          dispatch(
-            snackbar.error(
-              intl.formatMessage(messages.error),
-            ),
-          );
+          toast.error(intl.formatMessage(messages.error));
         }
       });
   }, [username, password]);
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -108,7 +90,7 @@ const Registration = () => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText='Your username' hintText={intl.formatMessage(messages.usernameHint)}>
+          <FormGroup labelText={intl.formatMessage(messages.usernameLabel)} hintText={intl.formatMessage(messages.usernameHint)}>
             <Input
               name='username'
               type='text'
@@ -120,7 +102,7 @@ const Registration = () => {
             />
           </FormGroup>
 
-          <FormGroup labelText='Password'>
+          <FormGroup labelText={intl.formatMessage(messages.passwordLabel)}>
             <Input
               name='password'
               type='password'
@@ -140,7 +122,7 @@ const Registration = () => {
               type='submit'
               disabled={isLoading || !hasValidPassword}
             >
-              Register
+              <FormattedMessage id='header.register.label' defaultMessage='Register' />
             </Button>
 
             {(links.get('termsOfService') && links.get('privacyPolicy')) ? (

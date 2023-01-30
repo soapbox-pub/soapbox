@@ -4,6 +4,7 @@ import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import Badge from 'soapbox/components/badge';
+import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
@@ -12,6 +13,7 @@ import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges'
 import { capitalize } from 'soapbox/utils/strings';
 
 import ProfileFamiliarFollowers from './profile-familiar-followers';
+import ProfileField from './profile-field';
 import ProfileStats from './profile-stats';
 
 import type { Account } from 'soapbox/types/entities';
@@ -46,9 +48,9 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
-      return <Badge slug='admin' title='Admin' key='staff' />;
+      return <Badge slug='admin' title={<FormattedMessage id='account_moderation_modal.roles.admin' defaultMessage='Admin' />} key='staff' />;
     } else if (account?.moderator) {
-      return <Badge slug='moderator' title='Moderator' key='staff' />;
+      return <Badge slug='moderator' title={<FormattedMessage id='account_moderation_modal.roles.moderator' defaultMessage='Moderator' />} key='staff' />;
     } else {
       return null;
     }
@@ -119,7 +121,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
-              <Text size='sm' theme='muted'>
+              <Text size='sm' theme='muted' direction='ltr'>
                 @{username}
               </Text>
             </HStack>
@@ -139,13 +141,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   return (
     <div className='mt-6 min-w-0 flex-1 sm:px-2'>
       <Stack space={2}>
-        {/* Not sure if this is actual used. */}
-        {/* <div className='profile-info-panel-content__deactivated'>
-          <FormattedMessage
-            id='account.deactivated_description' defaultMessage='This account has been deactivated.'
-          />
-        </div> */}
-
         <Stack>
           <HStack space={1} alignItems='center'>
             <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
@@ -162,7 +157,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           </HStack>
 
           <HStack alignItems='center' space={0.5}>
-            <Text size='sm' theme='muted'>
+            <Text size='sm' theme='muted' direction='ltr'>
               @{displayFqn ? account.fqn : account.acct}
             </Text>
 
@@ -178,8 +173,8 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
         <ProfileStats account={account} />
 
-        {account.note.length > 0 && account.note !== '<p></p>' && (
-          <Text size='sm' dangerouslySetInnerHTML={content} />
+        {account.note.length > 0 && (
+          <Markup size='sm' dangerouslySetInnerHTML={content} />
         )}
 
         <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>
@@ -237,6 +232,14 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
         <ProfileFamiliarFollowers account={account} />
       </Stack>
+
+      {account.fields.size > 0 && (
+        <Stack space={2} className='mt-4 xl:hidden'>
+          {account.fields.map((field, i) => (
+            <ProfileField field={field} key={i} />
+          ))}
+        </Stack>
+      )}
     </div>
   );
 };

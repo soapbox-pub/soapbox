@@ -2,14 +2,15 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useInstance, useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
 
 const CtaBanner = () => {
-  const { displayCta, singleUserMode } = useSoapboxConfig();
-  const siteTitle = useAppSelector((state) => state.instance.title);
+  const instance = useInstance();
+  const { isOpen } = useRegistrationStatus();
+  const { displayCta } = useSoapboxConfig();
   const me = useAppSelector((state) => state.me);
 
-  if (me || !displayCta || singleUserMode) return null;
+  if (me || !displayCta || !isOpen) return null;
 
   return (
     <div data-testid='cta-banner' className='hidden lg:block'>
@@ -17,7 +18,7 @@ const CtaBanner = () => {
         <HStack alignItems='center' justifyContent='between'>
           <Stack>
             <Text theme='white' size='xl' weight='bold'>
-              <FormattedMessage id='signup_panel.title' defaultMessage='New to {site_title}?' values={{ site_title: siteTitle }} />
+              <FormattedMessage id='signup_panel.title' defaultMessage='New to {site_title}?' values={{ site_title: instance.title }} />
             </Text>
 
             <Text theme='white' weight='medium' className='opacity-90'>

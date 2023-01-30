@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -10,18 +10,14 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
 import { isRtl } from '../rtl';
 
+import Markup from './markup';
 import Poll from './polls/poll';
-import './status-content.css';
 
+import type { Sizes } from 'soapbox/components/ui/text/text';
 import type { Status, Mention } from 'soapbox/types/entities';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
-
-type Point = [
-  x: number,
-  y: number,
-]
 
 interface IReadMoreButton {
   onClick: React.MouseEventHandler,
@@ -31,7 +27,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} fixedWidth />
+    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} />
   </button>
 );
 
@@ -40,16 +36,22 @@ interface IStatusContent {
   onClick?: () => void,
   collapsable?: boolean,
   translatable?: boolean,
+  textSize?: Sizes,
 }
 
 /** Renders the text content of a status */
-const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable = false, translatable }) => {
+const StatusContent: React.FC<IStatusContent> = ({
+  status,
+  onClick,
+  collapsable = false,
+  translatable,
+  textSize = 'md',
+}) => {
   const history = useHistory();
 
   const [collapsed, setCollapsed] = useState(false);
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 
-  const startXY = useRef<Point>();
   const node = useRef<HTMLDivElement>(null);
 
   const { greentext } = useSoapboxConfig();
@@ -109,7 +111,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
 
-    if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
+    if (collapsable && onClick && !collapsed) {
       if (node.current.clientHeight > MAX_HEIGHT) {
         setCollapsed(true);
       }
@@ -125,34 +127,11 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();
   });
-
-  const handleMouseDown: React.EventHandler<React.MouseEvent> = (e) => {
-    startXY.current = [e.clientX, e.clientY];
-  };
-
-  const handleMouseUp: React.EventHandler<React.MouseEvent> = (e) => {
-    if (!startXY.current) return;
-    const target = e.target as HTMLElement;
-    const parentNode = target.parentNode as HTMLElement;
-
-    const [startX, startY] = startXY.current;
-    const [deltaX, deltaY] = [Math.abs(e.clientX - startX), Math.abs(e.clientY - startY)];
-
-    if (target.localName === 'button' || target.localName === 'a' || (parentNode && (parentNode.localName === 'button' || parentNode.localName === 'a'))) {
-      return;
-    }
-
-    if (deltaX + deltaY < 5 && e.button === 0 && !(e.ctrlKey || e.metaKey) && onClick) {
-      onClick();
-    }
-
-    startXY.current = undefined;
-  };
 
   const parsedHtml = useMemo((): string => {
     const html = translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
@@ -173,30 +152,25 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
-  const directionStyle: React.CSSProperties = { direction: 'ltr' };
-  const className = classNames(baseClassName, 'status-content', {
+  const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';
+  const className = classNames(baseClassName, {
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
     'leading-normal big-emoji': onlyEmoji,
   });
 
-  if (isRtl(status.search_index)) {
-    directionStyle.direction = 'rtl';
-  }
-
   if (onClick) {
     const output = [
-      <div
+      <Markup
         ref={node}
         tabIndex={0}
         key='content'
         className={className}
-        style={directionStyle}
+        direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
+        size={textSize}
       />,
     ];
 
@@ -212,16 +186,17 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     return <div className={classNames({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
-      <div
+      <Markup
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames(baseClassName, 'status-content', {
+        className={classNames(baseClassName, {
           'leading-normal big-emoji': onlyEmoji,
         })}
-        style={directionStyle}
+        direction={direction}
         dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
+        size={textSize}
       />,
     ];
 

@@ -1,7 +1,7 @@
 import {
   withOpacityValue,
   parseColorMatrix,
-} from '../colors';
+} from '../colors.cjs';
 
 describe('withOpacityValue()', () => {
   it('returns a Tailwind color function with alpha support', () => {
@@ -42,12 +42,10 @@ describe('parseColorMatrix()', () => {
       accent: [300, 500],
       'gradient-start': true,
       'gradient-end': true,
-      'sea-blue': true,
     };
 
     const result = parseColorMatrix(colorMatrix);
 
-    expect(result['sea-blue']({})).toEqual('rgb(var(--color-sea-blue))');
     expect(result['gradient-start']({ opacityValue: .7 })).toEqual('rgb(var(--color-gradient-start) / 0.7)');
   });
 });

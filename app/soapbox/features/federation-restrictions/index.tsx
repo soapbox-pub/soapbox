@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Accordion } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { Column, Accordion } from 'soapbox/components/ui';
+import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetHosts } from 'soapbox/selectors';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
-
-import Column from '../ui/components/column';
 
 import RestrictedInstance from './components/restricted-instance';
 
@@ -21,12 +19,12 @@ const messages = defineMessages({
   notDisclosed: { id: 'federation_restrictions.not_disclosed_message', defaultMessage: '{siteTitle} does not disclose federation restrictions through the API.' },
 });
 
-const getHosts = makeGetHosts();
-
 const FederationRestrictions = () => {
   const intl = useIntl();
+  const instance = useInstance();
 
-  const siteTitle = useAppSelector((state) => state.instance.get('title'));
+  const getHosts = useCallback(makeGetHosts(), []);
+
   const hosts = useAppSelector((state) => getHosts(state)) as ImmutableOrderedSet<string>;
   const disclosed = useAppSelector((state) => federationRestrictionsDisclosed(state));
 
@@ -39,17 +37,17 @@ const FederationRestrictions = () => {
   const emptyMessage = disclosed ? messages.emptyMessage : messages.notDisclosed;
 
   return (
-    <Column icon='gavel' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <Accordion
         headline={intl.formatMessage(messages.boxTitle)}
         expanded={explanationBoxExpanded}
         onToggle={toggleExplanationBox}
       >
-        {intl.formatMessage(messages.boxMessage, { siteTitle })}
+        {intl.formatMessage(messages.boxMessage, { siteTitle: instance.title })}
       </Accordion>
 
       <div className='pt-4'>
-        <ScrollableList emptyMessage={intl.formatMessage(emptyMessage, { siteTitle })}>
+        <ScrollableList emptyMessage={intl.formatMessage(emptyMessage, { siteTitle: instance.title })}>
           {hosts.map((host) => <RestrictedInstance key={host} host={host} />)}
         </ScrollableList>
       </div>

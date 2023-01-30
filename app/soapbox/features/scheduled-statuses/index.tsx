@@ -4,9 +4,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import ScrollableList from 'soapbox/components/scrollable-list';
+import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-
-import Column from '../ui/components/column';
 
 import ScheduledStatus from './components/scheduled-status';
 
@@ -33,7 +32,7 @@ const ScheduledStatuses = () => {
   const emptyMessage = <FormattedMessage id='empty_column.scheduled_statuses' defaultMessage="You don't have any scheduled statuses yet. When you add one, it will show up here." />;
 
   return (
-    <Column icon='calendar' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='scheduled_statuses'
         hasMore={hasMore}

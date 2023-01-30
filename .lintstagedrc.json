@@ -1,5 +1,8 @@
 {
   "*.js": "eslint --cache",
+  "*.cjs": "eslint --cache",
+  "*.mjs": "eslint --cache",
   "*.ts": "eslint --cache",
+  "*.tsx": "eslint --cache",
   "app/styles/**/*.scss": "stylelint"
 }

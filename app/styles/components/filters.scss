@@ -1,12 +1,4 @@
 .filter-settings-panel {
-  .item-list article {
-    border-bottom: 1px solid var(--primary-text-color--faint);
-
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-
   .fields-group .two-col {
     display: flex;
     align-items: flex-start;
@@ -47,7 +39,7 @@
         @apply static;
       }
 
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         position: absolute;
         top: 3px;
         left: 0;
@@ -76,12 +68,12 @@
       @apply pr-1 capitalize;
 
       &::after {
-        content: ",";
+        content: ',';
       }
 
       &:last-of-type {
         &::after {
-          content: "";
+          content: '';
         }
       }
     }

@@ -1,13 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Form } from 'soapbox/components/ui';
 import { SelectDropdown } from 'soapbox/features/forms';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useFeatures, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks';
 
 import ThemeToggle from '../ui/components/theme-toggle';
 
@@ -89,7 +88,7 @@ const messages = defineMessages({
 
 const Preferences = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const settings = useSettings();
 
@@ -121,17 +120,11 @@ const Preferences = () => {
   return (
     <Form>
       <List>
-        <ListItem
-          label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />}
-          hint={<FormattedMessage id='preferences.hints.feed' defaultMessage='In your home feed' />}
-        >
+        <ListItem label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />}>
           <SettingToggle settings={settings} settingPath={['home', 'shows', 'reblog']} onChange={onToggleChange} />
         </ListItem>
 
-        <ListItem
-          label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />}
-          hint={<FormattedMessage id='preferences.hints.feed' defaultMessage='In your home feed' />}
-        >
+        <ListItem label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />}>
           <SettingToggle settings={settings} settingPath={['home', 'shows', 'reply']} onChange={onToggleChange} />
         </ListItem>
       </List>

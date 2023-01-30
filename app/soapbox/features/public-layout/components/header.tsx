@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -8,13 +7,14 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount } from 'soapbox/hooks';
+import { useSoapboxConfig, useOwnAccount, useAppDispatch, useRegistrationStatus } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
 import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
+  menu: { id: 'header.menu.title', defaultMessage: 'Open menu' },
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
   register: { id: 'header.register.label', defaultMessage: 'Register' },
@@ -24,18 +24,13 @@ const messages = defineMessages({
 });
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { isOpen } = useRegistrationStatus();
   const { links } = soapboxConfig;
-
-  const features = useFeatures();
-  const instance = useAppSelector((state) => state.instance);
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   const [isLoading, setLoading] = React.useState(false);
   const [username, setUsername] = React.useState('');
@@ -50,14 +45,12 @@ const Header = () => {
     setLoading(true);
 
     dispatch(logIn(username, password) as any)
-      .then(({ access_token }: { access_token: string }) => {
-        return (
-          dispatch(verifyCredentials(access_token) as any)
-            // Refetch the instance for authenticated fetch
-            .then(() => dispatch(fetchInstance()))
-            .then(() => setShouldRedirect(true))
-        );
-      })
+      .then(({ access_token }: { access_token: string }) => (
+        dispatch(verifyCredentials(access_token) as any)
+        // Refetch the instance for authenticated fetch
+          .then(() => dispatch(fetchInstance()))
+          .then(() => setShouldRedirect(true))
+      ))
       .catch((error: AxiosError) => {
         setLoading(false);
 
@@ -72,7 +65,7 @@ const Header = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <header>
+    <header data-testid='public-layout-header'>
       <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' aria-label='Header'>
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
           <div className='flex items-center sm:justify-center relative w-36'>
@@ -81,7 +74,7 @@ const Header = () => {
             </div>
 
             <IconButton
-              title='Open Menu'
+              title={intl.formatMessage(messages.menu)}
               src={require('@tabler/icons/menu-2.svg')}
               onClick={open}
               className='md:hidden mr-4 bg-transparent text-gray-700 dark:text-gray-600 hover:text-gray-600'
@@ -94,7 +87,7 @@ const Header = () => {
 
           </div>
 
-          <div className='ml-10 flex space-x-6 items-center relative z-10'>
+          <HStack space={6} alignItems='center' className='ml-10 relative z-10'>
             <HStack alignItems='center'>
               <HStack space={6} alignItems='center' className='hidden md:flex md:mr-6'>
                 {links.get('help') && (
@@ -113,7 +106,7 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {(isOpen || pepeEnabled && pepeOpen) && (
+                {isOpen && (
                   <Button
                     to='/signup'
                     theme='primary'
@@ -124,7 +117,7 @@ const Header = () => {
               </HStack>
             </HStack>
 
-            <Form className='hidden xl:flex space-x-2 items-center' onSubmit={handleSubmit}>
+            <Form className='hidden xl:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
               <Input
                 required
                 value={username}
@@ -167,7 +160,7 @@ const Header = () => {
                 {intl.formatMessage(messages.login)}
               </Button>
             </Form>
-          </div>
+          </HStack>
         </div>
       </nav>
     </header>

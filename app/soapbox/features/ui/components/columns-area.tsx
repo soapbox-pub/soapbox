@@ -4,6 +4,7 @@ import { Layout } from '../../../components/ui';
 
 interface IColumnsArea {
   layout: any,
+  children: React.ReactNode
 }
 
 const ColumnsArea: React.FC<IColumnsArea> = (props) => {

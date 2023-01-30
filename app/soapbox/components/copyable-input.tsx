@@ -28,7 +28,7 @@ const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
         ref={input}
         type='text'
         value={value}
-        className='rounded-r-none'
+        className='rounded-r-none rtl:rounded-l-none rtl:rounded-r-lg'
         outerClassName='flex-grow'
         onClick={selectInput}
         readOnly
@@ -36,7 +36,7 @@ const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
 
       <Button
         theme='primary'
-        className='mt-1 h-full rounded-l-none rounded-r-lg'
+        className='mt-1 h-full rounded-l-none rounded-r-lg rtl:rounded-l-lg rtl:rounded-r-none'
         onClick={selectInput}
       >
         <FormattedMessage id='input.copy' defaultMessage='Copy' />

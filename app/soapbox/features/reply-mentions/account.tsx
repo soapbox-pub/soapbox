@@ -3,9 +3,9 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display-name';
+import AccountComponent from 'soapbox/components/account';
 import IconButton from 'soapbox/components/icon-button';
+import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -44,24 +44,18 @@ const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   let button;
 
   if (added) {
-    button = <IconButton src={require('@tabler/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={require('@tabler/icons/x.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={require('@tabler/icons/plus.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (
-    <div className='account'>
-      <div className='account__wrapper'>
-        <div className='account__display-name'>
-          <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-          <DisplayName account={account} />
-        </div>
-
-        <div className='account__relationship'>
-          {!author && button}
-        </div>
+    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
+      <div className='w-full'>
+        <AccountComponent account={account} withRelationship={false} withLinkToProfile={false} />
       </div>
-    </div>
+      {!author && button}
+    </HStack>
   );
 };
 

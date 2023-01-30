@@ -79,12 +79,13 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
       ref={ref}
       type='button'
       className={classNames(
-        'flex items-center p-1 rounded-full',
+        'flex items-center p-1 rounded-full rtl:space-x-reverse',
         'text-gray-600 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',
         'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:ring-offset-0',
         {
           'text-black dark:text-white': active && emoji,
+          'hover:text-gray-600 dark:hover:text-white': !filteredProps.disabled,
           'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && !emoji && color === COLORS.accent,
           'text-success-600 hover:text-success-600 dark:hover:text-success-600': active && !emoji && color === COLORS.success,
           'space-x-1': !text,

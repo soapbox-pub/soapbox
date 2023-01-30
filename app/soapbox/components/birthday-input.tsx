@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import IconButton from 'soapbox/components/icon-button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useInstance, useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
   birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
@@ -23,9 +23,10 @@ interface IBirthdayInput {
 const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) => {
   const intl = useIntl();
   const features = useFeatures();
+  const instance = useInstance();
 
   const supportsBirthdays = features.birthdays;
-  const minAge = useAppSelector((state) => state.instance.pleroma.getIn(['metadata', 'birthday_min_age'])) as number;
+  const minAge = instance.pleroma.getIn(['metadata', 'birthday_min_age']) as number;
 
   const maxDate = useMemo(() => {
     if (!supportsBirthdays) return null;
@@ -69,7 +70,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
       <div className='flex flex-col gap-2'>
         <div className='flex items-center justify-between'>
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-left.svg')}
             onClick={decreaseMonth}
             disabled={prevMonthButtonDisabled}
@@ -78,7 +79,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           />
           {intl.formatDate(date, { month: 'long' })}
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-right.svg')}
             onClick={increaseMonth}
             disabled={nextMonthButtonDisabled}
@@ -88,7 +89,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
         </div>
         <div className='flex items-center justify-between'>
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-left.svg')}
             onClick={decreaseYear}
             disabled={prevYearButtonDisabled}
@@ -97,7 +98,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           />
           {intl.formatDate(date, { year: 'numeric' })}
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-right.svg')}
             onClick={increaseYear}
             disabled={nextYearButtonDisabled}

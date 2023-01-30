@@ -30,7 +30,13 @@ import {
   CompareHistoryModal,
   VerifySmsModal,
   FamiliarFollowersModal,
+  ComposeEventModal,
+  JoinEventModal,
   AccountModerationModal,
+  EventMapModal,
+  EventParticipantsModal,
+  PolicyModal,
+  ManageGroupModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle-container';
@@ -68,7 +74,13 @@ const MODAL_COMPONENTS = {
   'COMPARE_HISTORY': CompareHistoryModal,
   'VERIFY_SMS': VerifySmsModal,
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
+  'COMPOSE_EVENT': ComposeEventModal,
+  'JOIN_EVENT': JoinEventModal,
   'ACCOUNT_MODERATION': AccountModerationModal,
+  'EVENT_MAP': EventMapModal,
+  'EVENT_PARTICIPANTS': EventParticipantsModal,
+  'POLICY': PolicyModal,
+  'MANAGE_GROUP': ManageGroupModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;
@@ -95,16 +107,16 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
 
   renderLoading = (modalId: string) => () => {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
-  }
+  };
 
   renderError: React.ComponentType<{ onRetry: (props?: BundleProps) => void }> = (props) => {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
-  }
+  };
 
   onClickClose = (_?: ModalType) => {
     const { onClose, type } = this.props;
     onClose(type);
-  }
+  };
 
   render() {
     const { type, props } = this.props;

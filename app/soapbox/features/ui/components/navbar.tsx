@@ -1,16 +1,15 @@
 import classNames from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
-import { Avatar, Button, Form, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -24,14 +23,11 @@ const messages = defineMessages({
 });
 
 const Navbar = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
-
-  const node = useRef(null);
-
+  const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
-  const soapboxConfig = useSoapboxConfig();
-  const singleUserMode = soapboxConfig.get('singleUserMode');
+  const node = useRef(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -67,20 +63,21 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node}>
+    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node} data-testid='navbar'>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden'>
+            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:right-0 rtl:left-auto'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
             </div>
           )}
 
-          <div
-            className={classNames({
-              'flex-1 flex items-center lg:items-stretch space-x-4': true,
+          <HStack
+            space={4}
+            alignItems='center'
+            className={classNames('flex-1 enter lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
@@ -97,9 +94,9 @@ const Navbar = () => {
                 </div>
               </div>
             )}
-          </div>
+          </HStack>
 
-          <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>
+          <HStack space={3} alignItems='center' className='absolute inset-y-0 right-0 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0'>
             {account ? (
               <div className='hidden relative lg:flex items-center'>
                 <ProfileDropdown account={account}>
@@ -108,7 +105,7 @@ const Navbar = () => {
               </div>
             ) : (
               <>
-                <Form className='hidden lg:flex space-x-2 items-center' onSubmit={handleSubmit}>
+                <Form className='hidden lg:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
                   <Input
                     required
                     value={username}
@@ -151,7 +148,7 @@ const Navbar = () => {
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 
-                  {!singleUserMode && (
+                  {isOpen && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>
@@ -159,7 +156,7 @@ const Navbar = () => {
                 </div>
               </>
             )}
-          </div>
+          </HStack>
         </div>
       </div>
     </nav>

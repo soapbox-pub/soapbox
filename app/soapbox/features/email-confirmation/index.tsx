@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { confirmChangedEmail } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Spinner } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { buildErrorMessage } from 'soapbox/utils/errors';
 
 const Statuses = {
@@ -32,11 +32,7 @@ const EmailConfirmation = () => {
         .then(() => {
           setStatus(Statuses.SUCCESS);
 
-          dispatch(
-            snackbar.success(
-              intl.formatMessage(messages.success),
-            ),
-          );
+          toast.success(intl.formatMessage(messages.success));
         })
         .catch((error) => {
           setStatus(Statuses.FAIL);
@@ -44,14 +40,12 @@ const EmailConfirmation = () => {
           if (error.response.data.error) {
             const message = buildErrorMessage(error.response.data.error);
 
-            dispatch(
-              snackbar.error(
-                message,
-                // intl.formatMessage({
-                //   id: 'email_confirmation.fail',
-                //   defaultMessage,
-                // }),
-              ),
+            toast.error(
+              message,
+              // intl.formatMessage({
+              //   id: 'email_confirmation.fail',
+              //   defaultMessage,
+              // }),
             );
           }
         });

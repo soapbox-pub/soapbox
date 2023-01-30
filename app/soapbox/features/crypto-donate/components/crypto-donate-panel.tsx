@@ -3,12 +3,12 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { Text, Widget } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 import SiteWallet from './site-wallet';
 
 const messages = defineMessages({
-  actionTitle: { id: 'crypto_donate_panel.actions.view', defaultMessage: 'Click to see {count} {count, plural, one {wallet} other {wallets}}' },
+  actionTitle: { id: 'crypto_donate_panel.actions.view', defaultMessage: 'Click to see {count, plural, one {# wallet} other {# wallets}}' },
 });
 
 interface ICryptoDonatePanel {
@@ -18,9 +18,9 @@ interface ICryptoDonatePanel {
 const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Element | null => {
   const intl = useIntl();
   const history = useHistory();
+  const instance = useInstance();
 
   const addresses = useSoapboxConfig().get('cryptoAddresses');
-  const siteTitle = useAppSelector((state) => state.instance.title);
 
   if (limit === 0 || addresses.size === 0) {
     return null;
@@ -40,7 +40,7 @@ const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Ele
         <FormattedMessage
           id='crypto_donate_panel.intro.message'
           defaultMessage='{siteTitle} accepts cryptocurrency donations to fund our service. Thank you for your support!'
-          values={{ siteTitle }}
+          values={{ siteTitle: instance.title }}
         />
       </Text>
 

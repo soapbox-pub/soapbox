@@ -1,5 +1,7 @@
 import { Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
+import { ChatMessage } from 'soapbox/types/entities';
+
 import {
   REPORT_INIT,
   REPORT_SUBMIT_REQUEST,
@@ -19,6 +21,7 @@ const NewReportRecord = ImmutableRecord({
   isSubmitting: false,
   account_id: null as string | null,
   status_ids: ImmutableSet<string>(),
+  chat_message: null as null | ChatMessage,
   comment: '',
   forward: false,
   block: false,
@@ -37,6 +40,10 @@ export default function reports(state: State = ReducerRecord(), action: AnyActio
       return state.withMutations(map => {
         map.setIn(['new', 'isSubmitting'], false);
         map.setIn(['new', 'account_id'], action.account.id);
+
+        if (action.chatMessage) {
+          map.setIn(['new', 'chat_message'], action.chatMessage);
+        }
 
         if (state.new.account_id !== action.account.id) {
           map.setIn(['new', 'status_ids'], action.status ? ImmutableSet([action.status.reblog?.id || action.status.id]) : ImmutableSet());
@@ -76,6 +83,7 @@ export default function reports(state: State = ReducerRecord(), action: AnyActio
       return state.withMutations(map => {
         map.setIn(['new', 'account_id'], null);
         map.setIn(['new', 'status_ids'], ImmutableSet());
+        map.setIn(['new', 'chat_message'], null);
         map.setIn(['new', 'comment'], '');
         map.setIn(['new', 'isSubmitting'], false);
         map.setIn(['new', 'rule_ids'], ImmutableSet());

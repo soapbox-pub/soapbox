@@ -1,12 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists';
-import DisplayName from 'soapbox/components/display-name';
 import IconButton from 'soapbox/components/icon-button';
-import { Avatar } from 'soapbox/components/ui';
+import { HStack } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account-container';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },
@@ -20,37 +19,27 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ accountId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const getAccount = useCallback(makeGetAccount(), []);
 
-  const account = useAppSelector((state) => getAccount(state, accountId));
   const isAdded = useAppSelector((state) => state.listEditor.accounts.items.includes(accountId));
 
   const onRemove = () => dispatch(removeFromListEditor(accountId));
   const onAdd = () => dispatch(addToListEditor(accountId));
 
-  if (!account) return null;
-
   let button;
 
   if (isAdded) {
-    button = <IconButton src={require('@tabler/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={require('@tabler/icons/x.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={require('@tabler/icons/plus.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (
-    <div className='account'>
-      <div className='account__wrapper'>
-        <div className='account__display-name'>
-          <div className='account__avatar-wrapper'><Avatar src={account.avatar} size={36} /></div>
-          <DisplayName account={account} />
-        </div>
-
-        <div className='account__relationship'>
-          {button}
-        </div>
+    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
+      <div className='w-full'>
+        <AccountContainer id={accountId} withRelationship={false} />
       </div>
-    </div>
+      {button}
+    </HStack>
   );
 };
 

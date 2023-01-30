@@ -40,6 +40,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
         timestamp={status.created_at}
         showProfileHoverCard={false}
         withLinkToProfile={false}
+        hideActions={hideActions}
       />
 
       <Text

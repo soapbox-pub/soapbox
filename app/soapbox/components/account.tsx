@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
@@ -8,20 +9,29 @@ import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
+import Badge from './badge';
 import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
+import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
   account: AccountEntity,
+  disabled?: boolean,
 }
 
-const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
+const messages = defineMessages({
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
+});
+
+const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
   const history = useHistory();
 
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
+
+    if (disabled) return;
 
     const timelineUrl = `/timeline/${account.domain}`;
     if (!(e.ctrlKey || e.metaKey)) {
@@ -32,7 +42,11 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
   };
 
   return (
-    <button className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2' onClick={handleClick}>
+    <button
+      className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2'
+      onClick={handleClick}
+      disabled={disabled}
+    >
       <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
     </button>
   );
@@ -40,13 +54,19 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
 
 interface IProfilePopper {
   condition: boolean,
-  wrapper: (children: any) => React.ReactElement<any, any>
+  wrapper: (children: React.ReactNode) => React.ReactNode
+  children: React.ReactNode
 }
 
-const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
-  condition ? wrapper(children) : children;
+const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }) => {
+  return (
+    <>
+      {condition ? wrapper(children) : children}
+    </>
+  );
+};
 
-interface IAccount {
+export interface IAccount {
   account: AccountEntity,
   action?: React.ReactElement,
   actionAlignment?: 'center' | 'top',
@@ -68,7 +88,9 @@ interface IAccount {
   withLinkToProfile?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
+  approvalStatus?: StatusApprovalStatus,
   emoji?: string,
+  note?: string,
 }
 
 const Account = ({
@@ -91,7 +113,9 @@ const Account = ({
   withLinkToProfile = true,
   withRelationship = true,
   showEdit = false,
+  approvalStatus,
   emoji,
+  note,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
@@ -136,6 +160,8 @@ const Account = ({
     return null;
   };
 
+  const intl = useIntl();
+
   React.useEffect(() => {
     const style: React.CSSProperties = {};
     const actionWidth = actionRef.current?.clientWidth || 0;
@@ -169,7 +195,7 @@ const Account = ({
   return (
     <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems={withAccountNote ? 'top' : 'center'} space={3}>
+        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3}>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -199,7 +225,7 @@ const Account = ({
                 title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
-                <div className='flex items-center space-x-1 flex-grow' style={style}>
+                <HStack space={1} alignItems='center' grow style={style}>
                   <Text
                     size='sm'
                     weight='semibold'
@@ -208,16 +234,18 @@ const Account = ({
                   />
 
                   {account.verified && <VerificationBadge />}
-                </div>
+
+                  {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
+                </HStack>
               </LinkEl>
             </ProfilePopper>
 
-            <Stack space={withAccountNote ? 1 : 0}>
+            <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1} style={style}>
-                <Text theme='muted' size='sm' truncate>@{username}</Text>
+                <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (
-                  <InstanceFavicon account={account} />
+                  <InstanceFavicon account={account} disabled={!withLinkToProfile} />
                 )}
 
                 {(timestamp) ? (
@@ -233,6 +261,18 @@ const Account = ({
                     )}
                   </>
                 ) : null}
+
+                {approvalStatus && ['pending', 'rejected'].includes(approvalStatus) && (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text tag='span' theme='muted' size='sm'>
+                      {approvalStatus === 'pending'
+                        ? <FormattedMessage id='status.approval.pending' defaultMessage='Pending approval' />
+                        : <FormattedMessage id='status.approval.rejected' defaultMessage='Rejected' />}
+                    </Text>
+                  </>
+                )}
 
                 {showEdit ? (
                   <>
@@ -251,11 +291,18 @@ const Account = ({
                 ) : null}
               </HStack>
 
-              {withAccountNote && (
+              {note ? (
+                <Text
+                  size='sm'
+                  className='mr-2'
+                >
+                  {note}
+                </Text>
+              ) : withAccountNote && (
                 <Text
                   size='sm'
                   dangerouslySetInnerHTML={{ __html: account.note_emojified }}
-                  className='mr-2'
+                  className='mr-2 rtl:ml-2 rtl:mr-0'
                 />
               )}
             </Stack>

@@ -7,8 +7,6 @@ import { Button, Card, CardBody, CardHeader, CardTitle, Column, Spinner, Stack, 
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Token } from 'soapbox/reducers/security';
 
-import type { Map as ImmutableMap } from 'immutable';
-
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
   revoke: { id: 'security.tokens.revoke', defaultMessage: 'Revoke' },
@@ -47,17 +45,19 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
       <Stack space={2}>
         <Stack>
           <Text size='md' weight='medium'>{token.app_name}</Text>
-          <Text size='sm' theme='muted'>
-            <FormattedDate
-              value={new Date(token.valid_until)}
-              hour12
-              year='numeric'
-              month='short'
-              day='2-digit'
-              hour='numeric'
-              minute='2-digit'
-            />
-          </Text>
+          {token.valid_until && (
+            <Text size='sm' theme='muted'>
+              <FormattedDate
+                value={token.valid_until}
+                hour12
+                year='numeric'
+                month='short'
+                day='2-digit'
+                hour='numeric'
+                minute='2-digit'
+              />
+            </Text>
+          )}
         </Stack>
 
         <div className='flex justify-end'>
@@ -75,9 +75,9 @@ const AuthTokenList: React.FC = () => {
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());
   const currentTokenId = useAppSelector(state => {
-    const currentToken = state.auth.get('tokens').valueSeq().find((token: ImmutableMap<string, any>) => token.get('me') === state.auth.get('me'));
+    const currentToken = state.auth.tokens.valueSeq().find((token) => token.me === state.auth.me);
 
-    return currentToken?.get('id');
+    return currentToken?.id;
   });
 
   useEffect(() => {

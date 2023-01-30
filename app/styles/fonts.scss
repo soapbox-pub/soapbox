@@ -1,34 +1,9 @@
 @use 'sass:math';
 
-// OpenDyslexic
-@font-face {
-  font-family: 'OpenDyslexic';
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'OpenDyslexic';
-  font-weight: bold;
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'OpenDyslexic';
-  font-weight: bold;
-  font-style: italic;
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Bold-Italic.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'OpenDyslexic';
-  font-style: italic;
-  src: url('../assets/fonts/OpenDyslexic/OpenDyslexic-Italic.woff2') format('woff2');
-}
-
 // TYPEOGRAPHY MIXINS
 
 // declare the font family using these shortcuts
-@mixin font-inter { font-family: 'Inter', Arial, sans-serif !important; }
+@mixin font-inter { font-family: Inter, Arial, sans-serif !important; }
 
 // Declare font weights as a numerical value in rendered output
 // Prevents certain browsers which do not play nice with "light, medium" textual declarations
@@ -48,35 +23,13 @@
 @mixin font-size($size) {
   $rem: math.div($size, 10);
   $px: $size;
-  font-size: #{$px + "px"};
-  font-size: #{$rem + "rem"};
+  font-size: #{$px + 'px'};
+  font-size: #{$rem + 'rem'};
 }
 
 @mixin line-height($size) {
   $rem: math.div($size, 10);
   $px: $size;
-  line-height: #{$px + "px"};
-  line-height: #{$rem + "rem"};
-}
-
-// Soapbox icon font
-@font-face {
-  font-family: 'soapbox';
-  src: url('../assets/fonts/soapbox/soapbox.eot?pryg6i');
-  src: url('../assets/fonts/soapbox/soapbox.eot?pryg6i#iefix') format('embedded-opentype'),
-    url('../assets/fonts/soapbox/soapbox.ttf?pryg6i') format('truetype'),
-    url('../assets/fonts/soapbox/soapbox.woff?pryg6i') format('woff'),
-    url('../assets/fonts/soapbox/soapbox.svg?pryg6i#soapbox') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-.fa-fediverse::before {
-  font-family: 'soapbox';
-  content: "\e901";
-}
-
-.fa-spinster::before {
-  font-family: 'soapbox';
-  content: "\e900";
+  line-height: #{$px + 'px'};
+  line-height: #{$rem + 'rem'};
 }

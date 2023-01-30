@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import {
   followAccount,
@@ -14,7 +13,7 @@ import {
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import { Button, HStack } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -49,7 +48,7 @@ interface IActionButton {
  * `actionType` prop.
  */
 const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 

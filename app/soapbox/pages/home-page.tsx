@@ -16,13 +16,15 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
-import Avatar from '../components/avatar';
-import { Card, CardBody, Layout } from '../components/ui';
+import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle-container';
-// import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
-const HomePage: React.FC = ({ children }) => {
+interface IHomePage {
+  children: React.ReactNode
+}
+
+const HomePage: React.FC<IHomePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const features = useFeatures();
@@ -35,6 +37,7 @@ const HomePage: React.FC = ({ children }) => {
   const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit', 0);
 
   const acct = account ? account.acct : '';
+  const avatar = account ? account.avatar : '';
 
   return (
     <>
@@ -42,23 +45,25 @@ const HomePage: React.FC = ({ children }) => {
         {me && (
           <Card variant='rounded' ref={composeBlock}>
             <CardBody>
-              <div className='flex items-start space-x-4'>
+              <HStack alignItems='start' space={4}>
                 <Link to={`/@${acct}`}>
-                  <Avatar account={account} size={46} />
+                  <Avatar src={avatar} size={46} />
                 </Link>
 
-                <ComposeForm
-                  id='home'
-                  shouldCondense
-                  autoFocus={false}
-                  clickableAreaRef={composeBlock}
-                />
-              </div>
+                <div className='translate-y-0.5 w-full'>
+                  <ComposeForm
+                    id='home'
+                    shouldCondense
+                    autoFocus={false}
+                    clickableAreaRef={composeBlock}
+                  />
+                </div>
+              </HStack>
             </CardBody>
           </Card>
         )}
 
-        {features.feedUserFiltering && <FeedCarousel />}
+        {features.carousel && <FeedCarousel />}
 
         {children}
 

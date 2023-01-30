@@ -1,39 +1,22 @@
-// Fonts from elsewhere
-@import '~line-awesome/dist/font-awesome-line-awesome/css/all.css';
-@import '~@fontsource/inter/200.css';
-@import '~@fontsource/inter/300.css';
-@import '~@fontsource/inter/400.css';
-@import '~@fontsource/inter/500.css';
-@import '~@fontsource/inter/700.css';
-@import '~@fontsource/inter/900.css';
-
 @import 'mixins';
 @import 'themes';
 @import 'variables';
 @import 'fonts';
 @import 'basics';
-@import 'accounts';
-@import 'boost';
 @import 'loading';
 @import 'ui';
-// @import 'introduction';
 @import 'emoji-picker';
 @import 'rtl';
 @import 'accessibility';
-@import 'dyslexic';
-@import 'chats';
 @import 'navigation';
 @import 'placeholder';
 @import 'autosuggest';
 
 // COMPONENTS
 @import 'components/buttons';
-@import 'components/inputs';
 @import 'components/dropdown-menu';
 @import 'components/modal';
-@import 'components/account-header';
 @import 'components/compose-form';
-@import 'components/sidebar-menu';
 @import 'components/emoji-reacts';
 @import 'components/status';
 @import 'components/reply-mentions';
@@ -44,67 +27,12 @@
 @import 'components/columns';
 @import 'components/search';
 @import 'components/react-toggle';
-@import 'components/still-image';
-@import 'components/spoiler-button';
 @import 'components/video-player';
 @import 'components/audio-player';
-@import 'components/profile-hover-card';
 @import 'components/filters';
-@import 'components/snackbar';
-@import 'components/admin';
-@import 'components/backups';
 @import 'components/crypto-donate';
 @import 'components/aliases';
 @import 'components/icon';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer utilities {
-  .shadow-inset {
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%);
-  }
-
-  .d-screen {
-    height: 100vh; // Backwards compatibility
-    /* stylelint-disable-next-line unit-no-unknown */
-    height: 100dvh;
-  }
-
-  .bg-gradient-light {
-    background: linear-gradient(
-      115deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0) 20%,
-      rgba(var(--color-gradient-start) / 0.1) 35%,
-      rgba(var(--color-gradient-end) / 0.1) 70%,
-      rgba(0, 0, 0, 0) 80%,
-      rgba(0, 0, 0, 0) 100%
-    );
-  }
-
-  .bg-gradient-dark {
-    background: linear-gradient(
-      115deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0) 30%,
-      rgba(var(--color-gradient-start) / 0.1) 45%,
-      rgba(var(--color-gradient-start) / 0.2) 55%,
-      rgba(0, 0, 0, 0) 70%,
-      rgba(0, 0, 0, 0) 100%
-    );
-  }
-
-  .bg-gradient-sm {
-    background: linear-gradient(
-      112deg,
-      rgba(var(--color-gradient-start) / 0.1) 0%,
-      rgba(var(--color-gradient-end) / 0.1) 50%
-    );
-  }
-}
-
 @import 'forms';
 @import 'utilities';
 @import 'components/datepicker';

@@ -1,12 +1,13 @@
 'use strict';
 
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -14,18 +15,20 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still-image';
-import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider, Avatar } from 'soapbox/components/ui';
+import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { ChatKeys, useChats } from 'soapbox/queries/chats';
+import { queryClient } from 'soapbox/queries/client';
+import toast from 'soapbox/toast';
 import { Account } from 'soapbox/types/entities';
-import { isLocal, isRemote } from 'soapbox/utils/accounts';
+import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
@@ -68,6 +71,7 @@ const messages = defineMessages({
   userEndorsed: { id: 'account.endorse.success', defaultMessage: 'You are now featuring @{acct} on your profile' },
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
+  header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
 });
 
@@ -85,6 +89,21 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
+  const { getOrCreateChatByAccountId } = useChats();
+
+  const createAndNavigateToChat = useMutation((accountId: string) => {
+    return getOrCreateChatByAccountId(accountId);
+  }, {
+    onError: (error: AxiosError) => {
+      const data = error.response?.data as any;
+      toast.error(data?.error);
+    },
+    onSuccess: (response) => {
+      history.push(`/chats/${response.data.id}`);
+      queryClient.invalidateQueries(ChatKeys.chatSearch());
+    },
+  });
+
   if (!account) {
     return (
       <div className='-mt-4 -mx-4'>
@@ -93,13 +112,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         </div>
 
         <div className='px-4 sm:px-6'>
-          <div className='-mt-12 flex items-end space-x-5'>
+          <HStack alignItems='bottom' space={5} className='-mt-12'>
             <div className='flex relative'>
               <div
                 className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
               />
             </div>
-          </div>
+          </HStack>
         </div>
       </div>
     );
@@ -143,12 +162,12 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const onEndorseToggle = () => {
     if (account.relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
-        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .then(() => toast.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct })))
+        .catch(() => { });
     } else {
       dispatch(pinAccount(account.id))
-        .then(() => dispatch(snackbar.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct }))))
-        .catch(() => {});
+        .then(() => toast.success(intl.formatMessage(messages.userEndorsed, { acct: account.acct })))
+        .catch(() => { });
     }
   };
 
@@ -186,10 +205,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     dispatch(openModal('LIST_ADDER', {
       accountId: account.id,
     }));
-  };
-
-  const onChat = () => {
-    dispatch(launchChat(account.id, history));
   };
 
   const onModerate = () => {
@@ -334,13 +349,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
-        menu.push({
-          text: intl.formatMessage(messages.chat, { name: account.username }),
-          action: onChat,
-          icon: require('@tabler/icons/messages.svg'),
-        });
-      } else if (features.privacyScopes) {
+      if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,
@@ -516,34 +525,66 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return info;
   };
 
-  // const renderMessageButton = () => {
-  //   if (!ownAccount || !account || account.id === ownAccount.id) {
-  //     return null;
-  //   }
+  const renderHeader = () => {
+    let header: React.ReactNode;
 
-  //   const canChat = account.getIn(['pleroma', 'accepts_chat_messages']) === true;
+    if (account.header) {
+      header = (
+        <StillImage
+          src={account.header}
+          alt={intl.formatMessage(messages.header)}
+        />
+      );
 
-  //   if (canChat) {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/messages.svg')}
-  //         onClick={onChat}
-  //         title={intl.formatMessage(messages.chat, { name: account.username })}
-  //       />
-  //     );
-  //   } else {
-  //     return (
-  //       <IconButton
-  //         src={require('@tabler/icons/mail.svg')}
-  //         onClick={onDirect}
-  //         title={intl.formatMessage(messages.direct, { name: account.username })}
-  //         theme='outlined'
-  //         className='px-2'
-  //         iconClassName='w-4 h-4'
-  //       />
-  //     );
-  //   }
-  // };
+      if (!isDefaultHeader(account.header)) {
+        header = (
+          <a href={account.header} onClick={handleHeaderClick} target='_blank'>
+            {header}
+          </a>
+        );
+      }
+    }
+
+    return header;
+  };
+
+  const renderMessageButton = () => {
+    if (!ownAccount || !account || account.id === ownAccount?.id) {
+      return null;
+    }
+
+    if (features.chatsWithFollowers) { // Truth Social
+      const canChat = account.relationship?.followed_by;
+      if (!canChat) {
+        return null;
+      }
+
+      return (
+        <IconButton
+          src={require('@tabler/icons/messages.svg')}
+          onClick={() => createAndNavigateToChat.mutate(account.id)}
+          title={intl.formatMessage(messages.chat, { name: account.username })}
+          theme='outlined'
+          className='px-2'
+          iconClassName='w-4 h-4'
+          disabled={createAndNavigateToChat.isLoading}
+        />
+      );
+    } else if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
+      return (
+        <IconButton
+          src={require('@tabler/icons/messages.svg')}
+          onClick={() => createAndNavigateToChat.mutate(account.id)}
+          title={intl.formatMessage(messages.chat, { name: account.username })}
+          theme='outlined'
+          className='px-2'
+          iconClassName='w-4 h-4'
+        />
+      );
+    } else {
+      return null;
+    }
+  };
 
   const renderShareButton = () => {
     const canShare = 'share' in navigator;
@@ -574,16 +615,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
       )}
 
       <div>
-        <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50'>
-          {account.header && (
-            <a href={account.header} onClick={handleHeaderClick} target='_blank'>
-              <StillImage
-                src={account.header}
-                alt='Profile Header'
-                className='absolute inset-0 object-cover md:rounded-t-xl'
-              />
-            </a>
-          )}
+        <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
+          {renderHeader()}
 
           <div className='absolute top-2 left-2'>
             <HStack alignItems='center' space={1}>
@@ -594,20 +627,22 @@ const Header: React.FC<IHeader> = ({ account }) => {
       </div>
 
       <div className='px-4 sm:px-6'>
-        <div className='-mt-12 flex items-end space-x-5'>
+        <HStack className='-mt-12' alignItems='bottom' space={5}>
           <div className='flex'>
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
                 src={account.avatar}
                 size={96}
-                className='h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900'
+                className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900'
               />
             </a>
           </div>
 
           <div className='mt-6 flex justify-end w-full sm:pb-1'>
-            <div className='mt-10 flex flex-row space-y-0 space-x-2'>
+            <HStack space={2} className='mt-10'>
               <SubscriptionButton account={account} />
+              {renderMessageButton()}
+              {renderShareButton()}
 
               {menu.length > 0 && (
                 <Menu>
@@ -620,7 +655,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                     children={null}
                   />
 
-                  <MenuList>
+                  <MenuList className='w-56'>
                     {menu.map((menuItem, idx) => {
                       if (typeof menuItem?.text === 'undefined') {
                         return <MenuDivider key={idx} />;
@@ -630,13 +665,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
                         return (
                           <Comp key={idx} {...itemProps} className='group'>
-                            <div className='flex items-center'>
+                            <HStack space={3} alignItems='center'>
                               {menuItem.icon && (
-                                <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
+                                <SvgIcon src={menuItem.icon} className='h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
                               )}
 
                               <div className='truncate'>{menuItem.text}</div>
-                            </div>
+                            </HStack>
                           </Comp>
                         );
                       }
@@ -645,13 +680,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
                 </Menu>
               )}
 
-              {renderShareButton()}
-              {/* {renderMessageButton()} */}
-
               <ActionButton account={account} />
-            </div>
+            </HStack>
           </div>
-        </div>
+        </HStack>
       </div>
     </div>
   );

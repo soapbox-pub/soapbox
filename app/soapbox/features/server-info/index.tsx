@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Column, Divider, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useInstance } from 'soapbox/hooks';
 
 import LinkFooter from '../ui/components/link-footer';
 import PromoPanel from '../ui/components/promo-panel';
@@ -13,7 +13,7 @@ const messages = defineMessages({
 
 const ServerInfo = () => {
   const intl = useIntl();
-  const instance = useAppSelector((state) => state.instance);
+  const instance = useInstance();
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>

@@ -9,41 +9,12 @@ import Icon from 'soapbox/components/icon';
 import { Input } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
 import { isRtl } from 'soapbox/rtl';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { InputThemes } from 'soapbox/components/ui/input/input';
 
-type CursorMatch = [
-  tokenStart: number | null,
-  token: string | null,
-];
-
 export type AutoSuggestion = string | Emoji;
-
-const textAtCursorMatchesToken = (str: string, caretPosition: number, searchTokens: string[]): CursorMatch => {
-  let word: string;
-
-  const left: number = str.slice(0, caretPosition).search(/\S+$/);
-  const right: number = str.slice(caretPosition).search(/\s/);
-
-  if (right < 0) {
-    word = str.slice(left);
-  } else {
-    word = str.slice(left, right + caretPosition);
-  }
-
-  if (!word || word.trim().length < 3 || !searchTokens.includes(word[0])) {
-    return [null, null];
-  }
-
-  word = word.trim().toLowerCase();
-
-  if (word.length > 0) {
-    return [left + 1, word];
-  } else {
-    return [null, null];
-  }
-};
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
   value: string,
@@ -60,7 +31,8 @@ export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputEl
   searchTokens: string[],
   maxLength?: number,
   menu?: Menu,
-  resultsPosition: string,
+  renderSuggestion?: React.FC<{ id: string }>,
+  hidePortal?: boolean,
   theme?: InputThemes,
 }
 
@@ -70,12 +42,11 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     autoFocus: false,
     autoSelect: true,
     searchTokens: ImmutableList(['@', ':', '#']),
-    resultsPosition: 'below',
   };
 
   getFirstIndex = () => {
     return this.props.autoSelect ? 0 : -1;
-  }
+  };
 
   state = {
     suggestionsHidden: true,
@@ -88,7 +59,11 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   input: HTMLInputElement | null = null;
 
   onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const [tokenStart, token] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart || 0, this.props.searchTokens);
+    const [tokenStart, token] = textAtCursorMatchesToken(
+      e.target.value,
+      e.target.selectionStart || 0,
+      this.props.searchTokens,
+    );
 
     if (token !== null && this.state.lastToken !== token) {
       this.setState({ lastToken: token, selectedSuggestion: 0, tokenStart });
@@ -101,7 +76,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     if (this.props.onChange) {
       this.props.onChange(e);
     }
-  }
+  };
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     const { suggestions, menu, disabled } = this.props;
@@ -170,15 +145,15 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     if (this.props.onKeyDown) {
       this.props.onKeyDown(e);
     }
-  }
+  };
 
   onBlur = () => {
     this.setState({ suggestionsHidden: true, focused: false });
-  }
+  };
 
   onFocus = () => {
     this.setState({ focused: true });
-  }
+  };
 
   onSuggestionClick: React.EventHandler<React.MouseEvent | React.TouchEvent> = (e) => {
     const index = Number(e.currentTarget?.getAttribute('data-index'));
@@ -186,7 +161,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.input?.focus();
     e.preventDefault();
-  }
+  };
 
   componentDidUpdate(prevProps: IAutosuggestInput, prevState: any) {
     const { suggestions } = this.props;
@@ -197,13 +172,17 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
   setInput = (c: HTMLInputElement) => {
     this.input = c;
-  }
+  };
 
   renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
     const { selectedSuggestion } = this.state;
     let inner, key;
 
-    if (typeof suggestion === 'object') {
+    if (this.props.renderSuggestion && typeof suggestion === 'string') {
+      const RenderSuggestion = this.props.renderSuggestion;
+      inner = <RenderSuggestion id={suggestion} />;
+      key = suggestion;
+    } else if (typeof suggestion === 'object') {
       inner = <AutosuggestEmoji emoji={suggestion} />;
       key = suggestion.id;
     } else if (suggestion[0] === '#') {
@@ -230,21 +209,21 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         {inner}
       </div>
     );
-  }
+  };
 
   handleMenuItemAction = (item: MenuItem | null, e: React.MouseEvent | React.KeyboardEvent) => {
     this.onBlur();
     if (item?.action) {
       item.action(e);
     }
-  }
+  };
 
   handleMenuItemClick = (item: MenuItem | null): React.MouseEventHandler => {
     return e => {
       e.preventDefault();
       this.handleMenuItemAction(item, e);
     };
-  }
+  };
 
   renderMenu = () => {
     const { menu, suggestions } = this.props;
@@ -279,11 +258,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
     const { top, height, left, width } = this.input.getBoundingClientRect();
 
-    if (this.props.resultsPosition === 'below') {
-      return { left, width, top: top + height };
-    }
-
-    return { left, width, top, transform: 'translate(0, -100%)' };
+    return { left, width, top: top + height };
   }
 
   render() {
@@ -293,7 +268,8 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
     const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
 
-    if (isRtl(value)) {
+    // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
+    if (isRtl(value) || (!value && placeholder && isRtl(placeholder))) {
       style.direction = 'rtl';
     }
 

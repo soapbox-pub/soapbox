@@ -1,10 +1,10 @@
 import classNames from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import {
@@ -29,7 +29,6 @@ import MissingIndicator from 'soapbox/components/missing-indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
-import SubNavigation from 'soapbox/components/sub-navigation';
 import Tombstone from 'soapbox/components/tombstone';
 import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
@@ -83,7 +82,7 @@ const getAncestorsIds = createSelector([
   return ancestorsIds;
 });
 
-const getDescendantsIds = createSelector([
+export const getDescendantsIds = createSelector([
   (_: RootState, statusId: string) => statusId,
   (state: RootState) => state.contexts.replies,
 ], (statusId, contextReplies) => {
@@ -426,6 +425,12 @@ const Thread: React.FC<IThread> = (props) => {
   const hasAncestors = ancestorsIds.size > 0;
   const hasDescendants = descendantsIds.size > 0;
 
+  if (status?.event) {
+    return (
+      <Redirect to={`/@${status.getIn(['account', 'acct'])}/events/${status.id}`} />
+    );
+  }
+
   if (!status && isLoaded) {
     return (
       <MissingIndicator />
@@ -510,11 +515,7 @@ const Thread: React.FC<IThread> = (props) => {
   }
 
   return (
-    <Column label={intl.formatMessage(titleMessage, { username })} transparent withHeader={false}>
-      <div className='px-4 pt-4 sm:p-0'>
-        <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
-      </div>
-
+    <Column label={intl.formatMessage(titleMessage, { username })} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2}>
           <div ref={node} className='thread'>
