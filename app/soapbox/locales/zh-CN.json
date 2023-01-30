@@ -1154,7 +1154,7 @@
   "reply_indicator.cancel": "取消",
   "reply_mentions.account.add": "添加到提及列表",
   "reply_mentions.account.remove": "从提及列表中移除",
-  "reply_mentions.more": "更多 {count} 人",
+  "reply_mentions.more": "另外 {count} 人",
   "reply_mentions.reply": "回复 {accounts}",
   "reply_mentions.reply.hoverable": "<hover>回复</hover> {accounts}",
   "reply_mentions.reply_empty": "回复帖文",
