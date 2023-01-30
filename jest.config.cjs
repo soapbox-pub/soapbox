@@ -18,6 +18,8 @@ module.exports = {
   ],
   'collectCoverageFrom': [
     'app/soapbox/**/*.js',
+    'app/soapbox/**/*.cjs',
+    'app/soapbox/**/*.mjs',
     'app/soapbox/**/*.ts',
     'app/soapbox/**/*.tsx',
     '!app/soapbox/features/emoji/emoji-compressed.js',
@@ -43,6 +45,6 @@ module.exports = {
   ],
   'transform': {
     '\\.[jt]sx?$': 'babel-jest',
-    [`\\.(${ASSET_EXTS})$`]: '<rootDir>/jest/assetTransformer.js',
+    [`\\.(${ASSET_EXTS})$`]: '<rootDir>/jest/assetTransformer.cjs',
   },
 };

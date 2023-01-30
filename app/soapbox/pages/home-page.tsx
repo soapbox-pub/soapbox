@@ -20,7 +20,11 @@ import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle-container';
 
-const HomePage: React.FC = ({ children }) => {
+interface IHomePage {
+  children: React.ReactNode
+}
+
+const HomePage: React.FC<IHomePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const features = useFeatures();

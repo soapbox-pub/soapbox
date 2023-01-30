@@ -2,6 +2,7 @@
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 10px;
+  isolation: isolate;
   position: relative;
   width: 100%;
   height: auto;
@@ -50,10 +51,10 @@
 }
 
 .media-gallery__item-thumbnail {
+  @apply text-gray-400;
   cursor: zoom-in;
   display: block;
   text-decoration: none;
-  color: var(--primary-text-color--faint);
   line-height: 0;
   position: relative;
   z-index: 1;

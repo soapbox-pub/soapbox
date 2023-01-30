@@ -20,8 +20,8 @@ import KVStore from 'soapbox/storage/kv-store';
 import toast from 'soapbox/toast';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
-import { getFeatures } from 'soapbox/utils/features';
 import { normalizeUsername } from 'soapbox/utils/input';
+import { getScopes } from 'soapbox/utils/scopes';
 import { isStandalone } from 'soapbox/utils/state';
 
 import api, { baseClient } from '../api';
@@ -50,16 +50,11 @@ const customApp = custom('app');
 
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
+  awaitingApproval: { id: 'auth.awaiting_approval', defaultMessage: 'Your account is awaiting approval' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
 });
 
 const noOp = () => new Promise(f => f(undefined));
-
-const getScopes = (state: RootState) => {
-  const instance = state.instance;
-  const { scopes } = getFeatures(instance);
-  return scopes;
-};
 
 const createAppAndToken = () =>
   (dispatch: AppDispatch) =>
@@ -193,6 +188,8 @@ export const logIn = (username: string, password: string) =>
     if ((error.response?.data as any)?.error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
+    } else if ((error.response?.data as any)?.identifier === 'awaiting_approval') {
+      toast.error(messages.awaitingApproval);
     } else {
       // Return "wrong password" message.
       toast.error(messages.invalidCredentials);

@@ -30,6 +30,7 @@ interface IAutosuggesteTextarea {
   onFocus: () => void,
   onBlur?: () => void,
   condensed?: boolean,
+  children: React.ReactNode,
 }
 
 class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {
@@ -156,7 +157,8 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (lastTokenUpdated && !valueUpdated) {
       return false;
     } else {
-      return super.shouldComponentUpdate!(nextProps, nextState, undefined);
+      // https://stackoverflow.com/a/35962835
+      return super.shouldComponentUpdate!.bind(this)(nextProps, nextState, undefined);
     }
   }
 

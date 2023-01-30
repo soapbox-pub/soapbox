@@ -6,6 +6,8 @@ import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import useAccountSearch from 'soapbox/queries/search';
 
+import type { Account } from 'soapbox/types/entities';
+
 interface IResults {
   accountSearchResult: ReturnType<typeof useAccountSearch>
   onSelect(id: string): void
@@ -23,7 +25,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
     }
   };
 
-  const renderAccount = useCallback((_index, account) => (
+  const renderAccount = useCallback((_index: number, account: Account) => (
     <button
       key={account.id}
       type='button'

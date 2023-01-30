@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as BuildConfig from 'soapbox/build-config';
 import { isURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
-import { getFeatures } from 'soapbox/utils/features';
+import { getScopes } from 'soapbox/utils/scopes';
 
 import { createApp } from './apps';
 
@@ -11,8 +11,7 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 
 const createProviderApp = () => {
   return async(dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState();
-    const { scopes } = getFeatures(state.instance);
+    const scopes = getScopes(getState());
 
     const params = {
       client_name:   sourceCode.displayName,
@@ -29,8 +28,7 @@ export const prepareRequest = (provider: string) => {
   return async(dispatch: AppDispatch, getState: () => RootState) => {
     const baseURL = isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : '';
 
-    const state = getState();
-    const { scopes } = getFeatures(state.instance);
+    const scopes = getScopes(getState());
     const app = await dispatch(createProviderApp());
     const { client_id, redirect_uri } = app;
 

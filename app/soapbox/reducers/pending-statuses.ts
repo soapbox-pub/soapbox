@@ -35,7 +35,7 @@ const deleteStatus = (state: State, idempotencyKey: string) => state.delete(idem
 export default function pending_statuses(state = initialState, action: AnyAction) {
   switch (action.type) {
     case STATUS_CREATE_REQUEST:
-      return importStatus(state, ImmutableMap(fromJS(action.params)), action.idempotencyKey);
+      return action.editing ? state : importStatus(state, ImmutableMap(fromJS(action.params)), action.idempotencyKey);
     case STATUS_CREATE_SUCCESS:
       return deleteStatus(state, action.idempotencyKey);
     default:

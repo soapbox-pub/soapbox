@@ -13,6 +13,7 @@ interface IFooterLink {
   to: string,
   className?: string,
   onClick?: React.EventHandler<React.MouseEvent>,
+  children: React.ReactNode,
 }
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
@@ -55,9 +56,6 @@ const LinkFooter: React.FC = (): JSX.Element => {
           )}
           {account.locked && (
             <FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink>
-          )}
-          {features.import && (
-            <FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink>
           )}
           <FooterLink to='/logout' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}

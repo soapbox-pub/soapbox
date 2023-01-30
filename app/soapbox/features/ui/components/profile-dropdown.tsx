@@ -21,6 +21,7 @@ const messages = defineMessages({
 
 interface IProfileDropdown {
   account: AccountEntity
+  children: React.ReactNode
 }
 
 type IMenuItem = {

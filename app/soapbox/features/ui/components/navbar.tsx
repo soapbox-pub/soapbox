@@ -9,7 +9,7 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useAppDispatch, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -25,12 +25,9 @@ const messages = defineMessages({
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-
-  const node = useRef(null);
-
+  const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
-  const soapboxConfig = useSoapboxConfig();
-  const singleUserMode = soapboxConfig.get('singleUserMode');
+  const node = useRef(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -66,7 +63,7 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node}>
+    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node} data-testid='navbar'>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
           {account && (
@@ -151,7 +148,7 @@ const Navbar = () => {
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 
-                  {!singleUserMode && (
+                  {isOpen && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>

@@ -48,10 +48,12 @@ lint-js:
     changes:
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.cjs"
+      - "**/*.mjs"
       - "**/*.ts"
       - "**/*.tsx"
       - ".eslintignore"
-      - ".eslintrc.js"
+      - ".eslintrc.cjs"
 
 lint-sass:
   stage: test
@@ -72,7 +74,7 @@ jest:
       - "app/soapbox/**/*"
       - "webpack/**/*"
       - "custom/**/*"
-      - "jest.config.js"
+      - "jest.config.cjs"
       - "package.json"
       - "yarn.lock"
       - ".gitlab-ci.yml"
@@ -147,9 +149,9 @@ pages:
 
 docker:
   stage: deploy
-  image: docker:20.10.22
+  image: docker:20.10.23
   services:
-    - docker:20.10.22-dind
+    - docker:20.10.23-dind
   tags:
     - dind
   # https://medium.com/devops-with-valentine/how-to-build-a-docker-image-and-push-it-to-the-gitlab-container-registry-from-a-gitlab-ci-pipeline-acac0d1f26df

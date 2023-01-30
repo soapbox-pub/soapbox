@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
@@ -40,6 +41,7 @@ import {
   useTheme,
   useLocale,
   useInstance,
+  useRegistrationStatus,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -92,13 +94,12 @@ const SoapboxMount = () => {
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
+  const { pepeEnabled } = useRegistrationStatus();
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
-  const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
-
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { redirectRootNoLogin } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
@@ -134,8 +135,8 @@ const SoapboxMount = () => {
         />
       )}
 
-      {!me && (singleUserMode
-        ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+      {!me && (redirectRootNoLogin
+        ? <Redirect exact from='/' to={redirectRootNoLogin} />
         : <Route exact path='/' component={PublicLayout} />)}
 
       {!me && (
@@ -173,26 +174,28 @@ const SoapboxMount = () => {
   return (
     <ErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-        <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-          <Switch>
-            <Route
-              path='/embed/:statusId'
-              render={(props) => <EmbeddedStatus params={props.match.params} />}
-            />
-            <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
+        <CompatRouter>
+          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+            <Switch>
+              <Route
+                path='/embed/:statusId'
+                render={(props) => <EmbeddedStatus params={props.match.params} />}
+              />
+              <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
-            <Route>
-              {renderBody()}
+              <Route>
+                {renderBody()}
 
-              <BundleContainer fetchComponent={ModalContainer}>
-                {Component => <Component />}
-              </BundleContainer>
+                <BundleContainer fetchComponent={ModalContainer}>
+                  {Component => <Component />}
+                </BundleContainer>
 
-              <GdprBanner />
-              <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
-            </Route>
-          </Switch>
-        </ScrollContext>
+                <GdprBanner />
+                <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
+              </Route>
+            </Switch>
+          </ScrollContext>
+        </CompatRouter>
       </BrowserRouter>
     </ErrorBoundary>
   );

@@ -45,6 +45,7 @@ interface ICardHeader {
   backHref?: string,
   onBackClick?: (event: React.MouseEvent) => void
   className?: string
+  children?: React.ReactNode
 }
 
 /**
@@ -91,6 +92,8 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
 interface ICardBody {
   /** Classnames for the <div> element. */
   className?: string
+  /** Children to appear inside the card. */
+  children: React.ReactNode
 }
 
 /** A card's body. */

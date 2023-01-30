@@ -19,7 +19,11 @@ enum ChatWidgetScreens {
   CHAT_SETTINGS = 'CHAT_SETTINGS'
 }
 
-const ChatProvider: React.FC = ({ children }) => {
+interface IChatProvider {
+  children: React.ReactNode
+}
+
+const ChatProvider: React.FC<IChatProvider> = ({ children }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const settings = useSettings();

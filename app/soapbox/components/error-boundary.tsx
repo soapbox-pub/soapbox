@@ -26,7 +26,9 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-type Props = ReturnType<typeof mapStateToProps>;
+interface Props extends ReturnType<typeof mapStateToProps> {
+  children: React.ReactNode
+}
 
 type State = {
   hasError: boolean,
@@ -213,4 +215,4 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
 }
 
-export default connect(mapStateToProps)(ErrorBoundary as any);
+export default connect(mapStateToProps)(ErrorBoundary);

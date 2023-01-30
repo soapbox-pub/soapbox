@@ -14,6 +14,8 @@ interface IFormGroup {
   hintText?: React.ReactNode,
   /** Input errors. */
   errors?: string[]
+  /** Elements to display within the FormGroup. */
+  children: React.ReactNode
 }
 
 /** Input container with label. Renders the child. */

@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -103,7 +103,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
 
-    if (collapsable && onClick && !collapsed && status.spoiler_text.length === 0) {
+    if (collapsable && onClick && !collapsed) {
       if (node.current.clientHeight > MAX_HEIGHT) {
         setCollapsed(true);
       }
@@ -119,7 +119,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, onClick, collapsable 
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
     updateStatusLinks();

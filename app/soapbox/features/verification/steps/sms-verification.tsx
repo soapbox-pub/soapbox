@@ -39,7 +39,7 @@ const SmsVerification = () => {
     setPhone(phone);
   }, []);
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     if (!isValid) {
@@ -59,7 +59,7 @@ const SmsVerification = () => {
     });
   }, [phone, isValid]);
 
-  const resendVerificationCode = React.useCallback((event) => {
+  const resendVerificationCode: React.MouseEventHandler = React.useCallback((event) => {
     setAlreadyRequestedAnother(true);
     handleSubmit(event);
   }, [isValid]);

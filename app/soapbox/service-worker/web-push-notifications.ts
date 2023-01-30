@@ -1,3 +1,4 @@
+/* eslint-disable compat/compat */
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import unescape from 'lodash/unescape';

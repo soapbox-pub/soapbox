@@ -69,7 +69,9 @@ const EmailVerification = () => {
 
   const isValid = email.length > 0 && EMAIL_REGEX.test(email);
 
-  const onChange = React.useCallback((event) => setEmail(event.target.value), []);
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
+    setEmail(event.target.value);
+  }, []);
 
   const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();

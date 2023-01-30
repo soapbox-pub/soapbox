@@ -13,6 +13,7 @@ import type { Account } from 'soapbox/types/entities';
 interface IDisplayName {
   account: Account
   withSuffix?: boolean
+  children?: React.ReactNode
 }
 
 const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = true }) => {

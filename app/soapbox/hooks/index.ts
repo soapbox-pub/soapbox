@@ -12,6 +12,7 @@ export { useOnScreen } from './useOnScreen';
 export { useOwnAccount } from './useOwnAccount';
 export { usePrevious } from './usePrevious';
 export { useRefEventHandler } from './useRefEventHandler';
+export { useRegistrationStatus } from './useRegistrationStatus';
 export { useSettings } from './useSettings';
 export { useSoapboxConfig } from './useSoapboxConfig';
 export { useSystemTheme } from './useSystemTheme';

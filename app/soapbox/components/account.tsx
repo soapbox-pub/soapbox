@@ -1,4 +1,5 @@
 import React from 'react';
+import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
@@ -8,15 +9,21 @@ import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
+import Badge from './badge';
 import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
+import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
   account: AccountEntity,
   disabled?: boolean,
 }
+
+const messages = defineMessages({
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
+});
 
 const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
   const history = useHistory();
@@ -47,11 +54,17 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
 
 interface IProfilePopper {
   condition: boolean,
-  wrapper: (children: any) => React.ReactElement<any, any>
+  wrapper: (children: React.ReactNode) => React.ReactNode
+  children: React.ReactNode
 }
 
-const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }): any =>
-  condition ? wrapper(children) : children;
+const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }) => {
+  return (
+    <>
+      {condition ? wrapper(children) : children}
+    </>
+  );
+};
 
 export interface IAccount {
   account: AccountEntity,
@@ -75,6 +88,7 @@ export interface IAccount {
   withLinkToProfile?: boolean,
   withRelationship?: boolean,
   showEdit?: boolean,
+  approvalStatus?: StatusApprovalStatus,
   emoji?: string,
   note?: string,
 }
@@ -99,6 +113,7 @@ const Account = ({
   withLinkToProfile = true,
   withRelationship = true,
   showEdit = false,
+  approvalStatus,
   emoji,
   note,
 }: IAccount) => {
@@ -144,6 +159,8 @@ const Account = ({
 
     return null;
   };
+
+  const intl = useIntl();
 
   React.useEffect(() => {
     const style: React.CSSProperties = {};
@@ -217,6 +234,8 @@ const Account = ({
                   />
 
                   {account.verified && <VerificationBadge />}
+
+                  {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
                 </HStack>
               </LinkEl>
             </ProfilePopper>
@@ -242,6 +261,18 @@ const Account = ({
                     )}
                   </>
                 ) : null}
+
+                {approvalStatus && ['pending', 'rejected'].includes(approvalStatus) && (
+                  <>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+
+                    <Text tag='span' theme='muted' size='sm'>
+                      {approvalStatus === 'pending'
+                        ? <FormattedMessage id='status.approval.pending' defaultMessage='Pending approval' />
+                        : <FormattedMessage id='status.approval.rejected' defaultMessage='Rejected' />}
+                    </Text>
+                  </>
+                )}
 
                 {showEdit ? (
                   <>

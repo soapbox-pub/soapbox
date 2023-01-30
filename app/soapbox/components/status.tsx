@@ -26,6 +26,7 @@ import { Card, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
+  Group as GroupEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -51,6 +52,7 @@ export interface IStatus {
   hideActionBar?: boolean,
   hoverable?: boolean,
   variant?: 'default' | 'rounded',
+  showGroup?: boolean,
   withDismiss?: boolean,
   accountAction?: React.ReactElement,
 }
@@ -71,6 +73,7 @@ const Status: React.FC<IStatus> = (props) => {
     unread,
     hideActionBar,
     variant = 'rounded',
+    showGroup = true,
     withDismiss,
   } = props;
 
@@ -90,6 +93,7 @@ const Status: React.FC<IStatus> = (props) => {
   const actualStatus = getActualStatus(status);
   const isReblog = status.reblog && typeof status.reblog === 'object';
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+  const group = actualStatus.group as GroupEntity | null;
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -244,6 +248,25 @@ const Status: React.FC<IStatus> = (props) => {
           }
         />
       );
+    } else if (showGroup && group) {
+      return (
+        <StatusInfo
+          avatarSize={avatarSize}
+          to={`/groups/${group.id}`}
+          icon={<Icon src={require('@tabler/icons/circles.svg')} className='text-gray-600 dark:text-gray-400' />}
+          text={
+            <Text size='xs' theme='muted' weight='medium'>
+              <FormattedMessage
+                id='status.group'
+                defaultMessage='Posted in {group}'
+                values={{ group: (
+                  <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                ) }}
+              />
+            </Text>
+          }
+        />
+      );
     }
   };
 
@@ -252,8 +275,10 @@ const Status: React.FC<IStatus> = (props) => {
   if (hidden) {
     return (
       <div ref={node}>
-        {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
-        {actualStatus.content}
+        <>
+          {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
+          {actualStatus.content}
+        </>
       </div>
     );
   }
@@ -346,6 +371,7 @@ const Status: React.FC<IStatus> = (props) => {
             showEdit={!!actualStatus.edited_at}
             showProfileHoverCard={hoverable}
             withLinkToProfile={hoverable}
+            approvalStatus={actualStatus.approval_status}
             avatarSize={avatarSize}
           />
 
