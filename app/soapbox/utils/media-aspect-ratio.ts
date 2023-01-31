@@ -1,17 +1,33 @@
-export const minimumAspectRatio = 9 / 16; // Portrait phone
-export const maximumAspectRatio = 10; // Generous min-height
+/** Minimum aspect ratio for layout/display. */
+export const minimumAspectRatio = 3 / 4;
+/** Maximum aspect ratio for layout/display. */
+export const maximumAspectRatio = 4 / 3;
+/** Minimum aspect ratio for letterboxing (portrait phone). */
+export const letterboxMinRatio = 9 / 16;
+/** Maximum aspect ratio for letterboxing (generous min-height). */
+export const letterboxMaxRatio = 10;
 
-export const isPanoramic = (ar: number) => {
-  if (isNaN(ar)) return false;
-  return ar >= maximumAspectRatio;
+/** The media is significantly horizontal. */
+export const isPanoramic = (aspectRatio: number) => {
+  if (isNaN(aspectRatio)) return false;
+  return aspectRatio >= maximumAspectRatio;
 };
 
-export const isPortrait = (ar: number) => {
-  if (isNaN(ar)) return false;
-  return ar <= minimumAspectRatio;
+/** The media is significantly vertical. */
+export const isPortrait = (aspectRatio: number) => {
+  if (isNaN(aspectRatio)) return false;
+  return aspectRatio <= minimumAspectRatio;
 };
 
-export const isNonConformingRatio = (ar: number) => {
-  if (isNaN(ar)) return false;
-  return !isPanoramic(ar) && !isPortrait(ar);
+/** The media is mostly square. */
+export const isNonConformingRatio = (aspectRatio: number) => {
+  if (isNaN(aspectRatio)) return false;
+  return !isPanoramic(aspectRatio) && !isPortrait(aspectRatio);
+};
+
+/** Whether to letterbox the media. */
+export const shouldLetterbox = (aspectRatio?: number): boolean => {
+  if (!aspectRatio) return true;
+  const withinLimits = aspectRatio >= letterboxMinRatio && aspectRatio <= letterboxMaxRatio;
+  return !withinLimits;
 };

@@ -6,7 +6,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
+import { isPanoramic, isPortrait, letterboxMaxRatio, letterboxMinRatio } from 'soapbox/utils/media-aspect-ratio';
 
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 
@@ -427,9 +427,9 @@ const Video: React.FC<IVideo> = ({
     const minSize = containerWidth / (16 / 9);
 
     if (isPanoramic(aspectRatio)) {
-      height = Math.max(Math.floor(containerWidth / maximumAspectRatio), minSize);
+      height = Math.max(Math.floor(containerWidth / letterboxMaxRatio), minSize);
     } else if (isPortrait(aspectRatio)) {
-      height = Math.max(Math.floor(containerWidth / minimumAspectRatio), minSize);
+      height = Math.max(Math.floor(containerWidth / letterboxMinRatio), minSize);
     } else {
       height = Math.floor(containerWidth / aspectRatio);
     }

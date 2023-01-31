@@ -8,24 +8,13 @@ import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { isIOS } from 'soapbox/is-mobile';
 import { truncateFilename } from 'soapbox/utils/media';
-import { minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
+import { shouldLetterbox } from 'soapbox/utils/media-aspect-ratio';
 
 import { ATTACHMENT_LIMIT, MAX_FILENAME_LENGTH } from './constants';
 import MediaItemThumbnail from './media-item-thumbnail';
 
 import type { Dimensions } from './types';
 import type { Attachment } from 'soapbox/types/entities';
-
-const withinLimits = (aspectRatio: number) => {
-  return aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
-};
-
-const shouldLetterbox = (attachment: Attachment): boolean => {
-  const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']) as number | undefined;
-  if (!aspectRatio) return true;
-
-  return !withinLimits(aspectRatio);
-};
 
 interface IMediaItem {
   attachment: Attachment,
@@ -141,7 +130,8 @@ const MediaItem: React.FC<IMediaItem> = ({
       </div>
     );
   } else if (attachment.type === 'image') {
-    const letterboxed = total === 1 && shouldLetterbox(attachment);
+    const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']) as number | undefined;
+    const letterboxed = total === 1 && shouldLetterbox(aspectRatio);
 
     thumbnail = (
       <MediaItemThumbnail
