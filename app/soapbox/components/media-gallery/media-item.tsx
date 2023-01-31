@@ -12,6 +12,7 @@ import { shouldLetterbox } from 'soapbox/utils/media-aspect-ratio';
 
 import { ATTACHMENT_LIMIT, MAX_FILENAME_LENGTH } from './constants';
 import MediaItemThumbnail from './media-item-thumbnail';
+import MoreMediaOverlay from './more-media-overlay';
 
 import type { Dimensions } from './types';
 import type { Attachment } from 'soapbox/types/entities';
@@ -211,9 +212,9 @@ const MediaItem: React.FC<IMediaItem> = ({
   return (
     <div className={clsx('media-gallery__item', `media-gallery__item--${attachment.type}`, { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
       {last && total > ATTACHMENT_LIMIT && (
-        <div className='media-gallery__item-overflow'>
-          +{total - ATTACHMENT_LIMIT + 1}
-        </div>
+        <MoreMediaOverlay
+          count={total - ATTACHMENT_LIMIT + 1}
+        />
       )}
       <Blurhash
         hash={attachment.blurhash}

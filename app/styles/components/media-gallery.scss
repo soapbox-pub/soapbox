@@ -12,10 +12,6 @@
       @apply h-24 w-24;
     }
   }
-
-  &-overflow {
-    @apply absolute w-full h-full inset-0 bg-white/75 z-20 text-gray-900 text-center font-bold text-5xl flex items-center justify-center pointer-events-none;
-  }
 }
 
 .media-gallery__item-thumbnail {
