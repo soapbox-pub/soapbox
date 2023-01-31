@@ -183,9 +183,9 @@ const MediaItem: React.FC<IMediaItem> = ({
         href={attachment.url}
         onClick={handleClick}
         title={attachment.description}
+        ext={ext}
       >
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
-        <span className='media-gallery__file-extension__label'>{ext}</span>
       </MediaItemThumbnail>
     );
   } else if (attachment.type === 'video') {
@@ -195,6 +195,7 @@ const MediaItem: React.FC<IMediaItem> = ({
         href={attachment.url}
         onClick={handleClick}
         title={attachment.description}
+        ext={ext}
       >
         <video
           muted
@@ -204,7 +205,6 @@ const MediaItem: React.FC<IMediaItem> = ({
         >
           <source src={attachment.url} />
         </video>
-        <span className='media-gallery__file-extension__label'>{ext}</span>
       </MediaItemThumbnail>
     );
   }
