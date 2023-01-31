@@ -31,3 +31,8 @@ export const shouldLetterbox = (aspectRatio?: number): boolean => {
   const withinLimits = aspectRatio >= letterboxMinRatio && aspectRatio <= letterboxMaxRatio;
   return !withinLimits;
 };
+
+/** Force aspect ratio into letterbox limits. */
+export const containAspectRatio = (aspectRatio: number): number => {
+  return Math.max(Math.min(aspectRatio, letterboxMaxRatio), letterboxMinRatio);
+};

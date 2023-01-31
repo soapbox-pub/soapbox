@@ -1,4 +1,4 @@
-import { isNonConformingRatio, isPanoramic, isPortrait, maximumAspectRatio, minimumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
+import { containAspectRatio, isNonConformingRatio, isPanoramic, isPortrait, maximumAspectRatio, minimumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
 
 import type { Dimensions, SizeData } from './types';
 import type { List as ImmutableList } from 'immutable';
@@ -18,9 +18,7 @@ const useMediaSizeData = ({ width, height, defaultWidth, media }: UseMediaSizeDa
 
     const getHeight = () => {
       if (!aspectRatio) return w * 9 / 16;
-      if (isPanoramic(aspectRatio)) return Math.floor(w / maximumAspectRatio);
-      if (isPortrait(aspectRatio)) return Math.floor(w / minimumAspectRatio);
-      return Math.floor(w / aspectRatio);
+      return Math.floor(w / containAspectRatio(aspectRatio));
     };
 
     return {
