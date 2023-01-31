@@ -1,4 +1,4 @@
-import classNames, { clsx } from 'clsx';
+import classNames from 'clsx';
 import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -11,6 +11,8 @@ import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is-mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
+
+import MediaItemThumbnail from './media-gallery/media-item-thumbnail';
 
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
@@ -543,29 +545,6 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
       {children}
     </div>
-  );
-};
-
-interface IMediaItemThumbnail extends Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'title'> {
-  children: React.ReactNode
-  pointer?: boolean
-}
-
-const MediaItemThumbnail: React.FC<IMediaItemThumbnail> = ({
-  children,
-  pointer = false,
-  ...rest
-}) => {
-  return (
-    <a
-      className={clsx('media-gallery__item-thumbnail', {
-        'cursor-pointer': pointer,
-      })}
-      target='_blank'
-      {...rest}
-    >
-      {children}
-    </a>
   );
 };
 
