@@ -1,28 +1,12 @@
 .media-gallery {
-  box-sizing: border-box;
-  overflow: hidden;
-  border-radius: 10px;
-  isolation: isolate;
-  position: relative;
-  width: 100%;
-  height: auto;
-  background-color: var(--brand-color--faint);
+  @apply box-border overflow-hidden rounded-xl isolate relative w-full h-auto;
 }
 
 .media-gallery__item {
-  border: 0;
-  box-sizing: border-box;
-  display: block;
-  float: left;
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
+  @apply border-0 box-border block float-left relative rounded-xl overflow-hidden;
 
   &__icons {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 
     .svg-icon {
       @apply h-24 w-24;
@@ -30,108 +14,51 @@
   }
 
   &-overflow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.75);
-    z-index: 2;
-    color: #333;
-    text-align: center;
-    font-weight: bold;
-    font-size: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
+    @apply absolute w-full h-full inset-0 bg-white/75 z-20 text-gray-900 text-center font-bold text-5xl flex items-center justify-center pointer-events-none;
   }
 }
 
 .media-gallery__item-thumbnail {
-  @apply text-gray-400;
-  cursor: zoom-in;
-  display: block;
-  text-decoration: none;
-  line-height: 0;
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  width: 100%;
+  @apply block relative text-gray-400 cursor-zoom-in z-10 w-full h-full;
 
   video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    @apply w-full h-full object-cover;
   }
 }
 
 .media-gallery__preview {
-  @apply bg-gray-200 dark:bg-gray-900 rounded-lg;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
+  @apply bg-gray-200 dark:bg-gray-900 rounded-lg w-full h-full object-cover absolute top-0 left-0 z-0;
 
   &--hidden {
-    display: none;
+    @apply hidden;
   }
 }
 
 .media-gallery__gifv {
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
+  @apply w-full h-full overflow-hidden relative;
 }
 
 .media-gallery__item-gifv-thumbnail {
-  @apply rounded-md;
-  cursor: zoom-in;
-  height: 100%;
-  object-fit: cover;
-  position: relative;
-  width: 100%;
-  z-index: 1;
-  transform: none;
-  top: 0;
+  @apply rounded-md cursor-zoom-in h-full w-full top-0 z-10 object-cover relative transform-none;
 }
 
 .media-gallery__gifv__label,
 .media-gallery__filename__label,
 .media-gallery__file-extension__label {
-  display: block;
-  position: absolute;
-  color: #fff;
+  @apply block absolute bg-white leading-4 opacity-90 z-10 font-semibold text-xs rounded-sm bottom-1 left-1 px-0.5 py-1 pointer-events-none transition-opacity;
   background: rgba($base-overlay-background, 0.5);
-  bottom: 6px;
-  left: 6px;
-  padding: 2px 6px;
-  border-radius: 2px;
-  font-size: 11px;
-  font-weight: 600;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.9;
-  transition: opacity 0.1s ease;
-  line-height: 18px;
 }
 
 .media-gallery__gifv {
   &.autoplay {
     .media-gallery__gifv__label {
-      display: none;
+      @apply hidden;
     }
   }
 
   &:hover {
     .media-gallery__gifv__label {
-      opacity: 1;
+      @apply opacity-100;
     }
   }
 }
@@ -139,18 +66,18 @@
 $media-compact-size: 50px;
 
 .media-gallery--compact {
+  @apply bg-transparent;
   height: $media-compact-size !important;
-  background: transparent;
 
   .media-gallery__item {
+    @apply mr-1;
     width: $media-compact-size !important;
     height: $media-compact-size !important;
     inset: auto !important;
     float: left !important;
-    margin-right: 5px;
 
     &-overflow {
-      font-size: 20px;
+      @apply text-xl;
     }
 
     &__icons .svg-icon {
@@ -159,6 +86,6 @@ $media-compact-size: 50px;
   }
 
   .media-gallery__file-extension__label {
-    display: none;
+    @apply hidden;
   }
 }
