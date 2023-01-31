@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import classNames, { clsx } from 'clsx';
 import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -153,22 +153,20 @@ const Item: React.FC<IItem> = ({
 
     return (
       <div className={classNames('media-gallery__item', { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
-        <a className='media-gallery__item-thumbnail' href={attachment.url} target='_blank' style={{ cursor: 'pointer' }}>
+        <MediaItemThumbnail href={attachment.url} pointer>
           <Blurhash hash={attachment.blurhash} className='media-gallery__preview' />
           <span className='media-gallery__item__icons'>{attachmentIcon}</span>
           <span className='media-gallery__filename__label'>{filename}</span>
-        </a>
+        </MediaItemThumbnail>
       </div>
     );
   } else if (attachment.type === 'image') {
     const letterboxed = total === 1 && shouldLetterbox(attachment);
 
     thumbnail = (
-      <a
-        className='media-gallery__item-thumbnail'
+      <MediaItemThumbnail
         href={attachment.url}
         onClick={handleClick}
-        target='_blank'
       >
         <StillImage
           className='w-full h-full'
@@ -177,7 +175,7 @@ const Item: React.FC<IItem> = ({
           letterboxed={letterboxed}
           showExt
         />
-      </a>
+      </MediaItemThumbnail>
     );
   } else if (attachment.type === 'gifv') {
     const conditionalAttributes: React.VideoHTMLAttributes<HTMLVideoElement> = {};
@@ -210,25 +208,21 @@ const Item: React.FC<IItem> = ({
   } else if (attachment.type === 'audio') {
     const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
-      <a
-        className={classNames('media-gallery__item-thumbnail')}
+      <MediaItemThumbnail
         href={attachment.url}
         onClick={handleClick}
-        target='_blank'
         title={attachment.description}
       >
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
         <span className='media-gallery__file-extension__label'>{ext}</span>
-      </a>
+      </MediaItemThumbnail>
     );
   } else if (attachment.type === 'video') {
     const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
-      <a
-        className={classNames('media-gallery__item-thumbnail')}
+      <MediaItemThumbnail
         href={attachment.url}
         onClick={handleClick}
-        target='_blank'
         title={attachment.description}
       >
         <video
@@ -240,7 +234,7 @@ const Item: React.FC<IItem> = ({
           <source src={attachment.url} />
         </video>
         <span className='media-gallery__file-extension__label'>{ext}</span>
-      </a>
+      </MediaItemThumbnail>
     );
   }
 
@@ -549,6 +543,29 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
       {children}
     </div>
+  );
+};
+
+interface IMediaItemThumbnail extends Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick' | 'title'> {
+  children: React.ReactNode
+  pointer?: boolean
+}
+
+const MediaItemThumbnail: React.FC<IMediaItemThumbnail> = ({
+  children,
+  pointer = false,
+  ...rest
+}) => {
+  return (
+    <a
+      className={clsx('media-gallery__item-thumbnail', {
+        'cursor-pointer': pointer,
+      })}
+      target='_blank'
+      {...rest}
+    >
+      {children}
+    </a>
   );
 };
 
