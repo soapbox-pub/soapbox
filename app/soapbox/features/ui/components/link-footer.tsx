@@ -38,7 +38,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
   return (
     <div className='space-y-2'>
-      <div className='flex flex-wrap items-center divide-x-dot text-gray-600'>
+      <div className='divide-x-dot flex flex-wrap items-center text-gray-600'>
         {account && <>
           {features.profileDirectory && (
             <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>

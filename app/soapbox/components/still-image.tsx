@@ -70,7 +70,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
       )}
 
       {(hoverToPlay && showExt) && (
-        <div className='group-hover:hidden absolute opacity-90 left-2 bottom-2 pointer-events-none'>
+        <div className='pointer-events-none absolute left-2 bottom-2 opacity-90 group-hover:hidden'>
           <ExtensionBadge ext='GIF' />
         </div>
       )}
@@ -86,7 +86,7 @@ interface IExtensionBadge {
 /** Badge displaying a file extension. */
 const ExtensionBadge: React.FC<IExtensionBadge> = ({ ext }) => {
   return (
-    <div className='inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'>
+    <div className='inline-flex items-center rounded bg-gray-100 px-2 py-0.5 text-sm font-medium text-gray-900 dark:bg-gray-800 dark:text-gray-100'>
       {ext}
     </div>
   );

@@ -17,7 +17,7 @@ const Banner: React.FC<IBanner> = ({ theme, children, className }) => {
         'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-3xl dark:shadow-inset': theme === 'opaque',
       }, className)}
     >
-      <div className='max-w-4xl mx-auto px-4'>
+      <div className='mx-auto max-w-4xl px-4'>
         {children}
       </div>
     </div>

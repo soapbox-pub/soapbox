@@ -53,8 +53,8 @@ interface ISidebarLink {
 const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
   const body = (
     <HStack space={2} alignItems='center'>
-      <div className='bg-primary-50 dark:bg-gray-800 relative rounded-full inline-flex p-2'>
-        <Icon src={icon} className='text-primary-500 h-5 w-5' />
+      <div className='relative inline-flex rounded-full bg-primary-50 p-2 dark:bg-gray-800'>
+        <Icon src={icon} className='h-5 w-5 text-primary-500' />
       </div>
 
       <Text tag='span' weight='medium' theme='inherit'>{text}</Text>
@@ -63,14 +63,14 @@ const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) 
 
   if (to) {
     return (
-      <NavLink className='group rounded-full text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800' to={to} onClick={onClick}>
+      <NavLink className='group rounded-full text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800' to={to} onClick={onClick}>
         {body}
       </NavLink>
     );
   }
 
   return (
-    <a className='group rounded-full text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800' href={href} target='_blank' onClick={onClick}>
+    <a className='group rounded-full text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800' href={href} target='_blank' onClick={onClick}>
       {body}
     </a>
   );
@@ -165,10 +165,10 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
             src={require('@tabler/icons/x.svg')}
             ref={closeButtonRef}
             iconClassName='h-6 w-6'
-            className='absolute top-0 right-0 -mr-11 mt-2 text-gray-600 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+            className='absolute top-0 right-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
           />
 
-          <div className='relative overflow-y-scroll overflow-auto h-full w-full'>
+          <div className='relative h-full w-full overflow-auto overflow-y-scroll'>
             <div className='p-4'>
               <Stack space={4}>
                 <Link to={`/@${account.acct}`} onClick={onClose}>
@@ -342,11 +342,11 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     </button>
 
                     {switcher && (
-                      <div className='border-t-2 border-gray-100 dark:border-gray-800 border-solid'>
+                      <div className='border-t-2 border-solid border-gray-100 dark:border-gray-800'>
                         {otherAccounts.map(account => renderAccount(account))}
 
-                        <NavLink className='flex items-center py-2 space-x-1' to='/login/add' onClick={handleClose}>
-                          <Icon className='text-primary-500 w-4 h-4' src={require('@tabler/icons/plus.svg')} />
+                        <NavLink className='flex items-center space-x-1 py-2' to='/login/add' onClick={handleClose}>
+                          <Icon className='h-4 w-4 text-primary-500' src={require('@tabler/icons/plus.svg')} />
                           <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
                         </NavLink>
                       </div>
@@ -361,7 +361,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
         {/* Dummy element to keep Close Icon visible */}
         <div
           aria-hidden
-          className='w-14 flex-shrink-0'
+          className='w-14 shrink-0'
           onClick={handleClose}
         />
       </div>

@@ -41,7 +41,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
   };
 
   return (
-    <div className='p-4 rounded-lg bg-gray-100 dark:bg-primary-800'>
+    <div className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
       <Stack space={2}>
         <Stack>
           <Text size='md' weight='medium'>{token.app_name}</Text>
@@ -85,7 +85,7 @@ const AuthTokenList: React.FC = () => {
   }, []);
 
   const body = tokens ? (
-    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
       {tokens.map((token) => (
         <AuthToken key={token.id} token={token} isCurrent={token.id === currentTokenId} />
       ))}

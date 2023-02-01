@@ -31,7 +31,7 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
   );
 
   return (
-    <div className='block w-full max-w-xl mx-auto overflow-hidden text-left align-middle transition-all transform shadow-xl rounded-2xl pointer-events-auto'>
+    <div className='pointer-events-auto mx-auto block w-full max-w-xl overflow-hidden rounded-2xl text-left align-middle shadow-xl transition-all'>
       <Video
         preview={media.preview_url}
         blurhash={media.blurhash}

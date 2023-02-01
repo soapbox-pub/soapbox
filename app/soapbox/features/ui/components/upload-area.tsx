@@ -50,13 +50,13 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
           })}
           style={{ opacity: backgroundOpacity }}
         >
-          <div className='w-80 h-40 flex relative p-2'>
+          <div className='relative flex h-40 w-80 p-2'>
             <div className='absolute inset-0' style={{ transform: `scale(${backgroundScale})` }} />
 
             <Stack space={3} justifyContent='center' alignItems='center'>
               <Icon
                 src={require('@tabler/icons/cloud-upload.svg')}
-                className='w-12 h-12 text-white text-opacity-90'
+                className='h-12 w-12 text-white text-opacity-90'
               />
 
               <Text size='xl' theme='white'>

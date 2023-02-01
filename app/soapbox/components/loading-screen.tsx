@@ -9,7 +9,7 @@ const LoadingScreen: React.FC = () => {
     <div className='fixed h-screen w-screen'>
       <LandingGradient />
 
-      <div className='fixed d-screen w-screen flex items-center justify-center z-10'>
+      <div className='d-screen fixed z-10 flex w-screen items-center justify-center'>
         <div className='p-4'>
           <Spinner size={40} withText={false} />
         </div>

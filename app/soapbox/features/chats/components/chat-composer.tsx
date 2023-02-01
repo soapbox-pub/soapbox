@@ -156,7 +156,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
       <HStack alignItems='stretch' justifyContent='between' space={4}>
         {features.chatsMedia && (
-          <Stack justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
+          <Stack justifyContent='end' alignItems='center' className='mb-1.5 w-10'>
             <UploadButton
               onSelectFile={onSelectFile}
               resetFileKey={resetFileKey}
@@ -205,7 +205,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
           </Combobox>
         </Stack>
 
-        <Stack space={2} justifyContent='end' alignItems='center' className='w-10 mb-1.5'>
+        <Stack space={2} justifyContent='end' alignItems='center' className='mb-1.5 w-10'>
           {isOverCharacterLimit ? (
             <Text size='sm' theme='danger'>{overLimitText}</Text>
           ) : null}

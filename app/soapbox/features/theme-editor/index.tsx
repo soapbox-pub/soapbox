@@ -264,7 +264,7 @@ const ColorListItem: React.FC<IColorListItem> = ({ label, value, onChange }) => 
       <ColorWithPicker
         value={value}
         onChange={handleChange}
-        className='w-10 h-8 rounded-md overflow-hidden'
+        className='h-8 w-10 overflow-hidden rounded-md'
       />
     </ListItem>
   );

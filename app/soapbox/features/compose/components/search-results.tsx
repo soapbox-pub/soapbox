@@ -236,7 +236,7 @@ const SearchResults = () => {
   return (
     <>
       {filterByAccount ? (
-        <HStack className='mb-4 pb-4 px-2 border-solid border-b border-gray-200 dark:border-gray-800' space={2}>
+        <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleUnsetAccount} />
           <Text>
             <FormattedMessage

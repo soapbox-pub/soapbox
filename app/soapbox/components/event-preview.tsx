@@ -55,7 +55,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
       <div className='absolute top-28 right-3'>
         {floatingAction && action}
       </div>
-      <div className='bg-primary-200 dark:bg-gray-600 h-40'>
+      <div className='h-40 bg-primary-200 dark:bg-gray-600'>
         {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.eventBanner)} />}
       </div>
       <Stack className='p-2.5' space={2}>
@@ -65,7 +65,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
           {!floatingAction && action}
         </HStack>
 
-        <div className='flex gap-y-1 gap-x-2 flex-wrap text-gray-700 dark:text-gray-600'>
+        <div className='flex flex-wrap gap-y-1 gap-x-2 text-gray-700 dark:text-gray-600'>
           <HStack alignItems='center' space={2}>
             <Icon src={require('@tabler/icons/user.svg')} />
             <HStack space={1} alignItems='center' grow>
