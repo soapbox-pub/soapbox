@@ -11,9 +11,9 @@ import {
 import { normalizeList } from 'soapbox/normalizers';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 type ListRecord = ReturnType<typeof normalizeList>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ListRecord | false>;

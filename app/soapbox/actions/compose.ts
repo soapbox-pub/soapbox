@@ -46,6 +46,7 @@ const COMPOSE_UPLOAD_SUCCESS  = 'COMPOSE_UPLOAD_SUCCESS';
 const COMPOSE_UPLOAD_FAIL     = 'COMPOSE_UPLOAD_FAIL';
 const COMPOSE_UPLOAD_PROGRESS = 'COMPOSE_UPLOAD_PROGRESS';
 const COMPOSE_UPLOAD_UNDO     = 'COMPOSE_UPLOAD_UNDO';
+const COMPOSE_GROUP_POST      = 'COMPOSE_GROUP_POST';
 
 const COMPOSE_SUGGESTIONS_CLEAR = 'COMPOSE_SUGGESTIONS_CLEAR';
 const COMPOSE_SUGGESTIONS_READY = 'COMPOSE_SUGGESTIONS_READY';
@@ -288,6 +289,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       poll: compose.poll,
       scheduled_at: compose.schedule,
       to,
+      group_id: compose.privacy === 'group' ? compose.group_id : null,
     };
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
@@ -469,6 +471,15 @@ const undoUploadCompose = (composeId: string, media_id: string) => ({
   id: composeId,
   media_id: media_id,
 });
+
+const groupCompose = (composeId: string, groupId: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({
+      type: COMPOSE_GROUP_POST,
+      id: composeId,
+      group_id: groupId,
+    });
+  };
 
 const clearComposeSuggestions = (composeId: string) => {
   if (cancelFetchComposeSuggestionsAccounts) {
@@ -722,7 +733,7 @@ const eventDiscussionCompose = (composeId: string, status: Status) =>
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
 
-    dispatch({
+    return dispatch({
       type: COMPOSE_EVENT_REPLY,
       id: composeId,
       status: status,
@@ -749,6 +760,7 @@ export {
   COMPOSE_UPLOAD_FAIL,
   COMPOSE_UPLOAD_PROGRESS,
   COMPOSE_UPLOAD_UNDO,
+  COMPOSE_GROUP_POST,
   COMPOSE_SUGGESTIONS_CLEAR,
   COMPOSE_SUGGESTIONS_READY,
   COMPOSE_SUGGESTION_SELECT,
@@ -801,6 +813,7 @@ export {
   uploadComposeSuccess,
   uploadComposeFail,
   undoUploadCompose,
+  groupCompose,
   clearComposeSuggestions,
   fetchComposeSuggestions,
   readyComposeSuggestionsEmojis,

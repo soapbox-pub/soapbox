@@ -90,6 +90,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             timestamp={actualStatus.created_at}
             avatarSize={42}
             hideActions
+            approvalStatus={actualStatus.approval_status}
           />
         </div>
 
@@ -109,7 +110,11 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           )}
 
           <Stack space={4}>
-            <StatusContent status={actualStatus} translatable />
+            <StatusContent
+              status={actualStatus}
+              textSize='lg'
+              translatable
+            />
 
             <TranslateButton status={actualStatus} />
 

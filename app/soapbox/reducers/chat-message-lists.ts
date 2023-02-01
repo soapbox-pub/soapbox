@@ -11,8 +11,8 @@ import {
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ImmutableOrderedSet<string>>;

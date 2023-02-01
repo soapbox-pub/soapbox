@@ -33,6 +33,7 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  groups: { id: 'column.groups', defaultMessage: 'Groups' },
   events: { id: 'column.events', defaultMessage: 'Events' },
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
@@ -203,6 +204,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/bookmarks'
                       icon={require('@tabler/icons/bookmark.svg')}
                       text={intl.formatMessage(messages.bookmarks)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.groups && (
+                    <SidebarLink
+                      to='/groups'
+                      icon={require('@tabler/icons/circles.svg')}
+                      text={intl.formatMessage(messages.groups)}
                       onClick={onClose}
                     />
                   )}

@@ -39,7 +39,7 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
       action={
         <Link className='text-right' to='/suggestions'>
           <Text tag='span' theme='primary' size='sm' className='hover:underline'>
-            <FormattedMessage id='feed_suggestions.view_all' defaultMessage='View all'  />
+            <FormattedMessage id='feed_suggestions.view_all' defaultMessage='View all' />
           </Text>
         </Link>
       }

@@ -165,8 +165,8 @@
 }
 
 .error-modal {
+  @apply text-gray-900;
   background: var(--background-color);
-  color: var(--primary-text-color);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -231,19 +231,16 @@
     &:hover,
     &:focus,
     &:active {
-      color: var(--primary-text-color--faint);
+      @apply text-gray-400;
       background-color: var(--background-color);
     }
   }
 }
 
 .actions-modal {
-  position: relative;
-  flex-direction: column;
-  overflow: hidden;
+  @apply flex-col relative text-gray-400 overflow-hidden;
   border-radius: 10px;
   border: 1px solid var(--background-color);
-  color: var(--primary-text-color--faint);
 
   .dropdown-menu__separator {
     @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
