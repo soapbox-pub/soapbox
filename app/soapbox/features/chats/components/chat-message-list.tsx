@@ -195,13 +195,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   };
 
   const maybeRenderMedia = (chatMessage: ChatMessageEntity) => {
-    const { attachment } = chatMessage;
-    if (!attachment) return null;
+    if (!chatMessage.media_attachments.size) return null;
     return (
       <Bundle fetchComponent={MediaGallery}>
         {(Component: any) => (
           <Component
-            media={ImmutableList([attachment])}
+            media={chatMessage.media_attachments}
             onOpenMedia={onOpenMedia}
             visible
           />
@@ -316,7 +315,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
               space={0.5}
               className={classNames({
                 'max-w-[85%]': true,
-                'flex-1': chatMessage.attachment,
+                'flex-1': !!chatMessage.media_attachments.size,
                 'order-2': isMyMessage,
                 'order-1': !isMyMessage,
               })}
@@ -331,8 +330,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                     className={
                       classNames({
                         'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
-                        'rounded-tr-sm': chatMessage.attachment && isMyMessage,
-                        'rounded-tl-sm': chatMessage.attachment && !isMyMessage,
+                        'rounded-tr-sm': (!!chatMessage.media_attachments.size) && isMyMessage,
+                        'rounded-tl-sm': (!!chatMessage.media_attachments.size) && !isMyMessage,
                         '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
                         '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
                         'bg-primary-500 text-white': isMyMessage,
