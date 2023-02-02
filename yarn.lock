@@ -9704,10 +9704,10 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-virtuoso@^4.0.6:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.0.6.tgz#5ee8a72bf0b57d31063cef6343b26e6cde5529e3"
-  integrity sha512-TJ4fyTbre0uTpXE0AXaMG2BOX9PgKfDC7wLhnSmDvBU0WoEUrIAcNJACLJvqyWZMDAuEv3v+b4OyK6jiSkFL9Q==
+react-virtuoso@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.0.8.tgz#6543573e5b2da8cd5808bd687655cf24d7930dfe"
+  integrity sha512-ne9QzKajqwDT13t2nt5uktuFkyBTjRsJCdF06gdwcPVP6lrWt/VE5tkKf2OVtMqfethR8/FHuAYDOLyT5YtddQ==
 
 react@^18.0.0:
   version "18.2.0"
