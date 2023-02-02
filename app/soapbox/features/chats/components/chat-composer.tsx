@@ -44,6 +44,8 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   resetFileKey: number | null
   attachments?: Attachment[]
   onDeleteAttachment?: () => void
+  isUploading?: boolean
+  uploadProgress?: number
 }
 
 /** Textarea input for chats. */
@@ -59,6 +61,8 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onPaste,
   attachments = [],
   onDeleteAttachment,
+  isUploading,
+  uploadProgress,
 }, ref) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -189,6 +193,8 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               disabled={disabled}
               attachments={attachments}
               onDeleteAttachment={onDeleteAttachment}
+              isUploading={isUploading}
+              uploadProgress={uploadProgress}
             />
             {isSuggestionsAvailable ? (
               <ComboboxPopover>

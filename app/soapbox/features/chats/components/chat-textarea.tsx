@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Textarea } from 'soapbox/components/ui';
+import { ProgressBar, Textarea } from 'soapbox/components/ui';
 import { Attachment } from 'soapbox/types/entities';
 
 import ChatUpload from './chat-upload';
@@ -8,10 +8,18 @@ import ChatUpload from './chat-upload';
 interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
   attachments?: Attachment[]
   onDeleteAttachment?: () => void
+  isUploading?: boolean
+  uploadProgress?: number
 }
 
 /** Custom textarea for chats. */
-const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, onDeleteAttachment, ...rest }) => {
+const ChatTextarea: React.FC<IChatTextarea> = ({
+  attachments,
+  onDeleteAttachment,
+  isUploading = false,
+  uploadProgress = 0,
+  ...rest
+}) => {
   return (
     <div className={`
       bg-white
@@ -25,8 +33,14 @@ const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, onDeleteAttachment
       dark:focus-within:ring-primary-500 dark:focus-within:border-primary-500
     `}
     >
-      {(!!attachments?.length) && (
+      {(!!attachments?.length || isUploading) && (
         <div className='p-3 pb-0'>
+          {isUploading && (
+            <div className='relative p-4 inline-flex items-center justify-center w-24 h-24 rounded-lg overflow-hidden isolate bg-gray-200 dark:bg-primary-900'>
+              <ProgressBar progress={uploadProgress} />
+            </div>
+          )}
+
           {attachments?.map(attachment => (
             <ChatUpload
               key={attachment.id}

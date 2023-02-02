@@ -5,7 +5,6 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
 import { Stack } from 'soapbox/components/ui';
-import UploadProgress from 'soapbox/components/upload-progress';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
@@ -163,12 +162,6 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         <ChatMessageList chat={chat} />
       </div>
 
-      {isUploading && (
-        <div className='p-4'>
-          <UploadProgress progress={uploadProgress * 100} />
-        </div>
-      )}
-
       <ChatComposer
         ref={inputRef}
         onKeyDown={handleKeyDown}
@@ -181,6 +174,8 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onPaste={handlePaste}
         attachments={attachment ? [attachment] : []}
         onDeleteAttachment={handleRemoveFile}
+        isUploading={isUploading}
+        uploadProgress={uploadProgress}
       />
     </Stack>
   );
