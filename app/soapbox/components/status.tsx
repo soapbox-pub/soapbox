@@ -53,7 +53,6 @@ export interface IStatus {
   hoverable?: boolean,
   variant?: 'default' | 'rounded',
   showGroup?: boolean,
-  withDismiss?: boolean,
   accountAction?: React.ReactElement,
 }
 
@@ -74,7 +73,6 @@ const Status: React.FC<IStatus> = (props) => {
     hideActionBar,
     variant = 'rounded',
     showGroup = true,
-    withDismiss,
   } = props;
 
   const intl = useIntl();
@@ -421,7 +419,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
+                <StatusActionBar status={actualStatus} />
               </div>
             )}
           </div>
