@@ -7,6 +7,8 @@ import Blurhash from 'soapbox/components/blurhash';
 import { Icon } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import ChatUploadPreview from './chat-upload-preview';
+
 import type { Attachment } from 'soapbox/types/entities';
 
 interface IChatUpload {
@@ -24,7 +26,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
   };
 
   return (
-    <div className='relative inline-block w-24 h-24 rounded-lg overflow-hidden isolate'>
+    <div className='relative inline-block w-24 h-24 rounded-lg overflow-hidden isolate bg-gray-200 dark:bg-primary-900'>
       <Blurhash hash={attachment.blurhash} className='absolute inset-0 w-full h-full -z-10' />
 
       <div className='absolute right-[6px] top-[6px]'>
@@ -35,12 +37,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
         onClick={clickable ? handleOpenModal : undefined}
         className={clsx('w-full h-full', { 'cursor-zoom-in': clickable, 'cursor-default': !clickable })}
       >
-        <img
-          className='w-full h-full object-cover'
-          key={attachment.id}
-          src={attachment.url}
-          alt=''
-        />
+        <ChatUploadPreview attachment={attachment} />
       </button>
     </div>
   );

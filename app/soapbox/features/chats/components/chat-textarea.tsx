@@ -15,7 +15,7 @@ const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, onDeleteAttachment
   return (
     <div className={`
       bg-white
-      dark:bg-transparent
+      dark:bg-gray-800
       shadow-sm block w-full
       sm:text-sm rounded-md
       text-gray-900 dark:text-gray-100
