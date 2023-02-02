@@ -43,7 +43,7 @@ const RemoveButton: React.FC<IRemoveButton> = ({ onClick }) => {
       className='bg-secondary-500 w-5 h-5 p-1 rounded-full flex items-center justify-center'
     >
       <Icon
-        className='w-4 h-4'
+        className='w-4 h-4 text-white'
         src={require('@tabler/icons/x.svg')}
       />
     </button>
