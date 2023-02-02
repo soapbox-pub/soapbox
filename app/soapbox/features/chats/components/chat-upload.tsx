@@ -1,7 +1,11 @@
+import clsx from 'clsx';
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 
+import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import { Icon } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Attachment } from 'soapbox/types/entities';
 
@@ -12,20 +16,32 @@ interface IChatUpload {
 
 /** An attachment uploaded to the chat composer, before sending. */
 const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
+  const dispatch = useAppDispatch();
+  const clickable = attachment.type !== 'unknown';
+
+  const handleOpenModal = () => {
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(attachment), index: 0 }));
+  };
+
   return (
-    <div className='relative inline-block rounded-lg overflow-hidden isolate'>
+    <div className='relative inline-block w-24 h-24 rounded-lg overflow-hidden isolate'>
       <Blurhash hash={attachment.blurhash} className='absolute inset-0 w-full h-full -z-10' />
 
       <div className='absolute right-[6px] top-[6px]'>
         <RemoveButton onClick={onDelete} />
       </div>
 
-      <img
-        className='w-24 h-24'
-        key={attachment.id}
-        src={attachment.url}
-        alt=''
-      />
+      <button
+        onClick={clickable ? handleOpenModal : undefined}
+        className={clsx('w-full h-full', { 'cursor-zoom-in': clickable, 'cursor-default': !clickable })}
+      >
+        <img
+          className='w-full h-full object-cover'
+          key={attachment.id}
+          src={attachment.url}
+          alt=''
+        />
+      </button>
     </div>
   );
 };
