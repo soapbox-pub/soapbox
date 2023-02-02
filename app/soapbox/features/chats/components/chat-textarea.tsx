@@ -19,9 +19,9 @@ const ChatTextarea: React.FC<IChatTextarea> = ({ attachments, onDeleteAttachment
       shadow-sm block w-full
       sm:text-sm rounded-md
       text-gray-900 dark:text-gray-100
-      border-1
+      border
       placeholder:text-gray-600 dark:placeholder:text-gray-600 border-gray-400 dark:border-gray-800
-      dark:ring-1 dark:ring-gray-800 focus-within:ring-primary-500 focus-within:border-primary-500
+      dark:ring-1 focus-within:ring-1 dark:ring-gray-800 focus-within:ring-primary-500 focus-within:border-primary-500
       dark:focus-within:ring-primary-500 dark:focus-within:border-primary-500
     `}
     >
