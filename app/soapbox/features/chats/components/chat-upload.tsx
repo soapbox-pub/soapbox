@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Blurhash from 'soapbox/components/blurhash';
 import { Icon } from 'soapbox/components/ui';
 
 import type { Attachment } from 'soapbox/types/entities';
@@ -12,13 +13,15 @@ interface IChatUpload {
 /** An attachment uploaded to the chat composer, before sending. */
 const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
   return (
-    <div className='relative inline-block'>
+    <div className='relative inline-block rounded-lg overflow-hidden isolate'>
+      <Blurhash hash={attachment.blurhash} className='absolute inset-0 w-full h-full -z-10' />
+
       <div className='absolute right-[6px] top-[6px]'>
         <RemoveButton onClick={onDelete} />
       </div>
 
       <img
-        className='w-24 h-24 rounded-lg'
+        className='w-24 h-24'
         key={attachment.id}
         src={attachment.url}
         alt=''
