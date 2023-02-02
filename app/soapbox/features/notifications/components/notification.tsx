@@ -325,7 +325,6 @@ const Notification: React.FC<INotificaton> = (props) => {
         return status && typeof status === 'object' ? (
           <StatusContainer
             id={status.id}
-            withDismiss
             hidden={hidden}
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
