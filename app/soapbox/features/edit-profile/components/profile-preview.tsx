@@ -16,8 +16,8 @@ const ProfilePreview: React.FC<IProfilePreview> = ({ account }) => {
   const { displayFqn } = useSoapboxConfig();
 
   return (
-    <div className='bg-white dark:bg-gray-800 rounded-lg text-black dark:text-white sm:shadow dark:sm:shadow-inset overflow-hidden'>
-      <div className='relative overflow-hidden isolate w-full h-32 md:rounded-t-lg bg-gray-200 dark:bg-gray-900/50'>
+    <div className='dark:sm:shadow-inset overflow-hidden rounded-lg bg-white text-black dark:bg-gray-800 dark:text-white sm:shadow'>
+      <div className='relative isolate h-32 w-full overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-lg'>
         <StillImage src={account.header} />
       </div>
 

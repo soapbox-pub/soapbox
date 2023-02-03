@@ -145,7 +145,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
           )}
 
           <ListItem label={<FormattedMessage id='account_moderation_modal.fields.badges' defaultMessage='Custom badges' />}>
-            <div className='flex-grow'>
+            <div className='grow'>
               <HStack className='w-full' alignItems='center' space={2}>
                 <BadgeInput badges={badges} onChange={setBadges} />
                 <Button onClick={handleSaveBadges}>

@@ -40,11 +40,11 @@ const Search: React.FC = () => {
 
   return (
     <div className='flex items-center gap-1'>
-      <label className='flex-grow relative'>
+      <label className='relative grow'>
         <span style={{ display: 'none' }}>{intl.formatMessage(messages.search)}</span>
 
         <input
-          className='block w-full sm:text-sm dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-primary-500 focus:border-primary-500 rounded-full'
+          className='block w-full rounded-full focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 sm:text-sm'
           type='text'
           value={value}
           onChange={handleChange}

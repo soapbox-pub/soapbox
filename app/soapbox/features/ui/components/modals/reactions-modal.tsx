@@ -54,7 +54,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     reactions!.forEach(reaction => items.push(
       {
         text: <div className='flex items-center gap-1'>
-          <Emoji className='w-4 h-4' emoji={reaction.name} />
+          <Emoji className='h-4 w-4' emoji={reaction.name} />
           {reaction.count}
         </div>,
         action: () => setReaction(reaction.name),

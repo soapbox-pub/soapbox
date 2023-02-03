@@ -33,7 +33,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
+    <Stack space={2} className='rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
       <AccountContainer
         {...actions}
         id={status.getIn(['account', 'id']) as string}
@@ -44,7 +44,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
       />
 
       <Text
-        className='break-words status__content'
+        className='status__content break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}

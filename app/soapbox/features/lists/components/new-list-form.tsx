@@ -33,7 +33,7 @@ const NewListForm: React.FC = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <HStack space={2}>
-        <label className='flex-grow'>
+        <label className='grow'>
           <span style={{ display: 'none' }}>{label}</span>
 
           <Input

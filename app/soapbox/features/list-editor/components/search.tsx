@@ -35,7 +35,7 @@ const Search = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <HStack space={2}>
-        <label className='flex-grow relative'>
+        <label className='relative grow'>
           <span style={{ display: 'none' }}>{intl.formatMessage(messages.search)}</span>
 
           <Input

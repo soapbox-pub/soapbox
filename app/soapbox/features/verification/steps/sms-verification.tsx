@@ -81,13 +81,13 @@ const SmsVerification = () => {
   if (status === Statuses.REQUESTED) {
     return (
       <div>
-        <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-          <h1 className='text-center font-bold text-2xl'>
+        <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+          <h1 className='text-center text-2xl font-bold'>
             <FormattedMessage id='sms_verification.sent.header' defaultMessage='Verification code' />
           </h1>
         </div>
 
-        <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
+        <div className='mx-auto space-y-4 sm:w-2/3 sm:pt-10 md:w-1/2'>
           <Text theme='muted' size='sm' align='center'>
             <FormattedMessage id='sms_verification.sent.body' defaultMessage='We sent you a 6-digit code via SMS. Enter it below.' />
           </Text>
@@ -121,13 +121,13 @@ const SmsVerification = () => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'>
           <FormattedMessage id='sms_verification.header' defaultMessage='Enter your phone number' />
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.phoneLabel)}>
             <PhoneInput

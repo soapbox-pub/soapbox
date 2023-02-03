@@ -52,7 +52,7 @@ const Groups: React.FC = () => {
   }
 
   const emptyMessage = (
-    <Stack space={6} alignItems='center' justifyContent='center' className='p-6 h-full'>
+    <Stack space={6} alignItems='center' justifyContent='center' className='h-full p-6'>
       <Stack space={2} className='max-w-sm'>
         <Text size='2xl' weight='bold' tag='h2' align='center'>
           <FormattedMessage

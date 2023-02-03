@@ -116,12 +116,12 @@ const ChatPageMain = () => {
 
   return (
     <Stack className='h-full overflow-hidden'>
-      <HStack alignItems='center' justifyContent='between' space={2} className='px-4 py-4 w-full'>
+      <HStack alignItems='center' justifyContent='between' space={2} className='w-full p-4'>
         <HStack alignItems='center' space={2} className='overflow-hidden'>
           <HStack alignItems='center'>
             <IconButton
               src={require('@tabler/icons/arrow-left.svg')}
-              className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
+              className='mr-2 h-7 w-7 sm:mr-0 sm:hidden'
               onClick={() => history.push('/chats')}
             />
 
@@ -130,8 +130,8 @@ const ChatPageMain = () => {
             </Link>
           </HStack>
 
-          <Stack alignItems='start' className='overflow-hidden h-11'>
-            <div className='flex items-center space-x-1 flex-grow w-full'>
+          <Stack alignItems='start' className='h-11 overflow-hidden'>
+            <div className='flex w-full grow items-center space-x-1'>
               <Link to={`/@${chat.account.acct}`}>
                 <Text weight='bold' size='sm' align='left' truncate>
                   {chat.account.display_name || `@${chat.account.username}`}
@@ -212,8 +212,8 @@ const ChatPageMain = () => {
                   onSelect={isBlocking ? handleUnblockUser : handleBlockUser}
                   className='!px-0 hover:!bg-transparent'
                 >
-                  <div className='w-full flex items-center space-x-2 font-bold text-sm text-primary-500 dark:text-accent-blue'>
-                    <Icon src={require('@tabler/icons/ban.svg')} className='w-5 h-5' />
+                  <div className='flex w-full items-center space-x-2 text-sm font-bold text-primary-500 dark:text-accent-blue'>
+                    <Icon src={require('@tabler/icons/ban.svg')} className='h-5 w-5' />
                     <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
                   </div>
                 </MenuItem>
@@ -224,8 +224,8 @@ const ChatPageMain = () => {
                     onSelect={handleLeaveChat}
                     className='!px-0 hover:!bg-transparent'
                   >
-                    <div className='w-full flex items-center space-x-2 font-bold text-sm text-danger-600 dark:text-danger-500'>
-                      <Icon src={require('@tabler/icons/logout.svg')} className='w-5 h-5' />
+                    <div className='flex w-full items-center space-x-2 text-sm font-bold text-danger-600 dark:text-danger-500'>
+                      <Icon src={require('@tabler/icons/logout.svg')} className='h-5 w-5' />
                       <span>{intl.formatMessage(messages.leaveChat)}</span>
                     </div>
                   </MenuItem>

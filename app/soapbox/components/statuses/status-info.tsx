@@ -21,7 +21,7 @@ const StatusInfo = (props: IStatusInfo) => {
   return (
     <Container
       {...containerProps}
-      className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-3 rtl:space-x-reverse hover:underline'
+      className='flex items-center space-x-3 text-xs font-medium text-gray-700 hover:underline rtl:space-x-reverse dark:text-gray-600'
     >
       <div
         className='flex justify-end'

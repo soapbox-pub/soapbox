@@ -20,11 +20,11 @@ const Blankslate = ({ onSearch }: IBlankslate) => {
     <Stack
       alignItems='center'
       justifyContent='center'
-      className='h-full flex-grow'
+      className='h-full grow'
       data-testid='chat-pane-blankslate'
     >
       <Stack space={4}>
-        <Stack space={1} className='max-w-[80%] mx-auto'>
+        <Stack space={1} className='mx-auto max-w-[80%]'>
           <Text size='lg' weight='bold' align='center'>
             {intl.formatMessage(messages.title)}
           </Text>

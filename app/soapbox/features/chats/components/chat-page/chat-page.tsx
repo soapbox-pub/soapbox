@@ -60,11 +60,11 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
     <div
       ref={containerRef}
       style={{ height }}
-      className='h-screen bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden sm:rounded-t-xl'
+      className='h-screen overflow-hidden bg-white text-gray-900 shadow-lg dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:rounded-t-xl'
     >
       {isOnboarded ? (
         <div
-          className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'
+          className='grid h-full grid-cols-9 overflow-hidden dark:divide-x-2 dark:divide-solid dark:divide-gray-800'
           data-testid='chat-page'
         >
           <Stack
