@@ -83,7 +83,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   return (
     <div className={classes}>
-      <a className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap' onClick={handleClick}>
+      <a className='flex cursor-pointer items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-600 px-4 py-2 text-white transition-transform hover:scale-105 hover:bg-primary-700 active:scale-100' onClick={handleClick}>
         <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
 
         {(count > 0) && (

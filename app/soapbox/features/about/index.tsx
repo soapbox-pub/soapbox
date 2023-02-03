@@ -38,7 +38,7 @@ const AboutPage: React.FC = () => {
     <div>
       <FormattedMessage id='about.also_available' defaultMessage='Available in:' />
       {' '}
-      <ul className='p-0 inline list-none'>
+      <ul className='inline list-none p-0'>
         <li className="inline after:content-['_·_']">
           <a href='#' onClick={() => setLocale(defaultLocale)}>
             {/* @ts-ignore */}
@@ -60,7 +60,7 @@ const AboutPage: React.FC = () => {
   );
 
   return (
-    <div className='prose dark:prose-invert mx-auto py-20'>
+    <div className='prose mx-auto py-20 dark:prose-invert'>
       <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
 
       {alsoAvailable}

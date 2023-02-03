@@ -21,7 +21,7 @@ const DashCounter: React.FC<IDashCounter> = ({ count, label, to = '#', percent =
 
   return (
     <Link
-      className='bg-gray-200 dark:bg-gray-800 p-4 rounded flex flex-col items-center space-y-2 hover:-translate-y-1 transition-transform cursor-pointer'
+      className='flex cursor-pointer flex-col items-center space-y-2 rounded bg-gray-200 p-4 transition-transform hover:-translate-y-1 dark:bg-gray-800'
       to={to}
     >
       <Text align='center' size='2xl' weight='medium'>
@@ -45,7 +45,7 @@ interface IDashCounters {
 /** Wrapper container for dash counters. */
 const DashCounters: React.FC<IDashCounters> = ({ children }) => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
+    <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3'>
       {children}
     </div>
   );

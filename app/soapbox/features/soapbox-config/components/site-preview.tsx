@@ -39,7 +39,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
       <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
       <BackgroundShapes position='absolute' />
 
-      <div className='absolute p-2 rounded-lg overflow-hidden bg-accent-500 text-white self-center z-20'>
+      <div className='absolute z-20 self-center overflow-hidden rounded-lg bg-accent-500 p-2 text-white'>
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />
       </div>
 
@@ -48,7 +48,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
         'bg-gray-800': dark,
       })}
       >
-        <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto self-center px-2' theme={dark ? 'dark' : 'light'} />
+        <SiteLogo alt='Logo' className='h-5 w-auto self-center px-2 lg:h-6' theme={dark ? 'dark' : 'light'} />
       </div>
     </div>
   );

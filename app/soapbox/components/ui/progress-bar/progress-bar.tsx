@@ -14,7 +14,7 @@ interface IProgressBar {
 /** A horizontal meter filled to the given percentage. */
 const ProgressBar: React.FC<IProgressBar> = ({ progress, size = 'md' }) => (
   <div
-    className={clsx('h-2.5 w-full rounded-lg bg-gray-300 dark:bg-primary-800 overflow-hidden', {
+    className={clsx('h-2.5 w-full overflow-hidden rounded-lg bg-gray-300 dark:bg-primary-800', {
       'h-2.5': size === 'md',
       'h-[6px]': size === 'sm',
     })}

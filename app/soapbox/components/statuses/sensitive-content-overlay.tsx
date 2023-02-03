@@ -107,8 +107,8 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
           size='sm'
         />
       ) : (
-        <div className='flex justify-center items-center max-h-screen'>
-          <div className='text-center w-3/4 mx-auto space-y-4' ref={ref}>
+        <div className='flex max-h-screen items-center justify-center'>
+          <div className='mx-auto w-3/4 space-y-4 text-center' ref={ref}>
             <div className='space-y-1'>
               <Text theme='white' weight='semibold'>
                 {intl.formatMessage(isUnderReview ? messages.underReviewTitle : messages.sensitiveTitle)}

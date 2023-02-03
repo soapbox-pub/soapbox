@@ -23,15 +23,15 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
 }) => {
   return (
     <div className={`
-      bg-white
-      dark:bg-gray-800
-      shadow-sm block w-full
-      sm:text-sm rounded-md
-      text-gray-900 dark:text-gray-100
-      border
-      placeholder:text-gray-600 dark:placeholder:text-gray-600 border-gray-400 dark:border-gray-800
-      dark:ring-1 focus-within:ring-1 dark:ring-gray-800 focus-within:ring-primary-500 focus-within:border-primary-500
-      dark:focus-within:ring-primary-500 dark:focus-within:border-primary-500
+      block
+      w-full
+      rounded-md border border-gray-400
+      bg-white text-gray-900
+      shadow-sm placeholder:text-gray-600
+      focus-within:border-primary-500
+      focus-within:ring-1 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-800
+      dark:text-gray-100 dark:ring-1 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500
+      dark:focus-within:ring-primary-500 sm:text-sm
     `}
     >
       {(!!attachments?.length || isUploading) && (

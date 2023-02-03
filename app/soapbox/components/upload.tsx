@@ -141,7 +141,7 @@ const Upload: React.FC<IUpload> = ({
 
   const uploadIcon = mediaType === 'unknown' && (
     <Icon
-      className='h-16 w-16 mx-auto my-12 text-gray-800 dark:text-gray-200'
+      className='mx-auto my-12 h-16 w-16 text-gray-800 dark:text-gray-200'
       src={MIMETYPE_ICONS[mimeType || ''] || defaultIcon}
     />
   );

@@ -29,16 +29,16 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
 
   if (!group) {
     return (
-      <div className='-mt-4 -mx-4'>
+      <div className='-mx-4 -mt-4'>
         <div>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
 
         <div className='px-4 sm:px-6'>
           <HStack alignItems='bottom' space={5} className='-mt-12'>
-            <div className='flex relative'>
+            <div className='relative flex'>
               <div
-                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
+                className='h-24 w-24 rounded-full bg-gray-400 ring-4 ring-white dark:ring-gray-800'
               />
             </div>
           </HStack>
@@ -157,9 +157,9 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   const actionButton = makeActionButton();
 
   return (
-    <div className='-mt-4 -mx-4'>
+    <div className='-mx-4 -mt-4'>
       <div className='relative'>
-        <div className='relative flex flex-col justify-center h-32 w-full lg:h-[200px] md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
+        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-[200px]'>
           {renderHeader()}
         </div>
         <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>

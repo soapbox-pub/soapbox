@@ -63,11 +63,11 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node} data-testid='navbar'>
-      <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
-        <div className='relative flex justify-between h-12 lg:h-16'>
+    <nav className='sticky top-0 z-50 bg-white shadow dark:bg-primary-900' ref={node} data-testid='navbar'>
+      <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+        <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:right-0 rtl:left-auto'>
+            <div className='absolute inset-y-0 left-0 flex items-center rtl:right-0 rtl:left-auto lg:hidden'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
@@ -82,14 +82,14 @@ const Navbar = () => {
               'justify-start': !account,
             })}
           >
-            <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
+            <Link key='logo' to='/' data-preview-title-id='column.home' className='flex shrink-0 items-center'>
               <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
               <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
             </Link>
 
             {account && (
-              <div className='flex-1 hidden lg:flex justify-center px-2 lg:ml-6 lg:justify-start items-center'>
-                <div className='max-w-xl w-full lg:max-w-xs hidden lg:block'>
+              <div className='hidden flex-1 items-center justify-center px-2 lg:ml-6 lg:flex lg:justify-start'>
+                <div className='hidden w-full max-w-xl lg:block lg:max-w-xs'>
                   <Search openInRoute autosuggest />
                 </div>
               </div>
@@ -98,14 +98,14 @@ const Navbar = () => {
 
           <HStack space={3} alignItems='center' className='absolute inset-y-0 right-0 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0'>
             {account ? (
-              <div className='hidden relative lg:flex items-center'>
+              <div className='relative hidden items-center lg:flex'>
                 <ProfileDropdown account={account}>
                   <Avatar src={account.avatar} size={34} />
                 </ProfileDropdown>
               </div>
             ) : (
               <>
-                <Form className='hidden lg:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
+                <Form className='hidden items-center space-x-2 rtl:space-x-reverse lg:flex' onSubmit={handleSubmit}>
                   <Input
                     required
                     value={username}
@@ -128,7 +128,7 @@ const Navbar = () => {
                     <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                       <IconButton
                         src={require('@tabler/icons/help.svg')}
-                        className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'
+                        className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
                         iconClassName='w-5 h-5'
                       />
                     </Tooltip>

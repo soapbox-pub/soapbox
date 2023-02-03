@@ -101,7 +101,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
       <HStack alignItems='center' space={0.5}>
         <Icon
           src={require('@tabler/icons/ballon.svg')}
-          className='w-4 h-4 text-gray-800 dark:text-gray-200'
+          className='h-4 w-4 text-gray-800 dark:text-gray-200'
         />
 
         <Text size='sm'>
@@ -165,7 +165,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
               <Icon
                 src={require('@tabler/icons/lock.svg')}
                 alt={intl.formatMessage(messages.account_locked)}
-                className='w-4 h-4 text-gray-600'
+                className='h-4 w-4 text-gray-600'
               />
             )}
           </HStack>
@@ -177,12 +177,12 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           <Markup size='sm' dangerouslySetInnerHTML={content} />
         )}
 
-        <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>
+        <div className='flex flex-col items-start gap-2 md:flex-row md:flex-wrap md:items-center'>
           {isLocal(account) ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/calendar.svg')}
-                className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
               <Text size='sm'>
@@ -199,7 +199,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/map-pin.svg')}
-                className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
               <Text size='sm'>
@@ -212,13 +212,13 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/link.svg')}
-                className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
               <div className='max-w-[300px]'>
                 <Text size='sm' truncate>
                   {isSafeUrl(account.website) ? (
-                    <a className='text-primary-600 dark:text-accent-blue hover:underline' href={account.website} target='_blank'>{account.website}</a>
+                    <a className='text-primary-600 hover:underline dark:text-accent-blue' href={account.website} target='_blank'>{account.website}</a>
                   ) : (
                     account.website
                   )}

@@ -94,7 +94,7 @@ const ReasonStep = (_props: IReasonStep) => {
           <div className='relative'>
             <div
               style={{ maxHeight: RULES_HEIGHT }}
-              className='rounded-lg -space-y-px overflow-y-auto'
+              className='-space-y-px overflow-y-auto rounded-lg'
               onScroll={handleRulesScrolling}
               ref={rulesListRef}
             >
@@ -131,7 +131,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='border-2 dark:bg-gray-900 dark:border-gray-800 checked:bg-primary-500 dark:checked:bg-primary-500 focus:ring-primary-500 dark:focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded'
+                      className='h-4 w-4 rounded border-2 border-gray-300 text-primary-600 checked:bg-primary-500 focus:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:checked:bg-primary-500 dark:focus:ring-primary-500'
                     />
                   </button>
                 );

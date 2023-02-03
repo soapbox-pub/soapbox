@@ -30,7 +30,7 @@ const messages = defineMessages({
 const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
     <label
-      className='h-24 sm:h-36 w-full text-primary-500 dark:text-accent-blue bg-primary-100 dark:bg-gray-800 cursor-pointer relative rounded-lg sm:shadow dark:sm:shadow-inset overflow-hidden'
+      className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
     >
       {src && <img className='h-full w-full object-cover' src={src} alt='' />}
       <HStack
@@ -65,7 +65,7 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 
 const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
-    <label className='h-[72px] w-[72px] bg-primary-500 cursor-pointer rounded-full absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 ring-2 ring-white dark:ring-primary-900'>
+    <label className='absolute left-1/2 bottom-0 h-[72px] w-[72px] -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
       {src && <Avatar src={src} size={72} />}
       <HStack
         alignItems='center'
@@ -149,7 +149,7 @@ const DetailsStep = () => {
 
   return (
     <Form>
-      <div className='flex mb-12 relative'>
+      <div className='relative mb-12 flex'>
         <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
         <AvatarPicker src={avatarSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
       </div>

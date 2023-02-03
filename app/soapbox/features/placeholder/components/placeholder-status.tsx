@@ -22,7 +22,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
     <div className='w-full animate-pulse overflow-hidden'>
       <div>
         <HStack space={3} alignItems='center'>
-          <div className='flex-shrink-0'>
+          <div className='shrink-0'>
             <PlaceholderAvatar size={42} />
           </div>
 
@@ -32,7 +32,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
         </HStack>
       </div>
 
-      <div className='mt-4 status__content-wrapper'>
+      <div className='status__content-wrapper mt-4'>
         <PlaceholderStatusContent minLength={5} maxLength={120} />
       </div>
     </div>
