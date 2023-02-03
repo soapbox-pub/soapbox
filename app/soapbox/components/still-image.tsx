@@ -72,7 +72,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
       )}
 
       {(hoverToPlay && showExt) && (
-        <div className='group-hover:hidden absolute opacity-90 left-2 bottom-2 pointer-events-none'>
+        <div className='pointer-events-none absolute left-2 bottom-2 opacity-90 group-hover:hidden'>
           <ExtensionBadge ext='GIF' />
         </div>
       )}

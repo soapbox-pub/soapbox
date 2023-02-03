@@ -149,7 +149,7 @@ const Search = (props: ISearch) => {
         <div
           role='button'
           tabIndex={0}
-          className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto px-3 flex items-center cursor-pointer'
+          className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 rtl:left-0 rtl:right-auto'
           onClick={handleClear}
         >
           <SvgIcon

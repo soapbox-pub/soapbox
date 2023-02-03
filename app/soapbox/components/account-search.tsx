@@ -72,7 +72,7 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
         <div
           role='button'
           tabIndex={0}
-          className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
+          className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3'
           onClick={handleClear}
         >
           <SvgIcon

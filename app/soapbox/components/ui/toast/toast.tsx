@@ -40,7 +40,7 @@ const Toast = (props: IToast) => {
         return (
           <Icon
             src={require('@tabler/icons/circle-check.svg')}
-            className='w-6 h-6 text-success-500 dark:text-success-400'
+            className='h-6 w-6 text-success-500 dark:text-success-400'
             aria-hidden
           />
         );
@@ -48,7 +48,7 @@ const Toast = (props: IToast) => {
         return (
           <Icon
             src={require('@tabler/icons/info-circle.svg')}
-            className='w-6 h-6 text-primary-600 dark:text-accent-blue'
+            className='h-6 w-6 text-primary-600 dark:text-accent-blue'
             aria-hidden
           />
         );
@@ -56,7 +56,7 @@ const Toast = (props: IToast) => {
         return (
           <Icon
             src={require('@tabler/icons/alert-circle.svg')}
-            className='w-6 h-6 text-danger-600'
+            className='h-6 w-6 text-danger-600'
             aria-hidden
           />
         );
@@ -112,7 +112,7 @@ const Toast = (props: IToast) => {
       <HStack space={4} alignItems='start'>
         <HStack space={3} justifyContent='between' alignItems='start' className='w-0 flex-1'>
           <HStack space={3} alignItems='start' className='w-0 flex-1'>
-            <div className='flex-shrink-0'>
+            <div className='shrink-0'>
               {renderIcon()}
             </div>
 
@@ -126,15 +126,15 @@ const Toast = (props: IToast) => {
         </HStack>
 
         {/* Dismiss Button */}
-        <div className='flex flex-shrink-0 pt-0.5'>
+        <div className='flex shrink-0 pt-0.5'>
           <button
             type='button'
-            className='inline-flex rounded-md text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
+            className='inline-flex rounded-md text-gray-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:text-gray-600 dark:hover:text-gray-500'
             onClick={dismissToast}
             data-testid='toast-dismiss'
           >
             <span className='sr-only'>Close</span>
-            <Icon src={require('@tabler/icons/x.svg')} className='w-5 h-5' />
+            <Icon src={require('@tabler/icons/x.svg')} className='h-5 w-5' />
           </button>
         </div>
       </HStack>

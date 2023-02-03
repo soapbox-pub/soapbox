@@ -310,7 +310,7 @@ const EditProfile: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.header)}>
       <Form onSubmit={handleSubmit}>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
           <ProfilePreview account={previewAccount} />
 
           <div className='space-y-4'>

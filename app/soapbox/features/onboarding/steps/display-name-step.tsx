@@ -57,7 +57,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
+          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.display_name.title' defaultMessage='Choose a display name' />
@@ -69,7 +69,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
             </Stack>
           </div>
 
-          <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+          <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
             <Stack space={5}>
               <FormGroup
                 hintText={hintText}

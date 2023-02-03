@@ -83,9 +83,9 @@ const Lists: React.FC = () => {
           itemClassName='py-2'
         >
           {lists.map((list: any) => (
-            <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 p-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg'>
+            <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'>
               <Icon src={require('@tabler/icons/list.svg')} />
-              <span className='flex-grow'>
+              <span className='grow'>
                 {list.title}
               </span>
               <IconButton iconClassName='h-5 w-5 text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500' src={require('@tabler/icons/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />

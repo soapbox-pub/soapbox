@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:import/typescript',
     'plugin:compat/recommended',
+    'plugin:tailwindcss/recommended',
   ],
 
   env: {
@@ -61,6 +62,9 @@ module.exports = {
       'URL', // core-js
       'URLSearchParams', // core-js
     ],
+    tailwindcss: {
+      config: 'tailwind.config.cjs',
+    },
   },
 
   rules: {
@@ -235,18 +239,7 @@ module.exports = {
       },
     ],
     'import/newline-after-import': 'error',
-    'import/no-extraneous-dependencies': [
-      'error',
-      // {
-      //   devDependencies: [
-      //     'webpack/**',
-      //     'app/soapbox/test_setup.js',
-      //     'app/soapbox/test_helpers.js',
-      //     'app/**/__tests__/**',
-      //     'app/**/__mocks__/**',
-      //   ],
-      // },
-    ],
+    'import/no-extraneous-dependencies': 'error',
     'import/no-unresolved': 'error',
     'import/no-webpack-loader-syntax': 'error',
     'import/order': [
@@ -271,6 +264,9 @@ module.exports = {
     'promise/catch-or-return': 'error',
 
     'react-hooks/rules-of-hooks': 'error',
+
+    'tailwindcss/classnames-order': 'error',
+    'tailwindcss/migration-from-tailwind-2': 'error',
   },
   overrides: [
     {

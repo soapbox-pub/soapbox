@@ -25,7 +25,7 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
+  <button className='flex items-center border-0 bg-transparent p-0 pt-2 text-gray-900 hover:underline active:underline dark:text-gray-300' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
     <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} />
   </button>

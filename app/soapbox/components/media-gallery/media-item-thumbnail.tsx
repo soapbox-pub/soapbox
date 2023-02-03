@@ -26,7 +26,7 @@ const MediaItemThumbnail: React.FC<IMediaItemThumbnail> = ({
       {children}
 
       {ext && (
-        <div className='absolute opacity-90 left-2 bottom-2 pointer-events-none'>
+        <div className='pointer-events-none absolute left-2 bottom-2 opacity-90'>
           <ExtensionBadge ext={ext} />
         </div>
       )}

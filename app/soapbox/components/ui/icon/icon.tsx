@@ -21,9 +21,9 @@ interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
 
 /** Renders and SVG icon with optional counter. */
 const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredProps }): JSX.Element => (
-  <div className='flex flex-col flex-shrink-0 relative' data-testid='icon'>
+  <div className='relative flex shrink-0 flex-col' data-testid='icon'>
     {count ? (
-      <span className='absolute -top-2 -right-3 min-w-[20px] h-5 flex-shrink-0 whitespace-nowrap flex items-center justify-center break-words'>
+      <span className='absolute -top-2 -right-3 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
         <Counter count={count} countMax={countMax} />
       </span>
     ) : null}

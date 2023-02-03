@@ -7,7 +7,7 @@ interface IMoreMediaOverlay {
 /** Overlay on the final image in a gallery to indicate more images can be seen by clicking into the modal. */
 const MoreMediaOverlay: React.FC<IMoreMediaOverlay> = ({ count }) => {
   return (
-    <div className='absolute w-full h-full inset-0 bg-white/75 z-20 text-gray-900 text-center font-bold text-5xl flex items-center justify-center pointer-events-none'>
+    <div className='pointer-events-none absolute inset-0 z-20 flex h-full w-full items-center justify-center bg-white/75 text-center text-5xl font-bold text-gray-900'>
       <span>+{count}</span>
     </div>
   );

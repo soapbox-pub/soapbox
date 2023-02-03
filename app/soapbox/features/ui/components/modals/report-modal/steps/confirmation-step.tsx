@@ -25,7 +25,7 @@ const renderTermsOfServiceLink = (href: string) => (
   <a
     href={href}
     target='_blank'
-    className='hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue'
+    className='text-primary-600 hover:text-primary-800 hover:underline dark:text-accent-blue dark:hover:text-accent-blue'
   >
     {termsOfServiceText}
   </a>

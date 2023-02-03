@@ -140,7 +140,7 @@ const MediaItem: React.FC<IMediaItem> = ({
         onClick={handleClick}
       >
         <StillImage
-          className='w-full h-full'
+          className='h-full w-full'
           src={mediaPreview ? attachment.preview_url : attachment.url}
           alt={attachment.description}
           letterboxed={letterboxed}

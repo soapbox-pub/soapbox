@@ -67,7 +67,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-900/50 border-solid -mx-4 sm:-mx-10'>
+          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-900/50 sm:-mx-10 sm:pb-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />
@@ -79,15 +79,15 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
             </Stack>
           </div>
 
-          <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+          <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
             <Stack space={10}>
-              <div className='bg-gray-200 rounded-full relative mx-auto'>
+              <div className='relative mx-auto rounded-full bg-gray-200'>
                 {account && (
                   <Avatar src={selectedFile || account.avatar} size={175} />
                 )}
 
                 {isSubmitting && (
-                  <div className='absolute inset-0 rounded-full flex justify-center items-center bg-white/80 dark:bg-primary-900/80'>
+                  <div className='absolute inset-0 flex items-center justify-center rounded-full bg-white/80 dark:bg-primary-900/80'>
                     <Spinner withText={false} />
                   </div>
                 )}
@@ -101,7 +101,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
                   })}
                   disabled={isSubmitting}
                 >
-                  <Icon src={require('@tabler/icons/plus.svg')} className='text-white w-5 h-5' />
+                  <Icon src={require('@tabler/icons/plus.svg')} className='h-5 w-5 text-white' />
                 </button>
 
                 <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />

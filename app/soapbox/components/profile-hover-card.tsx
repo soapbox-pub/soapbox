@@ -123,7 +123,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/calendar.svg')}
-                  className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                  className='h-4 w-4 text-gray-800 dark:text-gray-200'
                 />
 
                 <Text size='sm'>

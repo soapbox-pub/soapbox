@@ -36,9 +36,9 @@ const Welcome = () => {
   };
 
   return (
-    <Stack className='py-20 px-4 sm:px-0 h-full overflow-y-auto' data-testid='chats-welcome'>
-      <div className='w-full sm:w-3/5 xl:w-2/5 mx-auto mb-2.5'>
-        <Text align='center' weight='bold' className='mb-6 text-2xl md:text-3xl leading-8'>
+    <Stack className='h-full overflow-y-auto py-20 px-4 sm:px-0' data-testid='chats-welcome'>
+      <div className='mx-auto mb-2.5 w-full sm:w-3/5 xl:w-2/5'>
+        <Text align='center' weight='bold' className='mb-6 text-2xl leading-8 md:text-3xl'>
           {intl.formatMessage(messages.title, { br: <br /> })}
         </Text>
 
@@ -47,7 +47,7 @@ const Welcome = () => {
         </Text>
       </div>
 
-      <Form onSubmit={handleSubmit} className='space-y-8 w-full sm:w-2/3 lg:w-3/5 sm:mx-auto'>
+      <Form onSubmit={handleSubmit} className='w-full space-y-8 sm:mx-auto sm:w-2/3 lg:w-3/5'>
         <Stack space={2}>
           <CardTitle title={<FormattedMessage id='chat.page_settings.privacy' defaultMessage='Privacy' />} />
 

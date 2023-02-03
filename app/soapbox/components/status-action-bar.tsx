@@ -98,7 +98,6 @@ const messages = defineMessages({
 
 interface IStatusActionBar {
   status: Status,
-  withDismiss?: boolean,
   withLabels?: boolean,
   expandable?: boolean,
   space?: 'expand' | 'compact',
@@ -106,7 +105,6 @@ interface IStatusActionBar {
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
   status,
-  withDismiss = false,
   withLabels = false,
   expandable = true,
   space = 'compact',
@@ -387,14 +385,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     menu.push(null);
 
-    if (ownAccount || withDismiss) {
-      menu.push({
-        text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
-        action: handleConversationMuteClick,
-        icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
-      });
-      menu.push(null);
-    }
+    menu.push({
+      text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
+      action: handleConversationMuteClick,
+      icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
+    });
+
+    menu.push(null);
 
     if (ownAccount) {
       if (publicStatus) {

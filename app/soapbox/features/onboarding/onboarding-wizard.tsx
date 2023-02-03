@@ -78,11 +78,11 @@ const OnboardingWizard = () => {
     <div data-testid='onboarding-wizard'>
       <LandingGradient />
 
-      <main className='h-screen flex flex-col overflow-x-hidden'>
-        <div className='flex flex-col justify-center items-center h-full'>
+      <main className='flex h-screen flex-col overflow-x-hidden'>
+        <div className='flex h-full flex-col items-center justify-center'>
           <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
             {steps.map((step, i) => (
-              <div key={i} className='py-6 sm:mx-auto w-full max-w-[100vw] sm:max-w-lg md:max-w-2xl'>
+              <div key={i} className='w-full max-w-[100vw] py-6 sm:mx-auto sm:max-w-lg md:max-w-2xl'>
                 <div
                   className={classNames({
                     'transition-opacity ease-linear': true,
