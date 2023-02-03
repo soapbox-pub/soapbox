@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
 
-import Button from 'soapbox/components/ui/button/button';
+import { Button } from 'soapbox/components/ui';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -10,32 +10,16 @@ export default {
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
     text: { type: 'string', defaultValue: 'Button' },
-    theme: {
-      control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'tertiary',
-        'accent',
-        'danger',
-        'transparent',
-        'outline',
-        'muted',
-      ],
-      defaultValue: 'primary',
-    },
-    size: {
-      control: 'select',
-      options: [
-        'xs',
-        'sm',
-        'md',
-        'lg',
-      ],
-      defaultValue: 'md',
-    },
-    disabled: { type: 'boolean', defaultValue: false },
-    onClick: { action: 'onClick' },
+    theme: { defaultValue: 'primary' },
+    size: { defaultValue: 'md' },
+    disabled: { defaultValue: false },
+    block: { defaultValue: false },
+    children: { table: { disable: true } },
+    className: { table: { disable: true } },
+    type: { table: { disable: true } },
+    to: { table: { disable: true } },
+    icon: { table: { disable: true } },
+    onClick: { table: { disable: true } },
   },
 } as ComponentMeta<typeof Button>;
 

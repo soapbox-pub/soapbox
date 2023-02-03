@@ -100,4 +100,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
   return renderButton();
 });
 
-export default Button;
+export {
+  Button as default,
+  Button,
+};
