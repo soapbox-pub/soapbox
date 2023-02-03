@@ -5,10 +5,11 @@ import Button from 'soapbox/components/ui/button/button';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Button',
+  title: 'UI/Button',
   component: Button,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
+    text: { type: 'string', defaultValue: 'Button' },
     theme: {
       control: 'select',
       options: [
@@ -21,7 +22,20 @@ export default {
         'outline',
         'muted',
       ],
+      defaultValue: 'primary',
     },
+    size: {
+      control: 'select',
+      options: [
+        'xs',
+        'sm',
+        'md',
+        'lg',
+      ],
+      defaultValue: 'md',
+    },
+    disabled: { type: 'boolean', defaultValue: false },
+    onClick: { action: 'onClick' },
   },
 } as ComponentMeta<typeof Button>;
 
@@ -32,22 +46,19 @@ export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
   theme: 'primary',
-  text: 'Button',
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  text: 'Button',
+  theme: 'secondary',
 };
 
 export const Large = Template.bind({});
 Large.args = {
   size: 'lg',
-  text: 'Button',
 };
 
 export const Small = Template.bind({});
 Small.args = {
   size: 'sm',
-  text: 'Button',
 };
