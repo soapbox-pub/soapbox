@@ -1,3 +1,5 @@
+import sharedConfig from '../webpack/shared';
+
 import type { StorybookConfig } from '@storybook/core-common';
 
 const config: StorybookConfig = {
@@ -9,10 +11,31 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    {
+      name: '@storybook/addon-postcss',
+      options: {
+        postcssLoaderOptions: {
+          implementation: require('postcss'),
+        },
+      },
+    },
   ],
   framework: '@storybook/react',
   core: {
     builder: '@storybook/builder-webpack5',
+  },
+  webpackFinal: async (config) => {
+    config.resolve!.alias = {
+      ...sharedConfig.resolve!.alias,
+      ...config.resolve!.alias,
+    };
+
+    config.resolve!.modules = [
+      ...sharedConfig.resolve!.modules!,
+      ...config.resolve!.modules!,
+    ];
+
+    return config;
   },
 };
 
