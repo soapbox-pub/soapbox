@@ -464,6 +464,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to list followed hashtags.
+     * @see GET /api/v1/followed_tags
+     */
+    followedHashtagsList: v.software === MASTODON && gte(v.compatVersion, '4.1.0'),
+
+    /**
      * Whether client settings can be retrieved from the API.
      * @see GET /api/pleroma/frontend_configurations
      */
