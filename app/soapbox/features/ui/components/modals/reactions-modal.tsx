@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -85,7 +85,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
-        className={classNames('max-w-full', {
+        className={clsx('max-w-full', {
           'mt-4': reactions.size > 0,
         })}
         itemClassName='pb-3'

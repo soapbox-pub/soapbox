@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -260,10 +260,10 @@ const SearchResults = () => {
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
-          className={classNames({
+          className={clsx({
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={classNames({
+          itemClassName={clsx({
             'pb-4': selectedFilter === 'accounts',
             'pb-3': selectedFilter === 'hashtags',
           })}

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { useCompose } from 'soapbox/hooks';
@@ -14,7 +14,7 @@ interface IUploadForm {
 
 const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {
   const mediaIds = useCompose(composeId).media_attachments.map((item: AttachmentEntity) => item.id);
-  const classes = classNames('compose-form__uploads-wrapper', {
+  const classes = clsx('compose-form__uploads-wrapper', {
     'contains-media': mediaIds.size !== 0,
   });
 

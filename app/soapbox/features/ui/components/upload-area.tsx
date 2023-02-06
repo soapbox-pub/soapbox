@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
@@ -43,7 +43,7 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
     >
       {({ backgroundOpacity, backgroundScale }) => (
         <div
-          className={classNames({
+          className={clsx({
             'flex items-center justify-center bg-gray-700 bg-opacity-90 h-full w-full absolute left-0 top-0 z-1000 pointer-events-none': true,
             'visible': active,
             'invisible': !active,

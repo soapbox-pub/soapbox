@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ interface IFooterLink {
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
   return (
     <div>
-      <Link className={classNames('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+      <Link className={clsx('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
     </div>
   );
 };

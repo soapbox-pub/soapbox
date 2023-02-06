@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import React, { useRef, useCallback } from 'react';
@@ -244,10 +244,10 @@ const StatusList: React.FC<IStatusList> = ({
       placeholderComponent={PlaceholderStatus}
       placeholderCount={20}
       ref={node}
-      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
+      className={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
         'divide-none': divideType !== 'border',
       })}
-      itemClassName={classNames({
+      itemClassName={clsx({
         'pb-3': divideType !== 'border',
       })}
       {...other}

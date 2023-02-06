@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import Icon from 'soapbox/components/icon';
@@ -66,7 +66,7 @@ const IconButton: React.FC<IIconButton> = ({
     }
   };
 
-  const classes = classNames(className, 'icon-button', {
+  const classes = clsx(className, 'icon-button', {
     active,
     disabled,
   });

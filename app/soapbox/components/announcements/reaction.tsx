@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import AnimatedNumber from 'soapbox/components/animated-number';
@@ -43,7 +43,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, 
 
   return (
     <button
-      className={classNames('flex shrink-0 items-center gap-1.5 bg-gray-100 dark:bg-primary-900 rounded-sm px-1.5 py-1 transition-colors', {
+      className={clsx('flex shrink-0 items-center gap-1.5 bg-gray-100 dark:bg-primary-900 rounded-sm px-1.5 py-1 transition-colors', {
         'bg-gray-200 dark:bg-primary-800': hovered,
         'bg-primary-200 dark:bg-primary-500': reaction.me,
       })}

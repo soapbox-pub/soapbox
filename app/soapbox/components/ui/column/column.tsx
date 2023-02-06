@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -74,7 +74,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
           <ColumnHeader
             label={label}
             backHref={backHref}
-            className={classNames({ 'px-4 pt-4 sm:p-0': transparent })}
+            className={clsx({ 'px-4 pt-4 sm:p-0': transparent })}
           />
         )}
 

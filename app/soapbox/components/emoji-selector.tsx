@@ -1,4 +1,4 @@
-// import classNames from 'clsx';
+// import clsx from 'clsx';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -111,7 +111,7 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     return (
       <HotKeys handlers={this.handlers}>
         {/*<div
-          className={classNames('flex absolute bg-white dark:bg-gray-500 px-2 py-3 rounded-full shadow-md opacity-0 pointer-events-none duration-100 w-max', { 'opacity-100 pointer-events-auto z-[999]': visible || focused })}
+          className={clsx('flex absolute bg-white dark:bg-gray-500 px-2 py-3 rounded-full shadow-md opacity-0 pointer-events-none duration-100 w-max', { 'opacity-100 pointer-events-auto z-[999]': visible || focused })}
           onBlur={this.handleBlur}
           ref={this.setRef}
         >

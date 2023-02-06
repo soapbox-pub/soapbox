@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -87,12 +87,12 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
+    <div data-testid='modal' className={clsx('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
           {title && (
             <div
-              className={classNames('w-full flex items-center gap-2', {
+              className={clsx('w-full flex items-center gap-2', {
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
@@ -121,7 +121,7 @@ const Modal: React.FC<IModal> = ({
 
       {confirmationAction && (
         <HStack className='mt-5' justifyContent='between' data-testid='modal-actions'>
-          <div className={classNames({ 'flex-grow': !confirmationFullWidth })}>
+          <div className={clsx({ 'flex-grow': !confirmationFullWidth })}>
             {cancelAction && (
               <Button
                 theme='tertiary'
@@ -132,7 +132,7 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-          <HStack space={2} className={classNames({ 'flex-grow': confirmationFullWidth })}>
+          <HStack space={2} className={clsx({ 'flex-grow': confirmationFullWidth })}>
             {secondaryAction && (
               <Button
                 theme='secondary'

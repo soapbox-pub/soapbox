@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 interface IBadge {
@@ -12,7 +12,7 @@ const Badge: React.FC<IBadge> = ({ title, slug }) => {
   return (
     <span
       data-testid='badge'
-      className={classNames('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', {
+      className={clsx('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium', {
         'bg-fuchsia-700 text-white': slug === 'patron',
         'bg-emerald-800 text-white': slug === 'badge:donor',
         'bg-black text-white': slug === 'admin',

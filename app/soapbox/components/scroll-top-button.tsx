@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
@@ -36,7 +36,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   const visible = count > 0 && scrolled;
 
-  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
+  const classes = clsx('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
     'hidden': !visible,
   });
 

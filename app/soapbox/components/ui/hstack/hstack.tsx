@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { forwardRef } from 'react';
 
 const justifyContentOptions = {
@@ -61,7 +61,7 @@ const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
     <Elem
       {...filteredProps}
       ref={ref}
-      className={classNames('flex rtl:space-x-reverse', {
+      className={clsx('flex rtl:space-x-reverse', {
         // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
