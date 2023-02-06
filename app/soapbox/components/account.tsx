@@ -165,7 +165,9 @@ const Account = ({
     const actionWidth = actionRef.current?.clientWidth || 0;
 
     if (overflowRef.current) {
-      style.maxWidth = Math.max(0, overflowRef.current.clientWidth - 30 - avatarSize - actionWidth);
+      if (action && withRelationship && typeof overflowRef.current.style.maxWidth !== 'number') {
+        style.maxWidth = Math.max(0, overflowRef.current.clientWidth - 30 - avatarSize - actionWidth);
+      }
     } else {
       style.visibility = 'hidden';
     }
