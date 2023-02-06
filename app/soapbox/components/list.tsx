@@ -84,7 +84,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
           {children}
 
           {isSelected ? (
-            <Icon src={require('@tabler/icons/check.svg')} className='text-primary-500 dark:text-primary-400 ml-1' />
+            <Icon src={require('@tabler/icons/check.svg')} className='ml-1 text-primary-500 dark:text-primary-400' />
           ) : null}
         </div>
       ) : null}

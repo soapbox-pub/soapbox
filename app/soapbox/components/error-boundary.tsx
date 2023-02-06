@@ -113,7 +113,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     const errorText = this.getErrorText();
 
     return (
-      <div className='dark:bg-primary-900 flex h-screen flex-col bg-white pt-16 pb-12'>
+      <div className='flex h-screen flex-col bg-white pt-16 pb-12 dark:bg-primary-900'>
         <main className='mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
           <div className='flex shrink-0 justify-center'>
             <a href='/' className='inline-flex'>
@@ -132,7 +132,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                   defaultMessage="We're sorry for the interruption. If the problem persists, please reach out to our support team. You may also try to {clearCookies} (this will log you out)."
                   values={{
                     clearCookies: (
-                      <a href='/' onClick={this.clearCookies} className='text-primary-600 dark:text-accent-blue hover:underline'>
+                      <a href='/' onClick={this.clearCookies} className='text-primary-600 hover:underline dark:text-accent-blue'>
                         <FormattedMessage
                           id='alert.unexpected.clear_cookies'
                           defaultMessage='clear cookies and browser data'
@@ -150,7 +150,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
               </Text>
 
               <div className='mt-10'>
-                <a href='/' className='text-primary-600 dark:text-accent-blue text-base font-medium hover:underline'>
+                <a href='/' className='text-base font-medium text-primary-600 hover:underline dark:text-accent-blue'>
                   <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
                   <span aria-hidden='true'> &rarr;</span>
                 </a>
@@ -162,7 +162,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                 {errorText && (
                   <textarea
                     ref={this.setTextareaRef}
-                    className='focus:border-primary-500 focus:ring-primary-500 block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
+                    className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
                     value={errorText}
                     onClick={this.handleCopy}
                     readOnly

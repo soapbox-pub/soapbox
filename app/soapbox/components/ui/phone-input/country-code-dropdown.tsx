@@ -12,7 +12,7 @@ const CountryCodeDropdown: React.FC<ICountryCodeDropdown> = ({ countryCode, onCh
   return (
     <select
       value={countryCode}
-      className='focus:ring-primary-500 h-full rounded-md border-transparent bg-transparent py-0 pl-3 pr-7 text-base focus:outline-none dark:text-white sm:text-sm'
+      className='h-full rounded-md border-transparent bg-transparent py-0 pl-3 pr-7 text-base focus:outline-none focus:ring-primary-500 dark:text-white sm:text-sm'
       onChange={(event) => onChange(event.target.value as any)}
     >
       {COUNTRY_CODES.map((code) => (

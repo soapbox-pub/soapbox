@@ -56,7 +56,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, 
       <span className='block h-4 w-4'>
         <Emoji hovered={hovered} emoji={reaction.name} emojiMap={emojiMap} />
       </span>
-      <span className='text-primary-600 block min-w-[9px] text-center text-xs font-medium dark:text-white'>
+      <span className='block min-w-[9px] text-center text-xs font-medium text-primary-600 dark:text-white'>
         <AnimatedNumber value={reaction.count} />
       </span>
     </button>

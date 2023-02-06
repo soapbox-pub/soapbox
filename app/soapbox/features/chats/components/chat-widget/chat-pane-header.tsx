@@ -47,7 +47,7 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
               ({unreadCount})
             </Text>
 
-            <div className='bg-accent-300 h-2.5 w-2.5 rounded-full' />
+            <div className='h-2.5 w-2.5 rounded-full bg-accent-300' />
           </HStack>
         )}
       </ButtonComp>

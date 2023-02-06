@@ -39,7 +39,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
       <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
       <BackgroundShapes position='absolute' />
 
-      <div className='bg-accent-500 absolute z-20 self-center overflow-hidden rounded-lg p-2 text-white'>
+      <div className='absolute z-20 self-center overflow-hidden rounded-lg bg-accent-500 p-2 text-white'>
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />
       </div>
 

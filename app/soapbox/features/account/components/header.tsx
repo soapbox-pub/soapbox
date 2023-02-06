@@ -610,7 +610,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <Avatar
                 src={account.avatar}
                 size={96}
-                className='dark:bg-primary-900 dark:ring-primary-900 relative h-24 w-24 rounded-full bg-white ring-4 ring-white'
+                className='relative h-24 w-24 rounded-full bg-white ring-4 ring-white dark:bg-primary-900 dark:ring-primary-900'
               />
             </a>
           </div>

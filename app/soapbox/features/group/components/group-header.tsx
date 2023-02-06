@@ -164,7 +164,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
         </div>
         <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
           <a href={group.avatar} onClick={handleAvatarClick} target='_blank'>
-            <Avatar className='dark:ring-primary-900 ring-[3px] ring-white' src={group.avatar} size={72} />
+            <Avatar className='ring-[3px] ring-white dark:ring-primary-900' src={group.avatar} size={72} />
           </a>
         </div>
       </div>

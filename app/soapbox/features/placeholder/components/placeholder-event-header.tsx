@@ -11,7 +11,7 @@ const PlaceholderEventHeader = () => {
   const locationLength = randomIntFromInterval(5, 30);
 
   return (
-    <Stack className='text-primary-50 dark:text-primary-800 animate-pulse' space={2}>
+    <Stack className='animate-pulse text-primary-50 dark:text-primary-800' space={2}>
       <p className='text-lg'>{generateText(eventNameLength)}</p>
 
       <Stack space={1}>

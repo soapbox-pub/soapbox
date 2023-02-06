@@ -28,7 +28,7 @@ const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
           <Motion defaultStyle={{ width: 0 }} style={{ width: spring(progress) }}>
             {({ width }) =>
               (<div
-                className='bg-primary-600 absolute left-0 top-0 h-1.5 rounded-lg'
+                className='absolute left-0 top-0 h-1.5 rounded-lg bg-primary-600'
                 style={{ width: `${width}%` }}
               />)
             }

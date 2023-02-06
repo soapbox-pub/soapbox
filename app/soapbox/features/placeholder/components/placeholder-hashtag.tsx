@@ -7,7 +7,7 @@ const PlaceholderHashtag: React.FC = () => {
   const length = randomIntFromInterval(15, 30);
 
   return (
-    <div className='text-primary-200 dark:text-primary-700 animate-pulse'>
+    <div className='animate-pulse text-primary-200 dark:text-primary-700'>
       <p>{generateText(length)}</p>
     </div>
   );

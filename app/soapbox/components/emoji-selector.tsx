@@ -1,4 +1,3 @@
-// import clsx from 'clsx';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';

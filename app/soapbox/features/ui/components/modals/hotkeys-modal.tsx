@@ -9,7 +9,7 @@ interface IHotkeysModal {
 }
 
 const Hotkey: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <kbd className='border-primary-200 bg-primary-50 rounded-md border border-solid px-1.5 py-1 font-sans text-xs dark:border-gray-700 dark:bg-gray-800'>
+  <kbd className='rounded-md border border-solid border-primary-200 bg-primary-50 px-1.5 py-1 font-sans text-xs dark:border-gray-700 dark:bg-gray-800'>
     {children}
   </kbd>
 );

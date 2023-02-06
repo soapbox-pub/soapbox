@@ -483,7 +483,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           {!isUnderReview ? (
             <>
-              <hr className='dark:border-primary-800 mb-2 border-t-2' />
+              <hr className='mb-2 border-t-2 dark:border-primary-800' />
 
               <StatusActionBar
                 status={status}
@@ -497,7 +497,7 @@ const Thread: React.FC<IThread> = (props) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='dark:border-primary-800 mt-2 border-t-2' />
+        <hr className='mt-2 border-t-2 dark:border-primary-800' />
       )}
     </div>
   );

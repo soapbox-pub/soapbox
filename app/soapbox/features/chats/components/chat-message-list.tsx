@@ -379,11 +379,11 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 {(isMyMessage && features.chatsReadReceipts) ? (
                   <>
                     {isRead ? (
-                      <span className='border-primary-500 bg-primary-500 dark:border-primary-400 dark:bg-primary-400 dark:text-primary-900 flex flex-col items-center justify-center rounded-full border border-solid p-0.5 text-white'>
+                      <span className='flex flex-col items-center justify-center rounded-full border border-solid border-primary-500 bg-primary-500 p-0.5 text-white dark:border-primary-400 dark:bg-primary-400 dark:text-primary-900'>
                         <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='h-2.5 w-2.5' />
                       </span>
                     ) : (
-                      <span className='border-primary-500 text-primary-500 dark:border-primary-400 dark:text-primary-400 flex flex-col items-center justify-center rounded-full border border-solid bg-transparent p-0.5'>
+                      <span className='flex flex-col items-center justify-center rounded-full border border-solid border-primary-500 bg-transparent p-0.5 text-primary-500 dark:border-primary-400 dark:text-primary-400'>
                         <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='h-2.5 w-2.5' />
                       </span>
                     )}

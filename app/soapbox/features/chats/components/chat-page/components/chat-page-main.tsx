@@ -212,7 +212,7 @@ const ChatPageMain = () => {
                   onSelect={isBlocking ? handleUnblockUser : handleBlockUser}
                   className='!px-0 hover:!bg-transparent'
                 >
-                  <div className='text-primary-500 dark:text-accent-blue flex w-full items-center space-x-2 text-sm font-bold'>
+                  <div className='flex w-full items-center space-x-2 text-sm font-bold text-primary-500 dark:text-accent-blue'>
                     <Icon src={require('@tabler/icons/ban.svg')} className='h-5 w-5' />
                     <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
                   </div>
@@ -224,7 +224,7 @@ const ChatPageMain = () => {
                     onSelect={handleLeaveChat}
                     className='!px-0 hover:!bg-transparent'
                   >
-                    <div className='text-danger-600 dark:text-danger-500 flex w-full items-center space-x-2 text-sm font-bold'>
+                    <div className='flex w-full items-center space-x-2 text-sm font-bold text-danger-600 dark:text-danger-500'>
                       <Icon src={require('@tabler/icons/logout.svg')} className='h-5 w-5' />
                       <span>{intl.formatMessage(messages.leaveChat)}</span>
                     </div>

@@ -214,7 +214,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.banner_label' defaultMessage='Event banner' />}
       >
-        <div className='dark:sm:shadow-inset bg-primary-100 text-primary-500 relative flex h-24 items-center justify-center overflow-hidden rounded-lg dark:bg-gray-800 dark:text-white sm:h-32 sm:shadow'>
+        <div className='dark:sm:shadow-inset relative flex h-24 items-center justify-center overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-white sm:h-32 sm:shadow'>
           {banner ? (
             <>
               <img className='h-full w-full object-cover' src={banner.url} alt='' />

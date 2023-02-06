@@ -62,7 +62,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
 
   return (
     <a
-      className='dark:bg-primary-900 block bg-white'
+      className='block bg-white dark:bg-primary-900'
       href={status?.url || '#'}
       onClick={e => e.stopPropagation()}
       target='_blank'
