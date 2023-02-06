@@ -195,7 +195,7 @@ const Account = ({
   return (
     <div data-testid='account' className='group block w-full shrink-0' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3}>
+        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3} className='overflow-hidden'>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -215,7 +215,7 @@ const Account = ({
             </LinkEl>
           </ProfilePopper>
 
-          <div className='grow'>
+          <div className='grow overflow-hidden'>
             <ProfilePopper
               condition={showProfileHoverCard}
               wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
