@@ -20,7 +20,7 @@ const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ pe
     <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { ...presets.gentle, precision: 0.1 }) }}>
       {({ width }) => (
         <span
-          className='absolute inset-0 inline-block h-full rounded-l-md bg-primary-100 dark:bg-primary-500'
+          className='bg-primary-100 dark:bg-primary-500 absolute inset-0 inline-block h-full rounded-l-md'
           style={{ width: `${width}%` }}
         />
       )}
@@ -46,7 +46,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
   return (
     <label
       className={
-        classNames('flex relative p-2 bg-white dark:bg-primary-900 cursor-pointer rounded-3xl border border-solid hover:bg-primary-50 dark:hover:bg-primary-800/50', {
+        classNames('dark:bg-primary-900 hover:bg-primary-50 dark:hover:bg-primary-800/50 relative flex cursor-pointer rounded-3xl border border-solid bg-white p-2', {
           'border-primary-600 ring-1 ring-primary-600 bg-primary-50 dark:bg-primary-800/50 dark:border-primary-300 dark:ring-primary-300': active,
           'border-primary-300 dark:border-primary-500': !active,
         })
@@ -74,7 +74,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 
         <div className='col-start-1 row-start-1 flex items-center justify-self-end'>
           <span
-            className={classNames('flex items-center justify-center w-6 h-6 flex-none border border-solid rounded-full', {
+            className={classNames('flex h-6 w-6 flex-none items-center justify-center rounded-full border border-solid', {
               'bg-primary-600 border-primary-600 dark:bg-primary-300 dark:border-primary-300': active,
               'border-primary-300 bg-white dark:bg-primary-900 dark:border-primary-500': !active,
             })}
@@ -85,7 +85,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             aria-label={option.title}
           >
             {active && (
-              <Icon src={require('@tabler/icons/check.svg')} className='h-4 w-4 text-white dark:text-primary-900' />
+              <Icon src={require('@tabler/icons/check.svg')} className='dark:text-primary-900 h-4 w-4 text-white' />
             )}
           </span>
         </div>
@@ -123,7 +123,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
           <HStack
             justifyContent='between'
             alignItems='center'
-            className='relative w-full overflow-hidden rounded-md bg-white p-2 dark:bg-primary-800'
+            className='dark:bg-primary-800 relative w-full overflow-hidden rounded-md bg-white p-2'
           >
             <PollPercentageBar percent={percent} leading={leading} />
 
@@ -141,7 +141,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
                 <Icon
                   src={require('@tabler/icons/circle-check.svg')}
                   alt={intl.formatMessage(messages.voted)}
-                  className='h-4 w-4 text-primary-600 dark:fill-white dark:text-primary-800'
+                  className='text-primary-600 dark:text-primary-800 h-4 w-4 dark:fill-white'
                 />
               ) : (
                 <div className='svg-icon' />

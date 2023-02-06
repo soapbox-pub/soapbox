@@ -60,7 +60,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                     {version.poll.options.map((option: any) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
                         <span
-                          className={classNames('inline-block w-4 h-4 flex-none mr-2.5 border border-solid border-primary-600 rounded-full', {
+                          className={classNames('border-primary-600 mr-2.5 inline-block h-4 w-4 flex-none rounded-full border border-solid', {
                             'rounded': poll.multiple,
                           })}
                           tabIndex={0}

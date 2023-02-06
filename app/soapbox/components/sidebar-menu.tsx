@@ -53,8 +53,8 @@ interface ISidebarLink {
 const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
   const body = (
     <HStack space={2} alignItems='center'>
-      <div className='relative inline-flex rounded-full bg-primary-50 p-2 dark:bg-gray-800'>
-        <Icon src={icon} className='h-5 w-5 text-primary-500' />
+      <div className='bg-primary-50 relative inline-flex rounded-full p-2 dark:bg-gray-800'>
+        <Icon src={icon} className='text-primary-500 h-5 w-5' />
       </div>
 
       <Text tag='span' weight='medium' theme='inherit'>{text}</Text>
@@ -334,7 +334,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                         <Icon
                           src={require('@tabler/icons/chevron-down.svg')}
-                          className={classNames('w-4 h-4 text-gray-900 dark:text-gray-100 transition-transform', {
+                          className={classNames('h-4 w-4 text-gray-900 transition-transform dark:text-gray-100', {
                             'rotate-180': switcher,
                           })}
                         />
@@ -346,7 +346,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                         {otherAccounts.map(account => renderAccount(account))}
 
                         <NavLink className='flex items-center space-x-1 py-2' to='/login/add' onClick={handleClose}>
-                          <Icon className='h-4 w-4 text-primary-500' src={require('@tabler/icons/plus.svg')} />
+                          <Icon className='text-primary-500 h-4 w-4' src={require('@tabler/icons/plus.svg')} />
                           <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
                         </NavLink>
                       </div>

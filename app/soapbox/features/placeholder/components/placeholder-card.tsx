@@ -11,7 +11,7 @@ const PlaceholderCard: React.FC = () => (
   >
     <div className='primary-500 w-2/5 rounded-l'>&nbsp;</div>
 
-    <div className='flex w-3/5 flex-col justify-between break-words p-4 text-primary-50'>
+    <div className='text-primary-50 flex w-3/5 flex-col justify-between break-words p-4'>
       <p>{generateText(randomIntFromInterval(5, 25))}</p>
       <p>{generateText(randomIntFromInterval(5, 75))}</p>
       <p>{generateText(randomIntFromInterval(5, 15))}</p>

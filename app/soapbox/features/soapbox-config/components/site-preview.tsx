@@ -26,9 +26,9 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
   const bodyClass = classNames(
     'site-preview',
-    'relative flex justify-center align-center text-base',
+    'align-center relative flex justify-center text-base',
     'border border-solid border-gray-200 dark:border-gray-600',
-    'h-40 rounded-lg overflow-hidden',
+    'h-40 overflow-hidden rounded-lg',
     {
       'bg-white': !dark,
       'bg-gray-900': dark,
@@ -39,11 +39,11 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
       <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
       <BackgroundShapes position='absolute' />
 
-      <div className='absolute z-20 self-center overflow-hidden rounded-lg bg-accent-500 p-2 text-white'>
+      <div className='bg-accent-500 absolute z-20 self-center overflow-hidden rounded-lg p-2 text-white'>
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />
       </div>
 
-      <div className={classNames('flex absolute inset-0 shadow z-10 h-12 lg:h-16', {
+      <div className={classNames('absolute inset-0 z-10 flex h-12 shadow lg:h-16', {
         'bg-white': !dark,
         'bg-gray-800': dark,
       })}

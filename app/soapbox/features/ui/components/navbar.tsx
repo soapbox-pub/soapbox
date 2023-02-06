@@ -63,7 +63,7 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='sticky top-0 z-50 bg-white shadow dark:bg-primary-900' ref={node} data-testid='navbar'>
+    <nav className='dark:bg-primary-900 sticky top-0 z-50 bg-white shadow' ref={node} data-testid='navbar'>
       <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
         <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
@@ -77,7 +77,7 @@ const Navbar = () => {
           <HStack
             space={4}
             alignItems='center'
-            className={classNames('flex-1 enter lg:items-stretch', {
+            className={classNames('enter flex-1 lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}

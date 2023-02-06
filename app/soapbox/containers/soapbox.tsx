@@ -271,7 +271,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
 
-  const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
+  const bodyClass = classNames('h-full bg-white text-base dark:bg-gray-800', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
     'demetricator': settings.get('demetricator'),

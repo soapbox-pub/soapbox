@@ -87,12 +87,12 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
+    <div data-testid='modal' className={classNames('dark:bg-primary-900 pointer-events-auto mx-auto block w-full transform rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:text-gray-100', widths[width])}>
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
           {title && (
             <div
-              className={classNames('w-full flex items-center gap-2', {
+              className={classNames('flex w-full items-center gap-2', {
                 'flex-row-reverse': closePosition === 'left',
               })}
             >

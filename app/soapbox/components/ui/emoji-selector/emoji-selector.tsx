@@ -1,5 +1,5 @@
 import classNames from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Emoji, HStack } from 'soapbox/components/ui';
 
@@ -8,6 +8,8 @@ interface IEmojiButton {
   emoji: string,
   /** Event handler when the emoji is clicked. */
   onClick: React.EventHandler<React.MouseEvent>,
+  /** Keyboard event handler. */
+  onKeyDown?: React.EventHandler<React.KeyboardEvent>,
   /** Extra class name on the <button> element. */
   className?: string,
   /** Tab order of the button. */
@@ -15,10 +17,10 @@ interface IEmojiButton {
 }
 
 /** Clickable emoji button that scales when hovered. */
-const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabIndex }): JSX.Element => {
+const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, onKeyDown, tabIndex }): JSX.Element => {
   return (
-    <button className={classNames(className)} onClick={onClick} tabIndex={tabIndex}>
-      <Emoji className='h-8 w-8 duration-100 hover:scale-125' emoji={emoji} />
+    <button className={classNames(className)} onClick={onClick} onKeyDown={onKeyDown} tabIndex={tabIndex}>
+      <Emoji className='h-8 w-8 duration-100' emoji={emoji} />
     </button>
   );
 };
@@ -28,6 +30,8 @@ interface IEmojiSelector {
   emojis: Iterable<string>,
   /** Event handler when an emoji is clicked. */
   onReact: (emoji: string) => void,
+  /** Event handler when selector is escaped. */
+  onUnfocus: React.KeyboardEventHandler<HTMLDivElement>,
   /** Whether the selector should be visible. */
   visible?: boolean,
   /** Whether the selector should be focused. */
@@ -35,7 +39,9 @@ interface IEmojiSelector {
 }
 
 /** Panel with a row of emoji buttons. */
-const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = false, focused = false }): JSX.Element => {
+const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, onUnfocus, visible = false, focused = false }): JSX.Element => {
+  const emojiList = Array.from(emojis);
+  const node = useRef<HTMLDivElement>(null);
 
   const handleReact = (emoji: string): React.EventHandler<React.MouseEvent> => {
     return (e) => {
@@ -45,15 +51,66 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
     };
   };
 
+  const selectPreviousEmoji = (i: number): void => {
+    if (!node.current) return;
+
+    if (i !== 0) {
+      const button: HTMLButtonElement | null = node.current.querySelector(`.emoji-react-selector__emoji:nth-child(${i})`);
+      button?.focus();
+    } else {
+      const button: HTMLButtonElement | null = node.current.querySelector('.emoji-react-selector__emoji:last-child');
+      button?.focus();
+    }
+  };
+
+  const selectNextEmoji = (i: number) => {
+    if (!node.current) return;
+
+    if (i !== emojiList.length - 1) {
+      const button: HTMLButtonElement | null = node.current.querySelector(`.emoji-react-selector__emoji:nth-child(${i + 2})`);
+      button?.focus();
+    } else {
+      const button: HTMLButtonElement | null = node.current.querySelector('.emoji-react-selector__emoji:first-child');
+      button?.focus();
+    }
+  };
+
+  const handleKeyDown = (i: number): React.KeyboardEventHandler<HTMLDivElement> => e => {
+    switch (e.key) {
+      case 'Enter':
+        handleReact(emojiList[i])(e as any);
+        break;
+      case 'Tab':
+        e.preventDefault();
+        if (e.shiftKey) selectPreviousEmoji(i);
+        else selectNextEmoji(i);
+        break;
+      case 'Left':
+      case 'ArrowLeft':
+        selectPreviousEmoji(i);
+        break;
+      case 'Right':
+      case 'ArrowRight':
+        selectNextEmoji(i);
+        break;
+      case 'Escape':
+        onUnfocus(e);
+        break;
+    }
+  };
+
   return (
     <HStack
-      className={classNames('gap-2 bg-white dark:bg-gray-900 p-3 rounded-full shadow-md z-[999] w-max max-w-[100vw] flex-wrap')}
+      className={classNames('emoji-react-selector z-[999] w-max max-w-[100vw] flex-wrap gap-2 rounded-full bg-white p-3 shadow-md dark:bg-gray-900')}
+      ref={node}
     >
-      {Array.from(emojis).map((emoji, i) => (
+      {emojiList.map((emoji, i) => (
         <EmojiButton
+          className='emoji-react-selector__emoji hover:scale-125 focus:scale-125'
           key={i}
           emoji={emoji}
           onClick={handleReact(emoji)}
+          onKeyDown={handleKeyDown(i)}
           tabIndex={(visible || focused) ? 0 : -1}
         />
       ))}

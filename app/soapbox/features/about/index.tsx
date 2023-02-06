@@ -60,7 +60,7 @@ const AboutPage: React.FC = () => {
   );
 
   return (
-    <div className='prose mx-auto py-20 dark:prose-invert'>
+    <div className='prose dark:prose-invert mx-auto py-20'>
       <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
 
       {alsoAvailable}

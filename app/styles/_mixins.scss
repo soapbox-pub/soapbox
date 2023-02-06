@@ -9,17 +9,9 @@
 @mixin standard-panel {
   @include standard-panel-shadow;
   border-radius: 10px;
-  background: var(--foreground-color);
 }
 
 // SHORTCUTS
-@mixin input-placeholder($color) {
-  &::-webkit-input-placeholder { color: $color; }
-  &::-moz-placeholder { color: $color; }
-  &:-ms-input-placeholder { color: $color; }
-  &:-moz-placeholder { color: $color; }
-}
-
 @mixin avatar-radius {
   border-radius: 50%;
   background: transparent no-repeat;

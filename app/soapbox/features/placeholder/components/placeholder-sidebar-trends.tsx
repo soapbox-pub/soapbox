@@ -11,7 +11,7 @@ export default ({ limit }: { limit: number }) => {
   return (
     <>
       {new Array(limit).fill(undefined).map((_, idx) => (
-        <Stack key={idx} className='animate-pulse text-primary-200 dark:text-primary-700'>
+        <Stack key={idx} className='text-primary-200 dark:text-primary-700 animate-pulse'>
           <p>{generateText(trend)}</p>
           <p>{generateText(stat)}</p>
         </Stack>

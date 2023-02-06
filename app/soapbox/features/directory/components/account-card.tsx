@@ -28,7 +28,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const followedBy = me !== account.id && account.relationship?.followed_by;
 
   return (
-    <div className='flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow dark:divide-primary-700 dark:bg-primary-800'>
+    <div className='dark:divide-primary-700 dark:bg-primary-800 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow'>
       <div className='relative'>
         {followedBy && (
           <div className='absolute top-2.5 left-2.5'>

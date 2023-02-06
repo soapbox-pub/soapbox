@@ -12,7 +12,7 @@ const PlaceholderStatusContent: React.FC<IPlaceholderStatusContent> = ({ minLeng
   const length = randomIntFromInterval(maxLength, minLength);
 
   return (
-    <div className='flex flex-col text-primary-50 dark:text-primary-800'>
+    <div className='text-primary-50 dark:text-primary-800 flex flex-col'>
       <p className='break-words'>{generateText(length)}</p>
     </div>
   );

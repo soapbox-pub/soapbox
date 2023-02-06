@@ -131,7 +131,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='h-4 w-4 rounded border-2 border-gray-300 text-primary-600 checked:bg-primary-500 focus:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:checked:bg-primary-500 dark:focus:ring-primary-500'
+                      className='text-primary-600 checked:bg-primary-500 focus:ring-primary-500 dark:checked:bg-primary-500 dark:focus:ring-primary-500 h-4 w-4 rounded border-2 border-gray-300 dark:border-gray-800 dark:bg-gray-900'
                     />
                   </button>
                 );
@@ -139,13 +139,13 @@ const ReasonStep = (_props: IReasonStep) => {
             </div>
 
             <div
-              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              className={classNames('pointer-events-none absolute inset-x-0 top-0 flex justify-center rounded-t-lg bg-gradient-to-b from-white pb-12 pt-8 transition-opacity duration-500 dark:from-gray-900', {
                 'opacity-0': isNearTop,
                 'opacity-100': !isNearTop,
               })}
             />
             <div
-              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              className={classNames('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white pt-12 pb-8 transition-opacity duration-500 dark:from-gray-900', {
                 'opacity-0': isNearBottom,
                 'opacity-100': !isNearBottom,
               })}

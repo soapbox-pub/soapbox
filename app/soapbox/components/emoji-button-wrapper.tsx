@@ -116,9 +116,9 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     }));
   };
 
-  // const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
-  //   setFocused(false);
-  // };
+  const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
+    setVisible(false);
+  };
 
   const selector = (
     <div
@@ -132,8 +132,9 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
       <EmojiSelector
         emojis={soapboxConfig.allowedEmoji}
         onReact={handleReact}
+        visible={visible}
         // focused={focused}
-        // onUnfocus={handleUnfocus}
+        onUnfocus={handleUnfocus}
       />
     </div>
   );

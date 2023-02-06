@@ -87,7 +87,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
                 )}
 
                 {isSubmitting && (
-                  <div className='absolute inset-0 flex items-center justify-center rounded-full bg-white/80 dark:bg-primary-900/80'>
+                  <div className='dark:bg-primary-900/80 absolute inset-0 flex items-center justify-center rounded-full bg-white/80'>
                     <Spinner withText={false} />
                   </div>
                 )}

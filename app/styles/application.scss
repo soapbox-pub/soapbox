@@ -1,5 +1,4 @@
 @import 'mixins';
-@import 'themes';
 @import 'variables';
 @import 'fonts';
 @import 'basics';
@@ -9,7 +8,6 @@
 @import 'rtl';
 @import 'accessibility';
 @import 'navigation';
-@import 'placeholder';
 @import 'autosuggest';
 
 // COMPONENTS
@@ -17,7 +15,6 @@
 @import 'components/dropdown-menu';
 @import 'components/modal';
 @import 'components/compose-form';
-@import 'components/emoji-reacts';
 @import 'components/status';
 @import 'components/reply-mentions';
 @import 'components/detailed-status';

@@ -19,7 +19,7 @@ interface IFooterLink {
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
   return (
     <div>
-      <Link className={classNames('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+      <Link className={classNames('text-gray-700 hover:text-gray-800 hover:underline dark:text-gray-600 dark:hover:text-gray-500', className)} {...rest}>{children}</Link>
     </div>
   );
 };

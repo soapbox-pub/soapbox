@@ -13,7 +13,6 @@
     }
 
     a {
-      color: var(--brand-color--hicontrast);
       font-weight: 500;
       text-decoration: underline;
 
@@ -28,7 +27,6 @@
   &__modifiers {
     @apply text-gray-900 text-sm;
     font-family: inherit;
-    background: var(--background-color);
   }
 }
 
@@ -41,7 +39,6 @@
 
   &.contains-media {
     padding: 5px;
-    border-top: 1px solid var(--foreground-color);
   }
 }
 
@@ -120,7 +117,7 @@
 }
 
 .privacy-dropdown__dropdown {
-  @apply absolute bg-white dark:bg-gray-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;
+  @apply absolute bg-white dark:bg-gray-900 z-[1000] rounded-md shadow-lg ml-10 text-sm overflow-hidden;
 
   &.top {
     transform-origin: 50% 100%;
@@ -152,7 +149,7 @@
 }
 
 .privacy-dropdown__option__icon {
-  @apply flex items-center justify-center mr-2.5;
+  @apply flex items-center justify-center mr-2.5 rtl:mr-0 rtl:ml-2.5;
 }
 
 .privacy-dropdown__option__content {
@@ -170,24 +167,6 @@
 }
 
 .privacy-dropdown.active {
-  .privacy-dropdown__value {
-    background: var(--foreground-color);
-    border-radius: 4px 4px 0 0;
-    box-shadow: 0 -4px 4px rgba($base-shadow-color, 0.1);
-
-    .icon-button {
-      transition: none;
-    }
-
-    &.active {
-      background: var(--brand-color);
-
-      .icon-button {
-        @apply text-gray-900;
-      }
-    }
-  }
-
   &.top .privacy-dropdown__value {
     @apply rounded-t-md;
   }

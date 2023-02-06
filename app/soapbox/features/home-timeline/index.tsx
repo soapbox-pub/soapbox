@@ -115,7 +115,7 @@ const HomeTimeline: React.FC = () => {
                     defaultMessage='Or you can visit {public} to get started and meet other users.'
                     values={{
                       public: (
-                        <Link to='/timeline/local' className='text-primary-600 hover:underline dark:text-primary-400'>
+                        <Link to='/timeline/local' className='text-primary-600 dark:text-primary-400 hover:underline'>
                           <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: instance.title }} />
                         </Link>
                       ),

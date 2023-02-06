@@ -103,63 +103,6 @@ export const SimpleInput: React.FC<ISimpleInput> = (props) => {
   );
 };
 
-interface ISimpleTextarea {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  value?: string,
-  onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
-  rows?: number,
-  name?: string,
-  maxLength?: number,
-  required?: boolean,
-}
-
-export const SimpleTextarea: React.FC<ISimpleTextarea> = (props) => {
-  const { hint, label, ...rest } = props;
-  const Input = label ? LabelTextarea : 'textarea';
-
-  return (
-    <InputContainer {...props}>
-      <Input {...rest} />
-    </InputContainer>
-  );
-};
-
-interface ISimpleForm {
-  className?: string,
-  onSubmit?: React.FormEventHandler,
-  acceptCharset?: string,
-  style?: React.CSSProperties,
-  children: React.ReactNode,
-}
-
-export const SimpleForm: React.FC<ISimpleForm> = (props) => {
-  const {
-    className,
-    children,
-    onSubmit = () => {},
-    acceptCharset = 'UTF-8',
-    ...rest
-  } = props;
-
-  const handleSubmit: React.FormEventHandler = e => {
-    onSubmit(e);
-    e.preventDefault();
-  };
-
-  return (
-    <form
-      className={classNames('simple_form', className)}
-      method='post'
-      onSubmit={handleSubmit}
-      acceptCharset={acceptCharset}
-      {...rest}
-    >
-      {children}
-    </form>
-  );
-};
-
 interface IFieldsGroup {
   children: React.ReactNode,
 }

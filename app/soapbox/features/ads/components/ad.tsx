@@ -85,7 +85,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
                 </Text>
 
                 <Icon
-                  className='h-5 w-5 stroke-accent-500'
+                  className='stroke-accent-500 h-5 w-5'
                   src={require('@tabler/icons/timeline.svg')}
                 />
               </HStack>

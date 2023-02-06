@@ -43,7 +43,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, 
 
   return (
     <button
-      className={classNames('flex shrink-0 items-center gap-1.5 bg-gray-100 dark:bg-primary-900 rounded-sm px-1.5 py-1 transition-colors', {
+      className={classNames('dark:bg-primary-900 flex shrink-0 items-center gap-1.5 rounded-sm bg-gray-100 px-1.5 py-1 transition-colors', {
         'bg-gray-200 dark:bg-primary-800': hovered,
         'bg-primary-200 dark:bg-primary-500': reaction.me,
       })}
@@ -56,7 +56,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, 
       <span className='block h-4 w-4'>
         <Emoji hovered={hovered} emoji={reaction.name} emojiMap={emojiMap} />
       </span>
-      <span className='block min-w-[9px] text-center text-xs font-medium text-primary-600 dark:text-white'>
+      <span className='text-primary-600 block min-w-[9px] text-center text-xs font-medium dark:text-white'>
         <AnimatedNumber value={reaction.count} />
       </span>
     </button>

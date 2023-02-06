@@ -60,7 +60,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
     <div
       ref={containerRef}
       style={{ height }}
-      className='h-screen overflow-hidden bg-white text-gray-900 shadow-lg dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:rounded-t-xl'
+      className='dark:bg-primary-900 h-screen overflow-hidden bg-white text-gray-900 shadow-lg dark:text-gray-100 dark:shadow-none sm:rounded-t-xl'
     >
       {isOnboarded ? (
         <div
@@ -68,7 +68,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           data-testid='chat-page'
         >
           <Stack
-            className={classNames('col-span-9 sm:col-span-3 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset', {
+            className={classNames('dark:inset col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none sm:col-span-3', {
               'hidden sm:block': isSidebarHidden,
             })}
           >
@@ -76,7 +76,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           </Stack>
 
           <Stack
-            className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
+            className={classNames('col-span-9 h-full overflow-hidden sm:col-span-6', {
               'hidden sm:block': !isSidebarHidden,
             })}
           >

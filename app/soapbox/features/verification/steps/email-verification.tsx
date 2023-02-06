@@ -45,7 +45,7 @@ const EmailSent: React.FC<IEmailSent> = ({ handleSubmit }) => {
 
   return (
     <div className='mx-auto flex flex-col items-center justify-center sm:pt-10'>
-      <Icon src={require('@tabler/icons/send.svg')} className='mb-5 h-12 w-12 text-primary-600 dark:text-primary-400' />
+      <Icon src={require('@tabler/icons/send.svg')} className='text-primary-600 dark:text-primary-400 mb-5 h-12 w-12' />
 
       <div className='mb-4 space-y-2 text-center'>
         <Text weight='bold' size='3xl'>We sent you an email</Text>

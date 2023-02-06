@@ -132,7 +132,7 @@ const Registration = () => {
                   defaultMessage='By registering, you agree to the {terms} and {privacy}.'
                   values={{
                     terms: (
-                      <a href={links.get('termsOfService')} target='_blank' className='text-primary-600 hover:underline dark:text-primary-400'>
+                      <a href={links.get('termsOfService')} target='_blank' className='text-primary-600 dark:text-primary-400 hover:underline'>
                         <FormattedMessage
                           id='registration.tos'
                           defaultMessage='Terms of Service'
@@ -140,7 +140,7 @@ const Registration = () => {
                       </a>
                     ),
                     privacy: (
-                      <a href={links.get('privacyPolicy')} target='_blank' className='text-primary-600 hover:underline dark:text-primary-400'>
+                      <a href={links.get('privacyPolicy')} target='_blank' className='text-primary-600 dark:text-primary-400 hover:underline'>
                         <FormattedMessage
                           id='registration.privacy'
                           defaultMessage='Privacy Policy'

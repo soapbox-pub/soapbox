@@ -15,7 +15,7 @@ const FediverseStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <Stack space={2}>
-          <Icon strokeWidth={1} src={require('@tabler/icons/affiliate.svg')} className='mx-auto h-16 w-16 text-primary-600 dark:text-primary-400' />
+          <Icon strokeWidth={1} src={require('@tabler/icons/affiliate.svg')} className='text-primary-600 dark:text-primary-400 mx-auto h-16 w-16' />
 
           <Text size='2xl' weight='bold'>
             <FormattedMessage
@@ -49,7 +49,7 @@ const FediverseStep = ({ onNext }: { onNext: () => void }) => {
               </Stack>
             </div>
 
-            <div className='rounded-lg bg-primary-50 p-4 text-center dark:bg-gray-800'>
+            <div className='bg-primary-50 rounded-lg p-4 text-center dark:bg-gray-800'>
               <Account account={account} />
             </div>
 

@@ -195,7 +195,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
               <Avatar src={account.avatar} className='h-8 w-8' />
             </div>
 
-            <div className='grow rounded-md bg-gray-200 p-4 dark:bg-primary-800'>
+            <div className='dark:bg-primary-800 grow rounded-md bg-gray-200 p-4'>
               <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
             </div>
           </HStack>

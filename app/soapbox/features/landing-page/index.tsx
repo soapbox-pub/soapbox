@@ -107,7 +107,7 @@ const LandingPage = () => {
           <div className='px-4 sm:px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:text-start'>
             <div className='w-full'>
               <Stack space={3}>
-                <h1 className='overflow-hidden text-ellipsis bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end bg-clip-text text-5xl font-extrabold text-transparent sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
+                <h1 className='from-accent-500 via-primary-500 to-gradient-end overflow-hidden text-ellipsis bg-gradient-to-br bg-clip-text text-5xl font-extrabold text-transparent sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
 

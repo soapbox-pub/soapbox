@@ -4,9 +4,8 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { expandUserIndex, fetchUserIndex, setUserIndexQuery } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column } from 'soapbox/components/ui';
+import { Column, Input } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { SimpleForm, TextInput } from 'soapbox/features/forms';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -22,7 +21,7 @@ const UserIndex: React.FC = () => {
   const { isLoading, items, total, query, next } = useAppSelector((state) => state.admin_user_index);
 
   const handleLoadMore = () => {
-    dispatch(expandUserIndex());
+    if (!isLoading) dispatch(expandUserIndex());
   };
 
   const updateQuery = useCallback(debounce(() => {
@@ -31,25 +30,25 @@ const UserIndex: React.FC = () => {
 
   const handleQueryChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     dispatch(setUserIndexQuery(e.target.value));
+    updateQuery();
   };
 
   useEffect(() => {
     updateQuery();
-  }, [query]);
+  }, []);
 
-  const hasMore = items.count() < total && next !== null;
+
+  const hasMore = items.count() < total && !!next;
 
   const showLoading = isLoading && items.isEmpty();
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <SimpleForm style={{ paddingBottom: 0 }}>
-        <TextInput
-          value={query}
-          onChange={handleQueryChange}
-          placeholder={intl.formatMessage(messages.searchPlaceholder)}
-        />
-      </SimpleForm>
+      <Input
+        value={query}
+        onChange={handleQueryChange}
+        placeholder={intl.formatMessage(messages.searchPlaceholder)}
+      />
       <ScrollableList
         scrollKey='user-index'
         hasMore={hasMore}

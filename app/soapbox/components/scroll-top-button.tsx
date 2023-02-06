@@ -36,7 +36,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   const visible = count > 0 && scrolled;
 
-  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
+  const classes = classNames('fixed left-1/2 top-20 z-50 -translate-x-1/2', {
     'hidden': !visible,
   });
 
@@ -83,7 +83,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   return (
     <div className={classes}>
-      <a className='flex cursor-pointer items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-600 px-4 py-2 text-white transition-transform hover:scale-105 hover:bg-primary-700 active:scale-100' onClick={handleClick}>
+      <a className='bg-primary-600 hover:bg-primary-700 flex cursor-pointer items-center space-x-1.5 whitespace-nowrap rounded-full px-4 py-2 text-white transition-transform hover:scale-105 active:scale-100' onClick={handleClick}>
         <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
 
         {(count > 0) && (

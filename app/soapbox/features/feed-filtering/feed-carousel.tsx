@@ -61,7 +61,7 @@ const CarouselItem = React.forwardRef((
       <Stack className='h-auto w-14' space={3}>
         <div className='relative mx-auto block h-12 w-12 rounded-full'>
           {isSelected && (
-            <div className='absolute inset-0 flex items-center justify-center rounded-full bg-primary-600/50'>
+            <div className='bg-primary-600/50 absolute inset-0 flex items-center justify-center rounded-full'>
               <Icon src={require('@tabler/icons/check.svg')} className='h-6 w-6 text-white' />
             </div>
           )}
@@ -159,11 +159,11 @@ const FeedCarousel = () => {
 
   return (
     <div
-      className='overflow-hidden rounded-xl bg-white shadow-lg dark:bg-primary-900 dark:shadow-none'
+      className='dark:bg-primary-900 overflow-hidden rounded-xl bg-white shadow-lg dark:shadow-none'
       data-testid='feed-carousel'
     >
       <HStack alignItems='stretch'>
-        <div className='z-10 flex w-8 items-center justify-center self-stretch rounded-l-xl bg-white dark:bg-primary-900'>
+        <div className='dark:bg-primary-900 z-10 flex w-8 items-center justify-center self-stretch rounded-l-xl bg-white'>
           <button
             data-testid='prev-page'
             onClick={handlePrevPage}
@@ -177,7 +177,7 @@ const FeedCarousel = () => {
         <div className='relative w-full overflow-hidden'>
           {pinnedAvatar ? (
             <div
-              className='absolute inset-y-0 left-0 z-10 flex items-center justify-center bg-white dark:bg-primary-900'
+              className='dark:bg-primary-900 absolute inset-y-0 left-0 z-10 flex items-center justify-center bg-white'
               style={{
                 width: widthPerAvatar || 'auto',
               }}
@@ -248,7 +248,7 @@ const FeedCarousel = () => {
           </HStack>
         </div>
 
-        <div className='z-10 flex w-8 items-center justify-center self-stretch rounded-r-xl bg-white dark:bg-primary-900'>
+        <div className='dark:bg-primary-900 z-10 flex w-8 items-center justify-center self-stretch rounded-r-xl bg-white'>
           <button
             data-testid='next-page'
             onClick={handleNextPage}

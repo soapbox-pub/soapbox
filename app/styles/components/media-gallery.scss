@@ -6,7 +6,6 @@
   position: relative;
   width: 100%;
   height: auto;
-  background-color: var(--brand-color--faint);
 }
 
 .media-gallery__item {
@@ -105,19 +104,8 @@
 .media-gallery__gifv__label,
 .media-gallery__filename__label,
 .media-gallery__file-extension__label {
-  display: block;
-  position: absolute;
-  color: #fff;
-  background: rgba($base-overlay-background, 0.5);
-  bottom: 6px;
-  left: 6px;
-  padding: 2px 6px;
-  border-radius: 2px;
+  @apply pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 py-0.5 px-1.5 font-semibold text-white opacity-90;
   font-size: 11px;
-  font-weight: 600;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.9;
   transition: opacity 0.1s ease;
   line-height: 18px;
 }

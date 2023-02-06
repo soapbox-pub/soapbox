@@ -9,16 +9,11 @@ body.with-modals {
 }
 
 body {
-  &.lighter {
-    background: var(--brand-color--med);
-  }
-
   &.player {
     text-align: center;
   }
 
   &.embed {
-    background: var(--brand-color--faint);
     margin: 0;
     padding-bottom: 0;
 
@@ -31,7 +26,6 @@ body {
   }
 
   &.admin {
-    background: var(--brand-color--med);
     position: fixed;
     width: 100%;
     height: 100%;
@@ -42,7 +36,6 @@ body {
     @apply text-gray-400;
     position: absolute;
     text-align: center;
-    background: var(--brand-color--med);
     width: 100%;
     height: 100%;
     padding: 0;
@@ -65,7 +58,7 @@ body {
 
 // Note: this is needed for React HotKeys performance. Removing this
 // will cause severe performance degradation on Safari.
-div[tabindex="-1"]:focus {
+div[tabindex='-1']:focus {
   outline: 0;
 }
 
@@ -89,7 +82,6 @@ noscript {
     max-width: 400px;
 
     a {
-      color: var(--highlight-text-color);
       text-decoration: underline;
 
       &:hover {
@@ -105,6 +97,6 @@ noscript {
 
 // Virtuoso empty placeholder fix.
 // https://gitlab.com/petyosi/soapbox-fe/-/commit/1e22c39934b60e5e186de804060ecfdf1955b506
-div[data-viewport-type="window"] {
+div[data-viewport-type='window'] {
   position: static !important;
 }

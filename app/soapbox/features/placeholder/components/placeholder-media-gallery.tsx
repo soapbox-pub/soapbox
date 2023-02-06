@@ -78,7 +78,7 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
     const float = dimensions.float as any || 'left';
     const position = dimensions.pos as any || 'relative';
 
-    return <div key={i} className='media-gallery__item' style={{ position, float, left, top, right, bottom, height, width }} />;
+    return <div key={i} className='media-gallery__item bg-primary-200 animate-pulse' style={{ position, float, left, top, right, bottom, height, width }} />;
   };
 
   const sizeData = getSizeData(media.size);

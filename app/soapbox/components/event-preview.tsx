@@ -51,11 +51,11 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
   ));
 
   return (
-    <div className={classNames('w-full rounded-lg bg-gray-100 dark:bg-primary-800 relative overflow-hidden', className)}>
+    <div className={classNames('dark:bg-primary-800 relative w-full overflow-hidden rounded-lg bg-gray-100', className)}>
       <div className='absolute top-28 right-3'>
         {floatingAction && action}
       </div>
-      <div className='h-40 bg-primary-200 dark:bg-gray-600'>
+      <div className='bg-primary-200 h-40 dark:bg-gray-600'>
         {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.eventBanner)} />}
       </div>
       <Stack className='p-2.5' space={2}>

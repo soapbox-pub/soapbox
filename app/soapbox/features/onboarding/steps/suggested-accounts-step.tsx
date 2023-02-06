@@ -49,7 +49,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
   const renderEmpty = () => {
     return (
-      <div className='my-2 rounded-lg bg-primary-50 p-8 text-center dark:bg-gray-800'>
+      <div className='bg-primary-50 my-2 rounded-lg p-8 text-center dark:bg-gray-800'>
         <Text>
           <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />
         </Text>

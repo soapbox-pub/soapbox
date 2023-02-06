@@ -57,10 +57,10 @@ const Slider: React.FC<ISlider> = ({ value, onChange }) => {
       onMouseDown={handleMouseDown}
       ref={node}
     >
-      <div className='absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full bg-primary-200 dark:bg-primary-700' />
-      <div className='absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-accent-500' style={{ width: `${value * 100}%` }} />
+      <div className='bg-primary-200 dark:bg-primary-700 absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full' />
+      <div className='bg-accent-500 absolute top-1/2 h-1 -translate-y-1/2 rounded-full' style={{ width: `${value * 100}%` }} />
       <span
-        className='absolute top-1/2 z-10 -ml-1.5 h-3 w-3 -translate-y-1/2 rounded-full bg-accent-500 shadow'
+        className='bg-accent-500 absolute top-1/2 z-10 -ml-1.5 h-3 w-3 -translate-y-1/2 rounded-full shadow'
         tabIndex={0}
         style={{ left: `${value * 100}%` }}
       />

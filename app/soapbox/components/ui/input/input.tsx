@@ -113,7 +113,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 type='button'
                 onClick={togglePassword}
                 tabIndex={-1}
-                className='h-full px-2 text-gray-700 hover:text-gray-500 focus:ring-2 focus:ring-primary-500 dark:text-gray-600 dark:hover:text-gray-400'
+                className='focus:ring-primary-500 h-full px-2 text-gray-700 hover:text-gray-500 focus:ring-2 dark:text-gray-600 dark:hover:text-gray-400'
               >
                 <SvgIcon
                   src={revealed ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}
