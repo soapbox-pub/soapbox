@@ -8,54 +8,6 @@ body.with-modals {
   @apply overflow-hidden;
 }
 
-body {
-  &.player {
-    text-align: center;
-  }
-
-  &.embed {
-    margin: 0;
-    padding-bottom: 0;
-
-    .container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-  }
-
-  &.admin {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-  }
-
-  &.error {
-    @apply text-gray-400;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .dialog {
-      vertical-align: middle;
-      margin: 20px;
-
-      h1 {
-        font-size: 20px;
-        line-height: 28px;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
 // Note: this is needed for React HotKeys performance. Removing this
 // will cause severe performance degradation on Safari.
 div[tabindex='-1']:focus {
@@ -68,27 +20,6 @@ div[tabindex='-1']:focus {
 
 noscript {
   text-align: center;
-
-  img {
-    width: 200px;
-    opacity: 0.5;
-    animation: flicker 4s infinite;
-  }
-
-  div {
-    @apply text-gray-400;
-    font-size: 14px;
-    margin: 30px auto;
-    max-width: 400px;
-
-    a {
-      text-decoration: underline;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
 }
 
 .emojione {

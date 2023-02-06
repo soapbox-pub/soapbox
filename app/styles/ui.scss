@@ -125,12 +125,6 @@
   font-family: inherit;
   padding: 7px 0;
 
-  &:focus,
-  &:active {
-    @apply text-gray-900;
-    border-bottom-color: var(--highlight-text-color);
-  }
-
   @media screen and (max-width: 600px) {
     font-size: 16px;
   }

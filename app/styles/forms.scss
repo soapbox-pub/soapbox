@@ -22,26 +22,8 @@ select {
   margin-left: -1px;
 }
 
-.captcha {
-  background-color: #fff;
-  border-radius: 4px;
-
-  img {
-    display: table;
-    margin: 0 auto;
-  }
-
-  input[type='text'] {
-    border-radius: 0 0 4px 4px;
-  }
-}
-
 .input.with_label.toggle .label_input {
   display: flex;
   font-size: 14px;
   align-items: center;
-
-  .theme-toggle {
-    margin-left: 10px;
-  }
 }
