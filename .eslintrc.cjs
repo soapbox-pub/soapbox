@@ -265,11 +265,7 @@ module.exports = {
 
     'react-hooks/rules-of-hooks': 'error',
 
-    'tailwindcss/classnames-order': ['error', {
-      callees: ['classNames'],
-    }],
     'tailwindcss/migration-from-tailwind-2': 'error',
-    'tailwindcss/no-custom-classname': 'off',
   },
   overrides: [
     {
