@@ -35,7 +35,7 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
     `}
     >
       {(!!attachments?.length || isUploading) && (
-        <div className='p-3 pb-0'>
+        <div className='flex p-3 pb-0'>
           {isUploading && (
             <ChatPendingUpload progress={uploadProgress} />
           )}
