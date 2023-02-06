@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import Account from 'soapbox/components/account';
 import { MenuDivider } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useClickOutside, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import ThemeToggle from './theme-toggle';
@@ -102,29 +102,13 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   const toggleVisible = () => setVisible(!visible);
 
-  const handleWindowClick = (e: MouseEvent) => {
-    if (e.target) {
-      const clickWithin = [
-        refs.floating.current?.contains(e.target as Node),
-        (refs.reference.current as HTMLButtonElement | undefined)?.contains(e.target as Node),
-      ].some(Boolean);
-
-      if (!clickWithin) {
-        setVisible(false);
-      }
-    }
-  };
-
   useEffect(() => {
     fetchOwnAccountThrottled();
   }, [account, authUsers]);
 
-  useEffect(() => {
-    window.addEventListener('click', handleWindowClick);
-    return () => {
-      window.removeEventListener('click', handleWindowClick);
-    };
-  }, []);
+  useClickOutside(refs, () => {
+    setVisible(false);
+  });
 
   return (
     <>
