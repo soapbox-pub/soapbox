@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import ZoomableImage from './zoomable-image';
@@ -135,7 +135,7 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 
-    const className = classNames('image-loader', {
+    const className = clsx('image-loader', {
       'image-loader--loading': loading,
       'image-loader--amorphous': !this.hasSize(),
     });

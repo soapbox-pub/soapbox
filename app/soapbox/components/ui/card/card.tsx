@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -32,7 +32,7 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
   <div
     ref={ref}
     {...filteredProps}
-    className={classNames({
+    className={clsx({
       'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
     }, className)}
@@ -72,7 +72,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
   };
 
   return (
-    <HStack alignItems='center' space={2} className={classNames('mb-4', className)}>
+    <HStack alignItems='center' space={2} className={clsx('mb-4', className)}>
       {renderBackButton()}
 
       {children}

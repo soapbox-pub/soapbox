@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
@@ -37,13 +37,13 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           {...compProps}
           space={2.5}
           data-index={i}
-          className={classNames('w-full', { active, destructive })}
+          className={clsx('w-full', { active, destructive })}
           data-method={isLogout ? 'delete' : null}
           element={Comp}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
           <div>
-            <div className={classNames({ 'actions-modal__item-label': !!meta })}>{text}</div>
+            <div className={clsx({ 'actions-modal__item-label': !!meta })}>{text}</div>
             <div>{meta}</div>
           </div>
         </HStack>
@@ -68,7 +68,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
             </Stack>
           )}
 
-          <ul className={classNames({ 'with-status': !!status })}>
+          <ul className={clsx({ 'with-status': !!status })}>
             {actions && actions.map(renderAction)}
 
             <li className='dropdown-menu__separator' />

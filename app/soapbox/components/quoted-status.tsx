@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -94,7 +94,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   return (
     <OutlineBox
       data-testid='quoted-status'
-      className={classNames('cursor-pointer', {
+      className={clsx('cursor-pointer', {
         'hover:bg-gray-100 dark:hover:bg-gray-800': !compose,
       })}
     >

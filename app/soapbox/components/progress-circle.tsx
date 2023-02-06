@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 interface IProgressCircle {
@@ -30,7 +30,7 @@ const ProgressCircle: React.FC<IProgressCircle> = ({ progress, radius = 12, stro
           strokeWidth={stroke}
         />
         <circle
-          className={classNames('stroke-primary-500', {
+          className={clsx('stroke-primary-500', {
             'stroke-secondary-500': progress > 1,
           })}
           style={{

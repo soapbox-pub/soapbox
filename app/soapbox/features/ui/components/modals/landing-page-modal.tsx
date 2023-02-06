@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -48,7 +48,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
         )}
 
         <div
-          className={classNames('pt-6 grid gap-4', {
+          className={clsx('grid gap-4 pt-6', {
             'grid-cols-2': isOpen,
             'grid-cols-1': !isOpen,
           })}

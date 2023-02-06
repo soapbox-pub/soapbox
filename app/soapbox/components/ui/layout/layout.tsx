@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import StickyBox from 'react-sticky-box';
 
@@ -40,7 +40,7 @@ const Sidebar: React.FC<ISidebar> = ({ children }) => (
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
-    className={classNames({
+    className={clsx({
       'md:col-span-12 lg:col-span-9 xl:col-span-6 pb-36': true,
     }, className)}
   >

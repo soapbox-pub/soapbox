@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -74,7 +74,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
 
   const renderButton = () => (
     <button
-      className={classNames('space-x-2 rtl:space-x-reverse', themeClass, className)}
+      className={clsx('space-x-2 rtl:space-x-reverse', themeClass, className)}
       disabled={disabled}
       onClick={handleClick}
       ref={ref}
@@ -100,4 +100,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
   return renderButton();
 });
 
-export default Button;
+export {
+  Button as default,
+  Button,
+};

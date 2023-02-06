@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -157,7 +157,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   }, [chat.id, inputRef?.current]);
 
   return (
-    <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
+    <Stack className={clsx('flex grow overflow-hidden', className)} onMouseOver={handleMouseOver}>
       <div className='flex h-full grow justify-center overflow-hidden'>
         <ChatMessageList chat={chat} />
       </div>

@@ -3,7 +3,7 @@
  * @module soapbox/components/icon
  */
 
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
@@ -17,7 +17,7 @@ export interface IIcon extends React.HTMLAttributes<HTMLDivElement> {
 const Icon: React.FC<IIcon> = ({ src, alt, className, ...rest }) => {
   return (
     <div
-      className={classNames('svg-icon', className)}
+      className={clsx('svg-icon', className)}
       {...rest}
     >
       <InlineSVG src={src} title={alt} loader={<></>} />
