@@ -158,7 +158,7 @@ interface MenuItemProps {
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ className, menuItem }) => {
-  const baseClassName = clsx(className, 'block cursor-pointer truncate px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500');
+  const baseClassName = clsx(className, 'block w-full cursor-pointer truncate px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 rtl:text-right dark:text-gray-500 dark:hover:bg-gray-800');
 
   if (menuItem.toggle) {
     return (
@@ -184,7 +184,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ className, menuItem }) => {
     return (
       <Link
         to={menuItem.to}
-        className={clsx(baseClassName, 'hover:bg-gray-100 dark:hover:bg-gray-800')}
+        className={baseClassName}
       >
         {menuItem.text}
       </Link>
