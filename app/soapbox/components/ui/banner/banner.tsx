@@ -12,7 +12,7 @@ const Banner: React.FC<IBanner> = ({ theme, children, className }) => {
   return (
     <div
       data-testid='banner'
-      className={clsx('fixed bottom-0 inset-x-0 z-50 py-8', {
+      className={clsx('fixed inset-x-0 bottom-0 z-50 py-8', {
         'backdrop-blur bg-primary-800/80 dark:bg-primary-900/80': theme === 'frosted',
         'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-3xl dark:shadow-inset': theme === 'opaque',
       }, className)}

@@ -82,7 +82,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
         'flex items-center rounded-full p-1 rtl:space-x-reverse',
         'text-gray-600 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',
-        'focus:ring-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:ring-offset-0',
+        'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-offset-0',
         {
           'text-black dark:text-white': active && emoji,
           'hover:text-gray-600 dark:hover:text-white': !filteredProps.disabled,

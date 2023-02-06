@@ -50,7 +50,7 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
           style={{ top }}
         />
         <div
-          className={clsx('bg-primary-500 absolute h-[3px] transition-all duration-200', {
+          className={clsx('absolute h-[3px] bg-primary-500 transition-all duration-200', {
             'hidden': top <= 0,
           })}
           style={{ left, top, width }}

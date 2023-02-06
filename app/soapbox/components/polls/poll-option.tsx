@@ -46,7 +46,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
   return (
     <label
       className={
-        clsx('dark:bg-primary-900 hover:bg-primary-50 dark:hover:bg-primary-800/50 relative flex cursor-pointer rounded-3xl border border-solid bg-white p-2', {
+        clsx('relative flex cursor-pointer rounded-3xl border border-solid bg-white p-2 hover:bg-primary-50 dark:bg-primary-900 dark:hover:bg-primary-800/50', {
           'border-primary-600 ring-1 ring-primary-600 bg-primary-50 dark:bg-primary-800/50 dark:border-primary-300 dark:ring-primary-300': active,
           'border-primary-300 dark:border-primary-500': !active,
         })

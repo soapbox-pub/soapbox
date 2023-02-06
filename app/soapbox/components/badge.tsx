@@ -18,7 +18,7 @@ const Badge: React.FC<IBadge> = ({ title, slug }) => {
         'bg-black text-white': slug === 'admin',
         'bg-cyan-600 text-white': slug === 'moderator',
         'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100': fallback,
-        'bg-white bg/-opacity-75 text-gray-900': slug === 'opaque',
+        'bg-white/75 text-gray-900': slug === 'opaque',
       })}
     >
       {title}
