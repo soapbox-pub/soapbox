@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -52,7 +52,7 @@ const AnnouncementsPanel = () => {
                 key={i}
                 tabIndex={0}
                 onClick={() => setIndex(i)}
-                className={classNames({
+                className={clsx({
                   'w-2 h-2 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
                   'bg-gray-200 hover:bg-gray-300': i !== index,
                   'bg-primary-600': i === index,

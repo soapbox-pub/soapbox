@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import Account from 'soapbox/components/account';
@@ -57,10 +57,10 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
   const account = status.account as AccountEntity;
 
   return (
-    <div className={classNames('opacity-50', className)}>
-      <div className={classNames('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
+    <div className={clsx('opacity-50', className)}>
+      <div className={clsx('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
         <Card
-          className={classNames('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
+          className={clsx('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
           variant={thread ? 'default' : 'rounded'}
         >
           <div className='mb-4'>

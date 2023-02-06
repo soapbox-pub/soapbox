@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -136,7 +136,7 @@ const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
   const title = intl.formatMessage(messages.emoji);
 
   return (
-    <div className={classNames('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={node}>
+    <div className={clsx('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={node}>
       <EmojiPicker
         perLine={8}
         emojiSize={22}

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
@@ -77,7 +77,7 @@ const Navbar = () => {
           <HStack
             space={4}
             alignItems='center'
-            className={classNames('flex-1 enter lg:items-stretch', {
+            className={clsx('enter flex-1 lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}

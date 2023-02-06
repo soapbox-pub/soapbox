@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -437,7 +437,7 @@ const Audio: React.FC<IAudio> = (props) => {
 
   return (
     <div
-      className={classNames('audio-player', { editable })}
+      className={clsx('audio-player', { editable })}
       ref={player}
       style={{
         backgroundColor: _getBackgroundColor(),
@@ -503,7 +503,7 @@ const Audio: React.FC<IAudio> = (props) => {
         />
 
         <span
-          className={classNames('video-player__seek__handle', { active: dragging })}
+          className={clsx('video-player__seek__handle', { active: dragging })}
           tabIndex={0}
           style={{ left: `${progress}%`, backgroundColor: _getAccentColor() }}
           onKeyDown={handleAudioKeyDown}
@@ -535,7 +535,7 @@ const Audio: React.FC<IAudio> = (props) => {
             </button>
 
             <div
-              className={classNames('video-player__volume', { active: hovered })}
+              className={clsx('video-player__volume', { active: hovered })}
               ref={slider}
               onMouseDown={handleVolumeMouseDown}
             >

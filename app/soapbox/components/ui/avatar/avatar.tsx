@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import StillImage from 'soapbox/components/still-image';
@@ -25,7 +25,7 @@ const Avatar = (props: IAvatar) => {
 
   return (
     <StillImage
-      className={classNames('rounded-full', className)}
+      className={clsx('rounded-full', className)}
       style={style}
       src={src}
       alt='Avatar'

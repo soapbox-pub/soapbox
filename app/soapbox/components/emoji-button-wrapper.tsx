@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useEffect, useRef } from 'react';
 import { usePopper } from 'react-popper';
 
@@ -122,7 +122,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
 
   const selector = (
     <div
-      className={classNames('z-50 transition-opacity duration-100', {
+      className={clsx('z-50 transition-opacity duration-100', {
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
