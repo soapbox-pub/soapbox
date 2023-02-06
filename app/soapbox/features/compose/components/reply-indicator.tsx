@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
@@ -35,7 +35,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
   }
 
   return (
-    <Stack space={2} className={classNames('rounded-lg bg-gray-100 p-4 dark:bg-gray-800', className)}>
+    <Stack space={2} className={clsx('rounded-lg bg-gray-100 p-4 dark:bg-gray-800', className)}>
       <AccountContainer
         {...actions}
         id={status.getIn(['account', 'id']) as string}

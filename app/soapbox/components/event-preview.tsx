@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -51,7 +51,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
   ));
 
   return (
-    <div className={classNames('dark:bg-primary-800 relative w-full overflow-hidden rounded-lg bg-gray-100', className)}>
+    <div className={clsx('dark:bg-primary-800 relative w-full overflow-hidden rounded-lg bg-gray-100', className)}>
       <div className='absolute top-28 right-3'>
         {floatingAction && action}
       </div>

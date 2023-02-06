@@ -1,6 +1,6 @@
 'use strict';
 
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -68,7 +68,7 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
             placeholderText={intl.formatMessage(messages.schedule)}
             filterDate={isCurrentOrFutureDate}
             filterTime={isFiveMinutesFromNow}
-            className={classNames({
+            className={clsx({
               'has-error': !isFiveMinutesFromNow(scheduledAt),
             })}
           />)}

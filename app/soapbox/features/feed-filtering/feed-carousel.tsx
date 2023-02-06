@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -68,7 +68,7 @@ const CarouselItem = React.forwardRef((
 
           <img
             src={avatar.account_avatar}
-            className={classNames({
+            className={clsx({
               'w-12 h-12 min-w-[48px] rounded-full ring-2 ring-offset-4 dark:ring-offset-primary-900': true,
               'ring-transparent': !isSelected && seen,
               'ring-primary-600': isSelected,

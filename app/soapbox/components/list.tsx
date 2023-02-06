@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,7 +45,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
 
         return React.cloneElement(child, {
           id: domId,
-          className: classNames({
+          className: clsx({
             'w-auto': isSelect,
           }, child.props.className),
         });
@@ -57,7 +57,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
 
   return (
     <Comp
-      className={classNames({
+      className={clsx({
         'flex items-center justify-between px-3 py-2 first:rounded-t-lg last:rounded-b-lg bg-gradient-to-r from-gradient-start/10 to-gradient-end/10': true,
         'cursor-pointer hover:from-gradient-start/20 hover:to-gradient-end/20 dark:hover:from-gradient-start/5 dark:hover:to-gradient-end/5': typeof onClick !== 'undefined' || typeof onSelect !== 'undefined',
       })}

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -34,7 +34,7 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
     >
       {src && <img className='h-full w-full object-cover' src={src} alt='' />}
       <HStack
-        className={classNames('absolute top-0 h-full w-full transition-opacity', {
+        className={clsx('absolute top-0 h-full w-full transition-opacity', {
           'opacity-0 hover:opacity-90 bg-primary-100 dark:bg-gray-800': src,
         })}
         space={3}
@@ -71,7 +71,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
         alignItems='center'
         justifyContent='center'
 
-        className={classNames('absolute left-0 top-0 h-full w-full rounded-full transition-opacity', {
+        className={clsx('absolute left-0 top-0 h-full w-full rounded-full transition-opacity', {
           'opacity-0 hover:opacity-90 bg-primary-500': src,
         })}
       >

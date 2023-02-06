@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useState, useRef, useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
@@ -122,7 +122,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
         // react-overlays
         <div className={`privacy-dropdown__dropdown ${placement}`} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
           {items.map(item => (
-            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
               <div className='privacy-dropdown__option__icon'>
                 <Icon src={item.icon} />
               </div>
@@ -239,10 +239,10 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const valueOption = options.find(item => item.value === value);
 
   return (
-    <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
-      <div className={classNames('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
+    <div className={clsx('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
+      <div className={clsx('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
         <IconButton
-          className={classNames({
+          className={clsx({
             'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !open,
             'text-primary-500 hover:text-primary-600 dark:text-primary-500 dark:hover:text-primary-400': open,
           })}

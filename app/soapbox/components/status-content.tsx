@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -153,7 +153,7 @@ const StatusContent: React.FC<IStatusContent> = ({
 
   const content = { __html: parsedHtml };
   const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';
-  const className = classNames(baseClassName, {
+  const className = clsx(baseClassName, {
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
@@ -183,14 +183,14 @@ const StatusContent: React.FC<IStatusContent> = ({
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);
     }
 
-    return <div className={classNames({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
+    return <div className={clsx({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
       <Markup
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames(baseClassName, {
+        className={clsx(baseClassName, {
           'leading-normal big-emoji': onlyEmoji,
         })}
         direction={direction}

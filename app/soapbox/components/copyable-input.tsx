@@ -29,7 +29,7 @@ const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
         type='text'
         value={value}
         className='rounded-r-none rtl:rounded-l-none rtl:rounded-r-lg'
-        outerClassName='flex-grow'
+        outerClassName='grow'
         onClick={selectInput}
         readOnly
       />

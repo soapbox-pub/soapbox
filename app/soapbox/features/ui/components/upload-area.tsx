@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
@@ -43,8 +43,8 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
     >
       {({ backgroundOpacity, backgroundScale }) => (
         <div
-          className={classNames({
-            'flex items-center justify-center bg-gray-700 bg-opacity-90 h-full w-full absolute left-0 top-0 z-1000 pointer-events-none': true,
+          className={clsx({
+            'flex items-center justify-center bg-gray-700/90 h-full w-full absolute left-0 top-0 z-1000 pointer-events-none': true,
             'visible': active,
             'invisible': !active,
           })}
@@ -56,7 +56,7 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
             <Stack space={3} justifyContent='center' alignItems='center'>
               <Icon
                 src={require('@tabler/icons/cloud-upload.svg')}
-                className='h-12 w-12 text-white text-opacity-90'
+                className='h-12 w-12 text-white/90'
               />
 
               <Text size='xl' theme='white'>

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
@@ -60,7 +60,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                     {version.poll.options.map((option: any) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
                         <span
-                          className={classNames('border-primary-600 mr-2.5 inline-block h-4 w-4 flex-none rounded-full border border-solid', {
+                          className={clsx('border-primary-600 mr-2.5 inline-block h-4 w-4 flex-none rounded-full border border-solid', {
                             'rounded': poll.multiple,
                           })}
                           tabIndex={0}

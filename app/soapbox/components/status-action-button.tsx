@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { Text, Icon, Emoji } from 'soapbox/components/ui';
@@ -49,7 +49,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
       return (
         <Icon
           src={icon}
-          className={classNames(
+          className={clsx(
             {
               'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
             },
@@ -78,7 +78,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
     <button
       ref={ref}
       type='button'
-      className={classNames(
+      className={clsx(
         'flex items-center rounded-full p-1 rtl:space-x-reverse',
         'text-gray-600 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',

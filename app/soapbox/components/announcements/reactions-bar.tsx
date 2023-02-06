@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { TransitionMotion, spring } from 'react-motion';
 
@@ -42,7 +42,7 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addR
   return (
     <TransitionMotion styles={styles} willEnter={willEnter} willLeave={willLeave}>
       {items => (
-        <div className={classNames('flex flex-wrap items-center gap-1', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
+        <div className={clsx('flex flex-wrap items-center gap-1', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
           {items.map(({ key, data, style }) => (
             <Reaction
               key={key}

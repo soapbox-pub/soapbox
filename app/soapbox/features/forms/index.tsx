@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -15,7 +15,7 @@ interface IInputContainer {
 }
 
 export const InputContainer: React.FC<IInputContainer> = (props) => {
-  const containerClass = classNames('input', {
+  const containerClass = clsx('input', {
     'with_label': props.label,
     'required': props.required,
     'boolean': props.type === 'checkbox',

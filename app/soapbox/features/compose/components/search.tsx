@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -154,12 +154,12 @@ const Search = (props: ISearch) => {
         >
           <SvgIcon
             src={require('@tabler/icons/search.svg')}
-            className={classNames('h-4 w-4 text-gray-600', { hidden: hasValue })}
+            className={clsx('h-4 w-4 text-gray-600', { hidden: hasValue })}
           />
 
           <SvgIcon
             src={require('@tabler/icons/x.svg')}
-            className={classNames('h-4 w-4 text-gray-600', { hidden: !hasValue })}
+            className={clsx('h-4 w-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />
         </div>

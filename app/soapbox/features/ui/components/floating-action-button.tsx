@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -25,7 +25,7 @@ const FloatingActionButton: React.FC<IFloatingActionButton> = () => {
   return (
     <button
       onClick={handleOpenComposeModal}
-      className={classNames(
+      className={clsx(
         'inline-flex appearance-none items-center rounded-full border p-4 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2',
         'bg-secondary-500 hover:bg-secondary-400 focus:bg-secondary-500 focus:ring-secondary-300 border-transparent text-gray-100',
       )}

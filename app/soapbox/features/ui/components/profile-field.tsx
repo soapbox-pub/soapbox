@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
@@ -53,7 +53,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
       </dt>
 
       <dd
-        className={classNames({ 'text-success-500': field.verified_at })}
+        className={clsx({ 'text-success-500': field.verified_at })}
         title={field.value_plain}
       >
         <HStack space={2} alignItems='center'>

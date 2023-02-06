@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import toast, { Toast as RHToast } from 'react-hot-toast';
 import { FormattedMessage } from 'react-intl';
@@ -102,7 +102,7 @@ const Toast = (props: IToast) => {
     <div
       data-testid='toast'
       className={
-        classNames({
+        clsx({
           'p-4 pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white dark:bg-gray-900 shadow-lg dark:ring-2 dark:ring-gray-800': true,
           'animate-enter': t.visible,
           'animate-leave': !t.visible,

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -59,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     return (
       <div
         className={
-          classNames('relative', {
+          clsx('relative', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
             'mt-1': !String(outerClassName).includes('mt-'),
@@ -83,7 +83,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           {...filteredProps}
           type={revealed ? 'text' : type}
           ref={ref}
-          className={classNames('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
+          className={clsx('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
             'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',

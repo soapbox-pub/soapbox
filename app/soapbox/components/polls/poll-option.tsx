@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Motion, presets, spring } from 'react-motion';
@@ -46,7 +46,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
   return (
     <label
       className={
-        classNames('dark:bg-primary-900 hover:bg-primary-50 dark:hover:bg-primary-800/50 relative flex cursor-pointer rounded-3xl border border-solid bg-white p-2', {
+        clsx('dark:bg-primary-900 hover:bg-primary-50 dark:hover:bg-primary-800/50 relative flex cursor-pointer rounded-3xl border border-solid bg-white p-2', {
           'border-primary-600 ring-1 ring-primary-600 bg-primary-50 dark:bg-primary-800/50 dark:border-primary-300 dark:ring-primary-300': active,
           'border-primary-300 dark:border-primary-500': !active,
         })
@@ -74,7 +74,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 
         <div className='col-start-1 row-start-1 flex items-center justify-self-end'>
           <span
-            className={classNames('flex h-6 w-6 flex-none items-center justify-center rounded-full border border-solid', {
+            className={clsx('flex h-6 w-6 flex-none items-center justify-center rounded-full border border-solid', {
               'bg-primary-600 border-primary-600 dark:bg-primary-300 dark:border-primary-300': active,
               'border-primary-300 bg-white dark:bg-primary-900 dark:border-primary-500': !active,
             })}

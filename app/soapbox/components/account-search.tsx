@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -77,12 +77,12 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
         >
           <SvgIcon
             src={require('@tabler/icons/search.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+            className={clsx('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
           />
 
           <SvgIcon
             src={require('@tabler/icons/x.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+            className={clsx('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />
         </div>

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
@@ -138,7 +138,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     <div
       aria-expanded={sidebarOpen}
       className={
-        classNames({
+        clsx({
           'z-[1000]': sidebarOpen,
           hidden: !sidebarOpen,
         })
@@ -153,7 +153,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
       <div className='fixed inset-0 z-[1000] flex'>
         <div
           className={
-            classNames({
+            clsx({
               'flex flex-col flex-1 bg-white dark:bg-primary-900 -translate-x-full rtl:translate-x-full w-full max-w-xs': true,
               '!translate-x-0': sidebarOpen,
             })
@@ -334,7 +334,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                         <Icon
                           src={require('@tabler/icons/chevron-down.svg')}
-                          className={classNames('h-4 w-4 text-gray-900 transition-transform dark:text-gray-100', {
+                          className={clsx('h-4 w-4 text-gray-900 transition-transform dark:text-gray-100', {
                             'rotate-180': switcher,
                           })}
                         />

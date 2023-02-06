@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
@@ -68,7 +68,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           data-testid='chat-page'
         >
           <Stack
-            className={classNames('dark:inset col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none sm:col-span-3', {
+            className={clsx('dark:inset col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none sm:col-span-3', {
               'hidden sm:block': isSidebarHidden,
             })}
           >
@@ -76,7 +76,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           </Stack>
 
           <Stack
-            className={classNames('col-span-9 h-full overflow-hidden sm:col-span-6', {
+            className={clsx('col-span-9 h-full overflow-hidden sm:col-span-6', {
               'hidden sm:block': !isSidebarHidden,
             })}
           >

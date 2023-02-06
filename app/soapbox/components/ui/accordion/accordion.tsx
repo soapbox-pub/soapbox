@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -62,7 +62,7 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
 
       <div
         className={
-          classNames({
+          clsx({
             'p-4 rounded-b-lg border-t border-solid border-gray-100 dark:border-primary-900': true,
             'h-0 hidden': !expanded,
           })

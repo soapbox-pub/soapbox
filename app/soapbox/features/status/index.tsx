@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -461,7 +461,7 @@ const Thread: React.FC<IThread> = (props) => {
   const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
   const focusedStatus = (
-    <div className={classNames({ 'pb-4': hasDescendants })} key={status.id}>
+    <div className={clsx({ 'pb-4': hasDescendants })} key={status.id}>
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}

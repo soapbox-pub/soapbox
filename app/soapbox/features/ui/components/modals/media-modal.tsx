@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -247,7 +247,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     alignItems: 'center', // center vertically
   };
 
-  const navigationClassName = classNames('media-modal__navigation', {
+  const navigationClassName = clsx('media-modal__navigation', {
     'media-modal__navigation--hidden': navigationHidden,
   });
 
@@ -280,7 +280,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         {rightNav}
 
         {(status && !isMultiMedia[getIndex()]) && (
-          <div className={classNames('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
+          <div className={clsx('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
             <a href={status.url} onClick={handleStatusClick}>
               <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
             </a>
