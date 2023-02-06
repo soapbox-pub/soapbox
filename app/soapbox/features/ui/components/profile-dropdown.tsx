@@ -42,7 +42,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const intl = useIntl();
 
   const [visible, setVisible] = useState(false);
-  const { x, y, strategy, refs } = useFloating({ placement: 'bottom-end' });
+  const { x, y, strategy, refs } = useFloating<HTMLButtonElement>({ placement: 'bottom-end' });
   const authUsers = useAppSelector((state) => state.auth.users);
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.id)!));
 
@@ -102,9 +102,29 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   const toggleVisible = () => setVisible(!visible);
 
+  const handleWindowClick = (e: MouseEvent) => {
+    if (e.target) {
+      const clickWithin = [
+        refs.floating.current?.contains(e.target as Node),
+        (refs.reference.current as HTMLButtonElement | undefined)?.contains(e.target as Node),
+      ].some(Boolean);
+
+      if (!clickWithin) {
+        setVisible(false);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchOwnAccountThrottled();
   }, [account, authUsers]);
+
+  useEffect(() => {
+    window.addEventListener('click', handleWindowClick);
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, []);
 
   return (
     <>
