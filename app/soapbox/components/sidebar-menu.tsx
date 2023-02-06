@@ -334,7 +334,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                         <Icon
                           src={require('@tabler/icons/chevron-down.svg')}
-                          className={clsx('w-4 h-4 text-gray-900 dark:text-gray-100 transition-transform', {
+                          className={clsx('h-4 w-4 text-gray-900 transition-transform dark:text-gray-100', {
                             'rotate-180': switcher,
                           })}
                         />

@@ -36,7 +36,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   const visible = count > 0 && scrolled;
 
-  const classes = clsx('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
+  const classes = clsx('fixed left-1/2 top-20 z-50 -translate-x-1/2', {
     'hidden': !visible,
   });
 

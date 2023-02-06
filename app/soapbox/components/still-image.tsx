@@ -39,7 +39,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
   };
 
   /** ClassNames shared between the `<img>` and `<canvas>` elements. */
-  const baseClassName = clsx('w-full h-full block', {
+  const baseClassName = clsx('block h-full w-full', {
     'object-contain': letterboxed,
     'object-cover': !letterboxed,
   });
@@ -47,7 +47,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
   return (
     <div
       data-testid='still-image-container'
-      className={clsx(className, 'relative group overflow-hidden isolate')}
+      className={clsx(className, 'group relative isolate overflow-hidden')}
       style={style}
     >
       <img

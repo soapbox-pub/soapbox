@@ -59,7 +59,7 @@ const Stack = React.forwardRef<HTMLDivElement, IStack>((props, ref: React.Legacy
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
-        'flex-grow': grow,
+        'grow': grow,
       }, className)}
     />
   );

@@ -44,7 +44,7 @@ const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
       {({ backgroundOpacity, backgroundScale }) => (
         <div
           className={clsx({
-            'flex items-center justify-center bg-gray-700 bg-opacity-90 h-full w-full absolute left-0 top-0 z-1000 pointer-events-none': true,
+            'flex items-center justify-center bg-gray-700/90 h-full w-full absolute left-0 top-0 z-1000 pointer-events-none': true,
             'visible': active,
             'invisible': !active,
           })}

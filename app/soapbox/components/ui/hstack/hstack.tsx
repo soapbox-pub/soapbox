@@ -68,7 +68,7 @@ const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
-        'flex-grow': grow,
+        'grow': grow,
         'flex-wrap': wrap,
       }, className)}
     />

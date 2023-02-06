@@ -77,7 +77,7 @@ const Navbar = () => {
           <HStack
             space={4}
             alignItems='center'
-            className={clsx('flex-1 enter lg:items-stretch', {
+            className={clsx('enter flex-1 lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
