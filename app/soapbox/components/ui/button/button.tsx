@@ -63,7 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       return null;
     }
 
-    return <Icon src={icon} className='w-4 h-4' />;
+    return <Icon src={icon} className='h-4 w-4' />;
   };
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((event) => {
@@ -100,4 +100,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
   return renderButton();
 });
 
-export default Button;
+export {
+  Button as default,
+  Button,
+};

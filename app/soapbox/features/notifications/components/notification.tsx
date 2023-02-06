@@ -30,7 +30,7 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
 const buildLink = (account: AccountEntity): JSX.Element => (
   <bdi>
     <Link
-      className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
+      className='font-bold text-gray-800 hover:underline dark:text-gray-200'
       title={account.acct}
       to={`/@${account.acct}`}
       dangerouslySetInnerHTML={{ __html: account.display_name_html }}
@@ -269,14 +269,14 @@ const Notification: React.FC<INotificaton> = (props) => {
       return (
         <Emoji
           emoji={notification.emoji}
-          className='w-4 h-4 flex-none'
+          className='h-4 w-4 flex-none'
         />
       );
     } else if (validType(type)) {
       return (
         <Icon
           src={icons[type]}
-          className='text-primary-600 dark:text-primary-400 flex-none'
+          className='flex-none text-primary-600 dark:text-primary-400'
         />
       );
     } else {
@@ -358,7 +358,7 @@ const Notification: React.FC<INotificaton> = (props) => {
         tabIndex={0}
         aria-label={ariaLabel}
       >
-        <div className='p-4 focusable'>
+        <div className='focusable p-4'>
           <div className='mb-2'>
             <HStack alignItems='center' space={3}>
               <div

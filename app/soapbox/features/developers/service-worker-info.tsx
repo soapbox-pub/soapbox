@@ -116,10 +116,10 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
 
           {url && (
             <ListItem label={intl.formatMessage(messages.url)}>
-              <a href={url} target='_blank' className='flex space-x-1 items-center truncate'>
+              <a href={url} target='_blank' className='flex items-center space-x-1 truncate'>
                 <span className='truncate'>{url}</span>
                 <Icon
-                  className='w-4 h-4'
+                  className='h-4 w-4'
                   src={require('@tabler/icons/external-link.svg')}
                 />
               </a>

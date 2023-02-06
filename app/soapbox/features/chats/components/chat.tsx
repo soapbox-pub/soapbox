@@ -160,7 +160,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   return (
     <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
-      <div className='flex-grow h-full overflow-hidden flex justify-center'>
+      <div className='flex h-full grow justify-center overflow-hidden'>
         <ChatMessageList chat={chat} />
       </div>
 

@@ -18,7 +18,7 @@ interface IEmojiButton {
 const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabIndex }): JSX.Element => {
   return (
     <button className={classNames(className)} onClick={onClick} tabIndex={tabIndex}>
-      <Emoji className='w-8 h-8 duration-100 hover:scale-125' emoji={emoji} />
+      <Emoji className='h-8 w-8 duration-100 hover:scale-125' emoji={emoji} />
     </button>
   );
 };

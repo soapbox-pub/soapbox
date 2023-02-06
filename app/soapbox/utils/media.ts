@@ -62,11 +62,11 @@ const addAutoPlay = (html: string): string => {
   try {
     const document = domParser.parseFromString(html, 'text/html').documentElement;
     const iframe = document.querySelector('iframe');
-  
+
     if (iframe) {
       const url = new URL(iframe.src);
       const provider = new URL(iframe.src).host;
-  
+
       if (provider === VideoProviders.RUMBLE) {
         url.searchParams.append('pub', '7a20');
         url.searchParams.append('autoplay', '2');
@@ -75,9 +75,9 @@ const addAutoPlay = (html: string): string => {
         url.searchParams.append('auto_play', '1');
         iframe.allow = 'autoplay';
       }
-  
+
       iframe.src = url.toString();
-  
+
       // DOM parser creates html/body elements around original HTML fragment,
       // so we need to get innerHTML out of the body and not the entire document
       return (document.querySelector('body') as HTMLBodyElement).innerHTML;

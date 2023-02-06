@@ -48,7 +48,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
+    <Stack space={2} className='rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
       <AccountContainer
         id={status.account as any}
         showProfileHoverCard={false}
@@ -127,7 +127,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
     switch (selectedStatusIds.size) {
       case 0:
         return (
-          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
+          <div className='flex w-full items-center justify-center rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
             <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
           </div>
         );
@@ -190,12 +190,12 @@ const ReportModal = ({ onClose }: IReportModal) => {
     if (account) {
       return (
         <Stack space={4}>
-          <HStack alignItems='center' space={4} className='rounded-md border dark:border-2 border-solid border-gray-400 dark:border-gray-800 p-4'>
+          <HStack alignItems='center' space={4} className='rounded-md border border-solid border-gray-400 p-4 dark:border-2 dark:border-gray-800'>
             <div>
-              <Avatar src={account.avatar} className='w-8 h-8' />
+              <Avatar src={account.avatar} className='h-8 w-8' />
             </div>
 
-            <div className='bg-gray-200 dark:bg-primary-800 rounded-md p-4 flex-grow'>
+            <div className='grow rounded-md bg-gray-200 p-4 dark:bg-primary-800'>
               <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
             </div>
           </HStack>

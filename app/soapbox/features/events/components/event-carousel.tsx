@@ -54,12 +54,12 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
   return (
     <div className='relative -mx-1'>
       {index !== 0 && (
-        <div className='z-10 absolute left-3 top-1/2 -mt-4'>
+        <div className='absolute left-3 top-1/2 z-10 -mt-4'>
           <button
             onClick={() => handleChangeIndex(index - 1)}
-            className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
+            className='flex h-8 w-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/chevron-left.svg')} className='text-black dark:text-white h-6 w-6' />
+            <Icon src={require('@tabler/icons/chevron-left.svg')} className='h-6 w-6 text-black dark:text-white' />
           </button>
         </div>
       )}
@@ -67,12 +67,12 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
         {statusIds.map(statusId => <Event key={statusId} id={statusId} />)}
       </ReactSwipeableViews>
       {index !== statusIds.size - 1 && (
-        <div className='z-10 absolute right-3 top-1/2 -mt-4'>
+        <div className='absolute right-3 top-1/2 z-10 -mt-4'>
           <button
             onClick={() => handleChangeIndex(index + 1)}
-            className='bg-white/50 dark:bg-gray-900/50 backdrop-blur rounded-full h-8 w-8 flex items-center justify-center'
+            className='flex h-8 w-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/chevron-right.svg')} className='text-black dark:text-white h-6 w-6' />
+            <Icon src={require('@tabler/icons/chevron-right.svg')} className='h-6 w-6 text-black dark:text-white' />
           </button>
         </div>
       )}

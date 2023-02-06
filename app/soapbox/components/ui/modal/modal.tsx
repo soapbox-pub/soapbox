@@ -88,7 +88,7 @@ const Modal: React.FC<IModal> = ({
 
   return (
     <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
-      <div className='sm:flex sm:items-start w-full justify-between'>
+      <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
           {title && (
             <div
@@ -96,7 +96,7 @@ const Modal: React.FC<IModal> = ({
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
-              <h3 className='flex-grow text-lg leading-6 font-bold text-gray-900 dark:text-white'>
+              <h3 className='grow text-lg font-bold leading-6 text-gray-900 dark:text-white'>
                 {title}
               </h3>
 
@@ -105,14 +105,14 @@ const Modal: React.FC<IModal> = ({
                   src={closeIcon}
                   title={intl.formatMessage(messages.close)}
                   onClick={onClose}
-                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
+                  className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
                 />
               )}
             </div>
           )}
 
           {title ? (
-            <div className='w-full mt-2'>
+            <div className='mt-2 w-full'>
               {children}
             </div>
           ) : children}

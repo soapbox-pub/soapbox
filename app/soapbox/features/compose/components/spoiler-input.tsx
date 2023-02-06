@@ -62,7 +62,7 @@ const SpoilerInput = React.forwardRef<AutosuggestInput, ISpoilerInput>(({
           onSuggestionSelected={onSuggestionSelected}
           searchTokens={[':']}
           id='cw-spoiler-input'
-          className='rounded-md dark:!bg-transparent !bg-transparent'
+          className='rounded-md !bg-transparent dark:!bg-transparent'
           ref={ref}
           autoFocus
         />

@@ -64,7 +64,7 @@ const ChatPageSidebar = () => {
         )}
       </Stack>
 
-      <Stack className='flex-grow h-full'>
+      <Stack className='h-full grow'>
         <ChatList
           onClickChat={handleClickChat}
           searchValue={debouncedSearch}

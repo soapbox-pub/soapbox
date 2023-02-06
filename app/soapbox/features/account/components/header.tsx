@@ -102,16 +102,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   if (!account) {
     return (
-      <div className='-mt-4 -mx-4'>
+      <div className='-mx-4 -mt-4'>
         <div>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
 
         <div className='px-4 sm:px-6'>
           <HStack alignItems='bottom' space={5} className='-mt-12'>
-            <div className='flex relative'>
+            <div className='relative flex'>
               <div
-                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
+                className='h-24 w-24 rounded-full bg-gray-400 ring-4 ring-white dark:ring-gray-800'
               />
             </div>
           </HStack>
@@ -586,13 +586,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const menu = makeMenu();
 
   return (
-    <div className='-mt-4 -mx-4'>
+    <div className='-mx-4 -mt-4'>
       {(account.moved && typeof account.moved === 'object') && (
         <MovedNote from={account} to={account.moved} />
       )}
 
       <div>
-        <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
+        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
           {renderHeader()}
 
           <div className='absolute top-2 left-2'>
@@ -610,12 +610,12 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <Avatar
                 src={account.avatar}
                 size={96}
-                className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900'
+                className='relative h-24 w-24 rounded-full bg-white ring-4 ring-white dark:bg-primary-900 dark:ring-primary-900'
               />
             </a>
           </div>
 
-          <div className='mt-6 flex justify-end w-full sm:pb-1'>
+          <div className='mt-6 flex w-full justify-end sm:pb-1'>
             <HStack space={2} className='mt-10'>
               <SubscriptionButton account={account} />
               {renderMessageButton()}
@@ -644,7 +644,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                           <Comp key={idx} {...itemProps} className='group'>
                             <HStack space={3} alignItems='center'>
                               {menuItem.icon && (
-                                <SvgIcon src={menuItem.icon} className='h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
+                                <SvgIcon src={menuItem.icon} className='h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500' />
                               )}
 
                               <div className='truncate'>{menuItem.text}</div>

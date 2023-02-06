@@ -88,7 +88,7 @@ const ChatSearch = (props: IChatSearch) => {
   };
 
   return (
-    <Stack space={4} className='flex-grow h-full'>
+    <Stack space={4} className='h-full grow'>
       <div className='px-4'>
         <Input
           data-testid='search'
@@ -111,7 +111,7 @@ const ChatSearch = (props: IChatSearch) => {
         />
       </div>
 
-      <Stack className='flex-grow'>
+      <Stack className='grow'>
         {renderBody()}
       </Stack>
     </Stack>

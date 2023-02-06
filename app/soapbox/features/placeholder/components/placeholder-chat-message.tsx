@@ -56,11 +56,11 @@ const PlaceholderChatMessage = ({ isMyMessage = false }: { isMyMessage?: boolean
             'order-2': !isMyMessage,
           })}
         >
-          <span style={{ width: 50, height: 12 }} className='rounded-full bg-primary-50 dark:bg-primary-800 block' />
+          <span style={{ width: 50, height: 12 }} className='block rounded-full bg-primary-50 dark:bg-primary-800' />
         </Text>
 
         <div className={classNames({ 'order-1': !isMyMessage })}>
-          <div className='w-[34px] ml-2' />
+          <div className='ml-2 w-[34px]' />
         </div>
       </HStack>
     </Stack>

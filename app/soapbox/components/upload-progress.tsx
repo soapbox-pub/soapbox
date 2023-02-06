@@ -16,7 +16,7 @@ const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
     <HStack alignItems='center' space={2}>
       <Icon
         src={require('@tabler/icons/cloud-upload.svg')}
-        className='w-7 h-7 text-gray-500'
+        className='h-7 w-7 text-gray-500'
       />
 
       <Stack space={1}>
@@ -24,11 +24,11 @@ const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
           <FormattedMessage id='upload_progress.label' defaultMessage='Uploading…' />
         </Text>
 
-        <div className='w-full h-1.5 rounded-lg bg-gray-200 relative'>
+        <div className='relative h-1.5 w-full rounded-lg bg-gray-200'>
           <Motion defaultStyle={{ width: 0 }} style={{ width: spring(progress) }}>
             {({ width }) =>
               (<div
-                className='absolute left-0 top-0 h-1.5 bg-primary-600 rounded-lg'
+                className='absolute left-0 top-0 h-1.5 rounded-lg bg-primary-600'
                 style={{ width: `${width}%` }}
               />)
             }

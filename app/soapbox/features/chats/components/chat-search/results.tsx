@@ -29,7 +29,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
     <button
       key={account.id}
       type='button'
-      className='px-2 py-3 w-full rounded-lg flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
+      className='flex w-full flex-col rounded-lg px-2 py-3 hover:bg-gray-100 dark:hover:bg-gray-800'
       onClick={() => onSelect(account.id)}
       data-testid='account'
     >
@@ -37,7 +37,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
         <Avatar src={account.avatar} size={40} />
 
         <Stack alignItems='start'>
-          <div className='flex items-center space-x-1 flex-grow'>
+          <div className='flex grow items-center space-x-1'>
             <Text weight='bold' size='sm' truncate>{account.display_name}</Text>
             {account.verified && <VerificationBadge />}
           </div>
@@ -48,7 +48,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
   ), []);
 
   return (
-    <div className='relative flex-grow'>
+    <div className='relative grow'>
       <Virtuoso
         data={accounts}
         itemContent={(index, chat) => (
