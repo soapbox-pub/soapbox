@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -117,19 +117,17 @@ const Account = ({
   emoji,
   note,
 }: IAccount) => {
-  const overflowRef = React.useRef<HTMLDivElement>(null);
-  const actionRef = React.useRef<HTMLDivElement>(null);
-  // @ts-ignore
+  const overflowRef = useRef<HTMLDivElement>(null);
+  const actionRef = useRef<HTMLDivElement>(null);
   const isOnScreen = useOnScreen(overflowRef);
 
-  const [style, setStyle] = React.useState<React.CSSProperties>({ visibility: 'hidden' });
+  const [style, setStyle] = useState<React.CSSProperties>({ visibility: 'hidden' });
 
   const me = useAppSelector((state) => state.me);
   const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
 
   const handleAction = () => {
-    // @ts-ignore
-    onActionClick(account);
+    onActionClick!(account);
   };
 
   const renderAction = () => {
@@ -162,12 +160,12 @@ const Account = ({
 
   const intl = useIntl();
 
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     const style: React.CSSProperties = {};
     const actionWidth = actionRef.current?.clientWidth || 0;
 
     if (overflowRef.current) {
-      style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
+      style.maxWidth = Math.max(0, overflowRef.current.clientWidth - 30 - avatarSize - actionWidth);
     } else {
       style.visibility = 'hidden';
     }
