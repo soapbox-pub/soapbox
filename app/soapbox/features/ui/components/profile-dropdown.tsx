@@ -1,11 +1,13 @@
+import { useFloating } from '@floating-ui/react';
+import clsx from 'clsx';
 import throttle from 'lodash/throttle';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import Account from 'soapbox/components/account';
-import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
+import { MenuDivider } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -39,6 +41,8 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const features = useFeatures();
   const intl = useIntl();
 
+  const [visible, setVisible] = useState(false);
+  const { x, y, strategy, refs } = useFloating({ placement: 'bottom-end' });
   const authUsers = useAppSelector((state) => state.auth.users);
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.id)!));
 
@@ -62,7 +66,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     );
   };
 
-  const menu: IMenuItem[] = React.useMemo(() => {
+  const menu: IMenuItem[] = useMemo(() => {
     const menu: IMenuItem[] = [];
 
     menu.push({ text: renderAccount(account), to: `/@${account.acct}` });
@@ -96,42 +100,78 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     return menu;
   }, [account, authUsers, features]);
 
-  React.useEffect(() => {
+  const toggleVisible = () => setVisible(!visible);
+
+  useEffect(() => {
     fetchOwnAccountThrottled();
   }, [account, authUsers]);
 
   return (
-    <Menu>
-      <MenuButton>
+    <>
+      <button type='button' ref={refs.setReference} onClick={toggleVisible}>
         {children}
-      </MenuButton>
+      </button>
 
-      <MenuList>
-        {menu.map((menuItem, idx) => {
-          if (menuItem.toggle) {
-            return (
-              <div key={idx} className='flex flex-row items-center justify-between space-x-4 px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
-                <span>{menuItem.text}</span>
-
-                {menuItem.toggle}
-              </div>
-            );
-          } else if (!menuItem.text) {
-            return <MenuDivider key={idx} />;
-          } else {
-            const Comp: any = menuItem.action ? MenuItem : MenuLink;
-            const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link };
-
-            return (
-              <Comp key={idx} {...itemProps} className='truncate'>
-                {menuItem.text}
-              </Comp>
-            );
-          }
-        })}
-      </MenuList>
-    </Menu>
+      {visible && (
+        <div
+          ref={refs.setFloating}
+          className='z-[1003] mt-2 rounded-md bg-white shadow-lg focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700'
+          style={{
+            position: strategy,
+            top: y ?? 0,
+            left: x ?? 0,
+            width: 'max-content',
+          }}
+        >
+          {menu.map((menuItem, i) => (
+            <MenuItem key={i} menuItem={menuItem} />
+          ))}
+        </div>
+      )}
+    </>
   );
+};
+
+interface MenuItemProps {
+  className?: string
+  menuItem: IMenuItem
+}
+
+const MenuItem: React.FC<MenuItemProps> = ({ className, menuItem }) => {
+  const baseClassName = clsx(className, 'block cursor-pointer truncate px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500');
+
+  if (menuItem.toggle) {
+    return (
+      <div className='flex flex-row items-center justify-between space-x-4 px-4 py-1 text-sm text-gray-700 dark:text-gray-400'>
+        <span>{menuItem.text}</span>
+
+        {menuItem.toggle}
+      </div>
+    );
+  } else if (!menuItem.text) {
+    return <MenuDivider />;
+  } else if (menuItem.action) {
+    return (
+      <button
+        type='button'
+        onClick={menuItem.action}
+        className={baseClassName}
+      >
+        {menuItem.text}
+      </button>
+    );
+  } else if (menuItem.to) {
+    return (
+      <Link
+        to={menuItem.to}
+        className={clsx(baseClassName, 'hover:bg-gray-100 dark:hover:bg-gray-800')}
+      >
+        {menuItem.text}
+      </Link>
+    );
+  } else {
+    throw menuItem;
+  }
 };
 
 export default ProfileDropdown;
