@@ -265,6 +265,7 @@ module.exports = {
 
     'react-hooks/rules-of-hooks': 'error',
 
+    'tailwindcss/classnames-order': 'error',
     'tailwindcss/migration-from-tailwind-2': 'error',
   },
   overrides: [
