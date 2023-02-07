@@ -1,11 +1,11 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import { useAppSelector, useOnScreen } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
@@ -119,9 +119,6 @@ const Account = ({
 }: IAccount) => {
   const overflowRef = useRef<HTMLDivElement>(null);
   const actionRef = useRef<HTMLDivElement>(null);
-  const isOnScreen = useOnScreen(overflowRef);
-
-  const [style, setStyle] = useState<React.CSSProperties>({ visibility: 'hidden' });
 
   const me = useAppSelector((state) => state.me);
   const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
@@ -159,21 +156,6 @@ const Account = ({
   };
 
   const intl = useIntl();
-
-  useLayoutEffect(() => {
-    const style: React.CSSProperties = {};
-    const actionWidth = actionRef.current?.clientWidth || 0;
-
-    if (overflowRef.current) {
-      if (action && withRelationship && typeof overflowRef.current.style.maxWidth !== 'number') {
-        style.maxWidth = Math.max(0, overflowRef.current.clientWidth - 30 - avatarSize - actionWidth);
-      }
-    } else {
-      style.visibility = 'hidden';
-    }
-
-    setStyle(style);
-  }, [isOnScreen, overflowRef, actionRef]);
 
   if (!account) {
     return null;
@@ -225,7 +207,7 @@ const Account = ({
                 title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
-                <HStack space={1} alignItems='center' grow style={style}>
+                <HStack space={1} alignItems='center' grow>
                   <Text
                     size='sm'
                     weight='semibold'
@@ -241,7 +223,7 @@ const Account = ({
             </ProfilePopper>
 
             <Stack space={withAccountNote || note ? 1 : 0}>
-              <HStack alignItems='center' space={1} style={style}>
+              <HStack alignItems='center' space={1}>
                 <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (
