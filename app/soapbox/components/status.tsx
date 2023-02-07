@@ -289,8 +289,10 @@ const Status: React.FC<IStatus> = (props) => {
 
     return (
       <HotKeys handlers={minHandlers}>
-        <div className={clsx('status__wrapper', 'status__wrapper--filtered', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
-          <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+        <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+          <Text theme='muted'>
+            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+          </Text>
         </div>
       </HotKeys>
     );

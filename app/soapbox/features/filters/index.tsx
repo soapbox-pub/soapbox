@@ -2,13 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filters';
-import Icon from 'soapbox/components/icon';
+import List, { ListItem } from 'soapbox/components/list';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
-import {
-  FieldsGroup,
-  Checkbox,
-} from 'soapbox/features/forms';
+import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, HStack, IconButton, Input, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -32,6 +28,13 @@ const messages = defineMessages({
   subheading_filters: { id: 'column.filters.subheading_filters', defaultMessage: 'Current Filters' },
   delete: { id: 'column.filters.delete', defaultMessage: 'Delete' },
 });
+
+const contexts = {
+  home: messages.home_timeline,
+  public: messages.public_timeline,
+  notifications: messages.notifications,
+  thread: messages.conversations,
+};
 
 // const expirations = {
 //   null: 'Never',
@@ -85,8 +88,8 @@ const Filters = () => {
     });
   };
 
-  const handleFilterDelete: React.MouseEventHandler<HTMLDivElement> = e => {
-    dispatch(deleteFilter(e.currentTarget.dataset.value!)).then(() => {
+  const handleFilterDelete = (id: string) => () => {
+    dispatch(deleteFilter(id)).then(() => {
       return dispatch(fetchFilters());
     }).catch(() => {
       toast.error(intl.formatMessage(messages.delete_error));
@@ -121,58 +124,68 @@ const Filters = () => {
           />
         </FormGroup> */}
 
-        <FieldsGroup>
-          <Text tag='label'>
+        <Stack>
+          <Text size='sm' weight='medium'>
             <FormattedMessage id='filters.context_header' defaultMessage='Filter contexts' />
           </Text>
-          <Text theme='muted' size='xs'>
+          <Text size='xs' theme='muted'>
             <FormattedMessage id='filters.context_hint' defaultMessage='One or multiple contexts where the filter should apply' />
           </Text>
-          <div className='two-col'>
-            <Checkbox
-              label={intl.formatMessage(messages.home_timeline)}
+        </Stack>
+
+        <List>
+          <ListItem label={intl.formatMessage(messages.home_timeline)}>
+            <Toggle
               name='home_timeline'
               checked={homeTimeline}
               onChange={({ target }) => setHomeTimeline(target.checked)}
             />
-            <Checkbox
-              label={intl.formatMessage(messages.public_timeline)}
+          </ListItem>
+          <ListItem label={intl.formatMessage(messages.public_timeline)}>
+            <Toggle
               name='public_timeline'
               checked={publicTimeline}
               onChange={({ target }) => setPublicTimeline(target.checked)}
             />
-            <Checkbox
-              label={intl.formatMessage(messages.notifications)}
+          </ListItem>
+          <ListItem label={intl.formatMessage(messages.notifications)}>
+            <Toggle
               name='notifications'
               checked={notifications}
               onChange={({ target }) => setNotifications(target.checked)}
             />
-            <Checkbox
-              label={intl.formatMessage(messages.conversations)}
+          </ListItem>
+          <ListItem label={intl.formatMessage(messages.conversations)}>
+            <Toggle
               name='conversations'
               checked={conversations}
               onChange={({ target }) => setConversations(target.checked)}
             />
-          </div>
+          </ListItem>
+        </List>
 
-        </FieldsGroup>
-
-        <FieldsGroup>
-          <Checkbox
+        <List>
+          <ListItem
             label={intl.formatMessage(messages.drop_header)}
             hint={intl.formatMessage(messages.drop_hint)}
-            name='irreversible'
-            checked={irreversible}
-            onChange={({ target }) => setIrreversible(target.checked)}
-          />
-          <Checkbox
+          >
+            <Toggle
+              name='irreversible'
+              checked={irreversible}
+              onChange={({ target }) => setIrreversible(target.checked)}
+            />
+          </ListItem>
+          <ListItem
             label={intl.formatMessage(messages.whole_word_header)}
             hint={intl.formatMessage(messages.whole_word_hint)}
-            name='whole_word'
-            checked={wholeWord}
-            onChange={({ target }) => setWholeWord(target.checked)}
-          />
-        </FieldsGroup>
+          >
+            <Toggle
+              name='whole_word'
+              checked={wholeWord}
+              onChange={({ target }) => setWholeWord(target.checked)}
+            />
+          </ListItem>
+        </List>
 
         <FormActions>
           <Button type='submit' theme='primary'>{intl.formatMessage(messages.add_new)}</Button>
@@ -186,40 +199,41 @@ const Filters = () => {
       <ScrollableList
         scrollKey='filters'
         emptyMessage={emptyMessage}
+        itemClassName='pb-4 last:pb-0'
       >
         {filters.map((filter, i) => (
-          <div key={i} className='filter__container'>
-            <div className='filter__details'>
-              <div className='filter__phrase'>
-                <span className='filter__list-label'><FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' /></span>
-                <span className='filter__list-value'>{filter.phrase}</span>
-              </div>
-              <div className='filter__contexts'>
-                <span className='filter__list-label'><FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' /></span>
-                <span className='filter__list-value'>
-                  {filter.context.map((context, i) => (
-                    <span key={i} className='context'>{context}</span>
-                  ))}
-                </span>
-              </div>
-              <div className='filter__details'>
-                <span className='filter__list-label'><FormattedMessage id='filters.filters_list_details_label' defaultMessage='Filter settings:' /></span>
-                <span className='filter__list-value'>
+          <HStack space={1} justifyContent='between'>
+            <Stack space={1}>
+              <Text weight='medium'>
+                <FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' />
+                {' '}
+                <Text theme='muted' tag='span'>{filter.phrase}</Text>
+              </Text>
+              <Text weight='medium'>
+                <FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' />
+                {' '}
+                <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
+              </Text>
+              <HStack space={4}>
+                <Text weight='medium'>
                   {filter.irreversible ?
-                    <span><FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /></span> :
-                    <span><FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' /></span>
-                  }
-                  {filter.whole_word &&
-                    <span><FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' /></span>
-                  }
-                </span>
-              </div>
-            </div>
-            <div className='filter__delete' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={filter.id} aria-label={intl.formatMessage(messages.delete)}>
-              <Icon className='filter__delete-icon' src={require('@tabler/icons/x.svg')} />
-              <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
-            </div>
-          </div>
+                    <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
+                    <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />}
+                </Text>
+                {filter.whole_word && (
+                  <Text weight='medium'>
+                    <FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' />
+                  </Text>
+                )}
+              </HStack>
+            </Stack>
+            <IconButton
+              iconClassName='h-5 w-5 text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500'
+              src={require('@tabler/icons/trash.svg')}
+              onClick={handleFilterDelete(filter.id)}
+              title={intl.formatMessage(messages.delete)}
+            />
+          </HStack>
         ))}
       </ScrollableList>
     </Column>
