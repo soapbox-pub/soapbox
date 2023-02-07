@@ -47,6 +47,7 @@
   "account.report": "Report @{name}",
   "account.requested": "Awaiting approval. Click to cancel follow request",
   "account.requested_small": "Awaiting approval",
+  "account.rss_feed": "Subscribe to RSS feed",
   "account.search": "Search from @{name}",
   "account.search_self": "Search your posts",
   "account.share": "Share @{name}'s profile",
