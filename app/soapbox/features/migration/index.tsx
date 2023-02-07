@@ -68,7 +68,7 @@ const Migration = () => {
             values={{
               link: (
                 <Link
-                  className='hover:underline text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-500'
+                  className='text-primary-600 hover:text-primary-800 hover:underline dark:text-primary-400 dark:hover:text-primary-500'
                   to='/settings/aliases'
                 >
                   <FormattedMessage

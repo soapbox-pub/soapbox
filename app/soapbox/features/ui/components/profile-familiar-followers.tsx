@@ -54,7 +54,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
 
   if (familiarFollowerIds.size > 2) {
     accounts.push(
-      <span className='hover:underline cursor-pointer' role='presentation' onClick={openFamiliarFollowersModal}>
+      <span className='cursor-pointer hover:underline' role='presentation' onClick={openFamiliarFollowersModal}>
         <FormattedMessage
           id='account.familiar_followers.more'
           defaultMessage='{count, plural, one {# other} other {# others}} you follow'

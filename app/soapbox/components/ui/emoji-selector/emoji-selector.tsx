@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { Emoji, HStack } from 'soapbox/components/ui';
@@ -17,8 +17,8 @@ interface IEmojiButton {
 /** Clickable emoji button that scales when hovered. */
 const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabIndex }): JSX.Element => {
   return (
-    <button className={classNames(className)} onClick={onClick} tabIndex={tabIndex}>
-      <Emoji className='w-8 h-8 duration-100 hover:scale-125' emoji={emoji} />
+    <button className={clsx(className)} onClick={onClick} tabIndex={tabIndex}>
+      <Emoji className='h-8 w-8 duration-100 hover:scale-125' emoji={emoji} />
     </button>
   );
 };
@@ -47,7 +47,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
 
   return (
     <HStack
-      className={classNames('gap-2 bg-white dark:bg-gray-900 p-3 rounded-full shadow-md z-[999] w-max max-w-[100vw] flex-wrap')}
+      className={clsx('z-[999] w-max max-w-[100vw] flex-wrap gap-2 rounded-full bg-white p-3 shadow-md dark:bg-gray-900')}
     >
       {Array.from(emojis).map((emoji, i) => (
         <EmojiButton

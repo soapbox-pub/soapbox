@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
@@ -79,7 +79,7 @@ const Directory = () => {
 
         <div
           className={
-            classNames({
+            clsx({
               'grid grid-cols-1 sm:grid-cols-2 gap-2.5': true,
               'opacity-30': isLoading,
             })

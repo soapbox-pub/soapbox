@@ -24,7 +24,7 @@ interface IRestriction {
 const Restriction: React.FC<IRestriction> = ({ icon, children }) => {
   return (
     <HStack space={3}>
-      <Icon className='flex-none w-5 h-5' src={icon} />
+      <Icon className='h-5 w-5 flex-none' src={icon} />
 
       <Text theme='muted'>
         {children}

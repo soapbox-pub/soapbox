@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React from 'react';
 import { spring } from 'react-motion';
@@ -182,7 +182,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
     const { text, href, to, newTab, isLogout, icon, count, destructive } = option;
 
     return (
-      <li className={classNames('dropdown-menu__item truncate', { destructive })} key={`${text}-${i}`}>
+      <li className={clsx('dropdown-menu__item truncate', { destructive })} key={`${text}-${i}`}>
         <a
           href={href || to || '#'}
           role='button'
@@ -196,7 +196,7 @@ class DropdownMenu extends React.PureComponent<IDropdownMenu, IDropdownMenuState
           data-method={isLogout ? 'delete' : undefined}
           title={text}
         >
-          {icon && <SvgIcon src={icon} className='mr-3 rtl:ml-3 rtl:mr-0 h-5 w-5 flex-none' />}
+          {icon && <SvgIcon src={icon} className='mr-3 h-5 w-5 flex-none rtl:ml-3 rtl:mr-0' />}
 
           <span className='truncate'>{text}</span>
 
@@ -392,7 +392,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
         ) : (
           <IconButton
             disabled={disabled}
-            className={classNames({
+            className={clsx({
               'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
               'text-gray-700 dark:text-gray-500': open,
             })}

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import escape from 'lodash/escape';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -195,13 +195,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   };
 
   const maybeRenderMedia = (chatMessage: ChatMessageEntity) => {
-    const { attachment } = chatMessage;
-    if (!attachment) return null;
+    if (!chatMessage.media_attachments.size) return null;
     return (
       <Bundle fetchComponent={MediaGallery}>
         {(Component: any) => (
           <Component
-            media={ImmutableList([attachment])}
+            media={chatMessage.media_attachments}
             onOpenMedia={onOpenMedia}
             visible
           />
@@ -281,20 +280,20 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
       <div key={chatMessage.id} className='group' data-testid='chat-message'>
         <Stack
           space={1.5}
-          className={classNames({
+          className={clsx({
             'ml-auto': isMyMessage,
           })}
         >
           <HStack
             alignItems='center'
             justifyContent={isMyMessage ? 'end' : 'start'}
-            className={classNames({
+            className={clsx({
               'opacity-50': chatMessage.pending,
             })}
           >
             {menu.length > 0 && (
               <div
-                className={classNames({
+                className={clsx({
                   'hidden focus:block group-hover:block text-gray-500': true,
                   'mr-2 order-1': isMyMessage,
                   'ml-2 order-2': !isMyMessage,
@@ -305,7 +304,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                   <IconButton
                     src={require('@tabler/icons/dots.svg')}
                     title={intl.formatMessage(messages.more)}
-                    className='text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
+                    className='text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
                     iconClassName='w-4 h-4'
                   />
                 </DropdownMenuContainer>
@@ -314,9 +313,9 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
             <Stack
               space={0.5}
-              className={classNames({
+              className={clsx({
                 'max-w-[85%]': true,
-                'flex-1': chatMessage.attachment,
+                'flex-1': !!chatMessage.media_attachments.size,
                 'order-2': isMyMessage,
                 'order-1': !isMyMessage,
               })}
@@ -329,10 +328,10 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                   <div
                     title={getFormattedTimestamp(chatMessage)}
                     className={
-                      classNames({
+                      clsx({
                         'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
-                        'rounded-tr-sm': chatMessage.attachment && isMyMessage,
-                        'rounded-tl-sm': chatMessage.attachment && !isMyMessage,
+                        'rounded-tr-sm': (!!chatMessage.media_attachments.size) && isMyMessage,
+                        'rounded-tl-sm': (!!chatMessage.media_attachments.size) && !isMyMessage,
                         '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
                         '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
                         'bg-primary-500 text-white': isMyMessage,
@@ -358,12 +357,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
           <HStack
             alignItems='center'
             space={2}
-            className={classNames({
+            className={clsx({
               'ml-auto': isMyMessage,
             })}
           >
             <div
-              className={classNames({
+              className={clsx({
                 'text-right': isMyMessage,
                 'order-2': !isMyMessage,
               })}
@@ -379,12 +378,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                 {(isMyMessage && features.chatsReadReceipts) ? (
                   <>
                     {isRead ? (
-                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-primary-500 text-white dark:bg-primary-400 dark:text-primary-900 border border-solid border-primary-500 dark:border-primary-400'>
-                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
+                      <span className='flex flex-col items-center justify-center rounded-full border border-solid border-primary-500 bg-primary-500 p-0.5 text-white dark:border-primary-400 dark:bg-primary-400 dark:text-primary-900'>
+                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='h-2.5 w-2.5' />
                       </span>
                     ) : (
-                      <span className='rounded-full flex flex-col items-center justify-center p-0.5 bg-transparent text-primary-500 dark:text-primary-400 border border-solid border-primary-500 dark:border-primary-400'>
-                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='w-2.5 h-2.5' />
+                      <span className='flex flex-col items-center justify-center rounded-full border border-solid border-primary-500 bg-transparent p-0.5 text-primary-500 dark:border-primary-400 dark:text-primary-400'>
+                        <Icon src={require('@tabler/icons/check.svg')} strokeWidth={3} className='h-2.5 w-2.5' />
                       </span>
                     )}
                   </>
@@ -419,7 +418,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   if (isBlocked) {
     return (
-      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+      <Stack alignItems='center' justifyContent='center' className='h-full grow'>
         <Stack alignItems='center' space={2}>
           <Avatar src={chat.account.avatar} size={75} />
           <Text align='center'>
@@ -436,7 +435,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   if (isError) {
     return (
-      <Stack alignItems='center' justifyContent='center' className='h-full flex-grow'>
+      <Stack alignItems='center' justifyContent='center' className='h-full grow'>
         <Stack space={4}>
           <Stack space={1}>
             <Text size='lg' weight='bold' align='center'>
@@ -459,7 +458,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   if (isLoading) {
     return (
-      <div className='flex-grow flex flex-col justify-end pb-4'>
+      <div className='flex grow flex-col justify-end pb-4'>
         <div className='px-4'>
           <PlaceholderChatMessage isMyMessage />
           <PlaceholderChatMessage />
@@ -472,8 +471,8 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   }
 
   return (
-    <div className='h-full flex flex-col flex-grow space-y-6'>
-      <div className='flex-grow flex flex-col justify-end'>
+    <div className='flex h-full grow flex-col space-y-6'>
+      <div className='flex grow flex-col justify-end'>
         <Virtuoso
           ref={node}
           alignToBottom

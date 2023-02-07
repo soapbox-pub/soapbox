@@ -60,7 +60,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='divide-y divide-gray-200 dark:divide-gray-800 divide-solid'>
+                <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 

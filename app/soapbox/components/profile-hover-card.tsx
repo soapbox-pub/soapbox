@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
@@ -95,7 +95,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
 
   return (
     <div
-      className={classNames({
+      className={clsx({
         'absolute transition-opacity w-[320px] z-[101] top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,
@@ -123,7 +123,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/calendar.svg')}
-                  className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                  className='h-4 w-4 text-gray-800 dark:text-gray-200'
                 />
 
                 <Text size='sm'>

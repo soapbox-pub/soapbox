@@ -8,7 +8,7 @@ import {
   MenuListProps,
 } from '@reach/menu-button';
 import { positionDefault, positionRight } from '@reach/popover';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import './menu.css';
@@ -28,7 +28,7 @@ const MenuList: React.FC<IMenuList> = (props) => {
       <MenuItems
         onKeyDown={(event) => event.nativeEvent.stopImmediatePropagation()}
         className={
-          classNames(className, 'py-1 bg-white dark:bg-primary-900 rounded-lg shadow-menu')
+          clsx(className, 'shadow-menu rounded-lg bg-white py-1 dark:bg-primary-900')
         }
         {...filteredProps}
       />

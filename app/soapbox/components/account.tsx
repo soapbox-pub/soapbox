@@ -43,11 +43,11 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
 
   return (
     <button
-      className='w-4 h-4 flex-none focus:ring-primary-500 focus:ring-2 focus:ring-offset-2'
+      className='h-4 w-4 flex-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
       onClick={handleClick}
       disabled={disabled}
     >
-      <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
+      <img src={account.favicon} alt='' title={account.domain} className='max-h-full w-full' />
     </button>
   );
 };
@@ -147,7 +147,7 @@ const Account = ({
           src={actionIcon}
           title={actionTitle}
           onClick={handleAction}
-          className='bg-transparent text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
+          className='bg-transparent text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
           iconClassName='w-4 h-4'
         />
       );
@@ -193,7 +193,7 @@ const Account = ({
   const LinkEl: any = withLinkToProfile ? Link : 'div';
 
   return (
-    <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
+    <div data-testid='account' className='group block w-full shrink-0' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
         <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3}>
           <ProfilePopper
@@ -208,14 +208,14 @@ const Account = ({
               <Avatar src={account.avatar} size={avatarSize} />
               {emoji && (
                 <Emoji
-                  className='w-5 h-5 absolute -bottom-1.5 -right-1.5'
+                  className='absolute -bottom-1.5 -right-1.5 h-5 w-5'
                   emoji={emoji}
                 />
               )}
             </LinkEl>
           </ProfilePopper>
 
-          <div className='flex-grow'>
+          <div className='grow'>
             <ProfilePopper
               condition={showProfileHoverCard}
               wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}

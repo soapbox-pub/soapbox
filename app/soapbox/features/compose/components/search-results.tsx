@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -236,7 +236,7 @@ const SearchResults = () => {
   return (
     <>
       {filterByAccount ? (
-        <HStack className='mb-4 pb-4 px-2 border-solid border-b border-gray-200 dark:border-gray-800' space={2}>
+        <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleUnsetAccount} />
           <Text>
             <FormattedMessage
@@ -260,10 +260,10 @@ const SearchResults = () => {
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
-          className={classNames({
+          className={clsx({
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={classNames({
+          itemClassName={clsx({
             'pb-4': selectedFilter === 'accounts',
             'pb-3': selectedFilter === 'hashtags',
           })}

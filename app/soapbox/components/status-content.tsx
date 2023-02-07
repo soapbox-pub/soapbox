@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -25,7 +25,7 @@ interface IReadMoreButton {
 
 /** Button to expand a truncated status (due to too much content) */
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
-  <button className='flex items-center text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline' onClick={onClick}>
+  <button className='flex items-center border-0 bg-transparent p-0 pt-2 text-gray-900 hover:underline active:underline dark:text-gray-300' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
     <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/chevron-right.svg')} />
   </button>
@@ -153,7 +153,7 @@ const StatusContent: React.FC<IStatusContent> = ({
 
   const content = { __html: parsedHtml };
   const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';
-  const className = classNames(baseClassName, {
+  const className = clsx(baseClassName, {
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
@@ -183,14 +183,14 @@ const StatusContent: React.FC<IStatusContent> = ({
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);
     }
 
-    return <div className={classNames({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
+    return <div className={clsx({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
   } else {
     const output = [
       <Markup
         ref={node}
         tabIndex={0}
         key='content'
-        className={classNames(baseClassName, {
+        className={clsx(baseClassName, {
           'leading-normal big-emoji': onlyEmoji,
         })}
         direction={direction}

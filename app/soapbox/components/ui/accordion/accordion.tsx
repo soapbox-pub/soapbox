@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -36,13 +36,13 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
   };
 
   return (
-    <div className='bg-white dark:bg-primary-800 text-gray-900 dark:text-gray-100 rounded-lg shadow dark:shadow-none'>
+    <div className='rounded-lg bg-white text-gray-900 shadow dark:bg-primary-800 dark:text-gray-100 dark:shadow-none'>
       <button
         type='button'
         onClick={handleToggle}
         title={intl.formatMessage(expanded ? messages.collapse : messages.expand)}
         aria-expanded={expanded}
-        className='px-4 py-3 font-semibold flex items-center justify-between w-full'
+        className='flex w-full items-center justify-between px-4 py-3 font-semibold'
       >
         <span>{headline}</span>
 
@@ -55,14 +55,14 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
           )}
           <Icon
             src={expanded ? require('@tabler/icons/chevron-up.svg') : require('@tabler/icons/chevron-down.svg')}
-            className='text-gray-700 dark:text-gray-600 h-5 w-5'
+            className='h-5 w-5 text-gray-700 dark:text-gray-600'
           />
         </HStack>
       </button>
 
       <div
         className={
-          classNames({
+          clsx({
             'p-4 rounded-b-lg border-t border-solid border-gray-100 dark:border-primary-900': true,
             'h-0 hidden': !expanded,
           })

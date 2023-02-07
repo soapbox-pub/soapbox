@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { useSoapboxConfig, useSettings, useTheme } from 'soapbox/hooks';
@@ -36,7 +36,7 @@ const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
     <img
-      className={classNames('object-contain', className)}
+      className={clsx('object-contain', className)}
       src={getSrc()}
       {...rest}
     />

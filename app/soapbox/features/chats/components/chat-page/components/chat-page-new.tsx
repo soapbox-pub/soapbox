@@ -20,11 +20,11 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
 
   return (
     <Stack className='h-full space-y-4'>
-      <Stack className='flex-grow pt-6 px-4 sm:px-6'>
+      <Stack className='grow px-4 pt-6 sm:px-6'>
         <HStack alignItems='center'>
           <IconButton
             src={require('@tabler/icons/arrow-left.svg')}
-            className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
+            className='mr-2 h-7 w-7 sm:mr-0 sm:hidden'
             onClick={() => history.push('/chats')}
           />
 

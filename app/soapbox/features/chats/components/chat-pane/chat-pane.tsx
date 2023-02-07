@@ -45,7 +45,7 @@ const ChatPane = () => {
   const renderBody = () => {
     if (hasSearchValue || Number(chats?.length) > 0 || isLoading) {
       return (
-        <Stack space={4} className='flex-grow h-full'>
+        <Stack space={4} className='h-full grow'>
           {features.chatsSearch && (
             <div className='px-4'>
               <ChatSearchInput
