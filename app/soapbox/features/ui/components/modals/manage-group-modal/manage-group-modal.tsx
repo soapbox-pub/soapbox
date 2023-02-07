@@ -39,7 +39,7 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   const [currentStep, setCurrentStep] = useState<Steps>(id ? Steps.TWO : Steps.ONE);
 
   const onClickClose = () => {
-    onClose('manage_group');
+    onClose('MANAGE_GROUP');
   };
 
   const handleSubmit = () => {

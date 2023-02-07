@@ -581,3 +581,11 @@ export function GroupMediaPanel() {
 export function NewEventPanel() {
   return import(/* webpackChunkName: "features/events" */'../components/panels/new-event-panel');
 }
+
+export function Announcements() {
+  return import(/* webpackChunkName: "features/admin/announcements" */'../../admin/announcements');
+}
+
+export function EditAnnouncementModal() {
+  return import(/* webpackChunkName: "features/admin/announcements" */'../components/modals/edit-announcement-modal');
+}
