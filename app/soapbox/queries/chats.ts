@@ -233,9 +233,13 @@ const useChatActions = (chatId: string) => {
   };
 
   const createChatMessage = useMutation(
-    (
-      {  chatId, content, mediaId }: { chatId: string, content: string, mediaId?: string },
-    ) => api.post<IChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, { content, media_id: mediaId, media_ids: [mediaId] }),
+    ({ chatId, content, mediaIds }: { chatId: string, content: string, mediaIds?: string[] }) => {
+      return api.post<IChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, {
+        content,
+        media_id: (mediaIds && mediaIds.length === 1) ? mediaIds[0] : undefined, // Pleroma backwards-compat
+        media_ids: mediaIds,
+      });
+    },
     {
       retry: false,
       onMutate: async (variables) => {

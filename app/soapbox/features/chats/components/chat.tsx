@@ -5,17 +5,21 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
 import { Stack } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
+import toast from 'soapbox/toast';
 
 import ChatComposer from './chat-composer';
 import ChatMessageList from './chat-message-list';
+
+import type { Attachment } from 'soapbox/types/entities';
 
 const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
 const messages = defineMessages({
   failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
+  uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
 });
 
 interface ChatInterface {
@@ -49,18 +53,19 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const dispatch = useAppDispatch();
 
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
+  const attachmentLimit = useAppSelector(state => state.instance.configuration.getIn(['chats', 'max_media_attachments']) as number);
 
   const [content, setContent] = useState<string>('');
-  const [attachment, setAttachment] = useState<any>(undefined);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const isSubmitDisabled = content.length === 0 && !attachment;
+  const isSubmitDisabled = content.length === 0 && attachments.length === 0;
 
   const submitMessage = () => {
-    createChatMessage.mutate({ chatId: chat.id, content, mediaId: attachment?.id }, {
+    createChatMessage.mutate({ chatId: chat.id, content, mediaIds: attachments.map(a => a.id) }, {
       onSuccess: () => {
         setErrorMessage(undefined);
       },
@@ -79,7 +84,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       clearNativeInputValue(inputRef.current);
     }
     setContent('');
-    setAttachment(undefined);
+    setAttachments([]);
     setIsUploading(false);
     setUploadProgress(0);
     setResetFileKey(fileKeyGen());
@@ -127,7 +132,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const handleMouseOver = () => markRead();
 
   const handleRemoveFile = () => {
-    setAttachment(undefined);
+    setAttachments([]);
     setResetFileKey(fileKeyGen());
   };
 
@@ -137,13 +142,18 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   };
 
   const handleFiles = (files: FileList) => {
+    if (files.length + attachments.length > attachmentLimit) {
+      toast.error(messages.uploadErrorLimit);
+      return;
+    }
+
     setIsUploading(true);
 
     const data = new FormData();
     data.append('file', files[0]);
 
     dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
-      setAttachment(normalizeAttachment(response.data));
+      setAttachments([...attachments, normalizeAttachment(response.data)]);
       setIsUploading(false);
     }).catch(() => {
       setIsUploading(false);
@@ -172,7 +182,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onSelectFile={handleFiles}
         resetFileKey={resetFileKey}
         onPaste={handlePaste}
-        attachments={attachment ? [attachment] : []}
+        attachments={attachments}
         onDeleteAttachment={handleRemoveFile}
         isUploading={isUploading}
         uploadProgress={uploadProgress}

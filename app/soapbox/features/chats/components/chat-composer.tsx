@@ -73,6 +73,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocked_by']));
   const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
   const maxCharacterCount = useAppSelector((state) => state.instance.getIn(['configuration', 'chats', 'max_characters']) as number);
+  const attachmentLimit = useAppSelector(state => state.instance.configuration.getIn(['chats', 'max_media_attachments']) as number);
 
   const [suggestions, setSuggestions] = useState<Suggestion>(initialSuggestionState);
   const isSuggestionsAvailable = suggestions.list.length > 0;
@@ -172,6 +173,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               resetFileKey={resetFileKey}
               iconClassName='w-5 h-5'
               className='text-primary-500'
+              disabled={attachments.length >= attachmentLimit}
             />
           </Stack>
         )}
