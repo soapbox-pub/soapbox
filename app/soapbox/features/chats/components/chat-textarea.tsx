@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Textarea } from 'soapbox/components/ui';
+import { HStack, Textarea } from 'soapbox/components/ui';
 import { Attachment } from 'soapbox/types/entities';
 
 import ChatPendingUpload from './chat-pending-upload';
@@ -35,19 +35,23 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
     `}
     >
       {(!!attachments?.length || isUploading) && (
-        <div className='flex p-3 pb-0'>
-          {isUploading && (
-            <ChatPendingUpload progress={uploadProgress} />
-          )}
-
+        <HStack className='-ml-2 -mt-2 p-3 pb-0' wrap>
           {attachments?.map(attachment => (
-            <ChatUpload
-              key={attachment.id}
-              attachment={attachment}
-              onDelete={onDeleteAttachment}
-            />
+            <div className='ml-2 mt-2 flex'>
+              <ChatUpload
+                key={attachment.id}
+                attachment={attachment}
+                onDelete={onDeleteAttachment}
+              />
+            </div>
           ))}
-        </div>
+
+          {isUploading && (
+            <div className='ml-2 mt-2 flex'>
+              <ChatPendingUpload progress={uploadProgress} />
+            </div>
+          )}
+        </HStack>
       )}
 
       <Textarea theme='transparent' {...rest} />
