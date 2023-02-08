@@ -249,6 +249,11 @@ const getInstanceFeatures = (instance: Instance) => {
     chatAcceptance: v.software === TRUTHSOCIAL,
 
     /**
+     * Ability to add reactions to chat messages.
+     */
+    chatEmojiReactions: v.software === TRUTHSOCIAL,
+
+    /**
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
@@ -303,6 +308,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to only chat with people that follow you.
      */
     chatsWithFollowers: v.software === TRUTHSOCIAL,
+
 
     /**
      * Mastodon's newer solution for direct messaging.
@@ -377,7 +383,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * The backend allows only RGI ("Recommended for General Interchange") emoji reactions.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
-    emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
+    emojiReactsRGI: (v.software === PLEROMA && gte(v.version, '2.2.49')) || v.software === TRUTHSOCIAL,
 
     /**
      * Sign in with an Ethereum wallet.

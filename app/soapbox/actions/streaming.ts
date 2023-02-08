@@ -2,7 +2,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { getUnreadChatsCount, updateChatListItem } from 'soapbox/utils/chats';
+import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats';
 import { removePageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -169,6 +169,9 @@ const connectTimelineStream = (
               updateChatQuery(JSON.parse(data.payload));
             }
           });
+          break;
+        case 'chat_message.reaction': // TruthSocial
+          updateChatMessage(JSON.parse(data.payload));
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));

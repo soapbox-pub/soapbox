@@ -16,7 +16,7 @@ const mapStateToProps = (state: RootState) => ({
   openedViaKeyboard: state.dropdown_menu.keyboard,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, { status, items }: Partial<IDropdown>) => ({
+const mapDispatchToProps = (dispatch: Dispatch, { status, items, ...filteredProps }: Partial<IDropdown>) => ({
   onOpen(
     id: number,
     onItemClick: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
@@ -28,10 +28,18 @@ const mapDispatchToProps = (dispatch: Dispatch, { status, items }: Partial<IDrop
       actions: items,
       onClick: onItemClick,
     }) : openDropdownMenu(id, dropdownPlacement, keyboard));
+
+    if (filteredProps.onOpen) {
+      filteredProps.onOpen(id, onItemClick, dropdownPlacement, keyboard);
+    }
   },
   onClose(id: number) {
     dispatch(closeModal('ACTIONS'));
     dispatch(closeDropdownMenu(id));
+
+    if (filteredProps.onClose) {
+      filteredProps.onClose(id);
+    }
   },
 });
 
