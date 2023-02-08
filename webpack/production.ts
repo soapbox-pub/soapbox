@@ -140,7 +140,7 @@ const configuration: Configuration = {
             '/report.html',
           ];
 
-          if (backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed')) {
+          if (backendRoutes.some(path => pathname.startsWith(path)) || pathname.endsWith('/embed') || pathname.endsWith('.rss')) {
             return url;
           }
         },
