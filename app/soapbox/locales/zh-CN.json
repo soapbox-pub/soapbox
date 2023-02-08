@@ -47,6 +47,7 @@
   "account.report": "举报 @{name}",
   "account.requested": "正在等待对方批准。点击以取消发送关注请求",
   "account.requested_small": "等待批准",
+  "account.rss_feed": "订阅 RSS 源",
   "account.search": "在 @{name} 的内容中搜索",
   "account.search_self": "搜索您的帖文",
   "account.share": "分享 @{name} 的个人资料",
