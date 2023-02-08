@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { Text } from 'soapbox/components/ui';
@@ -29,8 +29,8 @@ const ChatMessageReaction = (props: IChatMessageReaction) => {
       type='button'
       onClick={handleClick}
       className={
-        classNames({
-          'w-12 rounded-lg flex items-center justify-between text-sm border border-solid text-gray-700 dark:text-gray-600 px-2 py-1 space-x-1.5 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800 whitespace-nowrap': true,
+        clsx({
+          'w-12 rounded-lg flex justify-between text-sm border items-center border-solid text-gray-700 dark:text-gray-600 px-2 py-1 space-x-1.5 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800 whitespace-nowrap': true,
           'border-primary-500 dark:border-primary-400': emojiReaction.me,
           'border-gray-300 dark:border-gray-800': !emojiReaction.me,
         })
