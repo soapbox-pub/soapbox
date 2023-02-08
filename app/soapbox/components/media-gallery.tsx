@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import { Attachment } from 'soapbox/types/entities';
@@ -68,7 +68,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
   }, [node.current]);
 
   return (
-    <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
+    <div className={clsx('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
       {children}
     </div>
   );

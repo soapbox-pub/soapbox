@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import escape from 'lodash/escape';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -195,13 +195,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   };
 
   const maybeRenderMedia = (chatMessage: ChatMessageEntity) => {
-    const { attachment } = chatMessage;
-    if (!attachment) return null;
+    if (!chatMessage.media_attachments.size) return null;
     return (
       <Bundle fetchComponent={MediaGallery}>
         {(Component: any) => (
           <Component
-            media={ImmutableList([attachment])}
+            media={chatMessage.media_attachments}
             onOpenMedia={onOpenMedia}
             visible
           />
@@ -281,20 +280,20 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
       <div key={chatMessage.id} className='group' data-testid='chat-message'>
         <Stack
           space={1.5}
-          className={classNames({
+          className={clsx({
             'ml-auto': isMyMessage,
           })}
         >
           <HStack
             alignItems='center'
             justifyContent={isMyMessage ? 'end' : 'start'}
-            className={classNames({
+            className={clsx({
               'opacity-50': chatMessage.pending,
             })}
           >
             {menu.length > 0 && (
               <div
-                className={classNames({
+                className={clsx({
                   'hidden focus:block group-hover:block text-gray-500': true,
                   'mr-2 order-1': isMyMessage,
                   'ml-2 order-2': !isMyMessage,
@@ -314,9 +313,9 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
             <Stack
               space={0.5}
-              className={classNames({
+              className={clsx({
                 'max-w-[85%]': true,
-                'flex-1': chatMessage.attachment,
+                'flex-1': !!chatMessage.media_attachments.size,
                 'order-2': isMyMessage,
                 'order-1': !isMyMessage,
               })}
@@ -329,10 +328,10 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
                   <div
                     title={getFormattedTimestamp(chatMessage)}
                     className={
-                      classNames({
+                      clsx({
                         'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
-                        'rounded-tr-sm': chatMessage.attachment && isMyMessage,
-                        'rounded-tl-sm': chatMessage.attachment && !isMyMessage,
+                        'rounded-tr-sm': (!!chatMessage.media_attachments.size) && isMyMessage,
+                        'rounded-tl-sm': (!!chatMessage.media_attachments.size) && !isMyMessage,
                         '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
                         '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
                         'bg-primary-500 text-white': isMyMessage,
@@ -358,12 +357,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
           <HStack
             alignItems='center'
             space={2}
-            className={classNames({
+            className={clsx({
               'ml-auto': isMyMessage,
             })}
           >
             <div
-              className={classNames({
+              className={clsx({
                 'text-right': isMyMessage,
                 'order-2': !isMyMessage,
               })}

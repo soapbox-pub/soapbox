@@ -11,7 +11,7 @@ import type { Attachment, Card, Emoji } from 'soapbox/types/entities';
 
 export const ChatMessageRecord = ImmutableRecord({
   account_id: '',
-  attachment: null as Attachment | null,
+  media_attachments: ImmutableList<Attachment>(),
   card: null as Card | null,
   chat_id: '',
   content: '',
@@ -24,12 +24,15 @@ export const ChatMessageRecord = ImmutableRecord({
 });
 
 const normalizeMedia = (status: ImmutableMap<string, any>) => {
+  const attachments = status.get('media_attachments');
   const attachment = status.get('attachment');
 
-  if (attachment) {
-    return status.set('attachment', normalizeAttachment(attachment));
+  if (attachments) {
+    return status.set('media_attachments', ImmutableList(attachments.map(normalizeAttachment)));
+  } else if (attachment) {
+    return status.set('media_attachments', ImmutableList([normalizeAttachment(attachment)]));
   } else {
-    return status;
+    return status.set('media_attachments', ImmutableList());
   }
 };
 

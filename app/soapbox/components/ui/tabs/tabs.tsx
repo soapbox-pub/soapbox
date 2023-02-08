@@ -5,7 +5,7 @@ import {
   Tab as ReachTab,
   useTabsContext,
 } from '@reach/tabs';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -46,11 +46,11 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
         ref={ref}
       >
         <div
-          className='absolute h-[3px] w-full bg-primary-200 dark:bg-primary-700'
+          className='absolute h-[3px] w-full bg-primary-200 dark:bg-gray-800'
           style={{ top }}
         />
         <div
-          className={classNames('absolute h-[3px] bg-primary-500 transition-all duration-200', {
+          className={clsx('absolute h-[3px] bg-primary-500 transition-all duration-200', {
             'hidden': top <= 0,
           })}
           style={{ left, top, width }}

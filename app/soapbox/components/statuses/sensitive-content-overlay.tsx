@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -91,7 +91,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
 
   return (
     <div
-      className={classNames('absolute z-40', {
+      className={clsx('absolute z-40', {
         'cursor-default backdrop-blur-lg rounded-lg w-full h-full border-0 flex justify-center': !visible,
         'bg-gray-800/75 inset-0': !visible,
         'bottom-1 right-1': visible,

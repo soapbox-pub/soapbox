@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
       {count !== undefined ? (
         <IconWithCounter
           src={src}
-          className={classNames({
+          className={clsx({
             'h-5 w-5': true,
             'text-gray-600': !active,
             'text-primary-500': active,
@@ -44,7 +44,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
       ) : (
         <Icon
           src={src}
-          className={classNames({
+          className={clsx({
             'h-5 w-5': true,
             'text-gray-600': !active,
             'text-primary-500': active,
@@ -56,7 +56,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
         tag='span'
         size='xs'
         weight='medium'
-        className={classNames({
+        className={clsx({
           'text-gray-600': !active,
           'text-primary-500': active,
         })}
