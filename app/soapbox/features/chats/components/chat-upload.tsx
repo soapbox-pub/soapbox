@@ -4,10 +4,9 @@ import React from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
+import MediaPreview from 'soapbox/components/media/media-preview';
 import { Icon } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-
-import ChatUploadPreview from './chat-upload-preview';
 
 import type { Attachment } from 'soapbox/types/entities';
 
@@ -37,7 +36,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
         onClick={clickable ? handleOpenModal : undefined}
         className={clsx('h-full w-full', { 'cursor-zoom-in': clickable, 'cursor-default': !clickable })}
       >
-        <ChatUploadPreview attachment={attachment} />
+        <MediaPreview attachment={attachment} />
       </button>
     </div>
   );
