@@ -80,7 +80,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
   const hasAttachment = attachments.length > 0;
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
-  const isSubmitDisabled = disabled || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
+  const isSubmitDisabled = disabled || isUploading || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
 
   const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
 
@@ -173,7 +173,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               resetFileKey={resetFileKey}
               iconClassName='w-5 h-5'
               className='text-primary-500'
-              disabled={attachments.length >= attachmentLimit}
+              disabled={isUploading || (attachments.length >= attachmentLimit)}
             />
           </Stack>
         )}
