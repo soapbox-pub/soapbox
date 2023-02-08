@@ -1,6 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import React from 'react';
-import { IntlProvider } from 'react-intl';
 
 import { Toast } from 'soapbox/components/ui';
 
@@ -15,11 +14,7 @@ export default {
   },
 } as ComponentMeta<typeof Toast>;
 
-const Template: ComponentStory<typeof Toast> = (args) => (
-  <IntlProvider locale='en'>
-    <Toast {...args} />
-  </IntlProvider>
-);
+const Template: ComponentStory<typeof Toast> = (args) => <Toast {...args} />;
 
 export const Success = Template.bind({});
 Success.args = {
