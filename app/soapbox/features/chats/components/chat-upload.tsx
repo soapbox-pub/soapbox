@@ -28,7 +28,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
     <div className='relative isolate inline-block h-24 w-24 overflow-hidden rounded-lg bg-gray-200 dark:bg-primary-900'>
       <Blurhash hash={attachment.blurhash} className='absolute inset-0 -z-10 h-full w-full' />
 
-      <div className='absolute right-[6px] top-[6px]'>
+      <div className='absolute right-[6px] top-[6px] z-10'>
         <RemoveButton onClick={onDelete} />
       </div>
 
@@ -36,7 +36,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
         onClick={clickable ? handleOpenModal : undefined}
         className={clsx('h-full w-full', { 'cursor-zoom-in': clickable, 'cursor-default': !clickable })}
       >
-        <MediaPreview attachment={attachment} />
+        <MediaPreview attachment={attachment} withExt={false} />
       </button>
     </div>
   );

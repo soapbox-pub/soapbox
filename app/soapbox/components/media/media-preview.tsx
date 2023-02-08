@@ -1,5 +1,6 @@
 import React from 'react';
 
+import StillVideo from 'soapbox/components/still-video';
 import { Icon } from 'soapbox/components/ui';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 
@@ -8,15 +9,15 @@ import type { Attachment } from 'soapbox/types/entities';
 const defaultIcon = require('@tabler/icons/paperclip.svg');
 
 interface IMediaPreview {
-  className?: string
   attachment: Attachment
+  withExt?: boolean
 }
 
 /**
  * Displays a generic preview for an attachment depending on its media type.
  * It fills its container and is expected to be sized by its parent.
  */
-const MediaPreview: React.FC<IMediaPreview> = ({ className, attachment }) => {
+const MediaPreview: React.FC<IMediaPreview> = ({ attachment, withExt }) => {
   const mimeType = attachment.pleroma.get('mime_type') as string | undefined;
 
   switch (attachment.type) {
@@ -31,14 +32,10 @@ const MediaPreview: React.FC<IMediaPreview> = ({ className, attachment }) => {
       );
     case 'video':
       return (
-        <video
-          className='pointer-events-none h-full w-full object-cover'
-          src={attachment.preview_url}
-          autoPlay
-          playsInline
-          controls={false}
-          muted
-          loop
+        <StillVideo
+          className='h-full w-full object-cover'
+          src={attachment.url}
+          withExt={withExt}
         />
       );
     default:
