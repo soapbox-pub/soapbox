@@ -47,6 +47,7 @@
   "account.report": "Reportar a @{name}",
   "account.requested": "Esperando aprobación",
   "account.requested_small": "En espera de aprobación",
+  "account.rss_feed": "Suscríbete a la fuente RSS",
   "account.search": "Buscar en base a @{name}",
   "account.search_self": "Busca en tus entradas",
   "account.share": "Compartir el perfil de @{name}",
