@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -108,7 +108,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
                   <button
                     onClick={openFilePicker}
                     type='button'
-                    className={classNames({
+                    className={clsx({
                       'absolute -top-3 -right-3 p-1 bg-primary-600 rounded-full ring-2 ring-white dark:ring-primary-900 hover:bg-primary-700': true,
                       'opacity-50 pointer-events-none': isSubmitting,
                     })}

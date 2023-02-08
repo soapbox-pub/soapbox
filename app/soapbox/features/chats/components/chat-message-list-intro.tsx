@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -60,7 +60,7 @@ const ChatMessageListIntro = () => {
       alignItems='center'
       space={4}
       className={
-        classNames({
+        clsx({
           'w-3/4 mx-auto': needsAcceptance,
           'py-6': true, // needs to be padding to prevent Virtuoso bugs
         })

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { HStack } from 'soapbox/components/ui';
@@ -14,7 +14,7 @@ interface IPlaceholderStatus {
 /** Fake status to display while data is loading. */
 const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => (
   <div
-    className={classNames({
+    className={clsx({
       'status-placeholder bg-white dark:bg-primary-900': true,
       'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': !thread,
     })}

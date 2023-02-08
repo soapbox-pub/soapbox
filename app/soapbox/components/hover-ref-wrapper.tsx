@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 
@@ -47,7 +47,7 @@ export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, childre
   return (
     <Elem
       ref={ref}
-      className={classNames('hover-ref-wrapper', className)}
+      className={clsx('hover-ref-wrapper', className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

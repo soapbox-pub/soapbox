@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -24,11 +24,11 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
   const dark = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
 
-  const bodyClass = classNames(
+  const bodyClass = clsx(
     'site-preview',
-    'relative flex justify-center align-center text-base',
+    'align-center relative flex justify-center text-base',
     'border border-solid border-gray-200 dark:border-gray-600',
-    'h-40 rounded-lg overflow-hidden',
+    'h-40 overflow-hidden rounded-lg',
     {
       'bg-white': !dark,
       'bg-gray-900': dark,
@@ -43,7 +43,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />
       </div>
 
-      <div className={classNames('flex absolute inset-0 shadow z-10 h-12 lg:h-16', {
+      <div className={clsx('absolute inset-0 z-10 flex h-12 shadow lg:h-16', {
         'bg-white': !dark,
         'bg-gray-800': dark,
       })}

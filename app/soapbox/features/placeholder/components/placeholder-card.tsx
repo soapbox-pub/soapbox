@@ -1,11 +1,11 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
 /** Fake link preview to display while data is loading. */
 const PlaceholderCard: React.FC = () => (
-  <div className={classNames('status-card', {
+  <div className={clsx('status-card', {
     'animate-pulse': true,
   })}
   >

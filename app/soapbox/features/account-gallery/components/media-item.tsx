@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -83,7 +83,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
       conditionalAttributes.autoPlay = true;
     }
     thumbnail = (
-      <div className={classNames('media-gallery__gifv', { autoplay: autoPlayGif })}>
+      <div className={clsx('media-gallery__gifv', { autoplay: autoPlayGif })}>
         <video
           className='media-gallery__item-gifv-thumbnail'
           aria-label={attachment.description}
@@ -125,7 +125,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
       <a className='media-gallery__item-thumbnail aspect-square' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
           hash={attachment.get('blurhash')}
-          className={classNames('media-gallery__preview', {
+          className={clsx('media-gallery__preview', {
             'media-gallery__preview--hidden': visible,
           })}
         />

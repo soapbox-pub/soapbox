@@ -1,12 +1,10 @@
 import { AxiosError } from 'axios';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
 import { Stack } from 'soapbox/components/ui';
-import Upload from 'soapbox/components/upload';
-import UploadProgress from 'soapbox/components/upload-progress';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
@@ -159,26 +157,10 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   }, [chat.id, inputRef?.current]);
 
   return (
-    <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
+    <Stack className={clsx('flex grow overflow-hidden', className)} onMouseOver={handleMouseOver}>
       <div className='flex h-full grow justify-center overflow-hidden'>
         <ChatMessageList chat={chat} />
       </div>
-
-      {attachment && (
-        <div className='relative h-48'>
-          <Upload
-            media={attachment}
-            onDelete={handleRemoveFile}
-            withPreview
-          />
-        </div>
-      )}
-
-      {isUploading && (
-        <div className='p-4'>
-          <UploadProgress progress={uploadProgress * 100} />
-        </div>
-      )}
 
       <ChatComposer
         ref={inputRef}
@@ -190,7 +172,10 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onSelectFile={handleFiles}
         resetFileKey={resetFileKey}
         onPaste={handlePaste}
-        hasAttachment={!!attachment}
+        attachments={attachment ? [attachment] : []}
+        onDeleteAttachment={handleRemoveFile}
+        isUploading={isUploading}
+        uploadProgress={uploadProgress}
       />
     </Stack>
   );
