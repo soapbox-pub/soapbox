@@ -131,8 +131,10 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   const handleMouseOver = () => markRead();
 
-  const handleRemoveFile = () => {
-    setAttachments([]);
+  const handleRemoveFile = (i: number) => {
+    const newAttachments = [...attachments];
+    newAttachments.splice(i, 1);
+    setAttachments(newAttachments);
     setResetFileKey(fileKeyGen());
   };
 

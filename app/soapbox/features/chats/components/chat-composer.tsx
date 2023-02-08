@@ -43,7 +43,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   onSelectFile: (files: FileList, intl: IntlShape) => void
   resetFileKey: number | null
   attachments?: Attachment[]
-  onDeleteAttachment?: () => void
+  onDeleteAttachment?: (i: number) => void
   isUploading?: boolean
   uploadProgress?: number
 }
