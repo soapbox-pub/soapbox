@@ -74,7 +74,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
       {
         name: 'offset',
         options: {
-          offset: [-10, 0],
+          offset: [-10, 12],
         },
       },
     ],
