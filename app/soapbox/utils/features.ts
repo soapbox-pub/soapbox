@@ -251,7 +251,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /**
      * Ability to add reactions to chat messages.
      */
-    chatEmojiReactions: v.software === TRUTHSOCIAL,
+    chatEmojiReactions: false, // v.software === TRUTHSOCIAL,
 
     /**
      * Pleroma chats API.
