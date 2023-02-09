@@ -43,7 +43,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   onSelectFile: (files: FileList, intl: IntlShape) => void
   resetFileKey: number | null
   attachments?: Attachment[]
-  onDeleteAttachment?: () => void
+  onDeleteAttachment?: (i: number) => void
   isUploading?: boolean
   uploadProgress?: number
 }
@@ -73,13 +73,14 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocked_by']));
   const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
   const maxCharacterCount = useAppSelector((state) => state.instance.getIn(['configuration', 'chats', 'max_characters']) as number);
+  const attachmentLimit = useAppSelector(state => state.instance.configuration.getIn(['chats', 'max_media_attachments']) as number);
 
   const [suggestions, setSuggestions] = useState<Suggestion>(initialSuggestionState);
   const isSuggestionsAvailable = suggestions.list.length > 0;
 
   const hasAttachment = attachments.length > 0;
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
-  const isSubmitDisabled = disabled || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
+  const isSubmitDisabled = disabled || isUploading || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
 
   const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
 
@@ -172,6 +173,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               resetFileKey={resetFileKey}
               iconClassName='w-5 h-5'
               className='text-primary-500'
+              disabled={isUploading || (attachments.length >= attachmentLimit)}
             />
           </Stack>
         )}
