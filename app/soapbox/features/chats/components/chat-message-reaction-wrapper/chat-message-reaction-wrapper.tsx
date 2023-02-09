@@ -41,6 +41,7 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
         referenceElement={referenceElement}
         onReact={handleSelect}
         onClose={() => setIsOpen(false)}
+        all={false}
       />
     </React.Fragment>
   );
