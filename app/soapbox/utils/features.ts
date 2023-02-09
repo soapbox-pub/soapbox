@@ -309,7 +309,6 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     chatsWithFollowers: v.software === TRUTHSOCIAL,
 
-
     /**
      * Mastodon's newer solution for direct messaging.
      * @see {@link https://docs.joinmastodon.org/methods/timelines/conversations/}
@@ -383,7 +382,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * The backend allows only RGI ("Recommended for General Interchange") emoji reactions.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
-    emojiReactsRGI: (v.software === PLEROMA && gte(v.version, '2.2.49')) || v.software === TRUTHSOCIAL,
+    emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
 
     /**
      * Sign in with an Ethereum wallet.
