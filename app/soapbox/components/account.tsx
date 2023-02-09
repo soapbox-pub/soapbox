@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import { useAppSelector, useOnScreen } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
@@ -117,19 +117,14 @@ const Account = ({
   emoji,
   note,
 }: IAccount) => {
-  const overflowRef = React.useRef<HTMLDivElement>(null);
-  const actionRef = React.useRef<HTMLDivElement>(null);
-  // @ts-ignore
-  const isOnScreen = useOnScreen(overflowRef);
-
-  const [style, setStyle] = React.useState<React.CSSProperties>({ visibility: 'hidden' });
+  const overflowRef = useRef<HTMLDivElement>(null);
+  const actionRef = useRef<HTMLDivElement>(null);
 
   const me = useAppSelector((state) => state.me);
   const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
 
   const handleAction = () => {
-    // @ts-ignore
-    onActionClick(account);
+    onActionClick!(account);
   };
 
   const renderAction = () => {
@@ -162,19 +157,6 @@ const Account = ({
 
   const intl = useIntl();
 
-  React.useEffect(() => {
-    const style: React.CSSProperties = {};
-    const actionWidth = actionRef.current?.clientWidth || 0;
-
-    if (overflowRef.current) {
-      style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
-    } else {
-      style.visibility = 'hidden';
-    }
-
-    setStyle(style);
-  }, [isOnScreen, overflowRef, actionRef]);
-
   if (!account) {
     return null;
   }
@@ -195,7 +177,7 @@ const Account = ({
   return (
     <div data-testid='account' className='group block w-full shrink-0' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3}>
+        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3} className='overflow-hidden'>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -215,7 +197,7 @@ const Account = ({
             </LinkEl>
           </ProfilePopper>
 
-          <div className='grow'>
+          <div className='grow overflow-hidden'>
             <ProfilePopper
               condition={showProfileHoverCard}
               wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -225,7 +207,7 @@ const Account = ({
                 title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
-                <HStack space={1} alignItems='center' grow style={style}>
+                <HStack space={1} alignItems='center' grow>
                   <Text
                     size='sm'
                     weight='semibold'
@@ -241,7 +223,7 @@ const Account = ({
             </ProfilePopper>
 
             <Stack space={withAccountNote || note ? 1 : 0}>
-              <HStack alignItems='center' space={1} style={style}>
+              <HStack alignItems='center' space={1}>
                 <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (

@@ -31,7 +31,3 @@ div:focus[data-reach-menu-list] {
 [data-reach-menu-link][data-disabled] {
   @apply opacity-25 cursor-default;
 }
-
-[data-reach-menu-popover] hr {
-  @apply my-1 mx-2 border-t-2 border-gray-100 dark:border-gray-800;
-}
