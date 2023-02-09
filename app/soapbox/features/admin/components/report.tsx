@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
 import toast from 'soapbox/toast';

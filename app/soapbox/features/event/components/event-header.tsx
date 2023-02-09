@@ -396,7 +396,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                   return <MenuDivider key={idx} />;
                 } else {
                   const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.newTab ? '_blank' : '_self' };
+                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.target || '_self' };
 
                   return (
                     <Comp key={idx} {...itemProps} className='group'>

@@ -26,7 +26,7 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { icon = null, text, meta = null, active = false, href = '#', isLogout, destructive } = action;
+    const { icon = null, text, meta = null, active = false, href = '#', destructive } = action;
 
     const Comp = href === '#' ? 'button' : 'a';
     const compProps = href === '#' ? { onClick: onClick } : { href: href, rel: 'noopener' };
@@ -38,7 +38,6 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
           space={2.5}
           data-index={i}
           className={clsx('w-full', { active, destructive })}
-          data-method={isLogout ? 'delete' : null}
           element={Comp}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}

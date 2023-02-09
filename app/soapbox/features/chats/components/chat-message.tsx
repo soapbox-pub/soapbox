@@ -7,8 +7,8 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import emojify from 'soapbox/features/emoji/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
@@ -230,7 +230,7 @@ const ChatMessage = (props: IChatMessage) => {
         ) : null}
 
         {menu.length > 0 && (
-          <DropdownMenuContainer
+          <DropdownMenu
             items={menu}
             onOpen={() => setIsMenuOpen(true)}
             onClose={() => setIsMenuOpen(false)}
@@ -248,7 +248,7 @@ const ChatMessage = (props: IChatMessage) => {
                 className='h-4 w-4'
               />
             </button>
-          </DropdownMenuContainer>
+          </DropdownMenu>
         )}
       </div>
 
