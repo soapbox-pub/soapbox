@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ServiceWorker: switch to a network-first strategy. The "An update is available!" prompt goes away.
 - Posts: increased font size of focused status in threads.
 - Posts: let "mute conversation" be clicked from any feed, not just noficiations.
+- Posts: display all emoji reactions.
 
 ### Fixed
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
