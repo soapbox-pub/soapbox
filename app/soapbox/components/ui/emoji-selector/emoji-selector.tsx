@@ -118,7 +118,11 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
       {...attributes.popper}
     >
       {expanded ? (
-        <Picker />
+        <Picker
+          set='twitter'
+          backgroundImageFn={() => require('emoji-datasource/img/twitter/sheets/32.png')}
+          onClick={(emoji: any) => onReact(emoji.native)}
+        />
       ) : (
         <HStack
           className={clsx('z-[999] flex w-max max-w-[100vw] flex-wrap space-x-3 rounded-full bg-white px-3 py-2.5 shadow-lg focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700')}
