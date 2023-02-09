@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Events: allow to repost events in event menu.
 - Groups: Initial support for groups.
 - Profile: Add RSS link to user profiles.
+- Reactions: adds support for reacting to chat messages.
 
 ### Changed
 - Chats: improved display of media attachments.
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: increased font size of focused status in threads.
 - Posts: let "mute conversation" be clicked from any feed, not just noficiations.
 - Posts: display all emoji reactions.
+- Reactions: improved UI of reactions on statuses.
 
 ### Fixed
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.

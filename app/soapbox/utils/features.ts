@@ -249,6 +249,11 @@ const getInstanceFeatures = (instance: Instance) => {
     chatAcceptance: v.software === TRUTHSOCIAL,
 
     /**
+     * Ability to add reactions to chat messages.
+     */
+    chatEmojiReactions: false, // v.software === TRUTHSOCIAL,
+
+    /**
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */

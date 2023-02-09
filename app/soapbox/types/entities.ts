@@ -9,6 +9,7 @@ import {
   ChatRecord,
   ChatMessageRecord,
   EmojiRecord,
+  EmojiReactionRecord,
   FieldRecord,
   FilterRecord,
   GroupRecord,
@@ -40,6 +41,7 @@ type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
+type EmojiReaction = ReturnType<typeof EmojiReactionRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
 type Group = ReturnType<typeof GroupRecord>;
@@ -84,6 +86,7 @@ export {
   Chat,
   ChatMessage,
   Emoji,
+  EmojiReaction,
   Field,
   Filter,
   Group,

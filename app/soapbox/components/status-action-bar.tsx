@@ -14,8 +14,8 @@ import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
-import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
+import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
 import { HStack } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
@@ -629,7 +629,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         )}
 
         {features.emojiReacts ? (
-          <EmojiButtonWrapper statusId={status.id}>
+          <StatusReactionWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
               icon={require('@tabler/icons/heart.svg')}
@@ -640,7 +640,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               emoji={meEmojiReact}
               text={withLabels ? meEmojiTitle : undefined}
             />
-          </EmojiButtonWrapper>
+          </StatusReactionWrapper>
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
