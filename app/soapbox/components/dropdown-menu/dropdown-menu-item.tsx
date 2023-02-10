@@ -69,7 +69,7 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
   }, [itemRef.current, index]);
 
   if (item === null) {
-    return <li className='my-2 block h-[1px] bg-gray-100 dark:bg-gray-800' />;
+    return <li className='my-1 mx-2 h-[2px] bg-gray-100 dark:bg-gray-800' />;
   }
 
   return (
@@ -87,7 +87,7 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
         title={item.text}
         className={
           clsx({
-            'flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 cursor-pointer': true,
+            'flex px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none cursor-pointer': true,
             'text-danger-600 dark:text-danger-400': item.destructive,
           })
         }

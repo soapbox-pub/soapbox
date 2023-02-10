@@ -18,16 +18,16 @@ import type { Status } from 'soapbox/types/entities';
 export type Menu = Array<MenuItem | null>;
 
 interface IDropdownMenu {
-  children?: JSX.Element,
-  disabled?: boolean,
-  items: Menu,
-  onClose?: () => void,
-  onOpen?: () => void,
-  onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
-  placement?: Placement,
-  src?: string,
-  status?: Status,
-  title?: string,
+  children?: React.ReactElement
+  disabled?: boolean
+  items: Menu
+  onClose?: () => void
+  onOpen?: () => void
+  onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>
+  placement?: Placement
+  src?: string
+  status?: Status
+  title?: string
 }
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -286,6 +286,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
                   'absolute w-0 h-0 border-0 border-solid border-transparent': true,
                   'border-t-white dark:border-t-gray-900 -bottom-[5px] -ml-[5px] left-[calc(50%-2.5px)] border-t-[5px] border-x-[5px] border-b-0': placement === 'top',
                   'border-b-white dark:border-b-gray-900 -top-[5px] -ml-[5px] left-[calc(50%-2.5px)] border-t-0 border-x-[5px] border-b-[5px]': placement === 'bottom',
+                  'border-b-white dark:border-b-gray-900 -top-[5px] -ml-[5px] left-[92.5%] border-t-0 border-x-[5px] border-b-[5px]': placement === 'bottom-end',
                 })
               }
             />

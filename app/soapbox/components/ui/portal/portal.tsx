@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 interface IPortal {
@@ -9,17 +9,14 @@ interface IPortal {
  * Portal
  */
 const Portal: React.FC<IPortal> = ({ children }) => {
-  const isRendered = useRef<boolean>(false);
+  const [isRendered, setIsRendered] = useState<boolean>(false);
 
   useLayoutEffect(() => {
-    if (isRendered.current) {
-      return;
-    }
+    setIsRendered(true);
+  }, []);
 
-    isRendered.current = true;
-  }, [isRendered.current]);
 
-  if (!isRendered.current) {
+  if (!isRendered) {
     return null;
   }
 
