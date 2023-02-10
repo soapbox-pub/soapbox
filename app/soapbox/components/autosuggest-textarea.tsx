@@ -1,9 +1,9 @@
-import { Portal } from '@reach/portal';
 import clsx from 'clsx';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
+import { Portal } from 'soapbox/components/ui';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../features/compose/components/autosuggest-account';

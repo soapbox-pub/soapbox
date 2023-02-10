@@ -57,7 +57,6 @@
     "@reach/combobox": "^0.18.0",
     "@reach/menu-button": "^0.18.0",
     "@reach/popover": "^0.18.0",
-    "@reach/portal": "^0.18.0",
     "@reach/rect": "^0.18.0",
     "@reach/tabs": "^0.18.0",
     "@reach/tooltip": "^0.18.0",
