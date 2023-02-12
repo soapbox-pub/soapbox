@@ -1,4 +1,4 @@
-import classnames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
@@ -112,7 +112,7 @@ const Card: React.FC<ICard> = ({
 
   const interactive = card.type !== 'link';
   horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
+  const className = clsx('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
   const ratio = getRatio(card);
   const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
@@ -223,7 +223,7 @@ const Card: React.FC<ICard> = ({
     );
   } else if (card.image) {
     embed = (
-      <div className={classnames(
+      <div className={clsx(
         'status-card__image',
         'w-full flex-none rounded-l md:h-auto md:w-auto md:flex-auto',
         {

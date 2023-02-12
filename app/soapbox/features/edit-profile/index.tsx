@@ -152,14 +152,14 @@ const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, on
     <HStack space={2} grow>
       <Input
         type='text'
-        outerClassName='w-2/5 flex-grow'
+        outerClassName='w-2/5 grow'
         value={value.name}
         onChange={handleChange('name')}
         placeholder={intl.formatMessage(messages.metaFieldLabel)}
       />
       <Input
         type='text'
-        outerClassName='w-3/5 flex-grow'
+        outerClassName='w-3/5 grow'
         value={value.value}
         onChange={handleChange('value')}
         placeholder={intl.formatMessage(messages.metaFieldContent)}
