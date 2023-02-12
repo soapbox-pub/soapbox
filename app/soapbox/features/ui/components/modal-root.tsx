@@ -46,6 +46,7 @@ import { BundleProps } from './bundle';
 import BundleModalError from './bundle-modal-error';
 import ModalLoading from './modal-loading';
 
+/* eslint sort-keys: "error" */
 const MODAL_COMPONENTS = {
   'ACCOUNT_MODERATION': AccountModerationModal,
   'ACCOUNT_NOTE': AccountNoteModal,
