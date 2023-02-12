@@ -492,7 +492,6 @@
   "filters.context_header": "過濾器場景",
   "filters.context_hint": "一個或多個應用至過濾器的條件",
   "filters.filters_list_context_label": "過濾器場景：",
-  "filters.filters_list_delete": "刪除過濾詞",
   "filters.filters_list_details_label": "過濾詞設定：",
   "filters.filters_list_drop": "丟棄",
   "filters.filters_list_hide": "隱藏",

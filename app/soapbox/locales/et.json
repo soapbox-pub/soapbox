@@ -179,7 +179,6 @@
   "empty_column.notifications": "Sul ei ole veel teateid. Suhtle teistega alustamaks vestlust.",
   "empty_column.public": "Siin pole midagi! Kirjuta midagi avalikut või jälgi ise kasutajaid täitmaks seda ruumi",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Autoriseeri",
   "follow_request.reject": "Hülga",
   "getting_started.open_source_notice": "{code_name} on avatud lähtekoodiga tarkvara. Saad panustada või teatada probleemidest GitLabis {code_link} (v{code_version}).",

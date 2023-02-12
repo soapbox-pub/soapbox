@@ -179,7 +179,6 @@
   "empty_column.notifications": "Sinulle ei ole vielä ilmoituksia. Aloita keskustelu juttelemalla muille.",
   "empty_column.public": "Täällä ei ole mitään! Saat sisältöä, kun kirjoitat jotain julkisesti tai käyt seuraamassa muiden instanssien käyttäjiä",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Valtuuta",
   "follow_request.reject": "Hylkää",
   "getting_started.open_source_notice": "{code_name} on avoimen lähdekoodin ohjelma. Voit avustaa tai raportoida ongelmia GitLabissa: {code_link} (v{code_version}).",

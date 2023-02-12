@@ -654,7 +654,6 @@
   "filters.context_header": "سياق المُرشِّح",
   "filters.context_hint": "سياق واحد أو أكثر حيث يجب تطبيق المُرشِّح",
   "filters.filters_list_context_label": "سياق المُرشِّح:",
-  "filters.filters_list_delete": "حذف",
   "filters.filters_list_details_label": "إعدادات المُرشِّح:",
   "filters.filters_list_drop": "إسقاط",
   "filters.filters_list_hide": "إخفاء",

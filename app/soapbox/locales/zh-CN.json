@@ -706,7 +706,6 @@
   "filters.context_header": "过滤词场景",
   "filters.context_hint": "过滤词的应用场景",
   "filters.filters_list_context_label": "过滤词场景：",
-  "filters.filters_list_delete": "删除过滤词",
   "filters.filters_list_details_label": "过滤词设定：",
   "filters.filters_list_drop": "丢弃",
   "filters.filters_list_hide": "隐藏",

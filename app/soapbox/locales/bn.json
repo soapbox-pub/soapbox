@@ -179,7 +179,6 @@
   "empty_column.notifications": "আপনার এখনো কোনো প্রজ্ঞাপন নেই। কথোপকথন শুরু করতে,  অন্যদের সাথে মেলামেশা করতে পারেন।",
   "empty_column.public": "এখানে এখনো কিছু নেই! প্রকাশ্য ভাবে কিছু লিখুন বা অন্য সার্ভার থেকে কাওকে অনুসরণ করে এই জায়গা ভরে ফেলুন",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "অনুমতি দিন",
   "follow_request.reject": "প্রত্যাখ্যান করুন",
   "getting_started.open_source_notice": "{code_name} একটি মুক্ত সফটওয়্যার। তৈরিতে সাহায্য করতে বা কোনো সমস্যা সম্পর্কে জানাতে আমাদের গিটহাবে যেতে পারেন {code_link} (v{code_version})।",

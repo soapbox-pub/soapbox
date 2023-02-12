@@ -678,7 +678,6 @@
   "filters.context_header": "Filter contexts",
   "filters.context_hint": "One or multiple contexts where the filter should apply",
   "filters.filters_list_context_label": "Contexte du filtre :",
-  "filters.filters_list_delete": "Delete",
   "filters.filters_list_details_label": "Paramètres de filtre :",
   "filters.filters_list_drop": "Drop",
   "filters.filters_list_hide": "Hide",

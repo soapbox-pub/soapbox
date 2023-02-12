@@ -179,7 +179,6 @@
   "empty_column.notifications": "Vi ankoraŭ ne havas sciigojn. Interagu kun aliaj por komenci konversacion.",
   "empty_column.public": "Estas nenio ĉi tie! Publike skribu ion, aŭ mane sekvu uzantojn de aliaj serviloj por plenigi la publikan tempolinion",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Rajtigi",
   "follow_request.reject": "Rifuzi",
   "getting_started.open_source_notice": "{code_name} estas malfermitkoda programo. Vi povas kontribui aŭ raporti problemojn en GitLab je {code_link} (v{code_version}).",

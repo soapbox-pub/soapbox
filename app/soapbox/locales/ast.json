@@ -147,7 +147,6 @@
   "empty_column.notifications": "Entá nun tienes dengún avisu. Interactua con otros p'aniciar la conversación.",
   "empty_column.public": "There is nothing here! Write something publicly, or manually follow users from other instances to fill it up",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Autorizar",
   "follow_request.reject": "Refugar",
   "getting_started.open_source_notice": "{code_name} ye software de códigu abiertu. Pues collaborar o informar de fallos en {code_link} (v{code_version}).",

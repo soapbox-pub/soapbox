@@ -155,7 +155,6 @@
   "empty_column.notifications": "Ոչ մի ծանուցում դեռ չունես։ Բզիր մյուսներին՝ խոսակցությունը սկսելու համար։",
   "empty_column.public": "Այստեղ բան չկա՛։ Հրապարակային մի բան գրիր կամ հետեւիր այլ հանգույցներից էակների՝ այն լցնելու համար։",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Վավերացնել",
   "follow_request.reject": "Մերժել",
   "getting_started.open_source_notice": "Մաստոդոնը բաց ելատեքստով ծրագրակազմ է։ Կարող ես ներդրում անել կամ վրեպներ զեկուցել ԳիթՀաբում՝ {code_link} (v{code_version})։",

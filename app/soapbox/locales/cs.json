@@ -343,7 +343,6 @@
   "filters.context_header": "Filtrovat obsah",
   "filters.context_hint": "Kde všude by měl být filtr aktivován",
   "filters.filters_list_context_label": "Kontexty filtru:",
-  "filters.filters_list_delete": "Odstranit",
   "filters.filters_list_details_label": "Nastavení filtru:",
   "filters.filters_list_drop": "Zahodit",
   "filters.filters_list_hide": "Schovat",

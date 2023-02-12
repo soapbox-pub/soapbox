@@ -175,7 +175,6 @@
   "empty_column.notifications": "Ende s’keni ndonjë njoftim. Ndërveproni me të tjerët që të nisë biseda.",
   "empty_column.public": "S’ka gjë këtu! Shkruani diçka publikisht, ose ndiqni dorazi përdorues prej instancash të tjera, që ta mbushni këtë zonë",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Autorizoje",
   "follow_request.reject": "Hidhe tej",
   "getting_started.open_source_notice": "{code_name}-i është software me burim të hapur. Mund të jepni ndihmesë ose të njoftoni probleme në GitLab, te {code_link} (v{code_version}).",
