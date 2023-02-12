@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Groups: Initial support for groups.
 - Profile: Add RSS link to user profiles.
 - Reactions: adds support for reacting to chat messages.
+- Groups: initial support for groups.
+- Profile: add RSS link to user profiles.
+- Posts: fix posts filtering.
 
 ### Changed
 - Chats: improved display of media attachments.
