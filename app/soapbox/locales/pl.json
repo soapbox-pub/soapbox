@@ -576,7 +576,6 @@
   "filters.context_header": "Konteksty filtru",
   "filters.context_hint": "Jedno lub więcej miejsc, gdzie filtr powinien zostać zaaplikowany",
   "filters.filters_list_context_label": "Konteksty filtru:",
-  "filters.filters_list_details_label": "Ustawienia filtru:",
   "filters.filters_list_drop": "Usuwaj",
   "filters.filters_list_hide": "Ukrywaj",
   "filters.filters_list_phrase_label": "Słowo kluczowe lub fraza:",

@@ -276,7 +276,6 @@
   "filters.context_header": "Filtra els contextos",
   "filters.context_hint": "Un o diversos contextos on s'ha d'aplicar el filtre",
   "filters.filters_list_context_label": "Filtra els contextos:",
-  "filters.filters_list_details_label": "Paràmetres del filtre:",
   "filters.filters_list_drop": "Abandona",
   "filters.filters_list_hide": "Amaga",
   "filters.filters_list_phrase_label": "Paraula clau o frase:",

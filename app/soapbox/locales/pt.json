@@ -537,7 +537,6 @@
   "filters.context_header": "Filtrar contextos",
   "filters.context_hint": "Um ou múltiplos contextos onde o filtro se deve aplicar",
   "filters.filters_list_context_label": "Filtrar contexto:",
-  "filters.filters_list_details_label": "Filtrar detalhes:",
   "filters.filters_list_drop": "Largar",
   "filters.filters_list_hide": "Ocultar",
   "filters.filters_list_phrase_label": "Palavra-chave ou frase:",

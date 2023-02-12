@@ -706,7 +706,6 @@
   "filters.context_header": "Contesto del filtro",
   "filters.context_hint": "Seleziona uno o più contesti a cui applicare il filtro",
   "filters.filters_list_context_label": "Contesto del filtro:",
-  "filters.filters_list_details_label": "Impostazioni del filtro:",
   "filters.filters_list_drop": "Cancella",
   "filters.filters_list_hide": "Nascondi",
   "filters.filters_list_phrase_label": "Parola chiave o frase:",

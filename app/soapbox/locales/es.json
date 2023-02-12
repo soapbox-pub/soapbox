@@ -706,7 +706,6 @@
   "filters.context_header": "Filter contexts",
   "filters.context_hint": "One or multiple contexts where the filter should apply",
   "filters.filters_list_context_label": "Filter contexts:",
-  "filters.filters_list_details_label": "Filter settings:",
   "filters.filters_list_drop": "Drop",
   "filters.filters_list_hide": "Hide",
   "filters.filters_list_phrase_label": "Keyword or phrase:",
