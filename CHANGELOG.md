@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatibility: improved browser support for older browsers.
 - Events: allow to repost events in event menu.
 - Groups: Initial support for groups.
+- Admin: allow to manage announcements.
 
 ### Changed
 - Chats: improved display of media attachments.
