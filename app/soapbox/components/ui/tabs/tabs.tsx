@@ -46,7 +46,7 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
         ref={ref}
       >
         <div
-          className='absolute h-[3px] w-full bg-primary-200 dark:bg-primary-700'
+          className='absolute h-[3px] w-full bg-primary-200 dark:bg-gray-800'
           style={{ top }}
         />
         <div

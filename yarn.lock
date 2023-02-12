@@ -14029,7 +14029,7 @@ postcss@^7.0.14, postcss@^7.0.26, postcss@^7.0.32, postcss@^7.0.35, postcss@^7.0
     picocolors "^0.2.1"
     source-map "^0.6.1"
 
-postcss@^8.2.15:
+postcss@^8.2.15, postcss@^8.4.4:
   version "8.4.21"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
   integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
@@ -14060,15 +14060,6 @@ postcss@^8.4.19:
   version "8.4.20"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.20.tgz#64c52f509644cecad8567e949f4081d98349dc56"
   integrity sha512-6Q04AXR1212bXr5fh03u8aAwbLxAQNGQ/Q1LNa0VfOI06ZAlhPHtQvE4OIdpj4kLThXilalPnmDSOD65DcHt+g==
-  dependencies:
-    nanoid "^3.3.4"
-    picocolors "^1.0.0"
-    source-map-js "^1.0.2"
-
-postcss@^8.4.4:
-  version "8.4.21"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
-  integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
   dependencies:
     nanoid "^3.3.4"
     picocolors "^1.0.0"
@@ -14743,12 +14734,10 @@ react-sparklines@^1.7.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-sticky-box@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-sticky-box/-/react-sticky-box-1.0.2.tgz#7e72a0f237bdf8270cec9254337f49519a411174"
-  integrity sha512-Kyvtppdtv1KqJyNU4DtrSMI0unyQRgtraZvVQ0GAazVbYiTsIVpyhpr+5R0Aavzu4uJNSe1awj2rk/qI7i6Zfw==
-  dependencies:
-    resize-observer-polyfill "^1.5.1"
+react-sticky-box@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-sticky-box/-/react-sticky-box-2.0.0.tgz#db3d19f700f2c2fb8405da6973cadd9b74ceea91"
+  integrity sha512-xTy/46lG6GlfdkGL7DoevLj+p3lqjvULZvGkN36/2oM8FrijvFq/zzfAtK0ZSnDxM9Ct6KOr5ZVuejVdDFqEcw==
 
 react-swipeable-views-core@^0.14.0:
   version "0.14.0"
@@ -16055,6 +16044,18 @@ store2@^2.12.0:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.14.2.tgz#56138d200f9fe5f582ad63bc2704dbc0e4a45068"
   integrity sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==
+
+storybook-i18n@^1.1.2:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/storybook-i18n/-/storybook-i18n-1.1.4.tgz#f463287fa7d8c79c8283c4e7157c8557ebaf408f"
+  integrity sha512-0xD005aEBWhuDFU9oO5Yf+33MZQa/NWa2CWjkBODhcqC+N5WJhEPGUSQs8o9AqzQoRpIBOMQ3CS0cbRGbBuTxQ==
+
+storybook-react-intl@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/storybook-react-intl/-/storybook-react-intl-1.1.1.tgz#e0f3dd36fd6ec2ef3ac077c9488bfa2299ae6705"
+  integrity sha512-KD1G7TPo3+9nBXMkg6lk9MpS3RYMjUxam8d5S/NhHwzom0cnTk2AW4bd0zRmJkdjds1xuIhwZxet7Ebp9dggzw==
+  dependencies:
+    storybook-i18n "^1.1.2"
 
 stream-browserify@^2.0.1:
   version "2.0.2"

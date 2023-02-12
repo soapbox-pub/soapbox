@@ -15,6 +15,8 @@ interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   transparent?: boolean,
   /** Predefined styles to display for the button. */
   theme?: 'seamless' | 'outlined',
+  /** Override the data-testid */
+  'data-testid'?: string
 }
 
 /** A clickable icon. */
@@ -31,7 +33,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
         'opacity-50': filteredProps.disabled,
       }, className)}
       {...filteredProps}
-      data-testid='icon-button'
+      data-testid={filteredProps['data-testid'] || 'icon-button'}
     >
       <SvgIcon src={src} className={iconClassName} />
 

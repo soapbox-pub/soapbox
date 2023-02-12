@@ -1,6 +1,4 @@
-import clsx from 'clsx';
 import React, { useState, useEffect, useRef } from 'react';
-import { usePopper } from 'react-popper';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts';
 import { openModal } from 'soapbox/actions/modals';
@@ -9,13 +7,13 @@ import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig } from 
 import { isUserTouching } from 'soapbox/is-mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji-reacts';
 
-interface IEmojiButtonWrapper {
+interface IStatusReactionWrapper {
   statusId: string,
   children: JSX.Element,
 }
 
 /** Provides emoji reaction functionality to the underlying button component */
-const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children }): JSX.Element | null => {
+const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, children }): JSX.Element | null => {
   const dispatch = useAppDispatch();
   const ownAccount = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
@@ -23,24 +21,8 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
 
   const timeout = useRef<NodeJS.Timeout>();
   const [visible, setVisible] = useState(false);
-  // const [focused, setFocused] = useState(false);
 
-  // `useRef` won't trigger a re-render, while `useState` does.
-  // https://popper.js.org/react-popper/v2/
   const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: 'top-start',
-    modifiers: [
-      {
-        name: 'offset',
-        options: {
-          offset: [-10, 0],
-        },
-      },
-    ],
-  });
 
   useEffect(() => {
     return () => {
@@ -116,29 +98,6 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     }));
   };
 
-  const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
-    setVisible(false);
-  };
-
-  const selector = (
-    <div
-      className={clsx('z-50 transition-opacity duration-100', {
-        'opacity-0 pointer-events-none': !visible,
-      })}
-      ref={setPopperElement}
-      style={styles.popper}
-      {...attributes.popper}
-    >
-      <EmojiSelector
-        emojis={soapboxConfig.allowedEmoji}
-        onReact={handleReact}
-        visible={visible}
-        // focused={focused}
-        onUnfocus={handleUnfocus}
-      />
-    </div>
-  );
-
   return (
     <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {React.cloneElement(children, {
@@ -146,9 +105,14 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
         ref: setReferenceElement,
       })}
 
-      {selector}
+      <EmojiSelector
+        placement='top-start'
+        referenceElement={referenceElement}
+        onReact={handleReact}
+        visible={visible}
+      />
     </div>
   );
 };
 
-export default EmojiButtonWrapper;
+export default StatusReactionWrapper;

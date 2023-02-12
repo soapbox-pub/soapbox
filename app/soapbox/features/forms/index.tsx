@@ -103,14 +103,6 @@ export const SimpleInput: React.FC<ISimpleInput> = (props) => {
   );
 };
 
-interface IFieldsGroup {
-  children: React.ReactNode,
-}
-
-export const FieldsGroup: React.FC<IFieldsGroup> = ({ children }) => (
-  <div className='fields-group'>{children}</div>
-);
-
 interface ICheckbox {
   label?: React.ReactNode,
   hint?: React.ReactNode,

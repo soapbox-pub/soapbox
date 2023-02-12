@@ -5,11 +5,13 @@
  */
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
+export type ContextType = 'home' | 'public' | 'notifications' | 'thread';
+
 // https://docs.joinmastodon.org/entities/filter/
 export const FilterRecord = ImmutableRecord({
   id: '',
   phrase: '',
-  context: ImmutableList<string>(),
+  context: ImmutableList<ContextType>(),
   whole_word: false,
   expires_at: '',
   irreversible: false,

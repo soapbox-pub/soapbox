@@ -29,6 +29,7 @@ import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
 import EventPage from 'soapbox/pages/event-page';
+import EventsPage from 'soapbox/pages/events-page';
 import GroupPage from 'soapbox/pages/group-page';
 import GroupsPage from 'soapbox/pages/groups-page';
 import HomePage from 'soapbox/pages/home-page';
@@ -253,7 +254,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
-      {features.events && <WrappedRoute path='/events' page={DefaultPage} component={Events} content={children} />}
+      {features.events && <WrappedRoute path='/events' page={EventsPage} component={Events} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
       {features.chats && <WrappedRoute path='/chats/new' page={ChatsPage} component={ChatIndex} content={children} />}
