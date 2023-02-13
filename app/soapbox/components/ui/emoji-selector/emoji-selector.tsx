@@ -43,6 +43,8 @@ interface IEmojiSelector {
   placement?: Placement
   /** Whether the selector should be visible. */
   visible?: boolean
+  /** X/Y offset of the floating picker. */
+  offset?: [number, number]
   /** Whether to allow any emoji to be chosen. */
   all?: boolean
 }
@@ -54,6 +56,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   onReact,
   placement = 'top',
   visible = false,
+  offset = [-10, 0],
   all = true,
 }): JSX.Element => {
   const soapboxConfig = useSoapboxConfig();
@@ -80,7 +83,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
       {
         name: 'offset',
         options: {
-          offset: [-10, 12],
+          offset,
         },
       },
     ],
