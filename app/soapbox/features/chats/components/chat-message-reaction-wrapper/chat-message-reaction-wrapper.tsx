@@ -41,6 +41,7 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
         referenceElement={referenceElement}
         onReact={handleSelect}
         onClose={() => setIsOpen(false)}
+        offset={[-10, 12]}
         all={false}
       />
     </React.Fragment>
