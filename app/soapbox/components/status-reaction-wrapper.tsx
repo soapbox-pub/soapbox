@@ -1,3 +1,4 @@
+import { Portal } from '@reach/portal';
 import React, { useState, useEffect, useRef } from 'react';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts';
@@ -105,12 +106,14 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
         ref: setReferenceElement,
       })}
 
-      <EmojiSelector
-        placement='top-start'
-        referenceElement={referenceElement}
-        onReact={handleReact}
-        visible={visible}
-      />
+      <Portal>
+        <EmojiSelector
+          placement='top-start'
+          referenceElement={referenceElement}
+          onReact={handleReact}
+          visible={visible}
+        />
+      </Portal>
     </div>
   );
 };
