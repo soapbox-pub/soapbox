@@ -1,22 +1,6 @@
-// Commonly used web colors
-
-$error-red: #df405a !default; // Cerise
-
-// Variables for defaults in UI
-$base-shadow-color: #000 !default;
-$base-overlay-background: #000 !default;
-$error-value-color: $error-red !default;
-
 // Language codes that uses CJK fonts
 /* stylelint-disable-next-line value-keyword-case -- locale filenames */
 $cjk-langs: ja, ko, zh-CN, zh-HK, zh-TW;
-
-// Variables for components
-$media-modal-media-max-width: 100%;
-// put margins on top and bottom of image to avoid the screen covered by image.
-$media-modal-media-max-height: 80%;
-
-$no-gap-breakpoint: 415px;
 
 // CSS variables
 // NOTE: Prefer CSS variables whenever possible.

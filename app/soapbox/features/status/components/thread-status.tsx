@@ -8,6 +8,7 @@ import { useAppSelector } from 'soapbox/hooks';
 
 interface IThreadStatus {
   id: string,
+  contextType?: string,
   focusedStatusId: string,
   onMoveUp: (id: string) => void,
   onMoveDown: (id: string) => void,

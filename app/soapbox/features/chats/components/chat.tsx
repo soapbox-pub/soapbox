@@ -54,6 +54,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const [attachment, setAttachment] = useState<any>(undefined);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [resetContentKey, setResetContentKey] = useState<number>(fileKeyGen());
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
   const [errorMessage, setErrorMessage] = useState<string>();
 
@@ -83,6 +84,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
     setIsUploading(false);
     setUploadProgress(0);
     setResetFileKey(fileKeyGen());
+    setResetContentKey(fileKeyGen());
   };
 
   const sendMessage = () => {
@@ -171,6 +173,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         errorMessage={errorMessage}
         onSelectFile={handleFiles}
         resetFileKey={resetFileKey}
+        resetContentKey={resetContentKey}
         onPaste={handlePaste}
         attachments={attachment ? [attachment] : []}
         onDeleteAttachment={handleRemoveFile}

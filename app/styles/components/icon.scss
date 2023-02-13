@@ -12,46 +12,6 @@
     height: 100%;
     transition: 0.2s;
   }
-
-  &--active {
-    &.svg-icon--home svg {
-      fill: currentcolor;
-    }
-
-    svg.icon-tabler-search,
-    svg.icon-tabler-code {
-      stroke-width: 2.3px;
-    }
-
-    svg.icon-tabler-bell,
-    svg.icon-tabler-messages {
-      path:nth-child(2) {
-        fill: currentcolor;
-      }
-    }
-
-    svg.icon-tabler-users {
-      circle,
-      circle + path {
-        fill: currentcolor;
-      }
-    }
-
-    svg.icon-tabler-mail {
-      stroke: var(--background-color);
-
-      rect {
-        fill: currentcolor;
-        stroke: currentcolor;
-      }
-    }
-  }
-
-  &--unread {
-    svg.icon-tabler-bell {
-      transform: rotate(45deg);
-    }
-  }
 }
 
 .icon-button > div {

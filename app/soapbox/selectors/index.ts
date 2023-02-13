@@ -12,6 +12,7 @@ import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
+import type { ContextType } from 'soapbox/normalizers/filter';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
 import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
@@ -85,7 +86,7 @@ export const findAccountByUsername = (state: RootState, username: string) => {
   }
 };
 
-const toServerSideType = (columnType: string): string => {
+const toServerSideType = (columnType: string): ContextType => {
   switch (columnType) {
     case 'home':
     case 'notifications':
@@ -105,10 +106,8 @@ type FilterContext = { contextType?: string };
 
 export const getFilters = (state: RootState, query: FilterContext) => {
   return state.filters.filter((filter) => {
-    return query?.contextType
-      && filter.context.includes(toServerSideType(query.contextType))
-      && (filter.expires_at === null
-      || Date.parse(filter.expires_at) > new Date().getTime());
+    return (!query?.contextType || filter.context.includes(toServerSideType(query.contextType)))
+      && (filter.expires_at === null || Date.parse(filter.expires_at) > new Date().getTime());
   });
 };
 

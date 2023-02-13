@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
@@ -8,12 +9,13 @@ import { isRtl } from 'soapbox/rtl';
 import type { Status } from 'soapbox/types/entities';
 
 interface IReplyIndicator {
+  className?: string,
   status?: Status,
   onCancel?: () => void,
   hideActions: boolean,
 }
 
-const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCancel }) => {
+const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActions, onCancel }) => {
   const handleClick = () => {
     onCancel!();
   };
@@ -33,7 +35,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   }
 
   return (
-    <Stack space={2} className='rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
+    <Stack space={2} className={clsx('rounded-lg bg-gray-100 p-4 dark:bg-gray-800', className)}>
       <AccountContainer
         {...actions}
         id={status.getIn(['account', 'id']) as string}
