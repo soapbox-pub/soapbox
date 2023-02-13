@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 
 import HStack from '../hstack/hstack';
 import Icon from '../icon/icon';

@@ -4,10 +4,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatus } from 'soapbox/actions/statuses';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import DropdownMenu from '../dropdown-menu';
 import { Button, HStack, Text } from '../ui';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';

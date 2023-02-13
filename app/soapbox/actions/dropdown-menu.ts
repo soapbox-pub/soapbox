@@ -1,13 +1,8 @@
-import type { DropdownPlacement } from 'soapbox/components/dropdown-menu';
-
 const DROPDOWN_MENU_OPEN = 'DROPDOWN_MENU_OPEN';
 const DROPDOWN_MENU_CLOSE = 'DROPDOWN_MENU_CLOSE';
 
-const openDropdownMenu = (id: number, placement: DropdownPlacement, keyboard: boolean) =>
-  ({ type: DROPDOWN_MENU_OPEN, id, placement, keyboard });
-
-const closeDropdownMenu = (id: number) =>
-  ({ type: DROPDOWN_MENU_CLOSE, id });
+const openDropdownMenu = () => ({ type: DROPDOWN_MENU_OPEN });
+const closeDropdownMenu = () => ({ type: DROPDOWN_MENU_CLOSE });
 
 export {
   DROPDOWN_MENU_OPEN,

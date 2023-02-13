@@ -14,10 +14,10 @@ import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
 import { HStack } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
@@ -617,13 +617,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         />
 
         {(features.quotePosts && me) ? (
-          <DropdownMenuContainer
+          <DropdownMenu
             items={reblogMenu}
             disabled={!publicStatus}
             onShiftClick={handleReblogClick}
           >
             {reblogButton}
-          </DropdownMenuContainer>
+          </DropdownMenu>
         ) : (
           reblogButton
         )}
@@ -662,12 +662,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenuContainer items={menu} status={status}>
+        <DropdownMenu items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={require('@tabler/icons/dots.svg')}
           />
-        </DropdownMenuContainer>
+        </DropdownMenu>
       </HStack>
     </HStack>
   );

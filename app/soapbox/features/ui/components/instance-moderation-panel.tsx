@@ -4,8 +4,8 @@ import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import { Widget } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import InstanceRestrictions from 'soapbox/features/federation-restrictions/components/instance-restrictions';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
