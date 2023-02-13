@@ -219,7 +219,6 @@ const ChatMessage = (props: IChatMessage) => {
                 'p-1.5 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500 focus:text-gray-700 dark:focus:text-gray-500 focus:ring-0': true,
                 '!text-gray-700 dark:!text-gray-500': isReactionSelectorOpen,
               })}
-              data-testid='chat-message-menu'
             >
               <Icon
                 src={require('@tabler/icons/mood-smile.svg')}
