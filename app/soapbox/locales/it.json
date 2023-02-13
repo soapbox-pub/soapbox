@@ -916,7 +916,7 @@
   "modals.policy.submit": "Accetta e continua",
   "modals.policy.updateTitle": "Ecco l'ultima versione di {siteTitle}! Prenditi un attimo di tempo per dare un'occhiata alle ultime interessanti novità che sono state introdotte.",
   "moderation_overlay.contact": "Contatto",
-  "moderation_overlay.hide": "Nascondi il contenuto",
+  "moderation_overlay.hide": "Nascondi",
   "moderation_overlay.show": "Mostrami il contenuto",
   "moderation_overlay.subtitle": "Questa pubblicazione è stata segnalata per un controllo di moderazione ed è solamente visibile a te. Se credi si tratti di un errore, per favore, contatta gli amministratori.",
   "moderation_overlay.title": "Pubblicazione sotto controllo",
