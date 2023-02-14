@@ -3,10 +3,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
@@ -115,14 +115,14 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
         <HStack alignItems='center' space={2}>
           {features.chatsDelete && (
             <div className='hidden text-gray-600 hover:text-gray-100 group-hover:block'>
-              <DropdownMenuContainer items={menu}>
+              <DropdownMenu items={menu}>
                 <IconButton
                   src={require('@tabler/icons/dots.svg')}
                   title='Settings'
                   className='text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
                   iconClassName='w-4 h-4'
                 />
-              </DropdownMenuContainer>
+              </DropdownMenu>
             </div>
           )}
 

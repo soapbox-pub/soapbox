@@ -329,6 +329,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
             avatarSize={avatarSize}
+            contextType='notifications'
           />
         ) : null;
       default:

@@ -42,6 +42,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   errorMessage: string | undefined
   onSelectFile: (files: FileList, intl: IntlShape) => void
   resetFileKey: number | null
+  resetContentKey: number | null
   attachments?: Attachment[]
   onDeleteAttachment?: (i: number) => void
   isUploading?: boolean
@@ -58,6 +59,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   disabled = false,
   onSelectFile,
   resetFileKey,
+  resetContentKey,
   onPaste,
   attachments = [],
   onDeleteAttachment,
@@ -181,6 +183,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
         <Stack grow>
           <Combobox onSelect={onSelectComboboxOption}>
             <ComboboxInput
+              key={resetContentKey}
               as={ChatTextarea}
               autoFocus
               ref={ref}

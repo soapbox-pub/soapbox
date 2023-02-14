@@ -1,6 +1,7 @@
-import { Portal } from '@reach/portal';
 import { TooltipPopup, useTooltip } from '@reach/tooltip';
 import React from 'react';
+
+import Portal from '../portal/portal';
 
 import './tooltip.css';
 

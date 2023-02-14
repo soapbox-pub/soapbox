@@ -3,7 +3,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
-import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
+import { Button, Form, Input, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -104,9 +104,8 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
         secondaryText={isOpen ? <FormattedMessage id='account.register' defaultMessage='Sign up' /> : undefined}
       >
         <div className='remote-interaction-modal__content'>
-          <form className='simple_form remote-interaction-modal__fields' onSubmit={onSubmit}>
-            <input
-              type='text'
+          <Form className='remote-interaction-modal__fields' onSubmit={onSubmit}>
+            <Input
               placeholder={intl.formatMessage(messages.accountPlaceholder)}
               name='remote_follow[acct]'
               value={account}
@@ -116,7 +115,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
               required
             />
             <Button type='submit' theme='primary'>{button}</Button>
-          </form>
+          </Form>
           <div className='remote-interaction-modal__divider'>
             <Text align='center'>
               <FormattedMessage id='remote_interaction.divider' defaultMessage='or' />

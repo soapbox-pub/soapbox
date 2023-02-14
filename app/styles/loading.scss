@@ -59,7 +59,7 @@
 }
 
 @keyframes heartbeat {
-  from {
+  0% {
     transform: scale(1);
     animation-timing-function: ease-out;
   }
@@ -130,18 +130,9 @@
 .load-more {
   @apply block w-full m-0 p-4 border-0 box-border text-gray-900 bg-transparent;
 
-  &:hover,
-  &:focus {
-    background: var(--brand-color--faint);
-  }
-
   .svg-icon {
     @apply mx-auto;
   }
-}
-
-.load-gap {
-  border-bottom: 1px solid var(--brand-color--med);
 }
 
 .regeneration-indicator {
@@ -149,7 +140,6 @@
   text-align: center;
   font-size: 16px;
   font-weight: 500;
-  background: var(--accent-color--faint);
   cursor: default;
   display: flex;
   flex: 1 1 auto;

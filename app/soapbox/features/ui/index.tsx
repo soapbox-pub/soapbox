@@ -72,7 +72,6 @@ import {
   Lists,
   Bookmarks,
   Settings,
-  MediaDisplay,
   EditProfile,
   EditEmail,
   EditPassword,
@@ -301,7 +300,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
-      <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
@@ -357,7 +355,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
-  const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.openId !== null);
+  const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.isOpen);
   const accessToken = useAppSelector(state => getAccessToken(state));
   const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
