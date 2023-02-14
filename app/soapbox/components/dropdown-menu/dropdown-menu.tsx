@@ -4,7 +4,10 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { closeDropdownMenu, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
+import {
+  closeDropdownMenu as closeDropdownMenuRedux,
+  openDropdownMenu,
+} from 'soapbox/actions/dropdown-menu';
 import { closeModal, openModal } from 'soapbox/actions/modals';
 import { useAppDispatch } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
@@ -53,7 +56,6 @@ const DropdownMenu = (props: IDropdownMenu) => {
 
   const arrowRef = useRef<HTMLDivElement>(null);
   const activeElement = useRef<Element | null>(null);
-  const target = useRef<Element>(null);
 
   const isOnMobile = isUserTouching();
 
@@ -110,7 +112,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   };
 
   const handleClose = () => {
-    if (activeElement.current && activeElement.current === target.current) {
+    if (activeElement.current && activeElement.current === refs.reference.current) {
       (activeElement.current as any).focus();
       activeElement.current = null;
     }
@@ -118,12 +120,18 @@ const DropdownMenu = (props: IDropdownMenu) => {
     if (isOnMobile) {
       dispatch(closeModal('ACTIONS'));
     } else {
-      dispatch(closeDropdownMenu());
+      closeDropdownMenu();
       setIsOpen(false);
     }
 
     if (onClose) {
       onClose();
+    }
+  };
+
+  const closeDropdownMenu = () => {
+    if (isOpen) {
+      dispatch(closeDropdownMenuRedux());
     }
   };
 
@@ -246,7 +254,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
 
   useEffect(() => {
     return () => {
-      dispatch(closeDropdownMenu());
+      closeDropdownMenu();
     };
   }, []);
 
