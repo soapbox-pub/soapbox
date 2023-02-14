@@ -21,6 +21,7 @@ const ChatUploadPreview: React.FC<IChatUploadPreview> = ({ className, attachment
 
   switch (attachment.type) {
     case 'image':
+    case 'gifv':
       return (
         <img
           className='pointer-events-none h-full w-full object-cover'

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Textarea } from 'soapbox/components/ui';
+import { HStack, Textarea } from 'soapbox/components/ui';
 import { Attachment } from 'soapbox/types/entities';
 
 import ChatPendingUpload from './chat-pending-upload';
@@ -8,7 +8,7 @@ import ChatUpload from './chat-upload';
 
 interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
   attachments?: Attachment[]
-  onDeleteAttachment?: () => void
+  onDeleteAttachment?: (i: number) => void
   isUploading?: boolean
   uploadProgress?: number
 }
@@ -21,6 +21,14 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
   uploadProgress = 0,
   ...rest
 }) => {
+  const handleDeleteAttachment = (i: number) => {
+    return () => {
+      if (onDeleteAttachment) {
+        onDeleteAttachment(i);
+      }
+    };
+  };
+
   return (
     <div className={`
       block
@@ -35,19 +43,23 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
     `}
     >
       {(!!attachments?.length || isUploading) && (
-        <div className='flex p-3 pb-0'>
-          {isUploading && (
-            <ChatPendingUpload progress={uploadProgress} />
-          )}
-
-          {attachments?.map(attachment => (
-            <ChatUpload
-              key={attachment.id}
-              attachment={attachment}
-              onDelete={onDeleteAttachment}
-            />
+        <HStack className='-ml-2 -mt-2 p-3 pb-0' wrap>
+          {attachments?.map((attachment, i) => (
+            <div className='ml-2 mt-2 flex'>
+              <ChatUpload
+                key={attachment.id}
+                attachment={attachment}
+                onDelete={handleDeleteAttachment(i)}
+              />
+            </div>
           ))}
-        </div>
+
+          {isUploading && (
+            <div className='ml-2 mt-2 flex'>
+              <ChatPendingUpload progress={uploadProgress} />
+            </div>
+          )}
+        </HStack>
       )}
 
       <Textarea theme='transparent' {...rest} />
