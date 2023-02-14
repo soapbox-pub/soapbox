@@ -606,7 +606,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       <div className='px-4 sm:px-6'>
         <HStack className='-mt-12' alignItems='bottom' space={5}>
-          <div className='flex'>
+          <div className='flex relative'>
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
                 src={account.avatar}
@@ -614,7 +614,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
                 className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900'
               />
             </a>
-            {account.verified && <VerificationBadge className='w-6 h-6 -ml-6 mt-16 rounded-full ring-2 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900' />}
+            {account.verified && (
+              <div className='absolute bottom-0 right-0'>
+                <VerificationBadge className='w-6 h-6 rounded-full ring-2 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900' />
+              </div>
+            )}
           </div>
 
           <div className='mt-6 flex justify-end w-full sm:pb-1'>
