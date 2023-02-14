@@ -19,6 +19,7 @@ import Badge from 'soapbox/components/badge';
 import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, IconButton } from 'soapbox/components/ui';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
@@ -626,7 +627,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       <div className='px-4 sm:px-6'>
         <HStack className='-mt-12' alignItems='bottom' space={5}>
-          <div className='flex'>
+          <div className='relative flex'>
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
                 src={account.avatar}
@@ -634,6 +635,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
                 className='relative h-24 w-24 rounded-full bg-white ring-4 ring-white dark:bg-primary-900 dark:ring-primary-900'
               />
             </a>
+            {account.verified && (
+              <div className='absolute bottom-0 right-0'>
+                <VerificationBadge className='h-6 w-6 rounded-full bg-white ring-2 ring-white dark:bg-primary-900 dark:ring-primary-900' />
+              </div>
+            )}
           </div>
 
           <div className='mt-6 flex w-full justify-end sm:pb-1'>
