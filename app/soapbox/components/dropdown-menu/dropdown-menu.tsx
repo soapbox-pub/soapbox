@@ -211,6 +211,11 @@ const DropdownMenu = (props: IDropdownMenu) => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(closeDropdownMenu());
+    };
+  }, []);
 
   useEffect(() => {
     document.addEventListener('click', handleDocumentClick, false);
