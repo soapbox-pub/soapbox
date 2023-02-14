@@ -64,7 +64,7 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
     const firstItem = index === 0;
 
     if (itemRef.current && firstItem) {
-      itemRef.current.focus();
+      itemRef.current.focus({ preventScroll: true });
     }
   }, [itemRef.current, index]);
 
