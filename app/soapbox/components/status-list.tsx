@@ -192,7 +192,11 @@ const StatusList: React.FC<IStatusList> = ({
         }
 
         if (statusId === null) {
-          acc.push(renderLoadGap(index));
+          const gap = renderLoadGap(index);
+          // one does not simply push a null item to Virtuoso: https://github.com/petyosi/react-virtuoso/issues/206#issuecomment-747363793
+          if (gap) {
+            acc.push(gap);
+          }
         } else if (statusId.startsWith('末suggestions-')) {
           if (soapboxConfig.feedInjection) {
             acc.push(renderFeedSuggestions());
