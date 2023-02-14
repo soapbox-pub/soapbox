@@ -82,6 +82,9 @@ export const GLITCH = 'glitch';
 // NOTE: Rebased is named 'soapbox' for legacy reasons.
 export const REBASED = 'soapbox';
 
+/** Backend name reserved only for tests. */
+export const UNRELEASED = 'unreleased';
+
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -251,7 +254,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /**
      * Ability to add reactions to chat messages.
      */
-    chatEmojiReactions: false, // v.software === TRUTHSOCIAL,
+    chatEmojiReactions: v.software === TRUTHSOCIAL && v.build === UNRELEASED,
 
     /**
      * Pleroma chats API.
