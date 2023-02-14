@@ -1,7 +1,7 @@
-import { offset, Placement, useFloating } from '@floating-ui/react';
+import { offset, Placement, useFloating, flip, arrow } from '@floating-ui/react';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { closeDropdownMenu, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
@@ -40,7 +40,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
     onClose,
     onOpen,
     onShiftClick,
-    placement = 'top',
+    placement: initialPlacement = 'top',
     src = require('@tabler/icons/dots.svg'),
     title = 'Menu',
     ...filteredProps
@@ -51,14 +51,21 @@ const DropdownMenu = (props: IDropdownMenu) => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const arrowRef = useRef<HTMLDivElement>(null);
   const activeElement = useRef<Element | null>(null);
   const target = useRef<Element>(null);
 
   const isOnMobile = isUserTouching();
 
-  const { x, y, strategy, refs } = useFloating<HTMLButtonElement>({
-    placement,
-    middleware: [offset(12)],
+  const { x, y, strategy, refs, middlewareData, placement } = useFloating<HTMLButtonElement>({
+    placement: initialPlacement,
+    middleware: [
+      offset(12),
+      flip(),
+      arrow({
+        element: arrowRef,
+      }),
+    ],
   });
 
   const handleClick: React.EventHandler<
@@ -211,6 +218,32 @@ const DropdownMenu = (props: IDropdownMenu) => {
     }
   };
 
+  const arrowProps: React.CSSProperties = useMemo(() => {
+    if (middlewareData.arrow) {
+      const { x, y } = middlewareData.arrow;
+
+      const staticPlacement = {
+        top: 'bottom',
+        right: 'left',
+        bottom: 'top',
+        left: 'right',
+      }[placement.split('-')[0]];
+
+      return {
+        left: x !== null ? `${x}px` : '',
+        top: y !== null ? `${y}px` : '',
+        // Ensure the static side gets unset when
+        // flipping to other placements' axes.
+        right: '',
+        bottom: '',
+        [staticPlacement as string]: `${(-(arrowRef.current?.offsetWidth || 0)) / 2}px`,
+        transform: 'rotate(45deg)',
+      };
+    }
+
+    return {};
+  }, [middlewareData.arrow, placement]);
+
   useEffect(() => {
     return () => {
       dispatch(closeDropdownMenu());
@@ -263,7 +296,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
             data-testid='dropdown-menu'
             ref={refs.setFloating}
             className={
-              clsx('relative z-[1001] w-56 rounded-md bg-white py-1 shadow-lg transition-opacity duration-100 focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700', {
+              clsx('z-[1001] w-56 rounded-md bg-white py-1 shadow-lg transition-opacity duration-100 focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700', {
                 'opacity-0 pointer-events-none': !isOpen,
               })
             }
@@ -286,14 +319,9 @@ const DropdownMenu = (props: IDropdownMenu) => {
 
             {/* Arrow */}
             <div
-              className={
-                clsx({
-                  'absolute w-0 h-0 border-0 border-solid border-transparent': true,
-                  'border-t-white dark:border-t-gray-900 -bottom-[5px] -ml-[5px] left-[calc(50%-2.5px)] border-t-[5px] border-x-[5px] border-b-0': placement === 'top',
-                  'border-b-white dark:border-b-gray-900 -top-[5px] -ml-[5px] left-[calc(50%-2.5px)] border-t-0 border-x-[5px] border-b-[5px]': placement === 'bottom',
-                  'border-b-white dark:border-b-gray-900 -top-[5px] -ml-[5px] left-[92.5%] border-t-0 border-x-[5px] border-b-[5px]': placement === 'bottom-end',
-                })
-              }
+              ref={arrowRef}
+              style={arrowProps}
+              className='pointer-events-none absolute z-[-1] h-3 w-3 bg-white dark:bg-gray-900'
             />
           </div>
         </Portal>
