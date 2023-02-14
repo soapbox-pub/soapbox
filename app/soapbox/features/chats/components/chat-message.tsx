@@ -208,7 +208,7 @@ const ChatMessage = (props: IChatMessage) => {
           })
         }
       >
-        {!features.chatEmojiReactions ? (
+        {features.chatEmojiReactions && (
           <ChatMessageReactionWrapper
             onOpen={setIsReactionSelectorOpen}
             onSelect={(emoji) => createReaction.mutate({ emoji, messageId: chatMessage.id, chatMessage })}
@@ -226,7 +226,7 @@ const ChatMessage = (props: IChatMessage) => {
               />
             </button>
           </ChatMessageReactionWrapper>
-        ) : null}
+        )}
 
         {menu.length > 0 && (
           <DropdownMenu
@@ -307,7 +307,7 @@ const ChatMessage = (props: IChatMessage) => {
           </Stack>
         </HStack>
 
-        {(features.chatEmojiReactions && chatMessage.emoji_reactions) ? (
+        {(chatMessage.emoji_reactions?.size) ? (
           <div
             className={clsx({
               'space-y-1': true,

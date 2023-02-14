@@ -20,7 +20,7 @@ export const ChatMessageRecord = ImmutableRecord({
   created_at: '',
   emojis: ImmutableList<Emoji>(),
   expiration: null as number | null,
-  emoji_reactions: ImmutableList<EmojiReaction>(),
+  emoji_reactions: null as ImmutableList<EmojiReaction> | null,
   id: '',
   unread: false,
   deleting: false,
