@@ -705,8 +705,6 @@
   "filters.context_header": "Kontexte filtern",
   "filters.context_hint": "Ein oder mehrere Kontexte, auf die der Filter angewendet werden soll",
   "filters.filters_list_context_label": "Kontexte filtern:",
-  "filters.filters_list_delete": "Löschen",
-  "filters.filters_list_details_label": "Filtereinstellungen:",
   "filters.filters_list_drop": "Weg damit",
   "filters.filters_list_hide": "Verstecken",
   "filters.filters_list_phrase_label": "Stichwort oder Wortfolge:",

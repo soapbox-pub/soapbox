@@ -178,7 +178,6 @@
   "empty_column.notifications": "Ùn avete ancu nisuna nutificazione. Interact with others to start the conversation.",
   "empty_column.public": "Ùn c'hè nunda quì! Scrivete qualcosa in pubblicu o seguitate utilizatori d'altri servori per empie a linea pubblica",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Auturizà",
   "follow_request.reject": "Righjittà",
   "getting_started.open_source_notice": "{code_name} ghjè un lugiziale liberu. Pudete cuntribuisce à u codice o a traduzione, o palisà un bug, nant'à GitLab: {code_link} (v{code_version}).",

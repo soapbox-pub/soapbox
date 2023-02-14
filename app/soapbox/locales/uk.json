@@ -537,8 +537,6 @@
   "filters.context_header": "Фільтрувати контексти",
   "filters.context_hint": "Один або кілька контекстів, до яких повинні бути застосовані фільтри",
   "filters.filters_list_context_label": "Фільтрувати контексти:",
-  "filters.filters_list_delete": "Видалити",
-  "filters.filters_list_details_label": "Filter settings:",
   "filters.filters_list_drop": "Drop",
   "filters.filters_list_hide": "Hide",
   "filters.filters_list_phrase_label": "Ключове слово або фраза:",

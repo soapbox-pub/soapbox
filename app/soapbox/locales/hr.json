@@ -675,8 +675,6 @@
   "filters.context_header": "Filtrirajte kontekste",
   "filters.context_hint": "Jedan ili više konteksta u kojima bi se filtar trebao primijeniti",
   "filters.filters_list_context_label": "Filtriraj kontekste:",
-  "filters.filters_list_delete": "Delete",
-  "filters.filters_list_details_label": "Postavke filtera:",
   "filters.filters_list_drop": "Drop",
   "filters.filters_list_hide": "Hide",
   "filters.filters_list_phrase_label": "Keyword or phrase:",
