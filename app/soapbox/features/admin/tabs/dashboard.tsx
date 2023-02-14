@@ -97,10 +97,12 @@ const Dashboard: React.FC = () => {
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
 
-        <ListItem
-          onClick={navigateToAnnouncements}
-          label={<FormattedMessage id='column.admin.announcements' defaultMessage='Announcements' />}
-        />
+        {features.announcements && (
+          <ListItem
+            onClick={navigateToAnnouncements}
+            label={<FormattedMessage id='column.admin.announcements' defaultMessage='Announcements' />}
+          />
+        )}
       </List>
 
       {account.admin && (
