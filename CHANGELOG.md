@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile: make verified badge more prominent, overlapping with avatar.
 
 ### Fixed
+- Admin: fixed hover card in reports modal shows reporter not reportee
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
 - Chats: don't display "copy" button for messages without text.
 - Posts: don't have to click the play button twice for embedded videos.

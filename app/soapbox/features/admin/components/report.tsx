@@ -95,7 +95,7 @@ const Report: React.FC<IReport> = ({ id }) => {
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
             values={{ acct: (
-              <HoverRefWrapper accountId={account.id} inline>
+              <HoverRefWrapper accountId={targetAccount.id} inline>
                 <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
               </HoverRefWrapper>
             ) }}
