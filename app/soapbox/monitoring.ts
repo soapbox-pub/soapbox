@@ -22,6 +22,9 @@ export const start = (): void => {
         'Failed to update a ServiceWorker for scope',
         // Useful for try/catch, useless as a Sentry error.
         'AbortError',
+        // localForage error in FireFox private browsing mode (which doesn't support IndexedDB).
+        // We only use IndexedDB as a cache, so we can safely ignore the error.
+        'No available storage method found',
       ],
       denyUrls: [
         // Browser extensions.
