@@ -133,7 +133,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
                 collapsable
               />
 
-              {(status.card || status.media_attachments.size > 0) && (
+              {status.media_attachments.size > 0 && (
                 <StatusMedia
                   status={status}
                   muted={compose}
