@@ -306,7 +306,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
               left: x ?? 0,
             }}
           >
-            <ul className='z-10'>
+            <ul>
               {items.map((item, idx) => (
                 <DropdownMenuItem
                   key={idx}
