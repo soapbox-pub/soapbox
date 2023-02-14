@@ -43,6 +43,7 @@ const Dashboard: React.FC = () => {
 
   const navigateToSoapboxConfig = () => history.push('/soapbox/config');
   const navigateToModerationLog = () => history.push('/soapbox/admin/log');
+  const navigateToAnnouncements = () => history.push('/soapbox/admin/announcements');
 
   const v = parseVersion(instance.version);
 
@@ -95,6 +96,13 @@ const Dashboard: React.FC = () => {
           onClick={navigateToModerationLog}
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
+
+        {features.announcements && (
+          <ListItem
+            onClick={navigateToAnnouncements}
+            label={<FormattedMessage id='column.admin.announcements' defaultMessage='Announcements' />}
+          />
+        )}
       </List>
 
       {account.admin && (

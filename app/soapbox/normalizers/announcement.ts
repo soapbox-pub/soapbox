@@ -35,6 +35,8 @@ export const AnnouncementRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   updated_at: Date,
 
+  pleroma: ImmutableMap<string, any>(),
+
   // Internal fields
   contentHtml: '',
 });

@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile: add RSS link to user profiles.
 - Posts: fix posts filtering.
 - Chats: reset chat message field height after sending a message.
+- Admin: allow to manage announcements.
 
 ### Changed
 - Chats: improved display of media attachments.
