@@ -11,17 +11,11 @@
 }
 
 .video-player {
-  overflow: hidden;
-  position: relative;
-  background: $base-shadow-color;
-  max-width: 100%;
-  border-radius: 10px;
-  box-sizing: border-box;
+  @apply relative box-border max-w-full overflow-hidden rounded-[10px] bg-black text-white;
   direction: ltr;
-  color: white;
 
   &.editable {
-    border-radius: 0;
+    @apply rounded-none;
     height: 100% !important;
   }
 
@@ -63,7 +57,7 @@
     left: 0;
     right: 0;
     box-sizing: border-box;
-    background: linear-gradient(0deg, rgba($base-shadow-color, 0.85) 0, rgba($base-shadow-color, 0.45) 60%, transparent);
+    background: linear-gradient(0deg, #000000d9 0, #00000073 60%, transparent);
     padding: 0 15px;
     opacity: 0;
     transition: opacity 0.1s ease;
@@ -199,7 +193,7 @@
       left: 0;
       margin-left: -6px;
       transform: translate(0, -50%);
-      box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
+      box-shadow: 1px 2px 6px #0003;
       opacity: 0;
 
       .no-reduce-motion & {
@@ -272,7 +266,7 @@
       height: 12px;
       top: 10px;
       margin-left: -6px;
-      box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
+      box-shadow: 1px 2px 6px #0003;
 
       .no-reduce-motion & {
         transition: opacity 0.1s ease;

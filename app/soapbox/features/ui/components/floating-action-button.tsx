@@ -26,14 +26,14 @@ const FloatingActionButton: React.FC<IFloatingActionButton> = () => {
     <button
       onClick={handleOpenComposeModal}
       className={clsx(
-        'p-4 inline-flex items-center border font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 appearance-none transition-all',
-        'border-transparent bg-secondary-500 hover:bg-secondary-400 focus:bg-secondary-500 text-gray-100 focus:ring-secondary-300',
+        'inline-flex appearance-none items-center rounded-full border p-4 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2',
+        'border-transparent bg-secondary-500 text-gray-100 hover:bg-secondary-400 focus:bg-secondary-500 focus:ring-secondary-300',
       )}
       aria-label={intl.formatMessage(messages.publish)}
     >
       <Icon
         src={require('@tabler/icons/pencil-plus.svg')}
-        className='w-6 h-6'
+        className='h-6 w-6'
       />
     </button>
   );

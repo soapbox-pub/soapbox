@@ -22,8 +22,8 @@ const PublicLayout = () => {
     <div className='h-full'>
       <LandingGradient />
 
-      <div className='flex flex-col h-screen'>
-        <div className='flex-shrink-0'>
+      <div className='flex h-screen flex-col'>
+        <div className='shrink-0'>
           <Header />
 
           <div className='relative'>

@@ -66,10 +66,10 @@ const Header = () => {
 
   return (
     <header data-testid='public-layout-header'>
-      <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' aria-label='Header'>
-        <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
-          <div className='flex items-center sm:justify-center relative w-36'>
-            <div className='hidden md:block absolute z-0 -top-24 -left-6'>
+      <nav className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' aria-label='Header'>
+        <div className='flex w-full items-center justify-between border-b border-indigo-500 py-6 lg:border-none'>
+          <div className='relative flex w-36 items-center sm:justify-center'>
+            <div className='absolute -top-24 -left-6 z-0 hidden md:block'>
               <Sonar />
             </div>
 
@@ -77,7 +77,7 @@ const Header = () => {
               title={intl.formatMessage(messages.menu)}
               src={require('@tabler/icons/menu-2.svg')}
               onClick={open}
-              className='md:hidden mr-4 bg-transparent text-gray-700 dark:text-gray-600 hover:text-gray-600'
+              className='mr-4 bg-transparent text-gray-700 hover:text-gray-600 dark:text-gray-600 md:hidden'
             />
 
             <Link to='/' className='z-10'>
@@ -87,21 +87,21 @@ const Header = () => {
 
           </div>
 
-          <HStack space={6} alignItems='center' className='ml-10 relative z-10'>
+          <HStack space={6} alignItems='center' className='relative z-10 ml-10'>
             <HStack alignItems='center'>
-              <HStack space={6} alignItems='center' className='hidden md:flex md:mr-6'>
+              <HStack space={6} alignItems='center' className='hidden md:mr-6 md:flex'>
                 {links.get('help') && (
                   <a
                     href={links.get('help')}
                     target='_blank'
-                    className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'
+                    className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'
                   >
                     <FormattedMessage id='landing_page_modal.helpCenter' defaultMessage='Help Center' />
                   </a>
                 )}
               </HStack>
 
-              <HStack space={2} className='xl:hidden shrink-0'>
+              <HStack space={2} className='shrink-0 xl:hidden'>
                 <Button to='/login' theme='tertiary'>
                   {intl.formatMessage(messages.login)}
                 </Button>
@@ -117,7 +117,7 @@ const Header = () => {
               </HStack>
             </HStack>
 
-            <Form className='hidden xl:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
+            <Form className='hidden items-center space-x-2 rtl:space-x-reverse xl:flex' onSubmit={handleSubmit}>
               <Input
                 required
                 value={username}
@@ -145,7 +145,7 @@ const Header = () => {
                 <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                   <IconButton
                     src={require('@tabler/icons/help.svg')}
-                    className='bg-transparent text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 cursor-pointer'
+                    className='cursor-pointer bg-transparent text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
                     iconClassName='w-5 h-5'
                     transparent
                   />

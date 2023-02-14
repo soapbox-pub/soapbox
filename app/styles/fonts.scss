@@ -2,21 +2,6 @@
 
 // TYPEOGRAPHY MIXINS
 
-// declare the font family using these shortcuts
-@mixin font-inter { font-family: Inter, Arial, sans-serif !important; }
-
-// Declare font weights as a numerical value in rendered output
-// Prevents certain browsers which do not play nice with "light, medium" textual declarations
-// Numeical values always work more consistently across browsers
-// Each font-weight is linked with the @font-face declaration to the actual font file
-@mixin font-weight($weight) {
-  @if $weight == 'light' { font-weight: 300; }
-  @if $weight == 'normal' { font-weight: 400; }
-  @if $weight == 'medium' { font-weight: 500; }
-  @if $weight == 'bold' { font-weight: 700; }
-  @if $weight == 'extrabold' { font-weight: 800; }
-}
-
 // Use these mixins to define font-size and line-height
 // html and body declaration allows developer to pass px value as argument
 // Rendered css will default to "rem" and fall back to "px" for unsupported browsers
@@ -25,11 +10,4 @@
   $px: $size;
   font-size: #{$px + 'px'};
   font-size: #{$rem + 'rem'};
-}
-
-@mixin line-height($size) {
-  $rem: math.div($size, 10);
-  $px: $size;
-  line-height: #{$px + 'px'};
-  line-height: #{$rem + 'rem'};
 }

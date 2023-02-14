@@ -39,7 +39,7 @@ module.exports = {
   'transformIgnorePatterns': [
     // FIXME: react-sticky-box doesn't provide a CJS build, so transform it for now
     // https://github.com/codecks-io/react-sticky-box/issues/79
-    `/node_modules/(?!(react-sticky-box|blurhash|.+\\.(${ASSET_EXTS})$))`,
+    `/node_modules/(?!(react-sticky-box|blurhash|emoji-mart|.+\\.(${ASSET_EXTS})$))`,
     // Ignore node_modules, except static assets
     // `/node_modules/(?!.+\\.(${ASSET_EXTS})$)`,
   ],

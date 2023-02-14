@@ -69,7 +69,7 @@ const LandingPage = () => {
   const renderPepe = () => {
     return (
       <Stack space={3} data-testid='registrations-pepe'>
-        <VerificationBadge className='h-16 w-16 mx-auto' />
+        <VerificationBadge className='mx-auto h-16 w-16' />
 
         <Stack>
           <Text size='2xl' weight='bold' align='center'>
@@ -103,11 +103,11 @@ const LandingPage = () => {
   return (
     <main className='mt-16 sm:mt-24' data-testid='homepage'>
       <div className='mx-auto max-w-7xl'>
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 py-12'>
-          <div className='px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-start lg:flex'>
+        <div className='grid grid-cols-1 gap-8 py-12 lg:grid-cols-12'>
+          <div className='px-4 sm:px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:text-start'>
             <div className='w-full'>
               <Stack space={3}>
-                <h1 className='text-5xl font-extrabold text-transparent text-ellipsis overflow-hidden bg-clip-text bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
+                <h1 className='overflow-hidden text-ellipsis bg-gradient-to-br from-accent-500 via-primary-500 to-gradient-end bg-clip-text text-5xl font-extrabold text-transparent sm:mt-5 sm:leading-none lg:mt-6 lg:text-6xl xl:text-7xl'>
                   {instance.title}
                 </h1>
 
@@ -118,8 +118,8 @@ const LandingPage = () => {
               </Stack>
             </div>
           </div>
-          <div className='sm:mt-24 lg:mt-0 lg:col-span-6 self-center'>
-            <Card size='xl' variant='rounded' className='sm:max-w-md sm:w-full sm:mx-auto'>
+          <div className='self-center sm:mt-24 lg:col-span-6 lg:mt-0'>
+            <Card size='xl' variant='rounded' className='sm:mx-auto sm:w-full sm:max-w-md'>
               <CardBody>
                 {renderBody()}
               </CardBody>

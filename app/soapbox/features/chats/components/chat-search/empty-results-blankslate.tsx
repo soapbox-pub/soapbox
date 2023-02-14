@@ -12,7 +12,7 @@ const EmptyResultsBlankslate = () => {
   const intl = useIntl();
 
   return (
-    <Stack justifyContent='center' alignItems='center' space={2} className='h-full w-2/3 mx-auto'>
+    <Stack justifyContent='center' alignItems='center' space={2} className='mx-auto h-full w-2/3'>
       <Text weight='bold' size='lg' align='center' data-testid='no-results'>
         {intl.formatMessage(messages.title)}
       </Text>

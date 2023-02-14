@@ -110,7 +110,11 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
           )}
 
           <Stack space={4}>
-            <StatusContent status={actualStatus} translatable />
+            <StatusContent
+              status={actualStatus}
+              textSize='lg'
+              translatable
+            />
 
             <TranslateButton status={actualStatus} />
 

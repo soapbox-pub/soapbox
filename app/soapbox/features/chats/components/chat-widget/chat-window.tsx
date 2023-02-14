@@ -87,7 +87,7 @@ const ChatWindow = () => {
 
               <Stack alignItems='start'>
                 <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
-                  <div className='flex items-center space-x-1 flex-grow'>
+                  <div className='flex grow items-center space-x-1'>
                     <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>
                     {chat.account.verified && <VerificationBadge />}
                   </div>
@@ -113,7 +113,7 @@ const ChatWindow = () => {
         onToggle={toggleChatPane}
       />
 
-      <Stack className='overflow-hidden flex-grow h-full' space={2}>
+      <Stack className='h-full grow overflow-hidden' space={2}>
         <Chat chat={chat} inputRef={inputRef} />
       </Stack>
     </>

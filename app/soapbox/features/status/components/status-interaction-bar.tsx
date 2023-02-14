@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -152,7 +152,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               return (
                 <Emoji
                   key={i}
-                  className='w-4.5 h-4.5 flex-none'
+                  className='h-4.5 w-4.5 flex-none'
                   emoji={e.get('name')}
                 />
               );
@@ -188,7 +188,7 @@ const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, chi
       type='button'
       onClick={onClick}
       className={
-        classNames({
+        clsx({
           'text-gray-600 dark:text-gray-700': true,
           'hover:underline': features.exposableReactions,
           'cursor-default': !features.exposableReactions,

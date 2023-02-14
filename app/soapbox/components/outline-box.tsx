@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 interface IOutlineBox extends React.HTMLAttributes<HTMLDivElement> {
@@ -10,7 +10,7 @@ interface IOutlineBox extends React.HTMLAttributes<HTMLDivElement> {
 const OutlineBox: React.FC<IOutlineBox> = ({ children, className, ...rest }) => {
   return (
     <div
-      className={classNames('p-4 rounded-lg border border-solid border-gray-300 dark:border-gray-800', className)}
+      className={clsx('rounded-lg border border-solid border-gray-300 p-4 dark:border-gray-800', className)}
       {...rest}
     >
       {children}

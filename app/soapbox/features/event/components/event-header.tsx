@@ -80,8 +80,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   if (!status || !status.event) {
     return (
       <>
-        <div className='-mt-4 -mx-4'>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+        <div className='-mx-4 -mt-4'>
+          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
 
         <PlaceholderEventHeader />
@@ -364,14 +364,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   return (
     <>
-      <div className='-mt-4 -mx-4'>
-        <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50'>
+      <div className='-mx-4 -mt-4'>
+        <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
           {banner && (
             <a href={banner.url} onClick={handleHeaderClick} target='_blank'>
               <StillImage
                 src={banner.url}
                 alt={intl.formatMessage(messages.bannerHeader)}
-                className='absolute inset-0 object-cover md:rounded-t-xl h-full'
+                className='absolute inset-0 h-full object-cover md:rounded-t-xl'
               />
             </a>
           )}
@@ -379,13 +379,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       </div>
       <Stack space={2}>
         <HStack className='w-full' alignItems='start' space={2}>
-          <Text className='flex-grow' size='lg' weight='bold'>{event.name}</Text>
+          <Text className='grow' size='lg' weight='bold'>{event.name}</Text>
           <Menu>
             <MenuButton
               as={IconButton}
               src={require('@tabler/icons/dots.svg')}
               theme='outlined'
-              className='px-2 h-[30px]'
+              className='h-[30px] px-2'
               iconClassName='w-4 h-4'
               children={null}
             />
@@ -396,13 +396,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                   return <MenuDivider key={idx} />;
                 } else {
                   const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.newTab ? '_blank' : '_self' };
+                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.target || '_self' };
 
                   return (
                     <Comp key={idx} {...itemProps} className='group'>
                       <div className='flex items-center'>
                         {menuItem.icon && (
-                          <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
+                          <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500' />
                         )}
 
                         <div className='truncate'>{menuItem.text}</div>

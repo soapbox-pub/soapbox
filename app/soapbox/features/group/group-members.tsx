@@ -180,13 +180,13 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
                 return <MenuDivider key={idx} />;
               } else {
                 const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.newTab ? '_blank' : '_self' };
+                const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.target || '_self' };
 
                 return (
                   <Comp key={idx} {...itemProps} className='group'>
                     <HStack space={3} alignItems='center'>
                       {menuItem.icon && (
-                        <SvgIcon src={menuItem.icon} className='h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
+                        <SvgIcon src={menuItem.icon} className='h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500' />
                       )}
 
                       <div className='truncate'>{menuItem.text}</div>

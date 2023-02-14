@@ -238,10 +238,6 @@ export function Settings() {
   return import(/* webpackChunkName: "features/settings" */'../../settings');
 }
 
-export function MediaDisplay() {
-  return import(/* webpackChunkName: "features/settings" */'../../settings/media-display');
-}
-
 export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit-profile');
 }
@@ -576,4 +572,8 @@ export function NewGroupPanel() {
 
 export function GroupMediaPanel() {
   return import(/* webpackChunkName: "features/groups" */'../components/group-media-panel');
+}
+
+export function NewEventPanel() {
+  return import(/* webpackChunkName: "features/events" */'../components/panels/new-event-panel');
 }

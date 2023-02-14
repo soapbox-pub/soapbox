@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -164,7 +164,7 @@ const Notifications = () => {
       onLoadMore={handleLoadOlder}
       onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
-      className={classNames({
+      className={clsx({
         'divide-y divide-gray-200 dark:divide-primary-800 divide-solid': notifications.size > 0,
         'space-y-2': notifications.size === 0,
       })}

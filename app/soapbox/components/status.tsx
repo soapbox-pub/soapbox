@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
@@ -53,7 +53,6 @@ export interface IStatus {
   hoverable?: boolean,
   variant?: 'default' | 'rounded',
   showGroup?: boolean,
-  withDismiss?: boolean,
   accountAction?: React.ReactElement,
 }
 
@@ -74,7 +73,6 @@ const Status: React.FC<IStatus> = (props) => {
     hideActionBar,
     variant = 'rounded',
     showGroup = true,
-    withDismiss,
   } = props;
 
   const intl = useIntl();
@@ -291,8 +289,10 @@ const Status: React.FC<IStatus> = (props) => {
 
     return (
       <HotKeys handlers={minHandlers}>
-        <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
-          <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+        <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+          <Text theme='muted'>
+            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+          </Text>
         </div>
       </HotKeys>
     );
@@ -341,7 +341,7 @@ const Status: React.FC<IStatus> = (props) => {
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
-        className={classNames('status cursor-pointer', { focusable })}
+        className={clsx('status cursor-pointer', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
@@ -351,7 +351,7 @@ const Status: React.FC<IStatus> = (props) => {
       >
         <Card
           variant={variant}
-          className={classNames('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
+          className={clsx('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
             'py-6 sm:p-5': variant === 'rounded',
             'status-reply': !!status.in_reply_to_id,
             muted,
@@ -421,7 +421,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
+                <StatusActionBar status={actualStatus} />
               </div>
             )}
           </div>

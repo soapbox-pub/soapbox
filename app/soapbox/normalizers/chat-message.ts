@@ -7,16 +7,20 @@ import {
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 
-import type { Attachment, Card, Emoji } from 'soapbox/types/entities';
+import { normalizeEmojiReaction } from './emoji-reaction';
+
+import type { Attachment, Card, Emoji, EmojiReaction } from 'soapbox/types/entities';
 
 export const ChatMessageRecord = ImmutableRecord({
   account_id: '',
-  attachment: null as Attachment | null,
+  media_attachments: ImmutableList<Attachment>(),
   card: null as Card | null,
   chat_id: '',
   content: '',
   created_at: '',
   emojis: ImmutableList<Emoji>(),
+  expiration: null as number | null,
+  emoji_reactions: ImmutableList<EmojiReaction>(),
   id: '',
   unread: false,
   deleting: false,
@@ -24,12 +28,25 @@ export const ChatMessageRecord = ImmutableRecord({
 });
 
 const normalizeMedia = (status: ImmutableMap<string, any>) => {
+  const attachments = status.get('media_attachments');
   const attachment = status.get('attachment');
 
-  if (attachment) {
-    return status.set('attachment', normalizeAttachment(attachment));
+  if (attachments) {
+    return status.set('media_attachments', ImmutableList(attachments.map(normalizeAttachment)));
+  } else if (attachment) {
+    return status.set('media_attachments', ImmutableList([normalizeAttachment(attachment)]));
   } else {
-    return status;
+    return status.set('media_attachments', ImmutableList());
+  }
+};
+
+const normalizeChatMessageEmojiReaction = (chatMessage: ImmutableMap<string, any>) => {
+  const emojiReactions = chatMessage.get('emoji_reactions');
+
+  if (emojiReactions) {
+    return chatMessage.set('emoji_reactions', ImmutableList(emojiReactions.map(normalizeEmojiReaction)));
+  } else {
+    return chatMessage;
   }
 };
 
@@ -37,6 +54,7 @@ export const normalizeChatMessage = (chatMessage: Record<string, any>) => {
   return ChatMessageRecord(
     ImmutableMap(fromJS(chatMessage)).withMutations(chatMessage => {
       normalizeMedia(chatMessage);
+      normalizeChatMessageEmojiReaction(chatMessage);
     }),
   );
 };

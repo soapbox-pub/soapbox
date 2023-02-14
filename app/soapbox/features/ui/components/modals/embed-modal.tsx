@@ -45,7 +45,7 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
       </div>
 
       <SafeEmbed
-        className='rounded-xl overflow-hidden w-full'
+        className='w-full overflow-hidden rounded-xl'
         sandbox='allow-same-origin allow-scripts'
         title='embedded-status'
         html={embed?.html}

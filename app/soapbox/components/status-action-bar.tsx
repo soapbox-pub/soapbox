@@ -14,10 +14,10 @@ import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
-import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
+import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
 import { HStack } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
@@ -98,7 +98,6 @@ const messages = defineMessages({
 
 interface IStatusActionBar {
   status: Status,
-  withDismiss?: boolean,
   withLabels?: boolean,
   expandable?: boolean,
   space?: 'expand' | 'compact',
@@ -106,7 +105,6 @@ interface IStatusActionBar {
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
   status,
-  withDismiss = false,
   withLabels = false,
   expandable = true,
   space = 'compact',
@@ -387,14 +385,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     menu.push(null);
 
-    if (ownAccount || withDismiss) {
-      menu.push({
-        text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
-        action: handleConversationMuteClick,
-        icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
-      });
-      menu.push(null);
-    }
+    menu.push({
+      text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
+      action: handleConversationMuteClick,
+      icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
+    });
+
+    menu.push(null);
 
     if (ownAccount) {
       if (publicStatus) {
@@ -620,19 +617,19 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         />
 
         {(features.quotePosts && me) ? (
-          <DropdownMenuContainer
+          <DropdownMenu
             items={reblogMenu}
             disabled={!publicStatus}
             onShiftClick={handleReblogClick}
           >
             {reblogButton}
-          </DropdownMenuContainer>
+          </DropdownMenu>
         ) : (
           reblogButton
         )}
 
         {features.emojiReacts ? (
-          <EmojiButtonWrapper statusId={status.id}>
+          <StatusReactionWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
               icon={require('@tabler/icons/heart.svg')}
@@ -643,7 +640,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               emoji={meEmojiReact}
               text={withLabels ? meEmojiTitle : undefined}
             />
-          </EmojiButtonWrapper>
+          </StatusReactionWrapper>
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
@@ -665,12 +662,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenuContainer items={menu} status={status}>
+        <DropdownMenu items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={require('@tabler/icons/dots.svg')}
           />
-        </DropdownMenuContainer>
+        </DropdownMenu>
       </HStack>
     </HStack>
   );

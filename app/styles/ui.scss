@@ -25,11 +25,6 @@
     cursor: default;
   }
 
-  &.active {
-    color: var(--highlight-text-color);
-    opacity: 1;
-  }
-
   &::-moz-focus-inner {
     border: 0;
   }
@@ -75,8 +70,7 @@
   flex-direction: column;
 
   .image-loader__preview-canvas {
-    max-width: $media-modal-media-max-width;
-    max-height: $media-modal-media-max-height;
+    @apply max-w-full max-h-[80%];
     background: url('../assets/images/void.png') repeat;
     object-fit: contain;
   }
@@ -90,9 +84,7 @@
   @apply relative w-full h-full flex items-center justify-center;
 
   img {
-    @apply w-auto h-auto object-contain shadow-2xl;
-    max-width: $media-modal-media-max-width;
-    max-height: $media-modal-media-max-height;
+    @apply w-auto h-auto max-w-full max-h-[80%] object-contain shadow-2xl;
   }
 }
 
@@ -132,12 +124,6 @@
   @apply block w-full mb-2.5 border-0 border-b-2 border-solid box-border text-gray-400 bg-transparent;
   font-family: inherit;
   padding: 7px 0;
-
-  &:focus,
-  &:active {
-    @apply text-gray-900;
-    border-bottom-color: var(--highlight-text-color);
-  }
 
   @media screen and (max-width: 600px) {
     font-size: 16px;

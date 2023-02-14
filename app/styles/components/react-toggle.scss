@@ -6,7 +6,7 @@
   border: 0;
   padding: 0;
   user-select: none;
-  -webkit-tap-highlight-color: rgba($base-overlay-background, 0);
+  -webkit-tap-highlight-color: #0000;
   -webkit-tap-highlight-color: transparent;
 
   &:focus-within .react-toggle-track {

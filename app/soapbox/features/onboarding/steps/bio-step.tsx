@@ -46,7 +46,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
+          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.note.title' defaultMessage='Write a short bio' />
@@ -59,7 +59,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
           </div>
 
           <Stack space={5}>
-            <div className='sm:pt-10 sm:w-2/3 mx-auto'>
+            <div className='mx-auto sm:w-2/3 sm:pt-10'>
               <FormGroup
                 hintText={<FormattedMessage id='onboarding.bio.hint' defaultMessage='Max 500 characters' />}
                 labelText={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
@@ -74,7 +74,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
               </FormGroup>
             </div>
 
-            <div className='sm:w-2/3 md:w-1/2 mx-auto'>
+            <div className='mx-auto sm:w-2/3 md:w-1/2'>
               <Stack justifyContent='center' space={2}>
                 <Button
                   block

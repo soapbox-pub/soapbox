@@ -8,6 +8,7 @@ export { CardRecord, normalizeCard } from './card';
 export { ChatRecord, normalizeChat } from './chat';
 export { ChatMessageRecord, normalizeChatMessage } from './chat-message';
 export { EmojiRecord, normalizeEmoji } from './emoji';
+export { EmojiReactionRecord } from './emoji-reaction';
 export { FilterRecord, normalizeFilter } from './filter';
 export { GroupRecord, normalizeGroup } from './group';
 export { GroupRelationshipRecord, normalizeGroupRelationship } from './group-relationship';

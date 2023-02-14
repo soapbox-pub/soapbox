@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 const themes = {
@@ -115,7 +115,7 @@ const Text = React.forwardRef<any, IText>(
           textDecoration: tag === 'abbr' ? 'underline dotted' : undefined,
           direction,
         }}
-        className={classNames({
+        className={clsx({
           'cursor-default': tag === 'abbr',
           truncate: truncate,
           [sizes[size]]: true,
