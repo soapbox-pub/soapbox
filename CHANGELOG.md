@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: let "mute conversation" be clicked from any feed, not just noficiations.
 - Posts: display all emoji reactions.
 - Reactions: improved UI of reactions on statuses.
+- Profile: make verified badge more prominent, overlapping with avatar.
 
 ### Fixed
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
