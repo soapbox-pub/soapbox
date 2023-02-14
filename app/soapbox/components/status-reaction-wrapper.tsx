@@ -105,14 +105,16 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
         ref: setReferenceElement,
       })}
 
-      <Portal>
-        <EmojiSelector
-          placement='top-start'
-          referenceElement={referenceElement}
-          onReact={handleReact}
-          visible={visible}
-        />
-      </Portal>
+      {visible && (
+        <Portal>
+          <EmojiSelector
+            placement='top-start'
+            referenceElement={referenceElement}
+            onReact={handleReact}
+            visible={visible}
+          />
+        </Portal>
+      )}
     </div>
   );
 };

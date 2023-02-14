@@ -37,16 +37,18 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
         onClick: onToggleVisibility,
       })}
 
-      <Portal>
-        <EmojiSelector
-          visible={isOpen}
-          referenceElement={referenceElement}
-          onReact={handleSelect}
-          onClose={() => setIsOpen(false)}
-          offset={[-10, 12]}
-          all={false}
-        />
-      </Portal>
+      {isOpen && (
+        <Portal>
+          <EmojiSelector
+            visible={isOpen}
+            referenceElement={referenceElement}
+            onReact={handleSelect}
+            onClose={() => setIsOpen(false)}
+            offset={[-10, 12]}
+            all={false}
+          />
+        </Portal>
+      )}
     </React.Fragment>
   );
 }
