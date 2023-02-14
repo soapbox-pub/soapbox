@@ -224,6 +224,8 @@
   "chat_message_list_intro.leave_chat.message": "本当にこのチャットから退出しますか？メッセージは削除され、このチャットはあなたの受信トレイから削除されます。",
   "chat_search.blankslate.body": "チャットする相手を検索します。.",
   "chat_search.blankslate.title": "チャットを開始",
+  "chat_search.empty_results_blankslate.action": "誰かにメッセージを送る",
+  "chat_search.empty_results_blankslate.body": "別の名前で検索してみてください。",
   "chats.actions.delete": "メッセージを削除",
   "chats.actions.more": "もっと",
   "chats.actions.report": "ユーザを通報",
