@@ -113,7 +113,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
 
   return (
     <div
-      className={clsx('z-50 transition-opacity duration-100', {
+      className={clsx('z-[101] transition-opacity duration-100', {
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
