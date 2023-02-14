@@ -31,6 +31,7 @@ describe('<FeedCarousel />', () => {
               features: [],
             }),
           }),
+          configuration: ImmutableMap({}),
         },
       };
     });
