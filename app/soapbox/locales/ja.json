@@ -221,6 +221,7 @@
   "chat_message_list_intro.intro": "があなたとチャットを開始しようとしています",
   "chat_message_list_intro.leave_chat.confirm": "チャットから退出",
   "chat_message_list_intro.leave_chat.heading": "チャットから退出",
+  "chat_message_list_intro.leave_chat.message": "本当にこのチャットから退出しますか？メッセージは削除され、このチャットはあなたの受信トレイから削除されます。",
   "chats.actions.delete": "メッセージを削除",
   "chats.actions.more": "もっと",
   "chats.actions.report": "ユーザを通報",
