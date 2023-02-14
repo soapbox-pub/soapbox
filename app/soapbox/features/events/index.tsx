@@ -36,7 +36,7 @@ const Events = () => {
       <HStack className='mb-4' space={2} justifyContent='between'>
         <CardTitle title={<FormattedMessage id='events.recent_events' defaultMessage='Recent events' />} />
         <Button
-          className='ml-auto'
+          className='ml-auto xl:hidden'
           theme='primary'
           size='sm'
           onClick={onComposeEvent}

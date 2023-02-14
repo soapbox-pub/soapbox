@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -334,7 +334,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       <QuotedStatusContainer composeId={id} />
 
       <div
-        className={classNames('flex flex-wrap items-center justify-between', {
+        className={clsx('flex flex-wrap items-center justify-between', {
           'hidden': condensed,
         })}
       >

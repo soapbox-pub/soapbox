@@ -1,5 +1,5 @@
 import { Portal } from '@reach/portal';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
@@ -201,7 +201,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
         tabIndex={0}
         key={key}
         data-index={i}
-        className={classNames({
+        className={clsx({
           'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
           'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
         })}
@@ -244,7 +244,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
 
             <Textarea
               ref={this.setTextarea}
-              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-transparent px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+              className={clsx('w-full resize-none border-0 px-0 text-gray-800 transition-[min-height] placeholder:text-gray-600 focus:border-0 focus:shadow-none focus:ring-0 motion-reduce:transition-none dark:bg-transparent dark:text-white dark:placeholder:text-gray-600', {
                 'min-h-[40px]': condensed,
                 'min-h-[100px]': !condensed,
               })}
@@ -271,7 +271,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
       <Portal key='portal'>
         <div
           style={this.setPortalPosition()}
-          className={classNames({
+          className={clsx({
             'fixed z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
             hidden: suggestionsHidden || suggestions.isEmpty(),
             block: !suggestionsHidden && !suggestions.isEmpty(),

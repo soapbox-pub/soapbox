@@ -1,15 +1,17 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';
 
 import { __stub } from 'soapbox/api';
 import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeRelationship } from 'soapbox/normalizers';
+import { normalizeChatMessage, normalizeRelationship } from 'soapbox/normalizers';
+import { normalizeEmojiReaction } from 'soapbox/normalizers/emoji-reaction';
 import { Store } from 'soapbox/store';
+import { ChatMessage } from 'soapbox/types/entities';
 import { flattenPages } from 'soapbox/utils/queries';
 
 import { IAccount } from '../accounts';
-import { ChatKeys, IChat, IChatMessage, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
+import { ChatKeys, IChat, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
 
 const chat: IChat = {
   accepted: true,
@@ -22,6 +24,7 @@ const chat: IChat = {
     avatar_static: 'avatar',
     display_name: 'my name',
   } as IAccount,
+  chat_type: 'direct',
   created_at: '2020-06-10T02:05:06.000Z',
   created_by_account: '1',
   discarded_at: null,
@@ -33,12 +36,14 @@ const chat: IChat = {
   unread: 0,
 };
 
-const buildChatMessage = (id: string): IChatMessage => ({
+const buildChatMessage = (id: string) => normalizeChatMessage({
   id,
   chat_id: '1',
   account_id: '1',
   content: `chat message #${id}`,
   created_at: '2020-06-10T02:05:06.000Z',
+  emoji_reactions: null,
+  expiration: 1209600,
   unread: true,
 });
 
@@ -365,7 +370,7 @@ describe('useChatActions', () => {
         const { updateChat } = useChatActions(chat.id);
 
         useEffect(() => {
-          updateChat.mutate({  message_expiration: 1200 });
+          updateChat.mutate({ message_expiration: 1200 });
         }, []);
 
         return updateChat;
@@ -377,6 +382,54 @@ describe('useChatActions', () => {
 
       const nextQueryData = queryClient.getQueryData(ChatKeys.chat(chat.id));
       expect((nextQueryData as any).message_expiration).toBe(1200);
+    });
+  });
+
+  describe('createReaction()', () => {
+    const chatMessage = buildChatMessage('1');
+
+    beforeEach(() => {
+      __stub((mock) => {
+        mock
+          .onPost(`/api/v1/pleroma/chats/${chat.id}/messages/${chatMessage.id}/reactions`)
+          .reply(200, { ...chatMessage.toJS(), emoji_reactions: [{ name: '👍', count: 1, me: true }] });
+      });
+    });
+
+    it('successfully updates the Chat Message record', async () => {
+      const initialQueryData = {
+        pages: [
+          { result: [chatMessage], hasMore: false, link: undefined },
+        ],
+        pageParams: [undefined],
+      };
+
+      queryClient.setQueryData(ChatKeys.chatMessages(chat.id), initialQueryData);
+
+      const { result } = renderHook(() => {
+        const { createReaction } = useChatActions(chat.id);
+
+        useEffect(() => {
+          createReaction.mutate({
+            messageId: chatMessage.id,
+            emoji: '👍',
+            chatMessage,
+          });
+        }, []);
+
+        return createReaction;
+      });
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      const updatedChatMessage = (queryClient.getQueryData(ChatKeys.chatMessages(chat.id)) as any).pages[0].result[0] as ChatMessage;
+      expect(updatedChatMessage.emoji_reactions).toEqual(ImmutableList([normalizeEmojiReaction({
+        name: '👍',
+        count: 1,
+        me: true,
+      })]));
     });
   });
 });

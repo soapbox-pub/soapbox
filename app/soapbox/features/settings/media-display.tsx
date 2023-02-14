@@ -39,7 +39,7 @@ const MediaDisplay = () => {
       </CardHeader>
 
       <CardBody>
-        <SimpleForm className='p-0 space-y-3'>
+        <SimpleForm className='space-y-3 p-0'>
           <List>
             <ListItem label={intl.formatMessage(messages.mediaDisplay)}>
               <SelectDropdown

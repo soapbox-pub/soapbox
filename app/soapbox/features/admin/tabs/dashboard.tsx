@@ -115,13 +115,13 @@ const Dashboard: React.FC = () => {
         <ListItem label={<FormattedMessage id='admin.software.frontend' defaultMessage='Frontend' />}>
           <a
             href={sourceCode.ref ? `${sourceCode.url}/tree/${sourceCode.ref}` : sourceCode.url}
-            className='flex space-x-1 items-center truncate'
+            className='flex items-center space-x-1 truncate'
             target='_blank'
           >
             <span>{sourceCode.displayName} {sourceCode.version}</span>
 
             <Icon
-              className='w-4 h-4'
+              className='h-4 w-4'
               src={require('@tabler/icons/external-link.svg')}
             />
           </a>

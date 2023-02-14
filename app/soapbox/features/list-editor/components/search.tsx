@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -35,7 +35,7 @@ const Search = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <HStack space={2}>
-        <label className='flex-grow relative'>
+        <label className='relative grow'>
           <span style={{ display: 'none' }}>{intl.formatMessage(messages.search)}</span>
 
           <Input
@@ -45,7 +45,7 @@ const Search = () => {
             placeholder={intl.formatMessage(messages.search)}
           />
           <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-            <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
+            <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
           </div>
         </label>
 

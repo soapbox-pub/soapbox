@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -59,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     return (
       <div
         className={
-          classNames('relative', {
+          clsx('relative', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
             'mt-1': !String(outerClassName).includes('mt-'),
@@ -68,7 +68,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         }
       >
         {icon ? (
-          <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+          <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
             <Icon src={icon} className='h-4 w-4 text-gray-700 dark:text-gray-600' aria-hidden='true' />
           </div>
         ) : null}
@@ -83,7 +83,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           {...filteredProps}
           type={revealed ? 'text' : type}
           ref={ref}
-          className={classNames('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
+          className={clsx('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
             'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
@@ -95,7 +95,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
         />
 
         {append ? (
-          <div className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex items-center pr-3'>
+          <div className='absolute inset-y-0 right-0 flex items-center pr-3 rtl:left-0 rtl:right-auto'>
             {append}
           </div>
         ) : null}
@@ -108,12 +108,12 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 intl.formatMessage(messages.showPassword)
             }
           >
-            <div className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto flex items-center'>
+            <div className='absolute inset-y-0 right-0 flex items-center rtl:left-0 rtl:right-auto'>
               <button
                 type='button'
                 onClick={togglePassword}
                 tabIndex={-1}
-                className='text-gray-700 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 h-full px-2 focus:ring-primary-500 focus:ring-2'
+                className='h-full px-2 text-gray-700 hover:text-gray-500 focus:ring-2 focus:ring-primary-500 dark:text-gray-600 dark:hover:text-gray-400'
               >
                 <SvgIcon
                   src={revealed ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}

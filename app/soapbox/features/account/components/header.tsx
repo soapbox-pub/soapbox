@@ -22,13 +22,14 @@ import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
-import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import toast from 'soapbox/toast';
 import { Account } from 'soapbox/types/entities';
-import { isDefaultHeader, isRemote } from 'soapbox/utils/accounts';
+import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
+import { MASTODON, parseVersion } from 'soapbox/utils/features';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 
@@ -71,6 +72,7 @@ const messages = defineMessages({
   userUnendorsed: { id: 'account.unendorse.success', defaultMessage: 'You are no longer featuring @{acct}' },
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
+  subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
 });
 
 interface IHeader {
@@ -84,6 +86,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+
+  const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
   const { getOrCreateChatByAccountId } = useChats();
 
@@ -102,16 +106,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   if (!account) {
     return (
-      <div className='-mt-4 -mx-4'>
+      <div className='-mx-4 -mt-4'>
         <div>
-          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50' />
+          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
 
         <div className='px-4 sm:px-6'>
           <HStack alignItems='bottom' space={5} className='-mt-12'>
-            <div className='flex relative'>
+            <div className='relative flex'>
               <div
-                className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white dark:ring-gray-800'
+                className='h-24 w-24 rounded-full bg-gray-400 ring-4 ring-white dark:ring-gray-800'
               />
             </div>
           </HStack>
@@ -257,6 +261,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
   };
 
+  const handleRssFeedClick = () => {
+    window.open(software === MASTODON ? `${account.url}.rss` : `${account.url}/feed.rss`, '_blank');
+  };
+
   const handleShare = () => {
     navigator.share({
       text: `@${account.acct}`,
@@ -269,8 +277,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const makeMenu = () => {
     const menu: MenuType = [];
 
-    if (!account || !ownAccount) {
+    if (!account) {
       return [];
+    }
+
+    if (features.rssFeeds && isLocal(account)) {
+      menu.push({
+        text: intl.formatMessage(messages.subscribeFeed),
+        action: handleRssFeedClick,
+        icon: require('@tabler/icons/rss.svg'),
+      });
     }
 
     if ('share' in navigator) {
@@ -279,10 +295,25 @@ const Header: React.FC<IHeader> = ({ account }) => {
         action: handleShare,
         icon: require('@tabler/icons/upload.svg'),
       });
+    }
+
+    if (features.federating && isRemote(account)) {
+      const domain = account.fqn.split('@')[1];
+
+      menu.push({
+        text: intl.formatMessage(messages.profileExternal, { domain }),
+        action: () => onProfileExternal(account.url),
+        icon: require('@tabler/icons/external-link.svg'),
+      });
+    }
+
+    if (!ownAccount) return menu;
+
+    if (menu.length) {
       menu.push(null);
     }
 
-    if (account.id === ownAccount?.id) {
+    if (account.id === ownAccount.id) {
       menu.push({
         text: intl.formatMessage(messages.edit_profile),
         to: '/settings/profile',
@@ -435,17 +466,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
           icon: require('@tabler/icons/ban.svg'),
         });
       }
-
-      if (features.federating) {
-        menu.push({
-          text: intl.formatMessage(messages.profileExternal, { domain }),
-          action: () => onProfileExternal(account.url),
-          icon: require('@tabler/icons/external-link.svg'),
-        });
-      }
     }
 
-    if (ownAccount?.staff) {
+    if (ownAccount.staff) {
       menu.push(null);
 
       menu.push({
@@ -463,7 +486,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     if (!account || !ownAccount) return info;
 
-    if (ownAccount?.id !== account.id && account.relationship?.followed_by) {
+    if (ownAccount.id !== account.id && account.relationship?.followed_by) {
       info.push(
         <Badge
           key='followed_by'
@@ -471,7 +494,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
-    } else if (ownAccount?.id !== account.id && account.relationship?.blocking) {
+    } else if (ownAccount.id !== account.id && account.relationship?.blocking) {
       info.push(
         <Badge
           key='blocked'
@@ -481,7 +504,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       );
     }
 
-    if (ownAccount?.id !== account.id && account.relationship?.muting) {
+    if (ownAccount.id !== account.id && account.relationship?.muting) {
       info.push(
         <Badge
           key='muted'
@@ -489,7 +512,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
-    } else if (ownAccount?.id !== account.id && account.relationship?.domain_blocking) {
+    } else if (ownAccount.id !== account.id && account.relationship?.domain_blocking) {
       info.push(
         <Badge
           key='domain_blocked'
@@ -586,13 +609,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const menu = makeMenu();
 
   return (
-    <div className='-mt-4 -mx-4'>
+    <div className='-mx-4 -mt-4'>
       {(account.moved && typeof account.moved === 'object') && (
         <MovedNote from={account} to={account.moved} />
       )}
 
       <div>
-        <div className='relative flex flex-col justify-center h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200 dark:bg-gray-900/50 overflow-hidden isolate'>
+        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
           {renderHeader()}
 
           <div className='absolute top-2 left-2'>
@@ -610,18 +633,18 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <Avatar
                 src={account.avatar}
                 size={96}
-                className='relative h-24 w-24 rounded-full ring-4 ring-white dark:ring-primary-900 bg-white dark:bg-primary-900'
+                className='relative h-24 w-24 rounded-full bg-white ring-4 ring-white dark:bg-primary-900 dark:ring-primary-900'
               />
             </a>
           </div>
 
-          <div className='mt-6 flex justify-end w-full sm:pb-1'>
+          <div className='mt-6 flex w-full justify-end sm:pb-1'>
             <HStack space={2} className='mt-10'>
               <SubscriptionButton account={account} />
               {renderMessageButton()}
               {renderShareButton()}
 
-              {ownAccount && (
+              {menu.length > 0 && (
                 <Menu>
                   <MenuButton
                     as={IconButton}
@@ -644,7 +667,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                           <Comp key={idx} {...itemProps} className='group'>
                             <HStack space={3} alignItems='center'>
                               {menuItem.icon && (
-                                <SvgIcon src={menuItem.icon} className='h-5 w-5 text-gray-400 flex-none group-hover:text-gray-500' />
+                                <SvgIcon src={menuItem.icon} className='h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500' />
                               )}
 
                               <div className='truncate'>{menuItem.text}</div>

@@ -249,6 +249,11 @@ const getInstanceFeatures = (instance: Instance) => {
     chatAcceptance: v.software === TRUTHSOCIAL,
 
     /**
+     * Ability to add reactions to chat messages.
+     */
+    chatEmojiReactions: false, // v.software === TRUTHSOCIAL,
+
+    /**
      * Pleroma chats API.
      * @see {@link https://docs.pleroma.social/backend/development/API/chats/}
      */
@@ -374,10 +379,10 @@ const getInstanceFeatures = (instance: Instance) => {
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
 
     /**
-     * The backend allows only RGI ("Recommended for General Interchange") emoji reactions.
+     * The backend allows only non-RGI ("Recommended for General Interchange") emoji reactions.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
-    emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
+    emojiReactsNonRGI: v.software === PLEROMA && lt(v.version, '2.2.49'),
 
     /**
      * Sign in with an Ethereum wallet.
@@ -708,6 +713,14 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     richText: any([
       v.software === MASTODON && v.build === GLITCH,
+      v.software === PLEROMA,
+    ]),
+
+    /**
+     * Ability to follow account feeds using RSS.
+     */
+    rssFeeds: any([
+      v.software === MASTODON,
       v.software === PLEROMA,
     ]),
 

@@ -1,13 +1,16 @@
-import classNames from 'clsx';
-import React from 'react';
+import { Placement } from '@popperjs/core';
+import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
+import { usePopper } from 'react-popper';
 
 import { Emoji, HStack } from 'soapbox/components/ui';
+import { useSoapboxConfig } from 'soapbox/hooks';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
   emoji: string,
   /** Event handler when the emoji is clicked. */
-  onClick: React.EventHandler<React.MouseEvent>,
+  onClick(emoji: string): void
   /** Extra class name on the <button> element. */
   className?: string,
   /** Tab order of the button. */
@@ -16,48 +19,103 @@ interface IEmojiButton {
 
 /** Clickable emoji button that scales when hovered. */
 const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabIndex }): JSX.Element => {
+  const handleClick: React.EventHandler<React.MouseEvent> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    onClick(emoji);
+  };
+
   return (
-    <button className={classNames(className)} onClick={onClick} tabIndex={tabIndex}>
-      <Emoji className='w-8 h-8 duration-100 hover:scale-125' emoji={emoji} />
+    <button className={clsx(className)} onClick={handleClick} tabIndex={tabIndex}>
+      <Emoji className='h-6 w-6 duration-100 hover:scale-110' emoji={emoji} />
     </button>
   );
 };
 
 interface IEmojiSelector {
-  /** List of Unicode emoji characters. */
-  emojis: Iterable<string>,
+  onClose?(): void
   /** Event handler when an emoji is clicked. */
-  onReact: (emoji: string) => void,
+  onReact(emoji: string): void
+  /** Element that triggers the EmojiSelector Popper */
+  referenceElement: HTMLElement | null
+  placement?: Placement
   /** Whether the selector should be visible. */
-  visible?: boolean,
-  /** Whether the selector should be focused. */
-  focused?: boolean,
+  visible?: boolean
 }
 
 /** Panel with a row of emoji buttons. */
-const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = false, focused = false }): JSX.Element => {
+const EmojiSelector: React.FC<IEmojiSelector> = ({
+  referenceElement,
+  onClose,
+  onReact,
+  placement = 'top',
+  visible = false,
+}): JSX.Element => {
+  const soapboxConfig = useSoapboxConfig();
 
-  const handleReact = (emoji: string): React.EventHandler<React.MouseEvent> => {
-    return (e) => {
-      onReact(emoji);
-      e.preventDefault();
-      e.stopPropagation();
-    };
+  // `useRef` won't trigger a re-render, while `useState` does.
+  // https://popper.js.org/react-popper/v2/
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (referenceElement?.contains(event.target as Node) || popperElement?.contains(event.target as Node)) {
+      return;
+    }
+
+    if (onClose) {
+      onClose();
+    }
   };
 
+  const { styles, attributes, update } = usePopper(referenceElement, popperElement, {
+    placement,
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [-10, 0],
+        },
+      },
+    ],
+  });
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [referenceElement]);
+
+  useEffect(() => {
+    if (visible && update) {
+      update();
+    }
+  }, [visible, update]);
+
   return (
-    <HStack
-      className={classNames('gap-2 bg-white dark:bg-gray-900 p-3 rounded-full shadow-md z-[999] w-max max-w-[100vw] flex-wrap')}
+    <div
+      className={clsx('z-50 transition-opacity duration-100', {
+        'opacity-0 pointer-events-none': !visible,
+      })}
+      ref={setPopperElement}
+      style={styles.popper}
+      {...attributes.popper}
     >
-      {Array.from(emojis).map((emoji, i) => (
-        <EmojiButton
-          key={i}
-          emoji={emoji}
-          onClick={handleReact(emoji)}
-          tabIndex={(visible || focused) ? 0 : -1}
-        />
-      ))}
-    </HStack>
+      <HStack
+        className={clsx('z-[999] flex w-max max-w-[100vw] flex-wrap space-x-3 rounded-full bg-white px-3 py-2.5 shadow-lg focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700')}
+      >
+        {Array.from(soapboxConfig.allowedEmoji).map((emoji, i) => (
+          <EmojiButton
+            key={i}
+            emoji={emoji}
+            onClick={onReact}
+            tabIndex={visible ? 0 : -1}
+          />
+        ))}
+      </HStack>
+    </div>
   );
 };
 

@@ -49,7 +49,7 @@ const Widget: React.FC<IWidget> = ({
         <WidgetTitle title={title} />
         {action || (onActionClick && (
           <IconButton
-            className='w-6 h-6 ml-2 text-black dark:text-white rtl:rotate-180'
+            className='ml-2 h-6 w-6 text-black rtl:rotate-180 dark:text-white'
             src={actionIcon}
             onClick={onActionClick}
             title={actionTitle}

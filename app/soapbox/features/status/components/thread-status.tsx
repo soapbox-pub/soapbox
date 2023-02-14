@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import { useAppSelector } from 'soapbox/hooks';
 
 interface IThreadStatus {
   id: string,
+  contextType?: string,
   focusedStatusId: string,
   onMoveUp: (id: string) => void,
   onMoveDown: (id: string) => void,
@@ -30,7 +31,7 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
 
     return (
       <div
-        className={classNames('thread__connector', {
+        className={clsx('thread__connector', {
           'thread__connector--top': isConnectedTop,
           'thread__connector--bottom': isConnectedBottom,
         })}

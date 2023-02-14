@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -87,16 +87,16 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={classNames('block w-full p-6 mx-auto text-start align-middle transition-all transform bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-xl rounded-2xl pointer-events-auto', widths[width])}>
-      <div className='sm:flex sm:items-start w-full justify-between'>
+    <div data-testid='modal' className={clsx('pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}>
+      <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
           {title && (
             <div
-              className={classNames('w-full flex items-center gap-2', {
+              className={clsx('flex w-full items-center gap-2', {
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
-              <h3 className='flex-grow text-lg leading-6 font-bold text-gray-900 dark:text-white'>
+              <h3 className='grow text-lg font-bold leading-6 text-gray-900 dark:text-white'>
                 {title}
               </h3>
 
@@ -105,14 +105,14 @@ const Modal: React.FC<IModal> = ({
                   src={closeIcon}
                   title={intl.formatMessage(messages.close)}
                   onClick={onClose}
-                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
+                  className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
                 />
               )}
             </div>
           )}
 
           {title ? (
-            <div className='w-full mt-2'>
+            <div className='mt-2 w-full'>
               {children}
             </div>
           ) : children}
@@ -121,7 +121,7 @@ const Modal: React.FC<IModal> = ({
 
       {confirmationAction && (
         <HStack className='mt-5' justifyContent='between' data-testid='modal-actions'>
-          <div className={classNames({ 'flex-grow': !confirmationFullWidth })}>
+          <div className={clsx({ 'grow': !confirmationFullWidth })}>
             {cancelAction && (
               <Button
                 theme='tertiary'
@@ -132,7 +132,7 @@ const Modal: React.FC<IModal> = ({
             )}
           </div>
 
-          <HStack space={2} className={classNames({ 'flex-grow': confirmationFullWidth })}>
+          <HStack space={2} className={clsx({ 'grow': confirmationFullWidth })}>
             {secondaryAction && (
               <Button
                 theme='secondary'

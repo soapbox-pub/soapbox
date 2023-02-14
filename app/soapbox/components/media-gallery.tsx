@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -152,7 +152,7 @@ const Item: React.FC<IItem> = ({
     );
 
     return (
-      <div className={classNames('media-gallery__item', { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+      <div className={clsx('media-gallery__item', { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
         <a className='media-gallery__item-thumbnail' href={attachment.url} target='_blank' style={{ cursor: 'pointer' }}>
           <Blurhash hash={attachment.blurhash} className='media-gallery__preview' />
           <span className='media-gallery__item__icons'>{attachmentIcon}</span>
@@ -171,7 +171,7 @@ const Item: React.FC<IItem> = ({
         target='_blank'
       >
         <StillImage
-          className='w-full h-full'
+          className='h-full w-full'
           src={mediaPreview ? attachment.preview_url : attachment.url}
           alt={attachment.description}
           letterboxed={letterboxed}
@@ -189,7 +189,7 @@ const Item: React.FC<IItem> = ({
     }
 
     thumbnail = (
-      <div className={classNames('media-gallery__gifv', { autoplay: autoPlayGif })}>
+      <div className={clsx('media-gallery__gifv', { autoplay: autoPlayGif })}>
         <video
           className='media-gallery__item-gifv-thumbnail'
           aria-label={attachment.description}
@@ -211,7 +211,7 @@ const Item: React.FC<IItem> = ({
     const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
-        className={classNames('media-gallery__item-thumbnail')}
+        className={clsx('media-gallery__item-thumbnail')}
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
@@ -225,7 +225,7 @@ const Item: React.FC<IItem> = ({
     const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
-        className={classNames('media-gallery__item-thumbnail')}
+        className={clsx('media-gallery__item-thumbnail')}
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
@@ -245,7 +245,7 @@ const Item: React.FC<IItem> = ({
   }
 
   return (
-    <div className={classNames('media-gallery__item', `media-gallery__item--${attachment.type}`, { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+    <div className={clsx('media-gallery__item', `media-gallery__item--${attachment.type}`, { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
       {last && total > ATTACHMENT_LIMIT && (
         <div className='media-gallery__item-overflow'>
           +{total - ATTACHMENT_LIMIT + 1}
@@ -546,7 +546,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
   }, [node.current]);
 
   return (
-    <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
+    <div className={clsx('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
       {children}
     </div>
   );

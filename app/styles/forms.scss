@@ -191,18 +191,6 @@ select {
     color: lighten($error-value-color, 12%);
   }
 
-  .fields-group {
-    margin-bottom: 25px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    .input:last-child {
-      margin-bottom: 0;
-    }
-  }
-
   .input.radio_buttons .radio label {
     @apply text-gray-900;
     margin-bottom: 5px;
