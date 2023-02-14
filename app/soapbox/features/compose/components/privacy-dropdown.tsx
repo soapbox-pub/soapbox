@@ -120,7 +120,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
         // It should not be transformed when mounting because the resulting
         // size will be used to determine the coordinate of the menu by
         // react-overlays
-        <div className={`privacy-dropdown__dropdown ${placement}`} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
+        <div className={clsx('privacy-dropdown__dropdown', placement)} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
           {items.map(item => (
             <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
               <div className='privacy-dropdown__option__icon'>
