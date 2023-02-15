@@ -21,9 +21,9 @@ import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 interface IProfilePage {
   params?: {
-    username?: string,
-  },
-  children: React.ReactNode,
+    username?: string
+  }
+  children: React.ReactNode
 }
 
 const getAccount = makeGetAccount();

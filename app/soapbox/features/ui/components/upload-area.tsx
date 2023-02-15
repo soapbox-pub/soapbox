@@ -9,9 +9,9 @@ import Motion from '../util/optional-motion';
 
 interface IUploadArea {
   /** Whether the upload area is active. */
-  active: boolean,
+  active: boolean
   /** Callback when the upload area is closed. */
-  onClose: () => void,
+  onClose: () => void
 }
 
 /** Component to display when a file is dragged over the UI. */

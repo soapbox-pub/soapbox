@@ -16,9 +16,9 @@ const List: React.FC<IList> = ({ children }) => (
 );
 
 interface IListItem {
-  label: React.ReactNode,
-  hint?: React.ReactNode,
-  onClick?(): void,
+  label: React.ReactNode
+  hint?: React.ReactNode
+  onClick?(): void
   onSelect?(): void
   isSelected?: boolean
   children?: React.ReactNode

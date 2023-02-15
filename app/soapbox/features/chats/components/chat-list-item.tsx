@@ -23,8 +23,8 @@ const messages = defineMessages({
 });
 
 interface IChatListItemInterface {
-  chat: IChat,
-  onClick: (chat: any) => void,
+  chat: IChat
+  onClick: (chat: any) => void
 }
 
 const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
@@ -120,7 +120,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                   src={require('@tabler/icons/dots.svg')}
                   title='Settings'
                   className='text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
-                  iconClassName='w-4 h-4'
+                  iconClassName='h-4 w-4'
                 />
               </DropdownMenu>
             </div>

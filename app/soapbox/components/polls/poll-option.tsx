@@ -29,7 +29,7 @@ const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ pe
 };
 
 interface IPollOptionText extends IPollOption {
-  percent: number,
+  percent: number
 }
 
 const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active, onToggle }) => {
@@ -95,12 +95,12 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 };
 
 interface IPollOption {
-  poll: PollEntity,
-  option: PollOptionEntity,
-  index: number,
-  showResults?: boolean,
-  active: boolean,
-  onToggle: (value: number) => void,
+  poll: PollEntity
+  option: PollOptionEntity
+  index: number
+  showResults?: boolean
+  active: boolean
+  onToggle: (value: number) => void
 }
 
 const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {

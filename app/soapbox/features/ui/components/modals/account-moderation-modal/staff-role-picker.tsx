@@ -34,7 +34,7 @@ const messages = defineMessages({
 
 interface IStaffRolePicker {
   /** Account whose role to change. */
-  account: AccountEntity,
+  account: AccountEntity
 }
 
 /** Picker for setting the staff role of an account. */

@@ -43,15 +43,15 @@ type AdminAccountRecord = ReturnType<typeof normalizeAdminAccount>;
 type AdminReportRecord = ReturnType<typeof normalizeAdminReport>;
 
 export interface ReducerAdminAccount extends AdminAccountRecord {
-  account: string | null,
+  account: string | null
 }
 
 export interface ReducerAdminReport extends AdminReportRecord {
-  account: string | null,
-  target_account: string | null,
-  action_taken_by_account: string | null,
-  assigned_account: string | null,
-  statuses: ImmutableList<string | null>,
+  account: string | null
+  target_account: string | null
+  action_taken_by_account: string | null
+  assigned_account: string | null
+  statuses: ImmutableList<string | null>
 }
 
 // Lol https://javascript.plainenglish.io/typescript-essentials-conditionally-filter-types-488705bfbf56

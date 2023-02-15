@@ -31,7 +31,7 @@ const messages = defineMessages({
 });
 
 interface IRegistrationForm {
-  inviteToken?: string,
+  inviteToken?: string
 }
 
 /** Allows the user to sign up for the website. */

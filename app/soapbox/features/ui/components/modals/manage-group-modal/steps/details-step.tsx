@@ -16,8 +16,8 @@ import resizeImage from 'soapbox/utils/resize-image';
 import type { List as ImmutableList } from 'immutable';
 
 interface IMediaInput {
-  src: string | null,
-  accept: string,
+  src: string | null
+  accept: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
   disabled: boolean
 }

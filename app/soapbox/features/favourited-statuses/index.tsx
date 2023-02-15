@@ -17,7 +17,7 @@ const messages = defineMessages({
 
 interface IFavourites {
   params?: {
-    username?: string,
+    username?: string
   }
 }
 

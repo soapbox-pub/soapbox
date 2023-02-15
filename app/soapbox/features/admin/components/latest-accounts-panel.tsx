@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 interface ILatestAccountsPanel {
-  limit?: number,
+  limit?: number
 }
 
 const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {

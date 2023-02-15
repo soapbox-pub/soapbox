@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 interface IComposeModal {
-  onClose: (type?: string) => void,
+  onClose: (type?: string) => void
 }
 
 const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {

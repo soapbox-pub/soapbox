@@ -18,13 +18,13 @@ import type { List as ImmutableList } from 'immutable';
 import type { Attachment as AttachmentEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IDetailedStatus {
-  status: StatusEntity,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void,
-  onToggleHidden: (status: StatusEntity) => void,
-  showMedia: boolean,
-  onOpenCompareHistoryModal: (status: StatusEntity) => void,
-  onToggleMediaVisibility: () => void,
+  status: StatusEntity
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
+  onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void
+  onToggleHidden: (status: StatusEntity) => void
+  showMedia: boolean
+  onOpenCompareHistoryModal: (status: StatusEntity) => void
+  onToggleMediaVisibility: () => void
 }
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({

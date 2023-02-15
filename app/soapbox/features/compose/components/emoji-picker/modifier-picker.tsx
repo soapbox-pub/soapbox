@@ -6,11 +6,11 @@ import ModifierPickerMenu from './modifier-picker-menu';
 const backgroundImageFn = () => require('emoji-datasource/img/twitter/sheets/32.png');
 
 interface IModifierPicker {
-  active: boolean,
-  modifier?: number,
-  onOpen: () => void,
-  onClose: () => void,
-  onChange: (skinTone: number) => void,
+  active: boolean
+  modifier?: number
+  onOpen: () => void
+  onClose: () => void
+  onChange: (skinTone: number) => void
 }
 
 const ModifierPicker: React.FC<IModifierPicker> = ({ active, modifier, onOpen, onClose, onChange }) => {

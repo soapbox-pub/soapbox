@@ -95,7 +95,7 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
         title={title}
         theme='outlined'
         className='px-2'
-        iconClassName='w-4 h-4'
+        iconClassName='h-4 w-4'
       />
     );
   }

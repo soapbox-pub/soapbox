@@ -63,7 +63,7 @@ const messages = defineMessages({
 });
 
 interface IEventHeader {
-  status?: StatusEntity,
+  status?: StatusEntity
 }
 
 const EventHeader: React.FC<IEventHeader> = ({ status }) => {
@@ -386,7 +386,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
               src={require('@tabler/icons/dots.svg')}
               theme='outlined'
               className='h-[30px] px-2'
-              iconClassName='w-4 h-4'
+              iconClassName='h-4 w-4'
               children={null}
             />
 

@@ -129,7 +129,7 @@ const Navbar = () => {
                       <IconButton
                         src={require('@tabler/icons/help.svg')}
                         className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
-                        iconClassName='w-5 h-5'
+                        iconClassName='h-5 w-5'
                       />
                     </Tooltip>
                   </Link>

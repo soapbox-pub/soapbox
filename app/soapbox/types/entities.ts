@@ -61,13 +61,13 @@ type Tag = ReturnType<typeof TagRecord>;
 interface Account extends ReturnType<typeof AccountRecord> {
   // HACK: we can't do a circular reference in the Record definition itself,
   // so do it here.
-  moved: EmbeddedEntity<Account>;
+  moved: EmbeddedEntity<Account>
 }
 
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
-  quote: EmbeddedEntity<Status>;
-  reblog: EmbeddedEntity<Status>;
+  quote: EmbeddedEntity<Status>
+  reblog: EmbeddedEntity<Status>
 }
 
 // Utility types

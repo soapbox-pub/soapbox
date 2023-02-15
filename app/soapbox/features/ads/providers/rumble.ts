@@ -8,17 +8,17 @@ import type { AdProvider } from '.';
 
 /** Rumble ad API entity. */
 interface RumbleAd {
-  type: number,
-  impression: string,
-  click: string,
-  asset: string,
-  expires: number,
+  type: number
+  impression: string
+  click: string
+  asset: string
+  expires: number
 }
 
 /** Response from Rumble ad server. */
 interface RumbleApiResponse {
-  count: number,
-  ads: RumbleAd[],
+  count: number
+  ads: RumbleAd[]
 }
 
 /** Provides ads from Soapbox Config. */

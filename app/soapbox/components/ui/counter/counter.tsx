@@ -4,7 +4,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface ICounter {
   /** Number this counter should display. */
-  count: number,
+  count: number
   /** Optional max number (ie: N+) */
   countMax?: number
 }

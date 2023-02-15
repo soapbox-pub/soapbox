@@ -25,7 +25,7 @@ const manageGroupSteps = {
 };
 
 interface IManageGroupModal {
-  onClose: (type?: string) => void,
+  onClose: (type?: string) => void
 }
 
 const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {

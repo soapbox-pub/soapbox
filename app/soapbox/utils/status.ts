@@ -68,9 +68,9 @@ export const textForScreenReader = (intl: IntlShape, status: StatusEntity, reblo
 /** Get reblogged status if any, otherwise return the original status. */
 // @ts-ignore The type seems right, but TS doesn't like it.
 export const getActualStatus: {
-  (status: StatusEntity): StatusEntity,
-  (status: undefined): undefined,
-  (status: null): null,
+  (status: StatusEntity): StatusEntity
+  (status: undefined): undefined
+  (status: null): null
 } = (status) => {
   if (status?.reblog && typeof status?.reblog === 'object') {
     return status.reblog as StatusEntity;

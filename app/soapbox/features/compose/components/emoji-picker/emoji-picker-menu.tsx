@@ -32,14 +32,14 @@ const messages = defineMessages({
 });
 
 interface IEmojiPickerMenu {
-  customEmojis: ImmutableList<ImmutableMap<string, string>>,
-  loading?: boolean,
-  onClose: () => void,
-  onPick: (emoji: Emoji) => void,
-  onSkinTone: (skinTone: number) => void,
-  skinTone?: number,
-  frequentlyUsedEmojis?: Array<string>,
-  style?: React.CSSProperties,
+  customEmojis: ImmutableList<ImmutableMap<string, string>>
+  loading?: boolean
+  onClose: () => void
+  onPick: (emoji: Emoji) => void
+  onSkinTone: (skinTone: number) => void
+  skinTone?: number
+  frequentlyUsedEmojis?: Array<string>
+  style?: React.CSSProperties
 }
 
 const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({

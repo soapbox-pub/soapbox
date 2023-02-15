@@ -4,19 +4,19 @@ import unicodeMapping from 'soapbox/features/emoji/emoji-unicode-mapping-light';
 import { joinPublicPath } from 'soapbox/utils/static';
 
 export type Emoji = {
-  id: string,
-  custom: boolean,
-  imageUrl: string,
-  native: string,
-  colons: string,
+  id: string
+  custom: boolean
+  imageUrl: string
+  native: string
+  colons: string
 }
 
 type UnicodeMapping = {
-  filename: string,
+  filename: string
 }
 
 interface IAutosuggestEmoji {
-  emoji: Emoji,
+  emoji: Emoji
 }
 
 const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {

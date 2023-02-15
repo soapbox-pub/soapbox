@@ -75,7 +75,7 @@ const messages = defineMessages({
 });
 
 interface IHeader {
-  account?: Account,
+  account?: Account
 }
 
 const Header: React.FC<IHeader> = ({ account }) => {
@@ -565,7 +565,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
           className='px-2'
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
           disabled={createAndNavigateToChat.isLoading}
         />
       );
@@ -577,7 +577,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
           className='px-2'
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
         />
       );
     } else {
@@ -599,7 +599,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         title={intl.formatMessage(messages.share, { name: account.username })}
         theme='outlined'
         className='px-2'
-        iconClassName='w-4 h-4'
+        iconClassName='h-4 w-4'
       />
     );
   };
@@ -654,7 +654,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
                     src={require('@tabler/icons/dots.svg')}
                     theme='outlined'
                     className='px-2'
-                    iconClassName='w-4 h-4'
+                    iconClassName='h-4 w-4'
                     children={null}
                   />
                 </DropdownMenu>

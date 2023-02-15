@@ -13,7 +13,7 @@ const messages = defineMessages({
 });
 
 interface IOtpAuthForm {
-  mfa_token: string,
+  mfa_token: string
 }
 
 const OtpAuthForm: React.FC<IOtpAuthForm> = ({ mfa_token }) => {

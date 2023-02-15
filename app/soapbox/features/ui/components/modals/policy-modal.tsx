@@ -6,7 +6,7 @@ import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { usePendingPolicy, useAcceptPolicy } from 'soapbox/queries/policies';
 
 interface IPolicyModal {
-  onClose: (type: string) => void,
+  onClose: (type: string) => void
 }
 
 const DirectMessageUpdates = () => {

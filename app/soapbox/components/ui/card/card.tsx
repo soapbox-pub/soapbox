@@ -42,7 +42,7 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
 ));
 
 interface ICardHeader {
-  backHref?: string,
+  backHref?: string
   onBackClick?: (event: React.MouseEvent) => void
   className?: string
   children?: React.ReactNode

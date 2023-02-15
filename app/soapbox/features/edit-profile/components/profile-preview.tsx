@@ -8,7 +8,7 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 import type { Account } from 'soapbox/types/entities';
 
 interface IProfilePreview {
-  account: Account,
+  account: Account
 }
 
 /** Displays a preview of the user's account, including avatar, banner, etc. */

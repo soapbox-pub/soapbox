@@ -13,11 +13,11 @@ import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type { AnnouncementReaction } from 'soapbox/types/entities';
 
 interface IReactionsBar {
-  announcementId: string;
-  reactions: ImmutableList<AnnouncementReaction>;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
+  announcementId: string
+  reactions: ImmutableList<AnnouncementReaction>
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  addReaction: (id: string, name: string) => void
+  removeReaction: (id: string, name: string) => void
 }
 
 const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addReaction, removeReaction, emojiMap }) => {

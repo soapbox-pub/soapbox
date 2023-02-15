@@ -44,7 +44,7 @@ export interface IChat {
     unread: boolean
   }
   latest_read_message_by_account?: {
-    id: string,
+    id: string
     date: string
   }[]
   latest_read_message_created_at: null | string

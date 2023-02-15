@@ -8,10 +8,10 @@ import type { Card } from 'soapbox/types/entities';
 
 /** TruthSocial ad API entity. */
 interface TruthAd {
-  impression: string,
-  card: Card,
-  expires_at: string,
-  reason: string,
+  impression: string
+  card: Card
+  expires_at: string
+  reason: string
 }
 
 /** Provides ads from the TruthSocial API. */

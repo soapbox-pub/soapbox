@@ -15,7 +15,7 @@ import Timeline from '../ui/components/timeline';
 type RouteParams = { id: string };
 
 interface IGroupTimeline {
-  params: RouteParams,
+  params: RouteParams
 }
 
 const GroupTimeline: React.FC<IGroupTimeline> = (props) => {

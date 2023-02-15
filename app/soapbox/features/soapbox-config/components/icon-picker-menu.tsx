@@ -19,10 +19,10 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 const categoriesSort = ['custom'];
 
 interface IIconPickerMenu {
-  customEmojis: Record<string, Array<string>>,
-  onClose: () => void,
-  onPick: any,
-  style?: React.CSSProperties,
+  customEmojis: Record<string, Array<string>>
+  onClose: () => void
+  onPick: any
+  style?: React.CSSProperties
 }
 
 const IconPickerMenu: React.FC<IIconPickerMenu> = ({ customEmojis, onClose, onPick, style }) => {

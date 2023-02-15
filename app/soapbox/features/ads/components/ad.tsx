@@ -11,7 +11,7 @@ import { AdKeys } from 'soapbox/queries/ads';
 import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
 interface IAd {
-  ad: AdEntity,
+  ad: AdEntity
 }
 
 /** Displays an ad in sponsored post format. */
@@ -101,7 +101,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
 
             <Stack justifyContent='center'>
               <IconButton
-                iconClassName='stroke-gray-600 w-6 h-6'
+                iconClassName='h-6 w-6 stroke-gray-600'
                 src={require('@tabler/icons/info-circle.svg')}
                 onClick={handleInfoButtonClick}
               />

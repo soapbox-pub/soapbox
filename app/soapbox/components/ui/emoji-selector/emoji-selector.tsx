@@ -9,13 +9,13 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
-  emoji: string,
+  emoji: string
   /** Event handler when the emoji is clicked. */
   onClick(emoji: string): void
   /** Extra class name on the <button> element. */
-  className?: string,
+  className?: string
   /** Tab order of the button. */
-  tabIndex?: number,
+  tabIndex?: number
 }
 
 /** Clickable emoji button that scales when hovered. */

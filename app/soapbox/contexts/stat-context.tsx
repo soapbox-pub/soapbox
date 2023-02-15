@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
 type IStatContext = {
-  unreadChatsCount: number,
+  unreadChatsCount: number
   setUnreadChatsCount: React.Dispatch<React.SetStateAction<number>>
 }
 

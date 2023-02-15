@@ -18,9 +18,9 @@ const messages = defineMessages({
 });
 
 interface IReactionsModal {
-  onClose: (string: string) => void,
-  statusId: string,
-  reaction?: string,
+  onClose: (string: string) => void
+  statusId: string
+  reaction?: string
 }
 
 const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction: initialReaction }) => {

@@ -10,7 +10,7 @@ import { makeGetStatus } from 'soapbox/selectors';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IReplyMentions {
-  composeId: string,
+  composeId: string
 }
 
 const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
