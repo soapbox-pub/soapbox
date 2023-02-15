@@ -111,6 +111,12 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     }
   }, [visible, update]);
 
+  useEffect(() => {
+    if (expanded && update) {
+      update();
+    }
+  }, [expanded, update]);
+
   return (
     <div
       className={clsx('z-[101] transition-opacity duration-100', {
