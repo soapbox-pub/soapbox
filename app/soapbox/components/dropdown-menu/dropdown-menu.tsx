@@ -9,7 +9,7 @@ import {
   openDropdownMenu,
 } from 'soapbox/actions/dropdown-menu';
 import { closeModal, openModal } from 'soapbox/actions/modals';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
 
 import { IconButton, Portal } from '../ui';
@@ -53,6 +53,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   const history = useHistory();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const isOpenRedux = useAppSelector(state => state.dropdown_menu.isOpen);
 
   const arrowRef = useRef<HTMLDivElement>(null);
   const activeElement = useRef<Element | null>(null);
@@ -130,7 +131,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   };
 
   const closeDropdownMenu = () => {
-    if (isOpen) {
+    if (isOpenRedux) {
       dispatch(closeDropdownMenuRedux());
     }
   };
