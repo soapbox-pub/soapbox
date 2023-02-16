@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Fixed
+- Posts: fixed emojis being cut off in reactions modal.
 
 ## [3.2.0] - 2023-02-15
 
