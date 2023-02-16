@@ -30,7 +30,7 @@
   "account.last_status": "آخر تواجد",
   "account.link_verified_on": "أُكِّدت ملكية الحساب في {date}",
   "account.locked_info": "هذا الحساب خاص. يجب الموافقة على طلب المتابعة من قِبل صاحب الحساب.",
-  "account.login": "لِج",
+  "account.login": "تسجيل الدخول",
   "account.media": "الوسائط",
   "account.member_since": "إنضم بتاريخ {date}",
   "account.mention": "إشارة",
