@@ -5,9 +5,9 @@ import { FormattedMessage } from 'react-intl';
 import { Text } from 'soapbox/components/ui';
 
 interface ITombstone {
-  id: string,
-  onMoveUp: (statusId: string) => void,
-  onMoveDown: (statusId: string) => void,
+  id: string
+  onMoveUp: (statusId: string) => void
+  onMoveDown: (statusId: string) => void
 }
 
 /** Represents a deleted item. */

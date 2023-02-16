@@ -117,9 +117,9 @@ type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = { statusId: string };
 
 interface IThread {
-  params: RouteParams,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (video: AttachmentEntity, time: number) => void,
+  params: RouteParams
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
+  onOpenVideo: (video: AttachmentEntity, time: number) => void
 }
 
 const Thread: React.FC<IThread> = (props) => {

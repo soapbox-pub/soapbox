@@ -6,15 +6,15 @@ import Text from '../text/text';
 
 interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Class name for the <svg> icon. */
-  iconClassName?: string,
+  iconClassName?: string
   /** URL to the svg icon. */
-  src: string,
+  src: string
   /** Text to display next ot the button. */
-  text?: string,
+  text?: string
   /** Don't render a background behind the icon. */
-  transparent?: boolean,
+  transparent?: boolean
   /** Predefined styles to display for the button. */
-  theme?: 'seamless' | 'outlined',
+  theme?: 'seamless' | 'outlined'
   /** Override the data-testid */
   'data-testid'?: string
 }

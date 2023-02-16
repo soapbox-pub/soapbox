@@ -20,8 +20,8 @@ type ChatRecord = ReturnType<typeof normalizeChat>;
 type APIEntities = Array<APIEntity>;
 
 export interface ReducerChat extends ChatRecord {
-  account: string | null,
-  last_message: string | null,
+  account: string | null
+  last_message: string | null
 }
 
 const ReducerRecord = ImmutableRecord({

@@ -12,8 +12,8 @@ const messages = defineMessages({
 });
 
 interface IIconPickerDropdown {
-  value: string,
-  onPickEmoji: React.ChangeEventHandler,
+  value: string
+  onPickEmoji: React.ChangeEventHandler
 }
 
 const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickEmoji }) => {

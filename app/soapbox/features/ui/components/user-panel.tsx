@@ -14,10 +14,10 @@ import { displayFqn } from 'soapbox/utils/state';
 const getAccount = makeGetAccount();
 
 interface IUserPanel {
-  accountId: string,
-  action?: JSX.Element,
-  badges?: JSX.Element[],
-  domain?: string,
+  accountId: string
+  action?: JSX.Element
+  badges?: JSX.Element[]
+  domain?: string
 }
 
 const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) => {

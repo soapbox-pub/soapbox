@@ -39,7 +39,7 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Whether to let the flexbox grow. */
   grow?: boolean
   /** HTML element to use for container. */
-  element?: keyof JSX.IntrinsicElements,
+  element?: keyof JSX.IntrinsicElements
 }
 
 /** Vertical stack of child elements. */

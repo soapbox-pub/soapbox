@@ -5,7 +5,7 @@ import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 interface IAutosuggestAccount {
-  id: string,
+  id: string
 }
 
 const AutosuggestAccount: React.FC<IAutosuggestAccount> = ({ id }) => {

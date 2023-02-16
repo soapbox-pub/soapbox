@@ -25,7 +25,7 @@ const Statuses = {
 const EMAIL_REGEX = /^[^@\s]+@[^@\s]+$/;
 
 interface IEmailSent {
-  handleSubmit: React.FormEventHandler,
+  handleSubmit: React.FormEventHandler
 }
 
 const EmailSent: React.FC<IEmailSent> = ({ handleSubmit }) => {

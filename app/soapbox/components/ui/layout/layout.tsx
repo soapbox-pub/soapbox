@@ -14,9 +14,9 @@ interface ILayout {
 }
 
 interface LayoutComponent extends React.FC<ILayout> {
-  Sidebar: React.FC<ISidebar>,
-  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC<IAside>,
+  Sidebar: React.FC<ISidebar>
+  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>
+  Aside: React.FC<IAside>
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */

@@ -18,7 +18,7 @@ const FE_NAME = 'soapbox_fe';
 /** Options when changing/saving settings. */
 type SettingOpts = {
   /** Whether to display an alert when settings are saved. */
-  showAlert?: boolean,
+  showAlert?: boolean
 }
 
 const messages = defineMessages({

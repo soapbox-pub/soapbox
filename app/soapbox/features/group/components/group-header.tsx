@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 interface IGroupHeader {
-  group?: Group | false | null,
+  group?: Group | false | null
 }
 
 const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {

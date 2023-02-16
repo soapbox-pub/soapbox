@@ -228,7 +228,7 @@ const Filters = () => {
               </HStack>
             </Stack>
             <IconButton
-              iconClassName='h-5 w-5 text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500'
+              iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
               src={require('@tabler/icons/trash.svg')}
               onClick={handleFilterDelete(filter.id)}
               title={intl.formatMessage(messages.delete)}

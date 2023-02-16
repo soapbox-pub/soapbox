@@ -35,15 +35,15 @@ const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) =
 
 export interface IColumn {
   /** Route the back button goes to. */
-  backHref?: string,
+  backHref?: string
   /** Column title text. */
-  label?: string,
+  label?: string
   /** Whether this column should have a transparent background. */
-  transparent?: boolean,
+  transparent?: boolean
   /** Whether this column should have a title and back button. */
-  withHeader?: boolean,
+  withHeader?: boolean
   /** Extra class name for top <div> element. */
-  className?: string,
+  className?: string
   /** Ref forwarded to column. */
   ref?: React.Ref<HTMLDivElement>
   /** Children to display in the column. */

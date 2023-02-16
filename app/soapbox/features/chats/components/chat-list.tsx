@@ -12,8 +12,8 @@ import { useChats } from 'soapbox/queries/chats';
 import ChatListItem from './chat-list-item';
 
 interface IChatList {
-  onClickChat: (chat: any) => void,
-  useWindowScroll?: boolean,
+  onClickChat: (chat: any) => void
+  useWindowScroll?: boolean
   searchValue?: string
 }
 

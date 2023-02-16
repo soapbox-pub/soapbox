@@ -10,8 +10,8 @@ import { useAppDispatch } from 'soapbox/hooks';
 import type { Account, Status } from 'soapbox/types/entities';
 
 interface IStatusReplyMentions {
-  status: Status,
-  hoverable?: boolean,
+  status: Status
+  hoverable?: boolean
 }
 
 const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable = true }) => {

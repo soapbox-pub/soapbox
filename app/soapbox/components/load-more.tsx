@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import { Button } from 'soapbox/components/ui';
 
 interface ILoadMore {
-  onClick: React.MouseEventHandler,
-  disabled?: boolean,
-  visible?: Boolean,
+  onClick: React.MouseEventHandler
+  disabled?: boolean
+  visible?: Boolean
 }
 
 const LoadMore: React.FC<ILoadMore> = ({ onClick, disabled, visible = true }) => {

@@ -170,7 +170,7 @@ const GroupMember: React.FC<IGroupMember> = ({ accountId, accountRole, groupId, 
             src={require('@tabler/icons/dots.svg')}
             theme='outlined'
             className='px-2'
-            iconClassName='w-4 h-4'
+            iconClassName='h-4 w-4'
             children={null}
           />
 

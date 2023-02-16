@@ -23,7 +23,7 @@ const regexSupplant = function(regex: string | RegExp, flags = '') {
   }), flags);
 };
 
-const stringSupplant = function(str: string, values: { [x: string]: any; }) {
+const stringSupplant = function(str: string, values: { [x: string]: any }) {
   return str.replace(/#\{(\w+)\}/g, function(match, name) {
     return values[name] || '';
   });

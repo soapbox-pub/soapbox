@@ -97,10 +97,10 @@ const messages = defineMessages({
 });
 
 interface IStatusActionBar {
-  status: Status,
-  withLabels?: boolean,
-  expandable?: boolean,
-  space?: 'expand' | 'compact',
+  status: Status
+  withLabels?: boolean
+  expandable?: boolean
+  space?: 'expand' | 'compact'
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({

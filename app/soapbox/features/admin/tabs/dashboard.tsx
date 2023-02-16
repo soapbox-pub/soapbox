@@ -151,7 +151,7 @@ const Dashboard: React.FC = () => {
               <IconButton
                 src={require('@tabler/icons/download.svg')}
                 onClick={handleSubscribersClick}
-                iconClassName='w-5 h-5'
+                iconClassName='h-5 w-5'
               />
             </ListItem>
 
@@ -159,7 +159,7 @@ const Dashboard: React.FC = () => {
               <IconButton
                 src={require('@tabler/icons/download.svg')}
                 onClick={handleUnsubscribersClick}
-                iconClassName='w-5 h-5'
+                iconClassName='h-5 w-5'
               />
             </ListItem>
 
@@ -167,7 +167,7 @@ const Dashboard: React.FC = () => {
               <IconButton
                 src={require('@tabler/icons/download.svg')}
                 onClick={handleCombinedClick}
-                iconClassName='w-5 h-5'
+                iconClassName='h-5 w-5'
               />
             </ListItem>
           </List>

@@ -81,7 +81,7 @@ const updateChatQuery = (chat: IChat) => {
 };
 
 interface StreamOpts {
-  statContext?: IStatContext,
+  statContext?: IStatContext
 }
 
 const connectTimelineStream = (

@@ -146,7 +146,7 @@ const Header = () => {
                   <IconButton
                     src={require('@tabler/icons/help.svg')}
                     className='cursor-pointer bg-transparent text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
-                    iconClassName='w-5 h-5'
+                    iconClassName='h-5 w-5'
                     transparent
                   />
                 </Tooltip>

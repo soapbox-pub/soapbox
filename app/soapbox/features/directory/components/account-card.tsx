@@ -15,7 +15,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 const getAccount = makeGetAccount();
 
 interface IAccountCard {
-  id: string,
+  id: string
 }
 
 const AccountCard: React.FC<IAccountCard> = ({ id }) => {

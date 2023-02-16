@@ -10,7 +10,7 @@ const messages = defineMessages({
 });
 
 interface IBundleColumnError {
-  onRetry: () => void,
+  onRetry: () => void
 }
 
 const BundleColumnError: React.FC<IBundleColumnError> = ({ onRetry }) => {
@@ -24,7 +24,7 @@ const BundleColumnError: React.FC<IBundleColumnError> = ({ onRetry }) => {
     <Column label={intl.formatMessage(messages.title)}>
       <Stack space={4} alignItems='center' justifyContent='center' className='min-h-[160px] rounded-lg p-10'>
         <IconButton
-          iconClassName='w-10 h-10'
+          iconClassName='h-10 w-10'
           title={intl.formatMessage(messages.retry)}
           src={require('@tabler/icons/refresh.svg')}
           onClick={handleRetry}

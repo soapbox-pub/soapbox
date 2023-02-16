@@ -14,27 +14,27 @@ const messages = defineMessages({
 
 /** Type of the inner Streamfield input component. */
 export type StreamfieldComponent<T> = React.ComponentType<{
-  value: T,
-  onChange: (value: T) => void,
+  value: T
+  onChange: (value: T) => void
 }>;
 
 interface IStreamfield {
   /** Array of values for the streamfield. */
-  values: any[],
+  values: any[]
   /** Input label message. */
-  label?: React.ReactNode,
+  label?: React.ReactNode
   /** Input hint message. */
-  hint?: React.ReactNode,
+  hint?: React.ReactNode
   /** Callback to add an item. */
-  onAddItem?: () => void,
+  onAddItem?: () => void
   /** Callback to remove an item by index. */
-  onRemoveItem?: (i: number) => void,
+  onRemoveItem?: (i: number) => void
   /** Callback when values are changed. */
-  onChange: (values: any[]) => void,
+  onChange: (values: any[]) => void
   /** Input to render for each value. */
-  component: StreamfieldComponent<any>,
+  component: StreamfieldComponent<any>
   /** Maximum number of allowed inputs. */
-  maxItems?: number,
+  maxItems?: number
 }
 
 /** List of inputs that can be added or removed. */
@@ -72,7 +72,7 @@ const Streamfield: React.FC<IStreamfield> = ({
               <Component key={i} onChange={handleChange(i)} value={value} />
               {onRemoveItem && (
                 <IconButton
-                  iconClassName='w-4 h-4'
+                  iconClassName='h-4 w-4'
                   className='bg-transparent text-gray-400 hover:text-gray-600'
                   src={require('@tabler/icons/x.svg')}
                   onClick={() => onRemoveItem(i)}

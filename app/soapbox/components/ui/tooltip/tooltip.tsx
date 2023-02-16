@@ -7,9 +7,9 @@ import './tooltip.css';
 
 interface ITooltip {
   /** Text to display in the tooltip. */
-  text: string,
+  text: string
   /** Element to display the tooltip around. */
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 const centered = (triggerRect: any, tooltipRect: any) => {

@@ -13,7 +13,7 @@ const messages = defineMessages({
 });
 
 interface IAccountAuthorize {
-  id: string,
+  id: string
 }
 
 const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {

@@ -17,8 +17,8 @@ import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
-  account: AccountEntity,
-  disabled?: boolean,
+  account: AccountEntity
+  disabled?: boolean
 }
 
 const messages = defineMessages({
@@ -53,7 +53,7 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
 };
 
 interface IProfilePopper {
-  condition: boolean,
+  condition: boolean
   wrapper: (children: React.ReactNode) => React.ReactNode
   children: React.ReactNode
 }
@@ -67,30 +67,30 @@ const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children 
 };
 
 export interface IAccount {
-  account: AccountEntity,
-  action?: React.ReactElement,
-  actionAlignment?: 'center' | 'top',
-  actionIcon?: string,
-  actionTitle?: string,
+  account: AccountEntity
+  action?: React.ReactElement
+  actionAlignment?: 'center' | 'top'
+  actionIcon?: string
+  actionTitle?: string
   /** Override other actions for specificity like mute/unmute.  */
-  actionType?: 'muting' | 'blocking' | 'follow_request',
-  avatarSize?: number,
-  hidden?: boolean,
-  hideActions?: boolean,
-  id?: string,
-  onActionClick?: (account: any) => void,
-  showProfileHoverCard?: boolean,
-  timestamp?: string,
-  timestampUrl?: string,
-  futureTimestamp?: boolean,
-  withAccountNote?: boolean,
-  withDate?: boolean,
-  withLinkToProfile?: boolean,
-  withRelationship?: boolean,
-  showEdit?: boolean,
-  approvalStatus?: StatusApprovalStatus,
-  emoji?: string,
-  note?: string,
+  actionType?: 'muting' | 'blocking' | 'follow_request'
+  avatarSize?: number
+  hidden?: boolean
+  hideActions?: boolean
+  id?: string
+  onActionClick?: (account: any) => void
+  showProfileHoverCard?: boolean
+  timestamp?: string
+  timestampUrl?: string
+  futureTimestamp?: boolean
+  withAccountNote?: boolean
+  withDate?: boolean
+  withLinkToProfile?: boolean
+  withRelationship?: boolean
+  showEdit?: boolean
+  approvalStatus?: StatusApprovalStatus
+  emoji?: string
+  note?: string
 }
 
 const Account = ({
@@ -143,7 +143,7 @@ const Account = ({
           title={actionTitle}
           onClick={handleAction}
           className='bg-transparent text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
         />
       );
     }

@@ -92,8 +92,8 @@ const messages = defineMessages({
 });
 
 interface IEmojiPickerDropdown {
-  onPickEmoji: (data: EmojiType) => void,
-  button?: JSX.Element,
+  onPickEmoji: (data: EmojiType) => void
+  button?: JSX.Element
 }
 
 const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, button }) => {
