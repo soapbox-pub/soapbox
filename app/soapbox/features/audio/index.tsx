@@ -499,13 +499,13 @@ const Audio: React.FC<IAudio> = (props) => {
 
         <div
           className='video-player__seek__progress'
-          style={{ width: `${progress}%`, backgroundColor: _getAccentColor() }}
+          style={{ width: `${progress}%`, backgroundColor: accentColor }}
         />
 
         <span
           className={clsx('video-player__seek__handle', { active: dragging })}
           tabIndex={0}
-          style={{ left: `${progress}%`, backgroundColor: _getAccentColor() }}
+          style={{ left: `${progress}%`, backgroundColor: accentColor }}
           onKeyDown={handleAudioKeyDown}
         />
       </div>
