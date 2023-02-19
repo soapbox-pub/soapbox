@@ -8,11 +8,11 @@
 
   .video-player__volume::before,
   .video-player__seek::before {
-    @apply bg-current opacity-[15];
+    @apply bg-white/10;
   }
 
   .video-player__seek__buffer {
-    @apply bg-current opacity-20;
+    @apply bg-white/20;
   }
 
   .video-player__buttons button {
