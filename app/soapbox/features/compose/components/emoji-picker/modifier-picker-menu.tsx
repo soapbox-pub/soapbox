@@ -35,10 +35,8 @@ const ModifierPickerMenu: React.FC<IModifierPickerMenu> = ({ active, onSelect, o
     document.removeEventListener('touchend', handleDocumentClick, listenerOptions as any);
   };
 
-  useEffect(() => {
-    return () => {
-      removeListeners();
-    };
+  useEffect(() => () => {
+    removeListeners();
   }, []);
 
   useEffect(() => {

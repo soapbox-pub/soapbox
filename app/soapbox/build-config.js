@@ -24,13 +24,9 @@ const sanitizeURL = url => {
   }
 };
 
-const sanitizeBasename = path => {
-  return `/${trim(path, '/')}`;
-};
+const sanitizeBasename = path => `/${trim(path, '/')}`;
 
-const sanitizePath = path => {
-  return trim(path, '/');
-};
+const sanitizePath = path => trim(path, '/');
 
 // JSON.parse/stringify is to emulate what @preval is doing and avoid any
 // inconsistent behavior in dev mode

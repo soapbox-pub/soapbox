@@ -7,8 +7,7 @@ export const EmojiReactionRecord = ImmutableRecord({
   me: false,
 });
 
-export const normalizeEmojiReaction = (emojiReaction: Record<string, any>) => {
-  return EmojiReactionRecord(
+export const normalizeEmojiReaction = (emojiReaction: Record<string, any>) =>
+  EmojiReactionRecord(
     ImmutableMap(fromJS(emojiReaction)),
   );
-};

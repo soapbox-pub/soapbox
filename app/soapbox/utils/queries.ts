@@ -12,15 +12,13 @@ interface Entity {
   id: string
 }
 
-const isEntity = <T = unknown>(object: T): object is T & Entity => {
-  return object && typeof object === 'object' && 'id' in object;
-};
+const isEntity = <T = unknown>(object: T): object is T & Entity =>
+  object && typeof object === 'object' && 'id' in object;
 
 /** Deduplicate an array of entities by their ID. */
 const deduplicateById = <T extends Entity>(entities: T[]): T[] => {
-  const map = entities.reduce<Map<string, T>>((result, entity) => {
-    return result.set(entity.id, entity);
-  }, new Map());
+  const map = entities.reduce<Map<string, T>>((result, entity) =>
+    result.set(entity.id, entity), new Map());
 
   return Array.from(map.values());
 };
@@ -76,8 +74,8 @@ const removePageItem = <T>(queryKey: QueryKey, itemToRemove: T, isItem: (item: T
   });
 };
 
-const paginateQueryData = <T>(array: T[] | undefined) => {
-  return array?.reduce((resultArray: any, item: any, index: any) => {
+const paginateQueryData = <T>(array: T[] | undefined) =>
+  array?.reduce((resultArray: any, item: any, index: any) => {
     const chunkIndex = Math.floor(index / 20);
 
     if (!resultArray[chunkIndex]) {
@@ -88,7 +86,6 @@ const paginateQueryData = <T>(array: T[] | undefined) => {
 
     return resultArray;
   }, []);
-};
 
 const sortQueryData = <T>(queryKey: QueryKey, comparator: (a: T, b: T) => number) => {
   queryClient.setQueryData<InfiniteData<PaginatedResult<T>>>(queryKey, (prevResult) => {

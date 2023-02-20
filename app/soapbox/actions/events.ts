@@ -271,7 +271,7 @@ const submitEvent = () =>
           actionLink: `/@${data.account.acct}/events/${data.id}`,
         },
       );
-    }).catch(function(error) {
+    }).catch((error) => {
       dispatch(submitEventFail(error));
     });
   };
@@ -312,7 +312,7 @@ const joinEvent = (id: string, participationMessage?: string) =>
           actionLink: `/@${data.account.acct}/events/${data.id}`,
         },
       );
-    }).catch(function(error) {
+    }).catch((error) => {
       dispatch(joinEventFail(error, status, status?.event?.join_state || null));
     });
   };
@@ -347,7 +347,7 @@ const leaveEvent = (id: string) =>
     return api(getState).post(`/api/v1/pleroma/events/${id}/leave`).then(({ data }) => {
       dispatch(importFetchedStatus(data));
       dispatch(leaveEventSuccess(data));
-    }).catch(function(error) {
+    }).catch((error) => {
       dispatch(leaveEventFail(error, status));
     });
   };

@@ -31,23 +31,19 @@ type State = ReturnType<typeof ReducerRecord>;
 
 export type Token = ReturnType<typeof TokenRecord>;
 
-const deleteToken = (state: State, tokenId: number) => {
-  return state.update('tokens', tokens => {
-    return tokens.filterNot(token => token.id === tokenId);
-  });
-};
+const deleteToken = (state: State, tokenId: number) =>
+  state.update('tokens', tokens =>
+    tokens.filterNot(token => token.id === tokenId),
+  );
 
-const importMfa = (state: State, data: any) => {
-  return state.set('mfa', data);
-};
+const importMfa = (state: State, data: any) =>
+  state.set('mfa', data);
 
-const enableMfa = (state: State, method: string) => {
-  return state.setIn(['mfa', 'settings', method], true);
-};
+const enableMfa = (state: State, method: string) =>
+  state.setIn(['mfa', 'settings', method], true);
 
-const disableMfa = (state: State, method: string) => {
-  return state.setIn(['mfa', 'settings', method], false);
-};
+const disableMfa = (state: State, method: string) =>
+  state.setIn(['mfa', 'settings', method], false);
 
 export default function security(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {

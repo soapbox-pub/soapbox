@@ -75,10 +75,8 @@ const CreateApp: React.FC = () => {
     setParams({ ...params, [key]: value });
   };
 
-  const handleParamChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      setParam(key, e.target.value);
-    };
+  const handleParamChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => e => {
+    setParam(key, e.target.value);
   };
 
   const resetState = () => {
@@ -97,49 +95,47 @@ const CreateApp: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const renderResults = () => {
-    return (
-      <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
-        <Form>
-          <Stack>
-            <Text size='lg' weight='medium'>
-              <FormattedMessage id='app_create.results.explanation_title' defaultMessage='App created successfully' />
-            </Text>
-            <Text theme='muted'>
-              <FormattedMessage
-                id='app_create.results.explanation_text'
-                defaultMessage='You created a new app and token! Please copy the credentials somewhere; you will not see them again after navigating away from this page.'
-              />
-            </Text>
-          </Stack>
-
-          <FormGroup labelText={<FormattedMessage id='app_create.results.app_label' defaultMessage='App' />}>
-            <Textarea
-              value={JSON.stringify(app, null, 2)}
-              rows={10}
-              readOnly
-              isCodeEditor
+  const renderResults = () => (
+    <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
+      <Form>
+        <Stack>
+          <Text size='lg' weight='medium'>
+            <FormattedMessage id='app_create.results.explanation_title' defaultMessage='App created successfully' />
+          </Text>
+          <Text theme='muted'>
+            <FormattedMessage
+              id='app_create.results.explanation_text'
+              defaultMessage='You created a new app and token! Please copy the credentials somewhere; you will not see them again after navigating away from this page.'
             />
-          </FormGroup>
+          </Text>
+        </Stack>
 
-          <FormGroup labelText={<FormattedMessage id='app_create.results.token_label' defaultMessage='OAuth token' />}>
-            <Textarea
-              value={JSON.stringify(token, null, 2)}
-              rows={10}
-              readOnly
-              isCodeEditor
-            />
-          </FormGroup>
+        <FormGroup labelText={<FormattedMessage id='app_create.results.app_label' defaultMessage='App' />}>
+          <Textarea
+            value={JSON.stringify(app, null, 2)}
+            rows={10}
+            readOnly
+            isCodeEditor
+          />
+        </FormGroup>
 
-          <FormActions>
-            <Button theme='primary' type='button' onClick={handleReset}>
-              <FormattedMessage id='app_create.restart' defaultMessage='Create another' />
-            </Button>
-          </FormActions>
-        </Form>
-      </Column>
-    );
-  };
+        <FormGroup labelText={<FormattedMessage id='app_create.results.token_label' defaultMessage='OAuth token' />}>
+          <Textarea
+            value={JSON.stringify(token, null, 2)}
+            rows={10}
+            readOnly
+            isCodeEditor
+          />
+        </FormGroup>
+
+        <FormActions>
+          <Button theme='primary' type='button' onClick={handleReset}>
+            <FormattedMessage id='app_create.restart' defaultMessage='Create another' />
+          </Button>
+        </FormActions>
+      </Form>
+    </Column>
+  );
 
   if (app && token) {
     return renderResults();

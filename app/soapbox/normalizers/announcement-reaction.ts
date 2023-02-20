@@ -15,8 +15,7 @@ export const AnnouncementReactionRecord = ImmutableRecord({
   announcement_id: '',
 });
 
-export const normalizeAnnouncementReaction = (announcementReaction: Record<string, any>, announcementId?: string) => {
-  return AnnouncementReactionRecord(ImmutableMap(fromJS(announcementReaction)).withMutations(reaction => {
+export const normalizeAnnouncementReaction = (announcementReaction: Record<string, any>, announcementId?: string) =>
+  AnnouncementReactionRecord(ImmutableMap(fromJS(announcementReaction)).withMutations(reaction => {
     reaction.set('announcement_id', announcementId as any);
   }));
-};

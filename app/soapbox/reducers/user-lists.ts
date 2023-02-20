@@ -130,33 +130,29 @@ type Items = ImmutableOrderedSet<string>;
 type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests' | 'membership_requests' | 'group_blocks', string];
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
-const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
-  return state.setIn(path, ListRecord({
+const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) =>
+  state.setIn(path, ListRecord({
     next,
     items: ImmutableOrderedSet(accounts.map(item => item.id)),
   }));
-};
 
-const appendToList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next: string | null) => {
-  return state.updateIn(path, map => {
-    return (map as List)
+const appendToList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next: string | null) =>
+  state.updateIn(path, map =>
+    (map as List)
       .set('next', next)
       .set('isLoading', false)
-      .update('items', list => (list as Items).concat(accounts.map(item => item.id)));
-  });
-};
+      .update('items', list => (list as Items).concat(accounts.map(item => item.id))),
+  );
 
-const removeFromList = (state: State, path: NestedListPath | ListPath, accountId: string) => {
-  return state.updateIn(path, map => {
-    return (map as List).update('items', list => (list as Items).filterNot(item => item === accountId));
-  });
-};
+const removeFromList = (state: State, path: NestedListPath | ListPath, accountId: string) =>
+  state.updateIn(path, map =>
+    (map as List).update('items', list => (list as Items).filterNot(item => item === accountId)),
+  );
 
-const normalizeFollowRequest = (state: State, notification: APIEntity) => {
-  return state.updateIn(['follow_requests', 'items'], list => {
-    return ImmutableOrderedSet([notification.account.id]).union(list as Items);
-  });
-};
+const normalizeFollowRequest = (state: State, notification: APIEntity) =>
+  state.updateIn(['follow_requests', 'items'], list =>
+    ImmutableOrderedSet([notification.account.id]).union(list as Items),
+  );
 
 export default function userLists(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {

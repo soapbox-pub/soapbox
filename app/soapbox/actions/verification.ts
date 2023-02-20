@@ -130,7 +130,7 @@ const fetchVerificationConfig = () =>
  * - Don't overwrite a challenge that has already been completed.
  * - Update localStorage to the new set of challenges.
  */
-function saveChallenges(challenges: Array<'age' | 'sms' | 'email'>) {
+const saveChallenges = (challenges: Array<'age' | 'sms' | 'email'>) => {
   const currentChallenges: Challenges = fetchStoredChallenges() || {};
 
   const challengesToRemove = Object.keys(currentChallenges).filter((currentChallenge) => !challenges.includes(currentChallenge as Challenge)) as Challenge[];
@@ -148,18 +148,18 @@ function saveChallenges(challenges: Array<'age' | 'sms' | 'email'>) {
     challenges: currentChallenges,
     challengeTypes: challenges,
   });
-}
+};
 
 /**
  * Finish a challenge.
  */
-function finishChallenge(challenge: Challenge) {
+const finishChallenge = (challenge: Challenge) => {
   const currentChallenges: Challenges = fetchStoredChallenges() || {};
   // Set challenge to "complete"
   currentChallenges[challenge] = 1;
 
   updateStorage({ challenges: currentChallenges });
-}
+};
 
 /**
  * Fetch the next challenge

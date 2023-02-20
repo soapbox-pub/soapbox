@@ -78,10 +78,10 @@ const emojiReact = (status: Status, emoji: string) =>
 
     return api(getState)
       .put(`/api/v1/pleroma/statuses/${status.get('id')}/reactions/${emoji}`)
-      .then(function(response) {
+      .then((response) => {
         dispatch(importFetchedStatus(response.data));
         dispatch(emojiReactSuccess(status, emoji));
-      }).catch(function(error) {
+      }).catch((error) => {
         dispatch(emojiReactFail(status, emoji, error));
       });
   };

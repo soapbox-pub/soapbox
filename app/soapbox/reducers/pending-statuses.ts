@@ -26,9 +26,8 @@ type State = ImmutableMap<string, PendingStatus>;
 
 const initialState: State = ImmutableMap();
 
-const importStatus = (state: State, params: ImmutableMap<string, any>, idempotencyKey: string) => {
-  return state.set(idempotencyKey, PendingStatusRecord(params));
-};
+const importStatus = (state: State, params: ImmutableMap<string, any>, idempotencyKey: string) =>
+  state.set(idempotencyKey, PendingStatusRecord(params));
 
 const deleteStatus = (state: State, idempotencyKey: string) => state.delete(idempotencyKey);
 

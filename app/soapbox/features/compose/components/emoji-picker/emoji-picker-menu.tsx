@@ -78,25 +78,23 @@ const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
     }
   }, []);
 
-  const getI18n = () => {
-    return {
-      search: intl.formatMessage(messages.emoji_search),
-      notfound: intl.formatMessage(messages.emoji_not_found),
-      categories: {
-        search: intl.formatMessage(messages.search_results),
-        recent: intl.formatMessage(messages.recent),
-        people: intl.formatMessage(messages.people),
-        nature: intl.formatMessage(messages.nature),
-        foods: intl.formatMessage(messages.food),
-        activity: intl.formatMessage(messages.activity),
-        places: intl.formatMessage(messages.travel),
-        objects: intl.formatMessage(messages.objects),
-        symbols: intl.formatMessage(messages.symbols),
-        flags: intl.formatMessage(messages.flags),
-        custom: intl.formatMessage(messages.custom),
-      },
-    };
-  };
+  const getI18n = () => ({
+    search: intl.formatMessage(messages.emoji_search),
+    notfound: intl.formatMessage(messages.emoji_not_found),
+    categories: {
+      search: intl.formatMessage(messages.search_results),
+      recent: intl.formatMessage(messages.recent),
+      people: intl.formatMessage(messages.people),
+      nature: intl.formatMessage(messages.nature),
+      foods: intl.formatMessage(messages.food),
+      activity: intl.formatMessage(messages.activity),
+      places: intl.formatMessage(messages.travel),
+      objects: intl.formatMessage(messages.objects),
+      symbols: intl.formatMessage(messages.symbols),
+      flags: intl.formatMessage(messages.flags),
+      custom: intl.formatMessage(messages.custom),
+    },
+  });
 
   const handleClick = (emoji: any) => {
     if (!emoji.native) {

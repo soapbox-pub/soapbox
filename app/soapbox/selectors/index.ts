@@ -30,8 +30,8 @@ const getAccountPatron       = (state: RootState, id: string) => {
   return url ? state.patron.accounts.get(url) : null;
 };
 
-export const makeGetAccount = () => {
-  return createSelector([
+export const makeGetAccount = () =>
+  createSelector([
     getAccountBase,
     getAccountCounters,
     getAccountRelationship,
@@ -54,14 +54,11 @@ export const makeGetAccount = () => {
       map.setIn(['pleroma', 'admin'], admin);
     });
   });
-};
 
 const findAccountsByUsername = (state: RootState, username: string) => {
   const accounts = state.accounts;
 
-  return accounts.filter(account => {
-    return username.toLowerCase() === account?.acct.toLowerCase();
-  });
+  return accounts.filter(account => username.toLowerCase() === account?.acct.toLowerCase());
 };
 
 export const findAccountByUsername = (state: RootState, username: string) => {
@@ -104,12 +101,11 @@ const toServerSideType = (columnType: string): ContextType => {
 
 type FilterContext = { contextType?: string };
 
-export const getFilters = (state: RootState, query: FilterContext) => {
-  return state.filters.filter((filter) => {
-    return (!query?.contextType || filter.context.includes(toServerSideType(query.contextType)))
-      && (filter.expires_at === null || Date.parse(filter.expires_at) > new Date().getTime());
-  });
-};
+export const getFilters = (state: RootState, query: FilterContext) =>
+  state.filters.filter((filter) =>
+    (!query?.contextType || filter.context.includes(toServerSideType(query.contextType)))
+      && (filter.expires_at === null || Date.parse(filter.expires_at) > new Date().getTime()),
+  );
 
 const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -136,8 +132,8 @@ export const regexFromFilters = (filters: ImmutableList<FilterEntity>) => {
 
 type APIStatus = { id: string, username?: string };
 
-export const makeGetStatus = () => {
-  return createSelector(
+export const makeGetStatus = () =>
+  createSelector(
     [
       (state: RootState, { id }: APIStatus) => state.statuses.get(id),
       (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
@@ -178,68 +174,58 @@ export const makeGetStatus = () => {
       });
     },
   );
-};
 
-export const makeGetNotification = () => {
-  return createSelector([
+export const makeGetNotification = () =>
+  createSelector([
     (_state: RootState, notification: Notification) => notification,
     (state: RootState, notification: Notification) => state.accounts.get(normalizeId(notification.account)),
     (state: RootState, notification: Notification) => state.accounts.get(normalizeId(notification.target)),
     (state: RootState, notification: Notification) => state.statuses.get(normalizeId(notification.status)),
-  ], (notification, account, target, status) => {
-    return notification.merge({
-      // @ts-ignore
-      account: account || null,
-      // @ts-ignore
-      target: target || null,
-      // @ts-ignore
-      status: status || null,
-    });
-  });
-};
+  ], (notification, account, target, status) => notification.merge({
+    // @ts-ignore
+    account: account || null,
+    // @ts-ignore
+    target: target || null,
+    // @ts-ignore
+    status: status || null,
+  }));
 
 export const getAccountGallery = createSelector([
   (state: RootState, id: string) => state.timelines.get(`account:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState)       => state.statuses,
   (state: RootState)       => state.accounts,
-], (statusIds, statuses, accounts) => {
+], (statusIds, statuses, accounts) => statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
+  const status = statuses.get(statusId);
+  if (!status) return medias;
+  if (status.reblog) return medias;
+  if (typeof status.account !== 'string') return medias;
 
-  return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
-    const status = statuses.get(statusId);
-    if (!status) return medias;
-    if (status.reblog) return medias;
-    if (typeof status.account !== 'string') return medias;
+  const account = accounts.get(status.account);
 
-    const account = accounts.get(status.account);
-
-    return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
-  }, ImmutableList());
-});
+  return medias.concat(
+    status.media_attachments.map(media => media.merge({ status, account })));
+}, ImmutableList()));
 
 export const getGroupGallery = createSelector([
   (state: RootState, id: string) => state.timelines.get(`group:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState) => state.statuses,
   (state: RootState) => state.accounts,
-], (statusIds, statuses, accounts) => {
+], (statusIds, statuses, accounts) => statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
+  const status = statuses.get(statusId);
+  if (!status) return medias;
+  if (status.reblog) return medias;
+  if (typeof status.account !== 'string') return medias;
 
-  return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
-    const status = statuses.get(statusId);
-    if (!status) return medias;
-    if (status.reblog) return medias;
-    if (typeof status.account !== 'string') return medias;
+  const account = accounts.get(status.account);
 
-    const account = accounts.get(status.account);
-
-    return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
-  }, ImmutableList());
-});
+  return medias.concat(
+    status.media_attachments.map(media => media.merge({ status, account })));
+}, ImmutableList()));
 
 type APIChat = { id: string, last_message: string };
 
-export const makeGetChat = () => {
-  return createSelector(
+export const makeGetChat = () =>
+  createSelector(
     [
       (state: RootState, { id }: APIChat) => state.chats.items.get(id) as ReducerChat,
       (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.items.getIn([id, 'account'])),
@@ -257,7 +243,6 @@ export const makeGetChat = () => {
       });
     },
   );
-};
 
 export const makeGetReport = () => {
   const getStatus = makeGetStatus();
@@ -291,39 +276,35 @@ export const makeGetReport = () => {
 
 const getAuthUserIds = createSelector([
   (state: RootState) => state.auth.users,
-], authUsers => {
-  return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser) => {
+], authUsers =>
+  authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser) => {
     try {
       const id = authUser.id;
       return validId(id) ? ids.add(id) : ids;
     } catch {
       return ids;
     }
-  }, ImmutableOrderedSet<string>());
-});
+  }, ImmutableOrderedSet<string>()));
 
-export const makeGetOtherAccounts = () => {
-  return createSelector([
+export const makeGetOtherAccounts = () =>
+  createSelector([
     (state: RootState) => state.accounts,
     getAuthUserIds,
     (state: RootState) => state.me,
   ],
-  (accounts, authUserIds, me) => {
-    return authUserIds
-      .reduce((list: ImmutableList<any>, id: string) => {
-        if (id === me) return list;
-        const account = accounts.get(id);
-        return account ? list.push(account) : list;
-      }, ImmutableList());
-  });
-};
+  (accounts, authUserIds, me) => authUserIds
+    .reduce((list: ImmutableList<any>, id: string) => {
+      if (id === me) return list;
+      const account = accounts.get(id);
+      return account ? list.push(account) : list;
+    }, ImmutableList()));
 
 const getSimplePolicy = createSelector([
   (state: RootState) => state.admin.configs,
   (state: RootState) => state.instance.pleroma.getIn(['metadata', 'federation', 'mrf_simple'], ImmutableMap()) as ImmutableMap<string, any>,
-], (configs, instancePolicy: ImmutableMap<string, any>) => {
-  return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
-});
+], (configs, instancePolicy: ImmutableMap<string, any>) =>
+  instancePolicy.merge(ConfigDB.toSimplePolicy(configs)),
+);
 
 const getRemoteInstanceFavicon = (state: RootState, host: string) => (
   (state.accounts.find(account => getDomain(account) === host, null) || ImmutableMap())
@@ -335,28 +316,25 @@ const getRemoteInstanceFederation = (state: RootState, host: string) => (
     .map(hosts => hosts.includes(host))
 );
 
-export const makeGetHosts = () => {
-  return createSelector([getSimplePolicy], (simplePolicy) => {
-    return simplePolicy
+export const makeGetHosts = () =>
+  createSelector([getSimplePolicy], (simplePolicy) =>
+    simplePolicy
       .deleteAll(['accept', 'reject_deletes', 'report_removal'])
       .reduce((acc, hosts) => acc.union(hosts), ImmutableOrderedSet())
-      .sort();
-  });
-};
+      .sort());
 
-export const makeGetRemoteInstance = () => {
-  return createSelector([
+export const makeGetRemoteInstance = () =>
+  createSelector([
     (_state: RootState, host: string) => host,
     getRemoteInstanceFavicon,
     getRemoteInstanceFederation,
-  ], (host, favicon, federation) => {
-    return ImmutableMap({
+  ], (host, favicon, federation) =>
+    ImmutableMap({
       host,
       favicon,
       federation,
-    });
-  });
-};
+    }),
+  );
 
 type ColumnQuery = { type: string, prefix?: string };
 
@@ -364,16 +342,16 @@ export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type, prefix }: ColumnQuery) => getSettings(state).get(prefix || type, ImmutableMap()),
   (state: RootState, { type }: ColumnQuery) => state.timelines.get(type)?.items || ImmutableOrderedSet(),
   (state: RootState) => state.statuses,
-], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) => {
-  return statusIds.filter((id: string) => {
+], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) =>
+  statusIds.filter((id: string) => {
     const status = statuses.get(id);
     if (!status) return true;
     return !shouldFilter(status, columnSettings);
-  });
-});
+  }),
+);
 
-export const makeGetGroup = () => {
-  return createSelector([
+export const makeGetGroup = () =>
+  createSelector([
     (state: RootState, id: string) => state.groups.items.get(id),
     (state: RootState, id: string) => state.group_relationships.get(id),
   ], (base, relationship) => {
@@ -383,4 +361,3 @@ export const makeGetGroup = () => {
       if (relationship) map.set('relationship', relationship);
     });
   });
-};

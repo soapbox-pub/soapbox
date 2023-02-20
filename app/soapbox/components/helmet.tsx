@@ -27,9 +27,7 @@ const Helmet: React.FC<IHelmet> = ({ children }) => {
 
   const hasUnreadNotifications = React.useMemo(() => !(unreadCount < 1 || demetricator), [unreadCount, demetricator]);
 
-  const addCounter = (string: string) => {
-    return hasUnreadNotifications ? `(${unreadCount}) ${string}` : string;
-  };
+  const addCounter = (string: string) => hasUnreadNotifications ? `(${unreadCount}) ${string}` : string;
 
   const updateFaviconBadge = () => {
     if (hasUnreadNotifications) {

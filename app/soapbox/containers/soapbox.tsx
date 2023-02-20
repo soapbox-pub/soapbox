@@ -65,24 +65,22 @@ store.dispatch(preload() as any);
 store.dispatch(checkOnboardingStatus() as any);
 
 /** Load initial data from the backend */
-const loadInitial = () => {
-  // @ts-ignore
-  return async(dispatch, getState) => {
-    // Await for authenticated fetch
-    await dispatch(fetchMe());
-    // Await for feature detection
-    await dispatch(loadInstance());
-    // Await for configuration
-    await dispatch(loadSoapboxConfig());
+// @ts-ignore
+const loadInitial = () => async(dispatch, getState) => {
+  // Await for authenticated fetch
+  await dispatch(fetchMe());
+  // Await for feature detection
+  await dispatch(loadInstance());
+  // Await for configuration
+  await dispatch(loadSoapboxConfig());
 
-    const state = getState();
-    const soapboxConfig = getSoapboxConfig(state);
-    const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const state = getState();
+  const soapboxConfig = getSoapboxConfig(state);
+  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
 
-    if (pepeEnabled && !state.me) {
-      await dispatch(fetchVerificationConfig());
-    }
-  };
+  if (pepeEnabled && !state.me) {
+    await dispatch(fetchVerificationConfig());
+  }
 };
 
 /** Highest level node with the Redux store. */
@@ -102,9 +100,8 @@ const SoapboxMount = () => {
   const { redirectRootNoLogin } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
-  const shouldUpdateScroll = (prevRouterProps, { location }) => {
-    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
-  };
+  const shouldUpdateScroll = (prevRouterProps, { location }) =>
+    !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
 
   /** Render the onboarding flow. */
   const renderOnboarding = () => (
@@ -293,20 +290,18 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
 };
 
 /** The root React node of the application. */
-const Soapbox: React.FC = () => {
-  return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <StatProvider>
-          <SoapboxHead>
-            <SoapboxLoad>
-              <SoapboxMount />
-            </SoapboxLoad>
-          </SoapboxHead>
-        </StatProvider>
-      </QueryClientProvider>
-    </Provider>
-  );
-};
+const Soapbox: React.FC = () => (
+  <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <StatProvider>
+        <SoapboxHead>
+          <SoapboxLoad>
+            <SoapboxMount />
+          </SoapboxLoad>
+        </SoapboxHead>
+      </StatProvider>
+    </QueryClientProvider>
+  </Provider>
+);
 
 export default Soapbox;

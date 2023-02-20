@@ -145,7 +145,7 @@ const importFetchedStatuses = (statuses: APIEntity[]) =>
     const normalStatuses: APIEntity[] = [];
     const polls: APIEntity[] = [];
 
-    function processStatus(status: APIEntity) {
+    const processStatus = (status: APIEntity) => {
       // Skip broken statuses
       if (isBroken(status)) return;
 
@@ -172,7 +172,7 @@ const importFetchedStatuses = (statuses: APIEntity[]) =>
       if (status.group?.id) {
         dispatch(importFetchedGroup(status.group));
       }
-    }
+    };
 
     statuses.forEach(processStatus);
 

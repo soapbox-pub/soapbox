@@ -11,9 +11,8 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
-export const isCurrentOrFutureDate = (date: Date) => {
-  return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
-};
+export const isCurrentOrFutureDate = (date: Date) =>
+  date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
 
 const isFiveMinutesFromNow = (time: Date) => {
   const fiveMinutesFromNow = new Date(new Date().getTime() + 300000); // now, plus five minutes (Pleroma won't schedule posts )

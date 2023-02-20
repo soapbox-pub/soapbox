@@ -97,9 +97,9 @@ const register = () =>
             return { subscription };
           } else {
             // Something went wrong, try to subscribe again
-            return unsubscribe({ registration, subscription }).then((registration: ServiceWorkerRegistration) => {
-              return subscribe(registration, getState);
-            }).then(
+            return unsubscribe({ registration, subscription }).then((registration: ServiceWorkerRegistration) =>
+              subscribe(registration, getState),
+            ).then(
               (subscription: PushSubscription) => dispatch(sendSubscriptionToBackend(subscription, me) as any));
           }
         }

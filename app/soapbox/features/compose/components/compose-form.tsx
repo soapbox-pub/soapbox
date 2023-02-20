@@ -102,24 +102,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     }
   };
 
-  const getClickableArea = () => {
-    return clickableAreaRef ? clickableAreaRef.current : formRef.current;
-  };
+  const getClickableArea = () => clickableAreaRef ? clickableAreaRef.current : formRef.current;
 
-  const isEmpty = () => {
-    return !(text || spoilerText || anyMedia);
-  };
+  const isEmpty = () => !(text || spoilerText || anyMedia);
 
-  const isClickOutside = (e: MouseEvent | React.MouseEvent) => {
-    return ![
-      // List of elements that shouldn't collapse the composer when clicked
-      // FIXME: Make this less brittle
-      getClickableArea(),
-      document.querySelector('.privacy-dropdown__dropdown'),
-      document.querySelector('.emoji-picker-dropdown__menu'),
-      document.getElementById('modal-overlay'),
-    ].some(element => element?.contains(e.target as any));
-  };
+  const isClickOutside = (e: MouseEvent | React.MouseEvent) => ![
+    // List of elements that shouldn't collapse the composer when clicked
+    // FIXME: Make this less brittle
+    getClickableArea(),
+    document.querySelector('.privacy-dropdown__dropdown'),
+    document.querySelector('.emoji-picker-dropdown__menu'),
+    document.getElementById('modal-overlay'),
+  ].some(element => element?.contains(e.target as any));
 
   const handleClick = useCallback((e: MouseEvent | React.MouseEvent) => {
     if (isEmpty() && isClickOutside(e)) {

@@ -20,9 +20,8 @@ type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ChatMessageRecord>;
 
-const importMessage = (state: State, message: APIEntity) => {
-  return state.set(message.id, normalizeChatMessage(message));
-};
+const importMessage = (state: State, message: APIEntity) =>
+  state.set(message.id, normalizeChatMessage(message));
 
 const importMessages = (state: State, messages: APIEntities) =>
   state.withMutations(mutable =>

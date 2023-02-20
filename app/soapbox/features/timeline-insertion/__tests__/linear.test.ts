@@ -3,9 +3,7 @@ import { linearAlgorithm } from '../linear';
 const DATA = Object.freeze(['a', 'b', 'c', 'd']);
 
 test('linearAlgorithm', () => {
-  const result = Array(50).fill('').map((_, i) => {
-    return linearAlgorithm(DATA, i, { interval: 5 });
-  });
+  const result = Array(50).fill('').map((_, i) => linearAlgorithm(DATA, i, { interval: 5 }));
 
   // console.log(result);
   expect(result[0]).toBe(undefined);

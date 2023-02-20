@@ -165,8 +165,8 @@ const removeMedia = (compose: Compose, mediaId: string) => {
   });
 };
 
-const insertSuggestion = (compose: Compose, position: number, token: string, completion: string, path: Array<string | number>) => {
-  return compose.withMutations(map => {
+const insertSuggestion = (compose: Compose, position: number, token: string, completion: string, path: Array<string | number>) =>
+  compose.withMutations(map => {
     map.updateIn(path, oldText => `${(oldText as string).slice(0, position)}${completion} ${(oldText as string).slice(position + token.length)}`);
     map.set('suggestion_token', null);
     map.set('suggestions', ImmutableList());
@@ -176,7 +176,6 @@ const insertSuggestion = (compose: Compose, position: number, token: string, com
     }
     map.set('idempotencyKey', uuid());
   });
-};
 
 const updateSuggestionTags = (compose: Compose, token: string, currentTrends: ImmutableList<Tag>) => {
   const prefix = token.slice(1);
@@ -234,9 +233,8 @@ const getExplicitMentions = (me: string, status: ImmutableMap<string, any>) => {
   return ImmutableOrderedSet<string>(mentions);
 };
 
-const getAccountSettings = (account: ImmutableMap<string, any>) => {
-  return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap()) as ImmutableMap<string, any>;
-};
+const getAccountSettings = (account: ImmutableMap<string, any>) =>
+  account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap()) as ImmutableMap<string, any>;
 
 const importAccount = (compose: Compose, account: APIEntity) => {
   const settings = getAccountSettings(ImmutableMap(fromJS(account)));

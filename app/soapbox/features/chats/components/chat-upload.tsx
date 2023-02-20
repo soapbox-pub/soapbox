@@ -48,19 +48,17 @@ interface IRemoveButton {
 }
 
 /** Floating button to remove an attachment. */
-const RemoveButton: React.FC<IRemoveButton> = ({ onClick }) => {
-  return (
-    <button
-      type='button'
-      onClick={onClick}
-      className='flex h-5 w-5 items-center justify-center rounded-full bg-secondary-500 p-1'
-    >
-      <Icon
-        className='h-3 w-3 text-white'
-        src={require('@tabler/icons/x.svg')}
-      />
-    </button>
-  );
-};
+const RemoveButton: React.FC<IRemoveButton> = ({ onClick }) =>  (
+  <button
+    type='button'
+    onClick={onClick}
+    className='flex h-5 w-5 items-center justify-center rounded-full bg-secondary-500 p-1'
+  >
+    <Icon
+      className='h-3 w-3 text-white'
+      src={require('@tabler/icons/x.svg')}
+    />
+  </button>
+);
 
 export default ChatUpload;

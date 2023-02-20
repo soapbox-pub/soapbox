@@ -6,17 +6,17 @@ import api from '../api';
 
 import type { RootState } from 'soapbox/store';
 
-export const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';
-export const IMPORT_FOLLOWS_SUCCESS = 'IMPORT_FOLLOWS_SUCCESS';
-export const IMPORT_FOLLOWS_FAIL    = 'IMPORT_FOLLOWS_FAIL';
+const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';
+const IMPORT_FOLLOWS_SUCCESS = 'IMPORT_FOLLOWS_SUCCESS';
+const IMPORT_FOLLOWS_FAIL    = 'IMPORT_FOLLOWS_FAIL';
 
-export const IMPORT_BLOCKS_REQUEST = 'IMPORT_BLOCKS_REQUEST';
-export const IMPORT_BLOCKS_SUCCESS = 'IMPORT_BLOCKS_SUCCESS';
-export const IMPORT_BLOCKS_FAIL    = 'IMPORT_BLOCKS_FAIL';
+const IMPORT_BLOCKS_REQUEST = 'IMPORT_BLOCKS_REQUEST';
+const IMPORT_BLOCKS_SUCCESS = 'IMPORT_BLOCKS_SUCCESS';
+const IMPORT_BLOCKS_FAIL    = 'IMPORT_BLOCKS_FAIL';
 
-export const IMPORT_MUTES_REQUEST = 'IMPORT_MUTES_REQUEST';
-export const IMPORT_MUTES_SUCCESS = 'IMPORT_MUTES_SUCCESS';
-export const IMPORT_MUTES_FAIL    = 'IMPORT_MUTES_FAIL';
+const IMPORT_MUTES_REQUEST = 'IMPORT_MUTES_REQUEST';
+const IMPORT_MUTES_SUCCESS = 'IMPORT_MUTES_SUCCESS';
+const IMPORT_MUTES_FAIL    = 'IMPORT_MUTES_FAIL';
 
 type ImportDataActions = {
   type: typeof IMPORT_FOLLOWS_REQUEST
@@ -38,7 +38,7 @@ const messages = defineMessages({
   mutesSuccess: { id: 'import_data.success.mutes', defaultMessage: 'Mutes imported successfully' },
 });
 
-export const importFollows = (params: FormData) =>
+const importFollows = (params: FormData) =>
   (dispatch: React.Dispatch<ImportDataActions>, getState: () => RootState) => {
     dispatch({ type: IMPORT_FOLLOWS_REQUEST });
     return api(getState)
@@ -51,7 +51,7 @@ export const importFollows = (params: FormData) =>
       });
   };
 
-export const importBlocks = (params: FormData) =>
+const importBlocks = (params: FormData) =>
   (dispatch: React.Dispatch<ImportDataActions>, getState: () => RootState) => {
     dispatch({ type: IMPORT_BLOCKS_REQUEST });
     return api(getState)
@@ -64,7 +64,7 @@ export const importBlocks = (params: FormData) =>
       });
   };
 
-export const importMutes = (params: FormData) =>
+const importMutes = (params: FormData) =>
   (dispatch: React.Dispatch<ImportDataActions>, getState: () => RootState) => {
     dispatch({ type: IMPORT_MUTES_REQUEST });
     return api(getState)
@@ -76,3 +76,18 @@ export const importMutes = (params: FormData) =>
         dispatch({ type: IMPORT_MUTES_FAIL, error });
       });
   };
+
+export {
+  IMPORT_FOLLOWS_REQUEST,
+  IMPORT_FOLLOWS_SUCCESS,
+  IMPORT_FOLLOWS_FAIL,
+  IMPORT_BLOCKS_REQUEST,
+  IMPORT_BLOCKS_SUCCESS,
+  IMPORT_BLOCKS_FAIL,
+  IMPORT_MUTES_REQUEST,
+  IMPORT_MUTES_SUCCESS,
+  IMPORT_MUTES_FAIL,
+  importFollows,
+  importBlocks,
+  importMutes,
+};

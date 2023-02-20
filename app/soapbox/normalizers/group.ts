@@ -90,15 +90,15 @@ const addInternalFields = (group: ImmutableMap<string, any>) => {
     });
 
     // Emojify fields
-    group.update('fields', ImmutableList(), fields => {
-      return fields.map((field: ImmutableMap<string, any>) => {
-        return field.merge({
+    group.update('fields', ImmutableList(), fields =>
+      fields.map((field: ImmutableMap<string, any>) =>
+        field.merge({
           name_emojified: emojify(escapeTextContentForBrowser(field.get('name')), emojiMap),
           value_emojified: emojify(field.get('value'), emojiMap),
           value_plain: unescapeHTML(field.get('value')),
-        });
-      });
-    });
+        }),
+      ),
+    );
   });
 };
 
@@ -137,8 +137,8 @@ const fixNote = (group: ImmutableMap<string, any>) => {
   }
 };
 
-export const normalizeGroup = (group: Record<string, any>) => {
-  return GroupRecord(
+export const normalizeGroup = (group: Record<string, any>) =>
+  GroupRecord(
     ImmutableMap(fromJS(group)).withMutations(group => {
       normalizeEmojis(group);
       normalizeAvatar(group);
@@ -149,4 +149,3 @@ export const normalizeGroup = (group: Record<string, any>) => {
       addInternalFields(group);
     }),
   );
-};

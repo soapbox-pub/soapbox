@@ -42,23 +42,21 @@ const Widget: React.FC<IWidget> = ({
   actionIcon = require('@tabler/icons/arrow-right.svg'),
   actionTitle,
   action,
-}): JSX.Element => {
-  return (
-    <Stack space={4}>
-      <HStack alignItems='center' justifyContent='between'>
-        <WidgetTitle title={title} />
-        {action || (onActionClick && (
-          <IconButton
-            className='ml-2 h-6 w-6 text-black rtl:rotate-180 dark:text-white'
-            src={actionIcon}
-            onClick={onActionClick}
-            title={actionTitle}
-          />
-        ))}
-      </HStack>
-      <WidgetBody>{children}</WidgetBody>
-    </Stack>
-  );
-};
+}): JSX.Element => (
+  <Stack space={4}>
+    <HStack alignItems='center' justifyContent='between'>
+      <WidgetTitle title={title} />
+      {action || (onActionClick && (
+        <IconButton
+          className='ml-2 h-6 w-6 text-black rtl:rotate-180 dark:text-white'
+          src={actionIcon}
+          onClick={onActionClick}
+          title={actionTitle}
+        />
+      ))}
+    </HStack>
+    <WidgetBody>{children}</WidgetBody>
+  </Stack>
+);
 
 export default Widget;

@@ -25,12 +25,10 @@ const updateChatInChatSearchQuery = (newChat: ChatPayload) => {
  * Re-order the ChatSearch query by the last message timestamp.
  */
 const reOrderChatListItems = () => {
-  sortQueryData<ChatPayload>(ChatKeys.chatSearch(), (chatA, chatB) => {
-    return compareDate(
+  sortQueryData<ChatPayload>(ChatKeys.chatSearch(), (chatA, chatB) => compareDate(
       chatA.last_message?.created_at as string,
       chatB.last_message?.created_at as string,
-    );
-  });
+  ));
 };
 
 /**

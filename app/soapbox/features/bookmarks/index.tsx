@@ -28,9 +28,7 @@ const Bookmarks: React.FC = () => {
     dispatch(fetchBookmarkedStatuses());
   }, []);
 
-  const handleRefresh = () => {
-    return dispatch(fetchBookmarkedStatuses());
-  };
+  const handleRefresh = () => dispatch(fetchBookmarkedStatuses());
 
   const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 

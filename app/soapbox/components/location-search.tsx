@@ -29,9 +29,7 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
 
   const [value, setValue] = useState('');
 
-  const isEmpty = (): boolean => {
-    return !(value.length > 0);
-  };
+  const isEmpty = (): boolean => !(value.length > 0);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     refreshCancelToken();

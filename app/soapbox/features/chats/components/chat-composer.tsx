@@ -86,9 +86,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
   const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
 
-  const renderSuggestionValue = (emoji: any) => {
-    return `${(value).slice(0, suggestions.tokenStart)}${emoji.native} ${(value as string).slice(suggestions.tokenStart + suggestions.token.length)}`;
-  };
+  const renderSuggestionValue = (emoji: any) => `${(value).slice(0, suggestions.tokenStart)}${emoji.native} ${(value as string).slice(suggestions.tokenStart + suggestions.token.length)}`;
 
   const onSelectComboboxOption = (selection: string) => {
     const event = { target: { value: selection } } as React.ChangeEvent<HTMLTextAreaElement>;

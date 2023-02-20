@@ -17,30 +17,26 @@ const LandingPage = () => {
   const instance = useInstance();
 
   /** Registrations are closed */
-  const renderClosed = () => {
-    return (
-      <Stack space={3} data-testid='registrations-closed'>
-        <Text size='xl' weight='bold' align='center'>
-          <FormattedMessage
-            id='registration.closed_title'
-            defaultMessage='Registrations Closed'
-          />
-        </Text>
-        <Text theme='muted' align='center'>
-          <FormattedMessage
-            id='registration.closed_message'
-            defaultMessage='{instance} is not accepting new members.'
-            values={{ instance: instance.title }}
-          />
-        </Text>
-      </Stack>
-    );
-  };
+  const renderClosed = () => (
+    <Stack space={3} data-testid='registrations-closed'>
+      <Text size='xl' weight='bold' align='center'>
+        <FormattedMessage
+          id='registration.closed_title'
+          defaultMessage='Registrations Closed'
+        />
+      </Text>
+      <Text theme='muted' align='center'>
+        <FormattedMessage
+          id='registration.closed_message'
+          defaultMessage='{instance} is not accepting new members.'
+          values={{ instance: instance.title }}
+        />
+      </Text>
+    </Stack>
+  );
 
   /** Mastodon API registrations are open */
-  const renderOpen = () => {
-    return <RegistrationForm />;
-  };
+  const renderOpen = () => <RegistrationForm />;
 
   /** Display login button for external provider. */
   const renderProvider = () => {
@@ -66,26 +62,24 @@ const LandingPage = () => {
   };
 
   /** Pepe API registrations are open */
-  const renderPepe = () => {
-    return (
-      <Stack space={3} data-testid='registrations-pepe'>
-        <VerificationBadge className='mx-auto h-16 w-16' />
+  const renderPepe = () => (
+    <Stack space={3} data-testid='registrations-pepe'>
+      <VerificationBadge className='mx-auto h-16 w-16' />
 
-        <Stack>
-          <Text size='2xl' weight='bold' align='center'>
-            <FormattedMessage id='registrations.get_started' defaultMessage="Let's get started!" />
-          </Text>
-          <Text theme='muted' align='center'>
-            <FormattedMessage id='registrations.tagline' defaultMessage='Social Media Without Discrimination' />
-          </Text>
-        </Stack>
-
-        <Button to='/verify' theme='primary' block>
-          <FormattedMessage id='registrations.create_account' defaultMessage='Create an account' />
-        </Button>
+      <Stack>
+        <Text size='2xl' weight='bold' align='center'>
+          <FormattedMessage id='registrations.get_started' defaultMessage="Let's get started!" />
+        </Text>
+        <Text theme='muted' align='center'>
+          <FormattedMessage id='registrations.tagline' defaultMessage='Social Media Without Discrimination' />
+        </Text>
       </Stack>
-    );
-  };
+
+      <Button to='/verify' theme='primary' block>
+        <FormattedMessage id='registrations.create_account' defaultMessage='Create an account' />
+      </Button>
+    </Stack>
+  );
 
   // Render registration flow depending on features
   const renderBody = () => {

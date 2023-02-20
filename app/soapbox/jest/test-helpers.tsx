@@ -27,9 +27,8 @@ const rootState = rootReducer(undefined, {} as Action);
 const mockStore = configureMockStore<typeof rootState, AnyAction, AppDispatch>([thunk]);
 
 /** Apply actions to the state, one at a time. */
-const applyActions = (state: any, actions: any, reducer: any) => {
-  return actions.reduce((state: any, action: any) => reducer(state, action), state);
-};
+const applyActions = (state: any, actions: any, reducer: any) =>
+  actions.reduce((state: any, action: any) => reducer(state, action), state);
 
 const createTestStore = (initialState: any) => createStore(rootReducer, initialState, applyMiddleware(thunk));
 const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
@@ -86,12 +85,10 @@ const customRenderHook = <T extends { children?: React.ReactNode }>(
   callback: (props?: any) => any,
   options?: Omit<RenderHookOptions<T>, 'wrapper'>,
   store?: any,
-) => {
-  return renderHook(callback, {
+) => renderHook(callback, {
     wrapper: ({ children }) => <TestApp children={children} storeProps={store} />,
     ...options,
   });
-};
 
 const mockWindowProperty = (property: any, value: any) => {
   const { [property]: originalProperty } = window;

@@ -15,10 +15,8 @@ const messages = defineMessages({
 const CryptoAddressInput: StreamfieldComponent<CryptoAddress> = ({ value, onChange }) => {
   const intl = useIntl();
 
-  const handleChange = (key: 'ticker' | 'address' | 'note'): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      onChange(value.set(key, e.currentTarget.value));
-    };
+  const handleChange = (key: 'ticker' | 'address' | 'note'): React.ChangeEventHandler<HTMLInputElement> => e => {
+    onChange(value.set(key, e.currentTarget.value));
   };
 
   return (

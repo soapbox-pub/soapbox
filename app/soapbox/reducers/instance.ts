@@ -16,9 +16,9 @@ import type { AnyAction } from 'redux';
 
 const initialState = normalizeInstance(ImmutableMap());
 
-const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
+const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) =>
   // Match Pleroma's develop branch
-  return normalizeInstance(ImmutableMap({
+  normalizeInstance(ImmutableMap({
     pleroma: ImmutableMap({
       metadata: ImmutableMap({
         account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
@@ -30,15 +30,12 @@ const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
       }),
     }),
   }));
-};
 
-const importInstance = (_state: typeof initialState, instance: ImmutableMap<string, any>) => {
-  return normalizeInstance(instance);
-};
+const importInstance = (_state: typeof initialState, instance: ImmutableMap<string, any>) =>
+  normalizeInstance(instance);
 
-const importNodeinfo = (state: typeof initialState, nodeinfo: ImmutableMap<string, any>) => {
-  return nodeinfoToInstance(nodeinfo).mergeDeep(state);
-};
+const importNodeinfo = (state: typeof initialState, nodeinfo: ImmutableMap<string, any>) =>
+  nodeinfoToInstance(nodeinfo).mergeDeep(state);
 
 const preloadImport = (state: typeof initialState, action: Record<string, any>, path: string) => {
   const instance = action.data[path];
@@ -75,13 +72,12 @@ const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) 
   });
 };
 
-const handleAuthFetch = (state: typeof initialState) => {
+const handleAuthFetch = (state: typeof initialState) =>
   // Authenticated fetch is enabled, so make the instance appear censored
-  return state.mergeWith((o, n) => o || n, {
+  state.mergeWith((o, n) => o || n, {
     title: '██████',
     description: '████████████',
   });
-};
 
 const getHost = (instance: { uri: string }) => {
   try {

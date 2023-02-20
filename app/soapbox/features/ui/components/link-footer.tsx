@@ -16,13 +16,11 @@ interface IFooterLink {
   children: React.ReactNode
 }
 
-const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
-  return (
-    <div>
-      <Link className={clsx('text-gray-700 hover:text-gray-800 hover:underline dark:text-gray-600 dark:hover:text-gray-500', className)} {...rest}>{children}</Link>
-    </div>
-  );
-};
+const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => (
+  <div>
+    <Link className={clsx('text-gray-700 hover:text-gray-800 hover:underline dark:text-gray-600 dark:hover:text-gray-500', className)} {...rest}>{children}</Link>
+  </div>
+);
 
 const LinkFooter: React.FC = (): JSX.Element => {
   const account = useOwnAccount();

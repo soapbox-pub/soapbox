@@ -423,9 +423,8 @@ const UI: React.FC<IUI> = ({ children }) => {
     setDraggingOver(false);
   };
 
-  const dataTransferIsText = (dataTransfer: DataTransfer | null) => {
-    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
-  };
+  const dataTransferIsText = (dataTransfer: DataTransfer | null) =>
+    (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
 
   const closeUploadModal = () => {
     setDraggingOver(false);
@@ -571,9 +570,8 @@ const UI: React.FC<IUI> = ({ children }) => {
     if (!me || !hotkeys.current) return;
 
     // @ts-ignore
-    hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
-    };
+    hotkeys.current.__mousetrap__.stopCallback = (_e, element) =>
+      ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
   };
 
   const handleHotkeyToggleHelp = () => {

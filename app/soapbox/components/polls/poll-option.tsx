@@ -15,18 +15,16 @@ const messages = defineMessages({
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
 
-const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ percent, leading }): JSX.Element => {
-  return (
-    <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { ...presets.gentle, precision: 0.1 }) }}>
-      {({ width }) => (
-        <span
-          className='absolute inset-0 inline-block h-full rounded-l-md bg-primary-100 dark:bg-primary-500'
-          style={{ width: `${width}%` }}
-        />
-      )}
-    </Motion>
-  );
-};
+const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ percent, leading }): JSX.Element => (
+  <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { ...presets.gentle, precision: 0.1 }) }}>
+    {({ width }) => (
+      <span
+        className='absolute inset-0 inline-block h-full rounded-l-md bg-primary-100 dark:bg-primary-500'
+        style={{ width: `${width}%` }}
+      />
+    )}
+  </Motion>
+);
 
 interface IPollOptionText extends IPollOption {
   percent: number

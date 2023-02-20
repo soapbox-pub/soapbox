@@ -213,16 +213,16 @@ const deleteChatMessage = (chatId: string, messageId: string) =>
 const launchChat = (accountId: string, router: History, forceNavigate = false) => {
   const isMobile = (width: number) => width <= 1190;
 
-  return (dispatch: AppDispatch) => {
+  return (dispatch: AppDispatch) =>
     // TODO: make this faster
-    return dispatch(startChat(accountId)).then(chat => {
+    dispatch(startChat(accountId)).then(chat => {
       if (forceNavigate || isMobile(window.innerWidth)) {
         router.push(`/chats/${chat.id}`);
       } else {
         dispatch(openChat(chat.id));
       }
-    });
-  };
+    })
+  ;
 };
 
 export {

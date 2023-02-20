@@ -28,7 +28,7 @@ export const AdminReportRecord = ImmutableRecord({
 });
 
 const normalizePleromaReport = (report: ImmutableMap<string, any>) => {
-  if (report.get('actor')){
+  if (report.get('actor')) {
     return report.withMutations(report => {
       report.set('target_account', report.get('account'));
       report.set('account', report.get('actor'));
@@ -42,10 +42,9 @@ const normalizePleromaReport = (report: ImmutableMap<string, any>) => {
   return report;
 };
 
-export const normalizeAdminReport = (report: Record<string, any>) => {
-  return AdminReportRecord(
+export const normalizeAdminReport = (report: Record<string, any>) =>
+  AdminReportRecord(
     ImmutableMap(fromJS(report)).withMutations((report: ImmutableMap<string, any>) => {
       normalizePleromaReport(report);
     }),
   );
-};

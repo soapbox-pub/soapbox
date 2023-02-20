@@ -96,14 +96,13 @@ const getStatusIds = (statuses: APIEntity[] = []) => (
 
 const setLoading = (state: State, listType: string, loading: boolean) => state.setIn([listType, 'isLoading'], loading);
 
-const normalizeList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
-  return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
+const normalizeList = (state: State, listType: string, statuses: APIEntity[], next: string | null) =>
+  state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
     map.set('next', next);
     map.set('loaded', true);
     map.set('isLoading', false);
     map.set('items', getStatusIds(statuses));
   }));
-};
 
 const appendToList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
   const newIds = getStatusIds(statuses);
@@ -117,14 +116,20 @@ const appendToList = (state: State, listType: string, statuses: APIEntity[], nex
 
 const prependOneToList = (state: State, listType: string, status: APIEntity) => {
   const statusId = getStatusId(status);
-  return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => {
-    return ImmutableOrderedSet([statusId]).union(items as ImmutableOrderedSet<string>);
-  });
+  return state.updateIn(
+    [listType, 'items'],
+    ImmutableOrderedSet(),
+    items => ImmutableOrderedSet([statusId]).union(items as ImmutableOrderedSet<string>),
+  );
 };
 
 const removeOneFromList = (state: State, listType: string, status: APIEntity) => {
   const statusId = getStatusId(status);
-  return state.updateIn([listType, 'items'], ImmutableOrderedSet(), items => (items as ImmutableOrderedSet<string>).delete(statusId));
+  return state.updateIn(
+    [listType, 'items'],
+    ImmutableOrderedSet(),
+    items => (items as ImmutableOrderedSet<string>).delete(statusId),
+  );
 };
 
 const maybeAppendScheduledStatus = (state: State, status: APIEntity) => {

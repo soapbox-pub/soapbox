@@ -50,11 +50,10 @@ const normalizeChatMessageEmojiReaction = (chatMessage: ImmutableMap<string, any
   }
 };
 
-export const normalizeChatMessage = (chatMessage: Record<string, any>) => {
-  return ChatMessageRecord(
+export const normalizeChatMessage = (chatMessage: Record<string, any>) =>
+  ChatMessageRecord(
     ImmutableMap(fromJS(chatMessage)).withMutations(chatMessage => {
       normalizeMedia(chatMessage);
       normalizeChatMessageEmojiReaction(chatMessage);
     }),
   );
-};

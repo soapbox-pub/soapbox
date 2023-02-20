@@ -34,8 +34,8 @@ const normalizeAccounts = (state: State, accounts: ImmutableList<APIEntities>) =
   return state;
 };
 
-const updateFollowCounters = (state: State, counterUpdates: APIEntities) => {
-  return state.withMutations(state => {
+const updateFollowCounters = (state: State, counterUpdates: APIEntities) =>
+  state.withMutations(state => {
     counterUpdates.forEach((counterUpdate) => {
       state.update(counterUpdate.id, CounterRecord(), counters => counters.merge({
         followers_count: counterUpdate.follower_count,
@@ -43,7 +43,6 @@ const updateFollowCounters = (state: State, counterUpdates: APIEntities) => {
       }));
     });
   });
-};
 
 export default function accountsCounters(state: State = ImmutableMap<string, Counter>(), action: AnyAction) {
   switch (action.type) {

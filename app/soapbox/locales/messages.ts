@@ -2,19 +2,17 @@ type MessageJson   = Record<string, string>;
 type MessageModule = { default: MessageJson };
 
 /** Import custom messages */
-const importCustom = (locale: string): Promise<MessageModule> => {
-  return import(/* webpackChunkName: "locale_[request]" */`custom/locales/${locale}.json`)
+const importCustom = (locale: string): Promise<MessageModule> =>
+  import(/* webpackChunkName: "locale_[request]" */`custom/locales/${locale}.json`)
     .catch(() => ({ default: {} }));
-};
 
 /** Import git-checked messages */
-const importMessages = (locale: string): Promise<MessageModule> => {
-  return import(/* webpackChunkName: "locale_[request]" */`./${locale}.json`);
-};
+const importMessages = (locale: string): Promise<MessageModule> =>
+  import(/* webpackChunkName: "locale_[request]" */`./${locale}.json`);
 
 /** Override custom messages */
-const importMessagesWithCustom = (locale: string): Promise<MessageJson> => {
-  return Promise.all([
+const importMessagesWithCustom = (locale: string): Promise<MessageJson> =>
+  Promise.all([
     importMessages(locale),
     importCustom(locale),
   ]).then(messages => {
@@ -24,7 +22,6 @@ const importMessagesWithCustom = (locale: string): Promise<MessageJson> => {
     console.error(error);
     throw error;
   });
-};
 
 const locales: string[] = [
   'ar',

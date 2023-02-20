@@ -36,9 +36,8 @@ interface SizeData {
   width: number
 }
 
-const withinLimits = (aspectRatio: number) => {
-  return aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
-};
+const withinLimits = (aspectRatio: number) =>
+  aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
 
 const shouldLetterbox = (attachment: Attachment): boolean => {
   const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']) as number | undefined;
@@ -87,9 +86,7 @@ const Item: React.FC<IItem> = ({
     }
   };
 
-  const hoverToPlay = () => {
-    return !autoPlayGif && attachment.type === 'gifv';
-  };
+  const hoverToPlay = () => !autoPlayGif && attachment.type === 'gifv';
 
   // FIXME: wtf?
   const handleClick: React.MouseEventHandler = (e: any) => {

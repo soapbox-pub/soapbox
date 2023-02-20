@@ -52,11 +52,10 @@ const importStatus = (state: State, status: ContextStatus, idempotencyKey?: stri
 };
 
 /** Import multiple statuses into the state. */
-const importStatuses = (state: State, statuses: ContextStatus[]): State => {
-  return state.withMutations(state => {
+const importStatuses = (state: State, statuses: ContextStatus[]): State =>
+  state.withMutations(state => {
     statuses.forEach(status => importStatus(state, status));
   });
-};
 
 /** Insert a fake status ID connecting descendant to ancestor. */
 const insertTombstone = (state: State, ancestorId: string, descendantId: string): State => {
@@ -94,8 +93,8 @@ const connectNodes = (state: State, fromId: string, toId: string): State => {
 };
 
 /** Import a branch of ancestors or descendants, in relation to statusId. */
-const importBranch = (state: State, statuses: ContextStatus[], statusId?: string): State => {
-  return state.withMutations(state => {
+const importBranch = (state: State, statuses: ContextStatus[], statusId?: string): State =>
+  state.withMutations(state => {
     statuses.forEach((status, i) => {
       const prevId = statusId && i === 0 ? statusId : (statuses[i - 1] || {}).id;
 
@@ -114,7 +113,6 @@ const importBranch = (state: State, statuses: ContextStatus[], statusId?: string
       }
     });
   });
-};
 
 /** Import a status's ancestors and descendants. */
 const normalizeContext = (
@@ -132,8 +130,8 @@ const normalizeContext = (
 });
 
 /** Remove a status from the reducer. */
-const deleteStatus = (state: State, id: string): State => {
-  return state.withMutations(state => {
+const deleteStatus = (state: State, id: string): State =>
+  state.withMutations(state => {
     // Delete from its parent's tree
     const parentId = state.inReplyTos.get(id);
     if (parentId) {
@@ -149,14 +147,12 @@ const deleteStatus = (state: State, id: string): State => {
     state.deleteIn(['inReplyTos', id]);
     state.deleteIn(['replies', id]);
   });
-};
 
 /** Delete multiple statuses from the reducer. */
-const deleteStatuses = (state: State, ids: string[]): State => {
-  return state.withMutations(state => {
+const deleteStatuses = (state: State, ids: string[]): State =>
+  state.withMutations(state => {
     ids.forEach(id => deleteStatus(state, id));
   });
-};
 
 /** Delete statuses upon blocking or muting a user. */
 const filterContexts = (

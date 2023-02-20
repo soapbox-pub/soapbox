@@ -38,10 +38,8 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
     setData(remoteInstance.get('federation') as any);
   }, [remoteInstance]);
 
-  const handleDataChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
-    return ({ target }) => {
-      setData(data.set(key, target.checked));
-    };
+  const handleDataChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => ({ target }) => {
+    setData(data.set(key, target.checked));
   };
 
   const handleMediaRemoval: React.ChangeEventHandler<HTMLInputElement> = ({ target: { checked } }) => {

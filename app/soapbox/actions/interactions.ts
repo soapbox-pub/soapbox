@@ -67,12 +67,12 @@ const messages = defineMessages({
 });
 
 const reblog = (status: StatusEntity) =>
-  function(dispatch: AppDispatch, getState: () => RootState) {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     dispatch(reblogRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/reblog`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.get('id')}/reblog`).then((response) => {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
       // interested in how the original is modified, hence passing it skipping the wrapper
       dispatch(importFetchedStatus(response.data.reblog));
@@ -148,9 +148,9 @@ const favourite = (status: StatusEntity) =>
 
     dispatch(favouriteRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then((response) => {
       dispatch(favouriteSuccess(status));
-    }).catch(function(error) {
+    }).catch((error) => {
       dispatch(favouriteFail(status, error));
     });
   };
@@ -219,14 +219,14 @@ const bookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(bookmarkRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then((response) => {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
       toast.success(messages.bookmarkAdded, {
         actionLabel: messages.view,
         actionLink: '/bookmarks',
       });
-    }).catch(function(error) {
+    }).catch((error) => {
       dispatch(bookmarkFail(status, error));
     });
   };

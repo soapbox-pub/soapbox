@@ -7,6 +7,4 @@ export const makeEmojiMap = (emojis: any) => emojis.reduce((obj: any, emoji: any
 }, {});
 
 /** Normalize entity ID */
-export const normalizeId = (id: any): string | null => {
-  return typeof id === 'string' ? id : null;
-};
+export const normalizeId = (id: any): string | null => typeof id === 'string' ? id : null;

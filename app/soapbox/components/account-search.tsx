@@ -23,9 +23,7 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
 
   const [value, setValue] = useState('');
 
-  const isEmpty = (): boolean => {
-    return !(value.length > 0);
-  };
+  const isEmpty = (): boolean => !(value.length > 0);
 
   const clearState = () => {
     setValue('');

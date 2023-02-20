@@ -60,17 +60,14 @@ const IconPickerMenu: React.FC<IIconPickerMenu> = ({ customEmojis, onClose, onPi
     });
   };
 
-  const getI18n = () => {
-
-    return {
-      search: intl.formatMessage(messages.emoji_search),
-      notfound: intl.formatMessage(messages.emoji_not_found),
-      categories: {
-        search: intl.formatMessage(messages.search_results),
-        custom: intl.formatMessage(messages.custom),
-      },
-    };
-  };
+  const getI18n = () => ({
+    search: intl.formatMessage(messages.emoji_search),
+    notfound: intl.formatMessage(messages.emoji_not_found),
+    categories: {
+      search: intl.formatMessage(messages.search_results),
+      custom: intl.formatMessage(messages.custom),
+    },
+  });
 
   const handleClick = (emoji: Record<string, any>) => {
     emoji.native = emoji.colons;

@@ -85,9 +85,7 @@ const SoapboxConfig: React.FC = () => {
 
   const navigateToThemeEditor = () => history.push('/soapbox/admin/theme');
 
-  const soapbox = useMemo(() => {
-    return normalizeSoapboxConfig(data);
-  }, [data]);
+  const soapbox = useMemo(() => normalizeSoapboxConfig(data), [data]);
 
   const setConfig = (path: ConfigPath, value: any) => {
     const newData = data.setIn(path, value);
@@ -111,20 +109,18 @@ const SoapboxConfig: React.FC = () => {
     e.preventDefault();
   };
 
-  const handleChange = (path: ConfigPath, getValue: ValueGetter<any>): React.ChangeEventHandler => {
-    return e => {
+  const handleChange = (path: ConfigPath, getValue: ValueGetter<any>): React.ChangeEventHandler =>
+    e => {
       setConfig(path, getValue(e));
     };
-  };
 
-  const handleThemeChange = (path: ConfigPath): ThemeChangeHandler => {
-    return theme => {
+  const handleThemeChange = (path: ConfigPath): ThemeChangeHandler =>
+    theme => {
       setConfig(path, theme);
     };
-  };
 
-  const handleFileChange = (path: ConfigPath): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
+  const handleFileChange = (path: ConfigPath): React.ChangeEventHandler<HTMLInputElement> =>
+    e => {
       const data = new FormData();
       const file = e.target.files?.item(0);
 
@@ -136,27 +132,23 @@ const SoapboxConfig: React.FC = () => {
         }).catch(console.error);
       }
     };
-  };
 
-  const handleStreamItemChange = (path: ConfigPath) => {
-    return (values: any[]) => {
+  const handleStreamItemChange = (path: ConfigPath) =>
+    (values: any[]) => {
       setConfig(path, ImmutableList(values));
     };
-  };
 
-  const addStreamItem = (path: ConfigPath, template: Template) => {
-    return () => {
+  const addStreamItem = (path: ConfigPath, template: Template) =>
+    () => {
       const items = data.getIn(path) || ImmutableList();
       setConfig(path, items.push(template));
     };
-  };
 
-  const deleteStreamItem = (path: ConfigPath) => {
-    return (i: number) => {
+  const deleteStreamItem = (path: ConfigPath) =>
+    (i: number) => {
       const newData = data.deleteIn([...path, i]);
       setData(newData);
     };
-  };
 
   const handleEditJSON: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
     setRawJSON(e.target.value);

@@ -38,22 +38,20 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
   const LabelComp = onClick || onSelect ? 'span' : 'label';
   const linkProps = onClick || onSelect ? { onClick: onClick || onSelect, onKeyDown, tabIndex: 0, role: 'link' } : {};
 
-  const renderChildren = React.useCallback(() => {
-    return React.Children.map(children, (child) => {
-      if (React.isValidElement(child)) {
-        const isSelect = child.type === SelectDropdown || child.type === Select;
+  const renderChildren = React.useCallback(() => React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      const isSelect = child.type === SelectDropdown || child.type === Select;
 
-        return React.cloneElement(child, {
-          id: domId,
-          className: clsx({
-            'w-auto': isSelect,
-          }, child.props.className),
-        });
-      }
+      return React.cloneElement(child, {
+        id: domId,
+        className: clsx({
+          'w-auto': isSelect,
+        }, child.props.className),
+      });
+    }
 
-      return null;
-    });
-  }, [children, domId]);
+    return null;
+  }), [children, domId]);
 
   return (
     <Comp

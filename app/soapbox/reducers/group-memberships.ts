@@ -33,19 +33,17 @@ export type GroupRole = 'admin' | 'moderator' | 'user';
 export type List = ReturnType<typeof ListRecord>;
 type State = ReturnType<typeof ReducerRecord>;
 
-const normalizeList = (state: State, path: string[], memberships: APIEntity[], next: string | null) => {
-  return state.setIn(path, ListRecord({
+const normalizeList = (state: State, path: string[], memberships: APIEntity[], next: string | null) =>
+  state.setIn(path, ListRecord({
     next,
     items: ImmutableOrderedSet(memberships.map(item => item.account.id)),
     isLoading: false,
   }));
-};
 
-const appendToList = (state: State, path: string[], memberships: APIEntity[], next: string | null) => {
-  return state.updateIn(path, map => {
-    return (map as List).set('next', next).set('isLoading', false).update('items', list => list.concat(memberships.map(item => item.account.id)));
-  });
-};
+const appendToList = (state: State, path: string[], memberships: APIEntity[], next: string | null) =>
+  state.updateIn(path, map =>
+    (map as List).set('next', next).set('isLoading', false).update('items', list => list.concat(memberships.map(item => item.account.id))),
+  );
 
 const updateLists = (state: State, groupId: string, memberships: APIEntity[]) => {
   const updateList = (state: State, role: string, membership: APIEntity) => {
@@ -65,11 +63,10 @@ const updateLists = (state: State, groupId: string, memberships: APIEntity[]) =>
   return state;
 };
 
-const removeFromList = (state: State, path: string[], accountId: string) => {
-  return state.updateIn(path, map => {
-    return (map as List).update('items', set => set.delete(accountId));
-  });
-};
+const removeFromList = (state: State, path: string[], accountId: string) =>
+  state.updateIn(path, map =>
+    (map as List).update('items', set => set.delete(accountId)),
+  );
 
 export default function groupMemberships(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {

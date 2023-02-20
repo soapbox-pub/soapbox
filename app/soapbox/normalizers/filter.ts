@@ -17,8 +17,7 @@ export const FilterRecord = ImmutableRecord({
   irreversible: false,
 });
 
-export const normalizeFilter = (filter: Record<string, any>) => {
-  return FilterRecord(
+export const normalizeFilter = (filter: Record<string, any>) =>
+  FilterRecord(
     ImmutableMap(fromJS(filter)),
   );
-};

@@ -81,9 +81,9 @@ export const FieldRecord = ImmutableRecord({
 });
 
 // https://gitlab.com/soapbox-pub/soapbox/-/issues/549
-const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
-  return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
-    return pleroma.withMutations(pleroma => {
+const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) =>
+  account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) =>
+    pleroma.withMutations(pleroma => {
       const legacy = ImmutableMap({
         is_active: !pleroma.get('deactivated'),
         is_confirmed: !pleroma.get('confirmation_pending'),
@@ -92,9 +92,8 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
 
       pleroma.mergeWith(mergeDefined, legacy);
       pleroma.deleteAll(['deactivated', 'confirmation_pending', 'approval_pending']);
-    });
-  });
-};
+    }),
+  );
 
 /** Add avatar, if missing */
 const normalizeAvatar = (account: ImmutableMap<string, any>) => {
@@ -121,9 +120,8 @@ const normalizeHeader = (account: ImmutableMap<string, any>) => {
 };
 
 /** Normalize custom fields */
-const normalizeFields = (account: ImmutableMap<string, any>) => {
-  return account.update('fields', ImmutableList(), fields => fields.map(FieldRecord));
-};
+const normalizeFields = (account: ImmutableMap<string, any>) =>
+  account.update('fields', ImmutableList(), fields => fields.map(FieldRecord));
 
 /** Normalize emojis */
 const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
@@ -148,14 +146,13 @@ const getTags = (account: ImmutableMap<string, any>): ImmutableList<any> => {
 };
 
 /** Normalize Truth Social/Pleroma verified */
-const normalizeVerified = (account: ImmutableMap<string, any>) => {
-  return account.update('verified', verified => {
-    return [
+const normalizeVerified = (account: ImmutableMap<string, any>) =>
+  account.update('verified', verified =>
+    [
       verified === true,
       getTags(account).includes('verified'),
-    ].some(Boolean);
-  });
-};
+    ].some(Boolean),
+  );
 
 /** Upgrade legacy donor tag to a badge. */
 const normalizeDonor = (account: ImmutableMap<string, any>) => {
@@ -165,15 +162,12 @@ const normalizeDonor = (account: ImmutableMap<string, any>) => {
 };
 
 /** Normalize Fedibird/Truth Social/Pleroma location */
-const normalizeLocation = (account: ImmutableMap<string, any>) => {
-  return account.update('location', location => {
-    return [
-      location,
-      account.getIn(['pleroma', 'location']),
-      account.getIn(['other_settings', 'location']),
-    ].find(Boolean);
-  });
-};
+const normalizeLocation = (account: ImmutableMap<string, any>) =>
+  account.update('location', location => [
+    location,
+    account.getIn(['pleroma', 'location']),
+    account.getIn(['other_settings', 'location']),
+  ].find(Boolean));
 
 /** Set username from acct, if applicable */
 const fixUsername = (account: ImmutableMap<string, any>) => {
@@ -201,15 +195,15 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
     });
 
     // Emojify fields
-    account.update('fields', ImmutableList(), fields => {
-      return fields.map((field: ImmutableMap<string, any>) => {
-        return field.merge({
+    account.update('fields', ImmutableList(), fields =>
+      fields.map((field: ImmutableMap<string, any>) =>
+        field.merge({
           name_emojified: emojify(escapeTextContentForBrowser(field.get('name')), emojiMap),
           value_emojified: emojify(field.get('value'), emojiMap),
           value_plain: unescapeHTML(field.get('value')),
-        });
-      });
-    });
+        }),
+      ),
+    );
   });
 };
 
@@ -286,8 +280,8 @@ const fixNote = (account: ImmutableMap<string, any>) => {
   }
 };
 
-export const normalizeAccount = (account: Record<string, any>) => {
-  return AccountRecord(
+export const normalizeAccount = (account: Record<string, any>) =>
+  AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
       normalizePleromaLegacyFields(account);
       normalizeEmojis(account);
@@ -311,4 +305,3 @@ export const normalizeAccount = (account: Record<string, any>) => {
       addInternalFields(account);
     }),
   );
-};

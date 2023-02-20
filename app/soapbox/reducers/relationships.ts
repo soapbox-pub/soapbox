@@ -47,13 +47,12 @@ const normalizeRelationships = (state: State, relationships: APIEntities) => {
   return state;
 };
 
-const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocking: boolean) => {
-  return state.withMutations(map => {
+const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocking: boolean) =>
+  state.withMutations(map => {
     accounts.forEach(id => {
       map.setIn([id, 'domain_blocking'], blocking);
     });
   });
-};
 
 const importPleromaAccount = (state: State, account: APIEntity) => {
   const relationship = get(account, ['pleroma', 'relationship'], {});

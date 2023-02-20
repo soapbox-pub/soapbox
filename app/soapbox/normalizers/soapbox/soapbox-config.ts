@@ -129,11 +129,10 @@ const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   return soapboxConfig.set('ads', ads.map(normalizeAd));
 };
 
-const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
-  return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
-    return trimStart(ticker, '$').toLowerCase();
-  });
-};
+const normalizeCryptoAddress = (address: unknown): CryptoAddress =>
+  CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker =>
+    trimStart(ticker, '$').toLowerCase(),
+  );
 
 const normalizeCryptoAddresses = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   const addresses = ImmutableList(soapboxConfig.get('cryptoAddresses'));
@@ -236,8 +235,8 @@ const normalizeRedirectRootNoLogin = (soapboxConfig: SoapboxConfigMap): SoapboxC
   }
 };
 
-export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
-  return SoapboxConfigRecord(
+export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) =>
+  SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
       normalizeBrandColor(soapboxConfig);
       normalizeAccentColor(soapboxConfig);
@@ -252,4 +251,3 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeRedirectRootNoLogin(soapboxConfig);
     }),
   );
-};

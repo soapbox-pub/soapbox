@@ -24,12 +24,10 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
 
   const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    return () => {
-      if (timeout.current) {
-        clearTimeout(timeout.current);
-      }
-    };
+  useEffect(() => () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
   }, []);
 
   if (!status) return null;

@@ -142,10 +142,8 @@ const accountToCredentials = (account: Account): AccountCredentials => {
 const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, onChange }) => {
   const intl = useIntl();
 
-  const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      onChange({ ...value, [key]: e.currentTarget.value });
-    };
+  const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => e => {
+    onChange({ ...value, [key]: e.currentTarget.value });
   };
 
   return (
@@ -193,9 +191,10 @@ const EditProfile: React.FC = () => {
 
   /** Set a single key in the request data. */
   const updateData = (key: string, value: any) => {
-    setData(prevData => {
-      return { ...prevData, [key]: value };
-    });
+    setData(prevData => ({
+      ...prevData,
+      [key]: value,
+    }));
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {
@@ -227,16 +226,12 @@ const EditProfile: React.FC = () => {
     event.preventDefault();
   };
 
-  const handleCheckboxChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      updateData(key, e.target.checked);
-    };
+  const handleCheckboxChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement> => e => {
+    updateData(key, e.target.checked);
   };
 
-  const handleTextChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> => {
-    return e => {
-      updateData(key, e.target.value);
-    };
+  const handleTextChange = (key: keyof AccountCredentials): React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> => e => {
+    updateData(key, e.target.value);
   };
 
   const handleBirthdayChange = (date: string) => {
@@ -245,29 +240,25 @@ const EditProfile: React.FC = () => {
 
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
-    setData(prevData => {
-      return {
-        ...prevData,
-        hide_followers: hide,
-        hide_follows: hide,
-        hide_followers_count: hide,
-        hide_follows_count: hide,
-      };
-    });
+    setData(prevData => ({
+      ...prevData,
+      hide_followers: hide,
+      hide_follows: hide,
+      hide_followers_count: hide,
+      hide_follows_count: hide,
+    }));
   };
 
   const handleFileChange = (
     name: keyof AccountCredentials,
     maxPixels: number,
-  ): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      const f = e.target.files?.item(0);
-      if (!f) return;
+  ): React.ChangeEventHandler<HTMLInputElement> => e => {
+    const f = e.target.files?.item(0);
+    if (!f) return;
 
-      resizeImage(f, maxPixels).then(file => {
-        updateData(name, file);
-      }).catch(console.error);
-    };
+    resizeImage(f, maxPixels).then(file => {
+      updateData(name, file);
+    }).catch(console.error);
   };
 
   const handleFieldsChange = (fields: AccountCredentialsField[]) => {
@@ -288,24 +279,26 @@ const EditProfile: React.FC = () => {
   };
 
   /** Memoized avatar preview URL. */
-  const avatarUrl = useMemo(() => {
-    return data.avatar ? URL.createObjectURL(data.avatar) : account?.avatar;
-  }, [data.avatar, account?.avatar]);
+  const avatarUrl = useMemo(
+    () => data.avatar ? URL.createObjectURL(data.avatar) : account?.avatar,
+    [data.avatar, account?.avatar],
+  );
 
   /** Memoized header preview URL. */
-  const headerUrl = useMemo(() => {
-    return data.header ? URL.createObjectURL(data.header) : account?.header;
-  }, [data.header, account?.header]);
+  const headerUrl = useMemo(() =>
+    data.header ? URL.createObjectURL(data.header) : account?.header
+  , [data.header, account?.header]);
 
   /** Preview account data. */
-  const previewAccount = useMemo(() => {
-    return normalizeAccount({
+  const previewAccount = useMemo(
+    () => normalizeAccount({
       ...account?.toJS(),
       ...data,
       avatar: avatarUrl,
       header: headerUrl,
-    }) as Account;
-  }, [account?.id, data.display_name, avatarUrl, headerUrl]);
+    }) as Account,
+    [account?.id, data.display_name, avatarUrl, headerUrl],
+  );
 
   return (
     <Column label={intl.formatMessage(messages.header)}>

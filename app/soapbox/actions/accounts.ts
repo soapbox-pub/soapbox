@@ -135,9 +135,9 @@ const noOp = () => new Promise(f => f(undefined));
 const createAccount = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
-    return api(getState, 'app').post('/api/v1/accounts', params).then(({ data: token }) => {
-      return dispatch({ type: ACCOUNT_CREATE_SUCCESS, params, token });
-    }).catch(error => {
+    return api(getState, 'app').post('/api/v1/accounts', params).then(({ data: token }) =>
+      dispatch({ type: ACCOUNT_CREATE_SUCCESS, params, token }),
+    ).catch(error => {
       dispatch({ type: ACCOUNT_CREATE_FAIL, error, params });
       throw error;
     });
@@ -310,10 +310,10 @@ const blockAccount = (id: string) =>
 
     return api(getState)
       .post(`/api/v1/accounts/${id}/block`)
-      .then(response => {
+      .then(response =>
         // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-        return dispatch(blockAccountSuccess(response.data, getState().statuses));
-      }).catch(error => dispatch(blockAccountFail(error)));
+        dispatch(blockAccountSuccess(response.data, getState().statuses)),
+      ).catch(error => dispatch(blockAccountFail(error)));
   };
 
 const unblockAccount = (id: string) =>
@@ -383,10 +383,10 @@ const muteAccount = (id: string, notifications?: boolean, duration = 0) =>
 
     return api(getState)
       .post(`/api/v1/accounts/${id}/mute`, params)
-      .then(response => {
+      .then(response =>
         // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-        return dispatch(muteAccountSuccess(response.data, getState().statuses));
-      })
+        dispatch(muteAccountSuccess(response.data, getState().statuses)),
+      )
       .catch(error => dispatch(muteAccountFail(error)));
   };
 

@@ -36,9 +36,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
     }
   };
 
-  const hoverToPlay = () => {
-    return !autoPlayGif && ['gifv', 'video'].includes(attachment.type);
-  };
+  const hoverToPlay = () => !autoPlayGif && ['gifv', 'video'].includes(attachment.type);
 
   const handleClick: React.MouseEventHandler = e => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {

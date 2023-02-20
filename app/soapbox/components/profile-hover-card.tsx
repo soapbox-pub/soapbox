@@ -41,17 +41,15 @@ const getBadges = (account: Account): JSX.Element[] => {
   return badges;
 };
 
-const handleMouseEnter = (dispatch: AppDispatch): React.MouseEventHandler => {
-  return () => {
+const handleMouseEnter = (dispatch: AppDispatch): React.MouseEventHandler =>
+  () => {
     dispatch(updateProfileHoverCard());
   };
-};
 
-const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
-  return () => {
+const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler =>
+  () => {
     dispatch(closeProfileHoverCard(true));
   };
-};
 
 interface IProfileHoverCard {
   visible: boolean

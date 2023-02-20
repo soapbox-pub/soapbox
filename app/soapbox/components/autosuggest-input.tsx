@@ -43,9 +43,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     searchTokens: ImmutableList(['@', ':', '#']),
   };
 
-  getFirstIndex = () => {
-    return this.props.autoSelect ? 0 : -1;
-  };
+  getFirstIndex = () => this.props.autoSelect ? 0 : -1;
 
   state = {
     suggestionsHidden: true,
@@ -217,11 +215,9 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     }
   };
 
-  handleMenuItemClick = (item: MenuItem | null): React.MouseEventHandler => {
-    return e => {
-      e.preventDefault();
-      this.handleMenuItemAction(item, e);
-    };
+  handleMenuItemClick = (item: MenuItem | null): React.MouseEventHandler => e => {
+    e.preventDefault();
+    this.handleMenuItemAction(item, e);
   };
 
   renderMenu = () => {

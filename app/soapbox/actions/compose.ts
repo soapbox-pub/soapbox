@@ -292,12 +292,12 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       group_id: compose.privacy === 'group' ? compose.group_id : null,
     };
 
-    dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
+    dispatch(createStatus(params, idempotencyKey, statusId)).then((data) => {
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, composeId, data, status, !!statusId);
-    }).catch(function(error) {
+    }).catch((error) => {
       dispatch(submitComposeFail(composeId, error));
     });
   };

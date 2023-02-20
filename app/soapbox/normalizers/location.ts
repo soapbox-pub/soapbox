@@ -28,8 +28,7 @@ const normalizeGeographicLocation = (location: ImmutableMap<string, any>) => {
   return location;
 };
 
-export const normalizeLocation = (location: Record<string, any>) => {
-  return LocationRecord(ImmutableMap(fromJS(location)).withMutations((location: ImmutableMap<string, any>) => {
+export const normalizeLocation = (location: Record<string, any>) =>
+  LocationRecord(ImmutableMap(fromJS(location)).withMutations((location: ImmutableMap<string, any>) => {
     normalizeGeographicLocation(location);
   }));
-};

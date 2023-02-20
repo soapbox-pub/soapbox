@@ -40,9 +40,7 @@ const DEFAULT_HEADERS = [
 ];
 
 /** Check if the avatar is a default avatar */
-export const isDefaultHeader = (url: string) => {
-  return DEFAULT_HEADERS.some(header => url.endsWith(header));
-};
+export const isDefaultHeader = (url: string) => DEFAULT_HEADERS.some(header => url.endsWith(header));
 
 /** Default avatar filenames from various backends */
 const DEFAULT_AVATARS = [
@@ -51,6 +49,4 @@ const DEFAULT_AVATARS = [
 ];
 
 /** Check if the avatar is a default avatar */
-export const isDefaultAvatar = (url: string) => {
-  return DEFAULT_AVATARS.some(avatar => url.endsWith(avatar));
-};
+export const isDefaultAvatar = (url: string) => DEFAULT_AVATARS.some(avatar => url.endsWith(avatar));

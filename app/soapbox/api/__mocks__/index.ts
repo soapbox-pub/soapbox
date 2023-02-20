@@ -17,9 +17,8 @@ const setupMock = (axios: AxiosInstance) => {
 
 export const staticClient = api.staticClient;
 
-export const getLinks = (response: AxiosResponse): LinkHeader => {
-  return new LinkHeader(response.headers?.link);
-};
+export const getLinks = (response: AxiosResponse): LinkHeader =>
+  new LinkHeader(response.headers?.link);
 
 export const getNextLink = (response: AxiosResponse) => {
   const nextLink = new LinkHeader(response.headers?.link);

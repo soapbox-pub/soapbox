@@ -28,9 +28,7 @@ const getTagDiff = (oldTags: string[], newTags: string[]): TagDiff => {
 };
 
 /** Returns only tags which are badges. */
-const filterBadges = (tags: string[]): string[] => {
-  return tags.filter(tag => tag.startsWith('badge:'));
-};
+const filterBadges = (tags: string[]): string[] => tags.filter(tag => tag.startsWith('badge:'));
 
 /** Get badges from an account. */
 const getBadges = (account: Account) => {

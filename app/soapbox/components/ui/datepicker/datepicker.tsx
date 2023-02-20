@@ -22,9 +22,7 @@ const Datepicker = ({ onChange }: IDatepicker) => {
   const [day, setDay] = useState<number>(new Date().getDate());
   const [year, setYear] = useState<number>(new Date().getFullYear());
 
-  const numberOfDays = useMemo(() => {
-    return getDaysInMonth(month, year);
-  }, [month, year]);
+  const numberOfDays = useMemo(() => getDaysInMonth(month, year), [month, year]);
 
   useEffect(() => {
     onChange(new Date(year, month, day));

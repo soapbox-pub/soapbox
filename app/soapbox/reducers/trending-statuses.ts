@@ -18,12 +18,11 @@ type APIEntities = Array<APIEntity>;
 
 const toIds = (items: APIEntities) => ImmutableOrderedSet(items.map(item => item.id));
 
-const importStatuses = (state: State, statuses: APIEntities) => {
-  return state.withMutations(state => {
+const importStatuses = (state: State, statuses: APIEntities) =>
+  state.withMutations(state => {
     state.set('items', toIds(statuses));
     state.set('isLoading', false);
   });
-};
 
 export default function trending_statuses(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {

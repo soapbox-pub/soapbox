@@ -12,22 +12,20 @@ interface IAdminPage {
   children: React.ReactNode
 }
 
-const AdminPage: React.FC<IAdminPage> = ({ children }) => {
-  return (
-    <>
-      <Layout.Main>
-        {children}
-      </Layout.Main>
+const AdminPage: React.FC<IAdminPage> = ({ children }) => (
+  <>
+    <Layout.Main>
+      {children}
+    </Layout.Main>
 
-      <Layout.Aside>
-        <BundleContainer fetchComponent={LatestAccountsPanel}>
-          {Component => <Component limit={5} />}
-        </BundleContainer>
+    <Layout.Aside>
+      <BundleContainer fetchComponent={LatestAccountsPanel}>
+        {Component => <Component limit={5} />}
+      </BundleContainer>
 
-        <LinkFooter />
-      </Layout.Aside>
-    </>
-  );
-};
+      <LinkFooter />
+    </Layout.Aside>
+  </>
+);
 
 export default AdminPage;

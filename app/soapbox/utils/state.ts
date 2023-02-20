@@ -11,14 +11,12 @@ import { isURL } from 'soapbox/utils/auth';
 import type { RootState } from 'soapbox/store';
 
 /** Whether to display the fqn instead of the acct. */
-export const displayFqn = (state: RootState): boolean => {
-  return getSoapboxConfig(state).displayFqn;
-};
+export const displayFqn = (state: RootState): boolean =>
+  getSoapboxConfig(state).displayFqn;
 
 /** Whether the instance exposes instance blocks through the API. */
-export const federationRestrictionsDisclosed = (state: RootState): boolean => {
-  return state.instance.pleroma.hasIn(['metadata', 'federation', 'mrf_policies']);
-};
+export const federationRestrictionsDisclosed = (state: RootState): boolean =>
+  state.instance.pleroma.hasIn(['metadata', 'federation', 'mrf_policies']);
 
 /**
  * Determine whether Soapbox is running in standalone mode.

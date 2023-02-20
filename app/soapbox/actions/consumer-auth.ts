@@ -9,8 +9,8 @@ import { createApp } from './apps';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-const createProviderApp = () => {
-  return async(dispatch: AppDispatch, getState: () => RootState) => {
+const createProviderApp = () =>
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     const scopes = getScopes(getState());
 
     const params = {
@@ -22,10 +22,9 @@ const createProviderApp = () => {
 
     return dispatch(createApp(params));
   };
-};
 
-export const prepareRequest = (provider: string) => {
-  return async(dispatch: AppDispatch, getState: () => RootState) => {
+const prepareRequest = (provider: string) =>
+  async(dispatch: AppDispatch, getState: () => RootState) => {
     const baseURL = isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : '';
 
     const scopes = getScopes(getState());
@@ -50,4 +49,5 @@ export const prepareRequest = (provider: string) => {
 
     location.href = `${baseURL}/oauth/prepare_request?${query.toString()}`;
   };
-};
+
+export { prepareRequest };

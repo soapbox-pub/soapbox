@@ -5,10 +5,9 @@ import { Motion, MotionProps } from 'react-motion';
 
 const stylesToKeep = ['opacity', 'backgroundOpacity'];
 
-const extractValue = (value: any) => {
+const extractValue = (value: any) =>
   // This is either an object with a "val" property or it's a number
-  return (typeof value === 'object' && value && 'val' in value) ? value.val : value;
-};
+  (typeof value === 'object' && value && 'val' in value) ? value.val : value;
 
 const ReducedMotion: React.FC<MotionProps> = ({ style = {}, defaultStyle = {}, children }) => {
 

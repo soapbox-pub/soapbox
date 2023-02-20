@@ -31,44 +31,37 @@ const submitAccountNote = () => (dispatch: React.Dispatch<AnyAction>, getState: 
     .catch(error => dispatch(submitAccountNoteFail(error)));
 };
 
-function submitAccountNoteRequest() {
-  return {
-    type: ACCOUNT_NOTE_SUBMIT_REQUEST,
+const submitAccountNoteRequest = () => ({
+  type: ACCOUNT_NOTE_SUBMIT_REQUEST,
+});
+
+const submitAccountNoteSuccess = (relationship: any) => ({
+  type: ACCOUNT_NOTE_SUBMIT_SUCCESS,
+  relationship,
+});
+
+const submitAccountNoteFail = (error: AxiosError) => ({
+  type: ACCOUNT_NOTE_SUBMIT_FAIL,
+  error,
+});
+
+const initAccountNoteModal = (account: Account) =>
+  (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
+    const comment = getState().relationships.get(account.id)!.note;
+
+    dispatch({
+      type: ACCOUNT_NOTE_INIT_MODAL,
+      account,
+      comment,
+    });
+
+    dispatch(openModal('ACCOUNT_NOTE'));
   };
-}
 
-function submitAccountNoteSuccess(relationship: any) {
-  return {
-    type: ACCOUNT_NOTE_SUBMIT_SUCCESS,
-    relationship,
-  };
-}
-
-function submitAccountNoteFail(error: AxiosError) {
-  return {
-    type: ACCOUNT_NOTE_SUBMIT_FAIL,
-    error,
-  };
-}
-
-const initAccountNoteModal = (account: Account) => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
-  const comment = getState().relationships.get(account.id)!.note;
-
-  dispatch({
-    type: ACCOUNT_NOTE_INIT_MODAL,
-    account,
-    comment,
-  });
-
-  dispatch(openModal('ACCOUNT_NOTE'));
-};
-
-function changeAccountNoteComment(comment: string) {
-  return {
-    type: ACCOUNT_NOTE_CHANGE_COMMENT,
-    comment,
-  };
-}
+const changeAccountNoteComment = (comment: string) => ({
+  type: ACCOUNT_NOTE_CHANGE_COMMENT,
+  comment,
+});
 
 export {
   submitAccountNote,

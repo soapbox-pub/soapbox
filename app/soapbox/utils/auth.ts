@@ -27,9 +27,7 @@ export const getLoggedInAccount = (state: RootState) => {
   return state.accounts.get(me);
 };
 
-export const isLoggedIn = (getState: () => RootState) => {
-  return validId(getState().me);
-};
+export const isLoggedIn = (getState: () => RootState) => validId(getState().me);
 
 export const getAppToken = (state: RootState) => state.auth.app.access_token as string;
 

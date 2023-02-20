@@ -6,16 +6,14 @@ interface IEmptyPage {
   children: React.ReactNode
 }
 
-const EmptyPage: React.FC<IEmptyPage> = ({ children }) => {
-  return (
-    <>
-      <Layout.Main>
-        {children}
-      </Layout.Main>
+const EmptyPage: React.FC<IEmptyPage> = ({ children }) => (
+  <>
+    <Layout.Main>
+      {children}
+    </Layout.Main>
 
-      <Layout.Aside />
-    </>
-  );
-};
+    <Layout.Aside />
+  </>
+);
 
 export default EmptyPage;

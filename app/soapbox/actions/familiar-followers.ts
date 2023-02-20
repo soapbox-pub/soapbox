@@ -6,9 +6,9 @@ import { ACCOUNTS_IMPORT, importFetchedAccounts } from './importer';
 
 import type { APIEntity } from 'soapbox/types/entities';
 
-export const FAMILIAR_FOLLOWERS_FETCH_REQUEST = 'FAMILIAR_FOLLOWERS_FETCH_REQUEST';
-export const FAMILIAR_FOLLOWERS_FETCH_SUCCESS = 'FAMILIAR_FOLLOWERS_FETCH_SUCCESS';
-export const FAMILIAR_FOLLOWERS_FETCH_FAIL    = 'FAMILIAR_FOLLOWERS_FETCH_FAIL';
+const FAMILIAR_FOLLOWERS_FETCH_REQUEST = 'FAMILIAR_FOLLOWERS_FETCH_REQUEST';
+const FAMILIAR_FOLLOWERS_FETCH_SUCCESS = 'FAMILIAR_FOLLOWERS_FETCH_SUCCESS';
+const FAMILIAR_FOLLOWERS_FETCH_FAIL    = 'FAMILIAR_FOLLOWERS_FETCH_FAIL';
 
 type FamiliarFollowersFetchRequestAction = {
   type: typeof FAMILIAR_FOLLOWERS_FETCH_REQUEST
@@ -34,7 +34,7 @@ type AccountsImportAction = {
 
 export type FamiliarFollowersActions = FamiliarFollowersFetchRequestAction | FamiliarFollowersFetchRequestSuccessAction | FamiliarFollowersFetchRequestFailAction | AccountsImportAction
 
-export const fetchAccountFamiliarFollowers = (accountId: string) => (dispatch: React.Dispatch<FamiliarFollowersActions>, getState: () => RootState) => {
+const fetchAccountFamiliarFollowers = (accountId: string) => (dispatch: React.Dispatch<FamiliarFollowersActions>, getState: () => RootState) => {
   dispatch({
     type: FAMILIAR_FOLLOWERS_FETCH_REQUEST,
     id: accountId,
@@ -56,4 +56,11 @@ export const fetchAccountFamiliarFollowers = (accountId: string) => (dispatch: R
       id: accountId,
       error,
     }));
+};
+
+export {
+  FAMILIAR_FOLLOWERS_FETCH_REQUEST,
+  FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
+  FAMILIAR_FOLLOWERS_FETCH_FAIL,
+  fetchAccountFamiliarFollowers,
 };

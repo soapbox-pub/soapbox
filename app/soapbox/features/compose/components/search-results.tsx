@@ -85,9 +85,7 @@ const SearchResults = () => {
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
 
-  const getCurrentIndex = (id: string): number => {
-    return resultsIds?.keySeq().findIndex(key => key === id);
-  };
+  const getCurrentIndex = (id: string): number => resultsIds?.keySeq().findIndex(key => key === id);
 
   const handleMoveUp = (id: string) => {
     if (!resultsIds) return;

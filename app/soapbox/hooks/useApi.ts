@@ -6,7 +6,5 @@ import { useAppDispatch } from './useAppDispatch';
 export const useApi = () => {
   const dispatch = useAppDispatch();
 
-  return dispatch((_dispatch, getState) => {
-    return api(getState);
-  });
+  return dispatch((_dispatch, getState) => api(getState));
 };

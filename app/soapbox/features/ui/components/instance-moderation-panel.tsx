@@ -33,13 +33,11 @@ const InstanceModerationPanel: React.FC<IInstanceModerationPanel> = ({ host }) =
     dispatch(openModal('EDIT_FEDERATION', { host }));
   };
 
-  const makeMenu = () => {
-    return [{
-      text: intl.formatMessage(messages.editFederation),
-      action: handleEditFederation,
-      icon: require('@tabler/icons/edit.svg'),
-    }];
-  };
+  const makeMenu = () => [{
+    text: intl.formatMessage(messages.editFederation),
+    action: handleEditFederation,
+    icon: require('@tabler/icons/edit.svg'),
+  }];
 
   const menu = makeMenu();
 

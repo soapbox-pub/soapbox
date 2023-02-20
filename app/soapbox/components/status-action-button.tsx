@@ -16,13 +16,11 @@ interface IStatusActionCounter {
 }
 
 /** Action button numerical counter, eg "5" likes. */
-const StatusActionCounter: React.FC<IStatusActionCounter> = ({ count = 0 }): JSX.Element => {
-  return (
-    <Text size='xs' weight='semibold' theme='inherit'>
-      {shortNumberFormat(count)}
-    </Text>
-  );
-};
+const StatusActionCounter: React.FC<IStatusActionCounter> = ({ count = 0 }): JSX.Element => (
+  <Text size='xs' weight='semibold' theme='inherit'>
+    {shortNumberFormat(count)}
+  </Text>
+);
 
 interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconClassName?: string

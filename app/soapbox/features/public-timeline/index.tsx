@@ -30,9 +30,10 @@ const CommunityTimeline = () => {
   const explanationBoxExpanded = settings.get('explanationBox');
   const showExplanationBox = settings.get('showExplanationBox');
 
-  const explanationBoxMenu = () => {
-    return [{ text: intl.formatMessage(messages.dismiss), action: dismissExplanationBox }];
-  };
+  const explanationBoxMenu = () => [{
+    text: intl.formatMessage(messages.dismiss),
+    action: dismissExplanationBox,
+  }];
 
   const dismissExplanationBox = () => {
     dispatch(changeSetting(['showExplanationBox'], false));
@@ -46,9 +47,7 @@ const CommunityTimeline = () => {
     dispatch(expandPublicTimeline({ maxId, onlyMedia }));
   };
 
-  const handleRefresh = () => {
-    return dispatch(expandPublicTimeline({ onlyMedia } as any));
-  };
+  const handleRefresh = () => dispatch(expandPublicTimeline({ onlyMedia } as any));
 
   useEffect(() => {
     dispatch(expandPublicTimeline({ onlyMedia } as any));

@@ -53,14 +53,12 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     }));
   };
 
-  const getNormalizedReacts = () => {
-    return reduceEmoji(
-      ImmutableList(status.pleroma.get('emoji_reactions') as any),
-      status.favourites_count,
-      status.favourited,
-      allowedEmoji,
-    );
-  };
+  const getNormalizedReacts = () => reduceEmoji(
+    ImmutableList(status.pleroma.get('emoji_reactions') as any),
+    status.favourites_count,
+    status.favourited,
+    allowedEmoji,
+  );
 
   const handleOpenReblogsModal: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
@@ -148,15 +146,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       return (
         <InteractionCounter count={count} onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}>
           <HStack space={0.5} alignItems='center'>
-            {emojiReacts.take(3).map((e, i) => {
-              return (
-                <Emoji
-                  key={i}
-                  className='h-4.5 w-4.5 flex-none'
-                  emoji={e.get('name')}
-                />
-              );
-            })}
+            {emojiReacts.take(3).map((e, i) => (
+              <Emoji
+                key={i}
+                className='h-4.5 w-4.5 flex-none'
+                emoji={e.get('name')}
+              />
+            ))}
           </HStack>
         </InteractionCounter>
       );

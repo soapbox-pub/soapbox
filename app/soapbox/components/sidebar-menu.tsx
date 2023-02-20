@@ -102,11 +102,9 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     onClose();
   };
 
-  const handleSwitchAccount = (account: AccountEntity): React.MouseEventHandler => {
-    return (e) => {
-      e.preventDefault();
-      dispatch(switchAccount(account.id));
-    };
+  const handleSwitchAccount = (account: AccountEntity): React.MouseEventHandler => (e) => {
+    e.preventDefault();
+    dispatch(switchAccount(account.id));
   };
 
   const onClickLogOut: React.MouseEventHandler = (e) => {

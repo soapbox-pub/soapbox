@@ -9,7 +9,5 @@ export const shouldFilter = (status: StatusEntity, columnSettings: any) => {
     direct: status.visibility === 'direct',
   });
 
-  return shows.some((value, key) => {
-    return columnSettings.getIn(['shows', key]) === false && value;
-  });
+  return shows.some((value, key) => columnSettings.getIn(['shows', key]) === false && value);
 };

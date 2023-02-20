@@ -12,9 +12,9 @@ type SoapboxColors = ImmutableMap<string, any>;
 const isHex = (value: any): boolean => /^#([0-9A-F]{3}){1,2}$/i.test(value);
 
 /** Expand hex colors into tints */
-export const expandPalette = (palette: TailwindColorPalette): TailwindColorPalette => {
+export const expandPalette = (palette: TailwindColorPalette): TailwindColorPalette =>
   // Generate palette only for present colors
-  return Object.entries(palette).reduce((result: TailwindColorPalette, colorData) => {
+  Object.entries(palette).reduce((result: TailwindColorPalette, colorData) => {
     const [colorName, color] = colorData;
 
     // Conditionally handle hex color and Tailwind color object
@@ -26,12 +26,10 @@ export const expandPalette = (palette: TailwindColorPalette): TailwindColorPalet
 
     return result;
   }, {});
-};
 
 // Generate accent color only if brandColor is present
-const maybeGenerateAccentColor = (brandColor: any): string | null => {
-  return isHex(brandColor) ? generateAccent(brandColor) : null;
-};
+const maybeGenerateAccentColor = (brandColor: any): string | null =>
+  isHex(brandColor) ? generateAccent(brandColor) : null;
 
 /** Build a color object from legacy colors */
 export const fromLegacyColors = (soapboxConfig: SoapboxConfig): TailwindColorPalette => {

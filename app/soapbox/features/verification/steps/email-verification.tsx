@@ -80,32 +80,30 @@ const EmailVerification = () => {
     submitEmailForVerification();
   }, [email]);
 
-  const submitEmailForVerification = () => {
-    return dispatch(requestEmailVerification((email)))
-      .then(() => {
-        setStatus(Statuses.REQUESTED);
+  const submitEmailForVerification = () => dispatch(requestEmailVerification((email)))
+    .then(() => {
+      setStatus(Statuses.REQUESTED);
 
-        toast.success(intl.formatMessage(messages.verificationSuccess));
-      })
-      .catch((error: AxiosError) => {
-        const errorMessage = (error.response?.data as any)?.error;
-        const isEmailTaken = errorMessage === 'email_taken';
-        let message = intl.formatMessage(messages.verificationFail);
+      toast.success(intl.formatMessage(messages.verificationSuccess));
+    })
+    .catch((error: AxiosError) => {
+      const errorMessage = (error.response?.data as any)?.error;
+      const isEmailTaken = errorMessage === 'email_taken';
+      let message = intl.formatMessage(messages.verificationFail);
 
-        if (isEmailTaken) {
-          message = intl.formatMessage(messages.verificationFailTakenAlert);
-        } else if (errorMessage) {
-          message = errorMessage;
-        }
+      if (isEmailTaken) {
+        message = intl.formatMessage(messages.verificationFailTakenAlert);
+      } else if (errorMessage) {
+        message = errorMessage;
+      }
 
-        if (isEmailTaken) {
-          setErrors([intl.formatMessage(messages.verificationFailTaken)]);
-        }
+      if (isEmailTaken) {
+        setErrors([intl.formatMessage(messages.verificationFailTaken)]);
+      }
 
-        toast.error(message);
-        setStatus(Statuses.FAIL);
-      });
-  };
+      toast.error(message);
+      setStatus(Statuses.FAIL);
+    });
 
   if (status === Statuses.REQUESTED) {
     return <EmailSent handleSubmit={handleSubmit} />;

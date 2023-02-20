@@ -48,12 +48,11 @@ const STATUS_TRANSLATE_SUCCESS = 'STATUS_TRANSLATE_SUCCESS';
 const STATUS_TRANSLATE_FAIL    = 'STATUS_TRANSLATE_FAIL';
 const STATUS_TRANSLATE_UNDO    = 'STATUS_TRANSLATE_UNDO';
 
-const statusExists = (getState: () => RootState, statusId: string) => {
-  return (getState().statuses.get(statusId) || null) !== null;
-};
+const statusExists = (getState: () => RootState, statusId: string) =>
+  (getState().statuses.get(statusId) || null) !== null;
 
-const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
+const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey, editing: !!statusId });
 
     return api(getState).request({
@@ -93,7 +92,6 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
       throw error;
     });
   };
-};
 
 const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   let status = getState().statuses.get(id)!;
@@ -114,8 +112,8 @@ const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootS
   });
 };
 
-const fetchStatus = (id: string) => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
+const fetchStatus = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const skipLoading = statusExists(getState, id);
 
     dispatch({ type: STATUS_FETCH_REQUEST, id, skipLoading });
@@ -128,10 +126,9 @@ const fetchStatus = (id: string) => {
       dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
     });
   };
-};
 
-const deleteStatus = (id: string, withRedraft = false) => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
+const deleteStatus = (id: string, withRedraft = false) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
     let status = getState().statuses.get(id)!;
@@ -157,7 +154,6 @@ const deleteStatus = (id: string, withRedraft = false) => {
         dispatch({ type: STATUS_DELETE_FAIL, params: status, error });
       });
   };
-};
 
 const updateStatus = (status: APIEntity) => (dispatch: AppDispatch) =>
   dispatch(importFetchedStatus(status));

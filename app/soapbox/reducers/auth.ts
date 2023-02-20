@@ -198,21 +198,19 @@ const persistState = (state: State) => {
   persistSession(state);
 };
 
-const initialize = (state: State) => {
-  return state.withMutations(state => {
+const initialize = (state: State) =>
+  state.withMutations(state => {
     maybeShiftMe(state);
     setSessionUser(state);
     migrateLegacy(state);
     sanitizeState(state);
     persistState(state);
   });
-};
 
 const initialState = initialize(ReducerRecord().merge(localState as any));
 
-const importToken = (state: State, token: APIEntity) => {
-  return state.setIn(['tokens', token.access_token], AuthTokenRecord(token));
-};
+const importToken = (state: State, token: APIEntity) =>
+  state.setIn(['tokens', token.access_token], AuthTokenRecord(token));
 
 // Upgrade the `_legacy` placeholder ID with a real account
 const upgradeLegacyId = (state: State, account: APIEntity) => {
@@ -238,18 +236,17 @@ const upgradeNonUrlId = (state: State, account: APIEntity) => {
 };
 
 // Returns a predicate function for filtering a mismatched user/token
-const userMismatch = (token: string, account: APIEntity) => {
-  return (user: AuthUser, url: string) => {
+const userMismatch = (token: string, account: APIEntity) =>
+  (user: AuthUser, url: string) => {
     const sameToken = user.get('access_token') === token;
     const differentUrl = url !== account.url || user.get('url') !== account.url;
     const differentId = user.get('id') !== account.id;
 
     return sameToken && (differentUrl || differentId);
   };
-};
 
-const importCredentials = (state: State, token: string, account: APIEntity) => {
-  return state.withMutations(state => {
+const importCredentials = (state: State, token: string, account: APIEntity) =>
+  state.withMutations(state => {
     state.setIn(['users', account.url], AuthUserRecord({
       id: account.id,
       access_token: token,
@@ -262,15 +259,13 @@ const importCredentials = (state: State, token: string, account: APIEntity) => {
     upgradeLegacyId(state, account);
     upgradeNonUrlId(state, account);
   });
-};
 
-const deleteToken = (state: State, token: string) => {
-  return state.withMutations(state => {
+const deleteToken = (state: State, token: string) =>
+  state.withMutations(state => {
     state.update('tokens', tokens => tokens.delete(token));
     state.update('users', users => users.filterNot(user => user.get('access_token') === token));
     maybeShiftMe(state);
   });
-};
 
 const deleteUser = (state: State, account: AccountEntity) => {
   const accountUrl = account.get('url');
@@ -282,8 +277,8 @@ const deleteUser = (state: State, account: AccountEntity) => {
   });
 };
 
-const importMastodonPreload = (state: State, data: ImmutableMap<string, any>) => {
-  return state.withMutations(state => {
+const importMastodonPreload = (state: State, data: ImmutableMap<string, any>) =>
+  state.withMutations(state => {
     const accountId   = data.getIn(['meta', 'me']) as string;
     const accountUrl  = data.getIn(['accounts', accountId, 'url']) as string;
     const accessToken = data.getIn(['meta', 'access_token']) as string;
@@ -306,7 +301,6 @@ const importMastodonPreload = (state: State, data: ImmutableMap<string, any>) =>
 
     maybeShiftMe(state);
   });
-};
 
 const persistAuthAccount = (account: APIEntity) => {
   if (account && account.url) {

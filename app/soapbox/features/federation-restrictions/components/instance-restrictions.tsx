@@ -9,29 +9,26 @@ import { useInstance } from 'soapbox/hooks';
 
 import type { Map as ImmutableMap } from 'immutable';
 
-const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean => {
-  return remoteInstance
+const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean =>
+  remoteInstance
     .get('federation')
     .deleteAll(['accept', 'reject_deletes', 'report_removal'])
     .reduce((acc: boolean, value: boolean) => acc || value, false);
-};
 
 interface IRestriction {
   icon: string
   children: React.ReactNode
 }
 
-const Restriction: React.FC<IRestriction> = ({ icon, children }) => {
-  return (
-    <HStack space={3}>
-      <Icon className='h-5 w-5 flex-none' src={icon} />
+const Restriction: React.FC<IRestriction> = ({ icon, children }) => (
+  <HStack space={3}>
+    <Icon className='h-5 w-5 flex-none' src={icon} />
 
-      <Text theme='muted'>
-        {children}
-      </Text>
-    </HStack>
-  );
-};
+    <Text theme='muted'>
+      {children}
+    </Text>
+  </HStack>
+);
 
 interface IInstanceRestrictions {
   remoteInstance: ImmutableMap<string, any>

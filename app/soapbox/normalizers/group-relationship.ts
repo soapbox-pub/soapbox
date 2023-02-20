@@ -15,8 +15,7 @@ export const GroupRelationshipRecord = ImmutableRecord({
   role: null as 'admin' | 'moderator' | 'user' | null,
 });
 
-export const normalizeGroupRelationship = (relationship: Record<string, any>) => {
-  return GroupRelationshipRecord(
+export const normalizeGroupRelationship = (relationship: Record<string, any>) =>
+  GroupRelationshipRecord(
     ImmutableMap(fromJS(relationship)),
   );
-};

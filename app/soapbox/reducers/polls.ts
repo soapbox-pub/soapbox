@@ -15,17 +15,16 @@ const normalizePoll = (poll: any): EmbeddedEntity<Poll> => {
   return normalizeStatus(status).poll;
 };
 
-const importPolls = (state: State, polls: Array<APIEntity>) => {
-  return state.withMutations(map => {
-    return polls.forEach(poll => {
+const importPolls = (state: State, polls: Array<APIEntity>) =>
+  state.withMutations(map =>
+    polls.forEach(poll => {
       const normalPoll = normalizePoll(poll);
 
       if (normalPoll && typeof normalPoll === 'object') {
         map.set(normalPoll.id, normalPoll);
       }
-    });
-  });
-};
+    }),
+  );
 
 const initialState: State = ImmutableMap();
 

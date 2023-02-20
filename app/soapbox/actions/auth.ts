@@ -31,24 +31,24 @@ import { importFetchedAccount } from './importer';
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
+const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
-export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
-export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
-export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
-export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
+const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
+const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
+const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
+const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 
-export const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
-export const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
-export const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
+const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
+const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
+const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
 
-export const AUTH_ACCOUNT_REMEMBER_REQUEST = 'AUTH_ACCOUNT_REMEMBER_REQUEST';
-export const AUTH_ACCOUNT_REMEMBER_SUCCESS = 'AUTH_ACCOUNT_REMEMBER_SUCCESS';
-export const AUTH_ACCOUNT_REMEMBER_FAIL    = 'AUTH_ACCOUNT_REMEMBER_FAIL';
+const AUTH_ACCOUNT_REMEMBER_REQUEST = 'AUTH_ACCOUNT_REMEMBER_REQUEST';
+const AUTH_ACCOUNT_REMEMBER_SUCCESS = 'AUTH_ACCOUNT_REMEMBER_SUCCESS';
+const AUTH_ACCOUNT_REMEMBER_FAIL    = 'AUTH_ACCOUNT_REMEMBER_FAIL';
 
 const customApp = custom('app');
 
-export const messages = defineMessages({
+const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
   awaitingApproval: { id: 'auth.awaiting_approval', defaultMessage: 'Your account is awaiting approval' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
@@ -121,7 +121,7 @@ const createUserToken = (username: string, password: string) =>
       .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)));
   };
 
-export const otpVerify = (code: string, mfa_token: string) =>
+const otpVerify = (code: string, mfa_token: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const app = getState().auth.app;
     return api(getState, 'app').post('/oauth/mfa/challenge', {
@@ -135,7 +135,7 @@ export const otpVerify = (code: string, mfa_token: string) =>
     }).then(({ data: token }) => dispatch(authLoggedIn(token)));
   };
 
-export const verifyCredentials = (token: string, accountUrl?: string) => {
+const verifyCredentials = (token: string, accountUrl?: string) => {
   const baseURL = parseBaseURL(accountUrl);
 
   return (dispatch: AppDispatch, getState: () => RootState) => {
@@ -163,7 +163,7 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
   };
 };
 
-export const rememberAuthAccount = (accountUrl: string) =>
+const rememberAuthAccount = (accountUrl: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: AUTH_ACCOUNT_REMEMBER_REQUEST, accountUrl });
     return KVStore.getItemOrError(`authAccount:${accountUrl}`).then(account => {
@@ -176,15 +176,15 @@ export const rememberAuthAccount = (accountUrl: string) =>
     });
   };
 
-export const loadCredentials = (token: string, accountUrl: string) =>
+const loadCredentials = (token: string, accountUrl: string) =>
   (dispatch: AppDispatch) => dispatch(rememberAuthAccount(accountUrl))
     .then(() => dispatch(verifyCredentials(token, accountUrl)))
     .catch(() => dispatch(verifyCredentials(token, accountUrl)));
 
-export const logIn = (username: string, password: string) =>
-  (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
-    return dispatch(createUserToken(normalizeUsername(username), password));
-  }).catch((error: AxiosError) => {
+const logIn = (username: string, password: string) =>
+  (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() =>
+    dispatch(createUserToken(normalizeUsername(username), password)),
+  ).catch((error: AxiosError) => {
     if ((error.response?.data as any)?.error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
@@ -197,10 +197,10 @@ export const logIn = (username: string, password: string) =>
     throw error;
   });
 
-export const deleteSession = () =>
+const deleteSession = () =>
   (dispatch: AppDispatch, getState: () => RootState) => api(getState).delete('/api/sign_out');
 
-export const logOut = () =>
+const logOut = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
@@ -226,7 +226,7 @@ export const logOut = () =>
       });
   };
 
-export const switchAccount = (accountId: string, background = false) =>
+const switchAccount = (accountId: string, background = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const account = getState().accounts.get(accountId);
     // Clear all stored cache from React Query
@@ -236,7 +236,7 @@ export const switchAccount = (accountId: string, background = false) =>
     return dispatch({ type: SWITCH_ACCOUNT, account, background });
   };
 
-export const fetchOwnAccounts = () =>
+const fetchOwnAccounts = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     return state.auth.users.forEach((user) => {
@@ -247,7 +247,7 @@ export const fetchOwnAccounts = () =>
     });
   };
 
-export const register = (params: Record<string, any>) =>
+const register = (params: Record<string, any>) =>
   (dispatch: AppDispatch) => {
     params.fullname = params.username;
 
@@ -259,13 +259,39 @@ export const register = (params: Record<string, any>) =>
       });
   };
 
-export const fetchCaptcha = () =>
-  (_dispatch: AppDispatch, getState: () => RootState) => {
-    return api(getState).get('/api/pleroma/captcha');
-  };
+const fetchCaptcha = () =>
+  (_dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState).get('/api/pleroma/captcha');
 
-export const authLoggedIn = (token: Record<string, string | number>) =>
+const authLoggedIn = (token: Record<string, string | number>) =>
   (dispatch: AppDispatch) => {
     dispatch({ type: AUTH_LOGGED_IN, token });
     return token;
   };
+
+export {
+  SWITCH_ACCOUNT,
+  AUTH_APP_CREATED,
+  AUTH_APP_AUTHORIZED,
+  AUTH_LOGGED_IN,
+  AUTH_LOGGED_OUT,
+  VERIFY_CREDENTIALS_REQUEST,
+  VERIFY_CREDENTIALS_SUCCESS,
+  VERIFY_CREDENTIALS_FAIL,
+  AUTH_ACCOUNT_REMEMBER_REQUEST,
+  AUTH_ACCOUNT_REMEMBER_SUCCESS,
+  AUTH_ACCOUNT_REMEMBER_FAIL,
+  messages,
+  otpVerify,
+  verifyCredentials,
+  rememberAuthAccount,
+  loadCredentials,
+  logIn,
+  deleteSession,
+  logOut,
+  switchAccount,
+  fetchOwnAccounts,
+  register,
+  fetchCaptcha,
+  authLoggedIn,
+};

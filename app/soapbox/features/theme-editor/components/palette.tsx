@@ -24,13 +24,11 @@ const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
   const [hue, setHue] = useState(0);
   const lastHue = usePrevious(hue);
 
-  const handleChange = (tint: string) => {
-    return (color: string) => {
-      onChange({
-        ...palette,
-        [tint]: color,
-      });
-    };
+  const handleChange = (tint: string) => (color: string) => {
+    onChange({
+      ...palette,
+      [tint]: color,
+    });
   };
 
   useEffect(() => {

@@ -12,8 +12,7 @@ export const ListRecord = ImmutableRecord({
   replies_policy: null as 'followed' | 'list' | 'none' | null,
 });
 
-export const normalizeList = (list: Record<string, any>) => {
-  return ListRecord(
+export const normalizeList = (list: Record<string, any>) =>
+  ListRecord(
     ImmutableMap(fromJS(list)),
   );
-};

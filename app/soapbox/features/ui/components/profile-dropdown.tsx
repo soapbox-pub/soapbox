@@ -50,21 +50,17 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     dispatch(logOut());
   };
 
-  const handleSwitchAccount = (account: AccountEntity) => {
-    return () => {
-      dispatch(switchAccount(account.id));
-    };
+  const handleSwitchAccount = (account: AccountEntity) => () => {
+    dispatch(switchAccount(account.id));
   };
 
   const fetchOwnAccountThrottled = throttle(() => {
     dispatch(fetchOwnAccounts());
   }, 2000);
 
-  const renderAccount = (account: AccountEntity) => {
-    return (
-      <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
-    );
-  };
+  const renderAccount = (account: AccountEntity) => (
+    <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
+  );
 
   const menu: IMenuItem[] = useMemo(() => {
     const menu: IMenuItem[] = [];

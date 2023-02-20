@@ -32,18 +32,16 @@ const ReducerRecord = ImmutableRecord({
 
 type State = ReturnType<typeof ReducerRecord>;
 
-const minifyChat = (chat: ChatRecord): ReducerChat => {
-  return chat.mergeWith((o, n) => n || o, {
+const minifyChat = (chat: ChatRecord): ReducerChat =>
+  chat.mergeWith((o, n) => n || o, {
     account: normalizeId(chat.getIn(['account', 'id'])),
     last_message: normalizeId(chat.getIn(['last_message', 'id'])),
   }) as ReducerChat;
-};
 
-const fixChat = (chat: APIEntity): ReducerChat => {
-  return normalizeChat(chat).withMutations(chat => {
+const fixChat = (chat: APIEntity): ReducerChat =>
+  normalizeChat(chat).withMutations(chat => {
     minifyChat(chat);
   }) as ReducerChat;
-};
 
 const importChat = (state: State, chat: APIEntity) => state.setIn(['items', chat.id], fixChat(chat));
 

@@ -10,12 +10,10 @@ interface ICounter {
 }
 
 /** A simple counter for notifications, etc. */
-const Counter: React.FC<ICounter> = ({ count, countMax }) => {
-  return (
-    <span className='flex h-5 min-w-[20px] max-w-[26px] items-center justify-center rounded-full bg-secondary-500 text-xs font-medium text-white ring-2 ring-white dark:ring-gray-800'>
-      {shortNumberFormat(count, countMax)}
-    </span>
-  );
-};
+const Counter: React.FC<ICounter> = ({ count, countMax }) => (
+  <span className='flex h-5 min-w-[20px] max-w-[26px] items-center justify-center rounded-full bg-secondary-500 text-xs font-medium text-white ring-2 ring-white dark:ring-gray-800'>
+    {shortNumberFormat(count, countMax)}
+  </span>
+);
 
 export default Counter;

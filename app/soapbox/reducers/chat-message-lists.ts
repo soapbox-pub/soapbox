@@ -31,9 +31,8 @@ const updateList = (state: State, chatId: string, messageIds: string[]) => {
   return state.set(chatId, newIds);
 };
 
-const importMessage = (state: State, chatMessage: APIEntity) => {
-  return updateList(state, chatMessage.chat_id, [chatMessage.id]);
-};
+const importMessage = (state: State, chatMessage: APIEntity) =>
+  updateList(state, chatMessage.chat_id, [chatMessage.id]);
 
 const importMessages = (state: State, chatMessages: APIEntities) => (
   state.withMutations(map =>
@@ -47,9 +46,8 @@ const importLastMessages = (state: State, chats: APIEntities) =>
       if (chat.last_message) importMessage(mutable, chat.last_message);
     }));
 
-const replaceMessage = (state: State, chatId: string, oldId: string, newId: string) => {
-  return state.update(chatId, chat => chat!.delete(oldId).add(newId).sort(idComparator));
-};
+const replaceMessage = (state: State, chatId: string, oldId: string, newId: string) =>
+  state.update(chatId, chat => chat!.delete(oldId).add(newId).sort(idComparator));
 
 export default function chatMessageLists(state = initialState, action: AnyAction) {
   switch (action.type) {

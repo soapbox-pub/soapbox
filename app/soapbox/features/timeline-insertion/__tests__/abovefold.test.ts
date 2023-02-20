@@ -3,9 +3,8 @@ import { abovefoldAlgorithm } from '../abovefold';
 const DATA = Object.freeze(['a', 'b', 'c', 'd']);
 
 test('abovefoldAlgorithm', () => {
-  const result = Array(50).fill('').map((_, i) => {
-    return abovefoldAlgorithm(DATA, i, { seed: '!', range: [2, 6], pageSize: 20 });
-  });
+  const result = Array(50).fill('').map((_, i) =>
+    abovefoldAlgorithm(DATA, i, { seed: '!', range: [2, 6], pageSize: 20 }));
 
   // console.log(result);
   expect(result[0]).toBe(undefined);

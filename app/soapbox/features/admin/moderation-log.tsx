@@ -16,9 +16,7 @@ const ModerationLog = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const items = useAppSelector((state) => {
-    return state.admin_log.index.map((i) => state.admin_log.items.get(String(i)));
-  });
+  const items = useAppSelector((state) => state.admin_log.index.map((i) => state.admin_log.items.get(String(i))));
 
   const hasMore = useAppSelector((state) => state.admin_log.total - state.admin_log.index.count() > 0);
 
@@ -70,24 +68,22 @@ interface ILogItem {
   log: AdminLog
 }
 
-const LogItem: React.FC<ILogItem> = ({ log }) => {
-  return (
-    <Stack space={2} className='p-4'>
-      <Text>{log.message}</Text>
+const LogItem: React.FC<ILogItem> = ({ log }) => (
+  <Stack space={2} className='p-4'>
+    <Text>{log.message}</Text>
 
-      <Text theme='muted' size='xs'>
-        <FormattedDate
-          value={new Date(log.time * 1000)}
-          hour12
-          year='numeric'
-          month='short'
-          day='2-digit'
-          hour='numeric'
-          minute='2-digit'
-        />
-      </Text>
-    </Stack>
-  );
-};
+    <Text theme='muted' size='xs'>
+      <FormattedDate
+        value={new Date(log.time * 1000)}
+        hour12
+        year='numeric'
+        month='short'
+        day='2-digit'
+        hour='numeric'
+        minute='2-digit'
+      />
+    </Text>
+  </Stack>
+);
 
 export default ModerationLog;

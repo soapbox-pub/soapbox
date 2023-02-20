@@ -73,8 +73,8 @@ export const InstanceRecord = ImmutableRecord({
 });
 
 // Build Mastodon configuration from Pleroma instance
-const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
-  return ImmutableMap({
+const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) =>
+  ImmutableMap({
     statuses: ImmutableMap({
       max_characters: instance.get('max_toot_chars'),
     }),
@@ -85,14 +85,13 @@ const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
       max_expiration: instance.getIn(['poll_limits', 'max_expiration']),
     }),
   });
-};
 
 // Get the software's default attachment limit
 const getAttachmentLimit = (software: string | null) => software === PLEROMA ? Infinity : 4;
 
 // Normalize version
-const normalizeVersion = (instance: ImmutableMap<string, any>) => {
-  return instance.update('version', '0.0.0', version => {
+const normalizeVersion = (instance: ImmutableMap<string, any>) =>
+  instance.update('version', '0.0.0', version => {
     // Handle Mastodon release candidates
     if (new RegExp(/[0-9\.]+rc[0-9]+/g).test(version)) {
       return version.split('rc').join('-rc');
@@ -100,7 +99,6 @@ const normalizeVersion = (instance: ImmutableMap<string, any>) => {
       return version;
     }
   });
-};
 
 /** Rename Akkoma to Pleroma+akkoma */
 const fixAkkoma = (instance: ImmutableMap<string, any>) => {
@@ -125,8 +123,8 @@ const fixTakahe = (instance: ImmutableMap<string, any>) => {
 };
 
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
-export const normalizeInstance = (instance: Record<string, any>) => {
-  return InstanceRecord(
+export const normalizeInstance = (instance: Record<string, any>) =>
+  InstanceRecord(
     ImmutableMap(fromJS(instance)).withMutations((instance: ImmutableMap<string, any>) => {
       const { software } = parseVersion(instance.get('version'));
       const mastodonConfig = pleromaToMastodonConfig(instance);
@@ -137,9 +135,9 @@ export const normalizeInstance = (instance: Record<string, any>) => {
       ));
 
       // If max attachments isn't set, check the backend software
-      instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
-        return isNumber(value) ? value : getAttachmentLimit(software);
-      });
+      instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value =>
+        isNumber(value) ? value : getAttachmentLimit(software),
+      );
 
       // Urls can't be null, fix for Friendica
       if (instance.get('urls') === null) instance.delete('urls');
@@ -153,4 +151,3 @@ export const normalizeInstance = (instance: Record<string, any>) => {
       instance.mergeDeepWith(mergeDefined, InstanceRecord());
     }),
   );
-};

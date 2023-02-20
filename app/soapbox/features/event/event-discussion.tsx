@@ -98,30 +98,26 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
     });
   };
 
-  const renderTombstone = (id: string) => {
-    return (
-      <div className='py-4 pb-8'>
-        <Tombstone
-          key={id}
-          id={id}
-          onMoveUp={handleMoveUp}
-          onMoveDown={handleMoveDown}
-        />
-      </div>
-    );
-  };
-
-  const renderStatus = (id: string) => {
-    return (
-      <ThreadStatus
+  const renderTombstone = (id: string) => (
+    <div className='py-4 pb-8'>
+      <Tombstone
         key={id}
         id={id}
-        focusedStatusId={status!.id}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
       />
-    );
-  };
+    </div>
+  );
+
+  const renderStatus = (id: string) => (
+    <ThreadStatus
+      key={id}
+      id={id}
+      focusedStatusId={status!.id}
+      onMoveUp={handleMoveUp}
+      onMoveDown={handleMoveDown}
+    />
+  );
 
   const renderPendingStatus = (id: string) => {
     const idempotencyKey = id.replace(/^末pending-/, '');
@@ -135,17 +131,15 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
     );
   };
 
-  const renderChildren = (list: ImmutableOrderedSet<string>) => {
-    return list.map(id => {
-      if (id.endsWith('-tombstone')) {
-        return renderTombstone(id);
-      } else if (id.startsWith('末pending-')) {
-        return renderPendingStatus(id);
-      } else {
-        return renderStatus(id);
-      }
-    });
-  };
+  const renderChildren = (list: ImmutableOrderedSet<string>) => list.map(id => {
+    if (id.endsWith('-tombstone')) {
+      return renderTombstone(id);
+    } else if (id.startsWith('末pending-')) {
+      return renderPendingStatus(id);
+    } else {
+      return renderStatus(id);
+    }
+  });
 
   const handleLoadMore = useCallback(debounce(() => {
     if (next && status) {

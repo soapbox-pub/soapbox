@@ -129,19 +129,17 @@ describe('<FeedCarousel />', () => {
             ]);
         });
 
-        Element.prototype.getBoundingClientRect = jest.fn(() => {
-          return {
-            width: 200,
-            height: 120,
-            x: 0,
-            y: 0,
-            toJSON: () => null,
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          };
-        });
+        Element.prototype.getBoundingClientRect = jest.fn(() => ({
+          width: 200,
+          height: 120,
+          x: 0,
+          y: 0,
+          toJSON: () => null,
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        }));
       });
 
       it('should render the correct prev/next buttons', async() => {

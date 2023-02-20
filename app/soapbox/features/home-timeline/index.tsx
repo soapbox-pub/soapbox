@@ -51,9 +51,7 @@ const HomeTimeline: React.FC = () => {
     }
   };
 
-  const handleRefresh = () => {
-    return dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
-  };
+  const handleRefresh = () => dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
 
   useEffect(() => {
     checkIfReloadNeeded();

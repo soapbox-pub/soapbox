@@ -34,15 +34,12 @@ export const getFirstExternalLink = (status: StatusEntity): HTMLAnchorElement | 
 };
 
 /** Whether the status is expected to have a Card after it loads. */
-export const shouldHaveCard = (status: StatusEntity): boolean => {
-  return Boolean(getFirstExternalLink(status));
-};
+export const shouldHaveCard = (status: StatusEntity): boolean => Boolean(getFirstExternalLink(status));
 
 /** Whether the media IDs on this status have integer IDs (opposed to FlakeIds). */
 // https://gitlab.com/soapbox-pub/soapbox/-/merge_requests/1087
-export const hasIntegerMediaIds = (status: StatusEntity): boolean => {
-  return status.media_attachments.some(({ id }) => isIntegerId(id));
-};
+export const hasIntegerMediaIds = (status: StatusEntity): boolean =>
+  status.media_attachments.some(({ id }) => isIntegerId(id));
 
 /** Sanitize status text for use with screen readers. */
 export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {

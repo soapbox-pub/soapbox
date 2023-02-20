@@ -28,8 +28,7 @@ export const RelationshipRecord = ImmutableRecord({
   subscribing: false,
 });
 
-export const normalizeRelationship = (relationship: Record<string, any>) => {
-  return RelationshipRecord(
+export const normalizeRelationship = (relationship: Record<string, any>) =>
+  RelationshipRecord(
     ImmutableMap(fromJS(relationship)),
   );
-};

@@ -14,10 +14,8 @@ const messages = defineMessages({
 const PromoPanelInput: StreamfieldComponent<FooterItem> = ({ value, onChange }) => {
   const intl = useIntl();
 
-  const handleChange = (key: 'title' | 'url'): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      onChange(value.set(key, e.currentTarget.value));
-    };
+  const handleChange = (key: 'title' | 'url'): React.ChangeEventHandler<HTMLInputElement> => e => {
+    onChange(value.set(key, e.currentTarget.value));
   };
 
   return (

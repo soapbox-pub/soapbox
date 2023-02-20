@@ -50,12 +50,10 @@ const Streamfield: React.FC<IStreamfield> = ({
 }) => {
   const intl = useIntl();
 
-  const handleChange = (i: number) => {
-    return (value: any) => {
-      const newData = [...values];
-      newData[i] = value;
-      onChange(newData);
-    };
+  const handleChange = (i: number) => (value: any) => {
+    const newData = [...values];
+    newData[i] = value;
+    onChange(newData);
   };
 
   return (

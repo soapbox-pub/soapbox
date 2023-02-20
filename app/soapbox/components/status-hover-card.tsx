@@ -50,32 +50,26 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
     placement: 'top',
   });
 
-  const handleMouseEnter = useCallback((): React.MouseEventHandler => {
-    return () => {
-      dispatch(updateStatusHoverCard());
-    };
+  const handleMouseEnter = useCallback((): React.MouseEventHandler => () => {
+    dispatch(updateStatusHoverCard());
   }, []);
 
-  const handleMouseLeave = useCallback((): React.MouseEventHandler => {
-    return () => {
-      dispatch(closeStatusHoverCard(true));
-    };
+  const handleMouseLeave = useCallback((): React.MouseEventHandler => () => {
+    dispatch(closeStatusHoverCard(true));
   }, []);
 
   if (!statusId) return null;
 
-  const renderStatus = (statusId: string) => {
-    return (
-      // @ts-ignore
-      <StatusContainer
-        key={statusId}
-        id={statusId}
-        hoverable={false}
-        hideActionBar
-        muted
-      />
-    );
-  };
+  const renderStatus = (statusId: string) => (
+    // @ts-ignore
+    <StatusContainer
+      key={statusId}
+      id={statusId}
+      hoverable={false}
+      hideActionBar
+      muted
+    />
+  );
 
   return (
     <div

@@ -16,9 +16,8 @@ const decodeUTF8Base64 = (data: string) => {
   return text;
 };
 
-const decodePleromaData = (data: Record<string, any>) => {
-  return mapValues(data, base64string => JSON.parse(decodeUTF8Base64(base64string)));
-};
+const decodePleromaData = (data: Record<string, any>) =>
+  mapValues(data, base64string => JSON.parse(decodeUTF8Base64(base64string)));
 
 const pleromaDecoder = (json: string) => decodePleromaData(JSON.parse(json));
 

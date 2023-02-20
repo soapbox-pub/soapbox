@@ -1,9 +1,9 @@
 import { processHtml } from './tiny-post-html-processor';
 
-export const addGreentext = (html: string): string => {
+export const addGreentext = (html: string): string =>
   // Copied from Pleroma FE
   // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/19475ba356c3fd6c54ca0306d3ae392358c212d1/src/components/status_content/status_content.js#L132
-  return processHtml(html, (string) => {
+  processHtml(html, (string) => {
     try {
       if (string.includes('&gt;') &&
           string
@@ -19,4 +19,3 @@ export const addGreentext = (html: string): string => {
       return string;
     }
   });
-};

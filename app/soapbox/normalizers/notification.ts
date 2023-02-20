@@ -24,8 +24,7 @@ export const NotificationRecord = ImmutableRecord({
   total_count: null as number | null, // grouped notifications
 });
 
-export const normalizeNotification = (notification: Record<string, any>) => {
-  return NotificationRecord(
+export const normalizeNotification = (notification: Record<string, any>) =>
+  NotificationRecord(
     ImmutableMap(fromJS(notification)),
   );
-};

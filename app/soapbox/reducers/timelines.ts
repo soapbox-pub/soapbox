@@ -78,14 +78,12 @@ const truncate = (items: ImmutableOrderedSet<string>, truncateLimit: number, new
 
 const truncateIds = (items: ImmutableOrderedSet<string>) => truncate(items, TRUNCATE_LIMIT, TRUNCATE_SIZE);
 
-const setLoading = (state: State, timelineId: string, loading: boolean) => {
-  return state.update(timelineId, TimelineRecord(), timeline => timeline.set('isLoading', loading));
-};
+const setLoading = (state: State, timelineId: string, loading: boolean) =>
+  state.update(timelineId, TimelineRecord(), timeline => timeline.set('isLoading', loading));
 
 // Keep track of when a timeline failed to load
-const setFailed = (state: State, timelineId: string, failed: boolean) => {
-  return state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
-};
+const setFailed = (state: State, timelineId: string, failed: boolean) =>
+  state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
 
 const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean) => {
   const newIds = getStatusIds(statuses);
@@ -156,8 +154,8 @@ const shouldDelete = (timelineId: string, excludeAccount?: string) => {
   return true;
 };
 
-const deleteStatus = (state: State, statusId: string, accountId: string, references: ImmutableMap<string, [string, string]> | Array<[string, string]>, excludeAccount?: string) => {
-  return state.withMutations(state => {
+const deleteStatus = (state: State, statusId: string, accountId: string, references: ImmutableMap<string, [string, string]> | Array<[string, string]>, excludeAccount?: string) =>
+  state.withMutations(state => {
     state.keySeq().forEach(timelineId => {
       if (shouldDelete(timelineId, excludeAccount)) {
         state.updateIn([timelineId, 'items'], ids => (ids as ImmutableOrderedSet<string>).delete(statusId));
@@ -170,18 +168,15 @@ const deleteStatus = (state: State, statusId: string, accountId: string, referen
       deleteStatus(state, ref[0], ref[1], [], excludeAccount);
     });
   });
-};
 
-const clearTimeline = (state: State, timelineId: string) => {
-  return state.set(timelineId, TimelineRecord());
-};
+const clearTimeline = (state: State, timelineId: string) =>
+  state.set(timelineId, TimelineRecord());
 
-const updateTop = (state: State, timelineId: string, top: boolean) => {
-  return state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
+const updateTop = (state: State, timelineId: string, top: boolean) =>
+  state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
     if (top) timeline.set('unread', 0);
     timeline.set('top', top);
   }));
-};
 
 const isReblogOf = (reblog: Status, status: Status) => reblog.reblog === status.id;
 const statusToReference = (status: Status) => [status.id, status.account];
@@ -198,15 +193,14 @@ const filterTimeline = (state: State, timelineId: string, relationship: APIEntit
       statuses.getIn([statusId, 'account']) === relationship.id,
     ));
 
-const filterTimelines = (state: State, relationship: APIEntity, statuses: ImmutableMap<string, Status>) => {
-  return state.withMutations(state => {
+const filterTimelines = (state: State, relationship: APIEntity, statuses: ImmutableMap<string, Status>) =>
+  state.withMutations(state => {
     statuses.forEach(status => {
       if (status.get('account') !== relationship.id) return;
       const references = buildReferencesTo(statuses, status);
       deleteStatus(state, status.get('id'), status.get('account') as string, references, relationship.id);
     });
   });
-};
 
 const timelineDequeue = (state: State, timelineId: string) => {
   const top = state.getIn([timelineId, 'top']);
@@ -224,12 +218,11 @@ const timelineDequeue = (state: State, timelineId: string) => {
   }));
 };
 
-const timelineConnect = (state: State, timelineId: string) => {
-  return state.update(timelineId, TimelineRecord(), timeline => timeline.set('online', true));
-};
+const timelineConnect = (state: State, timelineId: string) =>
+  state.update(timelineId, TimelineRecord(), timeline => timeline.set('online', true));
 
-const timelineDisconnect = (state: State, timelineId: string) => {
-  return state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
+const timelineDisconnect = (state: State, timelineId: string) =>
+  state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
     timeline.set('online', false);
 
     const items = timeline.get('items', ImmutableOrderedSet());
@@ -239,7 +232,6 @@ const timelineDisconnect = (state: State, timelineId: string) => {
     // https://gitlab.com/soapbox-pub/soapbox/-/issues/716
     // timeline.set('items', addStatusId(items, null));
   }));
-};
 
 const getTimelinesForStatus = (status: APIEntity) => {
   switch (status.visibility) {
@@ -290,8 +282,8 @@ const replacePendingStatus = (state: State, idempotencyKey: string, newId: strin
   });
 };
 
-const importStatus = (state: State, status: APIEntity, idempotencyKey: string) => {
-  return state.withMutations(state => {
+const importStatus = (state: State, status: APIEntity, idempotencyKey: string) =>
+  state.withMutations(state => {
     replacePendingStatus(state, idempotencyKey, status.id);
 
     const timelineIds = getTimelinesForStatus(status);
@@ -300,14 +292,12 @@ const importStatus = (state: State, status: APIEntity, idempotencyKey: string) =
       updateTimeline(state, timelineId, status.id);
     });
   });
-};
 
-const handleExpandFail = (state: State, timelineId: string) => {
-  return state.withMutations(state => {
+const handleExpandFail = (state: State, timelineId: string) =>
+  state.withMutations(state => {
     setLoading(state, timelineId, false);
     setFailed(state, timelineId, true);
   });
-};
 
 export default function timelines(state: State = initialState, action: AnyAction) {
   switch (action.type) {

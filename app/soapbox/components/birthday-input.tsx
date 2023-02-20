@@ -65,50 +65,48 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
     prevYearButtonDisabled: boolean
     nextYearButtonDisabled: boolean
     date: Date
-  }) => {
-    return (
-      <div className='flex flex-col gap-2'>
-        <div className='flex items-center justify-between'>
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/chevron-left.svg')}
-            onClick={decreaseMonth}
-            disabled={prevMonthButtonDisabled}
-            aria-label={intl.formatMessage(messages.previousMonth)}
-            title={intl.formatMessage(messages.previousMonth)}
-          />
-          {intl.formatDate(date, { month: 'long' })}
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/chevron-right.svg')}
-            onClick={increaseMonth}
-            disabled={nextMonthButtonDisabled}
-            aria-label={intl.formatMessage(messages.nextMonth)}
-            title={intl.formatMessage(messages.nextMonth)}
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/chevron-left.svg')}
-            onClick={decreaseYear}
-            disabled={prevYearButtonDisabled}
-            aria-label={intl.formatMessage(messages.previousYear)}
-            title={intl.formatMessage(messages.previousYear)}
-          />
-          {intl.formatDate(date, { year: 'numeric' })}
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/chevron-right.svg')}
-            onClick={increaseYear}
-            disabled={nextYearButtonDisabled}
-            aria-label={intl.formatMessage(messages.nextYear)}
-            title={intl.formatMessage(messages.nextYear)}
-          />
-        </div>
+  }) => (
+    <div className='flex flex-col gap-2'>
+      <div className='flex items-center justify-between'>
+        <IconButton
+          className='datepicker__button rtl:rotate-180'
+          src={require('@tabler/icons/chevron-left.svg')}
+          onClick={decreaseMonth}
+          disabled={prevMonthButtonDisabled}
+          aria-label={intl.formatMessage(messages.previousMonth)}
+          title={intl.formatMessage(messages.previousMonth)}
+        />
+        {intl.formatDate(date, { month: 'long' })}
+        <IconButton
+          className='datepicker__button rtl:rotate-180'
+          src={require('@tabler/icons/chevron-right.svg')}
+          onClick={increaseMonth}
+          disabled={nextMonthButtonDisabled}
+          aria-label={intl.formatMessage(messages.nextMonth)}
+          title={intl.formatMessage(messages.nextMonth)}
+        />
       </div>
-    );
-  };
+      <div className='flex items-center justify-between'>
+        <IconButton
+          className='datepicker__button rtl:rotate-180'
+          src={require('@tabler/icons/chevron-left.svg')}
+          onClick={decreaseYear}
+          disabled={prevYearButtonDisabled}
+          aria-label={intl.formatMessage(messages.previousYear)}
+          title={intl.formatMessage(messages.previousYear)}
+        />
+        {intl.formatDate(date, { year: 'numeric' })}
+        <IconButton
+          className='datepicker__button rtl:rotate-180'
+          src={require('@tabler/icons/chevron-right.svg')}
+          onClick={increaseYear}
+          disabled={nextYearButtonDisabled}
+          aria-label={intl.formatMessage(messages.nextYear)}
+          title={intl.formatMessage(messages.nextYear)}
+        />
+      </div>
+    </div>
+  );
 
   const handleChange = (date: Date) => onChange(date ? new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10) : '');
 

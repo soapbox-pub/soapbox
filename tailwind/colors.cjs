@@ -17,28 +17,24 @@ const toColorVariable = (colorName, tint = null) => {
 };
 
 // Parse list of tints into Tailwind function with CSS variables
-const parseTints = (colorName, tints) => {
-  return tints.reduce((colorObj, tint) => {
-    colorObj[tint] = toColorVariable(colorName, tint);
-    return colorObj;
-  }, {});
-};
+const parseTints = (colorName, tints) => tints.reduce((colorObj, tint) => {
+  colorObj[tint] = toColorVariable(colorName, tint);
+  return colorObj;
+}, {});
 
 // Parse color matrix into Tailwind color palette
-const parseColorMatrix = colorMatrix => {
-  return Object.entries(colorMatrix).reduce((palette, colorData) => {
-    const [colorName, tints] = colorData;
+const parseColorMatrix = colorMatrix => Object.entries(colorMatrix).reduce((palette, colorData) => {
+  const [colorName, tints] = colorData;
 
-    // Conditionally parse array or single-tint colors
-    if (Array.isArray(tints)) {
-      palette[colorName] = parseTints(colorName, tints);
-    } else if (tints === true) {
-      palette[colorName] = toColorVariable(colorName);
-    }
+  // Conditionally parse array or single-tint colors
+  if (Array.isArray(tints)) {
+    palette[colorName] = parseTints(colorName, tints);
+  } else if (tints === true) {
+    palette[colorName] = toColorVariable(colorName);
+  }
 
-    return palette;
-  }, {});
-};
+  return palette;
+}, {});
 
 module.exports = {
   withOpacityValue,

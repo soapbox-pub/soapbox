@@ -45,9 +45,7 @@ const ChatSearch = (props: IChatSearch) => {
   const hasSearchValue = debouncedValue && debouncedValue.length > 0;
   const hasSearchResults = (accounts || []).length > 0;
 
-  const handleClickOnSearchResult = useMutation((accountId: string) => {
-    return getOrCreateChatByAccountId(accountId);
-  }, {
+  const handleClickOnSearchResult = useMutation((accountId: string) => getOrCreateChatByAccountId(accountId), {
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
       toast.error(data?.error);

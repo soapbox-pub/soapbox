@@ -90,9 +90,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const { getOrCreateChatByAccountId } = useChats();
 
-  const createAndNavigateToChat = useMutation((accountId: string) => {
-    return getOrCreateChatByAccountId(accountId);
-  }, {
+  const createAndNavigateToChat = useMutation((accountId: string) => getOrCreateChatByAccountId(accountId), {
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
       toast.error(data?.error);

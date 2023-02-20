@@ -28,9 +28,7 @@ const hasUppercaseCharacter = (string: string) => {
   return false;
 };
 
-const hasLowercaseCharacter = (string: string) => {
-  return string.toUpperCase() !== string;
-};
+const hasLowercaseCharacter = (string: string) => string.toUpperCase() !== string;
 
 interface IPasswordIndicator {
   onChange(isValid: boolean): void

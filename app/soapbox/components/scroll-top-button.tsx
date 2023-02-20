@@ -40,9 +40,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     'hidden': !visible,
   });
 
-  const getScrollTop = (): number => {
-    return (document.scrollingElement || document.documentElement).scrollTop;
-  };
+  const getScrollTop = (): number => (document.scrollingElement || document.documentElement).scrollTop;
 
   const maybeUnload = () => {
     if (autoload && getScrollTop() <= autoloadThreshold) {

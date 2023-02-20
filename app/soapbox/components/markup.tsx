@@ -7,10 +7,8 @@ interface IMarkup extends IText {
 }
 
 /** Styles HTML markup returned by the API, such as in account bios and statuses. */
-const Markup = React.forwardRef<any, IMarkup>((props, ref) => {
-  return (
-    <Text ref={ref} {...props} data-markup />
-  );
-});
+const Markup = React.forwardRef<any, IMarkup>((props, ref) => (
+  <Text ref={ref} {...props} data-markup />
+));
 
 export default Markup;

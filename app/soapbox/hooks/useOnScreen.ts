@@ -5,11 +5,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 export const useOnScreen = <T>(ref: React.RefObject<T & Element>) =>  {
   const [isIntersecting, setIntersecting] = useState(false);
 
-  const observer = useMemo(() => {
-    return new IntersectionObserver(
-      ([entry]) => setIntersecting(entry.isIntersecting),
-    );
-  }, []);
+  const observer = useMemo(() => new IntersectionObserver(
+    ([entry]) => setIntersecting(entry.isIntersecting),
+  ), []);
 
   useEffect(() => {
     if (ref.current) {

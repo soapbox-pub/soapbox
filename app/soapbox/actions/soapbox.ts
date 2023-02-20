@@ -22,9 +22,9 @@ const SOAPBOX_CONFIG_REMEMBER_FAIL    = 'SOAPBOX_CONFIG_REMEMBER_FAIL';
 const getSoapboxConfig = createSelector([
   (state: RootState) => state.soapbox,
   (state: RootState) => getFeatures(state.instance),
-], (soapbox, features) => {
+], (soapbox, features) =>
   // Do some additional normalization with the state
-  return normalizeSoapboxConfig(soapbox).withMutations(soapboxConfig => {
+  normalizeSoapboxConfig(soapbox).withMutations(soapboxConfig => {
 
     // If displayFqn isn't set, infer it from federation
     if (soapbox.get('displayFqn') === undefined) {
@@ -36,8 +36,8 @@ const getSoapboxConfig = createSelector([
     if (features.emojiReactsNonRGI) {
       soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
     }
-  });
-});
+  }),
+);
 
 const rememberSoapboxConfig = (host: string | null) =>
   (dispatch: AppDispatch) => {

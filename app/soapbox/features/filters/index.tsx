@@ -81,17 +81,17 @@ const Filters = () => {
       context.push('thread');
     }
 
-    dispatch(createFilter(phrase, expiresAt, context, wholeWord, irreversible)).then(() => {
-      return dispatch(fetchFilters());
-    }).catch(error => {
+    dispatch(createFilter(phrase, expiresAt, context, wholeWord, irreversible)).then(() =>
+      dispatch(fetchFilters()),
+    ).catch(error => {
       toast.error(intl.formatMessage(messages.create_error));
     });
   };
 
   const handleFilterDelete = (id: string) => () => {
-    dispatch(deleteFilter(id)).then(() => {
-      return dispatch(fetchFilters());
-    }).catch(() => {
+    dispatch(deleteFilter(id)).then(() =>
+      dispatch(fetchFilters()),
+    ).catch(() => {
       toast.error(intl.formatMessage(messages.delete_error));
     });
   };

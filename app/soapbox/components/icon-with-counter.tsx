@@ -10,18 +10,16 @@ interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
   src?: string
 }
 
-const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, countMax, ...rest }) => {
-  return (
-    <div className='relative'>
-      <Icon id={icon} {...rest as IIcon} />
+const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, countMax, ...rest }) => (
+  <div className='relative'>
+    <Icon id={icon} {...rest as IIcon} />
 
-      {count > 0 && (
-        <span className='absolute -top-2 -right-3'>
-          <Counter count={count} countMax={countMax} />
-        </span>
-      )}
-    </div>
-  );
-};
+    {count > 0 && (
+      <span className='absolute -top-2 -right-3'>
+        <Counter count={count} countMax={countMax} />
+      </span>
+    )}
+  </div>
+);
 
 export default IconWithCounter;

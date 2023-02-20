@@ -73,9 +73,8 @@ const StatusList: React.FC<IStatusList> = ({
   const node = useRef<VirtuosoHandle>(null);
   const seed = useRef<string>(uuidv4());
 
-  const getFeaturedStatusCount = () => {
-    return featuredStatusIds?.size || 0;
-  };
+  const getFeaturedStatusCount = () =>
+    featuredStatusIds?.size || 0;
 
   const getCurrentStatusIndex = (id: string, featured: boolean): number => {
     if (featured) {
@@ -130,24 +129,20 @@ const StatusList: React.FC<IStatusList> = ({
     );
   };
 
-  const renderStatus = (statusId: string) => {
-    return (
-      <StatusContainer
-        key={statusId}
-        id={statusId}
-        onMoveUp={handleMoveUp}
-        onMoveDown={handleMoveDown}
-        contextType={timelineId}
-        showGroup={showGroup}
-      />
-    );
-  };
+  const renderStatus = (statusId: string) => (
+    <StatusContainer
+      key={statusId}
+      id={statusId}
+      onMoveUp={handleMoveUp}
+      onMoveDown={handleMoveDown}
+      contextType={timelineId}
+      showGroup={showGroup}
+    />
+  );
 
-  const renderAd = (ad: AdEntity, index: number) => {
-    return (
-      <Ad key={`ad-${index}`} ad={ad} />
-    );
-  };
+  const renderAd = (ad: AdEntity, index: number) => (
+    <Ad key={`ad-${index}`} ad={ad} />
+  );
 
   const renderPendingStatus = (statusId: string) => {
     const idempotencyKey = statusId.replace(/^末pending-/, '');
@@ -176,9 +171,7 @@ const StatusList: React.FC<IStatusList> = ({
     ));
   };
 
-  const renderFeedSuggestions = (): React.ReactNode => {
-    return <FeedSuggestions key='suggestions' />;
-  };
+  const renderFeedSuggestions = (): React.ReactNode => <FeedSuggestions key='suggestions' />;
 
   const renderStatuses = (): React.ReactNode[] => {
     if (isLoading || statusIds.size > 0) {

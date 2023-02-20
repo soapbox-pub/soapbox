@@ -9,23 +9,21 @@ interface IUploadProgress {
 }
 
 /** Displays a progress bar for uploading files. */
-const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
-  return (
-    <HStack alignItems='center' space={2}>
-      <Icon
-        src={require('@tabler/icons/cloud-upload.svg')}
-        className='h-7 w-7 text-gray-500'
-      />
+const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => (
+  <HStack alignItems='center' space={2}>
+    <Icon
+      src={require('@tabler/icons/cloud-upload.svg')}
+      className='h-7 w-7 text-gray-500'
+    />
 
-      <Stack space={1}>
-        <Text theme='muted'>
-          <FormattedMessage id='upload_progress.label' defaultMessage='Uploading…' />
-        </Text>
+    <Stack space={1}>
+      <Text theme='muted'>
+        <FormattedMessage id='upload_progress.label' defaultMessage='Uploading…' />
+      </Text>
 
-        <ProgressBar progress={progress / 100} size='sm' />
-      </Stack>
-    </HStack>
-  );
-};
+      <ProgressBar progress={progress / 100} size='sm' />
+    </Stack>
+  </HStack>
+);
 
 export default UploadProgress;

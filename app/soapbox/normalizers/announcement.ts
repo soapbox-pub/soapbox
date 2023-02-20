@@ -41,25 +41,22 @@ export const AnnouncementRecord = ImmutableRecord({
   contentHtml: '',
 });
 
-const normalizeMentions = (announcement: ImmutableMap<string, any>) => {
-  return announcement.update('mentions', ImmutableList(), mentions => {
-    return mentions.map(normalizeMention);
-  });
-};
+const normalizeMentions = (announcement: ImmutableMap<string, any>) =>
+  announcement.update('mentions', ImmutableList(), mentions =>
+    mentions.map(normalizeMention),
+  );
 
 // Normalize reactions
-const normalizeReactions = (announcement: ImmutableMap<string, any>) => {
-  return announcement.update('reactions', ImmutableList(), reactions => {
-    return reactions.map((reaction: ImmutableMap<string, any>) => normalizeAnnouncementReaction(reaction, announcement.get('id')));
-  });
-};
+const normalizeReactions = (announcement: ImmutableMap<string, any>) =>
+  announcement.update('reactions', ImmutableList(), reactions =>
+    reactions.map((reaction: ImmutableMap<string, any>) => normalizeAnnouncementReaction(reaction, announcement.get('id'))),
+  );
 
 // Normalize emojis
-const normalizeEmojis = (announcement: ImmutableMap<string, any>) => {
-  return announcement.update('emojis', ImmutableList(), emojis => {
-    return emojis.map(normalizeEmoji);
-  });
-};
+const normalizeEmojis = (announcement: ImmutableMap<string, any>) =>
+  announcement.update('emojis', ImmutableList(), emojis =>
+    emojis.map(normalizeEmoji),
+  );
 
 const normalizeContent = (announcement: ImmutableMap<string, any>) => {
   const emojiMap   = makeEmojiMap(announcement.get('emojis'));
@@ -76,8 +73,8 @@ const normalizeStatuses = (announcement: ImmutableMap<string, any>) => {
   return announcement.set('statuses', statuses);
 };
 
-export const normalizeAnnouncement = (announcement: Record<string, any>) => {
-  return AnnouncementRecord(
+export const normalizeAnnouncement = (announcement: Record<string, any>) =>
+  AnnouncementRecord(
     ImmutableMap(fromJS(announcement)).withMutations(announcement => {
       normalizeMentions(announcement);
       normalizeReactions(announcement);
@@ -86,4 +83,3 @@ export const normalizeAnnouncement = (announcement: Record<string, any>) => {
       normalizeStatuses(announcement);
     }),
   );
-};

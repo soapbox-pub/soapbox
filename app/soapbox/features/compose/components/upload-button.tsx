@@ -10,9 +10,8 @@ const messages = defineMessages({
   upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },
 });
 
-const onlyImages = (types: ImmutableList<string>) => {
-  return Boolean(types && types.every(type => type.startsWith('image/')));
-};
+const onlyImages = (types: ImmutableList<string>) =>
+  Boolean(types && types.every(type => type.startsWith('image/')));
 
 export interface IUploadButton {
   disabled?: boolean

@@ -170,16 +170,16 @@ const handlePush = (event: PushEvent) => {
       }
 
       return notify(options);
-    }).catch(() => {
-      return notify({
+    }).catch(() =>
+      notify({
         title,
         body,
         icon,
         tag: notification_id,
         timestamp: Number(new Date()),
         data: { access_token, preferred_locale, url: '/notifications' },
-      });
-    }),
+      }),
+    ),
   );
 };
 

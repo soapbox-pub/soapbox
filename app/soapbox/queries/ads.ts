@@ -12,16 +12,14 @@ const AdKeys = {
 function useAds() {
   const dispatch = useAppDispatch();
 
-  const getAds = async () => {
-    return dispatch(async (_, getState) => {
-      const provider = await getProvider(getState);
-      if (provider) {
-        return provider.getAds(getState);
-      } else {
-        return [];
-      }
-    });
-  };
+  const getAds = async () => dispatch(async (_, getState) => {
+    const provider = await getProvider(getState);
+    if (provider) {
+      return provider.getAds(getState);
+    } else {
+      return [];
+    }
+  });
 
   const result = useQuery<Ad[]>(AdKeys.ads, getAds, {
     placeholderData: [],

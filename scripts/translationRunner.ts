@@ -168,21 +168,17 @@ interface Translation {
   data: Record<string, string>
 }
 
-const translations: Translation[] = languages.map((language: string) => {
-  return {
-    language: language,
-    data: JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
-  };
-});
+const translations: Translation[] = languages.map((language: string) => ({
+  language: language,
+  data: JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
+}));
 
 function difference<T>(a: Set<T>, b: Set<T>): Set<T> {
   return new Set(Array.from(a).filter(x => !b.has(x)));
 }
 
 function pushIfUnique<T>(arr: T[], newItem: T): void {
-  if (arr.every((item) => {
-    return (JSON.stringify(item) !== JSON.stringify(newItem));
-  })) {
+  if (arr.every((item) => (JSON.stringify(item) !== JSON.stringify(newItem)))) {
     arr.push(newItem);
   }
 }
@@ -235,9 +231,7 @@ if (problems.length > 0) {
     console.error(`${color}${problem.language}\t${problem.type}\t${problem.id}\x1b[0m`);
   });
   console.error('\n');
-  if (problems.find((item) => {
-    return item.severity === 'error';
-  })) {
+  if (problems.find((item) => item.severity === 'error')) {
     process.exit(1);
   }
 }

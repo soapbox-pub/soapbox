@@ -208,36 +208,33 @@ const useChatActions = (chatId: string) => {
 
   const { chat, changeScreen } = useChatContext();
 
-  const markChatAsRead = async (lastReadId: string) => {
-    return api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
-      .then(({ data }) => {
-        updatePageItem(ChatKeys.chatSearch(), data, (o, n) => o.id === n.id);
-        const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch());
+  const markChatAsRead = async (lastReadId: string) => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId })
+    .then(({ data }) => {
+      updatePageItem(ChatKeys.chatSearch(), data, (o, n) => o.id === n.id);
+      const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch());
 
-        if (queryData) {
-          const flattenedQueryData: any = flattenPages(queryData)?.map((chat: any) => {
-            if (chat.id === data.id) {
-              return data;
-            } else {
-              return chat;
-            }
-          });
-          setUnreadChatsCount(sumBy(flattenedQueryData, (chat: IChat) => chat.unread));
-        }
+      if (queryData) {
+        const flattenedQueryData: any = flattenPages(queryData)?.map((chat: any) => {
+          if (chat.id === data.id) {
+            return data;
+          } else {
+            return chat;
+          }
+        });
+        setUnreadChatsCount(sumBy(flattenedQueryData, (chat: IChat) => chat.unread));
+      }
 
-        return data;
-      })
-      .catch(() => null);
-  };
+      return data;
+    })
+    .catch(() => null);
 
   const createChatMessage = useMutation(
-    ({ chatId, content, mediaIds }: { chatId: string, content: string, mediaIds?: string[] }) => {
-      return api.post<ChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, {
+    ({ chatId, content, mediaIds }: { chatId: string, content: string, mediaIds?: string[] }) =>
+      api.post<ChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, {
         content,
         media_id: (mediaIds && mediaIds.length === 1) ? mediaIds[0] : undefined, // Pleroma backwards-compat
         media_ids: mediaIds,
-      });
-    },
+      }),
     {
       retry: false,
       onMutate: async (variables) => {

@@ -68,6 +68,7 @@ module.exports = {
   },
 
   rules: {
+    'arrow-body-style': 'error',
     'brace-style': 'error',
     'comma-dangle': ['error', 'always-multiline'],
     'comma-spacing': [
@@ -83,6 +84,7 @@ module.exports = {
     'space-in-parens': ['error', 'never'],
     'keyword-spacing': 'error',
     'dot-notation': 'error',
+    'eol-last': ['error', 'always'],
     eqeqeq: 'error',
     indent: ['error', 2, {
       SwitchCase: 1, // https://stackoverflow.com/a/53055584/8811886
@@ -284,6 +286,7 @@ module.exports = {
       },
     ],
     'tailwindcss/migration-from-tailwind-2': 'error',
+
   },
   overrides: [
     {

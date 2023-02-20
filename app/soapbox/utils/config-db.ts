@@ -13,11 +13,10 @@ const find = (
   configs: ImmutableList<Config>,
   group: string,
   key: string,
-): Config | undefined => {
-  return configs.find(config =>
+): Config | undefined =>
+  configs.find(config =>
     config.isSuperset(ImmutableMap({ group, key })),
   );
-};
 
 const toSimplePolicy = (configs: ImmutableList<Config>): Policy => {
   const config = find(configs, ':pleroma', ':mrf_simple');

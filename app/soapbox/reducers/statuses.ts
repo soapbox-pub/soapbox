@@ -59,15 +59,14 @@ export interface ReducerStatus extends StatusRecord {
   group: string | null
 }
 
-const minifyStatus = (status: StatusRecord): ReducerStatus => {
-  return status.mergeWith((o, n) => n || o, {
+const minifyStatus = (status: StatusRecord): ReducerStatus =>
+  status.mergeWith((o, n) => n || o, {
     account: normalizeId(status.getIn(['account', 'id'])),
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
     group: normalizeId(status.getIn(['group', 'id'])),
   }) as ReducerStatus;
-};
 
 // Gets titles of poll options from status
 const getPollOptionTitles = ({ poll }: StatusRecord): ImmutableList<string> => {
@@ -79,9 +78,8 @@ const getPollOptionTitles = ({ poll }: StatusRecord): ImmutableList<string> => {
 };
 
 // Gets usernames of mentioned users from status
-const getMentionedUsernames = (status: StatusRecord): ImmutableList<string> => {
-  return status.mentions.map(({ acct }) => `@${acct}`);
-};
+const getMentionedUsernames = (status: StatusRecord): ImmutableList<string> =>
+  status.mentions.map(({ acct }) => `@${acct}`);
 
 // Creates search text from the status
 const buildSearchContent = (status: StatusRecord): string => {
@@ -125,9 +123,8 @@ export const calculateStatus = (
 };
 
 // Check whether a status is a quote by secondary characteristics
-const isQuote = (status: StatusRecord) => {
-  return Boolean(status.pleroma.get('quote_url'));
-};
+const isQuote = (status: StatusRecord) =>
+  Boolean(status.pleroma.get('quote_url'));
 
 // Preserve quote if an existing status already has it
 const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord => {
@@ -166,9 +163,9 @@ const deleteStatus = (state: State, id: string, references: Array<string>) => {
 
 const incrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
-      return typeof count === 'number' ? count + 1 : 0;
-    });
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count =>
+      typeof count === 'number' ? count + 1 : 0,
+    );
   } else {
     return state;
   }
@@ -176,9 +173,9 @@ const incrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
 
 const decrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
-      return typeof count === 'number' ? Math.max(0, count - 1) : 0;
-    });
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count =>
+      typeof count === 'number' ? Math.max(0, count - 1) : 0,
+    );
   } else {
     return state;
   }
@@ -217,9 +214,8 @@ const importTranslation = (state: State, statusId: string, translation: Translat
 };
 
 /** Delete translation from the store. */
-const deleteTranslation = (state: State, statusId: string) => {
-  return state.deleteIn([statusId, 'translation']);
-};
+const deleteTranslation = (state: State, statusId: string) =>
+  state.deleteIn([statusId, 'translation']);
 
 const initialState: State = ImmutableMap();
 

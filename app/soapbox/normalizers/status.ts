@@ -85,24 +85,21 @@ export const StatusRecord = ImmutableRecord({
   translation: null as ImmutableMap<string, string> | null,
 });
 
-const normalizeAttachments = (status: ImmutableMap<string, any>) => {
-  return status.update('media_attachments', ImmutableList(), attachments => {
-    return attachments.map(normalizeAttachment);
-  });
-};
+const normalizeAttachments = (status: ImmutableMap<string, any>) =>
+  status.update('media_attachments', ImmutableList(), attachments =>
+    attachments.map(normalizeAttachment),
+  );
 
-const normalizeMentions = (status: ImmutableMap<string, any>) => {
-  return status.update('mentions', ImmutableList(), mentions => {
-    return mentions.map(normalizeMention);
-  });
-};
+const normalizeMentions = (status: ImmutableMap<string, any>) =>
+  status.update('mentions', ImmutableList(), mentions =>
+    mentions.map(normalizeMention),
+  );
 
 // Normalize emojis
-const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
-  return entity.update('emojis', ImmutableList(), emojis => {
-    return emojis.map(normalizeEmoji);
-  });
-};
+const normalizeEmojis = (entity: ImmutableMap<string, any>) =>
+  entity.update('emojis', ImmutableList(), emojis =>
+    emojis.map(normalizeEmoji),
+  );
 
 // Normalize the poll in the status, if applicable
 const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
@@ -157,14 +154,13 @@ const addSelfMention = (status: ImmutableMap<string, any>) => {
 };
 
 // Move the quote to the top-level
-const fixQuote = (status: ImmutableMap<string, any>) => {
-  return status.withMutations(status => {
+const fixQuote = (status: ImmutableMap<string, any>) =>
+  status.withMutations(status => {
     status.update('quote', quote => quote || status.getIn(['pleroma', 'quote']) || null);
     status.deleteIn(['pleroma', 'quote']);
     status.update('quotes_count', quotes_count => quotes_count || status.getIn(['pleroma', 'quotes_count'], 0));
     status.deleteIn(['pleroma', 'quotes_count']);
   });
-};
 
 // Workaround for not yet implemented filtering from Mastodon 3.6
 const fixFiltered = (status: ImmutableMap<string, any>) => {
@@ -205,8 +201,8 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
   }
 };
 
-export const normalizeStatus = (status: Record<string, any>) => {
-  return StatusRecord(
+export const normalizeStatus = (status: Record<string, any>) =>
+  StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
       normalizeAttachments(status);
       normalizeMentions(status);
@@ -221,4 +217,3 @@ export const normalizeStatus = (status: Record<string, any>) => {
       normalizeEvent(status);
     }),
   );
-};

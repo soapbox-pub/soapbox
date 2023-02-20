@@ -99,23 +99,19 @@ const parseShades = (obj: Record<string, any>, color: string, shades: Record<str
 };
 
 // Convert colors as CSS variables
-const parseColors = (colors: TailwindColorPalette): TailwindColorPalette => {
-  return Object.keys(colors).reduce((obj, color) => {
+const parseColors = (colors: TailwindColorPalette): TailwindColorPalette =>
+  Object.keys(colors).reduce((obj, color) => {
     parseShades(obj, color, colors[color] as TailwindColorObject);
     return obj;
   }, {});
-};
 
 export const colorsToCss = (colors: TailwindColorPalette): string => {
   const parsed = parseColors(colors);
-  return Object.keys(parsed).reduce((css, variable) => {
-    return css + `${variable}:${parsed[variable]};`;
-  }, '');
+  return Object.keys(parsed).reduce((css, variable) => css + `${variable}:${parsed[variable]};`, '');
 };
 
-export const generateThemeCss = (soapboxConfig: SoapboxConfig): string => {
-  return colorsToCss(soapboxConfig.colors.toJS() as TailwindColorPalette);
-};
+export const generateThemeCss = (soapboxConfig: SoapboxConfig): string =>
+  colorsToCss(soapboxConfig.colors.toJS() as TailwindColorPalette);
 
 const hexToHsl = (hex: string): Hsl | null => {
   const rgb = hexToRgb(hex);

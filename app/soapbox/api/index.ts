@@ -21,17 +21,14 @@ import type MockAdapter from 'axios-mock-adapter';
   @param {object} response - Axios response object
   @returns {object} Link object
   */
-export const getLinks = (response: AxiosResponse): LinkHeader => {
-  return new LinkHeader(response.headers?.link);
-};
+export const getLinks = (response: AxiosResponse): LinkHeader =>
+  new LinkHeader(response.headers?.link);
 
-export const getNextLink = (response: AxiosResponse): string | undefined => {
-  return getLinks(response).refs.find(link => link.rel === 'next')?.uri;
-};
+export const getNextLink = (response: AxiosResponse): string | undefined =>
+  getLinks(response).refs.find(link => link.rel === 'next')?.uri;
 
-const getToken = (state: RootState, authType: string) => {
-  return authType === 'app' ? getAppToken(state) : getAccessToken(state);
-};
+const getToken = (state: RootState, authType: string) =>
+  authType === 'app' ? getAppToken(state) : getAccessToken(state);
 
 const maybeParseJSON = (data: string) => {
   try {
@@ -55,8 +52,8 @@ const getAuthBaseURL = createSelector([
   * @param {string} baseURL
   * @returns {object} Axios instance
   */
-export const baseClient = (accessToken?: string | null, baseURL: string = ''): AxiosInstance => {
-  return axios.create({
+export const baseClient = (accessToken?: string | null, baseURL: string = ''): AxiosInstance =>
+  axios.create({
     // When BACKEND_URL is set, always use it.
     baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,
     headers: Object.assign(accessToken ? {
@@ -64,7 +61,6 @@ export const baseClient = (accessToken?: string | null, baseURL: string = ''): A
     } : {}),
     transformResponse: [maybeParseJSON],
   });
-};
 
 /**
   * Dumb client for grabbing static files.

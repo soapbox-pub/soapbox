@@ -22,8 +22,8 @@ import { baseClient } from '../api';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Instance } from 'soapbox/types/entities';
 
-const fetchExternalInstance = (baseURL?: string) => {
-  return baseClient(null, baseURL)
+const fetchExternalInstance = (baseURL?: string) =>
+  baseClient(null, baseURL)
     .get('/api/v1/instance')
     .then(({ data: instance }) => normalizeInstance(instance))
     .catch(error => {
@@ -35,7 +35,6 @@ const fetchExternalInstance = (baseURL?: string) => {
         throw error;
       }
     });
-};
 
 const createExternalApp = (instance: Instance, baseURL?: string) =>
   (dispatch: AppDispatch, _getState: () => RootState) => {
@@ -78,8 +77,8 @@ const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const loginMessage = instance.login_message;
 
-    return getWalletAndSign(loginMessage).then(({ wallet, signature }) => {
-      return dispatch(createExternalApp(instance, baseURL)).then((app) => {
+    return getWalletAndSign(loginMessage).then(({ wallet, signature }) =>
+      dispatch(createExternalApp(instance, baseURL)).then((app) => {
         const { client_id, client_secret } = app as Record<string, string>;
         const params = {
           grant_type: 'ethereum',
@@ -96,11 +95,11 @@ const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
           .then(({ access_token }: any) => dispatch(verifyCredentials(access_token, baseURL)))
           .then((account: { id: string }) => dispatch(switchAccount(account.id)))
           .then(() => window.location.href = '/');
-      });
-    });
+      }),
+    );
   };
 
-export const externalLogin = (host: string) =>
+const externalLogin = (host: string) =>
   (dispatch: AppDispatch) => {
     const baseURL = parseBaseURL(host) || parseBaseURL(`https://${host}`);
 
@@ -116,7 +115,7 @@ export const externalLogin = (host: string) =>
     });
   };
 
-export const loginWithCode = (code: string) =>
+const loginWithCode = (code: string) =>
   (dispatch: AppDispatch) => {
     const { client_id, client_secret, redirect_uri } = JSON.parse(localStorage.getItem('soapbox:external:app')!);
     const baseURL = localStorage.getItem('soapbox:external:baseurl')!;
@@ -137,3 +136,5 @@ export const loginWithCode = (code: string) =>
       .then((account: { id: string }) => dispatch(switchAccount(account.id)))
       .then(() => window.location.href = '/');
   };
+
+export { externalLogin, loginWithCode };

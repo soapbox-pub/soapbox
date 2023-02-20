@@ -15,7 +15,6 @@ export const MentionRecord = ImmutableRecord({
   url: '',
 });
 
-export const normalizeMention = (mention: Record<string, any>) => {
+export const normalizeMention = (mention: Record<string, any>) =>
   // Simply normalize it as an account then cast it as a mention ¯\_(ツ)_/¯
-  return MentionRecord(normalizeAccount(mention));
-};
+  MentionRecord(normalizeAccount(mention));

@@ -41,18 +41,16 @@ const Report: React.FC<IReport> = ({ id }) => {
   const account = report.account as Account;
   const targetAccount = report.target_account as Account;
 
-  const makeMenu = () => {
-    return [{
-      text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
-      action: handleDeactivateUser,
-      icon: require('@tabler/icons/hourglass-empty.svg'),
-    }, {
-      text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
-      action: handleDeleteUser,
-      icon: require('@tabler/icons/trash.svg'),
-      destructive: true,
-    }];
-  };
+  const makeMenu = () => [{
+    text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
+    action: handleDeactivateUser,
+    icon: require('@tabler/icons/hourglass-empty.svg'),
+  }, {
+    text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
+    action: handleDeleteUser,
+    icon: require('@tabler/icons/trash.svg'),
+    destructive: true,
+  }];
 
   const handleCloseReport = () => {
     dispatch(closeReports([report.id])).then(() => {

@@ -72,16 +72,14 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
     }
   };
 
-  const menu = useMemo(() => {
-    return [
-      {
-        text: intl.formatMessage(messages.delete),
-        action: handleDeleteStatus,
-        icon: require('@tabler/icons/trash.svg'),
-        destructive: true,
-      },
-    ];
-  }, []);
+  const menu = useMemo(() => [
+    {
+      text: intl.formatMessage(messages.delete),
+      action: handleDeleteStatus,
+      icon: require('@tabler/icons/trash.svg'),
+      destructive: true,
+    },
+  ], []);
 
   useEffect(() => {
     if (typeof props.visible !== 'undefined') {

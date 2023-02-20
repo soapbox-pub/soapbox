@@ -108,9 +108,7 @@ const Notifications = () => {
     dispatch(dequeueNotifications());
   };
 
-  const handleRefresh = () => {
-    return dispatch(expandNotifications());
-  };
+  const handleRefresh = () => dispatch(expandNotifications());
 
   useEffect(() => {
     handleDequeueNotifications();

@@ -21,12 +21,10 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
   uploadProgress = 0,
   ...rest
 }) => {
-  const handleDeleteAttachment = (i: number) => {
-    return () => {
-      if (onDeleteAttachment) {
-        onDeleteAttachment(i);
-      }
-    };
+  const handleDeleteAttachment = (i: number) => () => {
+    if (onDeleteAttachment) {
+      onDeleteAttachment(i);
+    }
   };
 
   return (

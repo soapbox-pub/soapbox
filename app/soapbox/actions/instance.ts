@@ -14,7 +14,7 @@ const getMeUrl = (state: RootState) => {
 };
 
 /** Figure out the appropriate instance to fetch depending on the state */
-export const getHost = (state: RootState) => {
+const getHost = (state: RootState) => {
   const accountUrl = getMeUrl(state) || getAuthUserUrl(state) as string;
 
   try {
@@ -24,11 +24,9 @@ export const getHost = (state: RootState) => {
   }
 };
 
-export const rememberInstance = createAsyncThunk(
+const rememberInstance = createAsyncThunk(
   'instance/remember',
-  async(host: string) => {
-    return await KVStore.getItemOrError(`instance:${host}`);
-  },
+  async(host: string) => await KVStore.getItemOrError(`instance:${host}`),
 );
 
 /** We may need to fetch nodeinfo on Pleroma < 2.1 */
@@ -37,7 +35,7 @@ const needsNodeinfo = (instance: Record<string, any>): boolean => {
   return v.software === 'Pleroma' && !get(instance, ['pleroma', 'metadata']);
 };
 
-export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
+const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
   'instance/fetch',
   async(_arg, { dispatch, getState, rejectWithValue }) => {
     try {
@@ -53,7 +51,7 @@ export const fetchInstance = createAsyncThunk<void, void, { state: RootState }>(
 );
 
 /** Tries to remember the instance from browser storage before fetching it */
-export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
+const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
   'instance/load',
   async(_arg, { dispatch, getState }) => {
     const host = getHost(getState());
@@ -64,7 +62,15 @@ export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
   },
 );
 
-export const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
+const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
   'nodeinfo/fetch',
   async(_arg, { getState }) => await api(getState).get('/nodeinfo/2.1.json'),
 );
+
+export {
+  getHost,
+  rememberInstance,
+  fetchInstance,
+  loadInstance,
+  fetchNodeinfo,
+};

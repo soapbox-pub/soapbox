@@ -42,11 +42,10 @@ export const PollOptionRecord = ImmutableRecord({
 });
 
 // Normalize emojis
-const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
-  return entity.update('emojis', ImmutableList(), emojis => {
-    return emojis.map(normalizeEmoji);
-  });
-};
+const normalizeEmojis = (entity: ImmutableMap<string, any>) =>
+  entity.update('emojis', ImmutableList(), emojis =>
+    emojis.map(normalizeEmoji),
+  );
 
 const normalizePollOption = (option: ImmutableMap<string, any> | string, emojis: ImmutableList<ImmutableMap<string, string>> = ImmutableList()) => {
   const emojiMap = makeEmojiMap(emojis);
@@ -71,27 +70,26 @@ const normalizePollOption = (option: ImmutableMap<string, any> | string, emojis:
 const normalizePollOptions = (poll: ImmutableMap<string, any>) => {
   const emojis = poll.get('emojis');
 
-  return poll.update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
-    return options.map(option => normalizePollOption(option, emojis));
-  });
+  return poll.update(
+    'options',
+    (options: ImmutableList<ImmutableMap<string, any>>) => options.map(option => normalizePollOption(option, emojis)),
+  );
 };
 
 // Normalize own_votes to `null` if empty (like Mastodon)
-const normalizePollOwnVotes = (poll: ImmutableMap<string, any>) => {
-  return poll.update('own_votes', ownVotes => {
-    return ownVotes?.size > 0 ? ownVotes : null;
-  });
-};
+const normalizePollOwnVotes = (poll: ImmutableMap<string, any>) =>
+  poll.update('own_votes', ownVotes =>
+    ownVotes?.size > 0 ? ownVotes : null,
+  );
 
 // Whether the user voted in the poll
-const normalizePollVoted = (poll: ImmutableMap<string, any>) => {
-  return poll.update('voted', voted => {
-    return typeof voted === 'boolean' ? voted : poll.get('own_votes')?.size > 0;
-  });
-};
+const normalizePollVoted = (poll: ImmutableMap<string, any>) =>
+  poll.update('voted', voted =>
+    typeof voted === 'boolean' ? voted : poll.get('own_votes')?.size > 0,
+  );
 
-export const normalizePoll = (poll: Record<string, any>) => {
-  return PollRecord(
+export const normalizePoll = (poll: Record<string, any>) =>
+  PollRecord(
     ImmutableMap(fromJS(poll)).withMutations((poll: ImmutableMap<string, any>) => {
       normalizeEmojis(poll);
       normalizePollOptions(poll);
@@ -99,4 +97,3 @@ export const normalizePoll = (poll: Record<string, any>) => {
       normalizePollVoted(poll);
     }),
   );
-};

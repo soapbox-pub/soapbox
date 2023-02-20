@@ -35,24 +35,18 @@ const fetchBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => 
     .catch(error => dispatch(fetchBlocksFail(error)));
 };
 
-function fetchBlocksRequest() {
-  return { type: BLOCKS_FETCH_REQUEST };
-}
+const fetchBlocksRequest = () => ({ type: BLOCKS_FETCH_REQUEST });
 
-function fetchBlocksSuccess(accounts: any, next: any) {
-  return {
-    type: BLOCKS_FETCH_SUCCESS,
-    accounts,
-    next,
-  };
-}
+const fetchBlocksSuccess = (accounts: any, next: any) => ({
+  type: BLOCKS_FETCH_SUCCESS,
+  accounts,
+  next,
+});
 
-function fetchBlocksFail(error: AxiosError) {
-  return {
-    type: BLOCKS_FETCH_FAIL,
-    error,
-  };
-}
+const fetchBlocksFail = (error: AxiosError) => ({
+  type: BLOCKS_FETCH_FAIL,
+  error,
+});
 
 const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
@@ -77,26 +71,20 @@ const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () =>
     .catch(error => dispatch(expandBlocksFail(error)));
 };
 
-function expandBlocksRequest() {
-  return {
-    type: BLOCKS_EXPAND_REQUEST,
-  };
-}
+const expandBlocksRequest = () => ({
+  type: BLOCKS_EXPAND_REQUEST,
+});
 
-function expandBlocksSuccess(accounts: any, next: any) {
-  return {
-    type: BLOCKS_EXPAND_SUCCESS,
-    accounts,
-    next,
-  };
-}
+const expandBlocksSuccess = (accounts: any, next: any) => ({
+  type: BLOCKS_EXPAND_SUCCESS,
+  accounts,
+  next,
+});
 
-function expandBlocksFail(error: AxiosError) {
-  return {
-    type: BLOCKS_EXPAND_FAIL,
-    error,
-  };
-}
+const expandBlocksFail = (error: AxiosError) => ({
+  type: BLOCKS_EXPAND_FAIL,
+  error,
+});
 
 export {
   fetchBlocks,

@@ -318,33 +318,26 @@ const Audio: React.FC<IAudio> = (props) => {
     visualizer.current?.draw(_getCX(), _getCY(), _getAccentColor(), _getRadius(), _getScaleCoefficient());
   };
 
-  const _getRadius = (): number => {
-    return ((height || props.height || 0) - (PADDING * _getScaleCoefficient()) * 2) / 2;
-  };
+  const _getRadius = (): number =>
+    ((height || props.height || 0) - (PADDING * _getScaleCoefficient()) * 2) / 2;
 
-  const _getScaleCoefficient = (): number => {
-    return (height || props.height || 0) / 982;
-  };
+  const _getScaleCoefficient = (): number =>
+    (height || props.height || 0) / 982;
 
-  const _getCX = (): number => {
-    return Math.floor((width || 0) / 2);
-  };
+  const _getCX = (): number =>
+    Math.floor((width || 0) / 2);
 
-  const _getCY = (): number => {
-    return Math.floor(_getRadius() + (PADDING * _getScaleCoefficient()));
-  };
+  const _getCY = (): number =>
+    Math.floor(_getRadius() + (PADDING * _getScaleCoefficient()));
 
-  const _getAccentColor = (): string => {
-    return accentColor || '#ffffff';
-  };
+  const _getAccentColor = (): string =>
+    accentColor || '#ffffff';
 
-  const _getBackgroundColor = (): string => {
-    return backgroundColor || '#000000';
-  };
+  const _getBackgroundColor = (): string =>
+    backgroundColor || '#000000';
 
-  const _getForegroundColor = (): string => {
-    return foregroundColor || '#ffffff';
-  };
+  const _getForegroundColor = (): string =>
+    foregroundColor || '#ffffff';
 
   const seekBy = (time: number) => {
     if (audio.current) {

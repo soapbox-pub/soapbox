@@ -169,9 +169,7 @@ const dequeueNotifications = () =>
     dispatch(markReadNotifications());
   };
 
-const excludeTypesFromFilter = (filter: string) => {
-  return NOTIFICATION_TYPES.filter(item => item !== filter);
-};
+const excludeTypesFromFilter = (filter: string) => NOTIFICATION_TYPES.filter(item => item !== filter);
 
 const noOp = () => new Promise(f => f(undefined));
 
@@ -298,9 +296,8 @@ const setFilter = (filterType: string) =>
 // Of course Markers don't work properly in Pleroma.
 // https://git.pleroma.social/pleroma/pleroma/-/issues/2769
 const markReadPleroma = (max_id: string | number) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    return api(getState).post('/api/v1/pleroma/notifications/read', { max_id });
-  };
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState).post('/api/v1/pleroma/notifications/read', { max_id });
 
 const markReadNotifications = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {

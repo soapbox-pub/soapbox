@@ -53,12 +53,11 @@ type State = ReturnType<typeof ReducerRecord>;
 type APIEntities = Array<APIEntity>;
 export type SearchFilter = 'accounts' | 'statuses' | 'groups' | 'hashtags';
 
-const toIds = (items: APIEntities = []) => {
-  return ImmutableOrderedSet(items.map(item => item.id));
-};
+const toIds = (items: APIEntities = []) =>
+  ImmutableOrderedSet(items.map(item => item.id));
 
-const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter) => {
-  return state.withMutations(state => {
+const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter) =>
+  state.withMutations(state => {
     if (state.value === searchTerm && state.filter === searchType) {
       state.set('results', ResultsRecord({
         accounts: toIds(results.accounts),
@@ -78,10 +77,9 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
       state.set('submitted', true);
     }
   });
-};
 
-const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string) => {
-  return state.withMutations(state => {
+const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string) =>
+  state.withMutations(state => {
     if (state.value === searchTerm) {
       state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
       state.setIn(['results', `${searchType}Loaded`], true);
@@ -96,15 +94,13 @@ const paginateResults = (state: State, searchType: SearchFilter, results: APIEnt
       });
     }
   });
-};
 
-const handleSubmitted = (state: State, value: string) => {
-  return state.withMutations(state => {
+const handleSubmitted = (state: State, value: string) =>
+  state.withMutations(state => {
     state.set('results', ResultsRecord());
     state.set('submitted', true);
     state.set('submittedValue', value);
   });
-};
 
 export default function search(state = ReducerRecord(), action: AnyAction) {
   switch (action.type) {

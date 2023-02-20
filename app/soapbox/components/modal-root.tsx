@@ -20,23 +20,21 @@ const messages = defineMessages({
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
-export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>) => {
-  return !!compose && [
+export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>) =>
+  !!compose && [
     compose.text.length > 0,
     compose.spoiler_text.length > 0,
     compose.media_attachments.size > 0,
     compose.poll !== null,
   ].some(check => check === true);
-};
 
-export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComposeEvent>) => {
-  return !!compose && [
+export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComposeEvent>) =>
+  !!compose && [
     compose.name.length > 0,
     compose.status.length > 0,
     compose.location !== null,
     compose.banner !== null,
   ].some(check => check === true);
-};
 
 interface IModalRoot {
   onCancel?: () => void
@@ -180,9 +178,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     }
   };
 
-  const getSiblings = () => {
-    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[])).filter(node => node !== ref.current);
-  };
+  const getSiblings = () => Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[])).filter(node => node !== ref.current);
 
   useEffect(() => {
     if (!visible) return;

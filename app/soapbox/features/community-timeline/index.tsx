@@ -26,9 +26,7 @@ const CommunityTimeline = () => {
     dispatch(expandCommunityTimeline({ maxId, onlyMedia }));
   };
 
-  const handleRefresh = () => {
-    return dispatch(expandCommunityTimeline({ onlyMedia } as any));
-  };
+  const handleRefresh = () => dispatch(expandCommunityTimeline({ onlyMedia } as any));
 
   useEffect(() => {
     dispatch(expandCommunityTimeline({ onlyMedia } as any));

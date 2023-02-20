@@ -43,13 +43,11 @@ interface IDashCounters {
 }
 
 /** Wrapper container for dash counters. */
-const DashCounters: React.FC<IDashCounters> = ({ children }) => {
-  return (
-    <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3'>
-      {children}
-    </div>
-  );
-};
+const DashCounters: React.FC<IDashCounters> = ({ children }) => (
+  <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3'>
+    {children}
+  </div>
+);
 
 export {
   DashCounter,

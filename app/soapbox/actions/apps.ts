@@ -10,17 +10,18 @@ import { baseClient } from '../api';
 
 import type { AnyAction } from 'redux';
 
-export const APP_CREATE_REQUEST = 'APP_CREATE_REQUEST';
-export const APP_CREATE_SUCCESS = 'APP_CREATE_SUCCESS';
-export const APP_CREATE_FAIL    = 'APP_CREATE_FAIL';
+const APP_CREATE_REQUEST = 'APP_CREATE_REQUEST';
+const APP_CREATE_SUCCESS = 'APP_CREATE_SUCCESS';
+const APP_CREATE_FAIL    = 'APP_CREATE_FAIL';
 
-export const APP_VERIFY_CREDENTIALS_REQUEST = 'APP_VERIFY_CREDENTIALS_REQUEST';
-export const APP_VERIFY_CREDENTIALS_SUCCESS = 'APP_VERIFY_CREDENTIALS_SUCCESS';
-export const APP_VERIFY_CREDENTIALS_FAIL    = 'APP_VERIFY_CREDENTIALS_FAIL';
+const APP_VERIFY_CREDENTIALS_REQUEST = 'APP_VERIFY_CREDENTIALS_REQUEST';
+const APP_VERIFY_CREDENTIALS_SUCCESS = 'APP_VERIFY_CREDENTIALS_SUCCESS';
+const APP_VERIFY_CREDENTIALS_FAIL    = 'APP_VERIFY_CREDENTIALS_FAIL';
 
-export function createApp(params?: Record<string, string>, baseURL?: string) {
-  return (dispatch: React.Dispatch<AnyAction>) => {
+const createApp = (params?: Record<string, string>, baseURL?: string) =>
+  (dispatch: React.Dispatch<AnyAction>) => {
     dispatch({ type: APP_CREATE_REQUEST, params });
+
     return baseClient(null, baseURL).post('/api/v1/apps', params).then(({ data: app }) => {
       dispatch({ type: APP_CREATE_SUCCESS, params, app });
       return app as Record<string, string>;
@@ -29,11 +30,11 @@ export function createApp(params?: Record<string, string>, baseURL?: string) {
       throw error;
     });
   };
-}
 
-export function verifyAppCredentials(token: string) {
-  return (dispatch: React.Dispatch<AnyAction>) => {
+const verifyAppCredentials = (token: string) =>
+  (dispatch: React.Dispatch<AnyAction>) => {
     dispatch({ type: APP_VERIFY_CREDENTIALS_REQUEST, token });
+
     return baseClient(token).get('/api/v1/apps/verify_credentials').then(({ data: app }) => {
       dispatch({ type: APP_VERIFY_CREDENTIALS_SUCCESS, token, app });
       return app;
@@ -42,4 +43,14 @@ export function verifyAppCredentials(token: string) {
       throw error;
     });
   };
-}
+
+export {
+  APP_CREATE_REQUEST,
+  APP_CREATE_SUCCESS,
+  APP_CREATE_FAIL,
+  APP_VERIFY_CREDENTIALS_REQUEST,
+  APP_VERIFY_CREDENTIALS_SUCCESS,
+  APP_VERIFY_CREDENTIALS_FAIL,
+  createApp,
+  verifyAppCredentials,
+};
