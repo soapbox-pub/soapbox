@@ -99,7 +99,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     return (
       <HStack alignItems='center' space={0.5}>
         <Icon
-          src={require('@tabler/icons/ballon.svg')}
+          src={require('@tabler/icons/balloon.svg')}
           className='h-4 w-4 text-gray-800 dark:text-gray-200'
         />
 
