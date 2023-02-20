@@ -113,7 +113,7 @@ const SidebarNavigation = () => {
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/home.svg')}
-          text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
+          text={<FormattedMessage id='tabs_bar.home' defaultMessage='For you' />}
         />
 
         <SidebarNavigationLink

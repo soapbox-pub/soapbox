@@ -131,7 +131,7 @@ const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
           <tbody>
             <tr>
               <TableCell><Hotkey>g</Hotkey> + <Hotkey>h</Hotkey></TableCell>
-              <TableCell><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open your timeline' /></TableCell>
             </tr>
             <tr>
               <TableCell><Hotkey>g</Hotkey> + <Hotkey>n</Hotkey></TableCell>
