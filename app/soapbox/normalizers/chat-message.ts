@@ -50,11 +50,21 @@ const normalizeChatMessageEmojiReaction = (chatMessage: ImmutableMap<string, any
   }
 };
 
+/** Rewrite `<p></p>` to empty string. */
+const fixContent = (chatMessage: ImmutableMap<string, any>) => {
+  if (chatMessage.get('content') === '<p></p>') {
+    return chatMessage.set('content', '');
+  } else {
+    return chatMessage;
+  }
+};
+
 export const normalizeChatMessage = (chatMessage: Record<string, any>) => {
   return ChatMessageRecord(
     ImmutableMap(fromJS(chatMessage)).withMutations(chatMessage => {
       normalizeMedia(chatMessage);
       normalizeChatMessageEmojiReaction(chatMessage);
+      fixContent(chatMessage);
     }),
   );
 };

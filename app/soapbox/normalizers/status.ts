@@ -205,6 +205,15 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
   }
 };
 
+/** Rewrite `<p></p>` to empty string. */
+const fixContent = (status: ImmutableMap<string, any>) => {
+  if (status.get('content') === '<p></p>') {
+    return status.set('content', '');
+  } else {
+    return status;
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -219,6 +228,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixFiltered(status);
       fixSensitivity(status);
       normalizeEvent(status);
+      fixContent(status);
     }),
   );
 };
