@@ -7,10 +7,10 @@ import { Map as ImmutableMap, fromJS } from 'immutable';
 import { z } from 'zod';
 
 export const AttachmentSchema = z.object({
-  blurhash: z.string().optional(),
-  description: z.string().default(''),
+  blurhash: z.string().nullish().transform(v => v || ''),
+  description: z.string().nullish().transform(v => v || ''),
   external_video_id: z.string().nullable().default(null), // TruthSocial
-  id: z.string().default(''),
+  id: z.string(),
   meta: z.any().transform(v => ImmutableMap(fromJS(v))).default(ImmutableMap()),
   pleroma: z.object({
     mime_type: z.string().default('application/octet-stream'),
@@ -24,8 +24,8 @@ export const AttachmentSchema = z.object({
 
   // Internal fields
   // TODO: Remove these? They're set in selectors/index.js
-  account: z.any(),
-  status: z.any(),
+  account: z.any().default({}),
+  status: z.any().default({}),
 }).transform(attachment => {
   const url = [
     attachment.url,

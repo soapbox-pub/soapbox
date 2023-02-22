@@ -27,7 +27,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
     if (attachment.type === 'video') {
       dispatch(openModal('VIDEO', { media: attachment, status: attachment.status }));
     } else {
-      const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
+      const media = attachment.status.media_attachments as ImmutableList<Attachment>;
       const index = media.findIndex(x => x.id === attachment.id);
 
       dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
@@ -46,7 +46,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
   }, [account?.id]);
 
   const renderAttachments = () => {
-    const publicAttachments = attachments.filter(attachment => attachment.getIn(['status', 'visibility']) === 'public');
+    const publicAttachments = attachments.filter(attachment => attachment.status.visibility === 'public');
     const nineAttachments = publicAttachments.slice(0, 9);
 
     if (!nineAttachments.isEmpty()) {
@@ -54,7 +54,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
         <div className='grid grid-cols-3 gap-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
-              key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
+              key={`${attachment.status.id}+${attachment.id}`}
               attachment={attachment}
               onOpenMedia={handleOpenMedia}
             />

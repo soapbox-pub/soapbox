@@ -27,7 +27,7 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
     if (attachment.type === 'video') {
       dispatch(openModal('VIDEO', { media: attachment, status: attachment.status }));
     } else {
-      const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
+      const media = attachment.status.media_attachments as ImmutableList<Attachment>;
       const index = media.findIndex(x => x.id === attachment.id);
 
       dispatch(openModal('MEDIA', { media, index, status: attachment.status, account: attachment.account }));
@@ -53,7 +53,7 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
         <div className='grid grid-cols-3 gap-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
-              key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
+              key={`${attachment.status.id}+${attachment.id}`}
               attachment={attachment}
               onOpenMedia={handleOpenMedia}
             />

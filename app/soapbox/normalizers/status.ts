@@ -86,9 +86,8 @@ export const StatusRecord = ImmutableRecord({
 });
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
-  return status.update('media_attachments', ImmutableList(), attachments => {
-    return attachments.map(normalizeAttachment);
-  });
+  const attachments = status.get('media_attachments', ImmutableList());
+  return status.set('media_attachments', attachments.map((a: any) => normalizeAttachment(a.toJS())));
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {
@@ -190,8 +189,8 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
       mediaAttachments = mediaAttachments.shift();
     }
 
-    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') === 'text/html');
-    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') !== 'text/html');
+    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.mime_type === 'text/html');
+    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.mime_type !== 'text/html');
 
     const event = EventRecord(
       (status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>)

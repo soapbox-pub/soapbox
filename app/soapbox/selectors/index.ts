@@ -213,7 +213,7 @@ export const getAccountGallery = createSelector([
     const account = accounts.get(status.account);
 
     return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
+      status.media_attachments.map(media => ({ ...media, status, account })));
   }, ImmutableList());
 });
 
@@ -232,7 +232,7 @@ export const getGroupGallery = createSelector([
     const account = accounts.get(status.account);
 
     return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
+      status.media_attachments.map(media => ({ ...media, status, account })));
   }, ImmutableList());
 });
 

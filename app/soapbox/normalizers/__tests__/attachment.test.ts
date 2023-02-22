@@ -2,7 +2,7 @@ import { normalizeAttachment } from '../attachment';
 
 describe('normalizeAttachment()', () => {
   it('adds base fields', () => {
-    const attachment = {};
+    const attachment = { id: '1' };
     const result = normalizeAttachment(attachment);
 
     expect(result.type).toEqual('unknown');
@@ -10,7 +10,7 @@ describe('normalizeAttachment()', () => {
   });
 
   it('infers preview_url from url', () => {
-    const attachment = { url: 'https://site.fedi/123.png' };
+    const attachment = { id: '1', url: 'https://site.fedi/123.png' };
     const result = normalizeAttachment(attachment);
 
     expect(result.preview_url).toEqual('https://site.fedi/123.png');

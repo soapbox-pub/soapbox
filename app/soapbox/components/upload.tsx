@@ -138,12 +138,12 @@ const Upload: React.FC<IUpload> = ({
   const x = focusX ? ((focusX /  2) + .5) * 100 : undefined;
   const y = focusY ? ((focusY / -2) + .5) * 100 : undefined;
   const mediaType = media.type;
-  const mimeType = media.pleroma.get('mime_type') as string | undefined;
+  const mimeType = media.pleroma.mime_type;
 
   const uploadIcon = mediaType === 'unknown' && (
     <Icon
       className='mx-auto my-12 h-16 w-16 text-gray-800 dark:text-gray-200'
-      src={MIMETYPE_ICONS[mimeType || ''] || defaultIcon}
+      src={MIMETYPE_ICONS[mimeType]}
     />
   );
 

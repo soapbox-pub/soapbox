@@ -5,10 +5,7 @@ import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 
 import type { Attachment } from 'soapbox/types/entities';
 
-const defaultIcon = require('@tabler/icons/paperclip.svg');
-
 interface IChatUploadPreview {
-  className?: string
   attachment: Attachment
 }
 
@@ -16,9 +13,7 @@ interface IChatUploadPreview {
  * Displays a generic preview for an upload depending on its media type.
  * It fills its container and is expected to be sized by its parent.
  */
-const ChatUploadPreview: React.FC<IChatUploadPreview> = ({ className, attachment }) => {
-  const mimeType = attachment.pleroma.get('mime_type') as string | undefined;
-
+const ChatUploadPreview: React.FC<IChatUploadPreview> = ({ attachment }) => {
   switch (attachment.type) {
     case 'image':
     case 'gifv':
@@ -46,7 +41,7 @@ const ChatUploadPreview: React.FC<IChatUploadPreview> = ({ className, attachment
         <div className='pointer-events-none flex h-full w-full items-center justify-center'>
           <Icon
             className='mx-auto my-12 h-16 w-16 text-gray-800 dark:text-gray-200'
-            src={MIMETYPE_ICONS[mimeType || ''] || defaultIcon}
+            src={MIMETYPE_ICONS[attachment.pleroma.mime_type]}
           />
         </div>
       );
