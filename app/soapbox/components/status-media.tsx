@@ -10,6 +10,7 @@ import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { List as ImmutableList } from 'immutable';
+import type AudioType from 'soapbox/features/audio';
 import type VideoType from 'soapbox/features/video';
 import type { Status, Attachment } from 'soapbox/types/entities';
 
@@ -81,8 +82,8 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
       if (video.external_video_id && status.card) {
         const getHeight = (): number => {
-          const width = Number(video.meta.getIn(['original', 'width']));
-          const height = Number(video.meta.getIn(['original', 'height']));
+          const width = Number(video.meta.original?.width);
+          const height = Number(video.meta.original?.height);
           return Number(mediaWrapperWidth) / (width / height);
         };
 
@@ -109,7 +110,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
                 blurhash={video.blurhash}
                 src={video.url}
                 alt={video.description}
-                aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
+                aspectRatio={video.meta.original?.aspect}
                 height={285}
                 visible={showMedia}
                 inline
@@ -123,15 +124,15 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
       media = (
         <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer}>
-          {(Component: any) => (
+          {(Component: typeof AudioType) => (
             <Component
               src={attachment.url}
               alt={attachment.description}
-              poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static'])}
-              backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-              foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-              accentColor={attachment.meta.getIn(['colors', 'accent'])}
-              duration={attachment.meta.getIn(['original', 'duration'], 0)}
+              poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static']) as string}
+              backgroundColor={attachment.meta.colors?.background}
+              foregroundColor={attachment.meta.colors?.foreground}
+              accentColor={attachment.meta.colors?.accent}
+              duration={attachment.meta.original?.duration}
               height={263}
             />
           )}

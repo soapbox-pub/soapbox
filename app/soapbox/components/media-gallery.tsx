@@ -41,7 +41,7 @@ const withinLimits = (aspectRatio: number) => {
 };
 
 const shouldLetterbox = (attachment: Attachment): boolean => {
-  const aspectRatio = attachment.meta.getIn(['original', 'aspect']) as number | undefined;
+  const aspectRatio = attachment.meta.original?.aspect;
   if (!aspectRatio) return true;
 
   return !withinLimits(aspectRatio);

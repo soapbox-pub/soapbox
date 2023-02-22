@@ -3,24 +3,45 @@
  * Converts API attachments into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/Attachment/}
  */
-import { Map as ImmutableMap, fromJS } from 'immutable';
 import { z } from 'zod';
 
 export const AttachmentSchema = z.object({
-  blurhash: z.string().nullish().transform(v => v || ''),
-  description: z.string().nullish().transform(v => v || ''),
-  external_video_id: z.string().nullable().default(null), // TruthSocial
+  blurhash: z.string().catch(''),
+  description: z.string().catch(''),
+  external_video_id: z.string().nullable().catch(null), // TruthSocial
   id: z.string(),
-  meta: z.any().transform(v => ImmutableMap(fromJS(v))).default(ImmutableMap()),
+  meta: z.object({
+    original: z.object({
+      width: z.number(),
+      height: z.number(),
+      aspect: z.number().optional(),
+      duration: z.number().optional().catch(undefined),
+    }).transform(size => ({
+      ...size,
+      aspect: size.aspect ?? (size.width / size.height),
+    })).optional().catch(undefined),
+    focus: z.object({
+      x: z.number(),
+      y: z.number(),
+    }).optional().catch({
+      x: 0,
+      y: 0,
+    }),
+    colors: z.object({
+      background: z.string(),
+      foreground: z.string(),
+      accent: z.string(),
+    }).optional().catch(undefined),
+  }).catch({}),
   pleroma: z.object({
-    mime_type: z.string().default('application/octet-stream'),
-  }).default({
+    mime_type: z.string(),
+  }).catch({
     mime_type: 'application/octet-stream',
   }),
-  preview_url: z.string().default(''),
-  remote_url: z.string().nullable().default(null),
-  type: z.string().default('unknown'),
-  url: z.string().default(''),
+  preview_url: z.string().catch(''),
+  remote_url: z.string().nullable().catch(null),
+  type: z.string().catch('unknown'),
+  url: z.string().catch(''),
 
   // Internal fields
   // TODO: Remove these? They're set in selectors/index.js

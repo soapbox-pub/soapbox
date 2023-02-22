@@ -133,8 +133,8 @@ const Upload: React.FC<IUpload> = ({
 
   const active = hovered || focused;
   const description = dirtyDescription || (dirtyDescription !== '' && media.description) || '';
-  const focusX = media.meta.getIn(['focus', 'x']) as number | undefined;
-  const focusY = media.meta.getIn(['focus', 'y']) as number | undefined;
+  const focusX = media.meta.focus?.x;
+  const focusY = media.meta.focus?.y;
   const x = focusX ? ((focusX /  2) + .5) * 100 : undefined;
   const y = focusY ? ((focusY / -2) + .5) * 100 : undefined;
   const mediaType = media.type;

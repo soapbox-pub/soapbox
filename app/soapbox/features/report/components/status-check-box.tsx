@@ -42,7 +42,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
                 blurhash={video.blurhash}
                 src={video.url}
                 alt={video.description}
-                aspectRatio={video.meta.getIn(['original', 'aspect'])}
+                aspectRatio={video.meta.original?.aspect}
                 width={239}
                 height={110}
                 inline

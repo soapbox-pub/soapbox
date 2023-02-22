@@ -61,8 +61,8 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   if (attachment.type === 'unknown') {
     // Skip
   } else if (attachment.type === 'image') {
-    const focusX = Number(attachment.meta.getIn(['focus', 'x'])) || 0;
-    const focusY = Number(attachment.meta.getIn(['focus', 'y'])) || 0;
+    const focusX = Number(attachment.meta.focus?.x) || 0;
+    const focusY = Number(attachment.meta.focus?.y) || 0;
     const x = ((focusX /  2) + .5) * 100;
     const y = ((focusY / -2) + .5) * 100;
 

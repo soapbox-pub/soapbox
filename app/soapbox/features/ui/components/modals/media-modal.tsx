@@ -161,8 +161,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
 
   const content = media.map((attachment, i) => {
-    const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
-    const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
+    const width  = attachment.meta.original?.width;
+    const height = attachment.meta.original?.height;
 
     const link = (status && (
       <a href={status.url} onClick={handleStatusClick}>
@@ -205,10 +205,10 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           src={attachment.url}
           alt={attachment.description}
           poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status?.getIn(['account', 'avatar_static'])) as string | undefined}
-          backgroundColor={attachment.meta.getIn(['colors', 'background']) as string | undefined}
-          foregroundColor={attachment.meta.getIn(['colors', 'foreground']) as string | undefined}
-          accentColor={attachment.meta.getIn(['colors', 'accent']) as string | undefined}
-          duration={attachment.meta.getIn(['original', 'duration'], 0) as number | undefined}
+          backgroundColor={attachment.meta.colors?.background}
+          foregroundColor={attachment.meta.colors?.foreground}
+          accentColor={attachment.meta.colors?.accent}
+          duration={attachment.meta.original?.duration}
           key={attachment.url}
         />
       );
