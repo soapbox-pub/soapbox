@@ -87,7 +87,7 @@ export const StatusRecord = ImmutableRecord({
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
   const attachments = status.get('media_attachments', ImmutableList());
-  return status.set('media_attachments', attachments.map((a: any) => normalizeAttachment(a.toJS())));
+  return status.set('media_attachments', attachments.map(normalizeAttachment));
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {

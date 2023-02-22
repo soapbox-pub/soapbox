@@ -9,7 +9,7 @@ export const AttachmentSchema = z.object({
   blurhash: z.string().catch(''),
   description: z.string().catch(''),
   external_video_id: z.string().nullable().catch(null), // TruthSocial
-  id: z.string(),
+  id: z.string().catch(''),
   meta: z.object({
     original: z.object({
       width: z.number(),
@@ -61,5 +61,5 @@ export const AttachmentSchema = z.object({
 });
 
 export const normalizeAttachment = (attachment: Record<string, any>) => {
-  return AttachmentSchema.parse(attachment);
+  return AttachmentSchema.parse('toJS' in attachment ? attachment.toJS() : attachment);
 };

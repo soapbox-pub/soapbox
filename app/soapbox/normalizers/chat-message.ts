@@ -32,9 +32,9 @@ const normalizeMedia = (status: ImmutableMap<string, any>) => {
   const attachment = status.get('attachment');
 
   if (attachments) {
-    return status.set('media_attachments', ImmutableList(attachments.map((a: any) => normalizeAttachment(a.toJS()))));
+    return status.set('media_attachments', ImmutableList(attachments.map(normalizeAttachment)));
   } else if (attachment) {
-    return status.set('media_attachments', ImmutableList([normalizeAttachment(attachment.toJS())]));
+    return status.set('media_attachments', ImmutableList([normalizeAttachment(attachment)]));
   } else {
     return status.set('media_attachments', ImmutableList());
   }
