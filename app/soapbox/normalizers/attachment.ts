@@ -1,63 +1,44 @@
 /**
  * Attachment normalizer:
  * Converts API attachments into our internal format.
- * @see {@link https://docs.joinmastodon.org/entities/attachment/}
+ * @see {@link https://docs.joinmastodon.org/entities/Attachment/}
  */
-import {
-  Map as ImmutableMap,
-  Record as ImmutableRecord,
-  fromJS,
-} from 'immutable';
+import { Map as ImmutableMap, fromJS } from 'immutable';
+import { z } from 'zod';
 
-import { mergeDefined } from 'soapbox/utils/normalizers';
-
-// https://docs.joinmastodon.org/entities/attachment/
-export const AttachmentRecord = ImmutableRecord({
-  blurhash: undefined,
-  description: '',
-  external_video_id: null as string | null, // TruthSocial
-  id: '',
-  meta: ImmutableMap(),
-  pleroma: ImmutableMap(),
-  preview_url: '',
-  remote_url: null as string | null,
-  type: 'unknown',
-  url: '',
+export const AttachmentSchema = z.object({
+  blurhash: z.string().optional(),
+  description: z.string().default(''),
+  external_video_id: z.string().nullable().default(null), // TruthSocial
+  id: z.string().default(''),
+  meta: z.any().transform(v => ImmutableMap(fromJS(v))).default(ImmutableMap()),
+  pleroma: z.object({
+    mime_type: z.string().default('application/octet-stream'),
+  }).default({
+    mime_type: 'application/octet-stream',
+  }),
+  preview_url: z.string().default(''),
+  remote_url: z.string().nullable().default(null),
+  type: z.string().default('unknown'),
+  url: z.string().default(''),
 
   // Internal fields
   // TODO: Remove these? They're set in selectors/index.js
-  account: null as any,
-  status: null as any,
+  account: z.any(),
+  status: z.any(),
+}).transform(attachment => {
+  const url = [
+    attachment.url,
+    attachment.preview_url,
+    attachment.remote_url,
+  ].find(Boolean) || '';
+
+  attachment.url = attachment.url || url;
+  attachment.preview_url = attachment.preview_url || url;
+
+  return attachment;
 });
 
-// Ensure attachments have required fields
-const normalizeUrls = (attachment: ImmutableMap<string, any>) => {
-  const url = [
-    attachment.get('url'),
-    attachment.get('preview_url'),
-    attachment.get('remote_url'),
-  ].find(url => url) || '';
-
-  const base = ImmutableMap({
-    url,
-    preview_url: url,
-  });
-
-  return attachment.mergeWith(mergeDefined, base);
-};
-
-// Ensure meta is not null
-const normalizeMeta = (attachment: ImmutableMap<string, any>) => {
-  const meta = ImmutableMap().merge(attachment.get('meta'));
-
-  return attachment.set('meta', meta);
-};
-
 export const normalizeAttachment = (attachment: Record<string, any>) => {
-  return AttachmentRecord(
-    ImmutableMap(fromJS(attachment)).withMutations((attachment: ImmutableMap<string, any>) => {
-      normalizeUrls(attachment);
-      normalizeMeta(attachment);
-    }),
-  );
+  return AttachmentSchema.parse(attachment);
 };

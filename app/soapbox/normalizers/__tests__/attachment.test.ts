@@ -1,5 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
-
 import { normalizeAttachment } from '../attachment';
 
 describe('normalizeAttachment()', () => {
@@ -7,7 +5,6 @@ describe('normalizeAttachment()', () => {
     const attachment = {};
     const result = normalizeAttachment(attachment);
 
-    expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(result.type).toEqual('unknown');
     expect(result.url).toEqual('');
   });

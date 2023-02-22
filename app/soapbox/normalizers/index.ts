@@ -3,7 +3,7 @@ export { AdminAccountRecord, normalizeAdminAccount } from './admin-account';
 export { AdminReportRecord, normalizeAdminReport } from './admin-report';
 export { AnnouncementRecord, normalizeAnnouncement } from './announcement';
 export { AnnouncementReactionRecord, normalizeAnnouncementReaction } from './announcement-reaction';
-export { AttachmentRecord, normalizeAttachment } from './attachment';
+export { AttachmentSchema, normalizeAttachment } from './attachment';
 export { CardRecord, normalizeCard } from './card';
 export { ChatRecord, normalizeChat } from './chat';
 export { ChatMessageRecord, normalizeChatMessage } from './chat-message';

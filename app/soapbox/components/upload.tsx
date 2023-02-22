@@ -52,6 +52,7 @@ export const MIMETYPE_ICONS: Record<string, string> = {
   'application/x-abiword': fileTextIcon,
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': fileTextIcon,
   'application/vnd.oasis.opendocument.text': fileTextIcon,
+  'application/octet-stream': defaultIcon,
 };
 
 const messages = defineMessages({

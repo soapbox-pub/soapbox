@@ -1,10 +1,12 @@
+import { z } from 'zod';
+
 import {
   AdminAccountRecord,
   AdminReportRecord,
   AccountRecord,
   AnnouncementRecord,
   AnnouncementReactionRecord,
-  AttachmentRecord,
+  AttachmentSchema,
   CardRecord,
   ChatRecord,
   ChatMessageRecord,
@@ -36,7 +38,7 @@ type AdminLog = ReturnType<typeof LogEntryRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Announcement = ReturnType<typeof AnnouncementRecord>;
 type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
-type Attachment = ReturnType<typeof AttachmentRecord>;
+type Attachment = z.infer<typeof AttachmentSchema>;
 type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;

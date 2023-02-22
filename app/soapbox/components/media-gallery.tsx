@@ -41,7 +41,7 @@ const withinLimits = (aspectRatio: number) => {
 };
 
 const shouldLetterbox = (attachment: Attachment): boolean => {
-  const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']) as number | undefined;
+  const aspectRatio = attachment.meta.getIn(['original', 'aspect']) as number | undefined;
   if (!aspectRatio) return true;
 
   return !withinLimits(aspectRatio);
@@ -147,7 +147,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <Icon
         className='h-16 w-16 text-gray-800 dark:text-gray-200'
-        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/paperclip.svg')}
+        src={MIMETYPE_ICONS[attachment.pleroma.mime_type]}
       />
     );
 
