@@ -277,7 +277,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
 
     const idempotencyKey = compose.idempotencyKey;
 
-    const params = {
+    const params: Record<string, any> = {
       status,
       in_reply_to_id: compose.in_reply_to,
       quote_id: compose.quote,
@@ -289,8 +289,9 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       poll: compose.poll,
       scheduled_at: compose.schedule,
       to,
-      group_id: compose.privacy === 'group' ? compose.group_id : null,
     };
+
+    if (compose.privacy === 'group') params.group_id = compose.group_id;
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
