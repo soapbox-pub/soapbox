@@ -12,14 +12,11 @@ export const AttachmentSchema = z.object({
   id: z.string().catch(''),
   meta: z.object({
     original: z.object({
-      width: z.number(),
-      height: z.number(),
-      aspect: z.number().optional(),
+      width: z.number().optional().catch(undefined),
+      height: z.number().optional().catch(undefined),
+      aspect: z.number().optional().catch(undefined),
       duration: z.number().optional().catch(undefined),
-    }).transform(size => ({
-      ...size,
-      aspect: size.aspect ?? (size.width / size.height),
-    })).optional().catch(undefined),
+    }).optional(),
     focus: z.object({
       x: z.number(),
       y: z.number(),
