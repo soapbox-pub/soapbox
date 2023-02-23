@@ -2,13 +2,13 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { markConversationRead } from 'soapbox/actions/conversations';
-import StatusContainer from 'soapbox/containers/status_container';
+import StatusContainer from 'soapbox/containers/status-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 interface IConversation {
-  conversationId: string,
-  onMoveUp: (id: string) => void,
-  onMoveDown: (id: string) => void,
+  conversationId: string
+  onMoveUp: (id: string) => void
+  onMoveDown: (id: string) => void
 }
 
 const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMoveDown }) => {

@@ -1,16 +1,15 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
-import { Avatar, Button, Form, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -24,14 +23,11 @@ const messages = defineMessages({
 });
 
 const Navbar = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
-
-  const node = useRef(null);
-
+  const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
-  const soapboxConfig = useSoapboxConfig();
-  const singleUserMode = soapboxConfig.get('singleUserMode');
+  const node = useRef(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -67,48 +63,49 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-slate-800 shadow z-50 sticky top-0' ref={node}>
-      <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
-        <div className='relative flex justify-between h-12 lg:h-16'>
+    <nav className='sticky top-0 z-50 bg-white shadow dark:bg-primary-900' ref={node} data-testid='navbar'>
+      <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+        <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden'>
+            <div className='absolute inset-y-0 left-0 flex items-center rtl:right-0 rtl:left-auto lg:hidden'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
             </div>
           )}
 
-          <div
-            className={classNames({
-              'flex-1 flex items-center lg:items-stretch space-x-4': true,
+          <HStack
+            space={4}
+            alignItems='center'
+            className={clsx('enter flex-1 lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
           >
-            <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-              <SiteLogo alt='Logo' className='h-5 lg:h-6 w-auto cursor-pointer' />
+            <Link key='logo' to='/' data-preview-title-id='column.home' className='ml-4 flex shrink-0 items-center'>
+              <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
               <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
             </Link>
 
             {account && (
-              <div className='flex-1 hidden lg:flex justify-center px-2 lg:ml-6 lg:justify-start items-center'>
-                <div className='max-w-xl w-full lg:max-w-xs hidden lg:block'>
+              <div className='hidden flex-1 items-center justify-center px-2 lg:ml-6 lg:flex lg:justify-start'>
+                <div className='hidden w-full max-w-xl lg:block lg:max-w-xs'>
                   <Search openInRoute autosuggest />
                 </div>
               </div>
             )}
-          </div>
+          </HStack>
 
-          <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>
+          <HStack space={3} alignItems='center' className='absolute inset-y-0 right-0 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0'>
             {account ? (
-              <div className='hidden relative lg:flex items-center'>
+              <div className='relative hidden items-center lg:flex'>
                 <ProfileDropdown account={account}>
                   <Avatar src={account.avatar} size={34} />
                 </ProfileDropdown>
               </div>
             ) : (
               <>
-                <Form className='hidden lg:flex space-x-2 items-center' onSubmit={handleSubmit}>
+                <Form className='hidden items-center space-x-2 rtl:space-x-reverse lg:flex' onSubmit={handleSubmit}>
                   <Input
                     required
                     value={username}
@@ -131,8 +128,8 @@ const Navbar = () => {
                     <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                       <IconButton
                         src={require('@tabler/icons/help.svg')}
-                        className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'
-                        iconClassName='w-5 h-5'
+                        className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
+                        iconClassName='h-5 w-5'
                       />
                     </Tooltip>
                   </Link>
@@ -147,11 +144,11 @@ const Navbar = () => {
                 </Form>
 
                 <div className='space-x-1.5 lg:hidden'>
-                  <Button theme='secondary' to='/login' size='sm'>
+                  <Button theme='tertiary' to='/login' size='sm'>
                     <FormattedMessage id='account.login' defaultMessage='Log In' />
                   </Button>
 
-                  {!singleUserMode && (
+                  {isOpen && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>
@@ -159,7 +156,7 @@ const Navbar = () => {
                 </div>
               </>
             )}
-          </div>
+          </HStack>
         </div>
       </div>
     </nav>

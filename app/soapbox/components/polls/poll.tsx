@@ -13,12 +13,12 @@ import PollOption from './poll-option';
 export type Selected = Record<number, boolean>;
 
 interface IPoll {
-  id: string,
-  status?: string,
+  id: string
+  status?: string
 }
 
 const messages = defineMessages({
-  multiple: { id: 'poll.chooseMultiple', defaultMessage: 'Choose as many as you\'d like.' },
+  multiple: { id: 'poll.choose_multiple', defaultMessage: 'Choose as many as you\'d like.' },
 });
 
 const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {

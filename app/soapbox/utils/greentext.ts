@@ -1,4 +1,4 @@
-import { processHtml } from './tiny_post_html_processor';
+import { processHtml } from './tiny-post-html-processor';
 
 export const addGreentext = (html: string): string => {
   // Copied from Pleroma FE
@@ -11,7 +11,7 @@ export const addGreentext = (html: string): string => {
             .replace(/@\w+/gi, '') // remove mentions (even failed ones)
             .trim()
             .startsWith('&gt;')) {
-        return `<span class='greentext'>${string}</span>`;
+        return `<span class='text-greentext'>${string}</span>`;
       } else {
         return string;
       }

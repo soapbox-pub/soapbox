@@ -4,11 +4,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { CardHeader, CardTitle, Column, HStack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Account from './components/account';
 import Search from './components/search';
@@ -22,22 +20,20 @@ const messages = defineMessages({
   delete: { id: 'column.aliases.delete', defaultMessage: 'Delete' },
 });
 
-const getAccount = makeGetAccount();
-
 const Aliases = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
+  const account = useOwnAccount();
 
   const aliases = useAppSelector((state) => {
-    const me = state.me as string;
-    const account = getAccount(state, me);
-
-    const instance = state.instance;
-    const features = getFeatures(instance);
-
-    if (features.accountMoving) return state.aliases.aliases.items;
-    return account!.pleroma.get('also_known_as');
+    if (features.accountMoving) {
+      return state.aliases.aliases.items;
+    } else {
+      return account!.pleroma.get('also_known_as');
+    }
   }) as ImmutableList<string>;
+
   const searchAccountIds = useAppSelector((state) => state.aliases.suggestions.items);
   const loaded = useAppSelector((state) => state.aliases.suggestions.loaded);
 
@@ -63,7 +59,7 @@ const Aliases = () => {
             <FormattedMessage id='empty_column.aliases.suggestions' defaultMessage='There are no account suggestions available for the provided term.' />
           </div>
         ) : (
-          <div className='aliases__accounts'>
+          <div className='aliases__accounts mb-4'>
             {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} aliases={aliases} />)}
           </div>
         )
@@ -84,7 +80,7 @@ const Aliases = () => {
                 <Text tag='span'>{alias}</Text>
               </div>
               <div className='flex items-center' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>
-                <Icon className='pr-1.5 text-lg' id='times' size={40} />
+                <Icon className='mr-1.5' src={require('@tabler/icons/x.svg')} />
                 <Text weight='bold' theme='muted'><FormattedMessage id='aliases.aliases_list_delete' defaultMessage='Unlink alias' /></Text>
               </div>
             </HStack>

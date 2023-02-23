@@ -16,8 +16,8 @@ for (const [key, emoji] of Object.entries(data.emojis)) {
 }
 
 export interface searchOptions {
-  maxResults?: number;
-  custom?: any,
+  maxResults?: number
+  custom?: any
 }
 
 export const addCustomToPool = (customEmojis: any[]) => {

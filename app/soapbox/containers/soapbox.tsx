@@ -1,43 +1,59 @@
 'use strict';
 
-import classNames from 'classnames';
+import { QueryClientProvider } from '@tanstack/react-query';
+import clsx from 'clsx';
 import React, { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
+
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import * as BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build-config';
+import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import AuthLayout from 'soapbox/features/auth_layout';
-import PublicLayout from 'soapbox/features/public_layout';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { StatProvider } from 'soapbox/contexts/stat-context';
+import AuthLayout from 'soapbox/features/auth-layout';
+import EmbeddedStatus from 'soapbox/features/embedded-status';
+import PublicLayout from 'soapbox/features/public-layout';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
-  NotificationsContainer,
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useAppDispatch, useOwnAccount, useFeatures, useSoapboxConfig, useSettings, useSystemTheme } from 'soapbox/hooks';
+import {
+  useAppSelector,
+  useAppDispatch,
+  useOwnAccount,
+  useFeatures,
+  useSoapboxConfig,
+  useSettings,
+  useTheme,
+  useLocale,
+  useInstance,
+  useRegistrationStatus,
+} from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
+import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
-import ErrorBoundary from '../components/error_boundary';
+import ErrorBoundary from '../components/error-boundary';
 import UI from '../features/ui';
 import { store } from '../store';
-
-/** Ensure the given locale exists in our codebase */
-const validLocale = (locale: string): boolean => Object.keys(MESSAGES).includes(locale);
 
 // Configure global functions for developers
 createGlobals(store);
@@ -72,81 +88,23 @@ const loadInitial = () => {
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
   useCachedLocationHandler();
-  const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
-  const instance = useAppSelector(state => state.instance);
+  const instance = useInstance();
   const account = useOwnAccount();
-  const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
-  const swUpdating = useAppSelector(state => state.meta.swUpdating);
-
-  const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
+  const { pepeEnabled } = useRegistrationStatus();
 
   const waitlisted = account && !account.source.get('approved', true);
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
-  const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
-
-  const [messages, setMessages] = useState<Record<string, string>>({});
-  const [localeLoading, setLocaleLoading] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const systemTheme = useSystemTheme();
-  const userTheme = settings.get('themeMode');
-  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-
-  const themeCss = generateThemeCss(soapboxConfig);
-
-  // Load the user's locale
-  useEffect(() => {
-    MESSAGES[locale]().then(messages => {
-      setMessages(messages);
-      setLocaleLoading(false);
-    }).catch(() => { });
-  }, [locale]);
-
-  // Load initial data from the API
-  useEffect(() => {
-    dispatch(loadInitial()).then(() => {
-      setIsLoaded(true);
-    }).catch(() => {
-      setIsLoaded(true);
-    });
-  }, []);
+  const { redirectRootNoLogin } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
-
-  /** Whether to display a loading indicator. */
-  const showLoading = [
-    me === null,
-    me && !account,
-    !isLoaded,
-    localeLoading,
-    swUpdating,
-  ].some(Boolean);
-
-  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base h-full', {
-    'no-reduce-motion': !settings.get('reduceMotion'),
-    'underline-links': settings.get('underlineLinks'),
-    'dyslexic': settings.get('dyslexicFont'),
-    'demetricator': settings.get('demetricator'),
-  });
-
-  const helmet = (
-    <Helmet>
-      <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
-      <body className={bodyClass} />
-      {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-      {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
-      <meta name='theme-color' content={soapboxConfig.brandColor} />
-    </Helmet>
-  );
 
   /** Render the onboarding flow. */
   const renderOnboarding = () => (
@@ -177,8 +135,8 @@ const SoapboxMount = () => {
         />
       )}
 
-      {!me && (singleUserMode
-        ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+      {!me && (redirectRootNoLogin
+        ? <Redirect exact from='/' to={redirectRootNoLogin} />
         : <Route exact path='/' component={PublicLayout} />)}
 
       {!me && (
@@ -186,7 +144,6 @@ const SoapboxMount = () => {
       )}
 
       <Route exact path='/about/:slug?' component={PublicLayout} />
-      <Route exact path='/mobile/:slug?' component={PublicLayout} />
       <Route path='/login' component={AuthLayout} />
 
       {(features.accountCreation && instance.registrations) && (
@@ -214,46 +171,140 @@ const SoapboxMount = () => {
     }
   };
 
+  return (
+    <ErrorBoundary>
+      <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
+        <CompatRouter>
+          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+            <Switch>
+              <Route
+                path='/embed/:statusId'
+                render={(props) => <EmbeddedStatus params={props.match.params} />}
+              />
+              <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
+
+              <Route>
+                {renderBody()}
+
+                <BundleContainer fetchComponent={ModalContainer}>
+                  {Component => <Component />}
+                </BundleContainer>
+
+                <GdprBanner />
+                <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
+              </Route>
+            </Switch>
+          </ScrollContext>
+        </CompatRouter>
+      </BrowserRouter>
+    </ErrorBoundary>
+  );
+};
+
+interface ISoapboxLoad {
+  children: React.ReactNode
+}
+
+/** Initial data loader. */
+const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
+  const dispatch = useAppDispatch();
+
+  const me = useAppSelector(state => state.me);
+  const account = useOwnAccount();
+  const swUpdating = useAppSelector(state => state.meta.swUpdating);
+  const { locale } = useLocale();
+
+  const [messages, setMessages] = useState<Record<string, string>>({});
+  const [localeLoading, setLocaleLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  /** Whether to display a loading indicator. */
+  const showLoading = [
+    me === null,
+    me && !account,
+    !isLoaded,
+    localeLoading,
+    swUpdating,
+  ].some(Boolean);
+
+  // Load the user's locale
+  useEffect(() => {
+    MESSAGES[locale]().then(messages => {
+      setMessages(messages);
+      setLocaleLoading(false);
+    }).catch(() => { });
+  }, [locale]);
+
+  // Load initial data from the API
+  useEffect(() => {
+    dispatch(loadInitial()).then(() => {
+      setIsLoaded(true);
+    }).catch(() => {
+      setIsLoaded(true);
+    });
+  }, []);
+
   // intl is part of loading.
   // It's important nothing in here depends on intl.
   if (showLoading) {
-    return (
-      <>
-        {helmet}
-        <LoadingScreen />
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   return (
     <IntlProvider locale={locale} messages={messages}>
-      {helmet}
-      <ErrorBoundary>
-        <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
-          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            <>
-              {renderBody()}
-
-              <BundleContainer fetchComponent={NotificationsContainer}>
-                {(Component) => <Component />}
-              </BundleContainer>
-
-              <BundleContainer fetchComponent={ModalContainer}>
-                {Component => <Component />}
-              </BundleContainer>
-            </>
-          </ScrollContext>
-        </BrowserRouter>
-      </ErrorBoundary>
+      {children}
     </IntlProvider>
   );
 };
 
+interface ISoapboxHead {
+  children: React.ReactNode
+}
+
+/** Injects metadata into site head with Helmet. */
+const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
+  const { locale, direction } = useLocale();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
+
+  const demo = !!settings.get('demo');
+  const darkMode = useTheme() === 'dark';
+  const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
+
+  const bodyClass = clsx('h-full bg-white text-base dark:bg-gray-800', {
+    'no-reduce-motion': !settings.get('reduceMotion'),
+    'underline-links': settings.get('underlineLinks'),
+    'demetricator': settings.get('demetricator'),
+  });
+
+  return (
+    <>
+      <Helmet>
+        <html lang={locale} className={clsx('h-full', { dark: darkMode })} />
+        <body className={bodyClass} dir={direction} />
+        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
+        <meta name='theme-color' content={soapboxConfig.brandColor} />
+      </Helmet>
+
+      {children}
+    </>
+  );
+};
+
 /** The root React node of the application. */
-const Soapbox = () => {
+const Soapbox: React.FC = () => {
   return (
     <Provider store={store}>
-      <SoapboxMount />
+      <QueryClientProvider client={queryClient}>
+        <StatProvider>
+          <SoapboxHead>
+            <SoapboxLoad>
+              <SoapboxMount />
+            </SoapboxLoad>
+          </SoapboxHead>
+        </StatProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };

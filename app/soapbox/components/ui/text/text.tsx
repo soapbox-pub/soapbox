@@ -1,21 +1,11 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
-
-type Themes = 'default' | 'danger' | 'primary' | 'muted' | 'subtle' | 'success' | 'inherit' | 'white'
-type Weights = 'normal' | 'medium' | 'semibold' | 'bold'
-type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
-type Alignments = 'left' | 'center' | 'right'
-type TrackingSizes = 'normal' | 'wide'
-type TransformProperties = 'uppercase' | 'normal'
-type Families = 'sans' | 'mono'
-type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label'
-type Directions = 'ltr' | 'rtl'
 
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
   danger: 'text-danger-600',
-  primary: 'text-primary-600 dark:text-primary-400',
-  muted: 'text-gray-500 dark:text-gray-300',
+  primary: 'text-primary-600 dark:text-accent-blue',
+  muted: 'text-gray-700 dark:text-gray-600',
   subtle: 'text-gray-400 dark:text-gray-500',
   success: 'text-success-600',
   inherit: 'text-inherit',
@@ -32,7 +22,7 @@ const weights = {
 const sizes = {
   xs: 'text-xs',
   sm: 'text-sm',
-  md: 'text-base',
+  md: 'text-base leading-5',
   lg: 'text-lg',
   xl: 'text-xl',
   '2xl': 'text-2xl',
@@ -60,36 +50,44 @@ const families = {
   mono: 'font-mono',
 };
 
-interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML'> {
+export type Sizes = keyof typeof sizes
+type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'div' | 'blockquote'
+type Directions = 'ltr' | 'rtl'
+
+interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML' | 'tabIndex' | 'lang'> {
+  /** Text content. */
+  children?: React.ReactNode
   /** How to align the text. */
-  align?: Alignments,
+  align?: keyof typeof alignments
   /** Extra class names for the outer element. */
-  className?: string,
+  className?: string
   /** Text direction. */
-  direction?: Directions,
+  direction?: Directions
   /** Typeface of the text. */
-  family?: Families,
+  family?: keyof typeof families
   /** The "for" attribute specifies which form element a label is bound to. */
-  htmlFor?: string,
+  htmlFor?: string
   /** Font size of the text. */
-  size?: Sizes,
+  size?: Sizes
   /** HTML element name of the outer element. */
-  tag?: Tags,
+  tag?: Tags
   /** Theme for the text. */
-  theme?: Themes,
+  theme?: keyof typeof themes
   /** Letter-spacing of the text. */
-  tracking?: TrackingSizes,
+  tracking?: keyof typeof trackingSizes
   /** Transform (eg uppercase) for the text. */
-  transform?: TransformProperties,
+  transform?: keyof typeof transformProperties
   /** Whether to truncate the text if its container is too small. */
-  truncate?: boolean,
+  truncate?: boolean
   /** Font weight of the text. */
-  weight?: Weights
+  weight?: keyof typeof weights
+  /** Tooltip title. */
+  title?: string
 }
 
 /** UI-friendly text container with dark mode support. */
-const Text: React.FC<IText> = React.forwardRef(
-  (props: IText, ref: React.LegacyRef<any>) => {
+const Text = React.forwardRef<any, IText>(
+  (props, ref) => {
     const {
       align,
       className,
@@ -117,7 +115,7 @@ const Text: React.FC<IText> = React.forwardRef(
           textDecoration: tag === 'abbr' ? 'underline dotted' : undefined,
           direction,
         }}
-        className={classNames({
+        className={clsx({
           'cursor-default': tag === 'abbr',
           truncate: truncate,
           [sizes[size]]: true,
@@ -133,4 +131,7 @@ const Text: React.FC<IText> = React.forwardRef(
   },
 );
 
-export default Text;
+export {
+  Text as default,
+  IText,
+};

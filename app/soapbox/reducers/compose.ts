@@ -7,13 +7,12 @@ import { PLEROMA } from 'soapbox/utils/features';
 import { hasIntegerMediaIds } from 'soapbox/utils/status';
 
 import {
-  COMPOSE_MOUNT,
-  COMPOSE_UNMOUNT,
   COMPOSE_CHANGE,
   COMPOSE_REPLY,
   COMPOSE_REPLY_CANCEL,
   COMPOSE_QUOTE,
   COMPOSE_QUOTE_CANCEL,
+  COMPOSE_GROUP_POST,
   COMPOSE_DIRECT,
   COMPOSE_MENTION,
   COMPOSE_SUBMIT_REQUEST,
@@ -29,7 +28,6 @@ import {
   COMPOSE_SUGGESTION_SELECT,
   COMPOSE_SUGGESTION_TAGS_UPDATE,
   COMPOSE_TAG_HISTORY_UPDATE,
-  COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
   COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
@@ -52,6 +50,7 @@ import {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
+  COMPOSE_EVENT_REPLY,
 } from '../actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
@@ -66,6 +65,7 @@ import type {
   APIEntity,
   Attachment as AttachmentEntity,
   Status as StatusEntity,
+  Tag,
 } from 'soapbox/types/entities';
 
 const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
@@ -76,13 +76,11 @@ const PollRecord = ImmutableRecord({
   multiple: false,
 });
 
-export const ReducerRecord = ImmutableRecord({
+export const ReducerCompose = ImmutableRecord({
   caretPosition: null as number | null,
   content_type: 'text/plain',
-  default_content_type: 'text/plain',
-  default_privacy: 'public',
-  default_sensitive: false,
   focusDate: null as Date | null,
+  group_id: null as string | null,
   idempotencyKey: '',
   id: null as string | null,
   in_reply_to: null as string | null,
@@ -91,7 +89,6 @@ export const ReducerRecord = ImmutableRecord({
   is_submitting: false,
   is_uploading: false,
   media_attachments: ImmutableList<AttachmentEntity>(),
-  mounted: 0,
   poll: null as Poll | null,
   privacy: 'public',
   progress: 0,
@@ -101,17 +98,18 @@ export const ReducerRecord = ImmutableRecord({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
-  suggestions: ImmutableList(),
+  suggestions: ImmutableList<string>(),
   suggestion_token: null as string | null,
   tagHistory: ImmutableList<string>(),
   text: '',
-  to: null as ImmutableOrderedSet<string> | null,
+  to: ImmutableOrderedSet<string>(),
 });
 
-type State = ReturnType<typeof ReducerRecord>;
+type State = ImmutableMap<string, Compose>;
+type Compose = ReturnType<typeof ReducerCompose>;
 type Poll = ReturnType<typeof PollRecord>;
 
-const statusToTextMentions = (state: State, status: ImmutableMap<string, any>, account: AccountEntity) => {
+const statusToTextMentions = (status: ImmutableMap<string, any>, account: AccountEntity) => {
   const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions')?.map((m: ImmutableMap<string, any>) => m.get('acct')) || [];
 
@@ -140,51 +138,25 @@ export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: A
     .delete(account.id) as ImmutableOrderedSet<string>;
 };
 
-function clearAll(state: State) {
-  return ReducerRecord({
-    content_type: state.default_content_type,
-    privacy: state.default_privacy,
-    idempotencyKey: uuid(),
-  });
-  // state.withMutations(map => {
-  //   map.set('id', null);
-  //   map.set('text', '');
-  //   map.set('to', ImmutableOrderedSet());
-  //   map.set('spoiler', false);
-  //   map.set('spoiler_text', '');
-  //   map.set('content_type', state.COMPOSE_SUBMIT_SUCCESS);
-  //   map.set('is_submitting', false);
-  //   map.set('is_changing_upload', false);
-  //   map.set('in_reply_to', null);
-  //   map.set('quote', null);
-  //   map.set('privacy', state.default_privacy);
-  //   map.set('sensitive', false);
-  //   map.set('media_attachments', ImmutableList());
-  //   map.set('poll', null);
-  //   map.set('idempotencyKey', uuid());
-  //   map.set('schedule', null);
-  // });
-}
+const appendMedia = (compose: Compose, media: APIEntity, defaultSensitive?: boolean) => {
+  const prevSize = compose.media_attachments.size;
 
-function appendMedia(state: State, media: APIEntity) {
-  const prevSize = state.media_attachments.size;
-
-  return state.withMutations(map => {
+  return compose.withMutations(map => {
     map.update('media_attachments', list => list.push(normalizeAttachment(media)));
     map.set('is_uploading', false);
     map.set('resetFileKey', Math.floor((Math.random() * 0x10000)));
     map.set('idempotencyKey', uuid());
 
-    if (prevSize === 0 && (state.default_sensitive || state.spoiler)) {
+    if (prevSize === 0 && (defaultSensitive || compose.spoiler)) {
       map.set('sensitive', true);
     }
   });
-}
+};
 
-function removeMedia(state: State, mediaId: string) {
-  const prevSize = state.media_attachments.size;
+const removeMedia = (compose: Compose, mediaId: string) => {
+  const prevSize = compose.media_attachments.size;
 
-  return state.withMutations(map => {
+  return compose.withMutations(map => {
     map.update('media_attachments', list => list.filterNot(item => item.id === mediaId));
     map.set('idempotencyKey', uuid());
 
@@ -192,10 +164,10 @@ function removeMedia(state: State, mediaId: string) {
       map.set('sensitive', false);
     }
   });
-}
+};
 
-const insertSuggestion = (state: State, position: number, token: string, completion: string, path: Array<string | number>) => {
-  return state.withMutations(map => {
+const insertSuggestion = (compose: Compose, position: number, token: string, completion: string, path: Array<string | number>) => {
+  return compose.withMutations(map => {
     map.updateIn(path, oldText => `${(oldText as string).slice(0, position)}${completion} ${(oldText as string).slice(position + token.length)}`);
     map.set('suggestion_token', null);
     map.set('suggestions', ImmutableList());
@@ -207,24 +179,24 @@ const insertSuggestion = (state: State, position: number, token: string, complet
   });
 };
 
-const updateSuggestionTags = (state: State, token: string) => {
+const updateSuggestionTags = (compose: Compose, token: string, currentTrends: ImmutableList<Tag>) => {
   const prefix = token.slice(1);
 
-  return state.merge({
-    suggestions: state.tagHistory
-      .filter(tag => tag.toLowerCase().startsWith(prefix.toLowerCase()))
+  return compose.merge({
+    suggestions: ImmutableList(currentTrends
+      .filter((tag) => tag.get('name').toLowerCase().startsWith(prefix.toLowerCase()))
       .slice(0, 4)
-      .map(tag => '#' + tag),
+      .map((tag) => '#' + tag.name)),
     suggestion_token: token,
   });
 };
 
-const insertEmoji = (state: State, position: number, emojiData: Emoji, needsSpace: boolean) => {
-  const oldText = state.text;
+const insertEmoji = (compose: Compose, position: number, emojiData: Emoji, needsSpace: boolean) => {
+  const oldText = compose.text;
   const emojiText = isNativeEmoji(emojiData) ? emojiData.native : emojiData.colons;
   const emoji = needsSpace ? ' ' + emojiText : emojiText;
 
-  return state.merge({
+  return compose.merge({
     text: `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`,
     focusDate: new Date(),
     caretPosition: position + emoji.length + 1,
@@ -234,6 +206,9 @@ const insertEmoji = (state: State, position: number, emojiData: Emoji, needsSpac
 
 const privacyPreference = (a: string, b: string) => {
   const order = ['public', 'unlisted', 'private', 'direct'];
+
+  if (a === 'group') return a;
+
   return order[Math.max(order.indexOf(a), order.indexOf(b), 0)];
 };
 
@@ -265,182 +240,191 @@ const getAccountSettings = (account: ImmutableMap<string, any>) => {
   return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap()) as ImmutableMap<string, any>;
 };
 
-const importAccount = (state: State, account: APIEntity) => {
+const importAccount = (compose: Compose, account: APIEntity) => {
   const settings = getAccountSettings(ImmutableMap(fromJS(account)));
 
   const defaultPrivacy = settings.get('defaultPrivacy', 'public');
   const defaultContentType = settings.get('defaultContentType', 'text/plain');
 
-  return state.merge({
-    default_privacy: defaultPrivacy,
+  return compose.merge({
     privacy: defaultPrivacy,
-    default_content_type: defaultContentType,
     content_type: defaultContentType,
     tagHistory: ImmutableList(tagHistory.get(account.id)),
   });
 };
 
-const updateAccount = (state: State, account: APIEntity) => {
+const updateAccount = (compose: Compose, account: APIEntity) => {
   const settings = getAccountSettings(ImmutableMap(fromJS(account)));
 
   const defaultPrivacy = settings.get('defaultPrivacy');
   const defaultContentType = settings.get('defaultContentType');
 
-  return state.withMutations(state => {
-    if (defaultPrivacy) state.set('default_privacy', defaultPrivacy);
-    if (defaultContentType) state.set('default_content_type', defaultContentType);
+  return compose.withMutations(compose => {
+    if (defaultPrivacy) compose.set('privacy', defaultPrivacy);
+    if (defaultContentType) compose.set('content_type', defaultContentType);
   });
 };
 
-const updateSetting = (state: State, path: string[], value: string) => {
+const updateSetting = (compose: Compose, path: string[], value: string) => {
   const pathString = path.join(',');
   switch (pathString) {
     case 'defaultPrivacy':
-      return state.set('default_privacy', value).set('privacy', value);
+      return compose.set('privacy', value);
     case 'defaultContentType':
-      return state.set('default_content_type', value).set('content_type', value);
+      return compose.set('content_type', value);
     default:
-      return state;
+      return compose;
   }
 };
 
-export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }), action: AnyAction) {
-  switch (action.type) {
-    case COMPOSE_MOUNT:
-      return state.set('mounted', state.mounted + 1);
-    case COMPOSE_UNMOUNT:
-      return state
-        .set('mounted', Math.max(state.mounted - 1, 0))
-        .set('is_composing', false);
-    case COMPOSE_SENSITIVITY_CHANGE:
-      return state.withMutations(map => {
-        if (!state.spoiler) {
-          map.set('sensitive', !state.sensitive);
-        }
+const updateCompose = (state: State, key: string, updater: (compose: Compose) => Compose) =>
+  state.update(key, state.get('default')!, updater);
 
-        map.set('idempotencyKey', uuid());
-      });
+export const initialState: State = ImmutableMap({
+  default: ReducerCompose({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }),
+});
+
+export default function compose(state = initialState, action: AnyAction) {
+  switch (action.type) {
     case COMPOSE_TYPE_CHANGE:
-      return state.withMutations(map => {
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('content_type', action.value);
         map.set('idempotencyKey', uuid());
-      });
+      }));
     case COMPOSE_SPOILERNESS_CHANGE:
-      return state.withMutations(map => {
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('spoiler_text', '');
-        map.set('spoiler', !state.spoiler);
+        map.set('spoiler', !compose.spoiler);
+        map.set('sensitive', !compose.spoiler);
         map.set('idempotencyKey', uuid());
-
-        if (!state.sensitive && state.media_attachments.size >= 1) {
-          map.set('sensitive', true);
-        }
-      });
+      }));
     case COMPOSE_SPOILER_TEXT_CHANGE:
-      return state
+      return updateCompose(state, action.id, compose => compose
         .set('spoiler_text', action.text)
-        .set('idempotencyKey', uuid());
+        .set('idempotencyKey', uuid()));
     case COMPOSE_VISIBILITY_CHANGE:
-      return state
+      return updateCompose(state, action.id, compose => compose
         .set('privacy', action.value)
-        .set('idempotencyKey', uuid());
+        .set('idempotencyKey', uuid()));
     case COMPOSE_CHANGE:
-      return state
+      return updateCompose(state, action.id, compose => compose
         .set('text', action.text)
-        .set('idempotencyKey', uuid());
+        .set('idempotencyKey', uuid()));
     case COMPOSE_COMPOSING_CHANGE:
-      return state.set('is_composing', action.value);
+      return updateCompose(state, action.id, compose => compose.set('is_composing', action.value));
     case COMPOSE_REPLY:
-      return state.withMutations(map => {
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
+        const defaultCompose = state.get('default')!;
+
+        map.set('group_id', action.status.getIn(['group', 'id']) || action.status.get('group'));
         map.set('in_reply_to', action.status.get('id'));
         map.set('to', action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : ImmutableOrderedSet<string>());
-        map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
-        map.set('privacy', privacyPreference(action.status.visibility, state.default_privacy));
+        map.set('text', !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '');
+        map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
-        map.set('content_type', state.default_content_type);
-
-        if (action.status.get('spoiler_text', '').length > 0) {
-          map.set('spoiler', true);
-          map.set('spoiler_text', action.status.spoiler_text);
-        } else {
-          map.set('spoiler', false);
-          map.set('spoiler_text', '');
-        }
-      });
+        map.set('content_type', defaultCompose.content_type);
+      }));
+    case COMPOSE_EVENT_REPLY:
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
+        map.set('in_reply_to', action.status.get('id'));
+        map.set('to', statusToMentionsArray(action.status, action.account));
+        map.set('idempotencyKey', uuid());
+      }));
     case COMPOSE_QUOTE:
-      return state.withMutations(map => {
+      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
+        const author = action.status.getIn(['account', 'acct']);
+        const defaultCompose = state.get('default')!;
+
         map.set('quote', action.status.get('id'));
-        map.set('to', null);
+        map.set('to', ImmutableOrderedSet([author]));
         map.set('text', '');
-        map.set('privacy', privacyPreference(action.status.visibility, state.default_privacy));
+        map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
-        map.set('content_type', state.default_content_type);
+        map.set('content_type', defaultCompose.content_type);
         map.set('spoiler', false);
         map.set('spoiler_text', '');
-      });
+      }));
     case COMPOSE_SUBMIT_REQUEST:
-      return state.set('is_submitting', true);
+      return updateCompose(state, action.id, compose => compose.set('is_submitting', true));
     case COMPOSE_UPLOAD_CHANGE_REQUEST:
-      return state.set('is_changing_upload', true);
+      return updateCompose(state, action.id, compose => compose.set('is_changing_upload', true));
     case COMPOSE_REPLY_CANCEL:
     case COMPOSE_QUOTE_CANCEL:
     case COMPOSE_RESET:
     case COMPOSE_SUBMIT_SUCCESS:
-      return clearAll(state);
+      return updateCompose(state, action.id, () => state.get('default')!.withMutations(map => {
+        map.set('idempotencyKey', uuid());
+        map.set('in_reply_to', action.id.startsWith('reply:') ? action.id.slice(6) : null);
+        if (action.id.startsWith('group:')) {
+          map.set('privacy', 'group');
+          map.set('group_id', action.id.slice(6));
+        }
+      }));
     case COMPOSE_SUBMIT_FAIL:
-      return state.set('is_submitting', false);
+      return updateCompose(state, action.id, compose => compose.set('is_submitting', false));
     case COMPOSE_UPLOAD_CHANGE_FAIL:
-      return state.set('is_changing_upload', false);
+      return updateCompose(state, action.composeId, compose => compose.set('is_changing_upload', false));
     case COMPOSE_UPLOAD_REQUEST:
-      return state.set('is_uploading', true);
+      return updateCompose(state, action.id, compose => compose.set('is_uploading', true));
     case COMPOSE_UPLOAD_SUCCESS:
-      return appendMedia(state, fromJS(action.media));
+      return updateCompose(state, action.id, compose => appendMedia(compose, fromJS(action.media), state.get('default')!.sensitive));
     case COMPOSE_UPLOAD_FAIL:
-      return state.set('is_uploading', false);
+      return updateCompose(state, action.id, compose => compose.set('is_uploading', false));
     case COMPOSE_UPLOAD_UNDO:
-      return removeMedia(state, action.media_id);
+      return updateCompose(state, action.id, compose => removeMedia(compose, action.media_id));
     case COMPOSE_UPLOAD_PROGRESS:
-      return state.set('progress', Math.round((action.loaded / action.total) * 100));
+      return updateCompose(state, action.id, compose => compose.set('progress', Math.round((action.loaded / action.total) * 100)));
     case COMPOSE_MENTION:
-      return state.withMutations(map => {
+      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
         map.update('text', text => [text.trim(), `@${action.account.get('acct')} `].filter((str) => str.length !== 0).join(' '));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
-      });
+      }));
     case COMPOSE_DIRECT:
-      return state.withMutations(map => {
+      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
         map.update('text', text => [text.trim(), `@${action.account.get('acct')} `].filter((str) => str.length !== 0).join(' '));
         map.set('privacy', 'direct');
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
-      });
+      }));
+    case COMPOSE_GROUP_POST:
+      return updateCompose(state, action.id, compose => compose.withMutations(map => {
+        map.set('privacy', 'group');
+        map.set('group_id', action.group_id);
+        map.set('focusDate', new Date());
+        map.set('caretPosition', null);
+        map.set('idempotencyKey', uuid());
+      }));
     case COMPOSE_SUGGESTIONS_CLEAR:
-      return state.update('suggestions', list => list.clear()).set('suggestion_token', null);
+      return updateCompose(state, action.id, compose => compose.update('suggestions', list => list?.clear()).set('suggestion_token', null));
     case COMPOSE_SUGGESTIONS_READY:
-      return state.set('suggestions', ImmutableList(action.accounts ? action.accounts.map((item: APIEntity) => item.id) : action.emojis)).set('suggestion_token', action.token);
+      return updateCompose(state, action.id, compose => compose.set('suggestions', ImmutableList(action.accounts ? action.accounts.map((item: APIEntity) => item.id) : action.emojis)).set('suggestion_token', action.token));
     case COMPOSE_SUGGESTION_SELECT:
-      return insertSuggestion(state, action.position, action.token, action.completion, action.path);
+      return updateCompose(state, action.id, compose => insertSuggestion(compose, action.position, action.token, action.completion, action.path));
     case COMPOSE_SUGGESTION_TAGS_UPDATE:
-      return updateSuggestionTags(state, action.token);
+      return updateCompose(state, action.id, compose => updateSuggestionTags(compose, action.token, action.currentTrends));
     case COMPOSE_TAG_HISTORY_UPDATE:
-      return state.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>);
+      return updateCompose(state, action.id, compose => compose.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>));
     case TIMELINE_DELETE:
-      if (action.id === state.in_reply_to) {
-        return state.set('in_reply_to', null);
-      } if (action.id === state.quote) {
-        return state.set('quote', null);
-      } else {
-        return state;
-      }
+      return updateCompose(state, 'compose-modal', compose => {
+        if (action.id === compose.in_reply_to) {
+          return compose.set('in_reply_to', null);
+        } if (action.id === compose.quote) {
+          return compose.set('quote', null);
+        } else {
+          return compose;
+        }
+      });
     case COMPOSE_EMOJI_INSERT:
-      return insertEmoji(state, action.position, action.emoji, action.needsSpace);
+      return updateCompose(state, action.id, compose => insertEmoji(compose, action.position, action.emoji, action.needsSpace));
     case COMPOSE_UPLOAD_CHANGE_SUCCESS:
-      return state
+      return updateCompose(state, action.id, compose => compose
         .set('is_changing_upload', false)
         .update('media_attachments', list => list.map(item => {
           if (item.id === action.media.id) {
@@ -448,9 +432,9 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
           }
 
           return item;
-        }));
+        })));
     case COMPOSE_SET_STATUS:
-      return state.withMutations(map => {
+      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
         if (!action.withRedraft) {
           map.set('id', action.status.get('id'));
         }
@@ -462,8 +446,10 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
         map.set('content_type', action.contentType || 'text/plain');
+        map.set('quote', action.status.get('quote'));
+        map.set('group_id', action.status.get('group'));
 
-        if (action.v?.software === PLEROMA && hasIntegerMediaIds(action.status)) {
+        if (action.v?.software === PLEROMA && action.withRedraft && hasIntegerMediaIds(action.status)) {
           map.set('media_attachments', ImmutableList());
         } else {
           map.set('media_attachments', action.status.media_attachments);
@@ -484,35 +470,35 @@ export default function compose(state = ReducerRecord({ idempotencyKey: uuid(), 
             expires_in: 24 * 3600,
           }));
         }
-      });
+      }));
     case COMPOSE_POLL_ADD:
-      return state.set('poll', PollRecord());
+      return updateCompose(state, action.id, compose => compose.set('poll', PollRecord()));
     case COMPOSE_POLL_REMOVE:
-      return state.set('poll', null);
+      return updateCompose(state, action.id, compose => compose.set('poll', null));
     case COMPOSE_SCHEDULE_ADD:
-      return state.set('schedule', new Date());
+      return updateCompose(state, action.id, compose => compose.set('schedule', new Date(Date.now() + 10 * 60 * 1000)));
     case COMPOSE_SCHEDULE_SET:
-      return state.set('schedule', action.date);
+      return updateCompose(state, action.id, compose => compose.set('schedule', action.date));
     case COMPOSE_SCHEDULE_REMOVE:
-      return state.set('schedule', null);
+      return updateCompose(state, action.id, compose => compose.set('schedule', null));
     case COMPOSE_POLL_OPTION_ADD:
-      return state.updateIn(['poll', 'options'], options => (options as ImmutableList<string>).push(action.title));
+      return updateCompose(state, action.id, compose => compose.updateIn(['poll', 'options'], options => (options as ImmutableList<string>).push(action.title)));
     case COMPOSE_POLL_OPTION_CHANGE:
-      return state.setIn(['poll', 'options', action.index], action.title);
+      return updateCompose(state, action.id, compose => compose.setIn(['poll', 'options', action.index], action.title));
     case COMPOSE_POLL_OPTION_REMOVE:
-      return state.updateIn(['poll', 'options'], options => (options as ImmutableList<string>).delete(action.index));
+      return updateCompose(state, action.id, compose => compose.updateIn(['poll', 'options'], options => (options as ImmutableList<string>).delete(action.index)));
     case COMPOSE_POLL_SETTINGS_CHANGE:
-      return state.update('poll', poll => poll!.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
+      return updateCompose(state, action.id, compose => compose.update('poll', poll => poll!.set('expires_in', action.expiresIn).set('multiple', action.isMultiple)));
     case COMPOSE_ADD_TO_MENTIONS:
-      return state.update('to', mentions => mentions!.add(action.account));
+      return updateCompose(state, action.id, compose => compose.update('to', mentions => mentions!.add(action.account)));
     case COMPOSE_REMOVE_FROM_MENTIONS:
-      return state.update('to', mentions => mentions!.delete(action.account));
+      return updateCompose(state, action.id, compose => compose.update('to', mentions => mentions!.delete(action.account)));
     case ME_FETCH_SUCCESS:
-      return importAccount(state, action.me);
+      return updateCompose(state, 'default', compose => importAccount(compose, action.me));
     case ME_PATCH_SUCCESS:
-      return updateAccount(state, action.me);
+      return updateCompose(state, 'default', compose => updateAccount(compose, action.me));
     case SETTING_CHANGE:
-      return updateSetting(state, action.path, action.value);
+      return updateCompose(state, 'default', compose => updateSetting(compose, action.path, action.value));
     default:
       return state;
   }

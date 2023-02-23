@@ -1,31 +1,27 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { Sparklines, SparklinesCurve } from 'react-sparklines';
-
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { useAppSelector } from 'soapbox/hooks';
 
 import { shortNumberFormat } from '../utils/numbers';
 
-import Permalink from './permalink';
 import { HStack, Stack, Text } from './ui';
 
 import type { Tag } from 'soapbox/types/entities';
 
 interface IHashtag {
-  hashtag: Tag,
+  hashtag: Tag
 }
 
 const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
   const count = Number(hashtag.history?.get(0)?.accounts);
-  const brandColor = useAppSelector((state) => getSoapboxConfig(state).brandColor);
 
   return (
     <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
       <Stack>
-        <Permalink href={hashtag.url} to={`/tags/${hashtag.name}`} className='hover:underline'>
+        <Link to={`/tags/${hashtag.name}`} className='hover:underline'>
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
-        </Permalink>
+        </Link>
 
         {hashtag.history && (
           <Text theme='muted' size='sm'>
@@ -48,7 +44,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
             height={28}
             data={hashtag.history.reverse().map((day) => +day.uses).toArray()}
           >
-            <SparklinesCurve style={{ fill: 'none' }} color={brandColor} />
+            <SparklinesCurve style={{ fill: 'none' }} color='#818cf8' />
           </Sparklines>
         </div>
       )}

@@ -1,0 +1,21 @@
+{
+  "css.validate": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.associations": {
+    "*.conf.template": "properties"
+  },
+  "files.eol": "\n",
+  "files.insertFinalNewline": false,
+  "json.schemas": [
+    {
+      "fileMatch": [".lintstagedrc.json"],
+      "url": "https://json.schemastore.org/lintstagedrc.schema.json"
+    },
+    {
+      "fileMatch": ["renovate.json"],
+      "url": "https://docs.renovatebot.com/renovate-schema.json"
+    }
+  ],
+  "scss.validate": false
+}

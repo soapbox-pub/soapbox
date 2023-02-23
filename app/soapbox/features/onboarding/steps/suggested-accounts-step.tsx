@@ -1,50 +1,44 @@
 import debounce from 'lodash/debounce';
-import * as React from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
-import { fetchSuggestions } from 'soapbox/actions/suggestions';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Card, CardBody, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import { useAppSelector } from 'soapbox/hooks';
+import AccountContainer from 'soapbox/containers/account-container';
+import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
 
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
-  const dispatch = useDispatch();
-
-  const suggestions = useAppSelector((state) => state.suggestions.items);
-  const hasMore = useAppSelector((state) => !!state.suggestions.next);
-  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
+  const { data, fetchNextPage, hasNextPage, isFetching } = useOnboardingSuggestions();
 
   const handleLoadMore = debounce(() => {
-    if (isLoading) {
+    if (isFetching) {
       return null;
     }
 
-    return dispatch(fetchSuggestions());
+    return fetchNextPage();
   }, 300);
 
-  React.useEffect(() => {
-    dispatch(fetchSuggestions({ limit: 20 }));
-  }, []);
-
   const renderSuggestions = () => {
+    if (!data) {
+      return null;
+    }
+
     return (
-      <div className='sm:pt-4 sm:pb-10 flex flex-col'>
+      <div className='flex flex-col sm:pt-4 sm:pb-10'>
         <ScrollableList
-          isLoading={isLoading}
+          isLoading={isFetching}
           scrollKey='suggestions'
           onLoadMore={handleLoadMore}
-          hasMore={hasMore}
+          hasMore={hasNextPage}
           useWindowScroll={false}
           style={{ height: 320 }}
         >
-          {suggestions.map((suggestion) => (
-            <div key={suggestion.account} className='py-2'>
+          {data.map((suggestion) => (
+            <div key={suggestion.account.id} className='py-2'>
               <AccountContainer
-                // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-                id={suggestion.account}
+                id={suggestion.account.id}
                 showProfileHoverCard={false}
+                withLinkToProfile={false}
               />
             </div>
           ))}
@@ -55,7 +49,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
   const renderEmpty = () => {
     return (
-      <div className='bg-primary-50 dark:bg-slate-700 my-2 rounded-lg text-center p-8'>
+      <div className='my-2 rounded-lg bg-primary-50 p-8 text-center dark:bg-gray-800'>
         <Text>
           <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />
         </Text>
@@ -64,7 +58,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
   };
 
   const renderBody = () => {
-    if (suggestions.isEmpty()) {
+    if (!data || data.length === 0) {
       return renderEmpty();
     } else {
       return renderSuggestions();
@@ -75,7 +69,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
+          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />
@@ -89,7 +83,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
           {renderBody()}
 
-          <div className='sm:w-2/3 md:w-1/2 mx-auto'>
+          <div className='mx-auto sm:w-2/3 md:w-1/2'>
             <Stack>
               <Stack justifyContent='center' space={2}>
                 <Button
@@ -100,7 +94,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
                   <FormattedMessage id='onboarding.done' defaultMessage='Done' />
                 </Button>
 
-                <Button block theme='link' type='button' onClick={onNext}>
+                <Button block theme='tertiary' type='button' onClick={onNext}>
                   <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
                 </Button>
               </Stack>

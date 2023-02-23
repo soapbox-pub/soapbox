@@ -1,16 +1,17 @@
 import api from '../api';
 
 import { fetchRelationships } from './accounts';
-import { importFetchedAccounts, importFetchedStatuses } from './importer';
+import { importFetchedAccounts, importFetchedGroups, importFetchedStatuses } from './importer';
 
 import type { AxiosError } from 'axios';
 import type { SearchFilter } from 'soapbox/reducers/search';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const SEARCH_CHANGE = 'SEARCH_CHANGE';
-const SEARCH_CLEAR  = 'SEARCH_CLEAR';
-const SEARCH_SHOW   = 'SEARCH_SHOW';
+const SEARCH_CHANGE        = 'SEARCH_CHANGE';
+const SEARCH_CLEAR         = 'SEARCH_CLEAR';
+const SEARCH_SHOW          = 'SEARCH_SHOW';
+const SEARCH_RESULTS_CLEAR = 'SEARCH_RESULTS_CLEAR';
 
 const SEARCH_FETCH_REQUEST = 'SEARCH_FETCH_REQUEST';
 const SEARCH_FETCH_SUCCESS = 'SEARCH_FETCH_SUCCESS';
@@ -22,11 +23,17 @@ const SEARCH_EXPAND_REQUEST = 'SEARCH_EXPAND_REQUEST';
 const SEARCH_EXPAND_SUCCESS = 'SEARCH_EXPAND_SUCCESS';
 const SEARCH_EXPAND_FAIL    = 'SEARCH_EXPAND_FAIL';
 
+const SEARCH_ACCOUNT_SET = 'SEARCH_ACCOUNT_SET';
+
 const changeSearch = (value: string) =>
   (dispatch: AppDispatch) => {
     // If backspaced all the way, clear the search
     if (value.length === 0) {
-      return dispatch(clearSearch());
+      dispatch(clearSearchResults());
+      return dispatch({
+        type: SEARCH_CHANGE,
+        value,
+      });
     } else {
       return dispatch({
         type: SEARCH_CHANGE,
@@ -39,10 +46,15 @@ const clearSearch = () => ({
   type: SEARCH_CLEAR,
 });
 
+const clearSearchResults = () => ({
+  type: SEARCH_RESULTS_CLEAR,
+});
+
 const submitSearch = (filter?: SearchFilter) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const value = getState().search.value;
     const type = filter || getState().search.filter || 'accounts';
+    const accountId = getState().search.accountId;
 
     // An empty search doesn't return any results
     if (value.length === 0) {
@@ -51,13 +63,17 @@ const submitSearch = (filter?: SearchFilter) =>
 
     dispatch(fetchSearchRequest(value));
 
+    const params: Record<string, any> = {
+      q: value,
+      resolve: true,
+      limit: 20,
+      type,
+    };
+
+    if (accountId) params.account_id = accountId;
+
     api(getState).get('/api/v2/search', {
-      params: {
-        q: value,
-        resolve: true,
-        limit: 20,
-        type,
-      },
+      params,
     }).then(response => {
       if (response.data.accounts) {
         dispatch(importFetchedAccounts(response.data.accounts));
@@ -65,6 +81,10 @@ const submitSearch = (filter?: SearchFilter) =>
 
       if (response.data.statuses) {
         dispatch(importFetchedStatuses(response.data.statuses));
+      }
+
+      if (response.data.groups) {
+        dispatch(importFetchedGroups(response.data.groups));
       }
 
       dispatch(fetchSearchSuccess(response.data, value, type));
@@ -123,6 +143,10 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
       dispatch(importFetchedStatuses(data.statuses));
     }
 
+    if (data.groups) {
+      dispatch(importFetchedGroups(data.groups));
+    }
+
     dispatch(expandSearchSuccess(data, value, type));
     dispatch(fetchRelationships(data.accounts.map((item: APIEntity) => item.id)));
   }).catch(error => {
@@ -151,10 +175,16 @@ const showSearch = () => ({
   type: SEARCH_SHOW,
 });
 
+const setSearchAccount = (accountId: string | null) => ({
+  type: SEARCH_ACCOUNT_SET,
+  accountId,
+});
+
 export {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
   SEARCH_SHOW,
+  SEARCH_RESULTS_CLEAR,
   SEARCH_FETCH_REQUEST,
   SEARCH_FETCH_SUCCESS,
   SEARCH_FETCH_FAIL,
@@ -162,8 +192,10 @@ export {
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
   SEARCH_EXPAND_FAIL,
+  SEARCH_ACCOUNT_SET,
   changeSearch,
   clearSearch,
+  clearSearchResults,
   submitSearch,
   fetchSearchRequest,
   fetchSearchSuccess,
@@ -174,4 +206,5 @@ export {
   expandSearchSuccess,
   expandSearchFail,
   showSearch,
+  setSearchAccount,
 };

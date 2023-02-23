@@ -11,7 +11,7 @@ The best way to get Soapbox builds is from a GitLab CI job.
 The official build URL is here:
 
 ```
-https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/develop/download?job=build-production
+https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production
 ```
 
 (Note that `develop` in that URL can be replaced with any git ref, eg `v2.0.0`, and thus will be updated with the latest zip whenever a new commit is pushed to `develop`.)
@@ -44,7 +44,7 @@ location ~ ^/(api|oauth|admin) {
 }
 ```
 
-We recommend trying [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox-fe/-/blob/develop/installation/mastodon.conf) as a starting point.
+We recommend trying [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/installation/mastodon.conf) as a starting point.
 It is fine-tuned, includes support for federation, and should work with any backend.
 
 ## The ServiceWorker
@@ -109,17 +109,4 @@ AKA "why don't links to my website show a preview when posted on Facebook/Twitte
 
 Deploying with Nginx means that you forego the link preview functionality offered by Pleroma and Mastodon, since Soapbox has no knowledge of the backend whatsoever.
 
-This problem has no official solution, but we have some ideas:
-
-1. Serve different content to link crawlers based on their `user-agent`.
-2. Inject metadata into `index.html` somehow based on the URL.
-
-The first solution is probably the most straightforward, and can be achieved in Nginx like so:
-
-```nginx
-if ($http_user_agent ~* "googlebot|bingbot|yandex|baiduspider|twitterbot|facebookexternalhit|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest\/0\.|pinterestbot|slackbot|vkShare|W3C_Validator|whatsapp") {
-  # TODO: route to backend?
-}
-```
-
-See [this snippet](https://gist.github.com/thoop/8165802) for more information.
+Our official solution is [Soapbox Worker](https://gitlab.com/soapbox-pub/soapbox-worker), a Cloudflare Worker that intercepts the reqest/response and injects metadata into the page by querying the API behind the scenes.

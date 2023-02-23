@@ -21,7 +21,6 @@ describe('normalizePoll()', () => {
     expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(ImmutableRecord.isRecord(result.options.get(0))).toBe(true);
     expect(result.toJS()).toMatchObject(expected);
-    expect(result.expires_at instanceof Date).toBe(true);
   });
 
   it('normalizes a Pleroma logged-out poll', () => {
@@ -39,7 +38,7 @@ describe('normalizePoll()', () => {
 
     // Emojifies poll options
     expect(result.options.get(1)?.title_emojified)
-      .toEqual('Custom emoji <img draggable="false" class="emojione" alt=":gleason_excited:" title=":gleason_excited:" src="https://gleasonator.com/emoji/gleason_emojis/gleason_excited.png" /> ');
+      .toContain('emojione');
 
     // Parses emojis as Immutable.Record's
     expect(ImmutableRecord.isRecord(result.emojis.get(0))).toBe(true);

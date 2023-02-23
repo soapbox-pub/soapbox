@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: soapbox-dev
+    ports:
+      - "3036:3036"
+    volumes:
+      - .:/app

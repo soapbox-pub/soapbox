@@ -21,12 +21,14 @@ import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/e
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
+  accepts_chat_messages: false,
   acct: '',
   avatar: '',
   avatar_static: '',
   birthday: '',
   bot: false,
-  created_at: new Date(),
+  chats_onboarded: true,
+  created_at: '',
   discoverable: false,
   display_name: '',
   emojis: ImmutableList<Emoji>(),
@@ -38,10 +40,11 @@ export const AccountRecord = ImmutableRecord({
   header: '',
   header_static: '',
   id: '',
-  last_status_at: new Date(),
+  last_status_at: '',
   location: '',
   locked: false,
   moved: null as EmbeddedEntity<any>,
+  mute_expires_at: null as string | null,
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
@@ -56,7 +59,6 @@ export const AccountRecord = ImmutableRecord({
   admin: false,
   display_name_html: '',
   domain: '',
-  donor: false,
   moderator: false,
   note_emojified: '',
   note_plain: '',
@@ -78,7 +80,7 @@ export const FieldRecord = ImmutableRecord({
   value_plain: '',
 });
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
+// https://gitlab.com/soapbox-pub/soapbox/-/issues/549
 const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
   return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
     return pleroma.withMutations(pleroma => {
@@ -98,7 +100,7 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
 const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   const avatar = account.get('avatar');
   const avatarStatic = account.get('avatar_static');
-  const missing = require('images/avatar-missing.png');
+  const missing = require('assets/images/avatar-missing.png');
 
   return account.withMutations(account => {
     account.set('avatar', avatar || avatarStatic || missing);
@@ -110,7 +112,7 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
 const normalizeHeader = (account: ImmutableMap<string, any>) => {
   const header = account.get('header');
   const headerStatic = account.get('header_static');
-  const missing = require('images/header-missing.png');
+  const missing = require('assets/images/header-missing.png');
 
   return account.withMutations(account => {
     account.set('header', header || headerStatic || missing);
@@ -155,9 +157,11 @@ const normalizeVerified = (account: ImmutableMap<string, any>) => {
   });
 };
 
-/** Get donor status from tags. */
+/** Upgrade legacy donor tag to a badge. */
 const normalizeDonor = (account: ImmutableMap<string, any>) => {
-  return account.set('donor', getTags(account).includes('donor'));
+  const tags = getTags(account);
+  const updated = tags.includes('donor') ? tags.push('badge:donor') : tags;
+  return account.setIn(['pleroma', 'tags'], updated);
 };
 
 /** Normalize Fedibird/Truth Social/Pleroma location */
@@ -261,10 +265,25 @@ const normalizeDiscoverable = (account: ImmutableMap<string, any>) => {
   return account.set('discoverable', discoverable);
 };
 
+/** Normalize message acceptance between Pleroma and Truth Social. */
+const normalizeMessageAcceptance = (account: ImmutableMap<string, any>) => {
+  const acceptance = Boolean(account.getIn(['pleroma', 'accepts_chat_messages']) || account.get('accepting_messages'));
+  return account.set('accepts_chat_messages', acceptance);
+};
+
 /** Normalize undefined/null birthday to empty string. */
 const fixBirthday = (account: ImmutableMap<string, any>) => {
   const birthday = account.get('birthday');
   return account.set('birthday', birthday || '');
+};
+
+/** Rewrite `<p></p>` to empty string. */
+const fixNote = (account: ImmutableMap<string, any>) => {
+  if (account.get('note') === '<p></p>') {
+    return account.set('note', '');
+  } else {
+    return account;
+  }
 };
 
 export const normalizeAccount = (account: Record<string, any>) => {
@@ -282,11 +301,13 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeFqn(account);
       normalizeFavicon(account);
       normalizeDiscoverable(account);
+      normalizeMessageAcceptance(account);
       addDomain(account);
       addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
       fixBirthday(account);
+      fixNote(account);
       addInternalFields(account);
     }),
   );

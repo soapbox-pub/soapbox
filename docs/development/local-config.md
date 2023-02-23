@@ -8,9 +8,9 @@ All configuration is optional, except `NODE_ENV`.
 ## `NODE_ENV`
 
 The Node environment.
-Soapbox FE checks for the following options:
+Soapbox checks for the following options:
 
-- `development` - What you should use while developing Soapbox FE.
+- `development` - What you should use while developing Soapbox.
 - `production` - Use when compiling to deploy to a live server.
 - `test` - Use when running automated tests.
 

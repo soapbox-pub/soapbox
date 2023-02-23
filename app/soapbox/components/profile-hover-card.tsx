@@ -1,6 +1,6 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';
 
@@ -8,16 +8,17 @@ import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,
-} from 'soapbox/actions/profile_hover_card';
+} from 'soapbox/actions/profile-hover-card';
 import Badge from 'soapbox/components/badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import { isLocal } from 'soapbox/utils/accounts';
 
-import { showProfileHoverCard } from './hover_ref_wrapper';
-import { Card, CardBody, Stack, Text } from './ui';
+import { showProfileHoverCard } from './hover-ref-wrapper';
+import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
 
 import type { AppDispatch } from 'soapbox/store';
 import type { Account } from 'soapbox/types/entities';
@@ -37,10 +38,6 @@ const getBadges = (account: Account): JSX.Element[] => {
     badges.push(<Badge key='patron' slug='patron' title='Patron' />);
   }
 
-  if (account.donor) {
-    badges.push(<Badge key='donor' slug='donor' title='Donor' />);
-  }
-
   return badges;
 };
 
@@ -57,13 +54,14 @@ const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
 };
 
 interface IProfileHoverCard {
-  visible: boolean,
+  visible: boolean
 }
 
 /** Popup profile preview that appears when hovering avatars and display names. */
 export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const intl = useIntl();
 
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
@@ -92,12 +90,13 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
 
   if (!account) return null;
   const accountBio = { __html: account.note_emojified };
+  const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const followedBy = me !== account.id && account.relationship?.followed_by === true;
 
   return (
     <div
-      className={classNames({
-        'absolute transition-opacity w-[320px] z-50 top-0 left-0': true,
+      className={clsx({
+        'absolute transition-opacity w-[320px] z-[101] top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,
       })}
@@ -107,7 +106,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >
-      <Card variant='rounded' className='relative'>
+      <Card variant='rounded' className='relative isolate'>
         <CardBody>
           <Stack space={2}>
             <BundleContainer fetchComponent={UserPanel}>
@@ -120,7 +119,24 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               )}
             </BundleContainer>
 
-            {account.source.get('note', '').length > 0 && (
+            {isLocal(account) ? (
+              <HStack alignItems='center' space={0.5}>
+                <Icon
+                  src={require('@tabler/icons/calendar.svg')}
+                  className='h-4 w-4 text-gray-800 dark:text-gray-200'
+                />
+
+                <Text size='sm'>
+                  <FormattedMessage
+                    id='account.member_since' defaultMessage='Joined {date}' values={{
+                      date: memberSinceDate,
+                    }}
+                  />
+                </Text>
+              </HStack>
+            ) : null}
+
+            {account.note.length > 0 && (
               <Text size='sm' dangerouslySetInnerHTML={accountBio} />
             )}
           </Stack>

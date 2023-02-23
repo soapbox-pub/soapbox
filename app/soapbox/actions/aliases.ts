@@ -1,14 +1,13 @@
 import { defineMessages } from 'react-intl';
 
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api from '../api';
 
-import { showAlertForError } from './alerts';
 import { importFetchedAccounts } from './importer';
 import { patchMeSuccess } from './me';
-import snackbar from './snackbar';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -80,7 +79,7 @@ const fetchAliasesSuggestions = (q: string) =>
     api(getState).get('/api/v1/accounts/search', { params }).then(({ data }) => {
       dispatch(importFetchedAccounts(data));
       dispatch(fetchAliasesSuggestionsReady(q, data));
-    }).catch(error => dispatch(showAlertForError(error)));
+    }).catch(error => toast.showAlertForError(error));
   };
 
 const fetchAliasesSuggestionsReady = (query: string, accounts: APIEntity[]) => ({
@@ -114,7 +113,7 @@ const addToAliases = (account: Account) =>
 
       api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.pleroma.get('ap_id')] })
         .then((response => {
-          dispatch(snackbar.success(messages.createSuccess));
+          toast.success(messages.createSuccess);
           dispatch(addToAliasesSuccess);
           dispatch(patchMeSuccess(response.data));
         }))
@@ -129,7 +128,7 @@ const addToAliases = (account: Account) =>
       alias: account.acct,
     })
       .then(() => {
-        dispatch(snackbar.success(messages.createSuccess));
+        toast.success(messages.createSuccess);
         dispatch(addToAliasesSuccess);
         dispatch(fetchAliases);
       })
@@ -165,7 +164,7 @@ const removeFromAliases = (account: string) =>
 
       api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: alsoKnownAs.filter((id: string) => id !== account) })
         .then(response => {
-          dispatch(snackbar.success(messages.removeSuccess));
+          toast.success(messages.removeSuccess);
           dispatch(removeFromAliasesSuccess);
           dispatch(patchMeSuccess(response.data));
         })
@@ -182,7 +181,7 @@ const removeFromAliases = (account: string) =>
       },
     })
       .then(response => {
-        dispatch(snackbar.success(messages.removeSuccess));
+        toast.success(messages.removeSuccess);
         dispatch(removeFromAliasesSuccess);
         dispatch(fetchAliases);
       })

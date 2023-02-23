@@ -1,27 +1,33 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { getSettings } from 'soapbox/actions/settings';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { Stack } from 'soapbox/components/ui';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppSelector, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
 
+import DropdownMenu, { Menu } from './dropdown-menu';
 import SidebarNavigationLink from './sidebar-navigation-link';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+const messages = defineMessages({
+  follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  events: { id: 'column.events', defaultMessage: 'Events' },
+  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
+});
 
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
-  const instance = useAppSelector((state) => state.instance);
-  const settings = useAppSelector((state) => getSettings(state));
+  const intl = useIntl();
+  const { unreadChatsCount } = useStatContext();
+
+  const features = useFeatures();
+  const settings = useSettings();
   const account = useOwnAccount();
-  const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
+  const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
-
-  const features = getFeatures(instance);
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];
@@ -30,7 +36,7 @@ const SidebarNavigation = () => {
       if (account.locked || followRequestsCount > 0) {
         menu.push({
           to: '/follow_requests',
-          text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
+          text: intl.formatMessage(messages.follow_requests),
           icon: require('@tabler/icons/user-plus.svg'),
           count: followRequestsCount,
         });
@@ -39,7 +45,7 @@ const SidebarNavigation = () => {
       if (features.bookmarks) {
         menu.push({
           to: '/bookmarks',
-          text: <FormattedMessage id='column.bookmarks' defaultMessage='Bookmarks' />,
+          text: intl.formatMessage(messages.bookmarks),
           icon: require('@tabler/icons/bookmark.svg'),
         });
       }
@@ -47,8 +53,16 @@ const SidebarNavigation = () => {
       if (features.lists) {
         menu.push({
           to: '/lists',
-          text: <FormattedMessage id='column.lists' defaultMessage='Lists' />,
+          text: intl.formatMessage(messages.lists),
           icon: require('@tabler/icons/list.svg'),
+        });
+      }
+
+      if (features.events) {
+        menu.push({
+          to: '/events',
+          text: intl.formatMessage(messages.events),
+          icon: require('@tabler/icons/calendar-event.svg'),
         });
       }
 
@@ -56,38 +70,9 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/developers',
           icon: require('@tabler/icons/code.svg'),
-          text: <FormattedMessage id='navigation.developers' defaultMessage='Developers' />,
+          text: intl.formatMessage(messages.developers),
         });
       }
-
-      if (account.staff) {
-        menu.push({
-          to: '/soapbox/admin',
-          icon: require('@tabler/icons/dashboard.svg'),
-          text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
-          count: dashboardCount,
-        });
-      }
-
-      if (features.publicTimeline) {
-        menu.push(null);
-      }
-    }
-
-    if (features.publicTimeline) {
-      menu.push({
-        to: '/timeline/local',
-        icon: features.federating ? require('@tabler/icons/users.svg') : require('@tabler/icons/world.svg'),
-        text: features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />,
-      });
-    }
-
-    if (features.publicTimeline && features.federating) {
-      menu.push({
-        to: '/timeline/fediverse',
-        icon: require('icons/fediverse.svg'),
-        text: <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />,
-      });
     }
 
     return menu;
@@ -102,8 +87,9 @@ const SidebarNavigation = () => {
         <SidebarNavigationLink
           to='/chats'
           icon={require('@tabler/icons/messages.svg')}
-          count={chatsCount}
-          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
+          count={unreadChatsCount}
+          countMax={9}
+          text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
         />
       );
     }
@@ -122,8 +108,8 @@ const SidebarNavigation = () => {
   };
 
   return (
-    <div>
-      <div className='flex flex-col space-y-2'>
+    <Stack space={4}>
+      <Stack space={2}>
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/home.svg')}
@@ -147,6 +133,14 @@ const SidebarNavigation = () => {
 
             {renderMessagesLink()}
 
+            {features.groups && (
+              <SidebarNavigationLink
+                to='/groups'
+                icon={require('@tabler/icons/circles.svg')}
+                text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
+              />
+            )}
+
             <SidebarNavigationLink
               to={`/@${account.acct}`}
               icon={require('@tabler/icons/user.svg')}
@@ -158,24 +152,50 @@ const SidebarNavigation = () => {
               icon={require('@tabler/icons/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
             />
+
+            {account.staff && (
+              <SidebarNavigationLink
+                to='/soapbox/admin'
+                icon={require('@tabler/icons/dashboard.svg')}
+                count={dashboardCount}
+                text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+              />
+            )}
+          </>
+        )}
+
+        {features.publicTimeline && (
+          <>
+            <SidebarNavigationLink
+              to='/timeline/local'
+              icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+              text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+            />
+
+            {features.federating && (
+              <SidebarNavigationLink
+                to='/timeline/fediverse'
+                icon={require('@tabler/icons/topology-star-ring-3.svg')}
+                text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+              />
+            )}
           </>
         )}
 
         {menu.length > 0 && (
-          <DropdownMenu items={menu}>
+          <DropdownMenu items={menu} placement='top'>
             <SidebarNavigationLink
               icon={require('@tabler/icons/dots-circle-horizontal.svg')}
-              count={dashboardCount}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
             />
           </DropdownMenu>
         )}
-      </div>
+      </Stack>
 
       {account && (
         <ComposeButton />
       )}
-    </div>
+    </Stack>
   );
 };
 

@@ -1,17 +1,17 @@
-import classNames from 'classnames';
-import * as React from 'react';
+import clsx from 'clsx';
+import React from 'react';
 
-import StillImage from 'soapbox/components/still_image';
+import StillImage from 'soapbox/components/still-image';
 
 const AVATAR_SIZE = 42;
 
 interface IAvatar {
   /** URL to the avatar image. */
-  src: string,
+  src: string
   /** Width and height of the avatar in pixels. */
-  size?: number,
+  size?: number
   /** Extra class names for the div surrounding the avatar image. */
-  className?: string,
+  className?: string
 }
 
 /** Round profile avatar for accounts. */
@@ -25,7 +25,7 @@ const Avatar = (props: IAvatar) => {
 
   return (
     <StillImage
-      className={classNames('rounded-full overflow-hidden', className)}
+      className={clsx('rounded-full', className)}
       style={style}
       src={src}
       alt='Avatar'

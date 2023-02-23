@@ -1,12 +1,11 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
 import { Button } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },
@@ -14,7 +13,7 @@ const messages = defineMessages({
 });
 
 const Search: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const value = useAppSelector(state => state.aliases.suggestions.value);
@@ -41,11 +40,11 @@ const Search: React.FC = () => {
 
   return (
     <div className='flex items-center gap-1'>
-      <label className='flex-grow relative'>
+      <label className='relative grow'>
         <span style={{ display: 'none' }}>{intl.formatMessage(messages.search)}</span>
 
         <input
-          className='block w-full sm:text-sm dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 rounded-full'
+          className='block w-full rounded-full focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 sm:text-sm'
           type='text'
           value={value}
           onChange={handleChange}
@@ -53,8 +52,8 @@ const Search: React.FC = () => {
           placeholder={intl.formatMessage(messages.search)}
         />
 
-        <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-          <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
+        <div role='button' tabIndex={hasValue ? 0 : -1} className='search__icon' onClick={handleClear}>
+          <Icon src={require('@tabler/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
         </div>
       </label>
       <Button onClick={handleSubmit}>{intl.formatMessage(messages.searchTitle)}</Button>

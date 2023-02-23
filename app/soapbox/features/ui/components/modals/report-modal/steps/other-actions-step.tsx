@@ -1,20 +1,19 @@
 import { OrderedSet } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import Toggle from 'react-toggle';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
-import StatusCheckBox from 'soapbox/features/report/components/status_check_box';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const messages = defineMessages({
-  addAdditionalStatuses: { id: 'report.otherActions.addAdditionl', defaultMessage: 'Would you like to add additional statuses to this report?' },
+  addAdditionalStatuses: { id: 'report.otherActions.addAdditional', defaultMessage: 'Would you like to add additional statuses to this report?' },
   addMore: { id: 'report.otherActions.addMore', defaultMessage: 'Add more' },
   furtherActions: { id: 'report.otherActions.furtherActions', defaultMessage: 'Further actions:' },
   hideAdditonalStatuses: { id: 'report.otherActions.hideAdditional', defaultMessage: 'Hide additional statuses' },
@@ -26,7 +25,7 @@ interface IOtherActionsStep {
 }
 
 const OtherActionsStep = ({ account }: IOtherActionsStep) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 
@@ -61,14 +60,14 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='bg-gray-100 dark:bg-slate-600 rounded-lg p-4'>
+                <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 
                 <div>
                   <Button
                     icon={require('@tabler/icons/arrows-minimize.svg')}
-                    theme='secondary'
+                    theme='tertiary'
                     size='sm'
                     onClick={() => setShowAdditionalStatuses(false)}
                   >
@@ -79,7 +78,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
             ) : (
               <Button
                 icon={require('@tabler/icons/plus.svg')}
-                theme='secondary'
+                theme='tertiary'
                 size='sm'
                 onClick={() => setShowAdditionalStatuses(true)}
               >

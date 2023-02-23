@@ -26,17 +26,17 @@ import {
 import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
-} from '../actions/domain_blocks';
+} from '../actions/domain-blocks';
 import {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,
 } from '../actions/importer';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 type Relationship = ReturnType<typeof normalizeRelationship>;
 type State = ImmutableMap<string, Relationship>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 const normalizeRelationships = (state: State, relationships: APIEntities) => {
@@ -57,7 +57,7 @@ const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocki
 
 const importPleromaAccount = (state: State, account: APIEntity) => {
   const relationship = get(account, ['pleroma', 'relationship'], {});
-  if (relationship.id && relationship !== {})
+  if (relationship.id)
     return normalizeRelationships(state, [relationship]);
   return state;
 };

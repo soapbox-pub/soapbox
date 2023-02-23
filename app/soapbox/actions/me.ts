@@ -1,4 +1,4 @@
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 
 import api from '../api';
@@ -6,7 +6,7 @@ import api from '../api';
 import { loadCredentials } from './auth';
 import { importFetchedAccount } from './importer';
 
-import type { AxiosError, AxiosRequestHeaders } from 'axios';
+import type { AxiosError, RawAxiosRequestHeaders } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -30,8 +30,8 @@ const getMeUrl = (state: RootState) => {
 
 const getMeToken = (state: RootState) => {
   // Fallback for upgrading IDs to URLs
-  const accountUrl = getMeUrl(state) || state.auth.get('me');
-  return state.auth.getIn(['users', accountUrl, 'access_token']);
+  const accountUrl = getMeUrl(state) || state.auth.me;
+  return state.auth.users.get(accountUrl!)?.access_token;
 };
 
 const fetchMe = () =>
@@ -41,13 +41,13 @@ const fetchMe = () =>
     const accountUrl = getMeUrl(state);
 
     if (!token) {
-      dispatch({ type: ME_FETCH_SKIP }); return noOp();
+      dispatch({ type: ME_FETCH_SKIP });
+      return noOp();
     }
 
     dispatch(fetchMeRequest());
-    return dispatch(loadCredentials(token, accountUrl)).catch(error => {
-      dispatch(fetchMeFail(error));
-    });
+    return dispatch(loadCredentials(token, accountUrl!))
+      .catch(error => dispatch(fetchMeFail(error)));
   };
 
 /** Update the auth account in IndexedDB for Mastodon, etc. */
@@ -66,7 +66,7 @@ const patchMe = (params: Record<string, any>, isFormData = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(patchMeRequest());
 
-    const headers: AxiosRequestHeaders = isFormData ? {
+    const headers: RawAxiosRequestHeaders = isFormData ? {
       'Content-Type': 'multipart/form-data',
     } : {};
 

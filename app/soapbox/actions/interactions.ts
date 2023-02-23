@@ -1,10 +1,11 @@
 import { defineMessages } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
+import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
 import api from '../api';
 
+import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 
 import type { AxiosError } from 'axios';
@@ -62,7 +63,7 @@ const REMOTE_INTERACTION_FAIL    = 'REMOTE_INTERACTION_FAIL';
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
 });
 
 const reblog = (status: StatusEntity) =>
@@ -92,6 +93,15 @@ const unreblog = (status: StatusEntity) =>
     }).catch(error => {
       dispatch(unreblogFail(status, error));
     });
+  };
+
+const toggleReblog = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.reblogged) {
+      dispatch(unreblog(status));
+    } else {
+      dispatch(reblog(status));
+    }
   };
 
 const reblogRequest = (status: StatusEntity) => ({
@@ -158,6 +168,15 @@ const unfavourite = (status: StatusEntity) =>
     });
   };
 
+const toggleFavourite = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.favourited) {
+      dispatch(unfavourite(status));
+    } else {
+      dispatch(favourite(status));
+    }
+  };
+
 const favouriteRequest = (status: StatusEntity) => ({
   type: FAVOURITE_REQUEST,
   status: status,
@@ -203,7 +222,10 @@ const bookmark = (status: StatusEntity) =>
     api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
-      dispatch(snackbar.success(messages.bookmarkAdded, messages.view, '/bookmarks'));
+      toast.success(messages.bookmarkAdded, {
+        actionLabel: messages.view,
+        actionLink: '/bookmarks',
+      });
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
     });
@@ -216,10 +238,19 @@ const unbookmark = (status: StatusEntity) =>
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unbookmarkSuccess(status, response.data));
-      dispatch(snackbar.success(messages.bookmarkRemoved));
+      toast.success(messages.bookmarkRemoved);
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
     });
+  };
+
+const toggleBookmark = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.bookmarked) {
+      dispatch(unbookmark(status));
+    } else {
+      dispatch(bookmark(status));
+    }
   };
 
 const bookmarkRequest = (status: StatusEntity) => ({
@@ -264,6 +295,7 @@ const fetchReblogs = (id: string) =>
 
     api(getState).get(`/api/v1/statuses/${id}/reblogged_by`).then(response => {
       dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
       dispatch(fetchReblogsSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchReblogsFail(id, error));
@@ -295,6 +327,7 @@ const fetchFavourites = (id: string) =>
 
     api(getState).get(`/api/v1/statuses/${id}/favourited_by`).then(response => {
       dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
       dispatch(fetchFavouritesSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchFavouritesFail(id, error));
@@ -394,6 +427,15 @@ const unpin = (status: StatusEntity) =>
     });
   };
 
+const togglePin = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.pinned) {
+      dispatch(unpin(status));
+    } else {
+      dispatch(pin(status));
+    }
+  };
+
 const unpinRequest = (status: StatusEntity) => ({
   type: UNPIN_REQUEST,
   status,
@@ -488,6 +530,7 @@ export {
   REMOTE_INTERACTION_FAIL,
   reblog,
   unreblog,
+  toggleReblog,
   reblogRequest,
   reblogSuccess,
   reblogFail,
@@ -496,6 +539,7 @@ export {
   unreblogFail,
   favourite,
   unfavourite,
+  toggleFavourite,
   favouriteRequest,
   favouriteSuccess,
   favouriteFail,
@@ -504,6 +548,7 @@ export {
   unfavouriteFail,
   bookmark,
   unbookmark,
+  toggleBookmark,
   bookmarkRequest,
   bookmarkSuccess,
   bookmarkFail,
@@ -530,6 +575,7 @@ export {
   unpinRequest,
   unpinSuccess,
   unpinFail,
+  togglePin,
   remoteInteraction,
   remoteInteractionRequest,
   remoteInteractionSuccess,

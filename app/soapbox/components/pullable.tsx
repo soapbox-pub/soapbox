@@ -3,7 +3,7 @@ import React from 'react';
 import PullToRefresh from './pull-to-refresh';
 
 interface IPullable {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /**
@@ -13,7 +13,6 @@ interface IPullable {
  */
 const Pullable: React.FC<IPullable> = ({ children }) =>(
   <PullToRefresh
-    pullingContent={undefined}
     // @ts-ignore
     refreshingContent={null}
   >

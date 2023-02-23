@@ -20,7 +20,7 @@ export const AttachmentRecord = ImmutableRecord({
   meta: ImmutableMap(),
   pleroma: ImmutableMap(),
   preview_url: '',
-  remote_url: null,
+  remote_url: null as string | null,
   type: 'unknown',
   url: '',
 

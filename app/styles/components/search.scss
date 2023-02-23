@@ -2,12 +2,6 @@
   position: relative;
 }
 
-input.search__input {
-  @include search-input;
-  display: block;
-  padding: 7px 30px 6px 10px;
-}
-
 .search__icon {
   &::-moz-focus-inner {
     border: 0;
@@ -19,17 +13,16 @@ input.search__input {
   }
 
   .svg-icon {
+    @apply right-4 rtl:left-4 rtl:right-auto text-gray-400;
     @include font-size(16);
     cursor: default;
     display: inline-block;
     position: absolute;
     top: 50%;
-    right: 16px;
     transform: translateY(-50%);
     z-index: 2;
     width: 18px;
     height: 18px;
-    color: var(--primary-text-color--faint);
     opacity: 0;
     pointer-events: none;
 
@@ -45,76 +38,7 @@ input.search__input {
 
   .svg-icon--backspace {
     cursor: pointer;
-    color: var(--highlight-text-color);
     width: 22px;
     height: 22px;
-
-    &:hover {
-      color: var(--brand-color);
-    }
-  }
-}
-
-.search-header {
-  display: block;
-  width: 100%;
-
-  &__text-container {
-    display: none;
-    padding: 25px 0;
-    background-color: var(--accent-color--med);
-
-    @media (min-width: 896px) {
-      display: block;
-    }
-  }
-
-  &__title-text {
-    color: var(--primary-text-color);
-    font-size: 27px;
-    font-weight: bold;
-    line-height: 32px;
-    overflow: hidden;
-    padding-left: 20px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__type-filters-tabs {
-    display: flex;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-
-    @media screen and (max-width: 895px) {
-      max-width: 580px;
-    }
-  }
-
-  @media (min-width: 896px) and (max-width: 1190px) {
-    &__title-text,
-    &__type-filters-tabs {
-      max-width: 900px;
-    }
-  }
-}
-
-.column {
-  .search {
-    padding: 10px 15px;
-    background-color: var(--foreground-color);
-    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
-  }
-
-  input.search__input {
-    background-color: var(--background-color);
-    border-radius: 8px;
-    padding: 12px 36px 12px 16px;
-  }
-
-  .search__icon .svg-icon {
-    right: 24px;
   }
 }

@@ -1,0 +1,118 @@
+# Soapbox Nginx for Docker.
+# It's intended to be used by the official nginx image, which has templating functionality.
+# Mount at: `/etc/nginx/templates/default.conf.template`
+
+map_hash_bucket_size 128;
+
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  ''      close;
+}
+
+# ActivityPub routing.
+map $http_accept $activitypub_location {
+  default @soapbox;
+  "application/activity+json" @backend;
+  'application/ld+json; profile="https://www.w3.org/ns/activitystreams"' @backend;
+}
+
+proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=CACHE:10m inactive=7d max_size=1g;
+
+# Fake backend for when BACKEND_URL isn't defined.
+server {
+  listen ${FALLBACK_PORT};
+  listen [::]:${FALLBACK_PORT};
+
+  location / {
+    add_header Content-Type "application/json" always;
+    return 404 '{"error": "Not implemented"}';
+  }
+}
+
+server {
+  listen ${PORT};
+  listen [::]:${PORT};
+
+  keepalive_timeout    70;
+  sendfile             on;
+  client_max_body_size 80m;
+
+  root /usr/share/nginx/html;
+
+  gzip on;
+  gzip_disable "msie6";
+  gzip_vary on;
+  gzip_proxied any;
+  gzip_comp_level 6;
+  gzip_buffers 16 8k;
+  gzip_http_version 1.1;
+  gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml image/x-icon;
+
+  add_header Strict-Transport-Security "max-age=31536000" always;
+
+  # Content Security Policy (CSP)
+  # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+  add_header Content-Security-Policy "${CSP}";
+
+  # Fallback route.
+  # Try static files, then fall back to the SPA.
+  location / {
+    try_files $uri @soapbox;
+  }
+
+  # Backend routes.
+  # These are routes to the backend's API and important rendered pages.
+  location ~ ^/(api|oauth|auth|admin|pghero|sidekiq|manifest.json|media|nodeinfo|unsubscribe|.well-known/(webfinger|host-meta|nodeinfo|change-password)|@(.+)/embed$) {
+    try_files /dev/null @backend;
+  }
+
+  # Backend ActivityPub routes.
+  # Conditionally send to the backend by Accept header.
+  location ~ ^/(inbox|users|@(.+)) {
+    try_files /dev/null $activitypub_location;
+  }
+
+  # Soapbox build files.
+  # New builds produce hashed filenames, so these should be cached heavily.
+  location /packs {
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    add_header Strict-Transport-Security "max-age=31536000" always;
+  }
+
+  # Soapbox ServiceWorker.
+  location = /sw.js {
+    add_header Cache-Control "public, max-age=0";
+    add_header Strict-Transport-Security "max-age=31536000" always;
+  }
+
+  # Soapbox SPA (Single Page App).
+  location @soapbox {
+    try_files /index.html /dev/null;
+  }
+
+  # Proxy to the backend.
+  location @backend {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Proxy "";
+    proxy_pass_header Server;
+
+    proxy_pass "${BACKEND_URL}";
+    proxy_buffering on;
+    proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+
+    proxy_cache CACHE;
+    proxy_cache_valid 200 7d;
+    proxy_cache_valid 410 24h;
+    proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+    add_header X-Cached $upstream_cache_status;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    tcp_nodelay on;
+  }
+}

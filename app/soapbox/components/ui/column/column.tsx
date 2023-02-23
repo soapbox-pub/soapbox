@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -7,25 +7,11 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-export interface IColumn {
-  /** Route the back button goes to. */
-  backHref?: string,
-  /** Column title text. */
-  label?: string,
-  /** Whether this column should have a transparent background. */
-  transparent?: boolean,
-  /** Whether this column should have a title and back button. */
-  withHeader?: boolean,
-  /** Extra class name for top <div> element. */
-  className?: string,
-}
+type IColumnHeader = Pick<IColumn, 'label' | 'backHref' |'className'>;
 
-/** A backdrop for the main section of the UI. */
-const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className } = props;
-
+/** Contains the column title with optional back button. */
+const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) => {
   const history = useHistory();
-  const soapboxConfig = useSoapboxConfig();
 
   const handleBackClick = () => {
     if (backHref) {
@@ -40,25 +26,34 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
     }
   };
 
-  const renderChildren = () => {
-    if (transparent) {
-      return <div className={classNames('text-black dark:text-white', className)}>{children}</div>;
-    }
+  return (
+    <CardHeader className={className} onBackClick={handleBackClick}>
+      <CardTitle title={label} />
+    </CardHeader>
+  );
+};
 
-    return (
-      <Card variant='rounded' className={className}>
-        {withHeader ? (
-          <CardHeader onBackClick={handleBackClick}>
-            <CardTitle title={label} />
-          </CardHeader>
-        ) : null}
+export interface IColumn {
+  /** Route the back button goes to. */
+  backHref?: string
+  /** Column title text. */
+  label?: string
+  /** Whether this column should have a transparent background. */
+  transparent?: boolean
+  /** Whether this column should have a title and back button. */
+  withHeader?: boolean
+  /** Extra class name for top <div> element. */
+  className?: string
+  /** Ref forwarded to column. */
+  ref?: React.Ref<HTMLDivElement>
+  /** Children to display in the column. */
+  children?: React.ReactNode
+}
 
-        <CardBody>
-          {children}
-        </CardBody>
-      </Card>
-    );
-  };
+/** A backdrop for the main section of the UI. */
+const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
+  const { backHref, children, label, transparent = false, withHeader = true, className } = props;
+  const soapboxConfig = useSoapboxConfig();
 
   return (
     <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
@@ -74,9 +69,24 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
         )}
       </Helmet>
 
-      {renderChildren()}
+      <Card variant={transparent ? undefined : 'rounded'} className={className}>
+        {withHeader && (
+          <ColumnHeader
+            label={label}
+            backHref={backHref}
+            className={clsx({ 'px-4 pt-4 sm:p-0': transparent })}
+          />
+        )}
+
+        <CardBody>
+          {children}
+        </CardBody>
+      </Card>
     </div>
   );
 });
 
-export default Column;
+export {
+  Column,
+  ColumnHeader,
+};

@@ -4,9 +4,10 @@
  * @see module:soapbox/actions/auth
  */
 
-import snackbar from 'soapbox/actions/snackbar';
+import toast from 'soapbox/toast';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
 import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
+import { normalizeUsername } from 'soapbox/utils/input';
 
 import api from '../api';
 
@@ -49,7 +50,7 @@ const MOVE_ACCOUNT_FAIL    = 'MOVE_ACCOUNT_FAIL';
 const fetchOAuthTokens = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FETCH_TOKENS_REQUEST });
-    return api(getState).get('/api/oauth_tokens.json').then(({ data: tokens }) => {
+    return api(getState).get('/api/oauth_tokens').then(({ data: tokens }) => {
       dispatch({ type: FETCH_TOKENS_SUCCESS, tokens });
     }).catch(() => {
       dispatch({ type: FETCH_TOKENS_FAIL });
@@ -84,15 +85,16 @@ const changePassword = (oldPassword: string, newPassword: string, confirmation: 
 
 const resetPassword = (usernameOrEmail: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
+    const input = normalizeUsername(usernameOrEmail);
     const state = getState();
     const v = parseVersion(state.instance.version);
 
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
     const params =
-      usernameOrEmail.includes('@')
-        ? { email: usernameOrEmail }
-        : { nickname: usernameOrEmail, username: usernameOrEmail };
+      input.includes('@')
+        ? { email: input }
+        : { nickname: input, username: input };
 
     const endpoint =
       v.software === TRUTHSOCIAL
@@ -150,7 +152,7 @@ const deleteAccount = (password: string) =>
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
       dispatch({ type: AUTH_LOGGED_OUT, account });
-      dispatch(snackbar.success(messages.loggedOut));
+      toast.success(messages.loggedOut);
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;

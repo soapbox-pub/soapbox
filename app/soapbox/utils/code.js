@@ -3,6 +3,8 @@ const { execSync } = require('child_process');
 
 const pkg = require('../../../package.json');
 
+const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;
+
 const shortRepoName = url => new URL(url).pathname.substring(1);
 const trimHash = hash => hash.substring(0, 7);
 
@@ -10,14 +12,12 @@ const tryGit = cmd => {
   try {
     return String(execSync(cmd));
   } catch (e) {
-    return null;
+    return undefined;
   }
 };
 
 const version = pkg => {
   // Try to discern from GitLab CI first
-  const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;
-
   if (CI_COMMIT_TAG === `v${pkg.version}` || CI_COMMIT_REF_NAME === 'stable') {
     return pkg.version;
   }
@@ -43,4 +43,5 @@ module.exports = {
   repository: shortRepoName(pkg.repository.url),
   version: version(pkg),
   homepage: pkg.homepage,
+  ref: CI_COMMIT_TAG || CI_COMMIT_SHA || tryGit('git rev-parse HEAD'),
 };

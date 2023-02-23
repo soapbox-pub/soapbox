@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 
 interface IInlineSVG {
-  loader?: JSX.Element,
+  loader?: JSX.Element
 }
 
 const InlineSVG: React.FC<IInlineSVG> = ({ loader }): JSX.Element => {

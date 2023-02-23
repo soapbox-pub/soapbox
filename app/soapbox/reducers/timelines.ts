@@ -5,13 +5,13 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
+import sample from 'lodash/sample';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
   ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
-import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -30,14 +30,15 @@ import {
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
   TIMELINE_REPLACE,
+  TIMELINE_INSERT,
+  TIMELINE_CLEAR_FEED_ACCOUNT_ID,
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
-import type { StatusVisibility } from 'soapbox/normalizers/status';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const TRUNCATE_LIMIT = 40;
-const TRUNCATE_SIZE  = 20;
+const TRUNCATE_SIZE = 20;
 
 const TimelineRecord = ImmutableRecord({
   unread: 0,
@@ -115,7 +116,7 @@ const expandNormalizedTimeline = (state: State, timelineId: string, statuses: Im
 };
 
 const updateTimeline = (state: State, timelineId: string, statusId: string) => {
-  const top    = state.get(timelineId)?.top;
+  const top = state.get(timelineId)?.top;
   const oldIds = state.get(timelineId)?.items || ImmutableOrderedSet<string>();
   const unread = state.get(timelineId)?.unread || 0;
 
@@ -135,8 +136,8 @@ const updateTimeline = (state: State, timelineId: string, statusId: string) => {
 };
 
 const updateTimelineQueue = (state: State, timelineId: string, statusId: string) => {
-  const queuedIds   = state.get(timelineId)?.queuedItems || ImmutableOrderedSet<string>();
-  const listedIds   = state.get(timelineId)?.items || ImmutableOrderedSet<string>();
+  const queuedIds = state.get(timelineId)?.queuedItems || ImmutableOrderedSet<string>();
+  const listedIds = state.get(timelineId)?.items || ImmutableOrderedSet<string>();
   const queuedCount = state.get(timelineId)?.totalQueuedItemsCount || 0;
 
   if (queuedIds.includes(statusId)) return state;
@@ -207,10 +208,6 @@ const filterTimelines = (state: State, relationship: APIEntity, statuses: Immuta
   });
 };
 
-const removeStatusFromGroup = (state: State, groupId: string, statusId: string) => {
-  return state.updateIn([`group:${groupId}`, 'items'], ImmutableOrderedSet(), ids => (ids as ImmutableOrderedSet<string>).delete(statusId));
-};
-
 const timelineDequeue = (state: State, timelineId: string) => {
   const top = state.getIn([timelineId, 'top']);
 
@@ -239,13 +236,15 @@ const timelineDisconnect = (state: State, timelineId: string) => {
     if (items.isEmpty()) return;
 
     // This is causing problems. Disable for now.
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/716
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/716
     // timeline.set('items', addStatusId(items, null));
   }));
 };
 
-const getTimelinesByVisibility = (visibility: StatusVisibility) => {
-  switch (visibility) {
+const getTimelinesForStatus = (status: APIEntity) => {
+  switch (status.visibility) {
+    case 'group':
+      return [`group:${status.group?.id || status.group_id}`];
     case 'direct':
       return ['direct'];
     case 'public':
@@ -271,7 +270,7 @@ const importPendingStatus = (state: State, params: APIEntity, idempotencyKey: st
   const statusId = `末pending-${idempotencyKey}`;
 
   return state.withMutations(state => {
-    const timelineIds = getTimelinesByVisibility(params.visibility);
+    const timelineIds = getTimelinesForStatus(params);
 
     timelineIds.forEach(timelineId => {
       updateTimelineQueue(state, timelineId, statusId);
@@ -295,7 +294,7 @@ const importStatus = (state: State, status: APIEntity, idempotencyKey: string) =
   return state.withMutations(state => {
     replacePendingStatus(state, idempotencyKey, status.id);
 
-    const timelineIds = getTimelinesByVisibility(status.visibility);
+    const timelineIds = getTimelinesForStatus(status);
 
     timelineIds.forEach(timelineId => {
       updateTimeline(state, timelineId, status.id);
@@ -316,7 +315,7 @@ export default function timelines(state: State = initialState, action: AnyAction
       if (action.params.scheduled_at) return state;
       return importPendingStatus(state, action.params, action.idempotencyKey);
     case STATUS_CREATE_SUCCESS:
-      if (action.status.scheduled_at) return state;
+      if (action.status.scheduled_at || action.editing) return state;
       return importStatus(state, action.status, action.idempotencyKey);
     case TIMELINE_EXPAND_REQUEST:
       return setLoading(state, action.timeline, true);
@@ -345,14 +344,31 @@ export default function timelines(state: State = initialState, action: AnyAction
       return timelineConnect(state, action.timeline);
     case TIMELINE_DISCONNECT:
       return timelineDisconnect(state, action.timeline);
-    case GROUP_REMOVE_STATUS_SUCCESS:
-      return removeStatusFromGroup(state, action.groupId, action.id);
     case TIMELINE_REPLACE:
       return state
         .update('home', TimelineRecord(), timeline => timeline.withMutations(timeline => {
           timeline.set('items', ImmutableOrderedSet([]));
         }))
         .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId));
+    case TIMELINE_INSERT:
+      return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
+        timeline.update('items', oldIds => {
+
+          let oldIdsArray = oldIds.toArray();
+          const existingSuggestionId = oldIdsArray.find(key => key.includes('末suggestions'));
+
+          if (existingSuggestionId) {
+            oldIdsArray = oldIdsArray.slice(1);
+          }
+          const positionInTimeline = sample([5, 6, 7, 8, 9]) as number;
+          if (oldIds.last()) {
+            oldIdsArray.splice(positionInTimeline, 0, `末suggestions-${oldIds.last()}`);
+          }
+          return ImmutableOrderedSet(oldIdsArray);
+        });
+      }));
+    case TIMELINE_CLEAR_FEED_ACCOUNT_ID:
+      return state.update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', null));
     default:
       return state;
   }

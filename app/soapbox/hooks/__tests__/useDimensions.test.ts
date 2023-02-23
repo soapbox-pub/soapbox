@@ -1,30 +1,22 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
+import { listener, mockDisconnect } from '../__mocks__/resize-observer';
 import { useDimensions } from '../useDimensions';
 
-let listener: ((rect: any) => void) | undefined = undefined;
-
-(window as any).ResizeObserver = class ResizeObserver {
-
-  constructor(ls: any) {
-    listener = ls;
-  }
-
-  observe() {}
-  disconnect() {}
-
-};
-
 describe('useDimensions()', () => {
+  beforeEach(() => {
+    mockDisconnect.mockClear();
+  });
+
   it('defaults to 0', () => {
     const { result } = renderHook(() => useDimensions());
 
     act(() => {
       const div = document.createElement('div');
-      (result.current[0] as any)(div);
+      (result.current[1] as any)(div);
     });
 
-    expect(result.current[1]).toMatchObject({
+    expect(result.current[2]).toMatchObject({
       width: 0,
       height: 0,
     });
@@ -35,7 +27,7 @@ describe('useDimensions()', () => {
 
     act(() => {
       const div = document.createElement('div');
-      (result.current[0] as any)(div);
+      (result.current[1] as any)(div);
     });
 
     act(() => {
@@ -49,32 +41,22 @@ describe('useDimensions()', () => {
       ]);
     });
 
-    expect(result.current[1]).toMatchObject({
+    expect(result.current[2]).toMatchObject({
       width: 200,
       height: 200,
     });
   });
 
   it('disconnects on unmount', () => {
-    const disconnect = jest.fn();
-    (window as any).ResizeObserver = class ResizeObserver {
-
-      observe() {}
-      disconnect() {
-        disconnect();
-      }
-
-    };
-
     const { result, unmount } = renderHook(() => useDimensions());
 
     act(() => {
       const div = document.createElement('div');
-      (result.current[0] as any)(div);
+      (result.current[1] as any)(div);
     });
 
-    expect(disconnect).toHaveBeenCalledTimes(0);
+    expect(mockDisconnect).toHaveBeenCalledTimes(0);
     unmount();
-    expect(disconnect).toHaveBeenCalledTimes(1);
+    expect(mockDisconnect).toHaveBeenCalledTimes(1);
   });
 });

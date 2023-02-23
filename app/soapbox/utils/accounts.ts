@@ -1,5 +1,3 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
-
 import type { Account } from 'soapbox/types/entities';
 
 const getDomainFromURL = (account: Account): string => {
@@ -28,15 +26,31 @@ export const getAcct = (account: Account, displayFqn: boolean): string => (
   displayFqn === true ? account.fqn : account.acct
 );
 
-export const getFollowDifference = (state: ImmutableMap<string, any>, accountId: string, type: string): number => {
-  const items: any = state.getIn(['user_lists', type, accountId, 'items'], ImmutableOrderedSet());
-  const counter: number = Number(state.getIn(['accounts_counters', accountId, `${type}_count`], 0));
-  return Math.max(counter - items.size, 0);
-};
-
 export const isLocal = (account: Account): boolean => {
   const domain: string = account.acct.split('@')[1];
   return domain === undefined ? true : false;
 };
 
 export const isRemote = (account: Account): boolean => !isLocal(account);
+
+/** Default header filenames from various backends */
+const DEFAULT_HEADERS = [
+  '/headers/original/missing.png', // Mastodon
+  '/images/banner.png', // Pleroma
+];
+
+/** Check if the avatar is a default avatar */
+export const isDefaultHeader = (url: string) => {
+  return DEFAULT_HEADERS.some(header => url.endsWith(header));
+};
+
+/** Default avatar filenames from various backends */
+const DEFAULT_AVATARS = [
+  '/avatars/original/missing.png', // Mastodon
+  '/images/avi.png', // Pleroma
+];
+
+/** Check if the avatar is a default avatar */
+export const isDefaultAvatar = (url: string) => {
+  return DEFAULT_AVATARS.some(avatar => url.endsWith(avatar));
+};

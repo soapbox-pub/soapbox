@@ -1,11 +1,12 @@
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { HStack } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
 
@@ -19,38 +20,15 @@ const trim = (text: string, len: number): string => {
   return text.substring(0, cut) + (text.length > len ? '…' : '');
 };
 
-const domParser = new DOMParser();
-
-const addAutoPlay = (html: string): string => {
-  const document = domParser.parseFromString(html, 'text/html').documentElement;
-  const iframe = document.querySelector('iframe');
-
-  if (iframe) {
-    if (iframe.src.indexOf('?') !== -1) {
-      iframe.src += '&';
-    } else {
-      iframe.src += '?';
-    }
-
-    iframe.src += 'autoplay=1&auto_play=1';
-    iframe.allow = 'autoplay';
-
-    // DOM parser creates html/body elements around original HTML fragment,
-    // so we need to get innerHTML out of the body and not the entire document
-    return (document.querySelector('body') as HTMLBodyElement).innerHTML;
-  }
-
-  return html;
-};
-
 interface ICard {
-  card: CardEntity,
-  maxTitle?: number,
-  maxDescription?: number,
-  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void,
-  compact?: boolean,
-  defaultWidth?: number,
-  cacheWidth?: (width: number) => void,
+  card: CardEntity
+  maxTitle?: number
+  maxDescription?: number
+  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void
+  compact?: boolean
+  defaultWidth?: number
+  cacheWidth?: (width: number) => void
+  horizontal?: boolean
 }
 
 const Card: React.FC<ICard> = ({
@@ -61,6 +39,7 @@ const Card: React.FC<ICard> = ({
   compact = false,
   cacheWidth,
   onOpenMedia,
+  horizontal,
 }): JSX.Element => {
   const [width, setWidth] = useState(defaultWidth);
   const [embedded, setEmbedded] = useState(false);
@@ -69,7 +48,7 @@ const Card: React.FC<ICard> = ({
     setEmbedded(false);
   }, [card.url]);
 
-  const trimmedTitle       = trim(card.title, maxTitle);
+  const trimmedTitle = trim(card.title, maxTitle);
   const trimmedDescription = trim(card.description, maxDescription);
 
   const handlePhotoClick = () => {
@@ -109,9 +88,9 @@ const Card: React.FC<ICard> = ({
   };
 
   const renderVideo = () => {
-    const content   = { __html: addAutoPlay(card.html) };
-    const ratio     = getRatio(card);
-    const height    = width / ratio;
+    const content = { __html: addAutoPlay(card.html) };
+    const ratio = getRatio(card);
+    const height = width / ratio;
 
     return (
       <div
@@ -124,7 +103,7 @@ const Card: React.FC<ICard> = ({
   };
 
   const getRatio = (card: CardEntity): number => {
-    const ratio  = (card.width / card.height) || 16 / 9;
+    const ratio = (card.width / card.height) || 16 / 9;
 
     // Constrain to a sane limit
     // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
@@ -132,39 +111,49 @@ const Card: React.FC<ICard> = ({
   };
 
   const interactive = card.type !== 'link';
-  const horizontal  = interactive || embedded;
-  const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
-  const ratio       = getRatio(card);
-  const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
+  horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
+  const className = clsx('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
+  const ratio = getRatio(card);
+  const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
   const title = interactive ? (
     <a
       onClick={(e) => e.stopPropagation()}
-      className='status-card__title'
       href={card.url}
       title={trimmedTitle}
       rel='noopener'
       target='_blank'
     >
-      <strong>{trimmedTitle}</strong>
+      <span>{trimmedTitle}</span>
     </a>
   ) : (
-    <strong className='status-card__title' title={trimmedTitle}>{trimmedTitle}</strong>
+    <span title={trimmedTitle}>{trimmedTitle}</span>
   );
 
   const description = (
-    <div className='status-card__content cursor-default'>
-      <span className='status-card__title'>{title}</span>
-      <p className='status-card__description'>{trimmedDescription}</p>
-      <span className='status-card__host'><Icon src={require('@tabler/icons/link.svg')} /> {card.provider_name}</span>
-    </div>
+    <Stack space={2} className='flex-1 overflow-hidden p-4'>
+      {trimmedTitle && (
+        <Text weight='bold'>{title}</Text>
+      )}
+      {trimmedDescription && (
+        <Text>{trimmedDescription}</Text>
+      )}
+      <HStack space={1} alignItems='center'>
+        <Text tag='span' theme='muted'>
+          <Icon src={require('@tabler/icons/link.svg')} />
+        </Text>
+        <Text tag='span' theme='muted' size='sm'>
+          {card.provider_name}
+        </Text>
+      </HStack>
+    </Stack>
   );
 
-  let embed: React.ReactNode = '';
+  let embed: React.ReactNode = null;
 
   const canvas = (
     <Blurhash
-      className='absolute w-full h-full inset-0 -z-10'
+      className='absolute inset-0 -z-10 h-full w-full'
       hash={card.blurhash}
     />
   );
@@ -196,12 +185,12 @@ const Card: React.FC<ICard> = ({
           {thumbnail}
 
           <div className='absolute inset-0 flex items-center justify-center'>
-            <div className='bg-white shadow-md rounded-md p-2 flex items-center justify-center'>
+            <div className='flex items-center justify-center rounded-full bg-gray-500/90 px-4 py-3 shadow-md dark:bg-gray-700/90'>
               <HStack space={3} alignItems='center'>
-                <button onClick={handleEmbedClick} className='appearance-none text-gray-400 hover:text-gray-600'>
+                <button onClick={handleEmbedClick} className='appearance-none text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'>
                   <Icon
                     src={iconVariant}
-                    className='w-5 h-5 text-inherit'
+                    className='h-6 w-6 text-inherit'
                   />
                 </button>
 
@@ -211,11 +200,11 @@ const Card: React.FC<ICard> = ({
                     href={card.url}
                     target='_blank'
                     rel='noopener'
-                    className='text-gray-400 hover:text-gray-600'
+                    className='text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'
                   >
                     <Icon
                       src={require('@tabler/icons/external-link.svg')}
-                      className='w-5 h-5 text-inherit'
+                      className='h-6 w-6 text-inherit'
                     />
                   </a>
                 )}
@@ -234,15 +223,17 @@ const Card: React.FC<ICard> = ({
     );
   } else if (card.image) {
     embed = (
-      <div className='status-card__image'>
+      <div className={clsx(
+        'status-card__image',
+        'w-full flex-none rounded-l md:h-auto md:w-auto md:flex-auto',
+        {
+          'h-auto': horizontal,
+          'h-[200px]': !horizontal,
+        },
+      )}
+      >
         {canvas}
         {thumbnail}
-      </div>
-    );
-  } else {
-    embed = (
-      <div className='status-card__image status-card__image--empty'>
-        <Icon src={require('@tabler/icons/file-text.svg')} />
       </div>
     );
   }

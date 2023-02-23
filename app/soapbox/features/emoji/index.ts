@@ -12,25 +12,25 @@ import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-m
  *  - emoji-mart's custom emoji types
  *  - an Emoji type that is either NativeEmoji or CustomEmoji
  *  - a type inside redux's `store.custom_emoji` immutablejs
- *  
+ *
  * there needs to be one type for the picker handler callback
  * and one type for the emoji-mart data
  * and one type that is used everywhere that the above two are converted into
  */
 
 export interface CustomEmoji {
-  id: string,
-  colons: string,
-  custom: true,
-  imageUrl: string, 
+  id: string
+  colons: string
+  custom: true
+  imageUrl: string
 }
 
 export interface NativeEmoji {
-  id: string,
-  colons: string,
-  custom?: boolean,
-  unified: string,
-  native: string,
+  id: string
+  colons: string
+  custom?: boolean
+  unified: string
+  native: string
 }
 
 export type Emoji = CustomEmoji | NativeEmoji;
@@ -42,8 +42,6 @@ export function isCustomEmoji(emoji: Emoji): emoji is CustomEmoji {
 export function isNativeEmoji(emoji: Emoji): emoji is NativeEmoji {
   return (emoji as NativeEmoji).native !== undefined;
 }
-
-// export type Emoji = any;
 
 const isAlphaNumeric = (c: string) => {
   const code = c.charCodeAt(0);

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { RootState } from 'soapbox/store';
 import { getAuthUserUrl } from 'soapbox/utils/auth';
 import { parseVersion } from 'soapbox/utils/features';
@@ -10,12 +10,12 @@ import api from '../api';
 
 const getMeUrl = (state: RootState) => {
   const me = state.me;
-  return state.accounts.getIn([me, 'url']);
+  return state.accounts.get(me)?.url;
 };
 
 /** Figure out the appropriate instance to fetch depending on the state */
 export const getHost = (state: RootState) => {
-  const accountUrl = getMeUrl(state) || getAuthUserUrl(state);
+  const accountUrl = getMeUrl(state) || getAuthUserUrl(state) as string;
 
   try {
     return new URL(accountUrl).host;
@@ -66,7 +66,5 @@ export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
 
 export const fetchNodeinfo = createAsyncThunk<void, void, { state: RootState }>(
   'nodeinfo/fetch',
-  async(_arg, { getState }) => {
-    return await api(getState).get('/nodeinfo/2.1.json');
-  },
+  async(_arg, { getState }) => await api(getState).get('/nodeinfo/2.1.json'),
 );

@@ -1,11 +1,12 @@
-import classNames from 'classnames';
-import React from 'react';
+import clsx from 'clsx';
+import React, { forwardRef } from 'react';
 
 const justifyContentOptions = {
   between: 'justify-between',
   center: 'justify-center',
   start: 'justify-start',
   end: 'justify-end',
+  around: 'justify-around',
 };
 
 const alignItemsOptions = {
@@ -13,52 +14,65 @@ const alignItemsOptions = {
   bottom: 'items-end',
   center: 'items-center',
   start: 'items-start',
+  stretch: 'items-stretch',
 };
 
 const spaces = {
-  '0.5': 'space-x-0.5',
+  [0.5]: 'space-x-0.5',
   1: 'space-x-1',
   1.5: 'space-x-1.5',
   2: 'space-x-2',
+  2.5: 'space-x-2.5',
   3: 'space-x-3',
   4: 'space-x-4',
+  5: 'space-x-5',
   6: 'space-x-6',
   8: 'space-x-8',
 };
 
-interface IHStack {
+interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   /** Vertical alignment of children. */
-  alignItems?: 'top' | 'bottom' | 'center' | 'start',
+  alignItems?: keyof typeof alignItemsOptions
   /** Extra class names on the <div> element. */
-  className?: string,
+  className?: string
+  /** Children */
+  children?: React.ReactNode
   /** Horizontal alignment of children. */
-  justifyContent?: 'between' | 'center' | 'start' | 'end',
+  justifyContent?: keyof typeof justifyContentOptions
   /** Size of the gap between elements. */
-  space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6 | 8,
+  space?: keyof typeof spaces
   /** Whether to let the flexbox grow. */
-  grow?: boolean,
+  grow?: boolean
+  /** HTML element to use for container. */
+  element?: keyof JSX.IntrinsicElements
   /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
+  /** Whether to let the flexbox wrap onto multiple lines. */
+  wrap?: boolean
 }
 
 /** Horizontal row of child elements. */
-const HStack: React.FC<IHStack> = (props) => {
-  const { space, alignItems, grow, justifyContent, className, ...filteredProps } = props;
+const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
+  const { space, alignItems, justifyContent, className, grow, element = 'div', wrap, ...filteredProps } = props;
+
+  const Elem = element as 'div';
 
   return (
-    <div
+    <Elem
       {...filteredProps}
-      className={classNames('flex', {
+      ref={ref}
+      className={clsx('flex rtl:space-x-reverse', {
         // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
-        'flex-grow': grow,
+        'grow': grow,
+        'flex-wrap': wrap,
       }, className)}
     />
   );
-};
+});
 
 export default HStack;

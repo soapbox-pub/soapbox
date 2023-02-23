@@ -3,14 +3,20 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import emojify from 'soapbox/features/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
 
 import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,
-} from '../actions/emoji_reacts';
+} from '../actions/emoji-reacts';
+import {
+  EVENT_JOIN_REQUEST,
+  EVENT_JOIN_FAIL,
+  EVENT_LEAVE_REQUEST,
+  EVENT_LEAVE_FAIL,
+} from '../actions/events';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,
@@ -30,24 +36,27 @@ import {
   STATUS_HIDE,
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
+  STATUS_TRANSLATE_SUCCESS,
+  STATUS_TRANSLATE_UNDO,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const domParser = new DOMParser();
 
 type StatusRecord = ReturnType<typeof normalizeStatus>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ReducerStatus>;
 
 export interface ReducerStatus extends StatusRecord {
-  account: string | null,
-  reblog: string | null,
-  poll: string | null,
-  quote: string | null,
+  account: string | null
+  reblog: string | null
+  poll: string | null
+  quote: string | null
+  group: string | null
 }
 
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
@@ -56,6 +65,7 @@ const minifyStatus = (status: StatusRecord): ReducerStatus => {
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
+    group: normalizeId(status.getIn(['group', 'id'])),
   }) as ReducerStatus;
 };
 
@@ -193,6 +203,24 @@ const simulateFavourite = (
   return state.set(statusId, updatedStatus);
 };
 
+interface Translation {
+  content: string
+  detected_source_language: string
+  provider: string
+}
+
+/** Import translation from translation service into the store. */
+const importTranslation = (state: State, statusId: string, translation: Translation) => {
+  const map = ImmutableMap(translation);
+  const result = map.set('content', stripCompatibilityFeatures(map.get('content', '')));
+  return state.setIn([statusId, 'translation'], result);
+};
+
+/** Delete translation from the store. */
+const deleteTranslation = (state: State, statusId: string) => {
+  return state.deleteIn([statusId, 'translation']);
+};
+
 const initialState: State = ImmutableMap();
 
 export default function statuses(state = initialState, action: AnyAction): State {
@@ -202,9 +230,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case STATUSES_IMPORT:
       return importStatuses(state, action.statuses, action.expandSpoilers);
     case STATUS_CREATE_REQUEST:
-      return incrementReplyCount(state, action.params);
+      return action.editing ? state : incrementReplyCount(state, action.params);
     case STATUS_CREATE_FAIL:
-      return decrementReplyCount(state, action.params);
+      return action.editing ? state : decrementReplyCount(state, action.params);
     case FAVOURITE_REQUEST:
       return simulateFavourite(state, action.status.id, true);
     case UNFAVOURITE_REQUEST:
@@ -255,8 +283,19 @@ export default function statuses(state = initialState, action: AnyAction): State
       return decrementReplyCount(state, action.params);
     case STATUS_DELETE_FAIL:
       return incrementReplyCount(state, action.params);
+    case STATUS_TRANSLATE_SUCCESS:
+      return importTranslation(state, action.id, action.translation);
+    case STATUS_TRANSLATE_UNDO:
+      return deleteTranslation(state, action.id);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
+    case EVENT_JOIN_REQUEST:
+      return state.setIn([action.id, 'event', 'join_state'], 'pending');
+    case EVENT_JOIN_FAIL:
+    case EVENT_LEAVE_REQUEST:
+      return state.setIn([action.id, 'event', 'join_state'], null);
+    case EVENT_LEAVE_FAIL:
+      return state.setIn([action.id, 'event', 'join_state'], action.previousState);
     default:
       return state;
   }

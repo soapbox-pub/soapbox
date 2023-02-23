@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { getHost } from 'soapbox/actions/instance';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-import KVStore from 'soapbox/storage/kv_store';
+import KVStore from 'soapbox/storage/kv-store';
 import { removeVS16s } from 'soapbox/utils/emoji';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -32,8 +32,8 @@ const getSoapboxConfig = createSelector([
     }
 
     // If RGI reacts aren't supported, strip VS16s
-    // // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-    if (!features.emojiReactsRGI) {
+    // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
+    if (features.emojiReactsNonRGI) {
       soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
     }
   });

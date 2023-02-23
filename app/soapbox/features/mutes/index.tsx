@@ -1,13 +1,12 @@
 import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchMutes, expandMutes } from 'soapbox/actions/mutes';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account_container';
-import { useAppSelector } from 'soapbox/hooks';
+import AccountContainer from 'soapbox/containers/account-container';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.mutes', defaultMessage: 'Muted users' },
@@ -18,7 +17,7 @@ const handleLoadMore = debounce((dispatch) => {
 }, 300, { leading: true });
 
 const Mutes: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const accountIds = useAppSelector((state) => state.user_lists.mutes.items);

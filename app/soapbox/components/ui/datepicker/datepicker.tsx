@@ -20,7 +20,7 @@ const Datepicker = ({ onChange }: IDatepicker) => {
 
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [day, setDay] = useState<number>(new Date().getDate());
-  const [year, setYear] = useState<number>(2022);
+  const [year, setYear] = useState<number>(new Date().getFullYear());
 
   const numberOfDays = useMemo(() => {
     return getDaysInMonth(month, year);
@@ -31,7 +31,7 @@ const Datepicker = ({ onChange }: IDatepicker) => {
   }, [month, day, year]);
 
   return (
-    <div className='grid grid-cols-1 gap-y-2 gap-x-2 sm:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-2 sm:grid-cols-3'>
       <div className='sm:col-span-1'>
         <Stack>
           <Text size='sm' weight='medium' theme='muted'>

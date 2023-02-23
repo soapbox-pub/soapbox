@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -11,29 +11,34 @@ const messages = defineMessages({
   hidePassword: { id: 'input.password.hide_password', defaultMessage: 'Hide password' },
 });
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern'> {
+/** Possible theme names for an Input. */
+type InputThemes = 'normal' | 'search'
+
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
-  autoFocus?: boolean,
+  autoFocus?: boolean
   /** The initial text in the input. */
-  defaultValue?: string,
+  defaultValue?: string
   /** Extra class names for the <input> element. */
-  className?: string,
+  className?: string
   /** Extra class names for the outer <div> element. */
-  outerClassName?: string,
-  /** URL to the svg icon. */
-  icon?: string,
+  outerClassName?: string
+  /** URL to the svg icon. Cannot be used with prepend. */
+  icon?: string
   /** Internal input name. */
-  name?: string,
+  name?: string
   /** Text to display before a value is entered. */
-  placeholder?: string,
+  placeholder?: string
   /** Text in the input. */
-  value?: string | number,
+  value?: string | number
   /** Change event handler for the input. */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  /** HTML input type. */
-  type: 'text' | 'number' | 'email' | 'tel' | 'password',
-  /** Whether to display the input in red. */
-  hasError?: boolean,
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  /** An element to display as prefix to input. Cannot be used with icon. */
+  prepend?: React.ReactElement
+  /** An element to display as suffix to input. Cannot be used with password type. */
+  append?: React.ReactElement
+  /** Theme to style the input with. */
+  theme?: InputThemes
 }
 
 /** Form input element. */
@@ -41,7 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
 
-    const { type = 'text', icon, className, outerClassName, hasError, ...filteredProps } = props;
+    const { type = 'text', icon, className, outerClassName, append, prepend, theme = 'normal', ...filteredProps } = props;
 
     const [revealed, setRevealed] = React.useState(false);
 
@@ -52,10 +57,25 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
     }, []);
 
     return (
-      <div className={classNames('mt-1 relative rounded-md shadow-sm', outerClassName)}>
+      <div
+        className={
+          clsx('relative', {
+            'rounded-md': theme !== 'search',
+            'rounded-full': theme === 'search',
+            'mt-1': !String(outerClassName).includes('mt-'),
+            [String(outerClassName)]: typeof outerClassName !== 'undefined',
+          })
+        }
+      >
         {icon ? (
-          <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-            <Icon src={icon} className='h-4 w-4 text-gray-400' aria-hidden='true' />
+          <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
+            <Icon src={icon} className='h-4 w-4 text-gray-700 dark:text-gray-600' aria-hidden='true' />
+          </div>
+        ) : null}
+
+        {prepend ? (
+          <div className='absolute inset-y-0 left-0 flex items-center'>
+            {prepend}
           </div>
         ) : null}
 
@@ -63,14 +83,22 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           {...filteredProps}
           type={revealed ? 'text' : type}
           ref={ref}
-          className={classNames({
-            'dark:bg-slate-800 dark:text-white block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500':
-              true,
-            'pr-7': isPassword,
-            'text-red-600 border-red-600': hasError,
+          className={clsx('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
+            'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+              ['normal', 'search'].includes(theme),
+            'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
+            'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
+            'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,
             'pl-8': typeof icon !== 'undefined',
+            'pl-16': typeof prepend !== 'undefined',
           }, className)}
         />
+
+        {append ? (
+          <div className='absolute inset-y-0 right-0 flex items-center pr-3 rtl:left-0 rtl:right-auto'>
+            {append}
+          </div>
+        ) : null}
 
         {isPassword ? (
           <Tooltip
@@ -80,12 +108,12 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 intl.formatMessage(messages.showPassword)
             }
           >
-            <div className='absolute inset-y-0 right-0 flex items-center'>
+            <div className='absolute inset-y-0 right-0 flex items-center rtl:left-0 rtl:right-auto'>
               <button
                 type='button'
                 onClick={togglePassword}
                 tabIndex={-1}
-                className='text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 h-full px-2 focus:ring-primary-500 focus:ring-2'
+                className='h-full px-2 text-gray-700 hover:text-gray-500 focus:ring-2 focus:ring-primary-500 dark:text-gray-600 dark:hover:text-gray-400'
               >
                 <SvgIcon
                   src={revealed ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}
@@ -100,4 +128,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
   },
 );
 
-export default Input;
+export {
+  Input as default,
+  InputThemes,
+};

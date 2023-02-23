@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';
@@ -13,9 +13,9 @@ const ValidationCheckmark = ({ isValid, text }: IValidationCheckmark) => {
     <HStack alignItems='center' space={2} data-testid='validation-checkmark'>
       <Icon
         src={isValid ? require('@tabler/icons/check.svg') : require('@tabler/icons/point.svg')}
-        className={classNames({
+        className={clsx({
           'w-4 h-4': true,
-          'text-gray-400 fill-gray-400': !isValid,
+          'text-gray-400 dark:text-gray-600 dark:fill-gray-600 fill-gray-400': !isValid,
           'text-success-500': isValid,
         })}
       />

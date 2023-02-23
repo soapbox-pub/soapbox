@@ -17,23 +17,40 @@ import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
-import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
-export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
+export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
+export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
+
+export type EventJoinMode = 'free' | 'restricted' | 'invite';
+export type EventJoinState = 'pending' | 'reject' | 'accept';
+
+export const EventRecord = ImmutableRecord({
+  name: '',
+  start_time: null as string | null,
+  end_time: null as string | null,
+  join_mode: null as EventJoinMode | null,
+  participants_count: 0,
+  location: null as ImmutableMap<string, any> | null,
+  join_state: null as EventJoinState | null,
+  banner: null as Attachment | null,
+  links: ImmutableList<Attachment>(),
+});
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
   application: null as ImmutableMap<string, any> | null,
+  approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
   card: null as Card | null,
   content: '',
-  created_at: new Date(),
-  edited_at: null as Date | null,
+  created_at: '',
+  edited_at: null as string | null,
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
-  group: null as EmbeddedEntity<any>,
+  group: null as EmbeddedEntity<Group>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',
@@ -45,6 +62,7 @@ export const StatusRecord = ImmutableRecord({
   pleroma: ImmutableMap<string, any>(),
   poll: null as EmbeddedEntity<Poll>,
   quote: null as EmbeddedEntity<any>,
+  quotes_count: 0,
   reblog: null as EmbeddedEntity<any>,
   reblogged: false,
   reblogs_count: 0,
@@ -55,6 +73,7 @@ export const StatusRecord = ImmutableRecord({
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
+  event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields
   contentHtml: '',
@@ -63,6 +82,7 @@ export const StatusRecord = ImmutableRecord({
   hidden: false,
   search_index: '',
   spoilerHtml: '',
+  translation: null as ImmutableMap<string, string> | null,
 });
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
@@ -141,7 +161,57 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   return status.withMutations(status => {
     status.update('quote', quote => quote || status.getIn(['pleroma', 'quote']) || null);
     status.deleteIn(['pleroma', 'quote']);
+    status.update('quotes_count', quotes_count => quotes_count || status.getIn(['pleroma', 'quotes_count'], 0));
+    status.deleteIn(['pleroma', 'quotes_count']);
   });
+};
+
+// Workaround for not yet implemented filtering from Mastodon 3.6
+const fixFiltered = (status: ImmutableMap<string, any>) => {
+  status.delete('filtered');
+};
+
+/** If the status contains spoiler text, treat it as sensitive. */
+const fixSensitivity = (status: ImmutableMap<string, any>) => {
+  if (status.get('spoiler_text')) {
+    status.set('sensitive', true);
+  }
+};
+
+// Normalize event
+const normalizeEvent = (status: ImmutableMap<string, any>) => {
+  if (status.getIn(['pleroma', 'event'])) {
+    const firstAttachment = status.get('media_attachments').first();
+    let banner = null;
+    let mediaAttachments = status.get('media_attachments');
+
+    if (firstAttachment && firstAttachment.description === 'Banner' && firstAttachment.type === 'image') {
+      banner = normalizeAttachment(firstAttachment);
+      mediaAttachments = mediaAttachments.shift();
+    }
+
+    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') === 'text/html');
+    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') !== 'text/html');
+
+    const event = EventRecord(
+      (status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>)
+        .set('banner', banner)
+        .set('links', links),
+    );
+
+    status
+      .set('event', event)
+      .set('media_attachments', mediaAttachments);
+  }
+};
+
+/** Rewrite `<p></p>` to empty string. */
+const fixContent = (status: ImmutableMap<string, any>) => {
+  if (status.get('content') === '<p></p>') {
+    return status.set('content', '');
+  } else {
+    return status;
+  }
 };
 
 export const normalizeStatus = (status: Record<string, any>) => {
@@ -155,6 +225,10 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
+      fixFiltered(status);
+      fixSensitivity(status);
+      normalizeEvent(status);
+      fixContent(status);
     }),
   );
 };

@@ -1,42 +1,57 @@
-import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
-import { fetchTrends } from 'soapbox/actions/trends';
+import { setFilter } from 'soapbox/actions/search';
 import Hashtag from 'soapbox/components/hashtag';
-import { Widget } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { Text, Widget } from 'soapbox/components/ui';
+import PlaceholderSidebarTrends from 'soapbox/features/placeholder/components/placeholder-sidebar-trends';
+import { useAppDispatch } from 'soapbox/hooks';
+import useTrends from 'soapbox/queries/trends';
 
 interface ITrendsPanel {
   limit: number
 }
 
+const messages = defineMessages({
+  viewAll: {
+    id: 'trendsPanel.viewAll',
+    defaultMessage: 'View all',
+  },
+});
+
 const TrendsPanel = ({ limit }: ITrendsPanel) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const intl = useIntl();
 
-  const trends = useAppSelector((state) => state.trends.items);
+  const { data: trends, isFetching } = useTrends();
 
-  const sortedTrends = React.useMemo(() => {
-    return trends.sort((a, b) => {
-      const num_a = Number(a.getIn(['history', 0, 'accounts']));
-      const num_b = Number(b.getIn(['history', 0, 'accounts']));
-      return num_b - num_a;
-    }).slice(0, limit);
-  }, [trends, limit]);
+  const setHashtagsFilter = () => {
+    dispatch(setFilter('hashtags'));
+  };
 
-  React.useEffect(() => {
-    dispatch(fetchTrends());
-  }, []);
-
-  if (sortedTrends.isEmpty()) {
+  if (!isFetching && !trends?.length) {
     return null;
   }
 
   return (
-    <Widget title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}>
-      {sortedTrends.map((hashtag) => (
-        <Hashtag key={hashtag.name} hashtag={hashtag} />
-      ))}
+    <Widget
+      title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}
+      action={
+        <Link className='text-right' to='/search' onClick={setHashtagsFilter}>
+          <Text tag='span' theme='primary' size='sm' className='hover:underline'>
+            {intl.formatMessage(messages.viewAll)}
+          </Text>
+        </Link>
+      }
+    >
+      {isFetching ? (
+        <PlaceholderSidebarTrends limit={limit} />
+      ) : (
+        trends?.slice(0, limit).map((hashtag) => (
+          <Hashtag key={hashtag.name} hashtag={hashtag} />
+        ))
+      )}
     </Widget>
   );
 };

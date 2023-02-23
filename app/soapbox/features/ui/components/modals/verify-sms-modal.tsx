@@ -1,19 +1,48 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
 
 import { verifyCredentials } from 'soapbox/actions/auth';
 import { closeModal } from 'soapbox/actions/modals';
-import snackbar from 'soapbox/actions/snackbar';
 import { reConfirmPhoneVerification, reRequestPhoneVerification } from 'soapbox/actions/verification';
-import { FormGroup, Input, Modal, Stack, Text } from 'soapbox/components/ui';
-import { validPhoneNumberRegex } from 'soapbox/features/verification/steps/sms-verification';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { FormGroup, PhoneInput, Modal, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { getAccessToken } from 'soapbox/utils/auth';
-import { formatPhoneNumber } from 'soapbox/utils/phone';
+
+const messages = defineMessages({
+  verificationInvalid: {
+    id: 'sms_verification.invalid',
+    defaultMessage: 'Please enter a valid phone number.',
+  },
+  verificationSuccess: {
+    id: 'sms_verification.success',
+    defaultMessage: 'A verification code has been sent to your phone number.',
+  },
+  verificationFail: {
+    id: 'sms_verification.fail',
+    defaultMessage: 'Failed to send SMS message to your phone number.',
+  },
+  verificationExpired: {
+    id: 'sms_verification.expired',
+    defaultMessage: 'Your SMS token has expired.',
+  },
+  verifySms: {
+    id: 'sms_verification.modal.verify_sms',
+    defaultMessage: 'Verify SMS',
+  },
+  verifyNumber: {
+    id: 'sms_verification.modal.verify_number',
+    defaultMessage: 'Verify phone number',
+  },
+  verifyCode: {
+    id: 'sms_verification.modal.verify_code',
+    defaultMessage: 'Verify code',
+  },
+});
 
 interface IVerifySmsModal {
-  onClose: (type: string) => void,
+  onClose: (type: string) => void
 }
 
 enum Statuses {
@@ -27,21 +56,19 @@ enum Statuses {
 const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const instance = useInstance();
   const accessToken = useAppSelector((state) => getAccessToken(state));
-  const title = useAppSelector((state) => state.instance.title);
   const isLoading = useAppSelector((state) => state.verification.isLoading);
 
   const [status, setStatus] = useState<Statuses>(Statuses.IDLE);
-  const [phone, setPhone] = useState<string>('');
+  const [phone, setPhone] = useState<string>();
   const [verificationCode, setVerificationCode] = useState('');
   const [requestedAnother, setAlreadyRequestedAnother] = useState(false);
 
-  const isValid = validPhoneNumberRegex.test(phone);
+  const isValid = !!phone;
 
-  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedPhone = formatPhoneNumber(event.target.value);
-
-    setPhone(formattedPhone);
+  const onChange = useCallback((phone?: string) => {
+    setPhone(phone);
   }, []);
 
   const handleSubmit = (event: React.MouseEvent) => {
@@ -49,37 +76,18 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
 
     if (!isValid) {
       setStatus(Statuses.IDLE);
-      dispatch(
-        snackbar.error(
-          intl.formatMessage({
-            id: 'sms_verification.invalid',
-            defaultMessage: 'Please enter a valid phone number.',
-          }),
-        ),
-      );
+      toast.error(intl.formatMessage(messages.verificationInvalid));
       return;
     }
 
-    dispatch(reRequestPhoneVerification(phone)).then(() => {
-      dispatch(
-        snackbar.success(
-          intl.formatMessage({
-            id: 'sms_verification.success',
-            defaultMessage: 'A verification code has been sent to your phone number.',
-          }),
-        ),
+    dispatch(reRequestPhoneVerification(phone!)).then(() => {
+      toast.success(
+        intl.formatMessage(messages.verificationSuccess),
       );
     })
       .finally(() => setStatus(Statuses.REQUESTED))
       .catch(() => {
-        dispatch(
-          snackbar.error(
-            intl.formatMessage({
-              id: 'sms_verification.fail',
-              defaultMessage: 'Failed to send SMS message to your phone number.',
-            }),
-          ),
-        );
+        toast.error(intl.formatMessage(messages.verificationFail));
       });
   };
 
@@ -106,20 +114,11 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   const confirmationText = useMemo(() => {
     switch (status) {
       case Statuses.IDLE:
-        return intl.formatMessage({
-          id: 'sms_verification.modal.verify_sms',
-          defaultMessage: 'Verify SMS',
-        });
+        return intl.formatMessage(messages.verifySms);
       case Statuses.READY:
-        return intl.formatMessage({
-          id: 'sms_verification.modal.verify_number',
-          defaultMessage: 'Verify phone number',
-        });
+        return intl.formatMessage(messages.verifyNumber);
       case Statuses.REQUESTED:
-        return intl.formatMessage({
-          id: 'sms_verification.modal.verify_code',
-          defaultMessage: 'Verify code',
-        });
+        return intl.formatMessage(messages.verifyCode);
       default:
         return null;
     }
@@ -130,19 +129,19 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
       case Statuses.IDLE:
         return (
           <Text theme='muted'>
-            {intl.formatMessage({
-              id: 'sms_verification.modal.verify_help_text',
-              defaultMessage: 'Verify your phone number to start using {instance}.',
-            }, {
-              instance: title,
-            })}
+            <FormattedMessage
+              id='sms_verification.modal.verify_help_text'
+              defaultMessage='Verify your phone number to start using {instance}.'
+              values={{
+                instance: instance.title,
+              }}
+            />
           </Text>
         );
       case Statuses.READY:
         return (
-          <FormGroup labelText='Phone Number'>
-            <Input
-              type='text'
+          <FormGroup labelText={<FormattedMessage id='sms_verification.phone.label' defaultMessage='Phone number' />}>
+            <PhoneInput
               value={phone}
               onChange={onChange}
               required
@@ -154,10 +153,10 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
         return (
           <>
             <Text theme='muted' size='sm' align='center'>
-              {intl.formatMessage({
-                id: 'sms_verification.modal.enter_code',
-                defaultMessage: 'We sent you a 6-digit code via SMS. Enter it below.',
-              })}
+              <FormattedMessage
+                id='sms_verification.modal.enter_code'
+                defaultMessage='We sent you a 6-digit code via SMS. Enter it below.'
+              />
             </Text>
 
             <OtpInput
@@ -187,14 +186,7 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
           .then(() => dispatch(closeModal('VERIFY_SMS')));
 
       })
-      .catch(() => dispatch(
-        snackbar.error(
-          intl.formatMessage({
-            id: 'sms_verification.invalid',
-            defaultMessage: 'Your SMS token has expired.',
-          }),
-        ),
-      ));
+      .catch(() => toast.error(intl.formatMessage(messages.verificationExpired)));
   };
 
   useEffect(() => {
@@ -206,10 +198,10 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
   return (
     <Modal
       title={
-        intl.formatMessage({
-          id: 'sms_verification.modal.verify_title',
-          defaultMessage: 'Verify your phone number',
-        })
+        <FormattedMessage
+          id='sms_verification.modal.verify_title'
+          defaultMessage='Verify your phone number'
+        />
       }
       onClose={() => onClose('VERIFY_SMS')}
       cancelAction={status === Statuses.IDLE ? () => onClose('VERIFY_SMS') : undefined}
@@ -217,10 +209,12 @@ const VerifySmsModal: React.FC<IVerifySmsModal> = ({ onClose }) => {
       confirmationAction={onConfirmationClick}
       confirmationText={confirmationText}
       secondaryAction={status === Statuses.REQUESTED ? resendVerificationCode : undefined}
-      secondaryText={status === Statuses.REQUESTED ? intl.formatMessage({
-        id: 'sms_verification.modal.resend_code',
-        defaultMessage: 'Resend verification code?',
-      }) : undefined}
+      secondaryText={status === Statuses.REQUESTED ? (
+        <FormattedMessage
+          id='sms_verification.modal.resend_code'
+          defaultMessage='Resend verification code?'
+        />
+      ) : undefined}
       secondaryDisabled={requestedAnother}
     >
       <Stack space={4}>

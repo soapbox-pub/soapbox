@@ -1,208 +1,91 @@
-# Soapbox FE
+![Soapbox Screenshot](soapbox-screenshot.png)
 
-![Soapbox FE Screenshot](soapbox-screenshot.png)
+**Soapbox** is customizable open-source software that puts the power of social media in the hands of the people. Feature-rich and hyper-focused on providing a user experience to rival Big Tech, Soapbox is already home to some of the biggest alternative social platforms.
 
-**Soapbox FE** is a frontend for Mastodon and Pleroma with a focus on custom branding and ease of use.
-It's part of the [Soapbox](https://soapbox.pub) project.
+# On The Fediverse
 
-## Try it out
+You may have heard of **Mastodon**. Soapbox builds upon what Mastodon made great to make something even better.
 
-Visit https://fe.soapbox.pub/ and point it to your favorite instance.
+You can run **Mastodon+Soapbox**, **Rebased+Soapbox**, and more.
 
-## :rocket: Deploy on Pleroma
+Soapbox is the **frontend** (what users see) while Mastodon is the **backend** (data, APIs). You can mix-and-match in the Fediverse ecosystem.
 
-Installing Soapbox FE on an existing Pleroma server is extremely easy.
-Just ssh into the server and download a .zip of the latest build:
+> 💡 If you're starting a new server, we highly recommend **Rebased+Soapbox**. Rebased is our custom-built backend just for Soapbox, providing important new features such as **quote posting** and **chats**.
+>
+> See: [Installing Rebased+Soapbox](https://soapbox.pub/install/)
 
-```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v2.0.0/download?job=build-production -o soapbox-fe.zip
-```
+# Try It Out
 
-Then unpack it into Pleroma's `instance` directory:
+Want to give Soapbox a shot? Here are some suggested servers:
 
-```sh
-busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
-```
+- [gleasonator.com](https://gleasonator.com/) - operated by the lead developer of Soapbox
+- [social.teci.world](https://social.teci.world/) - free speech server run by a Soapbox contributor
+- [spinster.xyz](https://spinster.xyz/) - one of the largest feminist communities on the internet
+- [poa.st](https://poa.st/) - the largest Soapbox server on the network
 
-**That's it!** :tada:
-**Soapbox FE is installed.**
-The change will take effect immediately, just refresh your browser tab.
-It's not necessary to restart the Pleroma service.
+Want to use Soapbox against **any existing Mastodon/Pleroma server?** Try:
 
-To remove Soapbox FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
+- [fe.soapbox.pub](https://fe.soapbox.pub) - enter your server's domain name to use Soapbox on any server!
 
-## How does it work?
+# 🚀 Starting Your Own Server
 
-Soapbox FE is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
+Starting your own server is one of the best ways to have freedom online! We recommend installing **Rebased+Soapbox**.
 
-It has a single HTML file, `index.html`, responsible only for loading the required JavaScript and CSS.
-It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest).
+See here for a detailed setup guide: [Installing Rebased+Soapbox](https://soapbox.pub/install/)
 
-It incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/) used by Pleroma and Mastodon, but requires many [Pleroma-specific features](https://docs.pleroma.social/backend/development/API/differences_in_mastoapi_responses/) in order to function.
+# Adding Soapbox to an Existing Server
 
-# Running locally
+Already have a server? No problem — it is still possible to use Soapbox.
 
-To get it running, just clone the repo:
+- [Deploying on Pleroma](https://docs.soapbox.pub/frontend/installing/#install-soapbox)
+- [Deploying on Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/)
 
-```sh
-git clone https://gitlab.com/soapbox-pub/soapbox-fe.git
-cd soapbox-fe
-```
+> 💡 If using Pleroma, it's recommended to [upgrade it to Rebased](https://gitlab.com/-/snippets/2411739). This comes with better support and many new features, helping you get the most out of Soapbox.
 
-Ensure that Node.js and Yarn are installed, then install dependencies:
+# Developing Soapbox
 
-```sh
-yarn
-```
+tl;dr — `git clone`, `yarn`, and `yarn dev`.
 
-Finally, run the dev server:
+For detailed guides, see these pages:
 
-```sh
-yarn dev
-```
+1. [Soapbox local development](https://docs.soapbox.pub/frontend/development/running-locally/)
+2. [yarn commands](https://docs.soapbox.pub/frontend/development/yarn-commands/)
+3. [How it works](https://docs.soapbox.pub/frontend/development/how-it-works/)
+4. [Environment variables](https://docs.soapbox.pub/frontend/development/local-config/)
+5. [Developing a backend](https://docs.soapbox.pub/frontend/development/developing-backend/)
 
-**That's it!** :tada:
+## Contributing
 
-It will serve at `http://localhost:3036` by default.
+We welcome contributions to this project.
+To contribute, see [Contributing to Soapbox](docs/contributing.md).
 
-It will proxy requests to the backend for you.
-For Pleroma running on `localhost:4000` (the default) no other changes are required, just start a local Pleroma server and it should begin working.
+Translators can help by providing [translations through Weblate](https://hosted.weblate.org/projects/soapbox-pub/soapbox/).
+Native speakers from all around the world are welcome!
 
-### Troubleshooting: `ERROR: NODE_ENV must be set`
+# Project Philosophy
 
-Create a `.env` file if you haven't already.
+Soapbox was born out of the need to build independent platforms with **a unique identity and brand**.
 
-```sh
-cp .env.example .env
-```
+This is in contrast to Mastodon's idea, where all servers are called "Mastodon" and use the Mastodon colors and logo. Users won't see the word "Soapbox" throughout the UI, they'll see the name of **your website** and your logo. To facilitate this, Soapbox has a robust customization UI and integrated moderation tools. Large servers are a priority.
 
-And ensure that it contains `NODE_ENV=development`.
-Try again.
-
-## Developing against a live backend
-
-You can also run Soapbox FE locally with a live production server as the backend.
-
-> **Note:** Whether or not this works depends on your production server. It does not seem to work with Cloudflare or VanwaNet.
-
-To do so, just copy the env file:
-
-```sh
-cp .env.example .env
-```
-
-And edit `.env`, setting the configuration like this:
-
-```sh
-BACKEND_URL="https://pleroma.example.com"
-PROXY_HTTPS_INSECURE=true
-```
-
-You will need to restart the local development server for the changes to take effect.
-
-## Local Dev Configuration
-
-The following configuration variables are supported supported in local development.
-Edit `.env` to set them.
-
-All configuration is optional, except `NODE_ENV`.
-
-#### `NODE_ENV`
-
-The Node environment.
-Soapbox FE checks for the following options:
-
-- `development` - What you should use while developing Soapbox FE.
-- `production` - Use when compiling to deploy to a live server.
-- `test` - Use when running automated tests.
-
-#### `BACKEND_URL`
-
-URL to the backend server.
-Can be http or https, and can include a port.
-For https, be sure to also set `PROXY_HTTPS_INSECURE=true`.
-
-**Default:** `http://localhost:4000`
-
-#### `PROXY_HTTPS_INSECURE`
-
-Allows using an HTTPS backend if set to `true`.
-
-This is needed if `BACKEND_URL` is set to an `https://` value.
-[More info](https://stackoverflow.com/a/48624590/8811886).
-
-**Default:** `false`
-
-# Yarn Commands
-
-The following commands are supported.
-You must set `NODE_ENV` to use these commands.
-To do so, you can add the following line to your `.env` file:
-
-```sh
-NODE_ENV=development
-```
-
-#### Local dev server
-- `yarn dev` - Run the local dev server.
-
-#### Building
-- `yarn build` - Compile without a dev server, into `/static` directory.
-
-#### Translations
-- `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
-
-#### Tests
-- `yarn test:all` - Runs all tests and linters.
-
-- `yarn test` - Runs Jest for frontend unit tests.
-
-- `yarn lint` - Runs all linters.
-
-- `yarn lint:js` - Runs only JavaScript linter.
-
-- `yarn lint:sass` - Runs only SASS linter.
-
-# Contributing
-
-We welcome contributions to this project.  To contribute, first review the [Contributing doc](docs/contributing.md)
-
-Additional supporting documents include:
-* [Soapbox History](docs/history.md)
-* [Redux Store Map](docs/history.md)
-
-# Customization
-
-Soapbox supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
-
-* Instance name
-* Site logo
-* Favicon
-* About page
-* Terms of Service page
-* Privacy Policy page
-* Copyright Policy (DMCA) page
-* Promo panel list items, e.g. blog site link
-* Soapbox extensions, e.g. Patron module
-* Default settings, e.g. default theme
-
-Customization details can be found in the [Customization doc](docs/customization.md)
+One disadvantage of this approach is that it does not help the software spread. Some of the biggest servers on the network and running Soapbox and people don't even know it!
 
 # License & Credits
 
-Soapbox FE is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
+© Alex Gleason & other Soapbox contributors  
+© Eugen Rochko & other Mastodon contributors  
+© Trump Media & Technology Group  
+© Gab AI, Inc.  
 
-- `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
-
-Soapbox FE is free software: you can redistribute it and/or modify
+Soapbox is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Soapbox FE is distributed in the hope that it will be useful,
+Soapbox is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Soapbox FE.  If not, see <https://www.gnu.org/licenses/>.
+along with Soapbox. If not, see <https://www.gnu.org/licenses/>.

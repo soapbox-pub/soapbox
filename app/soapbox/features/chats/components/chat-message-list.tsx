@@ -1,36 +1,28 @@
-import classNames from 'classnames';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-} from 'immutable';
-import escape from 'lodash/escape';
-import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import { createSelector } from 'reselect';
+import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
-import { openModal } from 'soapbox/actions/modals';
-import { initReportById } from 'soapbox/actions/reports';
-import { Text } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import emojify from 'soapbox/features/emoji';
-import Bundle from 'soapbox/features/ui/components/bundle';
-import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch, useRefEventHandler } from 'soapbox/hooks';
-import { onlyEmoji } from 'soapbox/utils/rich_content';
+import { Avatar, Button, Divider, Spinner, Stack, Text } from 'soapbox/components/ui';
+import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats';
 
-import type { Menu } from 'soapbox/components/dropdown_menu';
+import ChatMessage from './chat-message';
+import ChatMessageListIntro from './chat-message-list-intro';
+
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
-
-const BIG_EMOJI_LIMIT = 1;
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
-  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete message' },
-  report: { id: 'chats.actions.report', defaultMessage: 'Report user' },
+  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete for both' },
+  copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
+  report: { id: 'chats.actions.report', defaultMessage: 'Report' },
+  deleteForMe: { id: 'chats.actions.deleteForMe', defaultMessage: 'Delete for me' },
+  blockedBy: { id: 'chat_message_list.blockedBy', defaultMessage: 'You are blocked by' },
+  networkFailureTitle: { id: 'chat_message_list.network_failure.title', defaultMessage: 'Whoops!' },
+  networkFailureSubtitle: { id: 'chat_message_list.network_failure.subtitle', defaultMessage: 'We encountered a network failure.' },
+  networkFailureAction: { id: 'chat_message_list.network_failure.action', defaultMessage: 'Try again' },
 });
 
 type TimeFormat = 'today' | 'date';
@@ -38,7 +30,7 @@ type TimeFormat = 'today' | 'date';
 const timeChange = (prev: ChatMessageEntity, curr: ChatMessageEntity): TimeFormat | null => {
   const prevDate = new Date(prev.created_at).getDate();
   const currDate = new Date(curr.created_at).getDate();
-  const nowDate  = new Date().getDate();
+  const nowDate = new Date().getDate();
 
   if (prevDate !== currDate) {
     return currDate === nowDate ? 'today' : 'date';
@@ -47,287 +39,230 @@ const timeChange = (prev: ChatMessageEntity, curr: ChatMessageEntity): TimeForma
   return null;
 };
 
-const makeEmojiMap = (record: any) => record.get('emojis', ImmutableList()).reduce((map: ImmutableMap<string, any>, emoji: ImmutableMap<string, any>) => {
-  return map.set(`:${emoji.get('shortcode')}:`, emoji);
-}, ImmutableMap());
+const START_INDEX = 10000;
 
-const getChatMessages = createSelector(
-  [(chatMessages: ImmutableMap<string, ChatMessageEntity>, chatMessageIds: ImmutableOrderedSet<string>) => (
-    chatMessageIds.reduce((acc, curr) => {
-      const chatMessage = chatMessages.get(curr);
-      return chatMessage ? acc.push(chatMessage) : acc;
-    }, ImmutableList<ChatMessageEntity>())
-  )],
-  chatMessages => chatMessages,
-);
+const List: Components['List'] = React.forwardRef((props, ref) => {
+  const { context, ...rest } = props;
+  return <div ref={ref} {...rest} className='mb-2' />;
+});
+
+const Scroller: Components['Scroller'] = React.forwardRef((props, ref) => {
+  const { style, context, ...rest } = props;
+
+  return (
+    <div
+      {...rest}
+      ref={ref}
+      style={{
+        ...style,
+        scrollbarGutter: 'stable',
+      }}
+    />
+  );
+});
 
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
-  chatId: string,
-  /** Message IDs to render. */
-  chatMessageIds: ImmutableOrderedSet<string>,
-  /** Whether to make the chatbox fill the height of the screen. */
-  autosize?: boolean,
+  chat: IChat
 }
 
 /** Scrollable list of chat messages. */
-const ChatMessageList: React.FC<IChatMessageList> = ({ chatId, chatMessageIds, autosize }) => {
+const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
+  const account = useOwnAccount();
 
-  const me = useAppSelector(state => state.me);
-  const chatMessages = useAppSelector(state => getChatMessages(state.chat_messages, chatMessageIds));
+  const myLastReadMessageDateString = chat.latest_read_message_by_account?.find((latest) => latest.id === account?.id)?.date;
+  const myLastReadMessageTimestamp = myLastReadMessageDateString ? new Date(myLastReadMessageDateString) : null;
 
-  const [initialLoad, setInitialLoad] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const node = useRef<VirtuosoHandle>(null);
+  const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX - 20);
 
-  const node = useRef<HTMLDivElement>(null);
-  const messagesEnd = useRef<HTMLDivElement>(null);
-  const lastComputedScroll = useRef<number | undefined>(undefined);
-  const scrollBottom = useRef<number | undefined>(undefined);
+  const { markChatAsRead } = useChatActions(chat.id);
+  const {
+    data: chatMessages,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useChatMessages(chat);
 
-  const initialCount = useMemo(() => chatMessages.count(), []);
+  const formattedChatMessages = chatMessages || [];
 
-  const scrollToBottom = () => {
-    messagesEnd.current?.scrollIntoView(false);
-  };
+  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
 
-  const getFormattedTimestamp = (chatMessage: ChatMessageEntity) => {
-    return intl.formatDate(
-      new Date(chatMessage.created_at), {
-        hour12: false,
-        year: 'numeric',
-        month: 'short',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      },
-    );
-  };
+  const lastChatMessage = chatMessages ? chatMessages[chatMessages.length - 1] : null;
 
-  const setBubbleRef = (c: HTMLDivElement) => {
-    if (!c) return;
-    const links = c.querySelectorAll('a[rel="ugc"]');
-
-    links.forEach(link => {
-      link.classList.add('chat-link');
-      link.setAttribute('rel', 'ugc nofollow noopener');
-      link.setAttribute('target', '_blank');
-    });
-
-    if (onlyEmoji(c, BIG_EMOJI_LIMIT, false)) {
-      c.classList.add('chat-message__bubble--onlyEmoji');
-    } else {
-      c.classList.remove('chat-message__bubble--onlyEmoji');
+  useEffect(() => {
+    if (!chatMessages) {
+      return;
     }
-  };
 
-  const isNearBottom = (): boolean => {
-    const elem = node.current;
-    if (!elem) return false;
+    const nextFirstItemIndex = START_INDEX - chatMessages.length;
+    setFirstItemIndex(nextFirstItemIndex);
+  }, [lastChatMessage]);
 
-    const scrollBottom = elem.scrollHeight - elem.offsetHeight - elem.scrollTop;
-    return scrollBottom < elem.offsetHeight * 1.5;
-  };
-
-  const handleResize = throttle(() => {
-    if (isNearBottom()) {
-      scrollToBottom();
+  const buildCachedMessages = () => {
+    if (!chatMessages) {
+      return [];
     }
-  }, 150);
 
-  const restoreScrollPosition = () => {
-    if (node.current && scrollBottom.current) {
-      lastComputedScroll.current = node.current.scrollHeight - scrollBottom.current;
-      node.current.scrollTop = lastComputedScroll.current;
-    }
-  };
+    return chatMessages.reduce((acc: any, curr: any, idx: number) => {
+      const lastMessage = formattedChatMessages[idx - 1];
 
-  const handleLoadMore = () => {
-    const maxId = chatMessages.getIn([0, 'id']) as string;
-    dispatch(fetchChatMessages(chatId, maxId as any));
-    setIsLoading(true);
-  };
-
-  const handleScroll = useRefEventHandler(throttle(() => {
-    if (node.current) {
-      const { scrollTop, offsetHeight } = node.current;
-      const computedScroll = lastComputedScroll.current === scrollTop;
-      const nearTop = scrollTop < offsetHeight * 2;
-
-      if (nearTop && !isLoading && !initialLoad && !computedScroll) {
-        handleLoadMore();
+      if (lastMessage) {
+        switch (timeChange(lastMessage, curr)) {
+          case 'today':
+            acc.push({
+              type: 'divider',
+              text: intl.formatMessage(messages.today),
+            });
+            break;
+          case 'date':
+            acc.push({
+              type: 'divider',
+              text: intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' }),
+            });
+            break;
+        }
       }
-    }
-  }, 150, {
-    trailing: true,
-  }));
 
-  const onOpenMedia = (media: any, index: number) => {
-    dispatch(openModal('MEDIA', { media, index }));
+      acc.push(curr);
+      return acc;
+    }, []);
   };
+  const cachedChatMessages = buildCachedMessages();
 
-  const maybeRenderMedia = (chatMessage: ChatMessageEntity) => {
-    const { attachment } = chatMessage;
-    if (!attachment) return null;
+  const initialScrollPositionProps = useMemo(() => {
+    if (process.env.NODE_ENV === 'test') {
+      return {};
+    }
+
+    return {
+      initialTopMostItemIndex: cachedChatMessages.length - 1,
+      firstItemIndex: Math.max(0, firstItemIndex),
+    };
+  }, [cachedChatMessages.length, firstItemIndex]);
+
+  const handleStartReached = useCallback(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+    return false;
+  }, [firstItemIndex, hasNextPage, isFetching]);
+
+  const renderDivider = (key: React.Key, text: string) => <Divider key={key} text={text} textSize='xs' />;
+
+  useEffect(() => {
+    const lastMessage = formattedChatMessages[formattedChatMessages.length - 1];
+    if (!lastMessage) {
+      return;
+    }
+
+    const lastMessageId = lastMessage.id;
+    const isMessagePending = lastMessage.pending;
+    const isAlreadyRead = myLastReadMessageTimestamp ? myLastReadMessageTimestamp >= new Date(lastMessage.created_at) : false;
+
+    /**
+     * Only "mark the message as read" if..
+     * 1) it is not pending and
+     * 2) it has not already been read
+    */
+    if (!isMessagePending && !isAlreadyRead) {
+      markChatAsRead(lastMessageId);
+    }
+  }, [formattedChatMessages.length]);
+
+  if (isBlocked) {
     return (
-      <div className='chat-message__media'>
-        <Bundle fetchComponent={MediaGallery}>
-          {(Component: any) => (
-            <Component
-              media={ImmutableList([attachment])}
-              height={120}
-              onOpenMedia={onOpenMedia}
-            />
-          )}
-        </Bundle>
-      </div>
+      <Stack alignItems='center' justifyContent='center' className='h-full grow'>
+        <Stack alignItems='center' space={2}>
+          <Avatar src={chat.account.avatar} size={75} />
+          <Text align='center'>
+            <>
+              <Text tag='span'>{intl.formatMessage(messages.blockedBy)}</Text>
+              {' '}
+              <Text tag='span' theme='primary'>@{chat.account.acct}</Text>
+            </>
+          </Text>
+        </Stack>
+      </Stack>
     );
-  };
+  }
 
-  const parsePendingContent = (content: string) => {
-    return escape(content).replace(/(?:\r\n|\r|\n)/g, '<br>');
-  };
-
-  const parseContent = (chatMessage: ChatMessageEntity) => {
-    const content = chatMessage.content || '';
-    const pending = chatMessage.pending;
-    const deleting = chatMessage.deleting;
-    const formatted = (pending && !deleting) ? parsePendingContent(content) : content;
-    const emojiMap = makeEmojiMap(chatMessage);
-    return emojify(formatted, emojiMap.toJS());
-  };
-
-  const renderDivider = (key: React.Key, text: string) => (
-    <div className='chat-messages__divider' key={key}>{text}</div>
-  );
-
-  const handleDeleteMessage = (chatId: string, messageId: string) => {
-    return () => {
-      dispatch(deleteChatMessage(chatId, messageId));
-    };
-  };
-
-  const handleReportUser = (userId: string) => {
-    return () => {
-      dispatch(initReportById(userId));
-    };
-  };
-
-  const renderMessage = (chatMessage: ChatMessageEntity) => {
-    const menu: Menu = [
-      {
-        text: intl.formatMessage(messages.delete),
-        action: handleDeleteMessage(chatMessage.chat_id, chatMessage.id),
-        icon: require('@tabler/icons/trash.svg'),
-        destructive: true,
-      },
-    ];
-
-    if (chatMessage.account_id !== me) {
-      menu.push({
-        text: intl.formatMessage(messages.report),
-        action: handleReportUser(chatMessage.account_id),
-        icon: require('@tabler/icons/flag.svg'),
-      });
-    }
-
+  if (isError) {
     return (
-      <div
-        className={classNames('chat-message', {
-          'chat-message--me': chatMessage.account_id === me,
-          'chat-message--pending': chatMessage.pending,
-        })}
-        key={chatMessage.id}
-      >
-        <div
-          title={getFormattedTimestamp(chatMessage)}
-          className='chat-message__bubble'
-          ref={setBubbleRef}
-          tabIndex={0}
-        >
-          {maybeRenderMedia(chatMessage)}
-          <Text size='sm' dangerouslySetInnerHTML={{ __html: parseContent(chatMessage) }} />
-          <div className='chat-message__menu'>
-            <DropdownMenuContainer
-              items={menu}
-              src={require('@tabler/icons/dots.svg')}
-              title={intl.formatMessage(messages.more)}
-            />
+      <Stack alignItems='center' justifyContent='center' className='h-full grow'>
+        <Stack space={4}>
+          <Stack space={1}>
+            <Text size='lg' weight='bold' align='center'>
+              {intl.formatMessage(messages.networkFailureTitle)}
+            </Text>
+            <Text theme='muted' align='center'>
+              {intl.formatMessage(messages.networkFailureSubtitle)}
+            </Text>
+          </Stack>
+
+          <div className='mx-auto'>
+            <Button theme='primary' onClick={() => refetch()}>
+              {intl.formatMessage(messages.networkFailureAction)}
+            </Button>
           </div>
+        </Stack>
+      </Stack>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className='flex grow flex-col justify-end pb-4'>
+        <div className='px-4'>
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage />
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage isMyMessage />
+          <PlaceholderChatMessage />
         </div>
       </div>
     );
-  };
-
-  useEffect(() => {
-    dispatch(fetchChatMessages(chatId));
-
-    node.current?.addEventListener('scroll', e => handleScroll.current(e));
-    window.addEventListener('resize', handleResize);
-    scrollToBottom();
-
-    return () => {
-      node.current?.removeEventListener('scroll', e => handleScroll.current(e));
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // Store the scroll position.
-  useLayoutEffect(() => {
-    if (node.current) {
-      const { scrollHeight, scrollTop } = node.current;
-      scrollBottom.current = scrollHeight - scrollTop;
-    }
-  });
-
-  // Stick scrollbar to bottom.
-  useEffect(() => {
-    if (isNearBottom()) {
-      scrollToBottom();
-    }
-
-    // First load.
-    if (chatMessages.count() !== initialCount) {
-      setInitialLoad(false);
-      setIsLoading(false);
-      scrollToBottom();
-    }
-  }, [chatMessages.count()]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messagesEnd.current]);
-
-  // History added.
-  useEffect(() => {
-    // Restore scroll bar position when loading old messages.
-    if (!initialLoad) {
-      restoreScrollPosition();
-    }
-  }, [chatMessageIds.first()]);
+  }
 
   return (
-    <div className='chat-messages' style={{ height: autosize ? 'calc(100vh - 16rem)' : undefined }} ref={node}>
-      {chatMessages.reduce((acc, curr, idx) => {
-        const lastMessage = chatMessages.get(idx - 1);
+    <div className='flex h-full grow flex-col space-y-6'>
+      <div className='flex grow flex-col justify-end'>
+        <Virtuoso
+          ref={node}
+          alignToBottom
+          {...initialScrollPositionProps}
+          data={cachedChatMessages}
+          startReached={handleStartReached}
+          followOutput='auto'
+          itemContent={(index, chatMessage) => {
+            if (chatMessage.type === 'divider') {
+              return renderDivider(index, chatMessage.text);
+            } else {
+              return <ChatMessage chat={chat} chatMessage={chatMessage} />;
+            }
+          }}
+          components={{
+            List,
+            Scroller,
+            Header: () => {
+              if (hasNextPage || isFetchingNextPage) {
+                return <Spinner withText={false} />;
+              }
 
-        if (lastMessage) {
-          const key = `${curr.id}_divider`;
-          switch (timeChange(lastMessage, curr)) {
-            case 'today':
-              acc.push(renderDivider(key, intl.formatMessage(messages.today)));
-              break;
-            case 'date':
-              acc.push(renderDivider(key, new Date(curr.created_at).toDateString()));
-              break;
-          }
-        }
+              if (!hasNextPage && !isLoading) {
+                return <ChatMessageListIntro />;
+              }
 
-        acc.push(renderMessage(curr));
-        return acc;
-      }, [] as React.ReactNode[])}
-      <div style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
+              return null;
+            },
+          }}
+        />
+      </div>
     </div>
   );
 };

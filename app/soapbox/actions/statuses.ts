@@ -10,7 +10,7 @@ import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
@@ -43,13 +43,18 @@ const STATUS_UNMUTE_FAIL    = 'STATUS_UNMUTE_FAIL';
 const STATUS_REVEAL = 'STATUS_REVEAL';
 const STATUS_HIDE   = 'STATUS_HIDE';
 
+const STATUS_TRANSLATE_REQUEST = 'STATUS_TRANSLATE_REQUEST';
+const STATUS_TRANSLATE_SUCCESS = 'STATUS_TRANSLATE_SUCCESS';
+const STATUS_TRANSLATE_FAIL    = 'STATUS_TRANSLATE_FAIL';
+const STATUS_TRANSLATE_UNDO    = 'STATUS_TRANSLATE_UNDO';
+
 const statusExists = (getState: () => RootState, statusId: string) => {
   return (getState().statuses.get(statusId) || null) !== null;
 };
 
 const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
+    dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey, editing: !!statusId });
 
     return api(getState).request({
       url: statusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${statusId}`,
@@ -63,7 +68,7 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
       }
 
       dispatch(importFetchedStatus(status, idempotencyKey));
-      dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+      dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey, editing: !!statusId });
 
       // Poll the backend for the updated card
       if (status.expectsCard) {
@@ -84,7 +89,7 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
 
       return status;
     }).catch(error => {
-      dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
+      dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey, editing: !!statusId });
       throw error;
     });
   };
@@ -101,7 +106,7 @@ const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootS
 
   api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
     dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
-    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, false));
+    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.content_type, false));
     dispatch(openModal('COMPOSE'));
   }).catch(error => {
     dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
@@ -266,6 +271,15 @@ const unmuteStatus = (id: string) =>
     });
   };
 
+const toggleMuteStatus = (status: Status) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.muted) {
+      dispatch(unmuteStatus(status.id));
+    } else {
+      dispatch(muteStatus(status.id));
+    }
+  };
+
 const hideStatus = (ids: string[] | string) => {
   if (!Array.isArray(ids)) {
     ids = [ids];
@@ -287,6 +301,39 @@ const revealStatus = (ids: string[] | string) => {
     ids,
   };
 };
+
+const toggleStatusHidden = (status: Status) => {
+  if (status.hidden) {
+    return revealStatus(status.id);
+  } else {
+    return hideStatus(status.id);
+  }
+};
+
+const translateStatus = (id: string, targetLanguage?: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch({ type: STATUS_TRANSLATE_REQUEST, id });
+
+  api(getState).post(`/api/v1/statuses/${id}/translate`, {
+    target_language: targetLanguage,
+  }).then(response => {
+    dispatch({
+      type: STATUS_TRANSLATE_SUCCESS,
+      id,
+      translation: response.data,
+    });
+  }).catch(error => {
+    dispatch({
+      type: STATUS_TRANSLATE_FAIL,
+      id,
+      error,
+    });
+  });
+};
+
+const undoStatusTranslation = (id: string) => ({
+  type: STATUS_TRANSLATE_UNDO,
+  id,
+});
 
 export {
   STATUS_CREATE_REQUEST,
@@ -312,6 +359,10 @@ export {
   STATUS_UNMUTE_FAIL,
   STATUS_REVEAL,
   STATUS_HIDE,
+  STATUS_TRANSLATE_REQUEST,
+  STATUS_TRANSLATE_SUCCESS,
+  STATUS_TRANSLATE_FAIL,
+  STATUS_TRANSLATE_UNDO,
   createStatus,
   editStatus,
   fetchStatus,
@@ -324,6 +375,10 @@ export {
   fetchStatusWithContext,
   muteStatus,
   unmuteStatus,
+  toggleMuteStatus,
   hideStatus,
   revealStatus,
+  toggleStatusHidden,
+  translateStatus,
+  undoStatusTranslation,
 };

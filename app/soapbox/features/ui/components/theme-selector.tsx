@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Icon } from 'soapbox/components/ui';
+import { Icon, Select } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   light: { id: 'theme_toggle.light', defaultMessage: 'Light' },
@@ -10,8 +10,8 @@ const messages = defineMessages({
 });
 
 interface IThemeSelector {
-  value: string,
-  onChange: (value: string) => void,
+  value: string
+  onChange: (value: string) => void
 }
 
 /** Pure theme selector. */
@@ -38,22 +38,22 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
   return (
     <label>
       <div className='relative rounded-md shadow-sm'>
-        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-          <Icon src={themeIconSrc} className='h-4 w-4 text-gray-400' />
+        <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
+          <Icon src={themeIconSrc} className='h-4 w-4 text-gray-600 dark:text-gray-700' />
         </div>
 
-        <select
+        <Select
           onChange={handleChange}
           defaultValue={value}
-          className='focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-800 dark:border-gray-600 block w-full pl-8 pr-12 sm:text-sm border-gray-300 rounded-md'
+          className='pl-10'
         >
           <option value='system'>{intl.formatMessage(messages.system)}</option>
           <option value='light'>{intl.formatMessage(messages.light)}</option>
           <option value='dark'>{intl.formatMessage(messages.dark)}</option>
-        </select>
+        </Select>
 
-        <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
-          <Icon src={require('@tabler/icons/chevron-down.svg')} className='h-4 w-4 text-gray-400' />
+        <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
+          <Icon src={require('@tabler/icons/chevron-down.svg')} className='h-4 w-4 text-gray-600 dark:text-gray-700' />
         </div>
       </div>
     </label>
