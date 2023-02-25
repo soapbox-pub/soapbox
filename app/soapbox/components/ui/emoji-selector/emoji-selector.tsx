@@ -6,8 +6,7 @@ import { usePopper } from 'react-popper';
 
 import { changeSetting } from 'soapbox/actions/settings';
 import { Emoji, HStack, IconButton } from 'soapbox/components/ui';
-import { messages } from 'soapbox/features/emoji/components/emoji-picker-dropdown';
-import { getFrequentlyUsedEmojis } from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
+import { getFrequentlyUsedEmojis, messages } from 'soapbox/features/emoji/components/emoji-picker-dropdown';
 import { EmojiPicker as EmojiPickerAsync } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -88,8 +87,12 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if ([referenceElement, popperElement, document.querySelector('em-emoji-picker')].some(el => el?.contains(event.target as Node))) {
+    if ([referenceElement, popperElement].some(el => el?.contains(event.target as Node))) {
       return;
+    }
+
+    if (document.querySelector('em-emoji-picker')) {
+      return setExpanded(false);
     }
 
     if (onClose) {
@@ -144,6 +147,10 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
       },
     };
   };
+
+  useEffect(() => () => {
+    document.body.style.overflow = '';
+  }, []);
 
   useEffect(() => {
     setExpanded(false);

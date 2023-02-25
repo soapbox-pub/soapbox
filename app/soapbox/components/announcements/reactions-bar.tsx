@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React from 'react';
 import { TransitionMotion, spring } from 'react-motion';
 
-import { Icon } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { useSettings } from 'soapbox/hooks';
 
@@ -55,7 +54,7 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addR
             />
           ))}
 
-          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} button={<Icon className='h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-white' src={require('@tabler/icons/plus.svg')} />} />}
+          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />}
         </div>
       )}
     </TransitionMotion>

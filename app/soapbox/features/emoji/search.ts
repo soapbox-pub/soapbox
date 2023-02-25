@@ -41,7 +41,7 @@ const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, cus
     .flatMap(id => {
     // @ts-ignore
       if (id[0] === 'c') {
-        const { shortcode, static_url } = custom_emojis.get((id as string).substr(1)).toJS();
+        const { shortcode, static_url } = custom_emojis.get((id as string).slice(1)).toJS();
 
         return {
           id: shortcode,
@@ -51,10 +51,10 @@ const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, cus
         };
       }
 
-      const { skins } = data.emojis[(id as string).substr(1)];
+      const { skins } = data.emojis[(id as string).slice(1)];
 
       return {
-        id: (id as string).substr(1),
+        id: (id as string).slice(1),
         colons: ':' + id + ':',
         unified: skins[0].unified,
         native: skins[0].native,

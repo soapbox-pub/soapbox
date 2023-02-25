@@ -1,17 +1,21 @@
 import { supportsPassiveEvents } from 'detect-passive-events';
+import { Map as ImmutableMap } from 'immutable';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
+import { createSelector } from 'reselect';
 
-import { useSettings } from 'soapbox/hooks';
+import { useEmoji } from 'soapbox/actions/emojis';
+import { changeSetting } from 'soapbox/actions/settings';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
+import { RootState } from 'soapbox/store';
 
 import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 
 import type { EmojiPick } from 'emoji-mart';
-import type { List } from 'immutable';
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
@@ -43,16 +47,72 @@ export const messages = defineMessages({
   skins_6: { id: 'emoji_button.skins_6', defaultMessage: 'Dark' },
 });
 
-// TODO: fix types
-interface IEmojiPickerDropdown {
-  custom_emojis: List<any>
-  frequentlyUsedEmojis: string[]
-  intl: any
-  onPickEmoji: (emoji: Emoji) => void
-  onSkinTone: () => void
-  condensed: boolean
-  render: any
+export interface IEmojiPickerDropdown {
+  onPickEmoji?: (emoji: Emoji) => void
+  condensed?: boolean
+  render: React.FC<{
+    setPopperReference: React.Ref<HTMLButtonElement>
+    title?: string
+    visible?: boolean
+    loading?: boolean
+    handleToggle: (e: Event) => void
+  }>
 }
+
+const perLine = 8;
+const lines   = 2;
+
+const DEFAULTS = [
+  '+1',
+  'grinning',
+  'kissing_heart',
+  'heart_eyes',
+  'laughing',
+  'stuck_out_tongue_winking_eye',
+  'sweat_smile',
+  'joy',
+  'yum',
+  'disappointed',
+  'thinking_face',
+  'weary',
+  'sob',
+  'sunglasses',
+  'heart',
+  'ok_hand',
+];
+
+export const getFrequentlyUsedEmojis = createSelector([
+  (state: RootState) => state.settings.get('frequentlyUsedEmojis', ImmutableMap()),
+], (emojiCounters: ImmutableMap<string, number>) => {
+  let emojis = emojiCounters
+    .keySeq()
+    .sort((a, b) => emojiCounters.get(a)! - emojiCounters.get(b)!)
+    .reverse()
+    .slice(0, perLine * lines)
+    .toArray();
+
+  if (emojis.length < DEFAULTS.length) {
+    const uniqueDefaults = DEFAULTS.filter(emoji => !emojis.includes(emoji));
+    emojis = emojis.concat(uniqueDefaults.slice(0, DEFAULTS.length - emojis.length));
+  }
+
+  return emojis;
+});
+
+const getCustomEmojis = createSelector([
+  (state: RootState) => state.custom_emojis,
+], emojis => emojis.filter(e => e.get('visible_in_picker')).sort((a, b) => {
+  const aShort = a.get('shortcode')!.toLowerCase();
+  const bShort = b.get('shortcode')!.toLowerCase();
+
+  if (aShort < bShort) {
+    return -1;
+  } else if (aShort > bShort) {
+    return 1;
+  } else {
+    return 0;
+  }
+}));
 
 // Fixes render bug where popover has a delayed position update
 const RenderAfter = ({ children, update }: any) => {
@@ -75,12 +135,16 @@ const RenderAfter = ({ children, update }: any) => {
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, frequentlyUsedEmojis, onPickEmoji, onSkinTone, condensed, render: Render }) => {
+const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, condensed, render: Render }) => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
   const settings = useSettings();
   const title = intl.formatMessage(messages.emoji);
   const userTheme = settings.get('themeMode');
   const theme = (userTheme === 'dark' || userTheme === 'light') ? userTheme : 'auto';
+
+  const customEmojis = useAppSelector((state) => getCustomEmojis(state));
+  const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
 
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
   const [popperReference, setPopperReference] = useState<HTMLButtonElement | null>(null);
@@ -108,22 +172,34 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
   const handlePick = (emoji: EmojiPick) => {
     setVisible(false);
 
+    let pickedEmoji: Emoji;
+
     if (emoji.native) {
-      onPickEmoji({
+      pickedEmoji = {
         id: emoji.id,
         colons: emoji.shortcodes,
         custom: false,
         native: emoji.native,
         unified: emoji.unified,
-      } as NativeEmoji);
+      } as NativeEmoji;
     } else {
-      onPickEmoji({
+      pickedEmoji = {
         id: emoji.id,
         colons: emoji.shortcodes,
         custom: true,
         imageUrl: emoji.src,
-      } as CustomEmoji);
+      } as CustomEmoji;
+
+      dispatch(useEmoji(pickedEmoji)); // eslint-disable-line react-hooks/rules-of-hooks
+
+      if (onPickEmoji) {
+        onPickEmoji(pickedEmoji);
+      }
     }
+  };
+
+  const handleSkinTone = (skinTone: string) => {
+    dispatch(changeSetting(['skinTone'], skinTone));
   };
 
   const getI18n = () => {
@@ -216,12 +292,12 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ custom_emojis, fr
             <RenderAfter update={update}>
               {!loading && (
                 <EmojiPicker
-                  custom={[{ emojis: buildCustomEmojis(custom_emojis) }]}
+                  custom={[{ emojis: buildCustomEmojis(customEmojis) }]}
                   title={title}
                   onEmojiSelect={handlePick}
                   recent={frequentlyUsedEmojis}
                   perLine={8}
-                  skin={onSkinTone}
+                  skin={handleSkinTone}
                   emojiSize={22}
                   emojiButtonSize={34}
                   set='twitter'

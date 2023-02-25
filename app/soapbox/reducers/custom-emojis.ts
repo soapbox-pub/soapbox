@@ -9,7 +9,7 @@ import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom-emojis';
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const initialState = ImmutableList();
+const initialState = ImmutableList<ImmutableMap<string, string>>();
 
 // Populate custom emojis for composer autosuggest
 const autosuggestPopulate = (emojis: ImmutableList<ImmutableMap<string, string>>) => {

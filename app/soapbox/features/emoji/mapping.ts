@@ -8,8 +8,8 @@ function replaceAll(str: string, find: string, replace: string) {
 
 interface UnicodeMap {
   [s: string]: {
-    unified: string,
-    shortcode: string,
+    unified: string
+    shortcode: string
   }
 }
 

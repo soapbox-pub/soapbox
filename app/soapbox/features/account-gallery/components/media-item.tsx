@@ -103,7 +103,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   } else if (attachment.type === 'audio') {
     const remoteURL = attachment.remote_url || '';
     const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
-    const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+    const fileExtension = remoteURL.slice(fileExtensionLastIndex + 1).toUpperCase();
     thumbnail = (
       <div className='media-gallery__item-thumbnail'>
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
