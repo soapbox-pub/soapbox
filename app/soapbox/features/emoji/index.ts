@@ -2,7 +2,7 @@ import split from 'graphemesplit';
 
 import unicodeMapping from './mapping';
 
-import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'emoji-mart';
+import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data';
 
 /*
  * TODO: Consolate emoji object types

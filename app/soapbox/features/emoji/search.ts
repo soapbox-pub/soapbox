@@ -5,6 +5,7 @@ import data from './data';
 import type { Emoji } from './index';
 // import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
 
+// @ts-ignore
 const index = new Index({
   tokenize: 'full',
   optimize: true,
@@ -38,8 +39,7 @@ export const addCustomToPool = (customEmojis: any[]) => {
 // we can share an index by prefixing custom emojis with 'c' and native with 'n'
 const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, custom_emojis?: any): Emoji[] => {
   return index.search(str, maxResults)
-    .flatMap(id => {
-    // @ts-ignore
+    .flatMap((id: string) => {
       if (id[0] === 'c') {
         const { shortcode, static_url } = custom_emojis.get((id as string).slice(1)).toJS();
 

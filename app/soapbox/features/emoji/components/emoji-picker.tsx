@@ -1,4 +1,4 @@
-import { Picker as EmojiPicker, PickerProps } from 'emoji-mart';
+import { Picker as EmojiPicker } from 'emoji-mart';
 import React, { useRef, useEffect } from 'react';
 
 import { joinPublicPath } from 'soapbox/utils/static';
@@ -13,7 +13,7 @@ const getImageURL = (set: string, name: string) => {
   return joinPublicPath(`/packs/emoji/${name}.svg`);
 };
 
-function Picker(props: PickerProps) {
+function Picker(props: any) {
   const ref = useRef(null);
 
   useEffect(() => {

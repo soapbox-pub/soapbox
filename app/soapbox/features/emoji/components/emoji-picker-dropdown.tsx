@@ -15,7 +15,6 @@ import { RootState } from 'soapbox/store';
 import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 
-import type { EmojiPick } from 'emoji-mart';
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
@@ -169,7 +168,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, cond
     }
   };
 
-  const handlePick = (emoji: EmojiPick) => {
+  const handlePick = (emoji: any) => {
     setVisible(false);
 
     let pickedEmoji: Emoji;
@@ -189,12 +188,12 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, cond
         custom: true,
         imageUrl: emoji.src,
       } as CustomEmoji;
+    }
 
-      dispatch(useEmoji(pickedEmoji)); // eslint-disable-line react-hooks/rules-of-hooks
+    dispatch(useEmoji(pickedEmoji)); // eslint-disable-line react-hooks/rules-of-hooks
 
-      if (onPickEmoji) {
-        onPickEmoji(pickedEmoji);
-      }
+    if (onPickEmoji) {
+      onPickEmoji(pickedEmoji);
     }
   };
 
