@@ -1,4 +1,4 @@
-import type { AnyAction } from 'redux';
+import type { AppDispatch } from 'soapbox/store';
 
 const SET_BROWSER_SUPPORT = 'PUSH_NOTIFICATIONS_SET_BROWSER_SUPPORT';
 const SET_SUBSCRIPTION = 'PUSH_NOTIFICATIONS_SET_SUBSCRIPTION';
@@ -20,7 +20,7 @@ const clearSubscription = () => ({
 });
 
 const setAlerts = (path: Array<string>, value: any) =>
-  (dispatch: React.Dispatch<AnyAction>) =>
+  (dispatch: AppDispatch) =>
     dispatch({
       type: SET_ALERTS,
       path,

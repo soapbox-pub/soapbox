@@ -7,11 +7,12 @@ import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor
 import { normalizeChatMessage, normalizeRelationship } from 'soapbox/normalizers';
 import { normalizeEmojiReaction } from 'soapbox/normalizers/emoji-reaction';
 import { Store } from 'soapbox/store';
-import { ChatMessage } from 'soapbox/types/entities';
 import { flattenPages } from 'soapbox/utils/queries';
 
 import { IAccount } from '../accounts';
 import { ChatKeys, IChat, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
+
+import type { ChatMessage } from 'soapbox/types/entities';
 
 const chat: IChat = {
   accepted: true,

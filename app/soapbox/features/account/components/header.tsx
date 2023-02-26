@@ -28,9 +28,10 @@ import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import toast from 'soapbox/toast';
-import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
+
+import type { Account } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },

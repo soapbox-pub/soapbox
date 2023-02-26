@@ -99,7 +99,6 @@ const findElementPosition = (el: HTMLElement) => {
   };
 };
 
-
 const getPointerPosition = (el: HTMLElement, event: MouseEvent & TouchEvent): Point => {
   const box = findElementPosition(el);
   const boxW = el.offsetWidth;

@@ -6,6 +6,7 @@ import toast from 'soapbox/toast';
 
 import type { AxiosResponse } from 'axios';
 import type { RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
 export const EXPORT_FOLLOWS_REQUEST = 'EXPORT_FOLLOWS_REQUEST';
 export const EXPORT_FOLLOWS_SUCCESS = 'EXPORT_FOLLOWS_SUCCESS';
@@ -59,7 +60,7 @@ const listAccounts = (getState: () => RootState) => async(apiResponse: AxiosResp
     Array.prototype.push.apply(followings, apiResponse.data);
   }
 
-  accounts = followings.map((account: any) => normalizeAccount(account).fqn);
+  accounts = followings.map((account: APIEntity) => normalizeAccount(account).fqn);
   return Array.from(new Set(accounts));
 };
 

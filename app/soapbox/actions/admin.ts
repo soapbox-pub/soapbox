@@ -599,7 +599,7 @@ const fetchUserIndex = () =>
     dispatch({ type: ADMIN_USER_INDEX_FETCH_REQUEST });
 
     dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize))
-      .then((data: any) => {
+      .then((data: APIEntity) => {
         if (data.error) {
           dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
         } else {
@@ -620,7 +620,7 @@ const expandUserIndex = () =>
     dispatch({ type: ADMIN_USER_INDEX_EXPAND_REQUEST });
 
     dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize, next))
-      .then((data: any) => {
+      .then((data: APIEntity) => {
         if (data.error) {
           dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
         } else {

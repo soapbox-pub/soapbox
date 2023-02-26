@@ -1,8 +1,6 @@
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-} from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
+import type { StatusRecord } from 'soapbox/reducers/statuses';
 import type { Me } from 'soapbox/types/soapbox';
 
 // https://emojipedia.org/facebook
@@ -74,7 +72,7 @@ export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCo
     allowedEmoji,
   ));
 
-export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
+export const getReactForStatus = (status: StatusRecord, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
   const result = reduceEmoji(
     status.pleroma.get('emoji_reactions', ImmutableList()),
     status.favourites_count || 0,

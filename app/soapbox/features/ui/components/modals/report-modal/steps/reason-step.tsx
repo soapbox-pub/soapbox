@@ -8,6 +8,7 @@ import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
+import type { Rule } from 'soapbox/reducers/rules';
 
 const messages = defineMessages({
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
@@ -59,7 +60,7 @@ const ReasonStep = (_props: IReasonStep) => {
     }
   };
 
-  const filterRuleType = (rule: any) => {
+  const filterRuleType = (rule: Rule) => {
     const ruleTypeToFilter = isReportingAccount ? 'account' : 'content';
 
     if (rule.rule_type) {

@@ -46,7 +46,7 @@ import type { APIEntity } from 'soapbox/types/entities';
 
 const domParser = new DOMParser();
 
-type StatusRecord = ReturnType<typeof normalizeStatus>;
+export type StatusRecord = ReturnType<typeof normalizeStatus>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ReducerStatus>;

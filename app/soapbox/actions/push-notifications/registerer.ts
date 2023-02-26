@@ -54,7 +54,7 @@ const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
       }
     }
 
-    return dispatch(createPushSubscription(params) as any);
+    return dispatch(createPushSubscription(params));
   };
 
 // Last one checks for payload support: https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#no-payload

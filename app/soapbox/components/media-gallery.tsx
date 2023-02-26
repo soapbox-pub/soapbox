@@ -6,7 +6,6 @@ import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is-mobile';
@@ -14,6 +13,7 @@ import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maxi
 
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
+import type { Attachment } from 'soapbox/types/entities';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;

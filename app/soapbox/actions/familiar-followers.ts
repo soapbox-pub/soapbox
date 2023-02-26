@@ -4,6 +4,7 @@ import api from '../api';
 
 import { ACCOUNTS_IMPORT, importFetchedAccounts } from './importer';
 
+import type { AxiosError } from 'axios';
 import type { APIEntity } from 'soapbox/types/entities';
 
 export const FAMILIAR_FOLLOWERS_FETCH_REQUEST = 'FAMILIAR_FOLLOWERS_FETCH_REQUEST';
@@ -24,7 +25,7 @@ type FamiliarFollowersFetchRequestSuccessAction = {
 type FamiliarFollowersFetchRequestFailAction = {
   type: typeof FAMILIAR_FOLLOWERS_FETCH_FAIL
   id: string
-  error: any
+  error: AxiosError
 }
 
 type AccountsImportAction = {

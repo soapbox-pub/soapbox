@@ -8,10 +8,11 @@ import { useChatContext } from 'soapbox/contexts/chat-context';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
 import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import ChatTextarea from './chat-textarea';
+
+import type { Attachment } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },

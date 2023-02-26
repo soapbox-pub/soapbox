@@ -2,16 +2,16 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
-
+import { __stub } from 'soapbox/api';
 import { ChatContext } from 'soapbox/contexts/chat-context';
+import { queryClient, render, rootState, screen, waitFor } from 'soapbox/jest/test-helpers';
 import { normalizeChatMessage, normalizeInstance } from 'soapbox/normalizers';
-import { IAccount } from 'soapbox/queries/accounts';
-import { ChatMessage } from 'soapbox/types/entities';
 
-import { __stub } from '../../../../api';
-import { queryClient, render, rootState, screen, waitFor } from '../../../../jest/test-helpers';
-import { IChat } from '../../../../queries/chats';
 import ChatMessageList from '../chat-message-list';
+
+import type { IAccount } from 'soapbox/queries/accounts';
+import type { IChat } from 'soapbox/queries/chats';
+import type { ChatMessage } from 'soapbox/types/entities';
 
 const chat: IChat = {
   accepted: true,

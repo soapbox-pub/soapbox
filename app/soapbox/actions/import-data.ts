@@ -4,6 +4,7 @@ import toast from 'soapbox/toast';
 
 import api from '../api';
 
+import type { AxiosError } from 'axios';
 import type { RootState } from 'soapbox/store';
 
 export const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';
@@ -28,7 +29,7 @@ type ImportDataActions = {
   | typeof IMPORT_MUTES_REQUEST
   | typeof IMPORT_MUTES_SUCCESS
   | typeof IMPORT_MUTES_FAIL
-  error?: any
+  error?: AxiosError
   config?: string
 }
 

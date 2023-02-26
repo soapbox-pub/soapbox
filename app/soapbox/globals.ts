@@ -4,7 +4,7 @@
  */
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 
-import type { Store } from 'soapbox/store';
+import type { AppDispatch, Store } from 'soapbox/store';
 
 /** Add Soapbox globals to the window. */
 export const createGlobals = (store: Store) => {
@@ -14,7 +14,7 @@ export const createGlobals = (store: Store) => {
       if (![true, false].includes(bool)) {
         throw `Invalid option ${bool}. Must be true or false.`;
       }
-      store.dispatch(changeSettingImmediate(['isDeveloper'], bool) as any);
+      (store.dispatch as AppDispatch)(changeSettingImmediate(['isDeveloper'], bool));
       return bool;
     },
   };

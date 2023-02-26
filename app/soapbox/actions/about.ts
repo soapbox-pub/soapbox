@@ -1,12 +1,12 @@
 import { staticClient } from '../api';
 
-import type { AnyAction } from 'redux';
+import type { AppDispatch } from 'soapbox/store';
 
 const FETCH_ABOUT_PAGE_REQUEST = 'FETCH_ABOUT_PAGE_REQUEST';
 const FETCH_ABOUT_PAGE_SUCCESS = 'FETCH_ABOUT_PAGE_SUCCESS';
 const FETCH_ABOUT_PAGE_FAIL = 'FETCH_ABOUT_PAGE_FAIL';
 
-const fetchAboutPage = (slug = 'index', locale?: string) => (dispatch: React.Dispatch<AnyAction>) => {
+const fetchAboutPage = (slug = 'index', locale?: string) => (dispatch: AppDispatch) => {
   dispatch({ type: FETCH_ABOUT_PAGE_REQUEST, slug, locale });
 
   const filename = `${slug}${locale ? `.${locale}` : ''}.html`;

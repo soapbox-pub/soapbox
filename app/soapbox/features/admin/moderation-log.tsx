@@ -5,7 +5,8 @@ import { fetchModerationLog } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { AdminLog } from 'soapbox/types/entities';
+
+import type { AdminLog } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },

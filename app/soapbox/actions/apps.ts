@@ -8,7 +8,7 @@
 
 import { baseClient } from '../api';
 
-import type { AnyAction } from 'redux';
+import type { AppDispatch } from 'soapbox/store';
 
 export const APP_CREATE_REQUEST = 'APP_CREATE_REQUEST';
 export const APP_CREATE_SUCCESS = 'APP_CREATE_SUCCESS';
@@ -19,7 +19,7 @@ export const APP_VERIFY_CREDENTIALS_SUCCESS = 'APP_VERIFY_CREDENTIALS_SUCCESS';
 export const APP_VERIFY_CREDENTIALS_FAIL    = 'APP_VERIFY_CREDENTIALS_FAIL';
 
 export function createApp(params?: Record<string, string>, baseURL?: string) {
-  return (dispatch: React.Dispatch<AnyAction>) => {
+  return (dispatch: AppDispatch) => {
     dispatch({ type: APP_CREATE_REQUEST, params });
     return baseClient(null, baseURL).post('/api/v1/apps', params).then(({ data: app }) => {
       dispatch({ type: APP_CREATE_SUCCESS, params, app });
@@ -32,7 +32,7 @@ export function createApp(params?: Record<string, string>, baseURL?: string) {
 }
 
 export function verifyAppCredentials(token: string) {
-  return (dispatch: React.Dispatch<AnyAction>) => {
+  return (dispatch: AppDispatch) => {
     dispatch({ type: APP_VERIFY_CREDENTIALS_REQUEST, token });
     return baseClient(token).get('/api/v1/apps/verify_credentials').then(({ data: app }) => {
       dispatch({ type: APP_VERIFY_CREDENTIALS_SUCCESS, token, app });

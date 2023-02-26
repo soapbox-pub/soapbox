@@ -4,7 +4,8 @@ import React from 'react';
 import PollOption from 'soapbox/components/polls/poll-option';
 import { Stack } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
-import { Poll as PollEntity } from 'soapbox/types/entities';
+
+import type { Poll as PollEntity } from 'soapbox/types/entities';
 
 interface IPollPreview {
   pollId: string

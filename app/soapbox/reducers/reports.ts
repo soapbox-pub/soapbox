@@ -1,7 +1,5 @@
 import { Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
-import { ChatMessage } from 'soapbox/types/entities';
-
 import {
   REPORT_INIT,
   REPORT_SUBMIT_REQUEST,
@@ -16,6 +14,7 @@ import {
 } from '../actions/reports';
 
 import type { AnyAction } from 'redux';
+import type { ChatMessage } from 'soapbox/types/entities';
 
 const NewReportRecord = ImmutableRecord({
   isSubmitting: false,

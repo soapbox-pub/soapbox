@@ -30,6 +30,7 @@ import { importFetchedAccount } from './importer';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -185,10 +186,10 @@ export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
     return dispatch(createUserToken(normalizeUsername(username), password));
   }).catch((error: AxiosError) => {
-    if ((error.response?.data as any)?.error === 'mfa_required') {
+    if ((error.response?.data as APIEntity)?.error === 'mfa_required') {
       // If MFA is required, throw the error and handle it in the component.
       throw error;
-    } else if ((error.response?.data as any)?.identifier === 'awaiting_approval') {
+    } else if ((error.response?.data as APIEntity)?.identifier === 'awaiting_approval') {
       toast.error(messages.awaitingApproval);
     } else {
       // Return "wrong password" message.

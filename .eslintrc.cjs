@@ -110,6 +110,7 @@ module.exports = {
     'no-irregular-whitespace': 'error',
     'no-loop-func': 'error',
     'no-mixed-spaces-and-tabs': 'error',
+    'no-multiple-empty-lines': ['error', { max: 1 }],
     'no-nested-ternary': 'warn',
     'no-restricted-imports': ['error', {
       patterns: [{

@@ -4,10 +4,11 @@ import sumBy from 'lodash/sumBy';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 import { ChatKeys } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { Chat, ChatMessage } from 'soapbox/types/entities';
 
 import { compareDate } from './comparators';
 import { appendPageItem, flattenPages, PaginatedResult, sortQueryData, updatePageItem } from './queries';
+
+import type { Chat, ChatMessage } from 'soapbox/types/entities';
 
 interface ChatPayload extends Omit<Chat, 'last_message'> {
   last_message: ChatMessage | null

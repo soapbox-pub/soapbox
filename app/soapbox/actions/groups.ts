@@ -314,7 +314,11 @@ const fetchGroupRelationshipsFail = (error: AxiosError) => ({
 
 const joinGroup = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const locked = (getState().groups.items.get(id) as any).locked || false;
+    const group = getState().groups.items.get(id);
+
+    if (!group) return null;
+
+    const locked = group.locked || false;
 
     dispatch(joinGroupRequest(id, locked));
 

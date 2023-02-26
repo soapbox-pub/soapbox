@@ -3,7 +3,8 @@ import React from 'react';
 
 import { Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
-import { EmojiReaction } from 'soapbox/types/entities';
+
+import type { EmojiReaction } from 'soapbox/types/entities';
 
 interface IChatMessageReaction {
   emojiReaction: EmojiReaction

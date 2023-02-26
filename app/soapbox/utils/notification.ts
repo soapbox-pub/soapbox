@@ -26,7 +26,7 @@ const EXCLUDE_TYPES = [
 type NotificationType = typeof NOTIFICATION_TYPES[number];
 
 /** Ensure the Notification is a valid, known type. */
-const validType = (type: string): type is NotificationType => NOTIFICATION_TYPES.includes(type as any);
+const validType = (type: string): type is NotificationType => NOTIFICATION_TYPES.includes(type as NotificationType);
 
 export {
   NOTIFICATION_TYPES,

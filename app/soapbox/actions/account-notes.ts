@@ -3,9 +3,8 @@ import api from '../api';
 import { openModal, closeModal } from './modals';
 
 import type { AxiosError } from 'axios';
-import type { AnyAction } from 'redux';
-import type { RootState } from 'soapbox/store';
-import type { Account } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity, Account } from 'soapbox/types/entities';
 
 const ACCOUNT_NOTE_SUBMIT_REQUEST = 'ACCOUNT_NOTE_SUBMIT_REQUEST';
 const ACCOUNT_NOTE_SUBMIT_SUCCESS = 'ACCOUNT_NOTE_SUBMIT_SUCCESS';
@@ -15,7 +14,7 @@ const ACCOUNT_NOTE_INIT_MODAL = 'ACCOUNT_NOTE_INIT_MODAL';
 
 const ACCOUNT_NOTE_CHANGE_COMMENT = 'ACCOUNT_NOTE_CHANGE_COMMENT';
 
-const submitAccountNote = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
+const submitAccountNote = () => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch(submitAccountNoteRequest());
 
   const id = getState().account_notes.edit.account;
@@ -37,7 +36,7 @@ function submitAccountNoteRequest() {
   };
 }
 
-function submitAccountNoteSuccess(relationship: any) {
+function submitAccountNoteSuccess(relationship: APIEntity) {
   return {
     type: ACCOUNT_NOTE_SUBMIT_SUCCESS,
     relationship,
@@ -51,7 +50,7 @@ function submitAccountNoteFail(error: AxiosError) {
   };
 }
 
-const initAccountNoteModal = (account: Account) => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
+const initAccountNoteModal = (account: Account) => (dispatch: AppDispatch, getState: () => RootState) => {
   const comment = getState().relationships.get(account.id)!.note;
 
   dispatch({

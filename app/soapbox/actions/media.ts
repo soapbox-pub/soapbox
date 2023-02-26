@@ -7,23 +7,21 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 const noOp = (e: any) => {};
 
 const fetchMedia = (mediaId: string) =>
-  (dispatch: any, getState: () => RootState) => {
-    return api(getState).get(`/api/v1/media/${mediaId}`);
-  };
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState).get(`/api/v1/media/${mediaId}`);
 
 const updateMedia = (mediaId: string, params: Record<string, any>) =>
-  (dispatch: any, getState: () => RootState) => {
-    return api(getState).put(`/api/v1/media/${mediaId}`, params);
-  };
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState).put(`/api/v1/media/${mediaId}`, params);
 
 const uploadMediaV1 = (data: FormData, onUploadProgress = noOp) =>
-  (dispatch: any, getState: () => RootState) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState).post('/api/v1/media', data, {
       onUploadProgress: onUploadProgress,
     });
 
 const uploadMediaV2 = (data: FormData, onUploadProgress = noOp) =>
-  (dispatch: any, getState: () => RootState) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState).post('/api/v2/media', data, {
       onUploadProgress: onUploadProgress,
     });

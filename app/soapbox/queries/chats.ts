@@ -8,7 +8,6 @@ import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 import toast from 'soapbox/toast';
-import { ChatMessage } from 'soapbox/types/entities';
 import { reOrderChatListItems, updateChatMessage } from 'soapbox/utils/chats';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
 
@@ -16,6 +15,7 @@ import { queryClient } from './client';
 import { useFetchRelationships } from './relationships';
 
 import type { IAccount } from './accounts';
+import type { ChatMessage } from 'soapbox/types/entities';
 
 export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
 

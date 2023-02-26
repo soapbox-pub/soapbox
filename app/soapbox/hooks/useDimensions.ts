@@ -14,7 +14,7 @@ const useDimensions = (): UseDimensionsResult => {
 
   const observer = useMemo(
     () =>
-      new ResizeObserver((entries: any) => {
+      new ResizeObserver((entries) => {
         if (entries[0]) {
           const { width, height } = entries[0].contentRect;
           setRect({ width, height });
@@ -23,7 +23,7 @@ const useDimensions = (): UseDimensionsResult => {
     [],
   );
 
-  useEffect((): any => {
+  useEffect(() => {
     if (!element) return;
     observer.observe(element);
 

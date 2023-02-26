@@ -21,5 +21,5 @@ export {
 const changeAlerts = (path: Array<string>, value: any) =>
   (dispatch: AppDispatch) => {
     dispatch(setAlerts(path, value));
-    dispatch(saveSettings() as any);
+    dispatch(saveSettings());
   };

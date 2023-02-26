@@ -6,9 +6,9 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 
-import type { AnyAction } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
-import type { RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';
@@ -18,7 +18,7 @@ const BLOCKS_EXPAND_REQUEST = 'BLOCKS_EXPAND_REQUEST';
 const BLOCKS_EXPAND_SUCCESS = 'BLOCKS_EXPAND_SUCCESS';
 const BLOCKS_EXPAND_FAIL = 'BLOCKS_EXPAND_FAIL';
 
-const fetchBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
+const fetchBlocks = () => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
   const nextLinkName = getNextLinkName(getState);
 
@@ -30,7 +30,7 @@ const fetchBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => 
       const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchBlocksSuccess(response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: any) => item.id)) as any);
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
     })
     .catch(error => dispatch(fetchBlocksFail(error)));
 };
@@ -39,7 +39,7 @@ function fetchBlocksRequest() {
   return { type: BLOCKS_FETCH_REQUEST };
 }
 
-function fetchBlocksSuccess(accounts: any, next: any) {
+function fetchBlocksSuccess(accounts: APIEntity[], next: string | null) {
   return {
     type: BLOCKS_FETCH_SUCCESS,
     accounts,
@@ -54,7 +54,7 @@ function fetchBlocksFail(error: AxiosError) {
   };
 }
 
-const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () => RootState) => {
+const expandBlocks = () => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
   const nextLinkName = getNextLinkName(getState);
 
@@ -72,7 +72,7 @@ const expandBlocks = () => (dispatch: React.Dispatch<AnyAction>, getState: () =>
       const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(expandBlocksSuccess(response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: any) => item.id)) as any);
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
     })
     .catch(error => dispatch(expandBlocksFail(error)));
 };
@@ -83,7 +83,7 @@ function expandBlocksRequest() {
   };
 }
 
-function expandBlocksSuccess(accounts: any, next: any) {
+function expandBlocksSuccess(accounts: APIEntity[], next: string | null) {
   return {
     type: BLOCKS_EXPAND_SUCCESS,
     accounts,
