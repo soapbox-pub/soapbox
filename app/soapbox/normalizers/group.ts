@@ -29,6 +29,7 @@ export const GroupRecord = ImmutableRecord({
   id: '',
   locked: false,
   membership_required: false,
+  members_count: undefined as number | undefined,
   note: '',
   statuses_visibility: 'public',
   uri: '',

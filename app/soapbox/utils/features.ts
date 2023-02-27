@@ -500,6 +500,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groups: false,
 
     /**
+     * Can see trending/suggested Groups.
+     */
+    groupsDiscovery: v.software === TRUTHSOCIAL,
+
+    /**
      * Can hide follows/followers lists and counts.
      * @see PATCH /api/v1/accounts/update_credentials
      */
