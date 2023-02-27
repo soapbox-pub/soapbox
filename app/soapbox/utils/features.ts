@@ -284,7 +284,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Whether chat messages can accept a `media_id` attachment.
      * @see POST /api/v1/pleroma/chats/:id/messages
      */
-    chatsMedia: v.software !== TRUTHSOCIAL,
+    chatsMedia: v.software !== TRUTHSOCIAL || v.build === UNRELEASED,
 
     /**
      * Whether chat messages have read receipts.
