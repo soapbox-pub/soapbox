@@ -17,7 +17,7 @@ export const messages = defineMessages({
 });
 
 const EmojiPickerDropdownContainer = (
-  props: Pick<IEmojiPickerDropdown, 'onPickEmoji' | 'condensed'>,
+  props: Pick<IEmojiPickerDropdown, 'onPickEmoji' | 'condensed' | 'withCustom'>,
 ) => {
   const intl = useIntl();
   const title = intl.formatMessage(messages.emoji);

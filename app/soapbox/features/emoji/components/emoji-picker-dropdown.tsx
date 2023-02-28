@@ -46,6 +46,7 @@ export const messages = defineMessages({
 export interface IEmojiPickerDropdown {
   onPickEmoji?: (emoji: Emoji) => void
   condensed?: boolean
+  withCustom?: boolean
   visible: boolean
   setVisible: (value: boolean) => void
   update: (() => Promise<Partial<PopperState>>) | null
@@ -126,7 +127,7 @@ const RenderAfter = ({ children, update }: any) => {
 };
 
 const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
-  onPickEmoji, condensed, visible, setVisible, update,
+  onPickEmoji, visible, setVisible, update, withCustom = true,
 }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -235,7 +236,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
       <RenderAfter update={update}>
         {!loading && (
           <EmojiPicker
-            custom={[{ emojis: buildCustomEmojis(customEmojis) }]}
+            custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
             title={title}
             onEmojiSelect={handlePick}
             recent={frequentlyUsedEmojis}

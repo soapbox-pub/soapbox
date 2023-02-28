@@ -69,7 +69,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if ([referenceElement, popperElement].some(el => el?.contains(event.target as Node))) {
+    if ([referenceElement, popperElement, document.querySelector('em-emoji-picker')].some(el => el?.contains(event.target as Node))) {
       return;
     }
 
@@ -141,6 +141,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
           visible={expanded}
           setVisible={setExpanded}
           update={update}
+          withCustom={false}
         />
       ) : (
         <HStack
