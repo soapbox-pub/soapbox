@@ -1,20 +1,17 @@
-import { supportsPassiveEvents } from 'detect-passive-events';
 import { Map as ImmutableMap } from 'immutable';
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
-import { usePopper } from 'react-popper';
 import { createSelector } from 'reselect';
 
 import { useEmoji } from 'soapbox/actions/emojis';
 import { changeSetting } from 'soapbox/actions/settings';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is-mobile';
 import { RootState } from 'soapbox/store';
 
 import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 
+import type { State as PopperState } from '@popperjs/core';
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
@@ -49,13 +46,9 @@ export const messages = defineMessages({
 export interface IEmojiPickerDropdown {
   onPickEmoji?: (emoji: Emoji) => void
   condensed?: boolean
-  render: React.FC<{
-    setPopperReference: React.Ref<HTMLButtonElement>
-    title?: string
-    visible?: boolean
-    loading?: boolean
-    handleToggle: (e: Event) => void
-  }>
+  visible: boolean
+  setVisible: (value: boolean) => void
+  update: (() => Promise<Partial<PopperState>>) | null
 }
 
 const perLine = 8;
@@ -132,9 +125,9 @@ const RenderAfter = ({ children, update }: any) => {
   return nextTick ? children : null;
 };
 
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
-
-const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, condensed, render: Render }) => {
+const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
+  onPickEmoji, condensed, visible, setVisible, update,
+}) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const settings = useSettings();
@@ -145,28 +138,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, cond
   const customEmojis = useAppSelector((state) => getCustomEmojis(state));
   const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
 
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-  const [popperReference, setPopperReference] = useState<HTMLButtonElement | null>(null);
-  const [containerElement, setContainerElement] = useState<HTMLDivElement | null>(null);
-
-  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const placement = condensed ? 'bottom-start' : 'top-start';
-  const { styles, attributes, update } = usePopper(popperReference, popperElement, {
-    placement: isMobile(window.innerWidth) ? 'auto' : placement,
-  });
-
-  const handleToggle = (e: Event) => {
-    e.stopPropagation();
-    setVisible(!visible);
-  };
-
-  const handleDocClick = (e: any) => {
-    if (!containerElement?.contains(e.target) && !popperElement?.contains(e.target)) {
-      setVisible(false);
-    }
-  };
 
   const handlePick = (emoji: any) => {
     setVisible(false);
@@ -234,17 +206,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, cond
   };
 
   useEffect(() => {
-    document.addEventListener('click', handleDocClick, false);
-    document.addEventListener('touchend', handleDocClick, listenerOptions);
-
-    return function cleanup() {
-      document.removeEventListener('click', handleDocClick, false);
-      // @ts-ignore
-      document.removeEventListener('touchend', handleDocClick, listenerOptions);
-    };
-  });
-
-  useEffect(() => {
     // fix scrolling focus issue
     if (visible) {
       document.body.style.overflow = 'hidden';
@@ -265,51 +226,26 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, cond
     }
   }, [visible]);
 
-  // TODO: move to class
-  const style: React.CSSProperties = !isMobile(window.innerWidth) ? styles.popper : {
-    ...styles.popper, width: '100%',
-  };
-
   return (
-    <div className='relative' ref={setContainerElement}>
-      <Render
-        handleToggle={handleToggle}
-        visible={visible}
-        loading={loading}
-        title={title}
-        setPopperReference={setPopperReference}
-      />
-
-      {createPortal(
-        <div
-          className='z-[101]'
-          ref={setPopperElement}
-          style={style}
-          {...attributes.popper}
-        >
-          {visible && (
-            <RenderAfter update={update}>
-              {!loading && (
-                <EmojiPicker
-                  custom={[{ emojis: buildCustomEmojis(customEmojis) }]}
-                  title={title}
-                  onEmojiSelect={handlePick}
-                  recent={frequentlyUsedEmojis}
-                  perLine={8}
-                  skin={handleSkinTone}
-                  emojiSize={22}
-                  emojiButtonSize={34}
-                  set='twitter'
-                  theme={theme}
-                  i18n={getI18n()}
-                />
-              )}
-            </RenderAfter>
-          )}
-        </div>,
-        document.body,
-      )}
-    </div>
+    visible ? (
+      <RenderAfter update={update}>
+        {!loading && (
+          <EmojiPicker
+            custom={[{ emojis: buildCustomEmojis(customEmojis) }]}
+            title={title}
+            onEmojiSelect={handlePick}
+            recent={frequentlyUsedEmojis}
+            perLine={8}
+            skin={handleSkinTone}
+            emojiSize={22}
+            emojiButtonSize={34}
+            set='twitter'
+            theme={theme}
+            i18n={getI18n()}
+          />
+        )}
+      </RenderAfter>
+    ) : null
   );
 };
 

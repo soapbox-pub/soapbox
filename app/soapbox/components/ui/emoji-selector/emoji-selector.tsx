@@ -1,16 +1,11 @@
 import { Placement } from '@popperjs/core';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
 
-import { changeSetting } from 'soapbox/actions/settings';
 import { Emoji, HStack, IconButton } from 'soapbox/components/ui';
-import { getFrequentlyUsedEmojis, messages } from 'soapbox/features/emoji/components/emoji-picker-dropdown';
-import { EmojiPicker as EmojiPickerAsync } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-
-let EmojiPicker: any; // load asynchronously
+import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
+import { useSoapboxConfig } from 'soapbox/hooks';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
@@ -64,27 +59,14 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   offset = [-10, 0],
   all = true,
 }): JSX.Element => {
-  const intl = useIntl();
-  const dispatch = useAppDispatch();
-
-  const frequentlyUsedEmojis = useAppSelector(state => getFrequentlyUsedEmojis(state));
-  const settings = useSettings();
-  const userTheme = settings.get('themeMode');
-  const theme = (userTheme === 'dark' || userTheme === 'light') ? userTheme : 'auto';
   const soapboxConfig = useSoapboxConfig();
 
-  const title = intl.formatMessage(messages.emoji);
 
   const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // `useRef` won't trigger a re-render, while `useState` does.
   // https://popper.js.org/react-popper/v2/
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-
-  const onSkinTone = (skinTone: string) => {
-    dispatch(changeSetting(['skinTone'], skinTone));
-  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if ([referenceElement, popperElement].some(el => el?.contains(event.target as Node))) {
@@ -116,38 +98,6 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     setExpanded(true);
   };
 
-  const getI18n = () => {
-    return {
-      search: intl.formatMessage(messages.emoji_search),
-      pick: intl.formatMessage(messages.emoji_pick),
-      search_no_results_1: intl.formatMessage(messages.emoji_oh_no),
-      search_no_results_2: intl.formatMessage(messages.emoji_not_found),
-      add_custom: intl.formatMessage(messages.emoji_add_custom),
-      categories: {
-        search: intl.formatMessage(messages.search_results),
-        frequent: intl.formatMessage(messages.recent),
-        people: intl.formatMessage(messages.people),
-        nature: intl.formatMessage(messages.nature),
-        foods: intl.formatMessage(messages.food),
-        activity: intl.formatMessage(messages.activity),
-        places: intl.formatMessage(messages.travel),
-        objects: intl.formatMessage(messages.objects),
-        symbols: intl.formatMessage(messages.symbols),
-        flags: intl.formatMessage(messages.flags),
-        custom: intl.formatMessage(messages.custom),
-      },
-      skins: {
-        choose: intl.formatMessage(messages.skins_choose),
-        1: intl.formatMessage(messages.skins_1),
-        2: intl.formatMessage(messages.skins_2),
-        3: intl.formatMessage(messages.skins_3),
-        4: intl.formatMessage(messages.skins_4),
-        5: intl.formatMessage(messages.skins_5),
-        6: intl.formatMessage(messages.skins_6),
-      },
-    };
-  };
-
   useEffect(() => () => {
     document.body.style.overflow = '';
   }, []);
@@ -176,26 +126,6 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     }
   }, [expanded, update]);
 
-  useEffect(() => {
-    // fix scrolling focus issue
-    if (visible && expanded) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    if (!EmojiPicker) {
-      setLoading(true);
-
-      EmojiPickerAsync().then(EmojiMart => {
-        EmojiPicker = EmojiMart.Picker;
-
-        setLoading(false);
-      }).catch(() => {
-        setLoading(false);
-      });
-    }
-  }, [visible, expanded]);
 
   return (
     <div
@@ -207,17 +137,10 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
       {...attributes.popper}
     >
       {expanded ? (
-        !loading && <EmojiPicker
-          title={title}
-          onEmojiSelect={(emoji: any) => onReact(emoji.native)}
-          recent={frequentlyUsedEmojis}
-          perLine={8}
-          skin={onSkinTone}
-          emojiSize={22}
-          emojiButtonSize={34}
-          set='twitter'
-          theme={theme}
-          i18n={getI18n()}
+        <EmojiPickerDropdown
+          visible={expanded}
+          setVisible={setExpanded}
+          update={update}
         />
       ) : (
         <HStack
