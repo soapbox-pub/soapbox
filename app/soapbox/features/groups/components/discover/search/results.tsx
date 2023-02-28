@@ -101,7 +101,7 @@ export default (props: Props) => {
   ), []);
 
   return (
-    <Stack space={4}>
+    <Stack space={4} data-testid='results'>
       <HStack alignItems='center' justifyContent='between'>
         <Text weight='semibold'>Groups</Text>
 

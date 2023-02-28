@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { HStack, Icon, IconButton, Input, Stack } from 'soapbox/components/ui';
 
 import PopularGroups from './components/discover/popular-groups';
-import Search from './components/discover/search';
+import Search from './components/discover/search/search';
 import SuggestedGroups from './components/discover/suggested-groups';
 import TabBar, { TabItems } from './components/tab-bar';
 

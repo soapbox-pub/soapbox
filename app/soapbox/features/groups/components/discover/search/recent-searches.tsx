@@ -24,7 +24,7 @@ export default (props: Props) => {
   };
 
   return (
-    <Stack space={2}>
+    <Stack space={2} data-testid='recent-searches'>
       {recentSearches.length > 0 ? (
         <>
           <HStack
@@ -69,7 +69,7 @@ export default (props: Props) => {
         </>
       ) : (
         <Stack space={2}>
-          <Text weight='bold' size='lg' data-testid='no-results'>
+          <Text weight='bold' size='lg'>
             <FormattedMessage id='groups.discover.search.blankslate.title' defaultMessage='No recent searches' />
           </Text>
 
