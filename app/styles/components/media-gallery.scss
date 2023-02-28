@@ -1,21 +1,21 @@
 $media-compact-size: 50px;
 
 .media-gallery {
+  @apply rounded-lg;
   box-sizing: border-box;
   overflow: hidden;
-  border-radius: 10px;
   isolation: isolate;
   position: relative;
   width: 100%;
   height: auto;
 
   &__item {
+    @apply rounded-sm;
     border: 0;
     box-sizing: border-box;
     display: block;
     float: left;
     position: relative;
-    border-radius: 10px;
     overflow: hidden;
 
     &__icons {
