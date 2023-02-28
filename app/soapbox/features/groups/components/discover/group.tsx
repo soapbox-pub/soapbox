@@ -5,10 +5,9 @@ import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui
 import { Group as GroupEntity } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
-
 interface IGroup {
   group: GroupEntity
-  width: number
+  width?: number
 }
 
 const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
@@ -84,7 +83,7 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
         theme='primary'
         block
       >
-        Join Group
+        {group.locked ? 'Request to Join' : 'Join Group'}
       </Button>
     </div>
   );

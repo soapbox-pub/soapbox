@@ -497,7 +497,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/admin/groups/:group_id/unsuspend
      * @see DELETE /api/v1/admin/groups/:group_id
      */
-    groups: false,
+    groups: v.build === UNRELEASED,
 
     /**
      * Can see trending/suggested Groups.
