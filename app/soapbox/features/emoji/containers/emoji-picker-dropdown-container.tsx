@@ -16,7 +16,7 @@ export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
 });
 
-const EmojiPickerDropdownWrapper = (
+const EmojiPickerDropdownContainer = (
   props: Pick<IEmojiPickerDropdown, 'onPickEmoji' | 'condensed'>,
 ) => {
   const intl = useIntl();
@@ -53,7 +53,7 @@ const EmojiPickerDropdownWrapper = (
     document.addEventListener('click', handleDocClick, false);
     document.addEventListener('touchend', handleDocClick, listenerOptions);
 
-    return function cleanup() {
+    return () => {
       document.removeEventListener('click', handleDocClick, false);
       // @ts-ignore
       document.removeEventListener('touchend', handleDocClick, listenerOptions);
@@ -93,4 +93,4 @@ const EmojiPickerDropdownWrapper = (
 };
 
 
-export default EmojiPickerDropdownWrapper;
+export default EmojiPickerDropdownContainer;
