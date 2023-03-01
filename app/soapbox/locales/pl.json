@@ -563,7 +563,7 @@
   "edit_profile.fields.meta_fields_label": "Pola profilu",
   "edit_profile.fields.stranger_notifications_label": "Blokuj powiadomienia od nieznajomych",
   "edit_profile.fields.website_label": "Strona internetowa",
-  "edit_profile.fields.website_placeholder": "Wyświetl link",
+  "edit_profile.fields.website_placeholder": "Wyświetl odnośnik",
   "edit_profile.header": "Edytuj profil",
   "edit_profile.hints.accepts_email_list": "Otrzymuj wiadomości i nowości marketingowe.",
   "edit_profile.hints.avatar": "PNG, GIF lub JPG. Zostanie zmniejszony do {size}",
