@@ -40,7 +40,6 @@ export const addCustomToPool = (customEmojis: any[]) => {
 const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, custom_emojis?: any): Emoji[] => {
   return index.search(str, maxResults)
     .flatMap((id: string) => {
-      console.log(id);
       if (id[0] === 'c') {
         const { shortcode, static_url } = custom_emojis.get((id as string).slice(1)).toJS();
 

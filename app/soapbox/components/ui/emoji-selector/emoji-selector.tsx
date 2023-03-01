@@ -3,9 +3,11 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 
-import { Emoji, HStack, IconButton } from 'soapbox/components/ui';
+import { Emoji as EmojiComponent, HStack, IconButton } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
 import { useSoapboxConfig } from 'soapbox/hooks';
+
+import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
@@ -29,7 +31,7 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 
   return (
     <button className={clsx(className)} onClick={handleClick} tabIndex={tabIndex}>
-      <Emoji className='h-6 w-6 duration-100 hover:scale-110' emoji={emoji} />
+      <EmojiComponent className='h-6 w-6 duration-100 hover:scale-110' emoji={emoji} />
     </button>
   );
 };
@@ -61,7 +63,6 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
 }): JSX.Element => {
   const soapboxConfig = useSoapboxConfig();
 
-
   const [expanded, setExpanded] = useState(false);
 
   // `useRef` won't trigger a re-render, while `useState` does.
@@ -74,6 +75,8 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     }
 
     if (document.querySelector('em-emoji-picker')) {
+      event.preventDefault();
+      event.stopPropagation();
       return setExpanded(false);
     }
 
@@ -98,6 +101,10 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     setExpanded(true);
   };
 
+  const handlePickEmoji = (emoji: Emoji) => {
+    onReact((emoji as NativeEmoji).native);
+  };
+
   useEffect(() => () => {
     document.body.style.overflow = '';
   }, []);
@@ -112,7 +119,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [referenceElement]);
+  }, [referenceElement, popperElement]);
 
   useEffect(() => {
     if (visible && update) {
@@ -142,6 +149,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
           setVisible={setExpanded}
           update={update}
           withCustom={false}
+          onPickEmoji={handlePickEmoji}
         />
       ) : (
         <HStack

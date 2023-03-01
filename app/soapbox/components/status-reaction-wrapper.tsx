@@ -112,6 +112,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
             referenceElement={referenceElement}
             onReact={handleReact}
             visible={visible}
+            onClose={() => setVisible(false)}
           />
         </Portal>
       )}
