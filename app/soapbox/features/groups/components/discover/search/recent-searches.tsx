@@ -36,7 +36,7 @@ export default (props: Props) => {
               Recent searches
             </Text>
 
-            <button onClick={onClearRecentSearches}>
+            <button onClick={onClearRecentSearches} data-testid='clear-recent-searches'>
               <Text theme='primary' size='sm' className='hover:underline'>
                 Clear All
               </Text>
@@ -47,10 +47,11 @@ export default (props: Props) => {
             useWindowScroll
             data={recentSearches}
             itemContent={(_index, recentSearch) => (
-              <div key={recentSearch}>
+              <div key={recentSearch} data-testid='recent-search'>
                 <button
                   onClick={() => onSelect(recentSearch)}
                   className='group flex w-full flex-col rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  data-testid='recent-search-result'
                 >
                   <HStack alignItems='center' space={2}>
                     <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 p-2 dark:bg-gray-800 dark:group-hover:bg-gray-700/20'>
@@ -68,7 +69,7 @@ export default (props: Props) => {
           />
         </>
       ) : (
-        <Stack space={2}>
+        <Stack space={2} data-testid='recent-searches-blankslate'>
           <Text weight='bold' size='lg'>
             <FormattedMessage id='groups.discover.search.blankslate.title' defaultMessage='No recent searches' />
           </Text>
