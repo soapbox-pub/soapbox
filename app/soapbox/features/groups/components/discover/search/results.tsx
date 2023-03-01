@@ -80,7 +80,13 @@ export default (props: Props) => {
                 <Text theme='inherit' tag='span' size='sm' weight='medium'>
                   {shortNumberFormat(group.members_count)}
                   {' '}
-                  members
+                  <FormattedMessage
+                    id='groups.discover.search.results.member_count'
+                    defaultMessage='{members, plural, one {member} other {members}}'
+                    values={{
+                      members: group.members_count,
+                    }}
+                  />
                 </Text>
               </>
             )}
@@ -89,7 +95,9 @@ export default (props: Props) => {
       </HStack>
 
       <Button theme='primary'>
-        {group.locked ? 'Request to Join' : 'Join Group'}
+        {group.locked
+          ? <FormattedMessage id='group.join.private' defaultMessage='Request to Join' />
+          : <FormattedMessage id='group.join.public' defaultMessage='Join Group' />}
       </Button>
     </HStack>
   ), []);
@@ -103,7 +111,12 @@ export default (props: Props) => {
   return (
     <Stack space={4} data-testid='results'>
       <HStack alignItems='center' justifyContent='between'>
-        <Text weight='semibold'>Groups</Text>
+        <Text weight='semibold'>
+          <FormattedMessage
+            id='groups.discover.search.results.groups'
+            defaultMessage='Groups'
+          />
+        </Text>
 
         <HStack alignItems='center'>
           <button onClick={() => setLayout(Layout.LIST)}>

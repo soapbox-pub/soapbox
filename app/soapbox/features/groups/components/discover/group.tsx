@@ -67,7 +67,13 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
                 <Text theme='inherit' tag='span' size='sm'>
                   {shortNumberFormat(group.members_count)}
                   {' '}
-                  members
+                  <FormattedMessage
+                    id='groups.discover.search.results.member_count'
+                    defaultMessage='{members, plural, one {member} other {members}}'
+                    values={{
+                      members: group.members_count,
+                    }}
+                  />
                 </Text>
               )}
             </HStack>

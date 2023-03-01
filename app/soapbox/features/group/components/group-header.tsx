@@ -117,7 +117,9 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           theme='primary'
           onClick={onJoinGroup}
         >
-          {group.locked ? <FormattedMessage id='group.request_join' defaultMessage='Request to join group' /> : <FormattedMessage id='group.join' defaultMessage='Join group' />}
+          {group.locked
+            ? <FormattedMessage id='group.join.private' defaultMessage='Request to Join' />
+            : <FormattedMessage id='group.join.public' defaultMessage='Join Group' />}
         </Button>
       );
     }

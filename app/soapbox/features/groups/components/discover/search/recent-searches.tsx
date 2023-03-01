@@ -33,12 +33,18 @@ export default (props: Props) => {
             className='bg-white dark:bg-gray-900'
           >
             <Text theme='muted' weight='semibold' size='sm'>
-              Recent searches
+              <FormattedMessage
+                id='groups.discover.search.recent_searches.title'
+                defaultMessage='Recent searches'
+              />
             </Text>
 
             <button onClick={onClearRecentSearches} data-testid='clear-recent-searches'>
               <Text theme='primary' size='sm' className='hover:underline'>
-                Clear All
+                <FormattedMessage
+                  id='groups.discover.search.recent_searches.clear_all'
+                  defaultMessage='Clear all'
+                />
               </Text>
             </button>
           </HStack>
@@ -71,11 +77,11 @@ export default (props: Props) => {
       ) : (
         <Stack space={2} data-testid='recent-searches-blankslate'>
           <Text weight='bold' size='lg'>
-            <FormattedMessage id='groups.discover.search.blankslate.title' defaultMessage='No recent searches' />
+            <FormattedMessage id='groups.discover.search.recent_searches.blankslate.title' defaultMessage='No recent searches' />
           </Text>
 
           <Text theme='muted'>
-            <FormattedMessage id='groups.discover.search.blankslate.subtitle' defaultMessage='Search group names, topics or keywords' />
+            <FormattedMessage id='groups.discover.search.recent_searches.blankslate.subtitle' defaultMessage='Search group names, topics or keywords' />
           </Text>
         </Stack>
       )}
