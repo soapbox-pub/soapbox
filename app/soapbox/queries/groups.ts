@@ -18,9 +18,10 @@ const useGroups = () => {
   const api = useApi();
   const account = useOwnAccount();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const getGroups = async (pageParam?: any): Promise<PaginatedResult<Group>> => {
-    const endpoint = '/api/mock/groups'; // '/api/v1/groups';
+    const endpoint = '/api/v1/groups';
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || endpoint;
     const response = await api.get<Group[]>(uri);
@@ -45,7 +46,7 @@ const useGroups = () => {
     GroupKeys.myGroups(account?.id as string),
     ({ pageParam }: any) => getGroups(pageParam),
     {
-      enabled: !!account,
+      enabled: !!account && features.groups,
       keepPreviousData: true,
       getNextPageParam: (config) => {
         if (config?.hasMore) {
