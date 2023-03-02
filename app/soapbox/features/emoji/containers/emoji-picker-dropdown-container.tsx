@@ -64,7 +64,7 @@ const EmojiPickerDropdownContainer = (
     <div className='relative' ref={setContainerElement}>
       <IconButton
         className={clsx({
-          'text-gray-400 hover:text-gray-600': true,
+          'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
         })}
         ref={setPopperReference}
         src={require('@tabler/icons/mood-happy.svg')}
