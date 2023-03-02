@@ -46,9 +46,9 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  eventId: string,
-  id: string,
-  participationMessage: string | null,
+  eventId: string
+  id: string
+  participationMessage: string | null
 }
 
 const Account: React.FC<IAccount> = ({ eventId, id, participationMessage }) => {
@@ -88,7 +88,7 @@ const Account: React.FC<IAccount> = ({ eventId, id, participationMessage }) => {
 };
 
 interface IComposeEventModal {
-  onClose: (type?: string) => void,
+  onClose: (type?: string) => void
 }
 
 const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
@@ -183,7 +183,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   const renderLocation = () => location && (
     <HStack className='h-[38px] text-gray-700 dark:text-gray-500' alignItems='center' space={2}>
       <Icon src={ADDRESS_ICONS[location.type] || require('@tabler/icons/map-pin.svg')} />
-      <Stack className='flex-grow'>
+      <Stack className='grow'>
         <Text>{location.description}</Text>
         <Text theme='muted' size='xs'>{[location.street, location.locality, location.country].filter(val => val.trim()).join(' · ')}</Text>
       </Stack>
@@ -214,7 +214,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.banner_label' defaultMessage='Event banner' />}
       >
-        <div className='flex items-center justify-center bg-gray-200 dark:bg-gray-900/50 rounded-lg text-black dark:text-white sm:shadow dark:sm:shadow-inset overflow-hidden h-24 sm:h-32 relative'>
+        <div className='dark:sm:shadow-inset relative flex h-24 items-center justify-center overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-white sm:h-32 sm:shadow'>
           {banner ? (
             <>
               <img className='h-full w-full object-cover' src={banner.url} alt='' />
@@ -223,7 +223,6 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           ) : (
             <UploadButton disabled={isUploading} onSelectFile={handleFiles} />
           )}
-
         </div>
       </FormGroup>
       <FormGroup

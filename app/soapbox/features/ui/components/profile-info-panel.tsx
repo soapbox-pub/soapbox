@@ -6,7 +6,6 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
@@ -36,9 +35,9 @@ const messages = defineMessages({
 });
 
 interface IProfileInfoPanel {
-  account: Account,
+  account: Account
   /** Username from URL params, in case the account isn't found. */
-  username: string,
+  username: string
 }
 
 /** User profile metadata, such as location, birthday, etc. */
@@ -48,9 +47,9 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
-      return <Badge slug='admin' title='Admin' key='staff' />;
+      return <Badge slug='admin' title={<FormattedMessage id='account_moderation_modal.roles.admin' defaultMessage='Admin' />} key='staff' />;
     } else if (account?.moderator) {
-      return <Badge slug='moderator' title='Moderator' key='staff' />;
+      return <Badge slug='moderator' title={<FormattedMessage id='account_moderation_modal.roles.moderator' defaultMessage='Moderator' />} key='staff' />;
     } else {
       return null;
     }
@@ -100,8 +99,8 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     return (
       <HStack alignItems='center' space={0.5}>
         <Icon
-          src={require('@tabler/icons/ballon.svg')}
-          className='w-4 h-4 text-gray-800 dark:text-gray-200'
+          src={require('@tabler/icons/balloon.svg')}
+          className='h-4 w-4 text-gray-800 dark:text-gray-200'
         />
 
         <Text size='sm'>
@@ -135,7 +134,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const deactivated = !account.pleroma.get('is_active', true) === true;
   const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
-  const verified = account.verified;
   const badges = getBadges();
 
   return (
@@ -144,8 +142,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack>
           <HStack space={1} alignItems='center'>
             <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
-
-            {verified && <VerificationBadge />}
 
             {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
 
@@ -165,7 +161,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
               <Icon
                 src={require('@tabler/icons/lock.svg')}
                 alt={intl.formatMessage(messages.account_locked)}
-                className='w-4 h-4 text-gray-600'
+                className='h-4 w-4 text-gray-600'
               />
             )}
           </HStack>
@@ -177,12 +173,12 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           <Markup size='sm' dangerouslySetInnerHTML={content} />
         )}
 
-        <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>
+        <div className='flex flex-col items-start gap-2 md:flex-row md:flex-wrap md:items-center'>
           {isLocal(account) ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/calendar.svg')}
-                className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
               <Text size='sm'>
@@ -199,7 +195,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/map-pin.svg')}
-                className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
               <Text size='sm'>
@@ -212,13 +208,13 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/link.svg')}
-                className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
               <div className='max-w-[300px]'>
                 <Text size='sm' truncate>
                   {isSafeUrl(account.website) ? (
-                    <a className='text-primary-600 dark:text-accent-blue hover:underline' href={account.website} target='_blank'>{account.website}</a>
+                    <a className='text-primary-600 hover:underline dark:text-accent-blue' href={account.website} target='_blank'>{account.website}</a>
                   ) : (
                     account.website
                   )}

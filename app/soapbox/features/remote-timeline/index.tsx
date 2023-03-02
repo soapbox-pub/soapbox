@@ -14,7 +14,7 @@ import PinnedHostsPicker from './components/pinned-hosts-picker';
 
 interface IRemoteTimeline {
   params?: {
-    instance?: string,
+    instance?: string
   }
 }
 

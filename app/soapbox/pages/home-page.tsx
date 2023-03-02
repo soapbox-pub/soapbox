@@ -20,7 +20,11 @@ import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle-container';
 
-const HomePage: React.FC = ({ children }) => {
+interface IHomePage {
+  children: React.ReactNode
+}
+
+const HomePage: React.FC<IHomePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const features = useFeatures();
@@ -37,7 +41,7 @@ const HomePage: React.FC = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='pt-3 sm:pt-0 dark:divide-gray-800 space-y-3'>
+      <Layout.Main className='space-y-3 pt-3 dark:divide-gray-800 sm:pt-0'>
         {me && (
           <Card variant='rounded' ref={composeBlock}>
             <CardBody>
@@ -46,7 +50,7 @@ const HomePage: React.FC = ({ children }) => {
                   <Avatar src={avatar} size={46} />
                 </Link>
 
-                <div className='translate-y-0.5 w-full'>
+                <div className='w-full translate-y-0.5'>
                   <ComposeForm
                     id='home'
                     shouldCondense

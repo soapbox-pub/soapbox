@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -92,8 +92,8 @@ const messages = defineMessages({
 });
 
 interface IEmojiPickerDropdown {
-  onPickEmoji: (data: EmojiType) => void,
-  button?: JSX.Element,
+  onPickEmoji: (data: EmojiType) => void
+  button?: JSX.Element
 }
 
 const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, button }) => {
@@ -180,7 +180,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({ onPickEmoji, butt
         tabIndex={0}
       >
         {button || <IconButton
-          className={classNames({
+          className={clsx({
             'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
             'pulse-loading': active && loading,
           })}

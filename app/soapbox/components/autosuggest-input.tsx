@@ -1,12 +1,11 @@
-import { Portal } from '@reach/portal';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
-import { Input } from 'soapbox/components/ui';
+import { Input, Portal } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
 import { isRtl } from 'soapbox/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
@@ -17,23 +16,23 @@ import type { InputThemes } from 'soapbox/components/ui/input/input';
 export type AutoSuggestion = string | Emoji;
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
-  value: string,
-  suggestions: ImmutableList<any>,
-  disabled?: boolean,
-  placeholder?: string,
-  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void,
-  onSuggestionsClearRequested: () => void,
-  onSuggestionsFetchRequested: (token: string) => void,
-  autoFocus: boolean,
-  autoSelect: boolean,
-  className?: string,
-  id?: string,
-  searchTokens: string[],
-  maxLength?: number,
-  menu?: Menu,
-  renderSuggestion?: React.FC<{ id: string }>,
-  hidePortal?: boolean,
-  theme?: InputThemes,
+  value: string
+  suggestions: ImmutableList<any>
+  disabled?: boolean
+  placeholder?: string
+  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void
+  onSuggestionsClearRequested: () => void
+  onSuggestionsFetchRequested: (token: string) => void
+  autoFocus: boolean
+  autoSelect: boolean
+  className?: string
+  id?: string
+  searchTokens: string[]
+  maxLength?: number
+  menu?: Menu
+  renderSuggestion?: React.FC<{ id: string }>
+  hidePortal?: boolean
+  theme?: InputThemes
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {
@@ -46,7 +45,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
   getFirstIndex = () => {
     return this.props.autoSelect ? 0 : -1;
-  }
+  };
 
   state = {
     suggestionsHidden: true,
@@ -76,7 +75,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     if (this.props.onChange) {
       this.props.onChange(e);
     }
-  }
+  };
 
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     const { suggestions, menu, disabled } = this.props;
@@ -145,15 +144,15 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     if (this.props.onKeyDown) {
       this.props.onKeyDown(e);
     }
-  }
+  };
 
   onBlur = () => {
     this.setState({ suggestionsHidden: true, focused: false });
-  }
+  };
 
   onFocus = () => {
     this.setState({ focused: true });
-  }
+  };
 
   onSuggestionClick: React.EventHandler<React.MouseEvent | React.TouchEvent> = (e) => {
     const index = Number(e.currentTarget?.getAttribute('data-index'));
@@ -161,7 +160,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.input?.focus();
     e.preventDefault();
-  }
+  };
 
   componentDidUpdate(prevProps: IAutosuggestInput, prevState: any) {
     const { suggestions } = this.props;
@@ -172,7 +171,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
   setInput = (c: HTMLInputElement) => {
     this.input = c;
-  }
+  };
 
   renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
     const { selectedSuggestion } = this.state;
@@ -199,7 +198,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         tabIndex={0}
         key={key}
         data-index={i}
-        className={classNames({
+        className={clsx({
           'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
           'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
         })}
@@ -209,21 +208,21 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
         {inner}
       </div>
     );
-  }
+  };
 
   handleMenuItemAction = (item: MenuItem | null, e: React.MouseEvent | React.KeyboardEvent) => {
     this.onBlur();
     if (item?.action) {
       item.action(e);
     }
-  }
+  };
 
   handleMenuItemClick = (item: MenuItem | null): React.MouseEventHandler => {
     return e => {
       e.preventDefault();
       this.handleMenuItemAction(item, e);
     };
-  }
+  };
 
   renderMenu = () => {
     const { menu, suggestions } = this.props;
@@ -235,7 +234,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
 
     return menu.map((item, i) => (
       <a
-        className={classNames('flex items-center space-x-2 px-4 py-2.5 text-sm cursor-pointer text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800', { selected: suggestions.size - selectedSuggestion === i })}
+        className={clsx('flex cursor-pointer items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 dark:focus:bg-primary-800', { selected: suggestions.size - selectedSuggestion === i })}
         href='#'
         role='button'
         tabIndex={0}
@@ -302,7 +301,7 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
       <Portal key='portal'>
         <div
           style={this.setPortalPosition()}
-          className={classNames({
+          className={clsx({
             'fixed w-full z-[1001] shadow bg-white dark:bg-gray-900 rounded-lg py-1 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
             hidden: !visible,
             block: visible,

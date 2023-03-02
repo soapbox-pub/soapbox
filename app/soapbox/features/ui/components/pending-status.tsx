@@ -1,10 +1,10 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
+import Account from 'soapbox/components/account';
 import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import { Card, HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder-media-gallery';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
@@ -21,14 +21,14 @@ const shouldHaveCard = (pendingStatus: StatusEntity) => {
 };
 
 interface IPendingStatus {
-  className?: string,
-  idempotencyKey: string,
-  muted?: boolean,
-  thread?: boolean,
+  className?: string
+  idempotencyKey: string
+  muted?: boolean
+  thread?: boolean
 }
 
 interface IPendingStatusMedia {
-  status: StatusEntity,
+  status: StatusEntity
 }
 
 const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {
@@ -57,19 +57,20 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
   const account = status.account as AccountEntity;
 
   return (
-    <div className={classNames('opacity-50', className)}>
-      <div className={classNames('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
+    <div className={clsx('opacity-50', className)}>
+      <div className={clsx('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
         <Card
-          className={classNames('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
+          className={clsx('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
           variant={thread ? 'default' : 'rounded'}
         >
           <div className='mb-4'>
             <HStack justifyContent='between' alignItems='start'>
-              <AccountContainer
+              <Account
                 key={account.id}
-                id={account.id}
+                account={account}
                 timestamp={status.created_at}
                 hideActions
+                withLinkToProfile={false}
               />
             </HStack>
           </div>

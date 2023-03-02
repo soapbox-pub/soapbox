@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -32,14 +32,14 @@ const messages = defineMessages({
 });
 
 interface IEmojiPickerMenu {
-  customEmojis: ImmutableList<ImmutableMap<string, string>>,
-  loading?: boolean,
-  onClose: () => void,
-  onPick: (emoji: Emoji) => void,
-  onSkinTone: (skinTone: number) => void,
-  skinTone?: number,
-  frequentlyUsedEmojis?: Array<string>,
-  style?: React.CSSProperties,
+  customEmojis: ImmutableList<ImmutableMap<string, string>>
+  loading?: boolean
+  onClose: () => void
+  onPick: (emoji: Emoji) => void
+  onSkinTone: (skinTone: number) => void
+  skinTone?: number
+  frequentlyUsedEmojis?: Array<string>
+  style?: React.CSSProperties
 }
 
 const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
@@ -72,8 +72,8 @@ const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
 
   categoriesSort.splice(1, 0, ...Array.from(categoriesFromEmojis(customEmojis) as Set<string>).sort());
 
-  const handleDocumentClick = useCallback(e => {
-    if (node.current && !node.current.contains(e.target)) {
+  const handleDocumentClick = useCallback((e: MouseEvent | TouchEvent) => {
+    if (node.current && !node.current.contains(e.target as Node)) {
       onClose();
     }
   }, []);
@@ -136,7 +136,7 @@ const EmojiPickerMenu: React.FC<IEmojiPickerMenu> = ({
   const title = intl.formatMessage(messages.emoji);
 
   return (
-    <div className={classNames('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={node}>
+    <div className={clsx('emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={node}>
       <EmojiPicker
         perLine={8}
         emojiSize={22}

@@ -13,7 +13,7 @@ const messages = defineMessages({
 });
 
 interface IAccountNoteModal {
-  statusId: string,
+  statusId: string
 }
 
 const AccountNoteModal: React.FC<IAccountNoteModal> = ({ statusId }) => {

@@ -21,7 +21,7 @@ const REPORT_BLOCK_CHANGE   = 'REPORT_BLOCK_CHANGE';
 const REPORT_RULE_CHANGE    = 'REPORT_RULE_CHANGE';
 
 type ReportedEntity = {
-  status?: Status,
+  status?: Status
   chatMessage?: ChatMessage
 }
 

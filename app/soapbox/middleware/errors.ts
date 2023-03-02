@@ -21,12 +21,13 @@ const shouldShowError = ({ type, skipAlert, error }: AnyAction): boolean => {
 };
 
 /** Middleware to display Redux errors to the user. */
-export default function errorsMiddleware(): ThunkMiddleware {
-  return () => next => action => {
+const errorsMiddleware = (): ThunkMiddleware =>
+  () => next => action => {
     if (shouldShowError(action)) {
       toast.showAlertForError(action.error);
     }
 
     return next(action);
   };
-}
+
+export default errorsMiddleware;

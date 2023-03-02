@@ -12,6 +12,7 @@ import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
+import type { ContextType } from 'soapbox/normalizers/filter';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
 import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
@@ -85,7 +86,7 @@ export const findAccountByUsername = (state: RootState, username: string) => {
   }
 };
 
-const toServerSideType = (columnType: string): string => {
+const toServerSideType = (columnType: string): ContextType => {
   switch (columnType) {
     case 'home':
     case 'notifications':
@@ -105,10 +106,8 @@ type FilterContext = { contextType?: string };
 
 export const getFilters = (state: RootState, query: FilterContext) => {
   return state.filters.filter((filter) => {
-    return query?.contextType
-      && filter.context.includes(toServerSideType(query.contextType))
-      && (filter.expires_at === null
-      || Date.parse(filter.expires_at) > new Date().getTime());
+    return (!query?.contextType || filter.context.includes(toServerSideType(query.contextType)))
+      && (filter.expires_at === null || Date.parse(filter.expires_at) > new Date().getTime());
   });
 };
 
@@ -144,12 +143,13 @@ export const makeGetStatus = () => {
       (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || ''),
       (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || ''),
+      (state: RootState, { id }: APIStatus) => state.groups.items.get(state.statuses.get(id)?.group || ''),
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
       (state: RootState) => state.me,
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, username, filters, me) => {
+    (statusBase, statusReblog, accountBase, accountReblog, group, username, filters, me) => {
       if (!statusBase || !accountBase) return null;
 
       const accountUsername = accountBase.acct;
@@ -172,6 +172,8 @@ export const makeGetStatus = () => {
         map.set('reblog', statusReblog || null);
         // @ts-ignore :(
         map.set('account', accountBase || null);
+        // @ts-ignore
+        map.set('group', group || null);
         map.set('filtered', Boolean(filtered));
       });
     },
@@ -200,6 +202,25 @@ export const getAccountGallery = createSelector([
   (state: RootState, id: string) => state.timelines.get(`account:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState)       => state.statuses,
   (state: RootState)       => state.accounts,
+], (statusIds, statuses, accounts) => {
+
+  return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
+    const status = statuses.get(statusId);
+    if (!status) return medias;
+    if (status.reblog) return medias;
+    if (typeof status.account !== 'string') return medias;
+
+    const account = accounts.get(status.account);
+
+    return medias.concat(
+      status.media_attachments.map(media => media.merge({ status, account })));
+  }, ImmutableList());
+});
+
+export const getGroupGallery = createSelector([
+  (state: RootState, id: string) => state.timelines.get(`group:${id}:media`)?.items || ImmutableOrderedSet<string>(),
+  (state: RootState) => state.statuses,
+  (state: RootState) => state.accounts,
 ], (statusIds, statuses, accounts) => {
 
   return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
@@ -269,16 +290,16 @@ export const makeGetReport = () => {
 };
 
 const getAuthUserIds = createSelector([
-  (state: RootState) => state.auth.get('users', ImmutableMap()),
+  (state: RootState) => state.auth.users,
 ], authUsers => {
-  return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser: ImmutableMap<string, any>) => {
+  return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser) => {
     try {
-      const id = authUser.get('id');
+      const id = authUser.id;
       return validId(id) ? ids.add(id) : ids;
     } catch {
       return ids;
     }
-  }, ImmutableOrderedSet());
+  }, ImmutableOrderedSet<string>());
 });
 
 export const makeGetOtherAccounts = () => {
@@ -350,3 +371,16 @@ export const makeGetStatusIds = () => createSelector([
     return !shouldFilter(status, columnSettings);
   });
 });
+
+export const makeGetGroup = () => {
+  return createSelector([
+    (state: RootState, id: string) => state.groups.items.get(id),
+    (state: RootState, id: string) => state.group_relationships.get(id),
+  ], (base, relationship) => {
+    if (!base) return null;
+
+    return base.withMutations(map => {
+      if (relationship) map.set('relationship', relationship);
+    });
+  });
+};

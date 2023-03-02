@@ -35,8 +35,8 @@ const FloatingLinkEditor = ({
   editor,
   anchorElem,
 }: {
-   editor: LexicalEditor;
-   anchorElem: HTMLElement;
+   editor: LexicalEditor
+   anchorElem: HTMLElement
  }): JSX.Element => {
   const editorRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -79,7 +79,7 @@ const FloatingLinkEditor = ({
       let rect;
       if (nativeSelection.anchorNode === rootElement) {
         let inner = rootElement;
-        while (inner.firstElementChild != null) {
+        while (inner.firstElementChild !== null) {
           inner = inner.firstElementChild as HTMLElement;
         }
         rect = inner.getBoundingClientRect();
@@ -237,7 +237,7 @@ const useFloatingLinkEditorToolbar = (
       const autoLinkParent = $findMatchingParent(node, $isAutoLinkNode);
 
       // We don't want this menu to open for auto links.
-      if (linkParent != null && autoLinkParent == null) {
+      if (linkParent !== null && autoLinkParent === null) {
         setIsLink(true);
       } else {
         setIsLink(false);
@@ -268,7 +268,7 @@ const useFloatingLinkEditorToolbar = (
 const FloatingLinkEditorPlugin = ({
   anchorElem = document.body,
 }: {
-   anchorElem?: HTMLElement;
+   anchorElem?: HTMLElement
  }): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
   return useFloatingLinkEditorToolbar(editor, anchorElem);

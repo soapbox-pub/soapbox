@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import Icon from 'soapbox/components/icon';
+import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
 
 import IconPickerMenu from './icon-picker-menu';
 
@@ -12,8 +12,8 @@ const messages = defineMessages({
 });
 
 interface IIconPickerDropdown {
-  value: string,
-  onPickEmoji: React.ChangeEventHandler,
+  value: string
+  onPickEmoji: React.ChangeEventHandler
 }
 
 const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickEmoji }) => {
@@ -59,7 +59,7 @@ const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickEmoji 
     <div onKeyDown={handleKeyDown}>
       <div
         ref={target}
-        className='h-[38px] w-[38px] text-lg flex items-center justify-center cursor-pointer'
+        className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center text-lg'
         title={title}
         aria-label={title}
         aria-expanded={active}
@@ -68,7 +68,7 @@ const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickEmoji 
         onKeyDown={onToggle}
         tabIndex={0}
       >
-        <Icon id={value} />
+        <ForkAwesomeIcon id={value} />
       </div>
 
       <Overlay show={active} placement={placement} target={target.current}>

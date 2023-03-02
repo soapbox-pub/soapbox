@@ -1,12 +1,15 @@
-import { Portal } from '@reach/portal';
 import { TooltipPopup, useTooltip } from '@reach/tooltip';
 import React from 'react';
+
+import Portal from '../portal/portal';
 
 import './tooltip.css';
 
 interface ITooltip {
   /** Text to display in the tooltip. */
-  text: string,
+  text: string
+  /** Element to display the tooltip around. */
+  children: React.ReactNode
 }
 
 const centered = (triggerRect: any, tooltipRect: any) => {

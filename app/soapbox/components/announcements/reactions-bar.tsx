@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { TransitionMotion, spring } from 'react-motion';
 
@@ -13,11 +13,11 @@ import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type { AnnouncementReaction } from 'soapbox/types/entities';
 
 interface IReactionsBar {
-  announcementId: string;
-  reactions: ImmutableList<AnnouncementReaction>;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
+  announcementId: string
+  reactions: ImmutableList<AnnouncementReaction>
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  addReaction: (id: string, name: string) => void
+  removeReaction: (id: string, name: string) => void
 }
 
 const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addReaction, removeReaction, emojiMap }) => {
@@ -42,7 +42,7 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addR
   return (
     <TransitionMotion styles={styles} willEnter={willEnter} willLeave={willLeave}>
       {items => (
-        <div className={classNames('flex flex-wrap items-center gap-1', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
+        <div className={clsx('flex flex-wrap items-center gap-1', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
           {items.map(({ key, data, style }) => (
             <Reaction
               key={key}

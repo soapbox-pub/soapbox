@@ -1,7 +1,7 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -99,26 +99,28 @@ export const fileNameFromURL = (str: string) => {
 };
 
 interface IVideo {
-  preview?: string,
-  src: string,
-  alt?: string,
-  width?: number,
-  height?: number,
-  startTime?: number,
-  detailed?: boolean,
-  inline?: boolean,
-  cacheWidth?: (width: number) => void,
-  visible?: boolean,
-  blurhash?: string,
-  link?: React.ReactNode,
-  aspectRatio?: number,
-  displayMedia?: string,
+  preview?: string
+  src: string
+  alt?: string
+  width?: number
+  height?: number
+  startTime?: number
+  detailed?: boolean
+  autoFocus?: boolean
+  inline?: boolean
+  cacheWidth?: (width: number) => void
+  visible?: boolean
+  blurhash?: string
+  link?: React.ReactNode
+  aspectRatio?: number
+  displayMedia?: string
 }
 
 const Video: React.FC<IVideo> = ({
   width,
   visible = false,
   detailed = false,
+  autoFocus = false,
   cacheWidth,
   startTime,
   src,
@@ -159,7 +161,7 @@ const Video: React.FC<IVideo> = ({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setDimensions();
   }, [player.current]);
 
@@ -464,7 +466,7 @@ const Video: React.FC<IVideo> = ({
   return (
     <div
       role='menuitem'
-      className={classNames('video-player', { detailed, 'video-player--inline': inline && !fullscreen, fullscreen })}
+      className={clsx('video-player', { detailed, 'video-player--inline': inline && !fullscreen, fullscreen })}
       style={playerStyle}
       ref={player}
       onMouseEnter={handleMouseEnter}
@@ -497,13 +499,13 @@ const Video: React.FC<IVideo> = ({
         onVolumeChange={handleVolumeChange}
       />
 
-      <div className={classNames('video-player__controls', { active: paused || hovered })}>
+      <div className={clsx('video-player__controls', { active: paused || hovered })}>
         <div className='video-player__seek' onMouseDown={handleMouseDown} ref={seek}>
           <div className='video-player__seek__buffer' style={{ width: `${buffer}%` }} />
           <div className='video-player__seek__progress' style={{ width: `${progress}%` }} />
 
           <span
-            className={classNames('video-player__seek__handle', { active: dragging })}
+            className={clsx('video-player__seek__handle', { active: dragging })}
             tabIndex={0}
             style={{ left: `${progress}%` }}
             onKeyDown={handleVideoKeyDown}
@@ -518,7 +520,7 @@ const Video: React.FC<IVideo> = ({
               aria-label={intl.formatMessage(paused ? messages.play : messages.pause)}
               className='player-button'
               onClick={togglePlay}
-              autoFocus={detailed}
+              autoFocus={autoFocus}
             >
               <Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} />
             </button>
@@ -533,10 +535,10 @@ const Video: React.FC<IVideo> = ({
               <Icon src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')} />
             </button>
 
-            <div className={classNames('video-player__volume', { active: hovered })} onMouseDown={handleVolumeMouseDown} ref={slider}>
+            <div className={clsx('video-player__volume', { active: hovered })} onMouseDown={handleVolumeMouseDown} ref={slider}>
               <div className='video-player__volume__current' style={{ width: `${volume * 100}%` }} />
               <span
-                className={classNames('video-player__volume__handle')}
+                className={clsx('video-player__volume__handle')}
                 tabIndex={0}
                 style={{ left: `${volume * 100}%` }}
               />

@@ -7,9 +7,9 @@ import { joinPublicPath } from 'soapbox/utils/static';
 import type { Map as ImmutableMap } from 'immutable';
 
 interface IEmoji {
-  emoji: string;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  hovered: boolean;
+  emoji: string
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  hovered: boolean
 }
 
 const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
@@ -24,7 +24,7 @@ const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
     return (
       <img
         draggable='false'
-        className='emojione block m-0'
+        className='emojione m-0 block'
         alt={emoji}
         title={title}
         src={joinPublicPath(`packs/emoji/${filename}.svg`)}
@@ -37,7 +37,7 @@ const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
     return (
       <img
         draggable='false'
-        className='emojione block m-0'
+        className='emojione m-0 block'
         alt={shortCode}
         title={shortCode}
         src={filename as string}

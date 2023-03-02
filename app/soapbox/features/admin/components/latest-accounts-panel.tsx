@@ -11,11 +11,11 @@ import { compareId } from 'soapbox/utils/comparators';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },
-  expand: { id: 'admin.latest_accounts_panel.more', defaultMessage: 'Click to see {count} {count, plural, one {account} other {accounts}}' },
+  expand: { id: 'admin.latest_accounts_panel.more', defaultMessage: 'Click to see {count, plural, one {# account} other {# accounts}}' },
 });
 
 interface ILatestAccountsPanel {
-  limit?: number,
+  limit?: number
 }
 
 const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {

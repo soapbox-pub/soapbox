@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -9,6 +9,7 @@ import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon-button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import ImageLoader from '../image-loader';
 
@@ -22,11 +23,11 @@ const messages = defineMessages({
 });
 
 interface IMediaModal {
-  media: ImmutableList<Attachment>,
-  status?: Status,
-  index: number,
-  time?: number,
-  onClose: () => void,
+  media: ImmutableList<Attachment>
+  status?: Status
+  index: number
+  time?: number
+  onClose: () => void
 }
 
 const MediaModal: React.FC<IMediaModal> = (props) => {
@@ -39,6 +40,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
   const intl = useIntl();
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
@@ -83,9 +85,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     };
   }, [index]);
 
-  const getIndex = () => {
-    return index !== null ? index : props.index;
-  };
+  const getIndex = () => index !== null ? index : props.index;
 
   const toggleNavigation = () => {
     setNavigationHidden(!navigationHidden);
@@ -94,8 +94,14 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const handleStatusClick: React.MouseEventHandler = e => {
     if (status && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status?.id}`);
-      onClose();
+
+      dispatch((_, getState) => {
+        const account = typeof status.account === 'string' ? getState().accounts.get(status.account) : status.account;
+        if (!account) return;
+
+        history.push(`/@${account.acct}/posts/${status?.id}`);
+        onClose();
+      });
     }
   };
 
@@ -113,7 +119,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
   let pagination: React.ReactNode[] = [];
 
-  const leftNav  = media.size > 1 && (
+  const leftNav = media.size > 1 && (
     <button
       tabIndex={0}
       className='media-modal__nav media-modal__nav--left'
@@ -136,35 +142,25 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   );
 
   if (media.size > 1) {
-    pagination = media.toArray().map((item, i) => {
-      const classes = ['media-modal__button'];
-      if (i === getIndex()) {
-        classes.push('media-modal__button--active');
-      }
-      return (
-        <li className='media-modal__page-dot' key={i}>
-          <button
-            tabIndex={0}
-            className={classes.join(' ')}
-            onClick={handleChangeIndex}
-            data-index={i}
-          >
-            {i + 1}
-          </button>
-        </li>
-      );
-    });
+    pagination = media.toArray().map((item, i) => (
+      <li className='media-modal__page-dot' key={i}>
+        <button
+          tabIndex={0}
+          className={clsx('media-modal__button', {
+            'media-modal__button--active': i === getIndex(),
+          })}
+          onClick={handleChangeIndex}
+          data-index={i}
+        >
+          {i + 1}
+        </button>
+      </li>
+    ));
   }
 
-  const isMultiMedia = media.map((image) => {
-    if (image.type !== 'image') {
-      return true;
-    }
+  const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
 
-    return false;
-  }).toArray();
-
-  const content = media.map(attachment => {
+  const content = media.map((attachment, i) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
     const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
 
@@ -196,6 +192,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           height={height}
           startTime={time}
           detailed
+          autoFocus={i === getIndex()}
           link={link}
           alt={attachment.description}
           key={attachment.url}
@@ -246,7 +243,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     alignItems: 'center', // center vertically
   };
 
-  const navigationClassName = classNames('media-modal__navigation', {
+  const navigationClassName = clsx('media-modal__navigation', {
     'media-modal__navigation--hidden': navigationHidden,
   });
 
@@ -279,7 +276,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         {rightNav}
 
         {(status && !isMultiMedia[getIndex()]) && (
-          <div className={classNames('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
+          <div className={clsx('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
             <a href={status.url} onClick={handleStatusClick}>
               <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
             </a>

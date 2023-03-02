@@ -1,6 +1,6 @@
 'use strict';
 
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -28,7 +28,7 @@ const messages = defineMessages({
 });
 
 export interface IScheduleForm {
-  composeId: string,
+  composeId: string
 }
 
 const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
@@ -68,13 +68,13 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
             placeholderText={intl.formatMessage(messages.schedule)}
             filterDate={isCurrentOrFutureDate}
             filterTime={isFiveMinutesFromNow}
-            className={classNames({
+            className={clsx({
               'has-error': !isFiveMinutesFromNow(scheduledAt),
             })}
           />)}
         </BundleContainer>
         <IconButton
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
           className='bg-transparent text-gray-400 hover:text-gray-600'
           src={require('@tabler/icons/x.svg')}
           onClick={handleRemove}

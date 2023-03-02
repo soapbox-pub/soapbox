@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 // @ts-ignore
 import Picker from 'emoji-mart/dist-es/components/picker/picker';
@@ -19,10 +19,10 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 const categoriesSort = ['custom'];
 
 interface IIconPickerMenu {
-  customEmojis: Record<string, Array<string>>,
-  onClose: () => void,
-  onPick: any,
-  style?: React.CSSProperties,
+  customEmojis: Record<string, Array<string>>
+  onClose: () => void
+  onPick: any
+  style?: React.CSSProperties
 }
 
 const IconPickerMenu: React.FC<IIconPickerMenu> = ({ customEmojis, onClose, onPick, style }) => {
@@ -105,7 +105,7 @@ const IconPickerMenu: React.FC<IIconPickerMenu> = ({ customEmojis, onClose, onPi
   const title = intl.formatMessage(messages.emoji);
 
   return (
-    <div className={classNames('font-icon-picker emoji-picker-dropdown__menu')} style={style} ref={setRef}>
+    <div className={clsx('font-icon-picker emoji-picker-dropdown__menu')} style={style} ref={setRef}>
       <Picker
         perLine={8}
         emojiSize={22}

@@ -25,21 +25,21 @@ const CryptoAddressInput: StreamfieldComponent<CryptoAddress> = ({ value, onChan
     <HStack space={2} grow>
       <Input
         type='text'
-        outerClassName='w-1/6 flex-grow'
+        outerClassName='w-1/6 grow'
         value={value.ticker}
         onChange={handleChange('ticker')}
         placeholder={intl.formatMessage(messages.ticker)}
       />
       <Input
         type='text'
-        outerClassName='w-3/6 flex-grow'
+        outerClassName='w-3/6 grow'
         value={value.address}
         onChange={handleChange('address')}
         placeholder={intl.formatMessage(messages.address)}
       />
       <Input
         type='text'
-        outerClassName='w-2/6 flex-grow'
+        outerClassName='w-2/6 grow'
         value={value.note}
         onChange={handleChange('note')}
         placeholder={intl.formatMessage(messages.note)}

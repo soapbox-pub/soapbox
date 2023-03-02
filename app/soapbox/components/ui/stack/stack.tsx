@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 const spaces = {
@@ -39,7 +39,7 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Whether to let the flexbox grow. */
   grow?: boolean
   /** HTML element to use for container. */
-  element?: keyof JSX.IntrinsicElements,
+  element?: keyof JSX.IntrinsicElements
 }
 
 /** Vertical stack of child elements. */
@@ -52,14 +52,14 @@ const Stack = React.forwardRef<HTMLDivElement, IStack>((props, ref: React.Legacy
     <Elem
       {...filteredProps}
       ref={ref}
-      className={classNames('flex flex-col', {
+      className={clsx('flex flex-col', {
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
         // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
-        'flex-grow': grow,
+        'grow': grow,
       }, className)}
     />
   );

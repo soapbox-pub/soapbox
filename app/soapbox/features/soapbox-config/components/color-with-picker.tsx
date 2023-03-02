@@ -9,9 +9,9 @@ import ColorPicker from './color-picker';
 import type { ColorChangeHandler } from 'react-color';
 
 interface IColorWithPicker {
-  value: string,
-  onChange: ColorChangeHandler,
-  className?: string,
+  value: string
+  onChange: ColorChangeHandler
+  className?: string
 }
 
 const ColorWithPicker: React.FC<IColorWithPicker> = ({ value, onChange, className }) => {
@@ -42,7 +42,7 @@ const ColorWithPicker: React.FC<IColorWithPicker> = ({ value, onChange, classNam
     <div className={className}>
       <div
         ref={node}
-        className='w-full h-full'
+        className='h-full w-full'
         role='presentation'
         style={{ background: value }}
         title={value}

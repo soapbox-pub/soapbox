@@ -1,10 +1,9 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { changeListEditorTitle, submitListEditor } from 'soapbox/actions/lists';
 import { Button, Form, HStack, Input } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   label: { id: 'lists.new.title_placeholder', defaultMessage: 'New list title' },
@@ -13,7 +12,7 @@ const messages = defineMessages({
 });
 
 const NewListForm: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const value = useAppSelector((state) => state.listEditor.get('title'));
@@ -34,7 +33,7 @@ const NewListForm: React.FC = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <HStack space={2}>
-        <label className='flex-grow'>
+        <label className='grow'>
           <span style={{ display: 'none' }}>{label}</span>
 
           <Input

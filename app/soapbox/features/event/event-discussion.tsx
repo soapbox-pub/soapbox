@@ -24,9 +24,9 @@ import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 type RouteParams = { statusId: string };
 
 interface IEventDiscussion {
-  params: RouteParams,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (video: AttachmentEntity, time: number) => void,
+  params: RouteParams
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
+  onOpenVideo: (video: AttachmentEntity, time: number) => void
 }
 
 const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
@@ -175,10 +175,10 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
 
   return (
     <Stack space={2}>
-      {me && <div className='p-2 pt-0 border-b border-solid border-gray-200 dark:border-gray-800'>
+      {me && <div className='border-b border-solid border-gray-200 p-2 pt-0 dark:border-gray-800'>
         <ComposeForm id={`reply:${status.id}`} autoFocus={false} event={status.id} />
       </div>}
-      <div ref={node} className='thread p-0 sm:p-2 shadow-none'>
+      <div ref={node} className='thread p-0 shadow-none sm:p-2'>
         <ScrollableList
           id='thread'
           ref={scroller}

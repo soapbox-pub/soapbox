@@ -6,7 +6,7 @@ import { __stub } from 'soapbox/api';
 import { normalizeAccount } from 'soapbox/normalizers';
 import { ReducerAccount } from 'soapbox/reducers/accounts';
 
-import { render, screen } from '../../../../../jest/test-helpers';
+import { render, screen, waitFor } from '../../../../../jest/test-helpers';
 import ChatPage from '../chat-page';
 
 describe('<ChatPage />', () => {
@@ -48,7 +48,10 @@ describe('<ChatPage />', () => {
         await userEvent.click(screen.getByTestId('button'));
 
         expect(screen.getByTestId('chat-page')).toBeInTheDocument();
-        expect(screen.getByTestId('toast')).toHaveTextContent('Chat Settings updated successfully');
+
+        await waitFor(() => {
+          expect(screen.getByTestId('toast')).toHaveTextContent('Chat Settings updated successfully');
+        });
       });
     });
 
@@ -77,7 +80,10 @@ describe('<ChatPage />', () => {
       it('renders the Chats', async () => {
         render(<ChatPage />, undefined, store);
         await userEvent.click(screen.getByTestId('button'));
-        expect(screen.getByTestId('toast')).toHaveTextContent('Chat Settings failed to update.');
+
+        await waitFor(() => {
+          expect(screen.getByTestId('toast')).toHaveTextContent('Chat Settings failed to update.');
+        });
       });
     });
   });

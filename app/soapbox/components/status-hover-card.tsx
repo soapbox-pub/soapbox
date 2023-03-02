@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState, useCallback } from 'react';
 import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';
@@ -15,7 +15,7 @@ import { showStatusHoverCard } from './hover-status-wrapper';
 import { Card, CardBody } from './ui';
 
 interface IStatusHoverCard {
-  visible: boolean,
+  visible: boolean
 }
 
 /** Popup status preview that appears when hovering reply to */
@@ -79,7 +79,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
 
   return (
     <div
-      className={classNames({
+      className={clsx({
         'absolute transition-opacity w-[500px] z-50 top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,

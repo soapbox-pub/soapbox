@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -14,7 +14,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 import type { Status } from 'soapbox/types/entities';
 
 interface IStatusInteractionBar {
-  status: Status,
+  status: Status
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
@@ -152,7 +152,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               return (
                 <Emoji
                   key={i}
-                  className='w-4.5 h-4.5 flex-none'
+                  className='h-4.5 w-4.5 flex-none'
                   emoji={e.get('name')}
                 />
               );
@@ -175,9 +175,9 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 };
 
 interface IInteractionCounter {
-  count: number,
-  onClick?: React.MouseEventHandler<HTMLButtonElement>,
-  children: React.ReactNode,
+  count: number
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  children: React.ReactNode
 }
 
 const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, children }) => {
@@ -188,7 +188,7 @@ const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, chi
       type='button'
       onClick={onClick}
       className={
-        classNames({
+        clsx({
           'text-gray-600 dark:text-gray-700': true,
           'hover:underline': features.exposableReactions,
           'cursor-default': !features.exposableReactions,

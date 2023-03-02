@@ -32,12 +32,12 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
 
   const isFollowing = account.relationship?.following;
   const isRequested = account.relationship?.requested;
-  const isSubscribed = features.accountNotifies ?
-    account.relationship?.notifying :
-    account.relationship?.subscribing;
-  const title = isSubscribed ?
-    intl.formatMessage(messages.unsubscribe, { name: account.get('username') }) :
-    intl.formatMessage(messages.subscribe, { name: account.get('username') });
+  const isSubscribed = features.accountNotifies
+    ? account.relationship?.notifying
+    : account.relationship?.subscribing;
+  const title = isSubscribed
+    ? intl.formatMessage(messages.unsubscribe, { name: account.get('username') })
+    : intl.formatMessage(messages.subscribe, { name: account.get('username') });
 
   const onSubscribeSuccess = () =>
     toast.success(intl.formatMessage(messages.subscribeSuccess));
@@ -95,7 +95,7 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
         title={title}
         theme='outlined'
         className='px-2'
-        iconClassName='w-4 h-4'
+        iconClassName='h-4 w-4'
       />
     );
   }

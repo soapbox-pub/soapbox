@@ -8,64 +8,9 @@ body.with-modals {
   @apply overflow-hidden;
 }
 
-body {
-  &.lighter {
-    background: var(--brand-color--med);
-  }
-
-  &.player {
-    text-align: center;
-  }
-
-  &.embed {
-    background: var(--brand-color--faint);
-    margin: 0;
-    padding-bottom: 0;
-
-    .container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-  }
-
-  &.admin {
-    background: var(--brand-color--med);
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-  }
-
-  &.error {
-    position: absolute;
-    text-align: center;
-    color: var(--primary-text-color--faint);
-    background: var(--brand-color--med);
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .dialog {
-      vertical-align: middle;
-      margin: 20px;
-
-      h1 {
-        font-size: 20px;
-        line-height: 28px;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
 // Note: this is needed for React HotKeys performance. Removing this
 // will cause severe performance degradation on Safari.
-div[tabindex="-1"]:focus {
+div[tabindex='-1']:focus {
   outline: 0;
 }
 
@@ -75,28 +20,6 @@ div[tabindex="-1"]:focus {
 
 noscript {
   text-align: center;
-
-  img {
-    width: 200px;
-    opacity: 0.5;
-    animation: flicker 4s infinite;
-  }
-
-  div {
-    font-size: 14px;
-    margin: 30px auto;
-    color: var(--primary-text-color--faint);
-    max-width: 400px;
-
-    a {
-      color: var(--highlight-text-color);
-      text-decoration: underline;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
 }
 
 .emojione {
@@ -105,6 +28,6 @@ noscript {
 
 // Virtuoso empty placeholder fix.
 // https://gitlab.com/petyosi/soapbox-fe/-/commit/1e22c39934b60e5e186de804060ecfdf1955b506
-div[data-viewport-type="window"] {
+div[data-viewport-type='window'] {
   position: static !important;
 }

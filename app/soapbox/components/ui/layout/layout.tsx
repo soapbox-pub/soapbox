@@ -1,25 +1,36 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import StickyBox from 'react-sticky-box';
 
-interface LayoutComponent extends React.FC {
-  Sidebar: React.FC,
-  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>,
-  Aside: React.FC,
+interface ISidebar {
+  children: React.ReactNode
+}
+interface IAside {
+  children?: React.ReactNode
+}
+
+interface ILayout {
+  children: React.ReactNode
+}
+
+interface LayoutComponent extends React.FC<ILayout> {
+  Sidebar: React.FC<ISidebar>
+  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>
+  Aside: React.FC<IAside>
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */
 const Layout: LayoutComponent = ({ children }) => (
-  <div className='sm:pt-4 relative'>
-    <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
+  <div className='relative sm:pt-4'>
+    <div className='mx-auto max-w-3xl sm:px-6 md:grid md:max-w-7xl md:grid-cols-12 md:gap-8 md:px-8'>
       {children}
     </div>
   </div>
 );
 
 /** Left sidebar container in the UI. */
-const Sidebar: React.FC = ({ children }) => (
-  <div className='hidden lg:block lg:col-span-3'>
+const Sidebar: React.FC<ISidebar> = ({ children }) => (
+  <div className='hidden lg:col-span-3 lg:block'>
     <StickyBox offsetTop={80} className='pb-4'>
       {children}
     </StickyBox>
@@ -29,7 +40,7 @@ const Sidebar: React.FC = ({ children }) => (
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
-    className={classNames({
+    className={clsx({
       'md:col-span-12 lg:col-span-9 xl:col-span-6 pb-36': true,
     }, className)}
   >
@@ -38,8 +49,8 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 /** Right sidebar container in the UI. */
-const Aside: React.FC = ({ children }) => (
-  <aside className='hidden xl:block xl:col-span-3'>
+const Aside: React.FC<IAside> = ({ children }) => (
+  <aside className='hidden xl:col-span-3 xl:block'>
     <StickyBox offsetTop={80} className='space-y-6 pb-12'>
       {children}
     </StickyBox>

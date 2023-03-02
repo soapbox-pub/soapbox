@@ -1,12 +1,11 @@
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
 import { Spinner, Text, Widget } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getAccountGallery } from 'soapbox/selectors';
 
 import MediaItem from '../../account-gallery/components/media-item';
@@ -14,11 +13,11 @@ import MediaItem from '../../account-gallery/components/media-item';
 import type { Account, Attachment } from 'soapbox/types/entities';
 
 interface IProfileMediaPanel {
-  account?: Account,
+  account?: Account
 }
 
 const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(true);
 
@@ -52,12 +51,11 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
 
     if (!nineAttachments.isEmpty()) {
       return (
-        <div className='flex flex-wrap'>
+        <div className='grid grid-cols-3 gap-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
               key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
               attachment={attachment}
-              displayWidth={255}
               onOpenMedia={handleOpenMedia}
             />
           ))}
@@ -75,7 +73,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
   return (
     <Widget title={<FormattedMessage id='media_panel.title' defaultMessage='Media' />}>
       {account && (
-        <div className='w-full py-2'>
+        <div className='w-full'>
           {loading ? (
             <Spinner />
           ) : (

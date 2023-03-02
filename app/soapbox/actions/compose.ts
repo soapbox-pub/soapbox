@@ -19,11 +19,12 @@ import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
-import type { History } from 'history';
+import type { EditorState } from 'lexical';
 import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
+import type { History } from 'soapbox/types/history';
 
 const { CancelToken, isCancel } = axios;
 
@@ -46,6 +47,7 @@ const COMPOSE_UPLOAD_SUCCESS  = 'COMPOSE_UPLOAD_SUCCESS';
 const COMPOSE_UPLOAD_FAIL     = 'COMPOSE_UPLOAD_FAIL';
 const COMPOSE_UPLOAD_PROGRESS = 'COMPOSE_UPLOAD_PROGRESS';
 const COMPOSE_UPLOAD_UNDO     = 'COMPOSE_UPLOAD_UNDO';
+const COMPOSE_GROUP_POST      = 'COMPOSE_GROUP_POST';
 
 const COMPOSE_SUGGESTIONS_CLEAR = 'COMPOSE_SUGGESTIONS_CLEAR';
 const COMPOSE_SUGGESTIONS_READY = 'COMPOSE_SUGGESTIONS_READY';
@@ -83,10 +85,12 @@ const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS';
 
 const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS';
 
+const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET';
+
 const messages = defineMessages({
   exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
   exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
-  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit} seconds)' },
+  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit, plural, one {# second} other {# seconds}})' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
@@ -279,7 +283,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
 
     const idempotencyKey = compose.idempotencyKey;
 
-    const params = {
+    const params: Record<string, any> = {
       status,
       in_reply_to_id: compose.in_reply_to,
       quote_id: compose.quote,
@@ -292,6 +296,8 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       scheduled_at: compose.schedule,
       to,
     };
+
+    if (compose.privacy === 'group') params.group_id = compose.group_id;
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
@@ -472,6 +478,15 @@ const undoUploadCompose = (composeId: string, media_id: string) => ({
   id: composeId,
   media_id: media_id,
 });
+
+const groupCompose = (composeId: string, groupId: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({
+      type: COMPOSE_GROUP_POST,
+      id: composeId,
+      group_id: groupId,
+    });
+  };
 
 const clearComposeSuggestions = (composeId: string) => {
   if (cancelFetchComposeSuggestionsAccounts) {
@@ -725,7 +740,7 @@ const eventDiscussionCompose = (composeId: string, status: Status) =>
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
 
-    dispatch({
+    return dispatch({
       type: COMPOSE_EVENT_REPLY,
       id: composeId,
       status: status,
@@ -733,6 +748,12 @@ const eventDiscussionCompose = (composeId: string, status: Status) =>
       explicitAddressing,
     });
   };
+
+const setEditorState = (composeId: string, editorState: EditorState | string | null) => ({
+  type: COMPOSE_EDITOR_STATE_SET,
+  id: composeId,
+  editorState: editorState,
+});
 
 export {
   COMPOSE_CHANGE,
@@ -752,6 +773,7 @@ export {
   COMPOSE_UPLOAD_FAIL,
   COMPOSE_UPLOAD_PROGRESS,
   COMPOSE_UPLOAD_UNDO,
+  COMPOSE_GROUP_POST,
   COMPOSE_SUGGESTIONS_CLEAR,
   COMPOSE_SUGGESTIONS_READY,
   COMPOSE_SUGGESTION_SELECT,
@@ -779,6 +801,7 @@ export {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
+  COMPOSE_EDITOR_STATE_SET,
   setComposeToStatus,
   changeCompose,
   replyCompose,
@@ -804,6 +827,7 @@ export {
   uploadComposeSuccess,
   uploadComposeFail,
   undoUploadCompose,
+  groupCompose,
   clearComposeSuggestions,
   fetchComposeSuggestions,
   readyComposeSuggestionsEmojis,
@@ -829,4 +853,5 @@ export {
   addToMentions,
   removeFromMentions,
   eventDiscussionCompose,
+  setEditorState,
 };

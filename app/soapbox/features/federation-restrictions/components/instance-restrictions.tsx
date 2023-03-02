@@ -17,14 +17,14 @@ const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean => 
 };
 
 interface IRestriction {
-  icon: string,
-  children: React.ReactNode,
+  icon: string
+  children: React.ReactNode
 }
 
 const Restriction: React.FC<IRestriction> = ({ icon, children }) => {
   return (
     <HStack space={3}>
-      <Icon className='flex-none w-5 h-5' src={icon} />
+      <Icon className='h-5 w-5 flex-none' src={icon} />
 
       <Text theme='muted'>
         {children}
@@ -34,7 +34,7 @@ const Restriction: React.FC<IRestriction> = ({ icon, children }) => {
 };
 
 interface IInstanceRestrictions {
-  remoteInstance: ImmutableMap<string, any>,
+  remoteInstance: ImmutableMap<string, any>
 }
 
 const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance }) => {

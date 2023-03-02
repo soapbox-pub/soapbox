@@ -10,7 +10,7 @@ export type Rule = {
 }
 
 type RulesState = {
-  items: Rule[],
+  items: Rule[]
   isLoading: boolean
 }
 

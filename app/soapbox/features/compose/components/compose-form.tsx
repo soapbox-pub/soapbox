@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -15,7 +15,6 @@ import {
 } from 'soapbox/actions/compose';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
-import Icon from 'soapbox/components/icon';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
@@ -58,14 +57,15 @@ const messages = defineMessages({
 });
 
 interface IComposeForm<ID extends string> {
-  id: ID extends 'default' ? never : ID,
-  shouldCondense?: boolean,
-  autoFocus?: boolean,
-  clickableAreaRef?: React.RefObject<HTMLDivElement>,
-  event?: string,
+  id: ID extends 'default' ? never : ID
+  shouldCondense?: boolean
+  autoFocus?: boolean
+  clickableAreaRef?: React.RefObject<HTMLDivElement>
+  event?: string
+  group?: string
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -75,10 +75,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
   const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
-  const scheduledStatusCount = useAppSelector((state) => state.get('scheduled_statuses').size);
+  const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
-  const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt } = compose;
+  const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt, group_id: groupId } = compose;
   const prevSpoiler = usePrevious(spoiler);
 
   const hasPoll = !!compose.poll;
@@ -230,7 +230,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.media && <UploadButtonContainer composeId={id} />}
       <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
       {features.polls && <PollButton composeId={id} />}
-      {features.privacyScopes && <PrivacyDropdown composeId={id} />}
+      {features.privacyScopes && !group && !groupId && <PrivacyDropdown composeId={id} />}
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
     </HStack>
@@ -272,7 +272,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   return (
     <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
-      {scheduledStatusCount > 0 && !event && (
+      {scheduledStatusCount > 0 && !event && !group && (
         <Warning
           message={(
             <FormattedMessage
@@ -293,18 +293,19 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       <WarningContainer composeId={id} />
 
-      {!shouldCondense && !event && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && !group && <ReplyIndicatorContainer composeId={id} />}
 
-      {!shouldCondense && !event && <ReplyMentions composeId={id} />}
+      {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 
       <div>
         <ComposeEditor
           ref={editorStateRef}
           condensed={condensed}
           onFocus={handleComposeFocus}
+          autoFocus={shouldAutoFocus}
+          composeId={id}
         />
-        {
-          !condensed &&
+        {!condensed && (
           <Stack space={4} className='compose-form__modifiers'>
             <UploadForm composeId={id} />
             <PollForm composeId={id} />
@@ -318,7 +319,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
               ref={spoilerTextRef}
             />
           </Stack>
-        }
+        )}
       </div>
 
       <AutosuggestTextarea
@@ -337,12 +338,14 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
         autoFocus={shouldAutoFocus}
         condensed={condensed}
         id='compose-textarea'
-      />
+      >
+        <></>
+      </AutosuggestTextarea>
 
       <QuotedStatusContainer composeId={id} />
 
       <div
-        className={classNames('flex flex-wrap items-center justify-between', {
+        className={clsx('flex flex-wrap items-center justify-between', {
           'hidden': condensed,
         })}
       >
@@ -358,8 +361,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
           <Button type='submit' theme='primary' icon={publishIcon} text={publishText} disabled={disabledButton} />
         </HStack>
-        {/* <HStack alignItems='center' space={4}>
-        </HStack> */}
       </div>
     </Stack>
   );

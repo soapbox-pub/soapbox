@@ -2,7 +2,7 @@ import type { PickAlgorithm } from './types';
 
 type Opts = {
   /** Number of iterations until the next item is picked. */
-  interval: number,
+  interval: number
 };
 
 /** Picks the next item every iteration. */

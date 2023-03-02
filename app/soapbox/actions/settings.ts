@@ -18,7 +18,7 @@ const FE_NAME = 'soapbox_fe';
 /** Options when changing/saving settings. */
 type SettingOpts = {
   /** Whether to display an alert when settings are saved. */
-  showAlert?: boolean,
+  showAlert?: boolean
 }
 
 const messages = defineMessages({
@@ -47,7 +47,6 @@ const defaultSettings = ImmutableMap({
   autoloadMore: true,
 
   systemFont: false,
-  dyslexicFont: false,
   demetricator: false,
 
   isDeveloper: false,
@@ -156,6 +155,8 @@ const defaultSettings = ImmutableMap({
       direct: false,
     }),
   }),
+
+  groups: ImmutableMap({}),
 
   trends: ImmutableMap({
     show: true,

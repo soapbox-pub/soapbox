@@ -1,9 +1,7 @@
-import classNames from 'clsx';
-import { Map as ImmutableMap } from 'immutable';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -17,7 +15,8 @@ import {
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
 import { Input } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { AppDispatch, RootState } from 'soapbox/store';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
@@ -25,7 +24,7 @@ const messages = defineMessages({
 });
 
 function redirectToAccount(accountId: string, routerHistory: any) {
-  return (_dispatch: any, getState: () => ImmutableMap<string, any>) => {
+  return (_dispatch: AppDispatch, getState: () => RootState) => {
     const acct = getState().getIn(['accounts', accountId, 'acct']);
 
     if (acct && routerHistory) {
@@ -35,9 +34,9 @@ function redirectToAccount(accountId: string, routerHistory: any) {
 }
 
 interface ISearch {
-  autoFocus?: boolean,
-  autoSubmit?: boolean,
-  autosuggest?: boolean,
+  autoFocus?: boolean
+  autoSubmit?: boolean
+  autosuggest?: boolean
   openInRoute?: boolean
 }
 
@@ -49,7 +48,7 @@ const Search = (props: ISearch) => {
     openInRoute = false,
   } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
 
@@ -150,17 +149,17 @@ const Search = (props: ISearch) => {
         <div
           role='button'
           tabIndex={0}
-          className='absolute inset-y-0 right-0 rtl:left-0 rtl:right-auto px-3 flex items-center cursor-pointer'
+          className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 rtl:left-0 rtl:right-auto'
           onClick={handleClear}
         >
           <SvgIcon
             src={require('@tabler/icons/search.svg')}
-            className={classNames('h-4 w-4 text-gray-600', { hidden: hasValue })}
+            className={clsx('h-4 w-4 text-gray-600', { hidden: hasValue })}
           />
 
           <SvgIcon
             src={require('@tabler/icons/x.svg')}
-            className={classNames('h-4 w-4 text-gray-600', { hidden: !hasValue })}
+            className={clsx('h-4 w-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />
         </div>

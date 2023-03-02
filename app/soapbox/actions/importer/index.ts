@@ -5,42 +5,44 @@ import type { APIEntity } from 'soapbox/types/entities';
 
 const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';
+const GROUP_IMPORT    = 'GROUP_IMPORT';
+const GROUPS_IMPORT   = 'GROUPS_IMPORT';
 const STATUS_IMPORT   = 'STATUS_IMPORT';
 const STATUSES_IMPORT = 'STATUSES_IMPORT';
 const POLLS_IMPORT    = 'POLLS_IMPORT';
 const ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP = 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP';
 
-export function importAccount(account: APIEntity) {
-  return { type: ACCOUNT_IMPORT, account };
-}
+const importAccount = (account: APIEntity) =>
+  ({ type: ACCOUNT_IMPORT, account });
 
-export function importAccounts(accounts: APIEntity[]) {
-  return { type: ACCOUNTS_IMPORT, accounts };
-}
+const importAccounts = (accounts: APIEntity[]) =>
+  ({ type: ACCOUNTS_IMPORT, accounts });
 
-export function importStatus(status: APIEntity, idempotencyKey?: string) {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
+const importGroup = (group: APIEntity) =>
+  ({ type: GROUP_IMPORT, group });
+
+const importGroups = (groups: APIEntity[]) =>
+  ({ type: GROUPS_IMPORT, groups });
+
+const importStatus = (status: APIEntity, idempotencyKey?: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const expandSpoilers = getSettings(getState()).get('expandSpoilers');
     return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
   };
-}
 
-export function importStatuses(statuses: APIEntity[]) {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
+const importStatuses = (statuses: APIEntity[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const expandSpoilers = getSettings(getState()).get('expandSpoilers');
     return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
   };
-}
 
-export function importPolls(polls: APIEntity[]) {
-  return { type: POLLS_IMPORT, polls };
-}
+const importPolls = (polls: APIEntity[]) =>
+  ({ type: POLLS_IMPORT, polls });
 
-export function importFetchedAccount(account: APIEntity) {
-  return importFetchedAccounts([account]);
-}
+const importFetchedAccount = (account: APIEntity) =>
+  importFetchedAccounts([account]);
 
-export function importFetchedAccounts(accounts: APIEntity[], args = { should_refetch: false }) {
+const importFetchedAccounts = (accounts: APIEntity[], args = { should_refetch: false }) => {
   const { should_refetch } = args;
   const normalAccounts: APIEntity[] = [];
 
@@ -61,10 +63,27 @@ export function importFetchedAccounts(accounts: APIEntity[], args = { should_ref
   accounts.forEach(processAccount);
 
   return importAccounts(normalAccounts);
-}
+};
 
-export function importFetchedStatus(status: APIEntity, idempotencyKey?: string) {
-  return (dispatch: AppDispatch) => {
+const importFetchedGroup = (group: APIEntity) =>
+  importFetchedGroups([group]);
+
+const importFetchedGroups = (groups: APIEntity[]) => {
+  const normalGroups: APIEntity[] = [];
+
+  const processGroup = (group: APIEntity) => {
+    if (!group.id) return;
+
+    normalGroups.push(group);
+  };
+
+  groups.forEach(processGroup);
+
+  return importGroups(normalGroups);
+};
+
+const importFetchedStatus = (status: APIEntity, idempotencyKey?: string) =>
+  (dispatch: AppDispatch) => {
     // Skip broken statuses
     if (isBroken(status)) return;
 
@@ -96,10 +115,13 @@ export function importFetchedStatus(status: APIEntity, idempotencyKey?: string) 
       dispatch(importFetchedPoll(status.poll));
     }
 
+    if (status.group?.id) {
+      dispatch(importFetchedGroup(status.group));
+    }
+
     dispatch(importFetchedAccount(status.account));
     dispatch(importStatus(status, idempotencyKey));
   };
-}
 
 // Sometimes Pleroma can return an empty account,
 // or a repost can appear of a deleted account. Skip these statuses.
@@ -117,8 +139,8 @@ const isBroken = (status: APIEntity) => {
   }
 };
 
-export function importFetchedStatuses(statuses: APIEntity[]) {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
+const importFetchedStatuses = (statuses: APIEntity[]) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const accounts: APIEntity[] = [];
     const normalStatuses: APIEntity[] = [];
     const polls: APIEntity[] = [];
@@ -146,6 +168,10 @@ export function importFetchedStatuses(statuses: APIEntity[]) {
       if (status.poll?.id) {
         polls.push(status.poll);
       }
+
+      if (status.group?.id) {
+        dispatch(importFetchedGroup(status.group));
+      }
     }
 
     statuses.forEach(processStatus);
@@ -154,23 +180,37 @@ export function importFetchedStatuses(statuses: APIEntity[]) {
     dispatch(importFetchedAccounts(accounts));
     dispatch(importStatuses(normalStatuses));
   };
-}
 
-export function importFetchedPoll(poll: APIEntity) {
-  return (dispatch: AppDispatch) => {
+const importFetchedPoll = (poll: APIEntity) =>
+  (dispatch: AppDispatch) => {
     dispatch(importPolls([poll]));
   };
-}
 
-export function importErrorWhileFetchingAccountByUsername(username: string) {
-  return { type: ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP, username };
-}
+const importErrorWhileFetchingAccountByUsername = (username: string) =>
+  ({ type: ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP, username });
 
 export {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,
+  GROUP_IMPORT,
+  GROUPS_IMPORT,
   STATUS_IMPORT,
   STATUSES_IMPORT,
   POLLS_IMPORT,
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
+  importAccount,
+  importAccounts,
+  importGroup,
+  importGroups,
+  importStatus,
+  importStatuses,
+  importPolls,
+  importFetchedAccount,
+  importFetchedAccounts,
+  importFetchedGroup,
+  importFetchedGroups,
+  importFetchedStatus,
+  importFetchedStatuses,
+  importFetchedPoll,
+  importErrorWhileFetchingAccountByUsername,
 };

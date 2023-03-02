@@ -14,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface IUnapprovedAccount {
-  accountId: string,
+  accountId: string
 }
 
 /** Displays an unapproved account for moderation purposes. */

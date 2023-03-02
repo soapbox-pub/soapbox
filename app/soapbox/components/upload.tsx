@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
@@ -60,12 +60,12 @@ const messages = defineMessages({
 });
 
 interface IUpload {
-  media: Attachment,
-  onSubmit?(): void,
-  onDelete?(): void,
-  onDescriptionChange?(description: string): void,
-  descriptionLimit?: number,
-  withPreview?: boolean,
+  media: Attachment
+  onSubmit?(): void
+  onDelete?(): void
+  onDescriptionChange?(description: string): void
+  descriptionLimit?: number
+  withPreview?: boolean
 }
 
 const Upload: React.FC<IUpload> = ({
@@ -141,7 +141,7 @@ const Upload: React.FC<IUpload> = ({
 
   const uploadIcon = mediaType === 'unknown' && (
     <Icon
-      className='h-16 w-16 mx-auto my-12 text-gray-800 dark:text-gray-200'
+      className='mx-auto my-12 h-16 w-16 text-gray-800 dark:text-gray-200'
       src={MIMETYPE_ICONS[mimeType || ''] || defaultIcon}
     />
   );
@@ -152,13 +152,13 @@ const Upload: React.FC<IUpload> = ({
       <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
         {({ scale }) => (
           <div
-            className={classNames('compose-form__upload-thumbnail',  mediaType)}
+            className={clsx('compose-form__upload-thumbnail',  mediaType)}
             style={{
               transform: `scale(${scale})`,
               backgroundImage: mediaType === 'image' ? `url(${media.preview_url})` : undefined,
               backgroundPosition: typeof x === 'number' && typeof y === 'number' ? `${x}% ${y}%` : undefined }}
           >
-            <div className={classNames('compose-form__upload__actions', { active })}>
+            <div className={clsx('compose-form__upload__actions', { active })}>
               {onDelete && (
                 <IconButton
                   onClick={handleUndoClick}
@@ -178,7 +178,7 @@ const Upload: React.FC<IUpload> = ({
             </div>
 
             {onDescriptionChange && (
-              <div className={classNames('compose-form__upload-description', { active })}>
+              <div className={clsx('compose-form__upload-description', { active })}>
                 <label>
                   <span style={{ display: 'none' }}>{intl.formatMessage(messages.description)}</span>
 

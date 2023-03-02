@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -35,17 +35,19 @@ const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className }) =
 
 export interface IColumn {
   /** Route the back button goes to. */
-  backHref?: string,
+  backHref?: string
   /** Column title text. */
-  label?: string,
+  label?: string
   /** Whether this column should have a transparent background. */
-  transparent?: boolean,
+  transparent?: boolean
   /** Whether this column should have a title and back button. */
-  withHeader?: boolean,
+  withHeader?: boolean
   /** Extra class name for top <div> element. */
-  className?: string,
+  className?: string
   /** Ref forwarded to column. */
   ref?: React.Ref<HTMLDivElement>
+  /** Children to display in the column. */
+  children?: React.ReactNode
 }
 
 /** A backdrop for the main section of the UI. */
@@ -72,7 +74,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
           <ColumnHeader
             label={label}
             backHref={backHref}
-            className={classNames({ 'px-4 pt-4 sm:p-0': transparent })}
+            className={clsx({ 'px-4 pt-4 sm:p-0': transparent })}
           />
         )}
 

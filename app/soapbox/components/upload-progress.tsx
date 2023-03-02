@@ -1,13 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { spring } from 'react-motion';
 
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import Motion from 'soapbox/features/ui/util/optional-motion';
+import { HStack, Icon, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 
 interface IUploadProgress {
-  /** Number between 0 and 1 to represent the percentage complete. */
-  progress: number,
+  /** Number between 0 and 100 to represent the percentage complete. */
+  progress: number
 }
 
 /** Displays a progress bar for uploading files. */
@@ -16,7 +14,7 @@ const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
     <HStack alignItems='center' space={2}>
       <Icon
         src={require('@tabler/icons/cloud-upload.svg')}
-        className='w-7 h-7 text-gray-500'
+        className='h-7 w-7 text-gray-500'
       />
 
       <Stack space={1}>
@@ -24,16 +22,7 @@ const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
           <FormattedMessage id='upload_progress.label' defaultMessage='Uploading…' />
         </Text>
 
-        <div className='w-full h-1.5 rounded-lg bg-gray-200 relative'>
-          <Motion defaultStyle={{ width: 0 }} style={{ width: spring(progress) }}>
-            {({ width }) =>
-              (<div
-                className='absolute left-0 top-0 h-1.5 bg-primary-600 rounded-lg'
-                style={{ width: `${width}%` }}
-              />)
-            }
-          </Motion>
-        </div>
+        <ProgressBar progress={progress / 100} size='sm' />
       </Stack>
     </HStack>
   );

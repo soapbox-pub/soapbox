@@ -1,16 +1,16 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 interface IIndicator {
-  state?: 'active' | 'pending' | 'error' | 'inactive',
-  size?: 'sm',
+  state?: 'active' | 'pending' | 'error' | 'inactive'
+  size?: 'sm'
 }
 
 /** Indicator dot component. */
 const Indicator: React.FC<IIndicator> = ({ state = 'inactive', size = 'sm' }) => {
   return (
     <div
-      className={classNames('rounded-full outline-double', {
+      className={clsx('rounded-full outline-double', {
         'w-1.5 h-1.5 shadow-sm': size === 'sm',
         'bg-green-500 outline-green-400': state === 'active',
         'bg-yellow-500 outline-yellow-400': state === 'pending',

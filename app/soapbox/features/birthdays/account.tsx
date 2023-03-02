@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display-name';
+import AccountComponent from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
+import { HStack } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -13,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  accountId: string,
+  accountId: string
 }
 
 const Account: React.FC<IAccount> = ({ accountId }) => {
@@ -21,12 +20,6 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   const getAccount = useCallback(makeGetAccount(), []);
 
   const account = useAppSelector((state) => getAccount(state, accountId));
-
-  // useEffect(() => {
-  //   if (accountId && !account) {
-  //     fetchAccount(accountId);
-  //   }
-  // }, [accountId]);
 
   if (!account) return null;
 
@@ -36,26 +29,20 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   const formattedBirthday = intl.formatDate(birthday, { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
-    <div className='account'>
-      <div className='account__wrapper'>
-        <Link className='account__display-name' title={account.get('acct')} to={`/@${account.get('acct')}`}>
-          <div className='account__display-name'>
-            <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-            <DisplayName account={account} />
-
-          </div>
-        </Link>
-        <div
-          className='flex items-center gap-0.5'
-          title={intl.formatMessage(messages.birthday, {
-            date: formattedBirthday,
-          })}
-        >
-          <Icon src={require('@tabler/icons/ballon.svg')} />
-          {formattedBirthday}
-        </div>
+    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
+      <div className='w-full'>
+        <AccountComponent account={account} withRelationship={false} />
       </div>
-    </div>
+      <div
+        className='flex items-center gap-0.5'
+        title={intl.formatMessage(messages.birthday, {
+          date: formattedBirthday,
+        })}
+      >
+        <Icon src={require('@tabler/icons/balloon.svg')} />
+        {formattedBirthday}
+      </div>
+    </HStack>
   );
 };
 

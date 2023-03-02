@@ -79,7 +79,7 @@ const Option: React.FC<IOption> = ({
         </div>
 
         <AutosuggestInput
-          className='rounded-md dark:!bg-transparent !bg-transparent'
+          className='rounded-md !bg-transparent dark:!bg-transparent'
           placeholder={intl.formatMessage(messages.option_placeholder, { number: index + 1 })}
           maxLength={maxChars}
           value={title}
@@ -105,7 +105,7 @@ const Option: React.FC<IOption> = ({
 };
 
 interface IPollForm {
-  composeId: string,
+  composeId: string
 }
 
 const PollForm: React.FC<IPollForm> = ({ composeId }) => {

@@ -1,14 +1,13 @@
 import { OrderedSet } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import Toggle from 'react-toggle';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
 import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
@@ -26,7 +25,7 @@ interface IOtherActionsStep {
 }
 
 const OtherActionsStep = ({ account }: IOtherActionsStep) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 
@@ -61,7 +60,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='divide-y divide-gray-200 dark:divide-gray-800 divide-solid'>
+                <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 

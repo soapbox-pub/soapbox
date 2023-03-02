@@ -1,13 +1,13 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatus } from 'soapbox/actions/statuses';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
+import DropdownMenu from '../dropdown-menu';
 import { Button, HStack, Text } from '../ui';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
@@ -91,8 +91,8 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
 
   return (
     <div
-      className={classNames('absolute z-40', {
-        'cursor-default backdrop-blur-lg rounded-lg w-full h-full border-0 flex justify-center items-center': !visible,
+      className={clsx('absolute z-40', {
+        'cursor-default backdrop-blur-lg rounded-lg w-full h-full border-0 flex justify-center': !visible,
         'bg-gray-800/75 inset-0': !visible,
         'bottom-1 right-1': visible,
       })}
@@ -107,64 +107,66 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
           size='sm'
         />
       ) : (
-        <div className='text-center w-3/4 mx-auto space-y-4' ref={ref}>
-          <div className='space-y-1'>
-            <Text theme='white' weight='semibold'>
-              {intl.formatMessage(isUnderReview ? messages.underReviewTitle : messages.sensitiveTitle)}
-            </Text>
+        <div className='flex max-h-screen items-center justify-center'>
+          <div className='mx-auto w-3/4 space-y-4 text-center' ref={ref}>
+            <div className='space-y-1'>
+              <Text theme='white' weight='semibold'>
+                {intl.formatMessage(isUnderReview ? messages.underReviewTitle : messages.sensitiveTitle)}
+              </Text>
 
-            <Text theme='white' size='sm' weight='medium'>
-              {intl.formatMessage(isUnderReview ? messages.underReviewSubtitle : messages.sensitiveSubtitle)}
-            </Text>
+              <Text theme='white' size='sm' weight='medium'>
+                {intl.formatMessage(isUnderReview ? messages.underReviewSubtitle : messages.sensitiveSubtitle)}
+              </Text>
 
-            {status.spoiler_text && (
-              <div className='py-4 italic'>
-                <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
-                  &ldquo;<span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} />&rdquo;
-                </Text>
-              </div>
-            )}
-          </div>
+              {status.spoiler_text && (
+                <div className='py-4 italic'>
+                  <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
+                    &ldquo;<span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} />&rdquo;
+                  </Text>
+                </div>
+              )}
+            </div>
 
-          <HStack alignItems='center' justifyContent='center' space={2}>
-            {isUnderReview ? (
-              <>
-                {links.get('support') && (
-                  <a
-                    href={links.get('support')}
-                    target='_blank'
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    <Button
-                      type='button'
-                      theme='outline'
-                      size='sm'
-                      icon={require('@tabler/icons/headset.svg')}
+            <HStack alignItems='center' justifyContent='center' space={2}>
+              {isUnderReview ? (
+                <>
+                  {links.get('support') && (
+                    <a
+                      href={links.get('support')}
+                      target='_blank'
+                      onClick={(event) => event.stopPropagation()}
                     >
-                      {intl.formatMessage(messages.contact)}
-                    </Button>
-                  </a>
-                )}
-              </>
-            ) : null}
+                      <Button
+                        type='button'
+                        theme='outline'
+                        size='sm'
+                        icon={require('@tabler/icons/headset.svg')}
+                      >
+                        {intl.formatMessage(messages.contact)}
+                      </Button>
+                    </a>
+                  )}
+                </>
+              ) : null}
 
-            <Button
-              type='button'
-              theme='outline'
-              size='sm'
-              icon={require('@tabler/icons/eye.svg')}
-              onClick={toggleVisibility}
-            >
-              {intl.formatMessage(messages.show)}
-            </Button>
+              <Button
+                type='button'
+                theme='outline'
+                size='sm'
+                icon={require('@tabler/icons/eye.svg')}
+                onClick={toggleVisibility}
+              >
+                {intl.formatMessage(messages.show)}
+              </Button>
 
-            {(isUnderReview && isOwnStatus) ? (
-              <DropdownMenu
-                items={menu}
-                src={require('@tabler/icons/dots.svg')}
-              />
-            ) : null}
-          </HStack>
+              {(isUnderReview && isOwnStatus) ? (
+                <DropdownMenu
+                  items={menu}
+                  src={require('@tabler/icons/dots.svg')}
+                />
+              ) : null}
+            </HStack>
+          </div>
         </div>
       )}
     </div>

@@ -11,12 +11,12 @@ import ComposeForm from '../../../compose/components/compose-form';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
-  confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
 interface IComposeModal {
-  onClose: (type?: string) => void,
+  onClose: (type?: string) => void
 }
 
 const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
@@ -33,10 +33,10 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
         icon: require('@tabler/icons/trash.svg'),
         heading: statusId
           ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' />
-          : <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
+          : <FormattedMessage id='confirmations.cancel.heading' defaultMessage='Discard post' />,
         message: statusId
           ? <FormattedMessage id='confirmations.cancel_editing.message' defaultMessage='Are you sure you want to cancel editing this post? All changes will be lost.' />
-          : <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
+          : <FormattedMessage id='confirmations.cancel.message' defaultMessage='Are you sure you want to cancel creating this post?' />,
         confirm: intl.formatMessage(statusId ? messages.cancelEditing : messages.confirm),
         onConfirm: () => {
           dispatch(closeModal('COMPOSE'));

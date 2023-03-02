@@ -18,6 +18,7 @@ stages:
   - deps
   - test
   - deploy
+  - release
 
 deps:
   stage: deps
@@ -47,10 +48,12 @@ lint-js:
     changes:
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.cjs"
+      - "**/*.mjs"
       - "**/*.ts"
       - "**/*.tsx"
       - ".eslintignore"
-      - ".eslintrc.js"
+      - ".eslintrc.cjs"
 
 lint-sass:
   stage: test
@@ -71,7 +74,7 @@ jest:
       - "app/soapbox/**/*"
       - "webpack/**/*"
       - "custom/**/*"
-      - "jest.config.js"
+      - "jest.config.cjs"
       - "package.json"
       - "yarn.lock"
       - ".gitlab-ci.yml"
@@ -146,19 +149,27 @@ pages:
 
 docker:
   stage: deploy
-  image: docker:20.10.17
+  image: docker:23.0.0
   services:
-    - docker:20.10.17-dind
+    - docker:23.0.0-dind
   tags:
     - dind
   # https://medium.com/devops-with-valentine/how-to-build-a-docker-image-and-push-it-to-the-gitlab-container-registry-from-a-gitlab-ci-pipeline-acac0d1f26df
   script:
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-    - docker build -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
-  only:
-    variables:
-      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  rules:
+    - if: $CI_COMMIT_TAG
+  interruptible: false
+
+release:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - npx ts-node ./scripts/do-release.ts
+  interruptible: false
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml

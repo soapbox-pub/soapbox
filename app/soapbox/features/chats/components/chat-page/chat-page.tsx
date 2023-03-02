@@ -1,5 +1,5 @@
-import classNames from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
 import { Stack } from 'soapbox/components/ui';
@@ -12,7 +12,7 @@ import ChatPageSidebar from './components/chat-page-sidebar';
 import Welcome from './components/welcome';
 
 interface IChatPage {
-  chatId?: string,
+  chatId?: string
 }
 
 const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
@@ -44,7 +44,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
     setHeight(fullHeight - top + offset);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     calculateHeight();
   }, [containerRef.current]);
 
@@ -60,15 +60,15 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
     <div
       ref={containerRef}
       style={{ height }}
-      className='h-screen bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden sm:rounded-t-xl'
+      className='h-screen overflow-hidden bg-white text-gray-900 shadow-lg dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:rounded-t-xl'
     >
       {isOnboarded ? (
         <div
-          className='grid grid-cols-9 overflow-hidden h-full dark:divide-x-2 dark:divide-solid dark:divide-gray-800'
+          className='grid h-full grid-cols-9 overflow-hidden dark:divide-x-2 dark:divide-solid dark:divide-gray-800'
           data-testid='chat-page'
         >
           <Stack
-            className={classNames('col-span-9 sm:col-span-3 bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none overflow-hidden dark:inset', {
+            className={clsx('dark:inset col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 dark:bg-gray-900 dark:bg-none sm:col-span-3', {
               'hidden sm:block': isSidebarHidden,
             })}
           >
@@ -76,7 +76,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           </Stack>
 
           <Stack
-            className={classNames('col-span-9 sm:col-span-6 h-full overflow-hidden', {
+            className={clsx('col-span-9 h-full overflow-hidden sm:col-span-6', {
               'hidden sm:block': !isSidebarHidden,
             })}
           >

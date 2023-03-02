@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { HStack } from 'soapbox/components/ui';
@@ -10,7 +10,7 @@ import UploadProgress from './upload-progress';
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
 interface IUploadForm {
-  composeId: string,
+  composeId: string
 }
 
 const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {
@@ -20,7 +20,7 @@ const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {
     <div className='overflow-hidden'>
       <UploadProgress composeId={composeId} />
 
-      <HStack wrap className={classNames(mediaIds.size !== 0 && 'p-1')}>
+      <HStack wrap className={clsx('overflow-hidden', mediaIds.size !== 0 && 'p-1')}>
         {mediaIds.map((id: string) => (
           <Upload id={id} key={id} composeId={composeId} />
         ))}

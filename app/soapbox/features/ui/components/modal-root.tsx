@@ -2,40 +2,42 @@ import React from 'react';
 
 import Base from 'soapbox/components/modal-root';
 import {
-  MediaModal,
-  VideoModal,
-  BoostModal,
-  ConfirmationModal,
-  MuteModal,
-  ReportModal,
-  EmbedModal,
-  CryptoDonateModal,
-  ListEditor,
-  ListAdder,
-  MissingDescriptionModal,
-  ActionsModal,
-  HotkeysModal,
-  ComposeModal,
-  ReplyMentionsModal,
-  UnauthorizedModal,
-  EditFederationModal,
-  ComponentModal,
-  ReactionsModal,
-  FavouritesModal,
-  ReblogsModal,
-  MentionsModal,
-  LandingPageModal,
-  BirthdaysModal,
-  AccountNoteModal,
-  CompareHistoryModal,
-  VerifySmsModal,
-  FamiliarFollowersModal,
-  ComposeEventModal,
-  JoinEventModal,
   AccountModerationModal,
+  AccountNoteModal,
+  ActionsModal,
+  BirthdaysModal,
+  BoostModal,
+  CompareHistoryModal,
+  ComponentModal,
+  ComposeEventModal,
+  ComposeModal,
+  ConfirmationModal,
+  CryptoDonateModal,
+  EditAnnouncementModal,
+  EditFederationModal,
+  EmbedModal,
   EventMapModal,
   EventParticipantsModal,
+  FamiliarFollowersModal,
+  FavouritesModal,
+  HotkeysModal,
+  JoinEventModal,
+  LandingPageModal,
+  ListAdder,
+  ListEditor,
+  ManageGroupModal,
+  MediaModal,
+  MentionsModal,
+  MissingDescriptionModal,
+  MuteModal,
   PolicyModal,
+  ReactionsModal,
+  ReblogsModal,
+  ReplyMentionsModal,
+  ReportModal,
+  UnauthorizedModal,
+  VerifySmsModal,
+  VideoModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import BundleContainer from '../containers/bundle-container';
@@ -44,49 +46,52 @@ import { BundleProps } from './bundle';
 import BundleModalError from './bundle-modal-error';
 import ModalLoading from './modal-loading';
 
+/* eslint sort-keys: "error" */
 const MODAL_COMPONENTS = {
-  'MEDIA': MediaModal,
-  'VIDEO': VideoModal,
-  'BOOST': BoostModal,
-  'CONFIRM': ConfirmationModal,
-  'MISSING_DESCRIPTION': MissingDescriptionModal,
-  'MUTE': MuteModal,
-  'REPORT': ReportModal,
-  'ACTIONS': ActionsModal,
-  'EMBED': EmbedModal,
-  'LIST_EDITOR': ListEditor,
-  'LIST_ADDER': ListAdder,
-  'HOTKEYS': HotkeysModal,
-  'COMPOSE': ComposeModal,
-  'REPLY_MENTIONS': ReplyMentionsModal,
-  'UNAUTHORIZED': UnauthorizedModal,
-  'CRYPTO_DONATE': CryptoDonateModal,
-  'EDIT_FEDERATION': EditFederationModal,
-  'COMPONENT': ComponentModal,
-  'REBLOGS': ReblogsModal,
-  'FAVOURITES': FavouritesModal,
-  'REACTIONS': ReactionsModal,
-  'MENTIONS': MentionsModal,
-  'LANDING_PAGE': LandingPageModal,
-  'BIRTHDAYS': BirthdaysModal,
-  'ACCOUNT_NOTE': AccountNoteModal,
-  'COMPARE_HISTORY': CompareHistoryModal,
-  'VERIFY_SMS': VerifySmsModal,
-  'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
-  'COMPOSE_EVENT': ComposeEventModal,
-  'JOIN_EVENT': JoinEventModal,
   'ACCOUNT_MODERATION': AccountModerationModal,
+  'ACCOUNT_NOTE': AccountNoteModal,
+  'ACTIONS': ActionsModal,
+  'BIRTHDAYS': BirthdaysModal,
+  'BOOST': BoostModal,
+  'COMPARE_HISTORY': CompareHistoryModal,
+  'COMPONENT': ComponentModal,
+  'COMPOSE': ComposeModal,
+  'COMPOSE_EVENT': ComposeEventModal,
+  'CONFIRM': ConfirmationModal,
+  'CRYPTO_DONATE': CryptoDonateModal,
+  'EDIT_ANNOUNCEMENT': EditAnnouncementModal,
+  'EDIT_FEDERATION': EditFederationModal,
+  'EMBED': EmbedModal,
   'EVENT_MAP': EventMapModal,
   'EVENT_PARTICIPANTS': EventParticipantsModal,
+  'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
+  'FAVOURITES': FavouritesModal,
+  'HOTKEYS': HotkeysModal,
+  'JOIN_EVENT': JoinEventModal,
+  'LANDING_PAGE': LandingPageModal,
+  'LIST_ADDER': ListAdder,
+  'LIST_EDITOR': ListEditor,
+  'MANAGE_GROUP': ManageGroupModal,
+  'MEDIA': MediaModal,
+  'MENTIONS': MentionsModal,
+  'MISSING_DESCRIPTION': MissingDescriptionModal,
+  'MUTE': MuteModal,
   'POLICY': PolicyModal,
+  'REACTIONS': ReactionsModal,
+  'REBLOGS': ReblogsModal,
+  'REPLY_MENTIONS': ReplyMentionsModal,
+  'REPORT': ReportModal,
+  'UNAUTHORIZED': UnauthorizedModal,
+  'VERIFY_SMS': VerifySmsModal,
+  'VIDEO': VideoModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;
 
 interface IModalRoot {
-  type: ModalType,
-  props?: Record<string, any> | null,
-  onClose: (type?: ModalType) => void,
+  type: ModalType
+  props?: Record<string, any> | null
+  onClose: (type?: ModalType) => void
 }
 
 export default class ModalRoot extends React.PureComponent<IModalRoot> {
@@ -105,16 +110,16 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
 
   renderLoading = (modalId: string) => () => {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
-  }
+  };
 
   renderError: React.ComponentType<{ onRetry: (props?: BundleProps) => void }> = (props) => {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
-  }
+  };
 
   onClickClose = (_?: ModalType) => {
     const { onClose, type } = this.props;
     onClose(type);
-  }
+  };
 
   render() {
     const { type, props } = this.props;

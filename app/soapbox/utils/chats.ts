@@ -10,7 +10,7 @@ import { compareDate } from './comparators';
 import { appendPageItem, flattenPages, PaginatedResult, sortQueryData, updatePageItem } from './queries';
 
 interface ChatPayload extends Omit<Chat, 'last_message'> {
-  last_message: ChatMessage | null,
+  last_message: ChatMessage | null
 }
 
 /**
@@ -84,4 +84,11 @@ const getUnreadChatsCount = (): number => {
   return sumBy(chats, chat => chat.unread);
 };
 
-export { updateChatListItem, getUnreadChatsCount, reOrderChatListItems };
+/** Update the query cache for an individual Chat Message */
+const updateChatMessage = (chatMessage: ChatMessage) => updatePageItem(
+  ChatKeys.chatMessages(chatMessage.chat_id),
+  normalizeChatMessage(chatMessage),
+  (o, n) => o.id === n.id,
+);
+
+export { updateChatListItem, updateChatMessage, getUnreadChatsCount, reOrderChatListItems };

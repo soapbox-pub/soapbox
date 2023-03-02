@@ -47,7 +47,7 @@ const MAX_QUEUED_NOTIFICATIONS = 40;
 
 defineMessages({
   mention: { id: 'notification.mention', defaultMessage: '{name} mentioned you' },
-  group: { id: 'notifications.group', defaultMessage: '{count} notifications' },
+  group: { id: 'notifications.group', defaultMessage: '{count, plural, one {# notification} other {# notifications}}' },
 });
 
 const fetchRelatedRelationships = (dispatch: AppDispatch, notifications: APIEntity[]) => {
@@ -107,7 +107,10 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
 
     // Desktop notifications
     try {
-      if (showAlert && !filtered) {
+      // eslint-disable-next-line compat/compat
+      const isNotificationsEnabled = window.Notification?.permission === 'granted';
+
+      if (showAlert && !filtered && isNotificationsEnabled) {
         const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
         const body = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : unescapeHTML(notification.status ? notification.status.content : '');
 

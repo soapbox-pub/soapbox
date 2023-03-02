@@ -40,14 +40,14 @@ const TextFormatFloatingToolbar = ({
   isCode,
   isStrikethrough,
 }: {
-   editor: LexicalEditor;
-   anchorElem: HTMLElement;
-   isBold: boolean;
-   isCode: boolean;
-   isItalic: boolean;
-   isLink: boolean;
-   isStrikethrough: boolean;
-   isUnderline: boolean;
+   editor: LexicalEditor
+   anchorElem: HTMLElement
+   isBold: boolean
+   isCode: boolean
+   isItalic: boolean
+   isLink: boolean
+   isStrikethrough: boolean
+   isUnderline: boolean
  }): JSX.Element => {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
@@ -301,7 +301,7 @@ const useFloatingTextFormatToolbar = (
 const FloatingTextFormatToolbarPlugin = ({
   anchorElem = document.body,
 }: {
-   anchorElem?: HTMLElement;
+   anchorElem?: HTMLElement
  }): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
   return useFloatingTextFormatToolbar(editor, anchorElem);

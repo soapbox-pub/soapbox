@@ -13,8 +13,8 @@ import ChatPaneHeader from './chat-pane-header';
 import ChatSettings from './chat-settings';
 
 const messages = defineMessages({
-  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day} days' },
-  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day} days upon sending.' },
+  autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day, plural, one {# day} other {# days}}' },
+  autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day, plural, one {# day} other {# days}} upon sending.' },
 });
 
 const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, children: React.ReactNode }): JSX.Element => {
@@ -87,7 +87,7 @@ const ChatWindow = () => {
 
               <Stack alignItems='start'>
                 <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
-                  <div className='flex items-center space-x-1 flex-grow'>
+                  <div className='flex grow items-center space-x-1'>
                     <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>
                     {chat.account.verified && <VerificationBadge />}
                   </div>
@@ -113,7 +113,7 @@ const ChatWindow = () => {
         onToggle={toggleChatPane}
       />
 
-      <Stack className='overflow-hidden flex-grow h-full' space={2}>
+      <Stack className='h-full grow overflow-hidden' space={2}>
         <Chat chat={chat} inputRef={inputRef} />
       </Stack>
     </>

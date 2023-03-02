@@ -238,10 +238,6 @@ export function Settings() {
   return import(/* webpackChunkName: "features/settings" */'../../settings');
 }
 
-export function MediaDisplay() {
-  return import(/* webpackChunkName: "features/settings" */'../../settings/media-display');
-}
-
 export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit-profile');
 }
@@ -540,4 +536,52 @@ export function EventParticipantsModal() {
 
 export function Events() {
   return import(/* webpackChunkName: "features/events" */'../../events');
+}
+
+export function Groups() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups');
+}
+
+export function GroupMembers() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
+}
+
+export function GroupTimeline() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
+}
+
+export function ManageGroup() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/manage-group');
+}
+
+export function GroupBlockedMembers() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-blocked-members');
+}
+
+export function GroupMembershipRequests() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-membership-requests');
+}
+
+export function ManageGroupModal() {
+  return import(/* webpackChunkName: "features/manage_group_modal" */'../components/modals/manage-group-modal/manage-group-modal');
+}
+
+export function NewGroupPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/panels/new-group-panel');
+}
+
+export function GroupMediaPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/group-media-panel');
+}
+
+export function NewEventPanel() {
+  return import(/* webpackChunkName: "features/events" */'../components/panels/new-event-panel');
+}
+
+export function Announcements() {
+  return import(/* webpackChunkName: "features/admin/announcements" */'../../admin/announcements');
+}
+
+export function EditAnnouncementModal() {
+  return import(/* webpackChunkName: "features/admin/announcements" */'../components/modals/edit-announcement-modal');
 }

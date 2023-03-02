@@ -5,9 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { getHost } from 'soapbox/actions/instance';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, Column, Form, FormActions } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker';
 import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -194,7 +194,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
         </List>
 
         <FormActions>
-          <DropdownMenuContainer
+          <DropdownMenu
             items={[{
               text: intl.formatMessage(messages.restore),
               action: restoreDefaultTheme,
@@ -232,10 +232,10 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 };
 
 interface IPaletteListItem {
-  label: React.ReactNode,
-  palette: ColorGroup,
-  onChange: (palette: ColorGroup) => void,
-  resetKey?: string,
+  label: React.ReactNode
+  palette: ColorGroup
+  onChange: (palette: ColorGroup) => void
+  resetKey?: string
 }
 
 /** Palette editor inside a ListItem. */
@@ -248,9 +248,9 @@ const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette, onChange,
 };
 
 interface IColorListItem {
-  label: React.ReactNode,
-  value: string,
-  onChange: (hex: string) => void,
+  label: React.ReactNode
+  value: string
+  onChange: (hex: string) => void
 }
 
 /** Single-color picker. */
@@ -264,7 +264,7 @@ const ColorListItem: React.FC<IColorListItem> = ({ label, value, onChange }) => 
       <ColorWithPicker
         value={value}
         onChange={handleChange}
-        className='w-10 h-8 rounded-md overflow-hidden'
+        className='h-8 w-10 overflow-hidden rounded-md'
       />
     </ListItem>
   );

@@ -14,8 +14,9 @@ import { Layout } from '../components/ui';
 
 interface IRemoteInstancePage {
   params?: {
-    instance?: string,
-  },
+    instance?: string
+  }
+  children: React.ReactNode
 }
 
 /** Page for viewing a remote instance timeline. */

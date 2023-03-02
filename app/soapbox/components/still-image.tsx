@@ -1,21 +1,21 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useRef } from 'react';
 
 import { useSettings } from 'soapbox/hooks';
 
 interface IStillImage {
   /** Image alt text. */
-  alt?: string,
+  alt?: string
   /** Extra class names for the outer <div> container. */
-  className?: string,
+  className?: string
   /** URL to the image */
-  src: string,
+  src: string
   /** Extra CSS styles on the outer <div> element. */
-  style?: React.CSSProperties,
+  style?: React.CSSProperties
   /** Whether to display the image contained vs filled in its container. */
-  letterboxed?: boolean,
+  letterboxed?: boolean
   /** Whether to show the file extension in the corner. */
-  showExt?: boolean,
+  showExt?: boolean
 }
 
 /** Renders images on a canvas, only playing GIFs if autoPlayGif is enabled. */
@@ -39,7 +39,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
   };
 
   /** ClassNames shared between the `<img>` and `<canvas>` elements. */
-  const baseClassName = classNames('w-full h-full block', {
+  const baseClassName = clsx('block h-full w-full', {
     'object-contain': letterboxed,
     'object-cover': !letterboxed,
   });
@@ -47,7 +47,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
   return (
     <div
       data-testid='still-image-container'
-      className={classNames(className, 'relative group overflow-hidden isolate')}
+      className={clsx(className, 'group relative isolate overflow-hidden')}
       style={style}
     >
       <img
@@ -55,7 +55,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
         alt={alt}
         ref={img}
         onLoad={handleImageLoad}
-        className={classNames(baseClassName, {
+        className={clsx(baseClassName, {
           'invisible group-hover:visible': hoverToPlay,
         })}
       />
@@ -63,14 +63,14 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
       {hoverToPlay && (
         <canvas
           ref={canvas}
-          className={classNames(baseClassName, {
+          className={clsx(baseClassName, {
             'group-hover:invisible': hoverToPlay,
           })}
         />
       )}
 
       {(hoverToPlay && showExt) && (
-        <div className='group-hover:hidden absolute opacity-90 left-2 bottom-2 pointer-events-none'>
+        <div className='pointer-events-none absolute left-2 bottom-2 opacity-90 group-hover:hidden'>
           <ExtensionBadge ext='GIF' />
         </div>
       )}
@@ -80,13 +80,13 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
 
 interface IExtensionBadge {
   /** File extension. */
-  ext: string,
+  ext: string
 }
 
 /** Badge displaying a file extension. */
 const ExtensionBadge: React.FC<IExtensionBadge> = ({ ext }) => {
   return (
-    <div className='inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'>
+    <div className='inline-flex items-center rounded bg-gray-100 px-2 py-0.5 text-sm font-medium text-gray-900 dark:bg-gray-800 dark:text-gray-100'>
       {ext}
     </div>
   );

@@ -12,16 +12,16 @@ import type { InputThemes } from 'soapbox/components/ui/input/input';
 const noOp = () => { };
 
 interface IAutosuggestAccountInput {
-  onChange: React.ChangeEventHandler<HTMLInputElement>,
-  onSelected: (accountId: string) => void,
-  autoFocus?: boolean,
-  value: string,
-  limit?: number,
-  className?: string,
-  autoSelect?: boolean,
-  menu?: Menu,
-  onKeyDown?: React.KeyboardEventHandler,
-  theme?: InputThemes,
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onSelected: (accountId: string) => void
+  autoFocus?: boolean
+  value: string
+  limit?: number
+  className?: string
+  autoSelect?: boolean
+  menu?: Menu
+  onKeyDown?: React.KeyboardEventHandler
+  theme?: InputThemes
 }
 
 const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
@@ -44,7 +44,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     setAccountIds(ImmutableOrderedSet());
   };
 
-  const handleAccountSearch = useCallback(throttle(q => {
+  const handleAccountSearch = useCallback(throttle((q) => {
     const params = { q, limit, resolve: false };
 
     dispatch(accountSearch(params, controller.current.signal))
@@ -53,7 +53,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
         setAccountIds(ImmutableOrderedSet(accountIds));
       })
       .catch(noOp);
-  }, 900, { leading: false, trailing: true }), [limit]);
+  }, 900, { leading: true, trailing: true }), [limit]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     refreshCancelToken();

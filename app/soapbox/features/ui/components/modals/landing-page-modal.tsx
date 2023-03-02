@@ -1,10 +1,10 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import SiteLogo from 'soapbox/components/site-logo';
 import { Text, Button, Icon, Modal } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import { useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
 
 const messages = defineMessages({
   download: { id: 'landing_page_modal.download', defaultMessage: 'Download' },
@@ -14,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface ILandingPageModal {
-  onClose: (type: string) => void,
+  onClose: (type: string) => void
 }
 
 /** Login and links to display from the hamburger menu of the homepage. */
@@ -22,14 +22,8 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
   const intl = useIntl();
 
   const soapboxConfig = useSoapboxConfig();
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
+  const { isOpen } = useRegistrationStatus();
   const { links } = soapboxConfig;
-
-  const instance = useInstance();
-  const features = useFeatures();
-
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
 
   return (
     <Modal
@@ -38,13 +32,13 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
     >
       <div className='mt-4 divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
         {links.get('help') && (
-          <nav className='grid gap-y-8 mb-6'>
+          <nav className='mb-6 grid gap-y-8'>
             <a
               href={links.get('help')}
               target='_blank'
-              className='p-3 space-x-3 flex items-center rounded-md dark:hover:bg-gray-900/50 hover:bg-gray-50'
+              className='flex items-center space-x-3 rounded-md p-3 hover:bg-gray-50 dark:hover:bg-gray-900/50'
             >
-              <Icon src={require('@tabler/icons/lifebuoy.svg')} className='flex-shrink-0 h-6 w-6 text-gray-600 dark:text-gray-700' />
+              <Icon src={require('@tabler/icons/lifebuoy.svg')} className='h-6 w-6 shrink-0 text-gray-600 dark:text-gray-700' />
 
               <Text weight='medium'>
                 {intl.formatMessage(messages.helpCenter)}
@@ -54,7 +48,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
         )}
 
         <div
-          className={classNames('pt-6 grid gap-4', {
+          className={clsx('grid gap-4 pt-6', {
             'grid-cols-2': isOpen,
             'grid-cols-1': !isOpen,
           })}
@@ -63,7 +57,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
             {intl.formatMessage(messages.login)}
           </Button>
 
-          {(isOpen || pepeEnabled && pepeOpen) && (
+          {isOpen && (
             <Button to='/signup' theme='primary' block>
               {intl.formatMessage(messages.register)}
             </Button>

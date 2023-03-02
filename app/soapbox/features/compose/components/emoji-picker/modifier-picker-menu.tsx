@@ -7,9 +7,9 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 const backgroundImageFn = () => require('emoji-datasource/img/twitter/sheets/32.png');
 
 interface IModifierPickerMenu {
-  active: boolean,
-  onSelect: (modifier: number) => void,
-  onClose: () => void,
+  active: boolean
+  onSelect: (modifier: number) => void
+  onClose: () => void
 }
 
 const ModifierPickerMenu: React.FC<IModifierPickerMenu> = ({ active, onSelect, onClose }) => {
@@ -19,8 +19,8 @@ const ModifierPickerMenu: React.FC<IModifierPickerMenu> = ({ active, onSelect, o
     onSelect(+e.currentTarget.getAttribute('data-index')! * 1);
   };
 
-  const handleDocumentClick = useCallback((e => {
-    if (node.current && !node.current.contains(e.target)) {
+  const handleDocumentClick = useCallback(((e: MouseEvent | TouchEvent) => {
+    if (node.current && !node.current.contains(e.target as Node)) {
       onClose();
     }
   }), []);
