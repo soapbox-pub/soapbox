@@ -19,7 +19,7 @@ const PrivacyStep = () => {
     <>
       <Stack className='mx-auto max-w-sm' space={2}>
         <Text size='3xl' weight='bold' align='center'>
-          <FormattedMessage id='manage_group.get_started' defaultMessage="Let's get started!" />
+          <FormattedMessage id='manage_group.get_started' defaultMessage='Let’s get started!' />
         </Text>
         <Text size='lg' theme='muted' align='center'>
           <FormattedMessage id='manage_group.tagline' defaultMessage='Groups connect you with others based on shared interests.' />

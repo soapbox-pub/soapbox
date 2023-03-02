@@ -37,17 +37,17 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
         className={clsx('absolute top-0 h-full w-full transition-opacity', {
           'opacity-0 hover:opacity-90 bg-primary-100 dark:bg-gray-800': src,
         })}
-        space={3}
+        space={1.5}
         alignItems='center'
         justifyContent='center'
       >
         <Icon
           src={require('@tabler/icons/photo-plus.svg')}
-          className='h-7 w-7'
+          className='h-4.5 w-4.5'
         />
 
-        <Text size='sm' theme='primary' weight='semibold' transform='uppercase'>
-          <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
+        <Text size='md' theme='primary' weight='semibold'>
+          <FormattedMessage id='group.upload_banner' defaultMessage='Upload photo' />
         </Text>
 
         <input
@@ -65,8 +65,8 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 
 const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
-    <label className='absolute left-1/2 bottom-0 h-[72px] w-[72px] -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
-      {src && <Avatar src={src} size={72} />}
+    <label className='absolute left-1/2 bottom-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
+      {src && <Avatar src={src} size={80} />}
       <HStack
         alignItems='center'
         justifyContent='center'
@@ -77,7 +77,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
       >
         <Icon
           src={require('@tabler/icons/camera-plus.svg')}
-          className='h-7 w-7 text-white'
+          className='h-5 w-5 text-white'
         />
       </HStack>
       <span className='sr-only'>Upload avatar</span>
