@@ -10,7 +10,7 @@ type Permission = typeof PERMISSION_CREATE_GROUPS | typeof PERMISSION_INVITE_USE
 export const hasPermission = (state: RootState, permission: Permission) => {
   const account = state.accounts_meta.get(state.me as string)!;
 
-  if (!account?.role) return false;
+  if (!account?.role) return true;
 
   const permissions = account.getIn(['role', 'permissions']) as number;
 
