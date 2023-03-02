@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
-import { fetchGroup } from 'soapbox/actions/groups';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import { Column, Layout } from 'soapbox/components/ui';
+import { Column, Icon, Layout, Stack, Text } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
@@ -13,8 +11,8 @@ import {
   GroupMediaPanel,
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetGroup } from 'soapbox/selectors';
+import { useOwnAccount } from 'soapbox/hooks';
+import { useGroup } from 'soapbox/queries/groups';
 
 import { Tabs } from '../components/ui';
 
@@ -34,23 +32,20 @@ interface IGroupPage {
 const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const intl = useIntl();
   const match = useRouteMatch();
-  const dispatch = useAppDispatch();
+  const me = useOwnAccount();
 
   const id = params?.id || '';
 
-  const getGroup = useCallback(makeGetGroup(), []);
-  const group = useAppSelector(state => getGroup(state, id));
-  const me = useAppSelector(state => state.me);
+  const { group } = useGroup(id);
 
-  useEffect(() => {
-    dispatch(fetchGroup(id));
-  }, [id]);
+  const isNonMember = !group?.relationship || !group.relationship.member;
+  const isPrivate = group?.locked;
 
-  if ((group as any) === false) {
-    return (
-      <MissingIndicator />
-    );
-  }
+  // if ((group as any) === false) {
+  //   return (
+  //     <MissingIndicator />
+  //   );
+  // }
 
   const items = [
     {
@@ -76,7 +71,18 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
             activeItem={match.path}
           />
 
-          {children}
+          {(isNonMember && isPrivate) ? (
+            <Stack space={4} className='py-10' alignItems='center'>
+              <div className='rounded-full bg-gray-200 p-3'>
+                <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-gray-600' />
+              </div>
+
+              <Text theme='muted'>
+                Content is only visible to group members
+              </Text>
+            </Stack>
+
+          ) : children}
         </Column>
 
         {!me && (

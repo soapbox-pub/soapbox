@@ -96,7 +96,7 @@ export default (props: Props) => {
 
       <Button theme='primary'>
         {group.locked
-          ? <FormattedMessage id='group.join.private' defaultMessage='Request to Join' />
+          ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
           : <FormattedMessage id='group.join.public' defaultMessage='Join Group' />}
       </Button>
     </HStack>

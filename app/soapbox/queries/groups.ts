@@ -9,6 +9,7 @@ import { Group } from 'soapbox/types/entities';
 import { flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 
 const GroupKeys = {
+  group: (id: string) => ['groups', 'group', id] as const,
   myGroups: (userId: string) => ['groups', userId] as const,
   popularGroups: ['groups', 'popular'] as const,
   suggestedGroups: ['groups', 'suggested'] as const,
@@ -70,7 +71,7 @@ const usePopularGroups = () => {
   const features = useFeatures();
 
   const getQuery = async () => {
-    const { data } = await api.get<Group[]>('/api/mock/groups'); // '/api/v1/truth/trends/groups'
+    const { data } = await api.get<Group[]>('/api/v1/groups/search?q=group'); // '/api/v1/truth/trends/groups'
     const result = data.map(normalizeGroup);
 
     return result;
@@ -109,4 +110,23 @@ const useSuggestedGroups = () => {
   };
 };
 
-export { useGroups, usePopularGroups, useSuggestedGroups };
+const useGroup = (id: string) => {
+  const api = useApi();
+  const features = useFeatures();
+
+  const getGroup = async () => {
+    const { data } = await api.get(`/api/v1/groups/${id}`);
+    return normalizeGroup(data);
+  };
+
+  const queryInfo = useQuery(GroupKeys.group(id), getGroup, {
+    enabled: features.groups && !!id,
+  });
+
+  return {
+    ...queryInfo,
+    group: queryInfo.data,
+  };
+};
+
+export { useGroups, useGroup, usePopularGroups, useSuggestedGroups };

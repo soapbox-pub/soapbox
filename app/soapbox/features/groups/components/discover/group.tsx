@@ -1,9 +1,11 @@
 import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
-import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, Button, HStack, Stack, Text } from 'soapbox/components/ui';
+import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
+import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
 import { Group as GroupEntity } from 'soapbox/types/entities';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IGroup {
   group: GroupEntity
@@ -21,75 +23,56 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
         width,
       }}
     >
-      <Stack
-        className='aspect-w-10 aspect-h-7 h-full w-full overflow-hidden rounded-lg'
-        ref={ref}
-        style={{ minHeight: 180 }}
-      >
-        {group.header && (
-          <img
-            src={group.header}
-            alt='Group cover'
-            className='absolute inset-0 object-cover'
-          />
-        )}
+      <Link to={`/groups/${group.id}`}>
+        <Stack
+          className='aspect-w-10 aspect-h-7 h-full w-full overflow-hidden rounded-lg'
+          ref={ref}
+          style={{ minHeight: 180 }}
+        >
+          {group.header && (
+            <img
+              src={group.header}
+              alt='Group cover'
+              className='absolute inset-0 object-cover'
+            />
+          )}
 
-        <Stack justifyContent='end' className='z-10 p-4 text-white' space={3}>
-          <Avatar
-            className='ring-2 ring-white'
-            src={group.avatar}
-            size={44}
-          />
-
-          <Stack space={1}>
-            <Text
-              weight='bold'
-              dangerouslySetInnerHTML={{ __html: group.display_name_html }}
-              theme='inherit'
-              truncate
+          <Stack justifyContent='end' className='z-10 p-4 text-white' space={3}>
+            <Avatar
+              className='ring-2 ring-white'
+              src={group.avatar}
+              size={44}
             />
 
-            <HStack space={1} alignItems='center'>
-              <Icon
-                className='h-4.5 w-4.5'
-                src={group.locked ? require('@tabler/icons/lock.svg') : require('@tabler/icons/world.svg')}
+            <Stack space={1}>
+              <Text
+                weight='bold'
+                dangerouslySetInnerHTML={{ __html: group.display_name_html }}
+                theme='inherit'
+                truncate
               />
 
-              {typeof group.members_count === 'undefined' ? (
-                <Text theme='inherit' tag='span' size='sm'>
-                  {group.locked ? (
-                    <FormattedMessage id='group.privacy.locked' defaultMessage='Private' />
-                  ) : (
-                    <FormattedMessage id='group.privacy.public' defaultMessage='Public' />
-                  )}
-                </Text>
-              ) : (
-                <Text theme='inherit' tag='span' size='sm'>
-                  {shortNumberFormat(group.members_count)}
-                  {' '}
-                  <FormattedMessage
-                    id='groups.discover.search.results.member_count'
-                    defaultMessage='{members, plural, one {member} other {members}}'
-                    values={{
-                      members: group.members_count,
-                    }}
-                  />
-                </Text>
-              )}
-            </HStack>
+              <HStack alignItems='center' space={1}>
+                <GroupPrivacy group={group} />
+                <span>&bull;</span>
+                <GroupMemberCount group={group} />
+              </HStack>
+            </Stack>
           </Stack>
-        </Stack>
 
-        <div
-          className='absolute inset-x-0 bottom-0 z-0 flex justify-center rounded-b-lg bg-gradient-to-t from-gray-900 to-transparent pt-12 pb-8 transition-opacity duration-500'
-        />
-      </Stack>
+          <div
+            className='absolute inset-x-0 bottom-0 z-0 flex justify-center rounded-b-lg bg-gradient-to-t from-gray-900 to-transparent pt-12 pb-8 transition-opacity duration-500'
+          />
+        </Stack>
+      </Link>
 
       <Button
         theme='primary'
         block
       >
-        {group.locked ? 'Request to Join' : 'Join Group'}
+        {group.locked
+          ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
+          : <FormattedMessage id='group.join.public' defaultMessage='Join Group' />}
       </Button>
     </div>
   );
