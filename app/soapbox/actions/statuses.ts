@@ -48,6 +48,8 @@ const STATUS_TRANSLATE_SUCCESS = 'STATUS_TRANSLATE_SUCCESS';
 const STATUS_TRANSLATE_FAIL    = 'STATUS_TRANSLATE_FAIL';
 const STATUS_TRANSLATE_UNDO    = 'STATUS_TRANSLATE_UNDO';
 
+const STATUS_UNFILTER = 'STATUS_UNFILTER';
+
 const statusExists = (getState: () => RootState, statusId: string) => {
   return (getState().statuses.get(statusId) || null) !== null;
 };
@@ -335,6 +337,11 @@ const undoStatusTranslation = (id: string) => ({
   id,
 });
 
+const unfilterStatus = (id: string) => ({
+  type: STATUS_UNFILTER,
+  id,
+});
+
 export {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -363,6 +370,7 @@ export {
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_FAIL,
   STATUS_TRANSLATE_UNDO,
+  STATUS_UNFILTER,
   createStatus,
   editStatus,
   fetchStatus,
@@ -381,4 +389,5 @@ export {
   toggleStatusHidden,
   translateStatus,
   undoStatusTranslation,
+  unfilterStatus,
 };

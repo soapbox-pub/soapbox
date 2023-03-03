@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
-import { toggleStatusHidden } from 'soapbox/actions/statuses';
+import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import TranslateButton from 'soapbox/components/translate-button';
 import AccountContainer from 'soapbox/containers/account-container';
@@ -92,6 +92,8 @@ const Status: React.FC<IStatus> = (props) => {
   const isReblog = status.reblog && typeof status.reblog === 'object';
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
   const group = actualStatus.group as GroupEntity | null;
+
+  const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -202,6 +204,8 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
+  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.size ? status.id : actualStatus.id));
+
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
     firstEmoji?.focus();
@@ -281,7 +285,7 @@ const Status: React.FC<IStatus> = (props) => {
     );
   }
 
-  if (status.filtered || actualStatus.filtered) {
+  if (filtered && status.showFiltered) {
     const minHandlers = muted ? undefined : {
       moveUp: handleHotkeyMoveUp,
       moveDown: handleHotkeyMoveDown,
@@ -291,7 +295,11 @@ const Status: React.FC<IStatus> = (props) => {
       <HotKeys handlers={minHandlers}>
         <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
           <Text theme='muted'>
-            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {status.filtered.join(', ')}.
+            {' '}
+            <button className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleUnfilter}>
+              <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
+            </button>
           </Text>
         </div>
       </HotKeys>

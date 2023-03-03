@@ -5,20 +5,39 @@
  */
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
+import { FilterKeyword, FilterStatus } from 'soapbox/types/entities';
+
+import { normalizeFilterKeyword } from './filter-keyword';
+import { normalizeFilterStatus } from './filter-status';
+
 export type ContextType = 'home' | 'public' | 'notifications' | 'thread';
+export type FilterActionType = 'warn' | 'hide';
 
 // https://docs.joinmastodon.org/entities/filter/
 export const FilterRecord = ImmutableRecord({
   id: '',
-  phrase: '',
+  title: '',
   context: ImmutableList<ContextType>(),
-  whole_word: false,
   expires_at: '',
-  irreversible: false,
+  filter_action: 'warn' as FilterActionType,
+  keywords: ImmutableList<FilterKeyword>(),
+  statuses: ImmutableList<FilterStatus>(),
 });
 
-export const normalizeFilter = (filter: Record<string, any>) => {
-  return FilterRecord(
-    ImmutableMap(fromJS(filter)),
+const normalizeKeywords = (filter: ImmutableMap<string, any>) =>
+  filter.update('keywords', ImmutableList(), keywords =>
+    keywords.map(normalizeFilterKeyword),
   );
-};
+
+const normalizeStatuses = (filter: ImmutableMap<string, any>) =>
+  filter.update('statuses', ImmutableList(), statuses =>
+    statuses.map(normalizeFilterStatus),
+  );
+
+export const normalizeFilter = (filter: Record<string, any>) =>
+  FilterRecord(
+    ImmutableMap(fromJS(filter)).withMutations(filter => {
+      normalizeKeywords(filter);
+      normalizeStatuses(filter);
+    }),
+  );

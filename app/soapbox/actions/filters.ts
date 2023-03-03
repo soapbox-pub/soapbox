@@ -8,9 +8,13 @@ import api from '../api';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';
-const FILTERS_FETCH_SUCCESS = 'FILTERS_FETCH_SUCCESS';
-const FILTERS_FETCH_FAIL    = 'FILTERS_FETCH_FAIL';
+const FILTERS_V1_FETCH_REQUEST = 'FILTERS_V1_FETCH_REQUEST';
+const FILTERS_V1_FETCH_SUCCESS = 'FILTERS_V1_FETCH_SUCCESS';
+const FILTERS_V1_FETCH_FAIL    = 'FILTERS_V1_FETCH_FAIL';
+
+const FILTERS_V2_FETCH_REQUEST = 'FILTERS_V2_FETCH_REQUEST';
+const FILTERS_V2_FETCH_SUCCESS = 'FILTERS_V2_FETCH_SUCCESS';
+const FILTERS_V2_FETCH_FAIL    = 'FILTERS_V2_FETCH_FAIL';
 
 const FILTERS_CREATE_REQUEST = 'FILTERS_CREATE_REQUEST';
 const FILTERS_CREATE_SUCCESS = 'FILTERS_CREATE_SUCCESS';
@@ -25,6 +29,50 @@ const messages = defineMessages({
   removed: { id: 'filters.removed', defaultMessage: 'Filter deleted.' },
 });
 
+const fetchFiltersV1 = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({
+      type: FILTERS_V1_FETCH_REQUEST,
+      skipLoading: true,
+    });
+
+    api(getState)
+      .get('/api/v1/filters')
+      .then(({ data }) => dispatch({
+        type: FILTERS_V1_FETCH_SUCCESS,
+        filters: data,
+        skipLoading: true,
+      }))
+      .catch(err => dispatch({
+        type: FILTERS_V1_FETCH_FAIL,
+        err,
+        skipLoading: true,
+        skipAlert: true,
+      }));
+  };
+
+const fetchFiltersV2 = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({
+      type: FILTERS_V2_FETCH_REQUEST,
+      skipLoading: true,
+    });
+
+    api(getState)
+      .get('/api/v2/filters')
+      .then(({ data }) => dispatch({
+        type: FILTERS_V2_FETCH_SUCCESS,
+        filters: data,
+        skipLoading: true,
+      }))
+      .catch(err => dispatch({
+        type: FILTERS_V2_FETCH_FAIL,
+        err,
+        skipLoading: true,
+        skipAlert: true,
+      }));
+  };
+
 const fetchFilters = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
@@ -33,26 +81,9 @@ const fetchFilters = () =>
     const instance = state.instance;
     const features = getFeatures(instance);
 
-    if (!features.filters) return;
+    if (features.filtersV2) return dispatch(fetchFiltersV2());
 
-    dispatch({
-      type: FILTERS_FETCH_REQUEST,
-      skipLoading: true,
-    });
-
-    api(getState)
-      .get('/api/v1/filters')
-      .then(({ data }) => dispatch({
-        type: FILTERS_FETCH_SUCCESS,
-        filters: data,
-        skipLoading: true,
-      }))
-      .catch(err => dispatch({
-        type: FILTERS_FETCH_FAIL,
-        err,
-        skipLoading: true,
-        skipAlert: true,
-      }));
+    if (features.filters) return dispatch(fetchFiltersV1());
   };
 
 const createFilter = (phrase: string, expires_at: string, context: Array<string>, whole_word: boolean, irreversible: boolean) =>
@@ -84,9 +115,12 @@ const deleteFilter = (id: string) =>
   };
 
 export {
-  FILTERS_FETCH_REQUEST,
-  FILTERS_FETCH_SUCCESS,
-  FILTERS_FETCH_FAIL,
+  FILTERS_V1_FETCH_REQUEST,
+  FILTERS_V1_FETCH_SUCCESS,
+  FILTERS_V1_FETCH_FAIL,
+  FILTERS_V2_FETCH_REQUEST,
+  FILTERS_V2_FETCH_SUCCESS,
+  FILTERS_V2_FETCH_FAIL,
   FILTERS_CREATE_REQUEST,
   FILTERS_CREATE_SUCCESS,
   FILTERS_CREATE_FAIL,
