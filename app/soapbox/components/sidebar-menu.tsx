@@ -296,7 +296,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
                   )}
 
-                  {features.filters && (
+                  {(features.filters || features.filtersV2) && (
                     <SidebarLink
                       to='/filters'
                       icon={require('@tabler/icons/filter.svg')}

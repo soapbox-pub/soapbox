@@ -14,7 +14,6 @@ import {
   FilterRecord,
   FilterKeywordRecord,
   FilterStatusRecord,
-  FilterV1Record,
   GroupRecord,
   GroupRelationshipRecord,
   HistoryRecord,
@@ -49,7 +48,6 @@ type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
 type FilterKeyword = ReturnType<typeof FilterKeywordRecord>;
 type FilterStatus = ReturnType<typeof FilterStatusRecord>;
-type FilterV1 = ReturnType<typeof FilterV1Record>;
 type Group = ReturnType<typeof GroupRecord>;
 type GroupRelationship = ReturnType<typeof GroupRelationshipRecord>;
 type History = ReturnType<typeof HistoryRecord>;
@@ -97,7 +95,6 @@ export {
   Filter,
   FilterKeyword,
   FilterStatus,
-  FilterV1,
   Group,
   GroupRelationship,
   History,

@@ -33,6 +33,8 @@ interface IStreamfield {
   onChange: (values: any[]) => void
   /** Input to render for each value. */
   component: StreamfieldComponent<any>
+  /** Minimum number of allowed inputs. */
+  minItems?: number
   /** Maximum number of allowed inputs. */
   maxItems?: number
 }
@@ -47,6 +49,7 @@ const Streamfield: React.FC<IStreamfield> = ({
   onChange,
   component: Component,
   maxItems = Infinity,
+  minItems = 0,
 }) => {
   const intl = useIntl();
 
@@ -70,7 +73,7 @@ const Streamfield: React.FC<IStreamfield> = ({
           {values.map((value, i) => (
             <HStack space={2} alignItems='center'>
               <Component key={i} onChange={handleChange(i)} value={value} />
-              {onRemoveItem && (
+              {values.length > minItems && onRemoveItem && (
                 <IconButton
                   iconClassName='h-4 w-4'
                   className='bg-transparent text-gray-400 hover:text-gray-600'

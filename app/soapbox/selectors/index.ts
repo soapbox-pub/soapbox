@@ -16,7 +16,7 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 import type { ContextType } from 'soapbox/normalizers/filter';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { FilterV1 as FilterV1Entity, Notification } from 'soapbox/types/entities';
+import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
@@ -115,45 +115,65 @@ export const getFilters = (state: RootState, query: FilterContext) => {
 const escapeRegExp = (string: string) =>
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 
-export const regexFromFilters = (filters: ImmutableList<FilterV1Entity>) => {
+export const regexFromFilters = (filters: ImmutableList<FilterEntity>) => {
   if (filters.size === 0) return null;
 
-  return new RegExp(filters.map(filter => {
-    let expr = escapeRegExp(filter.phrase);
+  return new RegExp(filters.map(filter =>
+    filter.keywords.map(keyword => {
+      let expr = escapeRegExp(keyword.keyword);
 
-    if (filter.whole_word) {
-      if (/^[\w]/.test(expr)) {
-        expr = `\\b${expr}`;
+      if (keyword.whole_word) {
+        if (/^[\w]/.test(expr)) {
+          expr = `\\b${expr}`;
+        }
+
+        if (/[\w]$/.test(expr)) {
+          expr = `${expr}\\b`;
+        }
       }
 
-      if (/[\w]$/.test(expr)) {
-        expr = `${expr}\\b`;
-      }
-    }
-
-    return expr;
-  }).join('|'), 'i');
+      return expr;
+    }).join('|'),
+  ).join('|'), 'i');
 };
 
-const checkFiltered = (index: string, filters: ImmutableList<FilterV1Entity>) =>
-  filters.reduce((result, filter) => {
-    let expr = escapeRegExp(filter.phrase);
+const checkFiltered = (index: string, filters: ImmutableList<FilterEntity>) =>
+  filters.reduce((result, filter) =>
+    result.concat(filter.keywords.reduce((result, keyword) => {
+      let expr = escapeRegExp(keyword.keyword);
 
-    if (filter.whole_word) {
-      if (/^[\w]/.test(expr)) {
-        expr = `\\b${expr}`;
+      if (keyword.whole_word) {
+        if (/^[\w]/.test(expr)) {
+          expr = `\\b${expr}`;
+        }
+
+        if (/[\w]$/.test(expr)) {
+          expr = `${expr}\\b`;
+        }
       }
 
-      if (/[\w]$/.test(expr)) {
-        expr = `${expr}\\b`;
-      }
-    }
+      const regex = new RegExp(expr);
 
-    const regex = new RegExp(expr);
+      if (regex.test(index)) return result.concat(filter.title);
+      return result;
+    }, ImmutableList<string>())), ImmutableList<string>());
+// const results =
+// let expr = escapeRegExp(filter.phrase);
 
-    if (regex.test(index)) return result.push(filter.phrase);
-    return result;
-  }, ImmutableList<string>());
+// if (filter.whole_word) {
+//   if (/^[\w]/.test(expr)) {
+//     expr = `\\b${expr}`;
+//   }
+
+//   if (/[\w]$/.test(expr)) {
+//     expr = `${expr}\\b`;
+//   }
+// }
+
+// const regex = new RegExp(expr);
+
+// if (regex.test(index)) return result.join(filter.phrase);
+// return result;
 
 type APIStatus = { id: string, username?: string };
 
@@ -194,7 +214,7 @@ export const makeGetStatus = () => {
         // @ts-ignore
         map.set('group', group || null);
 
-        if (features.filters && (accountReblog || accountBase).id !== me) {
+        if ((features.filters || features.filtersV2) && (accountReblog || accountBase).id !== me) {
           const filtered = checkFiltered(statusReblog?.search_index || statusBase.search_index, filters);
 
           map.set('filtered', filtered);

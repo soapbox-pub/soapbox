@@ -1,22 +1,21 @@
 import { List as ImmutableList } from 'immutable';
 
-import { normalizeFilterV1 } from 'soapbox/normalizers';
+import { normalizeFilter } from 'soapbox/normalizers';
 
-import { FILTERS_V1_FETCH_SUCCESS } from '../actions/filters';
+import { FILTERS_FETCH_SUCCESS } from '../actions/filters';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, FilterV1 as FilterV1Entity } from 'soapbox/types/entities';
+import type { APIEntity, Filter as FilterEntity } from 'soapbox/types/entities';
 
-type State = ImmutableList<FilterV1Entity>;
+type State = ImmutableList<FilterEntity>;
 
-const importFiltersV1 = (_state: State, filters: APIEntity[]): State => {
-  return ImmutableList(filters.map((filter) => normalizeFilterV1(filter)));
-};
+const importFilters = (_state: State, filters: APIEntity[]): State =>
+  ImmutableList(filters.map((filter) => normalizeFilter(filter)));
 
 export default function filters(state: State = ImmutableList(), action: AnyAction): State {
   switch (action.type) {
-    case FILTERS_V1_FETCH_SUCCESS:
-      return importFiltersV1(state, action.filters);
+    case FILTERS_FETCH_SUCCESS:
+      return importFilters(state, action.filters);
     default:
       return state;
   }

@@ -45,7 +45,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
           )}
           <FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink>
           <FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink>
-          {features.filters && (
+          {(features.filters || features.filtersV2) && (
             <FooterLink to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></FooterLink>
           )}
           {features.federating && (
