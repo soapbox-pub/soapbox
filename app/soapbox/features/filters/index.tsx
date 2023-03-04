@@ -63,10 +63,7 @@ const FilterField: StreamfieldComponent<IFilterField> = ({ value, onChange }) =>
   const intl = useIntl();
 
   const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> =>
-    e => {
-      // console.log({ ...value, [key]: e.currentTarget[e.currentTarget.type === 'checkbox' ? 'checked' : 'value'] });
-      onChange({ ...value, [key]: e.currentTarget[e.currentTarget.type === 'checkbox' ? 'checked' : 'value'] });
-    };
+    e => onChange({ ...value, [key]: e.currentTarget[e.currentTarget.type === 'checkbox' ? 'checked' : 'value'] });
 
   return (
     <HStack space={2} grow>
