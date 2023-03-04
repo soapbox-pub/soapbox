@@ -452,7 +452,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Can edit and manage timeline filters (aka "muted words").
-     * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
+     * @see {@link https://docs.joinmastodon.org/methods/filters/}
      */
     filtersV2: v.software === MASTODON && gte(v.compatVersion, '3.6.0'),
 
@@ -788,7 +788,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Can display suggested accounts.
-     * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
+     * @see {@link https://docs.joinmastodon.org/methods/suggestions/}
      */
     suggestions: any([
       v.software === MASTODON && gte(v.compatVersion, '2.4.3'),

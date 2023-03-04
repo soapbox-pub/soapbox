@@ -102,6 +102,10 @@ export function Filters() {
   return import(/* webpackChunkName: "features/filters" */'../../filters');
 }
 
+export function EditFilter() {
+  return import(/* webpackChunkName: "features/filters" */'../../filters/edit-filter');
+}
+
 export function ReportModal() {
   return import(/* webpackChunkName: "modals/report-modal/report-modal" */'../components/modals/report-modal/report-modal');
 }

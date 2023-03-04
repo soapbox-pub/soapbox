@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
-import { fetchFilters, createFilter, deleteFilter } from 'soapbox/actions/filters';
-import List, { ListItem } from 'soapbox/components/list';
+import { fetchFilters, deleteFilter } from 'soapbox/actions/filters';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, HStack, IconButton, Input, Stack, Streamfield, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { Button, CardTitle, Column, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
-
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-
-interface IFilterField {
-  keyword: string
-  whole_word: boolean
-}
 
 const messages = defineMessages({
   heading: { id: 'column.filters', defaultMessage: 'Muted words' },
@@ -59,83 +52,14 @@ const contexts = {
 //   // 604800: '1 week',
 // };
 
-const FilterField: StreamfieldComponent<IFilterField> = ({ value, onChange }) => {
-  const intl = useIntl();
-
-  const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> =>
-    e => onChange({ ...value, [key]: e.currentTarget[e.currentTarget.type === 'checkbox' ? 'checked' : 'value'] });
-
-  return (
-    <HStack space={2} grow>
-      <Input
-        type='text'
-        outerClassName='w-2/5 grow'
-        value={value.keyword}
-        onChange={handleChange('keyword')}
-        placeholder={intl.formatMessage(messages.keyword)}
-      />
-      <HStack alignItems='center' space={2}>
-        <Toggle
-          checked={value.whole_word}
-          onChange={handleChange('whole_word')}
-          icons={false}
-        />
-
-        <Text tag='span' theme='muted'>
-          <FormattedMessage id='column.filters.whole_word' defaultMessage='Whole word' />
-        </Text>
-      </HStack>
-    </HStack>
-  );
-};
-
 const Filters = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const features = useFeatures();
+  const history = useHistory();
 
   const filters = useAppSelector((state) => state.filters);
 
-  const [title, setTitle] = useState('');
-  const [expiresAt] = useState('');
-  const [homeTimeline, setHomeTimeline] = useState(true);
-  const [publicTimeline, setPublicTimeline] = useState(false);
-  const [notifications, setNotifications] = useState(false);
-  const [conversations, setConversations] = useState(false);
-  const [accounts, setAccounts] = useState(false);
-  const [hide, setHide] = useState(false);
-  const [keywords, setKeywords] = useState<{ keyword: string, whole_word: boolean }[]>([{ keyword: '', whole_word: false }]);
-
-  // const handleSelectChange = e => {
-  //   this.setState({ [e.target.name]: e.target.value });
-  // };
-
-  const handleAddNew: React.FormEventHandler = e => {
-    e.preventDefault();
-    const context: Array<string> = [];
-
-    if (homeTimeline) {
-      context.push('home');
-    }
-    if (publicTimeline) {
-      context.push('public');
-    }
-    if (notifications) {
-      context.push('notifications');
-    }
-    if (conversations) {
-      context.push('thread');
-    }
-    if (accounts) {
-      context.push('account');
-    }
-
-    dispatch(createFilter(title, expiresAt, context, hide, keywords)).then(() => {
-      return dispatch(fetchFilters(true));
-    }).catch(error => {
-      toast.error(intl.formatMessage(messages.create_error));
-    });
-  };
+  const handleFilterEdit = (id: string) => () => history.push(`/filters/${id}`);
 
   const handleFilterDelete = (id: string) => () => {
     dispatch(deleteFilter(id)).then(() => {
@@ -145,12 +69,6 @@ const Filters = () => {
     });
   };
 
-  const handleChangeKeyword = (keywords: { keyword: string, whole_word: boolean }[]) => setKeywords(keywords);
-
-  const handleAddKeyword = () => setKeywords(keywords => [...keywords, { keyword: '', whole_word: false }]);
-
-  const handleRemoveKeyword = (i: number) => setKeywords(keywords => keywords.filter((_, index) => index !== i));
-
   useEffect(() => {
     dispatch(fetchFilters(true));
   }, []);
@@ -159,118 +77,16 @@ const Filters = () => {
 
   return (
     <Column className='filter-settings-panel' label={intl.formatMessage(messages.heading)}>
-      <CardHeader>
-        <CardTitle title={intl.formatMessage(messages.subheading_add_new)} />
-      </CardHeader>
-      <Form onSubmit={handleAddNew}>
-        <FormGroup labelText={intl.formatMessage(messages.title)}>
-          <Input
-            required
-            type='text'
-            name='title'
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </FormGroup>
-        {/* <FormGroup labelText={intl.formatMessage(messages.expires)} hintText={intl.formatMessage(messages.expires_hint)}>
-          <SelectDropdown
-            items={expirations}
-            defaultValue={expirations.never}
-            onChange={this.handleSelectChange}
-          />
-        </FormGroup> */}
-
-        <Stack>
-          <Text size='sm' weight='medium'>
-            <FormattedMessage id='filters.context_header' defaultMessage='Filter contexts' />
-          </Text>
-          <Text size='xs' theme='muted'>
-            <FormattedMessage id='filters.context_hint' defaultMessage='One or multiple contexts where the filter should apply' />
-          </Text>
-        </Stack>
-
-        <List>
-          <ListItem label={intl.formatMessage(messages.home_timeline)}>
-            <Toggle
-              name='home_timeline'
-              checked={homeTimeline}
-              onChange={({ target }) => setHomeTimeline(target.checked)}
-            />
-          </ListItem>
-          <ListItem label={intl.formatMessage(messages.public_timeline)}>
-            <Toggle
-              name='public_timeline'
-              checked={publicTimeline}
-              onChange={({ target }) => setPublicTimeline(target.checked)}
-            />
-          </ListItem>
-          <ListItem label={intl.formatMessage(messages.notifications)}>
-            <Toggle
-              name='notifications'
-              checked={notifications}
-              onChange={({ target }) => setNotifications(target.checked)}
-            />
-          </ListItem>
-          <ListItem label={intl.formatMessage(messages.conversations)}>
-            <Toggle
-              name='conversations'
-              checked={conversations}
-              onChange={({ target }) => setConversations(target.checked)}
-            />
-          </ListItem>
-          {features.filtersV2 && (
-            <ListItem label={intl.formatMessage(messages.accounts)}>
-              <Toggle
-                name='accounts'
-                checked={accounts}
-                onChange={({ target }) => setAccounts(target.checked)}
-              />
-            </ListItem>
-          )}
-        </List>
-
-        <List>
-          <ListItem
-            label={intl.formatMessage(features.filtersV2 ? messages.hide_header : messages.drop_header)}
-            hint={intl.formatMessage(features.filtersV2 ? messages.hide_hint : messages.drop_hint)}
-          >
-            <Toggle
-              name='hide'
-              checked={hide}
-              onChange={({ target }) => setHide(target.checked)}
-            />
-          </ListItem>
-          {/* <ListItem
-            label={intl.formatMessage(messages.whole_word_header)}
-            hint={intl.formatMessage(messages.whole_word_hint)}
-          >
-            <Toggle
-              name='whole_word'
-              checked={wholeWord}
-              onChange={({ target }) => setWholeWord(target.checked)}
-            />
-          </ListItem> */}
-        </List>
-
-        <Streamfield
-          label={intl.formatMessage(messages.keywords)}
-          component={FilterField}
-          values={keywords}
-          onChange={handleChangeKeyword}
-          onAddItem={handleAddKeyword}
-          onRemoveItem={handleRemoveKeyword}
-          minItems={1}
-          maxItems={features.filtersV2 ? Infinity : 1}
-        />
-
-        <FormActions>
-          <Button type='submit' theme='primary'>{intl.formatMessage(messages.add_new)}</Button>
-        </FormActions>
-      </Form>
-
-      <CardHeader>
+      <HStack className='mb-4' space={2} justifyContent='between'>
         <CardTitle title={intl.formatMessage(messages.subheading_filters)} />
-      </CardHeader>
+        <Button
+          to='/filters/new'
+          theme='primary'
+          size='sm'
+        >
+          <FormattedMessage id='filters.create_filter' defaultMessage='Create filter' />
+        </Button>
+      </HStack>
 
       <ScrollableList
         scrollKey='filters'
@@ -278,8 +94,8 @@ const Filters = () => {
         itemClassName='pb-4 last:pb-0'
       >
         {filters.map((filter, i) => (
-          <HStack space={1} justifyContent='between'>
-            <Stack space={1}>
+          <HStack space={1}>
+            <Stack className='grow' space={1}>
               <Text weight='medium'>
                 <FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' />
                 {' '}
@@ -303,6 +119,12 @@ const Filters = () => {
                 )} */}
               </HStack>
             </Stack>
+            <IconButton
+              iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
+              src={require('@tabler/icons/pencil.svg')}
+              onClick={handleFilterEdit(filter.id)}
+              title={intl.formatMessage(messages.delete)}
+            />
             <IconButton
               iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
               src={require('@tabler/icons/trash.svg')}
