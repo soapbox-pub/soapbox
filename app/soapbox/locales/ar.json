@@ -794,7 +794,6 @@
   "home.column_settings.show_replies": "عرض الردود",
   "icon_button.icons": "الأيقونات",
   "icon_button.label": "تحديد أيقونة",
-  "icon_button.not_found": "لا يوجد أيقونات (╯°□°）╯︵ ┻━┻",
   "import_data.actions.import": "إستيراد",
   "import_data.actions.import_blocks": "استيراد قائمة الحظر",
   "import_data.actions.import_follows": "استيراد قائمة المتابعين",
