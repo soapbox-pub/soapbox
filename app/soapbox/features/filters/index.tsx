@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { fetchFilters, deleteFilter } from 'soapbox/actions/filters';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, CardTitle, Column, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
+import { Button, CardTitle, Column, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -31,6 +31,7 @@ const messages = defineMessages({
   create_error: { id: 'column.filters.create_error', defaultMessage: 'Error adding filter' },
   delete_error: { id: 'column.filters.delete_error', defaultMessage: 'Error deleting filter' },
   subheading_filters: { id: 'column.filters.subheading_filters', defaultMessage: 'Current Filters' },
+  edit: { id: 'column.filters.edit', defaultMessage: 'Edit' },
   delete: { id: 'column.filters.delete', defaultMessage: 'Delete' },
 });
 
@@ -41,16 +42,6 @@ const contexts = {
   thread: messages.conversations,
   account: messages.accounts,
 };
-
-// const expirations = {
-//   null: 'Never',
-//   // 1800: '30 minutes',
-//   // 3600: '1 hour',
-//   // 21600: '6 hour',
-//   // 43200: '12 hours',
-//   // 86400 : '1 day',
-//   // 604800: '1 week',
-// };
 
 const Filters = () => {
   const intl = useIntl();
@@ -94,44 +85,42 @@ const Filters = () => {
         itemClassName='pb-4 last:pb-0'
       >
         {filters.map((filter, i) => (
-          <HStack space={1}>
-            <Stack className='grow' space={1}>
-              <Text weight='medium'>
-                <FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' />
-                {' '}
-                <Text theme='muted' tag='span'>{filter.keywords.map(keyword => keyword.keyword).join(', ')}</Text>
-              </Text>
-              <Text weight='medium'>
-                <FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' />
-                {' '}
-                <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
-              </Text>
-              <HStack space={4}>
-                {/* <Text weight='medium'>
-                  {filter.irreversible ?
-                    <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
-                    <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />}
+          <div className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
+            <Stack space={2}>
+              <Stack className='grow' space={1}>
+                <Text weight='medium'>
+                  <FormattedMessage id='filters.filters_list_phrases_label' defaultMessage='Keywords or phrases:' />
+                  {' '}
+                  <Text theme='muted' tag='span'>{filter.keywords.map(keyword => keyword.keyword).join(', ')}</Text>
                 </Text>
-                {filter.whole_word && (
-                  <Text weight='medium'>
-                    <FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' />
-                  </Text>
-                )} */}
+                <Text weight='medium'>
+                  <FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' />
+                  {' '}
+                  <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
+                </Text>
+                <HStack space={4}>
+                  {/* <Text weight='medium'>
+                   {filter.irreversible ?
+                     <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
+                     <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />}
+                 </Text>
+                 {filter.whole_word && (
+                   <Text weight='medium'>
+                     <FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' />
+                   </Text>
+                 )} */}
+                </HStack>
+              </Stack>
+              <HStack space={2} justifyContent='end'>
+                <Button theme='primary' onClick={handleFilterEdit(filter.id)}>
+                  {intl.formatMessage(messages.edit)}
+                </Button>
+                <Button theme='danger' onClick={handleFilterDelete(filter.id)}>
+                  {intl.formatMessage(messages.delete)}
+                </Button>
               </HStack>
             </Stack>
-            <IconButton
-              iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
-              src={require('@tabler/icons/pencil.svg')}
-              onClick={handleFilterEdit(filter.id)}
-              title={intl.formatMessage(messages.delete)}
-            />
-            <IconButton
-              iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
-              src={require('@tabler/icons/trash.svg')}
-              onClick={handleFilterDelete(filter.id)}
-              title={intl.formatMessage(messages.delete)}
-            />
-          </HStack>
+          </div>
         ))}
       </ScrollableList>
     </Column>

@@ -70,7 +70,7 @@ const Streamfield: React.FC<IStreamfield> = ({
 
       {(values.length > 0) && (
         <Stack>
-          {values.map((value, i) => (
+          {values.map((value, i) => value?._destroy ? null : (
             <HStack space={2} alignItems='center'>
               <Component key={i} onChange={handleChange(i)} value={value} />
               {values.length > minItems && onRemoveItem && (

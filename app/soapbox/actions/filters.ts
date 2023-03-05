@@ -147,7 +147,7 @@ const fetchFilter = (id: string) =>
     if (features.filters) return dispatch(fetchFilterV1(id));
   };
 
-const createFilterV1 = (title: string, expires_at: string, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
+const createFilterV1 = (title: string, expires_in: string | null, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FILTERS_CREATE_REQUEST });
     return api(getState).post('/api/v1/filters', {
@@ -155,7 +155,7 @@ const createFilterV1 = (title: string, expires_at: string, context: Array<string
       context,
       irreversible: hide,
       whole_word: keywords[0].whole_word,
-      expires_at,
+      expires_in,
     }).then(response => {
       dispatch({ type: FILTERS_CREATE_SUCCESS, filter: response.data });
       toast.success(messages.added);
@@ -164,14 +164,14 @@ const createFilterV1 = (title: string, expires_at: string, context: Array<string
     });
   };
 
-const createFilterV2 = (title: string, expires_at: string, context: Array<string>, hide: boolean, keywords_attributes: FilterKeywords) =>
+const createFilterV2 = (title: string, expires_in: string | null, context: Array<string>, hide: boolean, keywords_attributes: FilterKeywords) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FILTERS_CREATE_REQUEST });
     return api(getState).post('/api/v2/filters', {
       title,
       context,
       filter_action: hide ? 'hide' : 'warn',
-      expires_at,
+      expires_in,
       keywords_attributes,
     }).then(response => {
       dispatch({ type: FILTERS_CREATE_SUCCESS, filter: response.data });
@@ -181,18 +181,18 @@ const createFilterV2 = (title: string, expires_at: string, context: Array<string
     });
   };
 
-const createFilter = (title: string, expires_at: string, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
+const createFilter = (title: string, expires_in: string | null, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
     const features = getFeatures(instance);
 
-    if (features.filtersV2) return dispatch(createFilterV2(title, expires_at, context, hide, keywords));
+    if (features.filtersV2) return dispatch(createFilterV2(title, expires_in, context, hide, keywords));
 
-    return dispatch(createFilterV1(title, expires_at, context, hide, keywords));
+    return dispatch(createFilterV1(title, expires_in, context, hide, keywords));
   };
 
-const updateFilterV1 = (id: string, title: string, expires_at: string, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
+const updateFilterV1 = (id: string, title: string, expires_in: string | null, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FILTERS_UPDATE_REQUEST });
     return api(getState).patch(`/api/v1/filters/${id}`, {
@@ -200,7 +200,7 @@ const updateFilterV1 = (id: string, title: string, expires_at: string, context: 
       context,
       irreversible: hide,
       whole_word: keywords[0].whole_word,
-      expires_at,
+      expires_in,
     }).then(response => {
       dispatch({ type: FILTERS_UPDATE_SUCCESS, filter: response.data });
       toast.success(messages.added);
@@ -209,14 +209,14 @@ const updateFilterV1 = (id: string, title: string, expires_at: string, context: 
     });
   };
 
-const updateFilterV2 = (id: string, title: string, expires_at: string, context: Array<string>, hide: boolean, keywords_attributes: FilterKeywords) =>
+const updateFilterV2 = (id: string, title: string, expires_in: string | null, context: Array<string>, hide: boolean, keywords_attributes: FilterKeywords) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: FILTERS_UPDATE_REQUEST });
     return api(getState).patch(`/api/v2/filters/${id}`, {
       title,
       context,
       filter_action: hide ? 'hide' : 'warn',
-      expires_at,
+      expires_in,
       keywords_attributes,
     }).then(response => {
       dispatch({ type: FILTERS_UPDATE_SUCCESS, filter: response.data });
@@ -226,15 +226,15 @@ const updateFilterV2 = (id: string, title: string, expires_at: string, context: 
     });
   };
 
-const updateFilter = (id: string, title: string, expires_at: string, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
+const updateFilter = (id: string, title: string, expires_in: string | null, context: Array<string>, hide: boolean, keywords: FilterKeywords) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const instance = state.instance;
     const features = getFeatures(instance);
 
-    if (features.filtersV2) return dispatch(updateFilterV2(id, title, expires_at, context, hide, keywords));
+    if (features.filtersV2) return dispatch(updateFilterV2(id, title, expires_in, context, hide, keywords));
 
-    return dispatch(updateFilterV1(id, title, expires_at, context, hide, keywords));
+    return dispatch(updateFilterV1(id, title, expires_in, context, hide, keywords));
   };
 
 const deleteFilterV1 = (id: string) =>

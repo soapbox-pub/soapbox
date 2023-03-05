@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -10,11 +10,15 @@ import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeFilter } from 'soapbox/normalizers';
 import toast from 'soapbox/toast';
 
+import { SelectDropdown } from '../forms';
+
 import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 
 interface IFilterField {
+  id?: string
   keyword: string
   whole_word: boolean
+  _destroy?: boolean
 }
 
 interface IEditFilter {
@@ -28,7 +32,6 @@ const messages = defineMessages({
   keyword: { id: 'column.filters.keyword', defaultMessage: 'Keyword or phrase' },
   keywords: { id: 'column.filters.keywords', defaultMessage: 'Keywords or phrases' },
   expires: { id: 'column.filters.expires', defaultMessage: 'Expire after' },
-  expires_hint: { id: 'column.filters.expires_hint', defaultMessage: 'Expiration dates are not currently supported' },
   home_timeline: { id: 'column.filters.home_timeline', defaultMessage: 'Home timeline' },
   public_timeline: { id: 'column.filters.public_timeline', defaultMessage: 'Public timeline' },
   notifications: { id: 'column.filters.notifications', defaultMessage: 'Notifications' },
@@ -43,17 +46,14 @@ const messages = defineMessages({
   add_new: { id: 'column.filters.add_new', defaultMessage: 'Add New Filter' },
   edit: { id: 'column.filters.edit', defaultMessage: 'Edit Filter' },
   create_error: { id: 'column.filters.create_error', defaultMessage: 'Error adding filter' },
+  expiration_never: { id: 'colum.filters.expiration.never', defaultMessage: 'Never' },
+  expiration_1800: { id: 'colum.filters.expiration.1800', defaultMessage: '30 minutes' },
+  expiration_3600: { id: 'colum.filters.expiration.3600', defaultMessage: '1 hour' },
+  expiration_21600: { id: 'colum.filters.expiration.21600', defaultMessage: '6 hours' },
+  expiration_43200: { id: 'colum.filters.expiration.43200', defaultMessage: '12 hours' },
+  expiration_86400: { id: 'colum.filters.expiration.86400', defaultMessage: '1 day' },
+  expiration_604800: { id: 'colum.filters.expiration.604800', defaultMessage: '1 week' },
 });
-
-// const expirations = {
-//   null: 'Never',
-//   // 1800: '30 minutes',
-//   // 3600: '1 hour',
-//   // 21600: '6 hour',
-//   // 43200: '12 hours',
-//   // 86400 : '1 day',
-//   // 604800: '1 week',
-// };
 
 const FilterField: StreamfieldComponent<IFilterField> = ({ value, onChange }) => {
   const intl = useIntl();
@@ -95,18 +95,28 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
   const [notFound, setNotFound] = useState(false);
 
   const [title, setTitle] = useState('');
-  const [expiresAt] = useState('');
+  const [expiresIn, setExpiresIn] = useState<string | null>(null);
   const [homeTimeline, setHomeTimeline] = useState(true);
   const [publicTimeline, setPublicTimeline] = useState(false);
   const [notifications, setNotifications] = useState(false);
   const [conversations, setConversations] = useState(false);
   const [accounts, setAccounts] = useState(false);
   const [hide, setHide] = useState(false);
-  const [keywords, setKeywords] = useState<{ id?: string, keyword: string, whole_word: boolean }[]>([{ keyword: '', whole_word: false }]);
+  const [keywords, setKeywords] = useState<IFilterField[]>([{ keyword: '', whole_word: false }]);
 
-  // const handleSelectChange = e => {
-  //   this.setState({ [e.target.name]: e.target.value });
-  // };
+  const expirations = useMemo(() => ({
+    '': intl.formatMessage(messages.expiration_never),
+    1800: intl.formatMessage(messages.expiration_1800),
+    3600: intl.formatMessage(messages.expiration_3600),
+    21600: intl.formatMessage(messages.expiration_21600),
+    43200: intl.formatMessage(messages.expiration_43200),
+    86400: intl.formatMessage(messages.expiration_86400),
+    604800: intl.formatMessage(messages.expiration_604800),
+  }), []);
+
+  const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    setExpiresIn(e.target.value);
+  };
 
   const handleAddNew: React.FormEventHandler = e => {
     e.preventDefault();
@@ -129,8 +139,8 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
     }
 
     dispatch(params.id
-      ? updateFilter(params.id, title, expiresAt, context, hide, keywords)
-      : createFilter(title, expiresAt, context, hide, keywords)).then(() => {
+      ? updateFilter(params.id, title, expiresIn, context, hide, keywords)
+      : createFilter(title, expiresIn, context, hide, keywords)).then(() => {
       history.push('/filters');
     }).catch(() => {
       toast.error(intl.formatMessage(messages.create_error));
@@ -141,7 +151,9 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
 
   const handleAddKeyword = () => setKeywords(keywords => [...keywords, { keyword: '', whole_word: false }]);
 
-  const handleRemoveKeyword = (i: number) => setKeywords(keywords => keywords.filter((_, index) => index !== i));
+  const handleRemoveKeyword = (i: number) => setKeywords(keywords => keywords[i].id
+    ? keywords.map((keyword, index) => index === i ? { ...keyword, _destroy: true } : keyword)
+    : keywords.filter((_, index) => index !== i));
 
   useEffect(() => {
     if (params.id) {
@@ -180,13 +192,16 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
             onChange={({ target }) => setTitle(target.value)}
           />
         </FormGroup>
-        {/* <FormGroup labelText={intl.formatMessage(messages.expires)} hintText={intl.formatMessage(messages.expires_hint)}>
-          <SelectDropdown
-            items={expirations}
-            defaultValue={expirations.never}
-            onChange={this.handleSelectChange}
-          />
-        </FormGroup> */}
+
+        {features.filtersExpiration && (
+          <FormGroup labelText={intl.formatMessage(messages.expires)}>
+            <SelectDropdown
+              items={expirations}
+              defaultValue={''}
+              onChange={handleSelectChange}
+            />
+          </FormGroup>
+        )}
 
         <Stack>
           <Text size='sm' weight='medium'>
