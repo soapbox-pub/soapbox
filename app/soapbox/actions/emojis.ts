@@ -1,6 +1,6 @@
 import { saveSettings } from './settings';
 
-import type { Emoji } from 'soapbox/components/autosuggest-emoji';
+import type { Emoji } from 'soapbox/features/emoji';
 import type { AppDispatch } from 'soapbox/store';
 
 const EMOJI_USE = 'EMOJI_USE';

@@ -6,12 +6,14 @@ import { openModal } from 'soapbox/actions/modals';
 import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
-import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
+import emojiSearch from 'soapbox/features/emoji/search';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import ChatTextarea from './chat-textarea';
+
+import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
@@ -31,7 +33,7 @@ const initialSuggestionState = {
 };
 
 interface Suggestion {
-  list: { native: string, colons: string }[]
+  list: Emoji[]
   tokenStart: number
   token: string
 }
@@ -209,7 +211,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
                       key={emojiSuggestion.colons}
                       value={renderSuggestionValue(emojiSuggestion)}
                     >
-                      <span>{emojiSuggestion.native}</span>
+                      <span>{(emojiSuggestion as NativeEmoji).native}</span>
                       <span className='ml-1'>
                         {emojiSuggestion.colons}
                       </span>

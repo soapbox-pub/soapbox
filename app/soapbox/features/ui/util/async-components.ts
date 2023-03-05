@@ -1,5 +1,5 @@
 export function EmojiPicker() {
-  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/emoji-picker');
+  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/components/emoji-picker');
 }
 
 export function Notifications() {

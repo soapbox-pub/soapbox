@@ -3,9 +3,11 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 
-import { Emoji, HStack, IconButton } from 'soapbox/components/ui';
-import { Picker } from 'soapbox/features/emoji/emoji-picker';
+import { Emoji as EmojiComponent, HStack, IconButton } from 'soapbox/components/ui';
+import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
 import { useSoapboxConfig } from 'soapbox/hooks';
+
+import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
@@ -29,7 +31,7 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 
   return (
     <button className={clsx(className)} onClick={handleClick} tabIndex={tabIndex}>
-      <Emoji className='h-6 w-6 duration-100 hover:scale-110' emoji={emoji} />
+      <EmojiComponent className='h-6 w-6 duration-100 hover:scale-110' emoji={emoji} />
     </button>
   );
 };
@@ -68,8 +70,14 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (referenceElement?.contains(event.target as Node) || popperElement?.contains(event.target as Node)) {
+    if ([referenceElement, popperElement, document.querySelector('em-emoji-picker')].some(el => el?.contains(event.target as Node))) {
       return;
+    }
+
+    if (document.querySelector('em-emoji-picker')) {
+      event.preventDefault();
+      event.stopPropagation();
+      return setExpanded(false);
     }
 
     if (onClose) {
@@ -93,6 +101,14 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     setExpanded(true);
   };
 
+  const handlePickEmoji = (emoji: Emoji) => {
+    onReact((emoji as NativeEmoji).native);
+  };
+
+  useEffect(() => () => {
+    document.body.style.overflow = '';
+  }, []);
+
   useEffect(() => {
     setExpanded(false);
   }, [visible]);
@@ -103,7 +119,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [referenceElement]);
+  }, [referenceElement, popperElement]);
 
   useEffect(() => {
     if (visible && update) {
@@ -117,6 +133,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     }
   }, [expanded, update]);
 
+
   return (
     <div
       className={clsx('z-[101] transition-opacity duration-100', {
@@ -127,10 +144,12 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
       {...attributes.popper}
     >
       {expanded ? (
-        <Picker
-          set='twitter'
-          backgroundImageFn={() => require('emoji-datasource/img/twitter/sheets/32.png')}
-          onClick={(emoji: any) => onReact(emoji.native)}
+        <EmojiPickerDropdown
+          visible={expanded}
+          setVisible={setExpanded}
+          update={update}
+          withCustom={false}
+          onPickEmoji={handlePickEmoji}
         />
       ) : (
         <HStack
