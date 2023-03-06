@@ -776,7 +776,7 @@
   "group.join.private": "Request Access",
   "group.join.public": "Join Group",
   "group.join.request_success": "Requested to join the group",
-  "group.join.success": "Joined the group",
+  "group.join.success": "Group joined successfully!",
   "group.leave": "Leave Group",
   "group.leave.success": "Left the group",
   "group.manage": "Manage Group",
