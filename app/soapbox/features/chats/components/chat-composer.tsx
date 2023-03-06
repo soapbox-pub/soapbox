@@ -47,7 +47,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   resetContentKey: number | null
   attachments?: Attachment[]
   onDeleteAttachment?: (i: number) => void
-  isUploading?: boolean
+  uploadCount?: number
   uploadProgress?: number
 }
 
@@ -65,7 +65,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   onPaste,
   attachments = [],
   onDeleteAttachment,
-  isUploading,
+  uploadCount = 0,
   uploadProgress,
 }, ref) => {
   const intl = useIntl();
@@ -82,6 +82,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const [suggestions, setSuggestions] = useState<Suggestion>(initialSuggestionState);
   const isSuggestionsAvailable = suggestions.list.length > 0;
 
+  const isUploading = uploadCount > 0;
   const hasAttachment = attachments.length > 0;
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
   const isSubmitDisabled = disabled || isUploading || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
@@ -200,7 +201,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               disabled={disabled}
               attachments={attachments}
               onDeleteAttachment={onDeleteAttachment}
-              isUploading={isUploading}
+              uploadCount={uploadCount}
               uploadProgress={uploadProgress}
             />
             {isSuggestionsAvailable ? (
