@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { groupCompose } from 'soapbox/actions/compose';
-import { fetchGroup } from 'soapbox/actions/groups';
 import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
 import { Avatar, HStack, Stack } from 'soapbox/components/ui';
@@ -31,7 +30,6 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   };
 
   useEffect(() => {
-    dispatch(fetchGroup(groupId));
     dispatch(expandGroupTimeline(groupId));
 
     dispatch(groupCompose(`group:${groupId}`, groupId));
