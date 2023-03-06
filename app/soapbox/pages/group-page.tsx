@@ -37,7 +37,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
 
   const { group } = useGroup(id);
 
-  const isNonMember = !group?.relationship || !group.relationship.member;
+  const isNonMember = !group?.relationship?.member;
   const isPrivate = group?.locked;
 
   // if ((group as any) === false) {
@@ -80,7 +80,6 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
                 Content is only visible to group members
               </Text>
             </Stack>
-
           ) : children}
         </Column>
 
