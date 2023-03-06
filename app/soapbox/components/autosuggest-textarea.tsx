@@ -4,14 +4,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
 import { Portal } from 'soapbox/components/ui';
+import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
+import { isRtl } from 'soapbox/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
-import AutosuggestAccount from '../features/compose/components/autosuggest-account';
-import { isRtl } from '../rtl';
-
-import AutosuggestEmoji, { Emoji } from './autosuggest-emoji';
+import AutosuggestEmoji from './autosuggest-emoji';
 
 import type { List as ImmutableList } from 'immutable';
+import type { Emoji } from 'soapbox/features/emoji';
 
 interface IAutosuggesteTextarea {
   id?: string

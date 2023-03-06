@@ -3,7 +3,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest-emoji';
+import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
 import { Input, Portal } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
@@ -12,6 +12,7 @@ import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { InputThemes } from 'soapbox/components/ui/input/input';
+import type { Emoji } from 'soapbox/features/emoji';
 
 export type AutoSuggestion = string | Emoji;
 

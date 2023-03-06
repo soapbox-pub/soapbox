@@ -16,6 +16,7 @@ const ConversationsList: React.FC = () => {
 
   const conversations = useAppSelector((state) => state.conversations.items);
   const isLoading = useAppSelector((state) => state.conversations.isLoading);
+  const hasMore = useAppSelector((state) => state.conversations.hasMore);
 
   const getCurrentIndex = (id: string) => conversations.findIndex(x => x.id === id);
 
@@ -50,6 +51,7 @@ const ConversationsList: React.FC = () => {
 
   return (
     <ScrollableList
+      hasMore={hasMore}
       onLoadMore={handleLoadOlder}
       id='direct-list'
       scrollKey='direct'

@@ -569,7 +569,7 @@ const rejectEventParticipationRequestFail = (id: string, accountId: string, erro
 });
 
 const fetchEventIcs = (id: string) =>
-  (dispatch: any, getState: () => RootState) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState).get(`/api/v1/pleroma/events/${id}/ics`);
 
 const cancelEventCompose = () => ({
