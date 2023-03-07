@@ -3,34 +3,20 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { fetchFilters, deleteFilter } from 'soapbox/actions/filters';
+import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, CardTitle, Column, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.filters', defaultMessage: 'Muted words' },
-  subheading_add_new: { id: 'column.filters.subheading_add_new', defaultMessage: 'Add New Filter' },
-  title: { id: 'column.filters.title', defaultMessage: 'Title' },
-  keyword: { id: 'column.filters.keyword', defaultMessage: 'Keyword or phrase' },
-  keywords: { id: 'column.filters.keywords', defaultMessage: 'Keywords or phrases' },
-  expires: { id: 'column.filters.expires', defaultMessage: 'Expire after' },
-  expires_hint: { id: 'column.filters.expires_hint', defaultMessage: 'Expiration dates are not currently supported' },
   home_timeline: { id: 'column.filters.home_timeline', defaultMessage: 'Home timeline' },
   public_timeline: { id: 'column.filters.public_timeline', defaultMessage: 'Public timeline' },
   notifications: { id: 'column.filters.notifications', defaultMessage: 'Notifications' },
   conversations: { id: 'column.filters.conversations', defaultMessage: 'Conversations' },
   accounts: { id: 'column.filters.accounts', defaultMessage: 'Accounts' },
-  drop_header: { id: 'column.filters.drop_header', defaultMessage: 'Drop instead of hide' },
-  drop_hint: { id: 'column.filters.drop_hint', defaultMessage: 'Filtered posts will disappear irreversibly, even if filter is later removed' },
-  hide_header: { id: 'column.filters.hide_header', defaultMessage: 'Hide completely' },
-  hide_hint: { id: 'column.filters.hide_hint', defaultMessage: 'Completely hide the filtered content, instead of showing a warning' },
-  whole_word_header: { id: 'column.filters.whole_word_header', defaultMessage: 'Whole word' },
-  whole_word_hint: { id: 'column.filters.whole_word_hint', defaultMessage: 'When the keyword or phrase is alphanumeric only, it will only be applied if it matches the whole word' },
-  add_new: { id: 'column.filters.add_new', defaultMessage: 'Add New Filter' },
-  create_error: { id: 'column.filters.create_error', defaultMessage: 'Error adding filter' },
   delete_error: { id: 'column.filters.delete_error', defaultMessage: 'Error deleting filter' },
-  subheading_filters: { id: 'column.filters.subheading_filters', defaultMessage: 'Current Filters' },
   edit: { id: 'column.filters.edit', defaultMessage: 'Edit' },
   delete: { id: 'column.filters.delete', defaultMessage: 'Delete' },
 });
@@ -47,6 +33,7 @@ const Filters = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const { filtersV2 } = useFeatures();
 
   const filters = useAppSelector((state) => state.filters);
 
@@ -68,8 +55,7 @@ const Filters = () => {
 
   return (
     <Column className='filter-settings-panel' label={intl.formatMessage(messages.heading)}>
-      <HStack className='mb-4' space={2} justifyContent='between'>
-        <CardTitle title={intl.formatMessage(messages.subheading_filters)} />
+      <HStack className='mb-4' space={2} justifyContent='end'>
         <Button
           to='/filters/new'
           theme='primary'
@@ -98,17 +84,23 @@ const Filters = () => {
                   {' '}
                   <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
                 </Text>
-                <HStack space={4}>
-                  {/* <Text weight='medium'>
-                   {filter.irreversible ?
-                     <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
-                     <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />}
-                 </Text>
-                 {filter.whole_word && (
-                   <Text weight='medium'>
-                     <FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' />
-                   </Text>
-                 )} */}
+                <HStack space={4} wrap>
+                  <Text weight='medium'>
+                    {filtersV2 ? (
+                      filter.filter_action === 'hide' ?
+                        <FormattedMessage id='filters.filters_list_hide_completely' defaultMessage='Hide content' /> :
+                        <FormattedMessage id='filters.filters_list_warn' defaultMessage='Display warning' />
+                    ) : (filter.filter_action === 'hide' ?
+                      <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
+                      <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />)}
+                  </Text>
+                  {filter.expires_at && (
+                    <Text weight='medium'>
+                      {new Date(filter.expires_at).getTime() <= Date.now()
+                        ? <FormattedMessage id='filters.filters_list_expired' defaultMessage='Expired' />
+                        : <RelativeTimestamp timestamp={filter.expires_at} className='whitespace-nowrap' futureDate />}
+                    </Text>
+                  )}
                 </HStack>
               </Stack>
               <HStack space={2} justifyContent='end'>

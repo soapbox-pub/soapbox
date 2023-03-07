@@ -27,7 +27,6 @@ interface IEditFilter {
 
 const messages = defineMessages({
   subheading_add_new: { id: 'column.filters.subheading_add_new', defaultMessage: 'Add New Filter' },
-  subheading_edit: { id: 'column.filters.subheading_edit', defaultMessage: 'Edit Filter' },
   title: { id: 'column.filters.title', defaultMessage: 'Title' },
   keyword: { id: 'column.filters.keyword', defaultMessage: 'Keyword or phrase' },
   keywords: { id: 'column.filters.keywords', defaultMessage: 'Keywords or phrases' },
@@ -41,8 +40,6 @@ const messages = defineMessages({
   drop_hint: { id: 'column.filters.drop_hint', defaultMessage: 'Filtered posts will disappear irreversibly, even if filter is later removed' },
   hide_header: { id: 'column.filters.hide_header', defaultMessage: 'Hide completely' },
   hide_hint: { id: 'column.filters.hide_hint', defaultMessage: 'Completely hide the filtered content, instead of showing a warning' },
-  whole_word_header: { id: 'column.filters.whole_word_header', defaultMessage: 'Whole word' },
-  whole_word_hint: { id: 'column.filters.whole_word_hint', defaultMessage: 'When the keyword or phrase is alphanumeric only, it will only be applied if it matches the whole word' },
   add_new: { id: 'column.filters.add_new', defaultMessage: 'Add New Filter' },
   edit: { id: 'column.filters.edit', defaultMessage: 'Edit Filter' },
   create_error: { id: 'column.filters.create_error', defaultMessage: 'Error adding filter' },
