@@ -57,7 +57,6 @@ const Groups: React.FC = () => {
     </Stack>
   );
 
-
   return (
     <Stack space={4}>
       {canCreateGroup && (
