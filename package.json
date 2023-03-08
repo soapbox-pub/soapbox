@@ -55,6 +55,7 @@
     "@jest/globals": "^29.0.0",
     "@lcdp/offline-plugin": "^5.1.0",
     "@lexical/code": "^0.8.1",
+    "@lexical/hashtag": "^0.8.1",
     "@lexical/link": "^0.8.1",
     "@lexical/markdown": "^0.8.1",
     "@lexical/react": "^0.8.1",

@@ -11,6 +11,7 @@ import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalCompos
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
@@ -26,6 +27,7 @@ import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import nodes from './nodes';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
+import NewMentionsPlugin from './plugins/mention-plugin';
 
 const StatePlugin = ({ composeId, autoFocus }: { composeId: string, autoFocus: boolean }) => {
   const dispatch = useAppDispatch();
@@ -52,6 +54,7 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
       onError: console.error,
       nodes,
       theme: {
+        hashtag: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
         text: {
           bold: 'font-bold',
           code: 'font-mono',
@@ -126,11 +129,13 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
         }}
         />
         <HistoryPlugin />
+        <HashtagPlugin />
         {features.richText && <LinkPlugin />}
         {features.richText && floatingAnchorElem && (
           <>
             <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
             <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
+            <NewMentionsPlugin />
           </>
         )}
         <StatePlugin composeId={composeId} autoFocus={autoFocus} />
