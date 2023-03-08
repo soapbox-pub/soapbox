@@ -5,7 +5,7 @@ import { Carousel, Stack, Text } from 'soapbox/components/ui';
 import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover';
 import { useSuggestedGroups } from 'soapbox/queries/groups';
 
-import Group from './group';
+import GroupGridItem from './group-grid-item';
 
 const SuggestedGroups = () => {
   const { groups, isFetching, isFetched, isError } = useSuggestedGroups();
@@ -49,7 +49,7 @@ const SuggestedGroups = () => {
                 ))
               ) : (
                 groups.map((group) => (
-                  <Group
+                  <GroupGridItem
                     key={group.id}
                     group={group}
                     width={width}

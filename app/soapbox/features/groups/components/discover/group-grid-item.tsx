@@ -12,7 +12,7 @@ interface IGroup {
   width?: number
 }
 
-const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
+const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { group, width = 'auto' } = props;
 
   return (
@@ -78,4 +78,4 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
   );
 });
 
-export default Group;
+export default GroupGridItem;

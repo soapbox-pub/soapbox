@@ -546,6 +546,10 @@ export function GroupsDiscover() {
   return import(/* webpackChunkName: "features/groups/discover" */'../../groups/discover');
 }
 
+export function PendingGroupRequests() {
+  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/pending-requests');
+}
+
 export function GroupMembers() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
 }
@@ -572,6 +576,10 @@ export function ManageGroupModal() {
 
 export function NewGroupPanel() {
   return import(/* webpackChunkName: "features/groups" */'../components/panels/new-group-panel');
+}
+
+export function SuggestedGroupsPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/panels/suggested-groups-panel');
 }
 
 export function GroupMediaPanel() {
