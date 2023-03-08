@@ -1,7 +1,11 @@
 import React from 'react';
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
-import { Avatar, HStack, Icon, Stack, Text } from './ui';
+import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
+import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
+import GroupRelationship from 'soapbox/features/group/components/group-relationship';
+
+import { Avatar, HStack, Stack, Text } from './ui';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities';
 
@@ -17,7 +21,10 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
   const intl = useIntl();
 
   return (
-    <Stack className='relative h-[240px] rounded-lg border border-solid border-gray-300 bg-white dark:border-primary-800 dark:bg-primary-900'>
+    <Stack
+      className='relative h-[240px] rounded-lg border border-solid border-gray-300 bg-white dark:border-primary-800 dark:bg-primary-900'
+      data-testid='group-card'
+    >
       {/* Group Cover Image */}
       <Stack grow className='relative basis-1/2 rounded-t-lg bg-primary-100 dark:bg-gray-800'>
         {group.header && (
@@ -37,30 +44,10 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
       <Stack alignItems='center' justifyContent='end' grow className='basis-1/2 py-4' space={0.5}>
         <Text size='lg' weight='bold' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
 
-        <HStack className='text-gray-700 dark:text-gray-600' space={3} wrap>
-          {group.relationship?.role === 'admin' ? (
-            <HStack space={1} alignItems='center'>
-              <Icon className='h-4 w-4' src={require('@tabler/icons/users.svg')} />
-              <Text theme='inherit'><FormattedMessage id='group.role.admin' defaultMessage='Admin' /></Text>
-            </HStack>
-          ) : group.relationship?.role === 'moderator' && (
-            <HStack space={1} alignItems='center'>
-              <Icon className='h-4 w-4' src={require('@tabler/icons/gavel.svg')} />
-              <Text theme='inherit'><FormattedMessage id='group.role.moderator' defaultMessage='Moderator' /></Text>
-            </HStack>
-          )}
-
-          {group.locked ? (
-            <HStack space={1} alignItems='center'>
-              <Icon className='h-4 w-4' src={require('@tabler/icons/lock.svg')} />
-              <Text theme='inherit'><FormattedMessage id='group.privacy.locked' defaultMessage='Private' /></Text>
-            </HStack>
-          ) : (
-            <HStack space={1} alignItems='center'>
-              <Icon className='h-4 w-4' src={require('@tabler/icons/world.svg')} />
-              <Text theme='inherit'><FormattedMessage id='group.privacy.public' defaultMessage='Public' /></Text>
-            </HStack>
-          )}
+        <HStack className='text-gray-700 dark:text-gray-600' space={2} wrap>
+          <GroupRelationship group={group} />
+          <GroupPrivacy group={group} />
+          <GroupMemberCount group={group} />
         </HStack>
       </Stack>
     </Stack>

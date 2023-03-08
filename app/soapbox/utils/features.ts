@@ -517,6 +517,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsDiscovery: v.software === TRUTHSOCIAL,
 
     /**
+     * Can query pending Group requests.
+     */
+    groupsPending: v.software === TRUTHSOCIAL,
+
+    /**
      * Can hide follows/followers lists and counts.
      * @see PATCH /api/v1/accounts/update_credentials
      */

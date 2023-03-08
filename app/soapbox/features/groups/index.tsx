@@ -11,6 +11,7 @@ import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissio
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
 
+import PendingGroupsRow from './components/pending-groups-row';
 import TabBar, { TabItems } from './components/tab-bar';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities';
@@ -75,11 +76,13 @@ const Groups: React.FC = () => {
         <TabBar activeTab={TabItems.MY_GROUPS} />
       )}
 
+      <PendingGroupsRow />
+
       <ScrollableList
         scrollKey='groups'
         emptyMessage={renderBlankslate()}
         emptyMessageCard={false}
-        itemClassName='py-3 first:pt-0 last:pb-0'
+        itemClassName='pb-4 last:pb-0'
         isLoading={isLoading}
         showLoading={isLoading && groups.length === 0}
         placeholderComponent={PlaceholderGroupCard}
