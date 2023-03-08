@@ -104,7 +104,7 @@ const usePopularGroups = () => {
   const { fetchGroups } = useGroupsApi();
 
   const getQuery = async () => {
-    const { groups } = await fetchGroups('/api/v1/groups/search?q=group'); // '/api/v1/truth/trends/groups'
+    const { groups } = await fetchGroups('/api/v1/truth/trends/groups');
 
     return groups;
   };
@@ -125,7 +125,7 @@ const useSuggestedGroups = () => {
   const { fetchGroups } = useGroupsApi();
 
   const getQuery = async () => {
-    const { groups } = await fetchGroups('/api/v1/groups/search?q=group'); // /api/v1/truth/suggestions/groups
+    const { groups } = await fetchGroups('/api/v1/truth/suggestions/groups');
 
     return groups;
   };
@@ -146,7 +146,7 @@ const useGroup = (id: string) => {
   const { fetchGroups } = useGroupsApi();
 
   const getGroup = async () => {
-    const { groups } = await fetchGroups(`/api/v1/groups/${id}`); // /api/v1/truth/suggestions/groups
+    const { groups } = await fetchGroups(`/api/v1/groups/${id}`);
     return groups[0];
   };
 
