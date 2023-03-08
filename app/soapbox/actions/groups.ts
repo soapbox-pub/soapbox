@@ -148,7 +148,6 @@ const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
         if (shouldReset) {
           dispatch(resetGroupEditor());
         }
-        dispatch(closeModal('MANAGE_GROUP'));
       }).catch(err => dispatch(createGroupFail(err)));
   };
 
