@@ -1,5 +1,5 @@
 export function EmojiPicker() {
-  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/emoji-picker');
+  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/components/emoji-picker');
 }
 
 export function Notifications() {
@@ -540,6 +540,10 @@ export function Events() {
 
 export function Groups() {
   return import(/* webpackChunkName: "features/groups" */'../../groups');
+}
+
+export function GroupsDiscover() {
+  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/discover');
 }
 
 export function GroupMembers() {

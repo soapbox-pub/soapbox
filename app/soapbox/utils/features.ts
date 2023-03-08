@@ -284,7 +284,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Whether chat messages can accept a `media_id` attachment.
      * @see POST /api/v1/pleroma/chats/:id/messages
      */
-    chatsMedia: v.software !== TRUTHSOCIAL,
+    chatsMedia: v.software !== TRUTHSOCIAL || v.build === UNRELEASED,
 
     /**
      * Whether chat messages have read receipts.
@@ -497,7 +497,12 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/admin/groups/:group_id/unsuspend
      * @see DELETE /api/v1/admin/groups/:group_id
      */
-    groups: false,
+    groups: v.build === UNRELEASED,
+
+    /**
+     * Can see trending/suggested Groups.
+     */
+    groupsDiscovery: v.software === TRUTHSOCIAL,
 
     /**
      * Can hide follows/followers lists and counts.

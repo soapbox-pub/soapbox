@@ -57,7 +57,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   const [content, setContent] = useState<string>('');
   const [attachments, setAttachments] = useState<Attachment[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploadCount, setUploadCount] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [resetContentKey, setResetContentKey] = useState<number>(fileKeyGen());
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
@@ -86,7 +86,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
     }
     setContent('');
     setAttachments([]);
-    setIsUploading(false);
+    setUploadCount(0);
     setUploadProgress(0);
     setResetFileKey(fileKeyGen());
     setResetContentKey(fileKeyGen());
@@ -151,17 +151,21 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       return;
     }
 
-    setIsUploading(true);
+    setUploadCount(files.length);
 
-    const data = new FormData();
-    data.append('file', files[0]);
-
-    dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
-      setAttachments([...attachments, normalizeAttachment(response.data)]);
-      setIsUploading(false);
-    }).catch(() => {
-      setIsUploading(false);
+    const promises = Array.from(files).map(async(file) => {
+      const data = new FormData();
+      data.append('file', file);
+      const response = await dispatch(uploadMedia(data, onUploadProgress));
+      return normalizeAttachment(response.data);
     });
+
+    return Promise.all(promises)
+      .then((newAttachments) => {
+        setAttachments([...attachments, ...newAttachments]);
+        setUploadCount(0);
+      })
+      .catch(() => setUploadCount(0));
   };
 
   useEffect(() => {
@@ -189,7 +193,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         onPaste={handlePaste}
         attachments={attachments}
         onDeleteAttachment={handleRemoveFile}
-        isUploading={isUploading}
+        uploadCount={uploadCount}
         uploadProgress={uploadProgress}
       />
     </Stack>

@@ -16,6 +16,7 @@ import {
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
+import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
@@ -27,7 +28,6 @@ import WarningContainer from '../containers/warning-container';
 import ComposeEditor from '../editor';
 import { countableText } from '../util/counter';
 
-import EmojiPickerDropdown from './emoji-picker/emoji-picker-dropdown';
 import PollButton from './poll-button';
 import PollForm from './polls/poll-form';
 import PrivacyDropdown from './privacy-dropdown';
@@ -40,7 +40,7 @@ import UploadForm from './upload-form';
 import VisualCharacterCounter from './visual-character-counter';
 import Warning from './warning';
 
-import type { Emoji } from 'soapbox/components/autosuggest-emoji';
+import type { Emoji } from 'soapbox/features/emoji';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -117,7 +117,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       // FIXME: Make this less brittle
       getClickableArea(),
       document.querySelector('.privacy-dropdown__dropdown'),
-      document.querySelector('.emoji-picker-dropdown__menu'),
+      document.querySelector('em-emoji-picker'),
       document.getElementById('modal-overlay'),
     ].some(element => element?.contains(e.target as any));
   };
@@ -181,7 +181,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const handleEmojiPick = (data: Emoji) => {
     const position   = autosuggestTextareaRef.current!.textarea!.selectionStart;
-    const needsSpace = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+    const needsSpace = !!data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     dispatch(insertEmojiCompose(id, position, data, needsSpace));
   };
@@ -228,7 +228,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const renderButtons = useCallback(() => (
     <HStack alignItems='center' space={2}>
       {features.media && <UploadButtonContainer composeId={id} />}
-      <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
+      <EmojiPickerDropdown onPickEmoji={handleEmojiPick} condensed={shouldCondense} />
       {features.polls && <PollButton composeId={id} />}
       {features.privacyScopes && !group && !groupId && <PrivacyDropdown composeId={id} />}
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}

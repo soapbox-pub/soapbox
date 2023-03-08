@@ -9,7 +9,7 @@ import ChatUpload from './chat-upload';
 interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
   attachments?: Attachment[]
   onDeleteAttachment?: (i: number) => void
-  isUploading?: boolean
+  uploadCount?: number
   uploadProgress?: number
 }
 
@@ -17,10 +17,12 @@ interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
 const ChatTextarea: React.FC<IChatTextarea> = ({
   attachments,
   onDeleteAttachment,
-  isUploading = false,
+  uploadCount = 0,
   uploadProgress = 0,
   ...rest
 }) => {
+  const isUploading = uploadCount > 0;
+
   const handleDeleteAttachment = (i: number) => {
     return () => {
       if (onDeleteAttachment) {
@@ -54,11 +56,11 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
             </div>
           ))}
 
-          {isUploading && (
+          {Array.from(Array(uploadCount)).map(() => (
             <div className='ml-2 mt-2 flex'>
               <ChatPendingUpload progress={uploadProgress} />
             </div>
-          )}
+          ))}
         </HStack>
       )}
 

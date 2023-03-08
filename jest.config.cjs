@@ -22,7 +22,6 @@ module.exports = {
     'app/soapbox/**/*.mjs',
     'app/soapbox/**/*.ts',
     'app/soapbox/**/*.tsx',
-    '!app/soapbox/features/emoji/emoji-compressed.js',
     '!app/soapbox/service-worker/entry.ts',
     '!app/soapbox/jest/test-setup.ts',
     '!app/soapbox/jest/test-helpers.ts',
