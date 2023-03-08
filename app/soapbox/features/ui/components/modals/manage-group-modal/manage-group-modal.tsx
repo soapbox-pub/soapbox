@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { resetGroupEditor, submitGroupEditor } from 'soapbox/actions/groups';
+import { submitGroupEditor } from 'soapbox/actions/groups';
 import { Modal, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -37,6 +37,7 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const id = useAppSelector((state) => state.group_editor.groupId);
+  const [group, setGroup] = useState<any | null>(null);
 
   const isSubmitting = useAppSelector((state) => state.group_editor.isSubmitting);
 
@@ -47,7 +48,7 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   };
 
   const handleSubmit = () => {
-    dispatch(submitGroupEditor(true));
+    return dispatch(submitGroupEditor(true));
   };
 
   const confirmationText = useMemo(() => {
@@ -67,8 +68,12 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
         setCurrentStep(Steps.TWO);
         break;
       case Steps.TWO:
-        handleSubmit();
-        setCurrentStep(Steps.THREE);
+        handleSubmit()
+          .then((group) => {
+            setCurrentStep(Steps.THREE);
+            setGroup(group);
+          })
+          .catch(() => {});
         break;
       case Steps.THREE:
         handleClose();
@@ -92,7 +97,8 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
       onClose={handleClose}
     >
       <Stack space={2}>
-        <StepToRender />
+        {/* @ts-ignore */}
+        <StepToRender group={group} />
       </Stack>
     </Modal>
   );
