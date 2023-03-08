@@ -9,7 +9,7 @@ import {
 } from 'soapbox/actions/groups';
 import Icon from 'soapbox/components/icon';
 import { Avatar, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
@@ -96,6 +96,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 const DetailsStep = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const groupId = useAppSelector((state) => state.group_editor.groupId);
   const isUploading = useAppSelector((state) => state.group_editor.isUploading);
@@ -146,7 +147,6 @@ const DetailsStep = () => {
     });
   }, [groupId]);
 
-
   return (
     <Form>
       <div className='relative mb-12 flex'>
@@ -161,6 +161,7 @@ const DetailsStep = () => {
           placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
           value={name}
           onChange={onChangeName}
+          maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_name']))}
         />
       </FormGroup>
       <FormGroup
@@ -171,6 +172,7 @@ const DetailsStep = () => {
           placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
           value={description}
           onChange={onChangeDescription}
+          maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_description']))}
         />
       </FormGroup>
     </Form>
