@@ -1,13 +1,28 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Avatar, Divider, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
 
 interface IConfirmationStep {
   group: any
 }
 
 const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
+  const handleCopyLink = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(group.uri);
+    }
+  };
+
+  const handleShare = () => {
+    navigator.share({
+      text: group.display_name,
+      url: group.uri,
+    }).catch((e) => {
+      if (e.name !== 'AbortError') console.error(e);
+    });
+  };
+
   return (
     <Stack space={9}>
       <Stack space={3}>
@@ -59,6 +74,18 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
           </InfoListItem>
         </Stack>
       </Stack>
+
+      <HStack space={2} justifyContent='center'>
+        {('share' in navigator) && (
+          <Button onClick={handleShare} theme='transparent' icon={require('@tabler/icons/share.svg')} className='text-primary-600'>
+            <FormattedMessage id='manage_group.confirmation.share' defaultMessage='Share this group' />
+          </Button>
+        )}
+
+        <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/link.svg')} className='text-primary-600'>
+          <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
+        </Button>
+      </HStack>
     </Stack>
   );
 };
