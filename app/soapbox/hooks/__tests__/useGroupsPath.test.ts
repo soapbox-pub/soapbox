@@ -2,7 +2,7 @@ import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeAccount, normalizeGroup, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeAccount, normalizeGroup, normalizeGroupRelationship, normalizeInstance } from 'soapbox/normalizers';
 
 import { useGroupsPath } from '../useGroupsPath';
 
@@ -58,10 +58,16 @@ describe('useGroupsPath()', () => {
               id: '1',
             }),
           ]);
+
+          mock.onGet('/api/v1/groups/relationships?id[]=1').reply(200, [
+            normalizeGroupRelationship({
+              id: '1',
+            }),
+          ]);
         });
       });
 
-      test('should default to the discovery page', async () => {
+      test('should default to the "My Groups" page', async () => {
         const { result } = renderHook(useGroupsPath, undefined, store);
 
         await waitFor(() => {
