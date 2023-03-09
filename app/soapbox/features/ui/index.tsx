@@ -116,6 +116,7 @@ import {
   EventDiscussion,
   Events,
   Groups,
+  GroupsDiscover,
   GroupMembers,
   GroupTimeline,
   ManageGroup,
@@ -285,6 +286,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
       {features.groups && <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} />}
+      {features.groupsDiscovery && <WrappedRoute path='/groups/discover' exact page={GroupsPage} component={GroupsDiscover} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage' exact page={DefaultPage} component={ManageGroup} content={children} />}
@@ -575,7 +577,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
     // @ts-ignore
     hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
+      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName);
     };
   };
 

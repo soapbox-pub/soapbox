@@ -10,7 +10,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
@@ -29,6 +29,7 @@ export const GroupRecord = ImmutableRecord({
   id: '',
   locked: false,
   membership_required: false,
+  members_count: undefined as number | undefined,
   note: '',
   statuses_visibility: 'public',
   uri: '',
@@ -127,6 +128,11 @@ const normalizeFqn = (group: ImmutableMap<string, any>) => {
   return group.set('fqn', fqn);
 };
 
+const normalizeLocked = (group: ImmutableMap<string, any>) => {
+  const locked = group.get('locked') || group.get('group_visibility') === 'members_only';
+  return group.set('locked', locked);
+};
+
 
 /** Rewrite `<p></p>` to empty string. */
 const fixNote = (group: ImmutableMap<string, any>) => {
@@ -144,6 +150,7 @@ export const normalizeGroup = (group: Record<string, any>) => {
       normalizeAvatar(group);
       normalizeHeader(group);
       normalizeFqn(group);
+      normalizeLocked(group);
       fixDisplayName(group);
       fixNote(group);
       addInternalFields(group);

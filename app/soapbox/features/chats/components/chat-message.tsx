@@ -9,7 +9,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { initReport } from 'soapbox/actions/reports';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';

@@ -10,7 +10,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
@@ -90,6 +90,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
+  const groupsPath = useGroupsPath();
 
   const closeButtonRef = React.useRef(null);
 
@@ -210,7 +211,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   {features.groups && (
                     <SidebarLink
-                      to='/groups'
+                      to={groupsPath}
                       icon={require('@tabler/icons/circles.svg')}
                       text={intl.formatMessage(messages.groups)}
                       onClick={onClose}

@@ -53,3 +53,6 @@ export const pushNotificationsSetting = new Settings('soapbox_push_notification_
 
 /** Remember hashtag usage. */
 export const tagHistory = new Settings('soapbox_tag_history');
+
+/** Remember group usage. */
+export const groupSearchHistory = new Settings('soapbox_group_search_history');
