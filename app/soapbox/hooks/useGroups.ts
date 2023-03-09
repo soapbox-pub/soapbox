@@ -1,36 +1,13 @@
-import { useEffect } from 'react';
-
 import { useEntities, useEntity } from 'soapbox/entity-store/hooks';
 import { normalizeGroup, normalizeGroupRelationship } from 'soapbox/normalizers';
 
 import type { Group, GroupRelationship } from 'soapbox/types/entities';
 
-// HACK: normalizers currently don't have the desired API.
-// TODO: rewrite normalizers as Zod parsers.
-const parseGroup = (entity: unknown) => normalizeGroup(entity as Record<string, any>);
-const parseGroupRelationship = (entity: unknown) => normalizeGroupRelationship(entity as Record<string, any>);
-
 function useGroups() {
-  const result = useEntities<Group>(['Group', ''], '/api/v1/groups', { parser: parseGroup });
-  const { entities, isLoading, fetchEntities } = result;
-  const { entities: relationships } = useGroupRelationships(entities.map(entity => entity.id));
+  const { entities, ...result } = useEntities<Group>(['Group', ''], '/api/v1/groups', { parser: parseGroup });
+  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
-  // Note: we have to fetch them in the hook right now because I haven't implemented
-  // max-age or cache expiry in the entity store yet. It's planned.
-  useEffect(() => {
-    if (!isLoading) {
-      fetchEntities();
-    }
-  }, []);
-
-  const groups = entities.map((group) => {
-    // TODO: a generalistic useRelationships() hook that returns a map of values (would be faster).
-    const relationship = relationships.find(r => r.id === group.id);
-    if (relationship) {
-      return group.set('relationship', relationship);
-    }
-    return group;
-  });
+  const groups = entities.map((group) => group.set('relationship', relationships[group.id] || null));
 
   return {
     ...result,
@@ -38,46 +15,39 @@ function useGroups() {
   };
 }
 
-function useGroup(groupId: string) {
-  const result = useEntity<Group>(['Group', groupId], `/api/v1/groups/${groupId}`, { parser: parseGroup });
-  const { entity, isLoading, fetchEntity } = result;
-  const { relationship } = useGroupRelationship(groupId);
-
-  useEffect(() => {
-    if (!isLoading) {
-      fetchEntity();
-    }
-  }, []);
+function useGroup(groupId: string, refetch = true) {
+  const { entity: group, ...result } = useEntity<Group>(['Group', groupId], `/api/v1/groups/${groupId}`, { parser: parseGroup, refetch });
+  const { entity: relationship } = useGroupRelationship(groupId);
 
   return {
     ...result,
-    group: entity?.set('relationship', relationship),
+    group: group?.set('relationship', relationship || null),
   };
 }
 
 function useGroupRelationship(groupId: string) {
-  const { relationships, ...rest } = useGroupRelationships([groupId]);
-  return {
-    ...rest,
-    relationship: relationships[0],
-  };
+  return useEntity<GroupRelationship>(['GroupRelationship', groupId], `/api/v1/groups/relationships?id[]=${groupId}`, { parser: parseGroupRelationship });
 }
 
 function useGroupRelationships(groupIds: string[]) {
   const q = groupIds.map(id => `id[]=${id}`).join('&');
-  const result = useEntities<GroupRelationship>(['GroupRelationship', ''], `/api/v1/groups/relationships?${q}`, { parser: parseGroupRelationship });
-  const { entities, isLoading, fetchEntities } = result;
+  const endpoint = groupIds.length ? `/api/v1/groups/relationships?${q}` : undefined;
+  const { entities, ...result } = useEntities<GroupRelationship>(['GroupRelationship', ''], endpoint, { parser: parseGroupRelationship });
 
-  useEffect(() => {
-    if (!isLoading) {
-      fetchEntities();
-    }
-  }, groupIds);
+  const relationships = entities.reduce<Record<string, GroupRelationship>>((map, relationship) => {
+    map[relationship.id] = relationship;
+    return map;
+  }, {});
 
   return {
     ...result,
-    relationships: entities,
+    relationships,
   };
 }
+
+// HACK: normalizers currently don't have the desired API.
+// TODO: rewrite normalizers as Zod parsers.
+const parseGroup = (entity: unknown) => normalizeGroup(entity as Record<string, any>);
+const parseGroupRelationship = (entity: unknown) => normalizeGroupRelationship(entity as Record<string, any>);
 
 export { useGroup, useGroups };
