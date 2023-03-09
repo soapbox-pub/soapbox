@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- Posts: truncate Nostr pubkeys in reply mentions.
 
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
