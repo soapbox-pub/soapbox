@@ -5,13 +5,36 @@ import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '.
 
 import type { Entity } from '../types';
 
-type EntityPath = [entityType: string, listKey: string]
+/** Tells us where to find/store the entity in the cache. */
+type EntityPath = [
+  /** Name of the entity type for use in the global cache, eg `'Notification'`. */
+  entityType: string,
+  /** Name of a particular index of this entity type. You can use empty-string (`''`) if you don't need separate lists. */
+  listKey: string,
+]
 
-function useEntities<TEntity extends Entity>(path: EntityPath, endpoint: string) {
+/** Additional options for the hook. */
+interface UseEntitiesOpts<TEntity> {
+  /** A parser function that returns the desired type, or undefined if validation fails. */
+  parser?: (entity: unknown) => TEntity | undefined
+}
+
+/** A hook for fetching and displaying API entities. */
+function useEntities<TEntity extends Entity>(
+  /** Tells us where to find/store the entity in the cache. */
+  path: EntityPath,
+  /** API route to GET, eg `'/api/v1/notifications'` */
+  endpoint: string,
+  /** Additional options for the hook. */
+  opts: UseEntitiesOpts<TEntity> = {},
+) {
   const api = useApi();
   const dispatch = useAppDispatch();
 
   const [entityType, listKey] = path;
+
+  const defaultParser = (entity: unknown) => entity as TEntity;
+  const parseEntity = opts.parser || defaultParser;
 
   const cache = useAppSelector(state => state.entities[entityType]);
   const list = cache?.lists[listKey];
@@ -20,7 +43,7 @@ function useEntities<TEntity extends Entity>(path: EntityPath, endpoint: string)
 
   const entities: readonly TEntity[] = entityIds ? (
     Array.from(entityIds).reduce<TEntity[]>((result, id) => {
-      const entity = cache?.store[id] as TEntity | undefined;
+      const entity = parseEntity(cache?.store[id] as unknown);
       if (entity) {
         result.push(entity);
       }

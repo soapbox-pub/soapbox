@@ -8,12 +8,26 @@ import type { Entity } from '../types';
 
 type EntityPath = [entityType: string, entityId: string]
 
-function useEntity<TEntity extends Entity>(path: EntityPath, endpoint: string) {
+/** Additional options for the hook. */
+interface UseEntityOpts<TEntity> {
+  /** A parser function that returns the desired type, or undefined if validation fails. */
+  parser?: (entity: unknown) => TEntity | undefined
+}
+
+function useEntity<TEntity extends Entity>(
+  path: EntityPath,
+  endpoint: string,
+  opts: UseEntityOpts<TEntity> = {},
+) {
   const api = useApi();
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;
-  const entity = useAppSelector(state => state.entities[entityType]?.store[entityId]) as TEntity | undefined;
+
+  const defaultParser = (entity: unknown) => entity as TEntity;
+  const parseEntity = opts.parser || defaultParser;
+
+  const entity = useAppSelector(state => parseEntity(state.entities[entityType]?.store[entityId]));
 
   const [isFetching, setIsFetching] = useState(false);
   const isLoading = isFetching && !entity;
