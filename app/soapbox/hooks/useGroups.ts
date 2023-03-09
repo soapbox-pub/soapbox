@@ -32,7 +32,7 @@ function useGroupRelationship(groupId: string) {
 function useGroupRelationships(groupIds: string[]) {
   const q = groupIds.map(id => `id[]=${id}`).join('&');
   const endpoint = groupIds.length ? `/api/v1/groups/relationships?${q}` : undefined;
-  const { entities, ...result } = useEntities<GroupRelationship>(['GroupRelationship', ''], endpoint, { parser: parseGroupRelationship });
+  const { entities, ...result } = useEntities<GroupRelationship>(['GroupRelationship', q], endpoint, { parser: parseGroupRelationship });
 
   const relationships = entities.reduce<Record<string, GroupRelationship>>((map, relationship) => {
     map[relationship.id] = relationship;
@@ -47,7 +47,7 @@ function useGroupRelationships(groupIds: string[]) {
 
 // HACK: normalizers currently don't have the desired API.
 // TODO: rewrite normalizers as Zod parsers.
-const parseGroup = (entity: unknown) => normalizeGroup(entity as Record<string, any>);
-const parseGroupRelationship = (entity: unknown) => normalizeGroupRelationship(entity as Record<string, any>);
+const parseGroup = (entity: unknown) => entity ? normalizeGroup(entity as Record<string, any>) : undefined;
+const parseGroupRelationship = (entity: unknown) => entity ? normalizeGroupRelationship(entity as Record<string, any>) : undefined;
 
 export { useGroup, useGroups };
