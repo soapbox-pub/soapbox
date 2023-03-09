@@ -5,8 +5,13 @@ import { normalizeGroup, normalizeGroupRelationship } from 'soapbox/normalizers'
 
 import type { Group, GroupRelationship } from 'soapbox/types/entities';
 
+// HACK: normalizers currently don't have the desired API.
+// TODO: rewrite normalizers as Zod parsers.
+const parseGroup = (entity: unknown) => normalizeGroup(entity as Record<string, any>);
+const parseGroupRelationship = (entity: unknown) => normalizeGroupRelationship(entity as Record<string, any>);
+
 function useGroups() {
-  const result = useEntities<Group>(['Group', ''], '/api/v1/groups');
+  const result = useEntities<Group>(['Group', ''], '/api/v1/groups', { parser: parseGroup });
   const { entities, isLoading, fetchEntities } = result;
   const { entities: relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
@@ -18,8 +23,7 @@ function useGroups() {
     }
   }, []);
 
-  const groups = entities.map((entity) => {
-    const group = normalizeGroup(entity);
+  const groups = entities.map((group) => {
     // TODO: a generalistic useRelationships() hook that returns a map of values (would be faster).
     const relationship = relationships.find(r => r.id === group.id);
     if (relationship) {
@@ -35,8 +39,9 @@ function useGroups() {
 }
 
 function useGroup(groupId: string) {
-  const result = useEntity<Group>(['Group', groupId], `/api/v1/groups/${groupId}`);
+  const result = useEntity<Group>(['Group', groupId], `/api/v1/groups/${groupId}`, { parser: parseGroup });
   const { entity, isLoading, fetchEntity } = result;
+  const { relationship } = useGroupRelationship(groupId);
 
   useEffect(() => {
     if (!isLoading) {
@@ -46,13 +51,21 @@ function useGroup(groupId: string) {
 
   return {
     ...result,
-    group: entity ? normalizeGroup(entity) : undefined,
+    group: entity?.set('relationship', relationship),
+  };
+}
+
+function useGroupRelationship(groupId: string) {
+  const { relationships, ...rest } = useGroupRelationships([groupId]);
+  return {
+    ...rest,
+    relationship: relationships[0],
   };
 }
 
 function useGroupRelationships(groupIds: string[]) {
   const q = groupIds.map(id => `id[]=${id}`).join('&');
-  const result = useEntities<GroupRelationship>(['GroupRelationship', ''], `/api/v1/groups/relationships?${q}`);
+  const result = useEntities<GroupRelationship>(['GroupRelationship', ''], `/api/v1/groups/relationships?${q}`, { parser: parseGroupRelationship });
   const { entities, isLoading, fetchEntities } = result;
 
   useEffect(() => {
@@ -63,7 +76,7 @@ function useGroupRelationships(groupIds: string[]) {
 
   return {
     ...result,
-    relationships: entities.map(normalizeGroupRelationship),
+    relationships: entities,
   };
 }
 
