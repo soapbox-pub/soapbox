@@ -31,6 +31,7 @@ const createList = (): EntityList => ({
     prev: undefined,
     fetching: false,
     error: null,
+    lastFetchedAt: undefined,
   },
 });
 

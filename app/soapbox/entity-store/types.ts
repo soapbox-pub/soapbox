@@ -27,6 +27,8 @@ interface EntityListState {
   error: any
   /** Whether data for this list is currently being fetched. */
   fetching: boolean
+  /** Date of the last API fetch for this list. */
+  lastFetchedAt: Date | undefined
 }
 
 /** Cache data pertaining to a paritcular entity type.. */

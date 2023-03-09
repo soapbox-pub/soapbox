@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -17,6 +19,11 @@ type EntityPath = [
 interface UseEntitiesOpts<TEntity> {
   /** A parser function that returns the desired type, or undefined if validation fails. */
   parser?: (entity: unknown) => TEntity | undefined
+  /**
+   * Time (milliseconds) until this query becomes stale and should be refetched.
+   * It is 1 minute by default, and can be set to `Infinity` to opt-out of automatic fetching.
+   */
+  staleTime?: number
 }
 
 /** A hook for fetching and displaying API entities. */
@@ -65,6 +72,7 @@ function useEntities<TEntity extends Entity>(
         prev: getPrevLink(response),
         fetching: false,
         error: null,
+        lastFetchedAt: new Date(),
       }));
     } catch (error) {
       dispatch(entitiesFetchFail(entityType, listKey, error));
@@ -90,6 +98,15 @@ function useEntities<TEntity extends Entity>(
       await fetchPage(prev);
     }
   };
+
+  const staleTime = opts.staleTime ?? 60000;
+  const lastFetchedAt = list?.state.lastFetchedAt;
+
+  useEffect(() => {
+    if (!isFetching && (!lastFetchedAt || lastFetchedAt.getTime() + staleTime <= Date.now())) {
+      fetchEntities();
+    }
+  }, [endpoint]);
 
   return {
     entities,
