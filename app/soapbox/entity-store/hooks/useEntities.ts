@@ -6,6 +6,7 @@ import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
 
 import type { Entity } from '../types';
+import type { RootState } from 'soapbox/store';
 
 /** Tells us where to find/store the entity in the cache. */
 type EntityPath = [
@@ -30,8 +31,8 @@ interface UseEntitiesOpts<TEntity> {
 function useEntities<TEntity extends Entity>(
   /** Tells us where to find/store the entity in the cache. */
   path: EntityPath,
-  /** API route to GET, eg `'/api/v1/notifications'` */
-  endpoint: string,
+  /** API route to GET, eg `'/api/v1/notifications'`. If undefined, nothing will be fetched. */
+  endpoint: string | undefined,
   /** Additional options for the hook. */
   opts: UseEntitiesOpts<TEntity> = {},
 ) {
@@ -64,6 +65,10 @@ function useEntities<TEntity extends Entity>(
   const hasPreviousPage = Boolean(list?.state.prev);
 
   const fetchPage = async(url: string): Promise<void> => {
+    // Get `isFetching` state from the store again to prevent race conditions.
+    const isFetching = dispatch((_, getState: () => RootState) => Boolean(getState().entities[entityType]?.lists[listKey]?.state.fetching));
+    if (isFetching) return;
+
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
       const response = await api.get(url);
@@ -80,7 +85,9 @@ function useEntities<TEntity extends Entity>(
   };
 
   const fetchEntities = async(): Promise<void> => {
-    await fetchPage(endpoint);
+    if (endpoint) {
+      await fetchPage(endpoint);
+    }
   };
 
   const fetchNextPage = async(): Promise<void> => {
