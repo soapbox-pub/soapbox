@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -12,6 +12,8 @@ type EntityPath = [entityType: string, entityId: string]
 interface UseEntityOpts<TEntity> {
   /** A parser function that returns the desired type, or undefined if validation fails. */
   parser?: (entity: unknown) => TEntity | undefined
+  /** Whether to refetch this entity every time the hook mounts, even if it's already in the store. */
+  refetch?: boolean
 }
 
 function useEntity<TEntity extends Entity>(
@@ -41,6 +43,12 @@ function useEntity<TEntity extends Entity>(
       setIsFetching(false);
     });
   };
+
+  useEffect(() => {
+    if (!entity || opts.refetch) {
+      fetchEntity();
+    }
+  }, []);
 
   return {
     entity,
