@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -17,9 +18,9 @@ const messages = defineMessages({
 });
 
 interface IReactionsModal {
-  onClose: (string: string) => void,
-  statusId: string,
-  reaction?: string,
+  onClose: (string: string) => void
+  statusId: string
+  reaction?: string
 }
 
 const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction: initialReaction }) => {
@@ -53,7 +54,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     reactions!.forEach(reaction => items.push(
       {
         text: <div className='flex items-center gap-1'>
-          <Emoji className='w-4 h-4' emoji={reaction.name} />
+          <Emoji className='h-4 w-4' emoji={reaction.name} />
           {reaction.count}
         </div>,
         action: () => setReaction(reaction.name),
@@ -84,7 +85,9 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
-        className='mt-4'
+        className={clsx('max-w-full', {
+          'mt-4': reactions.size > 0,
+        })}
         itemClassName='pb-3'
       >
         {accounts.map((account) =>

@@ -1,13 +1,12 @@
 import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks';
 import Domain from 'soapbox/components/domain';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.domain_blocks', defaultMessage: 'Hidden domains' },
@@ -19,7 +18,7 @@ const handleLoadMore = debounce((dispatch) => {
 }, 300, { leading: true });
 
 const DomainBlocks: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const domains = useAppSelector((state) => state.domain_lists.blocks.items);
@@ -48,7 +47,7 @@ const DomainBlocks: React.FC = () => {
         emptyMessage={emptyMessage}
         className='divide-y divide-gray-200 dark:divide-gray-800'
       >
-        {['gab.com', 'gab.ai'].map((domain) =>
+        {domains.map((domain) =>
           <Domain key={domain} domain={domain} />,
         )}
       </ScrollableList>

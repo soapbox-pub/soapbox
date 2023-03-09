@@ -10,8 +10,9 @@ import accounts from './accounts';
 import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
+import admin_announcements from './admin-announcements';
 import admin_log from './admin-log';
-import alerts from './alerts';
+import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import announcements from './announcements';
 import auth from './auth';
@@ -20,17 +21,23 @@ import chat_message_lists from './chat-message-lists';
 import chat_messages from './chat-messages';
 import chats from './chats';
 import compose from './compose';
+import compose_event from './compose-event';
 import contexts from './contexts';
 import conversations from './conversations';
 import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
+import group_editor from './group-editor';
+import group_memberships from './group-memberships';
+import group_relationships from './group-relationships';
+import groups from './groups';
 import history from './history';
 import instance from './instance';
 import listAdder from './list-adder';
 import listEditor from './list-editor';
 import lists from './lists';
+import locations from './locations';
 import me from './me';
 import meta from './meta';
 import modals from './modals';
@@ -62,62 +69,69 @@ import user_lists from './user-lists';
 import verification from './verification';
 
 const reducers = {
-  dropdown_menu,
-  timelines,
-  meta,
-  alerts,
-  modals,
-  user_lists,
-  domain_lists,
-  status_lists,
   account_notes,
   accounts,
   accounts_counters,
-  statuses,
-  relationships,
-  settings,
-  push_notifications,
-  mutes,
-  reports,
-  contexts,
-  compose,
-  search,
-  notifications,
-  custom_emojis,
-  lists,
-  listEditor,
-  listAdder,
-  filters,
-  conversations,
-  suggestions,
-  polls,
-  trends,
-  sidebar,
-  patron,
-  soapbox,
-  instance,
-  me,
-  auth,
-  admin,
-  chats,
-  chat_messages,
-  chat_message_lists,
-  profile_hover_card,
-  status_hover_card,
-  backups,
-  admin_log,
-  security,
-  scheduled_statuses,
-  pending_statuses,
-  aliases,
   accounts_meta,
-  trending_statuses,
-  verification,
-  onboarding,
-  rules,
-  history,
+  admin,
+  admin_announcements,
+  admin_log,
+  admin_user_index,
+  aliases,
   announcements,
+  auth,
+  backups,
+  chat_message_lists,
+  chat_messages,
+  chats,
+  compose,
+  compose_event,
+  contexts,
+  conversations,
+  custom_emojis,
+  domain_lists,
+  dropdown_menu,
   entities,
+  filters,
+  group_editor,
+  group_memberships,
+  group_relationships,
+  groups,
+  history,
+  instance,
+  listAdder,
+  listEditor,
+  lists,
+  locations,
+  me,
+  meta,
+  modals,
+  mutes,
+  notifications,
+  onboarding,
+  patron,
+  pending_statuses,
+  polls,
+  profile_hover_card,
+  push_notifications,
+  relationships,
+  reports,
+  rules,
+  scheduled_statuses,
+  search,
+  security,
+  settings,
+  sidebar,
+  soapbox,
+  status_hover_card,
+  status_lists,
+  statuses,
+  suggestions,
+  timelines,
+  trending_statuses,
+  trends,
+  user_lists,
+  verification,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`

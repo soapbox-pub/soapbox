@@ -15,9 +15,9 @@ const messages = defineMessages({
 });
 
 interface IBirthdayInput {
-  value?: string,
-  onChange: (value: string) => void,
-  required?: boolean,
+  value?: string
+  onChange: (value: string) => void
+  required?: boolean
 }
 
 const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) => {
@@ -56,21 +56,21 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
     nextYearButtonDisabled,
     date,
   }: {
-    decreaseMonth(): void,
-    increaseMonth(): void,
-    prevMonthButtonDisabled: boolean,
-    nextMonthButtonDisabled: boolean,
-    decreaseYear(): void,
-    increaseYear(): void,
-    prevYearButtonDisabled: boolean,
-    nextYearButtonDisabled: boolean,
-    date: Date,
+    decreaseMonth(): void
+    increaseMonth(): void
+    prevMonthButtonDisabled: boolean
+    nextMonthButtonDisabled: boolean
+    decreaseYear(): void
+    increaseYear(): void
+    prevYearButtonDisabled: boolean
+    nextYearButtonDisabled: boolean
+    date: Date
   }) => {
     return (
       <div className='flex flex-col gap-2'>
         <div className='flex items-center justify-between'>
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-left.svg')}
             onClick={decreaseMonth}
             disabled={prevMonthButtonDisabled}
@@ -79,7 +79,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           />
           {intl.formatDate(date, { month: 'long' })}
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-right.svg')}
             onClick={increaseMonth}
             disabled={nextMonthButtonDisabled}
@@ -89,7 +89,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
         </div>
         <div className='flex items-center justify-between'>
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-left.svg')}
             onClick={decreaseYear}
             disabled={prevYearButtonDisabled}
@@ -98,7 +98,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
           />
           {intl.formatDate(date, { year: 'numeric' })}
           <IconButton
-            className='datepicker__button'
+            className='datepicker__button rtl:rotate-180'
             src={require('@tabler/icons/chevron-right.svg')}
             onClick={increaseYear}
             disabled={nextYearButtonDisabled}
@@ -113,7 +113,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
   const handleChange = (date: Date) => onChange(date ? new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10) : '');
 
   return (
-    <div className='mt-1 relative rounded-md shadow-sm'>
+    <div className='relative mt-1 rounded-md shadow-sm'>
       <BundleContainer fetchComponent={DatePicker}>
         {Component => (<Component
           selected={selected}

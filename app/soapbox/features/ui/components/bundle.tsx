@@ -4,19 +4,19 @@ const emptyComponent = () => null;
 const noop = () => { };
 
 export interface BundleProps {
-  fetchComponent: () => Promise<any>,
-  loading: React.ComponentType,
-  error: React.ComponentType<{ onRetry: (props?: BundleProps) => void }>,
-  children: (mod: any) => React.ReactNode,
-  renderDelay?: number,
-  onFetch: () => void,
-  onFetchSuccess: () => void,
-  onFetchFail: (error: any) => void,
+  fetchComponent: () => Promise<any>
+  loading: React.ComponentType
+  error: React.ComponentType<{ onRetry: (props?: BundleProps) => void }>
+  children: (mod: any) => React.ReactNode
+  renderDelay?: number
+  onFetch: () => void
+  onFetchSuccess: () => void
+  onFetchFail: (error: any) => void
 }
 
 interface BundleState {
-  mod: any,
-  forceRender: boolean,
+  mod: any
+  forceRender: boolean
 }
 
 /** Fetches and renders an async component. */
@@ -32,20 +32,20 @@ class Bundle extends React.PureComponent<BundleProps, BundleState> {
     onFetch: noop,
     onFetchSuccess: noop,
     onFetchFail: noop,
-  }
+  };
 
-  static cache = new Map
+  static cache = new Map;
 
   state = {
     mod: undefined,
     forceRender: false,
-  }
+  };
 
   componentDidMount() {
     this.load(this.props);
   }
 
-  componentWillReceiveProps(nextProps: BundleProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: BundleProps) {
     if (nextProps.fetchComponent !== this.props.fetchComponent) {
       this.load(nextProps);
     }
@@ -91,7 +91,7 @@ class Bundle extends React.PureComponent<BundleProps, BundleState> {
         this.setState({ mod: null });
         onFetchFail(error);
       });
-  }
+  };
 
   render() {
     const { loading: Loading, error: Error, children, renderDelay } = this.props;

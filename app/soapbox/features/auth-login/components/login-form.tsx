@@ -18,8 +18,8 @@ const messages = defineMessages({
 });
 
 interface ILoginForm {
-  isLoading: boolean,
-  handleSubmit: React.FormEventHandler,
+  isLoading: boolean
+  handleSubmit: React.FormEventHandler
 }
 
 const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
@@ -27,11 +27,11 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'><FormattedMessage id='login_form.header' defaultMessage='Sign In' /></h1>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'><FormattedMessage id='login_form.header' defaultMessage='Sign In' /></h1>
       </div>
 
-      <Stack className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto' space={5}>
+      <Stack className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2' space={5}>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.username)}>
             <Input

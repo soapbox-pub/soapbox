@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { Text, Icon, Emoji } from 'soapbox/components/ui';
@@ -12,7 +12,7 @@ const COLORS = {
 type Color = keyof typeof COLORS;
 
 interface IStatusActionCounter {
-  count: number,
+  count: number
 }
 
 /** Action button numerical counter, eg "5" likes. */
@@ -25,14 +25,14 @@ const StatusActionCounter: React.FC<IStatusActionCounter> = ({ count = 0 }): JSX
 };
 
 interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  iconClassName?: string,
-  icon: string,
-  count?: number,
-  active?: boolean,
-  color?: Color,
-  filled?: boolean,
-  emoji?: string,
-  text?: React.ReactNode,
+  iconClassName?: string
+  icon: string
+  count?: number
+  active?: boolean
+  color?: Color
+  filled?: boolean
+  emoji?: string
+  text?: React.ReactNode
 }
 
 const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
@@ -41,15 +41,15 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
   const renderIcon = () => {
     if (emoji) {
       return (
-        <span className='flex w-6 h-6 items-center justify-center'>
-          <Emoji className='w-full h-full p-0.5' emoji={emoji} />
+        <span className='flex h-6 w-6 items-center justify-center'>
+          <Emoji className='h-full w-full p-0.5' emoji={emoji} />
         </span>
       );
     } else {
       return (
         <Icon
           src={icon}
-          className={classNames(
+          className={clsx(
             {
               'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
             },
@@ -78,13 +78,14 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
     <button
       ref={ref}
       type='button'
-      className={classNames(
-        'flex items-center p-1 rounded-full',
+      className={clsx(
+        'flex items-center rounded-full p-1 rtl:space-x-reverse',
         'text-gray-600 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',
-        'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:ring-offset-0',
+        'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-offset-0',
         {
           'text-black dark:text-white': active && emoji,
+          'hover:text-gray-600 dark:hover:text-white': !filteredProps.disabled,
           'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && !emoji && color === COLORS.accent,
           'text-success-600 hover:text-success-600 dark:hover:text-success-600': active && !emoji && color === COLORS.success,
           'space-x-1': !text,

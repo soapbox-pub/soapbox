@@ -1,13 +1,18 @@
+import { defineMessages } from 'react-intl';
+
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import toast from 'soapbox/toast';
 import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
 
+import { openModal } from './modals';
+
 import type { AxiosResponse } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Announcement } from 'soapbox/types/entities';
 
 const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
 const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
@@ -77,6 +82,45 @@ const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
 const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
 const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
 
+const ADMIN_USER_INDEX_EXPAND_FAIL    = 'ADMIN_USER_INDEX_EXPAND_FAIL';
+const ADMIN_USER_INDEX_EXPAND_REQUEST = 'ADMIN_USER_INDEX_EXPAND_REQUEST';
+const ADMIN_USER_INDEX_EXPAND_SUCCESS = 'ADMIN_USER_INDEX_EXPAND_SUCCESS';
+
+const ADMIN_USER_INDEX_FETCH_FAIL    = 'ADMIN_USER_INDEX_FETCH_FAIL';
+const ADMIN_USER_INDEX_FETCH_REQUEST = 'ADMIN_USER_INDEX_FETCH_REQUEST';
+const ADMIN_USER_INDEX_FETCH_SUCCESS = 'ADMIN_USER_INDEX_FETCH_SUCCESS';
+
+const ADMIN_USER_INDEX_QUERY_SET = 'ADMIN_USER_INDEX_QUERY_SET';
+
+const ADMIN_ANNOUNCEMENTS_FETCH_FAIL    = 'ADMIN_ANNOUNCEMENTS_FETCH_FAILS';
+const ADMIN_ANNOUNCEMENTS_FETCH_REQUEST = 'ADMIN_ANNOUNCEMENTS_FETCH_REQUEST';
+const ADMIN_ANNOUNCEMENTS_FETCH_SUCCESS = 'ADMIN_ANNOUNCEMENTS_FETCH_SUCCESS';
+
+const ADMIN_ANNOUNCEMENTS_EXPAND_FAIL    = 'ADMIN_ANNOUNCEMENTS_EXPAND_FAILS';
+const ADMIN_ANNOUNCEMENTS_EXPAND_REQUEST = 'ADMIN_ANNOUNCEMENTS_EXPAND_REQUEST';
+const ADMIN_ANNOUNCEMENTS_EXPAND_SUCCESS = 'ADMIN_ANNOUNCEMENTS_EXPAND_SUCCESS';
+
+const ADMIN_ANNOUNCEMENT_CHANGE_CONTENT    = 'ADMIN_ANNOUNCEMENT_CHANGE_CONTENT';
+const ADMIN_ANNOUNCEMENT_CHANGE_START_TIME = 'ADMIN_ANNOUNCEMENT_CHANGE_START_TIME';
+const ADMIN_ANNOUNCEMENT_CHANGE_END_TIME   = 'ADMIN_ANNOUNCEMENT_CHANGE_END_TIME';
+const ADMIN_ANNOUNCEMENT_CHANGE_ALL_DAY    = 'ADMIN_ANNOUNCEMENT_CHANGE_ALL_DAY';
+
+const ADMIN_ANNOUNCEMENT_CREATE_REQUEST = 'ADMIN_ANNOUNCEMENT_CREATE_REQUEST';
+const ADMIN_ANNOUNCEMENT_CREATE_SUCCESS = 'ADMIN_ANNOUNCEMENT_CREATE_REQUEST';
+const ADMIN_ANNOUNCEMENT_CREATE_FAIL    = 'ADMIN_ANNOUNCEMENT_CREATE_FAIL';
+
+const ADMIN_ANNOUNCEMENT_DELETE_REQUEST = 'ADMIN_ANNOUNCEMENT_DELETE_REQUEST';
+const ADMIN_ANNOUNCEMENT_DELETE_SUCCESS = 'ADMIN_ANNOUNCEMENT_DELETE_REQUEST';
+const ADMIN_ANNOUNCEMENT_DELETE_FAIL    = 'ADMIN_ANNOUNCEMENT_DELETE_FAIL';
+
+const ADMIN_ANNOUNCEMENT_MODAL_INIT = 'ADMIN_ANNOUNCEMENT_MODAL_INIT';
+
+const messages = defineMessages({
+  announcementCreateSuccess: { id: 'admin.edit_announcement.created', defaultMessage: 'Announcement created' },
+  announcementDeleteSuccess: { id: 'admin.edit_announcement.deleted', defaultMessage: 'Announcement deleted' },
+  announcementUpdateSuccess: { id: 'admin.edit_announcement.updated', defaultMessage: 'Announcement edited' },
+});
+
 const nicknamesFromIds = (getState: () => RootState, ids: string[]) => ids.map(id => getState().accounts.get(id)!.acct);
 
 const fetchConfig = () =>
@@ -101,6 +145,19 @@ const updateConfig = (configs: Record<string, any>[]) =>
       }).catch(error => {
         dispatch({ type: ADMIN_CONFIG_UPDATE_FAIL, error, configs });
       });
+  };
+
+const updateSoapboxConfig = (data: Record<string, any>) =>
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    const params = [{
+      group: ':pleroma',
+      key: ':frontend_configurations',
+      value: [{
+        tuple: [':soapbox_fe', data],
+      }],
+    }];
+
+    return dispatch(updateConfig(params));
   };
 
 const fetchMastodonReports = (params: Record<string, any>) =>
@@ -531,6 +588,137 @@ const unsuggestUsers = (accountIds: string[]) =>
       });
   };
 
+const setUserIndexQuery = (query: string) => ({ type: ADMIN_USER_INDEX_QUERY_SET, query });
+
+const fetchUserIndex = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const { filters, page, query, pageSize, isLoading } = getState().admin_user_index;
+
+    if (isLoading) return;
+
+    dispatch({ type: ADMIN_USER_INDEX_FETCH_REQUEST });
+
+    dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize))
+      .then((data: any) => {
+        if (data.error) {
+          dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
+        } else {
+          const { users, count, next } = (data);
+          dispatch({ type: ADMIN_USER_INDEX_FETCH_SUCCESS, users, count, next });
+        }
+      }).catch(() => {
+        dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
+      });
+  };
+
+const expandUserIndex = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const { filters, page, query, pageSize, isLoading, next, loaded } = getState().admin_user_index;
+
+    if (!loaded || isLoading) return;
+
+    dispatch({ type: ADMIN_USER_INDEX_EXPAND_REQUEST });
+
+    dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize, next))
+      .then((data: any) => {
+        if (data.error) {
+          dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
+        } else {
+          const { users, count, next } = (data);
+          dispatch({ type: ADMIN_USER_INDEX_EXPAND_SUCCESS, users, count, next });
+        }
+      }).catch(() => {
+        dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
+      });
+  };
+
+const fetchAdminAnnouncements = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({ type: ADMIN_ANNOUNCEMENTS_FETCH_REQUEST });
+    return api(getState)
+      .get('/api/pleroma/admin/announcements', { params: { limit: 50 } })
+      .then(({ data }) => {
+        dispatch({ type: ADMIN_ANNOUNCEMENTS_FETCH_SUCCESS, announcements: data });
+        return data;
+      }).catch(error => {
+        dispatch({ type: ADMIN_ANNOUNCEMENTS_FETCH_FAIL, error });
+      });
+  };
+
+const expandAdminAnnouncements = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const page = getState().admin_announcements.page;
+
+    dispatch({ type: ADMIN_ANNOUNCEMENTS_EXPAND_REQUEST });
+    return api(getState)
+      .get('/api/pleroma/admin/announcements', { params: { limit: 50, offset: page * 50 } })
+      .then(({ data }) => {
+        dispatch({ type: ADMIN_ANNOUNCEMENTS_EXPAND_SUCCESS, announcements: data });
+        return data;
+      }).catch(error => {
+        dispatch({ type: ADMIN_ANNOUNCEMENTS_EXPAND_FAIL, error });
+      });
+  };
+
+const changeAnnouncementContent = (content: string) => ({
+  type: ADMIN_ANNOUNCEMENT_CHANGE_CONTENT,
+  value: content,
+});
+
+const changeAnnouncementStartTime = (time: Date | null) => ({
+  type: ADMIN_ANNOUNCEMENT_CHANGE_START_TIME,
+  value: time,
+});
+
+const changeAnnouncementEndTime = (time: Date | null) => ({
+  type: ADMIN_ANNOUNCEMENT_CHANGE_END_TIME,
+  value: time,
+});
+
+const changeAnnouncementAllDay = (allDay: boolean) => ({
+  type: ADMIN_ANNOUNCEMENT_CHANGE_ALL_DAY,
+  value: allDay,
+});
+
+const handleCreateAnnouncement = () =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({ type: ADMIN_ANNOUNCEMENT_CREATE_REQUEST });
+
+    const { id, content, starts_at, ends_at, all_day } = getState().admin_announcements.form;
+
+    return api(getState)[id ? 'patch' : 'post'](
+      id ? `/api/pleroma/admin/announcements/${id}` : '/api/pleroma/admin/announcements',
+      { content, starts_at, ends_at, all_day },
+    ).then(({ data }) => {
+      dispatch({ type: ADMIN_ANNOUNCEMENT_CREATE_SUCCESS, announcement: data });
+      toast.success(id ? messages.announcementUpdateSuccess : messages.announcementCreateSuccess);
+      dispatch(fetchAdminAnnouncements());
+      return data;
+    }).catch(error => {
+      dispatch({ type: ADMIN_ANNOUNCEMENT_CREATE_FAIL, error });
+    });
+  };
+
+const deleteAnnouncement = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch({ type: ADMIN_ANNOUNCEMENT_DELETE_REQUEST, id });
+
+    return api(getState).delete(`/api/pleroma/admin/announcements/${id}`).then(({ data }) => {
+      dispatch({ type: ADMIN_ANNOUNCEMENT_DELETE_SUCCESS, id });
+      toast.success(messages.announcementDeleteSuccess);
+      dispatch(fetchAdminAnnouncements());
+      return data;
+    }).catch(error => {
+      dispatch({ type: ADMIN_ANNOUNCEMENT_DELETE_FAIL, id, error });
+    });
+  };
+
+const initAnnouncementModal = (announcement?: Announcement) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ADMIN_ANNOUNCEMENT_MODAL_INIT, announcement });
+    dispatch(openModal('EDIT_ANNOUNCEMENT'));
+  };
+
 export {
   ADMIN_CONFIG_FETCH_REQUEST,
   ADMIN_CONFIG_FETCH_SUCCESS,
@@ -583,8 +771,33 @@ export {
   ADMIN_USERS_UNSUGGEST_REQUEST,
   ADMIN_USERS_UNSUGGEST_SUCCESS,
   ADMIN_USERS_UNSUGGEST_FAIL,
+  ADMIN_USER_INDEX_EXPAND_FAIL,
+  ADMIN_USER_INDEX_EXPAND_REQUEST,
+  ADMIN_USER_INDEX_EXPAND_SUCCESS,
+  ADMIN_USER_INDEX_FETCH_FAIL,
+  ADMIN_USER_INDEX_FETCH_REQUEST,
+  ADMIN_USER_INDEX_FETCH_SUCCESS,
+  ADMIN_USER_INDEX_QUERY_SET,
+  ADMIN_ANNOUNCEMENTS_FETCH_FAIL,
+  ADMIN_ANNOUNCEMENTS_FETCH_REQUEST,
+  ADMIN_ANNOUNCEMENTS_FETCH_SUCCESS,
+  ADMIN_ANNOUNCEMENTS_EXPAND_FAIL,
+  ADMIN_ANNOUNCEMENTS_EXPAND_REQUEST,
+  ADMIN_ANNOUNCEMENTS_EXPAND_SUCCESS,
+  ADMIN_ANNOUNCEMENT_CHANGE_CONTENT,
+  ADMIN_ANNOUNCEMENT_CHANGE_START_TIME,
+  ADMIN_ANNOUNCEMENT_CHANGE_END_TIME,
+  ADMIN_ANNOUNCEMENT_CHANGE_ALL_DAY,
+  ADMIN_ANNOUNCEMENT_CREATE_FAIL,
+  ADMIN_ANNOUNCEMENT_CREATE_REQUEST,
+  ADMIN_ANNOUNCEMENT_CREATE_SUCCESS,
+  ADMIN_ANNOUNCEMENT_DELETE_FAIL,
+  ADMIN_ANNOUNCEMENT_DELETE_REQUEST,
+  ADMIN_ANNOUNCEMENT_DELETE_SUCCESS,
+  ADMIN_ANNOUNCEMENT_MODAL_INIT,
   fetchConfig,
   updateConfig,
+  updateSoapboxConfig,
   fetchReports,
   closeReports,
   fetchUsers,
@@ -608,4 +821,16 @@ export {
   setRole,
   suggestUsers,
   unsuggestUsers,
+  setUserIndexQuery,
+  fetchUserIndex,
+  expandUserIndex,
+  fetchAdminAnnouncements,
+  expandAdminAnnouncements,
+  changeAnnouncementContent,
+  changeAnnouncementStartTime,
+  changeAnnouncementEndTime,
+  changeAnnouncementAllDay,
+  handleCreateAnnouncement,
+  deleteAnnouncement,
+  initAnnouncementModal,
 };

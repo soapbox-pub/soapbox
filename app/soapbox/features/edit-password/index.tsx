@@ -2,9 +2,9 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changePassword } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import PasswordIndicator from '../verification/components/password-indicator';
 
@@ -34,7 +34,7 @@ const EditPassword = () => {
 
   const resetState = () => setState(initialState);
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -44,13 +44,13 @@ const EditPassword = () => {
     setLoading(true);
     dispatch(changePassword(currentPassword, newPassword, newPasswordConfirmation)).then(() => {
       resetState();
-      dispatch(snackbar.success(intl.formatMessage(messages.updatePasswordSuccess)));
+      toast.success(intl.formatMessage(messages.updatePasswordSuccess));
 
     }).finally(() => {
       setLoading(false);
     }).catch(() => {
       resetState();
-      dispatch(snackbar.error(intl.formatMessage(messages.updatePasswordFail)));
+      toast.error(intl.formatMessage(messages.updatePasswordFail));
     });
   }, [currentPassword, newPassword, newPasswordConfirmation, dispatch, intl]);
 

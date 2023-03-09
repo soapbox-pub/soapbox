@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import React, { useRef, useCallback } from 'react';
@@ -23,29 +23,31 @@ import type { Ad as AdEntity } from 'soapbox/types/soapbox';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** Unique key to preserve the scroll position when navigating back. */
-  scrollKey: string,
+  scrollKey: string
   /** List of status IDs to display. */
-  statusIds: ImmutableOrderedSet<string>,
+  statusIds: ImmutableOrderedSet<string>
   /** Last _unfiltered_ status ID (maxId) for pagination.  */
-  lastStatusId?: string,
+  lastStatusId?: string
   /** Pinned statuses to show at the top of the feed. */
-  featuredStatusIds?: ImmutableOrderedSet<string>,
+  featuredStatusIds?: ImmutableOrderedSet<string>
   /** Pagination callback when the end of the list is reached. */
-  onLoadMore?: (lastStatusId: string) => void,
+  onLoadMore?: (lastStatusId: string) => void
   /** Whether the data is currently being fetched. */
-  isLoading: boolean,
+  isLoading: boolean
   /** Whether the server did not return a complete page. */
-  isPartial?: boolean,
+  isPartial?: boolean
   /** Whether we expect an additional page of data. */
-  hasMore: boolean,
+  hasMore: boolean
   /** Message to display when the list is loaded but empty. */
-  emptyMessage: React.ReactNode,
+  emptyMessage: React.ReactNode
   /** ID of the timeline in Redux. */
-  timelineId?: string,
+  timelineId?: string
   /** Whether to display a gap or border between statuses in the list. */
-  divideType?: 'space' | 'border',
+  divideType?: 'space' | 'border'
   /** Whether to display ads. */
-  showAds?: boolean,
+  showAds?: boolean
+  /** Whether to show group information. */
+  showGroup?: boolean
 }
 
 /** Feed of statuses, built atop ScrollableList. */
@@ -59,6 +61,7 @@ const StatusList: React.FC<IStatusList> = ({
   isLoading,
   isPartial,
   showAds = false,
+  showGroup = true,
   ...other
 }) => {
   const { data: ads } = useAds();
@@ -135,6 +138,7 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
         contextType={timelineId}
+        showGroup={showGroup}
       />
     );
   };
@@ -167,6 +171,7 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
         contextType={timelineId}
+        showGroup={showGroup}
       />
     ));
   };
@@ -187,7 +192,11 @@ const StatusList: React.FC<IStatusList> = ({
         }
 
         if (statusId === null) {
-          acc.push(renderLoadGap(index));
+          const gap = renderLoadGap(index);
+          // one does not simply push a null item to Virtuoso: https://github.com/petyosi/react-virtuoso/issues/206#issuecomment-747363793
+          if (gap) {
+            acc.push(gap);
+          }
         } else if (statusId.startsWith('末suggestions-')) {
           if (soapboxConfig.feedInjection) {
             acc.push(renderFeedSuggestions());
@@ -239,10 +248,10 @@ const StatusList: React.FC<IStatusList> = ({
       placeholderComponent={PlaceholderStatus}
       placeholderCount={20}
       ref={node}
-      className={classNames('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
+      className={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
         'divide-none': divideType !== 'border',
       })}
-      itemClassName={classNames({
+      itemClassName={clsx({
         'pb-3': divideType !== 'border',
       })}
       {...other}

@@ -9,6 +9,10 @@ describe('normalizeInstance()', () => {
       contact_account: {},
       configuration: {
         media_attachments: {},
+        chats: {
+          max_characters: 5000,
+          max_media_attachments: 1,
+        },
         polls: {
           max_options: 4,
           max_characters_per_option: 25,

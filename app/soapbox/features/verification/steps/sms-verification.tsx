@@ -3,10 +3,10 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import OtpInput from 'react-otp-input';
 
-import snackbar from 'soapbox/actions/snackbar';
 import { confirmPhoneVerification, requestPhoneVerification } from 'soapbox/actions/verification';
 import { Button, Form, FormGroup, PhoneInput, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   verificationInvalid: { id: 'sms_verification.invalid', defaultMessage: 'Please enter a valid phone number.' },
@@ -39,35 +39,27 @@ const SmsVerification = () => {
     setPhone(phone);
   }, []);
 
-  const handleSubmit = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
     event.preventDefault();
 
     if (!isValid) {
       setStatus(Statuses.IDLE);
-      dispatch(
-        snackbar.error(
-          intl.formatMessage(messages.verificationInvalid),
-        ),
-      );
+      toast.error(intl.formatMessage(messages.verificationInvalid));
       return;
     }
 
     dispatch(requestPhoneVerification(phone!)).then(() => {
-      dispatch(
-        snackbar.success(
-          intl.formatMessage(messages.verificationSuccess),
-        ),
-      );
+      toast.success(intl.formatMessage(messages.verificationSuccess));
       setStatus(Statuses.REQUESTED);
     }).catch((error: AxiosError) => {
       const message = (error.response?.data as any)?.message || intl.formatMessage(messages.verificationFail);
 
-      dispatch(snackbar.error(message));
+      toast.error(message);
       setStatus(Statuses.FAIL);
     });
   }, [phone, isValid]);
 
-  const resendVerificationCode = React.useCallback((event) => {
+  const resendVerificationCode: React.MouseEventHandler = React.useCallback((event) => {
     setAlreadyRequestedAnother(true);
     handleSubmit(event);
   }, [isValid]);
@@ -75,11 +67,9 @@ const SmsVerification = () => {
   const submitVerification = () => {
     // TODO: handle proper validation from Pepe -- expired vs invalid
     dispatch(confirmPhoneVerification(verificationCode))
-      .catch(() => dispatch(
-        snackbar.error(
-          intl.formatMessage(messages.verificationExpired),
-        ),
-      ));
+      .catch(() => {
+        toast.error(intl.formatMessage(messages.verificationExpired));
+      });
   };
 
   React.useEffect(() => {
@@ -91,13 +81,13 @@ const SmsVerification = () => {
   if (status === Statuses.REQUESTED) {
     return (
       <div>
-        <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-          <h1 className='text-center font-bold text-2xl'>
+        <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+          <h1 className='text-center text-2xl font-bold'>
             <FormattedMessage id='sms_verification.sent.header' defaultMessage='Verification code' />
           </h1>
         </div>
 
-        <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
+        <div className='mx-auto space-y-4 sm:w-2/3 sm:pt-10 md:w-1/2'>
           <Text theme='muted' size='sm' align='center'>
             <FormattedMessage id='sms_verification.sent.body' defaultMessage='We sent you a 6-digit code via SMS. Enter it below.' />
           </Text>
@@ -131,13 +121,13 @@ const SmsVerification = () => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'>
           <FormattedMessage id='sms_verification.header' defaultMessage='Enter your phone number' />
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.phoneLabel)}>
             <PhoneInput

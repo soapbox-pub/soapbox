@@ -16,13 +16,15 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
-import Avatar from '../components/avatar';
-import { Card, CardBody, HStack, Layout } from '../components/ui';
+import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle-container';
-// import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
-const HomePage: React.FC = ({ children }) => {
+interface IHomePage {
+  children: React.ReactNode
+}
+
+const HomePage: React.FC<IHomePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
   const features = useFeatures();
@@ -35,30 +37,33 @@ const HomePage: React.FC = ({ children }) => {
   const cryptoLimit = soapboxConfig.cryptoDonatePanel.get('limit', 0);
 
   const acct = account ? account.acct : '';
+  const avatar = account ? account.avatar : '';
 
   return (
     <>
-      <Layout.Main className='pt-3 sm:pt-0 dark:divide-gray-800 space-y-3'>
+      <Layout.Main className='space-y-3 pt-3 dark:divide-gray-800 sm:pt-0'>
         {me && (
           <Card variant='rounded' ref={composeBlock}>
             <CardBody>
               <HStack alignItems='start' space={4}>
                 <Link to={`/@${acct}`}>
-                  <Avatar account={account} size={46} />
+                  <Avatar src={avatar} size={46} />
                 </Link>
 
-                <ComposeForm
-                  id='home'
-                  shouldCondense
-                  autoFocus={false}
-                  clickableAreaRef={composeBlock}
-                />
+                <div className='w-full translate-y-0.5'>
+                  <ComposeForm
+                    id='home'
+                    shouldCondense
+                    autoFocus={false}
+                    clickableAreaRef={composeBlock}
+                  />
+                </div>
               </HStack>
             </CardBody>
           </Card>
         )}
 
-        {features.feedUserFiltering && <FeedCarousel />}
+        {features.carousel && <FeedCarousel />}
 
         {children}
 

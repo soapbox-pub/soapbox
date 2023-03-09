@@ -1,10 +1,9 @@
 import { defineMessages } from 'react-intl';
 
-import snackbar from 'soapbox/actions/snackbar';
 import api, { getLinks } from 'soapbox/api';
 import { normalizeAccount } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 
-import type { SnackbarAction } from './snackbar';
 import type { AxiosResponse } from 'axios';
 import type { RootState } from 'soapbox/store';
 
@@ -35,9 +34,9 @@ type ExportDataActions = {
   | typeof EXPORT_BLOCKS_FAIL
   | typeof EXPORT_MUTES_REQUEST
   | typeof EXPORT_MUTES_SUCCESS
-  | typeof EXPORT_MUTES_FAIL,
-  error?: any,
-} | SnackbarAction
+  | typeof EXPORT_MUTES_FAIL
+  error?: any
+}
 
 function fileExport(content: string, fileName: string) {
   const fileToDownload = document.createElement('a');
@@ -75,7 +74,7 @@ export const exportFollows = () => (dispatch: React.Dispatch<ExportDataActions>,
       followings.unshift('Account address,Show boosts');
       fileExport(followings.join('\n'), 'export_followings.csv');
 
-      dispatch(snackbar.success(messages.followersSuccess));
+      toast.success(messages.followersSuccess);
       dispatch({ type: EXPORT_FOLLOWS_SUCCESS });
     }).catch(error => {
       dispatch({ type: EXPORT_FOLLOWS_FAIL, error });
@@ -90,7 +89,7 @@ export const exportBlocks = () => (dispatch: React.Dispatch<ExportDataActions>, 
     .then((blocks) => {
       fileExport(blocks.join('\n'), 'export_block.csv');
 
-      dispatch(snackbar.success(messages.blocksSuccess));
+      toast.success(messages.blocksSuccess);
       dispatch({ type: EXPORT_BLOCKS_SUCCESS });
     }).catch(error => {
       dispatch({ type: EXPORT_BLOCKS_FAIL, error });
@@ -105,7 +104,7 @@ export const exportMutes = () => (dispatch: React.Dispatch<ExportDataActions>, g
     .then((mutes) => {
       fileExport(mutes.join('\n'), 'export_mutes.csv');
 
-      dispatch(snackbar.success(messages.mutesSuccess));
+      toast.success(messages.mutesSuccess);
       dispatch({ type: EXPORT_MUTES_SUCCESS });
     }).catch(error => {
       dispatch({ type: EXPORT_MUTES_FAIL, error });

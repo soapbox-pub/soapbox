@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
 import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
+
+import MessagesSettings from './components/messages-settings';
 
 const messages = defineMessages({
   settings: { id: 'settings.settings', defaultMessage: 'Settings' },
@@ -26,11 +27,14 @@ const messages = defineMessages({
   other: { id: 'settings.other', defaultMessage: 'Other options' },
   mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
+  backups: { id: 'column.backups', defaultMessage: 'Backups' },
+  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
+  exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
 });
 
 /** User settings page. */
 const Settings = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
 
@@ -46,11 +50,14 @@ const Settings = () => {
   const navigateToDeleteAccount = () => history.push('/settings/account');
   const navigateToMoveAccount = () => history.push('/settings/migration');
   const navigateToAliases = () => history.push('/settings/aliases');
+  const navigateToBackups = () => history.push('/settings/backups');
+  const navigateToImportData = () => history.push('/settings/import');
+  const navigateToExportData = () => history.push('/settings/export');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
   useEffect(() => {
-    dispatch(fetchMfa());
+    if (features.security) dispatch(fetchMfa());
   }, [dispatch]);
 
   if (!account) return null;
@@ -101,6 +108,18 @@ const Settings = () => {
           </>
         )}
 
+        {features.chats ? (
+          <>
+            <CardHeader>
+              <CardTitle title={<FormattedMessage id='column.chats' defaultMessage='Chats' />} />
+            </CardHeader>
+
+            <CardBody>
+              <MessagesSettings />
+            </CardBody>
+          </>
+        ) : null}
+
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />
         </CardHeader>
@@ -117,6 +136,18 @@ const Settings = () => {
 
             <CardBody>
               <List>
+                {features.importData && (
+                  <ListItem label={intl.formatMessage(messages.importData)} onClick={navigateToImportData} />
+                )}
+
+                {features.exportData && (
+                  <ListItem label={intl.formatMessage(messages.exportData)} onClick={navigateToExportData} />
+                )}
+
+                {features.backups && (
+                  <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                )}
+
                 {features.federating && (features.accountMoving ? (
                   <ListItem label={intl.formatMessage(messages.accountMigration)} onClick={navigateToMoveAccount} />
                 ) : features.accountAliases && (

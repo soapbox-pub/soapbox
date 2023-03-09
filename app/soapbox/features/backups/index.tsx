@@ -1,10 +1,9 @@
-import classNames from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchBackups, createBackup } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column } from 'soapbox/components/ui';
+import { Button, Column, FormActions, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -23,22 +22,14 @@ const Backups = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleCreateBackup: React.MouseEventHandler<HTMLAnchorElement> = e => {
+  const handleCreateBackup: React.MouseEventHandler = e => {
     dispatch(createBackup());
     e.preventDefault();
   };
 
-  const makeColumnMenu = () => {
-    return [{
-      text: intl.formatMessage(messages.create),
-      action: handleCreateBackup,
-      icon: require('@tabler/icons/plus.svg'),
-    }];
-  };
-
   useEffect(() => {
     dispatch(fetchBackups()).then(() => {
-      setIsLoading(true);
+      setIsLoading(false);
     }).catch(() => {});
   }, []);
 
@@ -46,16 +37,14 @@ const Backups = () => {
 
   const emptyMessageAction = (
     <a href='#' onClick={handleCreateBackup}>
-      {intl.formatMessage(messages.emptyMessageAction)}
+      <Text tag='span' theme='primary' size='sm' className='hover:underline'>
+        {intl.formatMessage(messages.emptyMessageAction)}
+      </Text>
     </a>
   );
 
   return (
-    <Column
-      label={intl.formatMessage(messages.heading)}
-      // @ts-ignore FIXME: make this menu available.
-      menu={makeColumnMenu()}
-    >
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         isLoading={isLoading}
         showLoading={showLoading}
@@ -64,16 +53,22 @@ const Backups = () => {
       >
         {backups.map((backup) => (
           <div
-            className={classNames('backup', { 'backup--pending': !backup.processed })}
+            className='p-4'
             key={backup.id}
           >
             {backup.processed
               ? <a href={backup.url} target='_blank'>{backup.inserted_at}</a>
-              : <div>{intl.formatMessage(messages.pending)}: {backup.inserted_at}</div>
+              : <Text theme='subtle'>{intl.formatMessage(messages.pending)}: {backup.inserted_at}</Text>
             }
           </div>
         ))}
       </ScrollableList>
+
+      <FormActions>
+        <Button theme='primary' disabled={isLoading} onClick={handleCreateBackup}>
+          {intl.formatMessage(messages.create)}
+        </Button>
+      </FormActions>
     </Column>
   );
 };

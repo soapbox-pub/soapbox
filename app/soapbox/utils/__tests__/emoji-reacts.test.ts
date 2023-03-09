@@ -5,7 +5,6 @@ import { normalizeStatus } from 'soapbox/normalizers';
 import {
   sortEmoji,
   mergeEmojiFavourites,
-  filterEmoji,
   oneEmojiPerAccount,
   reduceEmoji,
   getReactForStatus,
@@ -22,29 +21,10 @@ const ALLOWED_EMOJI = ImmutableList([
   '😡',
 ]);
 
-describe('filterEmoji', () => {
-  describe('with a mix of allowed and disallowed emoji', () => {
-    const emojiReacts = fromJS([
-      { 'count': 1, 'me': true, 'name': '🌵' },
-      { 'count': 1, 'me': true, 'name': '😂' },
-      { 'count': 1, 'me': true, 'name': '👀' },
-      { 'count': 1, 'me': true, 'name': '🍩' },
-      { 'count': 1, 'me': true, 'name': '😡' },
-      { 'count': 1, 'me': true, 'name': '🔪' },
-      { 'count': 1, 'me': true, 'name': '😠' },
-    ]) as ImmutableList<ImmutableMap<string, any>>;
-    it('filters only allowed emoji', () => {
-      expect(filterEmoji(emojiReacts, ALLOWED_EMOJI)).toEqual(fromJS([
-        { 'count': 1, 'me': true, 'name': '😂' },
-        { 'count': 1, 'me': true, 'name': '😡' },
-      ]));
-    });
-  });
-});
-
 describe('sortEmoji', () => {
   describe('with an unsorted list of emoji', () => {
     const emojiReacts = fromJS([
+      { 'count': 7,  'me': true, 'name': '😃' },
       { 'count': 7,  'me': true, 'name': '😯' },
       { 'count': 3,  'me': true, 'name': '😢' },
       { 'count': 1,  'me': true, 'name': '😡' },
@@ -53,11 +33,12 @@ describe('sortEmoji', () => {
       { 'count': 15, 'me': true, 'name': '❤' },
     ]) as ImmutableList<ImmutableMap<string, any>>;
     it('sorts the emoji by count', () => {
-      expect(sortEmoji(emojiReacts)).toEqual(fromJS([
+      expect(sortEmoji(emojiReacts, ALLOWED_EMOJI)).toEqual(fromJS([
         { 'count': 20, 'me': true, 'name': '👍' },
         { 'count': 15, 'me': true, 'name': '❤' },
         { 'count': 7,  'me': true, 'name': '😯' },
         { 'count': 7,  'me': true, 'name': '😂' },
+        { 'count': 7,  'me': true, 'name': '😃' },
         { 'count': 3,  'me': true, 'name': '😢' },
         { 'count': 1,  'me': true, 'name': '😡' },
       ]));
@@ -127,6 +108,10 @@ describe('reduceEmoji', () => {
         { 'count': 7,  'me': false, 'name': '😂' },
         { 'count': 3,  'me': false, 'name': '😢' },
         { 'count': 1,  'me': false, 'name': '😡' },
+        { 'count': 1,  'me': true,  'name': '🔪' },
+        { 'count': 1,  'me': true,  'name': '🌵' },
+        { 'count': 1,  'me': false, 'name': '👀' },
+        { 'count': 1,  'me': false, 'name': '🍩' },
       ]));
     });
   });

@@ -1,10 +1,10 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import {
@@ -82,7 +82,7 @@ const getAncestorsIds = createSelector([
   return ancestorsIds;
 });
 
-const getDescendantsIds = createSelector([
+export const getDescendantsIds = createSelector([
   (_: RootState, statusId: string) => statusId,
   (state: RootState) => state.contexts.replies,
 ], (statusId, contextReplies) => {
@@ -117,9 +117,9 @@ type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = { statusId: string };
 
 interface IThread {
-  params: RouteParams,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (video: AttachmentEntity, time: number) => void,
+  params: RouteParams
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
+  onOpenVideo: (video: AttachmentEntity, time: number) => void
 }
 
 const Thread: React.FC<IThread> = (props) => {
@@ -361,6 +361,7 @@ const Thread: React.FC<IThread> = (props) => {
         focusedStatusId={status!.id}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
+        contextType='thread'
       />
     );
   };
@@ -425,6 +426,12 @@ const Thread: React.FC<IThread> = (props) => {
   const hasAncestors = ancestorsIds.size > 0;
   const hasDescendants = descendantsIds.size > 0;
 
+  if (status?.event) {
+    return (
+      <Redirect to={`/@${status.getIn(['account', 'acct'])}/events/${status.id}`} />
+    );
+  }
+
   if (!status && isLoaded) {
     return (
       <MissingIndicator />
@@ -455,7 +462,7 @@ const Thread: React.FC<IThread> = (props) => {
   const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
   const focusedStatus = (
-    <div className={classNames({ 'pb-4': hasDescendants })} key={status.id}>
+    <div className={clsx({ 'pb-4': hasDescendants })} key={status.id}>
       <HotKeys handlers={handlers}>
         <div
           ref={statusRef}

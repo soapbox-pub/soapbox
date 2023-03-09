@@ -1,31 +1,25 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-// @ts-ignore
-import Picker from 'emoji-mart/dist-es/components/picker/picker';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+
+import { Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   emoji: { id: 'icon_button.label', defaultMessage: 'Select icon' },
-  emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
-  emoji_not_found: { id: 'icon_button.not_found', defaultMessage: 'No icons!! (╯°□°）╯︵ ┻━┻' },
-  custom: { id: 'icon_button.icons', defaultMessage: 'Icons' },
-  search_results: { id: 'emoji_button.search_results', defaultMessage: 'Search results' },
 });
 
-const backgroundImageFn = () => '';
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-const categoriesSort = ['custom'];
 
 interface IIconPickerMenu {
-  customEmojis: Record<string, Array<string>>,
-  onClose: () => void,
-  onPick: any,
-  style?: React.CSSProperties,
+  icons: Record<string, Array<string>>
+  onClose: () => void
+  onPick: (icon: string) => void
+  style?: React.CSSProperties
 }
 
-const IconPickerMenu: React.FC<IIconPickerMenu> = ({ customEmojis, onClose, onPick, style }) => {
+const IconPickerMenu: React.FC<IIconPickerMenu> = ({ icons, onClose, onPick, style }) => {
   const intl = useIntl();
 
   const node = useRef<HTMLDivElement | null>(null);
@@ -60,70 +54,42 @@ const IconPickerMenu: React.FC<IIconPickerMenu> = ({ customEmojis, onClose, onPi
     });
   };
 
-  const getI18n = () => {
-
-    return {
-      search: intl.formatMessage(messages.emoji_search),
-      notfound: intl.formatMessage(messages.emoji_not_found),
-      categories: {
-        search: intl.formatMessage(messages.search_results),
-        custom: intl.formatMessage(messages.custom),
-      },
-    };
-  };
-
-  const handleClick = (emoji: Record<string, any>) => {
-    emoji.native = emoji.colons;
-
+  const handleClick = (icon: string) => {
     onClose();
-    onPick(emoji);
+    onPick(icon);
   };
 
-  const buildIcons = () => {
-    const emojis: Record<string, any> = [];
+  const renderIcon = (icon: string) => {
+    const name = icon.replace('fa fa-', '');
 
-    Object.values(customEmojis).forEach((category) => {
-      category.forEach((icon) => {
-        const name = icon.replace('fa fa-', '');
-        if (icon !== 'email' && icon !== 'memo') {
-          emojis.push({
-            id: name,
-            name,
-            short_names: [name],
-            emoticons: [],
-            keywords: [name],
-            imageUrl: '',
-          });
-        }
-      });
-    });
-
-    return emojis;
+    return (
+      <li key={icon} className='col-span-1 inline-block'>
+        <button
+          className='flex items-center justify-center rounded-full p-1.5 hover:bg-gray-50 dark:hover:bg-primary-800'
+          aria-label={name}
+          title={name}
+          onClick={() => handleClick(name)}
+        >
+          <i className={clsx(icon, 'h-[1.375rem] w-[1.375rem] text-lg leading-[1.15]')} />
+        </button>
+      </li>
+    );
   };
 
-  const data = { compressed: true, categories: [], aliases: [], emojis: [] };
   const title = intl.formatMessage(messages.emoji);
 
   return (
-    <div className={classNames('font-icon-picker emoji-picker-dropdown__menu')} style={style} ref={setRef}>
-      <Picker
-        perLine={8}
-        emojiSize={22}
-        include={categoriesSort}
-        sheetSize={32}
-        custom={buildIcons()}
-        color=''
-        emoji=''
-        set=''
-        title={title}
-        i18n={getI18n()}
-        onClick={handleClick}
-        showPreview={false}
-        backgroundImageFn={backgroundImageFn}
-        emojiTooltip
-        noShowAnchors
-        data={data}
-      />
+    <div
+      className={clsx('absolute z-[101] -my-0.5')}
+      style={{ transform: 'translateX(calc(-1 * env(safe-area-inset-right)))', ...style }}
+      ref={setRef}
+    >
+      <div className='h-[270px] overflow-x-hidden overflow-y-scroll rounded bg-white p-1.5 text-gray-900 dark:bg-primary-900 dark:text-gray-100' aria-label={title}>
+        <Text className='px-1.5 py-1'><FormattedMessage id='icon_button.icons' defaultMessage='Icons' /></Text>
+        <ul className='grid grid-cols-8'>
+          {Object.values(icons).flat().map(icon => renderIcon(icon))}
+        </ul>
+      </div>
     </div>
   );
 };

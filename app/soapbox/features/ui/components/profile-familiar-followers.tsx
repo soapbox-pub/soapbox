@@ -1,7 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React, { useEffect } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers';
@@ -9,7 +8,7 @@ import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import type { Account } from 'soapbox/types/entities';
@@ -17,11 +16,11 @@ import type { Account } from 'soapbox/types/entities';
 const getAccount = makeGetAccount();
 
 interface IProfileFamiliarFollowers {
-  account: Account,
+  account: Account
 }
 
 const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const me = useAppSelector((state) => state.me);
   const features = useFeatures();
   const familiarFollowerIds = useAppSelector(state => state.user_lists.familiar_followers.get(account.id)?.items || ImmutableOrderedSet<string>());
@@ -55,10 +54,10 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
 
   if (familiarFollowerIds.size > 2) {
     accounts.push(
-      <span className='hover:underline cursor-pointer' role='presentation' onClick={openFamiliarFollowersModal}>
+      <span className='cursor-pointer hover:underline' role='presentation' onClick={openFamiliarFollowersModal}>
         <FormattedMessage
           id='account.familiar_followers.more'
-          defaultMessage='{count} {count, plural, one {other} other {others}} you follow'
+          defaultMessage='{count, plural, one {# other} other {# others}} you follow'
           values={{ count: familiarFollowerIds.size - familiarFollowers.size }}
         />
       </span>,

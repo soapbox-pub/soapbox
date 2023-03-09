@@ -1,3 +1,7 @@
+[data-markup] {
+  @apply whitespace-pre-wrap;
+}
+
 [data-markup] p {
   @apply mb-4 whitespace-pre-wrap;
 }
@@ -61,7 +65,7 @@
 
 /* Emojis */
 [data-markup] img.emojione {
-  @apply w-5 h-5;
+  @apply w-5 h-5 m-0;
 }
 
 /* Hide Markdown images (Pleroma) */

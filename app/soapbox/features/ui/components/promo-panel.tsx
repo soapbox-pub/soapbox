@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from 'soapbox/components/icon';
+import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
 import { Widget, Stack, Text } from 'soapbox/components/ui';
 import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 
@@ -20,7 +20,7 @@ const PromoPanel: React.FC = () => {
         {promoItems.map((item, i) => (
           <Text key={i}>
             <a className='flex items-center' href={item.url} target='_blank'>
-              <Icon id={item.icon} className='flex-none text-lg mr-2 rtl:mr-0 rtl:ml-2' fixedWidth />
+              <ForkAwesomeIcon id={item.icon} className='mr-2 flex-none text-lg rtl:mr-0 rtl:ml-2' fixedWidth />
               {item.textLocales.get(locale) || item.text}
             </a>
           </Text>

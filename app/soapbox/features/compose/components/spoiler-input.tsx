@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -14,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface ISpoilerInput extends Pick<IAutosuggestInput, 'onSuggestionsFetchRequested' | 'onSuggestionsClearRequested' | 'onSuggestionSelected'> {
-  composeId: string extends 'default' ? never : string,
+  composeId: string extends 'default' ? never : string
 }
 
 /** Text input for content warning in composer. */
@@ -39,7 +39,7 @@ const SpoilerInput = React.forwardRef<AutosuggestInput, ISpoilerInput>(({
   return (
     <Stack
       space={4}
-      className={classNames({
+      className={clsx({
         'relative transition-height': true,
         'hidden': !compose.spoiler,
       })}
@@ -62,7 +62,7 @@ const SpoilerInput = React.forwardRef<AutosuggestInput, ISpoilerInput>(({
           onSuggestionSelected={onSuggestionSelected}
           searchTokens={[':']}
           id='cw-spoiler-input'
-          className='rounded-md dark:!bg-transparent !bg-transparent'
+          className='rounded-md !bg-transparent dark:!bg-transparent'
           ref={ref}
           autoFocus
         />

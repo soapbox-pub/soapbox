@@ -1,58 +1,36 @@
-import { Portal } from '@reach/portal';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
-import AutosuggestAccount from '../features/compose/components/autosuggest-account';
-import { isRtl } from '../rtl';
+import { Portal } from 'soapbox/components/ui';
+import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
+import { isRtl } from 'soapbox/rtl';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
-import AutosuggestEmoji, { Emoji } from './autosuggest-emoji';
+import AutosuggestEmoji from './autosuggest-emoji';
 
 import type { List as ImmutableList } from 'immutable';
-
-const textAtCursorMatchesToken = (str: string, caretPosition: number) => {
-  let word;
-
-  const left = str.slice(0, caretPosition).search(/\S+$/);
-  const right = str.slice(caretPosition).search(/\s/);
-
-  if (right < 0) {
-    word = str.slice(left);
-  } else {
-    word = str.slice(left, right + caretPosition);
-  }
-
-  if (!word || word.trim().length < 3 || !['@', ':', '#'].includes(word[0])) {
-    return [null, null];
-  }
-
-  word = word.trim().toLowerCase();
-
-  if (word.length > 0) {
-    return [left + 1, word];
-  } else {
-    return [null, null];
-  }
-};
+import type { Emoji } from 'soapbox/features/emoji';
 
 interface IAutosuggesteTextarea {
-  id?: string,
-  value: string,
-  suggestions: ImmutableList<string>,
-  disabled: boolean,
-  placeholder: string,
-  onSuggestionSelected: (tokenStart: number, token: string | null, value: string | undefined) => void,
-  onSuggestionsClearRequested: () => void,
-  onSuggestionsFetchRequested: (token: string | number) => void,
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement>,
-  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>,
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>,
-  onPaste: (files: FileList) => void,
-  autoFocus: boolean,
-  onFocus: () => void,
-  onBlur?: () => void,
-  condensed?: boolean,
+  id?: string
+  value: string
+  suggestions: ImmutableList<string>
+  disabled: boolean
+  placeholder: string
+  onSuggestionSelected: (tokenStart: number, token: string | null, value: string | undefined) => void
+  onSuggestionsClearRequested: () => void
+  onSuggestionsFetchRequested: (token: string | number) => void
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>
+  onPaste: (files: FileList) => void
+  autoFocus: boolean
+  onFocus: () => void
+  onBlur?: () => void
+  condensed?: boolean
+  children: React.ReactNode
 }
 
 class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {
@@ -72,7 +50,11 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
   };
 
   onChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    const [tokenStart, token] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart);
+    const [tokenStart, token] = textAtCursorMatchesToken(
+      e.target.value,
+      e.target.selectionStart,
+      ['@', ':', '#'],
+    );
 
     if (token !== null && this.state.lastToken !== token) {
       this.setState({ lastToken: token, selectedSuggestion: 0, tokenStart });
@@ -83,7 +65,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     }
 
     this.props.onChange(e);
-  }
+  };
 
   onKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
     const { suggestions, disabled } = this.props;
@@ -141,7 +123,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     }
 
     this.props.onKeyDown(e);
-  }
+  };
 
   onBlur = () => {
     this.setState({ suggestionsHidden: true, focused: false });
@@ -149,7 +131,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (this.props.onBlur) {
       this.props.onBlur();
     }
-  }
+  };
 
   onFocus = () => {
     this.setState({ focused: true });
@@ -157,14 +139,14 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (this.props.onFocus) {
       this.props.onFocus();
     }
-  }
+  };
 
   onSuggestionClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     const suggestion = this.props.suggestions.get(e.currentTarget.getAttribute('data-index') as any);
     e.preventDefault();
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.textarea?.focus();
-  }
+  };
 
   shouldComponentUpdate(nextProps: IAutosuggesteTextarea, nextState: any) {
     // Skip updating when only the lastToken changes so the
@@ -175,7 +157,8 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     if (lastTokenUpdated && !valueUpdated) {
       return false;
     } else {
-      return super.shouldComponentUpdate!(nextProps, nextState, undefined);
+      // https://stackoverflow.com/a/35962835
+      return super.shouldComponentUpdate!.bind(this)(nextProps, nextState, undefined);
     }
   }
 
@@ -188,14 +171,14 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
 
   setTextarea: React.Ref<HTMLTextAreaElement> = (c) => {
     this.textarea = c;
-  }
+  };
 
   onPaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
     if (e.clipboardData && e.clipboardData.files.length === 1) {
       this.props.onPaste(e.clipboardData.files);
       e.preventDefault();
     }
-  }
+  };
 
   renderSuggestion = (suggestion: string | Emoji, i: number) => {
     const { selectedSuggestion } = this.state;
@@ -218,7 +201,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
         tabIndex={0}
         key={key}
         data-index={i}
-        className={classNames({
+        className={clsx({
           'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
           'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
         })}
@@ -227,7 +210,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
         {inner}
       </div>
     );
-  }
+  };
 
   setPortalPosition() {
     if (!this.textarea) {
@@ -248,7 +231,8 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr', minRows: 10 };
 
-    if (isRtl(value)) {
+    // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
+    if (isRtl(value) || (!value && placeholder && isRtl(placeholder))) {
       style.direction = 'rtl';
     }
 
@@ -260,7 +244,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
 
             <Textarea
               ref={this.setTextarea}
-              className={classNames('transition-[min-height] motion-reduce:transition-none dark:bg-transparent px-0 border-0 text-gray-800 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-600 resize-none w-full focus:shadow-none focus:border-0 focus:ring-0', {
+              className={clsx('w-full resize-none border-0 px-0 text-gray-800 transition-[min-height] placeholder:text-gray-600 focus:border-0 focus:shadow-none focus:ring-0 motion-reduce:transition-none dark:bg-transparent dark:text-white dark:placeholder:text-gray-600', {
                 'min-h-[40px]': condensed,
                 'min-h-[100px]': !condensed,
               })}
@@ -287,7 +271,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
       <Portal key='portal'>
         <div
           style={this.setPortalPosition()}
-          className={classNames({
+          className={clsx({
             'fixed z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
             hidden: suggestionsHidden || suggestions.isEmpty(),
             block: !suggestionsHidden && !suggestions.isEmpty(),

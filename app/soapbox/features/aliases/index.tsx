@@ -20,7 +20,6 @@ const messages = defineMessages({
   delete: { id: 'column.aliases.delete', defaultMessage: 'Delete' },
 });
 
-
 const Aliases = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();

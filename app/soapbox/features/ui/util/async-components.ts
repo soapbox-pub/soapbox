@@ -1,5 +1,5 @@
 export function EmojiPicker() {
-  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/emoji-picker');
+  return import(/* webpackChunkName: "emoji_picker" */'../../emoji/components/emoji-picker');
 }
 
 export function Notifications() {
@@ -108,6 +108,10 @@ export function ReportModal() {
 
 export function AccountModerationModal() {
   return import(/* webpackChunkName: "modals/account-moderation-modal" */'../components/modals/account-moderation-modal/account-moderation-modal');
+}
+
+export function PolicyModal() {
+  return import(/* webpackChunkName: "modals/policy-modal" */'../components/modals/policy-modal');
 }
 
 export function MediaGallery() {
@@ -234,10 +238,6 @@ export function Settings() {
   return import(/* webpackChunkName: "features/settings" */'../../settings');
 }
 
-export function MediaDisplay() {
-  return import(/* webpackChunkName: "features/settings" */'../../settings/media-display');
-}
-
 export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit-profile');
 }
@@ -290,12 +290,8 @@ export function ChatIndex() {
   return import(/* webpackChunkName: "features/chats" */'../../chats');
 }
 
-export function ChatRoom() {
-  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat-room');
-}
-
-export function ChatPanes() {
-  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat-panes');
+export function ChatWidget() {
+  return import(/* webpackChunkName: "features/chats/components/chat-widget" */'../../chats/components/chat-widget/chat-widget');
 }
 
 export function ServerInfo() {
@@ -308,6 +304,10 @@ export function Dashboard() {
 
 export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation-log');
+}
+
+export function ThemeEditor() {
+  return import(/* webpackChunkName: "features/theme-editor" */'../../theme-editor');
 }
 
 export function UserPanel() {
@@ -368,10 +368,6 @@ export function SidebarMenu() {
 
 export function UploadArea() {
   return import(/* webpackChunkName: "features/compose" */'../components/upload-area');
-}
-
-export function NotificationsContainer() {
-  return import(/* webpackChunkName: "features/ui" */'../containers/notifications-container');
 }
 
 export function ModalContainer() {
@@ -508,4 +504,88 @@ export function AnnouncementsPanel() {
 
 export function Quotes() {
   return import(/*webpackChunkName: "features/quotes" */'../../quotes');
+}
+
+export function ComposeEventModal() {
+  return import(/* webpackChunkName: "features/compose_event_modal" */'../components/modals/compose-event-modal/compose-event-modal');
+}
+
+export function JoinEventModal() {
+  return import(/* webpackChunkName: "features/join_event_modal" */'../components/modals/join-event-modal');
+}
+
+export function EventHeader() {
+  return import(/* webpackChunkName: "features/event" */'../../event/components/event-header');
+}
+
+export function EventInformation() {
+  return import(/* webpackChunkName: "features/event" */'../../event/event-information');
+}
+
+export function EventDiscussion() {
+  return import(/* webpackChunkName: "features/event" */'../../event/event-discussion');
+}
+
+export function EventMapModal() {
+  return import(/* webpackChunkName: "modals/event-map-modal" */'../components/modals/event-map-modal');
+}
+
+export function EventParticipantsModal() {
+  return import(/* webpackChunkName: "modals/event-participants-modal" */'../components/modals/event-participants-modal');
+}
+
+export function Events() {
+  return import(/* webpackChunkName: "features/events" */'../../events');
+}
+
+export function Groups() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups');
+}
+
+export function GroupsDiscover() {
+  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/discover');
+}
+
+export function GroupMembers() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
+}
+
+export function GroupTimeline() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
+}
+
+export function ManageGroup() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/manage-group');
+}
+
+export function GroupBlockedMembers() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-blocked-members');
+}
+
+export function GroupMembershipRequests() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-membership-requests');
+}
+
+export function ManageGroupModal() {
+  return import(/* webpackChunkName: "features/manage_group_modal" */'../components/modals/manage-group-modal/manage-group-modal');
+}
+
+export function NewGroupPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/panels/new-group-panel');
+}
+
+export function GroupMediaPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/group-media-panel');
+}
+
+export function NewEventPanel() {
+  return import(/* webpackChunkName: "features/events" */'../components/panels/new-event-panel');
+}
+
+export function Announcements() {
+  return import(/* webpackChunkName: "features/admin/announcements" */'../../admin/announcements');
+}
+
+export function EditAnnouncementModal() {
+  return import(/* webpackChunkName: "features/admin/announcements" */'../components/modals/edit-announcement-modal');
 }

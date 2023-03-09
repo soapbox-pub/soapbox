@@ -9,8 +9,8 @@ import { useAppDispatch } from 'soapbox/hooks';
 import useEmbed from 'soapbox/queries/embed';
 
 interface IEmbedModal {
-  url: string,
-  onError: (error: any) => void,
+  url: string
+  onError: (error: any) => void
 }
 
 const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
@@ -45,7 +45,7 @@ const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {
       </div>
 
       <SafeEmbed
-        className='rounded-xl overflow-hidden w-full'
+        className='w-full overflow-hidden rounded-xl'
         sandbox='allow-same-origin allow-scripts'
         title='embedded-status'
         html={embed?.html}

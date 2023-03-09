@@ -59,7 +59,7 @@
 }
 
 @keyframes heartbeat {
-  from {
+  0% {
     transform: scale(1);
     animation-timing-function: ease-out;
   }
@@ -128,35 +128,18 @@
 }
 
 .load-more {
-  display: block;
-  color: var(--primary-text-color);
-  background-color: transparent;
-  border: 0;
-  margin: 0;
-  padding: 15px;
-  box-sizing: border-box;
-  width: 100%;
-
-  &:hover,
-  &:focus {
-    background: var(--brand-color--faint);
-  }
+  @apply block w-full m-0 p-4 border-0 box-border text-gray-900 bg-transparent;
 
   .svg-icon {
     @apply mx-auto;
   }
 }
 
-.load-gap {
-  border-bottom: 1px solid var(--brand-color--med);
-}
-
 .regeneration-indicator {
+  @apply text-gray-900;
   text-align: center;
   font-size: 16px;
   font-weight: 500;
-  color: var(--primary-text-color);
-  background: var(--accent-color--faint);
   cursor: default;
   display: flex;
   flex: 1 1 auto;
@@ -177,9 +160,7 @@
 
   &__label {
     strong {
-      display: block;
-      margin-bottom: 10px;
-      color: var(--primary-text-color);
+      @apply block mb-2.5 text-gray-900;
     }
 
     span {

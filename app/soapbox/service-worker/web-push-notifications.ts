@@ -1,3 +1,4 @@
+/* eslint-disable compat/compat */
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import unescape from 'lodash/unescape';
@@ -20,42 +21,42 @@ declare const self: ServiceWorkerGlobalScope;
 
 /** Soapbox notification data from push event. */
 interface NotificationData {
-  access_token?: string,
-  count?: number,
-  hiddenBody?: string,
-  hiddenImage?: string,
-  id?: string,
-  preferred_locale: string,
-  url: string,
+  access_token?: string
+  count?: number
+  hiddenBody?: string
+  hiddenImage?: string
+  id?: string
+  preferred_locale: string
+  url: string
 }
 
 /** ServiceWorker Notification options with extra fields. */
 interface ExtendedNotificationOptions extends NotificationOptions {
-  data: NotificationData,
-  title: string,
+  data: NotificationData
+  title: string
 }
 
 /** Partial clone of ServiceWorker Notification with mutability. */
 interface ClonedNotification {
-  actions?: NotificationAction[],
-  body?: string,
-  data: NotificationData,
-  image?: string,
-  tag?: string,
-  title: string,
+  actions?: NotificationAction[]
+  body?: string
+  data: NotificationData
+  image?: string
+  tag?: string
+  title: string
 }
 
 /** Status entitiy from the API (kind of). */
 // HACK
 interface APIStatus extends Omit<StatusEntity, 'media_attachments'> {
-  media_attachments: { preview_url: string }[],
+  media_attachments: { preview_url: string }[]
 }
 
 /** Notification entity from the API (kind of). */
 // HACK
 interface APINotification extends Omit<NotificationEntity, 'account' | 'status'> {
-  account: AccountEntity,
-  status?: APIStatus,
+  account: AccountEntity
+  status?: APIStatus
 }
 
 /** Show the actual push notification on the device. */
@@ -134,13 +135,18 @@ const htmlToPlainText = (html: string): string =>
 
 /** ServiceWorker `push` event callback. */
 const handlePush = (event: PushEvent) => {
-  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data?.json();
+  if (!event.data) {
+    console.error('An empty web push event was received.', { event });
+    return;
+  }
+
+  const { access_token, notification_id, preferred_locale, title, body, icon } = event.data.json();
 
   // Placeholder until more information can be loaded
   event.waitUntil(
     fetchFromApi(`/api/v1/notifications/${notification_id}`, 'get', access_token).then(notification => {
       const options: ExtendedNotificationOptions = {
-        title: formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
+        title:     formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
         body:      notification.status && htmlToPlainText(notification.status.content),
         icon:      notification.account.avatar_static,
         timestamp: notification.created_at && Number(new Date(notification.created_at)),
@@ -154,7 +160,7 @@ const handlePush = (event: PushEvent) => {
         options.data.hiddenImage = notification.status?.media_attachments[0]?.preview_url;
 
         if (notification.status?.spoiler_text) {
-          options.body    = notification.status.spoiler_text;
+          options.body = notification.status.spoiler_text;
         }
 
         options.image   = undefined;

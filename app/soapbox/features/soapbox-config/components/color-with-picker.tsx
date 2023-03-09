@@ -9,12 +9,12 @@ import ColorPicker from './color-picker';
 import type { ColorChangeHandler } from 'react-color';
 
 interface IColorWithPicker {
-  buttonId: string,
-  value: string,
-  onChange: ColorChangeHandler,
+  value: string
+  onChange: ColorChangeHandler
+  className?: string
 }
 
-const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, value, onChange }) => {
+const ColorWithPicker: React.FC<IColorWithPicker> = ({ value, onChange, className }) => {
   const node = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const [placement, setPlacement] = useState<string | null>(null);
@@ -39,11 +39,10 @@ const ColorWithPicker: React.FC<IColorWithPicker> = ({ buttonId, value, onChange
   };
 
   return (
-    <div>
+    <div className={className}>
       <div
         ref={node}
-        id={buttonId}
-        className='w-8 h-8 rounded-md'
+        className='h-full w-full'
         role='presentation'
         style={{ background: value }}
         title={value}

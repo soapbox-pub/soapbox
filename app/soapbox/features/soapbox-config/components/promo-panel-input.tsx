@@ -17,8 +17,8 @@ const messages = defineMessages({
 const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange }) => {
   const intl = useIntl();
 
-  const handleIconChange = (icon: any) => {
-    onChange(value.set('icon', icon.id));
+  const handleIconChange = (icon: string) => {
+    onChange(value.set('icon', icon));
   };
 
   const handleChange = (key: 'text' | 'url'): React.ChangeEventHandler<HTMLInputElement> => {
@@ -36,14 +36,14 @@ const PromoPanelInput: StreamfieldComponent<PromoPanelItem> = ({ value, onChange
 
       <Input
         type='text'
-        outerClassName='w-full flex-grow'
+        outerClassName='w-full grow'
         placeholder={intl.formatMessage(messages.label)}
         value={value.text}
         onChange={handleChange('text')}
       />
       <Input
         type='text'
-        outerClassName='w-full flex-grow'
+        outerClassName='w-full grow'
         placeholder={intl.formatMessage(messages.url)}
         value={value.url}
         onChange={handleChange('url')}

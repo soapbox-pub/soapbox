@@ -1,17 +1,17 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import IconButton from 'soapbox/components/icon-button';
+import { Modal } from 'soapbox/components/ui';
 
 const messages = defineMessages({
-  error: { id: 'bundle_modal_error.message', defaultMessage: 'Something went wrong while loading this page.' },
+  error: { id: 'bundle_modal_error.message', defaultMessage: 'Something went wrong while loading this modal.' },
   retry: { id: 'bundle_modal_error.retry', defaultMessage: 'Try again' },
   close: { id: 'bundle_modal_error.close', defaultMessage: 'Close' },
 });
 
 interface IBundleModalError {
-  onRetry: () => void,
-  onClose: () => void,
+  onRetry: () => void
+  onClose: () => void
 }
 
 const BundleModalError: React.FC<IBundleModalError> = ({ onRetry, onClose }) => {
@@ -22,23 +22,13 @@ const BundleModalError: React.FC<IBundleModalError> = ({ onRetry, onClose }) => 
   };
 
   return (
-    <div className='modal-root__modal error-modal'>
-      <div className='error-modal__body'>
-        <IconButton title={intl.formatMessage(messages.retry)} icon='refresh' onClick={handleRetry} size={64} />
-        {intl.formatMessage(messages.error)}
-      </div>
-
-      <div className='error-modal__footer'>
-        <div>
-          <button
-            onClick={onClose}
-            className='error-modal__nav'
-          >
-            {intl.formatMessage(messages.close)}
-          </button>
-        </div>
-      </div>
-    </div>
+    <Modal
+      title={intl.formatMessage(messages.error)}
+      confirmationAction={onClose}
+      confirmationText={intl.formatMessage(messages.close)}
+      secondaryAction={handleRetry}
+      secondaryText={intl.formatMessage(messages.retry)}
+    />
   );
 };
 

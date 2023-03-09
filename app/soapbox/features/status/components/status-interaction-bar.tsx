@@ -1,7 +1,7 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,11 +9,12 @@ import { openModal } from 'soapbox/actions/modals';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import type { Status } from 'soapbox/types/entities';
 
 interface IStatusInteractionBar {
-  status: Status,
+  status: Status
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
@@ -151,7 +152,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
               return (
                 <Emoji
                   key={i}
-                  className='w-4.5 h-4.5 flex-none'
+                  className='h-4.5 w-4.5 flex-none'
                   emoji={e.get('name')}
                 />
               );
@@ -174,9 +175,9 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 };
 
 interface IInteractionCounter {
-  count: number,
-  onClick?: React.MouseEventHandler<HTMLButtonElement>,
-  children: React.ReactNode,
+  count: number
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  children: React.ReactNode
 }
 
 const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, children }) => {
@@ -187,7 +188,7 @@ const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, chi
       type='button'
       onClick={onClick}
       className={
-        classNames({
+        clsx({
           'text-gray-600 dark:text-gray-700': true,
           'hover:underline': features.exposableReactions,
           'cursor-default': !features.exposableReactions,
@@ -196,7 +197,7 @@ const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, chi
     >
       <HStack space={1} alignItems='center'>
         <Text theme='primary' weight='bold'>
-          <FormattedNumber value={count} />
+          {shortNumberFormat(count)}
         </Text>
 
         <Text tag='div' theme='muted'>

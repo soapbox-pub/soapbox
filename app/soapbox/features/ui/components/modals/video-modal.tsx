@@ -7,11 +7,11 @@ import Video from 'soapbox/features/video';
 import type { Status, Account, Attachment } from 'soapbox/types/entities';
 
 interface IVideoModal {
-  media: Attachment,
-  status: Status,
-  account: Account,
-  time: number,
-  onClose: () => void,
+  media: Attachment
+  status: Status
+  account: Account
+  time: number
+  onClose: () => void
 }
 
 const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClose }) => {
@@ -31,7 +31,7 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
   );
 
   return (
-    <div className='block w-full max-w-xl mx-auto overflow-hidden text-left align-middle transition-all transform shadow-xl rounded-2xl pointer-events-auto'>
+    <div className='pointer-events-auto mx-auto block w-full max-w-xl overflow-hidden rounded-2xl text-left align-middle shadow-xl transition-all'>
       <Video
         preview={media.preview_url}
         blurhash={media.blurhash}
@@ -39,6 +39,7 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
         startTime={time}
         link={link}
         detailed
+        autoFocus
         alt={media.description}
         visible
       />

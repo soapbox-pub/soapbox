@@ -1,7 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
@@ -11,6 +11,12 @@ import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,
 } from '../actions/emoji-reacts';
+import {
+  EVENT_JOIN_REQUEST,
+  EVENT_JOIN_FAIL,
+  EVENT_LEAVE_REQUEST,
+  EVENT_LEAVE_FAIL,
+} from '../actions/events';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,
@@ -36,20 +42,21 @@ import {
 import { TIMELINE_DELETE } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const domParser = new DOMParser();
 
 type StatusRecord = ReturnType<typeof normalizeStatus>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ReducerStatus>;
 
 export interface ReducerStatus extends StatusRecord {
-  account: string | null,
-  reblog: string | null,
-  poll: string | null,
-  quote: string | null,
+  account: string | null
+  reblog: string | null
+  poll: string | null
+  quote: string | null
+  group: string | null
 }
 
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
@@ -58,6 +65,7 @@ const minifyStatus = (status: StatusRecord): ReducerStatus => {
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
+    group: normalizeId(status.getIn(['group', 'id'])),
   }) as ReducerStatus;
 };
 
@@ -196,9 +204,9 @@ const simulateFavourite = (
 };
 
 interface Translation {
-  content: string,
-  detected_source_language: string,
-  provider: string,
+  content: string
+  detected_source_language: string
+  provider: string
 }
 
 /** Import translation from translation service into the store. */
@@ -281,6 +289,13 @@ export default function statuses(state = initialState, action: AnyAction): State
       return deleteTranslation(state, action.id);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
+    case EVENT_JOIN_REQUEST:
+      return state.setIn([action.id, 'event', 'join_state'], 'pending');
+    case EVENT_JOIN_FAIL:
+    case EVENT_LEAVE_REQUEST:
+      return state.setIn([action.id, 'event', 'join_state'], null);
+    case EVENT_LEAVE_FAIL:
+      return state.setIn([action.id, 'event', 'join_state'], action.previousState);
     default:
       return state;
   }

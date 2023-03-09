@@ -1,20 +1,21 @@
-import classNames from 'clsx';
-import React, { useState, useRef } from 'react';
+import clsx from 'clsx';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Text, Select } from '../../components/ui';
+import { Select } from '../../components/ui';
 
 interface IInputContainer {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  required?: boolean,
-  type?: string,
-  extraClass?: string,
-  error?: boolean,
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  required?: boolean
+  type?: string
+  extraClass?: string
+  error?: boolean
+  children: React.ReactNode
 }
 
 export const InputContainer: React.FC<IInputContainer> = (props) => {
-  const containerClass = classNames('input', {
+  const containerClass = clsx('input', {
     'with_label': props.label,
     'required': props.required,
     'boolean': props.type === 'checkbox',
@@ -30,8 +31,9 @@ export const InputContainer: React.FC<IInputContainer> = (props) => {
 };
 
 interface ILabelInputContainer {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  children: React.ReactNode
 }
 
 export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hint, children }) => {
@@ -53,7 +55,7 @@ export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hin
 };
 
 interface ILabelInput {
-  label?: React.ReactNode,
+  label?: React.ReactNode
 }
 
 export const LabelInput: React.FC<ILabelInput> = ({ label, ...props }) => (
@@ -63,7 +65,7 @@ export const LabelInput: React.FC<ILabelInput> = ({ label, ...props }) => (
 );
 
 interface ILabelTextarea {
-  label?: React.ReactNode,
+  label?: React.ReactNode
 }
 
 export const LabelTextarea: React.FC<ILabelTextarea> = ({ label, ...props }) => (
@@ -73,21 +75,21 @@ export const LabelTextarea: React.FC<ILabelTextarea> = ({ label, ...props }) => 
 );
 
 interface ISimpleInput {
-  type: string,
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  error?: boolean,
-  onChange?: React.ChangeEventHandler,
-  min?: number,
-  max?: number,
-  pattern?: string,
-  name?: string,
-  placeholder?: string,
-  value?: string | number,
-  autoComplete?: string,
-  autoCorrect?: string,
-  autoCapitalize?: string,
-  required?: boolean,
+  type: string
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  error?: boolean
+  onChange?: React.ChangeEventHandler
+  min?: number
+  max?: number
+  pattern?: string
+  name?: string
+  placeholder?: string
+  value?: string | number
+  autoComplete?: string
+  autoCorrect?: string
+  autoCapitalize?: string
+  required?: boolean
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
@@ -101,132 +103,26 @@ export const SimpleInput: React.FC<ISimpleInput> = (props) => {
   );
 };
 
-interface ISimpleTextarea {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  value?: string,
-  onChange?: React.ChangeEventHandler<HTMLTextAreaElement>,
-  rows?: number,
-  name?: string,
-  maxLength?: number,
-  required?: boolean,
-}
-
-export const SimpleTextarea: React.FC<ISimpleTextarea> = (props) => {
-  const { hint, label, ...rest } = props;
-  const Input = label ? LabelTextarea : 'textarea';
-
-  return (
-    <InputContainer {...props}>
-      <Input {...rest} />
-    </InputContainer>
-  );
-};
-
-interface ISimpleForm {
-  className?: string,
-  onSubmit?: React.FormEventHandler,
-  acceptCharset?: string,
-  style?: React.CSSProperties,
-}
-
-export const SimpleForm: React.FC<ISimpleForm> = (props) => {
-  const {
-    className,
-    children,
-    onSubmit = () => {},
-    acceptCharset = 'UTF-8',
-    ...rest
-  } = props;
-
-  const handleSubmit: React.FormEventHandler = e => {
-    onSubmit(e);
-    e.preventDefault();
-  };
-
-  return (
-    <form
-      className={classNames('simple_form', className)}
-      method='post'
-      onSubmit={handleSubmit}
-      acceptCharset={acceptCharset}
-      {...rest}
-    >
-      {children}
-    </form>
-  );
-};
-
-export const FieldsGroup: React.FC = ({ children }) => (
-  <div className='fields-group'>{children}</div>
-);
-
 interface ICheckbox {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  name?: string,
-  checked?: boolean,
-  disabled?: boolean,
-  onChange?: React.ChangeEventHandler<HTMLInputElement>,
-  required?: boolean,
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  name?: string
+  checked?: boolean
+  disabled?: boolean
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  required?: boolean
 }
 
 export const Checkbox: React.FC<ICheckbox> = (props) => (
   <SimpleInput type='checkbox' {...props} />
 );
 
-interface IRadioGroup {
-  label?: React.ReactNode,
-  onChange?: React.ChangeEventHandler,
-}
-
-export const RadioGroup: React.FC<IRadioGroup> = (props) => {
-  const { label, children, onChange } = props;
-
-  const childrenWithProps = React.Children.map(children, child =>
-    // @ts-ignore
-    React.cloneElement(child, { onChange }),
-  );
-
-  return (
-    <div className='input with_floating_label radio_buttons'>
-      <div className='label_input'>
-        <label>{label}</label>
-        <ul>{childrenWithProps}</ul>
-      </div>
-    </div>
-  );
-};
-
-interface IRadioItem {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  value: string,
-  checked: boolean,
-  onChange?: React.ChangeEventHandler,
-}
-
-export const RadioItem: React.FC<IRadioItem> = (props) => {
-  const { current: id } = useRef<string>(uuidv4());
-  const { label, hint, checked = false, ...rest } = props;
-
-  return (
-    <li className='radio'>
-      <label htmlFor={id}>
-        <input id={id} type='radio' checked={checked} {...rest} />
-        <Text>{label}</Text>
-        {hint && <span className='hint'>{hint}</span>}
-      </label>
-    </li>
-  );
-};
-
 interface ISelectDropdown {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  items: Record<string, string>,
-  defaultValue?: string,
-  onChange?: React.ChangeEventHandler,
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  items: Record<string, string>
+  defaultValue?: string
+  onChange?: React.ChangeEventHandler
 }
 
 export const SelectDropdown: React.FC<ISelectDropdown> = (props) => {
@@ -245,18 +141,18 @@ export const SelectDropdown: React.FC<ISelectDropdown> = (props) => {
 };
 
 interface ITextInput {
-  name?: string,
-  onChange?: React.ChangeEventHandler,
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  placeholder?: string,
-  value?: string,
-  autoComplete?: string,
-  autoCorrect?: string,
-  autoCapitalize?: string,
-  pattern?: string,
-  error?: boolean,
-  required?: boolean,
+  name?: string
+  onChange?: React.ChangeEventHandler
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  placeholder?: string
+  value?: string
+  autoComplete?: string
+  autoCorrect?: string
+  autoCapitalize?: string
+  pattern?: string
+  error?: boolean
+  required?: boolean
 }
 
 export const TextInput: React.FC<ITextInput> = props => (
@@ -272,11 +168,11 @@ FileChooser.defaultProps = {
 };
 
 interface IFileChooserLogo {
-  label?: React.ReactNode,
-  hint?: React.ReactNode,
-  name?: string,
-  accept?: string[],
-  onChange: React.ChangeEventHandler<HTMLInputElement>,
+  label?: React.ReactNode
+  hint?: React.ReactNode
+  name?: string
+  accept?: string[]
+  onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
 export const FileChooserLogo: React.FC<IFileChooserLogo> = props => (

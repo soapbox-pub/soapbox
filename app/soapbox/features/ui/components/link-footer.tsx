@@ -1,25 +1,25 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
 import { Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji/emoji';
-import { useSoapboxConfig, useOwnAccount, useFeatures } from 'soapbox/hooks';
+import emojify from 'soapbox/features/emoji';
+import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 
 interface IFooterLink {
-  to: string,
-  className?: string,
-  onClick?: React.EventHandler<React.MouseEvent>,
+  to: string
+  className?: string
+  onClick?: React.EventHandler<React.MouseEvent>
+  children: React.ReactNode
 }
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
   return (
     <div>
-      <Link className={classNames('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+      <Link className={clsx('text-gray-700 hover:text-gray-800 hover:underline dark:text-gray-600 dark:hover:text-gray-500', className)} {...rest}>{children}</Link>
     </div>
   );
 };
@@ -29,7 +29,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onClickLogOut: React.EventHandler<React.MouseEvent> = (e) => {
     dispatch(logOut());
@@ -38,7 +38,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
   return (
     <div className='space-y-2'>
-      <div className='flex flex-wrap items-center divide-x-dot text-gray-600'>
+      <div className='divide-x-dot flex flex-wrap items-center text-gray-600'>
         {account && <>
           {features.profileDirectory && (
             <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>
@@ -57,9 +57,6 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {account.locked && (
             <FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink>
           )}
-          {features.import && (
-            <FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink>
-          )}
           <FooterLink to='/logout' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}
       </div>
@@ -76,7 +73,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
             defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
             values={{
               code_name: sourceCode.displayName,
-              code_link: <Text theme='subtle'><a className='underline' href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a></Text>,
+              code_link: <Text theme='subtle' tag='span'><a className='underline' href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a></Text>,
               code_version: sourceCode.version,
             }}
           />

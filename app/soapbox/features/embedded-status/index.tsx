@@ -12,8 +12,8 @@ import { makeGetStatus } from 'soapbox/selectors';
 
 interface IEmbeddedStatus {
   params: {
-    statusId: string,
-  },
+    statusId: string
+  }
 }
 
 /** Status to be presented in an iframe for embeds on external websites. */
@@ -45,7 +45,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
   }, [status, loading]);
 
   const logo = (
-    <div className='flex align-middle justify-center ml-4'>
+    <div className='ml-4 flex justify-center align-middle'>
       <SiteLogo className='max-h-[20px] max-w-[112px]' />
     </div>
   );
@@ -67,7 +67,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
       onClick={e => e.stopPropagation()}
       target='_blank'
     >
-      <div className='p-4 sm:p-6 max-w-3xl pointer-events-none'>
+      <div className='pointer-events-none max-w-3xl p-4 sm:p-6'>
         {renderInner()}
       </div>
     </a>

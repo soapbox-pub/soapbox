@@ -1,14 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
 import ThemeSelector from './theme-selector';
 
 /** Stateful theme selector. */
 const ThemeToggle: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const themeMode = useSettings().get('themeMode');
 
   const handleChange = (themeMode: string) => {

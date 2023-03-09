@@ -47,7 +47,7 @@ const maybeParseJSON = (data: string) => {
 
 const getAuthBaseURL = createSelector([
   (state: RootState, me: string | false | null) => state.accounts.getIn([me, 'url']),
-  (state: RootState, _me: string | false | null) => state.auth.get('me'),
+  (state: RootState, _me: string | false | null) => state.auth.me,
 ], (accountUrl, authUserUrl) => {
   const baseURL = parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);
   return baseURL !== window.location.origin ? baseURL : '';
@@ -66,7 +66,6 @@ export const baseClient = (accessToken?: string | null, baseURL: string = ''): A
     headers: Object.assign(accessToken ? {
       'Authorization': `Bearer ${accessToken}`,
     } : {}),
-
     transformResponse: [maybeParseJSON],
   });
 };

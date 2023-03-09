@@ -11,25 +11,25 @@ export const FAMILIAR_FOLLOWERS_FETCH_SUCCESS = 'FAMILIAR_FOLLOWERS_FETCH_SUCCES
 export const FAMILIAR_FOLLOWERS_FETCH_FAIL    = 'FAMILIAR_FOLLOWERS_FETCH_FAIL';
 
 type FamiliarFollowersFetchRequestAction = {
-  type: typeof FAMILIAR_FOLLOWERS_FETCH_REQUEST,
-  id: string,
+  type: typeof FAMILIAR_FOLLOWERS_FETCH_REQUEST
+  id: string
 }
 
 type FamiliarFollowersFetchRequestSuccessAction = {
-  type: typeof FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
-  id: string,
-  accounts: Array<APIEntity>,
+  type: typeof FAMILIAR_FOLLOWERS_FETCH_SUCCESS
+  id: string
+  accounts: Array<APIEntity>
 }
 
 type FamiliarFollowersFetchRequestFailAction = {
-  type: typeof FAMILIAR_FOLLOWERS_FETCH_FAIL,
-  id: string,
-  error: any,
+  type: typeof FAMILIAR_FOLLOWERS_FETCH_FAIL
+  id: string
+  error: any
 }
 
 type AccountsImportAction = {
-  type: typeof ACCOUNTS_IMPORT,
-  accounts: Array<APIEntity>,
+  type: typeof ACCOUNTS_IMPORT
+  accounts: Array<APIEntity>
 }
 
 export type FamiliarFollowersActions = FamiliarFollowersFetchRequestAction | FamiliarFollowersFetchRequestSuccessAction | FamiliarFollowersFetchRequestFailAction | AccountsImportAction

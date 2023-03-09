@@ -17,14 +17,31 @@ import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
-import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
+export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
+
+export type EventJoinMode = 'free' | 'restricted' | 'invite';
+export type EventJoinState = 'pending' | 'reject' | 'accept';
+
+export const EventRecord = ImmutableRecord({
+  name: '',
+  start_time: null as string | null,
+  end_time: null as string | null,
+  join_mode: null as EventJoinMode | null,
+  participants_count: 0,
+  location: null as ImmutableMap<string, any> | null,
+  join_state: null as EventJoinState | null,
+  banner: null as Attachment | null,
+  links: ImmutableList<Attachment>(),
+});
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
   application: null as ImmutableMap<string, any> | null,
+  approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
   card: null as Card | null,
   content: '',
@@ -33,7 +50,7 @@ export const StatusRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
-  group: null as EmbeddedEntity<any>,
+  group: null as EmbeddedEntity<Group>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',
@@ -56,6 +73,7 @@ export const StatusRecord = ImmutableRecord({
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
+  event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields
   contentHtml: '',
@@ -160,6 +178,42 @@ const fixSensitivity = (status: ImmutableMap<string, any>) => {
   }
 };
 
+// Normalize event
+const normalizeEvent = (status: ImmutableMap<string, any>) => {
+  if (status.getIn(['pleroma', 'event'])) {
+    const firstAttachment = status.get('media_attachments').first();
+    let banner = null;
+    let mediaAttachments = status.get('media_attachments');
+
+    if (firstAttachment && firstAttachment.description === 'Banner' && firstAttachment.type === 'image') {
+      banner = normalizeAttachment(firstAttachment);
+      mediaAttachments = mediaAttachments.shift();
+    }
+
+    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') === 'text/html');
+    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') !== 'text/html');
+
+    const event = EventRecord(
+      (status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>)
+        .set('banner', banner)
+        .set('links', links),
+    );
+
+    status
+      .set('event', event)
+      .set('media_attachments', mediaAttachments);
+  }
+};
+
+/** Rewrite `<p></p>` to empty string. */
+const fixContent = (status: ImmutableMap<string, any>) => {
+  if (status.get('content') === '<p></p>') {
+    return status.set('content', '');
+  } else {
+    return status;
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -173,6 +227,8 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixQuote(status);
       fixFiltered(status);
       fixSensitivity(status);
+      normalizeEvent(status);
+      fixContent(status);
     }),
   );
 };

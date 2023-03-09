@@ -15,15 +15,15 @@ import type { Status, Attachment } from 'soapbox/types/entities';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: Status,
+  status: Status
   /** Whether to display compact media. */
-  muted?: boolean,
+  muted?: boolean
   /** Callback when compact media is clicked. */
-  onClick?: () => void,
+  onClick?: () => void
   /** Whether or not the media is concealed behind a NSFW banner. */
-  showMedia?: boolean,
+  showMedia?: boolean
   /** Callback when visibility is toggled (eg clicked through NSFW). */
-  onToggleVisibility?: () => void,
+  onToggleVisibility?: () => void
 }
 
 /** Render media attachments for a status. */
@@ -43,7 +43,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   const size = status.media_attachments.size;
   const firstAttachment = status.media_attachments.first();
 
-  let media = null;
+  let media: JSX.Element | null = null;
 
   const setRef = (c: HTMLDivElement): void => {
     if (c) {
@@ -122,7 +122,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
       const attachment = firstAttachment;
 
       media = (
-        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer} >
+        <Bundle fetchComponent={Audio} loading={renderLoadingAudioPlayer}>
           {(Component: any) => (
             <Component
               src={attachment.url}

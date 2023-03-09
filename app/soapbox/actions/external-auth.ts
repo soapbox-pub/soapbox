@@ -15,10 +15,11 @@ import sourceCode from 'soapbox/utils/code';
 import { getWalletAndSign } from 'soapbox/utils/ethereum';
 import { getFeatures } from 'soapbox/utils/features';
 import { getQuirks } from 'soapbox/utils/quirks';
+import { getInstanceScopes } from 'soapbox/utils/scopes';
 
 import { baseClient } from '../api';
 
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Instance } from 'soapbox/types/entities';
 
 const fetchExternalInstance = (baseURL?: string) => {
@@ -37,25 +38,23 @@ const fetchExternalInstance = (baseURL?: string) => {
 };
 
 const createExternalApp = (instance: Instance, baseURL?: string) =>
-  (dispatch: AppDispatch) => {
+  (dispatch: AppDispatch, _getState: () => RootState) => {
     // Mitra: skip creating the auth app
     if (getQuirks(instance).noApps) return new Promise(f => f({}));
 
-    const { scopes } = getFeatures(instance);
-
     const params = {
-      client_name:   sourceCode.displayName,
+      client_name: sourceCode.displayName,
       redirect_uris: `${window.location.origin}/login/external`,
-      website:       sourceCode.homepage,
-      scopes,
+      website: sourceCode.homepage,
+      scopes: getInstanceScopes(instance),
     };
 
     return dispatch(createApp(params, baseURL));
   };
 
 const externalAuthorize = (instance: Instance, baseURL: string) =>
-  (dispatch: AppDispatch) => {
-    const { scopes } = getFeatures(instance);
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    const scopes = getInstanceScopes(instance);
 
     return dispatch(createExternalApp(instance, baseURL)).then((app) => {
       const { client_id, redirect_uri } = app as Record<string, string>;
@@ -76,7 +75,7 @@ const externalAuthorize = (instance: Instance, baseURL: string) =>
   };
 
 const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
-  (dispatch: AppDispatch) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     const loginMessage = instance.login_message;
 
     return getWalletAndSign(loginMessage).then(({ wallet, signature }) => {
@@ -89,7 +88,7 @@ const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
           client_secret: client_secret,
           password: signature as string,
           redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-          scope: getFeatures(instance).scopes,
+          scope: getInstanceScopes(instance),
         };
 
         return dispatch(obtainOAuthToken(params, baseURL))

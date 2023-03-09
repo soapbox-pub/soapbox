@@ -5,13 +5,13 @@
  * @see soapbox/components/icon
  */
 
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 export interface IForkAwesomeIcon extends React.HTMLAttributes<HTMLLIElement> {
-  id: string,
-  className?: string,
-  fixedWidth?: boolean,
+  id: string
+  className?: string
+  fixedWidth?: boolean
 }
 
 const ForkAwesomeIcon: React.FC<IForkAwesomeIcon> = ({ id, className, fixedWidth, ...rest }) => {
@@ -25,7 +25,7 @@ const ForkAwesomeIcon: React.FC<IForkAwesomeIcon> = ({ id, className, fixedWidth
     <i
       role='img'
       // alt={alt}
-      className={classNames('fa', `fa-${id}`, className, { 'fa-fw': fixedWidth })}
+      className={clsx('fa', `fa-${id}`, className, { 'fa-fw': fixedWidth })}
       {...rest}
     />
   );

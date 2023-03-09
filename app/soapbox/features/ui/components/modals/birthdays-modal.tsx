@@ -7,7 +7,7 @@ import Account from 'soapbox/features/birthdays/account';
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IBirthdaysModal {
-  onClose: (string: string) => void,
+  onClose: (string: string) => void
 }
 
 const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
@@ -28,6 +28,7 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
       <ScrollableList
         scrollKey='birthdays'
         emptyMessage={emptyMessage}
+        className='max-w-full'
         itemClassName='pb-3'
       >
         {accountIds.map(id =>

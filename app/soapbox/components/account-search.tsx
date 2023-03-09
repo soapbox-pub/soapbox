@@ -1,9 +1,10 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
-import Icon from 'soapbox/components/icon';
+
+import SvgIcon from './ui/icon/svg-icon';
 
 const messages = defineMessages({
   placeholder: { id: 'account_search.placeholder', defaultMessage: 'Search for an account' },
@@ -11,11 +12,9 @@ const messages = defineMessages({
 
 interface IAccountSearch {
   /** Callback when a searched account is chosen. */
-  onSelected: (accountId: string) => void,
+  onSelected: (accountId: string) => void
   /** Override the default placeholder of the input. */
-  placeholder?: string,
-  /** Position of results relative to the input. */
-  resultsPosition?: 'above' | 'below',
+  placeholder?: string
 }
 
 /** Input to search for accounts. */
@@ -56,9 +55,10 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
   };
 
   return (
-    <div className='search search--account'>
-      <label>
-        <span style={{ display: 'none' }}>{intl.formatMessage(messages.placeholder)}</span>
+    <div className='w-full'>
+      <label className='sr-only'>{intl.formatMessage(messages.placeholder)}</label>
+
+      <div className='relative'>
         <AutosuggestAccountInput
           className='rounded-full'
           placeholder={intl.formatMessage(messages.placeholder)}
@@ -68,10 +68,24 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
           onKeyDown={handleKeyDown}
           {...rest}
         />
-      </label>
-      <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-        <Icon src={require('@tabler/icons/search.svg')} className={classNames('svg-icon--search', { active: isEmpty() })} />
-        <Icon src={require('@tabler/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
+
+        <div
+          role='button'
+          tabIndex={0}
+          className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3'
+          onClick={handleClear}
+        >
+          <SvgIcon
+            src={require('@tabler/icons/search.svg')}
+            className={clsx('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+          />
+
+          <SvgIcon
+            src={require('@tabler/icons/x.svg')}
+            className={clsx('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+            aria-label={intl.formatMessage(messages.placeholder)}
+          />
+        </div>
       </div>
     </div>
   );

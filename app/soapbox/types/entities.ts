@@ -9,11 +9,15 @@ import {
   ChatRecord,
   ChatMessageRecord,
   EmojiRecord,
+  EmojiReactionRecord,
   FieldRecord,
   FilterRecord,
+  GroupRecord,
+  GroupRelationshipRecord,
   HistoryRecord,
   InstanceRecord,
   ListRecord,
+  LocationRecord,
   MentionRecord,
   NotificationRecord,
   PollRecord,
@@ -23,10 +27,12 @@ import {
   StatusRecord,
   TagRecord,
 } from 'soapbox/normalizers';
+import { LogEntryRecord } from 'soapbox/reducers/admin-log';
 
 import type { Record as ImmutableRecord } from 'immutable';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
+type AdminLog = ReturnType<typeof LogEntryRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Announcement = ReturnType<typeof AnnouncementRecord>;
 type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
@@ -35,11 +41,15 @@ type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
+type EmojiReaction = ReturnType<typeof EmojiReactionRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
+type Group = ReturnType<typeof GroupRecord>;
+type GroupRelationship = ReturnType<typeof GroupRelationshipRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
+type Location = ReturnType<typeof LocationRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
@@ -51,13 +61,13 @@ type Tag = ReturnType<typeof TagRecord>;
 interface Account extends ReturnType<typeof AccountRecord> {
   // HACK: we can't do a circular reference in the Record definition itself,
   // so do it here.
-  moved: EmbeddedEntity<Account>;
+  moved: EmbeddedEntity<Account>
 }
 
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
-  quote: EmbeddedEntity<Status>;
-  reblog: EmbeddedEntity<Status>;
+  quote: EmbeddedEntity<Status>
+  reblog: EmbeddedEntity<Status>
 }
 
 // Utility types
@@ -66,6 +76,7 @@ type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableReco
 
 export {
   AdminAccount,
+  AdminLog,
   AdminReport,
   Account,
   Announcement,
@@ -75,11 +86,15 @@ export {
   Chat,
   ChatMessage,
   Emoji,
+  EmojiReaction,
   Field,
   Filter,
+  Group,
+  GroupRelationship,
   History,
   Instance,
   List,
+  Location,
   Mention,
   Notification,
   Poll,

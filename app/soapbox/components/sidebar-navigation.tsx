@@ -1,30 +1,33 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
+import { Stack } from 'soapbox/components/ui';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useGroupsPath, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
 
+import DropdownMenu, { Menu } from './dropdown-menu';
 import SidebarNavigationLink from './sidebar-navigation-link';
-
-import type { Menu } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  events: { id: 'column.events', defaultMessage: 'Events' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
 });
 
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
   const intl = useIntl();
+  const { unreadChatsCount } = useStatContext();
 
   const features = useFeatures();
   const settings = useSettings();
   const account = useOwnAccount();
+  const groupsPath = useGroupsPath();
+
   const notificationCount = useAppSelector((state) => state.notifications.unread);
-  const chatsCount = useAppSelector((state) => state.chats.items.reduce((acc, curr) => acc + Math.min(curr.unread || 0, 1), 0));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
@@ -57,6 +60,14 @@ const SidebarNavigation = () => {
         });
       }
 
+      if (features.events) {
+        menu.push({
+          to: '/events',
+          text: intl.formatMessage(messages.events),
+          icon: require('@tabler/icons/calendar-event.svg'),
+        });
+      }
+
       if (settings.get('isDeveloper')) {
         menu.push({
           to: '/developers',
@@ -78,8 +89,9 @@ const SidebarNavigation = () => {
         <SidebarNavigationLink
           to='/chats'
           icon={require('@tabler/icons/messages.svg')}
-          count={chatsCount}
-          text={<FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />}
+          count={unreadChatsCount}
+          countMax={9}
+          text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
         />
       );
     }
@@ -98,8 +110,8 @@ const SidebarNavigation = () => {
   };
 
   return (
-    <div>
-      <div className='flex flex-col space-y-2'>
+    <Stack space={4}>
+      <Stack space={2}>
         <SidebarNavigationLink
           to='/'
           icon={require('@tabler/icons/home.svg')}
@@ -122,6 +134,14 @@ const SidebarNavigation = () => {
             />
 
             {renderMessagesLink()}
+
+            {features.groups && (
+              <SidebarNavigationLink
+                to={groupsPath}
+                icon={require('@tabler/icons/circles.svg')}
+                text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
+              />
+            )}
 
             <SidebarNavigationLink
               to={`/@${account.acct}`}
@@ -165,19 +185,19 @@ const SidebarNavigation = () => {
         )}
 
         {menu.length > 0 && (
-          <DropdownMenu items={menu}>
+          <DropdownMenu items={menu} placement='top'>
             <SidebarNavigationLink
               icon={require('@tabler/icons/dots-circle-horizontal.svg')}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
             />
           </DropdownMenu>
         )}
-      </div>
+      </Stack>
 
       {account && (
         <ComposeButton />
       )}
-    </div>
+    </Stack>
   );
 };
 

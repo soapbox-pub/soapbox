@@ -22,7 +22,7 @@ const messages = defineMessages({
 
 interface IFollowing {
   params?: {
-    username?: string,
+    username?: string
   }
 }
 

@@ -9,7 +9,6 @@ import {
   setBadges as saveBadges,
 } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import snackbar from 'soapbox/actions/snackbar';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
 import MissingIndicator from 'soapbox/components/missing-indicator';
@@ -17,6 +16,7 @@ import OutlineBox from 'soapbox/components/outline-box';
 import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 import { isLocal } from 'soapbox/utils/accounts';
 import { getBadges } from 'soapbox/utils/badges';
 
@@ -37,9 +37,9 @@ const messages = defineMessages({
 
 interface IAccountModerationModal {
   /** Action to close the modal. */
-  onClose: (type: string) => void,
+  onClose: (type: string) => void
   /** ID of the account to moderate. */
-  accountId: string,
+  accountId: string
 }
 
 /** Moderator actions against accounts. */
@@ -75,7 +75,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     const action = checked ? verifyUser : unverifyUser;
 
     dispatch(action(account.id))
-      .then(() => dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct }))))
+      .then(() => toast.success(intl.formatMessage(message, { acct: account.acct })))
       .catch(() => {});
   };
 
@@ -86,7 +86,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     const action = checked ? suggestUsers : unsuggestUsers;
 
     dispatch(action([account.id]))
-      .then(() => dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct }))))
+      .then(() => toast.success(intl.formatMessage(message, { acct: account.acct })))
       .catch(() => {});
   };
 
@@ -100,7 +100,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
 
   const handleSaveBadges = () => {
     dispatch(saveBadges(account.id, accountBadges, badges))
-      .then(() => dispatch(snackbar.success(intl.formatMessage(messages.badgesSaved))))
+      .then(() => toast.success(intl.formatMessage(messages.badgesSaved)))
       .catch(() => {});
   };
 
@@ -145,7 +145,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
           )}
 
           <ListItem label={<FormattedMessage id='account_moderation_modal.fields.badges' defaultMessage='Custom badges' />}>
-            <div className='flex-grow'>
+            <div className='grow'>
               <HStack className='w-full' alignItems='center' space={2}>
                 <BadgeInput badges={badges} onChange={setBadges} />
                 <Button onClick={handleSaveBadges}>

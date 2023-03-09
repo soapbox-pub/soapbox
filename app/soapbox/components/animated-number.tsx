@@ -15,8 +15,8 @@ const obfuscatedCount = (count: number) => {
 };
 
 interface IAnimatedNumber {
-  value: number;
-  obfuscate?: boolean;
+  value: number
+  obfuscate?: boolean
 }
 
 const AnimatedNumber: React.FC<IAnimatedNumber> = ({ value, obfuscate }) => {
@@ -50,7 +50,7 @@ const AnimatedNumber: React.FC<IAnimatedNumber> = ({ value, obfuscate }) => {
   return (
     <TransitionMotion styles={styles} willEnter={willEnter} willLeave={willLeave}>
       {items => (
-        <span className='inline-flex flex-col items-stretch relative overflow-hidden'>
+        <span className='relative inline-flex flex-col items-stretch overflow-hidden'>
           {items.map(({ key, data, style }) => (
             <span key={key} style={{ position: (direction * style.y) > 0 ? 'absolute' : 'static', transform: `translateY(${style.y * 100}%)` }}>{obfuscate ? obfuscatedCount(data) : <FormattedNumber value={data} />}</span>
           ))}

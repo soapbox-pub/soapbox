@@ -1,95 +1,92 @@
-import { Map as ImmutableMap } from 'immutable';
-import React, { useCallback } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import clsx from 'clsx';
+import React, { useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
-import { createSelector } from 'reselect';
 
-import { fetchChats, expandChats } from 'soapbox/actions/chats';
+import { fetchChats } from 'soapbox/actions/chats';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Card, Text } from 'soapbox/components/ui';
+import { Spinner, Stack } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
+import { useChats } from 'soapbox/queries/chats';
 
-import Chat from './chat';
-
-const messages = defineMessages({
-  emptyMessage: { id: 'chat_panels.main_window.empty', defaultMessage: 'No chats found. To start a chat, visit a user\'s profile' },
-});
-
-const getSortedChatIds = (chats: ImmutableMap<string, any>) => (
-  chats
-    .toList()
-    .sort(chatDateComparator)
-    .map(chat => chat.id)
-);
-
-const chatDateComparator = (chatA: { updated_at: string }, chatB: { updated_at: string }) => {
-  // Sort most recently updated chats at the top
-  const a = new Date(chatA.updated_at);
-  const b = new Date(chatB.updated_at);
-
-  if (a === b) return 0;
-  if (a > b) return -1;
-  if (a < b) return 1;
-  return 0;
-};
-
-const sortedChatIdsSelector = createSelector(
-  [getSortedChatIds],
-  chats => chats,
-);
+import ChatListItem from './chat-list-item';
 
 interface IChatList {
-  onClickChat: (chat: any) => void,
-  useWindowScroll?: boolean,
+  onClickChat: (chat: any) => void
+  useWindowScroll?: boolean
+  searchValue?: string
 }
 
-const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false }) => {
-  const dispatch = useDispatch();
-  const intl = useIntl();
+const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, searchValue }) => {
+  const dispatch = useAppDispatch();
 
-  const chatIds = useAppSelector(state => sortedChatIdsSelector(state.chats.items));
-  const hasMore = useAppSelector(state => !!state.chats.next);
-  const isLoading = useAppSelector(state => state.chats.isLoading);
+  const chatListRef = useRef(null);
 
-  const isEmpty = chatIds.size === 0;
+  const { chatsQuery: { data: chats, isFetching, hasNextPage, fetchNextPage } } = useChats(searchValue);
 
-  const handleLoadMore = useCallback(() => {
-    if (hasMore && !isLoading) {
-      dispatch(expandChats());
+  const [isNearBottom, setNearBottom] = useState<boolean>(false);
+  const [isNearTop, setNearTop] = useState<boolean>(true);
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
     }
-  }, [dispatch, hasMore, isLoading]);
-
-  const handleRefresh = () => {
-    return dispatch(fetchChats()) as any;
   };
 
-  const renderEmpty = () => isLoading ? <PlaceholderChat /> : (
-    <Card className='mt-2' variant='rounded' size='lg'>
-      <Text>{intl.formatMessage(messages.emptyMessage)}</Text>
-    </Card>
-  );
+  const handleRefresh = () => dispatch(fetchChats());
+
+  const renderEmpty = () => {
+    if (isFetching) {
+      return (
+        <Stack space={2}>
+          <PlaceholderChat />
+          <PlaceholderChat />
+          <PlaceholderChat />
+        </Stack>
+      );
+    }
+
+    return null;
+  };
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
-      {isEmpty ? renderEmpty() : (
+    <div className='relative h-full'>
+      <PullToRefresh onRefresh={handleRefresh}>
         <Virtuoso
-          className='chat-list'
+          ref={chatListRef}
+          atTopStateChange={(atTop) => setNearTop(atTop)}
+          atBottomStateChange={(atBottom) => setNearBottom(atBottom)}
           useWindowScroll={useWindowScroll}
-          data={chatIds.toArray()}
+          data={chats}
           endReached={handleLoadMore}
-          itemContent={(_index, chatId) => (
-            <Chat chatId={chatId} onClick={onClickChat} />
+          itemContent={(_index, chat) => (
+            <div className='px-2'>
+              <ChatListItem chat={chat} onClick={onClickChat} />
+            </div>
           )}
           components={{
             ScrollSeekPlaceholder: () => <PlaceholderChat />,
-            Footer: () => hasMore ? <PlaceholderChat /> : null,
+            Footer: () => hasNextPage ? <Spinner withText={false} /> : null,
             EmptyPlaceholder: renderEmpty,
           }}
         />
-      )}
-    </PullToRefresh>
+      </PullToRefresh>
+
+      <>
+        <div
+          className={clsx('pointer-events-none absolute inset-x-0 top-0 flex justify-center rounded-t-lg bg-gradient-to-b from-white to-transparent pb-12 pt-8 transition-opacity duration-500 dark:from-gray-900', {
+            'opacity-0': isNearTop,
+            'opacity-100': !isNearTop,
+          })}
+        />
+        <div
+          className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white to-transparent pt-12 pb-8 transition-opacity duration-500 dark:from-gray-900', {
+            'opacity-0': isNearBottom,
+            'opacity-100': !isNearBottom,
+          })}
+        />
+      </>
+    </div>
   );
 };
 

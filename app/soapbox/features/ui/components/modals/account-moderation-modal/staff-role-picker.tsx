@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 
 import { setRole } from 'soapbox/actions/admin';
-import snackbar from 'soapbox/actions/snackbar';
 import { SelectDropdown } from 'soapbox/features/forms';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
@@ -34,7 +34,7 @@ const messages = defineMessages({
 
 interface IStaffRolePicker {
   /** Account whose role to change. */
-  account: AccountEntity,
+  account: AccountEntity
 }
 
 /** Picker for setting the staff role of an account. */
@@ -66,7 +66,7 @@ const StaffRolePicker: React.FC<IStaffRolePicker> = ({ account }) => {
         }
 
         if (message) {
-          dispatch(snackbar.success(intl.formatMessage(message, { acct: account.acct })));
+          toast.success(intl.formatMessage(message, { acct: account.acct }));
         }
       })
       .catch(() => {});

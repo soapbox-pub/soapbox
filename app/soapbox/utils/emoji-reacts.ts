@@ -19,12 +19,10 @@ export const ALLOWED_EMOJI = ImmutableList([
 type Account = ImmutableMap<string, any>;
 type EmojiReact = ImmutableMap<string, any>;
 
-export const sortEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
-  emojiReacts.sortBy(emojiReact => -emojiReact.get('count'))
-);
-
-export const mergeEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
-  emojiReacts // TODO: Merge similar emoji
+export const sortEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji: ImmutableList<string>): ImmutableList<EmojiReact> => (
+  emojiReacts
+    .sortBy(emojiReact =>
+      -(emojiReact.get('count') + Number(allowedEmoji.includes(emojiReact.get('name')))))
 );
 
 export const mergeEmojiFavourites = (emojiReacts = ImmutableList<EmojiReact>(), favouritesCount: number, favourited: boolean) => {
@@ -70,15 +68,11 @@ export const oneEmojiPerAccount = (emojiReacts: ImmutableList<EmojiReact>, me: M
     .reverse();
 };
 
-export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
-  emojiReacts.filter(emojiReact => (
-    allowedEmoji.includes(emojiReact.get('name'))
-  )));
-
 export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
-  filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount, favourited,
-  ))), allowedEmoji));
+  sortEmoji(
+    mergeEmojiFavourites(emojiReacts, favouritesCount, favourited),
+    allowedEmoji,
+  ));
 
 export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
   const result = reduceEmoji(

@@ -3,9 +3,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { moveAccount } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.migration', defaultMessage: 'Account migration' },
@@ -43,7 +43,7 @@ const Migration = () => {
     setIsLoading(true);
     return dispatch(moveAccount(targetAccount, password)).then(() => {
       clearForm();
-      dispatch(snackbar.success(intl.formatMessage(messages.moveAccountSuccess)));
+      toast.success(intl.formatMessage(messages.moveAccountSuccess));
     }).catch(error => {
       let message = intl.formatMessage(messages.moveAccountFail);
 
@@ -52,7 +52,7 @@ const Migration = () => {
         message = intl.formatMessage(messages.moveAccountFailCooldownPeriod);
       }
 
-      dispatch(snackbar.error(message));
+      toast.error(message);
     }).then(() => {
       setIsLoading(false);
     });
@@ -68,7 +68,7 @@ const Migration = () => {
             values={{
               link: (
                 <Link
-                  className='hover:underline text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-500'
+                  className='text-primary-600 hover:text-primary-800 hover:underline dark:text-primary-400 dark:hover:text-primary-500'
                   to='/settings/aliases'
                 >
                   <FormattedMessage

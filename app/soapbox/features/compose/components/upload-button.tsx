@@ -15,11 +15,14 @@ const onlyImages = (types: ImmutableList<string>) => {
 };
 
 export interface IUploadButton {
-  disabled?: boolean,
-  unavailable?: boolean,
-  onSelectFile: (files: FileList, intl: IntlShape) => void,
-  style?: React.CSSProperties,
-  resetFileKey: number | null,
+  disabled?: boolean
+  unavailable?: boolean
+  onSelectFile: (files: FileList, intl: IntlShape) => void
+  style?: React.CSSProperties
+  resetFileKey: number | null
+  className?: string
+  iconClassName?: string
+  icon?: string
 }
 
 const UploadButton: React.FC<IUploadButton> = ({
@@ -27,6 +30,9 @@ const UploadButton: React.FC<IUploadButton> = ({
   unavailable = false,
   onSelectFile,
   resetFileKey,
+  className = 'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500',
+  iconClassName,
+  icon,
 }) => {
   const intl = useIntl();
   const { configuration } = useInstance();
@@ -48,15 +54,18 @@ const UploadButton: React.FC<IUploadButton> = ({
     return null;
   }
 
-  const src = onlyImages(attachmentTypes)
-    ? require('@tabler/icons/photo.svg')
-    : require('@tabler/icons/paperclip.svg');
+  const src = icon || (
+    onlyImages(attachmentTypes)
+      ? require('@tabler/icons/photo.svg')
+      : require('@tabler/icons/paperclip.svg')
+  );
 
   return (
     <div>
       <IconButton
         src={src}
-        className='text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
+        className={className}
+        iconClassName={iconClassName}
         title={intl.formatMessage(messages.upload)}
         disabled={disabled}
         onClick={handleClick}

@@ -1,10 +1,10 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
-import { updateConfig } from 'soapbox/actions/admin';
+import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
-import snackbar from 'soapbox/actions/snackbar';
 import List, { ListItem } from 'soapbox/components/list';
 import {
   Accordion,
@@ -22,16 +22,14 @@ import {
   Toggle,
 } from 'soapbox/components/ui';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 
-import ColorWithPicker from './components/color-with-picker';
 import CryptoAddressInput from './components/crypto-address-input';
 import FooterLinkInput from './components/footer-link-input';
 import PromoPanelInput from './components/promo-panel-input';
 import SitePreview from './components/site-preview';
-
-import type { ColorChangeHandler, ColorResult } from 'react-color';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -41,6 +39,7 @@ const messages = defineMessages({
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
   rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
+  rawJSONInvalid: { id: 'soapbox_config.raw_json_invalid', defaultMessage: 'is invalid' },
   verifiedCanEditNameLabel: { id: 'soapbox_config.verified_can_edit_name_label', defaultMessage: 'Allow verified users to edit their own display name.' },
   displayFqnLabel: { id: 'soapbox_config.display_fqn_label', defaultMessage: 'Display domain (eg @user@domain) for local accounts.' },
   greentextLabel: { id: 'soapbox_config.greentext_label', defaultMessage: 'Enable greentext support' },
@@ -48,16 +47,17 @@ const messages = defineMessages({
   authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
   authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
   displayCtaLabel: { id: 'soapbox_config.cta_label', defaultMessage: 'Display call to action panels if not authenticated' },
-  singleUserModeLabel: { id: 'soapbox_config.single_user_mode_label', defaultMessage: 'Single user mode' },
-  singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
-  singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
-  singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
+  mediaPreviewLabel: { id: 'soapbox_config.media_preview_label', defaultMessage: 'Prefer preview media for thumbnails' },
+  mediaPreviewHint: { id: 'soapbox_config.media_preview_hint', defaultMessage: 'Some backends provide an optimized version of media for display in timelines. However, these preview images may be too small without additional configuration.' },
   feedInjectionLabel: { id: 'soapbox_config.feed_injection_label', defaultMessage: 'Feed injection' },
   feedInjectionHint: { id: 'soapbox_config.feed_injection_hint', defaultMessage: 'Inject the feed with additional content, such as suggested profiles.' },
+  tileServerLabel: { id: 'soapbox_config.tile_server_label', defaultMessage: 'Map tile server' },
+  tileServerAttributionLabel: { id: 'soapbox_config.tile_server_attribution_label', defaultMessage: 'Map tiles attribution' },
+  redirectRootNoLoginLabel: { id: 'soapbox_config.redirect_root_no_login_label', defaultMessage: 'Redirect homepage' },
+  redirectRootNoLoginHint: { id: 'soapbox_config.redirect_root_no_login_hint', defaultMessage: 'Path to redirect the homepage when a user is not logged in.' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
-type ColorValueGetter = (color: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => any;
 type Template = ImmutableMap<string, any>;
 type ConfigPath = Array<string | number>;
 type ThemeChangeHandler = (theme: string) => void;
@@ -70,7 +70,10 @@ const templates: Record<string, Template> = {
 
 const SoapboxConfig: React.FC = () => {
   const intl = useIntl();
+  const history = useHistory();
   const dispatch = useAppDispatch();
+
+  const features = useFeatures();
 
   const initialData = useAppSelector(state => state.soapbox);
 
@@ -79,6 +82,8 @@ const SoapboxConfig: React.FC = () => {
   const [jsonEditorExpanded, setJsonEditorExpanded] = useState(false);
   const [rawJSON, setRawJSON] = useState<string>(JSON.stringify(initialData, null, 2));
   const [jsonValid, setJsonValid] = useState(true);
+
+  const navigateToThemeEditor = () => history.push('/soapbox/admin/theme');
 
   const soapbox = useMemo(() => {
     return normalizeSoapboxConfig(data);
@@ -95,20 +100,10 @@ const SoapboxConfig: React.FC = () => {
     setJsonValid(true);
   };
 
-  const getParams = () => {
-    return [{
-      group: ':pleroma',
-      key: ':frontend_configurations',
-      value: [{
-        tuple: [':soapbox_fe', data.toJS()],
-      }],
-    }];
-  };
-
   const handleSubmit: React.FormEventHandler = (e) => {
-    dispatch(updateConfig(getParams())).then(() => {
+    dispatch(updateSoapboxConfig(data.toJS())).then(() => {
       setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.saved)));
+      toast.success(intl.formatMessage(messages.saved));
     }).catch(() => {
       setLoading(false);
     });
@@ -125,12 +120,6 @@ const SoapboxConfig: React.FC = () => {
   const handleThemeChange = (path: ConfigPath): ThemeChangeHandler => {
     return theme => {
       setConfig(path, theme);
-    };
-  };
-
-  const handleColorChange = (path: ConfigPath, getValue: ColorValueGetter): ColorChangeHandler => {
-    return (color, event) => {
-      setConfig(path, getValue(color, event));
     };
   };
 
@@ -220,21 +209,10 @@ const SoapboxConfig: React.FC = () => {
               />
             </ListItem>
 
-            <ListItem label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}>
-              <ColorWithPicker
-                buttonId='brandColor'
-                value={soapbox.brandColor}
-                onChange={handleColorChange(['brandColor'], (color) => color.hex)}
-              />
-            </ListItem>
-
-            <ListItem label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}>
-              <ColorWithPicker
-                buttonId='accentColor'
-                value={soapbox.accentColor}
-                onChange={handleColorChange(['accentColor'], (color) => color.hex)}
-              />
-            </ListItem>
+            <ListItem
+              label={<FormattedMessage id='soapbox_config.fields.edit_theme_label' defaultMessage='Edit theme' />}
+              onClick={navigateToThemeEditor}
+            />
           </List>
 
           <CardHeader>
@@ -273,6 +251,16 @@ const SoapboxConfig: React.FC = () => {
               />
             </ListItem>
 
+            <ListItem
+              label={intl.formatMessage(messages.mediaPreviewLabel)}
+              hint={intl.formatMessage(messages.mediaPreviewHint)}
+            >
+              <Toggle
+                checked={soapbox.mediaPreview === true}
+                onChange={handleChange(['mediaPreview'], (e) => e.target.checked)}
+              />
+            </ListItem>
+
             <ListItem label={intl.formatMessage(messages.displayCtaLabel)}>
               <Toggle
                 checked={soapbox.displayCta === true}
@@ -291,25 +279,16 @@ const SoapboxConfig: React.FC = () => {
             </ListItem>
 
             <ListItem
-              label={intl.formatMessage(messages.singleUserModeLabel)}
-              hint={intl.formatMessage(messages.singleUserModeHint)}
+              label={intl.formatMessage(messages.redirectRootNoLoginLabel)}
+              hint={intl.formatMessage(messages.redirectRootNoLoginHint)}
             >
-              <Toggle
-                checked={soapbox.singleUserMode === true}
-                onChange={handleChange(['singleUserMode'], (e) => e.target.checked)}
+              <Input
+                type='text'
+                placeholder='/timeline/local'
+                value={String(data.get('redirectRootNoLogin', ''))}
+                onChange={handleChange(['redirectRootNoLogin'], (e) => e.target.value)}
               />
             </ListItem>
-
-            {soapbox.get('singleUserMode') && (
-              <ListItem label={intl.formatMessage(messages.singleUserModeProfileLabel)}>
-                <Input
-                  type='text'
-                  placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
-                  value={soapbox.singleUserModeProfile}
-                  onChange={handleChange(['singleUserModeProfile'], (e) => e.target.value)}
-                />
-              </ListItem>
-            )}
           </List>
 
           <CardHeader>
@@ -345,6 +324,32 @@ const SoapboxConfig: React.FC = () => {
             />
           </FormGroup>
 
+          {features.events && (
+            <>
+              <CardHeader>
+                <CardTitle title={<FormattedMessage id='soapbox_config.headings.events' defaultMessage='Events' />} />
+              </CardHeader>
+
+              <FormGroup labelText={intl.formatMessage(messages.tileServerLabel)}>
+                <Input
+                  type='text'
+                  placeholder={intl.formatMessage(messages.tileServerLabel)}
+                  value={soapbox.tileServer}
+                  onChange={handleChange(['tileServer'], (e) => e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup labelText={intl.formatMessage(messages.tileServerAttributionLabel)}>
+                <Input
+                  type='text'
+                  placeholder={intl.formatMessage(messages.tileServerAttributionLabel)}
+                  value={soapbox.tileServerAttribution}
+                  onChange={handleChange(['tileServerAttribution'], (e) => e.target.value)}
+                />
+              </FormGroup>
+            </>
+          )}
+
           <CardHeader>
             <CardTitle title={<FormattedMessage id='soapbox_config.headings.cryptocurrency' defaultMessage='Cryptocurrency' />} />
           </CardHeader>
@@ -379,11 +384,13 @@ const SoapboxConfig: React.FC = () => {
             expanded={jsonEditorExpanded}
             onToggle={toggleJSONEditor}
           >
-            <FormGroup hintText={intl.formatMessage(messages.rawJSONHint)}>
+            <FormGroup
+              hintText={intl.formatMessage(messages.rawJSONHint)}
+              errors={jsonValid ? undefined : [intl.formatMessage(messages.rawJSONInvalid)]}
+            >
               <Textarea
                 value={rawJSON}
                 onChange={handleEditJSON}
-                hasError={!jsonValid}
                 isCodeEditor
                 rows={12}
               />

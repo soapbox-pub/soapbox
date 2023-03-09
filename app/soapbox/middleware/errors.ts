@@ -1,4 +1,4 @@
-import { showAlertForError } from '../actions/alerts';
+import toast from 'soapbox/toast';
 
 import type { AnyAction } from 'redux';
 import type { ThunkMiddleware } from 'redux-thunk';
@@ -21,12 +21,13 @@ const shouldShowError = ({ type, skipAlert, error }: AnyAction): boolean => {
 };
 
 /** Middleware to display Redux errors to the user. */
-export default function errorsMiddleware(): ThunkMiddleware {
-  return ({ dispatch }) => next => action => {
+const errorsMiddleware = (): ThunkMiddleware =>
+  () => next => action => {
     if (shouldShowError(action)) {
-      dispatch(showAlertForError(action.error));
+      toast.showAlertForError(action.error);
     }
 
     return next(action);
   };
-}
+
+export default errorsMiddleware;

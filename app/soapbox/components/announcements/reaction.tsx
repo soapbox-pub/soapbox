@@ -1,8 +1,8 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import AnimatedNumber from 'soapbox/components/animated-number';
-import unicodeMapping from 'soapbox/features/emoji/emoji-unicode-mapping-light';
+import unicodeMapping from 'soapbox/features/emoji/mapping';
 
 import Emoji from './emoji';
 
@@ -10,12 +10,12 @@ import type { Map as ImmutableMap } from 'immutable';
 import type { AnnouncementReaction } from 'soapbox/types/entities';
 
 interface IReaction {
-  announcementId: string;
-  reaction: AnnouncementReaction;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
-  style: React.CSSProperties;
+  announcementId: string
+  reaction: AnnouncementReaction
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  addReaction: (id: string, name: string) => void
+  removeReaction: (id: string, name: string) => void
+  style: React.CSSProperties
 }
 
 const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, removeReaction, emojiMap, style }) => {
@@ -43,7 +43,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, 
 
   return (
     <button
-      className={classNames('flex shrink-0 items-center gap-1.5 bg-gray-100 dark:bg-primary-900 rounded-sm px-1.5 py-1 transition-colors', {
+      className={clsx('flex shrink-0 items-center gap-1.5 rounded-sm bg-gray-100 px-1.5 py-1 transition-colors dark:bg-primary-900', {
         'bg-gray-200 dark:bg-primary-800': hovered,
         'bg-primary-200 dark:bg-primary-500': reaction.me,
       })}

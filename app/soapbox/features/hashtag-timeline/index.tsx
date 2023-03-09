@@ -23,9 +23,9 @@ const messages = defineMessages({
 
 interface IHashtagTimeline {
   params?: {
-    id?: string,
-    tags?: Tags,
-  },
+    id?: string
+    tags?: Tags
+  }
 }
 
 export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {

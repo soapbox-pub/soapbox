@@ -7,9 +7,9 @@ import {
   setupMfa,
   confirmMfa,
 } from 'soapbox/actions/mfa';
-import snackbar from 'soapbox/actions/snackbar';
 import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },
@@ -38,11 +38,11 @@ const OtpConfirmForm: React.FC = () => {
     dispatch(setupMfa('totp')).then((data: any) => {
       setState((prevState) => ({ ...prevState, qrCodeURI: data.provisioning_uri, confirmKey: data.key }));
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.qrFail)));
+      toast.error(intl.formatMessage(messages.qrFail));
     });
   }, []);
 
-  const handleInputChange = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -52,10 +52,10 @@ const OtpConfirmForm: React.FC = () => {
     setState((prevState) => ({ ...prevState, isLoading: true }));
 
     dispatch(confirmMfa('totp', state.code, state.password) as any).then((r: any) => {
-      dispatch(snackbar.success(intl.formatMessage(messages.mfaConfirmSuccess)));
+      toast.success(intl.formatMessage(messages.mfaConfirmSuccess));
       history.push('../auth/edit');
     }).catch(() => {
-      dispatch(snackbar.error(intl.formatMessage(messages.confirmFail)));
+      toast.error(intl.formatMessage(messages.confirmFail));
       setState((prevState) => ({ ...prevState, isLoading: false }));
     });
 
@@ -75,7 +75,7 @@ const OtpConfirmForm: React.FC = () => {
           </Text>
         </Stack>
 
-        <QRCode value={state.qrCodeURI} />
+        <QRCode className='rounded-lg' value={state.qrCodeURI} includeMargin />
         {state.confirmKey}
 
         <Text weight='semibold' size='lg'>

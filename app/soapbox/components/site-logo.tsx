@@ -1,13 +1,13 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { useSoapboxConfig, useSettings, useTheme } from 'soapbox/hooks';
 
 interface ISiteLogo extends React.ComponentProps<'img'> {
   /** Extra class names for the <img> element. */
-  className?: string,
+  className?: string
   /** Override theme setting for <SitePreview /> */
-  theme?: 'dark' | 'light',
+  theme?: 'dark' | 'light'
 }
 
 /** Display the most appropriate site logo based on the theme and configuration. */
@@ -36,7 +36,7 @@ const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
     <img
-      className={classNames('object-contain', className)}
+      className={clsx('object-contain', className)}
       src={getSrc()}
       {...rest}
     />

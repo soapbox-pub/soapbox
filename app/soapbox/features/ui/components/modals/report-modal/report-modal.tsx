@@ -5,8 +5,9 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import List, { ListItem } from 'soapbox/components/list';
 import StatusContent from 'soapbox/components/status-content';
-import { Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -20,9 +21,9 @@ const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
   done: { id: 'report.done', defaultMessage: 'Done' },
   next: { id: 'report.next', defaultMessage: 'Next' },
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
-  placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
   submit: { id: 'report.submit', defaultMessage: 'Submit' },
+  reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.' },
+  reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },
   cancel: {  id: 'common.cancel', defaultMessage: 'Cancel' },
   previous: {  id: 'report.previous', defaultMessage: 'Previous' },
 });
@@ -47,7 +48,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
+    <Stack space={2} className='rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
       <AccountContainer
         id={status.account as any}
         showProfileHoverCard={false}
@@ -75,6 +76,12 @@ interface IReportModal {
   onClose: () => void
 }
 
+enum ReportedEntities {
+  Account = 'Account',
+  Status = 'Status',
+  ChatMessage = 'ChatMessage'
+}
+
 const ReportModal = ({ onClose }: IReportModal) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
@@ -87,9 +94,22 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const rules = useAppSelector((state) => state.rules.items);
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
+  const selectedChatMessage = useAppSelector((state) => state.reports.new.chat_message);
 
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
   const shouldRequireRule = rules.length > 0;
+
+  const reportedEntity = useMemo(() => {
+    if (selectedStatusIds.size === 0 && !selectedChatMessage) {
+      return ReportedEntities.Account;
+    } else if (selectedChatMessage) {
+      return ReportedEntities.ChatMessage;
+    } else {
+      return ReportedEntities.Status;
+    }
+  }, []);
+
+  const isReportingAccount = reportedEntity === ReportedEntities.Account;
+  const isReportingStatus = reportedEntity === ReportedEntities.Status;
 
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
 
@@ -107,7 +127,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
     switch (selectedStatusIds.size) {
       case 0:
         return (
-          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
+          <div className='flex w-full items-center justify-center rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
             <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
           </div>
         );
@@ -166,13 +186,57 @@ const ReportModal = ({ onClose }: IReportModal) => {
     }
   };
 
+  const renderSelectedChatMessage = () => {
+    if (account) {
+      return (
+        <Stack space={4}>
+          <HStack alignItems='center' space={4} className='rounded-md border border-solid border-gray-400 p-4 dark:border-2 dark:border-gray-800'>
+            <div>
+              <Avatar src={account.avatar} className='h-8 w-8' />
+            </div>
+
+            <div className='grow rounded-md bg-gray-200 p-4 dark:bg-primary-800'>
+              <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
+            </div>
+          </HStack>
+
+          <List>
+            <ListItem
+              label={<Icon src={require('@tabler/icons/info-circle.svg')} className='text-gray-600' />}
+            >
+              <Text size='sm'>{intl.formatMessage(messages.reportContext)}</Text>
+            </ListItem>
+          </List>
+        </Stack>
+      );
+    }
+  };
+
+  const renderSelectedEntity = () => {
+    switch (reportedEntity) {
+      case ReportedEntities.Status:
+        return renderSelectedStatuses();
+      case ReportedEntities.ChatMessage:
+        return renderSelectedChatMessage();
+    }
+  };
+
+  const renderTitle = () => {
+    switch (reportedEntity) {
+      case ReportedEntities.ChatMessage:
+        return intl.formatMessage(messages.reportMessage);
+      default:
+        return <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account?.acct}</strong> }} />;
+    }
+  };
+
   const isConfirmationButtonDisabled = useMemo(() => {
     if (currentStep === Steps.THREE) {
       return false;
     }
 
-    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (!isReportingAccount && selectedStatusIds.size === 0);
-  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingAccount]);
+    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (isReportingStatus && selectedStatusIds.size === 0);
+  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingStatus]);
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {
@@ -201,7 +265,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
   return (
     <Modal
-      title={<FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account.acct}</strong> }} />}
+      title={renderTitle()}
       onClose={onClose}
       cancelText={cancelText}
       cancelAction={currentStep === Steps.THREE ? undefined : cancelAction}
@@ -213,7 +277,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       <Stack space={4}>
         <ProgressBar progress={calculateProgress()} />
 
-        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedStatuses()}
+        {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedEntity()}
 
         <StepToRender account={account} />
       </Stack>

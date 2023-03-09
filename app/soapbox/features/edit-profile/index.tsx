@@ -1,9 +1,9 @@
+import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
-import snackbar from 'soapbox/actions/snackbar';
 import BirthdayInput from 'soapbox/components/birthday-input';
 import List, { ListItem } from 'soapbox/components/list';
 import {
@@ -21,6 +21,7 @@ import {
 } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
 import { normalizeAccount } from 'soapbox/normalizers';
+import toast from 'soapbox/toast';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
@@ -56,18 +57,18 @@ const messages = defineMessages({
  * (By default, max 4 fields and 255 characters per property/value)
  */
 interface AccountCredentialsField {
-  name: string,
-  value: string,
+  name: string
+  value: string
 }
 
 /** Private information (settings) for the account. */
 interface AccountCredentialsSource {
   /** Default post privacy for authored statuses. */
-  privacy?: string,
+  privacy?: string
   /** Whether to mark authored statuses as sensitive by default. */
-  sensitive?: boolean,
+  sensitive?: boolean
   /** Default language to use for authored statuses. (ISO 6391) */
-  language?: string,
+  language?: string
 }
 
 /**
@@ -76,43 +77,43 @@ interface AccountCredentialsSource {
  */
 interface AccountCredentials {
   /** Whether the account should be shown in the profile directory. */
-  discoverable?: boolean,
+  discoverable?: boolean
   /** Whether the account has a bot flag. */
-  bot?: boolean,
+  bot?: boolean
   /** The display name to use for the profile. */
-  display_name?: string,
+  display_name?: string
   /** The account bio. */
-  note?: string,
+  note?: string
   /** Avatar image encoded using multipart/form-data */
-  avatar?: File,
+  avatar?: File
   /** Header image encoded using multipart/form-data */
-  header?: File,
+  header?: File
   /** Whether manual approval of follow requests is required. */
-  locked?: boolean,
+  locked?: boolean
   /** Private information (settings) about the account. */
-  source?: AccountCredentialsSource,
+  source?: AccountCredentialsSource
   /** Custom profile fields. */
-  fields_attributes?: AccountCredentialsField[],
+  fields_attributes?: AccountCredentialsField[]
 
   // Non-Mastodon fields
   /** Pleroma: whether to accept notifications from people you don't follow. */
-  stranger_notifications?: boolean,
+  stranger_notifications?: boolean
   /** Soapbox BE: whether the user opts-in to email communications. */
-  accepts_email_list?: boolean,
+  accepts_email_list?: boolean
   /** Pleroma: whether to publicly display followers. */
-  hide_followers?: boolean,
+  hide_followers?: boolean
   /** Pleroma: whether to publicly display follows. */
-  hide_follows?: boolean,
+  hide_follows?: boolean
   /** Pleroma: whether to publicly display follower count. */
-  hide_followers_count?: boolean,
+  hide_followers_count?: boolean
   /** Pleroma: whether to publicly display follows count. */
-  hide_follows_count?: boolean,
+  hide_follows_count?: boolean
   /** User's website URL. */
-  website?: string,
+  website?: string
   /** User's location. */
-  location?: string,
+  location?: string
   /** User's birthday. */
-  birthday?: string,
+  birthday?: string
 }
 
 /** Convert an account into an update_credentials request object. */
@@ -125,7 +126,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     display_name: account.display_name,
     note: account.source.get('note'),
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', []).toJS()],
+    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', ImmutableList()).toJS()],
     stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
     accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
     hide_followers: hideNetwork,
@@ -151,14 +152,14 @@ const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, on
     <HStack space={2} grow>
       <Input
         type='text'
-        outerClassName='w-2/5 flex-grow'
+        outerClassName='w-2/5 grow'
         value={value.name}
         onChange={handleChange('name')}
         placeholder={intl.formatMessage(messages.metaFieldLabel)}
       />
       <Input
         type='text'
-        outerClassName='w-3/5 flex-grow'
+        outerClassName='w-3/5 grow'
         value={value.value}
         onChange={handleChange('value')}
         placeholder={intl.formatMessage(messages.metaFieldContent)}
@@ -217,10 +218,10 @@ const EditProfile: React.FC = () => {
 
     Promise.all(promises).then(() => {
       setLoading(false);
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      toast.success(intl.formatMessage(messages.success));
     }).catch(() => {
       setLoading(false);
-      dispatch(snackbar.error(intl.formatMessage(messages.error)));
+      toast.error(intl.formatMessage(messages.error));
     });
 
     event.preventDefault();
@@ -244,7 +245,6 @@ const EditProfile: React.FC = () => {
 
   const handleHideNetworkChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const hide = e.target.checked;
-
     setData(prevData => {
       return {
         ...prevData,
@@ -310,6 +310,26 @@ const EditProfile: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.header)}>
       <Form onSubmit={handleSubmit}>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+          <ProfilePreview account={previewAccount} />
+
+          <div className='space-y-4'>
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
+            >
+              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
+            </FormGroup>
+
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
+              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
+            >
+              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
+            </FormGroup>
+          </div>
+        </div>
+
         <FormGroup
           labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
         >
@@ -369,26 +389,6 @@ const EditProfile: React.FC = () => {
           />
         </FormGroup>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <ProfilePreview account={previewAccount} />
-
-          <div className='space-y-4'>
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
-            >
-              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
-            </FormGroup>
-
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-            >
-              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
-            </FormGroup>
-          </div>
-        </div>
-
         <List>
           {features.followRequests && (
             <ListItem
@@ -408,7 +408,7 @@ const EditProfile: React.FC = () => {
               hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
             >
               <Toggle
-                checked={account ? hidesNetwork(account) : false}
+                checked={account ? (data.hide_followers && data.hide_follows && data.hide_followers_count && data.hide_follows_count) : false}
                 onChange={handleHideNetworkChange}
               />
             </ListItem>

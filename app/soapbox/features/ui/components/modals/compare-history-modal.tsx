@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
@@ -11,8 +11,8 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities';
 
 interface ICompareHistoryModal {
-  onClose: (string: string) => void,
-  statusId: string,
+  onClose: (string: string) => void
+  statusId: string
 }
 
 const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId }) => {
@@ -60,7 +60,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                     {version.poll.options.map((option: any) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
                         <span
-                          className={classNames('inline-block w-4 h-4 flex-none mr-2.5 border border-solid border-primary-600 rounded-full', {
+                          className={clsx('mr-2.5 inline-block h-4 w-4 flex-none rounded-full border border-solid border-primary-600', {
                             'rounded': poll.multiple,
                           })}
                           tabIndex={0}

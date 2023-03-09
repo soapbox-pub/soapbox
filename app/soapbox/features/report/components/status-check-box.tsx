@@ -10,8 +10,8 @@ import Bundle from '../../ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 
 interface IStatusCheckBox {
-  id: string,
-  disabled?: boolean,
+  id: string
+  disabled?: boolean
 }
 
 const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
@@ -35,7 +35,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
 
       if (video) {
         media = (
-          <Bundle fetchComponent={Video} >
+          <Bundle fetchComponent={Video}>
             {(Component: any) => (
               <Component
                 preview={video.preview_url}
@@ -58,7 +58,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
 
       if (audio) {
         media = (
-          <Bundle fetchComponent={Audio} >
+          <Bundle fetchComponent={Audio}>
             {(Component: any) => (
               <Component
                 src={audio.url}
@@ -73,7 +73,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
       }
     } else {
       media = (
-        <Bundle fetchComponent={MediaGallery} >
+        <Bundle fetchComponent={MediaGallery}>
           {(Component: any) => <Component media={status.media_attachments} sensitive={status.sensitive} height={110} onOpenMedia={noop} />}
         </Bundle>
       );
