@@ -24,13 +24,13 @@ const groupSchema = z.object({
   id: z.string().catch(''),
   locked: z.boolean().catch(false),
   membership_required: z.boolean().catch(false),
-  members_count: z.number().optional().catch(undefined),
+  members_count: z.number().catch(0),
   note: z.string().catch('').refine(note => note === '<p></p>' ? '' : note),
-  relationship: groupRelationshipSchema.optional().catch(undefined), // Dummy field to be overwritten later
+  relationship: groupRelationshipSchema.nullable().catch(null), // Dummy field to be overwritten later
   statuses_visibility: z.string().catch('public'),
   uri: z.string().catch(''),
   url: z.string().catch(''),
-}).refine(group => {
+}).transform(group => {
   group.avatar_static = group.avatar_static || group.avatar;
   group.header_static = group.header_static || group.header;
   group.locked = group.locked || group.group_visibility === 'members_only'; // TruthSocial
