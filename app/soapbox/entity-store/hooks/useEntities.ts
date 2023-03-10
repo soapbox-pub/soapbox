@@ -12,8 +12,12 @@ import type { RootState } from 'soapbox/store';
 type EntityPath = [
   /** Name of the entity type for use in the global cache, eg `'Notification'`. */
   entityType: string,
-  /** Name of a particular index of this entity type. You can use empty-string (`''`) if you don't need separate lists. */
-  listKey: string,
+  /**
+   * Name of a particular index of this entity type.
+   * Multiple params get combined into one string with a `:` separator.
+   * You can use empty-string (`''`) if you don't need separate lists.
+   */
+  ...listKeys: string[],
 ]
 
 /** Additional options for the hook. */
@@ -39,7 +43,8 @@ function useEntities<TEntity extends Entity>(
   const api = useApi();
   const dispatch = useAppDispatch();
 
-  const [entityType, listKey] = path;
+  const [entityType, ...listKeys] = path;
+  const listKey = listKeys.join(':');
 
   const defaultParser = (entity: unknown) => entity as TEntity;
   const parseEntity = opts.parser || defaultParser;
