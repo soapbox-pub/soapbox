@@ -21,13 +21,13 @@ const DurationSelector = ({ onDurationChange }: IDurationSelector) => {
   const [minutes, setMinutes] = useState<number>(0);
 
   const value = useMemo(() => {
-    const now: any = new Date();
-    const future: any = new Date();
-    now.setDate(now.getDate() + days);
-    now.setMinutes(now.getMinutes() + minutes);
-    now.setHours(now.getHours() + hours);
+    const now = new Date();
+    const future = new Date();
+    now.setUTCDate(now.getUTCDate() + days);
+    now.setUTCMinutes(now.getUTCMinutes() + minutes);
+    now.setUTCHours(now.getUTCHours() + hours);
 
-    return Math.round((now - future) / 1000);
+    return Math.round((now.getTime() - future.getTime()) / 1000);
   }, [days, hours, minutes]);
 
   useEffect(() => {
