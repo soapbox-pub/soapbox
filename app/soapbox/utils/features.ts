@@ -314,7 +314,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Mastodon's newer solution for direct messaging.
-     * @see {@link https://docs.joinmastodon.org/methods/timelines/conversations/}
+     * @see {@link https://docs.joinmastodon.org/methods/conversations/}
      */
     conversations: any([
       v.software === FRIENDICA,
@@ -443,16 +443,28 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Can edit and manage timeline filters (aka "muted words").
-     * @see {@link https://docs.joinmastodon.org/methods/accounts/filters/}
+     * @see {@link https://docs.joinmastodon.org/methods/filters/#v1}
      */
     filters: any([
       v.software === MASTODON && lt(v.compatVersion, '3.6.0'),
       v.software === PLEROMA,
     ]),
 
+    /** Whether filters can automatically expires. */
+    filtersExpiration: any([
+      v.software === MASTODON,
+      v.software === PLEROMA && gte(v.version, '2.3.0'),
+    ]),
+
+    /**
+     * Can edit and manage timeline filters (aka "muted words").
+     * @see {@link https://docs.joinmastodon.org/methods/filters/}
+     */
+    filtersV2: v.software === MASTODON && gte(v.compatVersion, '3.6.0'),
+
     /**
      * Allows setting the focal point of a media attachment.
-     * @see {@link https://docs.joinmastodon.org/methods/statuses/media/}
+     * @see {@link https://docs.joinmastodon.org/methods/media/}
      */
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
 
@@ -528,7 +540,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Can create, view, and manage lists.
-     * @see {@link https://docs.joinmastodon.org/methods/timelines/lists/}
+     * @see {@link https://docs.joinmastodon.org/methods/lists/}
      * @see GET /api/v1/timelines/list/:list_id
      */
     lists: any([
@@ -643,7 +655,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * A directory of discoverable profiles from the instance.
-     * @see {@link https://docs.joinmastodon.org/methods/instance/directory/}
+     * @see {@link https://docs.joinmastodon.org/methods/directory/}
      */
     profileDirectory: any([
       v.software === FRIENDICA,
@@ -736,7 +748,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /**
      * Can schedule statuses to be posted at a later time.
      * @see POST /api/v1/statuses
-     * @see {@link https://docs.joinmastodon.org/methods/statuses/scheduled_statuses/}
+     * @see {@link https://docs.joinmastodon.org/methods/scheduled_statuses/}
      */
     scheduledStatuses: any([
       v.software === MASTODON && gte(v.version, '2.7.0'),
@@ -788,7 +800,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Can display suggested accounts.
-     * @see {@link https://docs.joinmastodon.org/methods/accounts/suggestions/}
+     * @see {@link https://docs.joinmastodon.org/methods/suggestions/}
      */
     suggestions: any([
       v.software === MASTODON && gte(v.compatVersion, '2.4.3'),

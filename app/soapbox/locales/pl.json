@@ -1271,7 +1271,7 @@
   "status.embed": "Osadź",
   "status.external": "View post on {domain}",
   "status.favourite": "Zareaguj",
-  "status.filtered": "Filtrowany(-a)",
+  "status.filtered": "Filtrowany",
   "status.interactions.favourites": "{count, plural, one {Polubienie} few {Polubienia} other {Polubień}}",
   "status.interactions.reblogs": "{count, plural, one {Podanie dalej} few {Podania dalej} other {Podań dalej}}",
   "status.load_more": "Załaduj więcej",
