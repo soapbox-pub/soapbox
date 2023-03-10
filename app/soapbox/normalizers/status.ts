@@ -50,6 +50,7 @@ export const StatusRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
+  filtered: ImmutableList<string>(),
   group: null as EmbeddedEntity<Group>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
@@ -78,9 +79,9 @@ export const StatusRecord = ImmutableRecord({
   // Internal fields
   contentHtml: '',
   expectsCard: false,
-  filtered: false,
   hidden: false,
   search_index: '',
+  showFiltered: true,
   spoilerHtml: '',
   translation: null as ImmutableMap<string, string> | null,
 });
@@ -166,11 +167,6 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-// Workaround for not yet implemented filtering from Mastodon 3.6
-const fixFiltered = (status: ImmutableMap<string, any>) => {
-  status.delete('filtered');
-};
-
 /** If the status contains spoiler text, treat it as sensitive. */
 const fixSensitivity = (status: ImmutableMap<string, any>) => {
   if (status.get('spoiler_text')) {
@@ -214,6 +210,13 @@ const fixContent = (status: ImmutableMap<string, any>) => {
   }
 };
 
+const normalizeFilterResults = (status: ImmutableMap<string, any>) =>
+  status.update('filtered', ImmutableList(), filterResults =>
+    filterResults.map((filterResult: ImmutableMap<string, any>) =>
+      filterResult.getIn(['filter', 'title']),
+    ),
+  );
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -225,10 +228,10 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
-      fixFiltered(status);
       fixSensitivity(status);
       normalizeEvent(status);
       fixContent(status);
+      normalizeFilterResults(status);
     }),
   );
 };

@@ -10,6 +10,8 @@ export { ChatMessageRecord, normalizeChatMessage } from './chat-message';
 export { EmojiRecord, normalizeEmoji } from './emoji';
 export { EmojiReactionRecord } from './emoji-reaction';
 export { FilterRecord, normalizeFilter } from './filter';
+export { FilterKeywordRecord, normalizeFilterKeyword } from './filter-keyword';
+export { FilterStatusRecord, normalizeFilterStatus } from './filter-status';
 export { GroupRecord, normalizeGroup } from './group';
 export { GroupRelationshipRecord, normalizeGroupRelationship } from './group-relationship';
 export { HistoryRecord, normalizeHistory } from './history';

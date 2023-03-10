@@ -96,7 +96,7 @@ const EditAnnouncementModal: React.FC<IEditAnnouncementModal> = ({ onClose }) =>
             />)}
           </BundleContainer>
         </FormGroup>
-        <HStack  alignItems='center' space={2}>
+        <HStack alignItems='center' space={2}>
           <Toggle
             icons={false}
             checked={allDay}

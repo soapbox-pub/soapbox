@@ -12,6 +12,8 @@ import {
   EmojiReactionRecord,
   FieldRecord,
   FilterRecord,
+  FilterKeywordRecord,
+  FilterStatusRecord,
   GroupRecord,
   GroupRelationshipRecord,
   HistoryRecord,
@@ -44,6 +46,8 @@ type Emoji = ReturnType<typeof EmojiRecord>;
 type EmojiReaction = ReturnType<typeof EmojiReactionRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
+type FilterKeyword = ReturnType<typeof FilterKeywordRecord>;
+type FilterStatus = ReturnType<typeof FilterStatusRecord>;
 type Group = ReturnType<typeof GroupRecord>;
 type GroupRelationship = ReturnType<typeof GroupRelationshipRecord>;
 type History = ReturnType<typeof HistoryRecord>;
@@ -89,6 +93,8 @@ export {
   EmojiReaction,
   Field,
   Filter,
+  FilterKeyword,
+  FilterStatus,
   Group,
   GroupRelationship,
   History,

@@ -79,7 +79,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.7",
     "@tanstack/react-query": "^4.0.10",
-    "@testing-library/react": "^13.0.0",
+    "@testing-library/react": "^14.0.0",
     "@types/escape-html": "^1.0.1",
     "@types/flexsearch": "^0.7.3",
     "@types/http-link-header": "^1.0.3",

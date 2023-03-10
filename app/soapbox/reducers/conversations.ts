@@ -9,7 +9,7 @@ import {
   CONVERSATIONS_UPDATE,
   CONVERSATIONS_READ,
 } from '../actions/conversations';
-import { compareId } from '../utils/comparators';
+import { compareDate } from '../utils/comparators';
 
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
@@ -19,7 +19,7 @@ const ConversationRecord = ImmutableRecord({
   unread: false,
   accounts: ImmutableList<string>(),
   last_status: null as string | null,
-
+  last_status_created_at: null as string | null,
 });
 
 const ReducerRecord = ImmutableRecord({
@@ -37,6 +37,7 @@ const conversationToMap = (item: APIEntity) => ConversationRecord({
   unread: item.unread,
   accounts: ImmutableList(item.accounts.map((a: APIEntity) => a.id)),
   last_status: item.last_status ? item.last_status.id : null,
+  last_status_created_at: item.last_status ? item.last_status.created_at : null,
 });
 
 const updateConversation = (state: State, item: APIEntity) => state.update('items', list => {
@@ -71,12 +72,12 @@ const expandNormalizedConversations = (state: State, conversations: APIEntity[],
 
         list = list.concat(items);
 
-        return list.sortBy(x => x.get('last_status'), (a, b) => {
+        return list.sortBy(x => x.get('last_status_created_at'), (a, b) => {
           if (a === null || b === null) {
             return -1;
           }
 
-          return compareId(a, b) * -1;
+          return compareDate(a, b);
         });
       });
     }

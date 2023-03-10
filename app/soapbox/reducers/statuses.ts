@@ -38,6 +38,7 @@ import {
   STATUS_DELETE_FAIL,
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_UNDO,
+  STATUS_UNFILTER,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
@@ -287,6 +288,8 @@ export default function statuses(state = initialState, action: AnyAction): State
       return importTranslation(state, action.id, action.translation);
     case STATUS_TRANSLATE_UNDO:
       return deleteTranslation(state, action.id);
+    case STATUS_UNFILTER:
+      return state.setIn([action.id, 'showFiltered'], false);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
     case EVENT_JOIN_REQUEST:

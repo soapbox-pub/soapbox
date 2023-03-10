@@ -121,7 +121,7 @@ const AccountGallery = () => {
   let loadOlder = null;
 
   if (hasMore && !(isLoading && attachments.size === 0)) {
-    loadOlder = <LoadMore visible={!isLoading} onClick={handleLoadOlder} />;
+    loadOlder = <LoadMore className='my-auto' visible={!isLoading} onClick={handleLoadOlder} />;
   }
 
   if (unavailable) {
