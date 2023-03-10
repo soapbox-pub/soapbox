@@ -13,6 +13,8 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 
+import { MentionNode } from './nodes/mention-node';
+
 import type { Klass, LexicalNode } from 'lexical';
 
 const ComposeNodes: Array<Klass<LexicalNode>> = [
@@ -24,6 +26,7 @@ const ComposeNodes: Array<Klass<LexicalNode>> = [
   LinkNode,
   HorizontalRuleNode,
   HashtagNode,
+  MentionNode,
 ];
 
 export default ComposeNodes;
