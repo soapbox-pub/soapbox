@@ -262,7 +262,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     chats: any([
       v.software === TRUTHSOCIAL,
-      v.software === PLEROMA && gte(v.version, '2.1.0') && v.build !== AKKOMA,
+      features.includes('pleroma_chat_messages'),
     ]),
 
     /**
@@ -679,6 +679,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     quotePosts: any([
       v.software === PLEROMA && [REBASED, AKKOMA].includes(v.build!) && gte(v.version, '2.4.50'),
+      features.includes('quote_posting'),
       instance.feature_quote === true,
     ]),
 
