@@ -3,6 +3,7 @@ import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
+import entities from 'soapbox/entity-store/reducer';
 
 import account_notes from './account-notes';
 import accounts from './accounts';
@@ -90,6 +91,7 @@ const reducers = {
   custom_emojis,
   domain_lists,
   dropdown_menu,
+  entities,
   filters,
   group_editor,
   group_memberships,

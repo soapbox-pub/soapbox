@@ -11,8 +11,7 @@ import {
   GroupMediaPanel,
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { useOwnAccount } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/queries/groups';
+import { useGroup, useOwnAccount } from 'soapbox/hooks';
 
 import { Tabs } from '../components/ui';
 
