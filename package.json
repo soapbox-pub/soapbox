@@ -194,7 +194,8 @@
     "webpack-cli": "^5.0.0",
     "webpack-deadcode-plugin": "^0.1.16",
     "webpack-merge": "^5.8.0",
-    "wicg-inert": "^3.1.1"
+    "wicg-inert": "^3.1.1",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
