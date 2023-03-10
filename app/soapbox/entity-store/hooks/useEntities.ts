@@ -48,6 +48,7 @@ function useEntities<TEntity extends Entity>(
 
   const [entityType, ...listKeys] = path;
   const listKey = listKeys.join(':');
+
   const entities = useAppSelector(state => selectEntities<TEntity>(state, path));
 
   const isFetching = useListState(path, 'fetching');
