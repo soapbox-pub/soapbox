@@ -6,8 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { useGroups } from 'soapbox/queries/groups';
+import { useAppDispatch, useAppSelector, useGroups, useFeatures } from 'soapbox/hooks';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
@@ -15,16 +14,6 @@ import PlaceholderGroupCard from '../placeholder/components/placeholder-group-ca
 import TabBar, { TabItems } from './components/tab-bar';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities';
-
-// const getOrderedGroups = createSelector([
-//   (state: RootState) => state.groups.items,
-//   (state: RootState) => state.group_relationships,
-// ], (groups, group_relationships) => ({
-//   groups: (groups.toList().filter((item: GroupEntity | false) => !!item) as ImmutableList<GroupEntity>)
-//     .map((item) => item.set('relationship', group_relationships.get(item.id) || null))
-//     .filter((item) => item.relationship?.member)
-//     .sort((a, b) => a.display_name.localeCompare(b.display_name)),
-// }));
 
 const EmptyMessage = () => (
   <Stack space={6} alignItems='center' justifyContent='center' className='h-full p-6'>
