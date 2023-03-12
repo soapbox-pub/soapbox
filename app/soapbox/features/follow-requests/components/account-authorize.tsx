@@ -35,27 +35,29 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   if (!account) return null;
 
   return (
-    <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
-      <div className='w-full'>
-        <Account account={account} withRelationship={false} />
-      </div>
-      <HStack space={2}>
-        <Button
-          theme='secondary'
-          size='sm'
-          text={intl.formatMessage(messages.authorize)}
-          icon={require('@tabler/icons/check.svg')}
-          onClick={onAuthorize}
-        />
-        <Button
-          theme='danger'
-          size='sm'
-          text={intl.formatMessage(messages.reject)}
-          icon={require('@tabler/icons/x.svg')}
-          onClick={onReject}
-        />
-      </HStack>
-    </HStack>
+    <div className='p-2.5'>
+      <Account
+        account={account}
+        action={
+          <HStack className='ml-1' space={2}>
+            <Button
+              theme='secondary'
+              size='sm'
+              text={intl.formatMessage(messages.authorize)}
+              icon={require('@tabler/icons/check.svg')}
+              onClick={onAuthorize}
+            />
+            <Button
+              theme='danger'
+              size='sm'
+              text={intl.formatMessage(messages.reject)}
+              icon={require('@tabler/icons/x.svg')}
+              onClick={onReject}
+            />
+          </HStack>
+        }
+      />
+    </div>
   );
 };
 
