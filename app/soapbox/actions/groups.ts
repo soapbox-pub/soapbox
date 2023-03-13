@@ -40,14 +40,6 @@ const GROUP_RELATIONSHIPS_FETCH_REQUEST = 'GROUP_RELATIONSHIPS_FETCH_REQUEST';
 const GROUP_RELATIONSHIPS_FETCH_SUCCESS = 'GROUP_RELATIONSHIPS_FETCH_SUCCESS';
 const GROUP_RELATIONSHIPS_FETCH_FAIL    = 'GROUP_RELATIONSHIPS_FETCH_FAIL';
 
-const GROUP_JOIN_REQUEST = 'GROUP_JOIN_REQUEST';
-const GROUP_JOIN_SUCCESS = 'GROUP_JOIN_SUCCESS';
-const GROUP_JOIN_FAIL    = 'GROUP_JOIN_FAIL';
-
-const GROUP_LEAVE_REQUEST = 'GROUP_LEAVE_REQUEST';
-const GROUP_LEAVE_SUCCESS = 'GROUP_LEAVE_SUCCESS';
-const GROUP_LEAVE_FAIL    = 'GROUP_LEAVE_FAIL';
-
 const GROUP_DELETE_STATUS_REQUEST = 'GROUP_DELETE_STATUS_REQUEST';
 const GROUP_DELETE_STATUS_SUCCESS = 'GROUP_DELETE_STATUS_SUCCESS';
 const GROUP_DELETE_STATUS_FAIL    = 'GROUP_DELETE_STATUS_FAIL';
@@ -310,70 +302,6 @@ const fetchGroupRelationshipsFail = (error: AxiosError) => ({
   error,
   skipLoading: true,
   skipNotFound: true,
-});
-
-const joinGroup = (id: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const locked = (getState().groups.items.get(id) as any).locked || false;
-
-    dispatch(joinGroupRequest(id, locked));
-
-    return api(getState).post(`/api/v1/groups/${id}/join`).then(response => {
-      dispatch(joinGroupSuccess(response.data));
-      toast.success(locked ? messages.joinRequestSuccess : messages.joinSuccess);
-    }).catch(error => {
-      dispatch(joinGroupFail(error, locked));
-    });
-  };
-
-const leaveGroup = (id: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(leaveGroupRequest(id));
-
-    return api(getState).post(`/api/v1/groups/${id}/leave`).then(response => {
-      dispatch(leaveGroupSuccess(response.data));
-      toast.success(messages.leaveSuccess);
-    }).catch(error => {
-      dispatch(leaveGroupFail(error));
-    });
-  };
-
-const joinGroupRequest = (id: string, locked: boolean) => ({
-  type: GROUP_JOIN_REQUEST,
-  id,
-  locked,
-  skipLoading: true,
-});
-
-const joinGroupSuccess = (relationship: APIEntity) => ({
-  type: GROUP_JOIN_SUCCESS,
-  relationship,
-  skipLoading: true,
-});
-
-const joinGroupFail = (error: AxiosError, locked: boolean) => ({
-  type: GROUP_JOIN_FAIL,
-  error,
-  locked,
-  skipLoading: true,
-});
-
-const leaveGroupRequest = (id: string) => ({
-  type: GROUP_LEAVE_REQUEST,
-  id,
-  skipLoading: true,
-});
-
-const leaveGroupSuccess = (relationship: APIEntity) => ({
-  type: GROUP_LEAVE_SUCCESS,
-  relationship,
-  skipLoading: true,
-});
-
-const leaveGroupFail = (error: AxiosError) => ({
-  type: GROUP_LEAVE_FAIL,
-  error,
-  skipLoading: true,
 });
 
 const groupDeleteStatus = (groupId: string, statusId: string) =>
@@ -895,12 +823,6 @@ export {
   GROUP_RELATIONSHIPS_FETCH_REQUEST,
   GROUP_RELATIONSHIPS_FETCH_SUCCESS,
   GROUP_RELATIONSHIPS_FETCH_FAIL,
-  GROUP_JOIN_REQUEST,
-  GROUP_JOIN_SUCCESS,
-  GROUP_JOIN_FAIL,
-  GROUP_LEAVE_REQUEST,
-  GROUP_LEAVE_SUCCESS,
-  GROUP_LEAVE_FAIL,
   GROUP_DELETE_STATUS_REQUEST,
   GROUP_DELETE_STATUS_SUCCESS,
   GROUP_DELETE_STATUS_FAIL,
@@ -973,14 +895,6 @@ export {
   fetchGroupRelationshipsRequest,
   fetchGroupRelationshipsSuccess,
   fetchGroupRelationshipsFail,
-  joinGroup,
-  leaveGroup,
-  joinGroupRequest,
-  joinGroupSuccess,
-  joinGroupFail,
-  leaveGroupRequest,
-  leaveGroupSuccess,
-  leaveGroupFail,
   groupDeleteStatus,
   groupDeleteStatusRequest,
   groupDeleteStatusSuccess,

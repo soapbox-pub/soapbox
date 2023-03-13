@@ -125,7 +125,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           dangerouslySetInnerHTML={{ __html: group.display_name_html }}
         />
 
-        <Stack space={1}>
+        <Stack space={1} alignItems='center'>
           <HStack className='text-gray-700 dark:text-gray-600' space={2} wrap>
             <GroupRelationship group={group} />
             <GroupPrivacy group={group} />
