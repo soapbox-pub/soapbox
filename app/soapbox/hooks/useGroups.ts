@@ -44,4 +44,4 @@ function useGroupRelationships(groupIds: string[]) {
   };
 }
 
-export { useGroup, useGroups };
+export { useGroup, useGroups, useGroupRelationships };

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Carousel, Stack, Text } from 'soapbox/components/ui';
 import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover';
-import { useSuggestedGroups } from 'soapbox/queries/groups';
+import { useSuggestedGroups } from 'soapbox/hooks/api/useSuggestedGroups';
 
 import GroupGridItem from './group-grid-item';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Widget } from 'soapbox/components/ui';
 import GroupListItem from 'soapbox/features/groups/components/discover/group-list-item';
 import PlaceholderGroupSearch from 'soapbox/features/placeholder/components/placeholder-group-search';
-import { useSuggestedGroups } from 'soapbox/queries/groups';
+import { useSuggestedGroups } from 'soapbox/hooks/api/useSuggestedGroups';
 
 const SuggestedGroupsPanel = () => {
   const { groups, isFetching, isFetched, isError } = useSuggestedGroups();
