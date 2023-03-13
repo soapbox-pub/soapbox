@@ -32,6 +32,7 @@ import EventPage from 'soapbox/pages/event-page';
 import EventsPage from 'soapbox/pages/events-page';
 import GroupPage from 'soapbox/pages/group-page';
 import GroupsPage from 'soapbox/pages/groups-page';
+import GroupsPendingPage from 'soapbox/pages/groups-pending-page';
 import HomePage from 'soapbox/pages/home-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
@@ -117,6 +118,7 @@ import {
   Events,
   Groups,
   GroupsDiscover,
+  PendingGroupRequests,
   GroupMembers,
   GroupTimeline,
   ManageGroup,
@@ -287,6 +289,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       {features.groups && <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} />}
       {features.groupsDiscovery && <WrappedRoute path='/groups/discover' exact page={GroupsPage} component={GroupsDiscover} content={children} />}
+      {features.groupsPending && <WrappedRoute path='/groups/pending-requests' exact page={GroupsPendingPage} component={PendingGroupRequests} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage' exact page={DefaultPage} component={ManageGroup} content={children} />}
