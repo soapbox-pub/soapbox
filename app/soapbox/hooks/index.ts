@@ -5,6 +5,7 @@ export { useAppSelector } from './useAppSelector';
 export { useClickOutside } from './useClickOutside';
 export { useCompose } from './useCompose';
 export { useDebounce } from './useDebounce';
+export { useGetState } from './useGetState';
 export { useGroup, useGroups } from './useGroups';
 export { useGroupsPath } from './useGroupsPath';
 export { useDimensions } from './useDimensions';
