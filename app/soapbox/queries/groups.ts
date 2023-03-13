@@ -200,7 +200,7 @@ const useGroup = (id: string) => {
     return groups[0];
   };
 
-  const queryInfo = useQuery(GroupKeys.group(id), getGroup, {
+  const queryInfo = useQuery<Group>(GroupKeys.group(id), getGroup, {
     enabled: features.groups && !!id,
   });
 
