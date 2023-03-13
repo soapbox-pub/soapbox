@@ -118,7 +118,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
         </div>
       </div>
 
-      <Stack alignItems='center' space={3} className='mt-10 py-4'>
+      <Stack alignItems='center' space={3} className='mx-auto mt-10 w-5/6 py-4'>
         <Text
           size='xl'
           weight='bold'
@@ -132,7 +132,11 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
             <GroupMemberCount group={group} />
           </HStack>
 
-          <Text theme='muted' dangerouslySetInnerHTML={{ __html: group.note_emojified }} />
+          <Text
+            theme='muted'
+            align='center'
+            dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+          />
         </Stack>
 
         <GroupActionButton group={group} />
