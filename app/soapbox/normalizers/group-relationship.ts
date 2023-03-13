@@ -10,7 +10,9 @@ import {
 
 export const GroupRelationshipRecord = ImmutableRecord({
   id: '',
+  blocked_by: false,
   member: false,
+  notifying: null,
   requested: false,
   role: null as 'admin' | 'moderator' | 'user' | null,
 });
