@@ -13,6 +13,7 @@ import {
   FieldRecord,
   FilterRecord,
   GroupRecord,
+  // GroupMember as GroupMemberRecord,
   GroupRelationshipRecord,
   HistoryRecord,
   InstanceRecord,
@@ -45,6 +46,7 @@ type EmojiReaction = ReturnType<typeof EmojiReactionRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
 type Group = ReturnType<typeof GroupRecord>;
+// type GroupMember = GroupMemberRecord
 type GroupRelationship = ReturnType<typeof GroupRelationshipRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
@@ -90,6 +92,7 @@ export {
   Field,
   Filter,
   Group,
+  // GroupMember,
   GroupRelationship,
   History,
   Instance,

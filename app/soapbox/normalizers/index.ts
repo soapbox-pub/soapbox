@@ -11,6 +11,7 @@ export { EmojiRecord, normalizeEmoji } from './emoji';
 export { EmojiReactionRecord } from './emoji-reaction';
 export { FilterRecord, normalizeFilter } from './filter';
 export { GroupRecord, normalizeGroup } from './group';
+// export { GroupMember, normalizeGroupMember } from './group-member';
 export { GroupRelationshipRecord, normalizeGroupRelationship } from './group-relationship';
 export { HistoryRecord, normalizeHistory } from './history';
 export { InstanceRecord, normalizeInstance } from './instance';
