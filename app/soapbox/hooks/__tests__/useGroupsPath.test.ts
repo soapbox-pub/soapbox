@@ -68,6 +68,19 @@ describe('useGroupsPath()', () => {
       });
 
       test('should default to the "My Groups" page', async () => {
+        const store = {
+          entities: {
+            Groups: {
+              store: {
+                '1': normalizeGroup({}),
+              },
+              lists: {
+                '': new Set(['1']),
+              },
+            },
+          },
+        };
+
         const { result } = renderHook(useGroupsPath, undefined, store);
 
         await waitFor(() => {
