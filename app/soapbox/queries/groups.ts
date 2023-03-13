@@ -149,48 +149,6 @@ const usePendingGroups = () => {
   };
 };
 
-const usePopularGroups = () => {
-  const features = useFeatures();
-  const { fetchGroups } = useGroupsApi();
-
-  const getQuery = async () => {
-    const { groups } = await fetchGroups('/api/v1/truth/trends/groups');
-
-    return groups;
-  };
-
-  const queryInfo = useQuery<Group[]>(GroupKeys.popularGroups, getQuery, {
-    enabled: features.groupsDiscovery,
-    placeholderData: [],
-  });
-
-  return {
-    groups: queryInfo.data || [],
-    ...queryInfo,
-  };
-};
-
-const useSuggestedGroups = () => {
-  const features = useFeatures();
-  const { fetchGroups } = useGroupsApi();
-
-  const getQuery = async () => {
-    const { groups } = await fetchGroups('/api/v1/truth/suggestions/groups');
-
-    return groups;
-  };
-
-  const queryInfo = useQuery<Group[]>(GroupKeys.suggestedGroups, getQuery, {
-    enabled: features.groupsDiscovery,
-    placeholderData: [],
-  });
-
-  return {
-    groups: queryInfo.data || [],
-    ...queryInfo,
-  };
-};
-
 const useGroup = (id: string) => {
   const features = useFeatures();
   const { fetchGroups } = useGroupsApi();
@@ -256,6 +214,4 @@ export {
   useJoinGroup,
   useLeaveGroup,
   usePendingGroups,
-  usePopularGroups,
-  useSuggestedGroups,
 };

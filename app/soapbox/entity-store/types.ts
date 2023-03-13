@@ -25,6 +25,8 @@ interface EntityListState {
   prev: string | undefined
   /** Error returned from the API, if any. */
   error: any
+  /** Whether data has already been fetched */
+  fetched: boolean
   /** Whether data for this list is currently being fetched. */
   fetching: boolean
   /** Date of the last API fetch for this list. */
