@@ -10,11 +10,10 @@ import { HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, 
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAccount, useAppDispatch } from 'soapbox/hooks';
 import { BaseGroupRoles, useGroupRoles } from 'soapbox/hooks/useGroupRoles';
-import { GroupMember } from 'soapbox/normalizers/group-member';
 import toast from 'soapbox/toast';
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
-import type { Account as AccountEntity, Group } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Group, GroupMember } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Block' },
