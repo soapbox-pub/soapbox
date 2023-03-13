@@ -8,7 +8,6 @@
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
-  LexicalTypeaheadMenuPlugin,
   QueryMatch,
   TypeaheadOption,
   useBasicTypeaheadTriggerMatch,
@@ -18,6 +17,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import { $createMentionNode, MentionNode } from '../nodes/mention-node';
+
+import { TypeaheadMenuPlugin } from './typeahead-menu-plugin';
 
 import type { TextNode } from 'lexical';
 
@@ -318,7 +319,7 @@ export function MentionPlugin(): JSX.Element | null {
   );
 
   return (
-    <LexicalTypeaheadMenuPlugin<MentionTypeaheadOption>
+    <TypeaheadMenuPlugin<MentionTypeaheadOption>
       onQueryChange={setQueryString}
       onSelectOption={onSelectOption}
       triggerFn={checkForMentionMatch}
