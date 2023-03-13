@@ -18,7 +18,7 @@ describe('<GroupActionButton />', () => {
 
     describe('with a private group', () => {
       beforeEach(() => {
-        group = group.set('locked', true);
+        group = { ...group, locked: true };
       });
 
       it('should render the Request Access button', () => {
@@ -30,7 +30,7 @@ describe('<GroupActionButton />', () => {
 
     describe('with a public group', () => {
       beforeEach(() => {
-        group = group.set('locked', false);
+        group = { ...group, locked: false };
       });
 
       it('should render the Join Group button', () => {
@@ -52,7 +52,7 @@ describe('<GroupActionButton />', () => {
 
     describe('with a private group', () => {
       beforeEach(() => {
-        group = group.set('locked', true);
+        group = { ...group, locked: true };
       });
 
       it('should render the Request Access button', () => {
@@ -64,7 +64,7 @@ describe('<GroupActionButton />', () => {
 
     describe('with a public group', () => {
       beforeEach(() => {
-        group = group.set('locked', false);
+        group = { ...group, locked: false };
       });
 
       it('should render the Join Group button', () => {

@@ -14,8 +14,6 @@ import {
   FilterRecord,
   FilterKeywordRecord,
   FilterStatusRecord,
-  GroupRecord,
-  GroupRelationshipRecord,
   HistoryRecord,
   InstanceRecord,
   ListRecord,
@@ -48,8 +46,6 @@ type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
 type FilterKeyword = ReturnType<typeof FilterKeywordRecord>;
 type FilterStatus = ReturnType<typeof FilterStatusRecord>;
-type Group = ReturnType<typeof GroupRecord>;
-type GroupRelationship = ReturnType<typeof GroupRelationshipRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
@@ -95,8 +91,6 @@ export {
   Filter,
   FilterKeyword,
   FilterStatus,
-  Group,
-  GroupRelationship,
   History,
   Instance,
   List,
@@ -114,3 +108,8 @@ export {
   APIEntity,
   EmbeddedEntity,
 };
+
+export type {
+  Group,
+  GroupRelationship,
+} from 'soapbox/schemas';

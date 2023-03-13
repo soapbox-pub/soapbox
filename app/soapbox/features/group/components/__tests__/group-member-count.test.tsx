@@ -9,20 +9,6 @@ import GroupMemberCount from '../group-member-count';
 let group: Group;
 
 describe('<GroupMemberCount />', () => {
-  describe('without support for "members_count"', () => {
-    beforeEach(() => {
-      group = normalizeGroup({
-        members_count: undefined,
-      });
-    });
-
-    it('should return null', () => {
-      render(<GroupMemberCount group={group} />);
-
-      expect(screen.queryAllByTestId('group-member-count')).toHaveLength(0);
-    });
-  });
-
   describe('with support for "members_count"', () => {
     describe('with 1 member', () => {
       beforeEach(() => {

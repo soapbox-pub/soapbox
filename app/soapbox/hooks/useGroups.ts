@@ -1,13 +1,12 @@
 import { useEntities, useEntity } from 'soapbox/entity-store/hooks';
-import { normalizeGroup, normalizeGroupRelationship } from 'soapbox/normalizers';
-
-import type { Group, GroupRelationship } from 'soapbox/types/entities';
+import { groupSchema, Group } from 'soapbox/schemas/group';
+import { groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas/group-relationship';
 
 function useGroups() {
   const { entities, ...result } = useEntities<Group>(['Group', ''], '/api/v1/groups', { parser: parseGroup });
   const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
-  const groups = entities.map((group) => group.set('relationship', relationships[group.id] || null));
+  const groups = entities.map((group) => ({ ...group, relationship: relationships[group.id] || null }));
 
   return {
     ...result,
@@ -21,7 +20,7 @@ function useGroup(groupId: string, refetch = true) {
 
   return {
     ...result,
-    group: group?.set('relationship', relationship || null),
+    group: group ? { ...group, relationship: relationship || null } : undefined,
   };
 }
 
@@ -45,9 +44,18 @@ function useGroupRelationships(groupIds: string[]) {
   };
 }
 
-// HACK: normalizers currently don't have the desired API.
-// TODO: rewrite normalizers as Zod parsers.
-const parseGroup = (entity: unknown) => entity ? normalizeGroup(entity as Record<string, any>) : undefined;
-const parseGroupRelationship = (entity: unknown) => entity ? normalizeGroupRelationship(entity as Record<string, any>) : undefined;
+const parseGroup = (entity: unknown) => {
+  const result = groupSchema.safeParse(entity);
+  if (result.success) {
+    return result.data;
+  }
+};
+
+const parseGroupRelationship = (entity: unknown) => {
+  const result = groupRelationshipSchema.safeParse(entity);
+  if (result.success) {
+    return result.data;
+  }
+};
 
 export { useGroup, useGroups };
