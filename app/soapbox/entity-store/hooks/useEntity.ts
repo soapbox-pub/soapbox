@@ -30,11 +30,7 @@ function useEntity<TEntity extends Entity>(
   const defaultSchema = z.custom<TEntity>();
   const schema = opts.schema || defaultSchema;
 
-  const entity = useAppSelector(state => {
-    // TODO: parse after fetch, not during render.
-    const result = schema.safeParse(state.entities[entityType]?.store[entityId]);
-    return result.success ? result.data : undefined;
-  });
+  const entity = useAppSelector(state => state.entities[entityType]?.store[entityId] as TEntity | undefined);
 
   const [isFetching, setIsFetching] = useState(false);
   const isLoading = isFetching && !entity;
@@ -42,7 +38,8 @@ function useEntity<TEntity extends Entity>(
   const fetchEntity = () => {
     setIsFetching(true);
     api.get(endpoint).then(({ data }) => {
-      dispatch(importEntities([data], entityType));
+      const entity = schema.parse(data);
+      dispatch(importEntities([entity], entityType));
       setIsFetching(false);
     }).catch(() => {
       setIsFetching(false);

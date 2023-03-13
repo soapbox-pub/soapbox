@@ -3,6 +3,7 @@ import z from 'zod';
 
 import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { filteredArray } from 'soapbox/schemas/utils';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
 
@@ -52,10 +53,9 @@ function useEntities<TEntity extends Entity>(
 
   const entities: readonly TEntity[] = entityIds ? (
     Array.from(entityIds).reduce<TEntity[]>((result, id) => {
-      // TODO: parse after fetch, not during render.
-      const entity = schema.safeParse(cache?.store[id]);
-      if (entity.success) {
-        result.push(entity.data);
+      const entity = cache?.store[id];
+      if (entity) {
+        result.push(entity as TEntity);
       }
       return result;
     }, [])
@@ -74,7 +74,9 @@ function useEntities<TEntity extends Entity>(
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
       const response = await api.get(url);
-      dispatch(entitiesFetchSuccess(response.data, entityType, listKey, {
+      const entities = filteredArray(schema).parse(response.data);
+
+      dispatch(entitiesFetchSuccess(entities, entityType, listKey, {
         next: getNextLink(response),
         prev: getPrevLink(response),
         fetching: false,
