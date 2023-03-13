@@ -1,8 +1,9 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
+import { buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeAccount, normalizeGroup, normalizeGroupRelationship, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeAccount, normalizeInstance } from 'soapbox/normalizers';
 
 import { useGroupsPath } from '../useGroupsPath';
 
@@ -53,14 +54,14 @@ describe('useGroupsPath()', () => {
       beforeEach(() => {
         __stub((mock) => {
           mock.onGet('/api/v1/groups').reply(200, [
-            normalizeGroup({
+            buildGroup({
               display_name: 'Group',
               id: '1',
             }),
           ]);
 
           mock.onGet('/api/v1/groups/relationships?id[]=1').reply(200, [
-            normalizeGroupRelationship({
+            buildGroupRelationship({
               id: '1',
             }),
           ]);

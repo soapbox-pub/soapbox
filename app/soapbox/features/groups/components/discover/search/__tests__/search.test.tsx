@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { __stub } from 'soapbox/api';
+import { buildGroup } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeGroup, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeInstance } from 'soapbox/normalizers';
 
 import Search from '../search';
 
@@ -35,7 +36,7 @@ describe('<Search />', () => {
     beforeEach(() => {
       __stub((mock) => {
         mock.onGet('/api/v1/groups/search').reply(200, [
-          normalizeGroup({
+          buildGroup({
             display_name: 'Group',
             id: '1',
           }),

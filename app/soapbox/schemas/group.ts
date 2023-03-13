@@ -21,7 +21,7 @@ const groupSchema = z.object({
   group_visibility: z.string().catch(''), // TruthSocial
   header: z.string().catch(headerMissing),
   header_static: z.string().catch(''),
-  id: z.string().catch(''),
+  id: z.string(),
   locked: z.boolean().catch(false),
   membership_required: z.boolean().catch(false),
   members_count: z.number().catch(0),

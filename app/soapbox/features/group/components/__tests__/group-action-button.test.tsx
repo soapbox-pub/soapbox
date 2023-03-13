@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeGroup, normalizeGroupRelationship } from 'soapbox/normalizers';
 import { Group } from 'soapbox/types/entities';
 
 import GroupActionButton from '../group-action-button';
@@ -11,7 +11,7 @@ let group: Group;
 describe('<GroupActionButton />', () => {
   describe('with no group relationship', () => {
     beforeEach(() => {
-      group = normalizeGroup({
+      group = buildGroup({
         relationship: null,
       });
     });
@@ -43,8 +43,8 @@ describe('<GroupActionButton />', () => {
 
   describe('with no group relationship member', () => {
     beforeEach(() => {
-      group = normalizeGroup({
-        relationship: normalizeGroupRelationship({
+      group = buildGroup({
+        relationship: buildGroupRelationship({
           member: null,
         }),
       });
@@ -77,8 +77,8 @@ describe('<GroupActionButton />', () => {
 
   describe('when the user has requested to join', () => {
     beforeEach(() => {
-      group = normalizeGroup({
-        relationship: normalizeGroupRelationship({
+      group = buildGroup({
+        relationship: buildGroupRelationship({
           requested: true,
           member: true,
         }),
@@ -94,8 +94,8 @@ describe('<GroupActionButton />', () => {
 
   describe('when the user is an Admin', () => {
     beforeEach(() => {
-      group = normalizeGroup({
-        relationship: normalizeGroupRelationship({
+      group = buildGroup({
+        relationship: buildGroupRelationship({
           requested: false,
           member: true,
           role: 'admin',
@@ -112,8 +112,8 @@ describe('<GroupActionButton />', () => {
 
   describe('when the user is just a member', () => {
     beforeEach(() => {
-      group = normalizeGroup({
-        relationship: normalizeGroupRelationship({
+      group = buildGroup({
+        relationship: buildGroupRelationship({
           requested: false,
           member: true,
           role: 'user',
