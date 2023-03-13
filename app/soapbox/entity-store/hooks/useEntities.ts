@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import z from 'zod';
 
 import { getNextLink, getPrevLink } from 'soapbox/api';
-import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
 import { filteredArray } from 'soapbox/schemas/utils';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
 
-import type { Entity } from '../types';
+import type { Entity, EntityListState } from '../types';
 import type { RootState } from 'soapbox/store';
 
 /** Tells us where to find/store the entity in the cache. */
@@ -40,40 +40,26 @@ function useEntities<TEntity extends Entity>(
 ) {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const getState = useGetState();
 
   const [entityType, listKey] = path;
+  const entities = useAppSelector(state => selectEntities<TEntity>(state, path));
 
-  const defaultSchema = z.custom<TEntity>();
-  const schema = opts.schema || defaultSchema;
+  const isFetching = useListState(path, 'fetching');
+  const lastFetchedAt = useListState(path, 'lastFetchedAt');
 
-  const cache = useAppSelector(state => state.entities[entityType]);
-  const list = cache?.lists[listKey];
-
-  const entityIds = list?.ids;
-
-  const entities: readonly TEntity[] = entityIds ? (
-    Array.from(entityIds).reduce<TEntity[]>((result, id) => {
-      const entity = cache?.store[id];
-      if (entity) {
-        result.push(entity as TEntity);
-      }
-      return result;
-    }, [])
-  ) : [];
-
-  const isFetching = Boolean(list?.state.fetching);
-  const isLoading = isFetching && entities.length === 0;
-  const hasNextPage = Boolean(list?.state.next);
-  const hasPreviousPage = Boolean(list?.state.prev);
+  const next = useListState(path, 'next');
+  const prev = useListState(path, 'prev');
 
   const fetchPage = async(url: string): Promise<void> => {
     // Get `isFetching` state from the store again to prevent race conditions.
-    const isFetching = dispatch((_, getState: () => RootState) => Boolean(getState().entities[entityType]?.lists[listKey]?.state.fetching));
+    const isFetching = selectListState(getState(), path, 'fetching');
     if (isFetching) return;
 
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
       const response = await api.get(url);
+      const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
 
       dispatch(entitiesFetchSuccess(entities, entityType, listKey, {
@@ -95,23 +81,18 @@ function useEntities<TEntity extends Entity>(
   };
 
   const fetchNextPage = async(): Promise<void> => {
-    const next = list?.state.next;
-
     if (next) {
       await fetchPage(next);
     }
   };
 
   const fetchPreviousPage = async(): Promise<void> => {
-    const prev = list?.state.prev;
-
     if (prev) {
       await fetchPage(prev);
     }
   };
 
   const staleTime = opts.staleTime ?? 60000;
-  const lastFetchedAt = list?.state.lastFetchedAt;
 
   useEffect(() => {
     if (!isFetching && (!lastFetchedAt || lastFetchedAt.getTime() + staleTime <= Date.now())) {
@@ -123,12 +104,47 @@ function useEntities<TEntity extends Entity>(
     entities,
     fetchEntities,
     isFetching,
-    isLoading,
-    hasNextPage,
-    hasPreviousPage,
+    isLoading: isFetching && entities.length === 0,
+    hasNextPage: !!next,
+    hasPreviousPage: !!prev,
     fetchNextPage,
     fetchPreviousPage,
   };
+}
+
+/** Get cache at path from Redux. */
+const selectCache = (state: RootState, path: EntityPath) => state.entities[path[0]];
+
+/** Get list at path from Redux. */
+const selectList = (state: RootState, path: EntityPath) => selectCache(state, path)?.lists[path[1]];
+
+/** Select a particular item from a list state. */
+function selectListState<K extends keyof EntityListState>(state: RootState, path: EntityPath, key: K) {
+  const listState = selectList(state, path)?.state;
+  return listState ? listState[key] : undefined;
+}
+
+/** Hook to get a particular item from a list state. */
+function useListState<K extends keyof EntityListState>(path: EntityPath, key: K) {
+  return useAppSelector(state => selectListState(state, path, key));
+}
+
+/** Get list of entities from Redux. */
+function selectEntities<TEntity extends Entity>(state: RootState, path: EntityPath): readonly TEntity[] {
+  const cache = selectCache(state, path);
+  const list = selectList(state, path);
+
+  const entityIds = list?.ids;
+
+  return entityIds ? (
+    Array.from(entityIds).reduce<TEntity[]>((result, id) => {
+      const entity = cache?.store[id];
+      if (entity) {
+        result.push(entity as TEntity);
+      }
+      return result;
+    }, [])
+  ) : [];
 }
 
 export {
