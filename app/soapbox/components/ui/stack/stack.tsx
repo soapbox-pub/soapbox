@@ -11,6 +11,7 @@ const spaces = {
   4: 'space-y-4',
   5: 'space-y-5',
   6: 'space-y-6',
+  9: 'space-y-9',
   10: 'space-y-10',
 };
 

@@ -5,6 +5,7 @@ import { submitGroupEditor } from 'soapbox/actions/groups';
 import { Modal, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
+import ConfirmationStep from './steps/confirmation-step';
 import DetailsStep from './steps/details-step';
 import PrivacyStep from './steps/privacy-step';
 
@@ -12,16 +13,19 @@ const messages = defineMessages({
   next: { id: 'manage_group.next', defaultMessage: 'Next' },
   create: { id: 'manage_group.create', defaultMessage: 'Create' },
   update: { id: 'manage_group.update', defaultMessage: 'Update' },
+  done: { id: 'manage_group.done', defaultMessage: 'Done' },
 });
 
 enum Steps {
   ONE = 'ONE',
   TWO = 'TWO',
+  THREE = 'THREE',
 }
 
 const manageGroupSteps = {
   ONE: PrivacyStep,
   TWO: DetailsStep,
+  THREE: ConfirmationStep,
 };
 
 interface IManageGroupModal {
@@ -33,21 +37,24 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const id = useAppSelector((state) => state.group_editor.groupId);
+  const [group, setGroup] = useState<any | null>(null);
 
   const isSubmitting = useAppSelector((state) => state.group_editor.isSubmitting);
 
   const [currentStep, setCurrentStep] = useState<Steps>(id ? Steps.TWO : Steps.ONE);
 
-  const onClickClose = () => {
+  const handleClose = () => {
     onClose('MANAGE_GROUP');
   };
 
   const handleSubmit = () => {
-    dispatch(submitGroupEditor(true));
+    return dispatch(submitGroupEditor(true));
   };
 
   const confirmationText = useMemo(() => {
     switch (currentStep) {
+      case Steps.THREE:
+        return intl.formatMessage(messages.done);
       case Steps.TWO:
         return intl.formatMessage(id ? messages.update : messages.create);
       default:
@@ -61,8 +68,15 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
         setCurrentStep(Steps.TWO);
         break;
       case Steps.TWO:
-        handleSubmit();
-        onClose();
+        handleSubmit()
+          .then((group) => {
+            setCurrentStep(Steps.THREE);
+            setGroup(group);
+          })
+          .catch(() => {});
+        break;
+      case Steps.THREE:
+        handleClose();
         break;
       default:
         break;
@@ -80,10 +94,11 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
       confirmationText={confirmationText}
       confirmationDisabled={isSubmitting}
       confirmationFullWidth
-      onClose={onClickClose}
+      onClose={handleClose}
     >
       <Stack space={2}>
-        <StepToRender />
+        {/* @ts-ignore */}
+        <StepToRender group={group} />
       </Stack>
     </Modal>
   );

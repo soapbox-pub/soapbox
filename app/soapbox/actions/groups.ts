@@ -140,7 +140,8 @@ const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
         if (shouldReset) {
           dispatch(resetGroupEditor());
         }
-        dispatch(closeModal('MANAGE_GROUP'));
+
+        return data;
       }).catch(err => dispatch(createGroupFail(err)));
   };
 
@@ -797,9 +798,9 @@ const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, get
   if (header) params.header = header;
 
   if (groupId === null) {
-    dispatch(createGroup(params, shouldReset));
+    return dispatch(createGroup(params, shouldReset));
   } else {
-    dispatch(updateGroup(groupId, params, shouldReset));
+    return dispatch(updateGroup(groupId, params, shouldReset));
   }
 };
 

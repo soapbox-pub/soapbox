@@ -9,7 +9,7 @@ import {
 } from 'soapbox/actions/groups';
 import Icon from 'soapbox/components/icon';
 import { Avatar, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
@@ -37,17 +37,17 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
         className={clsx('absolute top-0 h-full w-full transition-opacity', {
           'opacity-0 hover:opacity-90 bg-primary-100 dark:bg-gray-800': src,
         })}
-        space={3}
+        space={1.5}
         alignItems='center'
         justifyContent='center'
       >
         <Icon
           src={require('@tabler/icons/photo-plus.svg')}
-          className='h-7 w-7'
+          className='h-4.5 w-4.5'
         />
 
-        <Text size='sm' theme='primary' weight='semibold' transform='uppercase'>
-          <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
+        <Text size='md' theme='primary' weight='semibold'>
+          <FormattedMessage id='group.upload_banner' defaultMessage='Upload photo' />
         </Text>
 
         <input
@@ -65,8 +65,8 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 
 const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
-    <label className='absolute left-1/2 bottom-0 h-[72px] w-[72px] -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
-      {src && <Avatar src={src} size={72} />}
+    <label className='absolute left-1/2 bottom-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
+      {src && <Avatar src={src} size={80} />}
       <HStack
         alignItems='center'
         justifyContent='center'
@@ -77,7 +77,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
       >
         <Icon
           src={require('@tabler/icons/camera-plus.svg')}
-          className='h-7 w-7 text-white'
+          className='h-5 w-5 text-white'
         />
       </HStack>
       <span className='sr-only'>Upload avatar</span>
@@ -96,6 +96,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 const DetailsStep = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const instance = useInstance();
 
   const groupId = useAppSelector((state) => state.group_editor.groupId);
   const isUploading = useAppSelector((state) => state.group_editor.isUploading);
@@ -146,7 +147,6 @@ const DetailsStep = () => {
     });
   }, [groupId]);
 
-
   return (
     <Form>
       <div className='relative mb-12 flex'>
@@ -161,6 +161,7 @@ const DetailsStep = () => {
           placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
           value={name}
           onChange={onChangeName}
+          maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_name']))}
         />
       </FormGroup>
       <FormGroup
@@ -171,6 +172,7 @@ const DetailsStep = () => {
           placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
           value={description}
           onChange={onChangeDescription}
+          maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_description']))}
         />
       </FormGroup>
     </Form>
