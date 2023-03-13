@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import z from 'zod';
 
 import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -17,9 +18,9 @@ type EntityPath = [
 ]
 
 /** Additional options for the hook. */
-interface UseEntitiesOpts<TEntity> {
-  /** A parser function that returns the desired type, or undefined if validation fails. */
-  parser?: (entity: unknown) => TEntity | undefined
+interface UseEntitiesOpts<TEntity extends Entity> {
+  /** A zod schema to parse the API entities. */
+  schema?: z.ZodType<TEntity, z.ZodTypeDef, any>
   /**
    * Time (milliseconds) until this query becomes stale and should be refetched.
    * It is 1 minute by default, and can be set to `Infinity` to opt-out of automatic fetching.
@@ -41,8 +42,8 @@ function useEntities<TEntity extends Entity>(
 
   const [entityType, listKey] = path;
 
-  const defaultParser = (entity: unknown) => entity as TEntity;
-  const parseEntity = opts.parser || defaultParser;
+  const defaultSchema = z.custom<TEntity>();
+  const schema = opts.schema || defaultSchema;
 
   const cache = useAppSelector(state => state.entities[entityType]);
   const list = cache?.lists[listKey];
@@ -51,9 +52,10 @@ function useEntities<TEntity extends Entity>(
 
   const entities: readonly TEntity[] = entityIds ? (
     Array.from(entityIds).reduce<TEntity[]>((result, id) => {
-      const entity = parseEntity(cache?.store[id] as unknown);
-      if (entity) {
-        result.push(entity);
+      // TODO: parse after fetch, not during render.
+      const entity = schema.safeParse(cache?.store[id]);
+      if (entity.success) {
+        result.push(entity.data);
       }
       return result;
     }, [])
