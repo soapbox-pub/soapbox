@@ -119,7 +119,7 @@
     "escape-html": "^1.0.3",
     "exif-js": "^2.3.0",
     "flexsearch": "^0.7.31",
-    "fork-ts-checker-webpack-plugin": "^7.2.11",
+    "fork-ts-checker-webpack-plugin": "^8.0.0",
     "graphemesplit": "^2.4.4",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.5.0",
