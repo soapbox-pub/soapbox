@@ -1,5 +1,6 @@
-import { entitiesFetchFail, entitiesFetchRequest, importEntities } from '../actions';
-import reducer from '../reducer';
+import { deleteEntities, entitiesFetchFail, entitiesFetchRequest, importEntities } from '../actions';
+import reducer, { State } from '../reducer';
+import { createListState } from '../utils';
 
 import type { EntityCache } from '../types';
 
@@ -76,4 +77,24 @@ test('failure adds the error to the state', () => {
   const result = reducer(undefined, action);
 
   expect(result.TestEntity!.lists.thingies!.state.error).toBe(error);
+});
+
+test('deleting items', () => {
+  const state: State = {
+    TestEntity: {
+      store: { '1': { id: '1' }, '2': { id: '2' }, '3': { id: '3' } },
+      lists: {
+        '': {
+          ids: new Set(['1', '2', '3']),
+          state: createListState(),
+        },
+      },
+    },
+  };
+
+  const action = deleteEntities(['3', '1'], 'TestEntity');
+  const result = reducer(state, action);
+
+  expect(result.TestEntity!.store).toMatchObject({ '2': { id: '2' } });
+  expect([...result.TestEntity!.lists['']!.ids]).toEqual(['2']);
 });

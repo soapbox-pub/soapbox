@@ -6,7 +6,7 @@
     "strict": true,
     "module": "es2022",
     "lib": ["es2019", "es6", "dom", "webworker"],
-    "target": "es5",
+    "target": "es2015",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",

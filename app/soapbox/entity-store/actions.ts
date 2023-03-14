@@ -1,6 +1,7 @@
 import type { Entity, EntityListState } from './types';
 
 const ENTITIES_IMPORT = 'ENTITIES_IMPORT' as const;
+const ENTITIES_DELETE = 'ENTITIES_DELETE' as const;
 const ENTITIES_FETCH_REQUEST = 'ENTITIES_FETCH_REQUEST' as const;
 const ENTITIES_FETCH_SUCCESS = 'ENTITIES_FETCH_SUCCESS' as const;
 const ENTITIES_FETCH_FAIL = 'ENTITIES_FETCH_FAIL' as const;
@@ -12,6 +13,14 @@ function importEntities(entities: Entity[], entityType: string, listKey?: string
     entityType,
     entities,
     listKey,
+  };
+}
+
+function deleteEntities(ids: Iterable<string>, entityType: string) {
+  return {
+    type: ENTITIES_DELETE,
+    ids,
+    entityType,
   };
 }
 
@@ -45,16 +54,19 @@ function entitiesFetchFail(entityType: string, listKey: string | undefined, erro
 /** Any action pertaining to entities. */
 type EntityAction =
   ReturnType<typeof importEntities>
+  | ReturnType<typeof deleteEntities>
   | ReturnType<typeof entitiesFetchRequest>
   | ReturnType<typeof entitiesFetchSuccess>
   | ReturnType<typeof entitiesFetchFail>;
 
 export {
   ENTITIES_IMPORT,
+  ENTITIES_DELETE,
   ENTITIES_FETCH_REQUEST,
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
   importEntities,
+  deleteEntities,
   entitiesFetchRequest,
   entitiesFetchSuccess,
   entitiesFetchFail,
