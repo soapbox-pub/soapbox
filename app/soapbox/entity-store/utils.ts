@@ -29,8 +29,9 @@ const createList = (): EntityList => ({
   state: {
     next: undefined,
     prev: undefined,
-    fetching: false,
     error: null,
+    fetched: false,
+    fetching: false,
     lastFetchedAt: undefined,
   },
 });

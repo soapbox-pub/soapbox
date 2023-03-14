@@ -14,8 +14,12 @@ import type { RootState } from 'soapbox/store';
 type EntityPath = [
   /** Name of the entity type for use in the global cache, eg `'Notification'`. */
   entityType: string,
-  /** Name of a particular index of this entity type. You can use empty-string (`''`) if you don't need separate lists. */
-  listKey: string,
+  /**
+   * Name of a particular index of this entity type.
+   * Multiple params get combined into one string with a `:` separator.
+   * You can use empty-string (`''`) if you don't need separate lists.
+   */
+  ...listKeys: string[],
 ]
 
 /** Additional options for the hook. */
@@ -27,6 +31,8 @@ interface UseEntitiesOpts<TEntity extends Entity> {
    * It is 1 minute by default, and can be set to `Infinity` to opt-out of automatic fetching.
    */
   staleTime?: number
+  /** A flag to potentially disable sending requests to the API. */
+  enabled?: boolean
 }
 
 /** A hook for fetching and displaying API entities. */
@@ -42,11 +48,16 @@ function useEntities<TEntity extends Entity>(
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
-  const [entityType, listKey] = path;
+  const [entityType, ...listKeys] = path;
+  const listKey = listKeys.join(':');
+
   const entities = useAppSelector(state => selectEntities<TEntity>(state, path));
 
+  const isEnabled = opts.enabled ?? true;
   const isFetching = useListState(path, 'fetching');
   const lastFetchedAt = useListState(path, 'lastFetchedAt');
+  const isFetched = useListState(path, 'fetched');
+  const isError = !!useListState(path, 'error');
 
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
@@ -66,6 +77,7 @@ function useEntities<TEntity extends Entity>(
         next: getNextLink(response),
         prev: getPrevLink(response),
         fetching: false,
+        fetched: true,
         error: null,
         lastFetchedAt: new Date(),
       }));
@@ -95,20 +107,22 @@ function useEntities<TEntity extends Entity>(
   const staleTime = opts.staleTime ?? 60000;
 
   useEffect(() => {
-    if (!isFetching && (!lastFetchedAt || lastFetchedAt.getTime() + staleTime <= Date.now())) {
+    if (isEnabled && !isFetching && (!lastFetchedAt || lastFetchedAt.getTime() + staleTime <= Date.now())) {
       fetchEntities();
     }
-  }, [endpoint]);
+  }, [endpoint, isEnabled]);
 
   return {
     entities,
     fetchEntities,
-    isFetching,
-    isLoading: isFetching && entities.length === 0,
-    hasNextPage: !!next,
-    hasPreviousPage: !!prev,
     fetchNextPage,
     fetchPreviousPage,
+    hasNextPage: !!next,
+    hasPreviousPage: !!prev,
+    isError,
+    isFetched,
+    isFetching,
+    isLoading: isFetching && entities.length === 0,
   };
 }
 

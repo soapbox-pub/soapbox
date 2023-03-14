@@ -60,9 +60,13 @@ const Groups: React.FC = () => {
 
   return (
     <Stack space={4}>
+      {features.groupsDiscovery && (
+        <TabBar activeTab={TabItems.MY_GROUPS} />
+      )}
+
       {canCreateGroup && (
         <Button
-          className='sm:w-fit sm:self-end xl:hidden'
+          className='xl:hidden'
           icon={require('@tabler/icons/circles.svg')}
           onClick={createGroup}
           theme='secondary'
@@ -70,10 +74,6 @@ const Groups: React.FC = () => {
         >
           <FormattedMessage id='new_group_panel.action' defaultMessage='Create Group' />
         </Button>
-      )}
-
-      {features.groupsDiscovery && (
-        <TabBar activeTab={TabItems.MY_GROUPS} />
       )}
 
       <PendingGroupsRow />
