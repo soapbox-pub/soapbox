@@ -111,5 +111,6 @@ export {
 
 export type {
   Group,
+  GroupMember,
   GroupRelationship,
 } from 'soapbox/schemas';
