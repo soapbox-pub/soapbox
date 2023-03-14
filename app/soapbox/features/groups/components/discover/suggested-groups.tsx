@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Carousel, Stack, Text } from 'soapbox/components/ui';
+import Link from 'soapbox/components/link';
+import { Carousel, HStack, Stack, Text } from 'soapbox/components/ui';
 import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover';
 import { useSuggestedGroups } from 'soapbox/hooks/api/useSuggestedGroups';
 
@@ -15,12 +16,23 @@ const SuggestedGroups = () => {
 
   return (
     <Stack space={4}>
-      <Text size='xl' weight='bold'>
-        <FormattedMessage
-          id='groups.discover.suggested.title'
-          defaultMessage='Suggested For You'
-        />
-      </Text>
+      <HStack alignItems='center' justifyContent='between'>
+        <Text size='xl' weight='bold'>
+          <FormattedMessage
+            id='groups.discover.suggested.title'
+            defaultMessage='Suggested For You'
+          />
+        </Text>
+
+        <Link to='/groups/suggested'>
+          <Text tag='span' weight='medium' size='sm' theme='inherit'>
+            <FormattedMessage
+              id='groups.discover.suggested.show_more'
+              defaultMessage='Show More'
+            />
+          </Text>
+        </Link>
+      </HStack>
 
       {isEmpty ? (
         <Text theme='muted'>
