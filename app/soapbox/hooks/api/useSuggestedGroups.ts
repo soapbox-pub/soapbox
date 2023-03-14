@@ -9,7 +9,7 @@ function useSuggestedGroups() {
   const features = useFeatures();
 
   const { entities, ...result } = useEntities<Group>(
-    [Entities.POPULAR_GROUPS, ''],
+    [Entities.SUGGESTED_GROUPS, ''],
     '/api/mock/groups', // '/api/v1/truth/suggestions/groups'
     {
       schema: groupSchema,
