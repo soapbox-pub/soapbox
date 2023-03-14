@@ -12,7 +12,7 @@ function useSuggestedGroups() {
     [Entities.POPULAR_GROUPS, ''],
     '/api/mock/groups', // '/api/v1/truth/suggestions/groups'
     {
-      parser: parseGroup,
+      schema: groupSchema,
       enabled: features.groupsDiscovery,
     },
   );
@@ -29,12 +29,5 @@ function useSuggestedGroups() {
     groups,
   };
 }
-
-const parseGroup = (entity: unknown) => {
-  const result = groupSchema.safeParse(entity);
-  if (result.success) {
-    return result.data;
-  }
-};
 
 export { useSuggestedGroups };
