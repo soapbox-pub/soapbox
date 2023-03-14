@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, HStack, Stack, Text } from 'soapbox/components/ui';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
+import { useJoinGroup } from 'soapbox/queries/groups';
 import { Group as GroupEntity } from 'soapbox/types/entities';
 
 interface IGroup {
@@ -14,6 +15,10 @@ interface IGroup {
 
 const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { group, width = 'auto' } = props;
+
+  const joinGroup = useJoinGroup();
+
+  const onJoinGroup = () => joinGroup.mutate(group);
 
   return (
     <div
@@ -69,6 +74,8 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
       <Button
         theme='primary'
         block
+        onClick={onJoinGroup}
+        disabled={joinGroup.isLoading}
       >
         {group.locked
           ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
