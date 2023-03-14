@@ -1,6 +1,6 @@
 import { TRUTHSOCIAL } from 'soapbox/utils/features';
 
-import { useVersion } from './useVersion';
+import { useBackend } from './useBackend';
 
 enum TruthSocialGroupRoles {
   ADMIN = 'owner',
@@ -26,7 +26,7 @@ const roleMap = {
  * @returns Object
  */
 const useGroupRoles = () => {
-  const version = useVersion();
+  const version = useBackend();
   const isTruthSocial = version.software === TRUTHSOCIAL;
   const selectedRoles = isTruthSocial ? TruthSocialGroupRoles : BaseGroupRoles;
 

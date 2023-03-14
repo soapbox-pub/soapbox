@@ -7,10 +7,10 @@ import { useInstance } from './useInstance';
  *
  * @returns Backend
  */
-const useVersion = () => {
+const useBackend = () => {
   const instance = useInstance();
 
   return parseVersion(instance.version);
 };
 
-export { useVersion };
+export { useBackend };
