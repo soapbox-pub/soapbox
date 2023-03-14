@@ -161,8 +161,6 @@ function checkForAtSignMentions(
   minMatchLength: number,
 ): QueryMatch | null {
   let match = AtSignMentionsRegex.exec(text);
-  console.log(text, match);
-
   if (match === null) {
     match = AtSignMentionsRegexAliasRegex.exec(text);
   }
@@ -278,7 +276,6 @@ export function MentionPlugin(): JSX.Element | null {
 
   const checkForMentionMatch = useCallback(
     (text: string) => {
-      console.log(text);
       const mentionMatch = getPossibleQueryMatch(text);
       const slashMatch = checkForSlashTriggerMatch(text, editor);
       return !slashMatch && mentionMatch ? mentionMatch : null;

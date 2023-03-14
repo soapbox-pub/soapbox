@@ -21,7 +21,7 @@ describe('markReadNotifications()', () => {
 
     const store = mockStore(state);
 
-    const expectedActions =  [{
+    const expectedActions = [{
       type: 'MARKER_SAVE_REQUEST',
       marker: {
         notifications: {

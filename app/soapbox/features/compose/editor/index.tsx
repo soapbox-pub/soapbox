@@ -25,6 +25,7 @@ import { setEditorState } from 'soapbox/actions/compose';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 import nodes from './nodes';
+import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import { MentionPlugin } from './plugins/mention-plugin';
@@ -109,7 +110,7 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
           contentEditable={
             <div className='editor' ref={onRef} onFocus={onFocus}>
               <ContentEditable
-                className={clsx('py-2 outline-none transition-[min-height] motion-reduce:transition-none', {
+                className={clsx('mr-4 py-2 outline-none transition-[min-height] motion-reduce:transition-none', {
                   'min-h-[40px]': condensed,
                   'min-h-[100px]': !condensed,
                 })}
@@ -135,6 +136,7 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
         {features.richText && <LinkPlugin />}
         {features.richText && floatingAnchorElem && (
           <>
+            <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
             <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
             <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
           </>

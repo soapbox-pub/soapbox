@@ -612,7 +612,7 @@ const fetchRecentEvents = () =>
         next: next ? next.uri : null,
       });
     }).catch(error => {
-      dispatch({ type: RECENT_EVENTS_FETCH_FAIL,  error });
+      dispatch({ type: RECENT_EVENTS_FETCH_FAIL, error });
     });
   };
 
@@ -633,7 +633,7 @@ const fetchJoinedEvents = () =>
         next: next ? next.uri : null,
       });
     }).catch(error => {
-      dispatch({ type: JOINED_EVENTS_FETCH_FAIL,  error });
+      dispatch({ type: JOINED_EVENTS_FETCH_FAIL, error });
     });
   };
 

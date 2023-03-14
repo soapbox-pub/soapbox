@@ -109,7 +109,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   };
 
   const handleCopy = () => {
-    const { uri }  = status;
+    const { uri } = status;
 
     copy(uri);
   };

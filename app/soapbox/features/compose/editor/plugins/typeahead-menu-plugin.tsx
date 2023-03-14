@@ -125,7 +125,7 @@ function tryToPositionRange(leadOffset: number, range: Range): boolean {
   const startOffset = leadOffset;
   const endOffset = domSelection.anchorOffset;
 
-  if (anchorNode == null || endOffset == null) {
+  if (!anchorNode || !endOffset) {
     return false;
   }
 
@@ -142,9 +142,7 @@ function tryToPositionRange(leadOffset: number, range: Range): boolean {
 function getQueryTextForSearch(editor: LexicalEditor): string | null {
   let text = null;
   editor.getEditorState().read(() => {
-    console.log(editor.getEditorState().toJSON());
     const selection = $getSelection();
-    console.log(selection);
     if (!$isRangeSelection(selection)) {
       return;
     }
@@ -289,10 +287,10 @@ export function useDynamicPositioning(
 ) {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
-    if (targetElement != null && resolution != null) {
+    if (targetElement && resolution) {
       const rootElement = editor.getRootElement();
       const rootScrollParent =
-        rootElement != null
+        rootElement
           ? getScrollParent(rootElement, false)
           : document.body;
       let ticking = false;
@@ -314,7 +312,7 @@ export function useDynamicPositioning(
         );
         if (isInView !== previousIsInView) {
           previousIsInView = isInView;
-          if (onVisibilityChange != null) {
+          if (onVisibilityChange) {
             onVisibilityChange(isInView);
           }
         }
@@ -423,7 +421,7 @@ function LexicalPopoverMenu<TOption extends TypeaheadOption>({
       editor.registerCommand(
         SCROLL_TYPEAHEAD_OPTION_INTO_VIEW_COMMAND,
         ({ option }) => {
-          if (option.ref && option.ref.current != null) {
+          if (option.ref && option.ref.current) {
             scrollIntoViewIfNeeded(option.ref.current);
             return true;
           }
@@ -446,7 +444,7 @@ function LexicalPopoverMenu<TOption extends TypeaheadOption>({
               selectedIndex !== options.length - 1 ? selectedIndex + 1 : 0;
             updateSelectedIndex(newSelectedIndex);
             const option = options[newSelectedIndex];
-            if (option.ref != null && option.ref.current) {
+            if (option.ref && option.ref.current) {
               editor.dispatchCommand(
                 SCROLL_TYPEAHEAD_OPTION_INTO_VIEW_COMMAND,
                 {
@@ -471,7 +469,7 @@ function LexicalPopoverMenu<TOption extends TypeaheadOption>({
               selectedIndex !== 0 ? selectedIndex - 1 : options.length - 1;
             updateSelectedIndex(newSelectedIndex);
             const option = options[newSelectedIndex];
-            if (option.ref != null && option.ref.current) {
+            if (option.ref && option.ref.current) {
               scrollIntoViewIfNeeded(option.ref.current);
             }
             event.preventDefault();
@@ -499,7 +497,7 @@ function LexicalPopoverMenu<TOption extends TypeaheadOption>({
           if (
             options === null ||
             selectedIndex === null ||
-            options[selectedIndex] == null
+            !options[selectedIndex]
           ) {
             return false;
           }
@@ -516,7 +514,7 @@ function LexicalPopoverMenu<TOption extends TypeaheadOption>({
           if (
             options === null ||
             selectedIndex === null ||
-            options[selectedIndex] == null
+            !options[selectedIndex]
           ) {
             return false;
           }
@@ -612,7 +610,7 @@ function useMenuAnchorRef(
       containerDiv.style.width = `${width}px`;
 
       if (!containerDiv.isConnected) {
-        if (className != null) {
+        if (className) {
           containerDiv.className = className;
         }
         containerDiv.setAttribute('aria-label', 'Typeahead menu');
@@ -706,7 +704,7 @@ export function TypeaheadMenuPlugin<TOption extends TypeaheadOption>({
 
   const closeTypeahead = useCallback(() => {
     setResolution(null);
-    if (onClose != null && resolution !== null) {
+    if (onClose && resolution !== null) {
       onClose();
     }
   }, [onClose, resolution]);
@@ -714,7 +712,7 @@ export function TypeaheadMenuPlugin<TOption extends TypeaheadOption>({
   const openTypeahead = useCallback(
     (res: Resolution) => {
       setResolution(res);
-      if (onOpen != null && resolution === null) {
+      if (onOpen && resolution === null) {
         onOpen(res);
       }
     },
@@ -821,7 +819,7 @@ export function LexicalNodeMenuPlugin<TOption extends TypeaheadOption>({
 
   const closeNodeMenu = useCallback(() => {
     setResolution(null);
-    if (onClose != null && resolution !== null) {
+    if (onClose && resolution !== null) {
       onClose();
     }
   }, [onClose, resolution]);
@@ -829,7 +827,7 @@ export function LexicalNodeMenuPlugin<TOption extends TypeaheadOption>({
   const openNodeMenu = useCallback(
     (res: Resolution) => {
       setResolution(res);
-      if (onOpen != null && resolution === null) {
+      if (onOpen && resolution === null) {
         onOpen(res);
       }
     },
@@ -841,9 +839,9 @@ export function LexicalNodeMenuPlugin<TOption extends TypeaheadOption>({
       editor.update(() => {
         const node = $getNodeByKey(nodeKey);
         const domElement = editor.getElementByKey(nodeKey);
-        if (node != null && domElement != null) {
+        if (node && domElement) {
           const text = node.getTextContent();
-          if (resolution == null || resolution.match.matchingString !== text) {
+          if (!resolution || resolution.match.matchingString !== text) {
             startTransition(() =>
               openNodeMenu({
                 getRect: () => domElement.getBoundingClientRect(),
@@ -857,7 +855,7 @@ export function LexicalNodeMenuPlugin<TOption extends TypeaheadOption>({
           }
         }
       });
-    } else if (nodeKey == null && resolution != null) {
+    } else if (!nodeKey && resolution) {
       closeNodeMenu();
     }
   }, [closeNodeMenu, editor, nodeKey, openNodeMenu, resolution]);
@@ -867,7 +865,7 @@ export function LexicalNodeMenuPlugin<TOption extends TypeaheadOption>({
   }, [positionOrCloseMenu, nodeKey]);
 
   useEffect(() => {
-    if (nodeKey != null) {
+    if (nodeKey) {
       return editor.registerUpdateListener(({ dirtyElements }) => {
         if (dirtyElements.get(nodeKey)) {
           positionOrCloseMenu();
