@@ -2,7 +2,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import GroupAvatar from 'soapbox/components/groups/group-avatar';
+import { Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useJoinGroup } from 'soapbox/queries/groups';
 import { Group as GroupEntity } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -26,9 +27,8 @@ const GroupListItem = (props: IGroup) => {
     >
       <Link key={group.id} to={`/groups/${group.id}`}>
         <HStack alignItems='center' space={2}>
-          <Avatar
-            className='ring-2 ring-white dark:ring-primary-900'
-            src={group.avatar}
+          <GroupAvatar
+            group={group}
             size={44}
           />
 

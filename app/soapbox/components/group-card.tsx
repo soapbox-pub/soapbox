@@ -5,7 +5,8 @@ import GroupMemberCount from 'soapbox/features/group/components/group-member-cou
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
 import GroupRelationship from 'soapbox/features/group/components/group-relationship';
 
-import { Avatar, HStack, Stack, Text } from './ui';
+import GroupAvatar from './groups/group-avatar';
+import { HStack, Stack, Text } from './ui';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities';
 
@@ -37,7 +38,7 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
 
       {/* Group Avatar */}
       <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-        <Avatar className='ring-2 ring-white dark:ring-primary-900' src={group.avatar} size={64} />
+        <GroupAvatar group={group} size={64} withRing />
       </div>
 
       {/* Group Info */}
