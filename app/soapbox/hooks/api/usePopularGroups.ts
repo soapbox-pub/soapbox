@@ -12,7 +12,7 @@ function usePopularGroups() {
     [Entities.POPULAR_GROUPS, ''],
     '/api/mock/groups', // '/api/v1/truth/trends/groups'
     {
-      parser: parseGroup,
+      schema: groupSchema,
       enabled: features.groupsDiscovery,
     },
   );
@@ -29,12 +29,5 @@ function usePopularGroups() {
     groups,
   };
 }
-
-const parseGroup = (entity: unknown) => {
-  const result = groupSchema.safeParse(entity);
-  if (result.success) {
-    return result.data;
-  }
-};
 
 export { usePopularGroups };
