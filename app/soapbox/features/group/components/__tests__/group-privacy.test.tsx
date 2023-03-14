@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { buildGroup } from 'soapbox/jest/factory';
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeGroup } from 'soapbox/normalizers';
 import { Group } from 'soapbox/types/entities';
 
 import GroupPrivacy from '../group-privacy';
@@ -11,7 +11,7 @@ let group: Group;
 describe('<GroupPrivacy />', () => {
   describe('with a Private group', () => {
     beforeEach(() => {
-      group = normalizeGroup({
+      group = buildGroup({
         locked: true,
       });
     });
@@ -25,7 +25,7 @@ describe('<GroupPrivacy />', () => {
 
   describe('with a Public group', () => {
     beforeEach(() => {
-      group = normalizeGroup({
+      group = buildGroup({
         locked: false,
       });
     });
