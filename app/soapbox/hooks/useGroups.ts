@@ -3,7 +3,7 @@ import { groupSchema, Group } from 'soapbox/schemas/group';
 import { groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas/group-relationship';
 
 function useGroups() {
-  const { entities, ...result } = useEntities<Group>(['Group', ''], '/api/v1/groups', { parser: parseGroup });
+  const { entities, ...result } = useEntities<Group>(['Group', ''], '/api/v1/groups', { schema: groupSchema });
   const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
   const groups = entities.map((group) => ({ ...group, relationship: relationships[group.id] || null }));
@@ -15,7 +15,7 @@ function useGroups() {
 }
 
 function useGroup(groupId: string, refetch = true) {
-  const { entity: group, ...result } = useEntity<Group>(['Group', groupId], `/api/v1/groups/${groupId}`, { parser: parseGroup, refetch });
+  const { entity: group, ...result } = useEntity<Group>(['Group', groupId], `/api/v1/groups/${groupId}`, { schema: groupSchema, refetch });
   const { entity: relationship } = useGroupRelationship(groupId);
 
   return {
@@ -25,13 +25,13 @@ function useGroup(groupId: string, refetch = true) {
 }
 
 function useGroupRelationship(groupId: string) {
-  return useEntity<GroupRelationship>(['GroupRelationship', groupId], `/api/v1/groups/relationships?id[]=${groupId}`, { parser: parseGroupRelationship });
+  return useEntity<GroupRelationship>(['GroupRelationship', groupId], `/api/v1/groups/relationships?id[]=${groupId}`, { schema: groupRelationshipSchema });
 }
 
 function useGroupRelationships(groupIds: string[]) {
   const q = groupIds.map(id => `id[]=${id}`).join('&');
   const endpoint = groupIds.length ? `/api/v1/groups/relationships?${q}` : undefined;
-  const { entities, ...result } = useEntities<GroupRelationship>(['GroupRelationship', q], endpoint, { parser: parseGroupRelationship });
+  const { entities, ...result } = useEntities<GroupRelationship>(['GroupRelationship', q], endpoint, { schema: groupRelationshipSchema });
 
   const relationships = entities.reduce<Record<string, GroupRelationship>>((map, relationship) => {
     map[relationship.id] = relationship;
@@ -43,19 +43,5 @@ function useGroupRelationships(groupIds: string[]) {
     relationships,
   };
 }
-
-const parseGroup = (entity: unknown) => {
-  const result = groupSchema.safeParse(entity);
-  if (result.success) {
-    return result.data;
-  }
-};
-
-const parseGroupRelationship = (entity: unknown) => {
-  const result = groupRelationshipSchema.safeParse(entity);
-  if (result.success) {
-    return result.data;
-  }
-};
 
 export { useGroup, useGroups };

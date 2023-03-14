@@ -48,6 +48,7 @@ const setFetching = (
   entityType: string,
   listKey: string | undefined,
   isFetching: boolean,
+  error?: any,
 ) => {
   return produce(state, draft => {
     const cache = draft[entityType] ?? createCache();
@@ -55,6 +56,7 @@ const setFetching = (
     if (typeof listKey === 'string') {
       const list = cache.lists[listKey] ?? createList();
       list.state.fetching = isFetching;
+      list.state.error = error;
       cache.lists[listKey] = list;
     }
 
@@ -72,7 +74,7 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
     case ENTITIES_FETCH_REQUEST:
       return setFetching(state, action.entityType, action.listKey, true);
     case ENTITIES_FETCH_FAIL:
-      return setFetching(state, action.entityType, action.listKey, false);
+      return setFetching(state, action.entityType, action.listKey, false, action.error);
     default:
       return state;
   }

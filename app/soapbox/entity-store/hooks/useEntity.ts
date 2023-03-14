@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import z from 'zod';
 
 import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -10,8 +11,8 @@ type EntityPath = [entityType: string, entityId: string]
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity> {
-  /** A parser function that returns the desired type, or undefined if validation fails. */
-  parser?: (entity: unknown) => TEntity | undefined
+  /** A zod schema to parse the API entity. */
+  schema?: z.ZodType<TEntity, z.ZodTypeDef, any>
   /** Whether to refetch this entity every time the hook mounts, even if it's already in the store. */
   refetch?: boolean
 }
@@ -26,10 +27,10 @@ function useEntity<TEntity extends Entity>(
 
   const [entityType, entityId] = path;
 
-  const defaultParser = (entity: unknown) => entity as TEntity;
-  const parseEntity = opts.parser || defaultParser;
+  const defaultSchema = z.custom<TEntity>();
+  const schema = opts.schema || defaultSchema;
 
-  const entity = useAppSelector(state => parseEntity(state.entities[entityType]?.store[entityId]));
+  const entity = useAppSelector(state => state.entities[entityType]?.store[entityId] as TEntity | undefined);
 
   const [isFetching, setIsFetching] = useState(false);
   const isLoading = isFetching && !entity;
@@ -37,7 +38,8 @@ function useEntity<TEntity extends Entity>(
   const fetchEntity = () => {
     setIsFetching(true);
     api.get(endpoint).then(({ data }) => {
-      dispatch(importEntities([data], entityType));
+      const entity = schema.parse(data);
+      dispatch(importEntities([entity], entityType));
       setIsFetching(false);
     }).catch(() => {
       setIsFetching(false);

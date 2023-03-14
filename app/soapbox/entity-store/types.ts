@@ -5,8 +5,8 @@ interface Entity {
 }
 
 /** Store of entities by ID. */
-interface EntityStore {
-  [id: string]: Entity | undefined
+interface EntityStore<TEntity extends Entity = Entity> {
+  [id: string]: TEntity | undefined
 }
 
 /** List of entity IDs and fetch state. */
@@ -32,9 +32,9 @@ interface EntityListState {
 }
 
 /** Cache data pertaining to a paritcular entity type.. */
-interface EntityCache {
+interface EntityCache<TEntity extends Entity = Entity> {
   /** Map of entities of this type. */
-  store: EntityStore
+  store: EntityStore<TEntity>
   /** Lists of entity IDs for a particular purpose. */
   lists: {
     [listKey: string]: EntityList | undefined
