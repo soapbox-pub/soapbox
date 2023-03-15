@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities, useEntity } from 'soapbox/entity-store/hooks';
 import { groupSchema, Group } from 'soapbox/schemas/group';
@@ -40,7 +42,7 @@ function useGroupRelationship(groupId: string) {
   return useEntity<GroupRelationship>(
     [Entities.GROUP_RELATIONSHIPS, groupId],
     `/api/v1/groups/relationships?id[]=${groupId}`,
-    { schema: groupRelationshipSchema },
+    { schema: z.array(groupRelationshipSchema).transform(arr => arr[0]) },
   );
 }
 

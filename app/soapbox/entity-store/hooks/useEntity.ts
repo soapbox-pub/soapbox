@@ -39,7 +39,7 @@ function useEntity<TEntity extends Entity>(
   const fetchEntity = () => {
     setIsFetching(true);
     api.get(endpoint).then(({ data }) => {
-      const entity = schema.parse(Array.isArray(data) ? data[0] : data);
+      const entity = schema.parse(data);
       dispatch(importEntities([entity], entityType));
       setIsFetching(false);
     }).catch(() => {
