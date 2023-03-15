@@ -16,11 +16,16 @@ function importEntities(entities: Entity[], entityType: string, listKey?: string
   };
 }
 
-function deleteEntities(ids: Iterable<string>, entityType: string) {
+interface DeleteEntitiesOpts {
+  preserveLists?: boolean
+}
+
+function deleteEntities(ids: Iterable<string>, entityType: string, opts: DeleteEntitiesOpts = {}) {
   return {
     type: ENTITIES_DELETE,
     ids,
     entityType,
+    opts,
   };
 }
 
@@ -72,3 +77,5 @@ export {
   entitiesFetchFail,
   EntityAction,
 };
+
+export type { DeleteEntitiesOpts };

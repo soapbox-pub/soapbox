@@ -10,6 +10,7 @@ import {
 } from './actions';
 import { createCache, createList, updateStore, updateList } from './utils';
 
+import type { DeleteEntitiesOpts } from './actions';
 import type { Entity, EntityCache, EntityListState } from './types';
 
 enableMapSet();
@@ -48,6 +49,7 @@ const deleteEntities = (
   state: State,
   entityType: string,
   ids: Iterable<string>,
+  opts: DeleteEntitiesOpts,
 ) => {
   return produce(state, draft => {
     const cache = draft[entityType] ?? createCache();
@@ -55,8 +57,10 @@ const deleteEntities = (
     for (const id of ids) {
       delete cache.store[id];
 
-      for (const list of Object.values(cache.lists)) {
-        list?.ids.delete(id);
+      if (!opts?.preserveLists) {
+        for (const list of Object.values(cache.lists)) {
+          list?.ids.delete(id);
+        }
       }
     }
 
@@ -91,7 +95,7 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
     case ENTITIES_IMPORT:
       return importEntities(state, action.entityType, action.entities, action.listKey);
     case ENTITIES_DELETE:
-      return deleteEntities(state, action.entityType, action.ids);
+      return deleteEntities(state, action.entityType, action.ids, action.opts);
     case ENTITIES_FETCH_SUCCESS:
       return importEntities(state, action.entityType, action.entities, action.listKey, action.newState);
     case ENTITIES_FETCH_REQUEST:
