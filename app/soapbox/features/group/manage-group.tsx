@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { deleteGroup, editGroup, fetchGroup } from 'soapbox/actions/groups';
+import { deleteGroup, editGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetGroup } from 'soapbox/selectors';
+import { useAppDispatch, useGroup } from 'soapbox/hooks';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
@@ -29,18 +28,12 @@ interface IManageGroup {
 }
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
-  const history = useHistory();
+  const { id } = params;
   const intl = useIntl();
+  const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const id = params?.id || '';
-
-  const getGroup = useCallback(makeGetGroup(), []);
-  const group = useAppSelector(state => getGroup(state, id));
-
-  useEffect(() => {
-    if (!group) dispatch(fetchGroup(id));
-  }, [id]);
+  const { group } = useGroup(id);
 
   if (!group || !group.relationship) {
     return (
