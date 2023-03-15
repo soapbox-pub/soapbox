@@ -8,6 +8,7 @@ import { filteredArray } from 'soapbox/schemas/utils';
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
 
 import type { Entity, EntityListState } from '../types';
+import type { EntitySchema } from './types';
 import type { RootState } from 'soapbox/store';
 
 /** Tells us where to find/store the entity in the cache. */
@@ -25,7 +26,7 @@ type EntityPath = [
 /** Additional options for the hook. */
 interface UseEntitiesOpts<TEntity extends Entity> {
   /** A zod schema to parse the API entities. */
-  schema?: z.ZodType<TEntity, z.ZodTypeDef, any>
+  schema?: EntitySchema<TEntity>
   /**
    * Time (milliseconds) until this query becomes stale and should be refetched.
    * It is 1 minute by default, and can be set to `Infinity` to opt-out of automatic fetching.

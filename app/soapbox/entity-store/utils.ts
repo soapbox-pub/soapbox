@@ -1,4 +1,4 @@
-import type { Entity, EntityStore, EntityList, EntityCache } from './types';
+import type { Entity, EntityStore, EntityList, EntityCache, EntityListState } from './types';
 
 /** Insert the entities into the store. */
 const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {
@@ -26,14 +26,17 @@ const createCache = (): EntityCache => ({
 /** Create an empty entity list. */
 const createList = (): EntityList => ({
   ids: new Set(),
-  state: {
-    next: undefined,
-    prev: undefined,
-    error: null,
-    fetched: false,
-    fetching: false,
-    lastFetchedAt: undefined,
-  },
+  state: createListState(),
+});
+
+/** Create an empty entity list state. */
+const createListState = (): EntityListState => ({
+  next: undefined,
+  prev: undefined,
+  error: null,
+  fetched: false,
+  fetching: false,
+  lastFetchedAt: undefined,
 });
 
 export {
@@ -41,4 +44,5 @@ export {
   updateList,
   createCache,
   createList,
+  createListState,
 };

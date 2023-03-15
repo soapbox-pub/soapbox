@@ -6,13 +6,14 @@ import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { importEntities } from '../actions';
 
 import type { Entity } from '../types';
+import type { EntitySchema } from './types';
 
 type EntityPath = [entityType: string, entityId: string]
 
 /** Additional options for the hook. */
-interface UseEntityOpts<TEntity> {
+interface UseEntityOpts<TEntity extends Entity> {
   /** A zod schema to parse the API entity. */
-  schema?: z.ZodType<TEntity, z.ZodTypeDef, any>
+  schema?: EntitySchema<TEntity>
   /** Whether to refetch this entity every time the hook mounts, even if it's already in the store. */
   refetch?: boolean
 }
