@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { useApi, useAppDispatch } from 'soapbox/hooks';
 
-import { importEntities } from '../actions';
+import { deleteEntities, importEntities } from '../actions';
 
 import type { Entity } from '../types';
 import type { EntitySchema } from './types';
@@ -57,6 +57,8 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   function deleteEntity(entityId: string): Promise<DeleteEntityResult> {
     if (!endpoints.delete) return Promise.reject(endpoints);
     return api.delete(endpoints.delete.replaceAll(':id', entityId)).then((response) => {
+
+      dispatch(deleteEntities([entityId], entityType));
 
       return {
         response,
