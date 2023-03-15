@@ -12,6 +12,7 @@ import {
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useGroup, useOwnAccount } from 'soapbox/hooks';
+import { Group } from 'soapbox/schemas';
 
 import { Tabs } from '../components/ui';
 
@@ -27,6 +28,32 @@ interface IGroupPage {
   children: React.ReactNode
 }
 
+const PrivacyBlankslate = () => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-gray-200 p-3'>
+      <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-gray-600' />
+    </div>
+
+    <Text theme='muted'>
+      Content is only visible to group members
+    </Text>
+  </Stack>
+);
+
+const BlockedBlankslate = ({ group }: { group: Group }) => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-danger-200 p-3'>
+      <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-danger-600' />
+    </div>
+
+    <Text theme='muted'>
+      You are banned from
+      {' '}
+      <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+    </Text>
+  </Stack>
+);
+
 /** Page to display a group. */
 const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const intl = useIntl();
@@ -37,7 +64,8 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
 
   const { group } = useGroup(id);
 
-  const isNonMember = !group?.relationship?.member;
+  const isMember = !!group?.relationship?.member;
+  const isBlocked = group?.relationship?.blocked_by;
   const isPrivate = group?.locked;
 
   // if ((group as any) === false) {
@@ -59,6 +87,16 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
     },
   ];
 
+  const renderChildren = () => {
+    if (!isMember && isPrivate) {
+      return <PrivacyBlankslate />;
+    } else if (isBlocked) {
+      return <BlockedBlankslate group={group} />;
+    } else {
+      return children;
+    }
+  };
+
   return (
     <>
       <Layout.Main>
@@ -70,17 +108,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
             activeItem={match.path}
           />
 
-          {(isNonMember && isPrivate) ? (
-            <Stack space={4} className='py-10' alignItems='center'>
-              <div className='rounded-full bg-gray-200 p-3'>
-                <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-gray-600' />
-              </div>
-
-              <Text theme='muted'>
-                Content is only visible to group members
-              </Text>
-            </Stack>
-          ) : children}
+          {renderChildren()}
         </Column>
 
         {!me && (

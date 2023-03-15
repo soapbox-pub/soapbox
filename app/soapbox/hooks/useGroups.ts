@@ -48,7 +48,7 @@ function useGroupRelationships(groupIds: string[]) {
   const q = groupIds.map(id => `id[]=${id}`).join('&');
   const endpoint = groupIds.length ? `/api/v1/groups/relationships?${q}` : undefined;
   const { entities, ...result } = useEntities<GroupRelationship>(
-    [Entities.GROUP_RELATIONSHIPS, q],
+    [Entities.GROUP_RELATIONSHIPS, ...groupIds],
     endpoint,
     { schema: groupRelationshipSchema },
   );

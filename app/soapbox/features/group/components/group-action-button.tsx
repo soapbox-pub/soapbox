@@ -28,6 +28,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
   const isAdmin = group.relationship?.role === 'admin';
+  const isBlocked = group.relationship?.blocked_by;
 
   const onJoinGroup = () => joinGroup.mutate(group);
 
@@ -40,6 +41,10 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
     }));
 
   const onCancelRequest = () => cancelRequest.mutate(group);
+
+  if (isBlocked) {
+    return null;
+  }
 
   if (isNonMember) {
     return (

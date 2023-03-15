@@ -50,7 +50,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
           <GroupMemberListItem
             group={group as Group}
             member={member}
-            key={member?.account}
+            key={member.account.id}
           />
         ))}
       </ScrollableList>

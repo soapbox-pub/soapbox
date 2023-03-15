@@ -1,5 +1,7 @@
 import z from 'zod';
 
+import { accountSchema } from './account';
+
 enum TruthSocialGroupRoles {
   ADMIN = 'owner',
   MODERATOR = 'admin',
@@ -14,7 +16,7 @@ enum BaseGroupRoles {
 
 const groupMemberSchema = z.object({
   id: z.string(),
-  account: z.any(),
+  account: accountSchema,
   role: z.union([
     z.nativeEnum(TruthSocialGroupRoles),
     z.nativeEnum(BaseGroupRoles),

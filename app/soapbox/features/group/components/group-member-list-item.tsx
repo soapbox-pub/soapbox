@@ -1,14 +1,16 @@
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 
-import { groupBlock, groupDemoteAccount, groupKick, groupPromoteAccount } from 'soapbox/actions/groups';
+import { groupDemoteAccount, groupKick, groupPromoteAccount } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import Account from 'soapbox/components/account';
-import { HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAccount, useAppDispatch } from 'soapbox/hooks';
+import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu';
+import { HStack } from 'soapbox/components/ui';
+import { deleteEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
+import { useAccount, useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useBlockGroupMember } from 'soapbox/hooks/api/groups/useBlockGroupMember';
 import { BaseGroupRoles, useGroupRoles } from 'soapbox/hooks/useGroupRoles';
 import toast from 'soapbox/toast';
 
@@ -17,10 +19,11 @@ import type { Account as AccountEntity, Group, GroupMember } from 'soapbox/types
 
 const messages = defineMessages({
   blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Block' },
-  blockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to block @{name} from interacting with this group?' },
-  blocked: { id: 'group.group_mod_block.success', defaultMessage: 'Blocked @{name} from group' },
+  blockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Ban From Group' },
+  blockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to ban @{name} from the group?' },
+  blocked: { id: 'group.group_mod_block.success', defaultMessage: 'You have successfully blocked @{name} from the group' },
   demotedToUser: { id: 'group.group_mod_demote.success', defaultMessage: 'Demoted @{name} to group user' },
-  groupModBlock: { id: 'group.group_mod_block', defaultMessage: 'Block @{name} from group' },
+  groupModBlock: { id: 'group.group_mod_block', defaultMessage: 'Ban from group' },
   groupModDemote: { id: 'group.group_mod_demote', defaultMessage: 'Demote @{name}' },
   groupModKick: { id: 'group.group_mod_kick', defaultMessage: 'Kick @{name} from group' },
   groupModPromoteAdmin: { id: 'group.group_mod_promote_admin', defaultMessage: 'Promote @{name} to group administrator' },
@@ -43,9 +46,11 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   const { member, group } = props;
 
   const dispatch = useAppDispatch();
+  const features = useFeatures();
   const intl = useIntl();
 
   const { normalizeRole } = useGroupRoles();
+  const blockGroupMember = useBlockGroupMember(group, member);
 
   const account = useAccount(member.account.id) as AccountEntity;
 
@@ -70,11 +75,13 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
 
   const handleBlockFromGroup = () => {
     dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.blockFromGroupHeading),
       message: intl.formatMessage(messages.blockFromGroupMessage, { name: account.username }),
       confirm: intl.formatMessage(messages.blockConfirm),
-      onConfirm: () => dispatch(groupBlock(group.id, account.id)).then(() =>
-        toast.success(intl.formatMessage(messages.blocked, { name: account.acct })),
-      ),
+      onConfirm: () => blockGroupMember({ account_ids: [member.account.id] }).then(() => {
+        dispatch(deleteEntities([member.id], Entities.GROUP_MEMBERSHIPS));
+        toast.success(intl.formatMessage(messages.blocked, { name: account.acct }));
+      }),
     }));
   };
 
@@ -118,15 +125,19 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       (isMemberModerator || isMemberUser) &&
       member.role !== group.relationship.role
     ) {
-      items.push({
-        text: intl.formatMessage(messages.groupModKick, { name: account.username }),
-        icon: require('@tabler/icons/user-minus.svg'),
-        action: handleKickFromGroup,
-      });
+      if (features.groupsKick) {
+        items.push({
+          text: intl.formatMessage(messages.groupModKick, { name: account.username }),
+          icon: require('@tabler/icons/user-minus.svg'),
+          action: handleKickFromGroup,
+        });
+      }
+
       items.push({
         text: intl.formatMessage(messages.groupModBlock, { name: account.username }),
         icon: require('@tabler/icons/ban.svg'),
         action: handleBlockFromGroup,
+        destructive: true,
       });
     }
 
@@ -176,40 +187,7 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
           </span>
         ) : null}
 
-        {menu.length > 0 && (
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              src={require('@tabler/icons/dots.svg')}
-              className='px-2'
-              iconClassName='h-4 w-4'
-              children={null}
-            />
-
-            <MenuList className='w-56'>
-              {menu.map((menuItem, idx) => {
-                if (typeof menuItem?.text === 'undefined') {
-                  return <MenuDivider key={idx} />;
-                } else {
-                  const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.target || '_self' };
-
-                  return (
-                    <Comp key={idx} {...itemProps} className='group'>
-                      <HStack space={2} alignItems='center'>
-                        {menuItem.icon && (
-                          <SvgIcon src={menuItem.icon} className='h-4 w-4 flex-none text-gray-700 group-hover:text-gray-800' />
-                        )}
-
-                        <div className='truncate'>{menuItem.text}</div>
-                      </HStack>
-                    </Comp>
-                  );
-                }
-              })}
-            </MenuList>
-          </Menu>
-        )}
+        <DropdownMenu items={menu} />
       </HStack>
     </HStack>
   );
