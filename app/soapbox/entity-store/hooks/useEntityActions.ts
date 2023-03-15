@@ -65,7 +65,7 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   }
 
   return {
-    createEntity: endpoints.post ? createEntity : undefined,
+    createEntity: createEntity,
     deleteEntity: endpoints.delete ? deleteEntity : undefined,
   };
 }
