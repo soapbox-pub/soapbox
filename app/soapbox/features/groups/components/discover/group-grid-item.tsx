@@ -2,7 +2,8 @@ import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Avatar, Button, HStack, Stack, Text } from 'soapbox/components/ui';
+import GroupAvatar from 'soapbox/components/groups/group-avatar';
+import { Button, HStack, Stack, Text } from 'soapbox/components/ui';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
 import { useJoinGroup } from 'soapbox/queries/groups';
@@ -43,9 +44,8 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
           )}
 
           <Stack justifyContent='end' className='z-10 p-4 text-white' space={3}>
-            <Avatar
-              className='ring-2 ring-white'
-              src={group.avatar}
+            <GroupAvatar
+              group={group}
               size={44}
             />
 
