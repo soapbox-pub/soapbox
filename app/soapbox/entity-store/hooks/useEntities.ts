@@ -131,7 +131,12 @@ function useEntities<TEntity extends Entity>(
 const selectCache = (state: RootState, path: EntityPath) => state.entities[path[0]];
 
 /** Get list at path from Redux. */
-const selectList = (state: RootState, path: EntityPath) => selectCache(state, path)?.lists[path[1]];
+const selectList = (state: RootState, path: EntityPath) => {
+  const [, ...listKeys] = path;
+  const listKey = listKeys.join(':');
+
+  return selectCache(state, path)?.lists[listKey];
+};
 
 /** Select a particular item from a list state. */
 function selectListState<K extends keyof EntityListState>(state: RootState, path: EntityPath, key: K) {

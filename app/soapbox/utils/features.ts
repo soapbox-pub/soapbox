@@ -517,6 +517,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsDiscovery: v.software === TRUTHSOCIAL,
 
     /**
+     * Can kick user from Group.
+     */
+    groupsKick: v.software !== TRUTHSOCIAL,
+
+    /**
      * Can query pending Group requests.
      */
     groupsPending: v.software === TRUTHSOCIAL,
