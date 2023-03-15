@@ -1,5 +1,6 @@
 import { defineMessages } from 'react-intl';
 
+import { deleteEntities } from 'soapbox/entity-store/actions';
 import toast from 'soapbox/toast';
 
 import api, { getLinks } from '../api';
@@ -191,7 +192,7 @@ const updateGroupFail = (error: AxiosError) => ({
 });
 
 const deleteGroup = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
-  dispatch(deleteGroupRequest(id));
+  dispatch(deleteEntities([id], 'Group'));
 
   return api(getState).delete(`/api/v1/groups/${id}`)
     .then(() => dispatch(deleteGroupSuccess(id)))

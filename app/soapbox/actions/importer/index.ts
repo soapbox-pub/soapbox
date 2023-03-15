@@ -1,3 +1,7 @@
+import { importEntities } from 'soapbox/entity-store/actions';
+import { Group, groupSchema } from 'soapbox/schemas';
+import { filteredArray } from 'soapbox/schemas/utils';
+
 import { getSettings } from '../settings';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -18,11 +22,11 @@ const importAccount = (account: APIEntity) =>
 const importAccounts = (accounts: APIEntity[]) =>
   ({ type: ACCOUNTS_IMPORT, accounts });
 
-const importGroup = (group: APIEntity) =>
-  ({ type: GROUP_IMPORT, group });
+const importGroup = (group: Group) =>
+  importEntities([group], 'Group');
 
-const importGroups = (groups: APIEntity[]) =>
-  ({ type: GROUPS_IMPORT, groups });
+const importGroups = (groups: Group[]) =>
+  importEntities(groups, 'Group');
 
 const importStatus = (status: APIEntity, idempotencyKey?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -69,17 +73,8 @@ const importFetchedGroup = (group: APIEntity) =>
   importFetchedGroups([group]);
 
 const importFetchedGroups = (groups: APIEntity[]) => {
-  const normalGroups: APIEntity[] = [];
-
-  const processGroup = (group: APIEntity) => {
-    if (!group.id) return;
-
-    normalGroups.push(group);
-  };
-
-  groups.forEach(processGroup);
-
-  return importGroups(normalGroups);
+  const entities = filteredArray(groupSchema).catch([]).parse(groups);
+  return importGroups(entities);
 };
 
 const importFetchedStatus = (status: APIEntity, idempotencyKey?: string) =>
