@@ -50,7 +50,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
     );
   }
 
-  if (!group.relationship.role || !['admin', 'moderator'].includes(group.relationship.role)) {
+  if (!group.relationship.role || !['owner', 'admin', 'moderator'].includes(group.relationship.role)) {
     return (<ColumnForbidden />);
   }
 
@@ -72,7 +72,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
   return (
     <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}`}>
       <CardBody className='space-y-4'>
-        {group.relationship.role === 'admin' && (
+        {group.relationship.role === 'owner' && (
           <List>
             <ListItem label={intl.formatMessage(messages.editGroup)} onClick={onEditGroup}>
               <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
@@ -83,7 +83,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
           <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
           <ListItem label={intl.formatMessage(messages.blockedMembers)} onClick={navigateToBlocks} />
         </List>
-        {group.relationship.role === 'admin' && (
+        {group.relationship.role === 'owner' && (
           <List>
             <ListItem label={intl.formatMessage(messages.deleteGroup)} onClick={onDeleteGroup} />
           </List>

@@ -27,7 +27,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
 
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
-  const isAdmin = group.relationship?.role === 'admin';
+  const isAdmin = group.relationship?.role === 'owner';
   const isBlocked = group.relationship?.blocked_by;
 
   const onJoinGroup = () => joinGroup.mutate(group);

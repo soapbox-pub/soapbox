@@ -81,7 +81,7 @@ const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {
     );
   }
 
-  if (!group.relationship.role || !['admin', 'moderator'].includes(group.relationship.role)) {
+  if (!group.relationship.role || !['owner', 'admin', 'moderator'].includes(group.relationship.role)) {
     return (<ColumnForbidden />);
   }
 
