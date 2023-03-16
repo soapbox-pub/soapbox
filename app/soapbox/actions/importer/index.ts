@@ -1,4 +1,5 @@
 import { importEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
 import { Group, groupSchema } from 'soapbox/schemas';
 import { filteredArray } from 'soapbox/schemas/utils';
 
@@ -23,10 +24,10 @@ const importAccounts = (accounts: APIEntity[]) =>
   ({ type: ACCOUNTS_IMPORT, accounts });
 
 const importGroup = (group: Group) =>
-  importEntities([group], 'Group');
+  importEntities([group], Entities.GROUPS);
 
 const importGroups = (groups: Group[]) =>
-  importEntities(groups, 'Group');
+  importEntities(groups, Entities.GROUPS);
 
 const importStatus = (status: APIEntity, idempotencyKey?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
