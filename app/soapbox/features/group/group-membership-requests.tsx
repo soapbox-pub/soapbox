@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { authorizeGroupMembershipRequest, fetchGroup, fetchGroupMembershipRequests, rejectGroupMembershipRequest } from 'soapbox/actions/groups';
+import { authorizeGroupMembershipRequest, fetchGroupMembershipRequests, rejectGroupMembershipRequest } from 'soapbox/actions/groups';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount, makeGetGroup } from 'soapbox/selectors';
+import { useAppDispatch, useAppSelector, useGroup } from 'soapbox/hooks';
+import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
@@ -77,14 +77,12 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const id = params?.id || '';
+  const id = params?.id;
 
-  const getGroup = useCallback(makeGetGroup(), []);
-  const group = useAppSelector(state => getGroup(state, id));
+  const { group } = useGroup(id);
   const accountIds = useAppSelector((state) => state.user_lists.membership_requests.get(id)?.items);
 
   useEffect(() => {
-    if (!group) dispatch(fetchGroup(id));
     dispatch(fetchGroupMembershipRequests(id));
   }, [id]);
 
