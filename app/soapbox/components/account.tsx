@@ -91,6 +91,7 @@ export interface IAccount {
   showEdit?: boolean
   approvalStatus?: StatusApprovalStatus
   emoji?: string
+  emojiUrl?: string
   note?: string
 }
 
@@ -116,6 +117,7 @@ const Account = ({
   showEdit = false,
   approvalStatus,
   emoji,
+  emojiUrl,
   note,
 }: IAccount) => {
   const overflowRef = useRef<HTMLDivElement>(null);
@@ -193,6 +195,7 @@ const Account = ({
                 <Emoji
                   className='absolute bottom-0 -right-1.5 h-5 w-5'
                   emoji={emoji}
+                  src={emojiUrl}
                 />
               )}
             </LinkEl>

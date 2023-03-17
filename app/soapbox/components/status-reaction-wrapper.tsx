@@ -60,9 +60,9 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
     }
   };
 
-  const handleReact = (emoji: string): void => {
+  const handleReact = (emoji: string, custom?: string): void => {
     if (ownAccount) {
-      dispatch(simpleEmojiReact(status, emoji));
+      dispatch(simpleEmojiReact(status, emoji, custom));
     } else {
       handleUnauthorized();
     }
@@ -71,7 +71,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
-    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
+    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji)?.get('name') || '👍';
 
     if (isUserTouching()) {
       if (ownAccount) {

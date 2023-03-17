@@ -54,7 +54,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     reactions!.forEach(reaction => items.push(
       {
         text: <div className='flex items-center gap-1'>
-          <Emoji className='h-4 w-4' emoji={reaction.name} />
+          <Emoji className='h-4 w-4' emoji={reaction.name} src={reaction.url || undefined} />
           {reaction.count}
         </div>,
         action: () => setReaction(reaction.name),
@@ -71,7 +71,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
 
   const accounts = reactions && (reaction
     ? reactions.find(({ name }) => name === reaction)?.accounts.map(account => ({ id: account, reaction: reaction }))
-    : reactions.map(({ accounts, name }) => accounts.map(account => ({ id: account, reaction: name }))).flatten()) as ImmutableList<{ id: string, reaction: string }>;
+    : reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: name, reactionUrl: url }))).flatten()) as ImmutableList<{ id: string, reaction: string, reactionUrl?: string }>;
 
   let body;
 
@@ -91,7 +91,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
         itemClassName='pb-3'
       >
         {accounts.map((account) =>
-          <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} emoji={account.reaction} />,
+          <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} emoji={account.reaction} emojiUrl={account.reactionUrl} />,
         )}
       </ScrollableList>
     </>);
