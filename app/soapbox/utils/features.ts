@@ -528,8 +528,13 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /**
      * Can query pending Group requests.
-     */
+    */
     groupsPending: v.software === TRUTHSOCIAL,
+
+    /**
+    * Can promote members to Admins.
+    */
+    groupsPromoteToAdmin: v.software !== TRUTHSOCIAL,
 
     /**
      * Can hide follows/followers lists and counts.

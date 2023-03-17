@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { groupDemoteAccount, groupKick, groupPromoteAccount } from 'soapbox/actions/groups';
+import { groupKick } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import Account from 'soapbox/components/account';
 import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu';
@@ -10,8 +10,8 @@ import { HStack } from 'soapbox/components/ui';
 import { deleteEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAccount, useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { useBlockGroupMember } from 'soapbox/hooks/api/groups/useBlockGroupMember';
-import { BaseGroupRoles, useGroupRoles } from 'soapbox/hooks/useGroupRoles';
+import { useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/hooks/api';
+import { BaseGroupRoles, TruthSocialGroupRoles, useGroupRoles } from 'soapbox/hooks/useGroupRoles';
 import toast from 'soapbox/toast';
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
@@ -24,17 +24,17 @@ const messages = defineMessages({
   blocked: { id: 'group.group_mod_block.success', defaultMessage: 'You have successfully blocked @{name} from the group' },
   demotedToUser: { id: 'group.group_mod_demote.success', defaultMessage: 'Demoted @{name} to group user' },
   groupModBlock: { id: 'group.group_mod_block', defaultMessage: 'Ban from group' },
-  groupModDemote: { id: 'group.group_mod_demote', defaultMessage: 'Demote @{name}' },
+  groupModDemote: { id: 'group.group_mod_demote', defaultMessage: 'Remove {role} role' },
   groupModKick: { id: 'group.group_mod_kick', defaultMessage: 'Kick @{name} from group' },
   groupModPromoteAdmin: { id: 'group.group_mod_promote_admin', defaultMessage: 'Promote @{name} to group administrator' },
-  groupModPromoteMod: { id: 'group.group_mod_promote_mod', defaultMessage: 'Promote @{name} to group moderator' },
+  groupModPromoteMod: { id: 'group.group_mod_promote_mod', defaultMessage: 'Assign {role} role' },
   kickConfirm: { id: 'confirmations.kick_from_group.confirm', defaultMessage: 'Kick' },
   kickFromGroupMessage: { id: 'confirmations.kick_from_group.message', defaultMessage: 'Are you sure you want to kick @{name} from this group?' },
   kicked: { id: 'group.group_mod_kick.success', defaultMessage: 'Kicked @{name} from group' },
   promoteConfirm: { id: 'confirmations.promote_in_group.confirm', defaultMessage: 'Promote' },
   promoteConfirmMessage: { id: 'confirmations.promote_in_group.message', defaultMessage: 'Are you sure you want to promote @{name}? You will not be able to demote them.' },
   promotedToAdmin: { id: 'group.group_mod_promote_admin.success', defaultMessage: 'Promoted @{name} to group administrator' },
-  promotedToMod: { id: 'group.group_mod_promote_mod.success', defaultMessage: 'Promoted @{name} to group moderator' },
+  promotedToMod: { id: 'group.group_mod_promote_mod.success', defaultMessage: 'You have successfully promoted @{name} to group {role}.' },
 });
 
 interface IGroupMemberListItem {
@@ -49,8 +49,10 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   const features = useFeatures();
   const intl = useIntl();
 
-  const { normalizeRole } = useGroupRoles();
+  const { roles, isAdminRole, normalizeRole } = useGroupRoles();
   const blockGroupMember = useBlockGroupMember(group, member);
+  const promoteGroupMember = usePromoteGroupMember(group, member);
+  const demoteGroupMember = useDemoteGroupMember(group, member);
 
   const account = useAccount(member.account.id) as AccountEntity;
 
@@ -78,39 +80,59 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       heading: intl.formatMessage(messages.blockFromGroupHeading),
       message: intl.formatMessage(messages.blockFromGroupMessage, { name: account.username }),
       confirm: intl.formatMessage(messages.blockConfirm),
-      onConfirm: () => blockGroupMember({ account_ids: [member.account.id] }).then(() => {
-        dispatch(deleteEntities([member.id], Entities.GROUP_MEMBERSHIPS));
-        toast.success(intl.formatMessage(messages.blocked, { name: account.acct }));
-      }),
+      onConfirm: () => {
+        blockGroupMember({ account_ids: [member.account.id] }, {
+          onSuccess() {
+            dispatch(deleteEntities([member.id], Entities.GROUP_MEMBERSHIPS));
+            toast.success(intl.formatMessage(messages.blocked, { name: account.acct }));
+          },
+        });
+      },
     }));
   };
 
-  const onPromote = (role: 'admin' | 'moderator', warning?: boolean) => {
+  const onPromote = (role: TruthSocialGroupRoles | BaseGroupRoles, warning?: boolean) => {
     if (warning) {
       return dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.promoteConfirmMessage, { name: account.username }),
         confirm: intl.formatMessage(messages.promoteConfirm),
-        onConfirm: () => dispatch(groupPromoteAccount(group.id, account.id, role)).then(() =>
-          toast.success(intl.formatMessage(role === 'admin' ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct })),
-        ),
+        onConfirm: () => {
+          promoteGroupMember({ role: role, account_ids: [account.id] }, {
+            onSuccess() {
+              toast.success(
+                intl.formatMessage(
+                  isAdminRole(role) ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct, role },
+                ),
+              );
+            },
+          });
+        },
       }));
     } else {
-      return dispatch(groupPromoteAccount(group.id, account.id, role)).then(() =>
-        toast.success(intl.formatMessage(role === 'admin' ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct })),
-      );
+      promoteGroupMember({ role: role, account_ids: [account.id] }, {
+        onSuccess() {
+          toast.success(
+            intl.formatMessage(
+              isAdminRole(role) ? messages.promotedToAdmin : messages.promotedToMod, { name: account.acct, role },
+            ),
+          );
+        },
+      });
     }
   };
 
-  const handlePromoteToGroupAdmin = () => onPromote('admin', true);
+  const handlePromoteToGroupAdmin = () => onPromote(roles.admin, true);
 
-  const handlePromoteToGroupMod = () => {
-    onPromote('moderator', group.relationship!.role === 'moderator');
+  const handleAssignModerator = () => {
+    onPromote(roles.moderator, false);
   };
 
   const handleDemote = () => {
-    dispatch(groupDemoteAccount(group.id, account.id, 'user')).then(() =>
-      toast.success(intl.formatMessage(messages.demotedToUser, { name: account.acct })),
-    ).catch(() => {});
+    demoteGroupMember({ role: roles.user, account_ids: [account.id] }, {
+      onSuccess() {
+        toast.success(intl.formatMessage(messages.demotedToUser, { name: account.acct }));
+      },
+    });
   };
 
   const menu: IMenu = useMemo(() => {
@@ -118,6 +140,31 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
 
     if (!group || !account || !group.relationship?.role) {
       return items;
+    }
+
+    if (isCurrentUserAdmin && !isMemberAdmin && account.acct === account.username) {
+      if (isMemberModerator) {
+        if (features.groupsPromoteToAdmin) {
+          items.push({
+            text: intl.formatMessage(messages.groupModPromoteAdmin, { name: account.username }),
+            icon: require('@tabler/icons/arrow-up-circle.svg'),
+            action: handlePromoteToGroupAdmin,
+          });
+        }
+
+        items.push({
+          text: intl.formatMessage(messages.groupModDemote, { role: roles.moderator, name: account.username }),
+          icon: require('@tabler/icons/briefcase.svg'),
+          action: handleDemote,
+          destructive: true,
+        });
+      } else if (isMemberUser) {
+        items.push({
+          text: intl.formatMessage(messages.groupModPromoteMod, { role: roles.moderator }),
+          icon: require('@tabler/icons/briefcase.svg'),
+          action: handleAssignModerator,
+        });
+      }
     }
 
     if (
@@ -139,29 +186,6 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
         action: handleBlockFromGroup,
         destructive: true,
       });
-    }
-
-    if (isCurrentUserAdmin && !isMemberAdmin && account.acct === account.username) {
-      items.push(null);
-
-      if (isMemberModerator) {
-        items.push({
-          text: intl.formatMessage(messages.groupModPromoteAdmin, { name: account.username }),
-          icon: require('@tabler/icons/arrow-up-circle.svg'),
-          action: handlePromoteToGroupAdmin,
-        });
-        items.push({
-          text: intl.formatMessage(messages.groupModDemote, { name: account.username }),
-          icon: require('@tabler/icons/arrow-down-circle.svg'),
-          action: handleDemote,
-        });
-      } else if (isMemberUser) {
-        items.push({
-          text: intl.formatMessage(messages.groupModPromoteMod, { name: account.username }),
-          icon: require('@tabler/icons/arrow-up-circle.svg'),
-          action: handlePromoteToGroupMod,
-        });
-      }
     }
 
     return items;

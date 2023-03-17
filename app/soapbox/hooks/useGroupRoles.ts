@@ -30,6 +30,14 @@ const useGroupRoles = () => {
   const isTruthSocial = version.software === TRUTHSOCIAL;
   const selectedRoles = isTruthSocial ? TruthSocialGroupRoles : BaseGroupRoles;
 
+  const isAdminRole = (role: TruthSocialGroupRoles | BaseGroupRoles) => {
+    if (isTruthSocial) {
+      return role === TruthSocialGroupRoles.ADMIN;
+    }
+
+    return role === BaseGroupRoles.ADMIN;
+  };
+
   const normalizeRole = (role: TruthSocialGroupRoles) => {
     if (isTruthSocial) {
       return roleMap[role];
@@ -39,6 +47,7 @@ const useGroupRoles = () => {
   };
 
   return {
+    isAdminRole,
     normalizeRole,
     roles: {
       admin: selectedRoles.ADMIN,
