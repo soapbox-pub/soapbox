@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
 
 import { deleteEntities, importEntities } from '../actions';
 
@@ -35,6 +35,7 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
 ) {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const getState = useGetState();
   const [entityType, listKey] = path;
 
   function createEntity(params: P): Promise<CreateEntityResult<TEntity>> {
@@ -56,13 +57,24 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
 
   function deleteEntity(entityId: string): Promise<DeleteEntityResult> {
     if (!endpoints.delete) return Promise.reject(endpoints);
-    return api.delete(endpoints.delete.replaceAll(':id', entityId)).then((response) => {
+    // Get the entity before deleting, so we can reverse the action if the API request fails.
+    const entity = getState().entities[entityType]?.store[entityId];
+    // Optimistically delete the entity from the _store_ but keep the lists in tact.
+    dispatch(deleteEntities([entityId], entityType, { preserveLists: true }));
 
+    return api.delete(endpoints.delete.replaceAll(':id', entityId)).then((response) => {
+      // Success - finish deleting entity from the state.
       dispatch(deleteEntities([entityId], entityType));
 
       return {
         response,
       };
+    }).catch((e) => {
+      if (entity) {
+        // If the API failed, reimport the entity.
+        dispatch(importEntities([entity], entityType));
+      }
+      throw e;
     });
   }
 
