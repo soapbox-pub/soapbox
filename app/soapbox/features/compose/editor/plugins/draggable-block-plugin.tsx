@@ -208,7 +208,7 @@ const useDraggableBlockMenu = (
     useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    function onMouseMove(event: MouseEvent) {
+    const onMouseMove = (event: MouseEvent) => {
       const target = event.target;
       if (!isHTMLElement(target)) {
         setDraggableBlockElem(null);
@@ -222,11 +222,9 @@ const useDraggableBlockMenu = (
       const _draggableBlockElem = getBlockElement(anchorElem, editor, event);
 
       setDraggableBlockElem(_draggableBlockElem);
-    }
+    };
 
-    function onMouseLeave() {
-      setDraggableBlockElem(null);
-    }
+    const onMouseLeave = () => setDraggableBlockElem(null);
 
     scrollerElem?.addEventListener('mousemove', onMouseMove);
     scrollerElem?.addEventListener('mouseleave', onMouseLeave);
@@ -244,7 +242,7 @@ const useDraggableBlockMenu = (
   }, [anchorElem, draggableBlockElem]);
 
   useEffect(() => {
-    function onDragover(event: DragEvent): boolean {
+    const onDragover = (event: DragEvent): boolean => {
       const [isFileTransfer] = eventFiles(event);
       if (isFileTransfer) {
         return false;
@@ -262,9 +260,9 @@ const useDraggableBlockMenu = (
       // Prevent default event to be able to trigger onDrop events
       event.preventDefault();
       return true;
-    }
+    };
 
-    function onDrop(event: DragEvent): boolean {
+    const onDrop = (event: DragEvent): boolean => {
       const [isFileTransfer] = eventFiles(event);
       if (isFileTransfer) {
         return false;
@@ -299,7 +297,7 @@ const useDraggableBlockMenu = (
       setDraggableBlockElem(null);
 
       return true;
-    }
+    };
 
     return mergeRegister(
       editor.registerCommand(
@@ -319,7 +317,7 @@ const useDraggableBlockMenu = (
     );
   }, [anchorElem, editor]);
 
-  function onDragStart(event: ReactDragEvent<HTMLDivElement>): void {
+  const onDragStart = (event: ReactDragEvent<HTMLDivElement>): void => {
     const dataTransfer = event.dataTransfer;
     if (!dataTransfer || !draggableBlockElem) {
       return;
@@ -333,11 +331,11 @@ const useDraggableBlockMenu = (
       }
     });
     dataTransfer.setData(DRAG_DATA_FORMAT, nodeKey);
-  }
+  };
 
-  function onDragEnd(): void {
+  const onDragEnd = (): void => {
     hideTargetLine(targetLineRef.current);
-  }
+  };
 
   return createPortal(
     <>
@@ -359,11 +357,13 @@ const useDraggableBlockMenu = (
   );
 };
 
-export default function DraggableBlockPlugin({
+const DraggableBlockPlugin = ({
   anchorElem = document.body,
 }: {
   anchorElem?: HTMLElement
-}): JSX.Element {
+}): JSX.Element => {
   const [editor] = useLexicalComposerContext();
   return useDraggableBlockMenu(editor, anchorElem, editor._editable);
-}
+};
+
+export default DraggableBlockPlugin;

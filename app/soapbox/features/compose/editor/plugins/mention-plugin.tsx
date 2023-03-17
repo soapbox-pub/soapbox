@@ -106,7 +106,7 @@ const dummyLookupService = {
   },
 };
 
-function useMentionLookupService(mentionString: string | null) {
+const useMentionLookupService = (mentionString: string | null) => {
   const [results, setResults] = useState<Array<string>>([]);
 
   useEffect(() => {
@@ -132,12 +132,12 @@ function useMentionLookupService(mentionString: string | null) {
   }, [mentionString]);
 
   return results;
-}
+};
 
-function checkForCapitalizedNameMentions(
+const checkForCapitalizedNameMentions = (
   text: string,
   minMatchLength: number,
-): QueryMatch | null {
+): QueryMatch | null => {
   const match = CapitalizedNameMentionsRegex.exec(text);
   if (match !== null) {
     // The strategy ignores leading whitespace but we need to know it's
@@ -154,12 +154,12 @@ function checkForCapitalizedNameMentions(
     }
   }
   return null;
-}
+};
 
-function checkForAtSignMentions(
+const checkForAtSignMentions = (
   text: string,
   minMatchLength: number,
-): QueryMatch | null {
+): QueryMatch | null => {
   let match = AtSignMentionsRegex.exec(text);
   if (match === null) {
     match = AtSignMentionsRegexAliasRegex.exec(text);
@@ -179,12 +179,12 @@ function checkForAtSignMentions(
     }
   }
   return null;
-}
+};
 
-function getPossibleQueryMatch(text: string): QueryMatch | null {
+const getPossibleQueryMatch = (text: string): QueryMatch | null => {
   const match = checkForAtSignMentions(text, 1);
   return match === null ? checkForCapitalizedNameMentions(text, 3) : match;
-}
+};
 
 class MentionTypeaheadOption extends TypeaheadOption {
 
@@ -199,7 +199,7 @@ class MentionTypeaheadOption extends TypeaheadOption {
 
 }
 
-function MentionsTypeaheadMenuItem({
+const MentionsTypeaheadMenuItem = ({
   index,
   isSelected,
   onClick,
@@ -211,7 +211,7 @@ function MentionsTypeaheadMenuItem({
   onClick: () => void
   onMouseEnter: () => void
   option: MentionTypeaheadOption
-}) {
+}) => {
   let className = 'item';
   if (isSelected) {
     className += ' selected';
@@ -232,9 +232,9 @@ function MentionsTypeaheadMenuItem({
       <span className='text'>{option.name}</span>
     </li>
   );
-}
+};
 
-export function MentionPlugin(): JSX.Element | null {
+export const MentionPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
 
   const [queryString, setQueryString] = useState<string | null>(null);
@@ -352,4 +352,4 @@ export function MentionPlugin(): JSX.Element | null {
       }
     />
   );
-}
+};

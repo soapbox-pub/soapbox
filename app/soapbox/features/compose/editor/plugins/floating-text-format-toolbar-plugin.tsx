@@ -109,6 +109,7 @@ const TextFormatFloatingToolbar = ({
     editor.getEditorState().read(() => {
       updateTextFormatFloatingToolbar();
     });
+
     return mergeRegister(
       editor.registerUpdateListener(({ editorState }) => {
         editorState.read(() => {
@@ -131,6 +132,16 @@ const TextFormatFloatingToolbar = ({
     <div ref={popupCharStylesEditorRef} className='floating-text-format-popup'>
       {editor.isEditable() && (
         <>
+          <button
+            onClick={() => {
+              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+            }}
+            className={'popup-item spaced ' + (isBold ? 'active' : '')}
+            aria-label='Format text as bold'
+            type='button'
+          >
+            <Icon src={require('@tabler/icons/align-left.svg')} />
+          </button>
           <button
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
