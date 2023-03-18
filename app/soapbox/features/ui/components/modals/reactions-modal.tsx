@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
@@ -16,6 +16,12 @@ const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   all: { id: 'reactions.all', defaultMessage: 'All' },
 });
+
+interface IAccountWithReaction {
+  id: string
+  reaction: string
+  reactionUrl?: string
+}
 
 interface IReactionsModal {
   onClose: (string: string) => void
@@ -65,17 +71,25 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     return <Tabs items={items} activeItem={reaction || 'all'} />;
   };
 
+  const accounts = useMemo((): ImmutableList<IAccountWithReaction> | undefined  => {
+    if (!reactions) return;
+
+    if (reaction) {
+      const reactionRecord = reactions.find(({ name }) => name === reaction);
+
+      if (reactionRecord) return reactionRecord.accounts.map(account => ({ id: account, reaction: reaction, reactionUrl: reactionRecord.url || undefined })).toList();
+    } else {
+      return reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: name, reactionUrl: url }))).flatten() as ImmutableList<IAccountWithReaction>;
+    }
+  }, [reactions, reaction]);
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  const accounts = reactions && (reaction
-    ? reactions.find(({ name }) => name === reaction)?.accounts.map(account => ({ id: account, reaction: reaction }))
-    : reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: name, reactionUrl: url }))).flatten()) as ImmutableList<{ id: string, reaction: string, reactionUrl?: string }>;
-
   let body;
 
-  if (!accounts) {
+  if (!accounts || !reactions) {
     body = <Spinner />;
   } else {
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
