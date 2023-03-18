@@ -7,15 +7,35 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the /app/soapbox/features/compose/editor directory.
 */
 
-import { $isCodeHighlightNode } from '@lexical/code';
+import { $createCodeNode, $isCodeHighlightNode } from '@lexical/code';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { mergeRegister } from '@lexical/utils';
 import {
+  $isListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
+  REMOVE_LIST_COMMAND,
+} from '@lexical/list';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import {
+  $createHeadingNode,
+  $createQuoteNode,
+  $isHeadingNode,
+  HeadingTagType,
+} from '@lexical/rich-text';
+import {
+  $setBlocksType,
+} from '@lexical/selection';
+import { $findMatchingParent, $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
+import clsx from 'clsx';
+import {
+  $createParagraphNode,
   $getSelection,
   $isRangeSelection,
+  $isRootOrShadowRoot,
   $isTextNode,
   COMMAND_PRIORITY_LOW,
+  DEPRECATED_$isGridSelection,
   FORMAT_TEXT_COMMAND,
   LexicalEditor,
   SELECTION_CHANGE_COMMAND,
@@ -30,9 +50,203 @@ import { getDOMRangeRect } from '../utils/get-dom-range-rect';
 import { getSelectedNode } from '../utils/get-selected-node';
 import { setFloatingElemPosition } from '../utils/set-floating-elem-position';
 
+const blockTypeToIcon = {
+  bullet: require('@tabler/icons/list.svg'),
+  check: require('@tabler/icons/list-check.svg'),
+  code: require('@tabler/icons/code.svg'),
+  h1: require('@tabler/icons/h-1.svg'),
+  h2: require('@tabler/icons/h-2.svg'),
+  h3: require('@tabler/icons/h-3.svg'),
+  h4: require('@tabler/icons/h-4.svg'),
+  h5: require('@tabler/icons/h-5.svg'),
+  h6: require('@tabler/icons/h-6.svg'),
+  number: require('@tabler/icons/list-numbers.svg'),
+  paragraph: require('@tabler/icons/align-left.svg'),
+  quote: require('@tabler/icons/blockquote.svg'),
+};
+
+const blockTypeToBlockName = {
+  bullet: 'Bulleted List',
+  check: 'Check List',
+  code: 'Code Block',
+  h1: 'Heading 1',
+  h2: 'Heading 2',
+  h3: 'Heading 3',
+  h4: 'Heading 4',
+  h5: 'Heading 5',
+  h6: 'Heading 6',
+  number: 'Numbered List',
+  paragraph: 'Normal',
+  quote: 'Quote',
+};
+
+const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
+  editor: LexicalEditor
+  anchorElem: HTMLElement
+  blockType: keyof typeof blockTypeToBlockName
+  icon: string
+}) => {
+  const [showDropDown, setShowDropDown] = useState(false);
+
+  const formatParagraph = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if (
+        $isRangeSelection(selection) ||
+        DEPRECATED_$isGridSelection(selection)
+      ) {
+        $setBlocksType(selection, () => $createParagraphNode());
+      }
+    });
+  };
+
+  const formatHeading = (headingSize: HeadingTagType) => {
+    if (blockType !== headingSize) {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (
+          $isRangeSelection(selection) ||
+          DEPRECATED_$isGridSelection(selection)
+        ) {
+          $setBlocksType(selection, () => $createHeadingNode(headingSize));
+        }
+      });
+    }
+  };
+
+  const formatBulletList = () => {
+    if (blockType !== 'bullet') {
+      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+    } else {
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+    }
+  };
+
+  const formatNumberedList = () => {
+    if (blockType !== 'number') {
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+    } else {
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+    }
+  };
+
+  const formatQuote = () => {
+    if (blockType !== 'quote') {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (
+          $isRangeSelection(selection) ||
+          DEPRECATED_$isGridSelection(selection)
+        ) {
+          $setBlocksType(selection, () => $createQuoteNode());
+        }
+      });
+    }
+  };
+
+  const formatCode = () => {
+    if (blockType !== 'code') {
+      editor.update(() => {
+        let selection = $getSelection();
+
+        if (
+          $isRangeSelection(selection) ||
+          DEPRECATED_$isGridSelection(selection)
+        ) {
+          if (selection.isCollapsed()) {
+            $setBlocksType(selection, () => $createCodeNode());
+          } else {
+            const textContent = selection.getTextContent();
+            const codeNode = $createCodeNode();
+            selection.insertNodes([codeNode]);
+            selection = $getSelection();
+            if ($isRangeSelection(selection))
+              selection.insertRawText(textContent);
+          }
+        }
+      });
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={() => setShowDropDown(!showDropDown)}
+        className='popup-item spaced relative'
+        aria-label=''
+        type='button'
+      >
+        <Icon src={icon} />
+        <Icon src={require('@tabler/icons/chevron-down.svg')} className='-bottom-2 h-4 w-4' />
+        {showDropDown && (
+          <div className='floating-text-format-popup' style={{ opacity: 1, top: 36 }}>
+            <button
+              onClick={formatParagraph}
+              className={clsx('popup-item spaced', blockType === 'paragraph' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.paragraph} />
+            </button>
+            <button
+              onClick={() => formatHeading('h1')}
+              className={clsx('popup-item spaced', blockType === 'h1' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.h1} />
+            </button>
+            <button
+              onClick={() => formatHeading('h2')}
+              className={clsx('popup-item spaced', blockType === 'h2' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.h2} />
+            </button>
+            <button
+              onClick={() => formatHeading('h3')}
+              className={clsx('popup-item spaced', blockType === 'h3' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.h3} />
+            </button>
+            <button
+              onClick={formatBulletList}
+              className={clsx('popup-item spaced', blockType === 'bullet' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.bullet} />
+            </button>
+            <button
+              onClick={formatNumberedList}
+              className={clsx('popup-item spaced', blockType === 'number' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.number} />
+            </button>
+            <button
+              onClick={formatQuote}
+              className={clsx('popup-item spaced', blockType === 'quote' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.quote} />
+            </button>
+            <button
+              onClick={formatCode}
+              className={clsx('popup-item spaced', blockType === 'code' && 'active')}
+              type='button'
+            >
+              <Icon src={blockTypeToIcon.code} />
+            </button>
+          </div>
+        )}
+      </button>
+    </>
+  );
+};
+
 const TextFormatFloatingToolbar = ({
   editor,
   anchorElem,
+  blockType,
   isLink,
   isBold,
   isItalic,
@@ -42,6 +256,7 @@ const TextFormatFloatingToolbar = ({
 }: {
    editor: LexicalEditor
    anchorElem: HTMLElement
+   blockType: keyof typeof blockTypeToBlockName
    isBold: boolean
    isCode: boolean
    isItalic: boolean
@@ -132,16 +347,12 @@ const TextFormatFloatingToolbar = ({
     <div ref={popupCharStylesEditorRef} className='floating-text-format-popup'>
       {editor.isEditable() && (
         <>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
-            }}
-            className={'popup-item spaced ' + (isBold ? 'active' : '')}
-            aria-label='Format text as bold'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/align-left.svg')} />
-          </button>
+          <BlockTypeDropdown
+            editor={editor}
+            anchorElem={anchorElem}
+            blockType={blockType}
+            icon={blockTypeToIcon[blockType]}
+          />
           <button
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
@@ -210,6 +421,8 @@ const useFloatingTextFormatToolbar = (
   editor: LexicalEditor,
   anchorElem: HTMLElement,
 ): JSX.Element | null => {
+  const [blockType, setBlockType] =
+    useState<keyof typeof blockTypeToBlockName>('paragraph');
   const [isText, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
@@ -242,6 +455,22 @@ const useFloatingTextFormatToolbar = (
         return;
       }
 
+      const anchorNode = selection.anchor.getNode();
+      let element =
+        anchorNode.getKey() === 'root'
+          ? anchorNode
+          : $findMatchingParent(anchorNode, (e) => {
+            const parent = e.getParent();
+            return parent !== null && $isRootOrShadowRoot(parent);
+          });
+
+      if (element === null) {
+        element = anchorNode.getTopLevelElementOrThrow();
+      }
+
+      const elementKey = element.getKey();
+      const elementDOM = editor.getElementByKey(elementKey);
+
       const node = getSelectedNode(selection);
 
       // Update text format
@@ -250,6 +479,26 @@ const useFloatingTextFormatToolbar = (
       setIsUnderline(selection.hasFormat('underline'));
       setIsStrikethrough(selection.hasFormat('strikethrough'));
       setIsCode(selection.hasFormat('code'));
+
+      if (elementDOM !== null) {
+        if ($isListNode(element)) {
+          const parentList = $getNearestNodeOfType<ListNode>(
+            anchorNode,
+            ListNode,
+          );
+          const type = parentList
+            ? parentList.getListType()
+            : element.getListType();
+          setBlockType(type);
+        } else {
+          const type = $isHeadingNode(element)
+            ? element.getTag()
+            : element.getType();
+          if (type in blockTypeToBlockName) {
+            setBlockType(type as keyof typeof blockTypeToBlockName);
+          }
+        }
+      }
 
       // Update links
       const parent = node.getParent();
@@ -298,6 +547,7 @@ const useFloatingTextFormatToolbar = (
     <TextFormatFloatingToolbar
       editor={editor}
       anchorElem={anchorElem}
+      blockType={blockType}
       isLink={isLink}
       isBold={isBold}
       isItalic={isItalic}

@@ -10,6 +10,7 @@ LICENSE file in the /app/soapbox/features/compose/editor directory.
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { HashtagNode } from '@lexical/hashtag';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
+import { ListItemNode, ListNode } from '@lexical/list';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 
@@ -24,6 +25,8 @@ const ComposeNodes: Array<Klass<LexicalNode>> = [
   CodeHighlightNode,
   AutoLinkNode,
   LinkNode,
+  ListItemNode,
+  ListNode,
   HorizontalRuleNode,
   HashtagNode,
   MentionNode,

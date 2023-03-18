@@ -418,8 +418,6 @@
   "compose_form.hashtag_warning": "This post won't be listed under any hashtag as it is unlisted. Only public posts can be searched by hashtag.",
   "compose_form.lock_disclaimer": "Your account is not {locked}. Anyone can follow you to view your follower-only posts.",
   "compose_form.lock_disclaimer.lock": "locked",
-  "compose_form.markdown.marked": "Post markdown enabled",
-  "compose_form.markdown.unmarked": "Post markdown disabled",
   "compose_form.message": "Message",
   "compose_form.placeholder": "What's on your mind?",
   "compose_form.poll.add_option": "Add an answer",
