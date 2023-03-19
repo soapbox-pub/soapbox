@@ -14,13 +14,13 @@ interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
 }
 
 /** Custom textarea for chats. */
-const ChatTextarea: React.FC<IChatTextarea> = ({
+const ChatTextarea: React.FC<IChatTextarea> = React.forwardRef(({
   attachments,
   onDeleteAttachment,
   uploadCount = 0,
   uploadProgress = 0,
   ...rest
-}) => {
+}, ref) => {
   const isUploading = uploadCount > 0;
 
   const handleDeleteAttachment = (i: number) => {
@@ -64,9 +64,9 @@ const ChatTextarea: React.FC<IChatTextarea> = ({
         </HStack>
       )}
 
-      <Textarea theme='transparent' {...rest} />
+      <Textarea ref={ref} theme='transparent' {...rest} />
     </div>
   );
-};
+});
 
 export default ChatTextarea;
