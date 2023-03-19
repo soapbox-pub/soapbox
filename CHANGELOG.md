@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Posts: Support posts filtering on recent Mastodon versions
+- Reactions: Support custom emoji reactions
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
