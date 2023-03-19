@@ -2,6 +2,7 @@ import produce, { enableMapSet } from 'immer';
 
 import {
   ENTITIES_IMPORT,
+  ENTITIES_DELETE,
   ENTITIES_FETCH_REQUEST,
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
@@ -9,6 +10,7 @@ import {
 } from './actions';
 import { createCache, createList, updateStore, updateList } from './utils';
 
+import type { DeleteEntitiesOpts } from './actions';
 import type { Entity, EntityCache, EntityListState } from './types';
 
 enableMapSet();
@@ -43,11 +45,35 @@ const importEntities = (
   });
 };
 
+const deleteEntities = (
+  state: State,
+  entityType: string,
+  ids: Iterable<string>,
+  opts: DeleteEntitiesOpts,
+) => {
+  return produce(state, draft => {
+    const cache = draft[entityType] ?? createCache();
+
+    for (const id of ids) {
+      delete cache.store[id];
+
+      if (!opts?.preserveLists) {
+        for (const list of Object.values(cache.lists)) {
+          list?.ids.delete(id);
+        }
+      }
+    }
+
+    draft[entityType] = cache;
+  });
+};
+
 const setFetching = (
   state: State,
   entityType: string,
   listKey: string | undefined,
   isFetching: boolean,
+  error?: any,
 ) => {
   return produce(state, draft => {
     const cache = draft[entityType] ?? createCache();
@@ -55,6 +81,7 @@ const setFetching = (
     if (typeof listKey === 'string') {
       const list = cache.lists[listKey] ?? createList();
       list.state.fetching = isFetching;
+      list.state.error = error;
       cache.lists[listKey] = list;
     }
 
@@ -67,15 +94,18 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
   switch (action.type) {
     case ENTITIES_IMPORT:
       return importEntities(state, action.entityType, action.entities, action.listKey);
+    case ENTITIES_DELETE:
+      return deleteEntities(state, action.entityType, action.ids, action.opts);
     case ENTITIES_FETCH_SUCCESS:
       return importEntities(state, action.entityType, action.entities, action.listKey, action.newState);
     case ENTITIES_FETCH_REQUEST:
       return setFetching(state, action.entityType, action.listKey, true);
     case ENTITIES_FETCH_FAIL:
-      return setFetching(state, action.entityType, action.listKey, false);
+      return setFetching(state, action.entityType, action.listKey, false, action.error);
     default:
       return state;
   }
 }
 
 export default reducer;
+export type { State };

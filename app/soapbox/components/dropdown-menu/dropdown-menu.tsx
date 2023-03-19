@@ -271,6 +271,10 @@ const DropdownMenu = (props: IDropdownMenu) => {
     };
   }, [refs.floating.current]);
 
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <>
       {children ? (

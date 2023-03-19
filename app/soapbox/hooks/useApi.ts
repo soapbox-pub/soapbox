@@ -1,12 +1,9 @@
 import api from 'soapbox/api';
 
-import { useAppDispatch } from './useAppDispatch';
+import { useGetState } from './useGetState';
 
 /** Use stateful Axios client with auth from Redux. */
 export const useApi = () => {
-  const dispatch = useAppDispatch();
-
-  return dispatch((_dispatch, getState) => {
-    return api(getState);
-  });
+  const getState = useGetState();
+  return api(getState);
 };

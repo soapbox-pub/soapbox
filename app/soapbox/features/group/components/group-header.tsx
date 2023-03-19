@@ -3,8 +3,9 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
+import GroupAvatar from 'soapbox/components/groups/group-avatar';
 import StillImage from 'soapbox/components/still-image';
-import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { isDefaultHeader } from 'soapbox/utils/accounts';
@@ -109,30 +110,34 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
 
         <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
           <a href={group.avatar} onClick={handleAvatarClick} target='_blank'>
-            <Avatar
-              className='ring-[3px] ring-white dark:ring-primary-900'
-              src={group.avatar}
+            <GroupAvatar
+              group={group}
               size={80}
+              withRing
             />
           </a>
         </div>
       </div>
 
-      <Stack alignItems='center' space={3} className='mt-10 py-4'>
+      <Stack alignItems='center' space={3} className='mx-auto mt-10 w-5/6 py-4'>
         <Text
           size='xl'
           weight='bold'
           dangerouslySetInnerHTML={{ __html: group.display_name_html }}
         />
 
-        <Stack space={1}>
+        <Stack space={1} alignItems='center'>
           <HStack className='text-gray-700 dark:text-gray-600' space={2} wrap>
             <GroupRelationship group={group} />
             <GroupPrivacy group={group} />
             <GroupMemberCount group={group} />
           </HStack>
 
-          <Text theme='muted' dangerouslySetInnerHTML={{ __html: group.note_emojified }} />
+          <Text
+            theme='muted'
+            align='center'
+            dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+          />
         </Stack>
 
         <GroupActionButton group={group} />

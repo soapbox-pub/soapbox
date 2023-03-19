@@ -1,9 +1,10 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { defineMessages } from 'react-intl';
+import { defineMessage } from 'react-intl';
 import { createSelector } from 'reselect';
 import { v4 as uuid } from 'uuid';
 
 import { patchMe } from 'soapbox/actions/me';
+import messages from 'soapbox/locales/messages';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -21,9 +22,7 @@ type SettingOpts = {
   showAlert?: boolean
 }
 
-const messages = defineMessages({
-  saveSuccess: { id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' },
-});
+const saveSuccessMessage = defineMessage({ id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' });
 
 const defaultSettings = ImmutableMap({
   onboarded: false,
@@ -40,7 +39,7 @@ const defaultSettings = ImmutableMap({
   defaultPrivacy: 'public',
   defaultContentType: 'text/plain',
   themeMode: 'system',
-  locale: navigator.language.split(/[-_]/)[0] || 'en',
+  locale: navigator.language || 'en',
   showExplanationBox: true,
   explanationBox: true,
   autoloadTimelines: true,
@@ -221,7 +220,7 @@ const saveSettingsImmediate = (opts?: SettingOpts) =>
       dispatch({ type: SETTING_SAVE });
 
       if (opts?.showAlert) {
-        toast.success(messages.saveSuccess);
+        toast.success(saveSuccessMessage);
       }
     }).catch(error => {
       toast.showAlertForError(error);
@@ -230,6 +229,12 @@ const saveSettingsImmediate = (opts?: SettingOpts) =>
 
 const saveSettings = (opts?: SettingOpts) =>
   (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(opts));
+
+const getLocale = (state: RootState, fallback = 'en') => {
+  const localeWithVariant = (getSettings(state).get('locale') as string).replace('_', '-');
+  const locale = localeWithVariant.split('-')[0];
+  return Object.keys(messages).includes(localeWithVariant) ? localeWithVariant : Object.keys(messages).includes(locale) ? locale : fallback;
+};
 
 export {
   SETTING_CHANGE,
@@ -242,4 +247,5 @@ export {
   changeSetting,
   saveSettingsImmediate,
   saveSettings,
+  getLocale,
 };

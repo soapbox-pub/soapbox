@@ -24,6 +24,7 @@ const GroupsPage: React.FC<IGroupsPage> = ({ children }) => (
       <BundleContainer fetchComponent={NewGroupPanel}>
         {Component => <Component key='new-group-panel' />}
       </BundleContainer>
+
       <LinkFooter key='link-footer' />
     </Layout.Aside>
   </>

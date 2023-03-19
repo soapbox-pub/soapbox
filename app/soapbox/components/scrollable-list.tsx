@@ -52,6 +52,8 @@ interface IScrollableList extends VirtuosoProps<any, any> {
   alwaysPrepend?: boolean
   /** Message to display when the list is loaded but empty. */
   emptyMessage?: React.ReactNode
+  /** Should the empty message be displayed in a Card */
+  emptyMessageCard?: boolean
   /** Scrollable content. */
   children: Iterable<React.ReactNode>
   /** Callback when the list is scrolled to the top. */
@@ -87,6 +89,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   children,
   isLoading,
   emptyMessage,
+  emptyMessageCard = true,
   showLoading,
   onRefresh,
   onScroll,
@@ -158,13 +161,17 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       <div className='mt-2'>
         {alwaysPrepend && prepend}
 
-        <Card variant='rounded' size='lg'>
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            emptyMessage
-          )}
-        </Card>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            {emptyMessageCard ? (
+              <Card variant='rounded' size='lg'>
+                {emptyMessage}
+              </Card>
+            ) : emptyMessage}
+          </>
+        )}
       </div>
     );
   };

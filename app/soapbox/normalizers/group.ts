@@ -23,13 +23,14 @@ export const GroupRecord = ImmutableRecord({
   created_at: '',
   display_name: '',
   domain: '',
-  emojis: ImmutableList<Emoji>(),
+  emojis: [] as Emoji[],
+  group_visibility: '',
   header: '',
   header_static: '',
   id: '',
   locked: false,
   membership_required: false,
-  members_count: undefined as number | undefined,
+  members_count: 0,
   note: '',
   statuses_visibility: 'public',
   uri: '',
@@ -69,7 +70,7 @@ const normalizeHeader = (group: ImmutableMap<string, any>) => {
 /** Normalize emojis */
 const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
   const emojis = entity.get('emojis', ImmutableList()).map(normalizeEmoji);
-  return entity.set('emojis', emojis);
+  return entity.set('emojis', emojis.toArray());
 };
 
 /** Set display name from username, if applicable */

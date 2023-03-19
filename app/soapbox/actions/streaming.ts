@@ -1,4 +1,4 @@
-import { getSettings } from 'soapbox/actions/settings';
+import { getLocale, getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
@@ -33,13 +33,6 @@ import type { APIEntity, Chat } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
-
-const validLocale = (locale: string) => Object.keys(messages).includes(locale);
-
-const getLocale = (state: RootState) => {
-  const locale = getSettings(state).get('locale') as string;
-  return validLocale(locale) ? locale : 'en';
-};
 
 const updateFollowRelationships = (relationships: APIEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {

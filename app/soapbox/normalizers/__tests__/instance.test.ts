@@ -23,6 +23,10 @@ describe('normalizeInstance()', () => {
           max_characters: 500,
           max_media_attachments: 4,
         },
+        groups: {
+          max_characters_name: 50,
+          max_characters_description: 100,
+        },
       },
       description: '',
       description_limit: 1500,

@@ -10,10 +10,6 @@ interface IGroupMemberCount {
 }
 
 const GroupMemberCount = ({ group }: IGroupMemberCount) => {
-  if (typeof group.members_count === 'undefined') {
-    return null;
-  }
-
   return (
     <Text theme='inherit' tag='span' size='sm' weight='medium' data-testid='group-member-count'>
       {shortNumberFormat(group.members_count)}

@@ -2,9 +2,11 @@ import React, { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Avatar, Button, HStack, Stack, Text } from 'soapbox/components/ui';
+import GroupAvatar from 'soapbox/components/groups/group-avatar';
+import { Button, HStack, Stack, Text } from 'soapbox/components/ui';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
+import { useJoinGroup } from 'soapbox/queries/groups';
 import { Group as GroupEntity } from 'soapbox/types/entities';
 
 interface IGroup {
@@ -12,8 +14,12 @@ interface IGroup {
   width?: number
 }
 
-const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
+const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { group, width = 'auto' } = props;
+
+  const joinGroup = useJoinGroup();
+
+  const onJoinGroup = () => joinGroup.mutate(group);
 
   return (
     <div
@@ -38,9 +44,8 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
           )}
 
           <Stack justifyContent='end' className='z-10 p-4 text-white' space={3}>
-            <Avatar
-              className='ring-2 ring-white'
-              src={group.avatar}
+            <GroupAvatar
+              group={group}
               size={44}
             />
 
@@ -69,6 +74,8 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
       <Button
         theme='primary'
         block
+        onClick={onJoinGroup}
+        disabled={joinGroup.isLoading}
       >
         {group.locked
           ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
@@ -78,4 +85,4 @@ const Group = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>
   );
 });
 
-export default Group;
+export default GroupGridItem;
