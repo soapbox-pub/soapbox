@@ -25,7 +25,7 @@ const EMOJI_REACTS_FETCH_FAIL    = 'EMOJI_REACTS_FETCH_FAIL';
 
 const noOp = () => () => new Promise(f => f(undefined));
 
-const simpleEmojiReact = (status: Status, emoji: string) =>
+const simpleEmojiReact = (status: Status, emoji: string, custom?: string) =>
   (dispatch: AppDispatch) => {
     const emojiReacts: ImmutableList<ImmutableMap<string, any>> = status.pleroma.get('emoji_reactions') || ImmutableList();
 
@@ -43,7 +43,7 @@ const simpleEmojiReact = (status: Status, emoji: string) =>
       if (emoji === '👍') {
         dispatch(favourite(status));
       } else {
-        dispatch(emojiReact(status, emoji));
+        dispatch(emojiReact(status, emoji, custom));
       }
     }).catch(err => {
       console.error(err);
@@ -70,11 +70,11 @@ const fetchEmojiReacts = (id: string, emoji: string) =>
     });
   };
 
-const emojiReact = (status: Status, emoji: string) =>
+const emojiReact = (status: Status, emoji: string, custom?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return dispatch(noOp());
 
-    dispatch(emojiReactRequest(status, emoji));
+    dispatch(emojiReactRequest(status, emoji, custom));
 
     return api(getState)
       .put(`/api/v1/pleroma/statuses/${status.get('id')}/reactions/${emoji}`)
@@ -120,10 +120,11 @@ const fetchEmojiReactsFail = (id: string, error: AxiosError) => ({
   error,
 });
 
-const emojiReactRequest = (status: Status, emoji: string) => ({
+const emojiReactRequest = (status: Status, emoji: string, custom?: string) => ({
   type: EMOJI_REACT_REQUEST,
   status,
   emoji,
+  custom,
   skipLoading: true,
 });
 

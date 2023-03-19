@@ -28,7 +28,7 @@ export interface CustomEmoji {
 export interface NativeEmoji {
   id: string
   colons: string
-  custom?: boolean
+  custom?: false
   unified: string
   native: string
 }

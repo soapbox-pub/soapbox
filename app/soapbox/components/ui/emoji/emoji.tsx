@@ -10,7 +10,7 @@ interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 /** A single emoji image. */
 const Emoji: React.FC<IEmoji> = (props): JSX.Element | null => {
-  const { emoji, alt, ...rest } = props;
+  const { emoji, alt, src, ...rest } = props;
   const codepoints = toCodePoints(removeVS16s(emoji));
   const filename = codepoints.join('-');
 
@@ -20,7 +20,7 @@ const Emoji: React.FC<IEmoji> = (props): JSX.Element | null => {
     <img
       draggable='false'
       alt={alt || emoji}
-      src={joinPublicPath(`packs/emoji/${filename}.svg`)}
+      src={src || joinPublicPath(`packs/emoji/${filename}.svg`)}
       {...rest}
     />
   );

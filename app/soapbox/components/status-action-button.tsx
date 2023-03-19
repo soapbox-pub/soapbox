@@ -4,6 +4,8 @@ import React from 'react';
 import { Text, Icon, Emoji } from 'soapbox/components/ui';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
+import type { Map as ImmutableMap } from 'immutable';
+
 const COLORS = {
   accent: 'accent',
   success: 'success',
@@ -31,7 +33,7 @@ interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonEleme
   active?: boolean
   color?: Color
   filled?: boolean
-  emoji?: string
+  emoji?: ImmutableMap<string, any>
   text?: React.ReactNode
 }
 
@@ -42,7 +44,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
     if (emoji) {
       return (
         <span className='flex h-6 w-6 items-center justify-center'>
-          <Emoji className='h-full w-full p-0.5' emoji={emoji} />
+          <Emoji className='h-full w-full p-0.5' emoji={emoji.get('name')} src={emoji.get('url')} />
         </span>
       );
     } else {

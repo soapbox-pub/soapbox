@@ -5,9 +5,9 @@ import { usePopper } from 'react-popper';
 
 import { Emoji as EmojiComponent, HStack, IconButton } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
-import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
@@ -39,7 +39,7 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 interface IEmojiSelector {
   onClose?(): void
   /** Event handler when an emoji is clicked. */
-  onReact(emoji: string): void
+  onReact(emoji: string, custom?: string): void
   /** Element that triggers the EmojiSelector Popper */
   referenceElement: HTMLElement | null
   placement?: Placement
@@ -62,6 +62,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   all = true,
 }): JSX.Element => {
   const soapboxConfig = useSoapboxConfig();
+  const { customEmojiReacts } = useFeatures();
 
   const [expanded, setExpanded] = useState(false);
 
@@ -102,7 +103,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   };
 
   const handlePickEmoji = (emoji: Emoji) => {
-    onReact((emoji as NativeEmoji).native);
+    onReact(emoji.custom ? emoji.id : emoji.native, emoji.custom ? emoji.imageUrl : undefined);
   };
 
   useEffect(() => () => {
@@ -148,7 +149,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
           visible={expanded}
           setVisible={setExpanded}
           update={update}
-          withCustom={false}
+          withCustom={customEmojiReacts}
           onPickEmoji={handlePickEmoji}
         />
       ) : (

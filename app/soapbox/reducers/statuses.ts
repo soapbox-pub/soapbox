@@ -242,7 +242,7 @@ export default function statuses(state = initialState, action: AnyAction): State
       return state
         .updateIn(
           [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-          emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji),
+          emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji, action.custom),
         );
     case UNEMOJI_REACT_REQUEST:
       return state

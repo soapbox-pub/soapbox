@@ -269,6 +269,7 @@ const Notification: React.FC<INotificaton> = (props) => {
       return (
         <Emoji
           emoji={notification.emoji}
+          src={notification.emoji_url || undefined}
           className='h-4 w-4 flex-none'
         />
       );
