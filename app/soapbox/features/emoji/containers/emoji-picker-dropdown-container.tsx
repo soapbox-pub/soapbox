@@ -1,16 +1,13 @@
+import { useFloating, shift } from '@floating-ui/react';
 import clsx from 'clsx';
-import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { KeyboardEvent, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
-import { usePopper } from 'react-popper';
 
 import { IconButton } from 'soapbox/components/ui';
-import { isMobile } from 'soapbox/is-mobile';
+import { useClickOutside } from 'soapbox/hooks';
 
 import EmojiPickerDropdown, { IEmojiPickerDropdown } from '../components/emoji-picker-dropdown';
-
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -22,51 +19,28 @@ const EmojiPickerDropdownContainer = (
   const intl = useIntl();
   const title = intl.formatMessage(messages.emoji);
 
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-  const [popperReference, setPopperReference] = useState<HTMLButtonElement | null>(null);
-  const [containerElement, setContainerElement] = useState<HTMLDivElement | null>(null);
-
   const [visible, setVisible] = useState(false);
 
-  const placement = props.condensed ? 'bottom-start' : 'top-start';
-  const { styles, attributes, update } = usePopper(popperReference, popperElement, {
-    placement: isMobile(window.innerWidth) ? 'auto' : placement,
+  const { x, y, strategy, refs, update } = useFloating<HTMLButtonElement>({
+    middleware: [shift()],
   });
 
-  const handleDocClick = (e: any) => {
-    if (!containerElement?.contains(e.target) && !popperElement?.contains(e.target)) {
-      setVisible(false);
-    }
-  };
+  useClickOutside(refs, () => {
+    setVisible(false);
+  });
 
   const handleToggle = (e: MouseEvent | KeyboardEvent) => {
     e.stopPropagation();
     setVisible(!visible);
   };
 
-  // TODO: move to class
-  const style: React.CSSProperties = !isMobile(window.innerWidth) ? styles.popper : {
-    ...styles.popper, width: '100%',
-  };
-
-  useEffect(() => {
-    document.addEventListener('click', handleDocClick, false);
-    document.addEventListener('touchend', handleDocClick, listenerOptions);
-
-    return () => {
-      document.removeEventListener('click', handleDocClick, false);
-      // @ts-ignore
-      document.removeEventListener('touchend', handleDocClick, listenerOptions);
-    };
-  });
-
   return (
-    <div className='relative' ref={setContainerElement}>
+    <div className='relative'>
       <IconButton
         className={clsx({
           'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
         })}
-        ref={setPopperReference}
+        ref={refs.setReference}
         src={require('@tabler/icons/mood-happy.svg')}
         title={title}
         aria-label={title}
@@ -80,11 +54,20 @@ const EmojiPickerDropdownContainer = (
       {createPortal(
         <div
           className='z-[101]'
-          ref={setPopperElement}
-          style={style}
-          {...attributes.popper}
+          ref={refs.setFloating}
+          style={{
+            position: strategy,
+            top: y ?? 0,
+            left: x ?? 0,
+            width: 'max-content',
+          }}
         >
-          <EmojiPickerDropdown visible={visible} setVisible={setVisible} update={update} {...props} />
+          <EmojiPickerDropdown
+            visible={visible}
+            setVisible={setVisible}
+            update={update}
+            {...props}
+          />
         </div>,
         document.body,
       )}
