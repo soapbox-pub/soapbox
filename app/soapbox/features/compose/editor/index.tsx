@@ -7,6 +7,7 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the /app/soapbox/features/compose/editor directory.
 */
 import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -30,13 +31,13 @@ import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import { MentionPlugin } from './plugins/mention-plugin';
 
-const StatePlugin = ({ composeId, autoFocus }: { composeId: string, autoFocus: boolean }) => {
+const StatePlugin = ({ composeId }: { composeId: string }) => {
   const dispatch = useAppDispatch();
   const [editor] = useLexicalComposerContext();
 
-  useEffect(() => {
-    if (autoFocus) editor.focus();
+  (window as any).xd = editor;
 
+  useEffect(() => {
     editor.registerUpdateListener(({ editorState }) => {
       dispatch(setEditorState(composeId, editorState.isEmpty() ? null : JSON.stringify(editorState.toJSON())));
     });
@@ -64,6 +65,11 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
           strikethrough: 'line-through',
           underline: 'underline',
           underlineStrikethrough: 'underline-line-through',
+        },
+        heading: {
+          h1: 'text-2xl font-bold',
+          h2: 'text-xl font-bold',
+          h3: 'text-lg font-semibold',
         },
       },
       editorState: dispatch((_, getState) => {
@@ -111,9 +117,10 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
             <div className='editor' ref={onRef} onFocus={onFocus}>
               <ContentEditable
                 className={clsx('mr-4 py-2 outline-none transition-[min-height] motion-reduce:transition-none', {
-                  'min-h-[40px]': condensed,
+                  'min-fh-[40px]': condensed,
                   'min-h-[100px]': !condensed,
                 })}
+                autoFocus={autoFocus}
               />
             </div>
           }
@@ -124,6 +131,7 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
           )}
           ErrorBoundary={LexicalErrorBoundary}
         />
+        {autoFocus && <AutoFocusPlugin />}
         <OnChangePlugin onChange={(_, editor) => {
           editor.update(() => {
             if (editorStateRef) (editorStateRef as any).current = $convertToMarkdownString(TRANSFORMERS);
@@ -141,7 +149,7 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
             <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
           </>
         )}
-        <StatePlugin composeId={composeId} autoFocus={autoFocus} />
+        <StatePlugin composeId={composeId} />
       </div>
     </LexicalComposer>
   );
