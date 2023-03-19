@@ -5,11 +5,15 @@ import { useEntities, useEntity } from 'soapbox/entity-store/hooks';
 import { groupSchema, Group } from 'soapbox/schemas/group';
 import { groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas/group-relationship';
 
+import { useFeatures } from './useFeatures';
+
 function useGroups() {
+  const features = useFeatures();
+
   const { entities, ...result } = useEntities<Group>(
     [Entities.GROUPS, ''],
     '/api/v1/groups',
-    { schema: groupSchema },
+    { enabled: features.groups, schema: groupSchema },
   );
   const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
