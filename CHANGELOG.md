@@ -9,13 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Posts: Support posts filtering on recent Mastodon versions
 - Reactions: Support custom emoji reactions
+- Compatbility: Support Mastodon v2 timeline filters.
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
+- Posts: upgraded emoji picker component.
 
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
 - Posts: fix audio player progress bar visibility.
+- Posts: added missing gap in pending status.
+- Compatibility: fixed quote posting compatibility with custom Pleroma forks.
+- Profile: fix "load more" button height on account gallery page.
+- 18n: fixed Chinese language being detected from the browser.
+- Conversations: fixed pagination (Mastodon).
 
 ## [3.2.0] - 2023-02-15
 
