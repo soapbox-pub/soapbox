@@ -1,16 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { authorizeGroupMembershipRequest, fetchGroupMembershipRequests, rejectGroupMembershipRequest } from 'soapbox/actions/groups';
+import { authorizeGroupMembershipRequest, rejectGroupMembershipRequest } from 'soapbox/actions/groups';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useGroup } from 'soapbox/hooks';
+import { useAppDispatch, useGroup } from 'soapbox/hooks';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
-import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
+
+import type { Account as AccountEntity } from 'soapbox/schemas';
 
 type RouteParams = { id: string };
 
@@ -23,27 +24,23 @@ const messages = defineMessages({
 });
 
 interface IMembershipRequest {
-  accountId: string
+  account: AccountEntity
   groupId: string
 }
 
-const MembershipRequest: React.FC<IMembershipRequest> = ({ accountId, groupId }) => {
+const MembershipRequest: React.FC<IMembershipRequest> = ({ account, groupId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-
-  const getAccount = useCallback(makeGetAccount(), []);
-
-  const account = useAppSelector((state) => getAccount(state, accountId));
 
   if (!account) return null;
 
   const handleAuthorize = () =>
-    dispatch(authorizeGroupMembershipRequest(groupId, accountId)).then(() => {
+    dispatch(authorizeGroupMembershipRequest(groupId, account.id)).then(() => {
       toast.success(intl.formatMessage(messages.authorized, { name: account.acct }));
     });
 
   const handleReject = () =>
-    dispatch(rejectGroupMembershipRequest(groupId, accountId)).then(() => {
+    dispatch(rejectGroupMembershipRequest(groupId, account.id)).then(() => {
       toast.success(intl.formatMessage(messages.rejected, { name: account.acct }));
     });
 
@@ -76,19 +73,13 @@ interface IGroupMembershipRequests {
 
 const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params }) => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
 
   const id = params?.id;
 
   const { group } = useGroup(id);
-  const { entities } = useGroupMembershipRequests(id);
-  const accountIds = entities.map(e => e.id);
+  const { entities: accounts, isLoading } = useGroupMembershipRequests(id);
 
-  useEffect(() => {
-    dispatch(fetchGroupMembershipRequests(id));
-  }, [id]);
-
-  if (!group || !group.relationship || !accountIds) {
+  if (!group || !group.relationship || isLoading) {
     return (
       <Column label={intl.formatMessage(messages.heading)}>
         <Spinner />
@@ -108,8 +99,8 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
         scrollKey='group_membership_requests'
         emptyMessage={emptyMessage}
       >
-        {accountIds.map((accountId) =>
-          <MembershipRequest key={accountId} accountId={accountId} groupId={id} />,
+        {accounts.map((account) =>
+          <MembershipRequest key={account.id} account={account} groupId={id} />,
         )}
       </ScrollableList>
     </Column>

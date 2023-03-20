@@ -68,12 +68,6 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const isBlocked = group?.relationship?.blocked_by;
   const isPrivate = group?.locked;
 
-  // if ((group as any) === false) {
-  //   return (
-  //     <MissingIndicator />
-  //   );
-  // }
-
   const items = [
     {
       text: intl.formatMessage(messages.all),
