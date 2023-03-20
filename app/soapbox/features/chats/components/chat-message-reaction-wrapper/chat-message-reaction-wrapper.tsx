@@ -44,7 +44,7 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
             referenceElement={referenceElement}
             onReact={handleSelect}
             onClose={() => setIsOpen(false)}
-            offset={[-10, 12]}
+            offsetOptions={{ mainAxis: 12, crossAxis: -10 }}
             all={false}
           />
         </Portal>

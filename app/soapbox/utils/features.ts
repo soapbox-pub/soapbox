@@ -327,7 +327,11 @@ const getInstanceFeatures = (instance: Instance) => {
     /**
      * Ability to add non-standard reactions to a status.
      */
-    customEmojiReacts: v.software === PLEROMA && gte(v.version, '2.5.50'),
+    customEmojiReacts: any([
+      features.includes('pleroma_custom_emoji_reactions'),
+      features.includes('custom_emoji_reactions'),
+      v.software === PLEROMA && gte(v.version, '2.5.50'),
+    ]),
 
     /**
      * Legacy DMs timeline where messages are displayed chronologically without groupings.

@@ -1,11 +1,10 @@
-import { Placement } from '@popperjs/core';
+import { shift, useFloating, Placement, offset, OffsetOptions } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { usePopper } from 'react-popper';
 
 import { Emoji as EmojiComponent, HStack, IconButton } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
-import { useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import { useClickOutside, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import type { Emoji } from 'soapbox/features/emoji';
 
@@ -45,8 +44,7 @@ interface IEmojiSelector {
   placement?: Placement
   /** Whether the selector should be visible. */
   visible?: boolean
-  /** X/Y offset of the floating picker. */
-  offset?: [number, number]
+  offsetOptions?: OffsetOptions
   /** Whether to allow any emoji to be chosen. */
   all?: boolean
 }
@@ -58,7 +56,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   onReact,
   placement = 'top',
   visible = false,
-  offset = [-10, 0],
+  offsetOptions,
   all = true,
 }): JSX.Element => {
   const soapboxConfig = useSoapboxConfig();
@@ -66,36 +64,9 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
 
   const [expanded, setExpanded] = useState(false);
 
-  // `useRef` won't trigger a re-render, while `useState` does.
-  // https://popper.js.org/react-popper/v2/
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if ([referenceElement, popperElement, document.querySelector('em-emoji-picker')].some(el => el?.contains(event.target as Node))) {
-      return;
-    }
-
-    if (document.querySelector('em-emoji-picker')) {
-      event.preventDefault();
-      event.stopPropagation();
-      return setExpanded(false);
-    }
-
-    if (onClose) {
-      onClose();
-    }
-  };
-
-  const { styles, attributes, update } = usePopper(referenceElement, popperElement, {
+  const { x, y, strategy, refs, update } = useFloating<HTMLElement>({
     placement,
-    modifiers: [
-      {
-        name: 'offset',
-        options: {
-          offset,
-        },
-      },
-    ],
+    middleware: [offset(offsetOptions), shift()],
   });
 
   const handleExpand: React.MouseEventHandler = () => {
@@ -106,6 +77,10 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     onReact(emoji.custom ? emoji.id : emoji.native, emoji.custom ? emoji.imageUrl : undefined);
   };
 
+  useEffect(() => {
+    refs.setReference(referenceElement);
+  }, [referenceElement]);
+
   useEffect(() => () => {
     document.body.style.overflow = '';
   }, []);
@@ -114,35 +89,24 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     setExpanded(false);
   }, [visible]);
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [referenceElement, popperElement]);
-
-  useEffect(() => {
-    if (visible && update) {
-      update();
+  useClickOutside(refs, () => {
+    if (onClose) {
+      onClose();
     }
-  }, [visible, update]);
-
-  useEffect(() => {
-    if (expanded && update) {
-      update();
-    }
-  }, [expanded, update]);
-
+  });
 
   return (
     <div
       className={clsx('z-[101] transition-opacity duration-100', {
         'opacity-0 pointer-events-none': !visible,
       })}
-      ref={setPopperElement}
-      style={styles.popper}
-      {...attributes.popper}
+      ref={refs.setFloating}
+      style={{
+        position: strategy,
+        top: y ?? 0,
+        left: x ?? 0,
+        width: 'max-content',
+      }}
     >
       {expanded ? (
         <EmojiPickerDropdown
