@@ -30,7 +30,7 @@ interface EntityActionEndpoints {
 }
 
 interface EntityCallbacks<TEntity extends Entity = Entity> {
-  onSuccess?(entity: TEntity): void
+  onSuccess?(entity?: TEntity): void
 }
 
 function useEntityActions<TEntity extends Entity = Entity, P = any>(
@@ -70,14 +70,20 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
     });
   }
 
-  function deleteEntity(entityId: string): Promise<DeleteEntityResult> {
+  function deleteEntity(entityId: string, callbacks: EntityCallbacks = {}): Promise<DeleteEntityResult> {
     if (!endpoints.delete) return Promise.reject(endpoints);
     // Get the entity before deleting, so we can reverse the action if the API request fails.
     const entity = getState().entities[entityType]?.store[entityId];
     // Optimistically delete the entity from the _store_ but keep the lists in tact.
     dispatch(deleteEntities([entityId], entityType, { preserveLists: true }));
 
+    setIsLoading(true);
+
     return api.delete(endpoints.delete.replaceAll(':id', entityId)).then((response) => {
+      if (callbacks.onSuccess) {
+        callbacks.onSuccess();
+      }
+
       // Success - finish deleting entity from the state.
       dispatch(deleteEntities([entityId], entityType));
 
@@ -90,12 +96,14 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
         dispatch(importEntities([entity], entityType));
       }
       throw e;
+    }).finally(() => {
+      setIsLoading(false);
     });
   }
 
   return {
-    createEntity: createEntity,
-    deleteEntity: endpoints.delete ? deleteEntity : undefined,
+    createEntity,
+    deleteEntity,
     isLoading,
   };
 }
