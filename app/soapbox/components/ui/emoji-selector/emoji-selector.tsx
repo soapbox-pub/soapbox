@@ -1,4 +1,4 @@
-import { shift, useFloating, Placement } from '@floating-ui/react';
+import { shift, useFloating, Placement, offset, OffsetOptions } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 
@@ -44,6 +44,7 @@ interface IEmojiSelector {
   placement?: Placement
   /** Whether the selector should be visible. */
   visible?: boolean
+  offsetOptions?: OffsetOptions
   /** Whether to allow any emoji to be chosen. */
   all?: boolean
 }
@@ -55,6 +56,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   onReact,
   placement = 'top',
   visible = false,
+  offsetOptions,
   all = true,
 }): JSX.Element => {
   const soapboxConfig = useSoapboxConfig();
@@ -64,7 +66,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
 
   const { x, y, strategy, refs, update } = useFloating<HTMLElement>({
     placement,
-    middleware: [shift()],
+    middleware: [offset(offsetOptions), shift()],
   });
 
   const handleExpand: React.MouseEventHandler = () => {
