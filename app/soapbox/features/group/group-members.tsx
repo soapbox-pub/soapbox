@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { useGroup } from 'soapbox/hooks';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
@@ -47,7 +48,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         itemClassName='py-3 last:pb-0'
       >
         {(pending.length > 0) && (
-          <div>{pending.length} pending members</div>
+          <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pending.length} />
         )}
         {members.map((member) => (
           <GroupMemberListItem

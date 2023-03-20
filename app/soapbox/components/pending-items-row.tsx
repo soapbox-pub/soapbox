@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -9,17 +10,26 @@ interface IPendingItemsRow {
   to: string
   /** Number of pending items. */
   count: number
+  /** Size of the icon. */
+  size?: 'md' | 'lg'
 }
 
-const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count }) => {
+const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count, size = 'md' }) => {
   return (
     <Link to={to} className='group'>
       <HStack alignItems='center' justifyContent='between'>
         <HStack alignItems='center' space={2}>
-          <div className='rounded-full bg-primary-200 p-3 text-primary-500 dark:bg-primary-800 dark:text-primary-200'>
+          <div className={clsx('rounded-full bg-primary-200 text-primary-500 dark:bg-primary-800 dark:text-primary-200', {
+            'p-3': size === 'lg',
+            'p-2.5': size === 'md',
+          })}
+          >
             <Icon
               src={require('@tabler/icons/exclamation-circle.svg')}
-              className='h-7 w-7'
+              className={clsx({
+                'h-5 w-5': size === 'md',
+                'h-7 w-7': size === 'lg',
+              })}
             />
           </div>
 
