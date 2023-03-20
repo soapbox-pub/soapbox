@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useGroupRoles } from 'soapbox/hooks/useGroupRoles';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 
 import { Avatar } from '../ui';
 
@@ -16,17 +16,15 @@ interface IGroupAvatar {
 const GroupAvatar = (props: IGroupAvatar) => {
   const { group, size, withRing = false } = props;
 
-  const { normalizeRole } = useGroupRoles();
-
-  const isAdmin = normalizeRole(group.relationship?.role as any) === 'admin';
+  const isOwner = group.relationship?.role === GroupRoles.OWNER;
 
   return (
     <Avatar
       className={
         clsx('relative rounded-full', {
-          'shadow-[0_0_0_2px_theme(colors.primary.600),0_0_0_4px_theme(colors.white)]': isAdmin && withRing,
-          'shadow-[0_0_0_2px_theme(colors.primary.600)]': isAdmin && !withRing,
-          'shadow-[0_0_0_2px_theme(colors.white)]': !isAdmin && withRing,
+          'shadow-[0_0_0_2px_theme(colors.primary.600),0_0_0_4px_theme(colors.white)]': isOwner && withRing,
+          'shadow-[0_0_0_2px_theme(colors.primary.600)]': isOwner && !withRing,
+          'shadow-[0_0_0_2px_theme(colors.white)]': !isOwner && withRing,
         })
       }
       src={group.avatar}

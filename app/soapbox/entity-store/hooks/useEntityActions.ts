@@ -28,6 +28,10 @@ interface EntityActionEndpoints {
   delete?: string
 }
 
+interface EntityCallbacks<TEntity extends Entity = Entity> {
+  onSuccess?(entity: TEntity): void
+}
+
 function useEntityActions<TEntity extends Entity = Entity, P = any>(
   path: EntityPath,
   endpoints: EntityActionEndpoints,
@@ -38,7 +42,7 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   const getState = useGetState();
   const [entityType, listKey] = path;
 
-  function createEntity(params: P): Promise<CreateEntityResult<TEntity>> {
+  function createEntity(params: P, callbacks: EntityCallbacks = {}): Promise<CreateEntityResult<TEntity>> {
     if (!endpoints.post) return Promise.reject(endpoints);
 
     return api.post(endpoints.post, params).then((response) => {
@@ -47,6 +51,10 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
 
       // TODO: optimistic updating
       dispatch(importEntities([entity], entityType, listKey));
+
+      if (callbacks.onSuccess) {
+        callbacks.onSuccess(entity);
+      }
 
       return {
         response,
