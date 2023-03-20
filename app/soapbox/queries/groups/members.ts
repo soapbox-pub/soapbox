@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useApi } from 'soapbox/hooks';
-import { useGroupRoles } from 'soapbox/hooks/useGroupRoles';
 import { normalizeAccount } from 'soapbox/normalizers';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 
 const GroupMemberKeys = {
   members: (id: string, role: string) => ['group', id, role] as const,
 };
 
-const useGroupMembers = (groupId: string, role: ReturnType<typeof useGroupRoles>['roles']['admin']) => {
+const useGroupMembers = (groupId: string, role: GroupRoles) => {
   const api = useApi();
 
   const getQuery = async () => {

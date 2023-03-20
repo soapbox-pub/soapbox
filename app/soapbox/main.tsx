@@ -41,9 +41,9 @@ ready(() => {
 
   root.render(<Soapbox />);
 
-  if (BuildConfig.NODE_ENV === 'production') {
-    // avoid offline in dev mode because it's harder to debug
-    // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
-    OfflinePluginRuntime.install();
-  }
+  // if (BuildConfig.NODE_ENV === 'production') {
+  // avoid offline in dev mode because it's harder to debug
+  // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
+  OfflinePluginRuntime.install();
+  // }
 });
