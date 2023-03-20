@@ -6,6 +6,7 @@ import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useGroup } from 'soapbox/hooks';
+import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
@@ -80,7 +81,8 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   const id = params?.id;
 
   const { group } = useGroup(id);
-  const accountIds = useAppSelector((state) => state.user_lists.membership_requests.get(id)?.items);
+  const { entities } = useGroupMembershipRequests(id);
+  const accountIds = entities.map(e => e.id);
 
   useEffect(() => {
     dispatch(fetchGroupMembershipRequests(id));
