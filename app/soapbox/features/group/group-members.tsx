@@ -24,7 +24,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
   const { groupMembers: owners, isFetching: isFetchingOwners } = useGroupMembers(groupId, GroupRoles.OWNER);
   const { groupMembers: admins, isFetching: isFetchingAdmins } = useGroupMembers(groupId, GroupRoles.ADMIN);
   const { groupMembers: users, isFetching: isFetchingUsers, fetchNextPage, hasNextPage } = useGroupMembers(groupId, GroupRoles.USER);
-  const { entities: pending, isFetching: isFetchingPending } = useGroupMembershipRequests(groupId);
+  const { accounts: pending, isFetching: isFetchingPending } = useGroupMembershipRequests(groupId);
 
   const isLoading = isFetchingGroup || isFetchingOwners || isFetchingAdmins || isFetchingUsers || isFetchingPending;
 
