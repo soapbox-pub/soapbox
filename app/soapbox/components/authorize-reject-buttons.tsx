@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Button, HStack } from 'soapbox/components/ui';
+import { Button, HStack, IconButton } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   authorize: { id: 'authorize', defaultMessage: 'Accept' },
@@ -36,18 +36,20 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ id, onAutho
   switch (state) {
     case 'pending':
       return (
-        <HStack space={2}>
-          <Button
-            theme='secondary'
-            size='sm'
-            text={intl.formatMessage(messages.authorize)}
-            onClick={handleAuthorize}
-          />
-          <Button
-            theme='danger'
-            size='sm'
-            text={intl.formatMessage(messages.reject)}
+        <HStack space={3} alignItems='center'>
+          <IconButton
+            src={require('@tabler/icons/x.svg')}
             onClick={handleReject}
+            theme='outlined'
+            className='h-10 w-10 items-center justify-center border-2 border-danger-600/10 hover:border-danger-600 dark:border-danger-600/10 dark:hover:border-danger-600'
+            iconClassName='h-6 w-6 text-danger-600'
+          />
+          <IconButton
+            src={require('@tabler/icons/check.svg')}
+            onClick={handleAuthorize}
+            theme='outlined'
+            className='h-10 w-10 items-center justify-center border-2 border-primary-500/10 hover:border-primary-500 dark:border-primary-500/10 dark:hover:border-primary-500'
+            iconClassName='h-6 w-6 text-primary-500'
           />
         </HStack>
       );
