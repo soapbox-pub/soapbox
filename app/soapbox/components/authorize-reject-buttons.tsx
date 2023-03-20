@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { Button, HStack, IconButton } from 'soapbox/components/ui';
-
-const messages = defineMessages({
-  authorize: { id: 'authorize', defaultMessage: 'Accept' },
-  authorized: { id: 'authorize.success', defaultMessage: 'Accepted' },
-  reject: { id: 'reject', defaultMessage: 'Reject' },
-  rejected: { id: 'reject.success', defaultMessage: 'Rejected' },
-});
+import { HStack, IconButton, Text } from 'soapbox/components/ui';
 
 interface IAuthorizeRejectButtons {
   id: string
@@ -18,7 +11,6 @@ interface IAuthorizeRejectButtons {
 
 /** Buttons to approve or reject a pending item, usually an account. */
 const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ id, onAuthorize, onReject }) => {
-  const intl = useIntl();
   const [state, setState] = useState<'authorized' | 'rejected' | 'pending'>('pending');
 
   function handleAuthorize() {
@@ -55,19 +47,19 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ id, onAutho
       );
     case 'authorized':
       return (
-        <Button
-          size='sm'
-          text={intl.formatMessage(messages.authorized)}
-          disabled
-        />
+        <div className='rounded-full bg-gray-100 px-4 py-2 dark:bg-gray-800'>
+          <Text theme='muted' size='sm'>
+            <FormattedMessage id='authorize.success' defaultMessage='Authorized' />
+          </Text>
+        </div>
       );
     case 'rejected':
       return (
-        <Button
-          size='sm'
-          text={intl.formatMessage(messages.rejected)}
-          disabled
-        />
+        <div className='rounded-full bg-gray-100 px-4 py-2 dark:bg-gray-800'>
+          <Text theme='muted' size='sm'>
+            <FormattedMessage id='reject.success' defaultMessage='Rejected' />
+          </Text>
+        </div>
       );
   }
 };
