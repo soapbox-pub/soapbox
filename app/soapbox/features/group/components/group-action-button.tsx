@@ -3,8 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
+import { deleteEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/queries/groups';
+import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/hooks/api';
+import toast from 'soapbox/toast';
 import { Group } from 'soapbox/types/entities';
 
 interface IGroupActionButton {
@@ -12,35 +15,54 @@ interface IGroupActionButton {
 }
 
 const messages = defineMessages({
+  confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },
   confirmationHeading: { id: 'confirmations.leave_group.heading', defaultMessage: 'Leave group' },
   confirmationMessage: { id: 'confirmations.leave_group.message', defaultMessage: 'You are about to leave the group. Do you want to continue?' },
-  confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },
+  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
+  joinSuccess: { id: 'group.join.success', defaultMessage: 'Group joined successfully!' },
+  leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
 });
 
 const GroupActionButton = ({ group }: IGroupActionButton) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const joinGroup = useJoinGroup();
-  const leaveGroup = useLeaveGroup();
-  const cancelRequest = useCancelMembershipRequest();
+  const joinGroup = useJoinGroup(group);
+  const leaveGroup = useLeaveGroup(group);
+  const cancelRequest = useCancelMembershipRequest(group);
 
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
   const isAdmin = group.relationship?.role === 'owner';
   const isBlocked = group.relationship?.blocked_by;
 
-  const onJoinGroup = () => joinGroup.mutate(group);
+  const onJoinGroup = () => joinGroup.mutate({}, {
+    onSuccess() {
+      toast.success(
+        group.locked
+          ? intl.formatMessage(messages.joinRequestSuccess)
+          : intl.formatMessage(messages.joinSuccess),
+      );
+    },
+  });
 
   const onLeaveGroup = () =>
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.confirmationHeading),
       message: intl.formatMessage(messages.confirmationMessage),
       confirm: intl.formatMessage(messages.confirmationConfirm),
-      onConfirm: () => leaveGroup.mutate(group),
+      onConfirm: () => leaveGroup.mutate({}, {
+        onSuccess() {
+          toast.success(intl.formatMessage(messages.leaveSuccess));
+        },
+      }),
     }));
 
-  const onCancelRequest = () => cancelRequest.mutate(group);
+  const onCancelRequest = () => cancelRequest.mutate({}, {
+    onSuccess() {
+      dispatch(deleteEntities([group.id], Entities.GROUP_RELATIONSHIPS));
+    },
+  });
 
   if (isBlocked) {
     return null;

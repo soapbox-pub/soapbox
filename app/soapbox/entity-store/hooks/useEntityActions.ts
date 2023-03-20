@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { z } from 'zod';
 
 import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
@@ -42,8 +43,12 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   const getState = useGetState();
   const [entityType, listKey] = path;
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   function createEntity(params: P, callbacks: EntityCallbacks = {}): Promise<CreateEntityResult<TEntity>> {
     if (!endpoints.post) return Promise.reject(endpoints);
+
+    setIsLoading(true);
 
     return api.post(endpoints.post, params).then((response) => {
       const schema = opts.schema || z.custom<TEntity>();
@@ -55,6 +60,8 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
       if (callbacks.onSuccess) {
         callbacks.onSuccess(entity);
       }
+
+      setIsLoading(false);
 
       return {
         response,
@@ -89,6 +96,7 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   return {
     createEntity: createEntity,
     deleteEntity: endpoints.delete ? deleteEntity : undefined,
+    isLoading,
   };
 }
 
