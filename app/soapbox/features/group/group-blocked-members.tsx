@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { fetchGroup, fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups';
+import { fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount, makeGetGroup } from 'soapbox/selectors';
+import { useAppDispatch, useAppSelector, useGroup } from 'soapbox/hooks';
+import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
@@ -62,14 +62,12 @@ const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const id = params?.id || '';
+  const id = params?.id;
 
-  const getGroup = useCallback(makeGetGroup(), []);
-  const group = useAppSelector(state => getGroup(state, id));
+  const { group } = useGroup(id);
   const accountIds = useAppSelector((state) => state.user_lists.group_blocks.get(id)?.items);
 
   useEffect(() => {
-    if (!group) dispatch(fetchGroup(id));
     dispatch(fetchGroupBlocks(id));
   }, [id]);
 
@@ -81,7 +79,7 @@ const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {
     );
   }
 
-  if (!group.relationship.role || !['admin', 'moderator'].includes(group.relationship.role)) {
+  if (!group.relationship.role || !['owner', 'admin', 'moderator'].includes(group.relationship.role)) {
     return (<ColumnForbidden />);
   }
 

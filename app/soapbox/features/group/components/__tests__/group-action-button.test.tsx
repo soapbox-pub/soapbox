@@ -98,7 +98,7 @@ describe('<GroupActionButton />', () => {
         relationship: buildGroupRelationship({
           requested: false,
           member: true,
-          role: 'admin',
+          role: 'owner',
         }),
       });
     });
