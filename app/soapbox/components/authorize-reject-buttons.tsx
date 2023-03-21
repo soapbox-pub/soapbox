@@ -54,7 +54,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
       return (
         <div className='rounded-full bg-gray-100 px-4 py-2 dark:bg-gray-800'>
           <Text theme='muted' size='sm'>
-            <FormattedMessage id='authorize.success' defaultMessage='Authorized' />
+            <FormattedMessage id='authorize.success' defaultMessage='Approved' />
           </Text>
         </div>
       );

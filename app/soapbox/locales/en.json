@@ -192,7 +192,7 @@
   "auth.invalid_credentials": "Wrong username or password",
   "auth.logged_out": "Logged out.",
   "auth_layout.register": "Create an account",
-  "authorize.success": "Authorized",
+  "authorize.success": "Approved",
   "backups.actions.create": "Create backup",
   "backups.empty_message": "No backups found. {action}",
   "backups.empty_message.action": "Create one now?",
