@@ -927,7 +927,7 @@
   "login_external.errors.instance_fail": "The instance returned an error.",
   "login_external.errors.network_fail": "Connection failed. Is a browser extension blocking it?",
   "login_form.header": "Sign In",
-  "manage_group.blocked_members": "Blocked members",
+  "manage_group.blocked_members": "Banned members",
   "manage_group.confirmation.copy": "Copy link",
   "manage_group.confirmation.info_1": "As the owner of this group, you can assign staff, delete posts and much more.",
   "manage_group.confirmation.info_2": "Post the group's first post and get the conversation started.",
