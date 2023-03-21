@@ -12,6 +12,7 @@ import {
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useGroup, useOwnAccount } from 'soapbox/hooks';
+import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import { Group } from 'soapbox/schemas';
 
 import { Tabs } from '../components/ui';
@@ -63,6 +64,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const id = params?.id || '';
 
   const { group } = useGroup(id);
+  const { accounts: pending } = useGroupMembershipRequests(id);
 
   const isMember = !!group?.relationship?.member;
   const isBlocked = group?.relationship?.blocked_by;
@@ -78,6 +80,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
       text: intl.formatMessage(messages.members),
       to: `/groups/${group?.id}/members`,
       name: '/groups/:id/members',
+      count: pending.length,
     },
   ];
 
