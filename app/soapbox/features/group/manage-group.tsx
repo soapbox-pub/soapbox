@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { deleteGroup, editGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
-import { CardBody, Column, Spinner } from 'soapbox/components/ui';
+import { CardBody, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useGroup } from 'soapbox/hooks';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
@@ -78,7 +78,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
         </List>
         {group.relationship.role === 'owner' && (
           <List>
-            <ListItem label={intl.formatMessage(messages.deleteGroup)} onClick={onDeleteGroup} />
+            <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteGroup)}</Text>} onClick={onDeleteGroup} />
           </List>
         )}
       </CardBody>
