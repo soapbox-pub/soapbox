@@ -36,13 +36,13 @@ const MembershipRequest: React.FC<IMembershipRequest> = ({ account, onAuthorize,
 
   if (!account) return null;
 
-  function handleAuthorize(accountId: string) {
-    return onAuthorize(accountId)
+  function handleAuthorize() {
+    return onAuthorize(account.id)
       .catch(() => toast.error(intl.formatMessage(messages.authorizeFail, { name: account.username })));
   }
 
-  function handleReject(accountId: string) {
-    return onReject(accountId)
+  function handleReject() {
+    return onReject(account.id)
       .catch(() => toast.error(intl.formatMessage(messages.rejectFail, { name: account.username })));
   }
 
@@ -53,7 +53,6 @@ const MembershipRequest: React.FC<IMembershipRequest> = ({ account, onAuthorize,
       </div>
 
       <AuthorizeRejectButtons
-        id={account.id}
         onAuthorize={handleAuthorize}
         onReject={handleReject}
       />
