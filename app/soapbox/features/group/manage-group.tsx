@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { deleteGroup, editGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
-import { CardBody, Column, Spinner, Text } from 'soapbox/components/ui';
+import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useGroup } from 'soapbox/hooks';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
@@ -21,6 +21,8 @@ const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete_group.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete group' },
   deleteMessage: { id: 'confirmations.delete_group.message', defaultMessage: 'Are you sure you want to delete this group? This is a permanent action that cannot be undone.' },
+  members: { id: 'group.tabs.members', defaultMessage: 'Members' },
+  other: { id: 'settings.other', defaultMessage: 'Other options' },
 });
 
 interface IManageGroup {
@@ -66,20 +68,38 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
     <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}`}>
       <CardBody className='space-y-4'>
         {group.relationship.role === 'owner' && (
-          <List>
-            <ListItem label={intl.formatMessage(messages.editGroup)} onClick={onEditGroup}>
-              <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
-            </ListItem>
-          </List>
+          <>
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.editGroup)} />
+            </CardHeader>
+
+            <List>
+              <ListItem label={intl.formatMessage(messages.editGroup)} onClick={onEditGroup}>
+                <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+              </ListItem>
+            </List>
+          </>
         )}
+
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.members)} />
+        </CardHeader>
+
         <List>
           <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
           <ListItem label={intl.formatMessage(messages.blockedMembers)} onClick={navigateToBlocks} />
         </List>
+
         {group.relationship.role === 'owner' && (
-          <List>
-            <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteGroup)}</Text>} onClick={onDeleteGroup} />
-          </List>
+          <>
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.other)} />
+            </CardHeader>
+
+            <List>
+              <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteGroup)}</Text>} onClick={onDeleteGroup} />
+            </List>
+          </>
         )}
       </CardBody>
     </Column>
