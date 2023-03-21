@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: Support posts filtering on recent Mastodon versions
 - Reactions: Support custom emoji reactions
 - Compatbility: Support Mastodon v2 timeline filters.
+- UI: added a character counter to some textareas.
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
