@@ -16,7 +16,7 @@ interface IPendingItemsRow {
 
 const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count, size = 'md' }) => {
   return (
-    <Link to={to} className='group'>
+    <Link to={to} className='group' data-testid='pending-items-row'>
       <HStack alignItems='center' justifyContent='between'>
         <HStack alignItems='center' space={2}>
           <div className={clsx('rounded-full bg-primary-200 text-primary-500 dark:bg-primary-800 dark:text-primary-200', {

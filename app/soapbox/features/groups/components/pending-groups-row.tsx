@@ -17,7 +17,6 @@ export default () => {
   return (
     <>
       <PendingItemsRow
-        data-testid='pending-groups-row'
         to='/groups/pending-requests'
         count={groups.length}
         size='lg'

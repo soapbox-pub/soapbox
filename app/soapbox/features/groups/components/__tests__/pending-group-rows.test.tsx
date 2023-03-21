@@ -45,7 +45,7 @@ describe('<PendingGroupRows />', () => {
 
     it('should not render', () => {
       renderApp(store);
-      expect(screen.queryAllByTestId('pending-groups-row')).toHaveLength(0);
+      expect(screen.queryAllByTestId('pending-items-row')).toHaveLength(0);
     });
   });
 
@@ -69,7 +69,7 @@ describe('<PendingGroupRows />', () => {
 
       it('should not render', () => {
         renderApp(store);
-        expect(screen.queryAllByTestId('pending-groups-row')).toHaveLength(0);
+        expect(screen.queryAllByTestId('pending-items-row')).toHaveLength(0);
       });
     });
 
@@ -95,7 +95,7 @@ describe('<PendingGroupRows />', () => {
         renderApp(store);
 
         await waitFor(() => {
-          expect(screen.queryAllByTestId('pending-groups-row')).toHaveLength(1);
+          expect(screen.queryAllByTestId('pending-items-row')).toHaveLength(1);
         });
       });
     });
