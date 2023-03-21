@@ -1472,6 +1472,7 @@
   "tabs_bar.profile": "Profile",
   "tabs_bar.search": "Search",
   "tabs_bar.settings": "Settings",
+  "textarea.counter.label": "{count} characters remaining",
   "theme_editor.Reset": "Reset",
   "theme_editor.export": "Export theme",
   "theme_editor.import": "Import theme",
