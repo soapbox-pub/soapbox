@@ -4,25 +4,30 @@ import { FormattedMessage } from 'react-intl';
 import { HStack, IconButton, Text } from 'soapbox/components/ui';
 
 interface IAuthorizeRejectButtons {
-  id: string
-  onAuthorize(id: string): Promise<unknown>
-  onReject(id: string): Promise<unknown>
+  onAuthorize(): Promise<unknown> | unknown
+  onReject(): Promise<unknown> | unknown
 }
 
 /** Buttons to approve or reject a pending item, usually an account. */
-const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ id, onAuthorize, onReject }) => {
+const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize, onReject }) => {
   const [state, setState] = useState<'authorized' | 'rejected' | 'pending'>('pending');
 
-  function handleAuthorize() {
-    onAuthorize(id)
-      .then(() => setState('authorized'))
-      .catch(console.error);
+  async function handleAuthorize() {
+    try {
+      await onAuthorize();
+      setState('authorized');
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  function handleReject() {
-    onReject(id)
-      .then(() => setState('rejected'))
-      .catch(console.error);
+  async function handleReject() {
+    try {
+      await onReject();
+      setState('rejected');
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   switch (state) {
