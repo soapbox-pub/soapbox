@@ -10,6 +10,7 @@ import {
   CtaBanner,
   GroupMediaPanel,
   SignUpPanel,
+  SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useGroup, useOwnAccount } from 'soapbox/hooks';
 import { Group } from 'soapbox/schemas';
@@ -126,6 +127,9 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
         )}
         <BundleContainer fetchComponent={GroupMediaPanel}>
           {Component => <Component group={group} />}
+        </BundleContainer>
+        <BundleContainer fetchComponent={SuggestedGroupsPanel}>
+          {Component => <Component />}
         </BundleContainer>
         <LinkFooter key='link-footer' />
       </Layout.Aside>
