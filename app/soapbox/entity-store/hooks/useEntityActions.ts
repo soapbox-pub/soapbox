@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
 
-import { deleteEntities, importEntities } from '../actions';
+import { importEntities } from '../actions';
+
+import { useDeleteEntity } from './useDeleteEntity';
 
 import type { Entity } from '../types';
 import type { EntitySchema } from './types';
@@ -19,10 +21,6 @@ interface CreateEntityResult<TEntity extends Entity = Entity> {
   entity: TEntity
 }
 
-interface DeleteEntityResult {
-  response: AxiosResponse
-}
-
 interface EntityActionEndpoints {
   post?: string
   delete?: string
@@ -37,10 +35,15 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   endpoints: EntityActionEndpoints,
   opts: UseEntityActionsOpts<TEntity> = {},
 ) {
+  const [entityType, listKey] = path;
+
   const api = useApi();
   const dispatch = useAppDispatch();
-  const getState = useGetState();
-  const [entityType, listKey] = path;
+
+  const deleteEntity = useDeleteEntity(entityType, (entityId) => {
+    if (!endpoints.delete) return Promise.reject(endpoints);
+    return api.delete(endpoints.delete.replace(':id', entityId));
+  });
 
   function createEntity(params: P, callbacks: EntityCallbacks = {}): Promise<CreateEntityResult<TEntity>> {
     if (!endpoints.post) return Promise.reject(endpoints);
@@ -60,29 +63,6 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
         response,
         entity,
       };
-    });
-  }
-
-  function deleteEntity(entityId: string): Promise<DeleteEntityResult> {
-    if (!endpoints.delete) return Promise.reject(endpoints);
-    // Get the entity before deleting, so we can reverse the action if the API request fails.
-    const entity = getState().entities[entityType]?.store[entityId];
-    // Optimistically delete the entity from the _store_ but keep the lists in tact.
-    dispatch(deleteEntities([entityId], entityType, { preserveLists: true }));
-
-    return api.delete(endpoints.delete.replaceAll(':id', entityId)).then((response) => {
-      // Success - finish deleting entity from the state.
-      dispatch(deleteEntities([entityId], entityType));
-
-      return {
-        response,
-      };
-    }).catch((e) => {
-      if (entity) {
-        // If the API failed, reimport the entity.
-        dispatch(importEntities([entity], entityType));
-      }
-      throw e;
     });
   }
 
