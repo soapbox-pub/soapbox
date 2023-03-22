@@ -7,8 +7,10 @@ import { deleteEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/hooks/api';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
-import { Group } from 'soapbox/types/entities';
+
+import type { Group } from 'soapbox/types/entities';
 
 interface IGroupActionButton {
   group: Group
@@ -33,7 +35,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
 
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
-  const isAdmin = group.relationship?.role === 'owner';
+  const isOwner = group.relationship?.role === GroupRoles.OWNER;
   const isBlocked = group.relationship?.blocked_by;
 
   const onJoinGroup = () => joinGroup.mutate({}, {
@@ -68,6 +70,17 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
     return null;
   }
 
+  if (isOwner) {
+    return (
+      <Button
+        theme='secondary'
+        to={`/groups/${group.id}/manage`}
+      >
+        <FormattedMessage id='group.manage' defaultMessage='Manage Group' />
+      </Button>
+    );
+  }
+
   if (isNonMember) {
     return (
       <Button
@@ -90,17 +103,6 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
         disabled={cancelRequest.isLoading}
       >
         <FormattedMessage id='group.cancel_request' defaultMessage='Cancel Request' />
-      </Button>
-    );
-  }
-
-  if (isAdmin) {
-    return (
-      <Button
-        theme='secondary'
-        to={`/groups/${group.id}/manage`}
-      >
-        <FormattedMessage id='group.manage' defaultMessage='Manage Group' />
       </Button>
     );
   }

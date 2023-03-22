@@ -766,6 +766,7 @@
   "gdpr.title": "{siteTitle} uses cookies",
   "getting_started.open_source_notice": "{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).",
   "group.cancel_request": "Cancel Request",
+  "group.delete.success": "Group successfully deleted",
   "group.demote.user.success": "@{name} is now a member",
   "group.group_mod_authorize": "Accept",
   "group.group_mod_authorize.success": "Accepted @{name} to group",
