@@ -8,6 +8,7 @@ import {
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
   EntityAction,
+  ENTITIES_INVALIDATE_LIST,
 } from './actions';
 import { createCache, createList, updateStore, updateList } from './utils';
 
@@ -114,6 +115,14 @@ const setFetching = (
   });
 };
 
+const invalidateEntityList = (state: State, entityType: string, listKey: string) => {
+  return produce(state, draft => {
+    const cache = draft[entityType] ?? createCache();
+    const list = cache.lists[listKey] ?? createList();
+    list.state.invalid = true;
+  });
+};
+
 /** Stores various entity data and lists in a one reducer. */
 function reducer(state: Readonly<State> = {}, action: EntityAction): State {
   switch (action.type) {
@@ -129,6 +138,8 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
       return setFetching(state, action.entityType, action.listKey, true);
     case ENTITIES_FETCH_FAIL:
       return setFetching(state, action.entityType, action.listKey, false, action.error);
+    case ENTITIES_INVALIDATE_LIST:
+      return invalidateEntityList(state, action.entityType, action.listKey);
     default:
       return state;
   }

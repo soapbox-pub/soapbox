@@ -5,7 +5,7 @@ import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi, useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
 import { filteredArray } from 'soapbox/schemas/utils';
 
-import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
+import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions';
 
 import { parseEntitiesPath } from './utils';
 
@@ -48,6 +48,7 @@ function useEntities<TEntity extends Entity>(
   const isFetched = useListState(path, 'fetched');
   const isError = !!useListState(path, 'error');
   const totalCount = useListState(path, 'totalCount');
+  const isInvalid = useListState(path, 'invalid');
 
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
@@ -72,6 +73,7 @@ function useEntities<TEntity extends Entity>(
         fetched: true,
         error: null,
         lastFetchedAt: new Date(),
+        invalid: false,
       }));
     } catch (error) {
       dispatch(entitiesFetchFail(entityType, listKey, error));
@@ -96,10 +98,19 @@ function useEntities<TEntity extends Entity>(
     }
   };
 
+  const invalidate = () => {
+    dispatch(invalidateEntityList(entityType, listKey));
+  };
+
   const staleTime = opts.staleTime ?? 60000;
 
   useEffect(() => {
-    if (isEnabled && !isFetching && (!lastFetchedAt || lastFetchedAt.getTime() + staleTime <= Date.now())) {
+    if (!isEnabled) return;
+    if (isFetching) return;
+    const isUnset = !lastFetchedAt;
+    const isStale = lastFetchedAt ? Date.now() >= lastFetchedAt.getTime() + staleTime : false;
+
+    if (isInvalid || isUnset || isStale) {
       fetchEntities();
     }
   }, [endpoint, isEnabled]);
@@ -116,6 +127,7 @@ function useEntities<TEntity extends Entity>(
     isFetched,
     isFetching,
     isLoading: isFetching && entities.length === 0,
+    invalidate,
   };
 }
 

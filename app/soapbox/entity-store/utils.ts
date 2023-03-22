@@ -43,6 +43,7 @@ const createListState = (): EntityListState => ({
   fetched: false,
   fetching: false,
   lastFetchedAt: undefined,
+  invalid: false,
 });
 
 export {

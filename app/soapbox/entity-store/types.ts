@@ -33,6 +33,8 @@ interface EntityListState {
   fetching: boolean
   /** Date of the last API fetch for this list. */
   lastFetchedAt: Date | undefined
+  /** Whether the entities should be refetched on the next component mount. */
+  invalid: boolean
 }
 
 /** Cache data pertaining to a paritcular entity type.. */

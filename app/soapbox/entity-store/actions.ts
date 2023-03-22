@@ -6,6 +6,7 @@ const ENTITIES_DISMISS = 'ENTITIES_DISMISS' as const;
 const ENTITIES_FETCH_REQUEST = 'ENTITIES_FETCH_REQUEST' as const;
 const ENTITIES_FETCH_SUCCESS = 'ENTITIES_FETCH_SUCCESS' as const;
 const ENTITIES_FETCH_FAIL = 'ENTITIES_FETCH_FAIL' as const;
+const ENTITIES_INVALIDATE_LIST = 'ENTITIES_INVALIDATE_LIST' as const;
 
 /** Action to import entities into the cache. */
 function importEntities(entities: Entity[], entityType: string, listKey?: string) {
@@ -66,6 +67,14 @@ function entitiesFetchFail(entityType: string, listKey: string | undefined, erro
   };
 }
 
+function invalidateEntityList(entityType: string, listKey: string) {
+  return {
+    type: ENTITIES_INVALIDATE_LIST,
+    entityType,
+    listKey,
+  };
+}
+
 /** Any action pertaining to entities. */
 type EntityAction =
   ReturnType<typeof importEntities>
@@ -73,7 +82,8 @@ type EntityAction =
   | ReturnType<typeof dismissEntities>
   | ReturnType<typeof entitiesFetchRequest>
   | ReturnType<typeof entitiesFetchSuccess>
-  | ReturnType<typeof entitiesFetchFail>;
+  | ReturnType<typeof entitiesFetchFail>
+  | ReturnType<typeof invalidateEntityList>;
 
 export {
   ENTITIES_IMPORT,
@@ -82,12 +92,14 @@ export {
   ENTITIES_FETCH_REQUEST,
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
+  ENTITIES_INVALIDATE_LIST,
   importEntities,
   deleteEntities,
   dismissEntities,
   entitiesFetchRequest,
   entitiesFetchSuccess,
   entitiesFetchFail,
+  invalidateEntityList,
   EntityAction,
 };
 
