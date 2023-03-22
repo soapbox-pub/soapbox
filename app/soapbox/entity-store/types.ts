@@ -23,6 +23,8 @@ interface EntityListState {
   next: string | undefined
   /** Previous URL for pagination, if any. */
   prev: string | undefined
+  /** Total number of items according to the API. */
+  totalCount: number
   /** Error returned from the API, if any. */
   error: any
   /** Whether data has already been fetched */

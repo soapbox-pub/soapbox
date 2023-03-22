@@ -47,6 +47,7 @@ function useEntities<TEntity extends Entity>(
   const lastFetchedAt = useListState(path, 'lastFetchedAt');
   const isFetched = useListState(path, 'fetched');
   const isError = !!useListState(path, 'error');
+  const totalCount = useListState(path, 'totalCount');
 
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
@@ -61,10 +62,12 @@ function useEntities<TEntity extends Entity>(
       const response = await api.get(url);
       const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
+      const numItems = (selectList(getState(), path)?.ids.size || 0) + entities.length;
 
       dispatch(entitiesFetchSuccess(entities, entityType, listKey, {
         next: getNextLink(response),
         prev: getPrevLink(response),
+        totalCount: Number(response.headers['x-total-count'] ?? numItems) || 0,
         fetching: false,
         fetched: true,
         error: null,
@@ -108,6 +111,7 @@ function useEntities<TEntity extends Entity>(
     fetchPreviousPage,
     hasNextPage: !!next,
     hasPreviousPage: !!prev,
+    totalCount,
     isError,
     isFetched,
     isFetching,

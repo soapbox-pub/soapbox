@@ -60,7 +60,10 @@ const deleteEntities = (
 
       if (!opts?.preserveLists) {
         for (const list of Object.values(cache.lists)) {
-          list?.ids.delete(id);
+          if (list) {
+            list.ids.delete(id);
+            list.state.totalCount--;
+          }
         }
       }
     }
@@ -82,6 +85,7 @@ const dismissEntities = (
     if (list) {
       for (const id of ids) {
         list.ids.delete(id);
+        list.state.totalCount--;
       }
 
       draft[entityType] = cache;

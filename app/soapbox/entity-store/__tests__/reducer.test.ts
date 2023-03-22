@@ -42,7 +42,8 @@ test('import entities into a list', () => {
   const cache = result.TestEntity as EntityCache<TestEntity>;
 
   expect(cache.store['2']!.msg).toBe('benis');
-  expect(cache.lists.thingies?.ids.size).toBe(3);
+  expect(cache.lists.thingies!.ids.size).toBe(3);
+  expect(cache.lists.thingies!.state.totalCount).toBe(3);
 
   // Now try adding an additional item.
   const entities2: TestEntity[] = [
@@ -54,7 +55,8 @@ test('import entities into a list', () => {
   const cache2 = result2.TestEntity as EntityCache<TestEntity>;
 
   expect(cache2.store['4']!.msg).toBe('hehe');
-  expect(cache2.lists.thingies?.ids.size).toBe(4);
+  expect(cache2.lists.thingies!.ids.size).toBe(4);
+  expect(cache2.lists.thingies!.state.totalCount).toBe(4);
 
   // Finally, update an item.
   const entities3: TestEntity[] = [
@@ -66,7 +68,8 @@ test('import entities into a list', () => {
   const cache3 = result3.TestEntity as EntityCache<TestEntity>;
 
   expect(cache3.store['2']!.msg).toBe('yolofam');
-  expect(cache3.lists.thingies?.ids.size).toBe(4); // unchanged
+  expect(cache3.lists.thingies!.ids.size).toBe(4); // unchanged
+  expect(cache3.lists.thingies!.state.totalCount).toBe(4);
 });
 
 test('fetching updates the list state', () => {
@@ -92,7 +95,7 @@ test('deleting items', () => {
       lists: {
         '': {
           ids: new Set(['1', '2', '3']),
-          state: createListState(),
+          state: { ...createListState(), totalCount: 3 },
         },
       },
     },
@@ -103,6 +106,7 @@ test('deleting items', () => {
 
   expect(result.TestEntity!.store).toMatchObject({ '2': { id: '2' } });
   expect([...result.TestEntity!.lists['']!.ids]).toEqual(['2']);
+  expect(result.TestEntity!.lists['']!.state.totalCount).toBe(1);
 });
 
 test('dismiss items', () => {
@@ -112,7 +116,7 @@ test('dismiss items', () => {
       lists: {
         'yolo': {
           ids: new Set(['1', '2', '3']),
-          state: createListState(),
+          state: { ...createListState(), totalCount: 3 },
         },
       },
     },
@@ -123,4 +127,5 @@ test('dismiss items', () => {
 
   expect(result.TestEntity!.store).toMatchObject(state.TestEntity!.store);
   expect([...result.TestEntity!.lists.yolo!.ids]).toEqual(['2']);
+  expect(result.TestEntity!.lists.yolo!.state.totalCount).toBe(1);
 });
