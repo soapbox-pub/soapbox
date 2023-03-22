@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
@@ -56,7 +56,16 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   const intl = useIntl();
 
   const { group } = useGroup(id);
-  const { accounts, isLoading, authorize, reject } = useGroupMembershipRequests(id);
+
+  const {
+    accounts: entities,
+    isLoading,
+    authorize,
+    reject,
+    isFetching,
+  } = useGroupMembershipRequests(id);
+
+  const accounts = useMemo(() => entities, [isFetching]);
 
   if (!group || !group.relationship || isLoading) {
     return (
