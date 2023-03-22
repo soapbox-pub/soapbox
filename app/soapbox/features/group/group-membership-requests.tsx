@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
@@ -57,15 +57,7 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
 
   const { group } = useGroup(id);
 
-  const {
-    accounts: entities,
-    isLoading,
-    authorize,
-    reject,
-    isFetching,
-  } = useGroupMembershipRequests(id);
-
-  const accounts = useMemo(() => entities, [isFetching]);
+  const { accounts, authorize, reject, isLoading } = useGroupMembershipRequests(id);
 
   if (!group || !group.relationship || isLoading) {
     return (
@@ -96,7 +88,7 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   }
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}/manage`}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='group_membership_requests'
         emptyMessage={<FormattedMessage id='empty_column.group_membership_requests' defaultMessage='There are no pending membership requests for this group.' />}
