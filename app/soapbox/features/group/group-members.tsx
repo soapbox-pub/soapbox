@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
@@ -44,12 +45,14 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         showLoading={!group || isLoading && members.length === 0}
         placeholderComponent={PlaceholderAccount}
         placeholderCount={3}
-        className='divide-y divide-solid divide-gray-300'
+        className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
         itemClassName='py-3 last:pb-0'
-      >
-        {(pending.length > 0) && (
-          <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pending.length} />
+        prepend={(pending.length > 0) && (
+          <div className={clsx('py-3', { 'border-b border-gray-200 dark:border-gray-800': members.length })}>
+            <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pending.length} />
+          </div>
         )}
+      >
         {members.map((member) => (
           <GroupMemberListItem
             group={group as Group}
