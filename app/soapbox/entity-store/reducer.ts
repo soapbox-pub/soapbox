@@ -3,6 +3,7 @@ import produce, { enableMapSet } from 'immer';
 import {
   ENTITIES_IMPORT,
   ENTITIES_DELETE,
+  ENTITIES_DISMISS,
   ENTITIES_FETCH_REQUEST,
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
@@ -68,6 +69,26 @@ const deleteEntities = (
   });
 };
 
+const dismissEntities = (
+  state: State,
+  entityType: string,
+  ids: Iterable<string>,
+  listKey: string,
+) => {
+  return produce(state, draft => {
+    const cache = draft[entityType] ?? createCache();
+    const list = cache.lists[listKey];
+
+    if (list) {
+      for (const id of ids) {
+        list.ids.delete(id);
+      }
+
+      draft[entityType] = cache;
+    }
+  });
+};
+
 const setFetching = (
   state: State,
   entityType: string,
@@ -96,6 +117,8 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
       return importEntities(state, action.entityType, action.entities, action.listKey);
     case ENTITIES_DELETE:
       return deleteEntities(state, action.entityType, action.ids, action.opts);
+    case ENTITIES_DISMISS:
+      return dismissEntities(state, action.entityType, action.ids, action.listKey);
     case ENTITIES_FETCH_SUCCESS:
       return importEntities(state, action.entityType, action.entities, action.listKey, action.newState);
     case ENTITIES_FETCH_REQUEST:

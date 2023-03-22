@@ -1,4 +1,10 @@
-import { deleteEntities, entitiesFetchFail, entitiesFetchRequest, importEntities } from '../actions';
+import {
+  deleteEntities,
+  dismissEntities,
+  entitiesFetchFail,
+  entitiesFetchRequest,
+  importEntities,
+} from '../actions';
 import reducer, { State } from '../reducer';
 import { createListState } from '../utils';
 
@@ -97,4 +103,24 @@ test('deleting items', () => {
 
   expect(result.TestEntity!.store).toMatchObject({ '2': { id: '2' } });
   expect([...result.TestEntity!.lists['']!.ids]).toEqual(['2']);
+});
+
+test('dismiss items', () => {
+  const state: State = {
+    TestEntity: {
+      store: { '1': { id: '1' }, '2': { id: '2' }, '3': { id: '3' } },
+      lists: {
+        'yolo': {
+          ids: new Set(['1', '2', '3']),
+          state: createListState(),
+        },
+      },
+    },
+  };
+
+  const action = dismissEntities(['3', '1'], 'TestEntity', 'yolo');
+  const result = reducer(state, action);
+
+  expect(result.TestEntity!.store).toMatchObject(state.TestEntity!.store);
+  expect([...result.TestEntity!.lists.yolo!.ids]).toEqual(['2']);
 });
