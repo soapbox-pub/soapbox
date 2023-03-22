@@ -156,7 +156,7 @@ const Tabs = ({ items, activeItem }: ITabs) => {
       >
         <div className='relative'>
           {count ? (
-            <span className='absolute -top-2 left-full ml-1'>
+            <span className='absolute left-full ml-2'>
               <Counter count={count} />
             </span>
           ) : null}
