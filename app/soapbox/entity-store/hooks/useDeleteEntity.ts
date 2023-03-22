@@ -2,17 +2,18 @@ import { useAppDispatch, useGetState } from 'soapbox/hooks';
 
 import { deleteEntities, importEntities } from '../actions';
 
-interface DeleteEntityResult<T> {
-  result: T
-}
-
 type DeleteFn<T> = (entityId: string) => Promise<T> | T;
 
+/**
+ * Optimistically deletes an entity from the store.
+ * This hook should be used to globally delete an entity from all lists.
+ * To remove an entity from a single list, see `useDismissEntity`.
+ */
 function useDeleteEntity<T = unknown>(entityType: string, deleteFn: DeleteFn<T>) {
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
-  return async function deleteEntity(entityId: string): Promise<DeleteEntityResult<T>> {
+  return async function deleteEntity(entityId: string): Promise<T> {
     // Get the entity before deleting, so we can reverse the action if the API request fails.
     const entity = getState().entities[entityType]?.store[entityId];
 
@@ -23,7 +24,7 @@ function useDeleteEntity<T = unknown>(entityType: string, deleteFn: DeleteFn<T>)
       const result = await deleteFn(entityId);
       // Success - finish deleting entity from the state.
       dispatch(deleteEntities([entityId], entityType));
-      return { result };
+      return result;
     } catch (e) {
       if (entity) {
         // If the API failed, reimport the entity.
