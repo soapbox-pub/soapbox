@@ -12,7 +12,7 @@ import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbo
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
@@ -254,7 +254,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, { status }));
+        dispatch(initReport(ReportableEntities.STATUS, account, { status }));
       },
     }));
   };
@@ -271,7 +271,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(status.account as Account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, status.account as Account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {

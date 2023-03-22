@@ -12,7 +12,7 @@ import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
 import Badge from 'soapbox/components/badge';
@@ -136,7 +136,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         secondary: intl.formatMessage(messages.blockAndReport),
         onSecondary: () => {
           dispatch(blockAccount(account.id));
-          dispatch(initReport(account));
+          dispatch(initReport(ReportableEntities.ACCOUNT, account));
         },
       }));
     }
@@ -171,7 +171,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onReport = () => {
-    dispatch(initReport(account));
+    dispatch(initReport(ReportableEntities.ACCOUNT, account));
   };
 
   const onMute = () => {
