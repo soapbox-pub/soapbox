@@ -22,8 +22,7 @@ function useEntityActions<TEntity extends Entity = Entity, Params = any>(
   opts: UseEntityActionsOpts<TEntity> = {},
 ) {
   const api = useApi();
-  const path = parseEntitiesPath(expandedPath);
-  const [entityType] = path;
+  const { entityType, path } = parseEntitiesPath(expandedPath);
 
   const deleteEntity = useDeleteEntity(entityType, (entityId) => {
     if (!endpoints.delete) return Promise.reject(endpoints);

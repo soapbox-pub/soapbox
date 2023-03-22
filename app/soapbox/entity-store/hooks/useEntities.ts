@@ -39,9 +39,7 @@ function useEntities<TEntity extends Entity>(
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
-  const path = parseEntitiesPath(expandedPath);
-  const [entityType, listKey] = path;
-
+  const { entityType, listKey, path } = parseEntitiesPath(expandedPath);
   const entities = useAppSelector(state => selectEntities<TEntity>(state, path));
 
   const isEnabled = opts.enabled ?? true;

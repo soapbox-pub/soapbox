@@ -35,8 +35,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Params = any, Result =
   createFn: CreateFn<Params, Result>,
   opts: UseCreateEntityOpts<TEntity> = {},
 ) {
-  const path = parseEntitiesPath(expandedPath);
-  const [entityType, listKey] = path;
+  const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
   const dispatch = useAppDispatch();
 

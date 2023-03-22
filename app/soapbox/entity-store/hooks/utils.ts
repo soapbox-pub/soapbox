@@ -1,9 +1,15 @@
 import type { EntitiesPath, ExpandedEntitiesPath } from './types';
 
-function parseEntitiesPath(expandedPath: ExpandedEntitiesPath): EntitiesPath {
+function parseEntitiesPath(expandedPath: ExpandedEntitiesPath) {
   const [entityType, ...listKeys] = expandedPath;
   const listKey = (listKeys || []).join(':');
-  return [entityType, listKey];
+  const path: EntitiesPath = [entityType, listKey];
+
+  return {
+    entityType,
+    listKey,
+    path,
+  };
 }
 
 export { parseEntitiesPath };

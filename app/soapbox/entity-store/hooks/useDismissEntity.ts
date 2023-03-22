@@ -13,8 +13,7 @@ type DismissFn<T> = (entityId: string) => Promise<T> | T;
  * To remove an entity globally from all lists, see `useDeleteEntity`.
  */
 function useDismissEntity<T = unknown>(expandedPath: ExpandedEntitiesPath, dismissFn: DismissFn<T>) {
-  const path = parseEntitiesPath(expandedPath);
-  const [entityType, listKey] = path;
+  const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
   const dispatch = useAppDispatch();
 
