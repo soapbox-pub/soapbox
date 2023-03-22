@@ -2,15 +2,20 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import { dismissEntities } from '../actions';
 
-type EntityPath = [entityType: string, listKey: string]
+import { parseEntitiesPath } from './utils';
+
+import type { ExpandedEntitiesPath } from './types';
+
 type DismissFn<T> = (entityId: string) => Promise<T> | T;
 
 /**
  * Removes an entity from a specific list.
  * To remove an entity globally from all lists, see `useDeleteEntity`.
  */
-function useDismissEntity<T = unknown>(path: EntityPath, dismissFn: DismissFn<T>) {
+function useDismissEntity<T = unknown>(expandedPath: ExpandedEntitiesPath, dismissFn: DismissFn<T>) {
+  const path = parseEntitiesPath(expandedPath);
   const [entityType, listKey] = path;
+
   const dispatch = useAppDispatch();
 
   // TODO: optimistic dismissing

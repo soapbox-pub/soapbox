@@ -7,21 +7,11 @@ import { filteredArray } from 'soapbox/schemas/utils';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
 
-import type { Entity, EntityListState } from '../types';
-import type { EntitySchema } from './types';
-import type { RootState } from 'soapbox/store';
+import { parseEntitiesPath } from './utils';
 
-/** Tells us where to find/store the entity in the cache. */
-type EntityPath = [
-  /** Name of the entity type for use in the global cache, eg `'Notification'`. */
-  entityType: string,
-  /**
-   * Name of a particular index of this entity type.
-   * Multiple params get combined into one string with a `:` separator.
-   * You can use empty-string (`''`) if you don't need separate lists.
-   */
-  ...listKeys: string[],
-]
+import type { Entity, EntityListState } from '../types';
+import type { EntitiesPath, EntitySchema, ExpandedEntitiesPath } from './types';
+import type { RootState } from 'soapbox/store';
 
 /** Additional options for the hook. */
 interface UseEntitiesOpts<TEntity extends Entity> {
@@ -39,7 +29,7 @@ interface UseEntitiesOpts<TEntity extends Entity> {
 /** A hook for fetching and displaying API entities. */
 function useEntities<TEntity extends Entity>(
   /** Tells us where to find/store the entity in the cache. */
-  path: EntityPath,
+  expandedPath: ExpandedEntitiesPath,
   /** API route to GET, eg `'/api/v1/notifications'`. If undefined, nothing will be fetched. */
   endpoint: string | undefined,
   /** Additional options for the hook. */
@@ -49,8 +39,8 @@ function useEntities<TEntity extends Entity>(
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
-  const [entityType, ...listKeys] = path;
-  const listKey = listKeys.join(':');
+  const path = parseEntitiesPath(expandedPath);
+  const [entityType, listKey] = path;
 
   const entities = useAppSelector(state => selectEntities<TEntity>(state, path));
 
@@ -128,10 +118,10 @@ function useEntities<TEntity extends Entity>(
 }
 
 /** Get cache at path from Redux. */
-const selectCache = (state: RootState, path: EntityPath) => state.entities[path[0]];
+const selectCache = (state: RootState, path: EntitiesPath) => state.entities[path[0]];
 
 /** Get list at path from Redux. */
-const selectList = (state: RootState, path: EntityPath) => {
+const selectList = (state: RootState, path: EntitiesPath) => {
   const [, ...listKeys] = path;
   const listKey = listKeys.join(':');
 
@@ -139,18 +129,18 @@ const selectList = (state: RootState, path: EntityPath) => {
 };
 
 /** Select a particular item from a list state. */
-function selectListState<K extends keyof EntityListState>(state: RootState, path: EntityPath, key: K) {
+function selectListState<K extends keyof EntityListState>(state: RootState, path: EntitiesPath, key: K) {
   const listState = selectList(state, path)?.state;
   return listState ? listState[key] : undefined;
 }
 
 /** Hook to get a particular item from a list state. */
-function useListState<K extends keyof EntityListState>(path: EntityPath, key: K) {
+function useListState<K extends keyof EntityListState>(path: EntitiesPath, key: K) {
   return useAppSelector(state => selectListState(state, path, key));
 }
 
 /** Get list of entities from Redux. */
-function selectEntities<TEntity extends Entity>(state: RootState, path: EntityPath): readonly TEntity[] {
+function selectEntities<TEntity extends Entity>(state: RootState, path: EntitiesPath): readonly TEntity[] {
   const cache = selectCache(state, path);
   const list = selectList(state, path);
 

@@ -4,10 +4,11 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
 
-import type { Entity } from '../types';
-import type { EntitySchema } from './types';
+import { parseEntitiesPath } from './utils';
 
-type EntityPath = [entityType: string, listKey?: string]
+import type { Entity } from '../types';
+import type { EntitySchema, ExpandedEntitiesPath } from './types';
+
 type CreateFn<Params, Result> = (params: Params) => Promise<Result> | Result;
 
 interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
@@ -30,11 +31,13 @@ interface EntityCallbacks<TEntity extends Entity = Entity, Error = unknown> {
 }
 
 function useCreateEntity<TEntity extends Entity = Entity, Params = any, Result = unknown>(
-  path: EntityPath,
+  expandedPath: ExpandedEntitiesPath,
   createFn: CreateFn<Params, Result>,
   opts: UseCreateEntityOpts<TEntity> = {},
 ) {
+  const path = parseEntitiesPath(expandedPath);
   const [entityType, listKey] = path;
+
   const dispatch = useAppDispatch();
 
   return async function createEntity(

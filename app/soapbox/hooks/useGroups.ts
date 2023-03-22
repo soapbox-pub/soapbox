@@ -7,7 +7,7 @@ import { groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas/grou
 
 function useGroups() {
   const { entities, ...result } = useEntities<Group>(
-    [Entities.GROUPS, ''],
+    [Entities.GROUPS],
     '/api/v1/groups',
     { schema: groupSchema },
   );
