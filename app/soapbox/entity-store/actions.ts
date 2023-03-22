@@ -48,13 +48,20 @@ function entitiesFetchRequest(entityType: string, listKey?: string) {
   };
 }
 
-function entitiesFetchSuccess(entities: Entity[], entityType: string, listKey?: string, newState?: EntityListState) {
+function entitiesFetchSuccess(
+  entities: Entity[],
+  entityType: string,
+  listKey?: string,
+  newState?: EntityListState,
+  overwrite = false,
+) {
   return {
     type: ENTITIES_FETCH_SUCCESS,
     entityType,
     entities,
     listKey,
     newState,
+    overwrite,
   };
 }
 

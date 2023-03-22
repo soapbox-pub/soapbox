@@ -3,6 +3,7 @@ import {
   dismissEntities,
   entitiesFetchFail,
   entitiesFetchRequest,
+  entitiesFetchSuccess,
   importEntities,
 } from '../actions';
 import reducer, { State } from '../reducer';
@@ -88,6 +89,44 @@ test('failure adds the error to the state', () => {
   expect(result.TestEntity!.lists.thingies!.state.error).toBe(error);
 });
 
+test('import entities with override', () => {
+  const state: State = {
+    TestEntity: {
+      store: { '1': { id: '1' }, '2': { id: '2' }, '3': { id: '3' } },
+      lists: {
+        thingies: {
+          ids: new Set(['1', '2', '3']),
+          state: { ...createListState(), totalCount: 3 },
+        },
+      },
+    },
+  };
+
+  const entities: TestEntity[] = [
+    { id: '4', msg: 'yolo' },
+    { id: '5', msg: 'benis' },
+  ];
+
+  const now = new Date();
+
+  const action = entitiesFetchSuccess(entities, 'TestEntity', 'thingies', {
+    next: undefined,
+    prev: undefined,
+    totalCount: 2,
+    error: null,
+    fetched: true,
+    fetching: false,
+    lastFetchedAt: now,
+    invalid: false,
+  }, true);
+
+  const result = reducer(state, action);
+  const cache = result.TestEntity as EntityCache<TestEntity>;
+
+  expect([...cache.lists.thingies!.ids]).toEqual(['4', '5']);
+  expect(cache.lists.thingies!.state.lastFetchedAt).toBe(now); // Also check that newState worked
+});
+
 test('deleting items', () => {
   const state: State = {
     TestEntity: {
@@ -114,7 +153,7 @@ test('dismiss items', () => {
     TestEntity: {
       store: { '1': { id: '1' }, '2': { id: '2' }, '3': { id: '3' } },
       lists: {
-        'yolo': {
+        yolo: {
           ids: new Set(['1', '2', '3']),
           state: { ...createListState(), totalCount: 3 },
         },

@@ -53,7 +53,7 @@ function useEntities<TEntity extends Entity>(
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
 
-  const fetchPage = async(url: string): Promise<void> => {
+  const fetchPage = async(url: string, overwrite = false): Promise<void> => {
     // Get `isFetching` state from the store again to prevent race conditions.
     const isFetching = selectListState(getState(), path, 'fetching');
     if (isFetching) return;
@@ -74,7 +74,7 @@ function useEntities<TEntity extends Entity>(
         error: null,
         lastFetchedAt: new Date(),
         invalid: false,
-      }));
+      }, overwrite));
     } catch (error) {
       dispatch(entitiesFetchFail(entityType, listKey, error));
     }
@@ -82,7 +82,7 @@ function useEntities<TEntity extends Entity>(
 
   const fetchEntities = async(): Promise<void> => {
     if (endpoint) {
-      await fetchPage(endpoint);
+      await fetchPage(endpoint, true);
     }
   };
 

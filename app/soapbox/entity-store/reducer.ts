@@ -29,17 +29,25 @@ const importEntities = (
   entities: Entity[],
   listKey?: string,
   newState?: EntityListState,
+  overwrite = false,
 ): State => {
   return produce(state, draft => {
     const cache = draft[entityType] ?? createCache();
     cache.store = updateStore(cache.store, entities);
 
     if (typeof listKey === 'string') {
-      let list = { ...(cache.lists[listKey] ?? createList()) };
+      let list = cache.lists[listKey] ?? createList();
+
+      if (overwrite) {
+        list.ids = new Set();
+      }
+
       list = updateList(list, entities);
+
       if (newState) {
         list.state = newState;
       }
+
       cache.lists[listKey] = list;
     }
 
@@ -133,7 +141,7 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
     case ENTITIES_DISMISS:
       return dismissEntities(state, action.entityType, action.ids, action.listKey);
     case ENTITIES_FETCH_SUCCESS:
-      return importEntities(state, action.entityType, action.entities, action.listKey, action.newState);
+      return importEntities(state, action.entityType, action.entities, action.listKey, action.newState, action.overwrite);
     case ENTITIES_FETCH_REQUEST:
       return setFetching(state, action.entityType, action.listKey, true);
     case ENTITIES_FETCH_FAIL:
