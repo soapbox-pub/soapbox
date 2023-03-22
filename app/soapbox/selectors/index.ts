@@ -7,6 +7,7 @@ import {
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { Entities } from 'soapbox/entity-store/entities';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
@@ -14,9 +15,10 @@ import { getFeatures } from 'soapbox/utils/features';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ContextType } from 'soapbox/normalizers/filter';
+import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
+import type { Filter as FilterEntity, Notification, Status, Group } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
@@ -180,11 +182,11 @@ type APIStatus = { id: string, username?: string };
 export const makeGetStatus = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIStatus) => state.statuses.get(id),
-      (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
-      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || ''),
-      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || ''),
-      (state: RootState, { id }: APIStatus) => state.groups.items.get(state.statuses.get(id)?.group || ''),
+      (state: RootState, { id }: APIStatus) => state.statuses.get(id) as Status | undefined,
+      (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || '') as Status | undefined,
+      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || '') as ReducerAccount | undefined,
+      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || '') as ReducerAccount | undefined,
+      (state: RootState, { id }: APIStatus) => state.entities[Entities.GROUPS]?.store[state.statuses.get(id)?.group || ''] as Group | undefined,
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
       (state: RootState) => state.me,
@@ -207,7 +209,7 @@ export const makeGetStatus = () => {
         statusReblog = undefined;
       }
 
-      return statusBase.withMutations(map => {
+      return statusBase.withMutations((map: Status) => {
         map.set('reblog', statusReblog || null);
         // @ts-ignore :(
         map.set('account', accountBase || null);
