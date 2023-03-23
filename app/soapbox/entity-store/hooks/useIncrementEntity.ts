@@ -21,9 +21,9 @@ function useIncrementEntity<T = unknown>(
   const dispatch = useAppDispatch();
 
   return async function incrementEntity(entityId: string): Promise<void> {
+    dispatch(incrementEntities(entityType, listKey, diff));
     try {
       await incrementFn(entityId);
-      dispatch(incrementEntities(entityType, listKey, diff));
     } catch (e) {
       dispatch(incrementEntities(entityType, listKey, diff * -1));
     }
