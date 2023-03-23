@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import z from 'zod';
 
 import { getNextLink, getPrevLink } from 'soapbox/api';
-import { useApi, useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
 import { filteredArray } from 'soapbox/schemas/utils';
 import { realNumberSchema } from 'soapbox/utils/numbers';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions';
 
-import { parseEntitiesPath, toAxiosRequest } from './utils';
+import { useEntityRequest } from './useEntityRequest';
+import { parseEntitiesPath } from './utils';
 
 import type { Entity, EntityListState } from '../types';
 import type { EntitiesPath, EntityRequest, EntitySchema, ExpandedEntitiesPath } from './types';
@@ -32,11 +33,11 @@ function useEntities<TEntity extends Entity>(
   /** Tells us where to find/store the entity in the cache. */
   expandedPath: ExpandedEntitiesPath,
   /** API route to GET, eg `'/api/v1/notifications'`. If undefined, nothing will be fetched. */
-  request: EntityRequest,
+  entityRequest: EntityRequest,
   /** Additional options for the hook. */
   opts: UseEntitiesOpts<TEntity> = {},
 ) {
-  const api = useApi();
+  const { request } = useEntityRequest();
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
@@ -61,7 +62,7 @@ function useEntities<TEntity extends Entity>(
 
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
-      const response = await api.request(toAxiosRequest(req));
+      const response = await request(req);
       const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
       const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
@@ -82,7 +83,7 @@ function useEntities<TEntity extends Entity>(
   };
 
   const fetchEntities = async(): Promise<void> => {
-    await fetchPage(request, true);
+    await fetchPage(entityRequest, true);
   };
 
   const fetchNextPage = async(): Promise<void> => {
@@ -112,7 +113,7 @@ function useEntities<TEntity extends Entity>(
     if (isInvalid || isUnset || isStale) {
       fetchEntities();
     }
-  }, [request, isEnabled]);
+  }, [entityRequest, isEnabled]);
 
   return {
     entities,

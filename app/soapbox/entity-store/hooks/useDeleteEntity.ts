@@ -1,9 +1,8 @@
-import { useState } from 'react';
-
-import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
+import { useAppDispatch, useGetState } from 'soapbox/hooks';
 
 import { deleteEntities, importEntities } from '../actions';
 
+import { useEntityRequest } from './useEntityRequest';
 import { toAxiosRequest } from './utils';
 
 import type { EntityCallbacks, EntityRequest } from './types';
@@ -15,16 +14,13 @@ import type { EntityCallbacks, EntityRequest } from './types';
  */
 function useDeleteEntity(
   entityType: string,
-  request: EntityRequest,
+  entityRequest: EntityRequest,
 ) {
-  const api = useApi();
   const dispatch = useAppDispatch();
   const getState = useGetState();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { request, isLoading } = useEntityRequest();
 
   async function deleteEntity(entityId: string, callbacks: EntityCallbacks<string> = {}): Promise<void> {
-    setIsLoading(true);
-
     // Get the entity before deleting, so we can reverse the action if the API request fails.
     const entity = getState().entities[entityType]?.store[entityId];
 
@@ -33,10 +29,10 @@ function useDeleteEntity(
 
     try {
       // HACK: replace occurrences of `:id` in the URL. Maybe there's a better way?
-      const axiosReq = toAxiosRequest(request);
+      const axiosReq = toAxiosRequest(entityRequest);
       axiosReq.url?.replaceAll(':id', entityId);
 
-      await api.request(axiosReq);
+      await request(axiosReq);
 
       // Success - finish deleting entity from the state.
       dispatch(deleteEntities([entityId], entityType));
@@ -54,8 +50,6 @@ function useDeleteEntity(
         callbacks.onError(e);
       }
     }
-
-    setIsLoading(false);
   }
 
   return {

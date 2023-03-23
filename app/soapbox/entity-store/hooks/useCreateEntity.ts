@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { z } from 'zod';
 
-import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
 
+import { useEntityRequest } from './useEntityRequest';
 import { parseEntitiesPath, toAxiosRequest } from './utils';
 
 import type { Entity } from '../types';
@@ -16,21 +16,18 @@ interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
 
 function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
   expandedPath: ExpandedEntitiesPath,
-  request: EntityRequest,
+  entityRequest: EntityRequest,
   opts: UseCreateEntityOpts<TEntity> = {},
 ) {
-  const api = useApi();
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { request, isLoading } = useEntityRequest();
   const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
   async function createEntity(data: Data, callbacks: EntityCallbacks<TEntity> = {}): Promise<void> {
-    setIsLoading(true);
-
     try {
-      const result = await api.request({
-        ...toAxiosRequest(request),
+      const result = await request({
+        ...toAxiosRequest(entityRequest),
         data,
       });
 
@@ -48,8 +45,6 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
         callbacks.onError(error);
       }
     }
-
-    setIsLoading(false);
   }
 
   return {
