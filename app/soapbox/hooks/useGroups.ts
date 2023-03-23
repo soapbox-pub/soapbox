@@ -11,7 +11,7 @@ function useGroups() {
   const features = useFeatures();
 
   const { entities, ...result } = useEntities<Group>(
-    [Entities.GROUPS, ''],
+    [Entities.GROUPS],
     '/api/v1/groups',
     { enabled: features.groups, schema: groupSchema },
   );

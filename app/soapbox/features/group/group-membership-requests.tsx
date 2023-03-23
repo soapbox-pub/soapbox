@@ -1,70 +1,48 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { authorizeGroupMembershipRequest, fetchGroupMembershipRequests, rejectGroupMembershipRequest } from 'soapbox/actions/groups';
 import Account from 'soapbox/components/account';
+import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useGroup } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
+import { Column, HStack, Spinner } from 'soapbox/components/ui';
+import { useGroup } from 'soapbox/hooks';
+import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
+
+import type { Account as AccountEntity } from 'soapbox/schemas';
 
 type RouteParams = { id: string };
 
 const messages = defineMessages({
   heading: { id: 'column.group_pending_requests', defaultMessage: 'Pending requests' },
-  authorize: { id: 'group.group_mod_authorize', defaultMessage: 'Accept' },
-  authorized: { id: 'group.group_mod_authorize.success', defaultMessage: 'Accepted @{name} to group' },
-  reject: { id: 'group.group_mod_reject', defaultMessage: 'Reject' },
-  rejected: { id: 'group.group_mod_reject.success', defaultMessage: 'Rejected @{name} from group' },
+  authorizeFail: { id: 'group.group_mod_authorize.fail', defaultMessage: 'Failed to approve @{name}' },
+  rejectFail: { id: 'group.group_mod_reject.fail', defaultMessage: 'Failed to reject @{name}' },
 });
 
 interface IMembershipRequest {
-  accountId: string
-  groupId: string
+  account: AccountEntity
+  onAuthorize(account: AccountEntity): Promise<unknown>
+  onReject(account: AccountEntity): Promise<unknown>
 }
 
-const MembershipRequest: React.FC<IMembershipRequest> = ({ accountId, groupId }) => {
-  const intl = useIntl();
-  const dispatch = useAppDispatch();
-
-  const getAccount = useCallback(makeGetAccount(), []);
-
-  const account = useAppSelector((state) => getAccount(state, accountId));
-
+const MembershipRequest: React.FC<IMembershipRequest> = ({ account, onAuthorize, onReject }) => {
   if (!account) return null;
 
-  const handleAuthorize = () =>
-    dispatch(authorizeGroupMembershipRequest(groupId, accountId)).then(() => {
-      toast.success(intl.formatMessage(messages.authorized, { name: account.acct }));
-    });
-
-  const handleReject = () =>
-    dispatch(rejectGroupMembershipRequest(groupId, accountId)).then(() => {
-      toast.success(intl.formatMessage(messages.rejected, { name: account.acct }));
-    });
+  const handleAuthorize = () => onAuthorize(account);
+  const handleReject = () => onReject(account);
 
   return (
     <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
       <div className='w-full'>
         <Account account={account} withRelationship={false} />
       </div>
-      <HStack space={2}>
-        <Button
-          theme='secondary'
-          size='sm'
-          text={intl.formatMessage(messages.authorize)}
-          onClick={handleAuthorize}
-        />
-        <Button
-          theme='danger'
-          size='sm'
-          text={intl.formatMessage(messages.reject)}
-          onClick={handleReject}
-        />
-      </HStack>
+
+      <AuthorizeRejectButtons
+        onAuthorize={handleAuthorize}
+        onReject={handleReject}
+      />
     </HStack>
   );
 };
@@ -74,19 +52,14 @@ interface IGroupMembershipRequests {
 }
 
 const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params }) => {
-  const intl = useIntl();
-  const dispatch = useAppDispatch();
-
   const id = params?.id;
+  const intl = useIntl();
 
   const { group } = useGroup(id);
-  const accountIds = useAppSelector((state) => state.user_lists.membership_requests.get(id)?.items);
 
-  useEffect(() => {
-    dispatch(fetchGroupMembershipRequests(id));
-  }, [id]);
+  const { accounts, authorize, reject, isLoading } = useGroupMembershipRequests(id);
 
-  if (!group || !group.relationship || !accountIds) {
+  if (!group || !group.relationship || isLoading) {
     return (
       <Column label={intl.formatMessage(messages.heading)}>
         <Spinner />
@@ -95,20 +68,39 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   }
 
   if (!group.relationship.role || !['owner', 'admin', 'moderator'].includes(group.relationship.role)) {
-    return (<ColumnForbidden />);
+    return <ColumnForbidden />;
   }
 
-  const emptyMessage = <FormattedMessage id='empty_column.group_membership_requests' defaultMessage='There are no pending membership requests for this group.' />;
+  async function handleAuthorize(account: AccountEntity) {
+    try {
+      await authorize(account.id);
+    } catch (_e) {
+      toast.error(intl.formatMessage(messages.authorizeFail, { name: account.username }));
+    }
+  }
+
+  async function handleReject(account: AccountEntity) {
+    try {
+      await reject(account.id);
+    } catch (_e) {
+      toast.error(intl.formatMessage(messages.rejectFail, { name: account.username }));
+    }
+  }
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}/manage`}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='group_membership_requests'
-        emptyMessage={emptyMessage}
+        emptyMessage={<FormattedMessage id='empty_column.group_membership_requests' defaultMessage='There are no pending membership requests for this group.' />}
       >
-        {accountIds.map((accountId) =>
-          <MembershipRequest key={accountId} accountId={accountId} groupId={id} />,
-        )}
+        {accounts.map((account) => (
+          <MembershipRequest
+            key={account.id}
+            account={account}
+            onAuthorize={handleAuthorize}
+            onReject={handleReject}
+          />
+        ))}
       </ScrollableList>
     </Column>
   );

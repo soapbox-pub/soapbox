@@ -6,9 +6,7 @@ import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { importEntities } from '../actions';
 
 import type { Entity } from '../types';
-import type { EntitySchema } from './types';
-
-type EntityPath = [entityType: string, entityId: string]
+import type { EntitySchema, EntityPath } from './types';
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {
