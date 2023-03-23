@@ -8,7 +8,7 @@ import {
   changeGroupEditorMedia,
 } from 'soapbox/actions/groups';
 import Icon from 'soapbox/components/icon';
-import { Avatar, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
+import { Avatar, Form, FormGroup, HStack, Input, Streamfield, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
@@ -105,6 +105,7 @@ const DetailsStep = () => {
 
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
   const [headerSrc, setHeaderSrc] = useState<string | null>(null);
+  const [hashtags, setHashtags] = useState<string[][]>([[]]);
 
   const attachmentTypes = useAppSelector(
     state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
@@ -116,6 +117,16 @@ const DetailsStep = () => {
 
   const onChangeDescription: React.ChangeEventHandler<HTMLTextAreaElement> = ({ target }) => {
     dispatch(changeGroupEditorDescription(target.value));
+  };
+
+  const handleAddHashtag = () => {
+    setHashtags([...hashtags, []]);
+  };
+
+  const handleRemoveHashtag = (i: number) => {
+    const newHashtags = [...hashtags];
+    newHashtags.splice(i);
+    return newHashtags;
   };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -153,6 +164,7 @@ const DetailsStep = () => {
         <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
         <AvatarPicker src={avatarSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
       </div>
+
       <FormGroup
         labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}
       >
@@ -164,6 +176,7 @@ const DetailsStep = () => {
           maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_name']))}
         />
       </FormGroup>
+
       <FormGroup
         labelText={<FormattedMessage id='manage_group.fields.description_label' defaultMessage='Description' />}
       >
@@ -175,7 +188,32 @@ const DetailsStep = () => {
           maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_description']))}
         />
       </FormGroup>
+
+      <Streamfield
+        label='Topics'
+        hint='Add up to 3 keywords that will serve as core topics of discussion in the group.'
+        component={HashtagField}
+        values={hashtags}
+        onChange={setHashtags}
+        onAddItem={handleAddHashtag}
+        onRemoveItem={handleRemoveHashtag}
+      />
     </Form>
+  );
+};
+
+interface IHashtagField {
+  value: string
+  onChange: (value: string) => void
+}
+
+const HashtagField: React.FC<IHashtagField> = ({ value, onChange }) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    onChange(target.value);
+  };
+
+  return (
+    <Input outerClassName='w-full' type='text' value={value} onChange={handleChange} />
   );
 };
 

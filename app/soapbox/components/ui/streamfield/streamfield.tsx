@@ -76,7 +76,7 @@ const Streamfield: React.FC<IStreamfield> = ({
               {values.length > minItems && onRemoveItem && (
                 <IconButton
                   iconClassName='h-4 w-4'
-                  className='bg-transparent text-gray-400 hover:text-gray-600'
+                  className='bg-transparent text-gray-600 hover:text-gray-600'
                   src={require('@tabler/icons/x.svg')}
                   onClick={() => onRemoveItem(i)}
                   title={intl.formatMessage(messages.remove)}
