@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import GroupAvatar from 'soapbox/components/groups/group-avatar';
 import { Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useJoinGroup } from 'soapbox/queries/groups';
+import { useJoinGroup } from 'soapbox/hooks/api';
 import { Group as GroupEntity } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
@@ -16,7 +16,7 @@ interface IGroup {
 const GroupListItem = (props: IGroup) => {
   const { group, withJoinAction = true } = props;
 
-  const joinGroup = useJoinGroup();
+  const joinGroup = useJoinGroup(group);
 
   const onJoinGroup = () => joinGroup.mutate(group);
 

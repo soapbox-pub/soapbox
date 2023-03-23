@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
-import { Card, CardBody, CardHeader, CardTitle, Column } from 'soapbox/components/ui';
+import { Card, CardBody, CardHeader, CardTitle, Column, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
@@ -155,7 +155,7 @@ const Settings = () => {
                 ))}
 
                 {features.security && (
-                  <ListItem label={intl.formatMessage(messages.deleteAccount)} onClick={navigateToDeleteAccount} />
+                  <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteAccount)}</Text>} onClick={navigateToDeleteAccount} />
                 )}
               </List>
             </CardBody>
