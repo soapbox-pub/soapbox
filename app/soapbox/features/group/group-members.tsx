@@ -25,7 +25,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
   const { groupMembers: owners, isFetching: isFetchingOwners } = useGroupMembers(groupId, GroupRoles.OWNER);
   const { groupMembers: admins, isFetching: isFetchingAdmins } = useGroupMembers(groupId, GroupRoles.ADMIN);
   const { groupMembers: users, isFetching: isFetchingUsers, fetchNextPage, hasNextPage } = useGroupMembers(groupId, GroupRoles.USER);
-  const { accounts: pending, isFetching: isFetchingPending, totalCount: pendingTotalCount } = useGroupMembershipRequests(groupId);
+  const { isFetching: isFetchingPending, count: pendingCount } = useGroupMembershipRequests(groupId);
 
   const isLoading = isFetchingGroup || isFetchingOwners || isFetchingAdmins || isFetchingUsers || isFetchingPending;
 
@@ -34,9 +34,6 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
     ...admins,
     ...users,
   ], [owners, admins, users]);
-
-  // If the API gives us `X-Total-Count`, use it. Otherwise fallback to the number in the store.
-  const pendingCount = typeof pendingTotalCount === 'number' ? pendingTotalCount : pending.length;
 
   return (
     <>

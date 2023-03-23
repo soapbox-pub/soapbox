@@ -129,6 +129,8 @@ function useEntities<TEntity extends Entity>(
     isFetching,
     isLoading: isFetching && entities.length === 0,
     invalidate,
+    /** The `X-Total-Count` from the API if available, or the length of items in the store. */
+    count: typeof totalCount === 'number' ? totalCount : entities.length,
   };
 }
 
