@@ -1,4 +1,5 @@
 import type { Entity } from '../types';
+import type { AxiosRequestConfig } from 'axios';
 import type z from 'zod';
 
 type EntitySchema<TEntity extends Entity = Entity> = z.ZodType<TEntity, z.ZodTypeDef, any>;
@@ -24,9 +25,16 @@ type EntitiesPath = [entityType: string, listKey: string]
 /** Used to look up a single entity by its ID. */
 type EntityPath = [entityType: string, entityId: string]
 
+/**
+ * Passed into hooks to make requests.
+ * Can be a URL for GET requests, or a request object.
+ */
+type EntityRequest = string | URL | AxiosRequestConfig;
+
 export type {
   EntitySchema,
   ExpandedEntitiesPath,
   EntitiesPath,
   EntityPath,
+  EntityRequest,
 };

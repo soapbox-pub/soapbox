@@ -52,11 +52,10 @@ function useGroupRelationship(groupId: string) {
 
 function useGroupRelationships(groupIds: string[]) {
   const q = groupIds.map(id => `id[]=${id}`).join('&');
-  const endpoint = groupIds.length ? `/api/v1/groups/relationships?${q}` : undefined;
   const { entities, ...result } = useEntities<GroupRelationship>(
     [Entities.GROUP_RELATIONSHIPS, ...groupIds],
-    endpoint,
-    { schema: groupRelationshipSchema },
+    `/api/v1/groups/relationships?${q}`,
+    { schema: groupRelationshipSchema, enabled: groupIds.length > 0 },
   );
 
   const relationships = entities.reduce<Record<string, GroupRelationship>>((map, relationship) => {
