@@ -13,7 +13,7 @@ interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
   schema?: EntitySchema<TEntity>
 }
 
-interface EntityCallbacks<TEntity extends Entity = Entity, Error = unknown> {
+interface CreateEntityCallbacks<TEntity extends Entity = Entity, Error = unknown> {
   onSuccess?(entity: TEntity): void
   onError?(error: Error): void
 }
@@ -30,7 +30,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
 
   return async function createEntity(
     data: Data,
-    callbacks: EntityCallbacks = {},
+    callbacks: CreateEntityCallbacks = {},
   ): Promise<void> {
     try {
       const result = await api.request({

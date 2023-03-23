@@ -1,11 +1,14 @@
-import { useAppDispatch, useGetState } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
 
 import { deleteEntities, importEntities } from '../actions';
 
-type DeleteFn<T> = (entityId: string) => Promise<T> | T;
+import { toAxiosRequest } from './utils';
 
-interface EntityCallbacks {
+import type { EntityRequest } from './types';
+
+interface DeleteEntityCallbacks {
   onSuccess?(): void
+  onError?(): void
 }
 
 /**
@@ -13,14 +16,15 @@ interface EntityCallbacks {
  * This hook should be used to globally delete an entity from all lists.
  * To remove an entity from a single list, see `useDismissEntity`.
  */
-function useDeleteEntity<T = unknown>(
+function useDeleteEntity(
   entityType: string,
-  deleteFn: DeleteFn<T>,
+  request: EntityRequest,
 ) {
+  const api = useApi();
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
-  return async function deleteEntity(entityId: string, callbacks: EntityCallbacks = {}): Promise<T> {
+  return async function deleteEntity(entityId: string, callbacks: DeleteEntityCallbacks = {}): Promise<void> {
     // Get the entity before deleting, so we can reverse the action if the API request fails.
     const entity = getState().entities[entityType]?.store[entityId];
 
@@ -28,21 +32,27 @@ function useDeleteEntity<T = unknown>(
     dispatch(deleteEntities([entityId], entityType, { preserveLists: true }));
 
     try {
-      const result = await deleteFn(entityId);
+      // HACK: replace occurrences of `:id` in the URL. Maybe there's a better way?
+      const axiosReq = toAxiosRequest(request);
+      axiosReq.url?.replaceAll(':id', entityId);
+
+      await api.request(axiosReq);
+
       // Success - finish deleting entity from the state.
       dispatch(deleteEntities([entityId], entityType));
 
       if (callbacks.onSuccess) {
         callbacks.onSuccess();
       }
-
-      return result;
     } catch (e) {
       if (entity) {
         // If the API failed, reimport the entity.
         dispatch(importEntities([entity], entityType));
       }
-      throw e;
+
+      if (callbacks.onError) {
+        callbacks.onError();
+      }
     }
   };
 }
