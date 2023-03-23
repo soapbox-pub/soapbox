@@ -590,6 +590,10 @@ export function NewGroupPanel() {
   return import(/* webpackChunkName: "features/groups" */'../components/panels/new-group-panel');
 }
 
+export function MyGroupsPanel() {
+  return import(/* webpackChunkName: "features/groups" */'../components/panels/my-groups-panel');
+}
+
 export function SuggestedGroupsPanel() {
   return import(/* webpackChunkName: "features/groups" */'../components/panels/suggested-groups-panel');
 }

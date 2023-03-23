@@ -74,19 +74,19 @@ export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCo
     allowedEmoji,
   ));
 
-export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
+export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): EmojiReact | undefined => {
   const result = reduceEmoji(
     status.pleroma.get('emoji_reactions', ImmutableList()),
     status.favourites_count || 0,
     status.favourited,
     allowedEmoji,
   ).filter(e => e.get('me') === true)
-    .getIn([0, 'name']);
+    .get(0);
 
-  return typeof result === 'string' ? result : undefined;
+  return typeof result?.get('name') === 'string' ? result : undefined;
 };
 
-export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {
+export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string, url?: string) => {
   const idx = emojiReacts.findIndex(e => e.get('name') === emoji);
   const emojiReact = emojiReacts.get(idx);
 
@@ -94,12 +94,14 @@ export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji
     return emojiReacts.set(idx, emojiReact.merge({
       count: emojiReact.get('count') + 1,
       me: true,
+      url,
     }));
   } else {
     return emojiReacts.push(ImmutableMap({
       count: 1,
       me: true,
       name: emoji,
+      url,
     }));
   }
 };

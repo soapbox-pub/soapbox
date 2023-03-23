@@ -82,6 +82,7 @@ export const ReactionRecord = ImmutableRecord({
   accounts: ImmutableOrderedSet<string>(),
   count: 0,
   name: '',
+  url: null as string | null,
 });
 
 const ReactionListRecord = ImmutableRecord({

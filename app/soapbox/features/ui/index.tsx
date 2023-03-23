@@ -299,6 +299,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groups && <WrappedRoute path='/groups/:id/manage' exact page={DefaultPage} component={ManageGroup} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage/blocks' exact page={DefaultPage} component={GroupBlockedMembers} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage/requests' exact page={DefaultPage} component={GroupMembershipRequests} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />

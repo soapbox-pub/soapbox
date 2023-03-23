@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { z } from 'zod';
 
 import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
@@ -28,6 +29,10 @@ interface EntityActionEndpoints {
   delete?: string
 }
 
+interface EntityCallbacks<TEntity extends Entity = Entity> {
+  onSuccess?(entity?: TEntity): void
+}
+
 function useEntityActions<TEntity extends Entity = Entity, P = any>(
   path: EntityPath,
   endpoints: EntityActionEndpoints,
@@ -38,8 +43,12 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
   const getState = useGetState();
   const [entityType, listKey] = path;
 
-  function createEntity(params: P): Promise<CreateEntityResult<TEntity>> {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  function createEntity(params: P, callbacks: EntityCallbacks = {}): Promise<CreateEntityResult<TEntity>> {
     if (!endpoints.post) return Promise.reject(endpoints);
+
+    setIsLoading(true);
 
     return api.post(endpoints.post, params).then((response) => {
       const schema = opts.schema || z.custom<TEntity>();
@@ -48,6 +57,12 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
       // TODO: optimistic updating
       dispatch(importEntities([entity], entityType, listKey));
 
+      if (callbacks.onSuccess) {
+        callbacks.onSuccess(entity);
+      }
+
+      setIsLoading(false);
+
       return {
         response,
         entity,
@@ -55,14 +70,20 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
     });
   }
 
-  function deleteEntity(entityId: string): Promise<DeleteEntityResult> {
+  function deleteEntity(entityId: string, callbacks: EntityCallbacks = {}): Promise<DeleteEntityResult> {
     if (!endpoints.delete) return Promise.reject(endpoints);
     // Get the entity before deleting, so we can reverse the action if the API request fails.
     const entity = getState().entities[entityType]?.store[entityId];
     // Optimistically delete the entity from the _store_ but keep the lists in tact.
     dispatch(deleteEntities([entityId], entityType, { preserveLists: true }));
 
+    setIsLoading(true);
+
     return api.delete(endpoints.delete.replaceAll(':id', entityId)).then((response) => {
+      if (callbacks.onSuccess) {
+        callbacks.onSuccess();
+      }
+
       // Success - finish deleting entity from the state.
       dispatch(deleteEntities([entityId], entityType));
 
@@ -75,12 +96,15 @@ function useEntityActions<TEntity extends Entity = Entity, P = any>(
         dispatch(importEntities([entity], entityType));
       }
       throw e;
+    }).finally(() => {
+      setIsLoading(false);
     });
   }
 
   return {
-    createEntity: createEntity,
-    deleteEntity: endpoints.delete ? deleteEntity : undefined,
+    createEntity,
+    deleteEntity,
+    isLoading,
   };
 }
 

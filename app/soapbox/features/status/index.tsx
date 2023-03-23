@@ -114,7 +114,11 @@ export const getDescendantsIds = createSelector([
 });
 
 type DisplayMedia = 'default' | 'hide_all' | 'show_all';
-type RouteParams = { statusId: string };
+
+type RouteParams = {
+  statusId: string
+  groupId?: string
+};
 
 interface IThread {
   params: RouteParams
@@ -513,6 +517,10 @@ const Thread: React.FC<IThread> = (props) => {
 
   if (hasDescendants) {
     children.push(...renderChildren(descendantsIds).toArray());
+  }
+
+  if (status.group && typeof status.group === 'object' && !props.params.groupId) {
+    return <Redirect to={`/groups/${status.group.id}/posts/${props.params.statusId}`} />;
   }
 
   return (

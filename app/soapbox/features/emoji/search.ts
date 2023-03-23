@@ -1,11 +1,10 @@
-import { Index } from 'flexsearch';
+import { Index } from 'flexsearch-ts';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import data from './data';
 
 import type { Emoji } from './index';
-// import type { Emoji as EmojiMart, CustomEmoji } from 'emoji-mart';
 
-// @ts-ignore
 const index = new Index({
   tokenize: 'full',
   optimize: true,
@@ -37,29 +36,39 @@ export const addCustomToPool = (customEmojis: any[]) => {
 };
 
 // we can share an index by prefixing custom emojis with 'c' and native with 'n'
-const search = (str: string, { maxResults = 5, custom }: searchOptions = {}, custom_emojis?: any): Emoji[] => {
+const search = (
+  str: string, { maxResults = 5 }: searchOptions = {},
+  custom_emojis?: ImmutableList<ImmutableMap<string, string>>,
+): Emoji[] => {
   return index.search(str, maxResults)
-    .flatMap((id: string) => {
-      if (id[0] === 'c') {
-        const { shortcode, static_url } = custom_emojis.get((id as string).slice(1)).toJS();
+    .flatMap((id) => {
+      if (typeof id !== 'string') return;
 
-        return {
-          id: shortcode,
-          colons: ':' + shortcode + ':',
-          custom: true,
-          imageUrl: static_url,
-        };
+      if (id[0] === 'c' && custom_emojis) {
+        const index = Number(id.slice(1));
+        const custom = custom_emojis.get(index);
+
+        if (custom) {
+          return {
+            id: custom.get('shortcode', ''),
+            colons: ':' + custom.get('shortcode', '') + ':',
+            custom: true,
+            imageUrl: custom.get('static_url', ''),
+          };
+        }
       }
 
-      const { skins } = data.emojis[(id as string).slice(1)];
+      const skins = data.emojis[id.slice(1)]?.skins;
 
-      return {
-        id: (id as string).slice(1),
-        colons: ':' + id.slice(1) + ':',
-        unified: skins[0].unified,
-        native: skins[0].native,
-      };
-    });
+      if (skins) {
+        return {
+          id: id.slice(1),
+          colons: ':' + id.slice(1) + ':',
+          unified: skins[0].unified,
+          native: skins[0].native,
+        };
+      }
+    }).filter(Boolean) as Emoji[];
 };
 
 export default search;

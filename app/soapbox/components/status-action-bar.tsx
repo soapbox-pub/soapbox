@@ -538,7 +538,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     allowedEmoji,
   ).reduce((acc, cur) => acc + cur.get('count'), 0);
 
-  const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+  const meEmojiReact = getReactForStatus(status, allowedEmoji);
+  const meEmojiName = meEmojiReact?.get('name') as keyof typeof reactMessages | undefined;
 
   const reactMessages = {
     '👍': messages.reactionLike,
@@ -550,7 +551,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     '': messages.favourite,
   };
 
-  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
+  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiName || ''] || messages.favourite);
 
   const menu = _makeMenu(publicStatus);
   let reblogIcon = require('@tabler/icons/repeat.svg');
@@ -635,7 +636,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               icon={require('@tabler/icons/heart.svg')}
               filled
               color='accent'
-              active={Boolean(meEmojiReact)}
+              active={Boolean(meEmojiName)}
               count={emojiReactCount}
               emoji={meEmojiReact}
               text={withLabels ? meEmojiTitle : undefined}
@@ -648,7 +649,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             color='accent'
             filled
             onClick={handleFavouriteClick}
-            active={Boolean(meEmojiReact)}
+            active={Boolean(meEmojiName)}
             count={favouriteCount}
             text={withLabels ? meEmojiTitle : undefined}
           />

@@ -1,21 +1,11 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
-import { defineMessages, useIntl } from 'react-intl';
 
 import { getNextLink } from 'soapbox/api';
 import { useApi, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { normalizeGroup, normalizeGroupRelationship } from 'soapbox/normalizers';
-import toast from 'soapbox/toast';
 import { Group, GroupRelationship } from 'soapbox/types/entities';
 import { flattenPages, PaginatedResult } from 'soapbox/utils/queries';
-
-import { queryClient } from './client';
-
-const messages = defineMessages({
-  joinSuccess: { id: 'group.join.success', defaultMessage: 'Group joined successfully!' },
-  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
-  leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
-});
 
 const GroupKeys = {
   group: (id: string) => ['groups', 'group', id] as const,
@@ -168,50 +158,8 @@ const useGroup = (id: string) => {
   };
 };
 
-const useJoinGroup = () => {
-  const api = useApi();
-  const intl = useIntl();
-
-  return useMutation((group: Group) => api.post<GroupRelationship>(`/api/v1/groups/${group.id}/join`), {
-    onSuccess(_response, group) {
-      queryClient.invalidateQueries(['groups']);
-      toast.success(
-        group.locked
-          ? intl.formatMessage(messages.joinRequestSuccess)
-          : intl.formatMessage(messages.joinSuccess),
-      );
-    },
-  });
-};
-
-const useLeaveGroup = () => {
-  const api = useApi();
-  const intl = useIntl();
-
-  return useMutation((group: Group) => api.post<GroupRelationship>(`/api/v1/groups/${group.id}/leave`), {
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['groups'] });
-      toast.success(intl.formatMessage(messages.leaveSuccess));
-    },
-  });
-};
-
-const useCancelMembershipRequest = () => {
-  const api = useApi();
-  const me = useOwnAccount();
-
-  return useMutation((group: Group) => api.post(`/api/v1/groups/${group.id}/membership_requests/${me?.id}/reject`), {
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['groups'] });
-    },
-  });
-};
-
 export {
-  useCancelMembershipRequest,
   useGroup,
   useGroups,
-  useJoinGroup,
-  useLeaveGroup,
   usePendingGroups,
 };

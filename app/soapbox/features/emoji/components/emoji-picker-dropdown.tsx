@@ -11,7 +11,6 @@ import { RootState } from 'soapbox/store';
 import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
 
-import type { State as PopperState } from '@popperjs/core';
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
 
 let EmojiPicker: any; // load asynchronously
@@ -49,7 +48,7 @@ export interface IEmojiPickerDropdown {
   withCustom?: boolean
   visible: boolean
   setVisible: (value: boolean) => void
-  update: (() => Promise<Partial<PopperState>>) | null
+  update: (() => any) | null
 }
 
 const perLine = 8;

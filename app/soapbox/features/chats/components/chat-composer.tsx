@@ -110,7 +110,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
     );
 
     if (token && tokenStart) {
-      const results = emojiSearch(token.replace(':', ''), { maxResults: 5 } as any);
+      const results = emojiSearch(token.replace(':', ''), { maxResults: 5 });
       setSuggestions({
         list: results,
         token,
