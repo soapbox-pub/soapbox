@@ -8,15 +8,10 @@ import { importEntities } from '../actions';
 import { parseEntitiesPath, toAxiosRequest } from './utils';
 
 import type { Entity } from '../types';
-import type { EntityRequest, EntitySchema, ExpandedEntitiesPath } from './types';
+import type { EntityCallbacks, EntityRequest, EntitySchema, ExpandedEntitiesPath } from './types';
 
 interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
   schema?: EntitySchema<TEntity>
-}
-
-interface CreateEntityCallbacks<TEntity extends Entity = Entity, Error = unknown> {
-  onSuccess?(entity: TEntity): void
-  onError?(error: Error): void
 }
 
 function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
@@ -30,7 +25,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
 
   const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
-  async function createEntity(data: Data, callbacks: CreateEntityCallbacks = {}): Promise<void> {
+  async function createEntity(data: Data, callbacks: EntityCallbacks<TEntity> = {}): Promise<void> {
     setIsLoading(true);
 
     try {

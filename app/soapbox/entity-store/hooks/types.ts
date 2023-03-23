@@ -25,6 +25,12 @@ type EntitiesPath = [entityType: string, listKey: string]
 /** Used to look up a single entity by its ID. */
 type EntityPath = [entityType: string, entityId: string]
 
+/** Callback functions for entity actions. */
+interface EntityCallbacks<Value, Error = unknown> {
+  onSuccess?(value: Value): void
+  onError?(error: Error): void
+}
+
 /**
  * Passed into hooks to make requests.
  * Can be a URL for GET requests, or a request object.
@@ -36,5 +42,6 @@ export type {
   ExpandedEntitiesPath,
   EntitiesPath,
   EntityPath,
+  EntityCallbacks,
   EntityRequest,
 };

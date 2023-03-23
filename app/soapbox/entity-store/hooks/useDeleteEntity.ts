@@ -6,12 +6,7 @@ import { deleteEntities, importEntities } from '../actions';
 
 import { toAxiosRequest } from './utils';
 
-import type { EntityRequest } from './types';
-
-interface DeleteEntityCallbacks {
-  onSuccess?(): void
-  onError?(): void
-}
+import type { EntityCallbacks, EntityRequest } from './types';
 
 /**
  * Optimistically deletes an entity from the store.
@@ -27,7 +22,7 @@ function useDeleteEntity(
   const getState = useGetState();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  async function deleteEntity(entityId: string, callbacks: DeleteEntityCallbacks = {}): Promise<void> {
+  async function deleteEntity(entityId: string, callbacks: EntityCallbacks<string> = {}): Promise<void> {
     setIsLoading(true);
 
     // Get the entity before deleting, so we can reverse the action if the API request fails.
@@ -47,7 +42,7 @@ function useDeleteEntity(
       dispatch(deleteEntities([entityId], entityType));
 
       if (callbacks.onSuccess) {
-        callbacks.onSuccess();
+        callbacks.onSuccess(entityId);
       }
     } catch (e) {
       if (entity) {
@@ -56,7 +51,7 @@ function useDeleteEntity(
       }
 
       if (callbacks.onError) {
-        callbacks.onError();
+        callbacks.onError(e);
       }
     }
 
