@@ -103,19 +103,6 @@ const scrollIntoViewIfNeeded = (target: HTMLElement) => {
   target.scrollIntoView({ block: 'nearest' });
 };
 
-function getTextUpToAnchor(selection: RangeSelection): string | null {
-  const anchor = selection.anchor;
-  if (!['mention', 'text'].includes(anchor.type)) {
-    return null;
-  }
-  const anchorNode = anchor.getNode();
-  if (anchor.type === 'text' && !anchorNode.isSimpleText()) {
-    return null;
-  }
-  const anchorOffset = anchor.offset;
-  return anchorNode.getTextContent().slice(0, anchorOffset);
-}
-
 function tryToPositionRange(leadOffset: number, range: Range): boolean {
   const domSelection = window.getSelection();
   if (domSelection === null || !domSelection.isCollapsed) {
@@ -140,15 +127,12 @@ function tryToPositionRange(leadOffset: number, range: Range): boolean {
 }
 
 function getQueryTextForSearch(editor: LexicalEditor): string | null {
-  let text = null;
-  editor.getEditorState().read(() => {
-    const selection = $getSelection();
-    if (!$isRangeSelection(selection)) {
-      return;
-    }
-    text = getTextUpToAnchor(selection);
-  });
-  return text;
+  const state = editor.getEditorState();
+  const node = (state._selection as RangeSelection)?.anchor?.getNode();
+
+  if (node && node.getType() === 'mention') return node.getTextContent();
+
+  return null;
 }
 
 /**
@@ -173,10 +157,7 @@ function getFullMatchOffset(
  * Split Lexical TextNode and return a new TextNode only containing matched text.
  * Common use cases include: removing the node, replacing with a new node.
  */
-function splitNodeContainingQuery(
-  editor: LexicalEditor,
-  match: QueryMatch,
-): TextNode | null {
+function splitNodeContainingQuery(match: QueryMatch): TextNode | null {
   const selection = $getSelection();
   if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
     return null;
@@ -369,10 +350,7 @@ function LexicalPopoverMenu<TOption extends TypeaheadOption>({
   const selectOptionAndCleanUp = useCallback(
     (selectedEntry: TOption) => {
       editor.update(() => {
-        const textNodeContainingQuery = splitNodeContainingQuery(
-          editor,
-          resolution.match,
-        );
+        const textNodeContainingQuery = splitNodeContainingQuery(resolution.match);
 
         onSelectOption(
           selectedEntry,

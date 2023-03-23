@@ -35,8 +35,6 @@ const StatePlugin = ({ composeId }: { composeId: string }) => {
   const dispatch = useAppDispatch();
   const [editor] = useLexicalComposerContext();
 
-  (window as any).xd = editor;
-
   useEffect(() => {
     editor.registerUpdateListener(({ editorState }) => {
       dispatch(setEditorState(composeId, editorState.isEmpty() ? null : JSON.stringify(editorState.toJSON())));
