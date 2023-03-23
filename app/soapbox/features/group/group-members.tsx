@@ -44,8 +44,8 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         scrollKey='group-members'
         hasMore={hasNextPage}
         onLoadMore={fetchNextPage}
-        isLoading={isLoading || !group}
-        showLoading={!group || isLoading && members.length === 0}
+        isLoading={!group || isLoading}
+        showLoading={!group || isFetchingPending || isLoading && members.length === 0}
         placeholderComponent={PlaceholderAccount}
         placeholderCount={3}
         className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
