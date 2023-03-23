@@ -825,6 +825,7 @@
   "groups.pending.empty.title": "No pending requests",
   "groups.pending.label": "Pending Requests",
   "groups.popular.label": "Suggested Groups",
+  "groups.search.placeholder": "Search My Groups",
   "hashtag.column_header.tag_mode.all": "and {additional}",
   "hashtag.column_header.tag_mode.any": "or {additional}",
   "hashtag.column_header.tag_mode.none": "without {additional}",

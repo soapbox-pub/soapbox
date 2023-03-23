@@ -543,6 +543,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsPromoteToAdmin: v.software !== TRUTHSOCIAL,
 
     /**
+     * Can search my own groups.
+     */
+    groupsSearch: v.software === TRUTHSOCIAL,
+
+    /**
      * Can hide follows/followers lists and counts.
      * @see PATCH /api/v1/accounts/update_credentials
      */

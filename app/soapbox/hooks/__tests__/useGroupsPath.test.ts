@@ -53,7 +53,7 @@ describe('useGroupsPath()', () => {
     describe('when the user has groups', () => {
       beforeEach(() => {
         __stub((mock) => {
-          mock.onGet('/api/v1/groups').reply(200, [
+          mock.onGet('/api/v1/groups?q=').reply(200, [
             buildGroup({
               display_name: 'Group',
               id: '1',
