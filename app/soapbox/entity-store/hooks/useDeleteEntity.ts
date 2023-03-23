@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useApi, useAppDispatch, useGetState } from 'soapbox/hooks';
 
 import { deleteEntities, importEntities } from '../actions';
@@ -23,8 +25,11 @@ function useDeleteEntity(
   const api = useApi();
   const dispatch = useAppDispatch();
   const getState = useGetState();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  return async function deleteEntity(entityId: string, callbacks: DeleteEntityCallbacks = {}): Promise<void> {
+  async function deleteEntity(entityId: string, callbacks: DeleteEntityCallbacks = {}): Promise<void> {
+    setIsLoading(true);
+
     // Get the entity before deleting, so we can reverse the action if the API request fails.
     const entity = getState().entities[entityType]?.store[entityId];
 
@@ -54,6 +59,13 @@ function useDeleteEntity(
         callbacks.onError();
       }
     }
+
+    setIsLoading(false);
+  }
+
+  return {
+    deleteEntity,
+    isLoading,
   };
 }
 

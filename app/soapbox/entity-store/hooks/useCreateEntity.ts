@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { z } from 'zod';
 
 import { useApi, useAppDispatch } from 'soapbox/hooks';
@@ -25,13 +26,13 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
 ) {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
-  return async function createEntity(
-    data: Data,
-    callbacks: CreateEntityCallbacks = {},
-  ): Promise<void> {
+  async function createEntity(data: Data, callbacks: CreateEntityCallbacks = {}): Promise<void> {
+    setIsLoading(true);
+
     try {
       const result = await api.request({
         ...toAxiosRequest(request),
@@ -52,6 +53,13 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
         callbacks.onError(error);
       }
     }
+
+    setIsLoading(false);
+  }
+
+  return {
+    createEntity,
+    isLoading,
   };
 }
 
