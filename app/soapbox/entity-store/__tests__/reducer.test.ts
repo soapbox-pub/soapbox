@@ -5,6 +5,7 @@ import {
   entitiesFetchRequest,
   entitiesFetchSuccess,
   importEntities,
+  incrementEntities,
 } from '../actions';
 import reducer, { State } from '../reducer';
 import { createListState } from '../utils';
@@ -167,4 +168,42 @@ test('dismiss items', () => {
   expect(result.TestEntity!.store).toMatchObject(state.TestEntity!.store);
   expect([...result.TestEntity!.lists.yolo!.ids]).toEqual(['2']);
   expect(result.TestEntity!.lists.yolo!.state.totalCount).toBe(1);
+});
+
+test('increment items', () => {
+  const state: State = {
+    TestEntity: {
+      store: { '1': { id: '1' }, '2': { id: '2' }, '3': { id: '3' } },
+      lists: {
+        thingies: {
+          ids: new Set(['1', '2', '3']),
+          state: { ...createListState(), totalCount: 3 },
+        },
+      },
+    },
+  };
+
+  const action = incrementEntities('TestEntity', 'thingies', 1);
+  const result = reducer(state, action);
+
+  expect(result.TestEntity!.lists.thingies!.state.totalCount).toBe(4);
+});
+
+test('decrement items', () => {
+  const state: State = {
+    TestEntity: {
+      store: { '1': { id: '1' }, '2': { id: '2' }, '3': { id: '3' } },
+      lists: {
+        thingies: {
+          ids: new Set(['1', '2', '3']),
+          state: { ...createListState(), totalCount: 3 },
+        },
+      },
+    },
+  };
+
+  const action = incrementEntities('TestEntity', 'thingies', -1);
+  const result = reducer(state, action);
+
+  expect(result.TestEntity!.lists.thingies!.state.totalCount).toBe(2);
 });

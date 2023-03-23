@@ -1,5 +1,5 @@
 import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
+import { useEntities, useIncrementEntity } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
 import { accountSchema } from 'soapbox/schemas';
 
@@ -15,17 +15,17 @@ function useGroupMembershipRequests(groupId: string) {
     { schema: accountSchema },
   );
 
-  function authorize(accountId: string) {
+  const authorize = useIncrementEntity(path, -1, (accountId: string) => {
     return api
       .post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/authorize`)
       .then(invalidate);
-  }
+  });
 
-  function reject(accountId: string) {
+  const reject = useIncrementEntity(path, -1, (accountId: string) => {
     return api
       .post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/reject`)
       .then(invalidate);
-  }
+  });
 
   return {
     accounts: entities,
