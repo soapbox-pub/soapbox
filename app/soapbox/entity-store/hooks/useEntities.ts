@@ -4,6 +4,7 @@ import z from 'zod';
 import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi, useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
 import { filteredArray } from 'soapbox/schemas/utils';
+import { realNumberSchema } from 'soapbox/utils/numbers';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions';
 
@@ -63,12 +64,12 @@ function useEntities<TEntity extends Entity>(
       const response = await api.get(url);
       const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
-      const numItems = (selectList(getState(), path)?.ids.size || 0) + entities.length;
+      const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
 
       dispatch(entitiesFetchSuccess(entities, entityType, listKey, {
         next: getNextLink(response),
         prev: getPrevLink(response),
-        totalCount: Number(response.headers['x-total-count'] ?? numItems) || 0,
+        totalCount: parsedCount.success ? parsedCount.data : undefined,
         fetching: false,
         fetched: true,
         error: null,

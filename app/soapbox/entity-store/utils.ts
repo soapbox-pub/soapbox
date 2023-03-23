@@ -13,8 +13,10 @@ const updateList = (list: EntityList, entities: Entity[]): EntityList => {
   const newIds = entities.map(entity => entity.id);
   const ids = new Set([...Array.from(list.ids), ...newIds]);
 
-  const sizeDiff = ids.size - list.ids.size;
-  list.state.totalCount += sizeDiff;
+  if (typeof list.state.totalCount === 'number') {
+    const sizeDiff = ids.size - list.ids.size;
+    list.state.totalCount += sizeDiff;
+  }
 
   return {
     ...list,
