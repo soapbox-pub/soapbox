@@ -560,6 +560,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsSearch: v.software === TRUTHSOCIAL,
 
     /**
+     * Can see topics for Groups.
+     */
+    groupsTags: v.software === TRUTHSOCIAL,
+
+    /**
      * Can validate group names.
      */
     groupsValidation: v.software === TRUTHSOCIAL,

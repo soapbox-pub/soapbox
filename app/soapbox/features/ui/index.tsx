@@ -126,6 +126,8 @@ import {
   GroupsTags,
   PendingGroupRequests,
   GroupMembers,
+  GroupTags,
+  GroupTagTimeline,
   GroupTimeline,
   ManageGroup,
   GroupBlockedMembers,
@@ -301,6 +303,8 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groupsDiscovery && <WrappedRoute path='/groups/tags' exact page={GroupsPendingPage} component={GroupsTags} content={children} />}
       {features.groupsDiscovery && <WrappedRoute path='/groups/discover/tags/:id' exact page={GroupsPendingPage} component={GroupsTag} content={children} />}
       {features.groupsPending && <WrappedRoute path='/groups/pending-requests' exact page={GroupsPendingPage} component={PendingGroupRequests} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/groups/:id/tags' exact page={GroupPage} component={GroupTags} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/groups/:groupId/tag/:id' exact page={GroupsPendingPage} component={GroupTagTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/media' publicRoute={!authenticatedProfile} component={GroupGallery} page={GroupPage} content={children} />}

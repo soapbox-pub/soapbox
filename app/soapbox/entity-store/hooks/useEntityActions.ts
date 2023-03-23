@@ -12,8 +12,9 @@ interface UseEntityActionsOpts<TEntity extends Entity = Entity> {
 }
 
 interface EntityActionEndpoints {
-  post?: string
   delete?: string
+  patch?: string
+  post?: string
 }
 
 function useEntityActions<TEntity extends Entity = Entity, Data = any>(

@@ -578,6 +578,14 @@ export function GroupMembers() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
 }
 
+export function GroupTags() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-tags');
+}
+
+export function GroupTagTimeline() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-tag-timeline');
+}
+
 export function GroupTimeline() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-timeline');
 }
