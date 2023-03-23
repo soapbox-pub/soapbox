@@ -28,11 +28,13 @@ function useEntityActions<TEntity extends Entity = Entity, Data = any>(
   const create = useCreateEntity<TEntity, Data>(path, { method: 'post', url: endpoints.post }, opts);
 
   const createEntity: typeof create = async (...args) => {
+    setIsLoading(true);
     await create(...args);
     setIsLoading(false);
   };
 
   const deleteEntity: typeof _delete = async (...args) => {
+    setIsLoading(true);
     await _delete(...args);
     setIsLoading(false);
   };
