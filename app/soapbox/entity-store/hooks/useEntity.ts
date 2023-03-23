@@ -5,8 +5,10 @@ import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
 
+import { toAxiosRequest } from './utils';
+
 import type { Entity } from '../types';
-import type { EntitySchema, EntityPath } from './types';
+import type { EntitySchema, EntityPath, EntityRequest } from './types';
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {
@@ -18,7 +20,7 @@ interface UseEntityOpts<TEntity extends Entity> {
 
 function useEntity<TEntity extends Entity>(
   path: EntityPath,
-  endpoint: string,
+  request: EntityRequest,
   opts: UseEntityOpts<TEntity> = {},
 ) {
   const api = useApi();
@@ -34,15 +36,18 @@ function useEntity<TEntity extends Entity>(
   const [isFetching, setIsFetching] = useState(false);
   const isLoading = isFetching && !entity;
 
-  const fetchEntity = () => {
+  const fetchEntity = async () => {
     setIsFetching(true);
-    api.get(endpoint).then(({ data }) => {
-      const entity = schema.parse(data);
+
+    try {
+      const response = await api.request(toAxiosRequest(request));
+      const entity = schema.parse(response.data);
       dispatch(importEntities([entity], entityType));
-      setIsFetching(false);
-    }).catch(() => {
-      setIsFetching(false);
-    });
+    } catch (e) {
+      // do nothing
+    }
+
+    setIsFetching(false);
   };
 
   useEffect(() => {
