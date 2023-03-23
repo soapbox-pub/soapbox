@@ -18,7 +18,7 @@ interface EntityActionEndpoints {
   delete?: string
 }
 
-function useEntityActions<TEntity extends Entity = Entity, Params = any>(
+function useEntityActions<TEntity extends Entity = Entity, Data = any>(
   expandedPath: ExpandedEntitiesPath,
   endpoints: EntityActionEndpoints,
   opts: UseEntityActionsOpts<TEntity> = {},
@@ -34,11 +34,12 @@ function useEntityActions<TEntity extends Entity = Entity, Params = any>(
       .finally(() => setIsLoading(false));
   });
 
-  const createEntity = useCreateEntity(path, (params: Params) => {
-    if (!endpoints.post) return Promise.reject(endpoints);
-    return api.post(endpoints.post, params)
-      .finally(() => setIsLoading(false));
-  }, opts);
+  const create = useCreateEntity<TEntity, Data>(path, { method: 'post', url: endpoints.post }, opts);
+
+  const createEntity: typeof create = async (...args) => {
+    await create(...args);
+    setIsLoading(false);
+  };
 
   return {
     createEntity,

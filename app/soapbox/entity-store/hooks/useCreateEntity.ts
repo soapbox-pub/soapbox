@@ -1,52 +1,45 @@
 import { z } from 'zod';
 
-import { useAppDispatch } from 'soapbox/hooks';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
 
-import { parseEntitiesPath } from './utils';
+import { parseEntitiesPath, toAxiosRequest } from './utils';
 
 import type { Entity } from '../types';
-import type { EntitySchema, ExpandedEntitiesPath } from './types';
-
-type CreateFn<Params, Result> = (params: Params) => Promise<Result> | Result;
+import type { EntityRequest, EntitySchema, ExpandedEntitiesPath } from './types';
 
 interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
   schema?: EntitySchema<TEntity>
 }
-
-type CreateEntityResult<TEntity extends Entity = Entity, Result = unknown, Error = unknown> =
-  {
-    success: true
-    result: Result
-    entity: TEntity
-  } | {
-    success: false
-    error: Error
-  }
 
 interface EntityCallbacks<TEntity extends Entity = Entity, Error = unknown> {
   onSuccess?(entity: TEntity): void
   onError?(error: Error): void
 }
 
-function useCreateEntity<TEntity extends Entity = Entity, Params = any, Result = unknown>(
+function useCreateEntity<TEntity extends Entity = Entity, Data = any>(
   expandedPath: ExpandedEntitiesPath,
-  createFn: CreateFn<Params, Result>,
+  request: EntityRequest,
   opts: UseCreateEntityOpts<TEntity> = {},
 ) {
-  const { entityType, listKey } = parseEntitiesPath(expandedPath);
-
+  const api = useApi();
   const dispatch = useAppDispatch();
 
+  const { entityType, listKey } = parseEntitiesPath(expandedPath);
+
   return async function createEntity(
-    params: Params,
+    data: Data,
     callbacks: EntityCallbacks = {},
-  ): Promise<CreateEntityResult<TEntity>> {
+  ): Promise<void> {
     try {
-      const result = await createFn(params);
+      const result = await api.request({
+        ...toAxiosRequest(request),
+        data,
+      });
+
       const schema = opts.schema || z.custom<TEntity>();
-      const entity = schema.parse(result);
+      const entity = schema.parse(result.data);
 
       // TODO: optimistic updating
       dispatch(importEntities([entity], entityType, listKey));
@@ -54,21 +47,10 @@ function useCreateEntity<TEntity extends Entity = Entity, Params = any, Result =
       if (callbacks.onSuccess) {
         callbacks.onSuccess(entity);
       }
-
-      return {
-        success: true,
-        result,
-        entity,
-      };
     } catch (error) {
       if (callbacks.onError) {
         callbacks.onError(error);
       }
-
-      return {
-        success: false,
-        error,
-      };
     }
   };
 }
