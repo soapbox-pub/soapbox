@@ -25,7 +25,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
   const { groupMembers: owners, isFetching: isFetchingOwners } = useGroupMembers(groupId, GroupRoles.OWNER);
   const { groupMembers: admins, isFetching: isFetchingAdmins } = useGroupMembers(groupId, GroupRoles.ADMIN);
   const { groupMembers: users, isFetching: isFetchingUsers, fetchNextPage, hasNextPage } = useGroupMembers(groupId, GroupRoles.USER);
-  const { accounts: pending, isFetching: isFetchingPending } = useGroupMembershipRequests(groupId);
+  const { accounts: pending, isFetching: isFetchingPending, totalCount: pendingTotalCount } = useGroupMembershipRequests(groupId);
 
   const isLoading = isFetchingGroup || isFetchingOwners || isFetchingAdmins || isFetchingUsers || isFetchingPending;
 
@@ -34,6 +34,9 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
     ...admins,
     ...users,
   ], [owners, admins, users]);
+
+  // If the API gives us `X-Total-Count`, use it. Otherwise fallback to the number in the store.
+  const pendingCount = typeof pendingTotalCount === 'number' ? pendingTotalCount : pending.length;
 
   return (
     <>
@@ -47,9 +50,9 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         placeholderCount={3}
         className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
         itemClassName='py-3 last:pb-0'
-        prepend={(pending.length > 0) && (
+        prepend={(pendingCount > 0) && (
           <div className={clsx('py-3', { 'border-b border-gray-200 dark:border-gray-800': members.length })}>
-            <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pending.length} />
+            <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pendingCount} />
           </div>
         )}
       >
