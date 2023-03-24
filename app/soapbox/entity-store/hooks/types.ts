@@ -1,5 +1,5 @@
 import type { Entity } from '../types';
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosResponse } from 'axios';
 import type z from 'zod';
 
 type EntitySchema<TEntity extends Entity = Entity> = z.ZodType<TEntity, z.ZodTypeDef, any>;
@@ -33,9 +33,9 @@ interface EntityCallbacks<Value, Error = unknown> {
 
 /**
  * Passed into hooks to make requests.
- * Can be a URL for GET requests, or a request object.
+ * Must return an Axios response.
  */
-type EntityRequest = string | URL | AxiosRequestConfig;
+type EntityFn<T> = (value: T) => Promise<AxiosResponse>
 
 export type {
   EntitySchema,
@@ -43,5 +43,5 @@ export type {
   EntitiesPath,
   EntityPath,
   EntityCallbacks,
-  EntityRequest,
+  EntityFn,
 };

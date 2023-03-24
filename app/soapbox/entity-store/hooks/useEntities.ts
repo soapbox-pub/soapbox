@@ -2,17 +2,16 @@ import { useEffect } from 'react';
 import z from 'zod';
 
 import { getNextLink, getPrevLink } from 'soapbox/api';
-import { useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
 import { filteredArray } from 'soapbox/schemas/utils';
 import { realNumberSchema } from 'soapbox/utils/numbers';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions';
 
-import { useEntityRequest } from './useEntityRequest';
 import { parseEntitiesPath } from './utils';
 
 import type { Entity, EntityListState } from '../types';
-import type { EntitiesPath, EntityRequest, EntitySchema, ExpandedEntitiesPath } from './types';
+import type { EntitiesPath, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
 import type { RootState } from 'soapbox/store';
 
 /** Additional options for the hook. */
@@ -33,11 +32,11 @@ function useEntities<TEntity extends Entity>(
   /** Tells us where to find/store the entity in the cache. */
   expandedPath: ExpandedEntitiesPath,
   /** API route to GET, eg `'/api/v1/notifications'`. If undefined, nothing will be fetched. */
-  entityRequest: EntityRequest,
+  entityFn: EntityFn<void>,
   /** Additional options for the hook. */
   opts: UseEntitiesOpts<TEntity> = {},
 ) {
-  const { request } = useEntityRequest();
+  const api = useApi();
   const dispatch = useAppDispatch();
   const getState = useGetState();
 
@@ -55,14 +54,14 @@ function useEntities<TEntity extends Entity>(
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
 
-  const fetchPage = async(req: EntityRequest, overwrite = false): Promise<void> => {
+  const fetchPage = async(req: EntityFn<void>, overwrite = false): Promise<void> => {
     // Get `isFetching` state from the store again to prevent race conditions.
     const isFetching = selectListState(getState(), path, 'fetching');
     if (isFetching) return;
 
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
-      const response = await request(req);
+      const response = await req();
       const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
       const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
@@ -83,18 +82,18 @@ function useEntities<TEntity extends Entity>(
   };
 
   const fetchEntities = async(): Promise<void> => {
-    await fetchPage(entityRequest, true);
+    await fetchPage(entityFn, true);
   };
 
   const fetchNextPage = async(): Promise<void> => {
     if (next) {
-      await fetchPage(next);
+      await fetchPage(() => api.get(next));
     }
   };
 
   const fetchPreviousPage = async(): Promise<void> => {
     if (prev) {
-      await fetchPage(prev);
+      await fetchPage(() => api.get(prev));
     }
   };
 
@@ -113,7 +112,7 @@ function useEntities<TEntity extends Entity>(
     if (isInvalid || isUnset || isStale) {
       fetchEntities();
     }
-  }, [entityRequest, isEnabled]);
+  }, [isEnabled]);
 
   return {
     entities,

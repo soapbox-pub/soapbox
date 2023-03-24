@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
 import z from 'zod';
 
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useLoading } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
 
-import { useEntityRequest } from './useEntityRequest';
-
 import type { Entity } from '../types';
-import type { EntitySchema, EntityPath, EntityRequest } from './types';
+import type { EntitySchema, EntityPath, EntityFn } from './types';
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {
@@ -20,10 +18,10 @@ interface UseEntityOpts<TEntity extends Entity> {
 
 function useEntity<TEntity extends Entity>(
   path: EntityPath,
-  entityRequest: EntityRequest,
+  entityFn: EntityFn<void>,
   opts: UseEntityOpts<TEntity> = {},
 ) {
-  const { request, isLoading: isFetching } = useEntityRequest();
+  const [isFetching, setPromise] = useLoading();
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;
@@ -37,7 +35,7 @@ function useEntity<TEntity extends Entity>(
 
   const fetchEntity = async () => {
     try {
-      const response = await request(entityRequest);
+      const response = await setPromise(entityFn());
       const entity = schema.parse(response.data);
       dispatch(importEntities([entity], entityType));
     } catch (e) {

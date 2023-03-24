@@ -1,3 +1,5 @@
+import { useApi } from 'soapbox/hooks';
+
 import { useCreateEntity } from './useCreateEntity';
 import { useDeleteEntity } from './useDeleteEntity';
 import { parseEntitiesPath } from './utils';
@@ -19,13 +21,14 @@ function useEntityActions<TEntity extends Entity = Entity, Data = any>(
   endpoints: EntityActionEndpoints,
   opts: UseEntityActionsOpts<TEntity> = {},
 ) {
+  const api = useApi();
   const { entityType, path } = parseEntitiesPath(expandedPath);
 
   const { deleteEntity, isLoading: deleteLoading } =
-    useDeleteEntity(entityType, { method: 'delete', url: endpoints.delete });
+    useDeleteEntity(entityType, (entityId) => api.delete(endpoints.delete!.replaceAll(':id', entityId)));
 
   const { createEntity, isLoading: createLoading } =
-    useCreateEntity<TEntity, Data>(path, { method: 'post', url: endpoints.post }, opts);
+    useCreateEntity<TEntity, Data>(path, (data) => api.post(endpoints.post!, data), opts);
 
   return {
     createEntity,
