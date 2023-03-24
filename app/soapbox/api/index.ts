@@ -15,7 +15,6 @@ import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/
 
 import type MockAdapter from 'axios-mock-adapter';
 
-
 /**
   Parse Link headers, mostly for pagination.
   @see {@link https://www.npmjs.com/package/http-link-header}
