@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useApi } from 'soapbox/hooks';
 
 import { useCreateEntity } from './useCreateEntity';
@@ -18,7 +16,7 @@ interface EntityActionEndpoints {
   delete?: string
 }
 
-function useEntityActions<TEntity extends Entity = Entity, Params = any>(
+function useEntityActions<TEntity extends Entity = Entity, Data = any>(
   expandedPath: ExpandedEntitiesPath,
   endpoints: EntityActionEndpoints,
   opts: UseEntityActionsOpts<TEntity> = {},
@@ -26,24 +24,16 @@ function useEntityActions<TEntity extends Entity = Entity, Params = any>(
   const api = useApi();
   const { entityType, path } = parseEntitiesPath(expandedPath);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { deleteEntity, isLoading: deleteLoading } =
+    useDeleteEntity(entityType, (entityId) => api.delete(endpoints.delete!.replaceAll(':id', entityId)));
 
-  const deleteEntity = useDeleteEntity(entityType, (entityId) => {
-    if (!endpoints.delete) return Promise.reject(endpoints);
-    return api.delete(endpoints.delete.replace(':id', entityId))
-      .finally(() => setIsLoading(false));
-  });
-
-  const createEntity = useCreateEntity(path, (params: Params) => {
-    if (!endpoints.post) return Promise.reject(endpoints);
-    return api.post(endpoints.post, params)
-      .finally(() => setIsLoading(false));
-  }, opts);
+  const { createEntity, isLoading: createLoading } =
+    useCreateEntity<TEntity, Data>(path, (data) => api.post(endpoints.post!, data), opts);
 
   return {
     createEntity,
     deleteEntity,
-    isLoading,
+    isLoading: createLoading || deleteLoading,
   };
 }
 

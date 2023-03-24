@@ -12,4 +12,5 @@ function parseEntitiesPath(expandedPath: ExpandedEntitiesPath) {
   };
 }
 
+
 export { parseEntitiesPath };

@@ -11,20 +11,20 @@ function useGroupMembershipRequests(groupId: string) {
 
   const { entities, invalidate, ...rest } = useEntities(
     path,
-    `/api/v1/groups/${groupId}/membership_requests`,
+    () => api.get(`/api/v1/groups/${groupId}/membership_requests`),
     { schema: accountSchema },
   );
 
-  const authorize = useIncrementEntity(path, -1, (accountId: string) => {
-    return api
-      .post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/authorize`)
-      .then(invalidate);
+  const { incrementEntity: authorize } = useIncrementEntity(path, -1, async (accountId: string) => {
+    const response = await api.post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/authorize`);
+    invalidate();
+    return response;
   });
 
-  const reject = useIncrementEntity(path, -1, (accountId: string) => {
-    return api
-      .post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/reject`)
-      .then(invalidate);
+  const { incrementEntity: reject } = useIncrementEntity(path, -1, async (accountId: string) => {
+    const response = await api.post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/reject`);
+    invalidate();
+    return response;
   });
 
   return {
