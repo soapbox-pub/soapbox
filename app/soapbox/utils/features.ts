@@ -91,6 +91,8 @@ const getInstanceFeatures = (instance: Instance) => {
   const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
   const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
 
+  console.log(v);
+
   return {
     /**
      * Can view and manage ActivityPub aliases through the API.
@@ -150,6 +152,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/accounts/:id/follow
      */
     accountNotifies: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TRUTHSOCIAL,
@@ -359,6 +362,7 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     editStatuses: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.version, '3.5.0'),
       features.includes('editing'),
     ]),
@@ -432,6 +436,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
+      v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
@@ -775,6 +780,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/scheduled_statuses/}
      */
     scheduledStatuses: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.version, '2.7.0'),
       v.software === PLEROMA,
     ]),
@@ -785,6 +791,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v2/search
      */
     searchFromAccount: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA && gte(v.version, '1.0.0'),
     ]),
@@ -853,7 +860,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Trending statuses.
      * @see GET /api/v1/trends/statuses
      */
-    trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+    trendingStatuses: any([
+      v.software === FRIENDICA,
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+    ]),
 
     /**
      * Truth Social trending statuses API.
@@ -866,6 +876,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/trends
      */
     trends: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
@@ -886,7 +897,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Whether the backend allows adding users you don't follow to lists.
      * @see POST /api/v1/lists/:id/accounts
      */
-    unrestrictedLists: v.software === PLEROMA,
+    unrestrictedLists: any([
+      v.software === FRIENDICA,
+      v.software === PLEROMA,
+    ]),
   };
 };
 
