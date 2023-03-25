@@ -20,6 +20,10 @@ const FAVOURITE_REQUEST = 'FAVOURITE_REQUEST';
 const FAVOURITE_SUCCESS = 'FAVOURITE_SUCCESS';
 const FAVOURITE_FAIL    = 'FAVOURITE_FAIL';
 
+const DISLIKE_REQUEST = 'DISLIKE_REQUEST';
+const DISLIKE_SUCCESS = 'DISLIKE_SUCCESS';
+const DISLIKE_FAIL    = 'DISLIKE_FAIL';
+
 const UNREBLOG_REQUEST = 'UNREBLOG_REQUEST';
 const UNREBLOG_SUCCESS = 'UNREBLOG_SUCCESS';
 const UNREBLOG_FAIL    = 'UNREBLOG_FAIL';
@@ -27,6 +31,10 @@ const UNREBLOG_FAIL    = 'UNREBLOG_FAIL';
 const UNFAVOURITE_REQUEST = 'UNFAVOURITE_REQUEST';
 const UNFAVOURITE_SUCCESS = 'UNFAVOURITE_SUCCESS';
 const UNFAVOURITE_FAIL    = 'UNFAVOURITE_FAIL';
+
+const UNDISLIKE_REQUEST = 'UNDISLIKE_REQUEST';
+const UNDISLIKE_SUCCESS = 'UNDISLIKE_SUCCESS';
+const UNDISLIKE_FAIL    = 'UNDISLIKE_FAIL';
 
 const REBLOGS_FETCH_REQUEST = 'REBLOGS_FETCH_REQUEST';
 const REBLOGS_FETCH_SUCCESS = 'REBLOGS_FETCH_SUCCESS';
@@ -210,6 +218,79 @@ const unfavouriteSuccess = (status: StatusEntity) => ({
 
 const unfavouriteFail = (status: StatusEntity, error: AxiosError) => ({
   type: UNFAVOURITE_FAIL,
+  status: status,
+  error: error,
+  skipLoading: true,
+});
+
+const dislike = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(dislikeRequest(status));
+
+    api(getState).post(`/api/friendica/${status.get('id')}/dislike`).then(function() {
+      dispatch(dislikeSuccess(status));
+    }).catch(function(error) {
+      dispatch(dislikeFail(status, error));
+    });
+  };
+
+const undislike = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(undislikeRequest(status));
+
+    api(getState).post(`/api/friendica/${status.get('id')}/undislike`).then(() => {
+      dispatch(undislikeSuccess(status));
+    }).catch(error => {
+      dispatch(undislikeFail(status, error));
+    });
+  };
+
+const toggleDislike = (status: StatusEntity) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (status.disliked) {
+      dispatch(undislike(status));
+    } else {
+      dispatch(dislike(status));
+    }
+  };
+
+const dislikeRequest = (status: StatusEntity) => ({
+  type: DISLIKE_REQUEST,
+  status: status,
+  skipLoading: true,
+});
+
+const dislikeSuccess = (status: StatusEntity) => ({
+  type: DISLIKE_SUCCESS,
+  status: status,
+  skipLoading: true,
+});
+
+const dislikeFail = (status: StatusEntity, error: AxiosError) => ({
+  type: DISLIKE_FAIL,
+  status: status,
+  error: error,
+  skipLoading: true,
+});
+
+const undislikeRequest = (status: StatusEntity) => ({
+  type: UNDISLIKE_REQUEST,
+  status: status,
+  skipLoading: true,
+});
+
+const undislikeSuccess = (status: StatusEntity) => ({
+  type: UNDISLIKE_SUCCESS,
+  status: status,
+  skipLoading: true,
+});
+
+const undislikeFail = (status: StatusEntity, error: AxiosError) => ({
+  type: UNDISLIKE_FAIL,
   status: status,
   error: error,
   skipLoading: true,
@@ -498,12 +579,18 @@ export {
   FAVOURITE_REQUEST,
   FAVOURITE_SUCCESS,
   FAVOURITE_FAIL,
+  DISLIKE_REQUEST,
+  DISLIKE_SUCCESS,
+  DISLIKE_FAIL,
   UNREBLOG_REQUEST,
   UNREBLOG_SUCCESS,
   UNREBLOG_FAIL,
   UNFAVOURITE_REQUEST,
   UNFAVOURITE_SUCCESS,
   UNFAVOURITE_FAIL,
+  UNDISLIKE_REQUEST,
+  UNDISLIKE_SUCCESS,
+  UNDISLIKE_FAIL,
   REBLOGS_FETCH_REQUEST,
   REBLOGS_FETCH_SUCCESS,
   REBLOGS_FETCH_FAIL,
@@ -546,6 +633,15 @@ export {
   unfavouriteRequest,
   unfavouriteSuccess,
   unfavouriteFail,
+  dislike,
+  undislike,
+  toggleDislike,
+  dislikeRequest,
+  dislikeSuccess,
+  dislikeFail,
+  undislikeRequest,
+  undislikeSuccess,
+  undislikeFail,
   bookmark,
   unbookmark,
   toggleBookmark,

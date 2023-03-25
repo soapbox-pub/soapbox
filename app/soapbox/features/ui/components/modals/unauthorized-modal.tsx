@@ -15,7 +15,7 @@ const messages = defineMessages({
 
 interface IUnauthorizedModal {
   /** Unauthorized action type. */
-  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'POLL_VOTE' | 'JOIN'
+  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'DISLIKE' | 'POLL_VOTE' | 'JOIN'
   /** Close event handler. */
   onClose: (modalType: string) => void
   /** ActivityPub ID of the account OR status being acted upon. */
@@ -86,6 +86,9 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     } else if (action === 'FAVOURITE') {
       header = <FormattedMessage id='remote_interaction.favourite_title' defaultMessage='Like a post remotely' />;
       button = <FormattedMessage id='remote_interaction.favourite' defaultMessage='Proceed to like' />;
+    } else if (action === 'DISLIKE') {
+      header = <FormattedMessage id='remote_interaction.dislike_title' defaultMessage='Dislike a post remotely' />;
+      button = <FormattedMessage id='remote_interaction.dislike' defaultMessage='Proceed to dislike' />;
     } else if (action === 'POLL_VOTE') {
       header = <FormattedMessage id='remote_interaction.poll_vote_title' defaultMessage='Vote in a poll remotely' />;
       button = <FormattedMessage id='remote_interaction.poll_vote' defaultMessage='Proceed to vote' />;

@@ -344,6 +344,13 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * @see POST /api/friendica/statuses/:id/dislike
+     * @see POST /api/friendica/statuses/:id/undislike
+     * @see GET  /api/friendica/statuses/:id/disliked_by
+     */
+    dislikes: v.software === FRIENDICA && gte(v.version, '2023.03.0'),
+
+    /**
      * Ability to edit profile information.
      * @see PATCH /api/v1/accounts/update_credentials
      */

@@ -51,6 +51,7 @@ export const StatusRecord = ImmutableRecord({
   favourited: false,
   favourites_count: 0,
   filtered: ImmutableList<string>(),
+  friendica: ImmutableMap<string, any>(),
   group: null as EmbeddedEntity<Group>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
