@@ -359,7 +359,7 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     editStatuses: any([
-      v.software === FRIENDICA,
+      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.version, '3.5.0'),
       features.includes('editing'),
     ]),
@@ -857,7 +857,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/trends/statuses
      */
     trendingStatuses: any([
-      v.software === FRIENDICA,
+      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
     ]),
 
@@ -872,7 +872,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/trends
      */
     trends: any([
-      v.software === FRIENDICA,
+      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
