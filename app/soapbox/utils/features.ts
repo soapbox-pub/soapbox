@@ -91,8 +91,6 @@ const getInstanceFeatures = (instance: Instance) => {
   const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
   const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
 
-  console.log(v);
-
   return {
     /**
      * Can view and manage ActivityPub aliases through the API.
@@ -152,7 +150,6 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/accounts/:id/follow
      */
     accountNotifies: any([
-      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TRUTHSOCIAL,
@@ -791,7 +788,6 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v2/search
      */
     searchFromAccount: any([
-      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA && gte(v.version, '1.0.0'),
     ]),
@@ -897,10 +893,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Whether the backend allows adding users you don't follow to lists.
      * @see POST /api/v1/lists/:id/accounts
      */
-    unrestrictedLists: any([
-      v.software === FRIENDICA,
-      v.software === PLEROMA,
-    ]),
+    unrestrictedLists: v.software === PLEROMA,
   };
 };
 
@@ -933,7 +926,9 @@ export const parseVersion = (version: string): Backend => {
   const match = regex.exec(version);
 
   const semverString = match && (match[3] || match[1]);
-  const semver = match ? semverParse(semverString) || semverCoerce(semverString) : null;
+  const semver = match ? semverParse(semverString) || semverCoerce(semverString, {
+    loose: true,
+  }) : null;
   const compat = match ? semverParse(match[1]) || semverCoerce(match[1]) : null;
 
   if (match && semver && compat) {
