@@ -671,8 +671,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           color='accent'
           filled
           onClick={handleDislikeClick}
-          active={status.friendica.get('disliked')}
-          count={status.friendica.get('dislikes_count')}
+          active={status.disliked}
+          count={status.dislikes_count}
           text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined  }
           />
         )}

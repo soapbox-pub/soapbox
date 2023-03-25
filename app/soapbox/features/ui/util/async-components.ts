@@ -190,6 +190,10 @@ export function FavouritesModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/modals/favourites-modal');
 }
 
+export function DislikesModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/dislikes-modal');
+}
+
 export function ReactionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/modals/reactions-modal');
 }

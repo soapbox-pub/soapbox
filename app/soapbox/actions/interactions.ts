@@ -44,6 +44,10 @@ const FAVOURITES_FETCH_REQUEST = 'FAVOURITES_FETCH_REQUEST';
 const FAVOURITES_FETCH_SUCCESS = 'FAVOURITES_FETCH_SUCCESS';
 const FAVOURITES_FETCH_FAIL    = 'FAVOURITES_FETCH_FAIL';
 
+const DISLIKES_FETCH_REQUEST = 'DISLIKES_FETCH_REQUEST';
+const DISLIKES_FETCH_SUCCESS = 'DISLIKES_FETCH_SUCCESS';
+const DISLIKES_FETCH_FAIL    = 'DISLIKES_FETCH_FAIL';
+
 const REACTIONS_FETCH_REQUEST = 'REACTIONS_FETCH_REQUEST';
 const REACTIONS_FETCH_SUCCESS = 'REACTIONS_FETCH_SUCCESS';
 const REACTIONS_FETCH_FAIL    = 'REACTIONS_FETCH_FAIL';
@@ -104,7 +108,7 @@ const unreblog = (status: StatusEntity) =>
   };
 
 const toggleReblog = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  (dispatch: AppDispatch) => {
     if (status.reblogged) {
       dispatch(unreblog(status));
     } else {
@@ -177,7 +181,7 @@ const unfavourite = (status: StatusEntity) =>
   };
 
 const toggleFavourite = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  (dispatch: AppDispatch) => {
     if (status.favourited) {
       dispatch(unfavourite(status));
     } else {
@@ -229,7 +233,7 @@ const dislike = (status: StatusEntity) =>
 
     dispatch(dislikeRequest(status));
 
-    api(getState).post(`/api/friendica/${status.get('id')}/dislike`).then(function() {
+    api(getState).post(`/api/friendica/statuses/${status.get('id')}/dislike`).then(function() {
       dispatch(dislikeSuccess(status));
     }).catch(function(error) {
       dispatch(dislikeFail(status, error));
@@ -242,7 +246,7 @@ const undislike = (status: StatusEntity) =>
 
     dispatch(undislikeRequest(status));
 
-    api(getState).post(`/api/friendica/${status.get('id')}/undislike`).then(() => {
+    api(getState).post(`/api/friendica/statuses/${status.get('id')}/undislike`).then(() => {
       dispatch(undislikeSuccess(status));
     }).catch(error => {
       dispatch(undislikeFail(status, error));
@@ -250,7 +254,7 @@ const undislike = (status: StatusEntity) =>
   };
 
 const toggleDislike = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  (dispatch: AppDispatch) => {
     if (status.disliked) {
       dispatch(undislike(status));
     } else {
@@ -432,6 +436,38 @@ const fetchFavouritesFail = (id: string, error: AxiosError) => ({
   error,
 });
 
+const fetchDislikes = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(fetchDislikesRequest(id));
+
+    api(getState).get(`/api/friendica/statuses/${id}/disliked_by`).then(response => {
+      dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(fetchDislikesSuccess(id, response.data));
+    }).catch(error => {
+      dispatch(fetchDislikesFail(id, error));
+    });
+  };
+
+const fetchDislikesRequest = (id: string) => ({
+  type: DISLIKES_FETCH_REQUEST,
+  id,
+});
+
+const fetchDislikesSuccess = (id: string, accounts: APIEntity[]) => ({
+  type: DISLIKES_FETCH_SUCCESS,
+  id,
+  accounts,
+});
+
+const fetchDislikesFail = (id: string, error: AxiosError) => ({
+  type: DISLIKES_FETCH_FAIL,
+  id,
+  error,
+});
+
 const fetchReactions = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchReactionsRequest(id));
@@ -597,6 +633,9 @@ export {
   FAVOURITES_FETCH_REQUEST,
   FAVOURITES_FETCH_SUCCESS,
   FAVOURITES_FETCH_FAIL,
+  DISLIKES_FETCH_REQUEST,
+  DISLIKES_FETCH_SUCCESS,
+  DISLIKES_FETCH_FAIL,
   REACTIONS_FETCH_REQUEST,
   REACTIONS_FETCH_SUCCESS,
   REACTIONS_FETCH_FAIL,
@@ -659,6 +698,10 @@ export {
   fetchFavouritesRequest,
   fetchFavouritesSuccess,
   fetchFavouritesFail,
+  fetchDislikes,
+  fetchDislikesRequest,
+  fetchDislikesSuccess,
+  fetchDislikesFail,
   fetchReactions,
   fetchReactionsRequest,
   fetchReactionsSuccess,
