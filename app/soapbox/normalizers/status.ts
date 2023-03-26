@@ -220,14 +220,14 @@ const normalizeFilterResults = (status: ImmutableMap<string, any>) =>
   );
 
 const normalizeDislikes = (status: ImmutableMap<string, any>) => {
-    if (status.get('friendica')) {
-      return status
-        .set('dislikes_count', status.getIn(['friendica', 'dislikes_count']))
-        .set('disliked', status.getIn(['friendica', 'disliked']))
-    }
-
-    return status;
+  if (status.get('friendica')) {
+    return status
+      .set('dislikes_count', status.getIn(['friendica', 'dislikes_count']))
+      .set('disliked', status.getIn(['friendica', 'disliked']));
   }
+
+  return status;
+};
 
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(

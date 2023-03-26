@@ -666,14 +666,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
         {features.dislikes && (
           <StatusActionButton
-          title={intl.formatMessage(messages.disfavourite)}
-          icon={require('@tabler/icons/thumb-down.svg')}
-          color='accent'
-          filled
-          onClick={handleDislikeClick}
-          active={status.disliked}
-          count={status.dislikes_count}
-          text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined  }
+            title={intl.formatMessage(messages.disfavourite)}
+            icon={require('@tabler/icons/thumb-down.svg')}
+            color='accent'
+            filled
+            onClick={handleDislikeClick}
+            active={status.disliked}
+            count={status.dislikes_count}
+            text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined}
           />
         )}
 
