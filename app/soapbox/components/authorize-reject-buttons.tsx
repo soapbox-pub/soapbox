@@ -52,19 +52,11 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
   switch (state) {
     case 'authorized':
       return (
-        <div className='rounded-full bg-gray-100 px-4 py-2 dark:bg-gray-800'>
-          <Text theme='muted' size='sm'>
-            <FormattedMessage id='authorize.success' defaultMessage='Approved' />
-          </Text>
-        </div>
+        <ActionEmblem text={<FormattedMessage id='authorize.success' defaultMessage='Approved' />} />
       );
     case 'rejected':
       return (
-        <div className='rounded-full bg-gray-100 px-4 py-2 dark:bg-gray-800'>
-          <Text theme='muted' size='sm'>
-            <FormattedMessage id='reject.success' defaultMessage='Rejected' />
-          </Text>
-        </div>
+        <ActionEmblem text={<FormattedMessage id='reject.success' defaultMessage='Rejected' />} />
       );
     default:
       return (
@@ -86,6 +78,20 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
         </HStack>
       );
   }
+};
+
+interface IActionEmblem {
+  text: React.ReactNode
+}
+
+const ActionEmblem: React.FC<IActionEmblem> = ({ text }) => {
+  return (
+    <div className='rounded-full bg-gray-100 px-4 py-2 dark:bg-gray-800'>
+      <Text theme='muted' size='sm'>
+        {text}
+      </Text>
+    </div>
+  );
 };
 
 interface IAuthorizeRejectButton {
