@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -10,7 +11,7 @@ interface IAuthorizeRejectButtons {
 }
 
 /** Buttons to approve or reject a pending item, usually an account. */
-const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize, onReject, countdown = 0 }) => {
+const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize, onReject, countdown }) => {
   const [state, setState] = useState<'authorizing' | 'rejecting' | 'authorized' | 'rejected' | 'pending'>('pending');
   const timeout = useRef<NodeJS.Timeout>();
 
@@ -68,35 +69,60 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
     default:
       return (
         <HStack space={3} alignItems='center'>
-          <div className='relative'>
-            <IconButton
-              src={state === 'rejecting' ? require('@tabler/icons/player-stop-filled.svg') : require('@tabler/icons/x.svg')}
-              onClick={handleReject}
-              theme='seamless'
-              className='h-10 w-10 items-center justify-center border-2 border-danger-600/10 hover:border-danger-600'
-              iconClassName='h-6 w-6 text-danger-600'
-              disabled={state === 'authorizing'}
-            />
-            {(state === 'rejecting') && (
-              <div className='pointer-events-none absolute inset-0 h-10 w-10 animate-spin rounded-full border-2 border-transparent border-t-danger-600' />
-            )}
-          </div>
-          <div className='relative'>
-            <IconButton
-              src={state === 'authorizing' ? require('@tabler/icons/player-stop-filled.svg') : require('@tabler/icons/check.svg')}
-              onClick={handleAuthorize}
-              theme='seamless'
-              className='h-10 w-10 items-center justify-center border-2 border-primary-500/10 hover:border-primary-500'
-              iconClassName='h-6 w-6 text-primary-500'
-              disabled={state === 'rejecting'}
-            />
-            {(state === 'authorizing') && (
-              <div className='pointer-events-none absolute inset-0 h-10 w-10 animate-spin rounded-full border-2 border-transparent border-t-primary-500' />
-            )}
-          </div>
+          <AuthorizeRejectButton
+            theme='danger'
+            icon={require('@tabler/icons/x.svg')}
+            action={handleReject}
+            isLoading={state === 'rejecting'}
+            disabled={state === 'authorizing'}
+          />
+          <AuthorizeRejectButton
+            theme='primary'
+            icon={require('@tabler/icons/check.svg')}
+            action={handleAuthorize}
+            isLoading={state === 'authorizing'}
+            disabled={state === 'rejecting'}
+          />
         </HStack>
       );
   }
+};
+
+interface IAuthorizeRejectButton {
+  theme: 'primary' | 'danger'
+  icon: string
+  action(): void
+  isLoading?: boolean
+  disabled?: boolean
+}
+
+const AuthorizeRejectButton: React.FC<IAuthorizeRejectButton> = ({ theme, icon, action, isLoading, disabled }) => {
+  return (
+    <div className='relative'>
+      <IconButton
+        src={isLoading ? require('@tabler/icons/player-stop-filled.svg') : icon}
+        onClick={action}
+        theme='seamless'
+        className={clsx('h-10 w-10 items-center justify-center border-2', {
+          'border-primary-500/10 hover:border-primary-500': theme === 'primary',
+          'border-danger-600/10 hover:border-danger-600': theme === 'danger',
+        })}
+        iconClassName={clsx('h-6 w-6', {
+          'text-primary-500': theme === 'primary',
+          'text-danger-600': theme === 'danger',
+        })}
+        disabled={disabled}
+      />
+      {(isLoading) && (
+        <div
+          className={clsx('pointer-events-none absolute inset-0 h-10 w-10 animate-spin rounded-full border-2 border-transparent', {
+            'border-t-primary-500': theme === 'primary',
+            'border-t-danger-600': theme === 'danger',
+          })}
+        />
+      )}
+    </div>
+  );
 };
 
 export { AuthorizeRejectButtons };
