@@ -26,15 +26,20 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
       }
       setState('pending');
     } else {
-      setState(present);
-      timeout.current = setTimeout(async () => {
+      const doAction = async () => {
         try {
           await action();
           setState(past);
         } catch (e) {
           console.error(e);
         }
-      }, countdown);
+      };
+      if (typeof countdown === 'number') {
+        setState(present);
+        timeout.current = setTimeout(doAction, countdown);
+      } else {
+        doAction();
+      }
     }
   }
 
