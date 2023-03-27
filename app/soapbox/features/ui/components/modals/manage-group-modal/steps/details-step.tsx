@@ -189,15 +189,17 @@ const DetailsStep = () => {
         />
       </FormGroup>
 
-      <Streamfield
-        label='Topics'
-        hint='Add up to 3 keywords that will serve as core topics of discussion in the group.'
-        component={HashtagField}
-        values={hashtags}
-        onChange={setHashtags}
-        onAddItem={handleAddHashtag}
-        onRemoveItem={handleRemoveHashtag}
-      />
+      <div className='pb-6'>
+        <Streamfield
+          label='Topics'
+          hint='Add up to 3 keywords that will serve as core topics of discussion in the group.'
+          component={HashtagField}
+          values={hashtags}
+          onChange={setHashtags}
+          onAddItem={handleAddHashtag}
+          onRemoveItem={handleRemoveHashtag}
+        />
+      </div>
     </Form>
   );
 };
