@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import z from 'zod';
 
-import { useApi, useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useLoading } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
 
 import type { Entity } from '../types';
-import type { EntitySchema } from './types';
-
-type EntityPath = [entityType: string, entityId: string]
+import type { EntitySchema, EntityPath, EntityFn } from './types';
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {
@@ -20,10 +18,10 @@ interface UseEntityOpts<TEntity extends Entity> {
 
 function useEntity<TEntity extends Entity>(
   path: EntityPath,
-  endpoint: string,
+  entityFn: EntityFn<void>,
   opts: UseEntityOpts<TEntity> = {},
 ) {
-  const api = useApi();
+  const [isFetching, setPromise] = useLoading();
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;
@@ -33,18 +31,16 @@ function useEntity<TEntity extends Entity>(
 
   const entity = useAppSelector(state => state.entities[entityType]?.store[entityId] as TEntity | undefined);
 
-  const [isFetching, setIsFetching] = useState(false);
   const isLoading = isFetching && !entity;
 
-  const fetchEntity = () => {
-    setIsFetching(true);
-    api.get(endpoint).then(({ data }) => {
-      const entity = schema.parse(data);
+  const fetchEntity = async () => {
+    try {
+      const response = await setPromise(entityFn());
+      const entity = schema.parse(response.data);
       dispatch(importEntities([entity], entityType));
-      setIsFetching(false);
-    }).catch(() => {
-      setIsFetching(false);
-    });
+    } catch (e) {
+      // do nothing
+    }
   };
 
   useEffect(() => {

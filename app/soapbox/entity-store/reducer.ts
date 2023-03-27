@@ -3,10 +3,13 @@ import produce, { enableMapSet } from 'immer';
 import {
   ENTITIES_IMPORT,
   ENTITIES_DELETE,
+  ENTITIES_DISMISS,
   ENTITIES_FETCH_REQUEST,
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
   EntityAction,
+  ENTITIES_INVALIDATE_LIST,
+  ENTITIES_INCREMENT,
 } from './actions';
 import { createCache, createList, updateStore, updateList } from './utils';
 
@@ -27,17 +30,25 @@ const importEntities = (
   entities: Entity[],
   listKey?: string,
   newState?: EntityListState,
+  overwrite = false,
 ): State => {
   return produce(state, draft => {
     const cache = draft[entityType] ?? createCache();
     cache.store = updateStore(cache.store, entities);
 
     if (typeof listKey === 'string') {
-      let list = { ...(cache.lists[listKey] ?? createList()) };
+      let list = cache.lists[listKey] ?? createList();
+
+      if (overwrite) {
+        list.ids = new Set();
+      }
+
       list = updateList(list, entities);
+
       if (newState) {
         list.state = newState;
       }
+
       cache.lists[listKey] = list;
     }
 
@@ -59,12 +70,59 @@ const deleteEntities = (
 
       if (!opts?.preserveLists) {
         for (const list of Object.values(cache.lists)) {
-          list?.ids.delete(id);
+          if (list) {
+            list.ids.delete(id);
+
+            if (typeof list.state.totalCount === 'number') {
+              list.state.totalCount--;
+            }
+          }
         }
       }
     }
 
     draft[entityType] = cache;
+  });
+};
+
+const dismissEntities = (
+  state: State,
+  entityType: string,
+  ids: Iterable<string>,
+  listKey: string,
+) => {
+  return produce(state, draft => {
+    const cache = draft[entityType] ?? createCache();
+    const list = cache.lists[listKey];
+
+    if (list) {
+      for (const id of ids) {
+        list.ids.delete(id);
+
+        if (typeof list.state.totalCount === 'number') {
+          list.state.totalCount--;
+        }
+      }
+
+      draft[entityType] = cache;
+    }
+  });
+};
+
+const incrementEntities = (
+  state: State,
+  entityType: string,
+  listKey: string,
+  diff: number,
+) => {
+  return produce(state, draft => {
+    const cache = draft[entityType] ?? createCache();
+    const list = cache.lists[listKey];
+
+    if (typeof list?.state?.totalCount === 'number') {
+      list.state.totalCount += diff;
+      draft[entityType] = cache;
+    }
   });
 };
 
@@ -89,6 +147,14 @@ const setFetching = (
   });
 };
 
+const invalidateEntityList = (state: State, entityType: string, listKey: string) => {
+  return produce(state, draft => {
+    const cache = draft[entityType] ?? createCache();
+    const list = cache.lists[listKey] ?? createList();
+    list.state.invalid = true;
+  });
+};
+
 /** Stores various entity data and lists in a one reducer. */
 function reducer(state: Readonly<State> = {}, action: EntityAction): State {
   switch (action.type) {
@@ -96,12 +162,18 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
       return importEntities(state, action.entityType, action.entities, action.listKey);
     case ENTITIES_DELETE:
       return deleteEntities(state, action.entityType, action.ids, action.opts);
+    case ENTITIES_DISMISS:
+      return dismissEntities(state, action.entityType, action.ids, action.listKey);
+    case ENTITIES_INCREMENT:
+      return incrementEntities(state, action.entityType, action.listKey, action.diff);
     case ENTITIES_FETCH_SUCCESS:
-      return importEntities(state, action.entityType, action.entities, action.listKey, action.newState);
+      return importEntities(state, action.entityType, action.entities, action.listKey, action.newState, action.overwrite);
     case ENTITIES_FETCH_REQUEST:
       return setFetching(state, action.entityType, action.listKey, true);
     case ENTITIES_FETCH_FAIL:
       return setFetching(state, action.entityType, action.listKey, false, action.error);
+    case ENTITIES_INVALIDATE_LIST:
+      return invalidateEntityList(state, action.entityType, action.listKey);
     default:
       return state;
   }

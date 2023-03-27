@@ -359,6 +359,7 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     editStatuses: any([
+      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.version, '3.5.0'),
       features.includes('editing'),
     ]),
@@ -432,6 +433,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
+      v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
@@ -775,6 +777,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/scheduled_statuses/}
      */
     scheduledStatuses: any([
+      v.software === FRIENDICA,
       v.software === MASTODON && gte(v.version, '2.7.0'),
       v.software === PLEROMA,
     ]),
@@ -853,7 +856,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Trending statuses.
      * @see GET /api/v1/trends/statuses
      */
-    trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+    trendingStatuses: any([
+      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
+      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+    ]),
 
     /**
      * Truth Social trending statuses API.
@@ -866,6 +872,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/trends
      */
     trends: any([
+      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
     ]),
@@ -919,7 +926,9 @@ export const parseVersion = (version: string): Backend => {
   const match = regex.exec(version);
 
   const semverString = match && (match[3] || match[1]);
-  const semver = match ? semverParse(semverString) || semverCoerce(semverString) : null;
+  const semver = match ? semverParse(semverString) || semverCoerce(semverString, {
+    loose: true,
+  }) : null;
   const compat = match ? semverParse(match[1]) || semverCoerce(match[1]) : null;
 
   if (match && semver && compat) {

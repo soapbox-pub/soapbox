@@ -11,6 +11,7 @@ export { useGroupsPath } from './useGroupsPath';
 export { useDimensions } from './useDimensions';
 export { useFeatures } from './useFeatures';
 export { useInstance } from './useInstance';
+export { useLoading } from './useLoading';
 export { useLocale } from './useLocale';
 export { useOnScreen } from './useOnScreen';
 export { useOwnAccount } from './useOwnAccount';
