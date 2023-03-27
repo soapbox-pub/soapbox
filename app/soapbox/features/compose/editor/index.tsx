@@ -48,6 +48,8 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
+  const [suggestionsHidden, setSuggestionsHidden] = useState(true);
+
   const initialConfig: InitialConfigType = useMemo(function() {
     return {
       namespace: 'ComposeForm',
@@ -138,7 +140,7 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
         />
         <HistoryPlugin />
         <HashtagPlugin />
-        <MentionPlugin />
+        <MentionPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         {features.richText && <LinkPlugin />}
         {features.richText && floatingAnchorElem && (
           <>

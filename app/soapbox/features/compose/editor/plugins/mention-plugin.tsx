@@ -13,14 +13,19 @@ import {
   useBasicTypeaheadTriggerMatch,
 } from '@lexical/react/LexicalTypeaheadMenuPlugin';
 import { useLexicalTextEntity } from '@lexical/react/useLexicalTextEntity';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+import { fetchComposeSuggestions } from 'soapbox/actions/compose';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
+
+import AutosuggestAccount from '../../components/autosuggest-account';
 import { $createMentionNode, MentionNode } from '../nodes/mention-node';
 
 import { TypeaheadMenuPlugin } from './typeahead-menu-plugin';
 
-import type { TextNode } from 'lexical';
+import type { RangeSelection, TextNode } from 'lexical';
 
 const REGEX = new RegExp('(^|$|(?:^|\\s))([@])([a-z\\d_-]+(?:@[^@\\s]+)?)', 'i');
 
@@ -44,32 +49,7 @@ const TRIGGERS = ['@'].join('');
 // Chars we expect to see in a mention (non-space, non-punctuation).
 const VALID_CHARS = '[^' + TRIGGERS + PUNC + '\\s]';
 
-// Non-standard series of chars. Each series must be preceded and followed by
-// a valid char.
-// const VALID_JOINS =
-//   '(?:' +
-//   '\\.[ |$]|' + // E.g. "r. " in "Mr. Smith"
-//   ' |' + // E.g. " " in "Josh Duck"
-//   '[' +
-//   PUNC +
-//   ']|' + // E.g. "-' in "Salier-Hellendag"
-//   ')';
-
-// const LENGTH_LIMIT = 75;
-
-const AtSignMentionsRegex = REGEX; /* new RegExp(
-  '(^|\\s|\\()(' +
-    '[' +
-    TRIGGERS +
-    ']' +
-    '((?:' +
-    VALID_CHARS +
-    VALID_JOINS +
-    '){0,' +
-    LENGTH_LIMIT +
-    '})' +
-    ')$',
-); */
+const AtSignMentionsRegex = REGEX;
 
 // 50 is the longest alias length limit.
 const ALIAS_LENGTH_LIMIT = 50;
@@ -87,9 +67,6 @@ const AtSignMentionsRegexAliasRegex = new RegExp(
     '})' +
     ')$',
 );
-
-// At most, 5 suggestions are shown in the popup.
-const SUGGESTION_LIST_LENGTH_LIMIT = 5;
 
 const mentionsCache = new Map();
 
@@ -199,45 +176,20 @@ class MentionTypeaheadOption extends TypeaheadOption {
 
 }
 
-const MentionsTypeaheadMenuItem = ({
-  index,
-  isSelected,
-  onClick,
-  onMouseEnter,
-  option,
-}: {
-  index: number
-  isSelected: boolean
-  onClick: () => void
-  onMouseEnter: () => void
-  option: MentionTypeaheadOption
-}) => {
-  let className = 'item';
-  if (isSelected) {
-    className += ' selected';
-  }
-  return (
-    <li
-      key={option.key}
-      tabIndex={-1}
-      className={className}
-      ref={option.setRefElement}
-      role='option'
-      aria-selected={isSelected}
-      id={'typeahead-item-' + index}
-      onMouseEnter={onMouseEnter}
-      onClick={onClick}
-    >
-      {option.picture}
-      <span className='text'>{option.name}</span>
-    </li>
-  );
-};
+export const MentionPlugin: React.FC<{
+  composeId: string
+  suggestionsHidden: boolean
+  setSuggestionsHidden: (value: boolean) => void
+}> = ({
+  composeId, suggestionsHidden, setSuggestionsHidden,
+}): JSX.Element | null => {
+  const { suggestions } = useCompose(composeId);
+  const dispatch = useAppDispatch();
 
-export const MentionPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
 
   const [queryString, setQueryString] = useState<string | null>(null);
+  const [selectedSuggestion] = useState(0);
 
   const results = useMentionLookupService(queryString);
 
@@ -245,34 +197,28 @@ export const MentionPlugin = (): JSX.Element | null => {
     minLength: 0,
   });
 
-  const options = useMemo(
-    () =>
-      results
-        .map(
-          (result) =>
-            new MentionTypeaheadOption(result, <i className='icon user' />),
-        )
-        .slice(0, SUGGESTION_LIST_LENGTH_LIMIT),
-    [results],
-  );
+  const options = [new MentionTypeaheadOption('', <i className='icon user' />)];
 
-  const onSelectOption = useCallback(
-    (
-      selectedOption: MentionTypeaheadOption,
-      nodeToReplace: TextNode | null,
-      closeMenu: () => void,
-    ) => {
-      editor.update(() => {
-        const mentionNode = $createMentionNode(selectedOption.name);
-        if (nodeToReplace) {
-          nodeToReplace.replace(mentionNode);
-        }
-        mentionNode.select();
-        closeMenu();
+  const onSelectOption = useCallback(() => { }, [editor]);
+
+  const onSelectSuggestion: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    e.preventDefault();
+
+    const suggestion = suggestions.get(e.currentTarget.getAttribute('data-index') as any);
+
+    editor.update(() => {
+
+      dispatch((_, getState) => {
+        const state = editor.getEditorState();
+        const node = (state._selection as RangeSelection)?.anchor?.getNode();
+
+        const content = getState().accounts.get(suggestion)!.acct;
+
+        node.setTextContent(`@${content} `);
+        node.select();
       });
-    },
-    [editor],
-  );
+    });
+  };
 
   const checkForMentionMatch = useCallback(
     (text: string) => {
@@ -300,6 +246,8 @@ export const MentionPlugin = (): JSX.Element | null => {
       return null;
     }
 
+    dispatch(fetchComposeSuggestions(composeId, matchArr[0]));
+
     const mentionLength = matchArr[3].length + 1;
     const startOffset = matchArr.index + matchArr[1].length;
     const endOffset = startOffset + mentionLength;
@@ -315,6 +263,31 @@ export const MentionPlugin = (): JSX.Element | null => {
     createMentionNode,
   );
 
+  const renderSuggestion = (suggestion: string, i: number) => {
+    const inner = <AutosuggestAccount id={suggestion} />;
+    const key = suggestion;
+
+    return (
+      <div
+        role='button'
+        tabIndex={0}
+        key={key}
+        data-index={i}
+        className={clsx({
+          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
+          'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
+        })}
+        onMouseDown={onSelectSuggestion}
+      >
+        {inner}
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (suggestions && suggestions.size > 0) setSuggestionsHidden(false);
+  }, [suggestions]);
+
   return (
     <TypeaheadMenuPlugin<MentionTypeaheadOption>
       onQueryChange={setQueryString}
@@ -327,24 +300,15 @@ export const MentionPlugin = (): JSX.Element | null => {
       ) =>
         anchorElementRef.current && results.length
           ? ReactDOM.createPortal(
-            <div className='typeahead-popover mentions-menu'>
-              <ul>
-                {options.map((option, i: number) => (
-                  <MentionsTypeaheadMenuItem
-                    index={i}
-                    isSelected={selectedIndex === i}
-                    onClick={() => {
-                      setHighlightedIndex(i);
-                      selectOptionAndCleanUp(option);
-                    }}
-                    onMouseEnter={() => {
-                      setHighlightedIndex(i);
-                    }}
-                    key={option.key}
-                    option={option}
-                  />
-                ))}
-              </ul>
+            <div
+              // style={setPortalPosition()}
+              className={clsx({
+                'mt-6 fixed z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
+                hidden: suggestionsHidden || suggestions.isEmpty(),
+                block: !suggestionsHidden && !suggestions.isEmpty(),
+              })}
+            >
+              {suggestions.map(renderSuggestion)}
             </div>,
             anchorElementRef.current,
           )
