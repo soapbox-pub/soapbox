@@ -68,22 +68,32 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
     default:
       return (
         <HStack space={3} alignItems='center'>
-          <IconButton
-            src={state === 'rejecting' ? require('@tabler/icons/player-stop-filled.svg') : require('@tabler/icons/x.svg')}
-            onClick={handleReject}
-            theme='seamless'
-            className='h-10 w-10 items-center justify-center border-2 border-danger-600/10 hover:border-danger-600'
-            iconClassName='h-6 w-6 text-danger-600'
-            disabled={state === 'authorizing'}
-          />
-          <IconButton
-            src={state === 'authorizing' ? require('@tabler/icons/player-stop-filled.svg') : require('@tabler/icons/check.svg')}
-            onClick={handleAuthorize}
-            theme='seamless'
-            className='h-10 w-10 items-center justify-center border-2 border-primary-500/10 hover:border-primary-500'
-            iconClassName='h-6 w-6 text-primary-500'
-            disabled={state === 'rejecting'}
-          />
+          <div className='relative'>
+            <IconButton
+              src={state === 'rejecting' ? require('@tabler/icons/player-stop-filled.svg') : require('@tabler/icons/x.svg')}
+              onClick={handleReject}
+              theme='seamless'
+              className='h-10 w-10 items-center justify-center border-2 border-danger-600/10 hover:border-danger-600'
+              iconClassName='h-6 w-6 text-danger-600'
+              disabled={state === 'authorizing'}
+            />
+            {(state === 'rejecting') && (
+              <div className='pointer-events-none absolute inset-0 h-10 w-10 animate-spin rounded-full border-2 border-transparent border-t-danger-600' />
+            )}
+          </div>
+          <div className='relative'>
+            <IconButton
+              src={state === 'authorizing' ? require('@tabler/icons/player-stop-filled.svg') : require('@tabler/icons/check.svg')}
+              onClick={handleAuthorize}
+              theme='seamless'
+              className='h-10 w-10 items-center justify-center border-2 border-primary-500/10 hover:border-primary-500'
+              iconClassName='h-6 w-6 text-primary-500'
+              disabled={state === 'rejecting'}
+            />
+            {(state === 'authorizing') && (
+              <div className='pointer-events-none absolute inset-0 h-10 w-10 animate-spin rounded-full border-2 border-transparent border-t-primary-500' />
+            )}
+          </div>
         </HStack>
       );
   }
