@@ -25,6 +25,7 @@ interface IMediaInput {
 const messages = defineMessages({
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
+  hashtagPlaceholder: { id: 'manage_group.fields.hashtag_placeholder', defaultMessage: 'Add a topic' },
 });
 
 const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
@@ -210,12 +211,20 @@ interface IHashtagField {
 }
 
 const HashtagField: React.FC<IHashtagField> = ({ value, onChange }) => {
+  const intl = useIntl();
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     onChange(target.value);
   };
 
   return (
-    <Input outerClassName='w-full' type='text' value={value} onChange={handleChange} />
+    <Input
+      outerClassName='w-full'
+      type='text'
+      value={value}
+      onChange={handleChange}
+      placeholder={intl.formatMessage(messages.hashtagPlaceholder)}
+    />
   );
 };
 

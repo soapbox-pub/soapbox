@@ -941,6 +941,7 @@
   "manage_group.edit_success": "The group was edited",
   "manage_group.fields.description_label": "Description",
   "manage_group.fields.description_placeholder": "Description",
+  "manage_group.fields.hashtag_placeholder": "Add a topic",
   "manage_group.fields.name_label": "Group name (required)",
   "manage_group.fields.name_placeholder": "Group Name",
   "manage_group.get_started": "Let’s get started!",
