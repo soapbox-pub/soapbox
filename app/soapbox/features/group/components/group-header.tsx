@@ -12,6 +12,7 @@ import { isDefaultHeader } from 'soapbox/utils/accounts';
 
 import GroupActionButton from './group-action-button';
 import GroupMemberCount from './group-member-count';
+import GroupOptionsButton from './group-options-button';
 import GroupPrivacy from './group-privacy';
 import GroupRelationship from './group-relationship';
 
@@ -140,7 +141,10 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           />
         </Stack>
 
-        <GroupActionButton group={group} />
+        <HStack alignItems='center' space={2}>
+          <GroupOptionsButton group={group} />
+          <GroupActionButton group={group} />
+        </HStack>
       </Stack>
     </div>
   );
