@@ -14,7 +14,11 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
   const [state, setState] = useState<'authorizing' | 'rejecting' | 'authorized' | 'rejected' | 'pending'>('pending');
   const timeout = useRef<NodeJS.Timeout>();
 
-  function handleAction(present: 'authorizing' | 'rejecting', past: 'authorized' | 'rejected'): void {
+  function handleAction(
+    present: 'authorizing' | 'rejecting',
+    past: 'authorized' | 'rejected',
+    action: () => Promise<unknown> | unknown,
+  ): void {
     if (state === present) {
       if (timeout.current) {
         clearTimeout(timeout.current);
@@ -24,7 +28,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
       setState(present);
       timeout.current = setTimeout(async () => {
         try {
-          await onAuthorize();
+          await action();
           setState(past);
         } catch (e) {
           console.error(e);
@@ -33,8 +37,8 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
     }
   }
 
-  const handleAuthorize = async () => handleAction('authorizing', 'authorized');
-  const handleReject = async () => handleAction('rejecting', 'rejected');
+  const handleAuthorize = async () => handleAction('authorizing', 'authorized', onAuthorize);
+  const handleReject = async () => handleAction('rejecting', 'rejected', onReject);
 
   useEffect(() => {
     return () => {
