@@ -126,7 +126,7 @@ const DetailsStep = () => {
   const handleRemoveHashtag = (i: number) => {
     const newHashtags = [...hashtags];
     newHashtags.splice(i);
-    return newHashtags;
+    setHashtags(newHashtags);
   };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = e => {
