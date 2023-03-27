@@ -789,9 +789,11 @@ const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, get
   const note        = getState().group_editor.note;
   const avatar      = getState().group_editor.avatar;
   const header      = getState().group_editor.header;
+  const visibility  = getState().group_editor.locked ? 'members_only' : 'everyone'; // Truth Social
 
   const params: Record<string, any> = {
     display_name: displayName,
+    group_visibility: visibility,
     note,
   };
 

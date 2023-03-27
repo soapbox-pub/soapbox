@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeReportComment, changeReportRule } from 'soapbox/actions/reports';
+import { changeReportComment, changeReportRule, ReportableEntities } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -29,13 +29,11 @@ const ReasonStep = (_props: IReasonStep) => {
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
+  const entityType = useAppSelector((state) => state.reports.new.entityType);
   const comment = useAppSelector((state) => state.reports.new.comment);
   const rules = useAppSelector((state) => state.rules.items);
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const shouldRequireRule = rules.length > 0;
-
-  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(changeReportComment(event.target.value));
@@ -60,7 +58,23 @@ const ReasonStep = (_props: IReasonStep) => {
   };
 
   const filterRuleType = (rule: any) => {
-    const ruleTypeToFilter = isReportingAccount ? 'account' : 'content';
+    let ruleTypeToFilter = 'content';
+
+    switch (entityType) {
+      case ReportableEntities.ACCOUNT:
+        ruleTypeToFilter = 'account';
+        break;
+      case ReportableEntities.STATUS:
+      case ReportableEntities.CHAT_MESSAGE:
+        ruleTypeToFilter = 'content';
+        break;
+      case ReportableEntities.GROUP:
+        ruleTypeToFilter = 'group';
+        break;
+      default:
+        ruleTypeToFilter = 'content';
+        break;
+    }
 
     if (rule.rule_type) {
       return rule.rule_type === ruleTypeToFilter;

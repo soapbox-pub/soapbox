@@ -3,7 +3,8 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { approveUsers } from 'soapbox/actions/admin';
 import { rejectUserModal } from 'soapbox/actions/moderation';
-import { Stack, HStack, Text, IconButton } from 'soapbox/components/ui';
+import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
+import { Stack, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
@@ -29,19 +30,21 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   if (!account) return null;
 
   const handleApprove = () => {
-    dispatch(approveUsers([account.id]))
+    return dispatch(approveUsers([account.id]))
       .then(() => {
         const message = intl.formatMessage(messages.approved, { acct: `@${account.acct}` });
         toast.success(message);
-      })
-      .catch(() => {});
+      });
   };
 
   const handleReject = () => {
-    dispatch(rejectUserModal(intl, account.id, () => {
-      const message = intl.formatMessage(messages.rejected, { acct: `@${account.acct}` });
-      toast.info(message);
-    }));
+    return new Promise<void>((resolve) => {
+      dispatch(rejectUserModal(intl, account.id, () => {
+        const message = intl.formatMessage(messages.rejected, { acct: `@${account.acct}` });
+        toast.info(message);
+        resolve();
+      }));
+    });
   };
 
   return (
@@ -55,20 +58,12 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
         </Text>
       </Stack>
 
-      <HStack space={2} alignItems='center'>
-        <IconButton
-          src={require('@tabler/icons/check.svg')}
-          onClick={handleApprove}
-          theme='outlined'
-          iconClassName='p-1 text-gray-600 dark:text-gray-400'
+      <Stack justifyContent='center'>
+        <AuthorizeRejectButtons
+          onAuthorize={handleApprove}
+          onReject={handleReject}
         />
-        <IconButton
-          src={require('@tabler/icons/x.svg')}
-          onClick={handleReject}
-          theme='outlined'
-          iconClassName='p-1 text-gray-600 dark:text-gray-400'
-        />
-      </HStack>
+      </Stack>
     </HStack>
   );
 };

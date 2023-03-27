@@ -8,6 +8,8 @@ describe('reports reducer', () => {
         account_id: null,
         status_ids: [],
         chat_message: null,
+        group: null,
+        entityType: '',
         comment: '',
         forward: false,
         block: false,

@@ -23,6 +23,8 @@ interface EntityListState {
   next: string | undefined
   /** Previous URL for pagination, if any. */
   prev: string | undefined
+  /** Total number of items according to the API. */
+  totalCount: number | undefined
   /** Error returned from the API, if any. */
   error: any
   /** Whether data has already been fetched */
@@ -31,6 +33,8 @@ interface EntityListState {
   fetching: boolean
   /** Date of the last API fetch for this list. */
   lastFetchedAt: Date | undefined
+  /** Whether the entities should be refetched on the next component mount. */
+  invalid: boolean
 }
 
 /** Cache data pertaining to a paritcular entity type.. */

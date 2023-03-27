@@ -6,7 +6,7 @@ import React, { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji';
@@ -24,7 +24,7 @@ import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-mes
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
 import type { IMediaGallery } from 'soapbox/components/media-gallery';
-import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
+import type { Account, ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
@@ -178,7 +178,7 @@ const ChatMessage = (props: IChatMessage) => {
       if (features.reportChats) {
         menu.push({
           text: intl.formatMessage(messages.report),
-          action: () => dispatch(initReport(normalizeAccount(chat.account) as any, { chatMessage } as any)),
+          action: () => dispatch(initReport(ReportableEntities.CHAT_MESSAGE, normalizeAccount(chat.account) as Account, { chatMessage })),
           icon: require('@tabler/icons/flag.svg'),
         });
       }
