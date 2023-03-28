@@ -2,6 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { Map as ImmutableMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import React from 'react';
 
+import { ReportableEntities } from 'soapbox/actions/reports';
 import { __stub } from 'soapbox/api';
 
 import { render, screen, waitFor } from '../../../../../../jest/test-helpers';
@@ -29,6 +30,7 @@ describe('<ReportModal />', () => {
           account_id: '1',
           status_ids: ImmutableSet(['1']),
           rule_ids: ImmutableSet(),
+          entityType: ReportableEntities.STATUS,
         })(),
       })(),
       statuses: ImmutableMap({

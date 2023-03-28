@@ -11,7 +11,7 @@ import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interac
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
@@ -176,13 +176,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, { status }));
+        dispatch(initReport(ReportableEntities.STATUS, account, { status }));
       },
     }));
   };
 
   const handleReport = () => {
-    dispatch(initReport(account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, account, { status }));
   };
 
   const handleModerate = () => {
