@@ -46,6 +46,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     }));
   };
 
+  const onOpenDislikesModal = (username: string, statusId: string): void => {
+    dispatch(openModal('DISLIKES', {
+      username,
+      statusId,
+    }));
+  };
+
   const onOpenReactionsModal = (username: string, statusId: string): void => {
     dispatch(openModal('REACTIONS', {
       username,
@@ -114,6 +121,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     else onOpenFavouritesModal(account.acct, status.id);
   };
 
+  const handleOpenDislikesModal: React.EventHandler<React.MouseEvent<HTMLButtonElement>> = (e) => {
+    e.preventDefault();
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenDislikesModal(account.acct, status.id);
+  };
+
   const getFavourites = () => {
     if (status.favourites_count) {
       return (
@@ -122,6 +136,24 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             id='status.interactions.favourites'
             defaultMessage='{count, plural, one {Like} other {Likes}}'
             values={{ count: status.favourites_count }}
+          />
+        </InteractionCounter>
+      );
+    }
+
+    return null;
+  };
+
+  const getDislikes = () => {
+    const dislikesCount = status.dislikes_count;
+
+    if (dislikesCount) {
+      return (
+        <InteractionCounter count={status.favourites_count} onClick={features.exposableReactions ? handleOpenDislikesModal : undefined}>
+          <FormattedMessage
+            id='status.interactions.dislikes'
+            defaultMessage='{count, plural, one {Dislike} other {Dislikes}}'
+            values={{ count: dislikesCount }}
           />
         </InteractionCounter>
       );
@@ -171,6 +203,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       {getReposts()}
       {getQuotes()}
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
+      {getDislikes()}
     </HStack>
   );
 };

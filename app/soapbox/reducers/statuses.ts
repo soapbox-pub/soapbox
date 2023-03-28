@@ -26,6 +26,9 @@ import {
   FAVOURITE_REQUEST,
   UNFAVOURITE_REQUEST,
   FAVOURITE_FAIL,
+  DISLIKE_REQUEST,
+  UNDISLIKE_REQUEST,
+  DISLIKE_FAIL,
 } from '../actions/interactions';
 import {
   STATUS_CREATE_REQUEST,
@@ -204,6 +207,25 @@ const simulateFavourite = (
   return state.set(statusId, updatedStatus);
 };
 
+/** Simulate dislike/undislike of status for optimistic interactions */
+const simulateDislike = (
+  state: State,
+  statusId: string,
+  disliked: boolean,
+): State => {
+  const status = state.get(statusId);
+  if (!status) return state;
+
+  const delta = disliked ? +1 : -1;
+
+  const updatedStatus = status.merge({
+    disliked,
+    dislikes_count: Math.max(0, status.dislikes_count + delta),
+  });
+
+  return state.set(statusId, updatedStatus);
+};
+
 interface Translation {
   content: string
   detected_source_language: string
@@ -238,6 +260,10 @@ export default function statuses(state = initialState, action: AnyAction): State
       return simulateFavourite(state, action.status.id, true);
     case UNFAVOURITE_REQUEST:
       return simulateFavourite(state, action.status.id, false);
+    case DISLIKE_REQUEST:
+      return simulateDislike(state, action.status.id, true);
+    case UNDISLIKE_REQUEST:
+      return simulateDislike(state, action.status.id, false);
     case EMOJI_REACT_REQUEST:
       return state
         .updateIn(
@@ -252,6 +278,8 @@ export default function statuses(state = initialState, action: AnyAction): State
         );
     case FAVOURITE_FAIL:
       return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);
+    case DISLIKE_FAIL:
+      return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'disliked'], false);
     case REBLOG_REQUEST:
       return state.setIn([action.status.get('id'), 'reblogged'], true);
     case REBLOG_FAIL:

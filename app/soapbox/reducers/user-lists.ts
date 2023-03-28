@@ -60,6 +60,7 @@ import {
 import {
   REBLOGS_FETCH_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,
+  DISLIKES_FETCH_SUCCESS,
   REACTIONS_FETCH_SUCCESS,
 } from 'soapbox/actions/interactions';
 import {
@@ -107,6 +108,7 @@ export const ReducerRecord = ImmutableRecord({
   following: ImmutableMap<string, List>(),
   reblogged_by: ImmutableMap<string, List>(),
   favourited_by: ImmutableMap<string, List>(),
+  disliked_by: ImmutableMap<string, List>(),
   reactions: ImmutableMap<string, ReactionList>(),
   follow_requests: ListRecord(),
   blocks: ListRecord(),
@@ -128,7 +130,7 @@ type ReactionList = ReturnType<typeof ReactionListRecord>;
 type ParticipationRequest = ReturnType<typeof ParticipationRequestRecord>;
 type ParticipationRequestList = ReturnType<typeof ParticipationRequestListRecord>;
 type Items = ImmutableOrderedSet<string>;
-type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'reactions' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests' | 'membership_requests' | 'group_blocks', string];
+type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'disliked_by' | 'reactions' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests' | 'membership_requests' | 'group_blocks', string];
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
@@ -173,6 +175,8 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
       return normalizeList(state, ['reblogged_by', action.id], action.accounts);
     case FAVOURITES_FETCH_SUCCESS:
       return normalizeList(state, ['favourited_by', action.id], action.accounts);
+    case DISLIKES_FETCH_SUCCESS:
+      return normalizeList(state, ['disliked_by', action.id], action.accounts);
     case REACTIONS_FETCH_SUCCESS:
       return state.setIn(['reactions', action.id], ReactionListRecord({
         items: ImmutableOrderedSet<Reaction>(action.reactions.map(({ accounts, ...reaction }: APIEntity) => ReactionRecord({
