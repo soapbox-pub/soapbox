@@ -42,6 +42,7 @@ const MembershipRequest: React.FC<IMembershipRequest> = ({ account, onAuthorize,
       <AuthorizeRejectButtons
         onAuthorize={handleAuthorize}
         onReject={handleReject}
+        countdown={3000}
       />
     </HStack>
   );

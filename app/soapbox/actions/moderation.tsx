@@ -112,27 +112,6 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     }));
   };
 
-const rejectUserModal = (intl: IntlShape, accountId: string, afterConfirm = () => {}) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState();
-    const acct = state.accounts.get(accountId)!.acct;
-    const name = state.accounts.get(accountId)!.username;
-
-    dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/user-off.svg'),
-      heading: intl.formatMessage(messages.rejectUserHeading, { acct }),
-      message: intl.formatMessage(messages.rejectUserPrompt, { acct }),
-      confirm: intl.formatMessage(messages.rejectUserConfirm, { name }),
-      onConfirm: () => {
-        dispatch(deleteUsers([accountId]))
-          .then(() => {
-            afterConfirm();
-          })
-          .catch(() => {});
-      },
-    }));
-  };
-
 const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensitive: boolean, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
@@ -178,7 +157,6 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
 export {
   deactivateUserModal,
   deleteUserModal,
-  rejectUserModal,
   toggleStatusSensitivityModal,
   deleteStatusModal,
 };
