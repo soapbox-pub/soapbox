@@ -12,7 +12,7 @@ function usePopularGroups() {
 
   const { entities, ...result } = useEntities<Group>(
     [Entities.GROUPS, 'popular'],
-    () => api.get('/api/mock/groups'), // '/api/v1/truth/trends/groups'
+    () => api.get('/api/v1/truth/trends/groups'),
     {
       schema: groupSchema,
       enabled: features.groupsDiscovery,
