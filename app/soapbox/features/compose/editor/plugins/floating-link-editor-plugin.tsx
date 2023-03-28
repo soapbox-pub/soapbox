@@ -157,11 +157,15 @@ const FloatingLinkEditor = ({
   }, [isEditMode]);
 
   return (
-    <div ref={editorRef} className='link-editor'>
-      <div className='link-input'>
+    <div
+      ref={editorRef}
+      className='absolute top-0 left-0 z-10 w-full max-w-sm rounded-lg bg-white opacity-0 shadow-md transition-opacity will-change-transform'
+    >
+      <div className='relative my-2 mx-3 box-border block rounded-2xl border-0 bg-gray-100 py-2 px-3 text-sm text-gray-800 outline-0 dark:bg-gray-800 dark:text-gray-100'>
         {isEditMode ? (
           <>
             <input
+              className='-my-2 -mx-3 w-full border-0 bg-transparent py-2 px-3 text-sm text-gray-900 outline-0'
               ref={inputRef}
               value={linkUrl}
               onChange={(event) => {
@@ -188,7 +192,7 @@ const FloatingLinkEditor = ({
               }}
             />
             <div
-              className='link-edit'
+              className='absolute inset-y-0 right-0 flex w-9 cursor-pointer items-center justify-center'
               role='button'
               tabIndex={0}
               onMouseDown={(event) => event.preventDefault()}
@@ -201,11 +205,11 @@ const FloatingLinkEditor = ({
           </>
         ) : (
           <>
-            <a href={linkUrl} target='_blank' rel='noopener noreferrer'>
+            <a className='mr-8 block overflow-hidden text-ellipsis whitespace-nowrap text-primary-600 no-underline hover:underline dark:text-accent-blue' href={linkUrl} target='_blank' rel='noopener noreferrer'>
               {linkUrl}
             </a>
             <div
-              className='link-edit'
+              className='absolute inset-y-0 right-0 flex w-9 cursor-pointer items-center justify-center'
               role='button'
               tabIndex={0}
               onMouseDown={(event) => event.preventDefault()}

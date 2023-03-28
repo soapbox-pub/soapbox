@@ -80,6 +80,24 @@ const blockTypeToBlockName = {
   quote: 'Quote',
 };
 
+interface IToolbarButton extends React.HTMLAttributes<HTMLButtonElement> {
+  active?: boolean
+  icon: string
+}
+
+const ToolbarButton: React.FC<IToolbarButton> = ({ active, icon, ...props }) => (
+  <button
+    className={clsx(
+      'flex cursor-pointer rounded-lg border-0 bg-none p-1 align-middle hover:bg-gray-100 disabled:cursor-not-allowed disabled:hover:bg-none hover:dark:bg-primary-700',
+      { 'bg-gray-100/30 dark:bg-gray-800/30': active },
+    )}
+    type='button'
+    {...props}
+  >
+    <Icon className='h-5 w-5' src={icon} />
+  </button>
+);
+
 const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
   editor: LexicalEditor
   anchorElem: HTMLElement
@@ -172,70 +190,56 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
     <>
       <button
         onClick={() => setShowDropDown(!showDropDown)}
-        className='popup-item spaced relative'
+        className='relative flex cursor-pointer rounded-lg border-0 bg-none p-1 align-middle hover:bg-gray-100 disabled:cursor-not-allowed disabled:hover:bg-none hover:dark:bg-primary-700'
         aria-label=''
         type='button'
       >
         <Icon src={icon} />
         <Icon src={require('@tabler/icons/chevron-down.svg')} className='-bottom-2 h-4 w-4' />
         {showDropDown && (
-          <div className='floating-text-format-popup' style={{ opacity: 1, top: 36 }}>
-            <button
+          <div
+            className='absolute top-9 left-0 z-10 flex h-[38px] gap-0.5 rounded-lg bg-white p-1 shadow-lg transition-[opacity] dark:bg-gray-900'
+          >
+            <ToolbarButton
               onClick={formatParagraph}
-              className={clsx('popup-item spaced', blockType === 'paragraph' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.paragraph} />
-            </button>
-            <button
+              active={blockType === 'paragraph'}
+              icon={blockTypeToIcon.paragraph}
+            />
+            <ToolbarButton
               onClick={() => formatHeading('h1')}
-              className={clsx('popup-item spaced', blockType === 'h1' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.h1} />
-            </button>
-            <button
+              active={blockType === 'h1'}
+              icon={blockTypeToIcon.h1}
+            />
+            <ToolbarButton
               onClick={() => formatHeading('h2')}
-              className={clsx('popup-item spaced', blockType === 'h2' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.h2} />
-            </button>
-            <button
+              active={blockType === 'h2'}
+              icon={blockTypeToIcon.h2}
+            />
+            <ToolbarButton
               onClick={() => formatHeading('h3')}
-              className={clsx('popup-item spaced', blockType === 'h3' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.h3} />
-            </button>
-            <button
+              active={blockType === 'h3'}
+              icon={blockTypeToIcon.h3}
+            />
+            <ToolbarButton
               onClick={formatBulletList}
-              className={clsx('popup-item spaced', blockType === 'bullet' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.bullet} />
-            </button>
-            <button
+              active={blockType === 'bullet'}
+              icon={blockTypeToIcon.bullet}
+            />
+            <ToolbarButton
               onClick={formatNumberedList}
-              className={clsx('popup-item spaced', blockType === 'number' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.number} />
-            </button>
-            <button
+              active={blockType === 'number'}
+              icon={blockTypeToIcon.number}
+            />
+            <ToolbarButton
               onClick={formatQuote}
-              className={clsx('popup-item spaced', blockType === 'quote' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.quote} />
-            </button>
-            <button
+              active={blockType === 'quote'}
+              icon={blockTypeToIcon.quote}
+            />
+            <ToolbarButton
               onClick={formatCode}
-              className={clsx('popup-item spaced', blockType === 'code' && 'active')}
-              type='button'
-            >
-              <Icon src={blockTypeToIcon.code} />
-            </button>
+              active={blockType === 'code'}
+              icon={blockTypeToIcon.code}
+            />
           </div>
         )}
       </button>
@@ -344,7 +348,10 @@ const TextFormatFloatingToolbar = ({
   }, [editor, updateTextFormatFloatingToolbar]);
 
   return (
-    <div ref={popupCharStylesEditorRef} className='floating-text-format-popup'>
+    <div
+      ref={popupCharStylesEditorRef}
+      className='absolute top-0 left-0 z-10 flex h-[38px] gap-0.5 rounded-lg bg-white p-1 opacity-0 shadow-lg transition-[opacity] dark:bg-gray-900'
+    >
       {editor.isEditable() && (
         <>
           <BlockTypeDropdown
@@ -353,64 +360,52 @@ const TextFormatFloatingToolbar = ({
             blockType={blockType}
             icon={blockTypeToIcon[blockType]}
           />
-          <button
+          <ToolbarButton
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
             }}
-            className={'popup-item spaced ' + (isBold ? 'active' : '')}
+            active={isBold}
             aria-label='Format text as bold'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/bold.svg')} />
-          </button>
-          <button
+            icon={require('@tabler/icons/bold.svg')}
+          />
+          <ToolbarButton
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
             }}
-            className={'popup-item spaced ' + (isItalic ? 'active' : '')}
+            active={isItalic}
             aria-label='Format text as italics'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/italic.svg')} />
-          </button>
-          <button
+            icon={require('@tabler/icons/italic.svg')}
+          />
+          <ToolbarButton
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
             }}
-            className={'popup-item spaced ' + (isUnderline ? 'active' : '')}
+            active={isUnderline}
             aria-label='Format text to underlined'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/underline.svg')} />
-          </button>
-          <button
+            icon={require('@tabler/icons/underline.svg')}
+          />
+          <ToolbarButton
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
             }}
-            className={'popup-item spaced ' + (isStrikethrough ? 'active' : '')}
+            active={isStrikethrough}
             aria-label='Format text with a strikethrough'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/strikethrough.svg')} />
-          </button>
-          <button
+            icon={require('@tabler/icons/strikethrough.svg')}
+          />
+          <ToolbarButton
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
             }}
-            className={'popup-item spaced ' + (isCode ? 'active' : '')}
+            active={isCode}
             aria-label='Insert code block'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/code.svg')} />
-          </button>
-          <button
+            icon={require('@tabler/icons/code.svg')}
+          />
+          <ToolbarButton
             onClick={insertLink}
-            className={'popup-item spaced ' + (isLink ? 'active' : '')}
+            active={isLink}
             aria-label='Insert link'
-            type='button'
-          >
-            <Icon src={require('@tabler/icons/link.svg')} />
-          </button>
+            icon={require('@tabler/icons/link.svg')}
+          />
         </>
       )}
     </div>
