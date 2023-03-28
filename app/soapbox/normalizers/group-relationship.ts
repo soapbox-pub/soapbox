@@ -8,13 +8,15 @@ import {
   fromJS,
 } from 'immutable';
 
+import { GroupRoles } from 'soapbox/schemas/group-member';
+
 export const GroupRelationshipRecord = ImmutableRecord({
   id: '',
   blocked_by: false,
   member: false,
   notifying: null,
   requested: false,
-  role: null as 'admin' | 'moderator' | 'user' | null,
+  role: 'user' as GroupRoles,
 });
 
 export const normalizeGroupRelationship = (relationship: Record<string, any>) => {

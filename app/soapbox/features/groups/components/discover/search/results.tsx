@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useGroupSearch } from 'soapbox/queries/groups/search';
+import { useGroupSearch } from 'soapbox/hooks/api';
 import { Group } from 'soapbox/types/entities';
 
 import GroupGridItem from '../group-grid-item';
