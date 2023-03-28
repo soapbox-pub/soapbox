@@ -3,8 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import GroupAvatar from 'soapbox/components/groups/group-avatar';
-import { Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useJoinGroup } from 'soapbox/hooks/api';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import GroupActionButton from 'soapbox/features/group/components/group-action-button';
 import { Group as GroupEntity } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
@@ -15,10 +15,6 @@ interface IGroup {
 
 const GroupListItem = (props: IGroup) => {
   const { group, withJoinAction = true } = props;
-
-  const joinGroup = useJoinGroup(group);
-
-  const onJoinGroup = () => joinGroup.mutate(group);
 
   return (
     <HStack
@@ -74,11 +70,7 @@ const GroupListItem = (props: IGroup) => {
       </Link>
 
       {withJoinAction && (
-        <Button theme='primary' onClick={onJoinGroup} disabled={joinGroup.isLoading}>
-          {group.locked
-            ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
-            : <FormattedMessage id='group.join.public' defaultMessage='Join Group' />}
-        </Button>
+        <GroupActionButton group={group} />
       )}
     </HStack>
   );

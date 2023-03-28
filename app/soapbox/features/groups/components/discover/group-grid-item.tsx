@@ -1,25 +1,21 @@
 import React, { forwardRef } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import GroupAvatar from 'soapbox/components/groups/group-avatar';
-import { Button, HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
+import GroupActionButton from 'soapbox/features/group/components/group-action-button';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
-import { useJoinGroup } from 'soapbox/hooks/api';
-import { Group as GroupEntity } from 'soapbox/types/entities';
+
+import type { Group } from 'soapbox/schemas';
 
 interface IGroup {
-  group: GroupEntity
+  group: Group
   width?: number
 }
 
 const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { group, width = 'auto' } = props;
-
-  const joinGroup = useJoinGroup(group);
-
-  const onJoinGroup = () => joinGroup.mutate(group);
 
   return (
     <div
@@ -71,16 +67,7 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
         </Stack>
       </Link>
 
-      <Button
-        theme='primary'
-        block
-        onClick={onJoinGroup}
-        disabled={joinGroup.isLoading}
-      >
-        {group.locked
-          ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
-          : <FormattedMessage id='group.join.public' defaultMessage='Join Group' />}
-      </Button>
+      <GroupActionButton group={group} />
     </div>
   );
 });
