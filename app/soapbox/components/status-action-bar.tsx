@@ -24,6 +24,8 @@ import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
+import GroupPopover from './groups/popover/group-popover';
+
 import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { Account, Group, Status } from 'soapbox/types/entities';
 
@@ -608,14 +610,19 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         grow={space === 'expand'}
         onClick={e => e.stopPropagation()}
       >
-        <StatusActionButton
-          title={replyTitle}
-          icon={require('@tabler/icons/message-circle-2.svg')}
-          onClick={handleReplyClick}
-          count={replyCount}
-          text={withLabels ? intl.formatMessage(messages.reply) : undefined}
-          disabled={replyDisabled}
-        />
+        <GroupPopover
+          group={status.group as any}
+          isEnabled={replyDisabled}
+        >
+          <StatusActionButton
+            title={replyTitle}
+            icon={require('@tabler/icons/message-circle-2.svg')}
+            onClick={handleReplyClick}
+            count={replyCount}
+            text={withLabels ? intl.formatMessage(messages.reply) : undefined}
+            disabled={replyDisabled}
+          />
+        </GroupPopover>
 
         {(features.quotePosts && me) ? (
           <DropdownMenu
