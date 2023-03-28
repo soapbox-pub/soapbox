@@ -1,5 +1,4 @@
-import { useGroups } from 'soapbox/hooks';
-
+import { useGroups } from './api';
 import { useFeatures } from './useFeatures';
 
 /**

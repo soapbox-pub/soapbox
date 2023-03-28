@@ -7,7 +7,8 @@ import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
 import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useGroup, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useGroup } from 'soapbox/hooks/api';
 
 import Timeline from '../ui/components/timeline';
 

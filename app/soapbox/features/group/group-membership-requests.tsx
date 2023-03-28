@@ -5,7 +5,7 @@ import Account from 'soapbox/components/account';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useGroup } from 'soapbox/hooks';
+import { useGroup } from 'soapbox/hooks/api';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import toast from 'soapbox/toast';
 

@@ -1,12 +1,13 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { useState } from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useGroups, useFeatures } from 'soapbox/hooks';
+import { Button, Input, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks';
+import { useGroups } from 'soapbox/hooks/api';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
@@ -16,13 +17,22 @@ import TabBar, { TabItems } from './components/tab-bar';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities';
 
+const messages = defineMessages({
+  placeholder: { id: 'groups.search.placeholder', defaultMessage: 'Search My Groups' },
+});
+
 const Groups: React.FC = () => {
+  const debounce = useDebounce;
   const dispatch = useAppDispatch();
   const features = useFeatures();
+  const intl = useIntl();
 
   const canCreateGroup = useAppSelector((state) => hasPermission(state, PERMISSION_CREATE_GROUPS));
 
-  const { groups, isLoading } = useGroups();
+  const [searchValue, setSearchValue] = useState<string>('');
+  const debouncedValue = debounce(searchValue, 300);
+
+  const { groups, isLoading } = useGroups(debouncedValue);
 
   const createGroup = () => {
     dispatch(openModal('MANAGE_GROUP'));
@@ -75,6 +85,15 @@ const Groups: React.FC = () => {
           <FormattedMessage id='new_group_panel.action' defaultMessage='Create Group' />
         </Button>
       )}
+
+      {features.groupsSearch ? (
+        <Input
+          onChange={(event) => setSearchValue(event.target.value)}
+          placeholder={intl.formatMessage(messages.placeholder)}
+          theme='search'
+          value={searchValue}
+        />
+      ) : null}
 
       <PendingGroupsRow />
 

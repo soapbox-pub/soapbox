@@ -5,7 +5,8 @@ import { fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useGroup } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useGroup } from 'soapbox/hooks/api';
 import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 

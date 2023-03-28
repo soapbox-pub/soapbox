@@ -6,8 +6,8 @@ import { editGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useGroup, useGroupsPath } from 'soapbox/hooks';
-import { useDeleteGroup } from 'soapbox/hooks/api';
+import { useAppDispatch, useGroupsPath } from 'soapbox/hooks';
+import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
