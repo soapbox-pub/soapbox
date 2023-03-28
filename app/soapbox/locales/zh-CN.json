@@ -823,6 +823,7 @@
   "groups.pending.empty.title": "暂无待处理的申请",
   "groups.pending.label": "待处理的申请",
   "groups.popular.label": "推荐群组",
+  "groups.search.placeholder": "搜索我的群组",
   "hashtag.column_header.tag_mode.all": "以及{additional}",
   "hashtag.column_header.tag_mode.any": "或是{additional}",
   "hashtag.column_header.tag_mode.none": "而不用{additional}",
