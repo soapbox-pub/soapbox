@@ -1,8 +1,14 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntityActions } from 'soapbox/entity-store/hooks';
-import { Group, GroupRelationship, groupRelationshipSchema } from 'soapbox/schemas';
+import { groupRelationshipSchema } from 'soapbox/schemas';
+
+import { useGroups } from './useGroups';
+
+import type { Group, GroupRelationship } from 'soapbox/schemas';
 
 function useLeaveGroup(group: Group) {
+  const { invalidate } = useGroups();
+
   const { createEntity, isLoading } = useEntityActions<GroupRelationship>(
     [Entities.GROUP_RELATIONSHIPS, group.id],
     { post: `/api/v1/groups/${group.id}/leave` },
@@ -12,6 +18,7 @@ function useLeaveGroup(group: Group) {
   return {
     mutate: createEntity,
     isLoading,
+    invalidate,
   };
 }
 

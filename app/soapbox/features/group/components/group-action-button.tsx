@@ -40,6 +40,8 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
 
   const onJoinGroup = () => joinGroup.mutate({}, {
     onSuccess() {
+      joinGroup.invalidate();
+
       toast.success(
         group.locked
           ? intl.formatMessage(messages.joinRequestSuccess)
@@ -53,8 +55,9 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
       heading: intl.formatMessage(messages.confirmationHeading),
       message: intl.formatMessage(messages.confirmationMessage),
       confirm: intl.formatMessage(messages.confirmationConfirm),
-      onConfirm: () => leaveGroup.mutate({}, {
+      onConfirm: () => leaveGroup.mutate(group.relationship?.id as string, {
         onSuccess() {
+          leaveGroup.invalidate();
           toast.success(intl.formatMessage(messages.leaveSuccess));
         },
       }),
