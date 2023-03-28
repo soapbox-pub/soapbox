@@ -39,7 +39,7 @@ const useButtonStyles = ({
   size,
 }: IButtonStyles) => {
   const buttonStyle = clsx({
-    'inline-flex items-center border font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 appearance-none transition-all': true,
+    'inline-flex items-center place-content-center border font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 appearance-none transition-all': true,
     'select-none disabled:opacity-75 disabled:cursor-default': disabled,
     [`${themes[theme]}`]: true,
     [`${sizes[size]}`]: true,
