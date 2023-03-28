@@ -46,11 +46,12 @@ const PopularGroups = () => {
           itemWidth={250}
           itemCount={groups.length}
           controlsHeight={groupCover?.clientHeight}
+          isDisabled={isFetching}
         >
           {({ width }: { width: number }) => (
             <>
               {isFetching ? (
-                new Array(20).fill(0).map((_, idx) => (
+                new Array(4).fill(0).map((_, idx) => (
                   <div
                     className='relative flex shrink-0 flex-col space-y-2 px-0.5'
                     style={{ width: width || 'auto' }}

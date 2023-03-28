@@ -46,6 +46,7 @@ const SuggestedGroups = () => {
           itemWidth={250}
           itemCount={groups.length}
           controlsHeight={groupCover?.clientHeight}
+          isDisabled={isFetching}
         >
           {({ width }: { width: number }) => (
             <>
