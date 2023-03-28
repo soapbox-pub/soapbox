@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import { Group } from 'soapbox/types/entities';
 
 interface IGroupRelationship {
@@ -9,10 +10,10 @@ interface IGroupRelationship {
 }
 
 const GroupRelationship = ({ group }: IGroupRelationship) => {
-  const isAdmin = group.relationship?.role === 'admin';
-  const isModerator = group.relationship?.role === 'moderator';
+  const isOwner = group.relationship?.role === GroupRoles.OWNER;
+  const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
 
-  if (!isAdmin || !isModerator) {
+  if (!isOwner || !isAdmin) {
     return null;
   }
 
@@ -21,14 +22,14 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
       <Icon
         className='h-4 w-4'
         src={
-          isAdmin
+          isOwner
             ? require('@tabler/icons/users.svg')
             : require('@tabler/icons/gavel.svg')
         }
       />
 
       <Text tag='span' weight='medium' size='sm' theme='inherit'>
-        {isAdmin
+        {isOwner
           ? <FormattedMessage id='group.role.admin' defaultMessage='Admin' />
           : <FormattedMessage id='group.role.moderator' defaultMessage='Moderator' />}
       </Text>
