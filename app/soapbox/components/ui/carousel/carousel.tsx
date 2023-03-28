@@ -13,16 +13,19 @@ interface ICarousel {
   itemCount: number
   /** The minimum width per item */
   itemWidth: number
+  /** Should the controls be disabled? */
+  isDisabled?: boolean
 }
 
 /**
  * Carousel
  */
 const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
-  const { children, controlsHeight, itemCount, itemWidth } = props;
+  const { children, controlsHeight, isDisabled, itemCount, itemWidth } = props;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_ref, setContainerRef, { width: containerWidth }] = useDimensions();
+  const [ref, setContainerRef, { width: finalContainerWidth }] = useDimensions();
+  const containerWidth = finalContainerWidth || ref?.clientWidth;
 
   const [pageSize, setPageSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -62,7 +65,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
           data-testid='prev-page'
           onClick={handlePrevPage}
           className='flex h-full w-7 items-center justify-center transition-opacity duration-500 disabled:opacity-25'
-          disabled={!hasPrevPage}
+          disabled={!hasPrevPage || isDisabled}
         >
           <Icon
             src={require('@tabler/icons/chevron-left.svg')}
@@ -94,7 +97,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
           data-testid='next-page'
           onClick={handleNextPage}
           className='flex h-full w-7 items-center justify-center transition-opacity duration-500 disabled:opacity-25'
-          disabled={!hasNextPage}
+          disabled={!hasNextPage || isDisabled}
         >
           <Icon
             src={require('@tabler/icons/chevron-right.svg')}
