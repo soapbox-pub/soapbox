@@ -7,6 +7,7 @@ export { useDeleteGroup } from './groups/useDeleteGroup';
 export { useDemoteGroupMember } from './groups/useDemoteGroupMember';
 export { useGroup, useGroups } from './groups/useGroups';
 export { useGroupSearch } from './groups/useGroupSearch';
+export { useGroupValidation } from './groups/useGroupValidation';
 export { useJoinGroup } from './groups/useJoinGroup';
 export { useLeaveGroup } from './groups/useLeaveGroup';
 export { usePromoteGroupMember } from './groups/usePromoteGroupMember';
