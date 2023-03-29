@@ -17,6 +17,7 @@ export const GroupRelationshipRecord = ImmutableRecord({
   notifying: null,
   requested: false,
   role: 'user' as GroupRoles,
+  pending_requests: false,
 });
 
 export const normalizeGroupRelationship = (relationship: Record<string, any>) => {
