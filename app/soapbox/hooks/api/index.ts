@@ -16,8 +16,10 @@ export { useGroup, useGroups } from './groups/useGroups';
 export { useGroupMembershipRequests } from './groups/useGroupMembershipRequests';
 export { useGroupSearch } from './groups/useGroupSearch';
 export { useGroupValidation } from './groups/useGroupValidation';
+export { useGroupsFromTag } from './groups/useGroupsFromTag';
 export { useJoinGroup } from './groups/useJoinGroup';
 export { useLeaveGroup } from './groups/useLeaveGroup';
+export { usePopularTags } from './groups/usePopularTags';
 export { usePromoteGroupMember } from './groups/usePromoteGroupMember';
 export { useUpdateGroup } from './groups/useUpdateGroup';
 
