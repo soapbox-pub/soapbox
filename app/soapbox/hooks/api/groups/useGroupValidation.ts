@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useApi } from 'soapbox/hooks/useApi';
+import { useFeatures } from 'soapbox/hooks/useFeatures';
 
 type Validation = {
   error: string
@@ -13,6 +14,7 @@ const ValidationKeys = {
 
 function useGroupValidation(name: string = '') {
   const api = useApi();
+  const features = useFeatures();
 
   const getValidation = async() => {
     const { data } = await api.get<Validation>('/api/v1/groups/validate', {
@@ -30,14 +32,14 @@ function useGroupValidation(name: string = '') {
   };
 
   const queryInfo = useQuery<Validation>(ValidationKeys.validation(name), getValidation, {
-    enabled: !!name,
+    enabled: features.groupsValidation && !!name,
   });
 
   return {
     ...queryInfo,
     data: {
       ...queryInfo.data,
-      isValid: !queryInfo.data?.error,
+      isValid: !queryInfo.data?.error ?? true,
     },
   };
 }
