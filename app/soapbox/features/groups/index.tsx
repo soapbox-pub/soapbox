@@ -15,8 +15,6 @@ import PlaceholderGroupCard from '../placeholder/components/placeholder-group-ca
 import PendingGroupsRow from './components/pending-groups-row';
 import TabBar, { TabItems } from './components/tab-bar';
 
-import type { Group as GroupEntity } from 'soapbox/types/entities';
-
 const messages = defineMessages({
   placeholder: { id: 'groups.search.placeholder', defaultMessage: 'Search My Groups' },
 });
@@ -109,7 +107,7 @@ const Groups: React.FC = () => {
       >
         {groups.map((group) => (
           <Link key={group.id} to={`/groups/${group.id}`}>
-            <GroupCard group={group as GroupEntity} />
+            <GroupCard group={group} />
           </Link>
         ))}
       </ScrollableList>
