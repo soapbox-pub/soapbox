@@ -148,7 +148,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
           <AvatarPicker accept={attachmentTypes} disabled={isSubmitting} {...avatar} />
         </div>
         <FormGroup
-          labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}
+          labelText={<FormattedMessage id='manage_group.fields.name_label_optional' defaultMessage='Group name' />}
+          hintText={<FormattedMessage id='manage_group.fields.cannot_change_hint' defaultMessage='This cannot be changed after the group is created.' />}
         >
           <Input
             type='text'
