@@ -97,7 +97,7 @@ const Textarea = React.forwardRef(({
       />
 
       {maxLength && (
-        <div className='mt-1.5 text-right rtl:text-left'>
+        <div className='text-right rtl:text-left'>
           <Text size='xs' theme={maxLength - length < 0 ? 'danger' : 'muted'}>
             <FormattedMessage
               id='textarea.counter.label'
