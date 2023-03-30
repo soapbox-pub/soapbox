@@ -1481,6 +1481,7 @@
   "tabs_bar.profile": "个人资料",
   "tabs_bar.search": "搜索",
   "tabs_bar.settings": "设置",
+  "textarea.counter.label": "剩余 {count} 个字符",
   "theme_editor.Reset": "重置",
   "theme_editor.export": "导出主题",
   "theme_editor.import": "导入主题",
