@@ -11,3 +11,4 @@ export { useGroupValidation } from './groups/useGroupValidation';
 export { useJoinGroup } from './groups/useJoinGroup';
 export { useLeaveGroup } from './groups/useLeaveGroup';
 export { usePromoteGroupMember } from './groups/usePromoteGroupMember';
+export { useUpdateGroup } from './groups/useUpdateGroup';

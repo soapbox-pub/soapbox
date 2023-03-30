@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { editGroup } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
@@ -58,9 +57,6 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
     return (<ColumnForbidden />);
   }
 
-  const onEditGroup = () =>
-    dispatch(editGroup(group));
-
   const onDeleteGroup = () =>
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/trash.svg'),
@@ -77,6 +73,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
       },
     }));
 
+  const navigateToEdit = () => history.push(`/groups/${id}/manage/edit`);
   const navigateToPending = () => history.push(`/groups/${id}/manage/requests`);
   const navigateToBlocks = () => history.push(`/groups/${id}/manage/blocks`);
 
@@ -90,7 +87,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
             </CardHeader>
 
             <List>
-              <ListItem label={intl.formatMessage(messages.editGroup)} onClick={onEditGroup}>
+              <ListItem label={intl.formatMessage(messages.editGroup)} onClick={navigateToEdit}>
                 <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
               </ListItem>
             </List>

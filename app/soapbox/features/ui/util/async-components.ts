@@ -578,6 +578,10 @@ export function ManageGroup() {
   return import(/* webpackChunkName: "features/groups" */'../../group/manage-group');
 }
 
+export function EditGroup() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/edit-group');
+}
+
 export function GroupBlockedMembers() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-blocked-members');
 }
