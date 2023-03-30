@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { Avatar, Button, Column, Form, FormActions, FormGroup, HStack, Input, Spinner, Text, Textarea } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
+import { useImageField, useTextField } from 'soapbox/hooks/forms';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
-import resizeImage from 'soapbox/utils/resize-image';
 
 import type { List as ImmutableList } from 'immutable';
 
@@ -177,62 +177,5 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
     </Column>
   );
 };
-
-function usePreview(file: File | null | undefined): string | undefined {
-  return useMemo(() => {
-    if (file) {
-      return URL.createObjectURL(file);
-    }
-  }, [file]);
-}
-
-function useTextField(initialValue: string | undefined) {
-  const [value, setValue] = useState(initialValue);
-  const hasInitialValue = typeof initialValue === 'string';
-
-  const onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
-    setValue(e.target.value);
-  };
-
-  useEffect(() => {
-    if (hasInitialValue) {
-      setValue(initialValue);
-    }
-  }, [hasInitialValue]);
-
-  return {
-    value,
-    onChange,
-  };
-}
-
-interface UseImageFieldOpts {
-  maxPixels?: number
-  preview?: string
-}
-
-function useImageField(opts: UseImageFieldOpts = {}) {
-  const [file, setFile] = useState<File>();
-  const src = usePreview(file) || opts.preview;
-
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = ({ target: { files } }) => {
-    const file = files?.item(0) || undefined;
-    if (file) {
-      if (typeof opts.maxPixels === 'number') {
-        resizeImage(file, opts.maxPixels)
-          .then((f) => setFile(f))
-          .catch(console.error);
-      } else {
-        setFile(file);
-      }
-    }
-  };
-
-  return {
-    src,
-    file,
-    onChange,
-  };
-}
 
 export default EditGroup;
