@@ -84,8 +84,10 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={clsx('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
-            'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+            'block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
+            'text-gray-900 dark:text-gray-100': !props.disabled,
+            'text-gray-600': props.disabled,
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
             'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,

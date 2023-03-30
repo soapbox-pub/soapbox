@@ -155,6 +155,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
             placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
             maxLength={maxName}
             {...displayName}
+            append={<Icon className='h-5 w-5 text-gray-600' src={require('@tabler/icons/lock.svg')} />}
+            disabled
           />
         </FormGroup>
         <FormGroup
