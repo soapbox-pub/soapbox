@@ -7,6 +7,7 @@
  */
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import clsx from 'clsx';
 import {
   $getSelection,
   $isRangeSelection,
@@ -22,6 +23,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import ReactDOM from 'react-dom';
+
+import { fetchComposeSuggestions } from 'soapbox/actions/compose';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
+
+import AutosuggestAccount from '../../components/autosuggest-account';
+
+import { getMentionMatch } from './mention-plugin';
 
 export type QueryMatch = {
   leadOffset: number
@@ -269,46 +278,95 @@ function useMenuAnchorRef(
   return anchorElementRef;
 }
 
-export type TypeaheadMenuPluginProps = {
-  menuRenderFn: MenuRenderFn
-  triggerFn: TriggerFn
-  onOpen?: (resolution: Resolution) => void
-  onClose?: () => void
-};
-
 export type TriggerFn = (
   text: string,
   editor: LexicalEditor,
 ) => QueryMatch | null;
 
-export function TypeaheadMenuPlugin({
-  onOpen,
-  onClose,
-  menuRenderFn,
-  triggerFn,
-}: TypeaheadMenuPluginProps): JSX.Element | null {
+export type AutosuggestPluginProps = {
+  composeId: string
+  suggestionsHidden: boolean
+  setSuggestionsHidden: (value: boolean) => void
+};
+
+export function AutosuggestPlugin({
+  composeId,
+  suggestionsHidden,
+  setSuggestionsHidden,
+}: AutosuggestPluginProps): JSX.Element | null {
+  const { suggestions } = useCompose(composeId);
+  const dispatch = useAppDispatch();
+
   const [editor] = useLexicalComposerContext();
   const [resolution, setResolution] = useState<Resolution | null>(null);
+  const [selectedSuggestion] = useState(0);
   const anchorElementRef = useMenuAnchorRef(
     resolution,
     setResolution,
   );
 
+  const onSelectSuggestion: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    e.preventDefault();
+
+    const suggestion = suggestions.get(e.currentTarget.getAttribute('data-index') as any);
+
+    editor.update(() => {
+
+      dispatch((_, getState) => {
+        const state = editor.getEditorState();
+        const node = (state._selection as RangeSelection)?.anchor?.getNode();
+
+        const content = getState().accounts.get(suggestion)!.acct;
+
+        node.setTextContent(`@${content} `);
+        node.select();
+      });
+    });
+  };
+
+  const checkForMentionMatch = useCallback((text: string) => {
+    const matchArr = getMentionMatch(text);
+
+    if (!matchArr) return null;
+
+    dispatch(fetchComposeSuggestions(composeId, matchArr[0]));
+
+    return {
+      leadOffset: matchArr.index,
+      matchingString: matchArr[0],
+    };
+  }, []);
+
+  const renderSuggestion = (suggestion: string, i: number) => {
+    const inner = <AutosuggestAccount id={suggestion} />;
+    const key = suggestion;
+
+    return (
+      <div
+        role='button'
+        tabIndex={0}
+        key={key}
+        data-index={i}
+        className={clsx({
+          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
+          'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
+        })}
+        onMouseDown={onSelectSuggestion}
+      >
+        {inner}
+      </div>
+    );
+  };
+
   const closeTypeahead = useCallback(() => {
     setResolution(null);
-    if (onClose && resolution !== null) {
-      onClose();
-    }
-  }, [onClose, resolution]);
+  }, [resolution]);
 
   const openTypeahead = useCallback(
     (res: Resolution) => {
       setResolution(res);
-      if (onOpen && resolution === null) {
-        onOpen(res);
-      }
     },
-    [onOpen, resolution],
+    [resolution],
   );
 
   useEffect(() => {
@@ -322,7 +380,7 @@ export function TypeaheadMenuPlugin({
           return;
         }
 
-        const match = triggerFn(text, editor);
+        const match = checkForMentionMatch(text);
 
         if (
           match !== null &&
@@ -350,16 +408,34 @@ export function TypeaheadMenuPlugin({
     };
   }, [
     editor,
-    triggerFn,
     resolution,
     closeTypeahead,
     openTypeahead,
   ]);
 
+  useEffect(() => {
+    if (suggestions && suggestions.size > 0) setSuggestionsHidden(false);
+  }, [suggestions]);
+
   return resolution === null || editor === null ? null : (
     <LexicalPopoverMenu
       anchorElementRef={anchorElementRef}
-      menuRenderFn={menuRenderFn}
+      menuRenderFn={(anchorElementRef) =>
+        anchorElementRef.current
+          ? ReactDOM.createPortal(
+            <div
+              className={clsx({
+                'mt-6 fixed z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
+                hidden: suggestionsHidden || suggestions.isEmpty(),
+                block: !suggestionsHidden && !suggestions.isEmpty(),
+              })}
+            >
+              {suggestions.map(renderSuggestion)}
+            </div>,
+            anchorElementRef.current,
+          )
+          : null
+      }
     />
   );
 }

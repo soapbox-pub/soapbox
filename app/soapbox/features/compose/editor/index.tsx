@@ -26,6 +26,7 @@ import { setEditorState } from 'soapbox/actions/compose';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 import nodes from './nodes';
+import { AutosuggestPlugin } from './plugins/autosuggest-plugin';
 import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
@@ -140,7 +141,8 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
         />
         <HistoryPlugin />
         <HashtagPlugin />
-        <MentionPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
+        <MentionPlugin />
+        <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         {features.richText && <LinkPlugin />}
         {features.richText && floatingAnchorElem && (
           <>
