@@ -1,10 +1,9 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
-import { Avatar, Button, Column, Form, FormActions, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
+import { Avatar, Button, Column, Form, FormActions, FormGroup, HStack, Input, Spinner, Text, Textarea } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
@@ -96,13 +95,6 @@ const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
   );
 });
 
-interface EditGroupForm {
-  display_name: string
-  note: string
-  avatar?: FileList
-  header?: FileList
-}
-
 interface IEditGroup {
   params: {
     id: string
@@ -113,44 +105,47 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
   const intl = useIntl();
   const instance = useInstance();
 
-  const { group } = useGroup(groupId);
+  const { group, isLoading } = useGroup(groupId);
   const { updateGroup } = useUpdateGroup(groupId);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const avatarField = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(group?.avatar) });
+  const headerField = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
+
+  const displayNameField = useTextField(group?.display_name);
+  const noteField = useTextField(group?.note);
 
   const maxName = Number(instance.configuration.getIn(['groups', 'max_characters_name']));
   const maxNote = Number(instance.configuration.getIn(['groups', 'max_characters_description']));
-
-  const { register, handleSubmit, formState: { isSubmitting }, watch } = useForm<EditGroupForm>({
-    values: group ? {
-      display_name: group.display_name,
-      note: group.note,
-    } : undefined,
-  });
-
-  const avatarSrc = usePreview(watch('avatar')?.item(0)) || nonDefaultAvatar(group?.avatar);
-  const headerSrc = usePreview(watch('header')?.item(0)) || nonDefaultHeader(group?.header);
 
   const attachmentTypes = useAppSelector(
     state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
   )?.filter(type => type.startsWith('image/')).toArray().join(',');
 
-  async function onSubmit(data: EditGroupForm) {
-    const avatar = data.avatar?.item(0);
-    const header = data.header?.item(0);
+  async function handleSubmit() {
+    setIsSubmitting(true);
 
     await updateGroup({
-      display_name: data.display_name,
-      note: data.note,
-      avatar: avatar ? await resizeImage(avatar, 400 * 400) : undefined,
-      header: header ? await resizeImage(header, 1920 * 1080) : undefined,
+      display_name: displayNameField.value,
+      note: noteField.value,
+      avatar: avatarField.file,
+      header: headerField.file,
     });
+
+    setIsSubmitting(false);
+  }
+
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit}>
         <div className='relative mb-12 flex'>
-          <HeaderPicker src={headerSrc} accept={attachmentTypes} disabled={isSubmitting} {...register('header')} />
-          <AvatarPicker src={avatarSrc} accept={attachmentTypes} disabled={isSubmitting} {...register('avatar')} />
+          <HeaderPicker accept={attachmentTypes} disabled={isSubmitting} {...headerField} />
+          <AvatarPicker accept={attachmentTypes} disabled={isSubmitting} {...avatarField} />
         </div>
         <FormGroup
           labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}
@@ -158,7 +153,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
           <Input
             type='text'
             placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
-            {...register('display_name', { maxLength: maxName })}
+            {...displayNameField}
+            maxLength={maxName}
           />
         </FormGroup>
         <FormGroup
@@ -167,7 +163,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
           <Textarea
             autoComplete='off'
             placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
-            {...register('note', { maxLength: maxNote })}
+            {...noteField}
+            maxLength={maxNote}
           />
         </FormGroup>
 
@@ -187,6 +184,55 @@ function usePreview(file: File | null | undefined): string | undefined {
       return URL.createObjectURL(file);
     }
   }, [file]);
+}
+
+function useTextField(initialValue: string | undefined) {
+  const [value, setValue] = useState(initialValue);
+  const hasInitialValue = typeof initialValue === 'string';
+
+  const onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    setValue(e.target.value);
+  };
+
+  useEffect(() => {
+    if (hasInitialValue) {
+      setValue(initialValue);
+    }
+  }, [hasInitialValue]);
+
+  return {
+    value,
+    onChange,
+  };
+}
+
+interface UseImageFieldOpts {
+  maxPixels?: number
+  preview?: string
+}
+
+function useImageField(opts: UseImageFieldOpts = {}) {
+  const [file, setFile] = useState<File>();
+  const src = usePreview(file) || opts.preview;
+
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = ({ target: { files } }) => {
+    const file = files?.item(0) || undefined;
+    if (file) {
+      if (typeof opts.maxPixels === 'number') {
+        resizeImage(file, opts.maxPixels)
+          .then((f) => setFile(f))
+          .catch(console.error);
+      } else {
+        setFile(file);
+      }
+    }
+  };
+
+  return {
+    src,
+    file,
+    onChange,
+  };
 }
 
 export default EditGroup;
