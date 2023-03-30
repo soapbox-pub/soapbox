@@ -1,22 +1,22 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import {
-  changeGroupEditorTitle,
-  changeGroupEditorDescription,
-  changeGroupEditorMedia,
-} from 'soapbox/actions/groups';
 import Icon from 'soapbox/components/icon';
-import { Avatar, Column, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import { Avatar, Button, Column, Form, FormActions, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
+import { useAppSelector, useInstance } from 'soapbox/hooks';
+import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { List as ImmutableList } from 'immutable';
 
+const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
+const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;
+
 interface IMediaInput {
-  src: string | null
+  src: string | undefined
   accept: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
   disabled: boolean
@@ -28,7 +28,7 @@ const messages = defineMessages({
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
 });
 
-const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
+const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, accept, disabled }, ref) => {
   return (
     <label
       className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
@@ -52,6 +52,7 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
         </Text>
 
         <input
+          ref={ref}
           name='header'
           type='file'
           accept={accept}
@@ -62,9 +63,9 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
       </HStack>
     </label>
   );
-};
+});
 
-const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
+const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, accept, disabled }, ref) => {
   return (
     <label className='absolute left-1/2 bottom-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
       {src && <Avatar src={src} size={80} />}
@@ -83,6 +84,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
       </HStack>
       <span className='sr-only'>Upload avatar</span>
       <input
+        ref={ref}
         name='avatar'
         type='file'
         accept={accept}
@@ -92,68 +94,63 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
       />
     </label>
   );
-};
+});
 
-const EditGroup = () => {
+interface EditGroupForm {
+  display_name: string
+  note: string
+  avatar?: FileList
+  header?: FileList
+}
+
+interface IEditGroup {
+  params: {
+    id: string
+  }
+}
+
+const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
   const instance = useInstance();
 
-  const groupId = useAppSelector((state) => state.group_editor.groupId);
-  const isUploading = useAppSelector((state) => state.group_editor.isUploading);
-  const name = useAppSelector((state) => state.group_editor.displayName);
-  const description = useAppSelector((state) => state.group_editor.note);
+  const { group } = useGroup(groupId);
+  const { updateGroup } = useUpdateGroup(groupId);
 
-  const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
-  const [headerSrc, setHeaderSrc] = useState<string | null>(null);
+  const maxName = Number(instance.configuration.getIn(['groups', 'max_characters_name']));
+  const maxNote = Number(instance.configuration.getIn(['groups', 'max_characters_description']));
+
+  const { register, handleSubmit, formState: { isSubmitting }, watch } = useForm<EditGroupForm>({
+    values: group ? {
+      display_name: group.display_name,
+      note: group.note,
+    } : undefined,
+  });
+
+  const avatarSrc = usePreview(watch('avatar')?.item(0)) || nonDefaultAvatar(group?.avatar);
+  const headerSrc = usePreview(watch('header')?.item(0)) || nonDefaultHeader(group?.header);
 
   const attachmentTypes = useAppSelector(
     state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
   )?.filter(type => type.startsWith('image/')).toArray().join(',');
 
-  const onChangeName: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    dispatch(changeGroupEditorTitle(target.value));
-  };
+  async function onSubmit(data: EditGroupForm) {
+    const avatar = data.avatar?.item(0);
+    const header = data.header?.item(0);
 
-  const onChangeDescription: React.ChangeEventHandler<HTMLTextAreaElement> = ({ target }) => {
-    dispatch(changeGroupEditorDescription(target.value));
-  };
-
-  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const rawFile = e.target.files?.item(0);
-
-    if (!rawFile) return;
-
-    if (e.target.name === 'avatar') {
-      resizeImage(rawFile, 400 * 400).then(file => {
-        dispatch(changeGroupEditorMedia('avatar', file));
-        setAvatarSrc(URL.createObjectURL(file));
-      }).catch(console.error);
-    } else {
-      resizeImage(rawFile, 1920 * 1080).then(file => {
-        dispatch(changeGroupEditorMedia('header', file));
-        setHeaderSrc(URL.createObjectURL(file));
-      }).catch(console.error);
-    }
-  };
-
-  useEffect(() => {
-    if (!groupId) return;
-
-    dispatch((_, getState) => {
-      const group = getState().groups.items.get(groupId);
-      if (!group) return;
-      if (group.avatar && !isDefaultAvatar(group.avatar)) setAvatarSrc(group.avatar);
-      if (group.header && !isDefaultHeader(group.header)) setHeaderSrc(group.header);
+    await updateGroup({
+      display_name: data.display_name,
+      note: data.note,
+      avatar: avatar ? await resizeImage(avatar, 400 * 400) : undefined,
+      header: header ? await resizeImage(header, 1920 * 1080) : undefined,
     });
-  }, [groupId]);
+  }
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <div className='relative mb-12 flex'>
-          <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
-          <AvatarPicker src={avatarSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
+          <HeaderPicker src={headerSrc} accept={attachmentTypes} disabled={isSubmitting} {...register('header')} />
+          <AvatarPicker src={avatarSrc} accept={attachmentTypes} disabled={isSubmitting} {...register('avatar')} />
         </div>
         <FormGroup
           labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}
@@ -161,9 +158,7 @@ const EditGroup = () => {
           <Input
             type='text'
             placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
-            value={name}
-            onChange={onChangeName}
-            maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_name']))}
+            {...register('display_name', { maxLength: maxName })}
           />
         </FormGroup>
         <FormGroup
@@ -172,14 +167,26 @@ const EditGroup = () => {
           <Textarea
             autoComplete='off'
             placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
-            value={description}
-            onChange={onChangeDescription}
-            maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_description']))}
+            {...register('note', { maxLength: maxNote })}
           />
         </FormGroup>
+
+        <FormActions>
+          <Button theme='primary' type='submit' disabled={isSubmitting} block>
+            <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+          </Button>
+        </FormActions>
       </Form>
     </Column>
   );
 };
+
+function usePreview(file: File | null | undefined): string | undefined {
+  return useMemo(() => {
+    if (file) {
+      return URL.createObjectURL(file);
+    }
+  }, [file]);
+}
 
 export default EditGroup;
