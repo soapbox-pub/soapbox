@@ -11,21 +11,19 @@ interface UseImageFieldOpts {
   preview?: string
 }
 
-/** Handle image, and optionally resize it. */
+/** Returns props for `<input type="file">`, and optionally resizes the file. */
 function useImageField(opts: UseImageFieldOpts = {}) {
   const [file, setFile] = useState<File>();
   const src = usePreview(file) || opts.preview;
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = ({ target: { files } }) => {
-    const file = files?.item(0) || undefined;
-    if (file) {
-      if (typeof opts.maxPixels === 'number') {
-        resizeImage(file, opts.maxPixels)
-          .then((f) => setFile(f))
-          .catch(console.error);
-      } else {
-        setFile(file);
-      }
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = async ({ target: { files } }) => {
+    const file = files?.item(0);
+    if (!file) return;
+
+    if (typeof opts.maxPixels === 'number') {
+      setFile(await resizeImage(file, opts.maxPixels));
+    } else {
+      setFile(file);
     }
   };
 

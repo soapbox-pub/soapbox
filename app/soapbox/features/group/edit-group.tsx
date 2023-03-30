@@ -110,11 +110,11 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const avatarField = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(group?.avatar) });
-  const headerField = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
+  const avatar = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(group?.avatar) });
+  const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
 
-  const displayNameField = useTextField(group?.display_name);
-  const noteField = useTextField(group?.note);
+  const displayName = useTextField(group?.display_name);
+  const note = useTextField(group?.note);
 
   const maxName = Number(instance.configuration.getIn(['groups', 'max_characters_name']));
   const maxNote = Number(instance.configuration.getIn(['groups', 'max_characters_description']));
@@ -127,10 +127,10 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
     setIsSubmitting(true);
 
     await updateGroup({
-      display_name: displayNameField.value,
-      note: noteField.value,
-      avatar: avatarField.file,
-      header: headerField.file,
+      display_name: displayName.value,
+      note: note.value,
+      avatar: avatar.file,
+      header: header.file,
     });
 
     setIsSubmitting(false);
@@ -144,8 +144,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
     <Column label={intl.formatMessage(messages.heading)}>
       <Form onSubmit={handleSubmit}>
         <div className='relative mb-12 flex'>
-          <HeaderPicker accept={attachmentTypes} disabled={isSubmitting} {...headerField} />
-          <AvatarPicker accept={attachmentTypes} disabled={isSubmitting} {...avatarField} />
+          <HeaderPicker accept={attachmentTypes} disabled={isSubmitting} {...header} />
+          <AvatarPicker accept={attachmentTypes} disabled={isSubmitting} {...avatar} />
         </div>
         <FormGroup
           labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}
@@ -153,8 +153,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
           <Input
             type='text'
             placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
-            {...displayNameField}
             maxLength={maxName}
+            {...displayName}
           />
         </FormGroup>
         <FormGroup
@@ -163,8 +163,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
           <Textarea
             autoComplete='off'
             placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
-            {...noteField}
             maxLength={maxNote}
+            {...note}
           />
         </FormGroup>
 
