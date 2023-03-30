@@ -13,12 +13,16 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
   const isOwner = group.relationship?.role === GroupRoles.OWNER;
   const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
 
-  if (!isOwner || !isAdmin) {
+  if (!isOwner && !isAdmin) {
     return null;
   }
 
   return (
-    <HStack space={1} alignItems='center'>
+    <HStack
+      space={1}
+      alignItems='center'
+      data-testid='group-relationship'
+    >
       <Icon
         className='h-4 w-4'
         src={
@@ -30,8 +34,8 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
 
       <Text tag='span' weight='medium' size='sm' theme='inherit'>
         {isOwner
-          ? <FormattedMessage id='group.role.admin' defaultMessage='Admin' />
-          : <FormattedMessage id='group.role.moderator' defaultMessage='Moderator' />}
+          ? <FormattedMessage id='group.role.owner' defaultMessage='Owner' />
+          : <FormattedMessage id='group.role.admin' defaultMessage='Admin' />}
       </Text>
     </HStack>
   );
