@@ -945,6 +945,7 @@
   "manage_group.edit_success": "The group was edited",
   "manage_group.fields.description_label": "Description",
   "manage_group.fields.description_placeholder": "Description",
+  "manage_group.fields.name_help": "This cannot be changed after the group is created.",
   "manage_group.fields.name_label": "Group name (required)",
   "manage_group.fields.name_placeholder": "Group Name",
   "manage_group.get_started": "Let’s get started!",

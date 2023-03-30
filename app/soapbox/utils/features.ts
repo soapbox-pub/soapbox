@@ -555,6 +555,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsSearch: v.software === TRUTHSOCIAL,
 
     /**
+     * Can validate group names.
+     */
+    groupsValidation: v.software === TRUTHSOCIAL,
+
+    /**
      * Can hide follows/followers lists and counts.
      * @see PATCH /api/v1/accounts/update_credentials
      */

@@ -7,9 +7,9 @@ import {
   changeGroupEditorDescription,
   changeGroupEditorMedia,
 } from 'soapbox/actions/groups';
-import Icon from 'soapbox/components/icon';
-import { Avatar, Form, FormGroup, HStack, Input, Text, Textarea } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import { Avatar, Form, FormGroup, HStack, Icon, Input, Text, Textarea } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
+import { useGroupValidation } from 'soapbox/hooks/api';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
@@ -30,7 +30,7 @@ const messages = defineMessages({
 const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
     <label
-      className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
+      className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-xl bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-44'
     >
       {src && <img className='h-full w-full object-cover' src={src} alt='' />}
       <HStack
@@ -65,7 +65,7 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 
 const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
-    <label className='absolute left-1/2 bottom-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
+    <label className='absolute left-1/2 bottom-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-4 ring-white dark:ring-primary-900'>
       {src && <Avatar src={src} size={80} />}
       <HStack
         alignItems='center'
@@ -95,6 +95,7 @@ const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 
 const DetailsStep = () => {
   const intl = useIntl();
+  const debounce = useDebounce;
   const dispatch = useAppDispatch();
   const instance = useInstance();
 
@@ -102,6 +103,10 @@ const DetailsStep = () => {
   const isUploading = useAppSelector((state) => state.group_editor.isUploading);
   const name = useAppSelector((state) => state.group_editor.displayName);
   const description = useAppSelector((state) => state.group_editor.note);
+
+  const debouncedName = debounce(name, 300);
+
+  const { data: { isValid, message: errorMessage } } = useGroupValidation(debouncedName);
 
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
   const [headerSrc, setHeaderSrc] = useState<string | null>(null);
@@ -153,8 +158,11 @@ const DetailsStep = () => {
         <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
         <AvatarPicker src={avatarSrc} accept={attachmentTypes} onChange={handleFileChange} disabled={isUploading} />
       </div>
+
       <FormGroup
         labelText={<FormattedMessage id='manage_group.fields.name_label' defaultMessage='Group name (required)' />}
+        hintText={<FormattedMessage id='manage_group.fields.name_help' defaultMessage='This cannot be changed after the group is created.' />}
+        errors={isValid ? [] : [errorMessage as string]}
       >
         <Input
           type='text'
@@ -164,6 +172,7 @@ const DetailsStep = () => {
           maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_name']))}
         />
       </FormGroup>
+
       <FormGroup
         labelText={<FormattedMessage id='manage_group.fields.description_label' defaultMessage='Description' />}
       >
