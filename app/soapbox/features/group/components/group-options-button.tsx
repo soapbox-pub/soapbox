@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
@@ -8,20 +9,25 @@ import { GroupRoles } from 'soapbox/schemas/group-member';
 
 import type { Account, Group } from 'soapbox/types/entities';
 
+const messages = defineMessages({
+  report: { id: 'group.report.label', defaultMessage: 'Report' },
+});
+
 interface IGroupActionButton {
   group: Group
 }
 
 const GroupOptionsButton = ({ group }: IGroupActionButton) => {
-  const dispatch = useAppDispatch();
   const account = useOwnAccount();
+  const dispatch = useAppDispatch();
+  const intl = useIntl();
 
   const isMember = group.relationship?.role === GroupRoles.USER;
   const isBlocked = group.relationship?.blocked_by;
 
   const menu: Menu = useMemo(() => ([
     {
-      text: 'Report',
+      text: intl.formatMessage(messages.report),
       icon: require('@tabler/icons/flag.svg'),
       action: () => dispatch(initReport(ReportableEntities.GROUP, account as Account, { group })),
     },
@@ -38,6 +44,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
         theme='secondary'
         iconClassName='h-5 w-5'
         className='self-stretch px-2.5'
+        data-testid='dropdown-menu-button'
       />
     </DropdownMenu>
   );
