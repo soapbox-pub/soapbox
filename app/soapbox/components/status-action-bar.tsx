@@ -8,7 +8,7 @@ import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { editEvent } from 'soapbox/actions/events';
 import { groupBlock, groupDeleteStatus, groupKick } from 'soapbox/actions/groups';
-import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
+import { toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
@@ -23,6 +23,8 @@ import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
+
+import GroupPopover from './groups/popover/group-popover';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { Account, Group, Status } from 'soapbox/types/entities';
@@ -45,6 +47,7 @@ const messages = defineMessages({
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   favourite: { id: 'status.favourite', defaultMessage: 'Like' },
+  disfavourite: { id: 'status.disfavourite', defaultMessage: 'Disike' },
   open: { id: 'status.open', defaultMessage: 'Expand this post' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
@@ -158,6 +161,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       dispatch(toggleFavourite(status));
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
+    }
+  };
+
+  const handleDislikeClick: React.EventHandler<React.MouseEvent> = (e) => {
+    if (me) {
+      dispatch(toggleDislike(status));
+    } else {
+      onOpenUnauthorizedModal('DISLIKE');
     }
   };
 
@@ -608,14 +619,19 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         grow={space === 'expand'}
         onClick={e => e.stopPropagation()}
       >
-        <StatusActionButton
-          title={replyTitle}
-          icon={require('@tabler/icons/message-circle-2.svg')}
-          onClick={handleReplyClick}
-          count={replyCount}
-          text={withLabels ? intl.formatMessage(messages.reply) : undefined}
-          disabled={replyDisabled}
-        />
+        <GroupPopover
+          group={status.group as any}
+          isEnabled={replyDisabled}
+        >
+          <StatusActionButton
+            title={replyTitle}
+            icon={require('@tabler/icons/message-circle-2.svg')}
+            onClick={handleReplyClick}
+            count={replyCount}
+            text={withLabels ? intl.formatMessage(messages.reply) : undefined}
+            disabled={replyDisabled}
+          />
+        </GroupPopover>
 
         {(features.quotePosts && me) ? (
           <DropdownMenu
@@ -645,13 +661,26 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
-            icon={require('@tabler/icons/heart.svg')}
+            icon={features.dislikes ? require('@tabler/icons/thumb-up.svg') : require('@tabler/icons/heart.svg')}
             color='accent'
             filled
             onClick={handleFavouriteClick}
             active={Boolean(meEmojiName)}
             count={favouriteCount}
             text={withLabels ? meEmojiTitle : undefined}
+          />
+        )}
+
+        {features.dislikes && (
+          <StatusActionButton
+            title={intl.formatMessage(messages.disfavourite)}
+            icon={require('@tabler/icons/thumb-down.svg')}
+            color='accent'
+            filled
+            onClick={handleDislikeClick}
+            active={status.disliked}
+            count={status.dislikes_count}
+            text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined}
           />
         )}
 

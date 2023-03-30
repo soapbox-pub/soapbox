@@ -55,6 +55,7 @@ module.exports = {
     },
     polyfills: [
       'es:all', // core-js
+      'fetch', // not polyfilled, but ignore it
       'IntersectionObserver', // npm:intersection-observer
       'Promise', // core-js
       'ResizeObserver', // npm:resize-observer-polyfill

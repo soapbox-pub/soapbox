@@ -46,6 +46,8 @@ export const StatusRecord = ImmutableRecord({
   card: null as Card | null,
   content: '',
   created_at: '',
+  dislikes_count: 0,
+  disliked: false,
   edited_at: null as string | null,
   emojis: ImmutableList<Emoji>(),
   favourited: false,
@@ -217,6 +219,16 @@ const normalizeFilterResults = (status: ImmutableMap<string, any>) =>
     ),
   );
 
+const normalizeDislikes = (status: ImmutableMap<string, any>) => {
+  if (status.get('friendica')) {
+    return status
+      .set('dislikes_count', status.getIn(['friendica', 'dislikes_count']))
+      .set('disliked', status.getIn(['friendica', 'disliked']));
+  }
+
+  return status;
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -232,6 +244,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       normalizeEvent(status);
       fixContent(status);
       normalizeFilterResults(status);
+      normalizeDislikes(status);
     }),
   );
 };

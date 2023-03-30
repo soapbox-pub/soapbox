@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: Support posts filtering on recent Mastodon versions
 - Reactions: Support custom emoji reactions
 - Compatbility: Support Mastodon v2 timeline filters.
+- Posts: Support dislikes on Friendica.
+- UI: added a character counter to some textareas.
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
@@ -24,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile: fix "load more" button height on account gallery page.
 - 18n: fixed Chinese language being detected from the browser.
 - Conversations: fixed pagination (Mastodon).
+- Compatibility: fix version parsing for Friendica.
 
 ## [3.2.0] - 2023-02-15
 

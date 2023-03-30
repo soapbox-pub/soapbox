@@ -344,6 +344,13 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * @see POST /api/friendica/statuses/:id/dislike
+     * @see POST /api/friendica/statuses/:id/undislike
+     * @see GET  /api/friendica/statuses/:id/disliked_by
+     */
+    dislikes: v.software === FRIENDICA && gte(v.version, '2023.3.0'),
+
+    /**
      * Ability to edit profile information.
      * @see PATCH /api/v1/accounts/update_credentials
      */
@@ -543,6 +550,16 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsPromoteToAdmin: v.software !== TRUTHSOCIAL,
 
     /**
+     * Can search my own groups.
+     */
+    groupsSearch: v.software === TRUTHSOCIAL,
+
+    /**
+     * Can validate group names.
+     */
+    groupsValidation: v.software === TRUTHSOCIAL,
+
+    /**
      * Can hide follows/followers lists and counts.
      * @see PATCH /api/v1/accounts/update_credentials
      */
@@ -716,6 +733,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/statuses
      */
     quotePosts: any([
+      v.software === FRIENDICA && gte(v.version, '2023.3.0'),
       v.software === PLEROMA && [REBASED, AKKOMA].includes(v.build!) && gte(v.version, '2.4.50'),
       features.includes('quote_posting'),
       instance.feature_quote === true,

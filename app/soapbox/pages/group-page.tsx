@@ -12,7 +12,8 @@ import {
   SignUpPanel,
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { useGroup, useOwnAccount } from 'soapbox/hooks';
+import { useOwnAccount } from 'soapbox/hooks';
+import { useGroup } from 'soapbox/hooks/api';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import { Group } from 'soapbox/schemas';
 

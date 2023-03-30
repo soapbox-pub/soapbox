@@ -3,7 +3,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { submitGroupEditor } from 'soapbox/actions/groups';
 import { Modal, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useDebounce } from 'soapbox/hooks';
+import { useGroupValidation } from 'soapbox/hooks/api';
 
 import ConfirmationStep from './steps/confirmation-step';
 import DetailsStep from './steps/details-step';
@@ -34,6 +35,7 @@ interface IManageGroupModal {
 
 const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   const intl = useIntl();
+  const debounce = useDebounce;
   const dispatch = useAppDispatch();
 
   const id = useAppSelector((state) => state.group_editor.groupId);
@@ -42,6 +44,11 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   const isSubmitting = useAppSelector((state) => state.group_editor.isSubmitting);
 
   const [currentStep, setCurrentStep] = useState<Steps>(id ? Steps.TWO : Steps.ONE);
+
+  const name = useAppSelector((state) => state.group_editor.displayName);
+  const debouncedName = debounce(name, 300);
+
+  const { data: { isValid } } = useGroupValidation(debouncedName);
 
   const handleClose = () => {
     onClose('MANAGE_GROUP');
@@ -92,7 +99,7 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
         : <FormattedMessage id='navigation_bar.create_group' defaultMessage='Create Group' />}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}
-      confirmationDisabled={isSubmitting}
+      confirmationDisabled={isSubmitting || (currentStep === Steps.TWO && !isValid)}
       confirmationFullWidth
       onClose={handleClose}
     >

@@ -2,9 +2,9 @@ import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
 import { Group, groupSchema } from 'soapbox/schemas';
 
+import { useGroupRelationships } from '../api/groups/useGroups';
 import { useApi } from '../useApi';
 import { useFeatures } from '../useFeatures';
-import { useGroupRelationships } from '../useGroups';
 
 function useSuggestedGroups() {
   const api = useApi();
@@ -12,7 +12,7 @@ function useSuggestedGroups() {
 
   const { entities, ...result } = useEntities<Group>(
     [Entities.GROUPS, 'suggested'],
-    () => api.get('/api/mock/groups'), // '/api/v1/truth/suggestions/groups'
+    () => api.get('/api/v1/truth/suggestions/groups'),
     {
       schema: groupSchema,
       enabled: features.groupsDiscovery,

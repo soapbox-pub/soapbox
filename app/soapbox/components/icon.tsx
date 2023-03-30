@@ -14,6 +14,9 @@ export interface IIcon extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
+/**
+ * @deprecated Use the UI Icon component directly.
+ */
 const Icon: React.FC<IIcon> = ({ src, alt, className, ...rest }) => {
   return (
     <div

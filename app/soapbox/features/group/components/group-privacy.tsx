@@ -10,6 +10,7 @@ interface IGroupPolicy {
 
 const GroupPrivacy = ({ group }: IGroupPolicy) => (
   <Popover
+    referenceElementClassName='cursor-help'
     content={
       <Stack space={4} alignItems='center' className='w-72'>
         <div className='rounded-full bg-gray-200 p-3 dark:bg-gray-800'>

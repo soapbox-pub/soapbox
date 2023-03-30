@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { useGroup } from 'soapbox/hooks';
+import { useGroup } from 'soapbox/hooks/api';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import { useGroupMembers } from 'soapbox/hooks/api/useGroupMembers';
 import { GroupRoles } from 'soapbox/schemas/group-member';

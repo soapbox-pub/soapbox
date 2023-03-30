@@ -190,6 +190,10 @@ export function FavouritesModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/modals/favourites-modal');
 }
 
+export function DislikesModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/modals/dislikes-modal');
+}
+
 export function ReactionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/modals/reactions-modal');
 }
@@ -572,6 +576,10 @@ export function GroupTimeline() {
 
 export function ManageGroup() {
   return import(/* webpackChunkName: "features/groups" */'../../group/manage-group');
+}
+
+export function EditGroup() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/edit-group');
 }
 
 export function GroupBlockedMembers() {

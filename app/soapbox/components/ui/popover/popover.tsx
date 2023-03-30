@@ -1,18 +1,28 @@
 import {
   arrow,
+  autoPlacement,
   FloatingArrow,
   offset,
   useClick,
   useDismiss,
   useFloating,
+  useHover,
   useInteractions,
   useTransitionStyles,
 } from '@floating-ui/react';
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
 interface IPopover {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  /** The content of the popover */
   content: React.ReactNode
+  /** Should we remove padding on the Popover */
+  isFlush?: boolean
+  /** Should the popover trigger via click or hover */
+  interaction?: 'click' | 'hover'
+  /** Add a class to the reference (trigger) element */
+  referenceElementClassName?: string
 }
 
 /**
@@ -22,7 +32,7 @@ interface IPopover {
  * of information.
  */
 const Popover: React.FC<IPopover> = (props) => {
-  const { children, content } = props;
+  const { children, content, referenceElementClassName, interaction = 'hover', isFlush = false } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -33,6 +43,9 @@ const Popover: React.FC<IPopover> = (props) => {
     onOpenChange: setIsOpen,
     placement: 'top',
     middleware: [
+      autoPlacement({
+        allowedPlacements: ['top', 'bottom'],
+      }),
       offset(10),
       arrow({
         element: arrowRef,
@@ -40,8 +53,6 @@ const Popover: React.FC<IPopover> = (props) => {
     ],
   });
 
-  const click = useClick(context);
-  const dismiss = useDismiss(context);
   const { isMounted, styles } = useTransitionStyles(context, {
     initial: {
       opacity: 0,
@@ -53,8 +64,13 @@ const Popover: React.FC<IPopover> = (props) => {
     },
   });
 
+  const click = useClick(context, { enabled: interaction === 'click' });
+  const hover = useHover(context, { enabled: interaction === 'hover' });
+  const dismiss = useDismiss(context);
+
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
+    hover,
     dismiss,
   ]);
 
@@ -63,7 +79,7 @@ const Popover: React.FC<IPopover> = (props) => {
       {React.cloneElement(children, {
         ref: refs.setReference,
         ...getReferenceProps(),
-        className: 'cursor-help',
+        className: clsx(children.props.className, referenceElementClassName),
       })}
 
       {(isMounted) && (
@@ -75,12 +91,22 @@ const Popover: React.FC<IPopover> = (props) => {
             left: x ?? 0,
             ...styles,
           }}
-          className='rounded-lg bg-white p-6 shadow-2xl dark:bg-gray-900 dark:ring-2 dark:ring-primary-700'
+          className={
+            clsx({
+              'z-40 rounded-lg bg-white shadow-2xl dark:bg-gray-900 dark:ring-2 dark:ring-primary-700': true,
+              'p-6': !isFlush,
+            })
+          }
           {...getFloatingProps()}
         >
           {content}
 
-          <FloatingArrow ref={arrowRef} context={context} className='fill-white dark:hidden' />
+          <FloatingArrow
+            ref={arrowRef}
+            context={context}
+            className='-ml-2 fill-white dark:hidden' /** -ml-2 to fix offcenter arrow */
+            tipRadius={3}
+          />
         </div>
       )}
     </>
