@@ -28,6 +28,7 @@ const messages = defineMessages({
   newsletter: { id: 'registration.newsletter', defaultMessage: 'Subscribe to newsletter.' },
   needsConfirmationHeader: { id: 'confirmations.register.needs_confirmation.header', defaultMessage: 'Confirmation needed' },
   needsApprovalHeader: { id: 'confirmations.register.needs_approval.header', defaultMessage: 'Approval needed' },
+  reasonHint: { id: 'registration.reason_hint', defaultMessage: 'This will help us review your application' },
 });
 
 interface IRegistrationForm {
@@ -296,13 +297,14 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
           {needsApproval && (
             <FormGroup
               labelText={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
-              hintText={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
             >
               <Textarea
                 name='reason'
+                placeholder={intl.formatMessage(messages.reasonHint)}
                 maxLength={500}
                 onChange={onInputChange}
                 value={params.get('reason', '')}
+                autoGrow
                 required
               />
             </FormGroup>
