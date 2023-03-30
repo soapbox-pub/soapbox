@@ -13,6 +13,8 @@ import {
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
+import Portal from '../portal/portal';
+
 interface IPopover {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>
   /** The content of the popover */
@@ -83,31 +85,33 @@ const Popover: React.FC<IPopover> = (props) => {
       })}
 
       {(isMounted) && (
-        <div
-          ref={refs.setFloating}
-          style={{
-            position: strategy,
-            top: y ?? 0,
-            left: x ?? 0,
-            ...styles,
-          }}
-          className={
-            clsx({
-              'z-40 rounded-lg bg-white shadow-2xl dark:bg-gray-900 dark:ring-2 dark:ring-primary-700': true,
-              'p-6': !isFlush,
-            })
-          }
-          {...getFloatingProps()}
-        >
-          {content}
+        <Portal>
+          <div
+            ref={refs.setFloating}
+            style={{
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+              ...styles,
+            }}
+            className={
+              clsx({
+                'z-40 rounded-lg bg-white shadow-2xl dark:bg-gray-900 dark:ring-2 dark:ring-primary-700': true,
+                'p-6': !isFlush,
+              })
+            }
+            {...getFloatingProps()}
+          >
+            {content}
 
-          <FloatingArrow
-            ref={arrowRef}
-            context={context}
-            className='-ml-2 fill-white dark:hidden' /** -ml-2 to fix offcenter arrow */
-            tipRadius={3}
-          />
-        </div>
+            <FloatingArrow
+              ref={arrowRef}
+              context={context}
+              className='-ml-2 fill-white dark:hidden' /** -ml-2 to fix offcenter arrow */
+              tipRadius={3}
+            />
+          </div>
+        </Portal>
       )}
     </>
   );

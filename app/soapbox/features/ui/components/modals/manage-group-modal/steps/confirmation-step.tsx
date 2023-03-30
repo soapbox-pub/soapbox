@@ -3,8 +3,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
 
+import type { Group } from 'soapbox/schemas';
+
 interface IConfirmationStep {
-  group: any
+  group: Group
 }
 
 const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
@@ -53,24 +55,30 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
 
         <Stack space={5}>
           <InfoListItem number={1}>
-            <FormattedMessage
-              id='manage_group.confirmation.info_1'
-              defaultMessage='As the owner of this group, you can assign staff, delete posts and much more.'
-            />
+            <Text theme='muted'>
+              <FormattedMessage
+                id='manage_group.confirmation.info_1'
+                defaultMessage='As the owner of this group, you can assign staff, delete posts and much more.'
+              />
+            </Text>
           </InfoListItem>
 
           <InfoListItem number={2}>
-            <FormattedMessage
-              id='manage_group.confirmation.info_2'
-              defaultMessage="Post the group's first post and get the conversation started."
-            />
+            <Text theme='muted'>
+              <FormattedMessage
+                id='manage_group.confirmation.info_2'
+                defaultMessage="Post the group's first post and get the conversation started."
+              />
+            </Text>
           </InfoListItem>
 
           <InfoListItem number={3}>
-            <FormattedMessage
-              id='manage_group.confirmation.info_3'
-              defaultMessage='Share your new group with friends, family and followers to grow its membership.'
-            />
+            <Text theme='muted'>
+              <FormattedMessage
+                id='manage_group.confirmation.info_3'
+                defaultMessage='Share your new group with friends, family and followers to grow its membership.'
+              />
+            </Text>
           </InfoListItem>
         </Stack>
       </Stack>
@@ -96,7 +104,7 @@ interface IInfoListNumber {
 
 const InfoListNumber: React.FC<IInfoListNumber> = ({ number }) => {
   return (
-    <div className='flex h-7 w-7 items-center justify-center rounded-full border border-gray-200'>
+    <div className='flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gray-200 dark:border-gray-800'>
       <Text theme='primary' size='sm' weight='bold'>{number}</Text>
     </div>
   );
@@ -109,9 +117,11 @@ interface IInfoListItem {
 
 const InfoListItem: React.FC<IInfoListItem> = ({ number, children }) => {
   return (
-    <HStack space={3}>
-      <div><InfoListNumber number={number} /></div>
-      <div>{children}</div>
+    <HStack alignItems='top' space={3}>
+      <InfoListNumber number={number} />
+      <div className='mt-0.5'>
+        {children}
+      </div>
     </HStack>
   );
 };

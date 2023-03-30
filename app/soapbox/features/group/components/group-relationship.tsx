@@ -22,6 +22,7 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
       space={1}
       alignItems='center'
       data-testid='group-relationship'
+      className='text-primary-600 dark:text-accent-blue'
     >
       <Icon
         className='h-4 w-4'

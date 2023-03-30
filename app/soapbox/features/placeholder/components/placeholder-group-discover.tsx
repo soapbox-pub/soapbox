@@ -13,7 +13,7 @@ const PlaceholderGroupDiscover = () => {
         {/* Group Cover Image */}
         <div className='absolute inset-0 rounded-t-lg bg-gray-300 object-cover dark:bg-gray-800' />
 
-        <Stack justifyContent='end' className='z-10 p-4 text-white' space={3}>
+        <Stack justifyContent='end' className='z-10 p-4 text-gray-900 dark:text-gray-100' space={3}>
           {/* Group Avatar */}
           <div className='h-11 w-11 rounded-full bg-gray-500 dark:bg-gray-700 dark:ring-primary-900' />
 
