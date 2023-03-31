@@ -48,6 +48,7 @@ const COMPOSE_UPLOAD_FAIL     = 'COMPOSE_UPLOAD_FAIL';
 const COMPOSE_UPLOAD_PROGRESS = 'COMPOSE_UPLOAD_PROGRESS';
 const COMPOSE_UPLOAD_UNDO     = 'COMPOSE_UPLOAD_UNDO';
 const COMPOSE_GROUP_POST      = 'COMPOSE_GROUP_POST';
+const COMPOSE_SET_GROUP_TIMELINE_VISIBLE = 'COMPOSE_SET_GROUP_TIMELINE_VISIBLE';
 
 const COMPOSE_SUGGESTIONS_CLEAR = 'COMPOSE_SUGGESTIONS_CLEAR';
 const COMPOSE_SUGGESTIONS_READY = 'COMPOSE_SUGGESTIONS_READY';
@@ -292,7 +293,10 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       to,
     };
 
-    if (compose.privacy === 'group') params.group_id = compose.group_id;
+    if (compose.privacy === 'group') {
+      params.group_id = compose.group_id;
+      params.group_timeline_visible = compose.group_timeline_visible; // Truth Social
+    }
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
@@ -482,6 +486,12 @@ const groupCompose = (composeId: string, groupId: string) =>
       group_id: groupId,
     });
   };
+
+const setGroupTimelineVisible = (composeId: string, groupTimelineVisible: boolean) => ({
+  type: COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
+  id: composeId,
+  groupTimelineVisible,
+});
 
 const clearComposeSuggestions = (composeId: string) => {
   if (cancelFetchComposeSuggestionsAccounts) {
@@ -792,6 +802,7 @@ export {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
+  COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   setComposeToStatus,
   changeCompose,
   replyCompose,
@@ -818,6 +829,7 @@ export {
   uploadComposeFail,
   undoUploadCompose,
   groupCompose,
+  setGroupTimelineVisible,
   clearComposeSuggestions,
   fetchComposeSuggestions,
   readyComposeSuggestionsEmojis,

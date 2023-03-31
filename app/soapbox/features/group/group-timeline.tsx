@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { groupCompose } from 'soapbox/actions/compose';
+import { groupCompose, setGroupTimelineVisible } from 'soapbox/actions/compose';
 import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
-import { Avatar, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { useGroup } from 'soapbox/hooks/api';
 
 import Timeline from '../ui/components/timeline';
@@ -26,16 +26,21 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
 
   const { group } = useGroup(groupId);
 
+  const composeId = `group:${groupId}`;
   const canComposeGroupStatus = !!account && group?.relationship?.member;
+  const groupTimelineVisible = useAppSelector((state) => !!state.compose.get(composeId)?.group_timeline_visible);
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandGroupTimeline(groupId, { maxId }));
   };
 
+  const handleToggleChange = () => {
+    dispatch(setGroupTimelineVisible(composeId, !groupTimelineVisible));
+  };
+
   useEffect(() => {
     dispatch(expandGroupTimeline(groupId));
-
-    dispatch(groupCompose(`group:${groupId}`, groupId));
+    dispatch(groupCompose(composeId, groupId));
 
     const disconnect = dispatch(connectGroupStream(groupId));
 
@@ -58,10 +63,25 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
             </Link>
 
             <ComposeForm
-              id={`group:${groupId}`}
+              id={composeId}
               shouldCondense
               autoFocus={false}
               group={groupId}
+              extra={!group.locked && (
+                <HStack alignItems='center' space={4}>
+                  <label className='ml-auto cursor-pointer' htmlFor='group-timeline-visible'>
+                    <Text theme='muted'>
+                      <FormattedMessage id='compose_group.share_to_followers' defaultMessage='Share with my followers' />
+                    </Text>
+                  </label>
+                  <Toggle
+                    id='group-timeline-visible'
+                    checked={groupTimelineVisible}
+                    onChange={handleToggleChange}
+                    size='sm'
+                  />
+                </HStack>
+              )}
             />
           </HStack>
         </div>
@@ -69,7 +89,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
 
       <Timeline
         scrollKey='group_timeline'
-        timelineId={`group:${groupId}`}
+        timelineId={composeId}
         onLoadMore={handleLoadMore}
         emptyMessage={
           <Stack space={4} className='py-6' justifyContent='center' alignItems='center'>

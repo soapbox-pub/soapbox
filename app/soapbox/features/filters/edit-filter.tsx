@@ -71,7 +71,6 @@ const FilterField: StreamfieldComponent<IFilterField> = ({ value, onChange }) =>
         <Toggle
           checked={value.whole_word}
           onChange={handleChange('whole_word')}
-          icons={false}
         />
 
         <Text tag='span' theme='muted'>
@@ -212,28 +211,24 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
         <List>
           <ListItem label={intl.formatMessage(messages.home_timeline)}>
             <Toggle
-              name='home_timeline'
               checked={homeTimeline}
               onChange={({ target }) => setHomeTimeline(target.checked)}
             />
           </ListItem>
           <ListItem label={intl.formatMessage(messages.public_timeline)}>
             <Toggle
-              name='public_timeline'
               checked={publicTimeline}
               onChange={({ target }) => setPublicTimeline(target.checked)}
             />
           </ListItem>
           <ListItem label={intl.formatMessage(messages.notifications)}>
             <Toggle
-              name='notifications'
               checked={notifications}
               onChange={({ target }) => setNotifications(target.checked)}
             />
           </ListItem>
           <ListItem label={intl.formatMessage(messages.conversations)}>
             <Toggle
-              name='conversations'
               checked={conversations}
               onChange={({ target }) => setConversations(target.checked)}
             />
@@ -241,7 +236,6 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
           {features.filtersV2 && (
             <ListItem label={intl.formatMessage(messages.accounts)}>
               <Toggle
-                name='accounts'
                 checked={accounts}
                 onChange={({ target }) => setAccounts(target.checked)}
               />
@@ -255,7 +249,6 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
             hint={intl.formatMessage(features.filtersV2 ? messages.hide_hint : messages.drop_hint)}
           >
             <Toggle
-              name='hide'
               checked={hide}
               onChange={({ target }) => setHide(target.checked)}
             />
