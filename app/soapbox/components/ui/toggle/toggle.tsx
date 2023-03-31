@@ -17,7 +17,9 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, require
 
   return (
     <button
-      className={clsx('flex-none rounded-full bg-gray-500', {
+      className={clsx('flex-none rounded-full', {
+        'bg-gray-500': !checked,
+        'bg-primary-600': checked,
         'w-9 p-0.5': size === 'sm',
         'w-11 p-0.5': size === 'md',
       })}
