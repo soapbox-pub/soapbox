@@ -75,6 +75,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
                   <Toggle
                     checked={groupTimelineVisible}
                     onChange={handleToggleChange}
+                    size='sm'
                   />
                 </HStack>
               )}
