@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 
-interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'checked' | 'onChange' | 'required' | 'disabled'> {
+interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'name' | 'checked' | 'onChange' | 'required' | 'disabled'> {
   size?: 'sm' | 'md'
 }
 
 /** A glorified checkbox. */
-const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, required, disabled }) => {
+const Toggle: React.FC<IToggle> = ({ id, size = 'md', name, checked, onChange, required, disabled }) => {
   const input = useRef<HTMLInputElement>(null);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -39,6 +39,7 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, require
       <input
         id={id}
         ref={input}
+        name={name}
         type='checkbox'
         className='sr-only'
         checked={checked}
