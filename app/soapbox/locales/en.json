@@ -443,6 +443,7 @@
   "compose_form.spoiler_placeholder": "Write your warning here (optional)",
   "compose_form.spoiler_remove": "Remove sensitive",
   "compose_form.spoiler_title": "Sensitive content",
+  "compose_group.share_to_followers": "Share with my followers",
   "confirmation_modal.cancel": "Cancel",
   "confirmations.admin.deactivate_user.confirm": "Deactivate @{name}",
   "confirmations.admin.deactivate_user.heading": "Deactivate @{acct}",
