@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 
-interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'checked' | 'onChange' | 'required'> {
+interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'checked' | 'onChange' | 'required' | 'disabled'> {
   size?: 'sm' | 'md'
 }
 
 /** A glorified checkbox. */
-const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, required }) => {
+const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, required, disabled }) => {
   const input = useRef<HTMLInputElement>(null);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -18,10 +18,13 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, require
   return (
     <button
       className={clsx('flex-none rounded-full', {
-        'bg-gray-500': !checked,
-        'bg-primary-600': checked,
+        'bg-gray-500': !checked && !disabled,
+        'bg-primary-600': checked && !disabled,
+        'bg-gray-200': !checked && disabled,
+        'bg-primary-200': checked && disabled,
         'w-9 p-0.5': size === 'sm',
         'w-11 p-0.5': size === 'md',
+        'cursor-default': disabled,
       })}
       onClick={handleClick}
     >
@@ -41,6 +44,7 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, require
         checked={checked}
         onChange={onChange}
         required={required}
+        disabled={disabled}
       />
     </button>
   );
