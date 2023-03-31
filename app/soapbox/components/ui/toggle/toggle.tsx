@@ -5,7 +5,7 @@ interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id'
   size?: 'sm' | 'md'
 }
 
-/** A glorified checkbox. Wrapper around react-toggle. */
+/** A glorified checkbox. */
 const Toggle: React.FC<IToggle> = ({ id, size = 'md', checked, onChange, required }) => {
   const input = useRef<HTMLInputElement>(null);
 
