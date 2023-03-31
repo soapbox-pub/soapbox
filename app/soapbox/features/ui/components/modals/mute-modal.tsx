@@ -1,11 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Toggle from 'react-toggle';
 
 import { muteAccount } from 'soapbox/actions/accounts';
 import { closeModal } from 'soapbox/actions/modals';
 import { toggleHideNotifications, changeMuteDuration } from 'soapbox/actions/mutes';
-import { Modal, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Modal, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import DurationSelector from 'soapbox/features/compose/components/polls/duration-selector';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -74,7 +73,6 @@ const MuteModal = () => {
             <Toggle
               checked={notifications}
               onChange={toggleNotifications}
-              icons={false}
             />
           </HStack>
         </label>
@@ -90,7 +88,6 @@ const MuteModal = () => {
                 <Toggle
                   checked={duration !== 0}
                   onChange={toggleAutoExpire}
-                  icons={false}
                 />
               </HStack>
             </label>
