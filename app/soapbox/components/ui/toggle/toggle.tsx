@@ -9,8 +9,7 @@ interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id'
 const Toggle: React.FC<IToggle> = ({ id, size = 'md', name, checked, onChange, required, disabled }) => {
   const input = useRef<HTMLInputElement>(null);
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     input.current?.focus();
     input.current?.click();
   };
