@@ -18,7 +18,6 @@ export default () => {
 
   const { groups, isLoading } = usePendingGroups();
 
-
   const renderBlankslate = () => (
     <Stack
       space={4}
