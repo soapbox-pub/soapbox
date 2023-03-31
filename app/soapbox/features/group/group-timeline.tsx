@@ -67,7 +67,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
               shouldCondense
               autoFocus={false}
               group={groupId}
-              extra={(
+              extra={!group.locked && (
                 <HStack alignItems='center' space={4}>
                   <label className='ml-auto cursor-pointer' htmlFor='group-timeline-visible'>
                     <Text theme='muted'>
