@@ -795,7 +795,6 @@
   "group.promote.admin.confirmation.title": "Asignar la función de administrador",
   "group.promote.admin.success": "@{name} es ahora un administrador",
   "group.role.admin": "Administrador",
-  "group.role.moderator": "Moderador",
   "group.tabs.all": "Todos",
   "group.tabs.members": "Miembros",
   "group.upload_banner": "Subir una foto",
