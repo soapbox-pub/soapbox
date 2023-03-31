@@ -551,19 +551,19 @@ export function Groups() {
 }
 
 export function GroupsDiscover() {
-  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/discover');
+  return import(/* webpackChunkName: "features/groups" */'../../groups/discover');
 }
 
 export function GroupsPopular() {
-  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/popular');
+  return import(/* webpackChunkName: "features/groups" */'../../groups/popular');
 }
 
 export function GroupsSuggested() {
-  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/suggested');
+  return import(/* webpackChunkName: "features/groups" */'../../groups/suggested');
 }
 
 export function PendingGroupRequests() {
-  return import(/* webpackChunkName: "features/groups/discover" */'../../groups/pending-requests');
+  return import(/* webpackChunkName: "features/groups" */'../../groups/pending-requests');
 }
 
 export function GroupMembers() {
