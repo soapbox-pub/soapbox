@@ -69,10 +69,11 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
               group={groupId}
               extra={(
                 <HStack alignItems='center' space={4}>
-                  <div className='ml-auto'>
+                  <label className='ml-auto cursor-pointer' htmlFor='group-timeline-visible'>
                     <Text theme='muted'>Share with my followers</Text>
-                  </div>
+                  </label>
                   <Toggle
+                    id='group-timeline-visible'
                     checked={groupTimelineVisible}
                     onChange={handleToggleChange}
                     size='sm'
