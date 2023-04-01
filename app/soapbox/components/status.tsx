@@ -227,10 +227,9 @@ const Status: React.FC<IStatus> = (props) => {
                   <bdi className='truncate pr-1 rtl:pl-1'>
                     <strong
                       className='text-gray-800 dark:text-gray-200'
-                      dangerouslySetInnerHTML={{
-                        __html: String(status.getIn(['account', 'display_name_html'])),
-                      }}
-                    />
+                    >
+                      {status.getIn(['account', 'nostr']) as string}
+                    </strong>
                   </bdi>
                 ),
               }}
