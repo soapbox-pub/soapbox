@@ -649,7 +649,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           <StatusReactionWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
-              icon={require('@tabler/icons/heart.svg')}
+              icon={require('@tabler/icons/bolt.svg')}
               filled
               color='accent'
               active={Boolean(meEmojiName)}

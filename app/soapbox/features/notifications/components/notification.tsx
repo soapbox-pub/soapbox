@@ -43,7 +43,7 @@ const icons: Record<NotificationType, string> = {
   follow: require('@tabler/icons/user-plus.svg'),
   follow_request: require('@tabler/icons/user-plus.svg'),
   mention: require('@tabler/icons/at.svg'),
-  favourite: require('@tabler/icons/heart.svg'),
+  favourite: require('@tabler/icons/bolt.svg'),
   reblog: require('@tabler/icons/repeat.svg'),
   status: require('@tabler/icons/bell-ringing.svg'),
   poll: require('@tabler/icons/chart-bar.svg'),
