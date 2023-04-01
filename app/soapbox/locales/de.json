@@ -1293,7 +1293,7 @@
   "status.disabled_replies.group_membership": "Nur Gruppenmitglieder können antworten",
   "status.edit": "Bearbeiten",
   "status.embed": "Einbetten",
-  "status.external": "Öffne auf Heimatdomäne",
+  "status.external": "Auf Originalseite öffnen",
   "status.favourite": "Favorisieren",
   "status.filtered": "Gefiltert",
   "status.group": "Gepostet in {group}",
