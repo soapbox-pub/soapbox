@@ -113,7 +113,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
       </Card>
 
       {showInfo && (
-        <div ref={infobox} className='absolute top-5 right-5 max-w-[234px]'>
+        <div ref={infobox} className='absolute right-5 top-5 max-w-[234px]'>
           <Card variant='rounded'>
             <Stack space={2}>
               <Text size='sm' weight='bold'>

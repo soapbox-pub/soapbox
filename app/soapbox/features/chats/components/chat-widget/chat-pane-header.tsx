@@ -31,7 +31,7 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
   }
 
   return (
-    <HStack {...rest} alignItems='center' justifyContent='between' className='h-16 rounded-t-xl py-3 px-4'>
+    <HStack {...rest} alignItems='center' justifyContent='between' className='h-16 rounded-t-xl px-4 py-3'>
       <ButtonComp
         className='flex h-16 grow flex-row items-center space-x-1'
         data-testid='title'

@@ -9,7 +9,7 @@ const PlaceholderGroupDiscover = () => {
 
   return (
     <Stack space={2} className='animate-pulse'>
-      <Stack className='aspect-w-10 aspect-h-7 h-full w-full overflow-hidden rounded-lg'>
+      <Stack className='aspect-h-7 aspect-w-10 h-full w-full overflow-hidden rounded-lg'>
         {/* Group Cover Image */}
         <div className='absolute inset-0 rounded-t-lg bg-gray-300 object-cover dark:bg-gray-800' />
 

@@ -159,7 +159,7 @@ const ReasonStep = (_props: IReasonStep) => {
               })}
             />
             <div
-              className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white pt-12 pb-8 transition-opacity duration-500 dark:from-gray-900', {
+              className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white pb-8 pt-12 transition-opacity duration-500 dark:from-gray-900', {
                 'opacity-0': isNearBottom,
                 'opacity-100': !isNearBottom,
               })}

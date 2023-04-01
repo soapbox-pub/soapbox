@@ -23,7 +23,7 @@ interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
 const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredProps }): JSX.Element => (
   <div className='relative flex shrink-0 flex-col' data-testid='icon'>
     {count ? (
-      <span className='absolute -top-2 -right-3 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
+      <span className='absolute -right-3 -top-2 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
         <Counter count={count} countMax={countMax} />
       </span>
     ) : null}

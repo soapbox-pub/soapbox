@@ -617,7 +617,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
           {renderHeader()}
 
-          <div className='absolute top-2 left-2'>
+          <div className='absolute left-2 top-2'>
             <HStack alignItems='center' space={1}>
               {info}
             </HStack>

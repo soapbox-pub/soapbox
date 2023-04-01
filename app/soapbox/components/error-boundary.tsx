@@ -113,7 +113,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     const errorText = this.getErrorText();
 
     return (
-      <div className='flex h-screen flex-col bg-white pt-16 pb-12 dark:bg-primary-900'>
+      <div className='flex h-screen flex-col bg-white pb-12 pt-16 dark:bg-primary-900'>
         <main className='mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
           <div className='flex shrink-0 justify-center'>
             <a href='/' className='inline-flex'>
