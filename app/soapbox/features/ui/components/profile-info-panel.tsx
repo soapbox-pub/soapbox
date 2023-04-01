@@ -6,7 +6,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useSoapboxConfig } from 'soapbox/hooks';
+// import { useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
@@ -43,7 +43,7 @@ interface IProfileInfoPanel {
 /** User profile metadata, such as location, birthday, etc. */
 const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) => {
   const intl = useIntl();
-  const { displayFqn } = useSoapboxConfig();
+  // const { displayFqn } = useSoapboxConfig();
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
@@ -131,8 +131,8 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   }
 
   const content = { __html: account.note_emojified };
-  const deactivated = !account.pleroma.get('is_active', true) === true;
-  const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
+  // const deactivated = !account.pleroma.get('is_active', true) === true;
+  // const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const badges = getBadges();
 
@@ -141,7 +141,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
       <Stack space={2}>
         <Stack>
           <HStack space={1} alignItems='center'>
-            <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+            <Text size='lg' weight='bold'>{account.nostr}</Text>
 
             {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
 
@@ -154,7 +154,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
           <HStack alignItems='center' space={0.5}>
             <Text size='sm' theme='muted' direction='ltr'>
-              @{displayFqn ? account.fqn : account.acct}
+              @{account.nostr}
             </Text>
 
             {account.locked && (

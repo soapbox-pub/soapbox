@@ -6,8 +6,8 @@ import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
+// import { getAcct } from 'soapbox/utils/accounts';
+// import { displayFqn } from 'soapbox/utils/state';
 
 import Badge from './badge';
 import RelativeTimestamp from './relative-timestamp';
@@ -124,7 +124,7 @@ const Account = ({
   const actionRef = useRef<HTMLDivElement>(null);
 
   const me = useAppSelector((state) => state.me);
-  const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
+  // const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
 
   const handleAction = () => {
     onActionClick!(account);
@@ -216,8 +216,9 @@ const Account = ({
                     size='sm'
                     weight='semibold'
                     truncate
-                    dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-                  />
+                  >
+                    {account.nostr}
+                  </Text>
 
                   {account.verified && <VerificationBadge />}
 
@@ -228,7 +229,7 @@ const Account = ({
 
             <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1}>
-                <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
+                <Text theme='muted' size='sm' direction='ltr' truncate>@{account.nostr}</Text>
 
                 {account.favicon && (
                   <InstanceFavicon account={account} disabled={!withLinkToProfile} />

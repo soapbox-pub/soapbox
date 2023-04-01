@@ -13,6 +13,7 @@ export const MentionRecord = ImmutableRecord({
   acct: '',
   username: '',
   url: '',
+  nostr: '',
 });
 
 export const normalizeMention = (mention: Record<string, any>) => {

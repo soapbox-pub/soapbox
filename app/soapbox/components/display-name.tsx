@@ -26,8 +26,9 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = t
         size='sm'
         weight='semibold'
         truncate
-        dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-      />
+      >
+        {account.nostr}
+      </Text>
 
       {verified && <VerificationBadge />}
     </HStack>

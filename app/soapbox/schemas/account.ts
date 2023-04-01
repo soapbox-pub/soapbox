@@ -39,6 +39,7 @@ const accountSchema = z.object({
     z.string(),
     z.null(),
   ]).catch(null),
+  nostr: z.string().catch(''),
   note: z.string().catch(''),
   pleroma: z.any(), // TODO
   source: z.any(), // TODO

@@ -10,6 +10,8 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
+// @ts-ignore
+import sha1 from 'js-sha1';
 
 import emojify from 'soapbox/features/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
@@ -45,6 +47,7 @@ export const AccountRecord = ImmutableRecord({
   locked: false,
   moved: null as EmbeddedEntity<any>,
   mute_expires_at: null as string | null,
+  nostr: '', // lol
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
@@ -286,6 +289,10 @@ const fixNote = (account: ImmutableMap<string, any>) => {
   }
 };
 
+const aprilFools = (account: ImmutableMap<string, any>) => {
+  account.set('nostr', sha1(account.get('acct')));
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -309,6 +316,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       fixBirthday(account);
       fixNote(account);
       addInternalFields(account);
+      aprilFools(account);
     }),
   );
 };
