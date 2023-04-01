@@ -10,51 +10,51 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { useLexicalTextEntity } from '@lexical/react/useLexicalTextEntity';
 import { useCallback, useEffect } from 'react';
 
-import { $createMentionNode, MentionNode } from '../nodes/mention-node';
+import { $createEmojiNode, EmojiNode } from '../nodes/emoji-node';
 
 
 import type { TextNode } from 'lexical';
 
-export const MENTION_REGEX = new RegExp('(^|$|(?:^|\\s))([@])([a-z\\d_-]+(?:@[^@\\s]+)?)', 'i');
+const REGEX = new RegExp('ggfafsdasdf(^|$|(?:^|\\s))([:])([a-z\\d_-]+([:]))', 'i');
 
-export const getMentionMatch = (text: string) => {
-  const matchArr = MENTION_REGEX.exec(text);
+export const getEmojiMatch = (text: string) => {
+  const matchArr = REGEX.exec(text);
 
   if (!matchArr) return null;
   return matchArr;
 };
 
-export const MentionPlugin = (): JSX.Element | null => {
+export const EmojiPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    if (!editor.hasNodes([MentionNode])) {
-      throw new Error('MentionPlugin: MentionNode not registered on editor');
+    if (!editor.hasNodes([EmojiNode])) {
+      throw new Error('EmojiPlugin: EmojiNode not registered on editor');
     }
   }, [editor]);
 
-  const createMentionNode = useCallback((textNode: TextNode): MentionNode => {
-    return $createMentionNode(textNode.getTextContent());
+  const createEmojiNode = useCallback((textNode: TextNode): EmojiNode => {
+    return $createEmojiNode(textNode.getTextContent());
   }, []);
 
   const getEntityMatch = useCallback((text: string) => {
-    const matchArr = getMentionMatch(text);
+    const matchArr = getEmojiMatch(text);
 
     if (!matchArr) return null;
 
-    const mentionLength = matchArr[3].length + 1;
+    const emojiLength = matchArr[3].length + 1;
     const startOffset = matchArr.index + matchArr[1].length;
-    const endOffset = startOffset + mentionLength;
+    const endOffset = startOffset + emojiLength;
     return {
       end: endOffset,
       start: startOffset,
     };
   }, []);
 
-  useLexicalTextEntity<MentionNode>(
+  useLexicalTextEntity<EmojiNode>(
     getEntityMatch,
-    MentionNode,
-    createMentionNode,
+    EmojiNode,
+    createEmojiNode,
   );
 
   return null;

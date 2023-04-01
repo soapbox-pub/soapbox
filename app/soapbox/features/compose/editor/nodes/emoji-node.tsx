@@ -16,14 +16,14 @@ import type {
   SerializedTextNode,
 } from 'lexical';
 
-class MentionNode extends TextNode {
+class EmojiNode extends TextNode {
 
   static getType(): string {
-    return 'mention';
+    return 'emoji';
   }
 
-  static clone(node: MentionNode): MentionNode {
-    return new MentionNode(node.__text, node.__key);
+  static clone(node: EmojiNode): EmojiNode {
+    return new EmojiNode(node.__text, node.__key);
   }
 
   constructor(text: string, key?: NodeKey) {
@@ -32,12 +32,12 @@ class MentionNode extends TextNode {
 
   createDOM(config: EditorConfig): HTMLElement {
     const element = super.createDOM(config);
-    addClassNamesToElement(element, config.theme.mention);
+    addClassNamesToElement(element, config.theme.emoji);
     return element;
   }
 
-  static importJSON(serializedNode: SerializedTextNode): MentionNode {
-    const node = $createMentionNode(serializedNode.text);
+  static importJSON(serializedNode: SerializedTextNode): EmojiNode {
+    const node = $createEmojiNode(serializedNode.text);
     node.setFormat(serializedNode.format);
     node.setDetail(serializedNode.detail);
     node.setMode(serializedNode.mode);
@@ -48,7 +48,7 @@ class MentionNode extends TextNode {
   exportJSON(): SerializedTextNode {
     return {
       ...super.exportJSON(),
-      type: 'mention',
+      type: 'emoji',
     };
   }
 
@@ -62,10 +62,10 @@ class MentionNode extends TextNode {
 
 }
 
-const $createMentionNode = (text = ''): MentionNode => $applyNodeReplacement(new MentionNode(text));
+const $createEmojiNode = (text = ''): EmojiNode => $applyNodeReplacement(new EmojiNode(text).setMode('token'));
 
-const $isMentionNode = (
+const $isEmojiNode = (
   node: LexicalNode | null | undefined,
-): node is MentionNode => node instanceof MentionNode;
+): node is EmojiNode => node instanceof EmojiNode;
 
-export { MentionNode, $createMentionNode, $isMentionNode };
+export { EmojiNode, $createEmojiNode, $isEmojiNode };

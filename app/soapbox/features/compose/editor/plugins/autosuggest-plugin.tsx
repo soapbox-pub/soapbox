@@ -26,11 +26,17 @@ import React, {
 import ReactDOM from 'react-dom';
 
 import { fetchComposeSuggestions } from 'soapbox/actions/compose';
+import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 import AutosuggestAccount from '../../components/autosuggest-account';
 
-import { getMentionMatch } from './mention-plugin';
+import { MENTION_REGEX } from './mention-plugin';
+
+import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
+
+
+const EMOJI_REGEX = new RegExp('(^|$|(?:^|\\s))([:])([a-z\\d_-]+([:]?))', 'i');
 
 export type QueryMatch = {
   leadOffset: number
@@ -73,7 +79,7 @@ function getQueryTextForSearch(editor: LexicalEditor): string | null {
   const state = editor.getEditorState();
   const node = (state._selection as RangeSelection)?.anchor?.getNode();
 
-  if (node && node.getType() === 'mention') return node.getTextContent();
+  if (node && (node.getType() === 'mention' || node.getType() === 'text')) return node.getTextContent();
 
   return null;
 }
@@ -278,11 +284,6 @@ function useMenuAnchorRef(
   return anchorElementRef;
 }
 
-export type TriggerFn = (
-  text: string,
-  editor: LexicalEditor,
-) => QueryMatch | null;
-
 export type AutosuggestPluginProps = {
   composeId: string
   suggestionsHidden: boolean
@@ -324,12 +325,12 @@ export function AutosuggestPlugin({
     });
   };
 
-  const checkForMentionMatch = useCallback((text: string) => {
-    const matchArr = getMentionMatch(text);
+  const checkForMatch = useCallback((text: string) => {
+    const matchArr = MENTION_REGEX.exec(text) || EMOJI_REGEX.exec(text);
 
     if (!matchArr) return null;
 
-    dispatch(fetchComposeSuggestions(composeId, matchArr[0]));
+    dispatch(fetchComposeSuggestions(composeId, matchArr[0]?.trim()));
 
     return {
       leadOffset: matchArr.index,
@@ -337,9 +338,17 @@ export function AutosuggestPlugin({
     };
   }, []);
 
-  const renderSuggestion = (suggestion: string, i: number) => {
-    const inner = <AutosuggestAccount id={suggestion} />;
-    const key = suggestion;
+  const renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
+    let inner;
+    let key;
+
+    if (typeof suggestion === 'object') {
+      inner = <AutosuggestEmoji emoji={suggestion} />;
+      key = suggestion.id;
+    } else {
+      inner = <AutosuggestAccount id={suggestion} />;
+      key = suggestion;
+    }
 
     return (
       <div
@@ -380,7 +389,7 @@ export function AutosuggestPlugin({
           return;
         }
 
-        const match = checkForMentionMatch(text);
+        const match = checkForMatch(text);
 
         if (
           match !== null &&

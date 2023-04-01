@@ -14,6 +14,7 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 
+import { EmojiNode } from './nodes/emoji-node';
 import { MentionNode } from './nodes/mention-node';
 
 import type { Klass, LexicalNode } from 'lexical';
@@ -29,6 +30,7 @@ const ComposeNodes: Array<Klass<LexicalNode>> = [
   ListNode,
   HorizontalRuleNode,
   HashtagNode,
+  EmojiNode,
   MentionNode,
 ];
 
