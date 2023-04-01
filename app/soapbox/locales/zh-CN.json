@@ -443,6 +443,7 @@
   "compose_form.spoiler_placeholder": "折叠部分的警告消息",
   "compose_form.spoiler_remove": "移除敏感标记",
   "compose_form.spoiler_title": "敏感内容",
+  "compose_group.share_to_followers": "与我的关注者分享",
   "confirmation_modal.cancel": "取消",
   "confirmations.admin.deactivate_user.confirm": "停用帐号 @{name}",
   "confirmations.admin.deactivate_user.heading": "停用帐号 @{acct}",
