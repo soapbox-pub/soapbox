@@ -63,9 +63,10 @@ interface IComposeForm<ID extends string> {
   clickableAreaRef?: React.RefObject<HTMLDivElement>
   event?: string
   group?: string
+  extra?: React.ReactNode
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -343,6 +344,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       </AutosuggestTextarea>
 
       <QuotedStatusContainer composeId={id} />
+
+      {extra && <div className={clsx({ 'hidden': condensed })}>{extra}</div>}
 
       <div
         className={clsx('flex flex-wrap items-center justify-between', {

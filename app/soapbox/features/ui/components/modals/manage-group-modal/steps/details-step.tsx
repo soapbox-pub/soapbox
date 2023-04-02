@@ -65,7 +65,7 @@ const HeaderPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }
 
 const AvatarPicker: React.FC<IMediaInput> = ({ src, onChange, accept, disabled }) => {
   return (
-    <label className='absolute left-1/2 bottom-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-4 ring-white dark:ring-primary-900'>
+    <label className='absolute bottom-0 left-1/2 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-4 ring-white dark:ring-primary-900'>
       {src && <Avatar src={src} size={80} />}
       <HStack
         alignItems='center'

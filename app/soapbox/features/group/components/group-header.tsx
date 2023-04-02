@@ -109,7 +109,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       <div className='relative'>
         {renderHeader()}
 
-        <div className='absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2'>
+        <div className='absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2'>
           <a href={group.avatar} onClick={handleAvatarClick} target='_blank'>
             <GroupAvatar
               group={group}

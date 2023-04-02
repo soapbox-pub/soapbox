@@ -36,7 +36,7 @@ const Welcome = () => {
   };
 
   return (
-    <Stack className='h-full overflow-y-auto py-20 px-4 sm:px-0' data-testid='chats-welcome'>
+    <Stack className='h-full overflow-y-auto px-4 py-20 sm:px-0' data-testid='chats-welcome'>
       <div className='mx-auto mb-2.5 w-full sm:w-3/5 xl:w-2/5'>
         <Text align='center' weight='bold' className='mb-6 text-2xl leading-8 md:text-3xl'>
           {intl.formatMessage(messages.title, { br: <br /> })}

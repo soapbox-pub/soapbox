@@ -69,7 +69,7 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
   }, [itemRef.current, index]);
 
   if (item === null) {
-    return <li className='my-1 mx-2 h-[2px] bg-gray-100 dark:bg-gray-800' />;
+    return <li className='mx-2 my-1 h-[2px] bg-gray-100 dark:bg-gray-800' />;
   }
 
   return (

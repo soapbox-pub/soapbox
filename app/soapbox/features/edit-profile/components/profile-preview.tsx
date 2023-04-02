@@ -26,7 +26,7 @@ const ProfilePreview: React.FC<IProfilePreview> = ({ account }) => {
           <Avatar className='bg-gray-400' src={account.avatar} />
 
           {account.verified && (
-            <div className='absolute -top-1.5 -right-1.5'>
+            <div className='absolute -right-1.5 -top-1.5'>
               <VerificationBadge />
             </div>
           )}

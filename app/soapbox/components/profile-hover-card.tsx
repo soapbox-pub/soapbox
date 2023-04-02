@@ -142,7 +142,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
           </Stack>
 
           {followedBy && (
-            <div className='absolute top-2 left-2'>
+            <div className='absolute left-2 top-2'>
               <Badge
                 slug='opaque'
                 title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}

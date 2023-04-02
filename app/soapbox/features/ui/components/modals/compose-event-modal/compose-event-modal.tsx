@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import Toggle from 'react-toggle';
 
 import {
   changeEditEventApprovalRequired,
@@ -22,7 +21,7 @@ import { closeModal, openModal } from 'soapbox/actions/modals';
 import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
 import LocationSearch from 'soapbox/components/location-search';
 import { checkEventComposeContent } from 'soapbox/components/modal-root';
-import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Textarea } from 'soapbox/components/ui';
+import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Textarea, Toggle } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
@@ -218,7 +217,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           {banner ? (
             <>
               <img className='h-full w-full object-cover' src={banner.url} alt='' />
-              <IconButton className='absolute top-2 right-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
+              <IconButton className='absolute right-2 top-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
             </>
           ) : (
             <UploadButton disabled={isUploading} onSelectFile={handleFiles} />
@@ -273,7 +272,6 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       </FormGroup>
       <HStack alignItems='center' space={2}>
         <Toggle
-          icons={false}
           checked={!!endTime}
           onChange={onChangeHasEndTime}
         />
@@ -302,7 +300,6 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       {!id && (
         <HStack alignItems='center' space={2}>
           <Toggle
-            icons={false}
             checked={approvalRequired}
             onChange={onChangeApprovalRequired}
           />

@@ -52,6 +52,7 @@ import {
   COMPOSE_SET_STATUS,
   COMPOSE_EVENT_REPLY,
   COMPOSE_EDITOR_STATE_SET,
+  COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
 } from '../actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
@@ -105,6 +106,7 @@ export const ReducerCompose = ImmutableRecord({
   tagHistory: ImmutableList<string>(),
   text: '',
   to: ImmutableOrderedSet<string>(),
+  group_timeline_visible: false, // TruthSocial
 });
 
 type State = ImmutableMap<string, Compose>;
@@ -495,6 +497,8 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, action.id, compose => compose.update('to', mentions => mentions!.add(action.account)));
     case COMPOSE_REMOVE_FROM_MENTIONS:
       return updateCompose(state, action.id, compose => compose.update('to', mentions => mentions!.delete(action.account)));
+    case COMPOSE_SET_GROUP_TIMELINE_VISIBLE:
+      return updateCompose(state, action.id, compose => compose.set('group_timeline_visible', action.groupTimelineVisible));
     case ME_FETCH_SUCCESS:
       return updateCompose(state, 'default', compose => importAccount(compose, action.me));
     case ME_PATCH_SUCCESS:
