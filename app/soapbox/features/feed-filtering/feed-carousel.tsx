@@ -30,7 +30,7 @@ const CarouselItem = React.forwardRef((
     setLoading(true);
 
     if (isSelected) {
-      dispatch(replaceHomeTimeline(null, { maxId: null }, () => setLoading(false)));
+      dispatch(replaceHomeTimeline(undefined, { maxId: null }, () => setLoading(false)));
 
       if (onPinned) {
         onPinned(null);

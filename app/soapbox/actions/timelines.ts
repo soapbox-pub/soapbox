@@ -4,7 +4,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { normalizeStatus } from 'soapbox/normalizers';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
-import api, { getLinks } from '../api';
+import api, { getNextLink, getPrevLink } from '../api';
 
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 
@@ -139,7 +139,7 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
 };
 
 const replaceHomeTimeline = (
-  accountId: string | null,
+  accountId: string | undefined,
   { maxId }: Record<string, any> = {},
   done?: () => void,
 ) => (dispatch: AppDispatch, _getState: () => RootState) => {
@@ -162,7 +162,12 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
       return dispatch(noOpAsync());
     }
 
-    if (!params.max_id && !params.pinned && (timeline.items || ImmutableOrderedSet()).size > 0) {
+    if (
+      !params.max_id &&
+      !params.pinned &&
+      (timeline.items || ImmutableOrderedSet()).size > 0 &&
+      !path.includes('max_id=')
+    ) {
       params.since_id = timeline.getIn(['items', 0]);
     }
 
@@ -171,9 +176,16 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     dispatch(expandTimelineRequest(timelineId, isLoadingMore));
 
     return api(getState).get(path, { params }).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.status === 206, isLoadingRecent, isLoadingMore));
+      dispatch(expandTimelineSuccess(
+        timelineId,
+        response.data,
+        getNextLink(response),
+        getPrevLink(response),
+        response.status === 206,
+        isLoadingRecent,
+        isLoadingMore,
+      ));
       done();
     }).catch(error => {
       dispatch(expandTimelineFail(timelineId, error, isLoadingMore));
@@ -181,9 +193,26 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     });
   };
 
-const expandHomeTimeline = ({ accountId, maxId }: Record<string, any> = {}, done = noOp) => {
-  const endpoint = accountId ? `/api/v1/accounts/${accountId}/statuses` : '/api/v1/timelines/home';
-  const params: any = { max_id: maxId };
+interface ExpandHomeTimelineOpts {
+  accountId?: string
+  maxId?: string
+  url?: string
+}
+
+interface HomeTimelineParams {
+  max_id?: string
+  exclude_replies?: boolean
+  with_muted?: boolean
+}
+
+const expandHomeTimeline = ({ url, accountId, maxId }: ExpandHomeTimelineOpts = {}, done = noOp) => {
+  const endpoint = url || (accountId ? `/api/v1/accounts/${accountId}/statuses` : '/api/v1/timelines/home');
+  const params: HomeTimelineParams = {};
+
+  if (!url && maxId) {
+    params.max_id = maxId;
+  }
+
   if (accountId) {
     params.exclude_replies = true;
     params.with_muted = true;
@@ -237,11 +266,20 @@ const expandTimelineRequest = (timeline: string, isLoadingMore: boolean) => ({
   skipLoading: !isLoadingMore,
 });
 
-const expandTimelineSuccess = (timeline: string, statuses: APIEntity[], next: string | null, partial: boolean, isLoadingRecent: boolean, isLoadingMore: boolean) => ({
+const expandTimelineSuccess = (
+  timeline: string,
+  statuses: APIEntity[],
+  next: string | undefined,
+  prev: string | undefined,
+  partial: boolean,
+  isLoadingRecent: boolean,
+  isLoadingMore: boolean,
+) => ({
   type: TIMELINE_EXPAND_SUCCESS,
   timeline,
   statuses,
   next,
+  prev,
   partial,
   isLoadingRecent,
   skipLoading: !isLoadingMore,
