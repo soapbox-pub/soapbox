@@ -37,7 +37,7 @@ const AuthLayout = () => {
 
       <main className='relative h-full sm:flex sm:justify-center'>
         <div className='flex h-full w-full flex-col sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
-          <header className='relative mb-auto flex justify-between py-12 px-2'>
+          <header className='relative mb-auto flex justify-between px-2 py-12'>
             <div className='relative z-0 flex-1 px-2 lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center'>
               <Link to='/' className='cursor-pointer'>
                 <SiteLogo alt={instance.title} className='h-7' />

@@ -217,7 +217,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           {banner ? (
             <>
               <img className='h-full w-full object-cover' src={banner.url} alt='' />
-              <IconButton className='absolute top-2 right-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
+              <IconButton className='absolute right-2 top-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
             </>
           ) : (
             <UploadButton disabled={isUploading} onSelectFile={handleFiles} />

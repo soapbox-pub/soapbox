@@ -166,7 +166,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
             src={require('@tabler/icons/x.svg')}
             ref={closeButtonRef}
             iconClassName='h-6 w-6'
-            className='absolute top-0 right-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
+            className='absolute right-0 top-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
           />
 
           <div className='relative h-full w-full overflow-auto overflow-y-scroll'>

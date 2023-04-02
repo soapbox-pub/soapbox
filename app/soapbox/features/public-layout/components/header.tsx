@@ -69,7 +69,7 @@ const Header = () => {
       <nav className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' aria-label='Header'>
         <div className='flex w-full items-center justify-between border-b border-indigo-500 py-6 lg:border-none'>
           <div className='relative flex w-36 items-center sm:justify-center'>
-            <div className='absolute -top-24 -left-6 z-0 hidden md:block'>
+            <div className='absolute -left-6 -top-24 z-0 hidden md:block'>
               <Sonar />
             </div>
 

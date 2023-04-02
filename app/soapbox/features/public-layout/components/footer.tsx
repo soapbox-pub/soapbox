@@ -21,7 +21,7 @@ const Footer = () => {
   });
 
   return (
-    <footer className='relative mx-auto mt-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8 xl:flex xl:items-center xl:justify-between'>
+    <footer className='relative mx-auto mt-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 xl:flex xl:items-center xl:justify-between'>
       <div className='flex flex-wrap justify-center'>
         {navlinks.map((link, idx) => {
           const url = link.get('url');

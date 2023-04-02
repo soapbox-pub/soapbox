@@ -14,7 +14,7 @@ const PlaceholderGroupCard = () => {
         <div className='relative grow basis-1/2 rounded-t-lg bg-gray-300 dark:bg-gray-800' />
 
         {/* Group Avatar */}
-        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
           <div className='h-16 w-16 rounded-full bg-gray-500 ring-2 ring-white dark:bg-primary-800 dark:ring-primary-900' />
         </div>
 

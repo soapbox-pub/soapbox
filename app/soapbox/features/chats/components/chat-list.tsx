@@ -80,7 +80,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, s
           })}
         />
         <div
-          className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white to-transparent pt-12 pb-8 transition-opacity duration-500 dark:from-gray-900', {
+          className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white to-transparent pb-8 pt-12 transition-opacity duration-500 dark:from-gray-900', {
             'opacity-0': isNearBottom,
             'opacity-100': !isNearBottom,
           })}
