@@ -26,17 +26,15 @@ import React, {
 import ReactDOM from 'react-dom';
 
 import { fetchComposeSuggestions } from 'soapbox/actions/compose';
+import { useEmoji } from 'soapbox/actions/emojis';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
+import { isNativeEmoji } from 'soapbox/features/emoji';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../../components/autosuggest-account';
 
-import { MENTION_REGEX } from './mention-plugin';
-
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-
-
-const EMOJI_REGEX = new RegExp('(^|$|(?:^|\\s))([:])([a-z\\d_-]+([:]?))', 'i');
 
 export type QueryMatch = {
   leadOffset: number
@@ -73,15 +71,6 @@ function tryToPositionRange(leadOffset: number, range: Range): boolean {
   }
 
   return true;
-}
-
-function getQueryTextForSearch(editor: LexicalEditor): string | null {
-  const state = editor.getEditorState();
-  const node = (state._selection as RangeSelection)?.anchor?.getNode();
-
-  if (node && (node.getType() === 'mention' || node.getType() === 'text')) return node.getTextContent();
-
-  return null;
 }
 
 function isSelectionOnEntityBoundary(
@@ -309,34 +298,60 @@ export function AutosuggestPlugin({
   const onSelectSuggestion: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
 
-    const suggestion = suggestions.get(e.currentTarget.getAttribute('data-index') as any);
+    const suggestion = suggestions.get(e.currentTarget.getAttribute('data-index') as any) as AutoSuggestion;
 
     editor.update(() => {
 
-      dispatch((_, getState) => {
+      dispatch((dispatch, getState) => {
         const state = editor.getEditorState();
         const node = (state._selection as RangeSelection)?.anchor?.getNode();
 
-        const content = getState().accounts.get(suggestion)!.acct;
+        if (typeof suggestion === 'object' && suggestion.id) {
+          dispatch(useEmoji(suggestion)); // eslint-disable-line react-hooks/rules-of-hooks
 
-        node.setTextContent(`@${content} `);
-        node.select();
+          const { leadOffset, matchingString } = resolution!.match;
+
+          if (isNativeEmoji(suggestion)) {
+            node.spliceText(leadOffset - 1, matchingString.length, `${suggestion.native} `, true);
+          } else {
+            // const completion = suggestion.colons;
+            // node.replace($createEmojiNode(completion, suggestion.imageUrl));
+          }
+        } else if ((suggestion as string)[0] === '#') {
+          node.setTextContent(`${suggestion} `);
+          node.select();
+        } else {
+          const content = getState().accounts.get(suggestion)!.acct;
+
+          node.setTextContent(`@${content} `);
+          node.select();
+        }
       });
     });
   };
 
-  const checkForMatch = useCallback((text: string) => {
-    const matchArr = MENTION_REGEX.exec(text) || EMOJI_REGEX.exec(text);
+  const getQueryTextForSearch = (editor: LexicalEditor) => {
+    const state = editor.getEditorState();
+    const node = (state._selection as RangeSelection)?.anchor?.getNode();
 
-    if (!matchArr) return null;
+    if (!node) return null;
 
-    dispatch(fetchComposeSuggestions(composeId, matchArr[0]?.trim()));
+    if (['mention', 'hashtag'].includes(node.getType())) {
+      const matchingString = node.getTextContent();
 
-    return {
-      leadOffset: matchArr.index,
-      matchingString: matchArr[0],
-    };
-  }, []);
+      return { leadOffset: 0, matchingString };
+    }
+
+    if (node.getType() === 'text') {
+      const [leadOffset, matchingString] = textAtCursorMatchesToken(node.getTextContent(), (state._selection as RangeSelection)?.anchor?.offset, [':']);
+
+      if (!leadOffset || !matchingString) return null;
+
+      return { leadOffset, matchingString };
+    }
+
+    return null;
+  };
 
   const renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
     let inner;
@@ -345,6 +360,9 @@ export function AutosuggestPlugin({
     if (typeof suggestion === 'object') {
       inner = <AutosuggestEmoji emoji={suggestion} />;
       key = suggestion.id;
+    } else if (suggestion[0] === '#') {
+      inner = suggestion;
+      key = suggestion;
     } else {
       inner = <AutosuggestAccount id={suggestion} />;
       key = suggestion;
@@ -382,17 +400,16 @@ export function AutosuggestPlugin({
     const updateListener = () => {
       editor.getEditorState().read(() => {
         const range = document.createRange();
-        const text = getQueryTextForSearch(editor);
+        const match = getQueryTextForSearch(editor);
 
-        if (!text) {
+        if (!match) {
           closeTypeahead();
           return;
         }
 
-        const match = checkForMatch(text);
+        dispatch(fetchComposeSuggestions(composeId, match.matchingString.trim()));
 
         if (
-          match !== null &&
           !isSelectionOnEntityBoundary(editor, match.leadOffset)
         ) {
           const isRangePositioned = tryToPositionRange(match.leadOffset, range);

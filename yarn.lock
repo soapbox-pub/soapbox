@@ -2440,6 +2440,13 @@
   dependencies:
     "@lexical/utils" "0.9.0"
 
+"@lexical/list@0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@lexical/list/-/list-0.9.1.tgz#18eba1e28d818a53661b7381f32b4461f024981e"
+  integrity sha512-z3wJfDjStesqjvamUgMez+CVvfGrmVqyGgMnCkYBrlfSZ8zlHvz8sJ/6iZkTh7TXIEkCTQpusCrkjUeYccmTxQ==
+  dependencies:
+    "@lexical/utils" "0.9.1"
+
 "@lexical/mark@0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@lexical/mark/-/mark-0.9.0.tgz#040d3e8d3e2f46160bd4e5b1e6a5489df0c6aa46"
@@ -2508,6 +2515,11 @@
   resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.9.0.tgz#2c11085f94435c1c71344654a1f2b9a0c3549a22"
   integrity sha512-jPLeaqNujER1t61OWmSuUMS010A6Nz49efO8rEJFjMbUK7GB9IDsSDgvE4WnT/yBrXLAickjSiXgUq51LQTYYw==
 
+"@lexical/selection@0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.9.1.tgz#6d809d9b8c3673992ba6fc6ccd6af5f402f57ba0"
+  integrity sha512-4eZcH8d4Kq/GswobVNIkM5fKk8YXPNFLCOHIyi0FmHymW/Ku7HLz2+mcOR6EQmk1Ce/4VJ4Oq+d1XlZw4PPTNA==
+
 "@lexical/table@0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@lexical/table/-/table-0.9.0.tgz#8f4e0d797c15141e26667cc54d7b640c90f5a9b8"
@@ -2515,12 +2527,19 @@
   dependencies:
     "@lexical/utils" "0.9.0"
 
+"@lexical/table@0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@lexical/table/-/table-0.9.1.tgz#06978da97425e46399d48b5d75d19b389c5b6a38"
+  integrity sha512-BPKmpToQRxv87OtA6W22XwfOBtZf+vG95jp/bj2ecJAW5BVMjHf5ViI3vjXf3Z701giVh1OVXNct8EPkcfvg3w==
+  dependencies:
+    "@lexical/utils" "0.9.1"
+
 "@lexical/text@0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@lexical/text/-/text-0.9.0.tgz#ee90b42d8558123c917f561cfbfb804dac25e0a4"
   integrity sha512-+OHoB1Qb2SajGTEm9K4I3hDtCmeLr0Bs62psra6qYE/lil0Y8brrEXB5egppDpm6mKtiMzGrkBDMpcsKw/kiWA==
 
-"@lexical/utils@0.9.0", "@lexical/utils@^0.9.0":
+"@lexical/utils@0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@lexical/utils/-/utils-0.9.0.tgz#923e79af94566844442bc8699aba89f7d1cf5779"
   integrity sha512-s4BrBKrd7VHexLSYdSKrRAVmuxmfVV49MYx/khILGnNQKYS2O8PuERCXi+IRi8Ac5ASELO6d28Y2my8NMM1CYA==
@@ -2528,6 +2547,15 @@
     "@lexical/list" "0.9.0"
     "@lexical/selection" "0.9.0"
     "@lexical/table" "0.9.0"
+
+"@lexical/utils@0.9.1", "@lexical/utils@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@lexical/utils/-/utils-0.9.1.tgz#5fd58468da890e7ed5260c502f66fd19ec64e9b3"
+  integrity sha512-cszNQufH6UZxOVew7DTELM63wjj8qOiGiOFklMmM6QmkirHb2fK4LxeLjaKiwP5DkA0A1NDNz8yuuMXqA/mWPQ==
+  dependencies:
+    "@lexical/list" "0.9.1"
+    "@lexical/selection" "0.9.1"
+    "@lexical/table" "0.9.1"
 
 "@lexical/yjs@0.9.0":
   version "0.9.0"

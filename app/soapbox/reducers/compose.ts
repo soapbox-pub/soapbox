@@ -183,11 +183,11 @@ const insertSuggestion = (compose: Compose, position: number, token: string, com
   });
 };
 
-const updateSuggestionTags = (compose: Compose, token: string, currentTrends: ImmutableList<Tag>) => {
+const updateSuggestionTags = (compose: Compose, token: string, tags: ImmutableList<Tag>) => {
   const prefix = token.slice(1);
 
   return compose.merge({
-    suggestions: ImmutableList(currentTrends
+    suggestions: ImmutableList(tags
       .filter((tag) => tag.get('name').toLowerCase().startsWith(prefix.toLowerCase()))
       .slice(0, 4)
       .map((tag) => '#' + tag.name)),
@@ -412,7 +412,7 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_SUGGESTION_SELECT:
       return updateCompose(state, action.id, compose => insertSuggestion(compose, action.position, action.token, action.completion, action.path));
     case COMPOSE_SUGGESTION_TAGS_UPDATE:
-      return updateCompose(state, action.id, compose => updateSuggestionTags(compose, action.token, action.currentTrends));
+      return updateCompose(state, action.id, compose => updateSuggestionTags(compose, action.token, action.tags));
     case COMPOSE_TAG_HISTORY_UPDATE:
       return updateCompose(state, action.id, compose => compose.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>));
     case TIMELINE_DELETE:

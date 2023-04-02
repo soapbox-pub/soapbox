@@ -6,6 +6,7 @@ import { defineMessages, IntlShape } from 'react-intl';
 import api from 'soapbox/api';
 import { isNativeEmoji } from 'soapbox/features/emoji';
 import emojiSearch from 'soapbox/features/emoji/search';
+import { normalizeTag } from 'soapbox/normalizers';
 import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
@@ -29,7 +30,7 @@ import type { History } from 'soapbox/types/history';
 
 const { CancelToken, isCancel } = axios;
 
-let cancelFetchComposeSuggestionsAccounts: Canceler;
+let cancelFetchComposeSuggestions: Canceler;
 
 const COMPOSE_CHANGE          = 'COMPOSE_CHANGE';
 const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST';
@@ -500,8 +501,8 @@ const setGroupTimelineVisible = (composeId: string, groupTimelineVisible: boolea
 });
 
 const clearComposeSuggestions = (composeId: string) => {
-  if (cancelFetchComposeSuggestionsAccounts) {
-    cancelFetchComposeSuggestionsAccounts();
+  if (cancelFetchComposeSuggestions) {
+    cancelFetchComposeSuggestions();
   }
   return {
     type: COMPOSE_SUGGESTIONS_CLEAR,
@@ -510,12 +511,12 @@ const clearComposeSuggestions = (composeId: string) => {
 };
 
 const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId, token) => {
-  if (cancelFetchComposeSuggestionsAccounts) {
-    cancelFetchComposeSuggestionsAccounts(composeId);
+  if (cancelFetchComposeSuggestions) {
+    cancelFetchComposeSuggestions(composeId);
   }
   api(getState).get('/api/v1/accounts/search', {
     cancelToken: new CancelToken(cancel => {
-      cancelFetchComposeSuggestionsAccounts = cancel;
+      cancelFetchComposeSuggestions = cancel;
     }),
     params: {
       q: token.slice(1),
@@ -540,10 +541,37 @@ const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => Ro
 };
 
 const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
-  const state = getState();
-  const currentTrends = state.trends.items;
+  if (cancelFetchComposeSuggestions) {
+    cancelFetchComposeSuggestions(composeId);
+  }
 
-  dispatch(updateSuggestionTags(composeId, token, currentTrends));
+  const state = getState();
+
+  const instance = state.instance;
+  const { trends } = getFeatures(instance);
+
+  if (trends) {
+    const currentTrends = state.trends.items;
+
+    return dispatch(updateSuggestionTags(composeId, token, currentTrends));
+  }
+
+  api(getState).get('/api/v2/search', {
+    cancelToken: new CancelToken(cancel => {
+      cancelFetchComposeSuggestions = cancel;
+    }),
+    params: {
+      q: token.slice(1),
+      limit: 4,
+      type: 'hashtags',
+    },
+  }).then(response => {
+    dispatch(updateSuggestionTags(composeId, token, response.data?.hashtags.map(normalizeTag)));
+  }).catch(error => {
+    if (!isCancel(error)) {
+      toast.showAlertForError(error);
+    }
+  });
 };
 
 const fetchComposeSuggestions = (composeId: string, token: string) =>
@@ -602,11 +630,11 @@ const selectComposeSuggestion = (composeId: string, position: number, token: str
     });
   };
 
-const updateSuggestionTags = (composeId: string, token: string, currentTrends: ImmutableList<Tag>) => ({
+const updateSuggestionTags = (composeId: string, token: string, tags: ImmutableList<Tag>) => ({
   type: COMPOSE_SUGGESTION_TAGS_UPDATE,
   id: composeId,
   token,
-  currentTrends,
+  tags,
 });
 
 const updateTagHistory = (composeId: string, tags: string[]) => ({

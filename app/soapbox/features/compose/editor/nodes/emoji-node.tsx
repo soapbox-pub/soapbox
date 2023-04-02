@@ -1,54 +1,74 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
+import { $applyNodeReplacement, DecoratorNode } from 'lexical';
+import React from 'react';
 
-import { addClassNamesToElement } from '@lexical/utils';
-import { $applyNodeReplacement, TextNode } from 'lexical';
+import { Emoji } from 'soapbox/components/ui';
 
 import type {
+  DOMExportOutput,
   EditorConfig,
   LexicalNode,
   NodeKey,
-  SerializedTextNode,
+  SerializedLexicalNode,
+  Spread,
 } from 'lexical';
 
-class EmojiNode extends TextNode {
+type SerializedEmojiNode = Spread<{
+  name: string
+  src: string
+  type: 'emoji'
+  version: 1
+}, SerializedLexicalNode>;
 
-  static getType(): string {
+class EmojiNode extends DecoratorNode<JSX.Element> {
+
+  __name: string;
+  __src: string;
+
+  static getType(): 'emoji' {
     return 'emoji';
   }
 
   static clone(node: EmojiNode): EmojiNode {
-    return new EmojiNode(node.__text, node.__key);
+    return new EmojiNode(node.__name, node.__key);
   }
 
-  constructor(text: string, key?: NodeKey) {
-    super(text, key);
+  constructor(name: string, src: string, key?: NodeKey) {
+    super(key);
+    this.__name = name;
+    this.__src = src;
   }
 
   createDOM(config: EditorConfig): HTMLElement {
-    const element = super.createDOM(config);
-    addClassNamesToElement(element, config.theme.emoji);
-    return element;
+    const span = document.createElement('span');
+    const theme = config.theme;
+    const className = theme.emoji;
+    if (className !== undefined) {
+      span.className = className;
+    }
+    return span;
   }
 
-  static importJSON(serializedNode: SerializedTextNode): EmojiNode {
-    const node = $createEmojiNode(serializedNode.text);
-    node.setFormat(serializedNode.format);
-    node.setDetail(serializedNode.detail);
-    node.setMode(serializedNode.mode);
-    node.setStyle(serializedNode.style);
+  exportDOM(): DOMExportOutput {
+    const element = document.createElement('img');
+    element.setAttribute('src', this.__src);
+    element.setAttribute('alt', this.__name);
+    element.classList.add('h-4', 'w-4');
+    return { element };
+  }
+
+  static importJSON(serializedNode: SerializedEmojiNode): EmojiNode {
+    const { name, src } =
+      serializedNode;
+    const node = $createEmojiNode(name, src);
     return node;
   }
 
-  exportJSON(): SerializedTextNode {
+  exportJSON(): SerializedEmojiNode {
     return {
-      ...super.exportJSON(),
+      name: this.__name,
+      src: this.__src,
       type: 'emoji',
+      version: 1,
     };
   }
 
@@ -60,9 +80,15 @@ class EmojiNode extends TextNode {
     return true;
   }
 
+  decorate(): JSX.Element {
+    return (
+      <Emoji src={this.__src} alt={this.__name} className='emojione h-4 w-4' />
+    );
+  }
+
 }
 
-const $createEmojiNode = (text = ''): EmojiNode => $applyNodeReplacement(new EmojiNode(text).setMode('token'));
+const $createEmojiNode = (name = '', src: string): EmojiNode => $applyNodeReplacement(new EmojiNode(name, src));
 
 const $isEmojiNode = (
   node: LexicalNode | null | undefined,
