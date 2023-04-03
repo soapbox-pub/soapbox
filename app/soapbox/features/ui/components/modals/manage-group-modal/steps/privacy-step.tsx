@@ -31,14 +31,14 @@ const PrivacyStep = () => {
         >
           <List>
             <ListItem
-              label={<FormattedMessage id='manage_group.privacy.public.label' defaultMessage='Public' />}
+              label={<Text weight='medium'><FormattedMessage id='manage_group.privacy.public.label' defaultMessage='Public' /></Text>}
               hint={<FormattedMessage id='manage_group.privacy.public.hint' defaultMessage='Discoverable. Anyone can join.' />}
               onSelect={() => onChangePrivacy(false)}
               isSelected={!locked}
             />
 
             <ListItem
-              label={<FormattedMessage id='manage_group.privacy.private.label' defaultMessage='Private (Owner approval required)' />}
+              label={<Text weight='medium'><FormattedMessage id='manage_group.privacy.private.label' defaultMessage='Private (Owner approval required)' /></Text>}
               hint={<FormattedMessage id='manage_group.privacy.private.hint' defaultMessage='Discoverable. Users can join after their request is approved.' />}
               onSelect={() => onChangePrivacy(true)}
               isSelected={locked}
