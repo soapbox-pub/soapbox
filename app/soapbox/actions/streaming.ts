@@ -95,7 +95,7 @@ const connectTimelineStream = (
       dispatch(disconnectTimeline(timelineId));
     },
 
-    onReceive(data: any) {
+    onReceive(websocket, data: any) {
       switch (data.event) {
         case 'update':
           dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
@@ -180,6 +180,15 @@ const connectTimelineStream = (
           break;
         case 'marker':
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
+          break;
+        case 'nostr:signEvent':
+          (async () => {
+            const event = await window.nostr?.signEvent(JSON.parse(data.payload));
+
+            if (event) {
+              websocket.send(JSON.stringify({ event: 'nostr:event', payload: event }));
+            }
+          })();
           break;
       }
     },
