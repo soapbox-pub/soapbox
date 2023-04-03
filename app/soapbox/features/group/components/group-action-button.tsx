@@ -89,7 +89,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
       <Button
         theme='primary'
         onClick={onJoinGroup}
-        disabled={joinGroup.isLoading}
+        disabled={joinGroup.isSubmitting}
       >
         {group.locked
           ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
@@ -103,7 +103,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
       <Button
         theme='secondary'
         onClick={onCancelRequest}
-        disabled={cancelRequest.isLoading}
+        disabled={cancelRequest.isSubmitting}
       >
         <FormattedMessage id='group.cancel_request' defaultMessage='Cancel Request' />
       </Button>
@@ -114,7 +114,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
     <Button
       theme='secondary'
       onClick={onLeaveGroup}
-      disabled={leaveGroup.isLoading}
+      disabled={leaveGroup.isSubmitting}
     >
       <FormattedMessage id='group.leave' defaultMessage='Leave Group' />
     </Button>
