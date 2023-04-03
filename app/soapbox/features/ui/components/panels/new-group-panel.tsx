@@ -12,7 +12,7 @@ const NewGroupPanel = () => {
   const canCreateGroup = useAppSelector((state) => hasPermission(state, PERMISSION_CREATE_GROUPS));
 
   const createGroup = () => {
-    dispatch(openModal('MANAGE_GROUP'));
+    dispatch(openModal('CREATE_GROUP'));
   };
 
   if (!canCreateGroup) return null;

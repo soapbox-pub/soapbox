@@ -22,11 +22,11 @@ enum Steps {
   THREE = 'THREE',
 }
 
-interface IManageGroupModal {
+interface ICreateGroupModal {
   onClose: (type?: string) => void
 }
 
-const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
+const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
   const intl = useIntl();
   const debounce = useDebounce;
 
@@ -102,4 +102,4 @@ const ManageGroupModal: React.FC<IManageGroupModal> = ({ onClose }) => {
   );
 };
 
-export default ManageGroupModal;
+export default CreateGroupModal;
