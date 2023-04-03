@@ -64,7 +64,7 @@ module.exports = {
       'URLSearchParams', // core-js
     ],
     tailwindcss: {
-      config: 'tailwind.config.cjs',
+      config: 'tailwind.config.ts',
     },
   },
 
@@ -281,7 +281,7 @@ module.exports = {
       'error',
       {
         classRegex: '^(base|container|icon|item|list|outer|wrapper)?[c|C]lass(Name)?$',
-        config: 'tailwind.config.cjs',
+        config: 'tailwind.config.ts',
       },
     ],
     'tailwindcss/migration-from-tailwind-2': 'error',
