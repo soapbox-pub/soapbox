@@ -7,8 +7,10 @@ import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useGroupsPath } from 'soapbox/hooks';
 import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
+import { useBackend } from 'soapbox/hooks/useBackend';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
+import { TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
@@ -34,10 +36,12 @@ interface IManageGroup {
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
   const { id } = params;
-  const intl = useIntl();
-  const history = useHistory();
+
+  const backend = useBackend();
   const dispatch = useAppDispatch();
   const groupsPath = useGroupsPath();
+  const history = useHistory();
+  const intl = useIntl();
 
   const { group } = useGroup(id);
 
@@ -99,7 +103,10 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
         </CardHeader>
 
         <List>
-          <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+          {backend.software !== TRUTHSOCIAL && (
+            <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+          )}
+
           <ListItem label={intl.formatMessage(messages.blockedMembers)} onClick={navigateToBlocks} />
         </List>
 
