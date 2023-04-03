@@ -609,7 +609,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     replyTitle = intl.formatMessage(messages.replyAll);
   }
 
-  const canShare = ('share' in navigator) && status.visibility === 'public';
+  const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
 
   return (
     <HStack data-testid='status-action-bar'>
