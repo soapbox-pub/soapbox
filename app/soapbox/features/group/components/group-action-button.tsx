@@ -20,7 +20,7 @@ const messages = defineMessages({
   confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },
   confirmationHeading: { id: 'confirmations.leave_group.heading', defaultMessage: 'Leave group' },
   confirmationMessage: { id: 'confirmations.leave_group.message', defaultMessage: 'You are about to leave the group. Do you want to continue?' },
-  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
+  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Request sent to group owner' },
   joinSuccess: { id: 'group.join.success', defaultMessage: 'Group joined successfully!' },
   leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
 });
