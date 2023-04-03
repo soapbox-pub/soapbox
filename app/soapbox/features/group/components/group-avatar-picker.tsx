@@ -8,7 +8,7 @@ interface IMediaInput {
   src: string | undefined
   accept: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
-  disabled: boolean
+  disabled?: boolean
 }
 
 const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, accept, disabled }, ref) => {

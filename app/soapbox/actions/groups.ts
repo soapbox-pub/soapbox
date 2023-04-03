@@ -783,30 +783,6 @@ const resetGroupEditor = () => ({
   type: GROUP_EDITOR_RESET,
 });
 
-const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, getState: () => RootState) => {
-  const groupId     = getState().group_editor.groupId;
-  const displayName = getState().group_editor.displayName;
-  const note        = getState().group_editor.note;
-  const avatar      = getState().group_editor.avatar;
-  const header      = getState().group_editor.header;
-  const visibility  = getState().group_editor.locked ? 'members_only' : 'everyone'; // Truth Social
-
-  const params: Record<string, any> = {
-    display_name: displayName,
-    group_visibility: visibility,
-    note,
-  };
-
-  if (avatar) params.avatar = avatar;
-  if (header) params.header = header;
-
-  if (groupId === null) {
-    return dispatch(createGroup(params, shouldReset));
-  } else {
-    return dispatch(updateGroup(groupId, params, shouldReset));
-  }
-};
-
 export {
   GROUP_EDITOR_SET,
   GROUP_CREATE_REQUEST,
@@ -960,5 +936,4 @@ export {
   changeGroupEditorPrivacy,
   changeGroupEditorMedia,
   resetGroupEditor,
-  submitGroupEditor,
 };
