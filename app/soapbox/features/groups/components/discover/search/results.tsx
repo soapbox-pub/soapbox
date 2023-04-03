@@ -3,20 +3,17 @@ import React, { useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { useGroupSearch } from 'soapbox/hooks/api';
-import { Group } from 'soapbox/types/entities';
 
 import GroupGridItem from '../group-grid-item';
 import GroupListItem from '../group-list-item';
+import LayoutButtons, { GroupLayout } from '../layout-buttons';
+
+import type { Group } from 'soapbox/types/entities';
 
 interface Props {
   groupSearchResult: ReturnType<typeof useGroupSearch>
-}
-
-enum Layout {
-  LIST = 'LIST',
-  GRID = 'GRID'
 }
 
 const GridList: Components['List'] = React.forwardRef((props, ref) => {
@@ -27,7 +24,7 @@ const GridList: Components['List'] = React.forwardRef((props, ref) => {
 export default (props: Props) => {
   const { groupSearchResult } = props;
 
-  const [layout, setLayout] = useState<Layout>(Layout.LIST);
+  const [layout, setLayout] = useState<GroupLayout>(GroupLayout.LIST);
 
   const { groups, hasNextPage, isFetching, fetchNextPage } = groupSearchResult;
 
@@ -65,32 +62,13 @@ export default (props: Props) => {
           />
         </Text>
 
-        <HStack alignItems='center'>
-          <button onClick={() => setLayout(Layout.LIST)}>
-            <Icon
-              src={require('@tabler/icons/layout-list.svg')}
-              className={
-                clsx('h-5 w-5 text-gray-600', {
-                  'text-primary-600': layout === Layout.LIST,
-                })
-              }
-            />
-          </button>
-
-          <button onClick={() => setLayout(Layout.GRID)}>
-            <Icon
-              src={require('@tabler/icons/layout-grid.svg')}
-              className={
-                clsx('h-5 w-5 text-gray-600', {
-                  'text-primary-600': layout === Layout.GRID,
-                })
-              }
-            />
-          </button>
-        </HStack>
+        <LayoutButtons
+          layout={layout}
+          onSelect={(selectedLayout) => setLayout(selectedLayout)}
+        />
       </HStack>
 
-      {layout === Layout.LIST ? (
+      {layout === GroupLayout.LIST ? (
         <Virtuoso
           useWindowScroll
           data={groups}
