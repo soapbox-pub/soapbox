@@ -783,7 +783,7 @@
   "group.header.alt": "Group header",
   "group.join.private": "Request Access",
   "group.join.public": "Join Group",
-  "group.join.request_success": "Requested to join the group",
+  "group.join.request_success": "Request sent to group owner",
   "group.join.success": "Group joined successfully!",
   "group.leave": "Leave Group",
   "group.leave.success": "Left the group",
