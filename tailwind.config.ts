@@ -1,7 +1,8 @@
-const { parseColorMatrix } = require('./tailwind/colors.cjs');
+import { parseColorMatrix } from './tailwind/colors';
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
   content: ['./app/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './app/index.ejs'],
   darkMode: 'class',
   theme: {
@@ -102,3 +103,5 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
   ],
 };
+
+export default config;

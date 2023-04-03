@@ -1,15 +1,12 @@
+import type { Config } from 'tailwindcss';
+
 // https://tailwindcss.com/docs/customizing-colors#using-css-variables
-function withOpacityValue(variable) {
-  return ({ opacityValue }) => {
-    if (opacityValue === undefined) {
-      return `rgb(var(${variable}))`;
-    }
-    return `rgb(var(${variable}) / ${opacityValue})`;
-  };
+function withOpacityValue(variable: string): string {
+  return `rgb(var(${variable}) / <alpha-value>)`;
 }
 
 // Parse a single color as a CSS variable
-const toColorVariable = (colorName, tint = null) => {
+const toColorVariable = (colorName: string, tint: number | null = null) => {
   const suffix = tint ? `-${tint}` : '';
   const variable = `--color-${colorName}${suffix}`;
 
@@ -17,16 +14,20 @@ const toColorVariable = (colorName, tint = null) => {
 };
 
 // Parse list of tints into Tailwind function with CSS variables
-const parseTints = (colorName, tints) => {
-  return tints.reduce((colorObj, tint) => {
+const parseTints = (colorName: string, tints: number[]) => {
+  return tints.reduce<Record<number, string>>((colorObj, tint) => {
     colorObj[tint] = toColorVariable(colorName, tint);
     return colorObj;
   }, {});
 };
 
+interface ColorMatrix {
+  [color: string]: number[] | boolean
+}
+
 // Parse color matrix into Tailwind color palette
-const parseColorMatrix = colorMatrix => {
-  return Object.entries(colorMatrix).reduce((palette, colorData) => {
+const parseColorMatrix = (colorMatrix: ColorMatrix): Config['colors'] => {
+  return Object.entries(colorMatrix).reduce<Config['colors']>((palette, colorData) => {
     const [colorName, tints] = colorData;
 
     // Conditionally parse array or single-tint colors
@@ -40,7 +41,7 @@ const parseColorMatrix = colorMatrix => {
   }, {});
 };
 
-module.exports = {
+export {
   withOpacityValue,
   parseColorMatrix,
 };
