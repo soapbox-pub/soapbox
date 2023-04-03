@@ -108,7 +108,7 @@ const messages = defineMessages({
   success: { id: 'manage_group.submit_success', defaultMessage: 'The group was created' },
   editSuccess: { id: 'manage_group.edit_success', defaultMessage: 'The group was edited' },
   joinSuccess: { id: 'group.join.success', defaultMessage: 'Joined the group' },
-  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
+  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Request sent to group owner' },
   leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
   view: { id: 'toast.view', defaultMessage: 'View' },
 });
