@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
+import { Form, FormGroup, Input, Streamfield, Textarea } from 'soapbox/components/ui';
 import AvatarPicker from 'soapbox/features/group/components/group-avatar-picker';
 import HeaderPicker from 'soapbox/features/group/components/group-header-picker';
 import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
@@ -14,6 +14,7 @@ import type { List as ImmutableList } from 'immutable';
 const messages = defineMessages({
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
+  hashtagPlaceholder: { id: 'manage_group.fields.hashtag_placeholder', defaultMessage: 'Add a topic' },
 });
 
 interface IDetailsStep {
@@ -29,6 +30,7 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
   const {
     display_name: displayName = '',
     note = '',
+    tags = [''],
   } = params;
 
   const debouncedName = debounce(displayName, 300);
@@ -63,6 +65,29 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
     };
   };
 
+  const handleTagsChange = (tags: string[]) => {
+    onChange({
+      ...params,
+      tags,
+    });
+  };
+
+  const handleAddTag = () => {
+    onChange({
+      ...params,
+      tags: [...tags, ''],
+    });
+  };
+
+  const handleRemoveTag = (i: number) => {
+    const newTags = [...tags];
+    newTags.splice(i, 1);
+    onChange({
+      ...params,
+      tags: newTags,
+    });
+  };
+
   return (
     <Form>
       <div className='relative mb-12 flex'>
@@ -95,7 +120,43 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
           maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_description']))}
         />
       </FormGroup>
+
+      <div className='pb-6'>
+        <Streamfield
+          label='Topics'
+          hint='Add up to 3 keywords that will serve as core topics of discussion in the group.'
+          component={HashtagField}
+          values={tags.map((t) => [t])}
+          onChange={handleTagsChange}
+          onAddItem={handleAddTag}
+          onRemoveItem={handleRemoveTag}
+          maxItems={3}
+        />
+      </div>
     </Form>
+  );
+};
+
+interface IHashtagField {
+  value: string
+  onChange: (value: string) => void
+}
+
+const HashtagField: React.FC<IHashtagField> = ({ value, onChange }) => {
+  const intl = useIntl();
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    onChange(target.value);
+  };
+
+  return (
+    <Input
+      outerClassName='w-full'
+      type='text'
+      value={value}
+      onChange={handleChange}
+      placeholder={intl.formatMessage(messages.hashtagPlaceholder)}
+    />
   );
 };
 
