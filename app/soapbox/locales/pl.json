@@ -835,7 +835,6 @@
   "manage_group.privacy.public.hint": "Widoczna w mechanizmach odkrywania. Każdy może dołączyć.",
   "manage_group.privacy.public.label": "Publiczna",
   "manage_group.tagline": "Grupy pozwalają łączyć ludzi o podobnych zainteresowaniach.",
-  "manage_group.update": "Aktualizuj",
   "media_panel.empty_message": "Nie znaleziono mediów.",
   "media_panel.title": "Media",
   "mfa.confirm.success_message": "Potwierdzono MFA",
