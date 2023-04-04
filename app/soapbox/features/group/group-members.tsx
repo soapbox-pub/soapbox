@@ -53,11 +53,11 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
           </div>
         )}
       >
-        {members.map((member) => (
+        {members.map((member, idx) => (
           <GroupMemberListItem
             group={group as Group}
             member={member}
-            key={member.account.id}
+            key={idx}
           />
         ))}
       </ScrollableList>
