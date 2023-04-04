@@ -21,7 +21,7 @@ function useEntity<TEntity extends Entity>(
   entityFn: EntityFn<void>,
   opts: UseEntityOpts<TEntity> = {},
 ) {
-  const [isFetching, setPromise] = useLoading();
+  const [isFetching, setPromise] = useLoading(true);
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;

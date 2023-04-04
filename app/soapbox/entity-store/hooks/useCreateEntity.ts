@@ -20,7 +20,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = unknown>(
 ) {
   const dispatch = useAppDispatch();
 
-  const [isLoading, setPromise] = useLoading();
+  const [isSubmitting, setPromise] = useLoading();
   const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
   async function createEntity(data: Data, callbacks: EntityCallbacks<TEntity> = {}): Promise<void> {
@@ -44,7 +44,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = unknown>(
 
   return {
     createEntity,
-    isLoading,
+    isSubmitting,
   };
 }
 

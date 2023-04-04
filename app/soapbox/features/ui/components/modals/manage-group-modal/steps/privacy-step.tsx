@@ -1,18 +1,20 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { changeGroupEditorPrivacy } from 'soapbox/actions/groups';
 import List, { ListItem } from 'soapbox/components/list';
 import { Form, FormGroup, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { type CreateGroupParams } from 'soapbox/hooks/api';
 
-const PrivacyStep = () => {
-  const dispatch = useAppDispatch();
+interface IPrivacyStep {
+  params: CreateGroupParams
+  onChange(params: CreateGroupParams): void
+}
 
-  const locked = useAppSelector((state) => state.group_editor.locked);
+const PrivacyStep: React.FC<IPrivacyStep> = ({ params, onChange }) => {
+  const visibility = params.group_visibility || 'everyone';
 
-  const onChangePrivacy = (value: boolean) => {
-    dispatch(changeGroupEditorPrivacy(value));
+  const onChangePrivacy = (group_visibility: CreateGroupParams['group_visibility']) => {
+    onChange({ ...params, group_visibility });
   };
 
   return (
@@ -31,17 +33,17 @@ const PrivacyStep = () => {
         >
           <List>
             <ListItem
-              label={<FormattedMessage id='manage_group.privacy.public.label' defaultMessage='Public' />}
+              label={<Text weight='medium'><FormattedMessage id='manage_group.privacy.public.label' defaultMessage='Public' /></Text>}
               hint={<FormattedMessage id='manage_group.privacy.public.hint' defaultMessage='Discoverable. Anyone can join.' />}
-              onSelect={() => onChangePrivacy(false)}
-              isSelected={!locked}
+              onSelect={() => onChangePrivacy('everyone')}
+              isSelected={visibility === 'everyone'}
             />
 
             <ListItem
-              label={<FormattedMessage id='manage_group.privacy.private.label' defaultMessage='Private (Owner approval required)' />}
+              label={<Text weight='medium'><FormattedMessage id='manage_group.privacy.private.label' defaultMessage='Private (Owner approval required)' /></Text>}
               hint={<FormattedMessage id='manage_group.privacy.private.hint' defaultMessage='Discoverable. Users can join after their request is approved.' />}
-              onSelect={() => onChangePrivacy(true)}
-              isSelected={locked}
+              onSelect={() => onChangePrivacy('members_only')}
+              isSelected={visibility === 'members_only'}
             />
           </List>
         </FormGroup>

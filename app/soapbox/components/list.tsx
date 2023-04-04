@@ -63,7 +63,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
       {...linkProps}
     >
       <div className='flex flex-col py-1.5 pr-4 rtl:pl-4 rtl:pr-0'>
-        <LabelComp className='font-medium text-gray-900 dark:text-gray-100' htmlFor={domId}>{label}</LabelComp>
+        <LabelComp className='text-gray-900 dark:text-gray-100' htmlFor={domId}>{label}</LabelComp>
 
         {hint ? (
           <span className='text-sm text-gray-700 dark:text-gray-600'>{hint}</span>

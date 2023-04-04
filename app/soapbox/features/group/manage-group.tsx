@@ -7,8 +7,10 @@ import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useGroupsPath } from 'soapbox/hooks';
 import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
+import { useBackend } from 'soapbox/hooks/useBackend';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
+import { TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
@@ -17,8 +19,8 @@ type RouteParams = { id: string };
 const messages = defineMessages({
   heading: { id: 'column.manage_group', defaultMessage: 'Manage group' },
   editGroup: { id: 'manage_group.edit_group', defaultMessage: 'Edit group' },
-  pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending requests' },
-  blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned members' },
+  pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending Requests' },
+  blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned Members' },
   deleteGroup: { id: 'manage_group.delete_group', defaultMessage: 'Delete group' },
   deleteConfirm: { id: 'confirmations.delete_group.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete group' },
@@ -34,10 +36,12 @@ interface IManageGroup {
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
   const { id } = params;
-  const intl = useIntl();
-  const history = useHistory();
+
+  const backend = useBackend();
   const dispatch = useAppDispatch();
   const groupsPath = useGroupsPath();
+  const history = useHistory();
+  const intl = useIntl();
 
   const { group } = useGroup(id);
 
@@ -99,7 +103,10 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
         </CardHeader>
 
         <List>
-          <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+          {backend.software !== TRUTHSOCIAL && (
+            <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+          )}
+
           <ListItem label={intl.formatMessage(messages.blockedMembers)} onClick={navigateToBlocks} />
         </List>
 

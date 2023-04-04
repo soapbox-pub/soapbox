@@ -33,7 +33,7 @@ const Groups: React.FC = () => {
   const { groups, isLoading } = useGroups(debouncedValue);
 
   const createGroup = () => {
-    dispatch(openModal('MANAGE_GROUP'));
+    dispatch(openModal('CREATE_GROUP'));
   };
 
   const renderBlankslate = () => (

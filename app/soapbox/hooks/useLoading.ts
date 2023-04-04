@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-function useLoading() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+function useLoading(initialState: boolean = false) {
+  const [isLoading, setIsLoading] = useState<boolean>(initialState);
 
   function setPromise<T>(promise: Promise<T>) {
     setIsLoading(true);
