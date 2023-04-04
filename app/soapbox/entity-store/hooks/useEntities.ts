@@ -112,7 +112,7 @@ function useEntities<TEntity extends Entity>(
     if (isInvalid || isUnset || isStale) {
       fetchEntities();
     }
-  }, [isEnabled]);
+  }, [isEnabled, ...path]);
 
   return {
     entities,
