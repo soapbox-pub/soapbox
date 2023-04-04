@@ -786,6 +786,7 @@
   "group.join.request_success": "申请已发送至群组拥有者",
   "group.join.success": "已成功加入群组！",
   "group.leave": "离开群组",
+  "group.leave.label": "离开",
   "group.leave.success": "离开了群组",
   "group.manage": "管理群组",
   "group.popover.action": "查看群组",
