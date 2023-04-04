@@ -3,14 +3,14 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
-import { deleteEntities } from 'soapbox/entity-store/actions';
+import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
-import type { Group } from 'soapbox/types/entities';
+import type { Group, GroupRelationship } from 'soapbox/types/entities';
 
 interface IGroupActionButton {
   group: Group
@@ -66,7 +66,11 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
 
   const onCancelRequest = () => cancelRequest.mutate({}, {
     onSuccess() {
-      dispatch(deleteEntities([group.id], Entities.GROUP_RELATIONSHIPS));
+      const entity = {
+        ...group.relationship as GroupRelationship,
+        requested: false,
+      };
+      dispatch(importEntities([entity], Entities.GROUP_RELATIONSHIPS));
     },
   });
 
