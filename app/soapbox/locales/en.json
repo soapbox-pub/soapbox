@@ -789,6 +789,8 @@
   "group.leave.label": "Leave",
   "group.leave.success": "Left the group",
   "group.manage": "Manage Group",
+  "group.member.admin.limit.summary": "You can assign up to {count} admins for the group at this time.",
+  "group.member.admin.limit.title": "Admin limit reached",
   "group.popover.action": "View Group",
   "group.popover.summary": "You must be a member of the group in order to reply to this status.",
   "group.popover.title": "Membership required",
