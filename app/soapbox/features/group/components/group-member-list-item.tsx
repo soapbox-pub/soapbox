@@ -9,13 +9,14 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu';
 import { HStack } from 'soapbox/components/ui';
 import { deleteEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { useAccount, useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/hooks/api';
+import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
-import type { Account as AccountEntity, Group, GroupMember } from 'soapbox/types/entities';
+import type { Group, GroupMember } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },
@@ -51,7 +52,7 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   const promoteGroupMember = usePromoteGroupMember(group, member);
   const demoteGroupMember = useDemoteGroupMember(group, member);
 
-  const account = useAccount(member.account.id) as AccountEntity;
+  const { account, isLoading } = useAccount(member.account.id);
 
   // Current user role
   const isCurrentUserOwner = group.relationship?.role === GroupRoles.OWNER;
@@ -64,10 +65,10 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
 
   const handleKickFromGroup = () => {
     dispatch(openModal('CONFIRM', {
-      message: intl.formatMessage(messages.kickFromGroupMessage, { name: account.username }),
+      message: intl.formatMessage(messages.kickFromGroupMessage, { name: account?.username }),
       confirm: intl.formatMessage(messages.kickConfirm),
-      onConfirm: () => dispatch(groupKick(group.id, account.id)).then(() =>
-        toast.success(intl.formatMessage(messages.kicked, { name: account.acct })),
+      onConfirm: () => dispatch(groupKick(group.id, account?.id as string)).then(() =>
+        toast.success(intl.formatMessage(messages.kicked, { name: account?.acct })),
       ),
     }));
   };
@@ -75,13 +76,13 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   const handleBlockFromGroup = () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.blockFromGroupHeading),
-      message: intl.formatMessage(messages.blockFromGroupMessage, { name: account.username }),
+      message: intl.formatMessage(messages.blockFromGroupMessage, { name: account?.username }),
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => {
         blockGroupMember({ account_ids: [member.account.id] }, {
           onSuccess() {
             dispatch(deleteEntities([member.id], Entities.GROUP_MEMBERSHIPS));
-            toast.success(intl.formatMessage(messages.blocked, { name: account.acct }));
+            toast.success(intl.formatMessage(messages.blocked, { name: account?.acct }));
           },
         });
       },
@@ -91,14 +92,14 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   const handleAdminAssignment = () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.promoteConfirm),
-      message: intl.formatMessage(messages.promoteConfirmMessage, { name: account.username }),
+      message: intl.formatMessage(messages.promoteConfirmMessage, { name: account?.username }),
       confirm: intl.formatMessage(messages.promoteConfirm),
       confirmationTheme: 'primary',
       onConfirm: () => {
-        promoteGroupMember({ role: GroupRoles.ADMIN, account_ids: [account.id] }, {
+        promoteGroupMember({ role: GroupRoles.ADMIN, account_ids: [account?.id] }, {
           onSuccess() {
             toast.success(
-              intl.formatMessage(messages.promotedToAdmin, { name: account.acct }),
+              intl.formatMessage(messages.promotedToAdmin, { name: account?.acct }),
             );
           },
         });
@@ -107,9 +108,9 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   };
 
   const handleUserAssignment = () => {
-    demoteGroupMember({ role: GroupRoles.USER, account_ids: [account.id] }, {
+    demoteGroupMember({ role: GroupRoles.USER, account_ids: [account?.id] }, {
       onSuccess() {
-        toast.success(intl.formatMessage(messages.demotedToUser, { name: account.acct }));
+        toast.success(intl.formatMessage(messages.demotedToUser, { name: account?.acct }));
       },
     });
   };
@@ -160,7 +161,11 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
     }
 
     return items;
-  }, [group, account]);
+  }, [group, account?.id]);
+
+  if (isLoading) {
+    return <PlaceholderAccount />;
+  }
 
   return (
     <HStack alignItems='center' justifyContent='between'>

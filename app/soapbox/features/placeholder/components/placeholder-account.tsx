@@ -18,4 +18,4 @@ const PlaceholderAccount: React.FC = () => (
   </HStack>
 );
 
-export default PlaceholderAccount;
+export default React.memo(PlaceholderAccount);
