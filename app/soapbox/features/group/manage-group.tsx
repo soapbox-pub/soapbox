@@ -19,8 +19,8 @@ type RouteParams = { id: string };
 const messages = defineMessages({
   heading: { id: 'column.manage_group', defaultMessage: 'Manage group' },
   editGroup: { id: 'manage_group.edit_group', defaultMessage: 'Edit group' },
-  pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending requests' },
-  blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned members' },
+  pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending Requests' },
+  blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned Members' },
   deleteGroup: { id: 'manage_group.delete_group', defaultMessage: 'Delete group' },
   deleteConfirm: { id: 'confirmations.delete_group.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete group' },
