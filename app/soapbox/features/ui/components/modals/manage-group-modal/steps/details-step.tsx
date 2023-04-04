@@ -1,9 +1,10 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Form, FormGroup, Input, Streamfield, Textarea } from 'soapbox/components/ui';
+import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
 import AvatarPicker from 'soapbox/features/group/components/group-avatar-picker';
 import HeaderPicker from 'soapbox/features/group/components/group-header-picker';
+import GroupTagsField from 'soapbox/features/group/components/group-tags-field';
 import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
 import { CreateGroupParams, useGroupValidation } from 'soapbox/hooks/api';
 import { usePreview } from 'soapbox/hooks/forms';
@@ -122,41 +123,14 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
       </FormGroup>
 
       <div className='pb-6'>
-        <Streamfield
-          label='Topics'
-          hint='Add up to 3 keywords that will serve as core topics of discussion in the group.'
-          component={HashtagField}
-          values={tags.map((t) => [t])}
+        <GroupTagsField
+          tags={tags}
           onChange={handleTagsChange}
           onAddItem={handleAddTag}
           onRemoveItem={handleRemoveTag}
-          maxItems={3}
         />
       </div>
     </Form>
-  );
-};
-
-interface IHashtagField {
-  value: string
-  onChange: (value: string) => void
-}
-
-const HashtagField: React.FC<IHashtagField> = ({ value, onChange }) => {
-  const intl = useIntl();
-
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    onChange(target.value);
-  };
-
-  return (
-    <Input
-      outerClassName='w-full'
-      type='text'
-      value={value}
-      onChange={handleChange}
-      placeholder={intl.formatMessage(messages.hashtagPlaceholder)}
-    />
   );
 };
 
