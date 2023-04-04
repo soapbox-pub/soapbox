@@ -40,10 +40,11 @@ describe('<GroupOptionsButton />', () => {
       });
     });
 
-    it('should render null', () => {
+    it('should render one option for leaving the group', () => {
       render(<GroupOptionsButton group={group} />);
 
-      expect(screen.queryAllByTestId('dropdown-menu-button')).toHaveLength(0);
+      // Leave group option only
+      expect(screen.queryAllByTestId('dropdown-menu-button')).toHaveLength(1);
     });
   });
 
