@@ -36,6 +36,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
   const isOwner = group.relationship?.role === GroupRoles.OWNER;
+  const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
   const isBlocked = group.relationship?.blocked_by;
 
   const onJoinGroup = () => joinGroup.mutate({}, {
@@ -73,7 +74,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
     return null;
   }
 
-  if (isOwner) {
+  if (isOwner || isAdmin) {
     return (
       <Button
         theme='secondary'
