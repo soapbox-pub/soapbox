@@ -9,7 +9,7 @@ import type { Group, GroupRelationship } from 'soapbox/schemas';
 function useLeaveGroup(group: Group) {
   const { invalidate } = useGroups();
 
-  const { createEntity, isLoading } = useEntityActions<GroupRelationship>(
+  const { createEntity, isSubmitting } = useEntityActions<GroupRelationship>(
     [Entities.GROUP_RELATIONSHIPS, group.id],
     { post: `/api/v1/groups/${group.id}/leave` },
     { schema: groupRelationshipSchema },
@@ -17,7 +17,7 @@ function useLeaveGroup(group: Group) {
 
   return {
     mutate: createEntity,
-    isLoading,
+    isSubmitting,
     invalidate,
   };
 }

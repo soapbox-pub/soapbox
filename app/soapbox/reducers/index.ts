@@ -28,7 +28,6 @@ import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
-import group_editor from './group-editor';
 import group_memberships from './group-memberships';
 import group_relationships from './group-relationships';
 import groups from './groups';
@@ -93,7 +92,6 @@ const reducers = {
   dropdown_menu,
   entities,
   filters,
-  group_editor,
   group_memberships,
   group_relationships,
   groups,

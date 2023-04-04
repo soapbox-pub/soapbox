@@ -8,6 +8,7 @@ export { useAccount } from './useAccount';
  */
 export { useBlockGroupMember } from './groups/useBlockGroupMember';
 export { useCancelMembershipRequest } from './groups/useCancelMembershipRequest';
+export { useCreateGroup, type CreateGroupParams } from './groups/useCreateGroup';
 export { useDeleteGroup } from './groups/useDeleteGroup';
 export { useDemoteGroupMember } from './groups/useDemoteGroupMember';
 export { useGroup, useGroups } from './groups/useGroups';
