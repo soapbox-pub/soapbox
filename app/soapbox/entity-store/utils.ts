@@ -11,7 +11,7 @@ const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {
 /** Update the list with new entity IDs. */
 const updateList = (list: EntityList, entities: Entity[]): EntityList => {
   const newIds = entities.map(entity => entity.id);
-  const ids = new Set([...Array.from(list.ids), ...newIds]);
+  const ids = new Set([...newIds, ...Array.from(list.ids)]);
 
   if (typeof list.state.totalCount === 'number') {
     const sizeDiff = ids.size - list.ids.size;
