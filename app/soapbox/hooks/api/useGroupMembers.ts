@@ -1,10 +1,11 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
 import { GroupMember, groupMemberSchema } from 'soapbox/schemas';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 
 import { useApi } from '../useApi';
 
-function useGroupMembers(groupId: string, role: string) {
+function useGroupMembers(groupId: string, role: GroupRoles) {
   const api = useApi();
 
   const { entities, ...result } = useEntities<GroupMember>(

@@ -530,6 +530,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groups: v.build === UNRELEASED,
 
     /**
+     * Cap # of Group Admins to 5
+     */
+    groupsAdminMax: v.software === TRUTHSOCIAL,
+
+    /**
      * Can see trending/suggested Groups.
      */
     groupsDiscovery: v.software === TRUTHSOCIAL,
