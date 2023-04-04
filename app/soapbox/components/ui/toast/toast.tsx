@@ -120,7 +120,12 @@ const Toast = (props: IToast) => {
                 {renderIcon()}
               </div>
 
-              <Text size='sm' data-testid='toast-message' className='pt-0.5'>
+              <Text
+                size='sm'
+                data-testid='toast-message'
+                className='pt-0.5'
+                weight={typeof summary === 'undefined' ? 'normal' : 'medium'}
+              >
                 {renderText(message)}
               </Text>
             </HStack>
