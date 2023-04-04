@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useGroup } from 'soapbox/hooks/api';
-import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
+import { useGroup, useGroupMembershipRequests } from 'soapbox/hooks/api';
+import { useGroupMembers } from 'soapbox/hooks/api/useGroupMembers';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
@@ -59,6 +60,13 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   const { group } = useGroup(id);
 
   const { accounts, authorize, reject, isLoading } = useGroupMembershipRequests(id);
+  const { invalidate } = useGroupMembers(id, GroupRoles.USER);
+
+  useEffect(() => {
+    return () => {
+      invalidate();
+    };
+  }, []);
 
   if (!group || !group.relationship || isLoading) {
     return (
