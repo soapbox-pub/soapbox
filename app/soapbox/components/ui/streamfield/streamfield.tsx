@@ -87,10 +87,9 @@ const Streamfield: React.FC<IStreamfield> = ({
         </Stack>
       )}
 
-      {onAddItem && (
+      {(onAddItem && (values.length < maxItems)) && (
         <Button
           onClick={onAddItem}
-          disabled={values.length >= maxItems}
           theme='secondary'
           block
         >
