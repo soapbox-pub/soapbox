@@ -52,6 +52,7 @@ import type {
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
+  titleGroup: { id: 'status.title_group', defaultMessage: 'Group Post Details' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
@@ -520,10 +521,13 @@ const Thread: React.FC<IThread> = (props) => {
     return <Redirect to={`/groups/${status.group.id}/posts/${props.params.statusId}`} />;
   }
 
-  const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
+  const titleMessage = () => {
+    if (status.visibility === 'direct') return messages.titleDirect;
+    return status.group ? messages.titleGroup : messages.title;
+  };
 
   return (
-    <Column label={intl.formatMessage(titleMessage)}>
+    <Column label={intl.formatMessage(titleMessage())}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2}>
           <div ref={node} className='thread'>
