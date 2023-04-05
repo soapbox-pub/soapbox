@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Helmet from 'soapbox/components/helmet';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
-import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
+import { Card, CardBody, CardHeader, CardTitle, type CardSizes } from '../card/card';
 
 type IColumnHeader = Pick<IColumn, 'label' | 'backHref' | 'className' | 'action'>;
 
@@ -54,12 +54,15 @@ export interface IColumn {
   ref?: React.Ref<HTMLDivElement>
   /** Children to display in the column. */
   children?: React.ReactNode
+  /** Action for the ColumnHeader, displayed at the end. */
   action?: React.ReactNode
+  /** Column size, inherited from Card. */
+  size?: CardSizes
 }
 
 /** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className, action } = props;
+  const { backHref, children, label, transparent = false, withHeader = true, className, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
 
   return (
@@ -76,7 +79,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
         )}
       </Helmet>
 
-      <Card variant={transparent ? undefined : 'rounded'} className={className}>
+      <Card size={size} variant={transparent ? undefined : 'rounded'} className={className}>
         {withHeader && (
           <ColumnHeader
             label={label}

@@ -1,5 +1,5 @@
 .thread {
-  @apply bg-white dark:bg-primary-900 p-4 shadow-xl dark:shadow-none sm:p-6 sm:rounded-xl;
+  @apply bg-white dark:bg-primary-900 shadow-xl dark:shadow-none sm:rounded-xl;
 
   &__status {
     @apply relative pb-4;

@@ -16,11 +16,13 @@ const messages = defineMessages({
   back: { id: 'card.back.label', defaultMessage: 'Back' },
 });
 
+export type CardSizes = keyof typeof sizes
+
 interface ICard {
   /** The type of card. */
   variant?: 'default' | 'rounded'
   /** Card size preset. */
-  size?: keyof typeof sizes
+  size?: CardSizes
   /** Extra classnames for the <div> element. */
   className?: string
   /** Elements inside the card. */

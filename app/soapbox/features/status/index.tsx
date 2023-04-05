@@ -50,7 +50,7 @@ import type {
 } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
+  title: { id: 'status.title', defaultMessage: 'Post Details' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
@@ -462,9 +462,6 @@ const Thread: React.FC<IThread> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const username = String(status.getIn(['account', 'acct']));
-  const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
-
   const focusedStatus = (
     <div className={clsx({ 'pb-4': hasDescendants })} key={status.id}>
       <HotKeys handlers={handlers}>
@@ -488,7 +485,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           {!isUnderReview ? (
             <>
-              <hr className='mb-2 border-t-2 dark:border-primary-800' />
+              <hr className='-mx-6 mb-2 border-t-2 dark:border-primary-800' />
 
               <StatusActionBar
                 status={status}
@@ -502,7 +499,7 @@ const Thread: React.FC<IThread> = (props) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='mt-2 border-t-2 dark:border-primary-800' />
+        <hr className='-mx-6 mt-2 border-t-2 dark:border-primary-800' />
       )}
     </div>
   );
@@ -523,8 +520,10 @@ const Thread: React.FC<IThread> = (props) => {
     return <Redirect to={`/groups/${status.group.id}/posts/${props.params.statusId}`} />;
   }
 
+  const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
+
   return (
-    <Column label={intl.formatMessage(titleMessage, { username })} transparent>
+    <Column size='lg' label={intl.formatMessage(titleMessage)}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2}>
           <div ref={node} className='thread'>

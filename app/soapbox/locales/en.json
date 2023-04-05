@@ -1456,7 +1456,7 @@
   "status.show_less_all": "Show less for all",
   "status.show_more_all": "Show more for all",
   "status.show_original": "Show original",
-  "status.title": "@{username}'s post",
+  "status.title": "Post Details",
   "status.title_direct": "Direct message",
   "status.translate": "Translate",
   "status.translated_from_with": "Translated from {lang} using {provider}",
