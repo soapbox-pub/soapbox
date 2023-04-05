@@ -485,7 +485,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           {!isUnderReview ? (
             <>
-              <hr className='-mx-6 mb-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
+              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
 
               <StatusActionBar
                 status={status}
@@ -499,7 +499,7 @@ const Thread: React.FC<IThread> = (props) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='-mx-6 mt-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
+        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
       )}
     </div>
   );
@@ -523,7 +523,7 @@ const Thread: React.FC<IThread> = (props) => {
   const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
   return (
-    <Column size='lg' label={intl.formatMessage(titleMessage)}>
+    <Column label={intl.formatMessage(titleMessage)}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2}>
           <div ref={node} className='thread'>
