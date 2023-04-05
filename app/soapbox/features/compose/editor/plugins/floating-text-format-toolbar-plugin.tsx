@@ -198,7 +198,7 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
         <Icon src={require('@tabler/icons/chevron-down.svg')} className='-bottom-2 h-4 w-4' />
         {showDropDown && (
           <div
-            className='absolute top-9 left-0 z-10 flex h-[38px] gap-0.5 rounded-lg bg-white p-1 shadow-lg transition-[opacity] dark:bg-gray-900'
+            className='absolute left-0 top-9 z-10 flex h-[38px] gap-0.5 rounded-lg bg-white p-1 shadow-lg transition-[opacity] dark:bg-gray-900'
           >
             <ToolbarButton
               onClick={formatParagraph}
@@ -350,7 +350,7 @@ const TextFormatFloatingToolbar = ({
   return (
     <div
       ref={popupCharStylesEditorRef}
-      className='absolute top-0 left-0 z-10 flex h-[38px] gap-0.5 rounded-lg bg-white p-1 opacity-0 shadow-lg transition-[opacity] dark:bg-gray-900'
+      className='absolute left-0 top-0 z-10 flex h-[38px] gap-0.5 rounded-lg bg-white p-1 opacity-0 shadow-lg transition-[opacity] dark:bg-gray-900'
     >
       {editor.isEditable() && (
         <>

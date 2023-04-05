@@ -159,13 +159,13 @@ const FloatingLinkEditor = ({
   return (
     <div
       ref={editorRef}
-      className='absolute top-0 left-0 z-10 w-full max-w-sm rounded-lg bg-white opacity-0 shadow-md transition-opacity will-change-transform dark:bg-gray-900'
+      className='absolute left-0 top-0 z-10 w-full max-w-sm rounded-lg bg-white opacity-0 shadow-md transition-opacity will-change-transform dark:bg-gray-900'
     >
-      <div className='relative my-2 mx-3 box-border block rounded-2xl border-0 bg-gray-100 py-2 px-3 text-sm text-gray-800 outline-0 dark:bg-gray-800 dark:text-gray-100'>
+      <div className='relative mx-3 my-2 box-border block rounded-2xl border-0 bg-gray-100 px-3 py-2 text-sm text-gray-800 outline-0 dark:bg-gray-800 dark:text-gray-100'>
         {isEditMode ? (
           <>
             <input
-              className='-my-2 -mx-3 w-full border-0 bg-transparent py-2 px-3 text-sm text-gray-900 outline-0 dark:text-gray-100'
+              className='-mx-3 -my-2 w-full border-0 bg-transparent px-3 py-2 text-sm text-gray-900 outline-0 dark:text-gray-100'
               ref={inputRef}
               value={linkUrl}
               onChange={(event) => {
