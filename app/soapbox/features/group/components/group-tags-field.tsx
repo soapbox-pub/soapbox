@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Input, Streamfield } from 'soapbox/components/ui';
 
@@ -18,8 +18,8 @@ interface IGroupTagsField {
 const GroupTagsField: React.FC<IGroupTagsField> = ({ tags, onChange, onAddItem, onRemoveItem, maxItems = 3 }) => {
   return (
     <Streamfield
-      label='Topics'
-      hint='Add up to 3 keywords that will serve as core topics of discussion in the group.'
+      label={<FormattedMessage id='group.tags.label' defaultMessage='Tags' />}
+      hint={<FormattedMessage id='group.tags.hint' defaultMessage='Add up to 3 keywords that will serve as core topics of discussion in the group.' />}
       component={HashtagField}
       values={tags}
       onChange={onChange}
