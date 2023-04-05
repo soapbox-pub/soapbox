@@ -15,10 +15,14 @@ import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupM
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
+import { MAX_ADMIN_COUNT } from '../group-members';
+
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
 import type { Group, GroupMember } from 'soapbox/types/entities';
 
 const messages = defineMessages({
+  adminLimitTitle: { id: 'group.member.admin.limit.title', defaultMessage: 'Admin limit reached' },
+  adminLimitSummary: { id: 'group.member.admin.limit.summary', defaultMessage: 'You can assign up to {count} admins for the group at this time.' },
   blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },
   blockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Ban From Group' },
   blockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to ban @{name} from the group?' },
@@ -39,10 +43,11 @@ const messages = defineMessages({
 interface IGroupMemberListItem {
   member: GroupMember
   group: Group
+  canPromoteToAdmin: boolean
 }
 
 const GroupMemberListItem = (props: IGroupMemberListItem) => {
-  const { member, group } = props;
+  const { canPromoteToAdmin, member, group } = props;
 
   const dispatch = useAppDispatch();
   const features = useFeatures();
@@ -90,6 +95,13 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   };
 
   const handleAdminAssignment = () => {
+    if (!canPromoteToAdmin) {
+      toast.error(intl.formatMessage(messages.adminLimitTitle), {
+        summary: intl.formatMessage(messages.adminLimitSummary, { count: MAX_ADMIN_COUNT }),
+      });
+      return;
+    }
+
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.promoteConfirm),
       message: intl.formatMessage(messages.promoteConfirmMessage, { name: account?.username }),

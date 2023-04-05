@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import ScrollableList from 'soapbox/components/scrollable-list';
+import { useFeatures } from 'soapbox/hooks';
 import { useGroup } from 'soapbox/hooks/api';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import { useGroupMembers } from 'soapbox/hooks/api/useGroupMembers';
@@ -18,8 +19,12 @@ interface IGroupMembers {
   params: { id: string }
 }
 
+export const MAX_ADMIN_COUNT = 5;
+
 const GroupMembers: React.FC<IGroupMembers> = (props) => {
   const groupId = props.params.id;
+
+  const features = useFeatures();
 
   const { group, isFetching: isFetchingGroup } = useGroup(groupId);
   const { groupMembers: owners, isFetching: isFetchingOwners } = useGroupMembers(groupId, GroupRoles.OWNER);
@@ -34,6 +39,10 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
     ...admins,
     ...users,
   ], [owners, admins, users]);
+
+  const canPromoteToAdmin = features.groupsAdminMax
+    ? members.filter((member) => member.role === GroupRoles.ADMIN).length < MAX_ADMIN_COUNT
+    : true;
 
   return (
     <>
@@ -58,6 +67,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
             group={group as Group}
             member={member}
             key={member.account.id}
+            canPromoteToAdmin={canPromoteToAdmin}
           />
         ))}
       </ScrollableList>
