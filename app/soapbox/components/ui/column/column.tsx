@@ -84,7 +84,10 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
           <ColumnHeader
             label={label}
             backHref={backHref}
-            className={clsx({ 'px-4 pt-4 sm:p-0': transparent })}
+            className={clsx({
+              'px-4 pt-4 sm:p-0': transparent,
+              'mb-6': size === 'lg',
+            })}
             action={action}
           />
         )}
