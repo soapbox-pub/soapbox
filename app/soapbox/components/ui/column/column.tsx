@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import React from 'react';
+import throttle from 'lodash/throttle';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet';
@@ -64,6 +65,19 @@ export interface IColumn {
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
   const { backHref, children, label, transparent = false, withHeader = true, className, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = useCallback(throttle(() => {
+    setIsScrolled(window.pageYOffset > 32);
+  }, 50), []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
@@ -85,10 +99,11 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
             label={label}
             backHref={backHref}
             className={clsx({
-              'sticky top-12 z-10 bg-white dark:bg-primary-900 lg:top-16': !transparent,
+              'rounded-t-3xl': !isScrolled && !transparent,
+              'sticky top-12 z-10 bg-white/90 dark:bg-primary-900/90 backdrop-blur lg:top-16': !transparent,
               'p-4 sm:p-0 sm:pb-4': transparent,
-              '-mt-4 py-4': size !== 'lg' && !transparent,
-              '-mt-4 py-4 sm:-mt-6 sm:py-6': size === 'lg' && !transparent,
+              '-mt-4 -mx-4 p-4': size !== 'lg' && !transparent,
+              '-mt-4 -mx-4 p-4 sm:-mt-6 sm:-mx-6 sm:p-6': size === 'lg' && !transparent,
             })}
             action={action}
           />
