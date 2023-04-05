@@ -5,7 +5,6 @@ import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Tex
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { useImageField, useTextField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 
 import AvatarPicker from './components/group-avatar-picker';
@@ -64,7 +63,6 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
       tags,
     });
 
-    toast.success(intl.formatMessage(messages.success));
     setIsSubmitting(false);
   }
 
