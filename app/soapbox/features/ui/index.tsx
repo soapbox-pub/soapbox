@@ -138,31 +138,31 @@ import 'soapbox/components/status';
 const EmptyPage = HomePage;
 
 const keyMap = {
-  // help: '?',
-  // new: 'n',
-  // search: 's',
-  // forceNew: 'option+n',
-  // reply: 'r',
-  // favourite: 'f',
-  // react: 'e',
-  // boost: 'b',
-  // mention: 'm',
-  // open: ['enter', 'o'],
-  // openProfile: 'p',
-  // moveDown: ['down', 'j'],
-  // moveUp: ['up', 'k'],
-  // back: 'backspace',
-  // goToHome: 'g h',
-  // goToNotifications: 'g n',
-  // goToFavourites: 'g f',
-  // goToPinned: 'g p',
-  // goToProfile: 'g u',
-  // goToBlocked: 'g b',
-  // goToMuted: 'g m',
-  // goToRequests: 'g r',
-  // toggleHidden: 'x',
-  // toggleSensitive: 'h',
-  // openMedia: 'a',
+  help: '?',
+  new: 'n',
+  search: 's',
+  forceNew: 'option+n',
+  reply: 'r',
+  favourite: 'f',
+  react: 'e',
+  boost: 'b',
+  mention: 'm',
+  open: ['enter', 'o'],
+  openProfile: 'p',
+  moveDown: ['down', 'j'],
+  moveUp: ['up', 'k'],
+  back: 'backspace',
+  goToHome: 'g h',
+  goToNotifications: 'g n',
+  goToFavourites: 'g f',
+  goToPinned: 'g p',
+  goToProfile: 'g u',
+  goToBlocked: 'g b',
+  goToMuted: 'g m',
+  goToRequests: 'g r',
+  toggleHidden: 'x',
+  toggleSensitive: 'h',
+  openMedia: 'a',
 };
 
 interface ISwitchingColumnsArea {
@@ -587,7 +587,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
     // @ts-ignore
     hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName);
+      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName) || !!element.closest('[contenteditable]');
     };
   };
 
