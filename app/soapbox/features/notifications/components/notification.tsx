@@ -43,7 +43,9 @@ const icons: Record<NotificationType, string> = {
   follow_request: require('@tabler/icons/user-plus.svg'),
   mention: require('@tabler/icons/at.svg'),
   favourite: require('@tabler/icons/heart.svg'),
+  group_favourite: require('@tabler/icons/heart.svg'),
   reblog: require('@tabler/icons/repeat.svg'),
+  group_reblog: require('@tabler/icons/repeat.svg'),
   status: require('@tabler/icons/bell-ringing.svg'),
   poll: require('@tabler/icons/chart-bar.svg'),
   move: require('@tabler/icons/briefcase.svg'),
@@ -78,9 +80,17 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
     id: 'notification.favourite',
     defaultMessage: '{name} liked your post',
   },
+  group_favourite: {
+    id: 'notification.group_favourite',
+    defaultMessage: '{name} liked your group post',
+  },
   reblog: {
     id: 'notification.reblog',
     defaultMessage: '{name} reposted your post',
+  },
+  group_reblog: {
+    id: 'notification.group_reblog',
+    defaultMessage: '{name} reposted your group post',
   },
   status: {
     id: 'notification.status',
@@ -314,8 +324,10 @@ const Notification: React.FC<INotificaton> = (props) => {
           />
         ) : null;
       case 'favourite':
+      case 'group_favourite':
       case 'mention':
       case 'reblog':
+      case 'group_reblog':
       case 'status':
       case 'poll':
       case 'update':
@@ -331,6 +343,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             onMoveUp={handleMoveUp}
             avatarSize={avatarSize}
             contextType='notifications'
+            showGroup={false}
           />
         ) : null;
       default:

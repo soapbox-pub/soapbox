@@ -1057,6 +1057,8 @@
   "notification.favourite": "{name} liked your post",
   "notification.follow": "{name} followed you",
   "notification.follow_request": "{name} has requested to follow you",
+  "notification.group_favourite": "{name} liked your group post",
+  "notification.group_reblog": "{name} reposted your group post",
   "notification.mention": "{name} mentioned you",
   "notification.mentioned": "{name} mentioned you",
   "notification.move": "{name} moved to {targetName}",
