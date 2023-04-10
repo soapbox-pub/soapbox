@@ -26,6 +26,7 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', name, checked, onChange, r
         'cursor-default': disabled,
       })}
       onClick={handleClick}
+      type='button'
     >
       <div className={clsx('rounded-full bg-white transition-transform', {
         'h-4.5 w-4.5': size === 'sm',
