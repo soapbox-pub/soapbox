@@ -6,6 +6,7 @@ import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
 import { groupRelationshipSchema } from './group-relationship';
+import { groupTagSchema } from './group-tag';
 import { filteredArray, makeCustomEmojiMap } from './utils';
 
 const avatarMissing = require('assets/images/avatar-missing.png');
@@ -28,6 +29,7 @@ const groupSchema = z.object({
   note: z.string().transform(note => note === '<p></p>' ? '' : note).catch(''),
   relationship: groupRelationshipSchema.nullable().catch(null), // Dummy field to be overwritten later
   statuses_visibility: z.string().catch('public'),
+  tags: z.array(groupTagSchema).catch([]),
   uri: z.string().catch(''),
   url: z.string().catch(''),
 }).transform(group => {
@@ -46,4 +48,4 @@ const groupSchema = z.object({
 
 type Group = z.infer<typeof groupSchema>;
 
-export { groupSchema, Group };
+export { groupSchema, type Group };

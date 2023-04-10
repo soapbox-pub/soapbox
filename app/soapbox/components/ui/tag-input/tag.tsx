@@ -20,7 +20,6 @@ const Tag: React.FC<ITag> = ({ tag, onDelete }) => {
         iconClassName='h-4 w-4'
         src={require('@tabler/icons/x.svg')}
         onClick={() => onDelete(tag)}
-        transparent
       />
     </div>
   );

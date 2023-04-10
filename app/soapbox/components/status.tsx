@@ -8,7 +8,6 @@ import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
 import TranslateButton from 'soapbox/components/translate-button';
 import AccountContainer from 'soapbox/containers/account-container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
@@ -22,7 +21,7 @@ import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import StatusInfo from './statuses/status-info';
-import { Card, Stack, Text } from './ui';
+import { Card, Icon, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
@@ -217,7 +216,7 @@ const Status: React.FC<IStatus> = (props) => {
         <StatusInfo
           avatarSize={avatarSize}
           to={`/@${status.getIn(['account', 'acct'])}`}
-          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />}
+          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='h-4 w-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by'
@@ -242,7 +241,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='h-4 w-4 text-gray-600 dark:text-gray-400' />}
           text={
             <Text size='xs' theme='muted' weight='medium'>
               <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
@@ -255,7 +254,7 @@ const Status: React.FC<IStatus> = (props) => {
         <StatusInfo
           avatarSize={avatarSize}
           to={`/groups/${group.id}`}
-          icon={<Icon src={require('@tabler/icons/circles.svg')} className='text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={require('@tabler/icons/circles.svg')} className='h-4 w-4 text-primary-600 dark:text-accent-blue' />}
           text={
             <Text size='xs' theme='muted' weight='medium'>
               <FormattedMessage

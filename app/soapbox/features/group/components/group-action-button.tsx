@@ -3,14 +3,14 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
-import { deleteEntities } from 'soapbox/entity-store/actions';
+import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
 import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
-import type { Group } from 'soapbox/types/entities';
+import type { Group, GroupRelationship } from 'soapbox/types/entities';
 
 interface IGroupActionButton {
   group: Group
@@ -20,7 +20,7 @@ const messages = defineMessages({
   confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },
   confirmationHeading: { id: 'confirmations.leave_group.heading', defaultMessage: 'Leave group' },
   confirmationMessage: { id: 'confirmations.leave_group.message', defaultMessage: 'You are about to leave the group. Do you want to continue?' },
-  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
+  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Request sent to group owner' },
   joinSuccess: { id: 'group.join.success', defaultMessage: 'Group joined successfully!' },
   leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
 });
@@ -36,6 +36,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
   const isOwner = group.relationship?.role === GroupRoles.OWNER;
+  const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
   const isBlocked = group.relationship?.blocked_by;
 
   const onJoinGroup = () => joinGroup.mutate({}, {
@@ -65,7 +66,11 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
 
   const onCancelRequest = () => cancelRequest.mutate({}, {
     onSuccess() {
-      dispatch(deleteEntities([group.id], Entities.GROUP_RELATIONSHIPS));
+      const entity = {
+        ...group.relationship as GroupRelationship,
+        requested: false,
+      };
+      dispatch(importEntities([entity], Entities.GROUP_RELATIONSHIPS));
     },
   });
 
@@ -73,7 +78,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
     return null;
   }
 
-  if (isOwner) {
+  if (isOwner || isAdmin) {
     return (
       <Button
         theme='secondary'
@@ -89,7 +94,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
       <Button
         theme='primary'
         onClick={onJoinGroup}
-        disabled={joinGroup.isLoading}
+        disabled={joinGroup.isSubmitting}
       >
         {group.locked
           ? <FormattedMessage id='group.join.private' defaultMessage='Request Access' />
@@ -103,7 +108,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
       <Button
         theme='secondary'
         onClick={onCancelRequest}
-        disabled={cancelRequest.isLoading}
+        disabled={cancelRequest.isSubmitting}
       >
         <FormattedMessage id='group.cancel_request' defaultMessage='Cancel Request' />
       </Button>
@@ -114,7 +119,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
     <Button
       theme='secondary'
       onClick={onLeaveGroup}
-      disabled={leaveGroup.isLoading}
+      disabled={leaveGroup.isSubmitting}
     >
       <FormattedMessage id='group.leave' defaultMessage='Leave Group' />
     </Button>

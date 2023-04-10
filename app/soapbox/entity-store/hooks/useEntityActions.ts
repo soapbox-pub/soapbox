@@ -24,16 +24,16 @@ function useEntityActions<TEntity extends Entity = Entity, Data = any>(
   const api = useApi();
   const { entityType, path } = parseEntitiesPath(expandedPath);
 
-  const { deleteEntity, isLoading: deleteLoading } =
+  const { deleteEntity, isSubmitting: deleteSubmitting } =
     useDeleteEntity(entityType, (entityId) => api.delete(endpoints.delete!.replaceAll(':id', entityId)));
 
-  const { createEntity, isLoading: createLoading } =
+  const { createEntity, isSubmitting: createSubmitting } =
     useCreateEntity<TEntity, Data>(path, (data) => api.post(endpoints.post!, data), opts);
 
   return {
     createEntity,
     deleteEntity,
-    isLoading: createLoading || deleteLoading,
+    isSubmitting: createSubmitting || deleteSubmitting,
   };
 }
 

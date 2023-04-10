@@ -1,20 +1,21 @@
 import { Entities } from 'soapbox/entity-store/entities';
-import { useEntityActions } from 'soapbox/entity-store/hooks';
-import { useOwnAccount } from 'soapbox/hooks';
+import { useCreateEntity } from 'soapbox/entity-store/hooks';
+import { useApi, useOwnAccount } from 'soapbox/hooks';
 
-import type { Group, GroupRelationship } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas';
 
 function useCancelMembershipRequest(group: Group) {
+  const api = useApi();
   const me = useOwnAccount();
 
-  const { createEntity, isLoading } = useEntityActions<GroupRelationship>(
-    [Entities.GROUP_RELATIONSHIPS, group.id],
-    { post: `/api/v1/groups/${group.id}/membership_requests/${me?.id}/reject` },
+  const { createEntity, isSubmitting } = useCreateEntity(
+    [Entities.GROUP_RELATIONSHIPS],
+    () => api.post(`/api/v1/groups/${group.id}/membership_requests/${me?.id}/reject`),
   );
 
   return {
     mutate: createEntity,
-    isLoading,
+    isSubmitting,
   };
 }
 

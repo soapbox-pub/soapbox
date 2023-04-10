@@ -65,11 +65,12 @@ function useEntities<TEntity extends Entity>(
       const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
       const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
+      const totalCount = parsedCount.success ? parsedCount.data : undefined;
 
       dispatch(entitiesFetchSuccess(entities, entityType, listKey, {
         next: getNextLink(response),
         prev: getPrevLink(response),
-        totalCount: parsedCount.success ? parsedCount.data : undefined,
+        totalCount: Number(totalCount) >= entities.length ? totalCount : undefined,
         fetching: false,
         fetched: true,
         error: null,
@@ -112,7 +113,7 @@ function useEntities<TEntity extends Entity>(
     if (isInvalid || isUnset || isStale) {
       fetchEntities();
     }
-  }, [isEnabled]);
+  }, [isEnabled, ...path]);
 
   return {
     entities,

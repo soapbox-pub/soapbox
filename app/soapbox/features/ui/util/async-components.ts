@@ -590,8 +590,8 @@ export function GroupMembershipRequests() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-membership-requests');
 }
 
-export function ManageGroupModal() {
-  return import(/* webpackChunkName: "features/manage_group_modal" */'../components/modals/manage-group-modal/manage-group-modal');
+export function CreateGroupModal() {
+  return import(/* webpackChunkName: "features/groups" */'../components/modals/manage-group-modal/create-group-modal');
 }
 
 export function NewGroupPanel() {
