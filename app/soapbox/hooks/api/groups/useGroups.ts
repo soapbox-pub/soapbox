@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { z } from 'zod';
 
+import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities, useEntity } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
 import { groupSchema, Group } from 'soapbox/schemas/group';
 import { groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas/group-relationship';
 
@@ -48,12 +50,24 @@ function useGroup(groupId: string, refetch = true) {
 
 function useGroupRelationship(groupId: string) {
   const api = useApi();
+  const dispatch = useAppDispatch();
 
-  return useEntity<GroupRelationship>(
+  const { entity: groupRelationship, ...result } = useEntity<GroupRelationship>(
     [Entities.GROUP_RELATIONSHIPS, groupId],
     () => api.get(`/api/v1/groups/relationships?id[]=${groupId}`),
     { schema: z.array(groupRelationshipSchema).transform(arr => arr[0]) },
   );
+
+  useEffect(() => {
+    if (groupRelationship?.id) {
+      dispatch(fetchGroupRelationshipsSuccess([groupRelationship]));
+    }
+  }, [groupRelationship?.id]);
+
+  return {
+    entity: groupRelationship,
+    ...result,
+  };
 }
 
 function useGroupRelationships(groupIds: string[]) {
