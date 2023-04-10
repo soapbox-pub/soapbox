@@ -529,7 +529,7 @@ const Thread: React.FC<IThread> = (props) => {
   return (
     <Column label={intl.formatMessage(titleMessage())}>
       <PullToRefresh onRefresh={handleRefresh}>
-        <Stack space={2}>
+        <Stack space={2} className='mt-2'>
           <div ref={node} className='thread'>
             <ScrollableList
               id='thread'
