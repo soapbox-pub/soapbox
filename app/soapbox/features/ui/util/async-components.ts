@@ -590,6 +590,10 @@ export function GroupMembershipRequests() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-membership-requests');
 }
 
+export function GroupGallery() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-gallery');
+}
+
 export function CreateGroupModal() {
   return import(/* webpackChunkName: "features/groups" */'../components/modals/manage-group-modal/create-group-modal');
 }

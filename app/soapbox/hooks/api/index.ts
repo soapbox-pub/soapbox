@@ -11,6 +11,7 @@ export { useCancelMembershipRequest } from './groups/useCancelMembershipRequest'
 export { useCreateGroup, type CreateGroupParams } from './groups/useCreateGroup';
 export { useDeleteGroup } from './groups/useDeleteGroup';
 export { useDemoteGroupMember } from './groups/useDemoteGroupMember';
+export { useGroupMedia } from './groups/useGroupMedia';
 export { useGroup, useGroups } from './groups/useGroups';
 export { useGroupMembershipRequests } from './groups/useGroupMembershipRequests';
 export { useGroupSearch } from './groups/useGroupSearch';

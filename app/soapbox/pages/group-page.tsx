@@ -22,6 +22,7 @@ import { Tabs } from '../components/ui';
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
+  media: { id: 'group.tabs.media', defaultMessage: 'Media' },
 });
 
 interface IGroupPage {
@@ -83,6 +84,11 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
       to: `/groups/${group?.id}/members`,
       name: '/groups/:id/members',
       count: pending.length,
+    },
+    {
+      text: intl.formatMessage(messages.media),
+      to: `/groups/${group?.id}/media`,
+      name: '/groups/:id/media',
     },
   ];
 
