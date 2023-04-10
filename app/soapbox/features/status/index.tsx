@@ -50,8 +50,9 @@ import type {
 } from 'soapbox/types/entities';
 
 const messages = defineMessages({
-  title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
+  title: { id: 'status.title', defaultMessage: 'Post Details' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
+  titleGroup: { id: 'status.title_group', defaultMessage: 'Group Post Details' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
@@ -462,9 +463,6 @@ const Thread: React.FC<IThread> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const username = String(status.getIn(['account', 'acct']));
-  const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
-
   const focusedStatus = (
     <div className={clsx({ 'pb-4': hasDescendants })} key={status.id}>
       <HotKeys handlers={handlers}>
@@ -488,7 +486,7 @@ const Thread: React.FC<IThread> = (props) => {
 
           {!isUnderReview ? (
             <>
-              <hr className='mb-2 border-t-2 dark:border-primary-800' />
+              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
 
               <StatusActionBar
                 status={status}
@@ -502,7 +500,7 @@ const Thread: React.FC<IThread> = (props) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='mt-2 border-t-2 dark:border-primary-800' />
+        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
       )}
     </div>
   );
@@ -523,10 +521,15 @@ const Thread: React.FC<IThread> = (props) => {
     return <Redirect to={`/groups/${status.group.id}/posts/${props.params.statusId}`} />;
   }
 
+  const titleMessage = () => {
+    if (status.visibility === 'direct') return messages.titleDirect;
+    return status.group ? messages.titleGroup : messages.title;
+  };
+
   return (
-    <Column label={intl.formatMessage(titleMessage, { username })} transparent>
+    <Column label={intl.formatMessage(titleMessage())}>
       <PullToRefresh onRefresh={handleRefresh}>
-        <Stack space={2}>
+        <Stack space={2} className='mt-2'>
           <div ref={node} className='thread'>
             <ScrollableList
               id='thread'

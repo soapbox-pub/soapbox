@@ -16,7 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
 - Posts: upgraded emoji picker component.
+- Posts: improved design of threads.
 - UI: unified design of "approve" and "reject" buttons in follow requests and waitlist.
+- UI: added sticky column header.
 
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
