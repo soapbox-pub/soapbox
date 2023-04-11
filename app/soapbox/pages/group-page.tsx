@@ -22,6 +22,7 @@ import { Tabs } from '../components/ui';
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
+  media: { id: 'group.tabs.media', defaultMessage: 'Media' },
 });
 
 interface IGroupPage {
@@ -84,6 +85,11 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
       name: '/groups/:id/members',
       count: pending.length,
     },
+    {
+      text: intl.formatMessage(messages.media),
+      to: `/groups/${group?.id}/media`,
+      name: '/groups/:id/media',
+    },
   ];
 
   const renderChildren = () => {
@@ -99,7 +105,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   return (
     <>
       <Layout.Main>
-        <Column label={group ? group.display_name : ''} withHeader={false}>
+        <Column size='lg' label={group ? group.display_name : ''} withHeader={false}>
           <GroupHeader group={group} />
 
           <Tabs

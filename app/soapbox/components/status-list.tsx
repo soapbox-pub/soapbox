@@ -139,6 +139,7 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveDown={handleMoveDown}
         contextType={timelineId}
         showGroup={showGroup}
+        variant={divideType === 'border' ? 'slim' : 'rounded'}
       />
     );
   };
@@ -172,6 +173,7 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveDown={handleMoveDown}
         contextType={timelineId}
         showGroup={showGroup}
+        variant={divideType === 'border' ? 'slim' : 'default'}
       />
     ));
   };
@@ -245,7 +247,7 @@ const StatusList: React.FC<IStatusList> = ({
       isLoading={isLoading}
       showLoading={isLoading && statusIds.size === 0}
       onLoadMore={handleLoadOlder}
-      placeholderComponent={PlaceholderStatus}
+      placeholderComponent={() => <PlaceholderStatus variant={divideType === 'border' ? 'slim' : 'rounded'} />}
       placeholderCount={20}
       ref={node}
       className={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { Button, Column, Form, FormActions, FormGroup, Input, Spinner, Textarea } from 'soapbox/components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { useImageField, useTextField } from 'soapbox/hooks/forms';
@@ -10,6 +9,7 @@ import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 
 import AvatarPicker from './components/group-avatar-picker';
 import HeaderPicker from './components/group-header-picker';
+import GroupTagsField from './components/group-tags-field';
 
 import type { List as ImmutableList } from 'immutable';
 
@@ -20,6 +20,7 @@ const messages = defineMessages({
   heading: { id: 'navigation_bar.edit_group', defaultMessage: 'Edit Group' },
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
+  success: { id: 'manage_group.success', defaultMessage: 'Group saved!' },
 });
 
 interface IEditGroup {
@@ -36,6 +37,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
   const { updateGroup } = useUpdateGroup(groupId);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tags, setTags] = useState<string[]>(['']);
 
   const avatar = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(group?.avatar) });
   const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
@@ -58,10 +60,27 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
       note: note.value,
       avatar: avatar.file,
       header: header.file,
+      tags,
     });
 
     setIsSubmitting(false);
   }
+
+  const handleAddTag = () => {
+    setTags([...tags, '']);
+  };
+
+  const handleRemoveTag = (i: number) => {
+    const newTags = [...tags];
+    newTags.splice(i, 1);
+    setTags(newTags);
+  };
+
+  useEffect(() => {
+    if (group) {
+      setTags(group.tags.map((t) => t.name));
+    }
+  }, [group?.id]);
 
   if (isLoading) {
     return <Spinner />;
@@ -97,6 +116,15 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
             {...note}
           />
         </FormGroup>
+
+        <div className='pb-6'>
+          <GroupTagsField
+            tags={tags}
+            onChange={setTags}
+            onAddItem={handleAddTag}
+            onRemoveItem={handleRemoveTag}
+          />
+        </div>
 
         <FormActions>
           <Button theme='primary' type='submit' disabled={isSubmitting} block>

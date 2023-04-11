@@ -76,4 +76,4 @@ function useGroupRelationships(groupIds: string[]) {
   };
 }
 
-export { useGroup, useGroups, useGroupRelationships };
+export { useGroup, useGroups, useGroupRelationship, useGroupRelationships };
