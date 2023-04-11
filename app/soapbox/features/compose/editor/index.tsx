@@ -46,7 +46,29 @@ const StatePlugin = ({ composeId }: { composeId: string }) => {
   return null;
 };
 
-const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onFocus, autoFocus }, editorStateRef) => {
+interface IComposeEditor {
+  className?: string
+  composeId: string
+  condensed?: boolean
+  eventDiscussion?: boolean
+  hasPoll?: boolean
+  autoFocus?: boolean
+  onFocus?: React.FocusEventHandler<HTMLDivElement>
+  onPaste?: (files: FileList) => void
+  placeholder?: JSX.Element | string
+}
+
+const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
+  className,
+  composeId,
+  condensed,
+  eventDiscussion,
+  hasPoll,
+  autoFocus,
+  onFocus,
+  onPaste,
+  placeholder,
+}, editorStateRef) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
@@ -111,14 +133,29 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
     }
   };
 
+  const handlePaste: React.ClipboardEventHandler<HTMLDivElement> = (e) => {
+    if (onPaste && e.clipboardData && e.clipboardData.files.length === 1) {
+      onPaste(e.clipboardData.files);
+      e.preventDefault();
+    }
+  };
+
+  let textareaPlaceholder = placeholder || <FormattedMessage id='compose_form.placeholder' defaultMessage="What's on your mind?" />;
+
+  if (eventDiscussion) {
+    textareaPlaceholder = <FormattedMessage id='compose_form.event_placeholder' defaultMessage='Post to this event' />;
+  } else if (hasPoll) {
+    textareaPlaceholder = <FormattedMessage id='compose_form.poll_placeholder' defaultMessage='Add a poll topic…' />;
+  }
+
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className='lexical relative' data-markup>
+      <div className={clsx('lexical relative', className)} data-markup>
         <RichTextPlugin
           contentEditable={
-            <div className='editor' ref={onRef} onFocus={onFocus}>
+            <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
-                className={clsx('mr-4 py-2 outline-none transition-[min-height] motion-reduce:transition-none', {
+                className={clsx('mr-4 outline-none transition-[min-height] motion-reduce:transition-none', {
                   'min-fh-[40px]': condensed,
                   'min-h-[100px]': !condensed,
                 })}
@@ -127,8 +164,10 @@ const ComposeEditor = React.forwardRef<string, any>(({ composeId, condensed, onF
             </div>
           }
           placeholder={(
-            <div className='pointer-events-none absolute top-2 select-none text-gray-600 dark:placeholder:text-gray-600'>
-              <FormattedMessage id='compose_form.placeholder' defaultMessage="What's on your mind" />
+            <div
+              className='pointer-events-none absolute top-0 select-none text-gray-600 dark:placeholder:text-gray-600'
+            >
+              {textareaPlaceholder}
             </div>
           )}
           ErrorBoundary={LexicalErrorBoundary}

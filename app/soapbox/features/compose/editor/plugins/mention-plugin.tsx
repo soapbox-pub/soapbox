@@ -12,7 +12,6 @@ import { useCallback, useEffect } from 'react';
 
 import { $createMentionNode, MentionNode } from '../nodes/mention-node';
 
-
 import type { TextNode } from 'lexical';
 
 export const MENTION_REGEX = new RegExp('(^|$|(?:^|\\s))([@])([a-z\\d_-]+(?:@[^@\\s]+)?)', 'i');

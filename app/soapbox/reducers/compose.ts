@@ -54,6 +54,7 @@ import {
   COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
 } from '../actions/compose';
+import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET } from '../actions/events';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
 import { TIMELINE_DELETE } from '../actions/timelines';
@@ -507,6 +508,10 @@ export default function compose(state = initialState, action: AnyAction) {
       return updateCompose(state, 'default', compose => updateSetting(compose, action.path, action.value));
     case COMPOSE_EDITOR_STATE_SET:
       return updateCompose(state, action.id, compose => compose.set('editorState', action.editorState));
+    case EVENT_COMPOSE_CANCEL:
+      return updateCompose(state, 'event-compose-modal', compose => compose.set('text', ''));
+    case EVENT_FORM_SET:
+      return updateCompose(state, 'event-compose-modal', compose => compose.set('text', action.text));
     default:
       return state;
   }

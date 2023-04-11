@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -45,9 +45,6 @@ import type { Emoji } from 'soapbox/features/emoji';
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
 const messages = defineMessages({
-  placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
-  pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
-  eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -74,12 +71,11 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
-  const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
   const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
-  const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt, group_id: groupId } = compose;
+  const { text, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt, group_id: groupId } = compose;
   const prevSpoiler = usePrevious(spoiler);
 
   const hasPoll = !!compose.poll;
@@ -92,17 +88,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
   const editorStateRef = useRef<string>(null);
-
-  const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    dispatch(changeCompose(id, e.target.value));
-  };
-
-  const handleKeyDown: React.KeyboardEventHandler = (e) => {
-    if (e.keyCode === 13 && (e.ctrlKey || e.metaKey)) {
-      handleSubmit();
-      e.preventDefault(); // Prevent bubbling to other ComposeForm instances
-    }
-  };
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
@@ -139,11 +124,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const handleSubmit = (e?: React.FormEvent<Element>) => {
     dispatch(changeCompose(id, editorStateRef.current!));
-    // if (text !== autosuggestTextareaRef.current?.textarea?.value) {
-    //   // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
-    //   // Update the state to match the current text
-    //   dispatch(changeCompose(id, autosuggestTextareaRef.current!.textarea!.value));
-    // }
 
     // Submit disabled:
     const fulltext = [spoilerText, countableText(text)].join('');
@@ -165,10 +145,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const onSuggestionsFetchRequested = (token: string | number) => {
     dispatch(fetchComposeSuggestions(id, token as string));
-  };
-
-  const onSuggestionSelected = (tokenStart: number, token: string | null, value: string | undefined) => {
-    if (value) dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['text']));
   };
 
   const onSpoilerSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
@@ -245,7 +221,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   let publishText: string | JSX.Element = '';
   let publishIcon: string | undefined = undefined;
-  let textareaPlaceholder: MessageDescriptor;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
@@ -261,14 +236,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   if (scheduledAt) {
     publishText = intl.formatMessage(messages.schedule);
-  }
-
-  if (event) {
-    textareaPlaceholder = messages.eventPlaceholder;
-  } else if (hasPoll) {
-    textareaPlaceholder = messages.pollPlaceholder;
-  } else {
-    textareaPlaceholder = messages.placeholder;
   }
 
   return (
@@ -301,10 +268,14 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       <div>
         <ComposeEditor
           ref={editorStateRef}
-          condensed={condensed}
-          onFocus={handleComposeFocus}
-          autoFocus={shouldAutoFocus}
+          className='my-2'
           composeId={id}
+          condensed={condensed}
+          eventDiscussion={!!event}
+          autoFocus={shouldAutoFocus}
+          hasPoll={hasPoll}
+          onFocus={handleComposeFocus}
+          onPaste={onPaste}
         />
         {!condensed && (
           <Stack space={4} className='compose-form__modifiers'>
@@ -322,26 +293,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
           </Stack>
         )}
       </div>
-
-      <AutosuggestTextarea
-        ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
-        placeholder={intl.formatMessage(textareaPlaceholder)}
-        disabled={disabled}
-        value={text}
-        onChange={handleChange}
-        suggestions={suggestions}
-        onKeyDown={handleKeyDown}
-        onFocus={handleComposeFocus}
-        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={onSuggestionsClearRequested}
-        onSuggestionSelected={onSuggestionSelected}
-        onPaste={onPaste}
-        autoFocus={shouldAutoFocus}
-        condensed={condensed}
-        id='compose-textarea'
-      >
-        <></>
-      </AutosuggestTextarea>
 
       <QuotedStatusContainer composeId={id} />
 

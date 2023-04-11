@@ -75,5 +75,4 @@ const EmojiPickerDropdownContainer = (
   );
 };
 
-
 export default EmojiPickerDropdownContainer;

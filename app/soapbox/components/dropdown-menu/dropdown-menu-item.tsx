@@ -35,7 +35,6 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
     if (!item) return;
     if (onClick) onClick();
 
-
     if (item.to) {
       event.preventDefault();
       history.push(item.to);

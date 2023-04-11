@@ -51,7 +51,7 @@ export type MenuRenderFn = (
   anchorElementRef: MutableRefObject<HTMLElement | null>,
 ) => ReactPortal | JSX.Element | null;
 
-function tryToPositionRange(leadOffset: number, range: Range): boolean {
+const tryToPositionRange = (leadOffset: number, range: Range): boolean => {
   const domSelection = window.getSelection();
   if (domSelection === null || !domSelection.isCollapsed) {
     return false;
@@ -72,12 +72,12 @@ function tryToPositionRange(leadOffset: number, range: Range): boolean {
   }
 
   return true;
-}
+};
 
-function isSelectionOnEntityBoundary(
+const isSelectionOnEntityBoundary = (
   editor: LexicalEditor,
   offset: number,
-): boolean {
+): boolean => {
   if (offset !== 0) {
     return false;
   }
@@ -91,21 +91,21 @@ function isSelectionOnEntityBoundary(
     }
     return false;
   });
-}
+};
 
-function startTransition(callback: () => void) {
+const startTransition = (callback: () => void) => {
   if (React.startTransition) {
     React.startTransition(callback);
   } else {
     callback();
   }
-}
+};
 
 // Got from https://stackoverflow.com/a/42543908/2013580
-export function getScrollParent(
+export const getScrollParent = (
   element: HTMLElement,
   includeHidden: boolean,
-): HTMLElement | HTMLBodyElement {
+): HTMLElement | HTMLBodyElement => {
   let style = getComputedStyle(element);
   const excludeStaticParent = style.position === 'absolute';
   const overflowRegex = includeHidden
@@ -130,24 +130,24 @@ export function getScrollParent(
     }
   }
   return document.body;
-}
+};
 
-function isTriggerVisibleInNearestScrollContainer(
+const isTriggerVisibleInNearestScrollContainer = (
   targetElement: HTMLElement,
   containerElement: HTMLElement,
-): boolean {
+): boolean => {
   const tRect = targetElement.getBoundingClientRect();
   const cRect = containerElement.getBoundingClientRect();
   return tRect.top > cRect.top && tRect.top < cRect.bottom;
-}
+};
 
 // Reposition the menu on scroll, window resize, and element resize.
-export function useDynamicPositioning(
+export const useDynamicPositioning = (
   resolution: Resolution | null,
   targetElement: HTMLElement | null,
   onReposition: () => void,
   onVisibilityChange?: (isInView: boolean) => void,
-) {
+) => {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     if (targetElement && resolution) {
@@ -161,9 +161,9 @@ export function useDynamicPositioning(
         targetElement,
         rootScrollParent,
       );
-      const handleScroll = function () {
+      const handleScroll = () => {
         if (!ticking) {
-          window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(() => {
             onReposition();
             ticking = false;
           });
@@ -194,22 +194,17 @@ export function useDynamicPositioning(
       };
     }
   }, [targetElement, editor, onVisibilityChange, onReposition, resolution]);
-}
+};
 
-function LexicalPopoverMenu({
-  anchorElementRef,
-  menuRenderFn,
-}: {
+const LexicalPopoverMenu = ({ anchorElementRef, menuRenderFn }: {
   anchorElementRef: MutableRefObject<HTMLElement>
   menuRenderFn: MenuRenderFn
-}): JSX.Element | null {
-  return menuRenderFn(anchorElementRef);
-}
+}): JSX.Element | null => menuRenderFn(anchorElementRef);
 
-function useMenuAnchorRef(
+const useMenuAnchorRef = (
   resolution: Resolution | null,
   setResolution: (r: Resolution | null) => void,
-): MutableRefObject<HTMLElement> {
+): MutableRefObject<HTMLElement> => {
   const [editor] = useLexicalComposerContext();
   const anchorElementRef = useRef<HTMLElement>(document.createElement('div'));
   const positionMenu = useCallback(() => {
@@ -272,7 +267,7 @@ function useMenuAnchorRef(
   );
 
   return anchorElementRef;
-}
+};
 
 export type AutosuggestPluginProps = {
   composeId: string
@@ -280,11 +275,11 @@ export type AutosuggestPluginProps = {
   setSuggestionsHidden: (value: boolean) => void
 };
 
-export function AutosuggestPlugin({
+export const AutosuggestPlugin = ({
   composeId,
   suggestionsHidden,
   setSuggestionsHidden,
-}: AutosuggestPluginProps): JSX.Element | null {
+}: AutosuggestPluginProps): JSX.Element | null => {
   const { suggestions } = useCompose(composeId);
   const dispatch = useAppDispatch();
 
@@ -473,4 +468,4 @@ export function AutosuggestPlugin({
       }
     />
   );
-}
+};
