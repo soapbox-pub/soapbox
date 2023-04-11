@@ -50,7 +50,7 @@ export interface IStatus {
   featured?: boolean
   hideActionBar?: boolean
   hoverable?: boolean
-  variant?: 'default' | 'rounded'
+  variant?: 'default' | 'rounded' | 'slim'
   showGroup?: boolean
   accountAction?: React.ReactElement
 }
