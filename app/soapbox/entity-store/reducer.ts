@@ -14,7 +14,7 @@ import {
 import { createCache, createList, updateStore, updateList } from './utils';
 
 import type { DeleteEntitiesOpts } from './actions';
-import type { Entity, EntityCache, EntityListState } from './types';
+import type { Entity, EntityCache, EntityListState, ImportPosition } from './types';
 
 enableMapSet();
 
@@ -29,6 +29,7 @@ const importEntities = (
   entityType: string,
   entities: Entity[],
   listKey?: string,
+  pos?: ImportPosition,
   newState?: EntityListState,
   overwrite = false,
 ): State => {
@@ -43,7 +44,7 @@ const importEntities = (
         list.ids = new Set();
       }
 
-      list = updateList(list, entities);
+      list = updateList(list, entities, pos);
 
       if (newState) {
         list.state = newState;
@@ -159,7 +160,7 @@ const invalidateEntityList = (state: State, entityType: string, listKey: string)
 function reducer(state: Readonly<State> = {}, action: EntityAction): State {
   switch (action.type) {
     case ENTITIES_IMPORT:
-      return importEntities(state, action.entityType, action.entities, action.listKey);
+      return importEntities(state, action.entityType, action.entities, action.listKey, action.pos);
     case ENTITIES_DELETE:
       return deleteEntities(state, action.entityType, action.ids, action.opts);
     case ENTITIES_DISMISS:
@@ -167,7 +168,7 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
     case ENTITIES_INCREMENT:
       return incrementEntities(state, action.entityType, action.listKey, action.diff);
     case ENTITIES_FETCH_SUCCESS:
-      return importEntities(state, action.entityType, action.entities, action.listKey, action.newState, action.overwrite);
+      return importEntities(state, action.entityType, action.entities, action.listKey, action.pos, action.newState, action.overwrite);
     case ENTITIES_FETCH_REQUEST:
       return setFetching(state, action.entityType, action.listKey, true);
     case ENTITIES_FETCH_FAIL:

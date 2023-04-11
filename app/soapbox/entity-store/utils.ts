@@ -1,4 +1,4 @@
-import type { Entity, EntityStore, EntityList, EntityCache, EntityListState } from './types';
+import type { Entity, EntityStore, EntityList, EntityCache, EntityListState, ImportPosition } from './types';
 
 /** Insert the entities into the store. */
 const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {
@@ -9,9 +9,10 @@ const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {
 };
 
 /** Update the list with new entity IDs. */
-const updateList = (list: EntityList, entities: Entity[]): EntityList => {
+const updateList = (list: EntityList, entities: Entity[], pos: ImportPosition = 'end'): EntityList => {
   const newIds = entities.map(entity => entity.id);
-  const ids = new Set([...newIds, ...Array.from(list.ids)]);
+  const oldIds = Array.from(list.ids);
+  const ids = new Set(pos === 'start' ? [...newIds, ...oldIds] : [...oldIds, ...newIds]);
 
   if (typeof list.state.totalCount === 'number') {
     const sizeDiff = ids.size - list.ids.size;
