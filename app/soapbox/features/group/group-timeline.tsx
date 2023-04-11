@@ -56,7 +56,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   return (
     <Stack space={2}>
       {canComposeGroupStatus && (
-        <div className='border-b border-solid border-gray-200 px-2 py-4 dark:border-gray-800'>
+        <div className='border-b border-solid border-gray-200 py-6 dark:border-gray-800'>
           <HStack alignItems='start' space={4}>
             <Link to={`/@${account.acct}`}>
               <Avatar src={account.avatar} size={46} />

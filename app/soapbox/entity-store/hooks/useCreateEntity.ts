@@ -30,7 +30,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = unknown>(
       const entity = schema.parse(result.data);
 
       // TODO: optimistic updating
-      dispatch(importEntities([entity], entityType, listKey));
+      dispatch(importEntities([entity], entityType, listKey, 'start'));
 
       if (callbacks.onSuccess) {
         callbacks.onSuccess(entity);

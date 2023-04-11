@@ -536,7 +536,7 @@ const Thread: React.FC<IThread> = (props) => {
               ref={scroller}
               hasMore={!!next}
               onLoadMore={handleLoadMore}
-              placeholderComponent={() => <PlaceholderStatus thread />}
+              placeholderComponent={() => <PlaceholderStatus variant='slim' />}
               initialTopMostItemIndex={ancestorsIds.size}
             >
               {children}

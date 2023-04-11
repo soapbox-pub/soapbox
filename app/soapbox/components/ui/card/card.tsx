@@ -20,7 +20,7 @@ export type CardSizes = keyof typeof sizes
 
 interface ICard {
   /** The type of card. */
-  variant?: 'default' | 'rounded'
+  variant?: 'default' | 'rounded' | 'slim'
   /** Card size preset. */
   size?: CardSizes
   /** Extra classnames for the <div> element. */
@@ -37,6 +37,7 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
     className={clsx({
       'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
+      'py-4': variant === 'slim',
     }, className)}
   >
     {children}
