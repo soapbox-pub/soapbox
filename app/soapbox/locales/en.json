@@ -807,6 +807,7 @@
   "group.role.admin": "Admin",
   "group.role.owner": "Owner",
   "group.tabs.all": "All",
+  "group.tabs.media": "Media",
   "group.tabs.members": "Members",
   "group.tags.hint": "Add up to 3 keywords that will serve as core topics of discussion in the group.",
   "group.tags.label": "Tags",
