@@ -99,7 +99,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   return (
     <>
       <Layout.Main>
-        <Column label={group ? group.display_name : ''} withHeader={false}>
+        <Column size='lg' label={group ? group.display_name : ''} withHeader={false}>
           <GroupHeader group={group} />
 
           <Tabs

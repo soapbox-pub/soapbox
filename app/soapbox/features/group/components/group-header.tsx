@@ -32,7 +32,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
 
   if (!group) {
     return (
-      <div className='-mx-4 -mt-4'>
+      <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
         <div>
           <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
@@ -105,7 +105,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   };
 
   return (
-    <div className='-mx-4 -mt-4'>
+    <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
       <div className='relative'>
         {renderHeader()}
 

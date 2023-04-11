@@ -105,7 +105,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   if (!account) {
     return (
-      <div className='-mx-4 -mt-4'>
+      <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
         <div>
           <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
@@ -608,7 +608,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const menu = makeMenu();
 
   return (
-    <div className='-mx-4 -mt-4'>
+    <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
       {(account.moved && typeof account.moved === 'object') && (
         <MovedNote from={account} to={account.moved} />
       )}
