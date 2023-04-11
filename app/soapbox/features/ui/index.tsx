@@ -117,6 +117,7 @@ import {
   EventInformation,
   EventDiscussion,
   Events,
+  GroupGallery,
   Groups,
   GroupsDiscover,
   GroupsPopular,
@@ -298,6 +299,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groupsPending && <WrappedRoute path='/groups/pending-requests' exact page={GroupsPendingPage} component={PendingGroupRequests} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:id/media' publicRoute={!authenticatedProfile} component={GroupGallery} page={GroupPage} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage' exact page={ManageGroupsPage} component={ManageGroup} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage/edit' exact page={ManageGroupsPage} component={EditGroup} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:id/manage/blocks' exact page={ManageGroupsPage} component={GroupBlockedMembers} content={children} />}
