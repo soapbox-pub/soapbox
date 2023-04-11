@@ -54,7 +54,7 @@ function useEntities<TEntity extends Entity>(
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
 
-  const fetchPage = async(req: EntityFn<void>, overwrite = false): Promise<void> => {
+  const fetchPage = async(req: EntityFn<void>, pos: 'start' | 'end', overwrite = false): Promise<void> => {
     // Get `isFetching` state from the store again to prevent race conditions.
     const isFetching = selectListState(getState(), path, 'fetching');
     if (isFetching) return;
@@ -67,7 +67,7 @@ function useEntities<TEntity extends Entity>(
       const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
       const totalCount = parsedCount.success ? parsedCount.data : undefined;
 
-      dispatch(entitiesFetchSuccess(entities, entityType, listKey, {
+      dispatch(entitiesFetchSuccess(entities, entityType, listKey, pos, {
         next: getNextLink(response),
         prev: getPrevLink(response),
         totalCount: Number(totalCount) >= entities.length ? totalCount : undefined,
@@ -83,18 +83,18 @@ function useEntities<TEntity extends Entity>(
   };
 
   const fetchEntities = async(): Promise<void> => {
-    await fetchPage(entityFn, true);
+    await fetchPage(entityFn, 'end', true);
   };
 
   const fetchNextPage = async(): Promise<void> => {
     if (next) {
-      await fetchPage(() => api.get(next));
+      await fetchPage(() => api.get(next), 'end');
     }
   };
 
   const fetchPreviousPage = async(): Promise<void> => {
     if (prev) {
-      await fetchPage(() => api.get(prev));
+      await fetchPage(() => api.get(prev), 'start');
     }
   };
 

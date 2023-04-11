@@ -47,10 +47,14 @@ interface EntityCache<TEntity extends Entity = Entity> {
   }
 }
 
+/** Whether to import items at the start or end of the list. */
+type ImportPosition = 'start' | 'end'
+
 export {
   Entity,
   EntityStore,
   EntityList,
   EntityListState,
   EntityCache,
+  ImportPosition,
 };
