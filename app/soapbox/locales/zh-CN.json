@@ -967,7 +967,6 @@
   "manage_group.privacy.private.label": "私有（需要群组所有者批准）",
   "manage_group.privacy.public.hint": "可发现。任何人都可以加入。",
   "manage_group.privacy.public.label": "公开",
-  "manage_group.success": "群组已保存！",
   "manage_group.tagline": "群组根据共同的兴趣将您与他人联系起来。",
   "media_panel.empty_message": "未找到媒体。",
   "media_panel.title": "媒体",

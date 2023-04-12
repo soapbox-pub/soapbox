@@ -964,7 +964,6 @@
   "manage_group.privacy.private.label": "Privat (Eierens godkjenning kreves)",
   "manage_group.privacy.public.hint": "Kan oppdages. Alle kan bli med.",
   "manage_group.privacy.public.label": "Offentlig",
-  "manage_group.success": "Gruppe lagret.",
   "manage_group.tagline": "Grupper setter deg i kontakt med andre basert på felles interesser.",
   "media_panel.empty_message": "Ingen medier funnet.",
   "media_panel.title": "Media",

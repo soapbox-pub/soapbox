@@ -963,7 +963,6 @@
   "manage_group.privacy.private.label": "Özel (Grup sahibi onayı gereklidir)",
   "manage_group.privacy.public.hint": "Keşfedilebilir. Herkes katılabilir.",
   "manage_group.privacy.public.label": "Herkese açık",
-  "manage_group.success": "Grup kaydedildi!",
   "manage_group.tagline": "Gruplar sizi ortak ilgi alanlarına göre başkalarıyla buluşturur.",
   "media_panel.empty_message": "Medya bulunamadı.",
   "media_panel.title": "Medya",
