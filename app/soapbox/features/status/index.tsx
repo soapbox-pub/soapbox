@@ -52,7 +52,6 @@ import type {
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
-  titleGroup: { id: 'status.title_group', defaultMessage: 'Group Post Details' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
@@ -523,7 +522,7 @@ const Thread: React.FC<IThread> = (props) => {
 
   const titleMessage = () => {
     if (status.visibility === 'direct') return messages.titleDirect;
-    return status.group ? messages.titleGroup : messages.title;
+    return messages.title;
   };
 
   return (
