@@ -63,4 +63,4 @@ function findEntity<TEntity extends Entity>(
   }
 }
 
-export default useEntityLookup;
+export { useEntityLookup };
