@@ -807,6 +807,7 @@
   "group.role.admin": "管理员",
   "group.role.owner": "拥有者",
   "group.tabs.all": "全部",
+  "group.tabs.media": "媒体",
   "group.tabs.members": "成员",
   "group.tags.hint": "最多添加 3 个关键词，这些关键词将作为群组讨论的核心话题。",
   "group.tags.label": "标签",
