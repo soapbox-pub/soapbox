@@ -5,6 +5,7 @@ import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Tex
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { useImageField, useTextField } from 'soapbox/hooks/forms';
+import toast from 'soapbox/toast';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 
 import AvatarPicker from './components/group-avatar-picker';
@@ -20,7 +21,7 @@ const messages = defineMessages({
   heading: { id: 'navigation_bar.edit_group', defaultMessage: 'Edit Group' },
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
-  success: { id: 'manage_group.success', defaultMessage: 'Group saved!' },
+  groupSaved: { id: 'group.update.success', defaultMessage: 'Group successfully saved' },
 });
 
 interface IEditGroup {
@@ -64,6 +65,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
     });
 
     setIsSubmitting(false);
+    toast.success(intl.formatMessage(messages.groupSaved));
   }
 
   const handleAddTag = () => {
