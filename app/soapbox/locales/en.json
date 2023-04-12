@@ -968,7 +968,6 @@
   "manage_group.privacy.private.label": "Private (Owner approval required)",
   "manage_group.privacy.public.hint": "Discoverable. Anyone can join.",
   "manage_group.privacy.public.label": "Public",
-  "manage_group.success": "Group saved!",
   "manage_group.tagline": "Groups connect you with others based on shared interests.",
   "media_panel.empty_message": "No media found.",
   "media_panel.title": "Media",
