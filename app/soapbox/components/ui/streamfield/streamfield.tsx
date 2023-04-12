@@ -16,6 +16,7 @@ const messages = defineMessages({
 export type StreamfieldComponent<T> = React.ComponentType<{
   value: T
   onChange: (value: T) => void
+  autoFocus: boolean
 }>;
 
 interface IStreamfield {
@@ -72,7 +73,12 @@ const Streamfield: React.FC<IStreamfield> = ({
         <Stack space={1}>
           {values.map((value, i) => value?._destroy ? null : (
             <HStack space={2} alignItems='center'>
-              <Component key={i} onChange={handleChange(i)} value={value} />
+              <Component
+                key={i}
+                onChange={handleChange(i)}
+                value={value}
+                autoFocus={i > 0}
+              />
               {values.length > minItems && onRemoveItem && (
                 <IconButton
                   iconClassName='h-4 w-4'
