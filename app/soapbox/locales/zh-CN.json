@@ -811,6 +811,7 @@
   "group.tabs.members": "成员",
   "group.tags.hint": "最多添加 3 个关键词，这些关键词将作为群组讨论的核心话题。",
   "group.tags.label": "标签",
+  "group.update.success": "已成功保存群组",
   "group.upload_banner": "已上传照片",
   "groups.discover.popular.empty": "目前无法获取热门群组。请稍后再试。",
   "groups.discover.popular.show_more": "显示更多",
