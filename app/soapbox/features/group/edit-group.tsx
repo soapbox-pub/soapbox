@@ -62,10 +62,20 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
       avatar: avatar.file,
       header: header.file,
       tags,
+    }, {
+      onSuccess() {
+        toast.success(intl.formatMessage(messages.groupSaved));
+      },
+      onError(error) {
+        const message = (error.response?.data as any)?.error;
+
+        if (error.response?.status === 422 && typeof message !== 'undefined') {
+          toast.error(message);
+        }
+      },
     });
 
     setIsSubmitting(false);
-    toast.success(intl.formatMessage(messages.groupSaved));
   }
 
   const handleAddTag = () => {
