@@ -11,7 +11,7 @@ function usePopularTags() {
 
   const { entities, ...result } = useEntities<GroupTag>(
     [Entities.GROUP_TAGS],
-    () => api.get('/api/mock/groups/tags'),
+    () => api.get('/api/v1/groups/tags'),
     {
       schema: groupTagSchema,
       enabled: features.groupsDiscovery,

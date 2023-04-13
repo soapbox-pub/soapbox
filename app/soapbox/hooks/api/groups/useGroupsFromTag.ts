@@ -5,6 +5,8 @@ import { groupSchema } from 'soapbox/schemas';
 import { useApi } from '../../useApi';
 import { useFeatures } from '../../useFeatures';
 
+import { useGroupRelationships } from './useGroups';
+
 import type { Group } from 'soapbox/schemas';
 
 function useGroupsFromTag(tagId: string) {
@@ -13,16 +15,22 @@ function useGroupsFromTag(tagId: string) {
 
   const { entities, ...result } = useEntities<Group>(
     [Entities.GROUPS, 'tags', tagId],
-    () => api.get(`/api/mock/tags/${tagId}/groups`),
+    () => api.get(`/api/v1/tags/${tagId}/groups`),
     {
       schema: groupSchema,
       enabled: features.groupsDiscovery,
     },
   );
+  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
+
+  const groups = entities.map((group) => ({
+    ...group,
+    relationship: relationships[group.id] || null,
+  }));
 
   return {
     ...result,
-    groups: entities,
+    groups,
   };
 }
 
