@@ -1518,7 +1518,7 @@
   "time_remaining.moments": "Moments remaining",
   "time_remaining.seconds": "{number, plural, one {# second} other {# seconds}} left",
   "toast.view": "View",
-  "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} talking",
+  "trends.count_by_accounts": "Total Posts: {count}",
   "trends.title": "Trends",
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "You need to be logged in to do that.",

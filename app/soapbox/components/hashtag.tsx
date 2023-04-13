@@ -27,7 +27,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
           <Text theme='muted' size='sm'>
             <FormattedMessage
               id='trends.count_by_accounts'
-              defaultMessage='{count} {rawCount, plural, one {person} other {people}} talking'
+              defaultMessage='Total Posts: {count}'
               values={{
                 rawCount: count,
                 count: <strong>{shortNumberFormat(count)}</strong>,

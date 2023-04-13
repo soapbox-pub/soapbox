@@ -1125,7 +1125,7 @@
   "time_remaining.moments": "Moments restants",
   "time_remaining.seconds": "demòra{number, plural, one { # segonda} other {n # segondas}}",
   "toast.view": "View",
-  "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} talking",
+  "trends.count_by_accounts": "Total Posts: {count}",
   "trends.title": "Trends",
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "You need to be logged in to do that.",
