@@ -1,6 +1,8 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';
+import { Icon, Stack, Text } from 'soapbox/components/ui';
 import { useGroupTags } from 'soapbox/hooks/api';
 import { useGroup } from 'soapbox/queries/groups';
 
@@ -26,28 +28,41 @@ const GroupTopics: React.FC<IGroupTopics> = (props) => {
   const isPinnable = pinnedTags.length < 3;
 
   return (
-    <>
-      <ScrollableList
-        scrollKey='group-tags'
-        hasMore={hasNextPage}
-        onLoadMore={fetchNextPage}
-        isLoading={isLoading || !group}
-        showLoading={!group || isLoading && tags.length === 0}
-        placeholderComponent={PlaceholderAccount}
-        placeholderCount={3}
-        className='divide-y divide-solid divide-gray-300'
-        itemClassName='py-3 last:pb-0'
-      >
-        {tags.map((tag) => (
-          <GroupTagListItem
-            key={tag.id}
-            group={group as Group}
-            isPinnable={isPinnable}
-            tag={tag}
-          />
-        ))}
-      </ScrollableList>
-    </>
+    <ScrollableList
+      scrollKey='group-tags'
+      hasMore={hasNextPage}
+      onLoadMore={fetchNextPage}
+      isLoading={isLoading || !group}
+      showLoading={!group || isLoading && tags.length === 0}
+      placeholderComponent={PlaceholderAccount}
+      placeholderCount={3}
+      className='divide-y divide-solid divide-gray-300'
+      itemClassName='py-3 last:pb-0'
+      emptyMessage={
+        <Stack space={4} className='pt-6' justifyContent='center' alignItems='center'>
+          <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
+            <Icon
+              src={require('@tabler/icons/hash.svg')}
+              className='h-6 w-6 text-gray-600'
+            />
+          </div>
+
+          <Text theme='muted'>
+            <FormattedMessage id='group.tags.empty' defaultMessage='There are no topics in this group yet.' />
+          </Text>
+        </Stack>
+      }
+      emptyMessageCard={false}
+    >
+      {tags.map((tag) => (
+        <GroupTagListItem
+          key={tag.id}
+          group={group as Group}
+          isPinnable={isPinnable}
+          tag={tag}
+        />
+      ))}
+    </ScrollableList>
   );
 };
 

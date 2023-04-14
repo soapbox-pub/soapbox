@@ -31,10 +31,14 @@ function useEntityActions<TEntity extends Entity = Entity, Data = any>(
   const { createEntity, isSubmitting: createSubmitting } =
     useCreateEntity<TEntity, Data>(path, (data) => api.post(endpoints.post!, data), opts);
 
+  const { createEntity: updateEntity, isSubmitting: updateSubmitting } =
+    useCreateEntity<TEntity, Data>(path, (data) => api.patch(endpoints.patch!, data), opts);
+
   return {
     createEntity,
     deleteEntity,
-    isSubmitting: createSubmitting || deleteSubmitting,
+    updateEntity,
+    isSubmitting: createSubmitting || deleteSubmitting || updateSubmitting,
   };
 }
 

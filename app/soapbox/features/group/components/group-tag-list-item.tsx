@@ -3,7 +3,11 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { HStack, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
+import { importEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
+import { useAppDispatch } from 'soapbox/hooks';
 import { useUpdateGroupTag } from 'soapbox/hooks/api';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
@@ -29,15 +33,26 @@ interface IGroupMemberListItem {
 
 const GroupTagListItem = (props: IGroupMemberListItem) => {
   const { group, tag, isPinnable } = props;
+  const dispatch = useAppDispatch();
 
   const intl = useIntl();
-  const updateGroupTag = useUpdateGroupTag(group.id, tag.id);
+  const { updateGroupTag } = useUpdateGroupTag(group.id, tag.id);
+
+  const isOwner = group.relationship?.role === GroupRoles.OWNER;
+  const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
+  const canEdit = isOwner || isAdmin;
 
   const toggleVisibility = () => {
     updateGroupTag({
-      pinned: !tag.visible,
+      group_tag_type: tag.visible ? 'hidden' : 'normal',
     }, {
-      onSuccess(entity: GroupTag) {
+      onSuccess() {
+        const entity = {
+          ...tag,
+          visible: !tag.visible,
+        };
+        dispatch(importEntities([entity], Entities.GROUP_TAGS));
+
         toast.success(
           entity.visible ?
             intl.formatMessage(messages.visibleSuccess) :
@@ -49,9 +64,15 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
 
   const togglePin = () => {
     updateGroupTag({
-      pinned: !tag.pinned,
+      group_tag_type: tag.pinned ? 'normal' : 'pinned',
     }, {
-      onSuccess(entity: GroupTag) {
+      onSuccess() {
+        const entity = {
+          ...tag,
+          pinned: !tag.pinned,
+        };
+        dispatch(importEntities([entity], Entities.GROUP_TAGS));
+
         toast.success(
           entity.pinned ?
             intl.formatMessage(messages.pinSuccess) :
@@ -73,7 +94,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
         >
           <IconButton
             onClick={togglePin}
-            transparent
+            theme='transparent'
             src={
               tag.pinned ?
                 require('@tabler/icons/pin-filled.svg') :
@@ -90,7 +111,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
         <Tooltip text={intl.formatMessage(messages.unpinTag)}>
           <IconButton
             onClick={togglePin}
-            transparent
+            theme='transparent'
             src={require('@tabler/icons/pin-filled.svg')}
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
           />
@@ -106,12 +127,12 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
         <Stack>
           <Text
             weight='bold'
-            theme={tag.visible ? 'default' : 'subtle'}
+            theme={(tag.visible || !canEdit) ? 'default' : 'subtle'}
             className='group-hover:underline'
           >
             #{tag.name}
           </Text>
-          <Text size='sm' theme={tag.visible ? 'muted' : 'subtle'}>
+          <Text size='sm' theme={(tag.visible || !canEdit) ? 'muted' : 'subtle'}>
             {intl.formatMessage(messages.total)}:
             {' '}
             <Text size='sm' theme='inherit' weight='semibold' tag='span'>
@@ -121,30 +142,32 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
         </Stack>
       </Link>
 
-      <HStack alignItems='center' space={2}>
-        {tag.visible ? (
-          renderPinIcon()
-        ) : null}
+      {canEdit ? (
+        <HStack alignItems='center' space={2}>
+          {tag.visible ? (
+            renderPinIcon()
+          ) : null}
 
-        <Tooltip
-          text={
-            tag.visible ?
-              intl.formatMessage(messages.hideTag) :
-              intl.formatMessage(messages.showTag)
-          }
-        >
-          <IconButton
-            onClick={toggleVisibility}
-            transparent
-            src={
+          <Tooltip
+            text={
               tag.visible ?
-                require('@tabler/icons/eye.svg') :
-                require('@tabler/icons/eye-off.svg')
+                intl.formatMessage(messages.hideTag) :
+                intl.formatMessage(messages.showTag)
             }
-            iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
-          />
-        </Tooltip>
-      </HStack>
+          >
+            <IconButton
+              onClick={toggleVisibility}
+              theme='transparent'
+              src={
+                tag.visible ?
+                  require('@tabler/icons/eye.svg') :
+                  require('@tabler/icons/eye-off.svg')
+              }
+              iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
+            />
+          </Tooltip>
+        </HStack>
+      ) : null}
     </HStack>
   );
 };

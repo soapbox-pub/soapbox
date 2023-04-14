@@ -1,17 +1,18 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntityActions } from 'soapbox/entity-store/hooks';
-import { groupTagSchema } from 'soapbox/schemas';
 
 import type { GroupTag } from 'soapbox/schemas';
 
 function useUpdateGroupTag(groupId: string, tagId: string) {
-  const { updateEntity } = useEntityActions<GroupTag>(
+  const { updateEntity, ...rest } = useEntityActions<GroupTag>(
     [Entities.GROUP_TAGS, groupId, tagId],
-    { patch: `/api/mock/truth/groups/${groupId}/tags/${tagId}` },
-    { schema: groupTagSchema },
+    { patch: `/api/v1/groups/${groupId}/tags/${tagId}` },
   );
 
-  return updateEntity;
+  return {
+    updateGroupTag: updateEntity,
+    ...rest,
+  };
 }
 
 export { useUpdateGroupTag };
