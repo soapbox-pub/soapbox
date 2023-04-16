@@ -37,7 +37,7 @@ export const InstanceRecord = ImmutableRecord({
     }),
     groups: ImmutableMap<string, number>({
       max_characters_name: 50,
-      max_characters_description: 100,
+      max_characters_description: 160,
     }),
   }),
   description: '',

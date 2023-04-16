@@ -598,6 +598,14 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can sign in using username instead of e-mail address.
+     */
+    logInWithUsername: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
+    ]),
+
+    /**
      * Can perform moderation actions with account and reports.
      * @see {@link https://docs.joinmastodon.org/methods/admin/}
      * @see GET /api/v1/admin/reports

@@ -536,7 +536,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     return menu;
   };
 
-  const publicStatus = ['public', 'unlisted'].includes(status.visibility);
+  const publicStatus = ['public', 'unlisted', 'group'].includes(status.visibility);
 
   const replyCount = status.replies_count;
   const reblogCount = status.reblogs_count;
@@ -609,7 +609,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     replyTitle = intl.formatMessage(messages.replyAll);
   }
 
-  const canShare = ('share' in navigator) && status.visibility === 'public';
+  const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
 
   return (
     <HStack data-testid='status-action-bar'>
