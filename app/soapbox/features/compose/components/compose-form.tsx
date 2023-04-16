@@ -75,7 +75,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
-  const { text, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt, group_id: groupId } = compose;
+  const { spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt, group_id: groupId } = compose;
   const prevSpoiler = usePrevious(spoiler);
 
   const hasPoll = !!compose.poll;
@@ -88,6 +88,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
   const editorStateRef = useRef<string>(null);
+  const text = editorStateRef.current || '';
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
