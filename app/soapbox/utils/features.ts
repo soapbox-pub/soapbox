@@ -600,7 +600,10 @@ const getInstanceFeatures = (instance: Instance) => {
     /**
      * Can sign in using username instead of e-mail address.
      */
-    logInWithUsername: v.software === PLEROMA || v.software === TRUTHSOCIAL,
+    logInWithUsername: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
+    ]),
 
     /**
      * Can perform moderation actions with account and reports.

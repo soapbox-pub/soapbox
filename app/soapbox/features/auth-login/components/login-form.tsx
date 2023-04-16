@@ -3,9 +3,9 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Button, Form, FormActions, FormGroup, Input, Stack } from 'soapbox/components/ui';
+import { useFeatures } from 'soapbox/hooks';
 
 import ConsumersList from './consumers-list';
-import { useFeatures } from 'soapbox/hooks';
 
 const messages = defineMessages({
   username: {
