@@ -562,6 +562,14 @@ export function GroupsSuggested() {
   return import(/* webpackChunkName: "features/groups" */'../../groups/suggested');
 }
 
+export function GroupsTag() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups/tag');
+}
+
+export function GroupsTags() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups/tags');
+}
+
 export function PendingGroupRequests() {
   return import(/* webpackChunkName: "features/groups" */'../../groups/pending-requests');
 }
