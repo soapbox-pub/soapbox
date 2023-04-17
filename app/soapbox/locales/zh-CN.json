@@ -1464,7 +1464,6 @@
   "status.show_original": "显示原文本",
   "status.title": "帖文详情",
   "status.title_direct": "私信",
-  "status.title_group": "群组帖文详情",
   "status.translate": "翻译",
   "status.translated_from_with": "使用 {provider} 从 {lang} 翻译而来",
   "status.unbookmark": "移除书签",

@@ -3,6 +3,8 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Input, Streamfield } from 'soapbox/components/ui';
 
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
+
 const messages = defineMessages({
   hashtagPlaceholder: { id: 'manage_group.fields.hashtag_placeholder', defaultMessage: 'Add a topic' },
 });
@@ -30,12 +32,7 @@ const GroupTagsField: React.FC<IGroupTagsField> = ({ tags, onChange, onAddItem, 
   );
 };
 
-interface IHashtagField {
-  value: string
-  onChange: (value: string) => void
-}
-
-const HashtagField: React.FC<IHashtagField> = ({ value, onChange }) => {
+const HashtagField: StreamfieldComponent<string> = ({ value, onChange, autoFocus = false }) => {
   const intl = useIntl();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -49,6 +46,7 @@ const HashtagField: React.FC<IHashtagField> = ({ value, onChange }) => {
       value={value}
       onChange={handleChange}
       placeholder={intl.formatMessage(messages.hashtagPlaceholder)}
+      autoFocus={autoFocus}
     />
   );
 };

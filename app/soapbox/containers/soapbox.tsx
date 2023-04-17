@@ -191,7 +191,14 @@ const SoapboxMount = () => {
                 </BundleContainer>
 
                 <GdprBanner />
-                <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
+
+                <div id='toaster'>
+                  <Toaster
+                    position='top-right'
+                    containerClassName='top-10'
+                    containerStyle={{ top: 75 }}
+                  />
+                </div>
               </Route>
             </Switch>
           </ScrollContext>

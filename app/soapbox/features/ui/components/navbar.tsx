@@ -9,7 +9,7 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -17,7 +17,8 @@ import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   login: { id: 'navbar.login.action', defaultMessage: 'Log in' },
-  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'Email or username' },
+  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'E-mail or username' },
+  email: { id: 'navbar.login.email.placeholder', defaultMessage: 'E-mail address' },
   password: { id: 'navbar.login.password.label', defaultMessage: 'Password' },
   forgotPassword: { id: 'navbar.login.forgot_password', defaultMessage: 'Forgot password?' },
 });
@@ -25,6 +26,7 @@ const messages = defineMessages({
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
   const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
   const node = useRef(null);
@@ -111,7 +113,7 @@ const Navbar = () => {
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                     type='text'
-                    placeholder={intl.formatMessage(messages.username)}
+                    placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
                     className='max-w-[200px]'
                   />
 

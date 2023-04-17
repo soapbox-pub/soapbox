@@ -124,8 +124,12 @@ import {
   GroupsDiscover,
   GroupsPopular,
   GroupsSuggested,
+  GroupsTag,
+  GroupsTags,
   PendingGroupRequests,
   GroupMembers,
+  GroupTags,
+  GroupTagTimeline,
   GroupTimeline,
   ManageGroup,
   GroupBlockedMembers,
@@ -139,6 +143,8 @@ import { WrappedRoute } from './util/react-router-helpers';
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
 
+const GroupTagsSlug = withHoc(GroupTags as any, GroupLookupHoc);
+const GroupTagTimelineSlug = withHoc(GroupTagTimeline as any, GroupLookupHoc);
 const GroupTimelineSlug = withHoc(GroupTimeline as any, GroupLookupHoc);
 const GroupMembersSlug = withHoc(GroupMembers as any, GroupLookupHoc);
 const GroupGallerySlug = withHoc(GroupGallery as any, GroupLookupHoc);
@@ -306,7 +312,11 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groupsDiscovery && <WrappedRoute path='/groups/discover' exact page={GroupsPage} component={GroupsDiscover} content={children} />}
       {features.groupsDiscovery && <WrappedRoute path='/groups/popular' exact page={GroupsPendingPage} component={GroupsPopular} content={children} />}
       {features.groupsDiscovery && <WrappedRoute path='/groups/suggested' exact page={GroupsPendingPage} component={GroupsSuggested} content={children} />}
+      {features.groupsDiscovery && <WrappedRoute path='/groups/tags' exact page={GroupsPendingPage} component={GroupsTags} content={children} />}
+      {features.groupsDiscovery && <WrappedRoute path='/groups/discover/tags/:id' exact page={GroupsPendingPage} component={GroupsTag} content={children} />}
       {features.groupsPending && <WrappedRoute path='/groups/pending-requests' exact page={GroupsPendingPage} component={PendingGroupRequests} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/groups/:groupId/tags' exact page={GroupPage} component={GroupTags} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/groups/:groupId/tag/:id' exact page={GroupsPendingPage} component={GroupTagTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:groupId' exact page={GroupPage} component={GroupTimeline} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:groupId/members' exact page={GroupPage} component={GroupMembers} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:groupId/media' publicRoute={!authenticatedProfile} component={GroupGallery} page={GroupPage} content={children} />}
@@ -316,6 +326,8 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groups && <WrappedRoute path='/groups/:groupId/manage/requests' exact page={ManageGroupsPage} component={GroupMembershipRequests} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:groupId/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
 
+      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tags' exact page={GroupPage} component={GroupTagsSlug} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tag/:id' exact page={GroupsPendingPage} component={GroupTagTimelineSlug} content={children} />}
       {features.groups && <WrappedRoute path='/group/:groupSlug' exact page={GroupPage} component={GroupTimelineSlug} content={children} />}
       {features.groups && <WrappedRoute path='/group/:groupSlug/members' exact page={GroupPage} component={GroupMembersSlug} content={children} />}
       {features.groups && <WrappedRoute path='/group/:groupSlug/media' publicRoute={!authenticatedProfile} component={GroupGallerySlug} page={GroupPage} content={children} />}

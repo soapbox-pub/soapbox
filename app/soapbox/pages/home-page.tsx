@@ -43,7 +43,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
     <>
       <Layout.Main className='space-y-3 pt-3 dark:divide-gray-800 sm:pt-0'>
         {me && (
-          <Card variant='rounded' ref={composeBlock}>
+          <Card className='relative z-[1]' variant='rounded' ref={composeBlock}>
             <CardBody>
               <HStack alignItems='start' space={4}>
                 <Link to={`/@${acct}`}>

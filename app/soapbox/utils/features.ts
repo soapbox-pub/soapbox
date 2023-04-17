@@ -560,6 +560,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsSearch: v.software === TRUTHSOCIAL,
 
     /**
+     * Can see topics for Groups.
+     */
+    groupsTags: v.software === TRUTHSOCIAL,
+
+    /**
      * Can validate group names.
      */
     groupsValidation: v.software === TRUTHSOCIAL,
@@ -595,6 +600,14 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    /**
+     * Can sign in using username instead of e-mail address.
+     */
+    logInWithUsername: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ import {
   SignUpPanel,
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { useOwnAccount } from 'soapbox/hooks';
+import { useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { useGroup } from 'soapbox/hooks/api';
 import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
 import { Group } from 'soapbox/schemas';
@@ -24,6 +24,7 @@ const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
   media: { id: 'group.tabs.media', defaultMessage: 'Media' },
+  tags: { id: 'group.tabs.tags', defaultMessage: 'Topics' },
 });
 
 interface IGroupPage {
@@ -62,6 +63,7 @@ const BlockedBlankslate = ({ group }: { group: Group }) => (
 /** Page to display a group. */
 const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const intl = useIntl();
+  const features = useFeatures();
   const match = useRouteMatch();
   const me = useOwnAccount();
 
@@ -74,13 +76,29 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const isBlocked = group?.relationship?.blocked_by;
   const isPrivate = group?.locked;
 
-  const items = [
-    {
+  // if ((group as any) === false) {
+  //   return (
+  //     <MissingIndicator />
+  //   );
+  // }
+
+  const tabItems = useMemo(() => {
+    const items = [];
+    items.push({
       text: intl.formatMessage(messages.all),
       to: `/group/${group?.slug}`,
       name: '/group/:groupSlug',
-    },
-    {
+    });
+
+    if (features.groupsTags) {
+      items.push({
+        text: intl.formatMessage(messages.tags),
+        to: `/group/${group?.slug}/tags`,
+        name: '/group/:groupSlug/tags',
+      });
+    }
+
+    items.push({
       text: intl.formatMessage(messages.members),
       to: `/group/${group?.slug}/members`,
       name: '/group/:groupSlug/members',
@@ -89,9 +107,11 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
     {
       text: intl.formatMessage(messages.media),
       to: `/group/${group?.slug}/media`,
-      name: '/group/:groupSlug',
-    },
-  ];
+      name: '/group/:groupSlug/media',
+    });
+
+    return items;
+  }, [features.groupsTags]);
 
   const renderChildren = () => {
     if (!isMember && isPrivate) {
@@ -110,7 +130,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
           <GroupHeader group={group} />
 
           <Tabs
-            items={items}
+            items={tabItems}
             activeItem={match.path}
           />
 

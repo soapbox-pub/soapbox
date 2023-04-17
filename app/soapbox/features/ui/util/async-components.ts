@@ -562,12 +562,28 @@ export function GroupsSuggested() {
   return import(/* webpackChunkName: "features/groups" */'../../groups/suggested');
 }
 
+export function GroupsTag() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups/tag');
+}
+
+export function GroupsTags() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups/tags');
+}
+
 export function PendingGroupRequests() {
   return import(/* webpackChunkName: "features/groups" */'../../groups/pending-requests');
 }
 
 export function GroupMembers() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
+}
+
+export function GroupTags() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-tags');
+}
+
+export function GroupTagTimeline() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-tag-timeline');
 }
 
 export function GroupTimeline() {
