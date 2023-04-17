@@ -10,7 +10,7 @@ function useGroupTags(groupId: string) {
 
   const { entities, ...result } = useEntities<GroupTag>(
     [Entities.GROUP_TAGS, groupId],
-    () => api.get(`api/v1/truth/trends/groups/${groupId}/tags`),
+    () => api.get(`/api/v1/truth/trends/groups/${groupId}/tags`),
     { schema: groupTagSchema },
   );
 
