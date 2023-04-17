@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -153,6 +154,10 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         </Bundle>
       );
     }
+  } else if (status.spoiler_text.length === 0 && !status.quote && status.card?.group) {
+    media = (
+      <GroupLinkPreview card={status.card} />
+    );
   } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
     media = (
       <Card
