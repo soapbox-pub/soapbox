@@ -1469,7 +1469,6 @@
   "status.show_original": "Show original",
   "status.title": "Post Details",
   "status.title_direct": "Direct message",
-  "status.title_group": "Group Post Details",
   "status.translate": "Translate",
   "status.translated_from_with": "Translated from {lang} using {provider}",
   "status.unbookmark": "Remove bookmark",

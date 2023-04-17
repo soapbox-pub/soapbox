@@ -2,20 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
-import Icon from 'soapbox/components/icon';
 import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
+import StatusInfo from 'soapbox/components/statuses/status-info';
 import TranslateButton from 'soapbox/components/translate-button';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Attachment as AttachmentEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Attachment as AttachmentEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IDetailedStatus {
   status: StatusEntity
@@ -50,6 +50,35 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     onOpenCompareHistoryModal(status);
   };
 
+  const renderStatusInfo = () => {
+    if (status.group) {
+      return (
+        <div className='mb-4'>
+          <StatusInfo
+            avatarSize={42}
+            to={`/groups/${(status.group as Group).id}`}
+            icon={
+              <Icon
+                src={require('@tabler/icons/circles.svg')}
+                className='h-4 w-4 text-primary-600 dark:text-accent-blue'
+              />}
+            text={
+              <Text size='xs' theme='muted' weight='medium'>
+                <FormattedMessage
+                  id='status.group'
+                  defaultMessage='Posted in {group}'
+                  values={{ group: (
+                    <span dangerouslySetInnerHTML={{ __html: (status.group as Group).display_name_html }} />
+                  ) }}
+                />
+              </Text>
+            }
+          />
+        </div>
+      );
+    }
+  };
+
   const actualStatus = getActualStatus(status);
   if (!actualStatus) return null;
   const { account } = actualStatus;
@@ -75,14 +104,16 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   if (actualStatus.visibility === 'direct') {
-    statusTypeIcon = <Icon className='text-gray-700 dark:text-gray-600' src={require('@tabler/icons/mail.svg')} />;
+    statusTypeIcon = <Icon className='h-4 w-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/mail.svg')} />;
   } else if (actualStatus.visibility === 'private') {
-    statusTypeIcon = <Icon className='text-gray-700 dark:text-gray-600' src={require('@tabler/icons/lock.svg')} />;
+    statusTypeIcon = <Icon className='h-4 w-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/lock.svg')} />;
   }
 
   return (
     <div className='border-box'>
       <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
+        {renderStatusInfo()}
+
         <div className='mb-4'>
           <Account
             key={account.id}
