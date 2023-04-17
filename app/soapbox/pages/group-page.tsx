@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
+import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import { Column, Icon, Layout, Stack, Text } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
@@ -27,7 +28,7 @@ const messages = defineMessages({
 
 interface IGroupPage {
   params?: {
-    id?: string
+    groupId?: string
   }
   children: React.ReactNode
 }
@@ -64,7 +65,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const match = useRouteMatch();
   const me = useOwnAccount();
 
-  const id = params?.id || '';
+  const id = params?.groupId || '';
 
   const { group } = useGroup(id);
   const { accounts: pending } = useGroupMembershipRequests(id);
@@ -76,19 +77,19 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const items = [
     {
       text: intl.formatMessage(messages.all),
-      to: `/groups/${group?.id}`,
-      name: '/groups/:id',
+      to: group?.slug ? `/group/${group.slug}` : `/groups/${group?.id}`,
+      name: group?.slug ? '/group/:groupSlug' : '/groups/:groupId',
     },
     {
       text: intl.formatMessage(messages.members),
-      to: `/groups/${group?.id}/members`,
-      name: '/groups/:id/members',
+      to: group?.slug ? `/group/${group.slug}/members` : `/groups/${group?.id}/members`,
+      name: group?.slug ? '/group/:groupSlug/members' : '/groups/:groupId/members',
       count: pending.length,
     },
     {
       text: intl.formatMessage(messages.media),
-      to: `/groups/${group?.id}/media`,
-      name: '/groups/:id/media',
+      to: group?.slug ? `/group/${group.slug}/media` : `/groups/${group?.id}/media`,
+      name: group?.slug ? '/group/:groupSlug' : '/groups/:groupId/media',
     },
   ];
 
@@ -141,4 +142,4 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   );
 };
 
-export default GroupPage;
+export default GroupLookupHoc(GroupPage as any) as any;

@@ -1,8 +1,7 @@
 import React from 'react';
 
+import ColumnLoading from 'soapbox/features/ui/components/column-loading';
 import { useGroupLookup } from 'soapbox/hooks/api/groups/useGroupLookup';
-
-import { Spinner } from '../ui';
 
 interface IGroupLookup {
   params: {
@@ -10,11 +9,19 @@ interface IGroupLookup {
   }
 }
 
+interface IMaybeGroupLookup {
+  params?: {
+    groupSlug?: string
+    groupId?: string
+  }
+}
+
 function GroupLookupHoc(Component: React.ComponentType<{ params: { groupId: string } }>) {
   const GroupLookup: React.FC<IGroupLookup> = (props) => {
     const { entity: group } = useGroupLookup(props.params.groupSlug);
+
     if (!group) return (
-      <Spinner />
+      <ColumnLoading />
     );
 
     const newProps = {
@@ -31,7 +38,17 @@ function GroupLookupHoc(Component: React.ComponentType<{ params: { groupId: stri
     );
   };
 
-  return GroupLookup;
+  const MaybeGroupLookup: React.FC<IMaybeGroupLookup> = (props) => {
+    const { params } = props;
+
+    if (params?.groupId) {
+      return <Component {...props} params={{ ...params, groupId: params.groupId }} />;
+    } else {
+      return <GroupLookup {...props} params={{ ...params, groupSlug: params?.groupSlug || '' }} />;
+    }
+  };
+
+  return MaybeGroupLookup;
 }
 
 export default GroupLookupHoc;

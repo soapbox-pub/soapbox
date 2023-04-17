@@ -14,7 +14,7 @@ import ColumnForbidden from '../ui/components/column-forbidden';
 
 import type { Account as AccountEntity } from 'soapbox/schemas';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 const messages = defineMessages({
   heading: { id: 'column.group_pending_requests', defaultMessage: 'Pending requests' },
@@ -54,7 +54,7 @@ interface IGroupMembershipRequests {
 }
 
 const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params }) => {
-  const id = params?.id;
+  const id = params?.groupId;
   const intl = useIntl();
 
   const { group } = useGroup(id);

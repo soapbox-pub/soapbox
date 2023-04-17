@@ -16,13 +16,13 @@ import GroupMemberListItem from './components/group-member-list-item';
 import type { Group } from 'soapbox/types/entities';
 
 interface IGroupMembers {
-  params: { id: string }
+  params: { groupId: string }
 }
 
 export const MAX_ADMIN_COUNT = 5;
 
 const GroupMembers: React.FC<IGroupMembers> = (props) => {
-  const groupId = props.params.id;
+  const { groupId } = props.params;
 
   const features = useFeatures();
 

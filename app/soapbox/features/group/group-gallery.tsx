@@ -16,7 +16,7 @@ import type { Attachment, Status } from 'soapbox/types/entities';
 const GroupGallery = () => {
   const dispatch = useAppDispatch();
 
-  const { id: groupId } = useParams<{ id: string }>();
+  const { groupId } = useParams<{ groupId: string }>();
 
   const { group, isLoading: groupIsLoading } = useGroup(groupId);
 

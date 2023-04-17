@@ -12,7 +12,7 @@ import { useGroup } from 'soapbox/hooks/api';
 
 import Timeline from '../ui/components/timeline';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 interface IGroupTimeline {
   params: RouteParams
@@ -22,7 +22,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   const account = useOwnAccount();
   const dispatch = useAppDispatch();
 
-  const groupId = props.params.id;
+  const { groupId } = props.params;
 
   const { group } = useGroup(groupId);
 

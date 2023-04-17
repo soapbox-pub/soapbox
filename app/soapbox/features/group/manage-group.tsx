@@ -14,7 +14,7 @@ import { TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 const messages = defineMessages({
   heading: { id: 'column.manage_group', defaultMessage: 'Manage group' },
@@ -35,7 +35,7 @@ interface IManageGroup {
 }
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
-  const { id } = params;
+  const { groupId: id } = params;
 
   const backend = useBackend();
   const dispatch = useAppDispatch();
