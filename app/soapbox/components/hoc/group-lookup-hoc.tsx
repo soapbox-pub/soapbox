@@ -3,6 +3,8 @@ import React from 'react';
 import ColumnLoading from 'soapbox/features/ui/components/column-loading';
 import { useGroupLookup } from 'soapbox/hooks/api/groups/useGroupLookup';
 
+import { Layout } from '../ui';
+
 interface IGroupLookup {
   params: {
     groupSlug: string
@@ -21,7 +23,13 @@ function GroupLookupHoc(Component: React.ComponentType<{ params: { groupId: stri
     const { entity: group } = useGroupLookup(props.params.groupSlug);
 
     if (!group) return (
-      <ColumnLoading />
+      <>
+        <Layout.Main>
+          <ColumnLoading />
+        </Layout.Main>
+
+        <Layout.Aside />
+      </>
     );
 
     const newProps = {
