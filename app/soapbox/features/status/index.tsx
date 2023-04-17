@@ -119,6 +119,7 @@ type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = {
   statusId: string
   groupId?: string
+  groupSlug?: string
 };
 
 interface IThread {
@@ -517,8 +518,10 @@ const Thread: React.FC<IThread> = (props) => {
     children.push(...renderChildren(descendantsIds).toArray());
   }
 
-  if (status.group && typeof status.group === 'object' && !props.params.groupId) {
-    return <Redirect to={`/groups/${status.group.id}/posts/${props.params.statusId}`} />;
+  if (status.group && typeof status.group === 'object') {
+    if (status.group.slug && !props.params.groupSlug) {
+      return <Redirect to={`/group/${status.group.slug}/posts/${props.params.statusId}`} />;
+    }
   }
 
   const titleMessage = () => {

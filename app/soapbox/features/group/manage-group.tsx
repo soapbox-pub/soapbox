@@ -77,12 +77,12 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
       },
     }));
 
-  const navigateToEdit = () => history.push(`/groups/${id}/manage/edit`);
-  const navigateToPending = () => history.push(`/groups/${id}/manage/requests`);
-  const navigateToBlocks = () => history.push(`/groups/${id}/manage/blocks`);
+  const navigateToEdit = () => history.push(`/group/${group.slug}/manage/edit`);
+  const navigateToPending = () => history.push(`/group/${group.slug}/manage/requests`);
+  const navigateToBlocks = () => history.push(`/group/${group.slug}/manage/blocks`);
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}`}>
+    <Column label={intl.formatMessage(messages.heading)} backHref={`/group/${group.slug}`}>
       <CardBody className='space-y-4'>
         {isOwner && (
           <>

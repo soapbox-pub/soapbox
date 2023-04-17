@@ -58,7 +58,10 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         itemClassName='py-3 last:pb-0'
         prepend={(pendingCount > 0) && (
           <div className={clsx('py-3', { 'border-b border-gray-200 dark:border-gray-800': members.length })}>
-            <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pendingCount} />
+            <PendingItemsRow
+              to={`/group/${group?.slug}/manage/requests`}
+              count={pendingCount}
+            />
           </div>
         )}
       >

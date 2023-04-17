@@ -77,19 +77,19 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const items = [
     {
       text: intl.formatMessage(messages.all),
-      to: group?.slug ? `/group/${group.slug}` : `/groups/${group?.id}`,
-      name: group?.slug ? '/group/:groupSlug' : '/groups/:groupId',
+      to: `/group/${group?.slug}`,
+      name: '/group/:groupSlug',
     },
     {
       text: intl.formatMessage(messages.members),
-      to: group?.slug ? `/group/${group.slug}/members` : `/groups/${group?.id}/members`,
-      name: group?.slug ? '/group/:groupSlug/members' : '/groups/:groupId/members',
+      to: `/group/${group?.slug}/members`,
+      name: '/group/:groupSlug/members',
       count: pending.length,
     },
     {
       text: intl.formatMessage(messages.media),
-      to: group?.slug ? `/group/${group.slug}/media` : `/groups/${group?.id}/media`,
-      name: group?.slug ? '/group/:groupSlug' : '/groups/:groupId/media',
+      to: `/group/${group?.slug}/media`,
+      name: '/group/:groupSlug',
     },
   ];
 
