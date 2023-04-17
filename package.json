@@ -61,7 +61,6 @@
     "@reach/popover": "^0.18.0",
     "@reach/rect": "^0.18.0",
     "@reach/tabs": "^0.18.0",
-    "@reach/tooltip": "^0.18.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@sentry/browser": "^7.37.2",
     "@sentry/react": "^7.37.2",
