@@ -73,7 +73,7 @@ const Ad: React.FC<IAd> = ({ ad }) => {
 
   return (
     <div className='relative'>
-      <Card className='py-6 sm:p-5' variant='rounded'>
+      <Card className='py-4' variant='rounded'>
         <Stack space={4}>
           <HStack alignItems='center' space={3}>
             <Avatar src={instance.thumbnail} size={42} />
