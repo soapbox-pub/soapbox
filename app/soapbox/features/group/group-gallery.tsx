@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import LoadMore from 'soapbox/components/load-more';
@@ -13,10 +12,14 @@ import MediaItem from '../account-gallery/components/media-item';
 
 import type { Attachment, Status } from 'soapbox/types/entities';
 
-const GroupGallery = () => {
-  const dispatch = useAppDispatch();
+interface IGroupGallery {
+  params: { groupId: string }
+}
 
-  const { groupId } = useParams<{ groupId: string }>();
+const GroupGallery: React.FC<IGroupGallery> = (props) => {
+  const { groupId } = props.params;
+
+  const dispatch = useAppDispatch();
 
   const { group, isLoading: groupIsLoading } = useGroup(groupId);
 
@@ -24,6 +27,7 @@ const GroupGallery = () => {
     entities: statuses,
     fetchNextPage,
     isLoading,
+    isFetching,
     hasNextPage,
   } = useGroupMedia(groupId);
 
@@ -45,21 +49,25 @@ const GroupGallery = () => {
 
   if (isLoading || groupIsLoading) {
     return (
-      <Column>
-        <Spinner />
+      <Column transparent withHeader={false}>
+        <div className='pt-6'>
+          <Spinner />
+        </div>
       </Column>
     );
   }
 
   if (!group) {
     return (
-      <MissingIndicator />
+      <div className='pt-6'>
+        <MissingIndicator nested />
+      </div>
     );
   }
 
   return (
     <Column label={group.display_name} transparent withHeader={false}>
-      <div role='feed' className='grid grid-cols-2 gap-2 sm:grid-cols-3'>
+      <div role='feed' className='mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3'>
         {attachments.map((attachment) => (
           <MediaItem
             key={`${attachment.status.id}+${attachment.id}`}
@@ -73,16 +81,10 @@ const GroupGallery = () => {
             <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
           </div>
         )}
-
-        {(hasNextPage && !isLoading) && (
-          <LoadMore className='my-auto' visible={!isLoading} onClick={fetchNextPage} />
-        )}
       </div>
 
-      {isLoading && (
-        <div className='slist__append'>
-          <Spinner />
-        </div>
+      {hasNextPage && (
+        <LoadMore className='mt-4' disabled={isFetching} onClick={fetchNextPage} />
       )}
     </Column>
   );
