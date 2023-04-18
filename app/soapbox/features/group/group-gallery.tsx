@@ -27,6 +27,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
     entities: statuses,
     fetchNextPage,
     isLoading,
+    isFetching,
     hasNextPage,
   } = useGroupMedia(groupId);
 
@@ -48,21 +49,25 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
 
   if (isLoading || groupIsLoading) {
     return (
-      <Column>
-        <Spinner />
+      <Column transparent withHeader={false}>
+        <div className='pt-6'>
+          <Spinner />
+        </div>
       </Column>
     );
   }
 
   if (!group) {
     return (
-      <MissingIndicator />
+      <div className='pt-6'>
+        <MissingIndicator nested />
+      </div>
     );
   }
 
   return (
     <Column label={group.display_name} transparent withHeader={false}>
-      <div role='feed' className='grid grid-cols-2 gap-2 sm:grid-cols-3'>
+      <div role='feed' className='mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3'>
         {attachments.map((attachment) => (
           <MediaItem
             key={`${attachment.status.id}+${attachment.id}`}
@@ -76,16 +81,10 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
             <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
           </div>
         )}
-
-        {(hasNextPage && !isLoading) && (
-          <LoadMore className='my-auto' visible={!isLoading} onClick={fetchNextPage} />
-        )}
       </div>
 
-      {isLoading && (
-        <div className='slist__append'>
-          <Spinner />
-        </div>
+      {hasNextPage && (
+        <LoadMore className='mt-4' disabled={isFetching} onClick={fetchNextPage} />
       )}
     </Column>
   );
