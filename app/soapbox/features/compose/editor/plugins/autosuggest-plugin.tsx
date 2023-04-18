@@ -37,17 +37,17 @@ import { $createEmojiNode } from '../nodes/emoji-node';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
-export type QueryMatch = {
+type QueryMatch = {
   leadOffset: number
   matchingString: string
 };
 
-export type Resolution = {
+type Resolution = {
   match: QueryMatch
   getRect: () => DOMRect
 };
 
-export type MenuRenderFn = (
+type MenuRenderFn = (
   anchorElementRef: MutableRefObject<HTMLElement | null>,
 ) => ReactPortal | JSX.Element | null;
 
@@ -102,7 +102,7 @@ const startTransition = (callback: () => void) => {
 };
 
 // Got from https://stackoverflow.com/a/42543908/2013580
-export const getScrollParent = (
+const getScrollParent = (
   element: HTMLElement,
   includeHidden: boolean,
 ): HTMLElement | HTMLBodyElement => {
@@ -142,7 +142,7 @@ const isTriggerVisibleInNearestScrollContainer = (
 };
 
 // Reposition the menu on scroll, window resize, and element resize.
-export const useDynamicPositioning = (
+const useDynamicPositioning = (
   resolution: Resolution | null,
   targetElement: HTMLElement | null,
   onReposition: () => void,
@@ -269,13 +269,13 @@ const useMenuAnchorRef = (
   return anchorElementRef;
 };
 
-export type AutosuggestPluginProps = {
+type AutosuggestPluginProps = {
   composeId: string
   suggestionsHidden: boolean
   setSuggestionsHidden: (value: boolean) => void
 };
 
-export const AutosuggestPlugin = ({
+const AutosuggestPlugin = ({
   composeId,
   suggestionsHidden,
   setSuggestionsHidden,
@@ -469,3 +469,5 @@ export const AutosuggestPlugin = ({
     />
   );
 };
+
+export default AutosuggestPlugin;

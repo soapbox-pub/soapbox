@@ -275,6 +275,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
           eventDiscussion={!!event}
           autoFocus={shouldAutoFocus}
           hasPoll={hasPoll}
+          handleSubmit={handleSubmit}
           onFocus={handleComposeFocus}
           onPaste={onPaste}
         />

@@ -14,16 +14,16 @@ import { $createMentionNode, MentionNode } from '../nodes/mention-node';
 
 import type { TextNode } from 'lexical';
 
-export const MENTION_REGEX = new RegExp('(^|$|(?:^|\\s))([@])([a-z\\d_-]+(?:@[^@\\s]+)?)', 'i');
+const MENTION_REGEX = new RegExp('(^|$|(?:^|\\s))([@])([a-z\\d_-]+(?:@[^@\\s]+)?)', 'i');
 
-export const getMentionMatch = (text: string) => {
+const getMentionMatch = (text: string) => {
   const matchArr = MENTION_REGEX.exec(text);
 
   if (!matchArr) return null;
   return matchArr;
 };
 
-export const MentionPlugin = (): JSX.Element | null => {
+const MentionPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -58,3 +58,5 @@ export const MentionPlugin = (): JSX.Element | null => {
 
   return null;
 };
+
+export default MentionPlugin;

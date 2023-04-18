@@ -242,6 +242,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           className='block w-full rounded-md border-gray-400 bg-white px-3 py-2 text-base text-gray-900 placeholder:text-gray-600 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-1 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm'
           composeId='compose-event-modal'
           placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
+          handleSubmit={handleSubmit}
         />
       </FormGroup>
       <FormGroup

@@ -9,7 +9,6 @@ LICENSE file in the /app/soapbox/features/compose/editor directory.
 import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
@@ -20,32 +19,19 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import clsx from 'clsx';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { setEditorState } from 'soapbox/actions/compose';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
 import nodes from './nodes';
-import { AutosuggestPlugin } from './plugins/autosuggest-plugin';
+import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
-import { MentionPlugin } from './plugins/mention-plugin';
+import MentionPlugin from './plugins/mention-plugin';
+import StatePlugin from './plugins/state-plugin';
 import { TO_WYSIWYG_TRANSFORMERS } from './transformers';
-
-const StatePlugin = ({ composeId }: { composeId: string }) => {
-  const dispatch = useAppDispatch();
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    editor.registerUpdateListener(({ editorState }) => {
-      dispatch(setEditorState(composeId, editorState.isEmpty() ? null : JSON.stringify(editorState.toJSON())));
-    });
-  }, [editor]);
-
-  return null;
-};
 
 interface IComposeEditor {
   className?: string
@@ -54,6 +40,7 @@ interface IComposeEditor {
   eventDiscussion?: boolean
   hasPoll?: boolean
   autoFocus?: boolean
+  handleSubmit?: () => void
   onFocus?: React.FocusEventHandler<HTMLDivElement>
   onPaste?: (files: FileList) => void
   placeholder?: JSX.Element | string
@@ -66,6 +53,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
   eventDiscussion,
   hasPoll,
   autoFocus,
+  handleSubmit,
   onFocus,
   onPaste,
   placeholder,
@@ -154,7 +142,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
       <div className={clsx('lexical relative', className)} data-markup>
         <RichTextPlugin
           contentEditable={
-            <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
+            <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste} onSubmit={() => alert('xd')}>
               <ContentEditable
                 className={clsx('mr-4 outline-none transition-[min-height] motion-reduce:transition-none', {
                   'min-fh-[40px]': condensed,
@@ -193,7 +181,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
             <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
           </>
         )}
-        <StatePlugin composeId={composeId} />
+        <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
       </div>
     </LexicalComposer>
   );
