@@ -17,7 +17,7 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
   const navigateToGroup = () => history.push(`/groups/${group.id}`);
 
   return (
-    <Stack className='overflow-hidden rounded-lg border border-gray-300 text-center'>
+    <Stack className='cursor-default overflow-hidden rounded-lg border border-gray-300 text-center'>
       <div
         className='-mb-8 h-32 w-full bg-center'
         style={{ backgroundImage: `url(${group.header})` }}
