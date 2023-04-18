@@ -14,7 +14,7 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
   const { group } = card;
   if (!group) return null;
 
-  const navigateToGroup = () => history.push(`/groups/${group.id}`);
+  const navigateToGroup = () => history.push(`/group/${group.slug}`);
 
   return (
     <Stack className='cursor-default overflow-hidden rounded-lg border border-gray-300 text-center dark:border-gray-800'>
