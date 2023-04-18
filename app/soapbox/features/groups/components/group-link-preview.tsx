@@ -17,14 +17,14 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
   const navigateToGroup = () => history.push(`/groups/${group.id}`);
 
   return (
-    <Stack className='cursor-default overflow-hidden rounded-lg border border-gray-300 text-center'>
+    <Stack className='cursor-default overflow-hidden rounded-lg border border-gray-300 text-center dark:border-gray-800'>
       <div
         className='-mb-8 h-32 w-full bg-center'
         style={{ backgroundImage: `url(${group.header})` }}
       />
 
       <Avatar
-        className='mx-auto border-4 border-white'
+        className='mx-auto border-4 border-white dark:border-primary-900'
         src={group.avatar}
         size={64}
       />
