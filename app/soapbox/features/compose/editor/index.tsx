@@ -6,7 +6,7 @@ Copyright (c) Meta Platforms, Inc. and affiliates.
 This source code is licensed under the MIT license found in the
 LICENSE file in the /app/soapbox/features/compose/editor directory.
 */
-import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -32,6 +32,7 @@ import DraggableBlockPlugin from './plugins/draggable-block-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import { MentionPlugin } from './plugins/mention-plugin';
+import { TO_WYSIWYG_TRANSFORMERS } from './transformers';
 
 const StatePlugin = ({ composeId }: { composeId: string }) => {
   const dispatch = useAppDispatch();
@@ -108,7 +109,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 
         return function() {
           if (compose.content_type === 'text/markdown') {
-            $convertFromMarkdownString(compose.text, TRANSFORMERS);
+            $convertFromMarkdownString(compose.text, TO_WYSIWYG_TRANSFORMERS);
           } else {
             const paragraph = $createParagraphNode();
             const textNode = $createTextNode(compose.text);
@@ -175,7 +176,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         {autoFocus && <AutoFocusPlugin />}
         <OnChangePlugin onChange={(_, editor) => {
           editor.update(() => {
-            if (editorStateRef) (editorStateRef as any).current = $convertToMarkdownString(TRANSFORMERS);
+            if (editorStateRef) (editorStateRef as any).current = $convertToMarkdownString(TO_WYSIWYG_TRANSFORMERS);
           });
         }}
         />

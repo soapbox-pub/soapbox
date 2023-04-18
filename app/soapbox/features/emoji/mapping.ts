@@ -1,11 +1,6 @@
 import data, { EmojiData } from './data';
 
 const stripLeadingZeros = /^0+/;
-
-function replaceAll(str: string, find: string, replace: string) {
-  return str.replace(new RegExp(find, 'g'), replace);
-}
-
 interface UnicodeMap {
   [s: string]: {
     unified: string
@@ -80,7 +75,7 @@ const stripcodes = (unified: string, native: string) => {
   if (unified.includes('200d') && !(unified in blacklist)) {
     return stripped;
   } else {
-    return replaceAll(stripped, '-fe0f', '');
+    return stripped.replaceAll('-fe0f', '');
   }
 };
 
