@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import LoadMore from 'soapbox/components/load-more';
@@ -13,10 +12,14 @@ import MediaItem from '../account-gallery/components/media-item';
 
 import type { Attachment, Status } from 'soapbox/types/entities';
 
-const GroupGallery = () => {
-  const dispatch = useAppDispatch();
+interface IGroupGallery {
+  params: { groupId: string }
+}
 
-  const { groupId } = useParams<{ groupId: string }>();
+const GroupGallery: React.FC<IGroupGallery> = (props) => {
+  const { groupId } = props.params;
+
+  const dispatch = useAppDispatch();
 
   const { group, isLoading: groupIsLoading } = useGroup(groupId);
 
