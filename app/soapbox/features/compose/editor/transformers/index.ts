@@ -57,6 +57,28 @@ export const UNESCAPE_ITALIC_UNDERSCORE: TextMatchTransformer = {
   type: 'text-match',
 };
 
+const UNESCAPE_ITALIC_STAR_IMPORT_REGEX =
+  /([\*])(?<!(?:\1|\w).)(?![_*\s])(.*?[^_*\s])(?=\1)([\*])(?!\w|\3)/;
+const UNESCAPE_ITALIC_STAR_REGEX =
+  /([\*])(?<!(?:\1|\w).)(?![_*\s])(.*?[^_*\s])(?=\1)([\*])(?!\w|\3)/;
+
+export const UNESCAPE_ITALIC_STAR: TextMatchTransformer = {
+  dependencies: [],
+  export: () => null,
+  importRegExp: UNESCAPE_ITALIC_STAR_IMPORT_REGEX,
+  regExp: UNESCAPE_ITALIC_STAR_REGEX,
+  replace: (textNode, _) => {
+    const notEscapedStarRegex = /(?<![\\]{1})[\*]{1}/g;
+    const textContent = replaceUnescapedChars(textNode.getTextContent(), [
+      notEscapedStarRegex,
+    ]);
+    textNode.setTextContent(replaceEscapedChars(textContent));
+    textNode.setFormat('italic');
+  },
+  trigger: '*',
+  type: 'text-match',
+};
+
 const UNESCAPE_BACKSLASH_IMPORT_REGEX = /(\\(?:\\\\)?).*?\1*[\~\*\_\{\}\[\]\(\)\#\+\-\.\!]/;
 const UNESCAPE_BACKSLASH_REGEX = /(\\(?:\\\\)?).*?\1*[\~\*\_\{\}\[\]\(\)\#\+\-\.\!]$/;
 
@@ -82,7 +104,7 @@ export const TO_WYSIWYG_TRANSFORMERS = [
   BOLD_UNDERSCORE,
   STRIKETHROUGH,
   UNESCAPE_ITALIC_UNDERSCORE,
-  // UNESCAPE_ITALIC_STAR,
+  UNESCAPE_ITALIC_STAR,
   INLINE_CODE,
   HEADING,
   QUOTE,
