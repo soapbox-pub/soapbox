@@ -16,13 +16,13 @@ import GroupMemberListItem from './components/group-member-list-item';
 import type { Group } from 'soapbox/types/entities';
 
 interface IGroupMembers {
-  params: { id: string }
+  params: { groupId: string }
 }
 
 export const MAX_ADMIN_COUNT = 5;
 
 const GroupMembers: React.FC<IGroupMembers> = (props) => {
-  const groupId = props.params.id;
+  const { groupId } = props.params;
 
   const features = useFeatures();
 
@@ -58,7 +58,10 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         itemClassName='py-3 last:pb-0'
         prepend={(pendingCount > 0) && (
           <div className={clsx('py-3', { 'border-b border-gray-200 dark:border-gray-800': members.length })}>
-            <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pendingCount} />
+            <PendingItemsRow
+              to={`/group/${group?.slug}/manage/requests`}
+              count={pendingCount}
+            />
           </div>
         )}
       >

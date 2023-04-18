@@ -80,7 +80,7 @@ const GroupPopover = (props: IGroupPopoverContainer) => {
           </Stack>
 
           <div className='px-4 pb-4'>
-            <Link to={`/groups/${group.id}`}>
+            <Link to={`/group/${group.slug}`}>
               <Button type='button' theme='secondary' block>
                 {intl.formatMessage(messages.action)}
               </Button>

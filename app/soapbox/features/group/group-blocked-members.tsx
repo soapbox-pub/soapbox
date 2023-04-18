@@ -12,7 +12,7 @@ import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 const messages = defineMessages({
   heading: { id: 'column.group_blocked_members', defaultMessage: 'Banned Members' },
@@ -62,7 +62,7 @@ const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const id = params?.id;
+  const id = params?.groupId;
 
   const { group } = useGroup(id);
   const accountIds = useAppSelector((state) => state.user_lists.group_blocks.get(id)?.items);
@@ -86,7 +86,7 @@ const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {
   const emptyMessage = <FormattedMessage id='empty_column.group_blocks' defaultMessage="The group hasn't banned any users yet." />;
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}/manage`}>
+    <Column label={intl.formatMessage(messages.heading)} backHref={`/group/${group.slug}/manage`}>
       <ScrollableList
         scrollKey='group_blocks'
         emptyMessage={emptyMessage}

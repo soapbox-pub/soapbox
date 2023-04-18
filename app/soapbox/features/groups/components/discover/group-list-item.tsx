@@ -21,7 +21,7 @@ const GroupListItem = (props: IGroup) => {
       alignItems='center'
       justifyContent='between'
     >
-      <Link key={group.id} to={`/groups/${group.id}`}>
+      <Link key={group.id} to={`/group/${group.slug}`}>
         <HStack alignItems='center' space={2}>
           <GroupAvatar
             group={group}

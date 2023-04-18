@@ -13,11 +13,11 @@ import GroupTagListItem from './components/group-tag-list-item';
 import type { Group } from 'soapbox/types/entities';
 
 interface IGroupTopics {
-  params: { id: string }
+  params: { groupId: string }
 }
 
 const GroupTopics: React.FC<IGroupTopics> = (props) => {
-  const groupId = props.params.id;
+  const { groupId } = props.params;
 
   const { group, isFetching: isFetchingGroup } = useGroup(groupId);
   const { tags, isFetching: isFetchingTags, hasNextPage, fetchNextPage } = useGroupTags(groupId);

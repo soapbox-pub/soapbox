@@ -253,7 +253,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          to={`/groups/${group.id}`}
+          to={`/group/${group.slug}`}
           icon={<Icon src={require('@tabler/icons/circles.svg')} className='h-4 w-4 text-primary-600 dark:text-accent-blue' />}
           text={
             <Text size='xs' theme='muted' weight='medium'>

@@ -59,4 +59,5 @@ function useEntity<TEntity extends Entity>(
 
 export {
   useEntity,
+  type UseEntityOpts,
 };

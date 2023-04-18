@@ -20,6 +20,8 @@ import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
+import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
+import withHoc from 'soapbox/components/hoc/with-hoc';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
@@ -140,6 +142,16 @@ import { WrappedRoute } from './util/react-router-helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
+
+const GroupTagsSlug = withHoc(GroupTags as any, GroupLookupHoc);
+const GroupTagTimelineSlug = withHoc(GroupTagTimeline as any, GroupLookupHoc);
+const GroupTimelineSlug = withHoc(GroupTimeline as any, GroupLookupHoc);
+const GroupMembersSlug = withHoc(GroupMembers as any, GroupLookupHoc);
+const GroupGallerySlug = withHoc(GroupGallery as any, GroupLookupHoc);
+const ManageGroupSlug = withHoc(ManageGroup as any, GroupLookupHoc);
+const EditGroupSlug = withHoc(EditGroup as any, GroupLookupHoc);
+const GroupBlockedMembersSlug = withHoc(GroupBlockedMembers as any, GroupLookupHoc);
+const GroupMembershipRequestsSlug = withHoc(GroupMembershipRequests as any, GroupLookupHoc);
 
 const EmptyPage = HomePage;
 
@@ -303,16 +315,27 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groupsDiscovery && <WrappedRoute path='/groups/tags' exact page={GroupsPendingPage} component={GroupsTags} content={children} />}
       {features.groupsDiscovery && <WrappedRoute path='/groups/discover/tags/:id' exact page={GroupsPendingPage} component={GroupsTag} content={children} />}
       {features.groupsPending && <WrappedRoute path='/groups/pending-requests' exact page={GroupsPendingPage} component={PendingGroupRequests} content={children} />}
-      {features.groupsTags && <WrappedRoute path='/groups/:id/tags' exact page={GroupPage} component={GroupTags} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/groups/:groupId/tags' exact page={GroupPage} component={GroupTags} content={children} />}
       {features.groupsTags && <WrappedRoute path='/groups/:groupId/tag/:id' exact page={GroupsPendingPage} component={GroupTagTimeline} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id' exact page={GroupPage} component={GroupTimeline} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id/members' exact page={GroupPage} component={GroupMembers} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id/media' publicRoute={!authenticatedProfile} component={GroupGallery} page={GroupPage} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id/manage' exact page={ManageGroupsPage} component={ManageGroup} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id/manage/edit' exact page={ManageGroupsPage} component={EditGroup} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id/manage/blocks' exact page={ManageGroupsPage} component={GroupBlockedMembers} content={children} />}
-      {features.groups && <WrappedRoute path='/groups/:id/manage/requests' exact page={ManageGroupsPage} component={GroupMembershipRequests} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId' exact page={GroupPage} component={GroupTimeline} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/members' exact page={GroupPage} component={GroupMembers} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/media' publicRoute={!authenticatedProfile} component={GroupGallery} page={GroupPage} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/manage' exact page={ManageGroupsPage} component={ManageGroup} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/manage/edit' exact page={ManageGroupsPage} component={EditGroup} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/manage/blocks' exact page={ManageGroupsPage} component={GroupBlockedMembers} content={children} />}
+      {features.groups && <WrappedRoute path='/groups/:groupId/manage/requests' exact page={ManageGroupsPage} component={GroupMembershipRequests} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:groupId/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
+
+      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tags' exact page={GroupPage} component={GroupTagsSlug} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tag/:id' exact page={GroupsPendingPage} component={GroupTagTimelineSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug' exact page={GroupPage} component={GroupTimelineSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/members' exact page={GroupPage} component={GroupMembersSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/media' publicRoute={!authenticatedProfile} component={GroupGallerySlug} page={GroupPage} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/manage' exact page={ManageGroupsPage} component={ManageGroupSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/manage/edit' exact page={ManageGroupsPage} component={EditGroupSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/manage/blocks' exact page={ManageGroupsPage} component={GroupBlockedMembersSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/manage/requests' exact page={ManageGroupsPage} component={GroupMembershipRequestsSlug} content={children} />}
+      {features.groups && <WrappedRoute path='/group/:groupSlug/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
 
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
