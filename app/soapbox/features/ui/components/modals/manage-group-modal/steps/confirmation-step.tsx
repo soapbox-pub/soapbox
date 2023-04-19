@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
+import copy from 'soapbox/utils/copy';
 
 import type { Group } from 'soapbox/schemas';
 
@@ -10,11 +11,7 @@ interface IConfirmationStep {
 }
 
 const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
-  const handleCopyLink = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(group.uri);
-    }
-  };
+  const handleCopyLink = () => copy(group.uri);
 
   const handleShare = () => {
     navigator.share({
@@ -90,9 +87,11 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
           </Button>
         )}
 
-        <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/link.svg')} className='text-primary-600'>
-          <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
-        </Button>
+        {group.uri && (
+          <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/link.svg')} className='text-primary-600'>
+            <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
+          </Button>
+        )}
       </HStack>
     </Stack>
   );
