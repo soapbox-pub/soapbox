@@ -1,7 +1,8 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
+import toast from 'soapbox/toast';
 import copy from 'soapbox/utils/copy';
 
 import type { Group } from 'soapbox/schemas';
@@ -10,8 +11,18 @@ interface IConfirmationStep {
   group: Group
 }
 
+const messages = defineMessages({
+  copied: { id: 'copy.success', defaultMessage: 'Copied to clipboard!' },
+});
+
 const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
-  const handleCopyLink = () => copy(group.uri);
+  const intl = useIntl();
+
+  const handleCopyLink = () => {
+    copy(`${window.location.origin}/group/${group.slug}`, () => {
+      toast.success(intl.formatMessage(messages.copied));
+    });
+  };
 
   const handleShare = () => {
     navigator.share({
@@ -87,11 +98,9 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
           </Button>
         )}
 
-        {group.uri && (
-          <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/link.svg')} className='text-primary-600'>
-            <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
-          </Button>
-        )}
+        <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/link.svg')} className='text-primary-600'>
+          <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
+        </Button>
       </HStack>
     </Stack>
   );
