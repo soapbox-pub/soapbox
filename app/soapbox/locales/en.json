@@ -1469,6 +1469,7 @@
   "status.reblog": "Repost",
   "status.reblog_private": "Repost to original audience",
   "status.reblogged_by": "{name} reposted",
+  "status.reblogged_by_with_group": "{name} reposted from {group}",
   "status.reblogs.empty": "No one has reposted this post yet. When someone does, they will show up here.",
   "status.redraft": "Delete & re-draft",
   "status.remove_account_from_group": "Remove account from group",
