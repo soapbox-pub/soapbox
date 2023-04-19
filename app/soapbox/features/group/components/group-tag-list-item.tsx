@@ -41,13 +41,16 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
   const isOwner = group.relationship?.role === GroupRoles.OWNER;
 
   const toggleVisibility = () => {
+    const isHiding = tag.visible;
+
     updateGroupTag({
-      group_tag_type: tag.visible ? 'hidden' : 'normal',
+      group_tag_type: isHiding ? 'hidden' : 'normal',
     }, {
       onSuccess() {
-        const entity = {
+        const entity: GroupTag = {
           ...tag,
           visible: !tag.visible,
+          pinned: isHiding ? false : tag.pinned, // unpin if we're hiding
         };
         dispatch(importEntities([entity], Entities.GROUP_TAGS));
 
