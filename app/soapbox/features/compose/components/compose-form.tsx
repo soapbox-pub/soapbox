@@ -319,7 +319,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
           <Stack space={4} className='compose-form__modifiers'>
             <UploadForm composeId={id} />
             <PollForm composeId={id} />
-            <ScheduleFormContainer composeId={id} />
 
             <SpoilerInput
               composeId={id}
@@ -328,6 +327,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
               onSuggestionSelected={onSpoilerSuggestionSelected}
               ref={spoilerTextRef}
             />
+
+            <ScheduleFormContainer composeId={id} />
           </Stack>
         }
       </AutosuggestTextarea>
