@@ -28,6 +28,7 @@ const groupSchema = z.object({
   members_count: z.number().catch(0),
   note: z.string().transform(note => note === '<p></p>' ? '' : note).catch(''),
   relationship: groupRelationshipSchema.nullable().catch(null), // Dummy field to be overwritten later
+  slug: z.string().catch(''), // TruthSocial
   statuses_visibility: z.string().catch('public'),
   tags: z.array(groupTagSchema).catch([]),
   uri: z.string().catch(''),

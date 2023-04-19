@@ -26,11 +26,11 @@ const messages = defineMessages({
 
 interface IEditGroup {
   params: {
-    id: string
+    groupId: string
   }
 }
 
-const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
+const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
   const intl = useIntl();
   const instance = useInstance();
 

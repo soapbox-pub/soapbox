@@ -52,7 +52,6 @@ import type {
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
-  titleGroup: { id: 'status.title_group', defaultMessage: 'Group Post Details' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
@@ -119,6 +118,7 @@ type DisplayMedia = 'default' | 'hide_all' | 'show_all';
 type RouteParams = {
   statusId: string
   groupId?: string
+  groupSlug?: string
 };
 
 interface IThread {
@@ -517,13 +517,15 @@ const Thread: React.FC<IThread> = (props) => {
     children.push(...renderChildren(descendantsIds).toArray());
   }
 
-  if (status.group && typeof status.group === 'object' && !props.params.groupId) {
-    return <Redirect to={`/groups/${status.group.id}/posts/${props.params.statusId}`} />;
+  if (status.group && typeof status.group === 'object') {
+    if (status.group.slug && !props.params.groupSlug) {
+      return <Redirect to={`/group/${status.group.slug}/posts/${props.params.statusId}`} />;
+    }
   }
 
   const titleMessage = () => {
     if (status.visibility === 'direct') return messages.titleDirect;
-    return status.group ? messages.titleGroup : messages.title;
+    return messages.title;
   };
 
   return (

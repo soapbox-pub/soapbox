@@ -5,16 +5,15 @@ import { useHistory } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useGroupsPath } from 'soapbox/hooks';
+import { useAppDispatch, useBackend, useGroupsPath } from 'soapbox/hooks';
 import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
-import { useBackend } from 'soapbox/hooks/useBackend';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 const messages = defineMessages({
   heading: { id: 'column.manage_group', defaultMessage: 'Manage group' },
@@ -35,7 +34,7 @@ interface IManageGroup {
 }
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
-  const { id } = params;
+  const { groupId: id } = params;
 
   const backend = useBackend();
   const dispatch = useAppDispatch();
@@ -77,12 +76,12 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
       },
     }));
 
-  const navigateToEdit = () => history.push(`/groups/${id}/manage/edit`);
-  const navigateToPending = () => history.push(`/groups/${id}/manage/requests`);
-  const navigateToBlocks = () => history.push(`/groups/${id}/manage/blocks`);
+  const navigateToEdit = () => history.push(`/group/${group.slug}/manage/edit`);
+  const navigateToPending = () => history.push(`/group/${group.slug}/manage/requests`);
+  const navigateToBlocks = () => history.push(`/group/${group.slug}/manage/blocks`);
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}`}>
+    <Column label={intl.formatMessage(messages.heading)} backHref={`/group/${group.slug}`}>
       <CardBody className='space-y-4'>
         {isOwner && (
           <>

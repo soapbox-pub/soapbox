@@ -2,6 +2,7 @@ export { useAccount } from './useAccount';
 export { useApi } from './useApi';
 export { useAppDispatch } from './useAppDispatch';
 export { useAppSelector } from './useAppSelector';
+export { useBackend } from './useBackend';
 export { useClickOutside } from './useClickOutside';
 export { useCompose } from './useCompose';
 export { useDebounce } from './useDebounce';
