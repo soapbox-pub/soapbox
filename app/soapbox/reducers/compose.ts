@@ -349,6 +349,15 @@ export default function compose(state = initialState, action: AnyAction) {
         map.set('content_type', defaultCompose.content_type);
         map.set('spoiler', false);
         map.set('spoiler_text', '');
+
+        if (action.status.visibility === 'group') {
+          if (action.status.group?.group_visibility === 'everyone') {
+            map.set('privacy', privacyPreference('public', defaultCompose.privacy));
+          } else if (action.status.group?.group_visibility === 'members_only') {
+            map.set('group_id', action.status.getIn(['group', 'id']) || action.status.get('group'));
+            map.set('privacy', 'group');
+          }
+        }
       }));
     case COMPOSE_SUBMIT_REQUEST:
       return updateCompose(state, action.id, compose => compose.set('is_submitting', true));
