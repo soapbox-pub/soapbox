@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import Account from 'soapbox/components/account';
 import StatusContent from 'soapbox/components/status-content';
@@ -56,22 +57,28 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
         <div className='mb-4'>
           <StatusInfo
             avatarSize={42}
-            to={`/groups/${(status.group as Group).id}`}
             icon={
               <Icon
                 src={require('@tabler/icons/circles.svg')}
                 className='h-4 w-4 text-primary-600 dark:text-accent-blue'
-              />}
+              />
+            }
             text={
-              <Text size='xs' theme='muted' weight='medium'>
-                <FormattedMessage
-                  id='status.group'
-                  defaultMessage='Posted in {group}'
-                  values={{ group: (
-                    <span dangerouslySetInnerHTML={{ __html: (status.group as Group).display_name_html }} />
-                  ) }}
-                />
-              </Text>
+              <FormattedMessage
+                id='status.group'
+                defaultMessage='Posted in {group}'
+                values={{
+                  group: (
+                    <Link to={`/group/${(status.group as Group).slug}`} className='hover:underline'>
+                      <bdi className='truncate'>
+                        <strong className='text-gray-800 dark:text-gray-200'>
+                          <span dangerouslySetInnerHTML={{ __html: (status.group as Group).display_name_html }} />
+                        </strong>
+                      </bdi>
+                    </Link>
+                  ),
+                }}
+              />
             }
           />
         </div>
