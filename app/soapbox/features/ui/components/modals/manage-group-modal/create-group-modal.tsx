@@ -14,7 +14,7 @@ import PrivacyStep from './steps/privacy-step';
 
 const messages = defineMessages({
   next: { id: 'manage_group.next', defaultMessage: 'Next' },
-  create: { id: 'manage_group.create', defaultMessage: 'Create' },
+  create: { id: 'manage_group.create', defaultMessage: 'Create Group' },
   done: { id: 'manage_group.done', defaultMessage: 'Done' },
 });
 
