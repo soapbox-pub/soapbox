@@ -14,7 +14,7 @@ import PrivacyStep from './steps/privacy-step';
 
 const messages = defineMessages({
   next: { id: 'manage_group.next', defaultMessage: 'Next' },
-  create: { id: 'manage_group.create', defaultMessage: 'Create' },
+  create: { id: 'manage_group.create', defaultMessage: 'Create Group' },
   done: { id: 'manage_group.done', defaultMessage: 'Done' },
 });
 
@@ -33,7 +33,9 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
   const debounce = useDebounce;
 
   const [group, setGroup] = useState<Group | null>(null);
-  const [params, setParams] = useState<CreateGroupParams>({});
+  const [params, setParams] = useState<CreateGroupParams>({
+    group_visibility: 'everyone',
+  });
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
 
   const { createGroup, isSubmitting } = useCreateGroup();
@@ -96,9 +98,22 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
     }
   };
 
+  const renderModalTitle = () => {
+    switch (currentStep) {
+      case Steps.ONE:
+        return <FormattedMessage id='navigation_bar.create_group' defaultMessage='Create Group' />;
+      default:
+        if (params.group_visibility === 'everyone') {
+          return <FormattedMessage id='navigation_bar.create_group.public' defaultMessage='Create Public Group' />;
+        } else {
+          return <FormattedMessage id='navigation_bar.create_group.private' defaultMessage='Create Private Group' />;
+        }
+    }
+  };
+
   return (
     <Modal
-      title={<FormattedMessage id='navigation_bar.create_group' defaultMessage='Create Group' />}
+      title={renderModalTitle()}
       confirmationAction={handleNextStep}
       confirmationText={confirmationText}
       confirmationDisabled={isSubmitting || (currentStep === Steps.TWO && !isValid)}

@@ -1,7 +1,9 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
+import toast from 'soapbox/toast';
+import copy from 'soapbox/utils/copy';
 
 import type { Group } from 'soapbox/schemas';
 
@@ -9,11 +11,17 @@ interface IConfirmationStep {
   group: Group
 }
 
+const messages = defineMessages({
+  copied: { id: 'copy.success', defaultMessage: 'Copied to clipboard!' },
+});
+
 const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
+  const intl = useIntl();
+
   const handleCopyLink = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(group.uri);
-    }
+    copy(`${window.location.origin}/group/${group.slug}`, () => {
+      toast.success(intl.formatMessage(messages.copied));
+    });
   };
 
   const handleShare = () => {
