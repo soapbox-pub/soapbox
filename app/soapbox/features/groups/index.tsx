@@ -30,11 +30,15 @@ const Groups: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedValue = debounce(searchValue, 300);
 
-  const { groups, isLoading } = useGroups(debouncedValue);
+  const { groups, isLoading, hasNextPage, fetchNextPage } = useGroups(debouncedValue);
 
-  const createGroup = () => {
-    dispatch(openModal('CREATE_GROUP'));
+  const handleLoadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
   };
+
+  const createGroup = () => dispatch(openModal('CREATE_GROUP'));
 
   const renderBlankslate = () => (
     <Stack space={4} alignItems='center' justifyContent='center' className='py-6'>
@@ -104,6 +108,8 @@ const Groups: React.FC = () => {
         showLoading={isLoading && groups.length === 0}
         placeholderComponent={PlaceholderGroupCard}
         placeholderCount={3}
+        onLoadMore={handleLoadMore}
+        hasMore={hasNextPage}
       >
         {groups.map((group) => (
           <Link key={group.id} to={`/group/${group.slug}`}>
