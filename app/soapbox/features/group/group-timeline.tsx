@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import clsx from 'clsx';
+import React, { useEffect, useRef } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { groupCompose, setGroupTimelineVisible } from 'soapbox/actions/compose';
+import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
 import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
 import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
 import { useGroup } from 'soapbox/hooks/api';
 
 import Timeline from '../ui/components/timeline';
@@ -19,8 +20,10 @@ interface IGroupTimeline {
 }
 
 const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
+  const intl = useIntl();
   const account = useOwnAccount();
   const dispatch = useAppDispatch();
+  const composer = useRef<HTMLDivElement>(null);
 
   const { groupId } = props.params;
 
@@ -29,6 +32,10 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   const composeId = `group:${groupId}`;
   const canComposeGroupStatus = !!account && group?.relationship?.member;
   const groupTimelineVisible = useAppSelector((state) => !!state.compose.get(composeId)?.group_timeline_visible);
+
+  const { isDragging, isDraggedOver } = useDraggedFiles(composer, (files) => {
+    dispatch(uploadCompose(composeId, files, intl));
+  });
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandGroupTimeline(groupId, { maxId }));
@@ -57,7 +64,15 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
     <Stack space={2}>
       {canComposeGroupStatus && (
         <div className='border-b border-solid border-gray-200 py-6 dark:border-gray-800'>
-          <HStack alignItems='start' space={4}>
+          <HStack
+            ref={composer}
+            alignItems='start'
+            space={4}
+            className={clsx('relative rounded-xl transition', {
+              'border-2 border-primary-600 border-dashed z-[9001] p-4': isDragging,
+              'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
+            })}
+          >
             <Link to={`/@${account.acct}`}>
               <Avatar src={account.avatar} size={46} />
             </Link>
