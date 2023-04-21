@@ -56,7 +56,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {me && (
           <Card
             className={clsx('relative z-[1] transition', {
-              'border-2 border-primary-600 border-dashed z-[9001]': isDragging,
+              'border-2 border-primary-600 border-dashed z-[99]': isDragging,
               'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
             })}
             variant='rounded'

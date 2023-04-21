@@ -634,7 +634,7 @@ const UI: React.FC<IUI> = ({ children }) => {
     <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
       <div ref={node} style={style}>
         <div
-          className={clsx('pointer-events-none fixed z-[9000] h-screen w-screen transition', {
+          className={clsx('pointer-events-none fixed z-[90] h-screen w-screen transition', {
             'backdrop-blur': isDragging,
           })}
         />

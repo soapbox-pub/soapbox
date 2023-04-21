@@ -69,7 +69,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
             alignItems='start'
             space={4}
             className={clsx('relative rounded-xl transition', {
-              'border-2 border-primary-600 border-dashed z-[9001] p-4': isDragging,
+              'border-2 border-primary-600 border-dashed z-[99] p-4': isDragging,
               'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
             })}
           >
