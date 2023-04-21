@@ -70,8 +70,8 @@ const Filters = () => {
         emptyMessage={emptyMessage}
         itemClassName='pb-4 last:pb-0'
       >
-        {filters.map((filter, i) => (
-          <div className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
+        {filters.map((filter) => (
+          <div key={filter.id} className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
             <Stack space={2}>
               <Stack className='grow' space={1}>
                 <Text weight='medium'>
