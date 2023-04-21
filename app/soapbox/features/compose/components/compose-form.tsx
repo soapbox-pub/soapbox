@@ -17,7 +17,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
@@ -91,6 +91,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
+
+  const { isDraggedOver } = useDraggedFiles(formRef);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     dispatch(changeCompose(id, e.target.value));
@@ -236,7 +238,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     </HStack>
   ), [features, id]);
 
-  const condensed = shouldCondense && !composeFocused && isEmpty() && !isUploading;
+  const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty() && !isUploading;
   const disabled = isSubmitting;
   const countedText = [spoilerText, countableText(text)].join('');
   const disabledButton = disabled || isUploading || isChangingUpload || length(countedText) > maxTootChars || (countedText.length !== 0 && countedText.trim().length === 0 && !anyMedia);
