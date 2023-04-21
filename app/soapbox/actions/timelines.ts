@@ -248,6 +248,9 @@ const expandListTimeline = (id: string, { maxId }: Record<string, any> = {}, don
 const expandGroupTimeline = (id: string, { maxId }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`group:${id}`, `/api/v1/timelines/group/${id}`, { max_id: maxId }, done);
 
+const expandGroupTimelineFromTag = (id: string, tagName: string, { maxId }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`group:tags:${id}:${tagName}`, `/api/v1/timelines/group/${id}/tags/${tagName}`, { max_id: maxId }, done);
+
 const expandGroupMediaTimeline = (id: string | number, { maxId }: Record<string, any> = {}) =>
   expandTimeline(`group:${id}:media`, `/api/v1/timelines/group/${id}`, { max_id: maxId, only_media: true, limit: 40, with_muted: true });
 
@@ -350,6 +353,7 @@ export {
   expandAccountMediaTimeline,
   expandListTimeline,
   expandGroupTimeline,
+  expandGroupTimelineFromTag,
   expandGroupMediaTimeline,
   expandHashtagTimeline,
   expandTimelineRequest,
