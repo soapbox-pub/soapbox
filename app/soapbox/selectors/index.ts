@@ -159,23 +159,6 @@ const checkFiltered = (index: string, filters: ImmutableList<FilterEntity>) =>
       if (regex.test(index)) return result.concat(filter.title);
       return result;
     }, ImmutableList<string>())), ImmutableList<string>());
-// const results =
-// let expr = escapeRegExp(filter.phrase);
-
-// if (filter.whole_word) {
-//   if (/^[\w]/.test(expr)) {
-//     expr = `\\b${expr}`;
-//   }
-
-//   if (/[\w]$/.test(expr)) {
-//     expr = `${expr}\\b`;
-//   }
-// }
-
-// const regex = new RegExp(expr);
-
-// if (regex.test(index)) return result.join(filter.phrase);
-// return result;
 
 type APIStatus = { id: string, username?: string };
 
@@ -216,7 +199,7 @@ export const makeGetStatus = () => {
         // @ts-ignore
         map.set('group', group || null);
 
-        if ((features.filters || features.filtersV2) && (accountReblog || accountBase).id !== me) {
+        if ((features.filters) && (accountReblog || accountBase).id !== me) {
           const filtered = checkFiltered(statusReblog?.search_index || statusBase.search_index, filters);
 
           map.set('filtered', filtered);
