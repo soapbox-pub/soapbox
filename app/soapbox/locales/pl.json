@@ -1285,7 +1285,7 @@
   "status.show_less_all": "Zwiń wszystkie",
   "status.show_more_all": "Rozwiń wszystkie",
   "status.show_original": "Pokaż oryginalny wpis",
-  "status.title": "Wpis @{username}",
+  "status.title": "Wpis",
   "status.title_direct": "Wiadomość bezpośrednia",
   "status.translate": "Przetłumacz wpis",
   "status.translated_from_with": "Przetłumaczono z {lang} z użyciem {provider}",
