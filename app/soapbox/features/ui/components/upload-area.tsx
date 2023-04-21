@@ -17,11 +17,9 @@ interface IUploadArea {
 /** Component to display when a file is dragged over the UI. */
 const UploadArea: React.FC<IUploadArea> = ({ active, onClose }) => {
   const handleKeyUp = (e: KeyboardEvent) => {
-    const keyCode = e.keyCode;
-
     if (active) {
-      switch (keyCode) {
-        case 27:
+      switch (e.key) {
+        case 'Escape':
           e.preventDefault();
           e.stopPropagation();
           onClose();
