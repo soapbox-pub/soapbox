@@ -121,7 +121,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
 
   return (
     <HStack alignItems='center' justifyContent='between'>
-      <Link to={`/groups/${group.id}/tag/${tag.id}`} className='group grow'>
+      <Link to={`/group/${group.slug}/tag/${tag.id}`} className='group grow'>
         <Stack>
           <Text
             weight='bold'
