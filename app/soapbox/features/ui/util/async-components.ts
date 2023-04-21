@@ -374,10 +374,6 @@ export function SidebarMenu() {
   return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar-menu');
 }
 
-export function UploadArea() {
-  return import(/* webpackChunkName: "features/compose" */'../components/upload-area');
-}
-
 export function ModalContainer() {
   return import(/* webpackChunkName: "features/ui" */'../containers/modal-container');
 }
