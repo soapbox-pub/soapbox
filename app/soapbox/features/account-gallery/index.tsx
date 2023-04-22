@@ -148,7 +148,7 @@ const AccountGallery = () => {
         ))}
 
         {!isLoading && attachments.size === 0 && (
-          <div className='empty-column-indicator'>
+          <div className='empty-column-indicator col-span-2 sm:col-span-3'>
             <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
           </div>
         )}
