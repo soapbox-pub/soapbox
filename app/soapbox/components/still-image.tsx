@@ -16,10 +16,12 @@ interface IStillImage {
   letterboxed?: boolean
   /** Whether to show the file extension in the corner. */
   showExt?: boolean
+  /** Callback function if the image fails to load */
+  onError?(): void
 }
 
 /** Renders images on a canvas, only playing GIFs if autoPlayGif is enabled. */
-const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterboxed = false, showExt = false }) => {
+const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterboxed = false, showExt = false, onError }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif');
 
@@ -55,6 +57,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
         alt={alt}
         ref={img}
         onLoad={handleImageLoad}
+        onError={onError}
         className={clsx(baseClassName, {
           'invisible group-hover:visible': hoverToPlay,
         })}

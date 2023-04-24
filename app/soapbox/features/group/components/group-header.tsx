@@ -1,11 +1,11 @@
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import GroupAvatar from 'soapbox/components/groups/group-avatar';
 import StillImage from 'soapbox/components/still-image';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { isDefaultHeader } from 'soapbox/utils/accounts';
@@ -29,6 +29,8 @@ interface IGroupHeader {
 const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  const [isHeaderMissing, setIsHeaderMissing] = useState<boolean>(false);
 
   if (!group) {
     return (
@@ -88,20 +90,27 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
         <StillImage
           src={group.header}
           alt={intl.formatMessage(messages.header)}
-          className='h-32 w-full bg-gray-200 object-center dark:bg-gray-900/50 md:rounded-t-xl lg:h-52'
+          className='relative h-32 w-full bg-gray-200 object-center dark:bg-gray-900/50 md:rounded-t-xl lg:h-52'
+          onError={() => setIsHeaderMissing(true)}
         />
       );
 
       if (!isDefaultHeader(group.header)) {
         header = (
-          <a href={group.header} onClick={handleHeaderClick} target='_blank'>
+          <a href={group.header} onClick={handleHeaderClick} target='_blank' className='relative'>
             {header}
           </a>
         );
       }
     }
 
-    return header;
+    return (
+      <div className='flex h-32 w-full items-center justify-center bg-gray-200 dark:bg-gray-800/30 md:rounded-t-xl lg:h-52'>
+        {isHeaderMissing ? (
+          <Icon src={require('@tabler/icons/photo-off.svg')} className='h-6 w-6 text-gray-500 dark:text-gray-700' />
+        ) : header}
+      </div>
+    );
   };
 
   return (
