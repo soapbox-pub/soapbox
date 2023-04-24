@@ -113,7 +113,6 @@ const useGroup = (id: string) => {
 
 export {
   useGroup,
-  useGroups,
   usePendingGroups,
   GroupKeys,
 };
