@@ -20,7 +20,7 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
   return (
     <div
       key={group.id}
-      className='relative flex shrink-0 flex-col space-y-2 px-0.5'
+      className='relative flex shrink-0 flex-col space-y-2 px-1'
       style={{
         width,
       }}
@@ -39,7 +39,11 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
             />
           )}
 
-          <Stack justifyContent='end' className='z-10 p-4 text-white' space={3}>
+          <div
+            className='absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-gray-900 to-transparent pb-8 pt-12 transition-opacity duration-500'
+          />
+
+          <Stack justifyContent='end' className='p-4 text-white' space={3}>
             <GroupAvatar
               group={group}
               size={44}
@@ -60,10 +64,6 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
               </HStack>
             </Stack>
           </Stack>
-
-          <div
-            className='absolute inset-x-0 bottom-0 z-0 flex justify-center rounded-b-lg bg-gradient-to-t from-gray-900 to-transparent pb-8 pt-12 transition-opacity duration-500'
-          />
         </Stack>
       </Link>
 

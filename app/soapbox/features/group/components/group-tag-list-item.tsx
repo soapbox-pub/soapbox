@@ -39,8 +39,6 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
   const { updateGroupTag } = useUpdateGroupTag(group.id, tag.id);
 
   const isOwner = group.relationship?.role === GroupRoles.OWNER;
-  const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
-  const canEdit = isOwner || isAdmin;
 
   const toggleVisibility = () => {
     updateGroupTag({
@@ -123,16 +121,16 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
 
   return (
     <HStack alignItems='center' justifyContent='between'>
-      <Link to={`/groups/${group.id}/tag/${tag.id}`} className='group grow'>
+      <Link to={`/group/${group.slug}/tag/${tag.id}`} className='group grow'>
         <Stack>
           <Text
             weight='bold'
-            theme={(tag.visible || !canEdit) ? 'default' : 'subtle'}
+            theme={(tag.visible || !isOwner) ? 'default' : 'subtle'}
             className='group-hover:underline'
           >
             #{tag.name}
           </Text>
-          <Text size='sm' theme={(tag.visible || !canEdit) ? 'muted' : 'subtle'}>
+          <Text size='sm' theme={(tag.visible || !isOwner) ? 'muted' : 'subtle'}>
             {intl.formatMessage(messages.total)}:
             {' '}
             <Text size='sm' theme='inherit' weight='semibold' tag='span'>
@@ -142,7 +140,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
         </Stack>
       </Link>
 
-      {canEdit ? (
+      {isOwner ? (
         <HStack alignItems='center' space={2}>
           {tag.visible ? (
             renderPinIcon()
