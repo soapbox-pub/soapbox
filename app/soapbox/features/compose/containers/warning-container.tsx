@@ -18,7 +18,7 @@ const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
   const me = useAppSelector((state) => state.me);
 
   const needsLockWarning = useAppSelector((state) => compose.privacy === 'private' && !state.accounts.get(me)!.locked);
-  const hashtagWarning = compose.privacy !== 'public' && APPROX_HASHTAG_RE.test(compose.text);
+  const hashtagWarning = (compose.privacy !== 'public' && compose.privacy !== 'group') && APPROX_HASHTAG_RE.test(compose.text);
   const directMessageWarning = compose.privacy === 'direct';
 
   if (needsLockWarning) {
