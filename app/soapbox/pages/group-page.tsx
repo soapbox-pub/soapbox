@@ -76,12 +76,6 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const isBlocked = group?.relationship?.blocked_by;
   const isPrivate = group?.locked;
 
-  // if ((group as any) === false) {
-  //   return (
-  //     <MissingIndicator />
-  //   );
-  // }
-
   const tabItems = useMemo(() => {
     const items = [];
     items.push({
@@ -111,7 +105,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
     });
 
     return items;
-  }, [features.groupsTags]);
+  }, [features.groupsTags, pending.length]);
 
   const renderChildren = () => {
     if (!isMember && isPrivate) {
