@@ -28,6 +28,7 @@ const GroupTagsField: React.FC<IGroupTagsField> = ({ tags, onChange, onAddItem, 
       onAddItem={onAddItem}
       onRemoveItem={onRemoveItem}
       maxItems={maxItems}
+      minItems={1}
     />
   );
 };
