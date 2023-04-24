@@ -5,8 +5,10 @@ import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/hooks/api';
+import { queryClient } from 'soapbox/queries/client';
+import { GroupKeys } from 'soapbox/queries/groups';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
@@ -28,6 +30,7 @@ const messages = defineMessages({
 const GroupActionButton = ({ group }: IGroupActionButton) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const account = useOwnAccount();
 
   const joinGroup = useJoinGroup(group);
   const leaveGroup = useLeaveGroup(group);
@@ -42,6 +45,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
   const onJoinGroup = () => joinGroup.mutate({}, {
     onSuccess() {
       joinGroup.invalidate();
+      queryClient.invalidateQueries(GroupKeys.pendingGroups(account?.id as string));
 
       toast.success(
         group.locked
@@ -71,6 +75,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
         requested: false,
       };
       dispatch(importEntities([entity], Entities.GROUP_RELATIONSHIPS));
+      queryClient.invalidateQueries(GroupKeys.pendingGroups(account?.id as string));
     },
   });
 
