@@ -1,11 +1,12 @@
-import React from 'react';
+import clsx from 'clsx';
+import React, { useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { cancelReplyCompose } from 'soapbox/actions/compose';
+import { cancelReplyCompose, uploadCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import { checkComposeContent } from 'soapbox/components/modal-root';
 import { Modal } from 'soapbox/components/ui';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { useAppDispatch, useCompose, useDraggedFiles } from 'soapbox/hooks';
 
 import ComposeForm from '../../../compose/components/compose-form';
 
@@ -22,10 +23,16 @@ interface IComposeModal {
 const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const node = useRef<HTMLDivElement>(null);
 
-  const compose = useCompose('compose-modal');
+  const composeId = 'compose-modal';
+  const compose = useCompose(composeId);
 
   const { id: statusId, privacy, in_reply_to: inReplyTo, quote } = compose!;
+
+  const { isDragging, isDraggedOver } = useDraggedFiles(node, (files) => {
+    dispatch(uploadCompose(composeId, files, intl));
+  });
 
   const onClickClose = () => {
     if (checkComposeContent(compose)) {
@@ -64,8 +71,13 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
 
   return (
     <Modal
+      ref={node}
       title={renderTitle()}
       onClose={onClickClose}
+      className={clsx({
+        'border-2 border-primary-600 border-dashed !z-[99]': isDragging,
+        'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
+      })}
     >
       <ComposeForm id='compose-modal' />
     </Modal>
