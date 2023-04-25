@@ -8,7 +8,7 @@ import copy from 'soapbox/utils/copy';
 import type { Group } from 'soapbox/schemas';
 
 interface IConfirmationStep {
-  group: Group
+  group: Group | null
 }
 
 const messages = defineMessages({
@@ -19,19 +19,23 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
   const intl = useIntl();
 
   const handleCopyLink = () => {
-    copy(`${window.location.origin}/group/${group.slug}`, () => {
+    copy(`${window.location.origin}/group/${group?.slug}`, () => {
       toast.success(intl.formatMessage(messages.copied));
     });
   };
 
   const handleShare = () => {
     navigator.share({
-      text: group.display_name,
-      url: group.uri,
+      text: group?.display_name,
+      url: group?.uri,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
   };
+
+  if (!group) {
+    return null;
+  }
 
   return (
     <Stack space={9}>
