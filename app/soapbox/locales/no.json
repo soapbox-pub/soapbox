@@ -1517,7 +1517,6 @@
   "trendsPanel.viewAll": "Vis alle",
   "unauthorized_modal.text": "Du må være logget inn for å gjøre det.",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Dra og slipp for å laste opp",
   "upload_button.label": "Legg til media",
   "upload_error.image_size_limit": "Bildet overskrider gjeldende filstørrelsesgrense ({limit})",
   "upload_error.limit": "Filopplastingsgrensen er overskredet.",

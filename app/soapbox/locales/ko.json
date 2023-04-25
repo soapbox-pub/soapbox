@@ -1130,7 +1130,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "드래그 & 드롭으로 업로드",
   "upload_button.label": "미디어 추가 (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "파일 업로드 제한에 도달했습니다.",

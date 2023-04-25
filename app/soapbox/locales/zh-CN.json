@@ -1542,7 +1542,6 @@
   "trendsPanel.viewAll": "查看全部",
   "unauthorized_modal.text": "您需要登录才能继续。",
   "unauthorized_modal.title": "注册 {site_title} 帐号",
-  "upload_area.title": "将文件拖放到此处开始上传",
   "upload_button.label": "添加媒体附件",
   "upload_error.image_size_limit": "图片超过了当前的文件大小限制（{limit}）",
   "upload_error.limit": "已超过文件上传限制。",

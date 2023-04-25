@@ -1513,7 +1513,6 @@
   "trendsPanel.viewAll": "Tümünü gör",
   "unauthorized_modal.text": "Bunu yapabilmek için giriş yapmış olmalısınız.",
   "unauthorized_modal.title": "{site_title} için kaydolun",
-  "upload_area.title": "Dosya yüklemek için sürükle bırak yapınız",
   "upload_button.label": "Görsel ekle",
   "upload_error.image_size_limit": "Resim geçerli dosya boyutu sınırını ({limit}) aşıyor",
   "upload_error.limit": "Dosya yükleme sınırı aşıldı.",
