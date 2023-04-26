@@ -29,7 +29,7 @@ const TagListItem = (props: ITagListItem) => {
             defaultMessage='Number of groups'
           />
           :{' '}
-          {tag.uses}
+          {tag.groups}
         </Text>
       </Stack>
     </Link>
