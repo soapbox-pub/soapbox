@@ -18,14 +18,13 @@ const messages = defineMessages({
 
 interface IComposeModal {
   onClose: (type?: string) => void
+  composeId?: string
 }
 
-const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
+const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-modal' }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const node = useRef<HTMLDivElement>(null);
-
-  const composeId = 'compose-modal';
   const compose = useCompose(composeId);
 
   const { id: statusId, privacy, in_reply_to: inReplyTo, quote } = compose!;
@@ -79,7 +78,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose }) => {
         'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
       })}
     >
-      <ComposeForm id='compose-modal' />
+      <ComposeForm id={composeId} />
     </Modal>
   );
 };

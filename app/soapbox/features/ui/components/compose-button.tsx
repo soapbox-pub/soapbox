@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
+import { groupComposeModal } from 'soapbox/actions/compose';
 import { openModal } from 'soapbox/actions/modals';
 import { Avatar, Button, HStack } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -39,7 +40,11 @@ const GroupComposeButton = () => {
   const match = useRouteMatch<{ groupSlug: string }>('/group/:groupSlug');
   const { entity: group } = useGroupLookup(match?.params.groupSlug || '');
 
-  const onOpenCompose = () => dispatch(openModal('COMPOSE'));
+  const onOpenCompose = () => {
+    if (group) {
+      dispatch(groupComposeModal(group));
+    }
+  };
 
   if (group) {
     return (
