@@ -27,7 +27,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
   const node = useRef<HTMLDivElement>(null);
   const compose = useCompose(composeId);
 
-  const { id: statusId, privacy, in_reply_to: inReplyTo, quote } = compose!;
+  const { id: statusId, privacy, in_reply_to: inReplyTo, quote, group_id: groupId } = compose!;
 
   const { isDragging, isDraggedOver } = useDraggedFiles(node, (files) => {
     dispatch(uploadCompose(composeId, files, intl));
@@ -59,6 +59,10 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
       return <FormattedMessage id='navigation_bar.compose_edit' defaultMessage='Edit post' />;
     } else if (privacy === 'direct') {
       return <FormattedMessage id='navigation_bar.compose_direct' defaultMessage='Direct message' />;
+    } else if (inReplyTo && groupId) {
+      return <FormattedMessage id='navigation_bar.compose_group_reply' defaultMessage='Reply to group post' />;
+    } else if (groupId) {
+      return <FormattedMessage id='navigation_bar.compose_group' defaultMessage='Compose to group' />;
     } else if (inReplyTo) {
       return <FormattedMessage id='navigation_bar.compose_reply' defaultMessage='Reply to post' />;
     } else if (quote) {
