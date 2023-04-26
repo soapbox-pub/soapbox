@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
 import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
@@ -34,26 +34,56 @@ interface IGroupPage {
   children: React.ReactNode
 }
 
-const PrivacyBlankslate = () => (
+const DeletedBlankslate = () => (
   <Stack space={4} className='py-10' alignItems='center'>
-    <div className='rounded-full bg-gray-200 p-3'>
-      <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-gray-600' />
+    <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
+      <Icon
+        src={require('@tabler/icons/trash.svg')}
+        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+      />
     </div>
 
     <Text theme='muted'>
-      Content is only visible to group members
+      <FormattedMessage
+        id='group.deleted.message'
+        defaultMessage='This group has been deleted.'
+      />
+    </Text>
+  </Stack>
+);
+
+const PrivacyBlankslate = () => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-gray-200 p-3 dark:bg-gray-800'>
+      <Icon
+        src={require('@tabler/icons/eye-off.svg')}
+        className='h-6 w-6 text-gray-600 dark:text-gray-600'
+      />
+    </div>
+
+    <Text theme='muted'>
+      <FormattedMessage
+        id='group.private.message'
+        defaultMessage='Content is only visible to group members'
+      />
     </Text>
   </Stack>
 );
 
 const BlockedBlankslate = ({ group }: { group: Group }) => (
   <Stack space={4} className='py-10' alignItems='center'>
-    <div className='rounded-full bg-danger-200 p-3'>
-      <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-danger-600' />
+    <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
+      <Icon
+        src={require('@tabler/icons/ban.svg')}
+        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+      />
     </div>
 
     <Text theme='muted'>
-      You are banned from
+      <FormattedMessage
+        id='group.banned.message'
+        defaultMessage='You are banned from'
+      />
       {' '}
       <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
     </Text>
@@ -75,6 +105,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const isMember = !!group?.relationship?.member;
   const isBlocked = group?.relationship?.blocked_by;
   const isPrivate = group?.locked;
+  const isDeleted = !!group?.deleted_at;
 
   const tabItems = useMemo(() => {
     const items = [];
@@ -108,7 +139,9 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   }, [features.groupsTags, pending.length]);
 
   const renderChildren = () => {
-    if (!isMember && isPrivate) {
+    if (isDeleted) {
+      return <DeletedBlankslate />;
+    } else if (!isMember && isPrivate) {
       return <PrivacyBlankslate />;
     } else if (isBlocked) {
       return <BlockedBlankslate group={group} />;
