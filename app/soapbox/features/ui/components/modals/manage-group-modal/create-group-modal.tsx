@@ -94,7 +94,7 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
       case Steps.TWO:
         return <DetailsStep params={params} onChange={setParams} />;
       case Steps.THREE:
-        return <ConfirmationStep group={group!} />;
+        return <ConfirmationStep group={group} />;
     }
   };
 
