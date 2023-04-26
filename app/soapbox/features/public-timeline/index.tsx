@@ -30,10 +30,6 @@ const CommunityTimeline = () => {
   const explanationBoxExpanded = settings.get('explanationBox');
   const showExplanationBox = settings.get('showExplanationBox');
 
-  const explanationBoxMenu = () => {
-    return [{ text: intl.formatMessage(messages.dismiss), action: dismissExplanationBox }];
-  };
-
   const dismissExplanationBox = () => {
     dispatch(changeSetting(['showExplanationBox'], false));
   };
@@ -66,7 +62,9 @@ const CommunityTimeline = () => {
       {showExplanationBox && <div className='mb-4'>
         <Accordion
           headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}
-          menu={explanationBoxMenu()}
+          action={dismissExplanationBox}
+          actionIcon={require('@tabler/icons/x.svg')}
+          actionLabel={intl.formatMessage(messages.dismiss)}
           expanded={explanationBoxExpanded}
           onToggle={toggleExplanationBox}
         >
