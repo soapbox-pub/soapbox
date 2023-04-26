@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import GroupAvatar from 'soapbox/components/groups/group-avatar';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import GroupActionButton from 'soapbox/features/group/components/group-action-button';
+import GroupHeaderImage from 'soapbox/features/group/components/group-header-image';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
 
@@ -31,13 +32,10 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
           ref={ref}
           style={{ minHeight: 180 }}
         >
-          {group.header && (
-            <img
-              src={group.header}
-              alt='Group cover'
-              className='absolute inset-0 object-cover'
-            />
-          )}
+          <GroupHeaderImage
+            group={group}
+            className='absolute inset-0 object-cover'
+          />
 
           <div
             className='absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-gray-900 to-transparent pb-8 pt-12 transition-opacity duration-500'

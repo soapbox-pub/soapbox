@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 
 import { useSettings } from 'soapbox/hooks';
 
-interface IStillImage {
+export interface IStillImage {
   /** Image alt text. */
   alt?: string
   /** Extra class names for the outer <div> container. */
