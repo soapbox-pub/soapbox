@@ -1,6 +1,6 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, matchPath, useHistory } from 'react-router-dom';
 
 import { Button, Divider, HStack, Popover, Stack, Text } from 'soapbox/components/ui';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
@@ -26,6 +26,13 @@ const GroupPopover = (props: IGroupPopoverContainer) => {
   const { children, group, isEnabled } = props;
 
   const intl = useIntl();
+  const history = useHistory();
+
+  const path = history.location.pathname;
+  const shouldHideAction = matchPath(path, {
+    path: ['/group/:groupSlug'],
+    exact: true,
+  });
 
   if (!isEnabled) {
     return children;
@@ -36,7 +43,7 @@ const GroupPopover = (props: IGroupPopoverContainer) => {
       interaction='click'
       referenceElementClassName='cursor-pointer'
       content={
-        <Stack space={4} className='w-80'>
+        <Stack space={4} className='w-80 pb-4'>
           <Stack
             className='relative h-60 rounded-lg bg-white dark:border-primary-800 dark:bg-primary-900'
             data-testid='group-card'
@@ -79,13 +86,15 @@ const GroupPopover = (props: IGroupPopoverContainer) => {
             </Text>
           </Stack>
 
-          <div className='px-4 pb-4'>
-            <Link to={`/group/${group.slug}`}>
-              <Button type='button' theme='secondary' block>
-                {intl.formatMessage(messages.action)}
-              </Button>
-            </Link>
-          </div>
+          {!shouldHideAction && (
+            <div className='px-4'>
+              <Link to={`/group/${group.slug}`}>
+                <Button type='button' theme='secondary' block>
+                  {intl.formatMessage(messages.action)}
+                </Button>
+              </Link>
+            </div>
+          )}
         </Stack>
       }
       isFlush
