@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
 import { Button } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
@@ -43,8 +44,9 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
   const isBlocked = group.relationship?.blocked_by;
 
   const onJoinGroup = () => joinGroup.mutate({}, {
-    onSuccess() {
+    onSuccess(entity) {
       joinGroup.invalidate();
+      dispatch(fetchGroupRelationshipsSuccess([entity]));
       queryClient.invalidateQueries(GroupKeys.pendingGroups(account?.id as string));
 
       toast.success(
@@ -61,8 +63,9 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
       message: intl.formatMessage(messages.confirmationMessage),
       confirm: intl.formatMessage(messages.confirmationConfirm),
       onConfirm: () => leaveGroup.mutate(group.relationship?.id as string, {
-        onSuccess() {
+        onSuccess(entity) {
           leaveGroup.invalidate();
+          dispatch(fetchGroupRelationshipsSuccess([entity]));
           toast.success(intl.formatMessage(messages.leaveSuccess));
         },
       }),
