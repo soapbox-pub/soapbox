@@ -3,6 +3,7 @@ import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import { MODAL_OPEN } from 'soapbox/actions/modals';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
@@ -14,7 +15,9 @@ const renderComposeButton = () => {
   render(
     <Provider store={store}>
       <IntlProvider locale='en'>
-        <ComposeButton />
+        <MemoryRouter>
+          <ComposeButton />
+        </MemoryRouter>
       </IntlProvider>
     </Provider>,
   );
