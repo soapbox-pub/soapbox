@@ -44,7 +44,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
   const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
 
   const displayName = useTextField(group?.display_name);
-  const note = useTextField(group?.note);
+  const note = useTextField(group?.note_plain);
 
   const maxName = Number(instance.configuration.getIn(['groups', 'max_characters_name']));
   const maxNote = Number(instance.configuration.getIn(['groups', 'max_characters_description']));
