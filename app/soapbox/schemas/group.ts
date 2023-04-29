@@ -29,6 +29,9 @@ const groupSchema = z.object({
   note: z.string().transform(note => note === '<p></p>' ? '' : note).catch(''),
   relationship: groupRelationshipSchema.nullable().catch(null), // Dummy field to be overwritten later
   slug: z.string().catch(''), // TruthSocial
+  source: z.object({
+    note: z.string(),
+  }).optional(), // TruthSocial
   statuses_visibility: z.string().catch('public'),
   tags: z.array(groupTagSchema).catch([]),
   uri: z.string().catch(''),
@@ -43,7 +46,7 @@ const groupSchema = z.object({
     ...group,
     display_name_html: emojify(escapeTextContentForBrowser(group.display_name), customEmojiMap),
     note_emojified: emojify(group.note, customEmojiMap),
-    note_plain: unescapeHTML(group.note),
+    note_plain: group.source?.note || unescapeHTML(group.note),
   };
 });
 
