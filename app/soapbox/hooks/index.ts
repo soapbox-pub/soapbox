@@ -6,6 +6,7 @@ export { useBackend } from './useBackend';
 export { useClickOutside } from './useClickOutside';
 export { useCompose } from './useCompose';
 export { useDebounce } from './useDebounce';
+export { useDraggedFiles } from './useDraggedFiles';
 export { useGetState } from './useGetState';
 export { useGroupsPath } from './useGroupsPath';
 export { useDimensions } from './useDimensions';

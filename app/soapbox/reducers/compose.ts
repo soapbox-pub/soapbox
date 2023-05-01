@@ -248,25 +248,13 @@ const getAccountSettings = (account: ImmutableMap<string, any>) => {
 const importAccount = (compose: Compose, account: APIEntity) => {
   const settings = getAccountSettings(ImmutableMap(fromJS(account)));
 
-  const defaultPrivacy = settings.get('defaultPrivacy', 'public');
-  const defaultContentType = settings.get('defaultContentType', 'text/plain');
-
-  return compose.merge({
-    privacy: defaultPrivacy,
-    content_type: defaultContentType,
-    tagHistory: ImmutableList(tagHistory.get(account.id)),
-  });
-};
-
-const updateAccount = (compose: Compose, account: APIEntity) => {
-  const settings = getAccountSettings(ImmutableMap(fromJS(account)));
-
   const defaultPrivacy = settings.get('defaultPrivacy');
   const defaultContentType = settings.get('defaultContentType');
 
   return compose.withMutations(compose => {
     if (defaultPrivacy) compose.set('privacy', defaultPrivacy);
     if (defaultContentType) compose.set('content_type', defaultContentType);
+    compose.set('tagHistory', ImmutableList(tagHistory.get(account.id)));
   });
 };
 
@@ -352,6 +340,15 @@ export default function compose(state = initialState, action: AnyAction) {
         map.set('content_type', defaultCompose.content_type);
         map.set('spoiler', false);
         map.set('spoiler_text', '');
+
+        if (action.status.visibility === 'group') {
+          if (action.status.group?.group_visibility === 'everyone') {
+            map.set('privacy', privacyPreference('public', defaultCompose.privacy));
+          } else if (action.status.group?.group_visibility === 'members_only') {
+            map.set('group_id', action.status.getIn(['group', 'id']) || action.status.get('group'));
+            map.set('privacy', 'group');
+          }
+        }
       }));
     case COMPOSE_SUBMIT_REQUEST:
       return updateCompose(state, action.id, compose => compose.set('is_submitting', true));
@@ -501,9 +498,8 @@ export default function compose(state = initialState, action: AnyAction) {
     case COMPOSE_SET_GROUP_TIMELINE_VISIBLE:
       return updateCompose(state, action.id, compose => compose.set('group_timeline_visible', action.groupTimelineVisible));
     case ME_FETCH_SUCCESS:
-      return updateCompose(state, 'default', compose => importAccount(compose, action.me));
     case ME_PATCH_SUCCESS:
-      return updateCompose(state, 'default', compose => updateAccount(compose, action.me));
+      return updateCompose(state, 'default', compose => importAccount(compose, action.me));
     case SETTING_CHANGE:
       return updateCompose(state, 'default', compose => updateSetting(compose, action.path, action.value));
     case COMPOSE_EDITOR_STATE_SET:

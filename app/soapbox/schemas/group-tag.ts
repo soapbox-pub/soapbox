@@ -3,7 +3,7 @@ import z from 'zod';
 const groupTagSchema = z.object({
   id: z.string(),
   name: z.string(),
-  uses: z.number().optional(),
+  groups: z.number().optional(),
   url: z.string().optional(),
   pinned: z.boolean().optional().catch(false),
   visible: z.boolean().optional().default(true),

@@ -1,11 +1,11 @@
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import GroupAvatar from 'soapbox/components/groups/group-avatar';
 import StillImage from 'soapbox/components/still-image';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { isDefaultHeader } from 'soapbox/utils/accounts';
@@ -30,6 +30,8 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const [isHeaderMissing, setIsHeaderMissing] = useState<boolean>(false);
+
   if (!group) {
     return (
       <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
@@ -49,6 +51,8 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       </div>
     );
   }
+
+  const isDeleted = !!group.deleted_at;
 
   const onAvatarClick = () => {
     const avatar = normalizeAttachment({
@@ -88,20 +92,27 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
         <StillImage
           src={group.header}
           alt={intl.formatMessage(messages.header)}
-          className='h-32 w-full bg-gray-200 object-center dark:bg-gray-900/50 md:rounded-t-xl lg:h-52'
+          className='relative h-32 w-full bg-gray-200 object-center dark:bg-gray-900/50 md:rounded-t-xl lg:h-52'
+          onError={() => setIsHeaderMissing(true)}
         />
       );
 
       if (!isDefaultHeader(group.header)) {
         header = (
-          <a href={group.header} onClick={handleHeaderClick} target='_blank'>
+          <a href={group.header} onClick={handleHeaderClick} target='_blank' className='relative'>
             {header}
           </a>
         );
       }
     }
 
-    return header;
+    return (
+      <div className='flex h-32 w-full items-center justify-center bg-gray-200 dark:bg-gray-800/30 md:rounded-t-xl lg:h-52'>
+        {isHeaderMissing ? (
+          <Icon src={require('@tabler/icons/photo-off.svg')} className='h-6 w-6 text-gray-500 dark:text-gray-700' />
+        ) : header}
+      </div>
+    );
   };
 
   return (
@@ -127,24 +138,28 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
           dangerouslySetInnerHTML={{ __html: group.display_name_html }}
         />
 
-        <Stack space={1} alignItems='center'>
-          <HStack className='text-gray-700 dark:text-gray-600' space={2} wrap>
-            <GroupRelationship group={group} />
-            <GroupPrivacy group={group} />
-            <GroupMemberCount group={group} />
-          </HStack>
+        {!isDeleted && (
+          <>
+            <Stack space={1} alignItems='center'>
+              <HStack className='text-gray-700 dark:text-gray-600' space={2} wrap>
+                <GroupRelationship group={group} />
+                <GroupPrivacy group={group} />
+                <GroupMemberCount group={group} />
+              </HStack>
 
-          <Text
-            theme='muted'
-            align='center'
-            dangerouslySetInnerHTML={{ __html: group.note_emojified }}
-          />
-        </Stack>
+              <Text
+                theme='muted'
+                align='center'
+                dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+              />
+            </Stack>
 
-        <HStack alignItems='center' space={2}>
-          <GroupOptionsButton group={group} />
-          <GroupActionButton group={group} />
-        </HStack>
+            <HStack alignItems='center' space={2}>
+              <GroupOptionsButton group={group} />
+              <GroupActionButton group={group} />
+            </HStack>
+          </>
+        )}
       </Stack>
     </div>
   );

@@ -46,10 +46,8 @@ const Popular: React.FC = () => {
     </div>
   ), []);
 
-  const renderGroupGrid = useCallback((group: Group, index: number) => (
-    <div className='pb-4'>
-      <GroupGridItem group={group} />
-    </div>
+  const renderGroupGrid = useCallback((group: Group) => (
+    <GroupGridItem group={group} />
   ), []);
 
   return (
@@ -73,10 +71,10 @@ const Popular: React.FC = () => {
         <VirtuosoGrid
           useWindowScroll
           data={groups}
-          itemContent={(index, group) => renderGroupGrid(group, index)}
+          itemContent={(_index, group) => renderGroupGrid(group)}
           components={{
             Item: (props) => (
-              <div {...props} className='w-1/2 flex-none' />
+              <div {...props} className='w-1/2 flex-none pb-4 [&:nth-last-of-type(-n+2)]:pb-0' />
             ),
             List: GridList,
           }}

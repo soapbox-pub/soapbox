@@ -1,16 +1,15 @@
 'use strict';
 
-import React, { useState, useEffect, useRef } from 'react';
+import clsx from 'clsx';
+import React, { useEffect, useRef } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import { useIntl } from 'react-intl';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
-import { uploadCompose, resetCompose } from 'soapbox/actions/compose';
+import { resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
-import { uploadEventBanner } from 'soapbox/actions/events';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { openModal } from 'soapbox/actions/modals';
@@ -26,7 +25,7 @@ import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
 import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance, useDraggedFiles } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -101,7 +100,6 @@ import {
   FollowRecommendations,
   Directory,
   SidebarMenu,
-  UploadArea,
   ProfileHoverCard,
   StatusHoverCard,
   Share,
@@ -327,7 +325,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groups && <WrappedRoute path='/groups/:groupId/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
 
       {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tags' exact page={GroupPage} component={GroupTagsSlug} content={children} />}
-      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tag/:id' exact page={GroupsPendingPage} component={GroupTagTimelineSlug} content={children} />}
+      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tag/:tagId' exact page={GroupsPendingPage} component={GroupTagTimelineSlug} content={children} />}
       {features.groups && <WrappedRoute path='/group/:groupSlug' exact page={GroupPage} component={GroupTimelineSlug} content={children} />}
       {features.groups && <WrappedRoute path='/group/:groupSlug/members' exact page={GroupPage} component={GroupMembersSlug} content={children} />}
       {features.groups && <WrappedRoute path='/group/:groupSlug/media' publicRoute={!authenticatedProfile} component={GroupGallerySlug} page={GroupPage} content={children} />}
@@ -387,16 +385,12 @@ interface IUI {
 }
 
 const UI: React.FC<IUI> = ({ children }) => {
-  const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { data: pendingPolicy } = usePendingPolicy();
   const instance = useInstance();
   const statContext = useStatContext();
 
-  const [draggingOver, setDraggingOver] = useState<boolean>(false);
-
-  const dragTargets = useRef<EventTarget[]>([]);
   const disconnect = useRef<any>(null);
   const node = useRef<HTMLDivElement | null>(null);
   const hotkeys = useRef<HTMLDivElement | null>(null);
@@ -411,74 +405,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
 
-  const handleDragEnter = (e: DragEvent) => {
-    e.preventDefault();
-
-    if (e.target && !dragTargets.current.includes(e.target)) {
-      dragTargets.current.push(e.target);
-    }
-
-    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
-      setDraggingOver(true);
-    }
-  };
-
-  const handleDragOver = (e: DragEvent) => {
-    if (dataTransferIsText(e.dataTransfer)) return false;
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      if (e.dataTransfer) {
-        e.dataTransfer.dropEffect = 'copy';
-      }
-    } catch (err) {
-      // Do nothing
-    }
-
-    return false;
-  };
-
-  const handleDrop = (e: DragEvent) => {
-    if (!me) return;
-
-    if (dataTransferIsText(e.dataTransfer)) return;
-    e.preventDefault();
-
-    setDraggingOver(false);
-    dragTargets.current = [];
-
-    dispatch((_, getState) => {
-      if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-        const modals = getState().modals;
-        const isModalOpen = modals.last()?.modalType === 'COMPOSE';
-        const isEventsModalOpen = modals.last()?.modalType === 'COMPOSE_EVENT';
-        if (isEventsModalOpen) dispatch(uploadEventBanner(e.dataTransfer.files[0], intl));
-        else dispatch(uploadCompose(isModalOpen ? 'compose-modal' : 'home', e.dataTransfer.files, intl));
-      }
-    });
-  };
-
-  const handleDragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    dragTargets.current = dragTargets.current.filter(el => el !== e.target && node.current?.contains(el as Node));
-
-    if (dragTargets.current.length > 0) {
-      return;
-    }
-
-    setDraggingOver(false);
-  };
-
-  const dataTransferIsText = (dataTransfer: DataTransfer | null) => {
-    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
-  };
-
-  const closeUploadModal = () => {
-    setDraggingOver(false);
-  };
+  const { isDragging } = useDraggedFiles(node);
 
   const handleServiceWorkerPostMessage = ({ data }: MessageEvent) => {
     if (data.type === 'navigate') {
@@ -500,6 +427,11 @@ const UI: React.FC<IUI> = ({ children }) => {
       disconnect.current = null;
     }
   };
+
+  const handleDragEnter = (e: DragEvent) => e.preventDefault();
+  const handleDragLeave = (e: DragEvent) => e.preventDefault();
+  const handleDragOver = (e: DragEvent) => e.preventDefault();
+  const handleDrop = (e: DragEvent) => e.preventDefault();
 
   /** Load initial data when a user is logged in */
   const loadAccountData = () => {
@@ -535,11 +467,6 @@ const UI: React.FC<IUI> = ({ children }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('dragenter', handleDragEnter, false);
-    document.addEventListener('dragover', handleDragOver, false);
-    document.addEventListener('drop', handleDrop, false);
-    document.addEventListener('dragleave', handleDragLeave, false);
-
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('message', handleServiceWorkerPostMessage);
     }
@@ -549,11 +476,20 @@ const UI: React.FC<IUI> = ({ children }) => {
     }
 
     return () => {
+      disconnectStreaming();
+    };
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('dragenter', handleDragEnter);
+    document.addEventListener('dragleave', handleDragLeave);
+    document.addEventListener('dragover', handleDragOver);
+    document.addEventListener('drop', handleDrop);
+    return () => {
       document.removeEventListener('dragenter', handleDragEnter);
+      document.removeEventListener('dragleave', handleDragLeave);
       document.removeEventListener('dragover', handleDragOver);
       document.removeEventListener('drop', handleDrop);
-      document.removeEventListener('dragleave', handleDragLeave);
-      disconnectStreaming();
     };
   }, []);
 
@@ -697,6 +633,12 @@ const UI: React.FC<IUI> = ({ children }) => {
   return (
     <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
       <div ref={node} style={style}>
+        <div
+          className={clsx('pointer-events-none fixed z-[90] h-screen w-screen transition', {
+            'backdrop-blur': isDragging,
+          })}
+        />
+
         <BackgroundShapes />
 
         <div className='z-10 flex flex-col'>
@@ -717,10 +659,6 @@ const UI: React.FC<IUI> = ({ children }) => {
               <FloatingActionButton />
             </div>
           )}
-
-          <BundleContainer fetchComponent={UploadArea}>
-            {Component => <Component active={draggingOver} onClose={closeUploadModal} />}
-          </BundleContainer>
 
           {me && (
             <BundleContainer fetchComponent={SidebarMenu}>

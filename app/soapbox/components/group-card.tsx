@@ -1,6 +1,6 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
 
+import GroupHeaderImage from 'soapbox/features/group/components/group-header-image';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
 import GroupRelationship from 'soapbox/features/group/components/group-relationship';
@@ -10,17 +10,11 @@ import { HStack, Stack, Text } from './ui';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities';
 
-const messages = defineMessages({
-  groupHeader: { id: 'group.header.alt', defaultMessage: 'Group header' },
-});
-
 interface IGroupCard {
   group: GroupEntity
 }
 
 const GroupCard: React.FC<IGroupCard> = ({ group }) => {
-  const intl = useIntl();
-
   return (
     <Stack
       className='relative h-[240px] rounded-lg border border-solid border-gray-300 bg-white dark:border-primary-800 dark:bg-primary-900'
@@ -28,12 +22,10 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
     >
       {/* Group Cover Image */}
       <Stack grow className='relative basis-1/2 rounded-t-lg bg-primary-100 dark:bg-gray-800'>
-        {group.header && (
-          <img
-            className='absolute inset-0 h-full w-full rounded-t-lg object-cover'
-            src={group.header} alt={intl.formatMessage(messages.groupHeader)}
-          />
-        )}
+        <GroupHeaderImage
+          group={group}
+          className='absolute inset-0 h-full w-full rounded-t-lg object-cover'
+        />
       </Stack>
 
       {/* Group Avatar */}

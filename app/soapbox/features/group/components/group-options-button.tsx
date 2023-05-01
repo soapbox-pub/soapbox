@@ -51,7 +51,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
   const menu: Menu = useMemo(() => {
     const items = [];
 
-    if (isMember) {
+    if (isMember || isAdmin) {
       items.push({
         text: intl.formatMessage(messages.report),
         icon: require('@tabler/icons/flag.svg'),

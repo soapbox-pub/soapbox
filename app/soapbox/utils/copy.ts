@@ -1,6 +1,10 @@
-const copy = (text: string) => {
+const copy = (text: string, onSuccess?: () => void) => {
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
+
+    if (onSuccess) {
+      onSuccess();
+    }
   } else {
     const textarea = document.createElement('textarea');
 
@@ -16,6 +20,10 @@ const copy = (text: string) => {
     // Do nothing
     } finally {
       document.body.removeChild(textarea);
+
+      if (onSuccess) {
+        onSuccess();
+      }
     }
   }
 };

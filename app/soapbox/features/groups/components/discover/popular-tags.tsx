@@ -12,7 +12,7 @@ const PopularTags = () => {
   const isEmpty = (isFetched && tags.length === 0) || isError;
 
   return (
-    <Stack space={4}>
+    <Stack space={4} data-testid='popular-tags'>
       <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
           <FormattedMessage

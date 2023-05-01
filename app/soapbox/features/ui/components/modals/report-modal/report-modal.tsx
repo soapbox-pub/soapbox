@@ -54,8 +54,8 @@ const reportSteps = {
   },
   [ReportableEntities.GROUP]: {
     ONE: ReasonStep,
-    TWO: ConfirmationStep,
-    THREE: null,
+    TWO: null,
+    THREE: ConfirmationStep,
   },
 };
 

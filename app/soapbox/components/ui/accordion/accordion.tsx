@@ -21,17 +21,27 @@ interface IAccordion {
   menu?: Menu
   expanded?: boolean
   onToggle?: (value: boolean) => void
+  action?: () => void
+  actionIcon?: string
+  actionLabel?: string
 }
 
 /**
  * Accordion
  * An accordion is a vertically stacked group of collapsible sections.
  */
-const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = false, onToggle = () => {} }) => {
+const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = false, onToggle = () => {}, action, actionIcon, actionLabel }) => {
   const intl = useIntl();
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     onToggle(!expanded);
+    e.preventDefault();
+  };
+
+  const handleAction = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!action) return;
+
+    action();
     e.preventDefault();
   };
 
@@ -52,6 +62,14 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
               items={menu}
               src={require('@tabler/icons/dots-vertical.svg')}
             />
+          )}
+          {action && actionIcon && (
+            <button onClick={handleAction} title={actionLabel}>
+              <Icon
+                src={actionIcon}
+                className='h-5 w-5 text-gray-700 dark:text-gray-600'
+              />
+            </button>
           )}
           <Icon
             src={expanded ? require('@tabler/icons/chevron-up.svg') : require('@tabler/icons/chevron-down.svg')}
