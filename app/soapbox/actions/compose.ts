@@ -22,6 +22,7 @@ import { createStatus } from './statuses';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import type { Emoji } from 'soapbox/features/emoji';
+import type { Group } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
 import type { History } from 'soapbox/types/history';
@@ -167,6 +168,14 @@ const cancelQuoteCompose = () => ({
   type: COMPOSE_QUOTE_CANCEL,
   id: 'compose-modal',
 });
+
+const groupComposeModal = (group: Group) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const composeId = `group:${group.id}`;
+
+    dispatch(groupCompose(composeId, group.id));
+    dispatch(openModal('COMPOSE', { composeId }));
+  };
 
 const resetCompose = (composeId = 'compose-modal') => ({
   type: COMPOSE_RESET,
@@ -829,6 +838,7 @@ export {
   uploadComposeFail,
   undoUploadCompose,
   groupCompose,
+  groupComposeModal,
   setGroupTimelineVisible,
   clearComposeSuggestions,
   fetchComposeSuggestions,
