@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines';
+import { useGroup, useGroupTag } from 'soapbox/api/hooks';
 import { Column, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useGroup, useGroupTag } from 'soapbox/hooks/api';
 
 import Timeline from '../ui/components/timeline';
 

@@ -1,8 +1,8 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntity } from 'soapbox/entity-store/hooks';
+import { useApi } from 'soapbox/hooks/useApi';
 import { type Account, accountSchema } from 'soapbox/schemas';
 
-import { useApi } from '../useApi';
 
 import { useRelationships } from './useRelationships';
 

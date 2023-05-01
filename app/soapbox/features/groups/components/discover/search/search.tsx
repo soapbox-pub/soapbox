@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useGroupSearch } from 'soapbox/api/hooks';
 import { Stack } from 'soapbox/components/ui';
 import PlaceholderGroupSearch from 'soapbox/features/placeholder/components/placeholder-group-search';
 import { useDebounce, useOwnAccount } from 'soapbox/hooks';
-import { useGroupSearch } from 'soapbox/hooks/api';
 import { saveGroupSearch } from 'soapbox/utils/groups';
 
 import Blankslate from './blankslate';

@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
+import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks';
 import { Column, HStack, Icon } from 'soapbox/components/ui';
-import { useGroupTag, useGroupsFromTag } from 'soapbox/hooks/api';
 
 import GroupGridItem from './components/discover/group-grid-item';
 import GroupListItem from './components/discover/group-list-item';

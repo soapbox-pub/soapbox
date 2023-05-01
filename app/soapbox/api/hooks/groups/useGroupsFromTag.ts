@@ -1,9 +1,7 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
+import { useApi, useFeatures } from 'soapbox/hooks';
 import { groupSchema } from 'soapbox/schemas';
-
-import { useApi } from '../../useApi';
-import { useFeatures } from '../../useFeatures';
 
 import { useGroupRelationships } from './useGroups';
 

@@ -3,7 +3,7 @@ import { useEntities } from 'soapbox/entity-store/hooks';
 import { GroupMember, groupMemberSchema } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
-import { useApi } from '../useApi';
+import { useApi } from '../../../hooks/useApi';
 
 function useGroupMembers(groupId: string, role: GroupRoles) {
   const api = useApi();

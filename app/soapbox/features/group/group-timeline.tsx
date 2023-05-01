@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
 import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
+import { useGroup } from 'soapbox/api/hooks';
 import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
 import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/hooks/api';
 
 import Timeline from '../ui/components/timeline';
 

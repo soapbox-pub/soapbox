@@ -2,9 +2,9 @@ import { AxiosError } from 'axios';
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks';
 import { Modal, Stack } from 'soapbox/components/ui';
 import { useDebounce } from 'soapbox/hooks';
-import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/hooks/api';
 import { type Group } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
 

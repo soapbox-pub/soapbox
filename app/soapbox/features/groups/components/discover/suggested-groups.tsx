@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useSuggestedGroups } from 'soapbox/api/hooks';
 import Link from 'soapbox/components/link';
 import { Carousel, HStack, Stack, Text } from 'soapbox/components/ui';
 import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover';
-import { useSuggestedGroups } from 'soapbox/hooks/api/useSuggestedGroups';
 
 import GroupGridItem from './group-grid-item';
 

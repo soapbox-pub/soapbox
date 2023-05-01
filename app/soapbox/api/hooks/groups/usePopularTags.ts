@@ -1,9 +1,7 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
-import { GroupTag, groupTagSchema } from 'soapbox/schemas';
-
-import { useApi } from '../../useApi';
-import { useFeatures } from '../../useFeatures';
+import { useApi, useFeatures } from 'soapbox/hooks';
+import { type GroupTag, groupTagSchema } from 'soapbox/schemas';
 
 function usePopularTags() {
   const api = useApi();

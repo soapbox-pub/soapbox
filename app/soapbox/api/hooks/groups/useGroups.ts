@@ -5,10 +5,9 @@ import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities, useEntity } from 'soapbox/entity-store/hooks';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { useFeatures } from 'soapbox/hooks/useFeatures';
 import { groupSchema, Group } from 'soapbox/schemas/group';
 import { groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas/group-relationship';
-
-import { useFeatures } from '../../useFeatures';
 
 function useGroups(q: string = '') {
   const api = useApi();

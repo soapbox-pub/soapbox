@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
+import { useGroupSearch } from 'soapbox/api/hooks';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { useGroupSearch } from 'soapbox/hooks/api';
 
 import GroupGridItem from '../group-grid-item';
 import GroupListItem from '../group-list-item';

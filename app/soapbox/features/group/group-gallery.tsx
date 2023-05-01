@@ -2,11 +2,11 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
+import { useGroup, useGroupMedia } from 'soapbox/api/hooks';
 import LoadMore from 'soapbox/components/load-more';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useGroup, useGroupMedia } from 'soapbox/hooks/api';
 
 import MediaItem from '../account-gallery/components/media-item';
 
