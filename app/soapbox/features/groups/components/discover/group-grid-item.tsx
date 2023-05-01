@@ -25,6 +25,7 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
       style={{
         width,
       }}
+      data-testid='group-grid-item'
     >
       <Link to={`/group/${group.slug}`}>
         <Stack
