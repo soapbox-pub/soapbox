@@ -16,6 +16,7 @@ const groupSchema = z.object({
   avatar: z.string().catch(avatarMissing),
   avatar_static: z.string().catch(''),
   created_at: z.string().datetime().catch(new Date().toUTCString()),
+  deleted_at: z.string().datetime().or(z.null()).catch(null),
   display_name: z.string().catch(''),
   domain: z.string().catch(''),
   emojis: filteredArray(customEmojiSchema).catch([]),
