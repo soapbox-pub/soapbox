@@ -15,7 +15,7 @@ const PopularGroups = () => {
   const [groupCover, setGroupCover] = useState<HTMLDivElement | null>(null);
 
   return (
-    <Stack space={4}>
+    <Stack space={4} data-testid='popular-groups'>
       <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
           <FormattedMessage

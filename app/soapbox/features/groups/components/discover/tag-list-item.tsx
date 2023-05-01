@@ -14,7 +14,11 @@ const TagListItem = (props: ITagListItem) => {
   const { tag } = props;
 
   return (
-    <Link to={`/groups/discover/tags/${tag.id}`} className='group'>
+    <Link
+      to={`/groups/discover/tags/${tag.id}`}
+      className='group'
+      data-testid='tag-list-item'
+    >
       <Stack>
         <Text
           weight='bold'

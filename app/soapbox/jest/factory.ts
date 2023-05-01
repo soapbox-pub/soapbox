@@ -1,6 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { groupSchema, Group, groupRelationshipSchema, GroupRelationship } from 'soapbox/schemas';
+import {
+  groupSchema,
+  groupRelationshipSchema,
+  groupTagSchema,
+  type Group,
+  type GroupRelationship,
+  type GroupTag,
+} from 'soapbox/schemas';
 
 // TODO: there's probably a better way to create these factory functions.
 // This looks promising but didn't work on my first attempt: https://github.com/anatine/zod-plugins/tree/main/packages/zod-mock
@@ -17,4 +24,10 @@ function buildGroupRelationship(props: Record<string, any> = {}): GroupRelations
   }, props));
 }
 
-export { buildGroup, buildGroupRelationship };
+function buildGroupTag(props: Record<string, any> = {}): GroupTag {
+  return groupTagSchema.parse(Object.assign({
+    id: uuidv4(),
+  }, props));
+}
+
+export { buildGroup, buildGroupRelationship, buildGroupTag };

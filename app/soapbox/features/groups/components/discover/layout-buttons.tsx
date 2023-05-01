@@ -15,7 +15,10 @@ interface ILayoutButtons {
 
 const LayoutButtons = ({ layout, onSelect }: ILayoutButtons) => (
   <HStack alignItems='center' space={1}>
-    <button onClick={() => onSelect(GroupLayout.LIST)}>
+    <button
+      data-testid='layout-list-action'
+      onClick={() => onSelect(GroupLayout.LIST)}
+    >
       <Icon
         src={require('@tabler/icons/layout-list.svg')}
         className={
@@ -26,7 +29,10 @@ const LayoutButtons = ({ layout, onSelect }: ILayoutButtons) => (
       />
     </button>
 
-    <button onClick={() => onSelect(GroupLayout.GRID)}>
+    <button
+      data-testid='layout-grid-action'
+      onClick={() => onSelect(GroupLayout.GRID)}
+    >
       <Icon
         src={require('@tabler/icons/layout-grid.svg')}
         className={
