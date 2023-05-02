@@ -491,7 +491,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/tags/:name/follow
      * @see POST /api/v1/tags/:name/unfollow
      */
-    followHashtags: v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+    followHashtags: any([
+      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+      v.software === PLEROMA && v.build === AKKOMA,
+    ]),
 
     /**
      * Ability to lock accounts and manually approve followers.
