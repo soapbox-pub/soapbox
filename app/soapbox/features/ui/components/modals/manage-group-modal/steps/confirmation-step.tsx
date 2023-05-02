@@ -54,7 +54,11 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
 
         <Stack>
           <Text size='2xl' weight='bold' align='center'>{group.display_name}</Text>
-          <Text size='md' className='mx-auto max-w-sm'>{group.note}</Text>
+          <Text
+            size='md'
+            className='mx-auto max-w-sm'
+            dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+          />
         </Stack>
       </Stack>
 
