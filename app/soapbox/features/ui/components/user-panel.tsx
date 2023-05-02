@@ -71,7 +71,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
             </HStack>
           </Link>
 
-          <Text size='sm' theme='muted'>
+          <Text size='sm' theme='muted' truncate>
             @{getAcct(account, fqn)}
           </Text>
         </Stack>
