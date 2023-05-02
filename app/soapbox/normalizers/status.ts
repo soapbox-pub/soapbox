@@ -11,10 +11,10 @@ import {
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
+import { cardSchema } from 'soapbox/schemas/card';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
@@ -118,9 +118,10 @@ const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
 
 // Normalize card
 const normalizeStatusCard = (status: ImmutableMap<string, any>) => {
-  if (status.get('card')) {
-    return status.update('card', ImmutableMap(), normalizeCard);
-  } else {
+  try {
+    const card = cardSchema.parse(status.get('card').toJS());
+    return status.set('card', card);
+  } catch (e) {
     return status.set('card', null);
   }
 };

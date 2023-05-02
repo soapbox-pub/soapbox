@@ -5,7 +5,6 @@ import {
   AnnouncementRecord,
   AnnouncementReactionRecord,
   AttachmentRecord,
-  CardRecord,
   ChatRecord,
   ChatMessageRecord,
   EmojiRecord,
@@ -37,7 +36,6 @@ type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Announcement = ReturnType<typeof AnnouncementRecord>;
 type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
 type Attachment = ReturnType<typeof AttachmentRecord>;
-type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
@@ -82,7 +80,6 @@ export {
   Announcement,
   AnnouncementReaction,
   Attachment,
-  Card,
   Chat,
   ChatMessage,
   Emoji,
@@ -110,6 +107,7 @@ export {
 };
 
 export type {
+  Card,
   Group,
   GroupMember,
   GroupRelationship,

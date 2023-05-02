@@ -13,6 +13,7 @@ export { relationshipSchema } from './relationship';
  * Entity Types
  */
 export type { Account } from './account';
+export type { Card } from './card';
 export type { CustomEmoji } from './custom-emoji';
 export type { Group } from './group';
 export type { GroupMember } from './group-member';
