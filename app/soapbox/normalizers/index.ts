@@ -4,7 +4,6 @@ export { AdminReportRecord, normalizeAdminReport } from './admin-report';
 export { AnnouncementRecord, normalizeAnnouncement } from './announcement';
 export { AnnouncementReactionRecord, normalizeAnnouncementReaction } from './announcement-reaction';
 export { AttachmentRecord, normalizeAttachment } from './attachment';
-export { normalizeCard } from './card';
 export { ChatRecord, normalizeChat } from './chat';
 export { ChatMessageRecord, normalizeChatMessage } from './chat-message';
 export { EmojiRecord, normalizeEmoji } from './emoji';

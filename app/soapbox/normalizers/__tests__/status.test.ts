@@ -195,7 +195,6 @@ describe('normalizeStatus()', () => {
     const result = normalizeStatus(status);
     const card = result.card as Card;
 
-    expect(ImmutableRecord.isRecord(card)).toBe(true);
     expect(card.type).toEqual('link');
     expect(card.provider_url).toEqual('https://soapbox.pub');
   });
