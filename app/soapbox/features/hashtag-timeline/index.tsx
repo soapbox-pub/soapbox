@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { connectHashtagStream } from 'soapbox/actions/streaming';
 import { fetchHashtag, followHashtag, unfollowHashtag } from 'soapbox/actions/tags';
 import { expandHashtagTimeline, clearTimeline } from 'soapbox/actions/timelines';
-import { Column } from 'soapbox/components/ui';
+import List, { ListItem } from 'soapbox/components/list';
+import { Column, Toggle } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
@@ -19,8 +20,6 @@ const messages = defineMessages({
   any: { id: 'hashtag.column_header.tag_mode.any', defaultMessage: 'or {additional}' },
   all: { id: 'hashtag.column_header.tag_mode.all', defaultMessage: 'and {additional}' },
   none: { id: 'hashtag.column_header.tag_mode.none', defaultMessage: 'without {additional}' },
-  followHashtag: { id: 'hashtag.follow', defaultMessage: 'Follow hashtag' },
-  unfollowHashtag: { id: 'hashtag.unfollow', defaultMessage: 'Unfollow hashtag' },
   empty: { id: 'empty_column.hashtag', defaultMessage: 'There is nothing in this hashtag yet.' },
 });
 
@@ -119,7 +118,19 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   }, [id]);
 
   return (
-    <Column label={title()} transparent>
+    <Column bodyClassName='space-y-3' label={title()} transparent>
+      {features.followHashtags && (
+        <List>
+          <ListItem
+            label={<FormattedMessage id='hashtag.follow' defaultMessage='Follow hashtag' />}
+          >
+            <Toggle
+              checked={tag?.following}
+              onChange={handleFollow}
+            />
+          </ListItem>
+        </List>
+      )}
       <Timeline
         scrollKey='hashtag_timeline'
         timelineId={`hashtag:${id}`}
