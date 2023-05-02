@@ -673,6 +673,7 @@
   "empty_column.filters": "You haven't created any muted words yet.",
   "empty_column.follow_recommendations": "Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.",
   "empty_column.follow_requests": "You don't have any follow requests yet. When you receive one, it will show up here.",
+  "empty_column.followed_tags": "You haven't followed any hashtag yet.",
   "empty_column.group": "There are no posts in this group yet.",
   "empty_column.group_blocks": "The group hasn't banned any users yet.",
   "empty_column.group_membership_requests": "There are no pending membership requests for this group.",
