@@ -25,7 +25,6 @@ const HomeComposeButton = () => {
   return (
     <Button
       theme='accent'
-      icon={require('@tabler/icons/pencil-plus.svg')}
       size='lg'
       onClick={onOpenCompose}
       block
