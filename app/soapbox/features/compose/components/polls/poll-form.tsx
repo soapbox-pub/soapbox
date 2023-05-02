@@ -105,7 +105,7 @@ const Option: React.FC<IOption> = ({
 };
 
 interface IPollForm {
-  composeId: string,
+  composeId: string
 }
 
 const PollForm: React.FC<IPollForm> = ({ composeId }) => {

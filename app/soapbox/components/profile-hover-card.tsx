@@ -54,7 +54,7 @@ const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
 };
 
 interface IProfileHoverCard {
-  visible: boolean,
+  visible: boolean
 }
 
 /** Popup profile preview that appears when hovering avatars and display names. */
@@ -106,7 +106,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >
-      <Card variant='rounded' className='relative isolate'>
+      <Card variant='rounded' className='relative isolate overflow-hidden'>
         <CardBody>
           <Stack space={2}>
             <BundleContainer fetchComponent={UserPanel}>
@@ -142,7 +142,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
           </Stack>
 
           {followedBy && (
-            <div className='absolute top-2 left-2'>
+            <div className='absolute left-2 top-2'>
               <Badge
                 slug='opaque'
                 title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}

@@ -4,7 +4,7 @@ import type { PickAlgorithm } from './types';
 
 type Opts = {
   /** Randomization seed. */
-  seed: string,
+  seed: string
   /**
    * Start/end index of the slot by which one item will be randomly picked per page.
    *
@@ -12,9 +12,9 @@ type Opts = {
    *
    * `end` must be larger than `start`.
    */
-  range: [start: number, end: number],
+  range: [start: number, end: number]
   /** Number of items in the page. */
-  pageSize: number,
+  pageSize: number
 };
 
 /**

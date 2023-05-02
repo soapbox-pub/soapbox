@@ -52,7 +52,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
   return (
     <div className={clsx('relative w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-primary-800', className)}>
-      <div className='absolute top-28 right-3'>
+      <div className='absolute right-3 top-28'>
         {floatingAction && action}
       </div>
       <div className='h-40 bg-primary-200 dark:bg-gray-600'>
@@ -65,7 +65,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
           {!floatingAction && action}
         </HStack>
 
-        <div className='flex flex-wrap gap-y-1 gap-x-2 text-gray-700 dark:text-gray-600'>
+        <div className='flex flex-wrap gap-x-2 gap-y-1 text-gray-700 dark:text-gray-600'>
           <HStack alignItems='center' space={2}>
             <Icon src={require('@tabler/icons/user.svg')} />
             <HStack space={1} alignItems='center' grow>

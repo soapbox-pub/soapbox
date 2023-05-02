@@ -5,20 +5,21 @@ import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
 import Badge from 'soapbox/components/badge';
+import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
 import StillImage from 'soapbox/components/still-image';
-import { Avatar, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import { Avatar, HStack, IconButton } from 'soapbox/components/ui';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button';
@@ -30,8 +31,6 @@ import toast from 'soapbox/toast';
 import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
-
-import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -76,7 +75,7 @@ const messages = defineMessages({
 });
 
 interface IHeader {
-  account?: Account,
+  account?: Account
 }
 
 const Header: React.FC<IHeader> = ({ account }) => {
@@ -106,7 +105,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   if (!account) {
     return (
-      <div className='-mx-4 -mt-4'>
+      <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
         <div>
           <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
@@ -137,7 +136,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         secondary: intl.formatMessage(messages.blockAndReport),
         onSecondary: () => {
           dispatch(blockAccount(account.id));
-          dispatch(initReport(account));
+          dispatch(initReport(ReportableEntities.ACCOUNT, account));
         },
       }));
     }
@@ -172,7 +171,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onReport = () => {
-    dispatch(initReport(account));
+    dispatch(initReport(ReportableEntities.ACCOUNT, account));
   };
 
   const onMute = () => {
@@ -275,7 +274,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const makeMenu = () => {
-    const menu: MenuType = [];
+    const menu: Menu = [];
 
     if (!account) {
       return [];
@@ -566,7 +565,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
           className='px-2'
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
           disabled={createAndNavigateToChat.isLoading}
         />
       );
@@ -578,7 +577,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
           className='px-2'
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
         />
       );
     } else {
@@ -600,7 +599,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         title={intl.formatMessage(messages.share, { name: account.username })}
         theme='outlined'
         className='px-2'
-        iconClassName='w-4 h-4'
+        iconClassName='h-4 w-4'
       />
     );
   };
@@ -609,7 +608,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const menu = makeMenu();
 
   return (
-    <div className='-mx-4 -mt-4'>
+    <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
       {(account.moved && typeof account.moved === 'object') && (
         <MovedNote from={account} to={account.moved} />
       )}
@@ -618,7 +617,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
           {renderHeader()}
 
-          <div className='absolute top-2 left-2'>
+          <div className='absolute left-2 top-2'>
             <HStack alignItems='center' space={1}>
               {info}
             </HStack>
@@ -628,7 +627,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       <div className='px-4 sm:px-6'>
         <HStack className='-mt-12' alignItems='bottom' space={5}>
-          <div className='flex'>
+          <div className='relative flex'>
             <a href={account.avatar} onClick={handleAvatarClick} target='_blank'>
               <Avatar
                 src={account.avatar}
@@ -636,6 +635,11 @@ const Header: React.FC<IHeader> = ({ account }) => {
                 className='relative h-24 w-24 rounded-full bg-white ring-4 ring-white dark:bg-primary-900 dark:ring-primary-900'
               />
             </a>
+            {account.verified && (
+              <div className='absolute bottom-0 right-0'>
+                <VerificationBadge className='h-6 w-6 rounded-full bg-white ring-2 ring-white dark:bg-primary-900 dark:ring-primary-900' />
+              </div>
+            )}
           </div>
 
           <div className='mt-6 flex w-full justify-end sm:pb-1'>
@@ -645,39 +649,15 @@ const Header: React.FC<IHeader> = ({ account }) => {
               {renderShareButton()}
 
               {menu.length > 0 && (
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
+                <DropdownMenu items={menu} placement='bottom-end'>
+                  <IconButton
                     src={require('@tabler/icons/dots.svg')}
                     theme='outlined'
                     className='px-2'
-                    iconClassName='w-4 h-4'
+                    iconClassName='h-4 w-4'
                     children={null}
                   />
-
-                  <MenuList className='w-56'>
-                    {menu.map((menuItem, idx) => {
-                      if (typeof menuItem?.text === 'undefined') {
-                        return <MenuDivider key={idx} />;
-                      } else {
-                        const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                        const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.newTab ? '_blank' : '_self' };
-
-                        return (
-                          <Comp key={idx} {...itemProps} className='group'>
-                            <HStack space={3} alignItems='center'>
-                              {menuItem.icon && (
-                                <SvgIcon src={menuItem.icon} className='h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500' />
-                              )}
-
-                              <div className='truncate'>{menuItem.text}</div>
-                            </HStack>
-                          </Comp>
-                        );
-                      }
-                    })}
-                  </MenuList>
-                </Menu>
+                </DropdownMenu>
               )}
 
               <ActionButton account={account} />

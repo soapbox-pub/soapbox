@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  accountId: string,
+  accountId: string
   aliases: ImmutableList<string>
 }
 

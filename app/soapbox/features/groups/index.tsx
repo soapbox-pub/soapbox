@@ -1,58 +1,47 @@
-import React, { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { useState } from 'react';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { createSelector } from 'reselect';
 
-import { fetchGroups } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
+import { useGroups } from 'soapbox/api/hooks';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { Button, Input, Stack, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
 
-import type { List as ImmutableList } from 'immutable';
-import type { RootState } from 'soapbox/store';
-import type { Group as GroupEntity } from 'soapbox/types/entities';
+import PendingGroupsRow from './components/pending-groups-row';
+import TabBar, { TabItems } from './components/tab-bar';
 
-const getOrderedGroups = createSelector([
-  (state: RootState) => state.groups.items,
-  (state: RootState) => state.groups.isLoading,
-  (state: RootState) => state.group_relationships,
-], (groups, isLoading, group_relationships) => ({
-  groups: (groups.toList().filter((item: GroupEntity | false) => !!item) as ImmutableList<GroupEntity>)
-    .map((item) => item.set('relationship', group_relationships.get(item.id) || null))
-    .filter((item) => item.relationship?.member)
-    .sort((a, b) => a.display_name.localeCompare(b.display_name)),
-  isLoading,
-}));
+const messages = defineMessages({
+  placeholder: { id: 'groups.search.placeholder', defaultMessage: 'Search My Groups' },
+});
 
 const Groups: React.FC = () => {
+  const debounce = useDebounce;
   const dispatch = useAppDispatch();
+  const features = useFeatures();
+  const intl = useIntl();
 
-  const { groups, isLoading } = useAppSelector((state) => getOrderedGroups(state));
   const canCreateGroup = useAppSelector((state) => hasPermission(state, PERMISSION_CREATE_GROUPS));
 
-  useEffect(() => {
-    dispatch(fetchGroups());
-  }, []);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const debouncedValue = debounce(searchValue, 300);
 
-  const createGroup = () => {
-    dispatch(openModal('MANAGE_GROUP'));
+  const { groups, isLoading, hasNextPage, fetchNextPage } = useGroups(debouncedValue);
+
+  const handleLoadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
   };
 
-  if (!groups) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
+  const createGroup = () => dispatch(openModal('CREATE_GROUP'));
 
-  const emptyMessage = (
-    <Stack space={6} alignItems='center' justifyContent='center' className='h-full p-6'>
+  const renderBlankslate = () => (
+    <Stack space={4} alignItems='center' justifyContent='center' className='py-6'>
       <Stack space={2} className='max-w-sm'>
         <Text size='2xl' weight='bold' tag='h2' align='center'>
           <FormattedMessage
@@ -68,34 +57,63 @@ const Groups: React.FC = () => {
           />
         </Text>
       </Stack>
+
+      {canCreateGroup && (
+        <Button
+          className='self-center'
+          onClick={createGroup}
+          theme='secondary'
+        >
+          <FormattedMessage id='new_group_panel.action' defaultMessage='Create Group' />
+        </Button>
+      )}
     </Stack>
   );
 
   return (
-    <Stack className='gap-4'>
+    <Stack space={4}>
+      {features.groupsDiscovery && (
+        <TabBar activeTab={TabItems.MY_GROUPS} />
+      )}
+
       {canCreateGroup && (
         <Button
-          className='sm:w-fit sm:self-end xl:hidden'
+          className='xl:hidden'
           icon={require('@tabler/icons/circles.svg')}
           onClick={createGroup}
           theme='secondary'
           block
         >
-          <FormattedMessage id='new_group_panel.action' defaultMessage='Create group' />
+          <FormattedMessage id='new_group_panel.action' defaultMessage='Create Group' />
         </Button>
       )}
+
+      {features.groupsSearch ? (
+        <Input
+          onChange={(event) => setSearchValue(event.target.value)}
+          placeholder={intl.formatMessage(messages.placeholder)}
+          theme='search'
+          value={searchValue}
+        />
+      ) : null}
+
+      <PendingGroupsRow />
+
       <ScrollableList
         scrollKey='groups'
-        emptyMessage={emptyMessage}
-        itemClassName='py-3 first:pt-0 last:pb-0'
+        emptyMessage={renderBlankslate()}
+        emptyMessageCard={false}
+        itemClassName='pb-4 last:pb-0'
         isLoading={isLoading}
-        showLoading={isLoading && !groups.count()}
+        showLoading={isLoading && groups.length === 0}
         placeholderComponent={PlaceholderGroupCard}
         placeholderCount={3}
+        onLoadMore={handleLoadMore}
+        hasMore={hasNextPage}
       >
         {groups.map((group) => (
-          <Link key={group.id} to={`/groups/${group.id}`}>
-            <GroupCard group={group as GroupEntity} />
+          <Link key={group.id} to={`/group/${group.slug}`}>
+            <GroupCard group={group} />
           </Link>
         ))}
       </ScrollableList>

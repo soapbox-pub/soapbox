@@ -23,11 +23,11 @@ const messages = defineMessages({
 });
 
 interface IMediaModal {
-  media: ImmutableList<Attachment>,
-  status?: Status,
-  index: number,
-  time?: number,
-  onClose: () => void,
+  media: ImmutableList<Attachment>
+  status?: Status
+  index: number
+  time?: number
+  onClose: () => void
 }
 
 const MediaModal: React.FC<IMediaModal> = (props) => {
@@ -142,24 +142,20 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   );
 
   if (media.size > 1) {
-    pagination = media.toArray().map((item, i) => {
-      const classes = ['media-modal__button'];
-      if (i === getIndex()) {
-        classes.push('media-modal__button--active');
-      }
-      return (
-        <li className='media-modal__page-dot' key={i}>
-          <button
-            tabIndex={0}
-            className={classes.join(' ')}
-            onClick={handleChangeIndex}
-            data-index={i}
-          >
-            {i + 1}
-          </button>
-        </li>
-      );
-    });
+    pagination = media.toArray().map((item, i) => (
+      <li className='media-modal__page-dot' key={i}>
+        <button
+          tabIndex={0}
+          className={clsx('media-modal__button', {
+            'media-modal__button--active': i === getIndex(),
+          })}
+          onClick={handleChangeIndex}
+          data-index={i}
+        >
+          {i + 1}
+        </button>
+      </li>
+    ));
   }
 
   const isMultiMedia = media.map((image) => image.type !== 'image').toArray();

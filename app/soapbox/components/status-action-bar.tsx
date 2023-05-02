@@ -8,21 +8,23 @@ import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { editEvent } from 'soapbox/actions/events';
 import { groupBlock, groupDeleteStatus, groupKick } from 'soapbox/actions/groups';
-import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
+import { toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
 import { HStack } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
+
+import GroupPopover from './groups/popover/group-popover';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
 import type { Account, Group, Status } from 'soapbox/types/entities';
@@ -45,6 +47,7 @@ const messages = defineMessages({
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   favourite: { id: 'status.favourite', defaultMessage: 'Like' },
+  disfavourite: { id: 'status.disfavourite', defaultMessage: 'Disike' },
   open: { id: 'status.open', defaultMessage: 'Expand this post' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
@@ -97,10 +100,10 @@ const messages = defineMessages({
 });
 
 interface IStatusActionBar {
-  status: Status,
-  withLabels?: boolean,
-  expandable?: boolean,
-  space?: 'expand' | 'compact',
+  status: Status
+  withLabels?: boolean
+  expandable?: boolean
+  space?: 'expand' | 'compact'
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
@@ -158,6 +161,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       dispatch(toggleFavourite(status));
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
+    }
+  };
+
+  const handleDislikeClick: React.EventHandler<React.MouseEvent> = (e) => {
+    if (me) {
+      dispatch(toggleDislike(status));
+    } else {
+      onOpenUnauthorizedModal('DISLIKE');
     }
   };
 
@@ -254,7 +265,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, { status }));
+        dispatch(initReport(ReportableEntities.STATUS, account, { status }));
       },
     }));
   };
@@ -271,7 +282,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(status.account as Account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, status.account as Account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -525,7 +536,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     return menu;
   };
 
-  const publicStatus = ['public', 'unlisted'].includes(status.visibility);
+  const publicStatus = ['public', 'unlisted', 'group'].includes(status.visibility);
 
   const replyCount = status.replies_count;
   const reblogCount = status.reblogs_count;
@@ -538,7 +549,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     allowedEmoji,
   ).reduce((acc, cur) => acc + cur.get('count'), 0);
 
-  const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+  const meEmojiReact = getReactForStatus(status, allowedEmoji);
+  const meEmojiName = meEmojiReact?.get('name') as keyof typeof reactMessages | undefined;
 
   const reactMessages = {
     '👍': messages.reactionLike,
@@ -550,7 +562,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     '': messages.favourite,
   };
 
-  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
+  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiName || ''] || messages.favourite);
 
   const menu = _makeMenu(publicStatus);
   let reblogIcon = require('@tabler/icons/repeat.svg');
@@ -597,7 +609,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     replyTitle = intl.formatMessage(messages.replyAll);
   }
 
-  const canShare = ('share' in navigator) && status.visibility === 'public';
+  const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
 
   return (
     <HStack data-testid='status-action-bar'>
@@ -607,23 +619,28 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         grow={space === 'expand'}
         onClick={e => e.stopPropagation()}
       >
-        <StatusActionButton
-          title={replyTitle}
-          icon={require('@tabler/icons/message-circle-2.svg')}
-          onClick={handleReplyClick}
-          count={replyCount}
-          text={withLabels ? intl.formatMessage(messages.reply) : undefined}
-          disabled={replyDisabled}
-        />
+        <GroupPopover
+          group={status.group as any}
+          isEnabled={replyDisabled}
+        >
+          <StatusActionButton
+            title={replyTitle}
+            icon={require('@tabler/icons/message-circle-2.svg')}
+            onClick={handleReplyClick}
+            count={replyCount}
+            text={withLabels ? intl.formatMessage(messages.reply) : undefined}
+            disabled={replyDisabled}
+          />
+        </GroupPopover>
 
         {(features.quotePosts && me) ? (
-          <DropdownMenuContainer
+          <DropdownMenu
             items={reblogMenu}
             disabled={!publicStatus}
             onShiftClick={handleReblogClick}
           >
             {reblogButton}
-          </DropdownMenuContainer>
+          </DropdownMenu>
         ) : (
           reblogButton
         )}
@@ -635,7 +652,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               icon={require('@tabler/icons/heart.svg')}
               filled
               color='accent'
-              active={Boolean(meEmojiReact)}
+              active={Boolean(meEmojiName)}
               count={emojiReactCount}
               emoji={meEmojiReact}
               text={withLabels ? meEmojiTitle : undefined}
@@ -644,13 +661,26 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
-            icon={require('@tabler/icons/heart.svg')}
+            icon={features.dislikes ? require('@tabler/icons/thumb-up.svg') : require('@tabler/icons/heart.svg')}
             color='accent'
             filled
             onClick={handleFavouriteClick}
-            active={Boolean(meEmojiReact)}
+            active={Boolean(meEmojiName)}
             count={favouriteCount}
             text={withLabels ? meEmojiTitle : undefined}
+          />
+        )}
+
+        {features.dislikes && (
+          <StatusActionButton
+            title={intl.formatMessage(messages.disfavourite)}
+            icon={require('@tabler/icons/thumb-down.svg')}
+            color='accent'
+            filled
+            onClick={handleDislikeClick}
+            active={status.disliked}
+            count={status.dislikes_count}
+            text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined}
           />
         )}
 
@@ -662,12 +692,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenuContainer items={menu} status={status}>
+        <DropdownMenu items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={require('@tabler/icons/dots.svg')}
           />
-        </DropdownMenuContainer>
+        </DropdownMenu>
       </HStack>
     </HStack>
   );

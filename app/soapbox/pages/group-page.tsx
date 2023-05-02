@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import React, { useMemo } from 'react';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
-import { fetchGroup } from 'soapbox/actions/groups';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import { Column, Layout } from 'soapbox/components/ui';
+import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
+import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
+import { Column, Icon, Layout, Stack, Text } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
@@ -12,71 +12,156 @@ import {
   CtaBanner,
   GroupMediaPanel,
   SignUpPanel,
+  SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetGroup } from 'soapbox/selectors';
+import { useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import { Tabs } from '../components/ui';
+
+import type { Group } from 'soapbox/schemas';
 
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
+  media: { id: 'group.tabs.media', defaultMessage: 'Media' },
+  tags: { id: 'group.tabs.tags', defaultMessage: 'Topics' },
 });
 
 interface IGroupPage {
   params?: {
-    id?: string
+    groupId?: string
   }
   children: React.ReactNode
 }
 
+const DeletedBlankslate = () => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
+      <Icon
+        src={require('@tabler/icons/trash.svg')}
+        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+      />
+    </div>
+
+    <Text theme='muted'>
+      <FormattedMessage
+        id='group.deleted.message'
+        defaultMessage='This group has been deleted.'
+      />
+    </Text>
+  </Stack>
+);
+
+const PrivacyBlankslate = () => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-gray-200 p-3 dark:bg-gray-800'>
+      <Icon
+        src={require('@tabler/icons/eye-off.svg')}
+        className='h-6 w-6 text-gray-600 dark:text-gray-600'
+      />
+    </div>
+
+    <Text theme='muted'>
+      <FormattedMessage
+        id='group.private.message'
+        defaultMessage='Content is only visible to group members'
+      />
+    </Text>
+  </Stack>
+);
+
+const BlockedBlankslate = ({ group }: { group: Group }) => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
+      <Icon
+        src={require('@tabler/icons/ban.svg')}
+        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+      />
+    </div>
+
+    <Text theme='muted'>
+      <FormattedMessage
+        id='group.banned.message'
+        defaultMessage='You are banned from'
+      />
+      {' '}
+      <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+    </Text>
+  </Stack>
+);
+
 /** Page to display a group. */
 const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const intl = useIntl();
+  const features = useFeatures();
   const match = useRouteMatch();
-  const dispatch = useAppDispatch();
+  const me = useOwnAccount();
 
-  const id = params?.id || '';
+  const id = params?.groupId || '';
 
-  const getGroup = useCallback(makeGetGroup(), []);
-  const group = useAppSelector(state => getGroup(state, id));
-  const me = useAppSelector(state => state.me);
+  const { group } = useGroup(id);
+  const { accounts: pending } = useGroupMembershipRequests(id);
 
-  useEffect(() => {
-    dispatch(fetchGroup(id));
-  }, [id]);
+  const isMember = !!group?.relationship?.member;
+  const isBlocked = group?.relationship?.blocked_by;
+  const isPrivate = group?.locked;
+  const isDeleted = !!group?.deleted_at;
 
-  if ((group as any) === false) {
-    return (
-      <MissingIndicator />
-    );
-  }
-
-  const items = [
-    {
+  const tabItems = useMemo(() => {
+    const items = [];
+    items.push({
       text: intl.formatMessage(messages.all),
-      to: `/groups/${group?.id}`,
-      name: '/groups/:id',
+      to: `/group/${group?.slug}`,
+      name: '/group/:groupSlug',
+    });
+
+    if (features.groupsTags) {
+      items.push({
+        text: intl.formatMessage(messages.tags),
+        to: `/group/${group?.slug}/tags`,
+        name: '/group/:groupSlug/tags',
+      });
+    }
+
+    items.push({
+      text: intl.formatMessage(messages.members),
+      to: `/group/${group?.slug}/members`,
+      name: '/group/:groupSlug/members',
+      count: pending.length,
     },
     {
-      text: intl.formatMessage(messages.members),
-      to: `/groups/${group?.id}/members`,
-      name: '/groups/:id/members',
-    },
-  ];
+      text: intl.formatMessage(messages.media),
+      to: `/group/${group?.slug}/media`,
+      name: '/group/:groupSlug/media',
+    });
+
+    return items;
+  }, [features.groupsTags, pending.length]);
+
+  const renderChildren = () => {
+    if (isDeleted) {
+      return <DeletedBlankslate />;
+    } else if (!isMember && isPrivate) {
+      return <PrivacyBlankslate />;
+    } else if (isBlocked) {
+      return <BlockedBlankslate group={group} />;
+    } else {
+      return children;
+    }
+  };
 
   return (
     <>
       <Layout.Main>
-        <Column label={group ? group.display_name : ''} withHeader={false}>
+        <Column size='lg' label={group ? group.display_name : ''} withHeader={false}>
           <GroupHeader group={group} />
 
           <Tabs
-            items={items}
+            items={tabItems}
             activeItem={match.path}
           />
 
-          {children}
+          {renderChildren()}
         </Column>
 
         {!me && (
@@ -95,10 +180,13 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
         <BundleContainer fetchComponent={GroupMediaPanel}>
           {Component => <Component group={group} />}
         </BundleContainer>
+        <BundleContainer fetchComponent={SuggestedGroupsPanel}>
+          {Component => <Component />}
+        </BundleContainer>
         <LinkFooter key='link-footer' />
       </Layout.Aside>
     </>
   );
 };
 
-export default GroupPage;
+export default GroupLookupHoc(GroupPage as any) as any;

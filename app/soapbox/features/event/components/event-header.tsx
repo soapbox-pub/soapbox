@@ -11,7 +11,7 @@ import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interac
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
@@ -63,7 +63,7 @@ const messages = defineMessages({
 });
 
 interface IEventHeader {
-  status?: StatusEntity,
+  status?: StatusEntity
 }
 
 const EventHeader: React.FC<IEventHeader> = ({ status }) => {
@@ -176,13 +176,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, { status }));
+        dispatch(initReport(ReportableEntities.STATUS, account, { status }));
       },
     }));
   };
 
   const handleReport = () => {
-    dispatch(initReport(account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, account, { status }));
   };
 
   const handleModerate = () => {
@@ -386,7 +386,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
               src={require('@tabler/icons/dots.svg')}
               theme='outlined'
               className='h-[30px] px-2'
-              iconClassName='w-4 h-4'
+              iconClassName='h-4 w-4'
               children={null}
             />
 
@@ -396,7 +396,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                   return <MenuDivider key={idx} />;
                 } else {
                   const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.newTab ? '_blank' : '_self' };
+                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.target || '_self' };
 
                   return (
                     <Comp key={idx} {...itemProps} className='group'>

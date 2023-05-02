@@ -15,7 +15,9 @@ NODE_ENV=development
 - `yarn build` - Compile without a dev server, into `/static` directory.
 
 ## Translations
-- `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
+- `yarn i18n` - Rebuilds app and updates English locale to prepare for translations in other languages. Should always be run after editing i18n strings.
+
+- `yarn manage:translations` - A low-level translations manager utility.
 
 ## Tests
 - `yarn test:all` - Runs all tests and linters.

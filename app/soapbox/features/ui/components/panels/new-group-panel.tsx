@@ -12,7 +12,7 @@ const NewGroupPanel = () => {
   const canCreateGroup = useAppSelector((state) => hasPermission(state, PERMISSION_CREATE_GROUPS));
 
   const createGroup = () => {
-    dispatch(openModal('MANAGE_GROUP'));
+    dispatch(openModal('CREATE_GROUP'));
   };
 
   if (!canCreateGroup) return null;
@@ -21,7 +21,7 @@ const NewGroupPanel = () => {
     <Stack space={2}>
       <Stack>
         <Text size='lg' weight='bold'>
-          <FormattedMessage id='new_group_panel.title' defaultMessage='Create New Group' />
+          <FormattedMessage id='new_group_panel.title' defaultMessage='Create Group' />
         </Text>
 
         <Text theme='muted' size='sm'>
@@ -30,12 +30,11 @@ const NewGroupPanel = () => {
       </Stack>
 
       <Button
-        icon={require('@tabler/icons/circles.svg')}
         onClick={createGroup}
         theme='secondary'
         block
       >
-        <FormattedMessage id='new_group_panel.action' defaultMessage='Create group' />
+        <FormattedMessage id='new_group_panel.action' defaultMessage='Create Group' />
       </Button>
     </Stack>
   );

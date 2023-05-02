@@ -25,40 +25,41 @@ const widths = {
 
 interface IModal {
   /** Callback when the modal is cancelled. */
-  cancelAction?: () => void,
+  cancelAction?: () => void
   /** Cancel button text. */
-  cancelText?: React.ReactNode,
+  cancelText?: React.ReactNode
   /** URL to an SVG icon for the close button. */
-  closeIcon?: string,
+  closeIcon?: string
   /** Position of the close button. */
-  closePosition?: 'left' | 'right',
+  closePosition?: 'left' | 'right'
   /** Callback when the modal is confirmed. */
-  confirmationAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
+  confirmationAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void
   /** Whether the confirmation button is disabled. */
-  confirmationDisabled?: boolean,
+  confirmationDisabled?: boolean
   /** Confirmation button text. */
-  confirmationText?: React.ReactNode,
+  confirmationText?: React.ReactNode
   /** Confirmation button theme. */
-  confirmationTheme?: ButtonThemes,
+  confirmationTheme?: ButtonThemes
   /** Whether to use full width style for confirmation button. */
-  confirmationFullWidth?: boolean,
+  confirmationFullWidth?: boolean
   /** Callback when the modal is closed. */
-  onClose?: () => void,
+  onClose?: () => void
   /** Callback when the secondary action is chosen. */
-  secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void,
+  secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void
   /** Secondary button text. */
-  secondaryText?: React.ReactNode,
-  secondaryDisabled?: boolean,
+  secondaryText?: React.ReactNode
+  secondaryDisabled?: boolean
   /** Don't focus the "confirm" button on mount. */
-  skipFocus?: boolean,
+  skipFocus?: boolean
   /** Title text for the modal. */
-  title?: React.ReactNode,
-  width?: keyof typeof widths,
-  children?: React.ReactNode,
+  title?: React.ReactNode
+  width?: keyof typeof widths
+  children?: React.ReactNode
+  className?: string
 }
 
 /** Displays a modal dialog box. */
-const Modal: React.FC<IModal> = ({
+const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   cancelAction,
   cancelText,
   children,
@@ -76,7 +77,8 @@ const Modal: React.FC<IModal> = ({
   skipFocus = false,
   title,
   width = 'xl',
-}) => {
+  className,
+}, ref) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
@@ -87,7 +89,11 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={clsx('pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}>
+    <div
+      ref={ref}
+      data-testid='modal'
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}
+    >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
           {title && (
@@ -157,6 +163,6 @@ const Modal: React.FC<IModal> = ({
       )}
     </div>
   );
-};
+});
 
 export default Modal;

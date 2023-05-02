@@ -10,8 +10,8 @@ const messages = defineMessages({
 });
 
 interface IThemeSelector {
-  value: string,
-  onChange: (value: string) => void,
+  value: string
+  onChange: (value: string) => void
 }
 
 /** Pure theme selector. */
@@ -45,7 +45,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
         <Select
           onChange={handleChange}
           defaultValue={value}
-          className='pl-10'
+          className='!pl-10'
         >
           <option value='system'>{intl.formatMessage(messages.system)}</option>
           <option value='light'>{intl.formatMessage(messages.light)}</option>

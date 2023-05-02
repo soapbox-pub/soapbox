@@ -16,7 +16,8 @@ import {
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
+import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
+import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
@@ -26,7 +27,6 @@ import UploadButtonContainer from '../containers/upload-button-container';
 import WarningContainer from '../containers/warning-container';
 import { countableText } from '../util/counter';
 
-import EmojiPickerDropdown from './emoji-picker/emoji-picker-dropdown';
 import MarkdownButton from './markdown-button';
 import PollButton from './poll-button';
 import PollForm from './polls/poll-form';
@@ -40,7 +40,7 @@ import UploadForm from './upload-form';
 import VisualCharacterCounter from './visual-character-counter';
 import Warning from './warning';
 
-import type { Emoji } from 'soapbox/components/autosuggest-emoji';
+import type { Emoji } from 'soapbox/features/emoji';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -57,15 +57,16 @@ const messages = defineMessages({
 });
 
 interface IComposeForm<ID extends string> {
-  id: ID extends 'default' ? never : ID,
-  shouldCondense?: boolean,
-  autoFocus?: boolean,
-  clickableAreaRef?: React.RefObject<HTMLDivElement>,
-  event?: string,
-  group?: string,
+  id: ID extends 'default' ? never : ID
+  shouldCondense?: boolean
+  autoFocus?: boolean
+  clickableAreaRef?: React.RefObject<HTMLDivElement>
+  event?: string
+  group?: string
+  extra?: React.ReactNode
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -87,9 +88,11 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const [composeFocused, setComposeFocused] = useState(false);
 
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
+
+  const { isDraggedOver } = useDraggedFiles(formRef);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     dispatch(changeCompose(id, e.target.value));
@@ -116,7 +119,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       // FIXME: Make this less brittle
       getClickableArea(),
       document.querySelector('.privacy-dropdown__dropdown'),
-      document.querySelector('.emoji-picker-dropdown__menu'),
+      document.querySelector('em-emoji-picker'),
       document.getElementById('modal-overlay'),
     ].some(element => element?.contains(e.target as any));
   };
@@ -179,7 +182,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const handleEmojiPick = (data: Emoji) => {
     const position   = autosuggestTextareaRef.current!.textarea!.selectionStart;
-    const needsSpace = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+    const needsSpace = !!data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     dispatch(insertEmojiCompose(id, position, data, needsSpace));
   };
@@ -226,7 +229,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const renderButtons = useCallback(() => (
     <HStack alignItems='center' space={2}>
       {features.media && <UploadButtonContainer composeId={id} />}
-      <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />
+      <EmojiPickerDropdown onPickEmoji={handleEmojiPick} condensed={shouldCondense} />
       {features.polls && <PollButton composeId={id} />}
       {features.privacyScopes && !group && !groupId && <PrivacyDropdown composeId={id} />}
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
@@ -235,7 +238,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     </HStack>
   ), [features, id]);
 
-  const condensed = shouldCondense && !composeFocused && isEmpty() && !isUploading;
+  const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty() && !isUploading;
   const disabled = isSubmitting;
   const countedText = [spoilerText, countableText(text)].join('');
   const disabledButton = disabled || isUploading || isChangingUpload || length(countedText) > maxTootChars || (countedText.length !== 0 && countedText.trim().length === 0 && !anyMedia);
@@ -318,7 +321,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
           <Stack space={4} className='compose-form__modifiers'>
             <UploadForm composeId={id} />
             <PollForm composeId={id} />
-            <ScheduleFormContainer composeId={id} />
 
             <SpoilerInput
               composeId={id}
@@ -327,11 +329,15 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
               onSuggestionSelected={onSpoilerSuggestionSelected}
               ref={spoilerTextRef}
             />
+
+            <ScheduleFormContainer composeId={id} />
           </Stack>
         }
       </AutosuggestTextarea>
 
       <QuotedStatusContainer composeId={id} />
+
+      {extra && <div className={clsx({ 'hidden': condensed })}>{extra}</div>}
 
       <div
         className={clsx('flex flex-wrap items-center justify-between', {

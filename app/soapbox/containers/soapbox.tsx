@@ -191,7 +191,14 @@ const SoapboxMount = () => {
                 </BundleContainer>
 
                 <GdprBanner />
-                <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
+
+                <div id='toaster'>
+                  <Toaster
+                    position='top-right'
+                    containerClassName='top-10'
+                    containerStyle={{ top: 75 }}
+                  />
+                </div>
               </Route>
             </Switch>
           </ScrollContext>
@@ -202,7 +209,7 @@ const SoapboxMount = () => {
 };
 
 interface ISoapboxLoad {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /** Initial data loader. */
@@ -258,7 +265,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 };
 
 interface ISoapboxHead {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /** Injects metadata into site head with Helmet. */

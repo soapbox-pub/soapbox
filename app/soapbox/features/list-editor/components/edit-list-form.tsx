@@ -36,7 +36,7 @@ const ListForm = () => {
     <Form onSubmit={handleSubmit}>
       <HStack space={2}>
         <Input
-          outerClassName='flex-grow'
+          outerClassName='grow'
           type='text'
           value={value}
           onChange={handleChange}

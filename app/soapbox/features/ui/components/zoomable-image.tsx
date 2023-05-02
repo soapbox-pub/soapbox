@@ -16,9 +16,9 @@ const getDistance = (p1: React.Touch, p2: React.Touch): number =>
 const clamp = (min: number, max: number, value: number): number => Math.min(max, Math.max(min, value));
 
 interface IZoomableImage {
-  alt?: string,
-  src: string,
-  onClick?: React.MouseEventHandler,
+  alt?: string
+  src: string
+  onClick?: React.MouseEventHandler
 }
 
 class ZoomableImage extends React.PureComponent<IZoomableImage> {

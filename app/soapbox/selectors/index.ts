@@ -7,15 +7,18 @@ import {
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { Entities } from 'soapbox/entity-store/entities';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
+import { getFeatures } from 'soapbox/utils/features';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ContextType } from 'soapbox/normalizers/filter';
+import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { Filter as FilterEntity, Notification } from 'soapbox/types/entities';
+import type { Filter as FilterEntity, Notification, Status, Group } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
@@ -117,39 +120,63 @@ const escapeRegExp = (string: string) =>
 export const regexFromFilters = (filters: ImmutableList<FilterEntity>) => {
   if (filters.size === 0) return null;
 
-  return new RegExp(filters.map(filter => {
-    let expr = escapeRegExp(filter.get('phrase'));
+  return new RegExp(filters.map(filter =>
+    filter.keywords.map(keyword => {
+      let expr = escapeRegExp(keyword.keyword);
 
-    if (filter.get('whole_word')) {
-      if (/^[\w]/.test(expr)) {
-        expr = `\\b${expr}`;
+      if (keyword.whole_word) {
+        if (/^[\w]/.test(expr)) {
+          expr = `\\b${expr}`;
+        }
+
+        if (/[\w]$/.test(expr)) {
+          expr = `${expr}\\b`;
+        }
       }
 
-      if (/[\w]$/.test(expr)) {
-        expr = `${expr}\\b`;
-      }
-    }
-
-    return expr;
-  }).join('|'), 'i');
+      return expr;
+    }).join('|'),
+  ).join('|'), 'i');
 };
+
+const checkFiltered = (index: string, filters: ImmutableList<FilterEntity>) =>
+  filters.reduce((result, filter) =>
+    result.concat(filter.keywords.reduce((result, keyword) => {
+      let expr = escapeRegExp(keyword.keyword);
+
+      if (keyword.whole_word) {
+        if (/^[\w]/.test(expr)) {
+          expr = `\\b${expr}`;
+        }
+
+        if (/[\w]$/.test(expr)) {
+          expr = `${expr}\\b`;
+        }
+      }
+
+      const regex = new RegExp(expr);
+
+      if (regex.test(index)) return result.concat(filter.title);
+      return result;
+    }, ImmutableList<string>())), ImmutableList<string>());
 
 type APIStatus = { id: string, username?: string };
 
 export const makeGetStatus = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIStatus) => state.statuses.get(id),
-      (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || ''),
-      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || ''),
-      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || ''),
-      (state: RootState, { id }: APIStatus) => state.groups.items.get(state.statuses.get(id)?.group || ''),
+      (state: RootState, { id }: APIStatus) => state.statuses.get(id) as Status | undefined,
+      (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || '') as Status | undefined,
+      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || '') as ReducerAccount | undefined,
+      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || '') as ReducerAccount | undefined,
+      (state: RootState, { id }: APIStatus) => state.entities[Entities.GROUPS]?.store[state.statuses.get(id)?.group || ''] as Group | undefined,
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
       (state: RootState) => state.me,
+      (state: RootState) => getFeatures(state.instance),
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, group, username, filters, me) => {
+    (statusBase, statusReblog, accountBase, accountReblog, group, username, filters, me, features) => {
       if (!statusBase || !accountBase) return null;
 
       const accountUsername = accountBase.acct;
@@ -165,16 +192,18 @@ export const makeGetStatus = () => {
         statusReblog = undefined;
       }
 
-      const regex    = (accountReblog || accountBase).id !== me && regexFromFilters(filters);
-      const filtered = regex && regex.test(statusReblog?.search_index || statusBase.search_index);
-
-      return statusBase.withMutations(map => {
+      return statusBase.withMutations((map: Status) => {
         map.set('reblog', statusReblog || null);
         // @ts-ignore :(
         map.set('account', accountBase || null);
         // @ts-ignore
         map.set('group', group || null);
-        map.set('filtered', Boolean(filtered));
+
+        if ((features.filters) && (accountReblog || accountBase).id !== me) {
+          const filtered = checkFiltered(statusReblog?.search_index || statusBase.search_index, filters);
+
+          map.set('filtered', filtered);
+        }
       });
     },
   );

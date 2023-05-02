@@ -10,8 +10,8 @@ import { isIOS } from 'soapbox/is-mobile';
 import type { Attachment } from 'soapbox/types/entities';
 
 interface IMediaItem {
-  attachment: Attachment,
-  onOpenMedia: (attachment: Attachment) => void,
+  attachment: Attachment
+  onOpenMedia: (attachment: Attachment) => void
 }
 
 const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
@@ -52,8 +52,8 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
     }
   };
 
-  const status = attachment.get('status');
-  const title  = status.get('spoiler_text') || attachment.get('description');
+  const status = attachment.status;
+  const title  = status.spoiler_text || attachment.description;
 
   let thumbnail: React.ReactNode = '';
   let icon;
@@ -61,8 +61,8 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   if (attachment.type === 'unknown') {
     // Skip
   } else if (attachment.type === 'image') {
-    const focusX = Number(attachment.getIn(['meta', 'focus', 'x'])) || 0;
-    const focusY = Number(attachment.getIn(['meta', 'focus', 'y'])) || 0;
+    const focusX = Number(attachment.meta.getIn(['focus', 'x'])) || 0;
+    const focusY = Number(attachment.meta.getIn(['focus', 'y'])) || 0;
     const x = ((focusX /  2) + .5) * 100;
     const y = ((focusY / -2) + .5) * 100;
 
@@ -103,7 +103,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   } else if (attachment.type === 'audio') {
     const remoteURL = attachment.remote_url || '';
     const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
-    const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+    const fileExtension = remoteURL.slice(fileExtensionLastIndex + 1).toUpperCase();
     thumbnail = (
       <div className='media-gallery__item-thumbnail'>
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
@@ -122,9 +122,9 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
 
   return (
     <div className='col-span-1'>
-      <a className='media-gallery__item-thumbnail aspect-square' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
+      <a className='media-gallery__item-thumbnail aspect-1' href={status.url} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
-          hash={attachment.get('blurhash')}
+          hash={attachment.blurhash}
           className={clsx('media-gallery__preview', {
             'media-gallery__preview--hidden': visible,
           })}

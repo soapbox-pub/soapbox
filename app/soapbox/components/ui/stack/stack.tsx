@@ -11,6 +11,7 @@ const spaces = {
   4: 'space-y-4',
   5: 'space-y-5',
   6: 'space-y-6',
+  9: 'space-y-9',
   10: 'space-y-10',
 };
 
@@ -39,7 +40,7 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Whether to let the flexbox grow. */
   grow?: boolean
   /** HTML element to use for container. */
-  element?: keyof JSX.IntrinsicElements,
+  element?: keyof JSX.IntrinsicElements
 }
 
 /** Vertical stack of child elements. */

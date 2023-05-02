@@ -1,5 +1,3 @@
-@import 'mixins';
-@import 'themes';
 @import 'variables';
 @import 'fonts';
 @import 'basics';
@@ -9,15 +7,12 @@
 @import 'rtl';
 @import 'accessibility';
 @import 'navigation';
-@import 'placeholder';
 @import 'autosuggest';
 
 // COMPONENTS
 @import 'components/buttons';
-@import 'components/dropdown-menu';
 @import 'components/modal';
 @import 'components/compose-form';
-@import 'components/emoji-reacts';
 @import 'components/status';
 @import 'components/reply-mentions';
 @import 'components/detailed-status';
@@ -26,7 +21,6 @@
 @import 'components/display-name';
 @import 'components/columns';
 @import 'components/search';
-@import 'components/react-toggle';
 @import 'components/video-player';
 @import 'components/audio-player';
 @import 'components/crypto-donate';

@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
 import { Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 
 interface IFooterLink {
-  to: string,
-  className?: string,
-  onClick?: React.EventHandler<React.MouseEvent>,
-  children: React.ReactNode,
+  to: string
+  className?: string
+  onClick?: React.EventHandler<React.MouseEvent>
+  children: React.ReactNode
 }
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
@@ -45,7 +45,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
           )}
           <FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink>
           <FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink>
-          {features.filters && (
+          {(features.filters || features.filtersV2) && (
             <FooterLink to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></FooterLink>
           )}
           {features.federating && (

@@ -99,21 +99,21 @@ export const fileNameFromURL = (str: string) => {
 };
 
 interface IVideo {
-  preview?: string,
-  src: string,
-  alt?: string,
-  width?: number,
-  height?: number,
-  startTime?: number,
-  detailed?: boolean,
-  autoFocus?: boolean,
-  inline?: boolean,
-  cacheWidth?: (width: number) => void,
-  visible?: boolean,
-  blurhash?: string,
-  link?: React.ReactNode,
-  aspectRatio?: number,
-  displayMedia?: string,
+  preview?: string
+  src: string
+  alt?: string
+  width?: number
+  height?: number
+  startTime?: number
+  detailed?: boolean
+  autoFocus?: boolean
+  inline?: boolean
+  cacheWidth?: (width: number) => void
+  visible?: boolean
+  blurhash?: string
+  link?: React.ReactNode
+  aspectRatio?: number
+  displayMedia?: string
 }
 
 const Video: React.FC<IVideo> = ({

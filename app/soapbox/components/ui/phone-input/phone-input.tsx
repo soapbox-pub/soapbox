@@ -9,11 +9,11 @@ import CountryCodeDropdown from './country-code-dropdown';
 
 interface IPhoneInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'required' | 'autoFocus'> {
   /** E164 phone number. */
-  value?: string,
+  value?: string
   /** Change handler which receives the E164 phone string. */
-  onChange?: (phone: string | undefined) => void,
+  onChange?: (phone: string | undefined) => void
   /** Country code that's selected on mount. */
-  defaultCountryCode?: CountryCode,
+  defaultCountryCode?: CountryCode
 }
 
 /** Internationalized phone input with country code picker. */

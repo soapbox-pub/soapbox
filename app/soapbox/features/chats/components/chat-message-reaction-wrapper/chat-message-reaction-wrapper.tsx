@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import EmojiSelector from '../../../../components/ui/emoji-selector/emoji-selector';
+import { Portal } from 'soapbox/components/ui';
+import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector';
 
 interface IChatMessageReactionWrapper {
   onOpen(isOpen: boolean): void
@@ -36,12 +37,18 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
         onClick: onToggleVisibility,
       })}
 
-      <EmojiSelector
-        visible={isOpen}
-        referenceElement={referenceElement}
-        onReact={handleSelect}
-        onClose={() => setIsOpen(false)}
-      />
+      {isOpen && (
+        <Portal>
+          <EmojiSelector
+            visible={isOpen}
+            referenceElement={referenceElement}
+            onReact={handleSelect}
+            onClose={() => setIsOpen(false)}
+            offsetOptions={{ mainAxis: 12, crossAxis: -10 }}
+            all={false}
+          />
+        </Portal>
+      )}
     </React.Fragment>
   );
 }

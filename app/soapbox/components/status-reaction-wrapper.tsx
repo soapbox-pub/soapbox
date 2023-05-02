@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts';
 import { openModal } from 'soapbox/actions/modals';
-import { EmojiSelector } from 'soapbox/components/ui';
+import { EmojiSelector, Portal } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji-reacts';
 
 interface IStatusReactionWrapper {
-  statusId: string,
-  children: JSX.Element,
+  statusId: string
+  children: JSX.Element
 }
 
 /** Provides emoji reaction functionality to the underlying button component */
@@ -60,9 +60,9 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
     }
   };
 
-  const handleReact = (emoji: string): void => {
+  const handleReact = (emoji: string, custom?: string): void => {
     if (ownAccount) {
-      dispatch(simpleEmojiReact(status, emoji));
+      dispatch(simpleEmojiReact(status, emoji, custom));
     } else {
       handleUnauthorized();
     }
@@ -71,7 +71,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
-    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
+    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji)?.get('name') || '👍';
 
     if (isUserTouching()) {
       if (ownAccount) {
@@ -105,12 +105,17 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
         ref: setReferenceElement,
       })}
 
-      <EmojiSelector
-        placement='top-start'
-        referenceElement={referenceElement}
-        onReact={handleReact}
-        visible={visible}
-      />
+      {visible && (
+        <Portal>
+          <EmojiSelector
+            placement='top-start'
+            referenceElement={referenceElement}
+            onReact={handleReact}
+            visible={visible}
+            onClose={() => setVisible(false)}
+          />
+        </Portal>
+      )}
     </div>
   );
 };

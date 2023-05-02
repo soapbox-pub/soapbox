@@ -3,8 +3,8 @@ import React from 'react';
 import { COUNTRY_CODES, CountryCode } from 'soapbox/utils/phone';
 
 interface ICountryCodeDropdown {
-  countryCode: CountryCode,
-  onChange(countryCode: CountryCode): void,
+  countryCode: CountryCode
+  onChange(countryCode: CountryCode): void
 }
 
 /** Dropdown menu to select a country code. */

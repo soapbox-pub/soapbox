@@ -13,13 +13,16 @@ import MediaItem from '../../account-gallery/components/media-item';
 import type { Attachment, Group } from 'soapbox/types/entities';
 
 interface IGroupMediaPanel {
-  group?: Group,
+  group?: Group
 }
 
 const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(true);
+
+  const isMember = !!group?.relationship?.member;
+  const isPrivate = group?.locked;
 
   const attachments: ImmutableList<Attachment> = useAppSelector((state) => group ? getGroupGallery(state, group?.id) : ImmutableList());
 
@@ -37,13 +40,13 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
   useEffect(() => {
     setLoading(true);
 
-    if (group) {
+    if (group && (isMember || !isPrivate)) {
       dispatch(expandGroupMediaTimeline(group.id))
       // @ts-ignore
         .then(() => setLoading(false))
         .catch(() => {});
     }
-  }, [group?.id]);
+  }, [group?.id, isMember, isPrivate]);
 
   const renderAttachments = () => {
     const nineAttachments = attachments.slice(0, 9);
@@ -68,6 +71,10 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
       );
     }
   };
+
+  if (isPrivate && !isMember) {
+    return null;
+  }
 
   return (
     <Widget title={<FormattedMessage id='media_panel.title' defaultMessage='Media' />}>

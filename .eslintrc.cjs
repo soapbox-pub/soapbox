@@ -56,6 +56,7 @@ module.exports = {
     },
     polyfills: [
       'es:all', // core-js
+      'fetch', // not polyfilled, but ignore it
       'IntersectionObserver', // npm:intersection-observer
       'Promise', // core-js
       'ResizeObserver', // npm:resize-observer-polyfill
@@ -260,12 +261,29 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-duplicate-imports': 'error',
+    '@typescript-eslint/member-delimiter-style': [
+      'error',
+      {
+        multiline: {
+          delimiter: 'none',
+        },
+        singleline: {
+          delimiter: 'comma',
+        },
+      },
+    ],
 
     'promise/catch-or-return': 'error',
 
     'react-hooks/rules-of-hooks': 'error',
 
-    'tailwindcss/classnames-order': 'error',
+    'tailwindcss/classnames-order': [
+      'error',
+      {
+        classRegex: '^(base|container|icon|item|list|outer|wrapper)?[c|C]lass(Name)?$',
+        config: 'tailwind.config.cjs',
+      },
+    ],
     'tailwindcss/migration-from-tailwind-2': 'error',
   },
   overrides: [

@@ -10,7 +10,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
@@ -21,16 +21,21 @@ export const GroupRecord = ImmutableRecord({
   avatar: '',
   avatar_static: '',
   created_at: '',
+  deleted_at: null,
   display_name: '',
   domain: '',
-  emojis: ImmutableList<Emoji>(),
+  emojis: [] as Emoji[],
+  group_visibility: '',
   header: '',
   header_static: '',
   id: '',
   locked: false,
   membership_required: false,
+  members_count: 0,
   note: '',
   statuses_visibility: 'public',
+  slug: '',
+  tags: [],
   uri: '',
   url: '',
 
@@ -68,7 +73,7 @@ const normalizeHeader = (group: ImmutableMap<string, any>) => {
 /** Normalize emojis */
 const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
   const emojis = entity.get('emojis', ImmutableList()).map(normalizeEmoji);
-  return entity.set('emojis', emojis);
+  return entity.set('emojis', emojis.toArray());
 };
 
 /** Set display name from username, if applicable */
@@ -127,6 +132,11 @@ const normalizeFqn = (group: ImmutableMap<string, any>) => {
   return group.set('fqn', fqn);
 };
 
+const normalizeLocked = (group: ImmutableMap<string, any>) => {
+  const locked = group.get('locked') || group.get('group_visibility') === 'members_only';
+  return group.set('locked', locked);
+};
+
 
 /** Rewrite `<p></p>` to empty string. */
 const fixNote = (group: ImmutableMap<string, any>) => {
@@ -144,6 +154,7 @@ export const normalizeGroup = (group: Record<string, any>) => {
       normalizeAvatar(group);
       normalizeHeader(group);
       normalizeFqn(group);
+      normalizeLocked(group);
       fixDisplayName(group);
       fixNote(group);
       addInternalFields(group);

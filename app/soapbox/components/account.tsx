@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import { useAppSelector, useOnScreen } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
@@ -14,11 +14,12 @@ import RelativeTimestamp from './relative-timestamp';
 import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
+import type { Account as AccountSchema } from 'soapbox/schemas';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
-  account: AccountEntity,
-  disabled?: boolean,
+  account: AccountEntity | AccountSchema
+  disabled?: boolean
 }
 
 const messages = defineMessages({
@@ -53,7 +54,7 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
 };
 
 interface IProfilePopper {
-  condition: boolean,
+  condition: boolean
   wrapper: (children: React.ReactNode) => React.ReactNode
   children: React.ReactNode
 }
@@ -67,30 +68,31 @@ const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children 
 };
 
 export interface IAccount {
-  account: AccountEntity,
-  action?: React.ReactElement,
-  actionAlignment?: 'center' | 'top',
-  actionIcon?: string,
-  actionTitle?: string,
+  account: AccountEntity | AccountSchema
+  action?: React.ReactElement
+  actionAlignment?: 'center' | 'top'
+  actionIcon?: string
+  actionTitle?: string
   /** Override other actions for specificity like mute/unmute.  */
-  actionType?: 'muting' | 'blocking' | 'follow_request',
-  avatarSize?: number,
-  hidden?: boolean,
-  hideActions?: boolean,
-  id?: string,
-  onActionClick?: (account: any) => void,
-  showProfileHoverCard?: boolean,
-  timestamp?: string,
-  timestampUrl?: string,
-  futureTimestamp?: boolean,
-  withAccountNote?: boolean,
-  withDate?: boolean,
-  withLinkToProfile?: boolean,
-  withRelationship?: boolean,
-  showEdit?: boolean,
-  approvalStatus?: StatusApprovalStatus,
-  emoji?: string,
-  note?: string,
+  actionType?: 'muting' | 'blocking' | 'follow_request'
+  avatarSize?: number
+  hidden?: boolean
+  hideActions?: boolean
+  id?: string
+  onActionClick?: (account: any) => void
+  showProfileHoverCard?: boolean
+  timestamp?: string
+  timestampUrl?: string
+  futureTimestamp?: boolean
+  withAccountNote?: boolean
+  withDate?: boolean
+  withLinkToProfile?: boolean
+  withRelationship?: boolean
+  showEdit?: boolean
+  approvalStatus?: StatusApprovalStatus
+  emoji?: string
+  emojiUrl?: string
+  note?: string
 }
 
 const Account = ({
@@ -115,21 +117,17 @@ const Account = ({
   showEdit = false,
   approvalStatus,
   emoji,
+  emojiUrl,
   note,
 }: IAccount) => {
-  const overflowRef = React.useRef<HTMLDivElement>(null);
-  const actionRef = React.useRef<HTMLDivElement>(null);
-  // @ts-ignore
-  const isOnScreen = useOnScreen(overflowRef);
-
-  const [style, setStyle] = React.useState<React.CSSProperties>({ visibility: 'hidden' });
+  const overflowRef = useRef<HTMLDivElement>(null);
+  const actionRef = useRef<HTMLDivElement>(null);
 
   const me = useAppSelector((state) => state.me);
   const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
 
   const handleAction = () => {
-    // @ts-ignore
-    onActionClick(account);
+    onActionClick!(account);
   };
 
   const renderAction = () => {
@@ -148,7 +146,7 @@ const Account = ({
           title={actionTitle}
           onClick={handleAction}
           className='bg-transparent text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
-          iconClassName='w-4 h-4'
+          iconClassName='h-4 w-4'
         />
       );
     }
@@ -161,19 +159,6 @@ const Account = ({
   };
 
   const intl = useIntl();
-
-  React.useEffect(() => {
-    const style: React.CSSProperties = {};
-    const actionWidth = actionRef.current?.clientWidth || 0;
-
-    if (overflowRef.current) {
-      style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
-    } else {
-      style.visibility = 'hidden';
-    }
-
-    setStyle(style);
-  }, [isOnScreen, overflowRef, actionRef]);
 
   if (!account) {
     return null;
@@ -195,7 +180,7 @@ const Account = ({
   return (
     <div data-testid='account' className='group block w-full shrink-0' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
-        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3}>
+        <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3} className='overflow-hidden'>
           <ProfilePopper
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -208,14 +193,15 @@ const Account = ({
               <Avatar src={account.avatar} size={avatarSize} />
               {emoji && (
                 <Emoji
-                  className='absolute -bottom-1.5 -right-1.5 h-5 w-5'
+                  className='absolute -right-1.5 bottom-0 h-5 w-5'
                   emoji={emoji}
+                  src={emojiUrl}
                 />
               )}
             </LinkEl>
           </ProfilePopper>
 
-          <div className='grow'>
+          <div className='grow overflow-hidden'>
             <ProfilePopper
               condition={showProfileHoverCard}
               wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
@@ -225,7 +211,7 @@ const Account = ({
                 title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
-                <HStack space={1} alignItems='center' grow style={style}>
+                <HStack space={1} alignItems='center' grow>
                   <Text
                     size='sm'
                     weight='semibold'
@@ -241,7 +227,7 @@ const Account = ({
             </ProfilePopper>
 
             <Stack space={withAccountNote || note ? 1 : 0}>
-              <HStack alignItems='center' space={1} style={style}>
+              <HStack alignItems='center' space={1}>
                 <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
                 {account.favicon && (

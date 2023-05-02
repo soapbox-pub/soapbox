@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import AnimatedNumber from 'soapbox/components/animated-number';
-import unicodeMapping from 'soapbox/features/emoji/emoji-unicode-mapping-light';
+import unicodeMapping from 'soapbox/features/emoji/mapping';
 
 import Emoji from './emoji';
 
@@ -10,12 +10,12 @@ import type { Map as ImmutableMap } from 'immutable';
 import type { AnnouncementReaction } from 'soapbox/types/entities';
 
 interface IReaction {
-  announcementId: string;
-  reaction: AnnouncementReaction;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
-  style: React.CSSProperties;
+  announcementId: string
+  reaction: AnnouncementReaction
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  addReaction: (id: string, name: string) => void
+  removeReaction: (id: string, name: string) => void
+  style: React.CSSProperties
 }
 
 const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, removeReaction, emojiMap, style }) => {

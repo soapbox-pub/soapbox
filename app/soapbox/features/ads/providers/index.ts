@@ -12,19 +12,19 @@ const PROVIDERS: Record<string, () => Promise<AdProvider>> = {
 
 /** Ad server implementation. */
 interface AdProvider {
-  getAds(getState: () => RootState): Promise<Ad[]>,
+  getAds(getState: () => RootState): Promise<Ad[]>
 }
 
 /** Entity representing an advertisement. */
 interface Ad {
   /** Ad data in Card (OEmbed-ish) format. */
-  card: Card,
+  card: Card
   /** Impression URL to fetch when displaying the ad. */
-  impression?: string,
+  impression?: string
   /** Time when the ad expires and should no longer be displayed. */
-  expires_at?: string,
+  expires_at?: string
   /** Reason the ad is displayed. */
-  reason?: string,
+  reason?: string
 }
 
 /** Gets the current provider based on config. */

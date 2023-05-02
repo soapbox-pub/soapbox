@@ -15,6 +15,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { Button, HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
+import type { Account } from 'soapbox/schemas';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -35,7 +36,7 @@ const messages = defineMessages({
 
 interface IActionButton {
   /** Target account for the action. */
-  account: AccountEntity
+  account: AccountEntity | Account
   /** Type of action to prioritize, eg on Blocks and Mutes pages. */
   actionType?: 'muting' | 'blocking' | 'follow_request'
   /** Displays shorter text on the "Awaiting approval" button. */

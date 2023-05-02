@@ -7,11 +7,11 @@ import Stack from '../stack/stack';
 
 interface IFormGroup {
   /** Input label message. */
-  labelText?: React.ReactNode,
+  labelText?: React.ReactNode
   /** Input label tooltip message. */
-  labelTitle?: string,
+  labelTitle?: string
   /** Input hint message. */
-  hintText?: React.ReactNode,
+  hintText?: React.ReactNode
   /** Input errors. */
   errors?: string[]
   /** Elements to display within the FormGroup. */
@@ -86,6 +86,12 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
       )}
 
       <div className='mt-1 dark:text-white'>
+        {hintText && (
+          <p data-testid='form-group-hint' className='mb-0.5 text-xs text-gray-700 dark:text-gray-600'>
+            {hintText}
+          </p>
+        )}
+
         {firstChild}
         {inputChildren.filter((_, i) => i !== 0)}
 
@@ -95,12 +101,6 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
             className='form-error relative mt-0.5 inline-block rounded-md bg-danger-200 px-2 py-1 text-xs text-danger-900'
           >
             {errors.join(', ')}
-          </p>
-        )}
-
-        {hintText && (
-          <p data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-700 dark:text-gray-600'>
-            {hintText}
           </p>
         )}
       </div>

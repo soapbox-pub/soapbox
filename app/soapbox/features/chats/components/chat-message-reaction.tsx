@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { EmojiReaction } from 'soapbox/types/entities';
 
 interface IChatMessageReaction {

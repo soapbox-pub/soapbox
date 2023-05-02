@@ -60,12 +60,12 @@ const messages = defineMessages({
 });
 
 interface IUpload {
-  media: Attachment,
-  onSubmit?(): void,
-  onDelete?(): void,
-  onDescriptionChange?(description: string): void,
-  descriptionLimit?: number,
-  withPreview?: boolean,
+  media: Attachment
+  onSubmit?(): void
+  onDelete?(): void
+  onDescriptionChange?(description: string): void
+  descriptionLimit?: number
+  withPreview?: boolean
 }
 
 const Upload: React.FC<IUpload> = ({

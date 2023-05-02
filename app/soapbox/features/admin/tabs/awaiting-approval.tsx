@@ -36,7 +36,7 @@ const AwaitingApproval: React.FC = () => {
       className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
       {accountIds.map(id => (
-        <div key={id} className='py-4 px-5'>
+        <div key={id} className='px-5 py-4'>
           <UnapprovedAccount accountId={id} />
         </div>
       ))}

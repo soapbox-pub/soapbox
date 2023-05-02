@@ -14,7 +14,7 @@ const PlaceholderEventPreview = () => {
       <Stack className='p-2.5' space={2}>
         <Text weight='semibold'>{generateText(eventNameLength)}</Text>
 
-        <div className='flex flex-wrap gap-y-1 gap-x-2 text-gray-700 dark:text-gray-600'>
+        <div className='flex flex-wrap gap-x-2 gap-y-1 text-gray-700 dark:text-gray-600'>
           <span>{generateText(nameLength)}</span>
           <span>{generateText(nameLength)}</span>
           <span>{generateText(nameLength)}</span>

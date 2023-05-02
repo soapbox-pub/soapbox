@@ -14,7 +14,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 import type { Status } from 'soapbox/types/entities';
 
 interface IStatusInteractionBar {
-  status: Status,
+  status: Status
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
@@ -41,6 +41,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
   const onOpenFavouritesModal = (username: string, statusId: string): void => {
     dispatch(openModal('FAVOURITES', {
+      username,
+      statusId,
+    }));
+  };
+
+  const onOpenDislikesModal = (username: string, statusId: string): void => {
+    dispatch(openModal('DISLIKES', {
       username,
       statusId,
     }));
@@ -114,6 +121,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     else onOpenFavouritesModal(account.acct, status.id);
   };
 
+  const handleOpenDislikesModal: React.EventHandler<React.MouseEvent<HTMLButtonElement>> = (e) => {
+    e.preventDefault();
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenDislikesModal(account.acct, status.id);
+  };
+
   const getFavourites = () => {
     if (status.favourites_count) {
       return (
@@ -122,6 +136,24 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
             id='status.interactions.favourites'
             defaultMessage='{count, plural, one {Like} other {Likes}}'
             values={{ count: status.favourites_count }}
+          />
+        </InteractionCounter>
+      );
+    }
+
+    return null;
+  };
+
+  const getDislikes = () => {
+    const dislikesCount = status.dislikes_count;
+
+    if (dislikesCount) {
+      return (
+        <InteractionCounter count={status.favourites_count} onClick={features.exposableReactions ? handleOpenDislikesModal : undefined}>
+          <FormattedMessage
+            id='status.interactions.dislikes'
+            defaultMessage='{count, plural, one {Dislike} other {Dislikes}}'
+            values={{ count: dislikesCount }}
           />
         </InteractionCounter>
       );
@@ -154,6 +186,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
                   key={i}
                   className='h-4.5 w-4.5 flex-none'
                   emoji={e.get('name')}
+                  src={e.get('url')}
                 />
               );
             })}
@@ -170,14 +203,15 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       {getReposts()}
       {getQuotes()}
       {features.emojiReacts ? getEmojiReacts() : getFavourites()}
+      {getDislikes()}
     </HStack>
   );
 };
 
 interface IInteractionCounter {
-  count: number,
-  onClick?: React.MouseEventHandler<HTMLButtonElement>,
-  children: React.ReactNode,
+  count: number
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  children: React.ReactNode
 }
 
 const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, children }) => {

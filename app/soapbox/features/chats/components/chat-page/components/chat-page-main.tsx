@@ -163,7 +163,7 @@ const ChatPageMain = () => {
           <MenuButton
             as={IconButton}
             src={require('@tabler/icons/info-circle.svg')}
-            iconClassName='w-5 h-5 text-gray-600'
+            iconClassName='h-5 w-5 text-gray-600'
             children={null}
           />
 

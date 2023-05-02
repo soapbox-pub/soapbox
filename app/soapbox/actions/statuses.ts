@@ -5,6 +5,7 @@ import { shouldHaveCard } from 'soapbox/utils/status';
 import api, { getNextLink } from '../api';
 
 import { setComposeToStatus } from './compose';
+import { fetchGroupRelationships } from './groups';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
@@ -47,6 +48,8 @@ const STATUS_TRANSLATE_REQUEST = 'STATUS_TRANSLATE_REQUEST';
 const STATUS_TRANSLATE_SUCCESS = 'STATUS_TRANSLATE_SUCCESS';
 const STATUS_TRANSLATE_FAIL    = 'STATUS_TRANSLATE_FAIL';
 const STATUS_TRANSLATE_UNDO    = 'STATUS_TRANSLATE_UNDO';
+
+const STATUS_UNFILTER = 'STATUS_UNFILTER';
 
 const statusExists = (getState: () => RootState, statusId: string) => {
   return (getState().statuses.get(statusId) || null) !== null;
@@ -122,6 +125,9 @@ const fetchStatus = (id: string) => {
 
     return api(getState).get(`/api/v1/statuses/${id}`).then(({ data: status }) => {
       dispatch(importFetchedStatus(status));
+      if (status.group) {
+        dispatch(fetchGroupRelationships([status.group.id]));
+      }
       dispatch({ type: STATUS_FETCH_SUCCESS, status, skipLoading });
       return status;
     }).catch(error => {
@@ -335,6 +341,11 @@ const undoStatusTranslation = (id: string) => ({
   id,
 });
 
+const unfilterStatus = (id: string) => ({
+  type: STATUS_UNFILTER,
+  id,
+});
+
 export {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
@@ -363,6 +374,7 @@ export {
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_FAIL,
   STATUS_TRANSLATE_UNDO,
+  STATUS_UNFILTER,
   createStatus,
   editStatus,
   fetchStatus,
@@ -381,4 +393,5 @@ export {
   toggleStatusHidden,
   translateStatus,
   undoStatusTranslation,
+  unfilterStatus,
 };

@@ -1,17 +1,17 @@
 import noop from 'lodash/noop';
 import React from 'react';
-import Toggle from 'react-toggle';
 
 import { toggleStatusReport } from 'soapbox/actions/reports';
 import StatusContent from 'soapbox/components/status-content';
+import { Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import Bundle from '../../ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 
 interface IStatusCheckBox {
-  id: string,
-  disabled?: boolean,
+  id: string
+  disabled?: boolean
 }
 
 const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
@@ -88,7 +88,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
       </div>
 
       <div className='status-check-box-toggle'>
-        <Toggle checked={checked} onChange={onToggle} disabled={disabled} icons={false} />
+        <Toggle checked={checked} onChange={onToggle} disabled={disabled} />
       </div>
     </div>
   );

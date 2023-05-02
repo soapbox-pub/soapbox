@@ -1,6 +1,7 @@
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
+import type { Account as AccountEntity } from 'soapbox/types/entities';
 
-const getDomainFromURL = (account: Account): string => {
+const getDomainFromURL = (account: AccountEntity): string => {
   try {
     const url = account.url;
     return new URL(url).host;
@@ -9,12 +10,12 @@ const getDomainFromURL = (account: Account): string => {
   }
 };
 
-export const getDomain = (account: Account): string => {
+export const getDomain = (account: AccountEntity): string => {
   const domain = account.acct.split('@')[1];
   return domain ? domain : getDomainFromURL(account);
 };
 
-export const getBaseURL = (account: Account): string => {
+export const getBaseURL = (account: AccountEntity): string => {
   try {
     return new URL(account.url).origin;
   } catch {
@@ -22,16 +23,16 @@ export const getBaseURL = (account: Account): string => {
   }
 };
 
-export const getAcct = (account: Account, displayFqn: boolean): string => (
+export const getAcct = (account: AccountEntity | Account, displayFqn: boolean): string => (
   displayFqn === true ? account.fqn : account.acct
 );
 
-export const isLocal = (account: Account): boolean => {
+export const isLocal = (account: AccountEntity | Account): boolean => {
   const domain: string = account.acct.split('@')[1];
   return domain === undefined ? true : false;
 };
 
-export const isRemote = (account: Account): boolean => !isLocal(account);
+export const isRemote = (account: AccountEntity): boolean => !isLocal(account);
 
 /** Default header filenames from various backends */
 const DEFAULT_HEADERS = [

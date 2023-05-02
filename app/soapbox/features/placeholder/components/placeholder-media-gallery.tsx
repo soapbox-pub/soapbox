@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
 interface IPlaceholderMediaGallery {
-  media: ImmutableList<AttachmentEntity>;
-  defaultWidth?: number;
+  media: ImmutableList<AttachmentEntity>
+  defaultWidth?: number
 }
 
 const SizeData = ImmutableRecord({
@@ -78,7 +78,7 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
     const float = dimensions.float as any || 'left';
     const position = dimensions.pos as any || 'relative';
 
-    return <div key={i} className='media-gallery__item' style={{ position, float, left, top, right, bottom, height, width }} />;
+    return <div key={i} className='media-gallery__item animate-pulse bg-primary-200' style={{ position, float, left, top, right, bottom, height, width }} />;
   };
 
   const sizeData = getSizeData(media.size);

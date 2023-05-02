@@ -1,39 +1,39 @@
-import { Portal } from '@reach/portal';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import AutosuggestEmoji, { Emoji } from 'soapbox/components/autosuggest-emoji';
+import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
-import { Input } from 'soapbox/components/ui';
+import { Input, Portal } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
 import { isRtl } from 'soapbox/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { InputThemes } from 'soapbox/components/ui/input/input';
+import type { Emoji } from 'soapbox/features/emoji';
 
 export type AutoSuggestion = string | Emoji;
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
-  value: string,
-  suggestions: ImmutableList<any>,
-  disabled?: boolean,
-  placeholder?: string,
-  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void,
-  onSuggestionsClearRequested: () => void,
-  onSuggestionsFetchRequested: (token: string) => void,
-  autoFocus: boolean,
-  autoSelect: boolean,
-  className?: string,
-  id?: string,
-  searchTokens: string[],
-  maxLength?: number,
-  menu?: Menu,
-  renderSuggestion?: React.FC<{ id: string }>,
-  hidePortal?: boolean,
-  theme?: InputThemes,
+  value: string
+  suggestions: ImmutableList<any>
+  disabled?: boolean
+  placeholder?: string
+  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void
+  onSuggestionsClearRequested: () => void
+  onSuggestionsFetchRequested: (token: string) => void
+  autoFocus: boolean
+  autoSelect: boolean
+  className?: string
+  id?: string
+  searchTokens: string[]
+  maxLength?: number
+  menu?: Menu
+  renderSuggestion?: React.FC<{ id: string }>
+  hidePortal?: boolean
+  theme?: InputThemes
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {

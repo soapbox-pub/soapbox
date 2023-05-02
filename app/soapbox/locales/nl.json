@@ -178,7 +178,6 @@
   "empty_column.notifications": "Je hebt nog geen meldingen. Begin met iemand een gesprek.",
   "empty_column.public": "Er is hier helemaal niks! Toot iets in het openbaar of volg mensen van andere servers om het te vullen",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Goedkeuren",
   "follow_request.reject": "Afkeuren",
   "getting_started.open_source_notice": "{code_name} is vrije software. Je kunt bijdragen of problemen melden op GitLab via {code_link} (v{code_version}).",

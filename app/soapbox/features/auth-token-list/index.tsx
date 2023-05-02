@@ -3,7 +3,7 @@ import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Token } from 'soapbox/reducers/security';
 
@@ -16,8 +16,8 @@ const messages = defineMessages({
 });
 
 interface IAuthToken {
-  token: Token,
-  isCurrent: boolean,
+  token: Token
+  isCurrent: boolean
 }
 
 const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
@@ -59,12 +59,11 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
             </Text>
           )}
         </Stack>
-
-        <div className='flex justify-end'>
+        <HStack justifyContent='end'>
           <Button theme={isCurrent ? 'danger' : 'primary'} onClick={handleRevoke}>
             {intl.formatMessage(messages.revoke)}
           </Button>
-        </div>
+        </HStack>
       </Stack>
     </div>
   );

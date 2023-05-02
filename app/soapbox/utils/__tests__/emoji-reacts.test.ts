@@ -52,15 +52,15 @@ describe('mergeEmojiFavourites', () => {
 
   describe('with existing 👍 reacts', () => {
     const emojiReacts = fromJS([
-      { 'count': 20, 'me': false, 'name': '👍' },
-      { 'count': 15, 'me': false, 'name': '❤' },
-      { 'count': 7,  'me': false, 'name': '😯' },
+      { 'count': 20, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 15, 'me': false, 'name': '❤', 'url': undefined },
+      { 'count': 7,  'me': false, 'name': '😯', 'url': undefined },
     ]) as ImmutableList<ImmutableMap<string, any>>;
     it('combines 👍 reacts with favourites', () => {
       expect(mergeEmojiFavourites(emojiReacts, favouritesCount, favourited)).toEqual(fromJS([
-        { 'count': 32, 'me': true,  'name': '👍' },
-        { 'count': 15, 'me': false, 'name': '❤' },
-        { 'count': 7,  'me': false, 'name': '😯' },
+        { 'count': 32, 'me': true,  'name': '👍', 'url': undefined },
+        { 'count': 15, 'me': false, 'name': '❤', 'url': undefined },
+        { 'count': 7,  'me': false, 'name': '😯', 'url': undefined },
       ]));
     });
   });
@@ -146,12 +146,12 @@ describe('getReactForStatus', () => {
         ],
       },
     }));
-    expect(getReactForStatus(status, ALLOWED_EMOJI)).toEqual('❤');
+    expect(getReactForStatus(status, ALLOWED_EMOJI)?.get('name')).toEqual('❤');
   });
 
   it('returns a thumbs-up for a favourite', () => {
     const status = normalizeStatus(fromJS({ favourites_count: 1, favourited: true }));
-    expect(getReactForStatus(status)).toEqual('👍');
+    expect(getReactForStatus(status)?.get('name')).toEqual('👍');
   });
 
   it('returns undefined when a status has no reacts (or favourites)', () => {
@@ -173,24 +173,36 @@ describe('getReactForStatus', () => {
 describe('simulateEmojiReact', () => {
   it('adds the emoji to the list', () => {
     const emojiReacts = fromJS([
-      { 'count': 2, 'me': false, 'name': '👍' },
-      { 'count': 2, 'me': false, 'name': '❤' },
+      { 'count': 2, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 2, 'me': false, 'name': '❤', 'url': undefined },
     ]) as ImmutableList<ImmutableMap<string, any>>;
     expect(simulateEmojiReact(emojiReacts, '❤')).toEqual(fromJS([
-      { 'count': 2, 'me': false, 'name': '👍' },
-      { 'count': 3, 'me': true,  'name': '❤' },
+      { 'count': 2, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 3, 'me': true,  'name': '❤', 'url': undefined },
     ]));
   });
 
   it('creates the emoji if it didn\'t already exist', () => {
     const emojiReacts = fromJS([
-      { 'count': 2, 'me': false, 'name': '👍' },
-      { 'count': 2, 'me': false, 'name': '❤' },
+      { 'count': 2, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 2, 'me': false, 'name': '❤', 'url': undefined },
     ]) as ImmutableList<ImmutableMap<string, any>>;
     expect(simulateEmojiReact(emojiReacts, '😯')).toEqual(fromJS([
-      { 'count': 2, 'me': false, 'name': '👍' },
-      { 'count': 2, 'me': false, 'name': '❤' },
-      { 'count': 1, 'me': true,  'name': '😯' },
+      { 'count': 2, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 2, 'me': false, 'name': '❤', 'url': undefined },
+      { 'count': 1, 'me': true,  'name': '😯', 'url': undefined },
+    ]));
+  });
+
+  it('adds a custom emoji to the list', () => {
+    const emojiReacts = fromJS([
+      { 'count': 2, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 2, 'me': false, 'name': '❤', 'url': undefined },
+    ]) as ImmutableList<ImmutableMap<string, any>>;
+    expect(simulateEmojiReact(emojiReacts, 'soapbox', 'https://gleasonator.com/emoji/Gleasonator/soapbox.png')).toEqual(fromJS([
+      { 'count': 2, 'me': false, 'name': '👍', 'url': undefined },
+      { 'count': 2, 'me': false,  'name': '❤', 'url': undefined },
+      { 'count': 1, 'me': true,  'name': 'soapbox', 'url': 'https://gleasonator.com/emoji/Gleasonator/soapbox.png' },
     ]));
   });
 });
@@ -214,6 +226,18 @@ describe('simulateUnEmojiReact', () => {
       { 'count': 1, 'me': true,  'name': '😯' },
     ]) as ImmutableList<ImmutableMap<string, any>>;
     expect(simulateUnEmojiReact(emojiReacts, '😯')).toEqual(fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
+    ]));
+  });
+
+  it ('removes custom emoji from the list', () => {
+    const emojiReacts = fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
+      { 'count': 1, 'me': true,  'name': 'soapbox', 'url': 'https://gleasonator.com/emoji/Gleasonator/soapbox.png' },
+    ]) as ImmutableList<ImmutableMap<string, any>>;
+    expect(simulateUnEmojiReact(emojiReacts, 'soapbox')).toEqual(fromJS([
       { 'count': 2, 'me': false, 'name': '👍' },
       { 'count': 2, 'me': false, 'name': '❤' },
     ]));

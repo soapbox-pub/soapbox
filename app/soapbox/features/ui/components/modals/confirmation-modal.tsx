@@ -7,15 +7,15 @@ import { Modal, Stack, Text, Toggle } from 'soapbox/components/ui';
 import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles';
 
 interface IConfirmationModal {
-  heading: React.ReactNode,
-  message: React.ReactNode,
-  confirm: React.ReactNode,
-  onClose: (type: string) => void,
-  onConfirm: () => void,
-  secondary: React.ReactNode,
-  onSecondary?: () => void,
-  onCancel: () => void,
-  checkbox?: JSX.Element,
+  heading: React.ReactNode
+  message: React.ReactNode
+  confirm: React.ReactNode
+  onClose: (type: string) => void
+  onConfirm: () => void
+  secondary: React.ReactNode
+  onSecondary?: () => void
+  onCancel: () => void
+  checkbox?: JSX.Element
   confirmationTheme?: ButtonThemes
 }
 

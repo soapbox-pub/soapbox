@@ -4,7 +4,8 @@ import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
 import api from 'soapbox/api';
-import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
+import { isNativeEmoji } from 'soapbox/features/emoji';
+import emojiSearch from 'soapbox/features/emoji/search';
 import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
@@ -19,8 +20,9 @@ import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
-import type { Emoji } from 'soapbox/components/autosuggest-emoji';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
+import type { Emoji } from 'soapbox/features/emoji';
+import type { Group } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
 import type { History } from 'soapbox/types/history';
@@ -47,6 +49,7 @@ const COMPOSE_UPLOAD_FAIL     = 'COMPOSE_UPLOAD_FAIL';
 const COMPOSE_UPLOAD_PROGRESS = 'COMPOSE_UPLOAD_PROGRESS';
 const COMPOSE_UPLOAD_UNDO     = 'COMPOSE_UPLOAD_UNDO';
 const COMPOSE_GROUP_POST      = 'COMPOSE_GROUP_POST';
+const COMPOSE_SET_GROUP_TIMELINE_VISIBLE = 'COMPOSE_SET_GROUP_TIMELINE_VISIBLE';
 
 const COMPOSE_SUGGESTIONS_CLEAR = 'COMPOSE_SUGGESTIONS_CLEAR';
 const COMPOSE_SUGGESTIONS_READY = 'COMPOSE_SUGGESTIONS_READY';
@@ -166,6 +169,14 @@ const cancelQuoteCompose = () => ({
   id: 'compose-modal',
 });
 
+const groupComposeModal = (group: Group) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const composeId = `group:${group.id}`;
+
+    dispatch(groupCompose(composeId, group.id));
+    dispatch(openModal('COMPOSE', { composeId }));
+  };
+
 const resetCompose = (composeId = 'compose-modal') => ({
   type: COMPOSE_RESET,
   id: composeId,
@@ -277,7 +288,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
 
     const idempotencyKey = compose.idempotencyKey;
 
-    const params = {
+    const params: Record<string, any> = {
       status,
       in_reply_to_id: compose.in_reply_to,
       quote_id: compose.quote,
@@ -289,8 +300,12 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       poll: compose.poll,
       scheduled_at: compose.schedule,
       to,
-      group_id: compose.privacy === 'group' ? compose.group_id : null,
     };
+
+    if (compose.privacy === 'group') {
+      params.group_id = compose.group_id;
+      params.group_timeline_visible = compose.group_timeline_visible; // Truth Social
+    }
 
     dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
@@ -481,6 +496,12 @@ const groupCompose = (composeId: string, groupId: string) =>
     });
   };
 
+const setGroupTimelineVisible = (composeId: string, groupTimelineVisible: boolean) => ({
+  type: COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
+  id: composeId,
+  groupTimelineVisible,
+});
+
 const clearComposeSuggestions = (composeId: string) => {
   if (cancelFetchComposeSuggestionsAccounts) {
     cancelFetchComposeSuggestionsAccounts();
@@ -515,7 +536,9 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
 }, 200, { leading: true, trailing: true });
 
 const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
-  const results = emojiSearch(token.replace(':', ''), { maxResults: 5 } as any);
+  const state = getState();
+  const results = emojiSearch(token.replace(':', ''), { maxResults: 5 }, state.custom_emojis);
+
   dispatch(readyComposeSuggestionsEmojis(composeId, token, results));
 };
 
@@ -560,7 +583,7 @@ const selectComposeSuggestion = (composeId: string, position: number, token: str
     let completion, startPosition;
 
     if (typeof suggestion === 'object' && suggestion.id) {
-      completion    = suggestion.native || suggestion.colons;
+      completion    = isNativeEmoji(suggestion) ? suggestion.native : suggestion.colons;
       startPosition = position - 1;
 
       dispatch(useEmoji(suggestion));
@@ -788,6 +811,7 @@ export {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
+  COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   setComposeToStatus,
   changeCompose,
   replyCompose,
@@ -814,6 +838,8 @@ export {
   uploadComposeFail,
   undoUploadCompose,
   groupCompose,
+  groupComposeModal,
+  setGroupTimelineVisible,
   clearComposeSuggestions,
   fetchComposeSuggestions,
   readyComposeSuggestionsEmojis,

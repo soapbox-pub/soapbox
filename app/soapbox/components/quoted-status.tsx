@@ -23,11 +23,11 @@ const messages = defineMessages({
 
 interface IQuotedStatus {
   /** The quoted status entity. */
-  status?: StatusEntity,
+  status?: StatusEntity
   /** Callback when cancelled (during compose). */
-  onCancel?: Function,
+  onCancel?: Function
   /** Whether the status is shown in the post composer. */
-  compose?: boolean,
+  compose?: boolean
 }
 
 /** Status embedded in a quote post. */
@@ -133,7 +133,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
                 collapsable
               />
 
-              {(status.card || status.media_attachments.size > 0) && (
+              {status.media_attachments.size > 0 && (
                 <StatusMedia
                   status={status}
                   muted={compose}

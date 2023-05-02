@@ -179,7 +179,6 @@
   "empty_column.notifications": "Du har endnu ingen notifikationer. Tag ud og bland dig med folkemængden for at starte samtalen.",
   "empty_column.public": "Der er ikke noget at se her! Skriv noget offentligt eller start ud med manuelt at følge brugere fra andre server for at udfylde tomrummet",
   "export_data.actions.export": "Export",
-  "filters.filters_list_delete": "Delete",
   "follow_request.authorize": "Godkend",
   "follow_request.reject": "Afvis",
   "getting_started.open_source_notice": "{code_name} er et open source software. Du kan bidrage eller rapporterer fejl på GitLab {code_link} (v{code_version}).",

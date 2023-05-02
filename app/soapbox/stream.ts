@@ -92,10 +92,10 @@ export default function getStream(
   accessToken: string,
   stream: string,
   { connected, received, disconnected, reconnected }: {
-    connected: ((this: WebSocket, ev: Event) => any) | null,
-    received: (data: any) => void,
-    disconnected: ((this: WebSocket, ev: Event) => any) | null,
-    reconnected: ((this: WebSocket, ev: Event) => any),
+    connected: ((this: WebSocket, ev: Event) => any) | null
+    received: (data: any) => void
+    disconnected: ((this: WebSocket, ev: Event) => any) | null
+    reconnected: ((this: WebSocket, ev: Event) => any)
   },
 ) {
   const params = [ `stream=${stream}` ];

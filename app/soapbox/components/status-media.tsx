@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -15,15 +16,15 @@ import type { Status, Attachment } from 'soapbox/types/entities';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: Status,
+  status: Status
   /** Whether to display compact media. */
-  muted?: boolean,
+  muted?: boolean
   /** Callback when compact media is clicked. */
-  onClick?: () => void,
+  onClick?: () => void
   /** Whether or not the media is concealed behind a NSFW banner. */
-  showMedia?: boolean,
+  showMedia?: boolean
   /** Callback when visibility is toggled (eg clicked through NSFW). */
-  onToggleVisibility?: () => void,
+  onToggleVisibility?: () => void
 }
 
 /** Render media attachments for a status. */
@@ -153,6 +154,10 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         </Bundle>
       );
     }
+  } else if (status.spoiler_text.length === 0 && !status.quote && status.card?.group) {
+    media = (
+      <GroupLinkPreview card={status.card} />
+    );
   } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
     media = (
       <Card

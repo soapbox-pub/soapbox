@@ -24,7 +24,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     }
 
     return (
-      <div className='flex flex-col sm:pt-4 sm:pb-10'>
+      <div className='flex flex-col sm:pb-10 sm:pt-4'>
         <ScrollableList
           isLoading={isFetching}
           scrollKey='suggestions'

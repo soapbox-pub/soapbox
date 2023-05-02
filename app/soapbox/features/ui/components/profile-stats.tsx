@@ -13,8 +13,8 @@ const messages = defineMessages({
 });
 
 interface IProfileStats {
-  account: Account | undefined,
-  onClickHandler?: React.MouseEventHandler,
+  account: Account | undefined
+  onClickHandler?: React.MouseEventHandler
 }
 
 /** Display follower and following counts for an account. */

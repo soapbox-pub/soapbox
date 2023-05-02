@@ -16,29 +16,29 @@ type InputThemes = 'normal' | 'search'
 
 interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
-  autoFocus?: boolean,
+  autoFocus?: boolean
   /** The initial text in the input. */
-  defaultValue?: string,
+  defaultValue?: string
   /** Extra class names for the <input> element. */
-  className?: string,
+  className?: string
   /** Extra class names for the outer <div> element. */
-  outerClassName?: string,
+  outerClassName?: string
   /** URL to the svg icon. Cannot be used with prepend. */
-  icon?: string,
+  icon?: string
   /** Internal input name. */
-  name?: string,
+  name?: string
   /** Text to display before a value is entered. */
-  placeholder?: string,
+  placeholder?: string
   /** Text in the input. */
-  value?: string | number,
+  value?: string | number
   /** Change event handler for the input. */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   /** An element to display as prefix to input. Cannot be used with icon. */
-  prepend?: React.ReactElement,
+  prepend?: React.ReactElement
   /** An element to display as suffix to input. Cannot be used with password type. */
-  append?: React.ReactElement,
+  append?: React.ReactElement
   /** Theme to style the input with. */
-  theme?: InputThemes,
+  theme?: InputThemes
 }
 
 /** Form input element. */
@@ -84,8 +84,10 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={clsx('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
-            'text-gray-900 dark:text-gray-100 block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+            'block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
+            'text-gray-900 dark:text-gray-100': !props.disabled,
+            'text-gray-600': props.disabled,
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
             'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,

@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  accountId: string,
+  accountId: string
 }
 
 const Account: React.FC<IAccount> = ({ accountId }) => {
@@ -39,7 +39,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
           date: formattedBirthday,
         })}
       >
-        <Icon src={require('@tabler/icons/ballon.svg')} />
+        <Icon src={require('@tabler/icons/balloon.svg')} />
         {formattedBirthday}
       </div>
     </HStack>

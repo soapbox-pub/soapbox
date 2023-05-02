@@ -6,12 +6,14 @@ import { openModal } from 'soapbox/actions/modals';
 import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
-import { search as emojiSearch } from 'soapbox/features/emoji/emoji-mart-search-light';
+import emojiSearch from 'soapbox/features/emoji/search';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import ChatTextarea from './chat-textarea';
+
+import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },
@@ -31,9 +33,9 @@ const initialSuggestionState = {
 };
 
 interface Suggestion {
-  list: { native: string, colons: string }[],
-  tokenStart: number,
-  token: string,
+  list: Emoji[]
+  tokenStart: number
+  token: string
 }
 
 interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'onPaste' | 'disabled'> {
@@ -42,9 +44,10 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
   errorMessage: string | undefined
   onSelectFile: (files: FileList, intl: IntlShape) => void
   resetFileKey: number | null
+  resetContentKey: number | null
   attachments?: Attachment[]
-  onDeleteAttachment?: () => void
-  isUploading?: boolean
+  onDeleteAttachment?: (i: number) => void
+  uploadCount?: number
   uploadProgress?: number
 }
 
@@ -58,10 +61,11 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   disabled = false,
   onSelectFile,
   resetFileKey,
+  resetContentKey,
   onPaste,
   attachments = [],
   onDeleteAttachment,
-  isUploading,
+  uploadCount = 0,
   uploadProgress,
 }, ref) => {
   const intl = useIntl();
@@ -73,13 +77,15 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
   const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocked_by']));
   const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
   const maxCharacterCount = useAppSelector((state) => state.instance.getIn(['configuration', 'chats', 'max_characters']) as number);
+  const attachmentLimit = useAppSelector(state => state.instance.configuration.getIn(['chats', 'max_media_attachments']) as number);
 
   const [suggestions, setSuggestions] = useState<Suggestion>(initialSuggestionState);
   const isSuggestionsAvailable = suggestions.list.length > 0;
 
+  const isUploading = uploadCount > 0;
   const hasAttachment = attachments.length > 0;
   const isOverCharacterLimit = maxCharacterCount && value?.length > maxCharacterCount;
-  const isSubmitDisabled = disabled || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
+  const isSubmitDisabled = disabled || isUploading || isOverCharacterLimit || (value.length === 0 && !hasAttachment);
 
   const overLimitText = maxCharacterCount ? maxCharacterCount - value?.length : '';
 
@@ -104,7 +110,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
     );
 
     if (token && tokenStart) {
-      const results = emojiSearch(token.replace(':', ''), { maxResults: 5 } as any);
+      const results = emojiSearch(token.replace(':', ''), { maxResults: 5 });
       setSuggestions({
         list: results,
         token,
@@ -170,8 +176,9 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
             <UploadButton
               onSelectFile={onSelectFile}
               resetFileKey={resetFileKey}
-              iconClassName='w-5 h-5'
+              iconClassName='h-5 w-5'
               className='text-primary-500'
+              disabled={isUploading || (attachments.length >= attachmentLimit)}
             />
           </Stack>
         )}
@@ -179,6 +186,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
         <Stack grow>
           <Combobox onSelect={onSelectComboboxOption}>
             <ComboboxInput
+              key={resetContentKey}
               as={ChatTextarea}
               autoFocus
               ref={ref}
@@ -193,7 +201,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
               disabled={disabled}
               attachments={attachments}
               onDeleteAttachment={onDeleteAttachment}
-              isUploading={isUploading}
+              uploadCount={uploadCount}
               uploadProgress={uploadProgress}
             />
             {isSuggestionsAvailable ? (
@@ -204,7 +212,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
                       key={emojiSuggestion.colons}
                       value={renderSuggestionValue(emojiSuggestion)}
                     >
-                      <span>{emojiSuggestion.native}</span>
+                      <span>{(emojiSuggestion as NativeEmoji).native}</span>
                       <span className='ml-1'>
                         {emojiSuggestion.colons}
                       </span>
@@ -223,7 +231,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
 
           <IconButton
             src={require('@tabler/icons/send.svg')}
-            iconClassName='w-5 h-5'
+            iconClassName='h-5 w-5'
             className='text-primary-500'
             disabled={isSubmitDisabled}
             onClick={onSubmit}

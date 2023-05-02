@@ -30,13 +30,13 @@ const messages = defineMessages({
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 interface IPrivacyDropdownMenu {
-  style?: React.CSSProperties,
-  items: any[],
-  value: string,
-  placement: string,
-  onClose: () => void,
-  onChange: (value: string | null) => void,
-  unavailable?: boolean,
+  style?: React.CSSProperties
+  items: any[]
+  value: string
+  placement: string
+  onClose: () => void
+  onChange: (value: string | null) => void
+  unavailable?: boolean
 }
 
 const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange }) => {
@@ -120,7 +120,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
         // It should not be transformed when mounting because the resulting
         // size will be used to determine the coordinate of the menu by
         // react-overlays
-        <div className={`privacy-dropdown__dropdown ${placement}`} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
+        <div className={clsx('privacy-dropdown__dropdown', placement)} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
           {items.map(item => (
             <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
               <div className='privacy-dropdown__option__icon'>
@@ -140,7 +140,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
 };
 
 interface IPrivacyDropdown {
-  composeId: string,
+  composeId: string
 }
 
 const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
@@ -242,7 +242,10 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
     <div className={clsx('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
       <div className={clsx('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
         <IconButton
-          className='text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
+          className={clsx({
+            'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !open,
+            'text-primary-500 hover:text-primary-600 dark:text-primary-500 dark:hover:text-primary-400': open,
+          })}
           src={valueOption?.icon}
           title={intl.formatMessage(messages.change_privacy)}
           onClick={handleToggle}

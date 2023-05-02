@@ -8,8 +8,8 @@ import { useAppSelector } from 'soapbox/hooks';
 import type { List as ImmutableList } from 'immutable';
 
 interface IUploadButton {
-  disabled?: boolean,
-  onSelectFile: (files: FileList) => void,
+  disabled?: boolean
+  onSelectFile: (files: FileList) => void
 }
 
 const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {

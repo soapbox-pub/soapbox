@@ -1,15 +1,15 @@
 import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
-import { emojis as emojiData } from 'soapbox/features/emoji/emoji-mart-data-light';
-import { addCustomToPool } from 'soapbox/features/emoji/emoji-mart-search-light';
+import { buildCustomEmojis } from 'soapbox/features/emoji';
+import emojiData from 'soapbox/features/emoji/data';
+import { addCustomToPool } from 'soapbox/features/emoji/search';
 
 import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom-emojis';
-import { buildCustomEmojis } from '../features/emoji/emoji';
 
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const initialState = ImmutableList();
+const initialState = ImmutableList<ImmutableMap<string, string>>();
 
 // Populate custom emojis for composer autosuggest
 const autosuggestPopulate = (emojis: ImmutableList<ImmutableMap<string, string>>) => {
@@ -22,7 +22,7 @@ const importEmojis = (customEmojis: APIEntity[]) => {
     // Otherwise it breaks EmojiMart.
     // https://gitlab.com/soapbox-pub/soapbox/-/issues/610
     const shortcode = emoji.get('shortcode', '').toLowerCase();
-    return !emojiData[shortcode];
+    return !emojiData.emojis[shortcode];
   });
 
   autosuggestPopulate(emojis);

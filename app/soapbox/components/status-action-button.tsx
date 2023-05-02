@@ -4,6 +4,8 @@ import React from 'react';
 import { Text, Icon, Emoji } from 'soapbox/components/ui';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
+import type { Map as ImmutableMap } from 'immutable';
+
 const COLORS = {
   accent: 'accent',
   success: 'success',
@@ -12,7 +14,7 @@ const COLORS = {
 type Color = keyof typeof COLORS;
 
 interface IStatusActionCounter {
-  count: number,
+  count: number
 }
 
 /** Action button numerical counter, eg "5" likes. */
@@ -25,14 +27,14 @@ const StatusActionCounter: React.FC<IStatusActionCounter> = ({ count = 0 }): JSX
 };
 
 interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  iconClassName?: string,
-  icon: string,
-  count?: number,
-  active?: boolean,
-  color?: Color,
-  filled?: boolean,
-  emoji?: string,
-  text?: React.ReactNode,
+  iconClassName?: string
+  icon: string
+  count?: number
+  active?: boolean
+  color?: Color
+  filled?: boolean
+  emoji?: ImmutableMap<string, any>
+  text?: React.ReactNode
 }
 
 const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
@@ -42,7 +44,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
     if (emoji) {
       return (
         <span className='flex h-6 w-6 items-center justify-center'>
-          <Emoji className='h-full w-full p-0.5' emoji={emoji} />
+          <Emoji className='h-full w-full p-0.5' emoji={emoji.get('name')} src={emoji.get('url')} />
         </span>
       );
     } else {
@@ -51,7 +53,7 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
           src={icon}
           className={clsx(
             {
-              'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
+              'fill-accent-300 text-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
             },
             iconClassName,
           )}

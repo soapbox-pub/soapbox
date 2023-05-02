@@ -12,11 +12,11 @@ const messages = defineMessages({
 });
 
 interface IIconPickerDropdown {
-  value: string,
-  onPickEmoji: React.ChangeEventHandler,
+  value: string
+  onPickIcon: (icon: string) => void
 }
 
-const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickEmoji }) => {
+const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickIcon }) => {
   const intl = useIntl();
 
   const [active, setActive] = useState(false);
@@ -73,9 +73,9 @@ const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickEmoji 
 
       <Overlay show={active} placement={placement} target={target.current}>
         <IconPickerMenu
-          customEmojis={forkAwesomeIcons}
+          icons={forkAwesomeIcons}
           onClose={onHideDropdown}
-          onPick={onPickEmoji}
+          onPick={onPickIcon}
         />
       </Overlay>
     </div>

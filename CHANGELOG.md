@@ -7,17 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Posts: Support posts filtering on recent Mastodon versions
+- Reactions: Support custom emoji reactions
+- Compatbility: Support Mastodon v2 timeline filters.
+- Posts: Support dislikes on Friendica.
+- UI: added a character counter to some textareas.
+
+### Changed
+- Posts: truncate Nostr pubkeys in reply mentions.
+- Posts: upgraded emoji picker component.
+- Posts: improved design of threads.
+- UI: unified design of "approve" and "reject" buttons in follow requests and waitlist.
+- UI: added sticky column header.
+- UI: add specific zones the user can drag-and-drop files.
+
+### Fixed
+- Posts: fixed emojis being cut off in reactions modal.
+- Posts: fix audio player progress bar visibility.
+- Posts: added missing gap in pending status.
+- Compatibility: fixed quote posting compatibility with custom Pleroma forks.
+- Profile: fix "load more" button height on account gallery page.
+- 18n: fixed Chinese language being detected from the browser.
+- Conversations: fixed pagination (Mastodon).
+- Compatibility: fix version parsing for Friendica.
+
+## [3.2.0] - 2023-02-15
+
+### Added
 - Admin: redirect the homepage to any URL.
 - Compatibility: added compatibility with Friendica.
 - Posts: bot badge on statuses from bot accounts.
 - Compatibility: improved browser support for older browsers.
 - Events: allow to repost events in event menu.
-- Groups: Initial support for groups.
 - Profile: Add RSS link to user profiles.
 - Reactions: adds support for reacting to chat messages.
 - Groups: initial support for groups.
 - Profile: add RSS link to user profiles.
-- Posts: fix posts filtering.
+- Chats: reset chat message field height after sending a message.
+- Admin: allow to manage announcements.
 
 ### Changed
 - Chats: improved display of media attachments.
@@ -26,13 +53,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts: let "mute conversation" be clicked from any feed, not just noficiations.
 - Posts: display all emoji reactions.
 - Reactions: improved UI of reactions on statuses.
+- Profile: make verified badge more prominent, overlapping with avatar.
 
 ### Fixed
+- Admin: fixed hover card in reports modal shows reporter not reportee
 - Chats: media attachments rendering at the wrong size and/or causing the chat to scroll on load.
 - Chats: don't display "copy" button for messages without text.
 - Posts: don't have to click the play button twice for embedded videos.
 - index.html: remove `referrer` meta tag so it doesn't conflict with backend's `Referrer-Policy` header.
 - Modals: fix media modal automatically switching to video.
+- Navigation: profile dropdown erratic behavior.
+- Posts: fix posts filtering.
 
 ### Removed
 - Admin: single user mode. Now the homepage can be redirected to any URL.

@@ -10,7 +10,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
@@ -43,11 +43,11 @@ const messages = defineMessages({
 });
 
 interface ISidebarLink {
-  href?: string,
-  to?: string,
-  icon: string,
-  text: string | JSX.Element,
-  onClick: React.EventHandler<React.MouseEvent>,
+  href?: string
+  to?: string
+  icon: string
+  text: string | JSX.Element
+  onClick: React.EventHandler<React.MouseEvent>
 }
 
 const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
@@ -90,6 +90,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
+  const groupsPath = useGroupsPath();
 
   const closeButtonRef = React.useRef(null);
 
@@ -165,7 +166,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
             src={require('@tabler/icons/x.svg')}
             ref={closeButtonRef}
             iconClassName='h-6 w-6'
-            className='absolute top-0 right-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
+            className='absolute right-0 top-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
           />
 
           <div className='relative h-full w-full overflow-auto overflow-y-scroll'>
@@ -210,7 +211,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   {features.groups && (
                     <SidebarLink
-                      to='/groups'
+                      to={groupsPath}
                       icon={require('@tabler/icons/circles.svg')}
                       text={intl.formatMessage(messages.groups)}
                       onClick={onClose}
@@ -296,7 +297,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
                   )}
 
-                  {features.filters && (
+                  {(features.filters || features.filtersV2) && (
                     <SidebarLink
                       to='/filters'
                       icon={require('@tabler/icons/filter.svg')}

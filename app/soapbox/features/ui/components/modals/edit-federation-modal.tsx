@@ -1,11 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
 import React, { useState, useEffect, useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import Toggle from 'react-toggle';
 
 import { updateMrf } from 'soapbox/actions/mrf';
 import List, { ListItem } from 'soapbox/components/list';
-import { Modal } from 'soapbox/components/ui';
+import { Modal, Toggle } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
@@ -20,8 +19,8 @@ const messages = defineMessages({
 });
 
 interface IEditFederationModal {
-  host: string,
-  onClose: () => void,
+  host: string
+  onClose: () => void
 }
 
 /** Modal for moderators to edit federation with a remote instance. */
@@ -86,7 +85,6 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
           <Toggle
             checked={reject}
             onChange={handleDataChange('reject')}
-            icons={false}
             id='reject'
           />
         </ListItem>
@@ -95,7 +93,6 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
           <Toggle
             checked={fullMediaRemoval}
             onChange={handleMediaRemoval}
-            icons={false}
             id='media_removal'
             disabled={reject}
           />
@@ -105,7 +102,6 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
           <Toggle
             checked={media_nsfw}
             onChange={handleDataChange('media_nsfw')}
-            icons={false}
             id='media_nsfw'
             disabled={reject || media_removal}
           />
@@ -115,7 +111,6 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
           <Toggle
             checked={followers_only}
             onChange={handleDataChange('followers_only')}
-            icons={false}
             id='followers_only'
             disabled={reject}
           />
@@ -125,7 +120,6 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
           <Toggle
             checked={federated_timeline_removal}
             onChange={handleDataChange('federated_timeline_removal')}
-            icons={false}
             id='federated_timeline_removal'
             disabled={reject || followers_only}
           />
