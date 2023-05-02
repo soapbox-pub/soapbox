@@ -59,7 +59,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
         <Stack>
           <Link to={`/@${account.acct}`}>
             <HStack space={1} alignItems='center'>
-              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} truncate />
 
               {verified && <VerificationBadge />}
 
