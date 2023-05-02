@@ -1,28 +1,24 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
+import { useApi, useFeatures } from 'soapbox/hooks';
 import { groupSchema } from 'soapbox/schemas';
 
-import { useApi } from '../../useApi';
-import { useFeatures } from '../../useFeatures';
-
-import { useGroupRelationships } from './useGroups';
+import { useGroupRelationships } from './useGroupRelationships';
 
 import type { Group } from 'soapbox/schemas';
 
-function useGroupSearch(search: string) {
+function useGroupsFromTag(tagId: string) {
   const api = useApi();
   const features = useFeatures();
 
   const { entities, ...result } = useEntities<Group>(
-    [Entities.GROUPS, 'discover', 'search', search],
-    () => api.get('/api/v1/groups/search', {
-      params: {
-        q: search,
-      },
-    }),
-    { enabled: features.groupsDiscovery && !!search, schema: groupSchema },
+    [Entities.GROUPS, 'tags', tagId],
+    () => api.get(`/api/v1/tags/${tagId}/groups`),
+    {
+      schema: groupSchema,
+      enabled: features.groupsDiscovery,
+    },
   );
-
   const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
   const groups = entities.map((group) => ({
@@ -36,4 +32,4 @@ function useGroupSearch(search: string) {
   };
 }
 
-export { useGroupSearch };
+export { useGroupsFromTag };

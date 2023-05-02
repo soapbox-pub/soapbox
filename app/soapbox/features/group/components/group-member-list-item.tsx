@@ -4,6 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { groupKick } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
+import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu';
 import { HStack } from 'soapbox/components/ui';
@@ -11,7 +12,6 @@ import { deleteEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 

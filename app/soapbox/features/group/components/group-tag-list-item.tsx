@@ -2,11 +2,11 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { useUpdateGroupTag } from 'soapbox/api/hooks';
 import { HStack, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useUpdateGroupTag } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { shortNumberFormat } from 'soapbox/utils/numbers';

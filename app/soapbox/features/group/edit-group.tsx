@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { useGroup, useUpdateGroup } from 'soapbox/api/hooks';
 import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
-import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { useImageField, useTextField } from 'soapbox/hooks/forms';
 import toast from 'soapbox/toast';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';

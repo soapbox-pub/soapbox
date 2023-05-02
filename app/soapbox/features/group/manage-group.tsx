@@ -3,10 +3,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import { useDeleteGroup, useGroup } from 'soapbox/api/hooks';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useBackend, useGroupsPath } from 'soapbox/hooks';
-import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { TRUTHSOCIAL } from 'soapbox/utils/features';

@@ -1,8 +1,7 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
+import { useApi } from 'soapbox/hooks/useApi';
 import { type Relationship, relationshipSchema } from 'soapbox/schemas';
-
-import { useApi } from '../useApi';
 
 function useRelationships(ids: string[]) {
   const api = useApi();

@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
+import { useSuggestedGroups } from 'soapbox/api/hooks';
 import { Column } from 'soapbox/components/ui';
-import { useSuggestedGroups } from 'soapbox/hooks/api/useSuggestedGroups';
 
 import GroupGridItem from './components/discover/group-grid-item';
 import GroupListItem from './components/discover/group-list-item';

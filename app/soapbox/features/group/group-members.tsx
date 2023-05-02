@@ -1,12 +1,10 @@
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
+import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { useFeatures } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/hooks/api';
-import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
-import { useGroupMembers } from 'soapbox/hooks/api/useGroupMembers';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account';
@@ -14,6 +12,7 @@ import PlaceholderAccount from '../placeholder/components/placeholder-account';
 import GroupMemberListItem from './components/group-member-list-item';
 
 import type { Group } from 'soapbox/types/entities';
+
 
 interface IGroupMembers {
   params: { groupId: string }
