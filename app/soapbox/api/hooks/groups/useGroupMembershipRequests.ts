@@ -4,7 +4,7 @@ import { useApi } from 'soapbox/hooks/useApi';
 import { accountSchema } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
-import { useGroupRelationship } from './useGroups';
+import { useGroupRelationship } from './useGroupRelationship';
 
 import type { ExpandedEntitiesPath } from 'soapbox/entity-store/hooks/types';
 

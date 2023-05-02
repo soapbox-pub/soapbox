@@ -3,7 +3,7 @@ import { useEntities } from 'soapbox/entity-store/hooks';
 import { useApi, useFeatures } from 'soapbox/hooks';
 import { groupSchema } from 'soapbox/schemas';
 
-import { useGroupRelationships } from './useGroups';
+import { useGroupRelationships } from './useGroupRelationships';
 
 import type { Group } from 'soapbox/schemas';
 

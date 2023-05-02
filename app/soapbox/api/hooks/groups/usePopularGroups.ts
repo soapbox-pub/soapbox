@@ -5,7 +5,7 @@ import { Group, groupSchema } from 'soapbox/schemas';
 import { useApi } from '../../../hooks/useApi';
 import { useFeatures } from '../../../hooks/useFeatures';
 
-import { useGroupRelationships } from './useGroups';
+import { useGroupRelationships } from './useGroupRelationships';
 
 function usePopularGroups() {
   const api = useApi();
