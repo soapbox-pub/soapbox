@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 18n: fixed Chinese language being detected from the browser.
 - Conversations: fixed pagination (Mastodon).
 - Compatibility: fix version parsing for Friendica.
+- UI: fixed various overflow issues related to long usernames.
+- UI: fixed display of Markdown code blocks in the reply indicator.
 
 ## [3.2.0] - 2023-02-15
 
