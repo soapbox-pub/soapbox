@@ -5,7 +5,7 @@ module.exports = (api) => {
     debug: false,
     modules: false,
     useBuiltIns: 'usage',
-    corejs: '3.15',
+    corejs: '3.27',
   };
 
   const config = {
@@ -15,9 +15,6 @@ module.exports = (api) => {
       ['@babel/env', envOptions],
     ],
     plugins: [
-      '@babel/syntax-dynamic-import',
-      ['@babel/proposal-object-rest-spread', { useBuiltIns: true }],
-      '@babel/proposal-class-properties',
       ['react-intl', { messagesDir: './build/messages/' }],
       'preval',
     ],
@@ -27,7 +24,6 @@ module.exports = (api) => {
   switch (env) {
     case 'production':
       config.plugins.push(...[
-        'lodash',
         '@babel/transform-react-inline-elements',
         [
           '@babel/transform-runtime',
@@ -37,12 +33,6 @@ module.exports = (api) => {
             useESModules: true,
           },
         ],
-      ]);
-      break;
-    case 'development':
-      config.plugins.push(...[
-        '@babel/transform-react-jsx-source',
-        '@babel/transform-react-jsx-self',
       ]);
       break;
     case 'test':

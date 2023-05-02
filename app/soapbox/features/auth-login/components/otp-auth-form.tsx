@@ -13,7 +13,7 @@ const messages = defineMessages({
 });
 
 interface IOtpAuthForm {
-  mfa_token: string,
+  mfa_token: string
 }
 
 const OtpAuthForm: React.FC<IOtpAuthForm> = ({ mfa_token }) => {
@@ -48,13 +48,13 @@ const OtpAuthForm: React.FC<IOtpAuthForm> = ({ mfa_token }) => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-600 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-600 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'>
           <FormattedMessage id='login.otp_log_in' defaultMessage='OTP Login' />
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
         <Form onSubmit={handleSubmit}>
           <FormGroup
             labelText={intl.formatMessage(messages.otpCodeLabel)}

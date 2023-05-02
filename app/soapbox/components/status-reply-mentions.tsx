@@ -6,12 +6,13 @@ import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
+import { isPubkey } from 'soapbox/utils/nostr';
 
 import type { Account, Status } from 'soapbox/types/entities';
 
 interface IStatusReplyMentions {
-  status: Status,
-  hoverable?: boolean,
+  status: Status
+  hoverable?: boolean
 }
 
 const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable = true }) => {
@@ -50,7 +51,14 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   // The typical case with a reply-to and a list of mentions.
   const accounts = to.slice(0, 2).map(account => {
     const link = (
-      <Link to={`/@${account.acct}`} className='reply-mentions__account' onClick={(e) => e.stopPropagation()}>@{account.username}</Link>
+      <Link
+        key={account.id}
+        to={`/@${account.acct}`}
+        className='reply-mentions__account'
+        onClick={(e) => e.stopPropagation()}
+      >
+        @{isPubkey(account.username) ? account.username.slice(0, 8) : account.username}
+      </Link>
     );
 
     if (hoverable) {
@@ -66,7 +74,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
 
   if (to.size > 2) {
     accounts.push(
-      <span key='more' className='hover:underline cursor-pointer' role='button' onClick={handleOpenMentionsModal} tabIndex={0}>
+      <span key='more' className='cursor-pointer hover:underline' role='button' onClick={handleOpenMentionsModal} tabIndex={0}>
         <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />
       </span>,
     );
@@ -86,7 +94,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
                 <HoverStatusWrapper statusId={status.in_reply_to_id} inline>
                   <span
                     key='hoverstatus'
-                    className='hover:underline cursor-pointer'
+                    className='cursor-pointer hover:underline'
                     role='presentation'
                   >
                     {children}

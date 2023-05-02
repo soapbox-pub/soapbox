@@ -1,7 +1,7 @@
 'use strict';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
@@ -191,7 +191,14 @@ const SoapboxMount = () => {
                 </BundleContainer>
 
                 <GdprBanner />
-                <Toaster position='top-right' containerClassName='top-10' containerStyle={{ top: 75 }} />
+
+                <div id='toaster'>
+                  <Toaster
+                    position='top-right'
+                    containerClassName='top-10'
+                    containerStyle={{ top: 75 }}
+                  />
+                </div>
               </Route>
             </Switch>
           </ScrollContext>
@@ -202,7 +209,7 @@ const SoapboxMount = () => {
 };
 
 interface ISoapboxLoad {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /** Initial data loader. */
@@ -258,7 +265,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 };
 
 interface ISoapboxHead {
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
 /** Injects metadata into site head with Helmet. */
@@ -271,7 +278,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
 
-  const bodyClass = classNames('bg-white dark:bg-gray-800 text-base h-full', {
+  const bodyClass = clsx('h-full bg-white text-base dark:bg-gray-800', {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
     'demetricator': settings.get('demetricator'),
@@ -280,7 +287,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   return (
     <>
       <Helmet>
-        <html lang={locale} className={classNames('h-full', { dark: darkMode })} />
+        <html lang={locale} className={clsx('h-full', { dark: darkMode })} />
         <body className={bodyClass} dir={direction} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}

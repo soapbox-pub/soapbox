@@ -47,11 +47,11 @@ const ChatPageSettings = () => {
   };
 
   return (
-    <Stack className='h-full py-6 px-4 sm:p-6 space-y-8'>
+    <Stack className='h-full space-y-8 px-4 py-6 sm:p-6'>
       <HStack alignItems='center'>
         <IconButton
           src={require('@tabler/icons/arrow-left.svg')}
-          className='sm:hidden h-7 w-7 mr-2 sm:mr-0'
+          className='mr-2 h-7 w-7 sm:mr-0 sm:hidden'
           onClick={() => history.push('/chats')}
         />
 

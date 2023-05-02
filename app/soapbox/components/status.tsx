@@ -1,14 +1,13 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
-import { toggleStatusHidden } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
+import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses';
 import TranslateButton from 'soapbox/components/translate-button';
 import AccountContainer from 'soapbox/containers/account-container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
@@ -22,10 +21,11 @@ import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import StatusInfo from './statuses/status-info';
-import { Card, Stack, Text } from './ui';
+import { Card, Icon, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
+  Group as GroupEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -37,22 +37,22 @@ const messages = defineMessages({
 });
 
 export interface IStatus {
-  id?: string,
-  avatarSize?: number,
-  status: StatusEntity,
-  onClick?: () => void,
-  muted?: boolean,
-  hidden?: boolean,
-  unread?: boolean,
-  onMoveUp?: (statusId: string, featured?: boolean) => void,
-  onMoveDown?: (statusId: string, featured?: boolean) => void,
-  focusable?: boolean,
-  featured?: boolean,
-  hideActionBar?: boolean,
-  hoverable?: boolean,
-  variant?: 'default' | 'rounded',
-  withDismiss?: boolean,
-  accountAction?: React.ReactElement,
+  id?: string
+  avatarSize?: number
+  status: StatusEntity
+  onClick?: () => void
+  muted?: boolean
+  hidden?: boolean
+  unread?: boolean
+  onMoveUp?: (statusId: string, featured?: boolean) => void
+  onMoveDown?: (statusId: string, featured?: boolean) => void
+  focusable?: boolean
+  featured?: boolean
+  hideActionBar?: boolean
+  hoverable?: boolean
+  variant?: 'default' | 'rounded' | 'slim'
+  showGroup?: boolean
+  accountAction?: React.ReactElement
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -71,7 +71,7 @@ const Status: React.FC<IStatus> = (props) => {
     unread,
     hideActionBar,
     variant = 'rounded',
-    withDismiss,
+    showGroup = true,
   } = props;
 
   const intl = useIntl();
@@ -90,6 +90,9 @@ const Status: React.FC<IStatus> = (props) => {
   const actualStatus = getActualStatus(status);
   const isReblog = status.reblog && typeof status.reblog === 'object';
   const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+  const group = actualStatus.group as GroupEntity | null;
+
+  const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -200,32 +203,75 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
+  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.size ? status.id : actualStatus.id));
+
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
     firstEmoji?.focus();
   };
 
   const renderStatusInfo = () => {
-    if (isReblog) {
+    if (isReblog && showGroup && group) {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          to={`/@${status.getIn(['account', 'acct'])}`}
-          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />}
+          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='h-4 w-4 text-green-600' />}
+          text={
+            <FormattedMessage
+              id='status.reblogged_by_with_group'
+              defaultMessage='{name} reposted from {group}'
+              values={{
+                name: (
+                  <Link
+                    to={`/@${status.getIn(['account', 'acct'])}`}
+                    className='hover:underline'
+                  >
+                    <bdi className='truncate'>
+                      <strong
+                        className='text-gray-800 dark:text-gray-200'
+                        dangerouslySetInnerHTML={{
+                          __html: String(status.getIn(['account', 'display_name_html'])),
+                        }}
+                      />
+                    </bdi>
+                  </Link>
+                ),
+                group: (
+                  <Link to={`/group/${(status.group as GroupEntity).slug}`} className='hover:underline'>
+                    <strong
+                      className='text-gray-800 dark:text-gray-200'
+                      dangerouslySetInnerHTML={{
+                        __html: (status.group as GroupEntity).display_name_html,
+                      }}
+                    />
+                  </Link>
+                ),
+              }}
+            />
+          }
+        />
+      );
+    } else if (isReblog) {
+      return (
+        <StatusInfo
+          avatarSize={avatarSize}
+          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='h-4 w-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by'
               defaultMessage='{name} reposted'
               values={{
                 name: (
-                  <bdi className='truncate pr-1 rtl:pl-1'>
-                    <strong
-                      className='text-gray-800 dark:text-gray-200'
-                      dangerouslySetInnerHTML={{
-                        __html: String(status.getIn(['account', 'display_name_html'])),
-                      }}
-                    />
-                  </bdi>
+                  <Link to={`/@${status.getIn(['account', 'acct'])}`} className='hover:underline'>
+                    <bdi className='truncate'>
+                      <strong
+                        className='text-gray-800 dark:text-gray-200'
+                        dangerouslySetInnerHTML={{
+                          __html: String(status.getIn(['account', 'display_name_html'])),
+                        }}
+                      />
+                    </bdi>
+                  </Link>
                 ),
               }}
             />
@@ -236,11 +282,33 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='h-4 w-4 text-gray-600 dark:text-gray-400' />}
           text={
-            <Text size='xs' theme='muted' weight='medium'>
-              <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
-            </Text>
+            <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+          }
+        />
+      );
+    } else if (showGroup && group) {
+      return (
+        <StatusInfo
+          avatarSize={avatarSize}
+          icon={<Icon src={require('@tabler/icons/circles.svg')} className='h-4 w-4 text-primary-600 dark:text-accent-blue' />}
+          text={
+            <FormattedMessage
+              id='status.group'
+              defaultMessage='Posted in {group}'
+              values={{
+                group: (
+                  <Link to={`/group/${group.slug}`} className='hover:underline'>
+                    <bdi className='truncate'>
+                      <strong className='text-gray-800 dark:text-gray-200'>
+                        <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                      </strong>
+                    </bdi>
+                  </Link>
+                ),
+              }}
+            />
           }
         />
       );
@@ -260,7 +328,7 @@ const Status: React.FC<IStatus> = (props) => {
     );
   }
 
-  if (status.filtered || actualStatus.filtered) {
+  if (filtered && status.showFiltered) {
     const minHandlers = muted ? undefined : {
       moveUp: handleHotkeyMoveUp,
       moveDown: handleHotkeyMoveDown,
@@ -268,8 +336,14 @@ const Status: React.FC<IStatus> = (props) => {
 
     return (
       <HotKeys handlers={minHandlers}>
-        <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
-          <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
+        <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+          <Text theme='muted'>
+            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {status.filtered.join(', ')}.
+            {' '}
+            <button className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleUnfilter}>
+              <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
+            </button>
+          </Text>
         </div>
       </HotKeys>
     );
@@ -318,7 +392,7 @@ const Status: React.FC<IStatus> = (props) => {
   return (
     <HotKeys handlers={handlers} data-testid='status'>
       <div
-        className={classNames('status cursor-pointer', { focusable })}
+        className={clsx('status cursor-pointer', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
         data-featured={featured ? 'true' : null}
         aria-label={textForScreenReader(intl, actualStatus, rebloggedByText)}
@@ -328,7 +402,7 @@ const Status: React.FC<IStatus> = (props) => {
       >
         <Card
           variant={variant}
-          className={classNames('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
+          className={clsx('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
             'py-6 sm:p-5': variant === 'rounded',
             'status-reply': !!status.in_reply_to_id,
             muted,
@@ -348,6 +422,7 @@ const Status: React.FC<IStatus> = (props) => {
             showEdit={!!actualStatus.edited_at}
             showProfileHoverCard={hoverable}
             withLinkToProfile={hoverable}
+            approvalStatus={actualStatus.approval_status}
             avatarSize={avatarSize}
           />
 
@@ -397,7 +472,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} withDismiss={withDismiss} />
+                <StatusActionBar status={actualStatus} />
               </div>
             )}
           </div>

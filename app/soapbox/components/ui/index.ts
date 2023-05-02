@@ -2,6 +2,7 @@ export { default as Accordion } from './accordion/accordion';
 export { default as Avatar } from './avatar/avatar';
 export { default as Banner } from './banner/banner';
 export { default as Button } from './button/button';
+export { default as Carousel } from './carousel/carousel';
 export { Card, CardBody, CardHeader, CardTitle } from './card/card';
 export { default as Checkbox } from './checkbox/checkbox';
 export { Column, ColumnHeader } from './column/column';
@@ -38,6 +39,8 @@ export {
 } from './menu/menu';
 export { default as Modal } from './modal/modal';
 export { default as PhoneInput } from './phone-input/phone-input';
+export { default as Popover } from './popover/popover';
+export { default as Portal } from './portal/portal';
 export { default as ProgressBar } from './progress-bar/progress-bar';
 export { default as RadioButton } from './radio-button/radio-button';
 export { default as Select } from './select/select';

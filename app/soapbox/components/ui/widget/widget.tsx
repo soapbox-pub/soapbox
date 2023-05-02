@@ -4,7 +4,7 @@ import { HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 
 interface IWidgetTitle {
   /** Title text for the widget. */
-  title: React.ReactNode,
+  title: React.ReactNode
 }
 
 /** Title of a widget. */
@@ -23,15 +23,15 @@ const WidgetBody: React.FC<IWidgetBody> = ({ children }): JSX.Element => (
 
 interface IWidget {
   /** Widget title text. */
-  title: React.ReactNode,
+  title: React.ReactNode
   /** Callback when the widget action is clicked. */
-  onActionClick?: () => void,
+  onActionClick?: () => void
   /** URL to the svg icon for the widget action. */
-  actionIcon?: string,
+  actionIcon?: string
   /** Text for the action. */
-  actionTitle?: string,
-  action?: JSX.Element,
-  children?: React.ReactNode,
+  actionTitle?: string
+  action?: JSX.Element
+  children?: React.ReactNode
 }
 
 /** Sidebar widget. */
@@ -49,7 +49,7 @@ const Widget: React.FC<IWidget> = ({
         <WidgetTitle title={title} />
         {action || (onActionClick && (
           <IconButton
-            className='w-6 h-6 ml-2 text-black dark:text-white rtl:rotate-180'
+            className='ml-2 h-6 w-6 text-black rtl:rotate-180 dark:text-white'
             src={actionIcon}
             onClick={onActionClick}
             title={actionTitle}

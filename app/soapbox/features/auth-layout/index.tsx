@@ -36,9 +36,9 @@ const AuthLayout = () => {
       <LandingGradient />
 
       <main className='relative h-full sm:flex sm:justify-center'>
-        <div className='w-full h-full flex flex-col sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
-          <header className='flex justify-between relative py-12 px-2 mb-auto'>
-            <div className='relative z-0 flex-1 px-2 lg:flex lg:items-center lg:justify-center lg:absolute lg:inset-0'>
+        <div className='flex h-full w-full flex-col sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
+          <header className='relative mb-auto flex justify-between px-2 py-12'>
+            <div className='relative z-0 flex-1 px-2 lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center'>
               <Link to='/' className='cursor-pointer'>
                 <SiteLogo alt={instance.title} className='h-7' />
               </Link>
@@ -57,8 +57,8 @@ const AuthLayout = () => {
             )}
           </header>
 
-          <div className='flex flex-col justify-center items-center'>
-            <div className='pb-10 sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
+          <div className='flex flex-col items-center justify-center'>
+            <div className='w-full pb-10 sm:mx-auto sm:max-w-lg md:max-w-2xl'>
               <Card variant='rounded' size='xl'>
                 <CardBody>
                   <Switch>

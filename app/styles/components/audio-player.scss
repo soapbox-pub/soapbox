@@ -1,69 +1,51 @@
 .audio-player {
-  overflow: hidden;
-  box-sizing: border-box;
-  position: relative;
-  background: $base-shadow-color;
-  border-radius: 10px;
-  padding-bottom: 44px;
+  @apply relative box-border overflow-hidden rounded-[10px] bg-black pb-11;
   direction: ltr;
 
   &.editable {
-    border-radius: 0;
-    height: 100%;
+    @apply rounded-none h-full;
   }
 
   .video-player__volume::before,
   .video-player__seek::before {
-    background: currentcolor;
-    opacity: 0.15;
+    @apply bg-white/10;
   }
 
   .video-player__seek__buffer {
-    background: currentcolor;
-    opacity: 0.2;
+    @apply bg-white/20;
   }
 
   .video-player__buttons button {
-    color: currentcolor;
-    opacity: 0.75;
+    @apply text-current opacity-[75];
 
     &:active,
     &:hover,
     &:focus {
-      color: currentcolor;
-      opacity: 1;
+      @apply text-current opacity-100;
     }
   }
 
   .video-player__time-sep,
   .video-player__time-total,
   .video-player__time-current {
-    color: currentcolor;
+    @apply text-current;
   }
 
   .video-player__seek::before,
   .video-player__seek__buffer,
   .video-player__seek__progress {
-    top: 0;
+    @apply top-0;
   }
 
   .video-player__seek__handle {
-    top: -4px;
+    @apply -top-1;
   }
 
   .video-player__controls {
-    padding-top: 10px;
-    background: transparent;
+    @apply pt-2.5 bg-transparent;
   }
 }
 
 .media-spoiler-audio {
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  cursor: pointer;
-  margin-top: 8px;
-  position: relative;
-  border: 0;
-  display: block;
+  @apply relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat;
 }

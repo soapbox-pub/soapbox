@@ -20,7 +20,7 @@ const PromoPanel: React.FC = () => {
         {promoItems.map((item, i) => (
           <Text key={i}>
             <a className='flex items-center' href={item.url} target='_blank'>
-              <ForkAwesomeIcon id={item.icon} className='flex-none text-lg mr-2 rtl:mr-0 rtl:ml-2' fixedWidth />
+              <ForkAwesomeIcon id={item.icon} className='mr-2 flex-none text-lg rtl:ml-2 rtl:mr-0' fixedWidth />
               {item.textLocales.get(locale) || item.text}
             </a>
           </Text>

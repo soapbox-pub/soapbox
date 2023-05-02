@@ -19,12 +19,10 @@ export const ALLOWED_EMOJI = ImmutableList([
 type Account = ImmutableMap<string, any>;
 type EmojiReact = ImmutableMap<string, any>;
 
-export const sortEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
-  emojiReacts.sortBy(emojiReact => -emojiReact.get('count'))
-);
-
-export const mergeEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
-  emojiReacts // TODO: Merge similar emoji
+export const sortEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji: ImmutableList<string>): ImmutableList<EmojiReact> => (
+  emojiReacts
+    .sortBy(emojiReact =>
+      -(emojiReact.get('count') + Number(allowedEmoji.includes(emojiReact.get('name')))))
 );
 
 export const mergeEmojiFavourites = (emojiReacts = ImmutableList<EmojiReact>(), favouritesCount: number, favourited: boolean) => {
@@ -70,29 +68,25 @@ export const oneEmojiPerAccount = (emojiReacts: ImmutableList<EmojiReact>, me: M
     .reverse();
 };
 
-export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
-  emojiReacts.filter(emojiReact => (
-    allowedEmoji.includes(emojiReact.get('name'))
-  )));
-
 export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji = ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
-  filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount, favourited,
-  ))), allowedEmoji));
+  sortEmoji(
+    mergeEmojiFavourites(emojiReacts, favouritesCount, favourited),
+    allowedEmoji,
+  ));
 
-export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): string | undefined => {
+export const getReactForStatus = (status: any, allowedEmoji = ALLOWED_EMOJI): EmojiReact | undefined => {
   const result = reduceEmoji(
     status.pleroma.get('emoji_reactions', ImmutableList()),
     status.favourites_count || 0,
     status.favourited,
     allowedEmoji,
   ).filter(e => e.get('me') === true)
-    .getIn([0, 'name']);
+    .get(0);
 
-  return typeof result === 'string' ? result : undefined;
+  return typeof result?.get('name') === 'string' ? result : undefined;
 };
 
-export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {
+export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string, url?: string) => {
   const idx = emojiReacts.findIndex(e => e.get('name') === emoji);
   const emojiReact = emojiReacts.get(idx);
 
@@ -100,12 +94,14 @@ export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji
     return emojiReacts.set(idx, emojiReact.merge({
       count: emojiReact.get('count') + 1,
       me: true,
+      url,
     }));
   } else {
     return emojiReacts.push(ImmutableMap({
       count: 1,
       me: true,
       name: emoji,
+      url,
     }));
   }
 };

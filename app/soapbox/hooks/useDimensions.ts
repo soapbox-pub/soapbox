@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import ResizeObserver from 'resize-observer-polyfill';
 
 type UseDimensionsRect = { width: number, height: number };
 type UseDimensionsResult = [Element | null, any, any]
@@ -24,7 +23,7 @@ const useDimensions = (): UseDimensionsResult => {
     [],
   );
 
-  useEffect((): any => {
+  useEffect(() => {
     if (!element) return;
     observer.observe(element);
 

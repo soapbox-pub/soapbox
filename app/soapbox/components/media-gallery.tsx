@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -19,21 +19,21 @@ const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 interface Dimensions {
-  w: Property.Width | number,
-  h: Property.Height | number,
-  t?: Property.Top,
-  r?: Property.Right,
-  b?: Property.Bottom,
-  l?: Property.Left,
-  float?: Property.Float,
-  pos?: Property.Position,
+  w: Property.Width | number
+  h: Property.Height | number
+  t?: Property.Top
+  r?: Property.Right
+  b?: Property.Bottom
+  l?: Property.Left
+  float?: Property.Float
+  pos?: Property.Position
 }
 
 interface SizeData {
-  style: React.CSSProperties,
-  itemsDimensions: Dimensions[],
-  size: number,
-  width: number,
+  style: React.CSSProperties
+  itemsDimensions: Dimensions[]
+  size: number
+  width: number
 }
 
 const withinLimits = (aspectRatio: number) => {
@@ -48,16 +48,16 @@ const shouldLetterbox = (attachment: Attachment): boolean => {
 };
 
 interface IItem {
-  attachment: Attachment,
-  standalone?: boolean,
-  index: number,
-  size: number,
-  onClick: (index: number) => void,
-  displayWidth?: number,
-  visible: boolean,
-  dimensions: Dimensions,
-  last?: boolean,
-  total: number,
+  attachment: Attachment
+  standalone?: boolean
+  index: number
+  size: number
+  onClick: (index: number) => void
+  displayWidth?: number
+  visible: boolean
+  dimensions: Dimensions
+  last?: boolean
+  total: number
 }
 
 const Item: React.FC<IItem> = ({
@@ -152,7 +152,14 @@ const Item: React.FC<IItem> = ({
     );
 
     return (
-      <div className={classNames('media-gallery__item', { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+      <div
+        className={clsx('media-gallery__item', {
+          standalone,
+          'rounded-md': total > 1,
+        })}
+        key={attachment.id}
+        style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
+      >
         <a className='media-gallery__item-thumbnail' href={attachment.url} target='_blank' style={{ cursor: 'pointer' }}>
           <Blurhash hash={attachment.blurhash} className='media-gallery__preview' />
           <span className='media-gallery__item__icons'>{attachmentIcon}</span>
@@ -171,7 +178,7 @@ const Item: React.FC<IItem> = ({
         target='_blank'
       >
         <StillImage
-          className='w-full h-full'
+          className='h-full w-full'
           src={mediaPreview ? attachment.preview_url : attachment.url}
           alt={attachment.description}
           letterboxed={letterboxed}
@@ -189,7 +196,7 @@ const Item: React.FC<IItem> = ({
     }
 
     thumbnail = (
-      <div className={classNames('media-gallery__gifv', { autoplay: autoPlayGif })}>
+      <div className={clsx('media-gallery__gifv', { autoplay: autoPlayGif })}>
         <video
           className='media-gallery__item-gifv-thumbnail'
           aria-label={attachment.description}
@@ -211,7 +218,7 @@ const Item: React.FC<IItem> = ({
     const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
-        className={classNames('media-gallery__item-thumbnail')}
+        className={clsx('media-gallery__item-thumbnail')}
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
@@ -225,7 +232,7 @@ const Item: React.FC<IItem> = ({
     const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
-        className={classNames('media-gallery__item-thumbnail')}
+        className={clsx('media-gallery__item-thumbnail')}
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
@@ -245,7 +252,14 @@ const Item: React.FC<IItem> = ({
   }
 
   return (
-    <div className={classNames('media-gallery__item', `media-gallery__item--${attachment.type}`, { standalone })} key={attachment.id} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+    <div
+      className={clsx('media-gallery__item', `media-gallery__item--${attachment.type}`, {
+        standalone,
+        'rounded-md': total > 1,
+      })}
+      key={attachment.id}
+      style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
+    >
       {last && total > ATTACHMENT_LIMIT && (
         <div className='media-gallery__item-overflow'>
           +{total - ATTACHMENT_LIMIT + 1}
@@ -260,23 +274,25 @@ const Item: React.FC<IItem> = ({
   );
 };
 
-interface IMediaGallery {
-  sensitive?: boolean,
-  media: ImmutableList<Attachment>,
-  height?: number,
-  onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void,
-  defaultWidth?: number,
-  cacheWidth?: (width: number) => void,
-  visible?: boolean,
-  onToggleVisibility?: () => void,
-  displayMedia?: string,
-  compact: boolean,
+export interface IMediaGallery {
+  sensitive?: boolean
+  media: ImmutableList<Attachment>
+  height?: number
+  onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void
+  defaultWidth?: number
+  cacheWidth?: (width: number) => void
+  visible?: boolean
+  onToggleVisibility?: () => void
+  displayMedia?: string
+  compact?: boolean
+  className?: string
 }
 
 const MediaGallery: React.FC<IMediaGallery> = (props) => {
   const {
     media,
     defaultWidth = 0,
+    className,
     onOpenMedia,
     cacheWidth,
     compact,
@@ -546,7 +562,11 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
   }, [node.current]);
 
   return (
-    <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.style} ref={node}>
+    <div
+      className={clsx(className, 'media-gallery', { 'media-gallery--compact': compact })}
+      style={sizeData.style}
+      ref={node}
+    >
       {children}
     </div>
   );

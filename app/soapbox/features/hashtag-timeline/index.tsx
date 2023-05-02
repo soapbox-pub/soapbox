@@ -26,9 +26,9 @@ const messages = defineMessages({
 
 interface IHashtagTimeline {
   params?: {
-    id?: string,
-    tags?: Tags,
-  },
+    id?: string
+    tags?: Tags
+  }
 }
 
 export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
@@ -119,13 +119,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   }, [id]);
 
   return (
-    <Column
-      label={title()}
-      transparent
-      onActionClick={features.followHashtags ? handleFollow : undefined}
-      actionIcon={tag?.following ? require('@tabler/icons/bell-ringing.svg') : require('@tabler/icons/bell.svg')}
-      actionTitle={intl.formatMessage(tag?.following ? messages.unfollowHashtag : messages.followHashtag)}
-    >
+    <Column label={title()} transparent>
       <Timeline
         scrollKey='hashtag_timeline'
         timelineId={`hashtag:${id}`}

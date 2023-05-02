@@ -8,7 +8,7 @@ import PlaceholderDisplayName from './placeholder-display-name';
 /** Fake account to display while data is loading. */
 const PlaceholderAccount: React.FC = () => (
   <HStack space={3} alignItems='center'>
-    <div className='flex-shrink-0'>
+    <div className='shrink-0'>
       <PlaceholderAvatar size={42} />
     </div>
 
@@ -18,4 +18,4 @@ const PlaceholderAccount: React.FC = () => (
   </HStack>
 );
 
-export default PlaceholderAccount;
+export default React.memo(PlaceholderAccount);

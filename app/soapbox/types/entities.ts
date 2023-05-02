@@ -9,8 +9,11 @@ import {
   ChatRecord,
   ChatMessageRecord,
   EmojiRecord,
+  EmojiReactionRecord,
   FieldRecord,
   FilterRecord,
+  FilterKeywordRecord,
+  FilterStatusRecord,
   HistoryRecord,
   InstanceRecord,
   ListRecord,
@@ -38,8 +41,11 @@ type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
+type EmojiReaction = ReturnType<typeof EmojiReactionRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
+type FilterKeyword = ReturnType<typeof FilterKeywordRecord>;
+type FilterStatus = ReturnType<typeof FilterStatusRecord>;
 type History = ReturnType<typeof HistoryRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
@@ -55,13 +61,13 @@ type Tag = ReturnType<typeof TagRecord>;
 interface Account extends ReturnType<typeof AccountRecord> {
   // HACK: we can't do a circular reference in the Record definition itself,
   // so do it here.
-  moved: EmbeddedEntity<Account>;
+  moved: EmbeddedEntity<Account>
 }
 
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
-  quote: EmbeddedEntity<Status>;
-  reblog: EmbeddedEntity<Status>;
+  quote: EmbeddedEntity<Status>
+  reblog: EmbeddedEntity<Status>
 }
 
 // Utility types
@@ -80,8 +86,11 @@ export {
   Chat,
   ChatMessage,
   Emoji,
+  EmojiReaction,
   Field,
   Filter,
+  FilterKeyword,
+  FilterStatus,
   History,
   Instance,
   List,
@@ -99,3 +108,9 @@ export {
   APIEntity,
   EmbeddedEntity,
 };
+
+export type {
+  Group,
+  GroupMember,
+  GroupRelationship,
+} from 'soapbox/schemas';

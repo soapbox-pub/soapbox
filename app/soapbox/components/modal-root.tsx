@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import 'wicg-inert';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -39,10 +39,10 @@ export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComp
 };
 
 interface IModalRoot {
-  onCancel?: () => void,
-  onClose: (type?: ModalType) => void,
-  type: ModalType,
-  children: React.ReactNode,
+  onCancel?: () => void
+  onClose: (type?: ModalType) => void
+  type: ModalType
+  children: React.ReactNode
 }
 
 const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) => {
@@ -181,7 +181,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   };
 
   const getSiblings = () => {
-    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[])).filter(node => node !== ref.current);
+    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[]))
+      .filter(node => (node as HTMLDivElement).id !== 'toaster')
+      .filter(node => node !== ref.current);
   };
 
   useEffect(() => {
@@ -232,7 +234,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   return (
     <div
       ref={ref}
-      className={classNames({
+      className={clsx({
         'fixed top-0 left-0 z-[100] w-full h-full overflow-x-hidden overflow-y-auto': true,
         'pointer-events-none': !visible,
       })}
@@ -241,17 +243,16 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       <div
         role='presentation'
         id='modal-overlay'
-        className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90 backdrop-blur'
+        className='fixed inset-0 bg-gray-500/90 backdrop-blur dark:bg-gray-700/90'
         onClick={handleOnClose}
       />
 
       <div
         role='dialog'
-        className={classNames({
-          'my-2 mx-auto relative pointer-events-none flex items-center': true,
+        className={clsx({
+          'my-2 mx-auto relative pointer-events-none flex items-center min-h-[calc(100%-3.5rem)]': true,
           'p-4 md:p-0': type !== 'MEDIA',
         })}
-        style={{ minHeight: 'calc(100% - 3.5rem)' }}
       >
         {children}
       </div>

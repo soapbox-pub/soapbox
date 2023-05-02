@@ -14,6 +14,7 @@ interface IToastOptions {
   actionLink?: string
   actionLabel?: ToastText
   duration?: number
+  summary?: string
 }
 
 const DEFAULT_DURATION = 4000;

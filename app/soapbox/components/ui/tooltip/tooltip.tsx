@@ -1,65 +1,87 @@
-import { Portal } from '@reach/portal';
-import { TooltipPopup, useTooltip } from '@reach/tooltip';
-import React from 'react';
-
-import './tooltip.css';
+import {
+  arrow,
+  FloatingArrow,
+  FloatingPortal,
+  offset,
+  useFloating,
+  useHover,
+  useInteractions,
+  useTransitionStyles,
+} from '@floating-ui/react';
+import React, { useRef, useState } from 'react';
 
 interface ITooltip {
-  /** Text to display in the tooltip. */
-  text: string,
   /** Element to display the tooltip around. */
-  children: React.ReactNode,
+  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  /** Text to display in the tooltip. */
+  text: string
 }
 
-const centered = (triggerRect: any, tooltipRect: any) => {
-  const triggerCenter = triggerRect.left + triggerRect.width / 2;
-  const left = triggerCenter - tooltipRect.width / 2;
-  const maxLeft = window.innerWidth - tooltipRect.width - 2;
-  return {
-    left: Math.min(Math.max(2, left), maxLeft) + window.scrollX,
-    top: triggerRect.bottom + 8 + window.scrollY,
-  };
-};
+/**
+ * Tooltip
+ */
+const Tooltip: React.FC<ITooltip> = (props) => {
+  const { children, text } = props;
 
-/** Hoverable tooltip element. */
-const Tooltip: React.FC<ITooltip> = ({
-  children,
-  text,
-}) => {
-  // get the props from useTooltip
-  const [trigger, tooltip] = useTooltip();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // destructure off what we need to position the triangle
-  const { isVisible, triggerRect } = tooltip;
+  const arrowRef = useRef<SVGSVGElement>(null);
+
+  const { x, y, strategy, refs, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    placement: 'top',
+    middleware: [
+      offset(6),
+      arrow({
+        element: arrowRef,
+      }),
+    ],
+  });
+
+  const hover = useHover(context);
+  const { isMounted, styles } = useTransitionStyles(context, {
+    initial: {
+      opacity: 0,
+      transform: 'scale(0.8)',
+    },
+    duration: {
+      open: 200,
+      close: 200,
+    },
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+  ]);
 
   return (
-    <React.Fragment>
-      {React.cloneElement(children as any, trigger)}
+    <>
+      {React.cloneElement(children, {
+        ref: refs.setReference,
+        ...getReferenceProps(),
+      })}
 
-      {isVisible && (
-        // The Triangle. We position it relative to the trigger, not the popup
-        // so that collisions don't have a triangle pointing off to nowhere.
-        // Using a Portal may seem a little extreme, but we can keep the
-        // positioning logic simpler here instead of needing to consider
-        // the popup's position relative to the trigger and collisions
-        <Portal>
+      {(isMounted) && (
+        <FloatingPortal>
           <div
-            data-reach-tooltip-arrow='true'
+            ref={refs.setFloating}
             style={{
-              left:
-                triggerRect && triggerRect.left - 10 + triggerRect.width / 2 as any,
-              top: triggerRect && triggerRect.bottom + window.scrollY as any,
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+              ...styles,
             }}
-          />
-        </Portal>
+            className='pointer-events-none z-[100] whitespace-nowrap rounded bg-gray-800 px-2.5 py-1.5 text-xs font-medium text-gray-100 shadow dark:bg-gray-100 dark:text-gray-900'
+            {...getFloatingProps()}
+          >
+            {text}
+
+            <FloatingArrow ref={arrowRef} context={context} className='fill-gray-800 dark:fill-gray-100' />
+          </div>
+        </FloatingPortal>
       )}
-      <TooltipPopup
-        {...tooltip}
-        label={text}
-        aria-label={text}
-        position={centered}
-      />
-    </React.Fragment>
+    </>
   );
 };
 

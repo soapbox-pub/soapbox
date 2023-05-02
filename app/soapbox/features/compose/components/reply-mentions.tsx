@@ -6,11 +6,12 @@ import { openModal } from 'soapbox/actions/modals';
 import { useAppSelector, useCompose, useFeatures } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
+import { isPubkey } from 'soapbox/utils/nostr';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IReplyMentions {
-  composeId: string,
+  composeId: string
 }
 
 const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
@@ -52,9 +53,14 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     );
   }
 
-  const accounts = to.slice(0, 2).map((acct: string) => (
-    <span className='reply-mentions__account'>@{acct.split('@')[0]}</span>
-  )).toArray();
+  const accounts = to.slice(0, 2).map((acct: string) => {
+    const username = acct.split('@')[0];
+    return (
+      <span className='reply-mentions__account'>
+        @{isPubkey(username) ? username.slice(0, 8) : username}
+      </span>
+    );
+  }).toArray();
 
   if (to.size > 2) {
     accounts.push(

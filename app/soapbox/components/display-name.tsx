@@ -5,8 +5,6 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { getAcct } from '../utils/accounts';
 
-import Icon from './icon';
-import RelativeTimestamp from './relative-timestamp';
 import { HStack, Text } from './ui';
 import VerificationBadge from './verification-badge';
 
@@ -15,20 +13,12 @@ import type { Account } from 'soapbox/types/entities';
 interface IDisplayName {
   account: Account
   withSuffix?: boolean
-  withDate?: boolean
   children?: React.ReactNode
 }
 
-const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = true, withDate = false }) => {
+const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = true }) => {
   const { displayFqn = false } = useSoapboxConfig();
-  const { created_at: createdAt, verified } = account;
-
-  const joinedAt = createdAt ? (
-    <div className='account__joined-at'>
-      <Icon src={require('@tabler/icons/clock.svg')} />
-      <RelativeTimestamp timestamp={createdAt} />
-    </div>
-  ) : null;
+  const { verified } = account;
 
   const displayName = (
     <HStack space={1} alignItems='center' grow>
@@ -40,7 +30,6 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = t
       />
 
       {verified && <VerificationBadge />}
-      {withDate && joinedAt}
     </HStack>
   );
 

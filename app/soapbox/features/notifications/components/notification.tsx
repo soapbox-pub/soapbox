@@ -30,7 +30,7 @@ const notificationForScreenReader = (intl: IntlShape, message: string, timestamp
 const buildLink = (account: AccountEntity): JSX.Element => (
   <bdi>
     <Link
-      className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
+      className='font-bold text-gray-800 hover:underline dark:text-gray-200'
       title={account.acct}
       to={`/@${account.acct}`}
       dangerouslySetInnerHTML={{ __html: account.display_name_html }}
@@ -43,7 +43,9 @@ const icons: Record<NotificationType, string> = {
   follow_request: require('@tabler/icons/user-plus.svg'),
   mention: require('@tabler/icons/at.svg'),
   favourite: require('@tabler/icons/heart.svg'),
+  group_favourite: require('@tabler/icons/heart.svg'),
   reblog: require('@tabler/icons/repeat.svg'),
+  group_reblog: require('@tabler/icons/repeat.svg'),
   status: require('@tabler/icons/bell-ringing.svg'),
   poll: require('@tabler/icons/chart-bar.svg'),
   move: require('@tabler/icons/briefcase.svg'),
@@ -78,9 +80,17 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
     id: 'notification.favourite',
     defaultMessage: '{name} liked your post',
   },
+  group_favourite: {
+    id: 'notification.group_favourite',
+    defaultMessage: '{name} liked your group post',
+  },
   reblog: {
     id: 'notification.reblog',
     defaultMessage: '{name} reposted your post',
+  },
+  group_reblog: {
+    id: 'notification.group_reblog',
+    defaultMessage: '{name} reposted your group post',
   },
   status: {
     id: 'notification.status',
@@ -138,7 +148,7 @@ const buildMessage = (
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
         id='notification.others'
-        defaultMessage=' + {count} {count, plural, one {other} other {others}}'
+        defaultMessage=' + {count, plural, one {# other} other {# others}}'
         values={{ count: totalCount - 1 }}
       />
     ) : '',
@@ -154,13 +164,13 @@ const buildMessage = (
 const avatarSize = 48;
 
 interface INotificaton {
-  hidden?: boolean,
-  notification: NotificationEntity,
-  onMoveUp?: (notificationId: string) => void,
-  onMoveDown?: (notificationId: string) => void,
-  onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void,
-  getScrollPosition?: () => ScrollPosition | undefined,
-  updateScrollBottom?: (bottom: number) => void,
+  hidden?: boolean
+  notification: NotificationEntity
+  onMoveUp?: (notificationId: string) => void
+  onMoveDown?: (notificationId: string) => void
+  onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void
+  getScrollPosition?: () => ScrollPosition | undefined
+  updateScrollBottom?: (bottom: number) => void
 }
 
 const Notification: React.FC<INotificaton> = (props) => {
@@ -269,14 +279,15 @@ const Notification: React.FC<INotificaton> = (props) => {
       return (
         <Emoji
           emoji={notification.emoji}
-          className='w-4 h-4 flex-none'
+          src={notification.emoji_url || undefined}
+          className='h-4 w-4 flex-none'
         />
       );
     } else if (validType(type)) {
       return (
         <Icon
           src={icons[type]}
-          className='text-primary-600 dark:text-primary-400 flex-none'
+          className='flex-none text-primary-600 dark:text-primary-400'
         />
       );
     } else {
@@ -313,8 +324,10 @@ const Notification: React.FC<INotificaton> = (props) => {
           />
         ) : null;
       case 'favourite':
+      case 'group_favourite':
       case 'mention':
       case 'reblog':
+      case 'group_reblog':
       case 'status':
       case 'poll':
       case 'update':
@@ -325,11 +338,12 @@ const Notification: React.FC<INotificaton> = (props) => {
         return status && typeof status === 'object' ? (
           <StatusContainer
             id={status.id}
-            withDismiss
             hidden={hidden}
             onMoveDown={handleMoveDown}
             onMoveUp={handleMoveUp}
             avatarSize={avatarSize}
+            contextType='notifications'
+            showGroup={false}
           />
         ) : null;
       default:
@@ -359,7 +373,7 @@ const Notification: React.FC<INotificaton> = (props) => {
         tabIndex={0}
         aria-label={ariaLabel}
       >
-        <div className='p-4 focusable'>
+        <div className='focusable p-4'>
           <div className='mb-2'>
             <HStack alignItems='center' space={3}>
               <div

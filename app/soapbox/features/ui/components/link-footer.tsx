@@ -1,25 +1,25 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
 import { Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'soapbox/hooks';
 import sourceCode from 'soapbox/utils/code';
 
 interface IFooterLink {
-  to: string,
-  className?: string,
-  onClick?: React.EventHandler<React.MouseEvent>,
-  children: React.ReactNode,
+  to: string
+  className?: string
+  onClick?: React.EventHandler<React.MouseEvent>
+  children: React.ReactNode
 }
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
   return (
     <div>
-      <Link className={classNames('text-gray-700 dark:text-gray-600 hover:text-gray-800 dark:hover:text-gray-500 hover:underline', className)} {...rest}>{children}</Link>
+      <Link className={clsx('text-gray-700 hover:text-gray-800 hover:underline dark:text-gray-600 dark:hover:text-gray-500', className)} {...rest}>{children}</Link>
     </div>
   );
 };
@@ -38,14 +38,14 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
   return (
     <div className='space-y-2'>
-      <div className='flex flex-wrap items-center divide-x-dot text-gray-600'>
+      <div className='divide-x-dot flex flex-wrap items-center text-gray-600'>
         {account && <>
           {features.profileDirectory && (
             <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>
           )}
           <FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink>
           <FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink>
-          {features.filters && (
+          {(features.filters || features.filtersV2) && (
             <FooterLink to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></FooterLink>
           )}
           {features.federating && (

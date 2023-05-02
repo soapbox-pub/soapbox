@@ -21,9 +21,9 @@ const PlaceholderAvatar: React.FC<IPlaceholderAvatar> = ({ size, withText = fals
   }, [size]);
 
   return (
-    <Stack space={2} className='animate-pulse text-center py-3'>
+    <Stack space={2} className='animate-pulse py-3 text-center'>
       <div
-        className='block mx-auto rounded-full bg-primary-50 dark:bg-primary-800'
+        className='mx-auto block rounded-full bg-primary-50 dark:bg-primary-800'
         style={style}
       />
 

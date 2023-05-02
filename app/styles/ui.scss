@@ -3,16 +3,11 @@
   display: inline-flex;
   align-items: center;
   padding: 0;
-  color: var(--primary-text-color);
   border: 0;
   background: transparent;
   cursor: pointer;
   transition: 100ms ease-in;
   opacity: 0.4;
-
-  i.fa {
-    margin: 0;
-  }
 
   &__text {
     padding-left: 2px;
@@ -28,11 +23,6 @@
   &.disabled {
     opacity: 0.2;
     cursor: default;
-  }
-
-  &.active {
-    color: var(--highlight-text-color);
-    opacity: 1;
   }
 
   &::-moz-focus-inner {
@@ -68,7 +58,7 @@
   z-index: 9999 !important;
 }
 
-.ellipsis::after { content: "…"; }
+.ellipsis::after { content: '…'; }
 
 .image-loader {
   position: relative;
@@ -80,8 +70,7 @@
   flex-direction: column;
 
   .image-loader__preview-canvas {
-    max-width: $media-modal-media-max-width;
-    max-height: $media-modal-media-max-height;
+    @apply max-w-full max-h-[80%];
     background: url('../assets/images/void.png') repeat;
     object-fit: contain;
   }
@@ -95,15 +84,12 @@
   @apply relative w-full h-full flex items-center justify-center;
 
   img {
-    @apply w-auto h-auto object-contain shadow-2xl;
-    max-width: $media-modal-media-max-width;
-    max-height: $media-modal-media-max-height;
+    @apply w-auto h-auto max-w-full max-h-[80%] object-contain shadow-2xl;
   }
 }
 
 .react-swipeable-view-container {
-  &,
-  .column {
+  & {
     height: 100%;
   }
 }
@@ -134,37 +120,13 @@
 }
 
 .setting-text {
-  color: var(--primary-text-color--faint);
-  background: transparent;
-  border: 0;
-  border-bottom: 2px solid var(--brand-color);
-  box-sizing: border-box;
-  display: block;
+  @apply block w-full mb-2.5 border-0 border-b-2 border-solid box-border text-gray-400 bg-transparent;
   font-family: inherit;
-  margin-bottom: 10px;
   padding: 7px 0;
-  width: 100%;
-
-  &:focus,
-  &:active {
-    color: var(--primary-text-color);
-    border-bottom-color: var(--highlight-text-color);
-  }
 
   @media screen and (max-width: 600px) {
     font-size: 16px;
   }
-}
-
-.text-btn {
-  display: inline-block;
-  padding: 0;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -175,12 +137,4 @@
   0% { opacity: 1; }
   30% { opacity: 0.75; }
   100% { opacity: 1; }
-}
-
-.text-muted {
-  color: var(--gray-500);
-}
-
-.mb-10 {
-  margin-bottom: 10px;
 }

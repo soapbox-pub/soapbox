@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -12,9 +12,9 @@ const messages = defineMessages({
 
 interface IAccountSearch {
   /** Callback when a searched account is chosen. */
-  onSelected: (accountId: string) => void,
+  onSelected: (accountId: string) => void
   /** Override the default placeholder of the input. */
-  placeholder?: string,
+  placeholder?: string
 }
 
 /** Input to search for accounts. */
@@ -72,17 +72,17 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
         <div
           role='button'
           tabIndex={0}
-          className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
+          className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3'
           onClick={handleClear}
         >
           <SvgIcon
             src={require('@tabler/icons/search.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+            className={clsx('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
           />
 
           <SvgIcon
             src={require('@tabler/icons/x.svg')}
-            className={classNames('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+            className={clsx('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />
         </div>

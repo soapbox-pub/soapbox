@@ -1,6 +1,6 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
@@ -17,10 +17,16 @@ const messages = defineMessages({
   all: { id: 'reactions.all', defaultMessage: 'All' },
 });
 
+interface IAccountWithReaction {
+  id: string
+  reaction: string
+  reactionUrl?: string
+}
+
 interface IReactionsModal {
-  onClose: (string: string) => void,
-  statusId: string,
-  reaction?: string,
+  onClose: (string: string) => void
+  statusId: string
+  reaction?: string
 }
 
 const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction: initialReaction }) => {
@@ -54,7 +60,7 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     reactions!.forEach(reaction => items.push(
       {
         text: <div className='flex items-center gap-1'>
-          <Emoji className='w-4 h-4' emoji={reaction.name} />
+          <Emoji className='h-4 w-4' emoji={reaction.name} src={reaction.url || undefined} />
           {reaction.count}
         </div>,
         action: () => setReaction(reaction.name),
@@ -65,17 +71,25 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     return <Tabs items={items} activeItem={reaction || 'all'} />;
   };
 
+  const accounts = useMemo((): ImmutableList<IAccountWithReaction> | undefined  => {
+    if (!reactions) return;
+
+    if (reaction) {
+      const reactionRecord = reactions.find(({ name }) => name === reaction);
+
+      if (reactionRecord) return reactionRecord.accounts.map(account => ({ id: account, reaction: reaction, reactionUrl: reactionRecord.url || undefined })).toList();
+    } else {
+      return reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: name, reactionUrl: url }))).flatten() as ImmutableList<IAccountWithReaction>;
+    }
+  }, [reactions, reaction]);
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  const accounts = reactions && (reaction
-    ? reactions.find(({ name }) => name === reaction)?.accounts.map(account => ({ id: account, reaction: reaction }))
-    : reactions.map(({ accounts, name }) => accounts.map(account => ({ id: account, reaction: name }))).flatten()) as ImmutableList<{ id: string, reaction: string }>;
-
   let body;
 
-  if (!accounts) {
+  if (!accounts || !reactions) {
     body = <Spinner />;
   } else {
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
@@ -85,13 +99,13 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
-        className={classNames('max-w-full', {
+        className={clsx('max-w-full', {
           'mt-4': reactions.size > 0,
         })}
         itemClassName='pb-3'
       >
         {accounts.map((account) =>
-          <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} emoji={account.reaction} />,
+          <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} emoji={account.reaction} emojiUrl={account.reactionUrl} />,
         )}
       </ScrollableList>
     </>);

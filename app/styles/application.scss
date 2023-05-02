@@ -1,25 +1,18 @@
-@import 'mixins';
-@import 'themes';
 @import 'variables';
 @import 'fonts';
 @import 'basics';
-@import 'accounts';
 @import 'loading';
 @import 'ui';
 @import 'emoji-picker';
 @import 'rtl';
 @import 'accessibility';
 @import 'navigation';
-@import 'placeholder';
 @import 'autosuggest';
 
 // COMPONENTS
 @import 'components/buttons';
-@import 'components/inputs';
-@import 'components/dropdown-menu';
 @import 'components/modal';
 @import 'components/compose-form';
-@import 'components/emoji-reacts';
 @import 'components/status';
 @import 'components/reply-mentions';
 @import 'components/detailed-status';
@@ -28,10 +21,8 @@
 @import 'components/display-name';
 @import 'components/columns';
 @import 'components/search';
-@import 'components/react-toggle';
 @import 'components/video-player';
 @import 'components/audio-player';
-@import 'components/filters';
 @import 'components/crypto-donate';
 @import 'components/aliases';
 @import 'components/icon';

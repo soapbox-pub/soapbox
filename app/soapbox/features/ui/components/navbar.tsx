@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useAppDispatch, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 
 import ProfileDropdown from './profile-dropdown';
 
@@ -17,7 +17,8 @@ import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   login: { id: 'navbar.login.action', defaultMessage: 'Log in' },
-  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'Email or username' },
+  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'E-mail or username' },
+  email: { id: 'navbar.login.email.placeholder', defaultMessage: 'E-mail address' },
   password: { id: 'navbar.login.password.label', defaultMessage: 'Password' },
   forgotPassword: { id: 'navbar.login.forgot_password', defaultMessage: 'Forgot password?' },
 });
@@ -25,6 +26,7 @@ const messages = defineMessages({
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
   const { isOpen } = useRegistrationStatus();
   const account = useOwnAccount();
   const node = useRef(null);
@@ -63,11 +65,11 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='bg-white dark:bg-primary-900 shadow z-50 sticky top-0' ref={node} data-testid='navbar'>
-      <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
-        <div className='relative flex justify-between h-12 lg:h-16'>
+    <nav className='sticky top-0 z-50 bg-white shadow dark:bg-primary-900' ref={node} data-testid='navbar'>
+      <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+        <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:right-0 rtl:left-auto'>
+            <div className='absolute inset-y-0 left-0 flex items-center rtl:left-auto rtl:right-0 lg:hidden'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
@@ -77,19 +79,19 @@ const Navbar = () => {
           <HStack
             space={4}
             alignItems='center'
-            className={classNames('flex-1 enter lg:items-stretch', {
+            className={clsx('enter flex-1 lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
           >
-            <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
+            <Link key='logo' to='/' data-preview-title-id='column.home' className='ml-4 flex shrink-0 items-center'>
               <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
               <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
             </Link>
 
             {account && (
-              <div className='flex-1 hidden lg:flex justify-center px-2 lg:ml-6 lg:justify-start items-center'>
-                <div className='max-w-xl w-full lg:max-w-xs hidden lg:block'>
+              <div className='hidden flex-1 items-center justify-center px-2 lg:ml-6 lg:flex lg:justify-start'>
+                <div className='hidden w-full max-w-xl lg:block lg:max-w-xs'>
                   <Search openInRoute autosuggest />
                 </div>
               </div>
@@ -98,20 +100,20 @@ const Navbar = () => {
 
           <HStack space={3} alignItems='center' className='absolute inset-y-0 right-0 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0'>
             {account ? (
-              <div className='hidden relative lg:flex items-center'>
+              <div className='relative hidden items-center lg:flex'>
                 <ProfileDropdown account={account}>
                   <Avatar src={account.avatar} size={34} />
                 </ProfileDropdown>
               </div>
             ) : (
               <>
-                <Form className='hidden lg:flex space-x-2 rtl:space-x-reverse items-center' onSubmit={handleSubmit}>
+                <Form className='hidden items-center space-x-2 rtl:space-x-reverse lg:flex' onSubmit={handleSubmit}>
                   <Input
                     required
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                     type='text'
-                    placeholder={intl.formatMessage(messages.username)}
+                    placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
                     className='max-w-[200px]'
                   />
 
@@ -128,8 +130,8 @@ const Navbar = () => {
                     <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                       <IconButton
                         src={require('@tabler/icons/help.svg')}
-                        className='bg-transparent text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'
-                        iconClassName='w-5 h-5'
+                        className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
+                        iconClassName='h-5 w-5'
                       />
                     </Tooltip>
                   </Link>

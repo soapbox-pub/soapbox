@@ -15,9 +15,9 @@ const messages = defineMessages({
 });
 
 interface IBirthdayInput {
-  value?: string,
-  onChange: (value: string) => void,
-  required?: boolean,
+  value?: string
+  onChange: (value: string) => void
+  required?: boolean
 }
 
 const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) => {
@@ -56,15 +56,15 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
     nextYearButtonDisabled,
     date,
   }: {
-    decreaseMonth(): void,
-    increaseMonth(): void,
-    prevMonthButtonDisabled: boolean,
-    nextMonthButtonDisabled: boolean,
-    decreaseYear(): void,
-    increaseYear(): void,
-    prevYearButtonDisabled: boolean,
-    nextYearButtonDisabled: boolean,
-    date: Date,
+    decreaseMonth(): void
+    increaseMonth(): void
+    prevMonthButtonDisabled: boolean
+    nextMonthButtonDisabled: boolean
+    decreaseYear(): void
+    increaseYear(): void
+    prevYearButtonDisabled: boolean
+    nextYearButtonDisabled: boolean
+    date: Date
   }) => {
     return (
       <div className='flex flex-col gap-2'>
@@ -113,7 +113,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
   const handleChange = (date: Date) => onChange(date ? new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10) : '');
 
   return (
-    <div className='mt-1 relative rounded-md shadow-sm'>
+    <div className='relative mt-1 rounded-md shadow-sm'>
       <BundleContainer fetchComponent={DatePicker}>
         {Component => (<Component
           selected={selected}

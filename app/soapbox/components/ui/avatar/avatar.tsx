@@ -1,34 +1,54 @@
-import classNames from 'clsx';
-import React from 'react';
+import clsx from 'clsx';
+import React, { useState } from 'react';
 
-import StillImage from 'soapbox/components/still-image';
+import StillImage, { IStillImage } from 'soapbox/components/still-image';
+
+import Icon from '../icon/icon';
 
 const AVATAR_SIZE = 42;
 
-interface IAvatar {
-  /** URL to the avatar image. */
-  src: string,
+interface IAvatar extends Pick<IStillImage, 'src' | 'onError' | 'className'> {
   /** Width and height of the avatar in pixels. */
-  size?: number,
-  /** Extra class names for the div surrounding the avatar image. */
-  className?: string,
+  size?: number
 }
 
 /** Round profile avatar for accounts. */
 const Avatar = (props: IAvatar) => {
   const { src, size = AVATAR_SIZE, className } = props;
 
+  const [isAvatarMissing, setIsAvatarMissing] = useState<boolean>(false);
+
+  const handleLoadFailure = () => setIsAvatarMissing(true);
+
   const style: React.CSSProperties = React.useMemo(() => ({
     width: size,
     height: size,
   }), [size]);
 
+  if (isAvatarMissing) {
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+        }}
+        className={clsx('flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900', className)}
+      >
+        <Icon
+          src={require('@tabler/icons/photo-off.svg')}
+          className='h-4 w-4 text-gray-500 dark:text-gray-700'
+        />
+      </div>
+    );
+  }
+
   return (
     <StillImage
-      className={classNames('rounded-full', className)}
+      className={clsx('rounded-full', className)}
       style={style}
       src={src}
       alt='Avatar'
+      onError={handleLoadFailure}
     />
   );
 };

@@ -3,10 +3,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Avatar, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
@@ -23,8 +23,8 @@ const messages = defineMessages({
 });
 
 interface IChatListItemInterface {
-  chat: IChat,
-  onClick: (chat: any) => void,
+  chat: IChat
+  onClick: (chat: any) => void
 }
 
 const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
@@ -68,7 +68,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
       role='button'
       key={chat.id}
       onClick={() => onClick(chat)}
-      className='group px-2 py-3 w-full flex flex-col rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:shadow-inset-ring'
+      className='group flex w-full flex-col rounded-lg px-2 py-3 hover:bg-gray-100 focus:shadow-inset-ring dark:hover:bg-gray-800'
       data-testid='chat-list-item'
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>
@@ -76,7 +76,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
           <Avatar src={chat.account?.avatar} size={40} className='flex-none' />
 
           <Stack alignItems='start' className='overflow-hidden'>
-            <div className='flex items-center space-x-1 flex-grow w-full'>
+            <div className='flex w-full grow items-center space-x-1'>
               <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
               {chat.account?.verified && <VerificationBadge />}
             </div>
@@ -88,7 +88,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                 weight='medium'
                 theme='muted'
                 truncate
-                className='w-full h-5 pointer-events-none italic'
+                className='pointer-events-none h-5 w-full italic'
                 data-testid='chat-last-message'
               >
                 {intl.formatMessage(isBlocked ? messages.blockedYou : messages.blocking)}
@@ -102,7 +102,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                     weight='medium'
                     theme={chat.last_message.unread ? 'default' : 'muted'}
                     truncate
-                    className='w-full h-5 truncate-child pointer-events-none'
+                    className='truncate-child pointer-events-none h-5 w-full'
                     data-testid='chat-last-message'
                     dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
                   />
@@ -114,15 +114,15 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
 
         <HStack alignItems='center' space={2}>
           {features.chatsDelete && (
-            <div className='text-gray-600 hidden group-hover:block hover:text-gray-100'>
-              <DropdownMenuContainer items={menu}>
+            <div className='hidden text-gray-600 hover:text-gray-100 group-hover:block'>
+              <DropdownMenu items={menu}>
                 <IconButton
                   src={require('@tabler/icons/dots.svg')}
                   title='Settings'
-                  className='text-gray-600 dark:text-gray-600 hover:text-gray-700 dark:hover:text-gray-500'
-                  iconClassName='w-4 h-4'
+                  className='text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
+                  iconClassName='h-4 w-4'
                 />
-              </DropdownMenuContainer>
+              </DropdownMenu>
             </div>
           )}
 
@@ -130,7 +130,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
             <>
               {chat.last_message.unread && (
                 <div
-                  className='w-2 h-2 rounded-full bg-secondary-500'
+                  className='h-2 w-2 rounded-full bg-secondary-500'
                   data-testid='chat-unread-indicator'
                 />
               )}

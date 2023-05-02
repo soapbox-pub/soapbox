@@ -42,7 +42,7 @@ const messages = defineMessages({
 });
 
 interface IVerifySmsModal {
-  onClose: (type: string) => void,
+  onClose: (type: string) => void
 }
 
 enum Statuses {

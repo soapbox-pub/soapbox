@@ -16,7 +16,7 @@ import type { Account } from 'soapbox/types/entities';
 const getAccount = makeGetAccount();
 
 interface IProfileFamiliarFollowers {
-  account: Account,
+  account: Account
 }
 
 const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account }) => {
@@ -54,10 +54,10 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
 
   if (familiarFollowerIds.size > 2) {
     accounts.push(
-      <span className='hover:underline cursor-pointer' role='presentation' onClick={openFamiliarFollowersModal}>
+      <span className='cursor-pointer hover:underline' role='presentation' onClick={openFamiliarFollowersModal}>
         <FormattedMessage
           id='account.familiar_followers.more'
-          defaultMessage='{count} {count, plural, one {other} other {others}} you follow'
+          defaultMessage='{count, plural, one {# other} other {# others}} you follow'
           values={{ count: familiarFollowerIds.size - familiarFollowers.size }}
         />
       </span>,

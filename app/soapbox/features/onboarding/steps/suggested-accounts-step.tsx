@@ -24,7 +24,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     }
 
     return (
-      <div className='sm:pt-4 sm:pb-10 flex flex-col'>
+      <div className='flex flex-col sm:pb-10 sm:pt-4'>
         <ScrollableList
           isLoading={isFetching}
           scrollKey='suggestions'
@@ -49,7 +49,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
   const renderEmpty = () => {
     return (
-      <div className='bg-primary-50 dark:bg-gray-800 my-2 rounded-lg text-center p-8'>
+      <div className='my-2 rounded-lg bg-primary-50 p-8 text-center dark:bg-gray-800'>
         <Text>
           <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />
         </Text>
@@ -69,7 +69,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
+          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />
@@ -83,7 +83,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
           {renderBody()}
 
-          <div className='sm:w-2/3 md:w-1/2 mx-auto'>
+          <div className='mx-auto sm:w-2/3 md:w-1/2'>
             <Stack>
               <Stack justifyContent='center' space={2}>
                 <Button

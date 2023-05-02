@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
@@ -10,7 +10,7 @@ const messages = defineMessages({
 });
 
 interface IVerificationBadge {
-  className?: string,
+  className?: string
 }
 
 const VerificationBadge: React.FC<IVerificationBadge> = ({ className }) => {
@@ -25,7 +25,7 @@ const VerificationBadge: React.FC<IVerificationBadge> = ({ className }) => {
 
   return (
     <span className='verified-icon' data-testid='verified-badge'>
-      <Element className={classNames('w-4 text-accent-500', className)} src={icon} alt={intl.formatMessage(messages.verified)} />
+      <Element className={clsx('w-4 text-accent-500', className)} src={icon} alt={intl.formatMessage(messages.verified)} />
     </span>
   );
 };

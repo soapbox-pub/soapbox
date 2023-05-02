@@ -1,11 +1,10 @@
 import { OrderedSet } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import Toggle from 'react-toggle';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
-import { Button, FormGroup, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Button, FormGroup, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
@@ -60,7 +59,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
           <FormGroup labelText={intl.formatMessage(messages.addAdditionalStatuses)}>
             {showAdditionalStatuses ? (
               <Stack space={2}>
-                <div className='divide-y divide-gray-200 dark:divide-gray-800 divide-solid'>
+                <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
                   {statusIds.map((statusId) => <StatusCheckBox id={statusId} key={statusId} />)}
                 </div>
 
@@ -101,7 +100,6 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
             <Toggle
               checked={isBlocked}
               onChange={handleBlockChange}
-              icons={false}
               id='report-block'
             />
 
@@ -119,7 +117,6 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
               <Toggle
                 checked={isForward}
                 onChange={handleForwardChange}
-                icons={false}
                 id='report-forward'
                 disabled={isSubmitting}
               />

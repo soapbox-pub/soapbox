@@ -15,9 +15,9 @@ const messages = defineMessages({
 });
 
 interface IDashWidget {
-  to?: string,
-  onClick?: React.MouseEventHandler<HTMLButtonElement>,
-  children: React.ReactNode,
+  to?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  children: React.ReactNode
 }
 
 const DashWidget: React.FC<IDashWidget> = ({ to, onClick, children }) => {
@@ -55,7 +55,7 @@ const Developers: React.FC = () => {
   return (
     <>
       <Column label={intl.formatMessage(messages.heading)}>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
+        <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3'>
           <DashWidget to='/developers/apps/create'>
             <SvgIcon src={require('@tabler/icons/apps.svg')} className='text-gray-700 dark:text-gray-600' />
 

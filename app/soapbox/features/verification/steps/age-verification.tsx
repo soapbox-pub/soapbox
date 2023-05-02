@@ -48,20 +48,20 @@ const AgeVerification = () => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'>
           <FormattedMessage id='age_verification.header' defaultMessage='Enter your birth date' />
         </h1>
       </div>
 
-      <div className='sm:pt-10 md:w-2/3 mx-auto'>
+      <div className='mx-auto sm:pt-10 md:w-2/3'>
         <Form onSubmit={handleSubmit}>
           <Datepicker onChange={onChange} />
 
           <Text theme='muted' size='sm'>
             <FormattedMessage
               id='age_verification.body'
-              defaultMessage='{siteTitle} requires users to be at least {ageMinimum} years old to access its platform. Anyone under the age of {ageMinimum} years old cannot access this platform.'
+              defaultMessage='{siteTitle} requires users to be at least {ageMinimum, plural, one {# year} other {# years}} years old to access its platform. Anyone under the age of {ageMinimum, plural, one {# year} other {# years}} old cannot access this platform.'
               values={{
                 siteTitle: instance.title,
                 ageMinimum,

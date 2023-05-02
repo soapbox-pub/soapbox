@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -29,7 +29,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
     <button
       key={account.id}
       type='button'
-      className='px-2 py-3 w-full rounded-lg flex flex-col hover:bg-gray-100 dark:hover:bg-gray-800'
+      className='flex w-full flex-col rounded-lg px-2 py-3 hover:bg-gray-100 dark:hover:bg-gray-800'
       onClick={() => onSelect(account.id)}
       data-testid='account'
     >
@@ -37,7 +37,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
         <Avatar src={account.avatar} size={40} />
 
         <Stack alignItems='start'>
-          <div className='flex items-center space-x-1 flex-grow'>
+          <div className='flex grow items-center space-x-1'>
             <Text weight='bold' size='sm' truncate>{account.display_name}</Text>
             {account.verified && <VerificationBadge />}
           </div>
@@ -48,7 +48,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
   ), []);
 
   return (
-    <div className='relative flex-grow'>
+    <div className='relative grow'>
       <Virtuoso
         data={accounts}
         itemContent={(index, chat) => (
@@ -63,13 +63,13 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
 
       <>
         <div
-          className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white to-transparent pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+          className={clsx('pointer-events-none absolute inset-x-0 top-0 flex justify-center rounded-t-lg bg-gradient-to-b from-white to-transparent pb-12 pt-8 transition-opacity duration-500 dark:from-gray-900', {
             'opacity-0': isNearTop,
             'opacity-100': !isNearTop,
           })}
         />
         <div
-          className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white to-transparent pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+          className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white to-transparent pb-8 pt-12 transition-opacity duration-500 dark:from-gray-900', {
             'opacity-0': isNearBottom,
             'opacity-100': !isNearBottom,
           })}

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 
@@ -15,10 +15,10 @@ const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
 }, 600);
 
 interface IHoverRefWrapper {
-  accountId: string,
-  inline?: boolean,
-  className?: string,
-  children: React.ReactNode,
+  accountId: string
+  inline?: boolean
+  className?: string
+  children: React.ReactNode
 }
 
 /** Makes a profile hover card appear when the wrapped element is hovered. */
@@ -47,7 +47,7 @@ export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, childre
   return (
     <Elem
       ref={ref}
-      className={classNames('hover-ref-wrapper', className)}
+      className={clsx('hover-ref-wrapper', className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

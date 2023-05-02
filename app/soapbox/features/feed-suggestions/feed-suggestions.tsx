@@ -19,15 +19,15 @@ const SuggestionItem = ({ accountId }: { accountId: string }) => {
   const account = useAccount(accountId) as Account;
 
   return (
-    <Stack space={3} className='p-4 md:p-0 rounded-md border border-solid border-gray-300 dark:border-gray-800 dark:md:border-transparent md:border-transparent w-52 shrink-0 md:shrink md:w-full'>
+    <Stack space={3} className='w-52 shrink-0 rounded-md border border-solid border-gray-300 p-4 dark:border-gray-800 md:w-full md:shrink md:border-transparent md:p-0 dark:md:border-transparent'>
       <Link
         to={`/@${account.acct}`}
         title={account.acct}
       >
-        <Stack space={3} className='w-40 md:w-24 mx-auto'>
+        <Stack space={3} className='mx-auto w-40 md:w-24'>
           <img
             src={account.avatar}
-            className='mx-auto block w-16 h-16 min-w-[56px] rounded-full object-cover'
+            className='mx-auto block h-16 w-16 min-w-[56px] rounded-full object-cover'
             alt={account.acct}
           />
 
@@ -71,14 +71,14 @@ const FeedSuggestions = () => {
 
         <Link
           to='/suggestions'
-          className='text-primary-600 dark:text-accent-blue hover:underline'
+          className='text-primary-600 hover:underline dark:text-accent-blue'
         >
           {intl.formatMessage(messages.viewAll)}
         </Link>
       </HStack>
 
       <CardBody>
-        <HStack space={4} alignItems='center' className='overflow-x-auto lg:overflow-x-hidden md:space-x-0'>
+        <HStack space={4} alignItems='center' className='overflow-x-auto md:space-x-0 lg:overflow-x-hidden'>
           {suggestedProfiles.slice(0, 4).map((suggestedProfile) => (
             <SuggestionItem key={suggestedProfile.account} accountId={suggestedProfile.account} />
           ))}

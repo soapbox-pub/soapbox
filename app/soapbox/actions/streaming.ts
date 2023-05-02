@@ -1,8 +1,8 @@
-import { getSettings } from 'soapbox/actions/settings';
+import { getLocale, getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { getUnreadChatsCount, updateChatListItem } from 'soapbox/utils/chats';
+import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats';
 import { removePageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -33,13 +33,6 @@ import type { APIEntity, Chat } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
-
-const validLocale = (locale: string) => Object.keys(messages).includes(locale);
-
-const getLocale = (state: RootState) => {
-  const locale = getSettings(state).get('locale') as string;
-  return validLocale(locale) ? locale : 'en';
-};
 
 const updateFollowRelationships = (relationships: APIEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -81,7 +74,7 @@ const updateChatQuery = (chat: IChat) => {
 };
 
 interface StreamOpts {
-  statContext?: IStatContext,
+  statContext?: IStatContext
 }
 
 const connectTimelineStream = (
@@ -169,6 +162,9 @@ const connectTimelineStream = (
               updateChatQuery(JSON.parse(data.payload));
             }
           });
+          break;
+        case 'chat_message.reaction': // TruthSocial
+          updateChatMessage(JSON.parse(data.payload));
           break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));

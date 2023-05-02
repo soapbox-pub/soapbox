@@ -22,7 +22,6 @@ module.exports = {
     'app/soapbox/**/*.mjs',
     'app/soapbox/**/*.ts',
     'app/soapbox/**/*.tsx',
-    '!app/soapbox/features/emoji/emoji-compressed.js',
     '!app/soapbox/service-worker/entry.ts',
     '!app/soapbox/jest/test-setup.ts',
     '!app/soapbox/jest/test-helpers.ts',
@@ -39,7 +38,7 @@ module.exports = {
   'transformIgnorePatterns': [
     // FIXME: react-sticky-box doesn't provide a CJS build, so transform it for now
     // https://github.com/codecks-io/react-sticky-box/issues/79
-    `/node_modules/(?!(react-sticky-box|blurhash|.+\\.(${ASSET_EXTS})$))`,
+    `/node_modules/(?!(react-sticky-box|blurhash|emoji-mart|.+\\.(${ASSET_EXTS})$))`,
     // Ignore node_modules, except static assets
     // `/node_modules/(?!.+\\.(${ASSET_EXTS})$)`,
   ],

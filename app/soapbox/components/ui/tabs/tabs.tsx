@@ -5,7 +5,7 @@ import {
   Tab as ReachTab,
   useTabsContext,
 } from '@reach/tabs';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const AnimatedContext = React.createContext(null);
 
 interface IAnimatedInterface {
   /** Callback when a tab is chosen. */
-  onChange(index: number): void,
+  onChange(index: number): void
   /** Default tab index. */
   defaultIndex: number
   children: React.ReactNode
@@ -46,11 +46,11 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
         ref={ref}
       >
         <div
-          className='w-full h-[3px] bg-primary-200 dark:bg-primary-700 absolute'
+          className='absolute h-[3px] w-full bg-primary-200 dark:bg-gray-800'
           style={{ top }}
         />
         <div
-          className={classNames('absolute h-[3px] bg-primary-500 transition-all duration-200', {
+          className={clsx('absolute h-[3px] bg-primary-500 transition-all duration-200', {
             'hidden': top <= 0,
           })}
           style={{ left, top, width }}
@@ -63,13 +63,13 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
 
 interface IAnimatedTab {
   /** ARIA role. */
-  role: 'button',
+  role: 'button'
   /** Element to represent the tab. */
-  as: 'a' | 'button',
+  as: 'a' | 'button'
   /** Route to visit when the tab is chosen. */
-  href?: string,
+  href?: string
   /** Tab title text. */
-  title: string,
+  title: string
   /** Index value of the tab. */
   index: number
 }
@@ -104,26 +104,26 @@ const AnimatedTab: React.FC<IAnimatedTab> = ({ index, ...props }) => {
 /** Structure to represent a tab. */
 export type Item = {
   /** Tab text. */
-  text: React.ReactNode,
+  text: React.ReactNode
   /** Tab tooltip text. */
-  title?: string,
+  title?: string
   /** URL to visit when the tab is selected. */
-  href?: string,
+  href?: string
   /** Route to visit when the tab is selected. */
-  to?: string,
+  to?: string
   /** Callback when the tab is selected. */
-  action?: () => void,
+  action?: () => void
   /** Display a counter over the tab. */
-  count?: number,
+  count?: number
   /** Unique name for this tab. */
   name: string
 }
 
 interface ITabs {
   /** Array of structured tab items. */
-  items: Item[],
+  items: Item[]
   /** Name of the active tab item. */
-  activeItem: string,
+  activeItem: string
 }
 
 /** Animated tabs component. */
@@ -156,7 +156,7 @@ const Tabs = ({ items, activeItem }: ITabs) => {
       >
         <div className='relative'>
           {count ? (
-            <span className='absolute -top-2 left-full ml-1'>
+            <span className='absolute left-full ml-2'>
               <Counter count={count} />
             </span>
           ) : null}

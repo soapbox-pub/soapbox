@@ -25,7 +25,7 @@ const Statuses = {
 const EMAIL_REGEX = /^[^@\s]+@[^@\s]+$/;
 
 interface IEmailSent {
-  handleSubmit: React.FormEventHandler,
+  handleSubmit: React.FormEventHandler
 }
 
 const EmailSent: React.FC<IEmailSent> = ({ handleSubmit }) => {
@@ -44,10 +44,10 @@ const EmailSent: React.FC<IEmailSent> = ({ handleSubmit }) => {
   }, []);
 
   return (
-    <div className='sm:pt-10 mx-auto flex flex-col items-center justify-center'>
-      <Icon src={require('@tabler/icons/send.svg')} className='text-primary-600 dark:text-primary-400 h-12 w-12 mb-5' />
+    <div className='mx-auto flex flex-col items-center justify-center sm:pt-10'>
+      <Icon src={require('@tabler/icons/send.svg')} className='mb-5 h-12 w-12 text-primary-600 dark:text-primary-400' />
 
-      <div className='space-y-2 text-center mb-4'>
+      <div className='mb-4 space-y-2 text-center'>
         <Text weight='bold' size='3xl'>We sent you an email</Text>
         <Text theme='muted'>Click on the link in the email to validate your email.</Text>
       </div>
@@ -113,13 +113,13 @@ const EmailVerification = () => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'>
           <FormattedMessage id='email_verification.header' defaultMessage='Enter your email address' />
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
         <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.emailLabel)} errors={errors}>
             <Input

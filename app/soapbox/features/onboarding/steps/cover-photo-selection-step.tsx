@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -70,7 +70,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
     <Card variant='rounded' size='xl'>
       <CardBody>
         <div>
-          <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-800 border-solid -mx-4 sm:-mx-10'>
+          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
                 <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
@@ -82,24 +82,24 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
             </Stack>
           </div>
 
-          <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+          <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
             <Stack space={10}>
-              <div className='border border-solid border-gray-200 dark:border-gray-800 rounded-lg'>
+              <div className='rounded-lg border border-solid border-gray-200 dark:border-gray-800'>
                 <div
                   role='button'
-                  className='relative h-24 bg-gray-200 dark:bg-gray-800 rounded-t-md flex items-center justify-center'
+                  className='relative flex h-24 items-center justify-center rounded-t-md bg-gray-200 dark:bg-gray-800'
                 >
                   {selectedFile || account?.header && (
                     <StillImage
                       src={selectedFile || account.header}
                       alt={intl.formatMessage(messages.header)}
-                      className='absolute inset-0 object-cover rounded-t-md'
+                      className='absolute inset-0 rounded-t-md object-cover'
                     />
                   )}
 
                   {isSubmitting && (
                     <div
-                      className='absolute inset-0 rounded-t-md flex justify-center items-center bg-white/80 dark:bg-primary-900/80'
+                      className='absolute inset-0 flex items-center justify-center rounded-t-md bg-white/80 dark:bg-primary-900/80'
                     >
                       <Spinner withText={false} />
                     </div>
@@ -108,13 +108,13 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
                   <button
                     onClick={openFilePicker}
                     type='button'
-                    className={classNames({
+                    className={clsx({
                       'absolute -top-3 -right-3 p-1 bg-primary-600 rounded-full ring-2 ring-white dark:ring-primary-900 hover:bg-primary-700': true,
                       'opacity-50 pointer-events-none': isSubmitting,
                     })}
                     disabled={isSubmitting}
                   >
-                    <Icon src={require('@tabler/icons/plus.svg')} className='text-white w-5 h-5' />
+                    <Icon src={require('@tabler/icons/plus.svg')} className='h-5 w-5 text-white' />
                   </button>
 
                   <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />
@@ -122,7 +122,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
                 <div className='flex flex-col px-4 pb-4'>
                   {account && (
-                    <Avatar src={account.avatar} size={64} className='ring-2 dark:ring-primary-800 ring-white -mt-8 mb-2' />
+                    <Avatar src={account.avatar} size={64} className='-mt-8 mb-2 ring-2 ring-white dark:ring-primary-800' />
                   )}
 
                   <Text weight='bold' size='sm'>{account?.display_name}</Text>

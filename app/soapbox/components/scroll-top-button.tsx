@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
@@ -9,15 +9,15 @@ import { useSettings } from 'soapbox/hooks';
 
 interface IScrollTopButton {
   /** Callback when clicked, and also when scrolled to the top. */
-  onClick: () => void,
+  onClick: () => void
   /** Number of unread items. */
-  count: number,
+  count: number
   /** Message to display in the button (should contain a `{count}` value). */
-  message: MessageDescriptor,
+  message: MessageDescriptor
   /** Distance from the top of the screen (scrolling down) before the button appears. */
-  threshold?: number,
+  threshold?: number
   /** Distance from the top of the screen (scrolling up) before the action is triggered. */
-  autoloadThreshold?: number,
+  autoloadThreshold?: number
 }
 
 /** Floating new post counter above timelines, clicked to scroll to top. */
@@ -36,7 +36,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   const visible = count > 0 && scrolled;
 
-  const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
+  const classes = clsx('fixed left-1/2 top-20 z-50 -translate-x-1/2', {
     'hidden': !visible,
   });
 
@@ -83,7 +83,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   return (
     <div className={classes}>
-      <a className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer whitespace-nowrap' onClick={handleClick}>
+      <a className='flex cursor-pointer items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-600 px-4 py-2 text-white transition-transform hover:scale-105 hover:bg-primary-700 active:scale-100' onClick={handleClick}>
         <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
 
         {(count > 0) && (

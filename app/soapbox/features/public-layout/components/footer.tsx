@@ -21,7 +21,7 @@ const Footer = () => {
   });
 
   return (
-    <footer className='relative max-w-7xl mt-auto mx-auto py-12 px-4 sm:px-6 xl:flex xl:items-center xl:justify-between lg:px-8'>
+    <footer className='relative mx-auto mt-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 xl:flex xl:items-center xl:justify-between'>
       <div className='flex flex-wrap justify-center'>
         {navlinks.map((link, idx) => {
           const url = link.get('url');
@@ -31,7 +31,7 @@ const Footer = () => {
 
           return (
             <div key={idx} className='px-5 py-2'>
-              <Comp {...compProps} className='text-primary-600 dark:text-primary-400 hover:underline'>
+              <Comp {...compProps} className='text-primary-600 hover:underline dark:text-primary-400'>
                 <Text tag='span' theme='inherit' size='sm'>
                   {(link.getIn(['titleLocales', locale]) || link.get('title')) as string}
                 </Text>

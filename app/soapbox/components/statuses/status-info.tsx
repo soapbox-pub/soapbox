@@ -1,37 +1,44 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
+import { HStack, Text } from '../ui';
 
 interface IStatusInfo {
   avatarSize: number
-  to?: string
   icon: React.ReactNode
   text: React.ReactNode
 }
 
 const StatusInfo = (props: IStatusInfo) => {
-  const { avatarSize, to, icon, text } = props;
+  const { avatarSize, icon, text } = props;
 
-  const onClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
   };
 
-  const Container = to ? Link : 'div';
-  const containerProps: any = to ? { onClick, to } : {};
-
   return (
-    <Container
-      {...containerProps}
-      className='flex items-center text-gray-700 dark:text-gray-600 text-xs font-medium space-x-3 rtl:space-x-reverse hover:underline'
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div
+      // eslint-disable-next-line jsx-a11y/aria-role
+      role='status-info'
+      onClick={onClick}
     >
-      <div
-        className='flex justify-end'
-        style={{ width: avatarSize }}
+      <HStack
+        space={3}
+        alignItems='center'
+        className='cursor-default text-xs font-medium text-gray-700 rtl:space-x-reverse dark:text-gray-600'
       >
-        {icon}
-      </div>
+        <div
+          className='flex justify-end'
+          style={{ width: avatarSize }}
+        >
+          {icon}
+        </div>
 
-      {text}
-    </Container>
+        <Text size='xs' theme='muted' weight='medium'>
+          {text}
+        </Text>
+      </HStack>
+    </div>
   );
 };
 

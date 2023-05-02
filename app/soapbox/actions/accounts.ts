@@ -228,7 +228,7 @@ const fetchAccountFail = (id: string | null, error: AxiosError) => ({
 });
 
 type FollowAccountOpts = {
-  reblogs?: boolean,
+  reblogs?: boolean
   notify?: boolean
 };
 

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
@@ -10,12 +10,11 @@ import { isIOS } from 'soapbox/is-mobile';
 import type { Attachment } from 'soapbox/types/entities';
 
 interface IMediaItem {
-  attachment: Attachment,
-  displayWidth: number,
-  onOpenMedia: (attachment: Attachment) => void,
+  attachment: Attachment
+  onOpenMedia: (attachment: Attachment) => void
 }
 
-const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia }) => {
+const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   const settings = useSettings();
   const autoPlayGif = settings.get('autoPlayGif');
   const displayMedia = settings.get('displayMedia');
@@ -53,10 +52,8 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
     }
   };
 
-  const width  = `${Math.floor((displayWidth - 4) / 3) - 4}px`;
-  const height = width;
-  const status = attachment.get('status');
-  const title  = status.get('spoiler_text') || attachment.get('description');
+  const status = attachment.status;
+  const title  = status.spoiler_text || attachment.description;
 
   let thumbnail: React.ReactNode = '';
   let icon;
@@ -64,8 +61,8 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
   if (attachment.type === 'unknown') {
     // Skip
   } else if (attachment.type === 'image') {
-    const focusX = Number(attachment.getIn(['meta', 'focus', 'x'])) || 0;
-    const focusY = Number(attachment.getIn(['meta', 'focus', 'y'])) || 0;
+    const focusX = Number(attachment.meta.getIn(['focus', 'x'])) || 0;
+    const focusY = Number(attachment.meta.getIn(['focus', 'y'])) || 0;
     const x = ((focusX /  2) + .5) * 100;
     const y = ((focusY / -2) + .5) * 100;
 
@@ -74,7 +71,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
         src={attachment.preview_url}
         alt={attachment.description}
         style={{ objectPosition: `${x}% ${y}%` }}
-        className='w-full h-full rounded-lg overflow-hidden'
+        className='h-full w-full overflow-hidden rounded-lg'
       />
     );
   } else if (['gifv', 'video'].indexOf(attachment.type) !== -1) {
@@ -86,7 +83,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
       conditionalAttributes.autoPlay = true;
     }
     thumbnail = (
-      <div className={classNames('media-gallery__gifv', { autoplay: autoPlayGif })}>
+      <div className={clsx('media-gallery__gifv', { autoplay: autoPlayGif })}>
         <video
           className='media-gallery__item-gifv-thumbnail'
           aria-label={attachment.description}
@@ -106,7 +103,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
   } else if (attachment.type === 'audio') {
     const remoteURL = attachment.remote_url || '';
     const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
-    const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+    const fileExtension = remoteURL.slice(fileExtensionLastIndex + 1).toUpperCase();
     thumbnail = (
       <div className='media-gallery__item-thumbnail'>
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
@@ -117,18 +114,18 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, displayWidth, onOpenMedia
 
   if (!visible) {
     icon = (
-      <span className='account-gallery__item__icons'>
+      <span className='media-gallery__item__icons'>
         <Icon src={require('@tabler/icons/eye-off.svg')} />
       </span>
     );
   }
 
   return (
-    <div className='account-gallery__item' style={{ width, height }}>
-      <a className='media-gallery__item-thumbnail' href={status.get('url')} target='_blank' onClick={handleClick} title={title}>
+    <div className='col-span-1'>
+      <a className='media-gallery__item-thumbnail aspect-1' href={status.url} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
-          hash={attachment.get('blurhash')}
-          className={classNames('media-gallery__preview', {
+          hash={attachment.blurhash}
+          className={clsx('media-gallery__preview', {
             'media-gallery__preview--hidden': visible,
           })}
         />

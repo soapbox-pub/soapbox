@@ -10,8 +10,8 @@ const messages = defineMessages({
 });
 
 interface IThemeSelector {
-  value: string,
-  onChange: (value: string) => void,
+  value: string
+  onChange: (value: string) => void
 }
 
 /** Pure theme selector. */
@@ -38,21 +38,21 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
   return (
     <label>
       <div className='relative rounded-md shadow-sm'>
-        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+        <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
           <Icon src={themeIconSrc} className='h-4 w-4 text-gray-600 dark:text-gray-700' />
         </div>
 
         <Select
           onChange={handleChange}
           defaultValue={value}
-          className='pl-10'
+          className='!pl-10'
         >
           <option value='system'>{intl.formatMessage(messages.system)}</option>
           <option value='light'>{intl.formatMessage(messages.light)}</option>
           <option value='dark'>{intl.formatMessage(messages.dark)}</option>
         </Select>
 
-        <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
+        <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
           <Icon src={require('@tabler/icons/chevron-down.svg')} className='h-4 w-4 text-gray-600 dark:text-gray-700' />
         </div>
       </div>

@@ -7,6 +7,7 @@ import punycode from 'punycode';
 
 import { Record as ImmutableRecord, Map as ImmutableMap, fromJS } from 'immutable';
 
+import { groupSchema, type Group } from 'soapbox/schemas';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/card/
@@ -16,6 +17,7 @@ export const CardRecord = ImmutableRecord({
   blurhash: null as string | null,
   description: '',
   embed_url: '',
+  group: null as null | Group,
   height: 0,
   html: '',
   image: null as string | null,
@@ -60,11 +62,21 @@ const normalizeProviderName = (card: ImmutableMap<string, any>) => {
   return card.set('provider_name', providerName);
 };
 
+const normalizeGroup = (card: ImmutableMap<string, any>) => {
+  try {
+    const group = groupSchema.parse(card.get('group').toJS());
+    return card.set('group', group);
+  } catch (_e) {
+    return card.set('group', null);
+  }
+};
+
 export const normalizeCard = (card: Record<string, any>) => {
   return CardRecord(
     ImmutableMap(fromJS(card)).withMutations(card => {
       normalizePleromaOpengraph(card);
       normalizeProviderName(card);
+      normalizeGroup(card);
     }),
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -20,8 +20,8 @@ import type { List as ImmutableList } from 'immutable';
 import type { Attachment, Status } from 'soapbox/types/entities';
 
 interface ILoadMoreMedia {
-  maxId: string | null,
-  onLoadMore: (value: string | null) => void,
+  maxId: string | null
+  onLoadMore: (value: string | null) => void
 }
 
 const LoadMoreMedia: React.FC<ILoadMoreMedia> = ({ maxId, onLoadMore }) => {
@@ -65,7 +65,6 @@ const AccountGallery = () => {
   const isLoading = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.isLoading);
   const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
 
-  const [width, setWidth] = useState(323);
   const node = useRef<HTMLDivElement>(null);
 
   const handleScrollToBottom = () => {
@@ -96,12 +95,6 @@ const AccountGallery = () => {
     }
   };
 
-  useLayoutEffect(() => {
-    if (node.current) {
-      setWidth(node.current.offsetWidth);
-    }
-  }, [node.current]);
-
   useEffect(() => {
     if (accountId && accountId !== -1) {
       dispatch(fetchAccount(accountId));
@@ -128,7 +121,7 @@ const AccountGallery = () => {
   let loadOlder = null;
 
   if (hasMore && !(isLoading && attachments.size === 0)) {
-    loadOlder = <LoadMore visible={!isLoading} onClick={handleLoadOlder} />;
+    loadOlder = <LoadMore className='my-auto' visible={!isLoading} onClick={handleLoadOlder} />;
   }
 
   if (unavailable) {
@@ -143,20 +136,19 @@ const AccountGallery = () => {
 
   return (
     <Column label={`@${accountUsername}`} transparent withHeader={false}>
-      <div role='feed' className='account-gallery__container' ref={node}>
+      <div role='feed' className='grid grid-cols-2 gap-2 sm:grid-cols-3' ref={node}>
         {attachments.map((attachment, index) => attachment === null ? (
           <LoadMoreMedia key={'more:' + attachments.get(index + 1)?.id} maxId={index > 0 ? (attachments.get(index - 1)?.id || null) : null} onLoadMore={handleLoadMore} />
         ) : (
           <MediaItem
             key={`${attachment.status.id}+${attachment.id}`}
             attachment={attachment}
-            displayWidth={width}
             onOpenMedia={handleOpenMedia}
           />
         ))}
 
         {!isLoading && attachments.size === 0 && (
-          <div className='empty-column-indicator'>
+          <div className='empty-column-indicator col-span-2 sm:col-span-3'>
             <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
           </div>
         )}

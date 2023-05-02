@@ -35,7 +35,6 @@ import {
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
-import type { StatusVisibility } from 'soapbox/normalizers/status';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const TRUNCATE_LIMIT = 40;
@@ -47,6 +46,8 @@ const TimelineRecord = ImmutableRecord({
   top: true,
   isLoading: false,
   hasMore: true,
+  next: undefined as string | undefined,
+  prev: undefined as string | undefined,
   items: ImmutableOrderedSet<string>(),
   queuedItems: ImmutableOrderedSet<string>(), //max= MAX_QUEUED_ITEMS
   feedAccountId: null,
@@ -88,13 +89,23 @@ const setFailed = (state: State, timelineId: string, failed: boolean) => {
   return state.update(timelineId, TimelineRecord(), timeline => timeline.set('loadingFailed', failed));
 };
 
-const expandNormalizedTimeline = (state: State, timelineId: string, statuses: ImmutableList<ImmutableMap<string, any>>, next: string | null, isPartial: boolean, isLoadingRecent: boolean) => {
+const expandNormalizedTimeline = (
+  state: State,
+  timelineId: string,
+  statuses: ImmutableList<ImmutableMap<string, any>>,
+  next: string | undefined,
+  prev: string | undefined,
+  isPartial: boolean,
+  isLoadingRecent: boolean,
+) => {
   const newIds = getStatusIds(statuses);
 
   return state.update(timelineId, TimelineRecord(), timeline => timeline.withMutations(timeline => {
     timeline.set('isLoading', false);
     timeline.set('loadingFailed', false);
     timeline.set('isPartial', isPartial);
+    timeline.set('next', next);
+    timeline.set('prev', prev);
 
     if (!next && !isLoadingRecent) timeline.set('hasMore', false);
 
@@ -242,8 +253,10 @@ const timelineDisconnect = (state: State, timelineId: string) => {
   }));
 };
 
-const getTimelinesByVisibility = (visibility: StatusVisibility) => {
-  switch (visibility) {
+const getTimelinesForStatus = (status: APIEntity) => {
+  switch (status.visibility) {
+    case 'group':
+      return [`group:${status.group?.id || status.group_id}`];
     case 'direct':
       return ['direct'];
     case 'public':
@@ -269,7 +282,7 @@ const importPendingStatus = (state: State, params: APIEntity, idempotencyKey: st
   const statusId = `末pending-${idempotencyKey}`;
 
   return state.withMutations(state => {
-    const timelineIds = getTimelinesByVisibility(params.visibility);
+    const timelineIds = getTimelinesForStatus(params);
 
     timelineIds.forEach(timelineId => {
       updateTimelineQueue(state, timelineId, statusId);
@@ -293,7 +306,7 @@ const importStatus = (state: State, status: APIEntity, idempotencyKey: string) =
   return state.withMutations(state => {
     replacePendingStatus(state, idempotencyKey, status.id);
 
-    const timelineIds = getTimelinesByVisibility(status.visibility);
+    const timelineIds = getTimelinesForStatus(status);
 
     timelineIds.forEach(timelineId => {
       updateTimeline(state, timelineId, status.id);
@@ -321,7 +334,15 @@ export default function timelines(state: State = initialState, action: AnyAction
     case TIMELINE_EXPAND_FAIL:
       return handleExpandFail(state, action.timeline);
     case TIMELINE_EXPAND_SUCCESS:
-      return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>, action.next, action.partial, action.isLoadingRecent);
+      return expandNormalizedTimeline(
+        state,
+        action.timeline,
+        fromJS(action.statuses) as ImmutableList<ImmutableMap<string, any>>,
+        action.next,
+        action.prev,
+        action.partial,
+        action.isLoadingRecent,
+      );
     case TIMELINE_UPDATE:
       return updateTimeline(state, action.timeline, action.statusId);
     case TIMELINE_UPDATE_QUEUE:

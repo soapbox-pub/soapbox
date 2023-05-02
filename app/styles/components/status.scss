@@ -17,7 +17,7 @@
 
 [column-type='filled'] .status__wrapper,
 [column-type='filled'] .status-placeholder {
-  @apply rounded-none shadow-none p-4;
+  @apply bg-transparent dark:bg-transparent rounded-none shadow-none;
 }
 
 .status-check-box {
@@ -78,7 +78,6 @@ a.status-card {
 
 .status-card__image {
   flex: 0 0 40%;
-  background: var(--brand-color--med);
   position: relative;
   overflow: hidden;
 
@@ -117,8 +116,9 @@ a.status-card {
   padding-bottom: 10px;
 
   &__status {
-    @include standard-panel;
     padding: 15px 0 10px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
   }
 
   .status {

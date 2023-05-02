@@ -22,7 +22,8 @@ export const InstanceRecord = ImmutableRecord({
   configuration: ImmutableMap<string, any>({
     media_attachments: ImmutableMap<string, any>(),
     chats: ImmutableMap<string, number>({
-      max_characters: 500,
+      max_characters: 5000,
+      max_media_attachments: 1,
     }),
     polls: ImmutableMap<string, number>({
       max_options: 4,
@@ -33,6 +34,10 @@ export const InstanceRecord = ImmutableRecord({
     statuses: ImmutableMap<string, number>({
       max_characters: 500,
       max_media_attachments: 4,
+    }),
+    groups: ImmutableMap<string, number>({
+      max_characters_name: 50,
+      max_characters_description: 160,
     }),
   }),
   description: '',

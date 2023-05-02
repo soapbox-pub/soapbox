@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
@@ -33,6 +33,7 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  groups: { id: 'column.groups', defaultMessage: 'Groups' },
   events: { id: 'column.events', defaultMessage: 'Events' },
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
@@ -42,18 +43,18 @@ const messages = defineMessages({
 });
 
 interface ISidebarLink {
-  href?: string,
-  to?: string,
-  icon: string,
-  text: string | JSX.Element,
-  onClick: React.EventHandler<React.MouseEvent>,
+  href?: string
+  to?: string
+  icon: string
+  text: string | JSX.Element
+  onClick: React.EventHandler<React.MouseEvent>
 }
 
 const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
   const body = (
     <HStack space={2} alignItems='center'>
-      <div className='bg-primary-50 dark:bg-gray-800 relative rounded-full inline-flex p-2'>
-        <Icon src={icon} className='text-primary-500 h-5 w-5' />
+      <div className='relative inline-flex rounded-full bg-primary-50 p-2 dark:bg-gray-800'>
+        <Icon src={icon} className='h-5 w-5 text-primary-500' />
       </div>
 
       <Text tag='span' weight='medium' theme='inherit'>{text}</Text>
@@ -62,14 +63,14 @@ const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) 
 
   if (to) {
     return (
-      <NavLink className='group rounded-full text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800' to={to} onClick={onClick}>
+      <NavLink className='group rounded-full text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800' to={to} onClick={onClick}>
         {body}
       </NavLink>
     );
   }
 
   return (
-    <a className='group rounded-full text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800' href={href} target='_blank' onClick={onClick}>
+    <a className='group rounded-full text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800' href={href} target='_blank' onClick={onClick}>
       {body}
     </a>
   );
@@ -89,6 +90,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
+  const groupsPath = useGroupsPath();
 
   const closeButtonRef = React.useRef(null);
 
@@ -137,7 +139,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     <div
       aria-expanded={sidebarOpen}
       className={
-        classNames({
+        clsx({
           'z-[1000]': sidebarOpen,
           hidden: !sidebarOpen,
         })
@@ -152,7 +154,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
       <div className='fixed inset-0 z-[1000] flex'>
         <div
           className={
-            classNames({
+            clsx({
               'flex flex-col flex-1 bg-white dark:bg-primary-900 -translate-x-full rtl:translate-x-full w-full max-w-xs': true,
               '!translate-x-0': sidebarOpen,
             })
@@ -164,10 +166,10 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
             src={require('@tabler/icons/x.svg')}
             ref={closeButtonRef}
             iconClassName='h-6 w-6'
-            className='absolute top-0 right-0 -mr-11 mt-2 text-gray-600 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+            className='absolute right-0 top-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
           />
 
-          <div className='relative overflow-y-scroll overflow-auto h-full w-full'>
+          <div className='relative h-full w-full overflow-auto overflow-y-scroll'>
             <div className='p-4'>
               <Stack space={4}>
                 <Link to={`/@${account.acct}`} onClick={onClose}>
@@ -203,6 +205,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/bookmarks'
                       icon={require('@tabler/icons/bookmark.svg')}
                       text={intl.formatMessage(messages.bookmarks)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.groups && (
+                    <SidebarLink
+                      to={groupsPath}
+                      icon={require('@tabler/icons/circles.svg')}
+                      text={intl.formatMessage(messages.groups)}
                       onClick={onClose}
                     />
                   )}
@@ -286,7 +297,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
                   )}
 
-                  {features.filters && (
+                  {(features.filters || features.filtersV2) && (
                     <SidebarLink
                       to='/filters'
                       icon={require('@tabler/icons/filter.svg')}
@@ -324,7 +335,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                         <Icon
                           src={require('@tabler/icons/chevron-down.svg')}
-                          className={classNames('w-4 h-4 text-gray-900 dark:text-gray-100 transition-transform', {
+                          className={clsx('h-4 w-4 text-gray-900 transition-transform dark:text-gray-100', {
                             'rotate-180': switcher,
                           })}
                         />
@@ -332,11 +343,11 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     </button>
 
                     {switcher && (
-                      <div className='border-t-2 border-gray-100 dark:border-gray-800 border-solid'>
+                      <div className='border-t-2 border-solid border-gray-100 dark:border-gray-800'>
                         {otherAccounts.map(account => renderAccount(account))}
 
-                        <NavLink className='flex items-center py-2 space-x-1' to='/login/add' onClick={handleClose}>
-                          <Icon className='text-primary-500 w-4 h-4' src={require('@tabler/icons/plus.svg')} />
+                        <NavLink className='flex items-center space-x-1 py-2' to='/login/add' onClick={handleClose}>
+                          <Icon className='h-4 w-4 text-primary-500' src={require('@tabler/icons/plus.svg')} />
                           <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
                         </NavLink>
                       </div>
@@ -351,7 +362,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
         {/* Dummy element to keep Close Icon visible */}
         <div
           aria-hidden
-          className='w-14 flex-shrink-0'
+          className='w-14 shrink-0'
           onClick={handleClose}
         />
       </div>

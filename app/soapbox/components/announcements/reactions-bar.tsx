@@ -1,30 +1,29 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { TransitionMotion, spring } from 'react-motion';
 
-import { Icon } from 'soapbox/components/ui';
-import EmojiPickerDropdown from 'soapbox/features/compose/components/emoji-picker/emoji-picker-dropdown';
+import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { useSettings } from 'soapbox/hooks';
 
 import Reaction from './reaction';
 
 import type { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import type { Emoji } from 'soapbox/components/autosuggest-emoji';
+import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
 import type { AnnouncementReaction } from 'soapbox/types/entities';
 
 interface IReactionsBar {
-  announcementId: string;
-  reactions: ImmutableList<AnnouncementReaction>;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
+  announcementId: string
+  reactions: ImmutableList<AnnouncementReaction>
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  addReaction: (id: string, name: string) => void
+  removeReaction: (id: string, name: string) => void
 }
 
 const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addReaction, removeReaction, emojiMap }) => {
   const reduceMotion = useSettings().get('reduceMotion');
 
   const handleEmojiPick = (data: Emoji) => {
-    addReaction(announcementId, data.native.replace(/:/g, ''));
+    addReaction(announcementId, (data as NativeEmoji).native.replace(/:/g, ''));
   };
 
   const willEnter = () => ({ scale: reduceMotion ? 1 : 0 });
@@ -42,7 +41,7 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addR
   return (
     <TransitionMotion styles={styles} willEnter={willEnter} willLeave={willLeave}>
       {items => (
-        <div className={classNames('flex flex-wrap items-center gap-1', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
+        <div className={clsx('flex flex-wrap items-center gap-1', { 'reactions-bar--empty': visibleReactions.isEmpty() })}>
           {items.map(({ key, data, style }) => (
             <Reaction
               key={key}
@@ -55,7 +54,7 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addR
             />
           ))}
 
-          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} button={<Icon className='h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-white' src={require('@tabler/icons/plus.svg')} />} />}
+          {visibleReactions.size < 8 && <EmojiPickerDropdown onPickEmoji={handleEmojiPick} />}
         </div>
       )}
     </TransitionMotion>

@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-export const useOnScreen = (ref: React.MutableRefObject<HTMLElement>) =>  {
-  const [isIntersecting, setIntersecting] = React.useState(false);
+/** Detect whether a given element is on the screen. */
+// https://stackoverflow.com/a/64892655
+export const useOnScreen = <T>(ref: React.RefObject<T & Element>) =>  {
+  const [isIntersecting, setIntersecting] = useState(false);
 
-  const observer = new IntersectionObserver(
-    ([entry]) => setIntersecting(entry.isIntersecting),
-  );
+  const observer = useMemo(() => {
+    return new IntersectionObserver(
+      ([entry]) => setIntersecting(entry.isIntersecting),
+    );
+  }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (ref.current) {
       observer.observe(ref.current);
     }

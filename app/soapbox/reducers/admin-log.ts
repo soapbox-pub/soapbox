@@ -7,6 +7,7 @@ import {
 import { ADMIN_LOG_FETCH_SUCCESS } from 'soapbox/actions/admin';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 export const LogEntryRecord = ImmutableRecord({
   data: ImmutableMap<string, any>(),
@@ -23,7 +24,6 @@ const ReducerRecord = ImmutableRecord({
 
 type LogEntry = ReturnType<typeof LogEntryRecord>;
 type State = ReturnType<typeof ReducerRecord>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 const parseItems = (items: APIEntities) => {

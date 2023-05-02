@@ -1,4 +1,4 @@
-import classnames from 'clsx';
+import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
@@ -21,14 +21,14 @@ const trim = (text: string, len: number): string => {
 };
 
 interface ICard {
-  card: CardEntity,
-  maxTitle?: number,
-  maxDescription?: number,
-  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void,
-  compact?: boolean,
-  defaultWidth?: number,
-  cacheWidth?: (width: number) => void,
-  horizontal?: boolean,
+  card: CardEntity
+  maxTitle?: number
+  maxDescription?: number
+  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void
+  compact?: boolean
+  defaultWidth?: number
+  cacheWidth?: (width: number) => void
+  horizontal?: boolean
 }
 
 const Card: React.FC<ICard> = ({
@@ -112,7 +112,7 @@ const Card: React.FC<ICard> = ({
 
   const interactive = card.type !== 'link';
   horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
+  const className = clsx('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
   const ratio = getRatio(card);
   const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
@@ -153,7 +153,7 @@ const Card: React.FC<ICard> = ({
 
   const canvas = (
     <Blurhash
-      className='absolute w-full h-full inset-0 -z-10'
+      className='absolute inset-0 -z-10 h-full w-full'
       hash={card.blurhash}
     />
   );
@@ -185,12 +185,12 @@ const Card: React.FC<ICard> = ({
           {thumbnail}
 
           <div className='absolute inset-0 flex items-center justify-center'>
-            <div className='bg-gray-500/90 dark:bg-gray-700/90 shadow-md rounded-full px-4 py-3 flex items-center justify-center'>
+            <div className='flex items-center justify-center rounded-full bg-gray-500/90 px-4 py-3 shadow-md dark:bg-gray-700/90'>
               <HStack space={3} alignItems='center'>
-                <button onClick={handleEmbedClick} className='appearance-none text-gray-700 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100'>
+                <button onClick={handleEmbedClick} className='appearance-none text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'>
                   <Icon
                     src={iconVariant}
-                    className='w-6 h-6 text-inherit'
+                    className='h-6 w-6 text-inherit'
                   />
                 </button>
 
@@ -200,11 +200,11 @@ const Card: React.FC<ICard> = ({
                     href={card.url}
                     target='_blank'
                     rel='noopener'
-                    className='text-gray-700 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100'
+                    className='text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'
                   >
                     <Icon
                       src={require('@tabler/icons/external-link.svg')}
-                      className='w-6 h-6 text-inherit'
+                      className='h-6 w-6 text-inherit'
                     />
                   </a>
                 )}
@@ -223,9 +223,9 @@ const Card: React.FC<ICard> = ({
     );
   } else if (card.image) {
     embed = (
-      <div className={classnames(
+      <div className={clsx(
         'status-card__image',
-        'w-full rounded-l md:w-auto md:h-auto flex-none md:flex-auto',
+        'w-full flex-none rounded-l md:h-auto md:w-auto md:flex-auto',
         {
           'h-auto': horizontal,
           'h-[200px]': !horizontal,

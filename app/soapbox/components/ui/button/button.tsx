@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,27 +10,27 @@ import type { ButtonSizes, ButtonThemes } from './useButtonStyles';
 
 interface IButton {
   /** Whether this button expands the width of its container. */
-  block?: boolean,
+  block?: boolean
   /** Elements inside the <button> */
-  children?: React.ReactNode,
+  children?: React.ReactNode
   /** Extra class names for the button. */
-  className?: string,
+  className?: string
   /** Prevent the button from being clicked. */
-  disabled?: boolean,
+  disabled?: boolean
   /** URL to an SVG icon to render inside the button. */
-  icon?: string,
+  icon?: string
   /** Action when the button is clicked. */
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void,
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
   /** A predefined button size. */
-  size?: ButtonSizes,
+  size?: ButtonSizes
   /** Text inside the button. Takes precedence over `children`. */
-  text?: React.ReactNode,
+  text?: React.ReactNode
   /** Makes the button into a navlink, if provided. */
-  to?: string,
+  to?: string
   /** Styles the button visually with a predefined theme. */
-  theme?: ButtonThemes,
+  theme?: ButtonThemes
   /** Whether this button should submit a form by default. */
-  type?: 'button' | 'submit',
+  type?: 'button' | 'submit'
 }
 
 /** Customizable button element with various themes. */
@@ -63,7 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       return null;
     }
 
-    return <Icon src={icon} className='w-4 h-4' />;
+    return <Icon src={icon} className='h-4 w-4' />;
   };
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((event) => {
@@ -74,7 +74,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
 
   const renderButton = () => (
     <button
-      className={classNames('space-x-2 rtl:space-x-reverse', themeClass, className)}
+      className={clsx('space-x-2 rtl:space-x-reverse', themeClass, className)}
       disabled={disabled}
       onClick={handleClick}
       ref={ref}
@@ -100,4 +100,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
   return renderButton();
 });
 
-export default Button;
+export {
+  Button as default,
+  Button,
+};

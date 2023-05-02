@@ -22,7 +22,7 @@ const messages = defineMessages({
 
 interface IFollowers {
   params?: {
-    username?: string,
+    username?: string
   }
 }
 

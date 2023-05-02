@@ -1,8 +1,8 @@
-import classNames from 'clsx';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
+import React, { useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeReportComment, changeReportRule } from 'soapbox/actions/reports';
+import { changeReportComment, changeReportRule, ReportableEntities } from 'soapbox/actions/reports';
 import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
@@ -29,13 +29,11 @@ const ReasonStep = (_props: IReasonStep) => {
   const [isNearBottom, setNearBottom] = useState<boolean>(false);
   const [isNearTop, setNearTop] = useState<boolean>(true);
 
+  const entityType = useAppSelector((state) => state.reports.new.entityType);
   const comment = useAppSelector((state) => state.reports.new.comment);
   const rules = useAppSelector((state) => state.rules.items);
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const shouldRequireRule = rules.length > 0;
-
-  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
-  const isReportingAccount = useMemo(() => selectedStatusIds.size === 0, []);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(changeReportComment(event.target.value));
@@ -60,7 +58,23 @@ const ReasonStep = (_props: IReasonStep) => {
   };
 
   const filterRuleType = (rule: any) => {
-    const ruleTypeToFilter = isReportingAccount ? 'account' : 'content';
+    let ruleTypeToFilter = 'content';
+
+    switch (entityType) {
+      case ReportableEntities.ACCOUNT:
+        ruleTypeToFilter = 'account';
+        break;
+      case ReportableEntities.STATUS:
+      case ReportableEntities.CHAT_MESSAGE:
+        ruleTypeToFilter = 'content';
+        break;
+      case ReportableEntities.GROUP:
+        ruleTypeToFilter = 'group';
+        break;
+      default:
+        ruleTypeToFilter = 'content';
+        break;
+    }
 
     if (rule.rule_type) {
       return rule.rule_type === ruleTypeToFilter;
@@ -94,7 +108,7 @@ const ReasonStep = (_props: IReasonStep) => {
           <div className='relative'>
             <div
               style={{ maxHeight: RULES_HEIGHT }}
-              className='rounded-lg -space-y-px overflow-y-auto'
+              className='-space-y-px overflow-y-auto rounded-lg'
               onScroll={handleRulesScrolling}
               ref={rulesListRef}
             >
@@ -106,7 +120,7 @@ const ReasonStep = (_props: IReasonStep) => {
                     key={idx}
                     data-testid={`rule-${rule.id}`}
                     onClick={() => dispatch(changeReportRule(rule.id))}
-                    className={classNames({
+                    className={clsx({
                       'relative border border-solid border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-primary-800/30 text-start w-full p-4 flex justify-between items-center cursor-pointer': true,
                       'rounded-tl-lg rounded-tr-lg': idx === 0,
                       'rounded-bl-lg rounded-br-lg': idx === rules.length - 1,
@@ -131,7 +145,7 @@ const ReasonStep = (_props: IReasonStep) => {
                       value={rule.id}
                       checked={isSelected}
                       readOnly
-                      className='border-2 dark:bg-gray-900 dark:border-gray-800 checked:bg-primary-500 dark:checked:bg-primary-500 focus:ring-primary-500 dark:focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded'
+                      className='h-4 w-4 rounded border-2 border-gray-300 text-primary-600 checked:bg-primary-500 focus:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:checked:bg-primary-500 dark:focus:ring-primary-500'
                     />
                   </button>
                 );
@@ -139,13 +153,13 @@ const ReasonStep = (_props: IReasonStep) => {
             </div>
 
             <div
-              className={classNames('inset-x-0 top-0 flex rounded-t-lg justify-center bg-gradient-to-b from-white pb-12 pt-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              className={clsx('pointer-events-none absolute inset-x-0 top-0 flex justify-center rounded-t-lg bg-gradient-to-b from-white pb-12 pt-8 transition-opacity duration-500 dark:from-gray-900', {
                 'opacity-0': isNearTop,
                 'opacity-100': !isNearTop,
               })}
             />
             <div
-              className={classNames('inset-x-0 bottom-0 flex rounded-b-lg justify-center bg-gradient-to-t from-white pt-12 pb-8 pointer-events-none dark:from-gray-900 absolute transition-opacity duration-500', {
+              className={clsx('pointer-events-none absolute inset-x-0 bottom-0 flex justify-center rounded-b-lg bg-gradient-to-t from-white pb-8 pt-12 transition-opacity duration-500 dark:from-gray-900', {
                 'opacity-0': isNearBottom,
                 'opacity-100': !isNearBottom,
               })}

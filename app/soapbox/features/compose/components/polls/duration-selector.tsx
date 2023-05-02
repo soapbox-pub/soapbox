@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Select } from 'soapbox/components/ui';
@@ -20,15 +20,7 @@ const DurationSelector = ({ onDurationChange }: IDurationSelector) => {
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
 
-  const value = useMemo(() => {
-    const now: any = new Date();
-    const future: any = new Date();
-    now.setDate(now.getDate() + days);
-    now.setMinutes(now.getMinutes() + minutes);
-    now.setHours(now.getHours() + hours);
-
-    return Math.round((now - future) / 1000);
-  }, [days, hours, minutes]);
+  const value = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
 
   useEffect(() => {
     if (days === 7) {
@@ -42,7 +34,7 @@ const DurationSelector = ({ onDurationChange }: IDurationSelector) => {
   }, [value]);
 
   return (
-    <div className='grid grid-cols-1 gap-y-2 gap-x-2 sm:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-2 sm:grid-cols-3'>
       <div className='sm:col-span-1'>
         <Select
           value={days}

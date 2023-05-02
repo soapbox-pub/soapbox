@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
@@ -14,10 +14,10 @@ const showStatusHoverCard = debounce((dispatch, ref, statusId) => {
 }, 300);
 
 interface IHoverStatusWrapper {
-  statusId: any,
-  inline: boolean,
-  className?: string,
-  children: React.ReactNode,
+  statusId: any
+  inline: boolean
+  className?: string
+  children: React.ReactNode
 }
 
 /** Makes a status hover card appear when the wrapped element is hovered. */
@@ -45,7 +45,7 @@ export const HoverStatusWrapper: React.FC<IHoverStatusWrapper> = ({ statusId, ch
   return (
     <Elem
       ref={ref}
-      className={classNames('hover-status-wrapper', className)}
+      className={clsx('hover-status-wrapper', className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -21,23 +21,23 @@ const TICK_SIZE = 10;
 const PADDING   = 180;
 
 interface IAudio {
-  src: string,
-  alt?: string,
-  poster?: string,
-  duration?: number,
-  width?: number,
-  height?: number,
-  editable?: boolean,
-  fullscreen?: boolean,
-  cacheWidth?: (width: number) => void,
-  backgroundColor?: string,
-  foregroundColor?: string,
-  accentColor?: string,
-  currentTime?: number,
-  autoPlay?: boolean,
-  volume?: number,
-  muted?: boolean,
-  deployPictureInPicture?: (type: string, opts: Record<string, any>) => void,
+  src: string
+  alt?: string
+  poster?: string
+  duration?: number
+  width?: number
+  height?: number
+  editable?: boolean
+  fullscreen?: boolean
+  cacheWidth?: (width: number) => void
+  backgroundColor?: string
+  foregroundColor?: string
+  accentColor?: string
+  currentTime?: number
+  autoPlay?: boolean
+  volume?: number
+  muted?: boolean
+  deployPictureInPicture?: (type: string, opts: Record<string, any>) => void
 }
 
 const Audio: React.FC<IAudio> = (props) => {
@@ -437,7 +437,7 @@ const Audio: React.FC<IAudio> = (props) => {
 
   return (
     <div
-      className={classNames('audio-player', { editable })}
+      className={clsx('audio-player', { editable })}
       ref={player}
       style={{
         backgroundColor: _getBackgroundColor(),
@@ -499,13 +499,13 @@ const Audio: React.FC<IAudio> = (props) => {
 
         <div
           className='video-player__seek__progress'
-          style={{ width: `${progress}%`, backgroundColor: _getAccentColor() }}
+          style={{ width: `${progress}%`, backgroundColor: accentColor }}
         />
 
         <span
-          className={classNames('video-player__seek__handle', { active: dragging })}
+          className={clsx('video-player__seek__handle', { active: dragging })}
           tabIndex={0}
-          style={{ left: `${progress}%`, backgroundColor: _getAccentColor() }}
+          style={{ left: `${progress}%`, backgroundColor: accentColor }}
           onKeyDown={handleAudioKeyDown}
         />
       </div>
@@ -535,7 +535,7 @@ const Audio: React.FC<IAudio> = (props) => {
             </button>
 
             <div
-              className={classNames('video-player__volume', { active: hovered })}
+              className={clsx('video-player__volume', { active: hovered })}
               ref={slider}
               onMouseDown={handleVolumeMouseDown}
             >
