@@ -2,6 +2,7 @@ import React from 'react';
 
 import { buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
 import { render, screen } from 'soapbox/jest/test-helpers';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import { Group } from 'soapbox/types/entities';
 
 import GroupActionButton from '../group-action-button';
@@ -45,7 +46,7 @@ describe('<GroupActionButton />', () => {
     beforeEach(() => {
       group = buildGroup({
         relationship: buildGroupRelationship({
-          member: null,
+          member: false,
         }),
       });
     });
@@ -98,7 +99,7 @@ describe('<GroupActionButton />', () => {
         relationship: buildGroupRelationship({
           requested: false,
           member: true,
-          role: 'owner',
+          role: GroupRoles.OWNER,
         }),
       });
     });
@@ -116,7 +117,7 @@ describe('<GroupActionButton />', () => {
         relationship: buildGroupRelationship({
           requested: false,
           member: true,
-          role: 'user',
+          role: GroupRoles.USER,
         }),
       });
     });

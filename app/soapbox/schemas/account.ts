@@ -22,7 +22,7 @@ const accountSchema = z.object({
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
-  emojis: filteredArray(customEmojiSchema).catch([]),
+  emojis: filteredArray(customEmojiSchema),
   favicon: z.string().catch(''),
   fields: z.any(), // TODO
   followers_count: z.number().catch(0),

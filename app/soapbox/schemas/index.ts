@@ -1,22 +1,11 @@
-/**
- * Schemas
- */
-export { accountSchema } from './account';
-export { customEmojiSchema  } from './custom-emoji';
-export { groupSchema } from './group';
-export { groupMemberSchema } from './group-member';
-export { groupRelationshipSchema } from './group-relationship';
-export { groupTagSchema } from './group-tag';
-export { relationshipSchema } from './relationship';
+export { accountSchema, type Account } from './account';
+export { cardSchema, type Card } from './card';
+export { customEmojiSchema, type CustomEmoji } from './custom-emoji';
+export { groupSchema, type Group } from './group';
+export { groupMemberSchema, type GroupMember } from './group-member';
+export { groupRelationshipSchema, type GroupRelationship } from './group-relationship';
+export { groupTagSchema, type GroupTag } from './group-tag';
+export { relationshipSchema, type Relationship } from './relationship';
 
-/**
- * Entity Types
- */
-export type { Account } from './account';
-export type { Card } from './card';
-export type { CustomEmoji } from './custom-emoji';
-export type { Group } from './group';
-export type { GroupMember } from './group-member';
-export type { GroupRelationship } from './group-relationship';
-export type { GroupTag } from './group-tag';
-export type { Relationship } from './relationship';
+// Soapbox
+export { adSchema, type Ad } from './soapbox/ad';

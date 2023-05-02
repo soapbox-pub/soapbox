@@ -4,7 +4,7 @@ import type { CustomEmoji } from './custom-emoji';
 
 /** Validates individual items in an array, dropping any that aren't valid. */
 function filteredArray<T extends z.ZodTypeAny>(schema: T) {
-  return z.any().array()
+  return z.any().array().catch([])
     .transform((arr) => (
       arr.map((item) => {
         const parsed = schema.safeParse(item);

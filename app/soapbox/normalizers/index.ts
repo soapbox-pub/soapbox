@@ -26,5 +26,4 @@ export { StatusRecord, normalizeStatus } from './status';
 export { StatusEditRecord, normalizeStatusEdit } from './status-edit';
 export { TagRecord, normalizeTag } from './tag';
 
-export { AdRecord, normalizeAd } from './soapbox/ad';
 export { SoapboxConfigRecord, normalizeSoapboxConfig } from './soapbox/soapbox-config';
