@@ -6,11 +6,13 @@ import {
   groupSchema,
   groupRelationshipSchema,
   groupTagSchema,
+  relationshipSchema,
   type Ad,
   type Card,
   type Group,
   type GroupRelationship,
   type GroupTag,
+  type Relationship,
 } from 'soapbox/schemas';
 
 // TODO: there's probably a better way to create these factory functions.
@@ -46,4 +48,17 @@ function buildAd(props: Partial<Ad> = {}): Ad {
   }, props));
 }
 
-export { buildCard, buildGroup, buildGroupRelationship, buildGroupTag, buildAd };
+function buildRelationship(props: Partial<Relationship> = {}): Relationship {
+  return relationshipSchema.parse(Object.assign({
+    id: uuidv4(),
+  }, props));
+}
+
+export {
+  buildCard,
+  buildGroup,
+  buildGroupRelationship,
+  buildGroupTag,
+  buildAd,
+  buildRelationship,
+};

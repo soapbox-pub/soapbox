@@ -21,7 +21,6 @@ import {
   NotificationRecord,
   PollRecord,
   PollOptionRecord,
-  RelationshipRecord,
   StatusEditRecord,
   StatusRecord,
   TagRecord,
@@ -52,7 +51,6 @@ type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
 type PollOption = ReturnType<typeof PollOptionRecord>;
-type Relationship = ReturnType<typeof RelationshipRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
 type Tag = ReturnType<typeof TagRecord>;
 
@@ -96,7 +94,6 @@ export {
   Notification,
   Poll,
   PollOption,
-  Relationship,
   Status,
   StatusEdit,
   Tag,
@@ -111,4 +108,5 @@ export type {
   Group,
   GroupMember,
   GroupRelationship,
+  Relationship,
 } from 'soapbox/schemas';
