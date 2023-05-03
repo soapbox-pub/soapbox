@@ -15,15 +15,18 @@ export default defineConfig({
     assetsDir: 'packs',
   },
   plugins: [
+    // @ts-ignore
+    vitePluginRequire.default(),
     createHtmlPlugin({
       template: 'index.html',
     }),
     react({
       // Use React plugin in all *.jsx and *.tsx files
       include: '**/*.{jsx,tsx}',
+      babel: {
+        configFile: './babel.config.cjs',
+      },
     }),
-    // @ts-ignore
-    vitePluginRequire.default(),
     compileTime(),
     viteStaticCopy({
       targets: [{
