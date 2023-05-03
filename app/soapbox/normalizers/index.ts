@@ -7,7 +7,6 @@ export { AttachmentRecord, normalizeAttachment } from './attachment';
 export { ChatRecord, normalizeChat } from './chat';
 export { ChatMessageRecord, normalizeChatMessage } from './chat-message';
 export { EmojiRecord, normalizeEmoji } from './emoji';
-export { EmojiReactionRecord } from './emoji-reaction';
 export { FilterRecord, normalizeFilter } from './filter';
 export { FilterKeywordRecord, normalizeFilterKeyword } from './filter-keyword';
 export { FilterStatusRecord, normalizeFilterStatus } from './filter-status';

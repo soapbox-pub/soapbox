@@ -312,7 +312,7 @@ const ChatMessage = (props: IChatMessage) => {
           </Stack>
         </HStack>
 
-        {(chatMessage.emoji_reactions?.size) ? (
+        {(chatMessage.emoji_reactions?.length) ? (
           <div
             className={clsx({
               'space-y-1': true,

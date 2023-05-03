@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';
 
@@ -6,7 +6,6 @@ import { __stub } from 'soapbox/api';
 import { buildRelationship } from 'soapbox/jest/factory';
 import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
 import { normalizeChatMessage } from 'soapbox/normalizers';
-import { normalizeEmojiReaction } from 'soapbox/normalizers/emoji-reaction';
 import { Store } from 'soapbox/store';
 import { ChatMessage } from 'soapbox/types/entities';
 import { flattenPages } from 'soapbox/utils/queries';
@@ -426,11 +425,11 @@ describe('useChatActions', () => {
       });
 
       const updatedChatMessage = (queryClient.getQueryData(ChatKeys.chatMessages(chat.id)) as any).pages[0].result[0] as ChatMessage;
-      expect(updatedChatMessage.emoji_reactions).toEqual(ImmutableList([normalizeEmojiReaction({
+      expect(updatedChatMessage.emoji_reactions).toEqual([{
         name: '👍',
         count: 1,
         me: true,
-      })]));
+      }]);
     });
   });
 });
