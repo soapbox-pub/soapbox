@@ -41,7 +41,7 @@ const normalizeMedia = (status: ImmutableMap<string, any>) => {
 };
 
 const normalizeChatMessageEmojiReaction = (chatMessage: ImmutableMap<string, any>) => {
-  const emojiReactions = chatMessage.get('emoji_reactions') || ImmutableList();
+  const emojiReactions = ImmutableList(chatMessage.get('emoji_reactions') || []);
   return chatMessage.set('emoji_reactions', filteredArray(emojiReactionSchema).parse(emojiReactions.toJS()));
 };
 
