@@ -34,23 +34,23 @@ const cardSchema = z.object({
   type: z.enum(['link', 'photo', 'video', 'rich']).catch('link'),
   url: z.string().url(),
   width: z.number().catch(0),
-}).transform((card) => {
+}).transform(({ pleroma, ...card }) => {
   if (!card.provider_name) {
     card.provider_name = decodeIDNA(new URL(card.url).hostname);
   }
 
-  if (card.pleroma?.opengraph) {
+  if (pleroma?.opengraph) {
     if (!card.width && !card.height) {
-      card.width = card.pleroma.opengraph.width;
-      card.height = card.pleroma.opengraph.height;
+      card.width = pleroma.opengraph.width;
+      card.height = pleroma.opengraph.height;
     }
 
     if (!card.html) {
-      card.html = card.pleroma.opengraph.html;
+      card.html = pleroma.opengraph.html;
     }
 
     if (!card.image) {
-      card.image = card.pleroma.opengraph.thumbnail_url;
+      card.image = pleroma.opengraph.thumbnail_url;
     }
   }
 
