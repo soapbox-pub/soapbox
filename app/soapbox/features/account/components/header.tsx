@@ -130,7 +130,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/ban.svg'),
         heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
-        message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
+        message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
         confirm: intl.formatMessage(messages.blockConfirm),
         onConfirm: () => dispatch(blockAccount(account.id)),
         secondary: intl.formatMessage(messages.blockAndReport),
@@ -215,7 +215,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       const unfollowModal = getSettings(getState()).get('unfollowModal');
       if (unfollowModal) {
         dispatch(openModal('CONFIRM', {
-          message: <FormattedMessage id='confirmations.remove_from_followers.message' defaultMessage='Are you sure you want to remove {name} from your followers?' values={{ name: <strong>@{account.acct}</strong> }} />,
+          message: <FormattedMessage id='confirmations.remove_from_followers.message' defaultMessage='Are you sure you want to remove {name} from your followers?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
           confirm: intl.formatMessage(messages.removeFromFollowersConfirm),
           onConfirm: () => dispatch(removeFromFollowers(account.id)),
         }));

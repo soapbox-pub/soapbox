@@ -1130,7 +1130,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "Deves ter a sessão iniciada para realizares essa ação.",
   "unauthorized_modal.title": "Registar no {site_title}",
-  "upload_area.title": "Arrasta e larga para enviar",
   "upload_button.label": "Adicionar multimédia",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "O limite máximo do ficheiro a carregar foi excedido.",

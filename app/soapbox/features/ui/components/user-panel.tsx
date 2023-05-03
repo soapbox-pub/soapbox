@@ -59,7 +59,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
         <Stack>
           <Link to={`/@${account.acct}`}>
             <HStack space={1} alignItems='center'>
-              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} truncate />
 
               {verified && <VerificationBadge />}
 
@@ -71,7 +71,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
             </HStack>
           </Link>
 
-          <Text size='sm' theme='muted'>
+          <Text size='sm' theme='muted' truncate>
             @{getAcct(account, fqn)}
           </Text>
         </Stack>

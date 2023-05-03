@@ -238,11 +238,11 @@ const SearchResults = () => {
       {filterByAccount ? (
         <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleUnsetAccount} />
-          <Text>
+          <Text truncate>
             <FormattedMessage
               id='search_results.filter_message'
               defaultMessage='You are searching for posts from @{acct}.'
-              values={{ acct: account }}
+              values={{ acct: <strong className='break-words'>{account}</strong> }}
             />
           </Text>
         </HStack>

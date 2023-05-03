@@ -17,6 +17,12 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
+ * Ditto, a Nostr server with Mastodon API.
+ * @see {@link https://gitlab.com/soapbox-pub/ditto}
+ */
+export const DITTO = 'Ditto';
+
+/**
  * Friendica, decentralized social platform implementing multiple federation protocols.
  * @see {@link https://friendi.ca/}
  */
@@ -137,6 +143,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
+      v.software === DITTO,
     ]),
 
     /**

@@ -1305,7 +1305,6 @@
   "trendsPanel.viewAll": "Prikaži još",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Povuci i spusti kako bi uploadao",
   "upload_button.label": "Dodaj media",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "File upload limit exceeded.",

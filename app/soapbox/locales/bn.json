@@ -420,7 +420,6 @@
   "toast.view": "View",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} কথা বলছে",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "টেনে এখানে ছেড়ে দিলে এখানে যুক্ত করা যাবে",
   "upload_button.label": "ছবি বা ভিডিও যুক্ত করতে (এসব ধরণের: JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.limit": "যা যুক্ত করতে চাচ্ছেন সেটি বেশি বড়, এখানকার সর্বাধিকের মেমোরির উপরে চলে গেছে।",
   "upload_error.poll": "নির্বাচনক্ষেত্রে কোনো ফাইল যুক্ত করা যাবেনা।",

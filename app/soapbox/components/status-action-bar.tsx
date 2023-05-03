@@ -258,8 +258,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
-      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(blockAccount(account.id)),
       secondary: intl.formatMessage(messages.blockAndReport),
@@ -313,7 +313,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
-      message: intl.formatMessage(messages.deleteFromGroupMessage, { name: account.username }),
+      message: intl.formatMessage(messages.deleteFromGroupMessage, { name: <strong className='break-words'>{account.username}</strong> }),
       confirm: intl.formatMessage(messages.deleteConfirm),
       onConfirm: () => dispatch(groupDeleteStatus((status.group as Group).id, status.id)),
     }));
@@ -324,7 +324,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.kickFromGroupHeading),
-      message: intl.formatMessage(messages.kickFromGroupMessage, { name: account.username }),
+      message: intl.formatMessage(messages.kickFromGroupMessage, { name: <strong className='break-words'>{account.username}</strong> }),
       confirm: intl.formatMessage(messages.kickFromGroupConfirm),
       onConfirm: () => dispatch(groupKick((status.group as Group).id, account.id)),
     }));
@@ -335,7 +335,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.blockFromGroupHeading),
-      message: intl.formatMessage(messages.blockFromGroupMessage, { name: account.username }),
+      message: intl.formatMessage(messages.blockFromGroupMessage, { name: <strong className='break-words'>{account.username}</strong> }),
       confirm: intl.formatMessage(messages.blockFromGroupConfirm),
       onConfirm: () => dispatch(groupBlock((status.group as Group).id, account.id)),
     }));
