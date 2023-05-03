@@ -102,7 +102,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
-              <h3 className='grow text-lg font-bold leading-6 text-gray-900 dark:text-white'>
+              <h3 className='grow truncate text-lg font-bold leading-6 text-gray-900 dark:text-white'>
                 {title}
               </h3>
 
