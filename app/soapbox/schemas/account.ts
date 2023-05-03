@@ -43,8 +43,8 @@ const accountSchema = z.object({
   pleroma: z.any(), // TODO
   source: z.any(), // TODO
   statuses_count: z.number().catch(0),
-  uri: z.string().catch(''),
-  url: z.string().catch(''),
+  uri: z.string().url().catch(''),
+  url: z.string().url().catch(''),
   username: z.string().catch(''),
   verified: z.boolean().default(false),
   website: z.string().catch(''),

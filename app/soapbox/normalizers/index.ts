@@ -18,7 +18,6 @@ export { ListRecord, normalizeList } from './list';
 export { LocationRecord, normalizeLocation } from './location';
 export { MentionRecord, normalizeMention } from './mention';
 export { NotificationRecord, normalizeNotification } from './notification';
-export { PollRecord, PollOptionRecord, normalizePoll } from './poll';
 export { StatusRecord, normalizeStatus } from './status';
 export { StatusEditRecord, normalizeStatusEdit } from './status-edit';
 export { TagRecord, normalizeTag } from './tag';

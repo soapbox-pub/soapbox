@@ -18,8 +18,6 @@ import {
   LocationRecord,
   MentionRecord,
   NotificationRecord,
-  PollRecord,
-  PollOptionRecord,
   StatusEditRecord,
   StatusRecord,
   TagRecord,
@@ -47,8 +45,6 @@ type List = ReturnType<typeof ListRecord>;
 type Location = ReturnType<typeof LocationRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
-type Poll = ReturnType<typeof PollRecord>;
-type PollOption = ReturnType<typeof PollOptionRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
 type Tag = ReturnType<typeof TagRecord>;
 
@@ -89,8 +85,6 @@ export {
   Location,
   Mention,
   Notification,
-  Poll,
-  PollOption,
   Status,
   StatusEdit,
   Tag,
@@ -106,5 +100,7 @@ export type {
   Group,
   GroupMember,
   GroupRelationship,
+  Poll,
+  PollOption,
   Relationship,
 } from 'soapbox/schemas';

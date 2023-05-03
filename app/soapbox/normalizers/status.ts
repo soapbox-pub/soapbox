@@ -13,8 +13,7 @@ import {
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { normalizePoll } from 'soapbox/normalizers/poll';
-import { cardSchema } from 'soapbox/schemas/card';
+import { cardSchema, pollSchema } from 'soapbox/schemas';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
@@ -109,9 +108,10 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
 
 // Normalize the poll in the status, if applicable
 const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
-  if (status.hasIn(['poll', 'options'])) {
-    return status.update('poll', ImmutableMap(), normalizePoll);
-  } else {
+  try {
+    const poll = pollSchema.parse(status.get('poll').toJS());
+    return status.set('poll', poll);
+  } catch (_e) {
     return status.set('poll', null);
   }
 };
