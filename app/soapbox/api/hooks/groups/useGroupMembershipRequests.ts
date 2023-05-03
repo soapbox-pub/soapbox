@@ -14,7 +14,7 @@ function useGroupMembershipRequests(groupId: string) {
 
   const { entity: relationship } = useGroupRelationship(groupId);
 
-  const { entities, invalidate, ...rest } = useEntities(
+  const { entities, invalidate, fetchEntities, ...rest } = useEntities(
     path,
     () => api.get(`/api/v1/groups/${groupId}/membership_requests`),
     {
@@ -37,6 +37,7 @@ function useGroupMembershipRequests(groupId: string) {
 
   return {
     accounts: entities,
+    refetch: fetchEntities,
     authorize,
     reject,
     ...rest,

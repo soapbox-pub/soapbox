@@ -58,7 +58,7 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
 
   const { group } = useGroup(id);
 
-  const { accounts, authorize, reject, isLoading } = useGroupMembershipRequests(id);
+  const { accounts, authorize, reject, refetch, isLoading } = useGroupMembershipRequests(id);
   const { invalidate } = useGroupMembers(id, GroupRoles.USER);
 
   useEffect(() => {
@@ -80,11 +80,13 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   }
 
   async function handleAuthorize(account: AccountEntity) {
-    try {
-      await authorize(account.id);
-    } catch (_e) {
-      toast.error(intl.formatMessage(messages.authorizeFail, { name: account.username }));
-    }
+    return authorize(account.id)
+      .then(() => Promise.resolve())
+      .catch(() => {
+        refetch();
+        toast.error(intl.formatMessage(messages.authorizeFail, { name: account.username }));
+        return Promise.reject();
+      });
   }
 
   async function handleReject(account: AccountEntity) {

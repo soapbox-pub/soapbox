@@ -19,7 +19,7 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
   const intl = useIntl();
 
   const handleCopyLink = () => {
-    copy(`${window.location.origin}/group/${group?.slug}`, () => {
+    copy(group?.url as string, () => {
       toast.success(intl.formatMessage(messages.copied));
     });
   };
