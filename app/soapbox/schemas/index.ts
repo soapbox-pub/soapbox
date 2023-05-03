@@ -8,6 +8,7 @@ export { groupRelationshipSchema, type GroupRelationship } from './group-relatio
 export { groupTagSchema, type GroupTag } from './group-tag';
 export { pollSchema, type Poll, type PollOption } from './poll';
 export { relationshipSchema, type Relationship } from './relationship';
+export { tagSchema, type Tag } from './tag';
 
 // Soapbox
 export { adSchema, type Ad } from './soapbox/ad';
