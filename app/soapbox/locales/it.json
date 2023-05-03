@@ -1440,7 +1440,6 @@
   "trendsPanel.viewAll": "Di più",
   "unauthorized_modal.text": "Per fare questo, devi prima autenticarti.",
   "unauthorized_modal.title": "Iscriviti su {site_title}",
-  "upload_area.title": "Trascina per caricare",
   "upload_button.label": "Aggiungi allegati",
   "upload_error.image_size_limit": "L'immagine eccede il limite di dimensioni ({limit})",
   "upload_error.limit": "Hai superato il limite di quanti file puoi caricare.",

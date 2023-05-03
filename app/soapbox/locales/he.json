@@ -1130,7 +1130,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "אתה צריך להיות מחובר כדי לעשות זאת.",
   "unauthorized_modal.title": "להירשם ל{site_title}",
-  "upload_area.title": "ניתן להעלות על ידי Drag & drop",
   "upload_button.label": "הוספת מדיה",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "חרגת ממגבלת העלאת הקבצים.",

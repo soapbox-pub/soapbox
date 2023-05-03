@@ -1130,7 +1130,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Llusgwch & gollwing i uwchlwytho",
   "upload_button.label": "Ychwanegwch gyfryngau (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "Wedi mynd heibio'r uchafswm terfyn uwchlwytho.",

@@ -420,7 +420,6 @@
   "toast.view": "View",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} parlanu",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Drag & drop per caricà un fugliale",
   "upload_button.label": "Aghjunghje un media (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.limit": "Limita di caricamentu di fugliali trapassata.",
   "upload_error.poll": "Ùn si pò micca caricà fugliali cù i scandagli.",

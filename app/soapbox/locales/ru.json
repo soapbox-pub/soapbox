@@ -1130,7 +1130,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Перетащите сюда, чтобы загрузить",
   "upload_button.label": "Добавить медиаконтент",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "Достигнут лимит загруженных файлов.",

@@ -1012,7 +1012,6 @@
   "trendsPanel.viewAll": "顯示全部",
   "unauthorized_modal.text": "你需要登入才能繼續",
   "unauthorized_modal.title": "註冊 {site_title} 帳戶",
-  "upload_area.title": "拖放來上傳",
   "upload_button.label": "上傳媒體檔案 (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.image_size_limit": "圖片超出當前文件大小限制 ({limit})",
   "upload_error.limit": "已達到檔案上傳限制。",

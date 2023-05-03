@@ -742,7 +742,6 @@
   "trends.title": "Trendy",
   "unauthorized_modal.text": "Nejprve se přihlašte.",
   "unauthorized_modal.title": "Registrovat se na {site_title}",
-  "upload_area.title": "Přetažením nahrajete",
   "upload_button.label": "Přidat média (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.limit": "Byl překročen limit nahraných souborů.",
   "upload_error.poll": "Nahrávání souborů není povoleno u anket.",
