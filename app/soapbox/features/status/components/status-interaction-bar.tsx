@@ -230,7 +230,7 @@ const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, chi
       }
     >
       <HStack space={1} alignItems='center'>
-        <Text theme='primary' weight='bold'>
+        <Text weight='bold'>
           {shortNumberFormat(count)}
         </Text>
 
