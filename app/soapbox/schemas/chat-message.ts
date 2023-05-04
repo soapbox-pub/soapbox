@@ -3,14 +3,14 @@ import { z } from 'zod';
 import { attachmentSchema } from './attachment';
 import { cardSchema } from './card';
 import { customEmojiSchema } from './custom-emoji';
-import { emojiSchema, filteredArray } from './utils';
+import { contentSchema, emojiSchema, filteredArray } from './utils';
 
 const chatMessageSchema = z.object({
   account_id: z.string(),
   media_attachments: filteredArray(attachmentSchema),
   card: cardSchema.nullable().catch(null),
   chat_id: z.string(),
-  content: z.string().catch(''),
+  content: contentSchema,
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   emojis: filteredArray(customEmojiSchema),
   expiration: z.number().optional().catch(undefined),
