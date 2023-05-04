@@ -13,6 +13,9 @@ function filteredArray<T extends z.ZodTypeAny>(schema: T) {
     ));
 }
 
+/** Validates the string as an emoji. */
+const emojiSchema = z.string().refine((v) => /\p{Extended_Pictographic}/u.test(v));
+
 /** Map a list of CustomEmoji to their shortcodes. */
 function makeCustomEmojiMap(customEmojis: CustomEmoji[]) {
   return customEmojis.reduce<Record<string, CustomEmoji>>((result, emoji) => {
@@ -21,4 +24,4 @@ function makeCustomEmojiMap(customEmojis: CustomEmoji[]) {
   }, {});
 }
 
-export { filteredArray, makeCustomEmojiMap };
+export { filteredArray, makeCustomEmojiMap, emojiSchema };
