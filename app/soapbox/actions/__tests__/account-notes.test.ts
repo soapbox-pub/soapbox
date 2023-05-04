@@ -1,10 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
+import { buildRelationship } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ReducerRecord, EditRecord } from 'soapbox/reducers/account-notes';
 
-import { normalizeAccount, normalizeRelationship } from '../../normalizers';
+import { normalizeAccount } from '../../normalizers';
 import { changeAccountNoteComment, initAccountNoteModal, submitAccountNote } from '../account-notes';
 
 import type { Account } from 'soapbox/types/entities';
@@ -66,7 +67,7 @@ describe('initAccountNoteModal()', () => {
 
   beforeEach(() => {
     const state = rootState
-      .set('relationships', ImmutableMap({ '1': normalizeRelationship({ note: 'hello' }) }));
+      .set('relationships', ImmutableMap({ '1': buildRelationship({ note: 'hello' }) }));
     store = mockStore(state);
   });
 

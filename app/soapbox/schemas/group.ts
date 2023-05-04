@@ -19,7 +19,7 @@ const groupSchema = z.object({
   deleted_at: z.string().datetime().or(z.null()).catch(null),
   display_name: z.string().catch(''),
   domain: z.string().catch(''),
-  emojis: filteredArray(customEmojiSchema).catch([]),
+  emojis: filteredArray(customEmojiSchema),
   group_visibility: z.string().catch(''), // TruthSocial
   header: z.string().catch(headerMissing),
   header_static: z.string().catch(''),

@@ -74,11 +74,11 @@ const minifyStatus = (status: StatusRecord): ReducerStatus => {
 };
 
 // Gets titles of poll options from status
-const getPollOptionTitles = ({ poll }: StatusRecord): ImmutableList<string> => {
+const getPollOptionTitles = ({ poll }: StatusRecord): readonly string[] => {
   if (poll && typeof poll === 'object') {
     return poll.options.map(({ title }) => title);
   } else {
-    return ImmutableList();
+    return [];
   }
 };
 

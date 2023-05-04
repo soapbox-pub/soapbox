@@ -1,10 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
+import { buildRelationship } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ListRecord, ReducerRecord } from 'soapbox/reducers/user-lists';
 
-import { normalizeAccount, normalizeInstance, normalizeRelationship } from '../../normalizers';
+import { normalizeAccount, normalizeInstance } from '../../normalizers';
 import {
   authorizeFollowRequest,
   blockAccount,
@@ -1340,7 +1341,7 @@ describe('fetchRelationships()', () => {
     describe('without newAccountIds', () => {
       beforeEach(() => {
         const state = rootState
-          .set('relationships', ImmutableMap({ [id]: normalizeRelationship({}) }))
+          .set('relationships', ImmutableMap({ [id]: buildRelationship() }))
           .set('me', '123');
         store = mockStore(state);
       });

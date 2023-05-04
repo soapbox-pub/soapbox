@@ -11,10 +11,9 @@ import {
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { normalizePoll } from 'soapbox/normalizers/poll';
+import { cardSchema, pollSchema } from 'soapbox/schemas';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
@@ -109,18 +108,20 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
 
 // Normalize the poll in the status, if applicable
 const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
-  if (status.hasIn(['poll', 'options'])) {
-    return status.update('poll', ImmutableMap(), normalizePoll);
-  } else {
+  try {
+    const poll = pollSchema.parse(status.get('poll').toJS());
+    return status.set('poll', poll);
+  } catch (_e) {
     return status.set('poll', null);
   }
 };
 
 // Normalize card
 const normalizeStatusCard = (status: ImmutableMap<string, any>) => {
-  if (status.get('card')) {
-    return status.update('card', ImmutableMap(), normalizeCard);
-  } else {
+  try {
+    const card = cardSchema.parse(status.get('card').toJS());
+    return status.set('card', card);
+  } catch (e) {
     return status.set('card', null);
   }
 };

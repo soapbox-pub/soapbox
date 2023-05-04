@@ -146,12 +146,16 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes poll and poll options', () => {
-    const status = { poll: { options: [{ title: 'Apples' }] } };
+    const status = { poll: { id: '1', options: [{ title: 'Apples' }, { title: 'Oranges' }] } };
     const result = normalizeStatus(status);
     const poll = result.poll as Poll;
 
     const expected = {
-      options: [{ title: 'Apples', votes_count: 0 }],
+      id: '1',
+      options: [
+        { title: 'Apples', votes_count: 0 },
+        { title: 'Oranges', votes_count: 0 },
+      ],
       emojis: [],
       expired: false,
       multiple: false,
@@ -161,9 +165,7 @@ describe('normalizeStatus()', () => {
       voted: false,
     };
 
-    expect(ImmutableRecord.isRecord(poll)).toBe(true);
-    expect(ImmutableRecord.isRecord(poll.options.get(0))).toBe(true);
-    expect(poll.toJS()).toMatchObject(expected);
+    expect(poll).toMatchObject(expected);
   });
 
   it('normalizes a Pleroma logged-out poll', () => {
@@ -182,12 +184,10 @@ describe('normalizeStatus()', () => {
     const poll = result.poll as Poll;
 
     // Emojifies poll options
-    expect(poll.options.get(1)?.title_emojified)
+    expect(poll.options[1].title_emojified)
       .toContain('emojione');
 
-    // Parses emojis as Immutable.Record's
-    expect(ImmutableRecord.isRecord(poll.emojis.get(0))).toBe(true);
-    expect(poll.emojis.get(1)?.shortcode).toEqual('soapbox');
+    expect(poll.emojis[1].shortcode).toEqual('soapbox');
   });
 
   it('normalizes a card', () => {
@@ -195,7 +195,6 @@ describe('normalizeStatus()', () => {
     const result = normalizeStatus(status);
     const card = result.card as Card;
 
-    expect(ImmutableRecord.isRecord(card)).toBe(true);
     expect(card.type).toEqual('link');
     expect(card.provider_url).toEqual('https://soapbox.pub');
   });

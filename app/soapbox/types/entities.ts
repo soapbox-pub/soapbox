@@ -5,11 +5,9 @@ import {
   AnnouncementRecord,
   AnnouncementReactionRecord,
   AttachmentRecord,
-  CardRecord,
   ChatRecord,
   ChatMessageRecord,
   EmojiRecord,
-  EmojiReactionRecord,
   FieldRecord,
   FilterRecord,
   FilterKeywordRecord,
@@ -20,9 +18,6 @@ import {
   LocationRecord,
   MentionRecord,
   NotificationRecord,
-  PollRecord,
-  PollOptionRecord,
-  RelationshipRecord,
   StatusEditRecord,
   StatusRecord,
   TagRecord,
@@ -37,11 +32,9 @@ type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Announcement = ReturnType<typeof AnnouncementRecord>;
 type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
 type Attachment = ReturnType<typeof AttachmentRecord>;
-type Card = ReturnType<typeof CardRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
-type EmojiReaction = ReturnType<typeof EmojiReactionRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Filter = ReturnType<typeof FilterRecord>;
 type FilterKeyword = ReturnType<typeof FilterKeywordRecord>;
@@ -52,9 +45,6 @@ type List = ReturnType<typeof ListRecord>;
 type Location = ReturnType<typeof LocationRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
-type Poll = ReturnType<typeof PollRecord>;
-type PollOption = ReturnType<typeof PollOptionRecord>;
-type Relationship = ReturnType<typeof RelationshipRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
 type Tag = ReturnType<typeof TagRecord>;
 
@@ -82,11 +72,9 @@ export {
   Announcement,
   AnnouncementReaction,
   Attachment,
-  Card,
   Chat,
   ChatMessage,
   Emoji,
-  EmojiReaction,
   Field,
   Filter,
   FilterKeyword,
@@ -97,9 +85,6 @@ export {
   Location,
   Mention,
   Notification,
-  Poll,
-  PollOption,
-  Relationship,
   Status,
   StatusEdit,
   Tag,
@@ -110,7 +95,12 @@ export {
 };
 
 export type {
+  Card,
+  EmojiReaction,
   Group,
   GroupMember,
   GroupRelationship,
+  Poll,
+  PollOption,
+  Relationship,
 } from 'soapbox/schemas';
