@@ -17,8 +17,7 @@ type RouteParams = { groupId: string };
 
 const messages = defineMessages({
   heading: { id: 'column.group_pending_requests', defaultMessage: 'Pending requests' },
-  authorizeFail: { id: 'group.group_mod_authorize.fail', defaultMessage: 'Failed to approve @{name}' },
-  rejectFail: { id: 'group.group_mod_reject.fail', defaultMessage: 'Failed to reject @{name}' },
+  authorizeRejectFail: { id: 'group.membership_requests.fail', defaultMessage: 'Group owner or admin has already taken action on this request.' },
 });
 
 interface IMembershipRequest {
@@ -84,17 +83,19 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
       .then(() => Promise.resolve())
       .catch(() => {
         refetch();
-        toast.error(intl.formatMessage(messages.authorizeFail, { name: account.username }));
+        toast.error(intl.formatMessage(messages.authorizeRejectFail));
         return Promise.reject();
       });
   }
 
   async function handleReject(account: AccountEntity) {
-    try {
-      await reject(account.id);
-    } catch (_e) {
-      toast.error(intl.formatMessage(messages.rejectFail, { name: account.username }));
-    }
+    return reject(account.id)
+      .then(() => Promise.resolve())
+      .catch(() => {
+        refetch();
+        toast.error(intl.formatMessage(messages.authorizeRejectFail));
+        return Promise.reject();
+      });
   }
 
   return (
