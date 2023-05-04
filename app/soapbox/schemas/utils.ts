@@ -5,6 +5,9 @@ import type { CustomEmoji } from './custom-emoji';
 /** Ensure HTML content is a string, and drop empty `<p>` tags. */
 const contentSchema = z.string().catch('').transform((value) => value === '<p></p>' ? '' : value);
 
+/** Validate to Mastodon's date format, or use the current date. */
+const dateSchema = z.string().datetime().catch(new Date().toUTCString());
+
 /** Validates individual items in an array, dropping any that aren't valid. */
 function filteredArray<T extends z.ZodTypeAny>(schema: T) {
   return z.any().array().catch([])
@@ -27,4 +30,4 @@ function makeCustomEmojiMap(customEmojis: CustomEmoji[]) {
   }, {});
 }
 
-export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema };
+export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema };
