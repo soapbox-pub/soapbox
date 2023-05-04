@@ -121,4 +121,4 @@ const accountSchema = z.object({
 
 type Account = z.infer<typeof accountSchema>;
 
-export { accountSchema, Account };
+export { accountSchema, type Account };

@@ -11,4 +11,4 @@ const emojiReactionSchema = z.object({
 
 type EmojiReaction = z.infer<typeof emojiReactionSchema>;
 
-export { emojiReactionSchema, EmojiReaction };
+export { emojiReactionSchema, type EmojiReaction };
