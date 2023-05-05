@@ -102,6 +102,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
                 require('@tabler/icons/pin.svg')
             }
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
+            data-testid='pin-icon'
           />
         </Tooltip>
       );
@@ -123,13 +124,18 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
   };
 
   return (
-    <HStack alignItems='center' justifyContent='between'>
+    <HStack
+      alignItems='center'
+      justifyContent='between'
+      data-testid='group-tag-list-item'
+    >
       <Link to={`/group/${group.slug}/tag/${tag.id}`} className='group grow'>
         <Stack>
           <Text
             weight='bold'
             theme={(tag.visible || !isOwner) ? 'default' : 'subtle'}
             className='group-hover:underline'
+            data-testid='group-tag-name'
           >
             #{tag.name}
           </Text>
