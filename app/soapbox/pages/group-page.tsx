@@ -123,17 +123,19 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
       });
     }
 
-    items.push({
-      text: intl.formatMessage(messages.members),
-      to: `/group/${group?.slug}/members`,
-      name: '/group/:groupSlug/members',
-      count: pending.length,
-    },
-    {
-      text: intl.formatMessage(messages.media),
-      to: `/group/${group?.slug}/media`,
-      name: '/group/:groupSlug/media',
-    });
+    items.push(
+      {
+        text: intl.formatMessage(messages.media),
+        to: `/group/${group?.slug}/media`,
+        name: '/group/:groupSlug/media',
+      },
+      {
+        text: intl.formatMessage(messages.members),
+        to: `/group/${group?.slug}/members`,
+        name: '/group/:groupSlug/members',
+        count: pending.length,
+      },
+    );
 
     return items;
   }, [features.groupsTags, pending.length]);
