@@ -20,7 +20,7 @@ export function isRtl(text: string): boolean {
     return false;
   }
   // Remove http(s), (s)ftp, ws(s), blob and smtp(s) links
-  text = text.replace(/(?:https?|ftp|sftp|ws|wss|blob|smtp|smtps):\/\/[\n\S]+/g, '');
+  text = text.replace(/(?:https?|ftp|sftp|ws|wss|blob|smtp|smtps):\/\/[\S]+/g, '');
   // Remove email address links
   text = text.replace(/(mailto:)([^\s@]+@[^\s@]+\.[^\s@]+)/g, '');
   // Remove Phone numbe links
