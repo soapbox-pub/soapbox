@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -17,7 +18,8 @@ type RouteParams = { groupId: string };
 
 const messages = defineMessages({
   heading: { id: 'column.group_pending_requests', defaultMessage: 'Pending requests' },
-  authorizeRejectFail: { id: 'group.membership_requests.fail', defaultMessage: 'Group owner or admin has already taken action on this request.' },
+  authorizeFail: { id: 'group.group_mod_authorize.fail', defaultMessage: 'Failed to approve @{name}' },
+  rejectFail: { id: 'group.group_mod_reject.fail', defaultMessage: 'Failed to reject @{name}' },
 });
 
 interface IMembershipRequest {
@@ -81,9 +83,15 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   async function handleAuthorize(account: AccountEntity) {
     return authorize(account.id)
       .then(() => Promise.resolve())
-      .catch(() => {
+      .catch((error: AxiosError) => {
         refetch();
-        toast.error(intl.formatMessage(messages.authorizeRejectFail));
+
+        let message = intl.formatMessage(messages.authorizeFail, { name: account.username });
+        if (error.response?.status === 409) {
+          message = (error.response?.data as any).error;
+        }
+        toast.error(message);
+
         return Promise.reject();
       });
   }
@@ -91,9 +99,15 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   async function handleReject(account: AccountEntity) {
     return reject(account.id)
       .then(() => Promise.resolve())
-      .catch(() => {
+      .catch((error: AxiosError) => {
         refetch();
-        toast.error(intl.formatMessage(messages.authorizeRejectFail));
+
+        let message = intl.formatMessage(messages.rejectFail, { name: account.username });
+        if (error.response?.status === 409) {
+          message = (error.response?.data as any).error;
+        }
+        toast.error(message);
+
         return Promise.reject();
       });
   }
