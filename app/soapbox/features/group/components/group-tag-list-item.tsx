@@ -137,7 +137,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
             {intl.formatMessage(messages.total)}:
             {' '}
             <Text size='sm' theme='inherit' weight='semibold' tag='span'>
-              {shortNumberFormat(tag.groups)}
+              {shortNumberFormat(tag.uses)}
             </Text>
           </Text>
         </Stack>
