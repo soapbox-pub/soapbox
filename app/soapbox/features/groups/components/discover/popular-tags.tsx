@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { usePopularTags } from 'soapbox/api/hooks';
 import Link from 'soapbox/components/link';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { usePopularTags } from 'soapbox/hooks/api';
 
 import TagListItem from './tag-list-item';
 

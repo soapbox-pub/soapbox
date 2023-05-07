@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useGroupLookup } from 'soapbox/api/hooks';
 import ColumnLoading from 'soapbox/features/ui/components/column-loading';
-import { useGroupLookup } from 'soapbox/hooks/api/groups/useGroupLookup';
 
 import { Layout } from '../ui';
 

@@ -3,11 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import { useGroups } from 'soapbox/api/hooks';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks';
-import { useGroups } from 'soapbox/hooks/api';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';

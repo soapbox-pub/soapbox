@@ -1180,7 +1180,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Para subir, arrastrá y soltá",
   "upload_button.label": "Agregar medios",
   "upload_error.image_size_limit": "Image exceeds the current file size limit ({limit})",
   "upload_error.limit": "Se excedió el límite de subida de archivos.",

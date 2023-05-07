@@ -1515,7 +1515,6 @@
   "trendsPanel.viewAll": "إظهار الكل",
   "unauthorized_modal.text": "يجب عليك تسجيل الدخول لتتمكن من القيام بذلك.",
   "unauthorized_modal.title": "التسجيل في {site_title}",
-  "upload_area.title": "اسحب ملف وافلته لتحميله",
   "upload_button.label": "إرفاق وسائط (JPEG، PNG، GIF، WebM، MP4، MOV)",
   "upload_error.image_size_limit": "الصورة تجاوزت الحجم المسموح به: ({limt})",
   "upload_error.limit": "لقد تم بلوغ الحد الأقصى المسموح به لإرسال الملفات.",

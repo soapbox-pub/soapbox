@@ -1,12 +1,10 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { normalizeEmojiReaction } from 'soapbox/normalizers/emoji-reaction';
-
 import { render, screen } from '../../../../jest/test-helpers';
 import ChatMessageReaction from '../chat-message-reaction';
 
-const emojiReaction = normalizeEmojiReaction({
+const emojiReaction = ({
   name: '👍',
   count: 1,
   me: false,
@@ -56,7 +54,7 @@ describe('<ChatMessageReaction />', () => {
 
     render(
       <ChatMessageReaction
-        emojiReaction={normalizeEmojiReaction({
+        emojiReaction={({
           name: '👍',
           count: 1,
           me: true,

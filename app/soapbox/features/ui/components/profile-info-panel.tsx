@@ -120,7 +120,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
-              <Text size='sm' theme='muted' direction='ltr'>
+              <Text size='sm' theme='muted' direction='ltr' truncate>
                 @{username}
               </Text>
             </HStack>

@@ -421,7 +421,6 @@
   "toast.view": "View",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {inimene} other {inimesed}} talking",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Lohista & aseta üleslaadimiseks",
   "upload_button.label": "Lisa meedia (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.limit": "Faili üleslaadimise limiit ületatud.",
   "upload_error.poll": "Küsitlustes pole faili üleslaadimine lubatud.",

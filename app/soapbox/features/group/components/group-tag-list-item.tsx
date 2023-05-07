@@ -2,11 +2,11 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { useUpdateGroupTag } from 'soapbox/api/hooks';
 import { HStack, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useUpdateGroupTag } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -102,6 +102,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
                 require('@tabler/icons/pin.svg')
             }
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
+            data-testid='pin-icon'
           />
         </Tooltip>
       );
@@ -123,13 +124,18 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
   };
 
   return (
-    <HStack alignItems='center' justifyContent='between'>
+    <HStack
+      alignItems='center'
+      justifyContent='between'
+      data-testid='group-tag-list-item'
+    >
       <Link to={`/group/${group.slug}/tag/${tag.id}`} className='group grow'>
         <Stack>
           <Text
             weight='bold'
             theme={(tag.visible || !isOwner) ? 'default' : 'subtle'}
             className='group-hover:underline'
+            data-testid='group-tag-name'
           >
             #{tag.name}
           </Text>
@@ -137,7 +143,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
             {intl.formatMessage(messages.total)}:
             {' '}
             <Text size='sm' theme='inherit' weight='semibold' tag='span'>
-              {shortNumberFormat(tag.groups)}
+              {shortNumberFormat(tag.uses)}
             </Text>
           </Text>
         </Stack>

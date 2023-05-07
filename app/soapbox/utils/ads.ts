@@ -1,4 +1,4 @@
-import type { Ad } from 'soapbox/types/soapbox';
+import type { Ad } from 'soapbox/schemas';
 
 /** Time (ms) window to not display an ad if it's about to expire. */
 const AD_EXPIRY_THRESHOLD = 5 * 60 * 1000;

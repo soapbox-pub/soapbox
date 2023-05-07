@@ -58,6 +58,7 @@ const BirthdayPanel = ({ limit }: IBirthdayPanel) => {
           key={accountId}
           // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
           id={accountId}
+          withRelationship={false}
         />
       ))}
     </Widget>

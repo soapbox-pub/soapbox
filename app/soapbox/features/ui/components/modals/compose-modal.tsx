@@ -4,10 +4,10 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
 import { openModal, closeModal } from 'soapbox/actions/modals';
+import { useGroup } from 'soapbox/api/hooks';
 import { checkComposeContent } from 'soapbox/components/modal-root';
 import { HStack, Modal, Text, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/hooks/api';
 
 import ComposeForm from '../../../compose/components/compose-form';
 

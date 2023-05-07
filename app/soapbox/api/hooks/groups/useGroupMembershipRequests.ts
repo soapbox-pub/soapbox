@@ -1,10 +1,10 @@
 import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities, useIncrementEntity } from 'soapbox/entity-store/hooks';
+import { useDismissEntity, useEntities } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
 import { accountSchema } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
-import { useGroupRelationship } from './useGroups';
+import { useGroupRelationship } from './useGroupRelationship';
 
 import type { ExpandedEntitiesPath } from 'soapbox/entity-store/hooks/types';
 
@@ -14,7 +14,7 @@ function useGroupMembershipRequests(groupId: string) {
 
   const { entity: relationship } = useGroupRelationship(groupId);
 
-  const { entities, invalidate, ...rest } = useEntities(
+  const { entities, invalidate, fetchEntities, ...rest } = useEntities(
     path,
     () => api.get(`/api/v1/groups/${groupId}/membership_requests`),
     {
@@ -23,13 +23,13 @@ function useGroupMembershipRequests(groupId: string) {
     },
   );
 
-  const { incrementEntity: authorize } = useIncrementEntity(path, -1, async (accountId: string) => {
+  const { dismissEntity: authorize } = useDismissEntity(path, async (accountId: string) => {
     const response = await api.post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/authorize`);
     invalidate();
     return response;
   });
 
-  const { incrementEntity: reject } = useIncrementEntity(path, -1, async (accountId: string) => {
+  const { dismissEntity: reject } = useDismissEntity(path, async (accountId: string) => {
     const response = await api.post(`/api/v1/groups/${groupId}/membership_requests/${accountId}/reject`);
     invalidate();
     return response;
@@ -37,6 +37,7 @@ function useGroupMembershipRequests(groupId: string) {
 
   return {
     accounts: entities,
+    refetch: fetchEntities,
     authorize,
     reject,
     ...rest,

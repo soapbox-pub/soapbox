@@ -3,10 +3,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import { useDeleteGroup, useGroup } from 'soapbox/api/hooks';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useBackend, useGroupsPath } from 'soapbox/hooks';
-import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { TRUTHSOCIAL } from 'soapbox/utils/features';
@@ -16,16 +16,16 @@ import ColumnForbidden from '../ui/components/column-forbidden';
 type RouteParams = { groupId: string };
 
 const messages = defineMessages({
-  heading: { id: 'column.manage_group', defaultMessage: 'Manage group' },
-  editGroup: { id: 'manage_group.edit_group', defaultMessage: 'Edit group' },
+  heading: { id: 'column.manage_group', defaultMessage: 'Manage Group' },
+  editGroup: { id: 'manage_group.edit_group', defaultMessage: 'Edit Group' },
   pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending Requests' },
   blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned Members' },
-  deleteGroup: { id: 'manage_group.delete_group', defaultMessage: 'Delete group' },
+  deleteGroup: { id: 'manage_group.delete_group', defaultMessage: 'Delete Group' },
   deleteConfirm: { id: 'confirmations.delete_group.confirm', defaultMessage: 'Delete' },
-  deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete group' },
+  deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete Group' },
   deleteMessage: { id: 'confirmations.delete_group.message', defaultMessage: 'Are you sure you want to delete this group? This is a permanent action that cannot be undone.' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
-  other: { id: 'settings.other', defaultMessage: 'Other options' },
+  other: { id: 'settings.other', defaultMessage: 'Other Options' },
   deleteSuccess: { id: 'group.delete.success', defaultMessage: 'Group successfully deleted' },
 });
 

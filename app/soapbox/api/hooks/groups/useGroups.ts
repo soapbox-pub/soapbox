@@ -1,24 +1,20 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
-import { Group, groupSchema } from 'soapbox/schemas';
+import { useApi } from 'soapbox/hooks';
+import { useFeatures } from 'soapbox/hooks/useFeatures';
+import { groupSchema, type Group } from 'soapbox/schemas/group';
 
-import { useGroupRelationships } from '../api/groups/useGroups';
-import { useApi } from '../useApi';
-import { useFeatures } from '../useFeatures';
+import { useGroupRelationships } from './useGroupRelationships';
 
-function usePopularGroups() {
+function useGroups(q: string = '') {
   const api = useApi();
   const features = useFeatures();
 
   const { entities, ...result } = useEntities<Group>(
-    [Entities.GROUPS, 'popular'],
-    () => api.get('/api/v1/truth/trends/groups'),
-    {
-      schema: groupSchema,
-      enabled: features.groupsDiscovery,
-    },
+    [Entities.GROUPS, 'search', q],
+    () => api.get('/api/v1/groups', { params: { q } }),
+    { enabled: features.groups, schema: groupSchema },
   );
-
   const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
 
   const groups = entities.map((group) => ({
@@ -32,4 +28,4 @@ function usePopularGroups() {
   };
 }
 
-export { usePopularGroups };
+export { useGroups };

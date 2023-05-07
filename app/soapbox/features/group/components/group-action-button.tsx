@@ -3,11 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
+import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/api/hooks';
 import { Button } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/hooks/api';
 import { queryClient } from 'soapbox/queries/client';
 import { GroupKeys } from 'soapbox/queries/groups';
 import { GroupRoles } from 'soapbox/schemas/group-member';

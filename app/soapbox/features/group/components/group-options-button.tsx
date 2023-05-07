@@ -3,10 +3,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
+import { useLeaveGroup } from 'soapbox/api/hooks';
 import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
 import { IconButton } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { useLeaveGroup } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 

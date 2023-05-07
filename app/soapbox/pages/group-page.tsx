@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
+import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
 import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import { Column, Icon, Layout, Stack, Text } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
@@ -14,11 +15,10 @@ import {
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useFeatures, useOwnAccount } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/hooks/api';
-import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
-import { Group } from 'soapbox/schemas';
 
 import { Tabs } from '../components/ui';
+
+import type { Group } from 'soapbox/schemas';
 
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },
@@ -123,17 +123,19 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
       });
     }
 
-    items.push({
-      text: intl.formatMessage(messages.members),
-      to: `/group/${group?.slug}/members`,
-      name: '/group/:groupSlug/members',
-      count: pending.length,
-    },
-    {
-      text: intl.formatMessage(messages.media),
-      to: `/group/${group?.slug}/media`,
-      name: '/group/:groupSlug/media',
-    });
+    items.push(
+      {
+        text: intl.formatMessage(messages.media),
+        to: `/group/${group?.slug}/media`,
+        name: '/group/:groupSlug/media',
+      },
+      {
+        text: intl.formatMessage(messages.members),
+        to: `/group/${group?.slug}/members`,
+        name: '/group/:groupSlug/members',
+        count: pending.length,
+      },
+    );
 
     return items;
   }, [features.groupsTags, pending.length]);

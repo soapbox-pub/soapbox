@@ -1188,7 +1188,6 @@
   "trendsPanel.viewAll": "すべて表示",
   "unauthorized_modal.text": "ログインする必要があります。",
   "unauthorized_modal.title": "{site_title}へ新規登録",
-  "upload_area.title": "ドラッグ＆ドロップでアップロード",
   "upload_button.label": "メディアを追加 (JPG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.image_size_limit": "画像が現在のファイルサイズ制限({limit})を越えています",
   "upload_error.limit": "アップロードできる上限を超えています。",

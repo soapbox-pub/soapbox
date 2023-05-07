@@ -4,6 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { groupKick } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
+import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu';
 import { HStack } from 'soapbox/components/ui';
@@ -11,7 +12,6 @@ import { deleteEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/hooks/api';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
@@ -180,7 +180,11 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   }
 
   return (
-    <HStack alignItems='center' justifyContent='between'>
+    <HStack
+      alignItems='center'
+      justifyContent='between'
+      data-testid='group-member-list-item'
+    >
       <div className='w-full'>
         <Account account={member.account} withRelationship={false} />
       </div>
@@ -188,6 +192,7 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       <HStack alignItems='center' space={2}>
         {(isMemberOwner || isMemberAdmin) ? (
           <span
+            data-testid='role-badge'
             className={
               clsx('inline-flex items-center rounded px-2 py-1 text-xs font-medium capitalize', {
                 'bg-primary-200 text-primary-500': isMemberOwner,

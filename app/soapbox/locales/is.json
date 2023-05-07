@@ -1130,7 +1130,6 @@
   "trendsPanel.viewAll": "View all",
   "unauthorized_modal.text": "Þú þarft að vera skráður inn til að gera þetta.",
   "unauthorized_modal.title": "Nýskrá á {site_title}",
-  "upload_area.title": "Dragðu-og-slepptu hér til að senda inn",
   "upload_button.label": "Bæta við viðhengi",
   "upload_error.image_size_limit": "Mynd fer yfir núverandi skráarstærðarmörk ({limit})",
   "upload_error.limit": "Fór yfir takmörk á innsendingum skráa.",

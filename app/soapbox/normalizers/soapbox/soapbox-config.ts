@@ -6,11 +6,11 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
+import { adSchema } from 'soapbox/schemas';
+import { filteredArray } from 'soapbox/schemas/utils';
 import { normalizeUsername } from 'soapbox/utils/input';
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
-
-import { normalizeAd } from './ad';
 
 import type {
   Ad,
@@ -125,8 +125,12 @@ export const SoapboxConfigRecord = ImmutableRecord({
 type SoapboxConfigMap = ImmutableMap<string, any>;
 
 const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const ads = ImmutableList<Record<string, any>>(soapboxConfig.get('ads'));
-  return soapboxConfig.set('ads', ads.map(normalizeAd));
+  if (soapboxConfig.has('ads')) {
+    const ads = filteredArray(adSchema).parse(soapboxConfig.get('ads').toJS());
+    return soapboxConfig.set('ads', ads);
+  } else {
+    return soapboxConfig;
+  }
 };
 
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {

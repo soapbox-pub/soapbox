@@ -6,8 +6,8 @@ import {
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-
-import { normalizeEmojiReaction } from './emoji-reaction';
+import { emojiReactionSchema } from 'soapbox/schemas';
+import { filteredArray } from 'soapbox/schemas/utils';
 
 import type { Attachment, Card, Emoji, EmojiReaction } from 'soapbox/types/entities';
 
@@ -20,7 +20,7 @@ export const ChatMessageRecord = ImmutableRecord({
   created_at: '',
   emojis: ImmutableList<Emoji>(),
   expiration: null as number | null,
-  emoji_reactions: null as ImmutableList<EmojiReaction> | null,
+  emoji_reactions: null as readonly EmojiReaction[] | null,
   id: '',
   unread: false,
   deleting: false,
@@ -41,13 +41,8 @@ const normalizeMedia = (status: ImmutableMap<string, any>) => {
 };
 
 const normalizeChatMessageEmojiReaction = (chatMessage: ImmutableMap<string, any>) => {
-  const emojiReactions = chatMessage.get('emoji_reactions');
-
-  if (emojiReactions) {
-    return chatMessage.set('emoji_reactions', ImmutableList(emojiReactions.map(normalizeEmojiReaction)));
-  } else {
-    return chatMessage;
-  }
+  const emojiReactions = ImmutableList(chatMessage.get('emoji_reactions') || []);
+  return chatMessage.set('emoji_reactions', filteredArray(emojiReactionSchema).parse(emojiReactions.toJS()));
 };
 
 /** Rewrite `<p></p>` to empty string. */

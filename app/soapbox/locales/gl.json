@@ -426,7 +426,6 @@
   "toast.view": "View",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} outras {people}} conversando",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Arrastre e solte para subir",
   "upload_button.label": "Engadir medios (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.limit": "Excedeu o límite de subida de ficheiros.",
   "upload_error.poll": "Non se poden subir ficheiros nas sondaxes.",

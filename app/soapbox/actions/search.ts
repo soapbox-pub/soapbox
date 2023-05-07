@@ -1,7 +1,7 @@
 import api from '../api';
 
 import { fetchRelationships } from './accounts';
-import { importFetchedAccounts, importFetchedGroups, importFetchedStatuses } from './importer';
+import { importFetchedAccounts, importFetchedStatuses } from './importer';
 
 import type { AxiosError } from 'axios';
 import type { SearchFilter } from 'soapbox/reducers/search';
@@ -83,10 +83,6 @@ const submitSearch = (filter?: SearchFilter) =>
         dispatch(importFetchedStatuses(response.data.statuses));
       }
 
-      if (response.data.groups) {
-        dispatch(importFetchedGroups(response.data.groups));
-      }
-
       dispatch(fetchSearchSuccess(response.data, value, type));
       dispatch(fetchRelationships(response.data.accounts.map((item: APIEntity) => item.id)));
     }).catch(error => {
@@ -141,10 +137,6 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
 
     if (data.statuses) {
       dispatch(importFetchedStatuses(data.statuses));
-    }
-
-    if (data.groups) {
-      dispatch(importFetchedGroups(data.groups));
     }
 
     dispatch(expandSearchSuccess(data, value, type));

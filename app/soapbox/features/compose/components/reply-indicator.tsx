@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import { Stack, Text } from 'soapbox/components/ui';
+import Markup from 'soapbox/components/markup';
+import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isRtl } from 'soapbox/rtl';
 
@@ -45,8 +46,8 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         hideActions={hideActions}
       />
 
-      <Text
-        className='status__content break-words'
+      <Markup
+        className='break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}

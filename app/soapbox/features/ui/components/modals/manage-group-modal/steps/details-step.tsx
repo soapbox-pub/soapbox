@@ -1,12 +1,12 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { CreateGroupParams, useGroupValidation } from 'soapbox/api/hooks';
 import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
 import AvatarPicker from 'soapbox/features/group/components/group-avatar-picker';
 import HeaderPicker from 'soapbox/features/group/components/group-header-picker';
 import GroupTagsField from 'soapbox/features/group/components/group-tags-field';
 import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
-import { CreateGroupParams, useGroupValidation } from 'soapbox/hooks/api';
 import { usePreview } from 'soapbox/hooks/forms';
 import resizeImage from 'soapbox/utils/resize-image';
 

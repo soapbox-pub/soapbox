@@ -5,9 +5,9 @@ import { useLocation, useRouteMatch } from 'react-router-dom';
 
 import { groupComposeModal } from 'soapbox/actions/compose';
 import { openModal } from 'soapbox/actions/modals';
+import { useGroupLookup } from 'soapbox/api/hooks';
 import { Avatar, HStack, Icon } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
-import { useGroupLookup } from 'soapbox/hooks/api/groups/useGroupLookup';
 
 const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },

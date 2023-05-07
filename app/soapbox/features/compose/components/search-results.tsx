@@ -9,13 +9,11 @@ import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { HStack, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import GroupContainer from 'soapbox/containers/group-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
-import PlaceholderGroupCard from 'soapbox/features/placeholder/components/placeholder-group-card';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -24,7 +22,6 @@ import type { SearchFilter } from 'soapbox/reducers/search';
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
   statuses: { id: 'search_results.statuses', defaultMessage: 'Posts' },
-  groups: { id: 'search_results.groups', defaultMessage: 'Groups' },
   hashtags: { id: 'search_results.hashtags', defaultMessage: 'Hashtags' },
 });
 
@@ -33,7 +30,6 @@ const SearchResults = () => {
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const features = useFeatures();
 
   const value = useAppSelector((state) => state.search.submittedValue);
   const results = useAppSelector((state) => state.search.results);
@@ -63,14 +59,6 @@ const SearchResults = () => {
         text: intl.formatMessage(messages.statuses),
         action: () => selectFilter('statuses'),
         name: 'statuses',
-      },
-    );
-
-    if (features.groups) items.push(
-      {
-        text: intl.formatMessage(messages.groups),
-        action: () => selectFilter('groups'),
-        name: 'groups',
       },
     );
 
@@ -186,31 +174,6 @@ const SearchResults = () => {
     }
   }
 
-  if (selectedFilter === 'groups') {
-    hasMore = results.groupsHasMore;
-    loaded = results.groupsLoaded;
-    placeholderComponent = PlaceholderGroupCard;
-
-    if (results.groups && results.groups.size > 0) {
-      searchResults = results.groups.map((groupId: string) => (
-        <GroupContainer id={groupId} />
-      ));
-      resultsIds = results.groups;
-    } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
-      searchResults = null;
-    } else if (loaded) {
-      noResultsMessage = (
-        <div className='empty-column-indicator'>
-          <FormattedMessage
-            id='empty_column.search.groups'
-            defaultMessage='There are no groups results for "{term}"'
-            values={{ term: value }}
-          />
-        </div>
-      );
-    }
-  }
-
   if (selectedFilter === 'hashtags') {
     hasMore = results.hashtagsHasMore;
     loaded = results.hashtagsLoaded;
@@ -238,11 +201,11 @@ const SearchResults = () => {
       {filterByAccount ? (
         <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleUnsetAccount} />
-          <Text>
+          <Text truncate>
             <FormattedMessage
               id='search_results.filter_message'
               defaultMessage='You are searching for posts from @{acct}.'
-              values={{ acct: account }}
+              values={{ acct: <strong className='break-words'>{account}</strong> }}
             />
           </Text>
         </HStack>

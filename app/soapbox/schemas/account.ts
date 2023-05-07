@@ -22,7 +22,7 @@ const accountSchema = z.object({
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
-  emojis: filteredArray(customEmojiSchema).catch([]),
+  emojis: filteredArray(customEmojiSchema),
   favicon: z.string().catch(''),
   fields: z.any(), // TODO
   followers_count: z.number().catch(0),
@@ -43,8 +43,8 @@ const accountSchema = z.object({
   pleroma: z.any(), // TODO
   source: z.any(), // TODO
   statuses_count: z.number().catch(0),
-  uri: z.string().catch(''),
-  url: z.string().catch(''),
+  uri: z.string().url().catch(''),
+  url: z.string().url().catch(''),
   username: z.string().catch(''),
   verified: z.boolean().default(false),
   website: z.string().catch(''),

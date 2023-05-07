@@ -74,7 +74,7 @@ const Settings = () => {
         <CardBody>
           <List>
             <ListItem label={intl.formatMessage(messages.editProfile)} onClick={navigateToEditProfile}>
-              <span>{displayName}</span>
+              <span className='max-w-full truncate'>{displayName}</span>
             </ListItem>
           </List>
         </CardBody>

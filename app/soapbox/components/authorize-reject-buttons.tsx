@@ -51,7 +51,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
           await action();
           setState(past);
         } catch (e) {
-          console.error(e);
+          if (e) console.error(e);
         }
       };
       if (typeof countdown === 'number') {
