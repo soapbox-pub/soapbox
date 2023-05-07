@@ -8,6 +8,7 @@ LICENSE file in the /app/soapbox/features/compose/editor directory.
 */
 import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { AutoLinkPlugin, createLinkMatcherWithRegExp } from '@lexical/react/LexicalAutoLinkPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
@@ -23,6 +24,13 @@ import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+
+const LINK_MATCHERS = [
+  createLinkMatcherWithRegExp(
+    /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
+    (text) => text.startsWith('http') ? text : `https://${text}`,
+  ),
+];
 
 import nodes from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
@@ -142,10 +150,10 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
       <div className={clsx('lexical relative', className)} data-markup>
         <RichTextPlugin
           contentEditable={
-            <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste} onSubmit={() => alert('xd')}>
+            <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
                 className={clsx('mr-4 outline-none transition-[min-height] motion-reduce:transition-none', {
-                  'min-fh-[40px]': condensed,
+                  'min-h-[40px]': condensed,
                   'min-h-[100px]': !condensed,
                 })}
                 autoFocus={autoFocus}
@@ -172,6 +180,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         <HashtagPlugin />
         <MentionPlugin />
         <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
+        <AutoLinkPlugin matchers={LINK_MATCHERS} />
         {features.richText && <LinkPlugin />}
         {features.richText && <ListPlugin />}
         {features.richText && floatingAnchorElem && (
