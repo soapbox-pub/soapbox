@@ -443,7 +443,9 @@ const Thread: React.FC<IThread> = (props) => {
     );
   } else if (!status) {
     return (
-      <PlaceholderStatus />
+      <Column>
+        <PlaceholderStatus />
+      </Column>
     );
   }
 
