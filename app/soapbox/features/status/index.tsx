@@ -404,7 +404,7 @@ const Thread: React.FC<IThread> = (props) => {
   useEffect(() => {
     scroller.current?.scrollToIndex({
       index: ancestorsIds.size,
-      offset: -140,
+      offset: -146,
     });
 
     setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
