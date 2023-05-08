@@ -71,55 +71,53 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
 
-  const initialConfig: InitialConfigType = useMemo(function() {
-    return {
-      namespace: 'ComposeForm',
-      onError: console.error,
-      nodes,
-      theme: {
-        hashtag: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
-        mention: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
-        text: {
-          bold: 'font-bold',
-          code: 'font-mono',
-          italic: 'italic',
-          strikethrough: 'line-through',
-          underline: 'underline',
-          underlineStrikethrough: 'underline-line-through',
-        },
-        heading: {
-          h1: 'text-2xl font-bold',
-          h2: 'text-xl font-bold',
-          h3: 'text-lg font-semibold',
-        },
+  const initialConfig: InitialConfigType = useMemo(() => ({
+    namespace: 'ComposeForm',
+    onError: console.error,
+    nodes,
+    theme: {
+      hashtag: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
+      mention: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
+      text: {
+        bold: 'font-bold',
+        code: 'font-mono',
+        italic: 'italic',
+        strikethrough: 'line-through',
+        underline: 'underline',
+        underlineStrikethrough: 'underline-line-through',
       },
-      editorState: dispatch((_, getState) => {
-        const state = getState();
-        const compose = state.compose.get(composeId);
+      heading: {
+        h1: 'text-2xl font-bold',
+        h2: 'text-xl font-bold',
+        h3: 'text-lg font-semibold',
+      },
+    },
+    editorState: dispatch((_, getState) => {
+      const state = getState();
+      const compose = state.compose.get(composeId);
 
-        if (!compose) return;
+      if (!compose) return;
 
-        if (compose.editorState) {
-          return compose.editorState;
+      if (compose.editorState) {
+        return compose.editorState;
+      }
+
+      return function() {
+        if (compose.content_type === 'text/markdown') {
+          $convertFromMarkdownString(compose.text, TO_WYSIWYG_TRANSFORMERS);
+        } else {
+          const paragraph = $createParagraphNode();
+          const textNode = $createTextNode(compose.text);
+
+          paragraph.append(textNode);
+
+          $getRoot()
+            .clear()
+            .append(paragraph);
         }
-
-        return function() {
-          if (compose.content_type === 'text/markdown') {
-            $convertFromMarkdownString(compose.text, TO_WYSIWYG_TRANSFORMERS);
-          } else {
-            const paragraph = $createParagraphNode();
-            const textNode = $createTextNode(compose.text);
-
-            paragraph.append(textNode);
-
-            $getRoot()
-              .clear()
-              .append(paragraph);
-          }
-        };
-      }),
-    };
-  }, []);
+      };
+    }),
+  }), []);
 
   const [floatingAnchorElem, setFloatingAnchorElem] =
     useState<HTMLDivElement | null>(null);

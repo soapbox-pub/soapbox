@@ -45,6 +45,7 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 
 import { Icon } from 'soapbox/components/ui';
+import { useInstance } from 'soapbox/hooks';
 
 import { getDOMRangeRect } from '../utils/get-dom-range-rect';
 import { getSelectedNode } from '../utils/get-selected-node';
@@ -104,6 +105,8 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
   blockType: keyof typeof blockTypeToBlockName
   icon: string
 }) => {
+  const instance = useInstance();
+
   const [showDropDown, setShowDropDown] = useState(false);
 
   const formatParagraph = () => {
@@ -205,21 +208,25 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
               active={blockType === 'paragraph'}
               icon={blockTypeToIcon.paragraph}
             />
-            <ToolbarButton
-              onClick={() => formatHeading('h1')}
-              active={blockType === 'h1'}
-              icon={blockTypeToIcon.h1}
-            />
-            <ToolbarButton
-              onClick={() => formatHeading('h2')}
-              active={blockType === 'h2'}
-              icon={blockTypeToIcon.h2}
-            />
-            <ToolbarButton
-              onClick={() => formatHeading('h3')}
-              active={blockType === 'h3'}
-              icon={blockTypeToIcon.h3}
-            />
+            {instance.pleroma.getIn(['metadata', 'markup', 'allow_headings']) === true && (
+              <>
+                <ToolbarButton
+                  onClick={() => formatHeading('h1')}
+                  active={blockType === 'h1'}
+                  icon={blockTypeToIcon.h1}
+                />
+                <ToolbarButton
+                  onClick={() => formatHeading('h2')}
+                  active={blockType === 'h2'}
+                  icon={blockTypeToIcon.h2}
+                />
+                <ToolbarButton
+                  onClick={() => formatHeading('h3')}
+                  active={blockType === 'h3'}
+                  icon={blockTypeToIcon.h3}
+                />
+              </>
+            )}
             <ToolbarButton
               onClick={formatBulletList}
               active={blockType === 'bullet'}
