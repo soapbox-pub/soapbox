@@ -5,7 +5,7 @@ const historySchema = z.object({
   uses: z.coerce.number(),
 });
 
-/** // https://docs.joinmastodon.org/entities/tag */
+/** https://docs.joinmastodon.org/entities/tag */
 const tagSchema = z.object({
   name: z.string().min(1),
   url: z.string().url().catch(''),

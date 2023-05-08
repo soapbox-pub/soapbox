@@ -14,4 +14,4 @@ const groupRelationshipSchema = z.object({
 
 type GroupRelationship = z.infer<typeof groupRelationshipSchema>;
 
-export { groupRelationshipSchema, GroupRelationship };
+export { groupRelationshipSchema, type GroupRelationship };
