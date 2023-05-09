@@ -19,10 +19,17 @@ const Tombstone: React.FC<ITombstone> = ({ id, onMoveUp, onMoveDown }) => {
 
   return (
     <HotKeys handlers={handlers}>
-      <div className='focusable flex items-center justify-center border border-solid border-gray-200 bg-gray-100 p-9 dark:border-gray-800 dark:bg-gray-900 sm:rounded-xl' tabIndex={0}>
-        <Text>
-          <FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts are unavailable.' />
-        </Text>
+      <div className='h-16'>
+        <div
+          className='focusable flex h-[42px] items-center justify-center rounded-lg border-2 border-gray-200 text-center'
+        >
+          <Text theme='muted'>
+            <FormattedMessage
+              id='statuses.tombstone'
+              defaultMessage='One or more posts are unavailable.'
+            />
+          </Text>
+        </div>
       </div>
     </HotKeys>
   );

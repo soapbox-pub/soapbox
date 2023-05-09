@@ -13,7 +13,7 @@ import {
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { cardSchema, pollSchema } from 'soapbox/schemas';
+import { cardSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
@@ -35,6 +35,10 @@ export const EventRecord = ImmutableRecord({
   banner: null as Attachment | null,
   links: ImmutableList<Attachment>(),
 });
+
+interface Tombstone {
+  reason: 'deleted'
+}
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
@@ -72,6 +76,7 @@ export const StatusRecord = ImmutableRecord({
   sensitive: false,
   spoiler_text: '',
   tags: ImmutableList<ImmutableMap<string, any>>(),
+  tombstone: null as Tombstone | null,
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
@@ -113,6 +118,15 @@ const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
     return status.set('poll', poll);
   } catch (_e) {
     return status.set('poll', null);
+  }
+};
+
+const normalizeTombstone = (status: ImmutableMap<string, any>) => {
+  try {
+    const tombstone = tombstoneSchema.parse(status.get('tombstone').toJS());
+    return status.set('tombstone', tombstone);
+  } catch (_e) {
+    return status.set('tombstone', null);
   }
 };
 
@@ -246,6 +260,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixContent(status);
       normalizeFilterResults(status);
       normalizeDislikes(status);
+      normalizeTombstone(status);
     }),
   );
 };
