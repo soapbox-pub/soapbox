@@ -14,6 +14,7 @@ export { pollSchema, type Poll, type PollOption } from './poll';
 export { relationshipSchema, type Relationship } from './relationship';
 export { statusSchema, type Status } from './status';
 export { tagSchema, type Tag } from './tag';
+export { tombstoneSchema, type Tombstone } from './tombstone';
 
 // Soapbox
 export { adSchema, type Ad } from './soapbox/ad';

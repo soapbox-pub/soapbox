@@ -10,6 +10,10 @@ import { pollSchema } from './poll';
 import { tagSchema } from './tag';
 import { contentSchema, dateSchema, filteredArray } from './utils';
 
+const tombstoneSchema = z.object({
+  reason: z.enum(['deleted']),
+});
+
 const baseStatusSchema = z.object({
   account: accountSchema,
   application: z.object({
@@ -46,6 +50,7 @@ const baseStatusSchema = z.object({
   sensitive: z.coerce.boolean(),
   spoiler_text: contentSchema,
   tags: filteredArray(tagSchema),
+  tombstone: tombstoneSchema.nullable().optional(),
   uri: z.string().url().catch(''),
   url: z.string().url().catch(''),
   visibility: z.string().catch('public'),
