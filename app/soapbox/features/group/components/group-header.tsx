@@ -99,7 +99,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
 
       if (!isDefaultHeader(group.header)) {
         header = (
-          <a href={group.header} onClick={handleHeaderClick} target='_blank' className='relative'>
+          <a href={group.header} onClick={handleHeaderClick} target='_blank' className='relative w-full'>
             {header}
           </a>
         );
