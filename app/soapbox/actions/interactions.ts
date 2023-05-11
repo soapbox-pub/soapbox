@@ -160,7 +160,7 @@ const favourite = (status: StatusEntity) =>
 
     dispatch(favouriteRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.id}/favourite`).then(function(response) {
       dispatch(favouriteSuccess(status));
     }).catch(function(error) {
       dispatch(favouriteFail(status, error));
@@ -173,7 +173,7 @@ const unfavourite = (status: StatusEntity) =>
 
     dispatch(unfavouriteRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/unfavourite`).then(() => {
+    api(getState).post(`/api/v1/statuses/${status.id}/unfavourite`).then(() => {
       dispatch(unfavouriteSuccess(status));
     }).catch(error => {
       dispatch(unfavouriteFail(status, error));
