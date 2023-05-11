@@ -1,4 +1,8 @@
+import escapeTextContentForBrowser from 'escape-html';
 import { z } from 'zod';
+
+import emojify from 'soapbox/features/emoji';
+import { stripCompatibilityFeatures } from 'soapbox/utils/html';
 
 import { accountSchema } from './account';
 import { attachmentSchema } from './attachment';
@@ -8,7 +12,7 @@ import { groupSchema } from './group';
 import { mentionSchema } from './mention';
 import { pollSchema } from './poll';
 import { tagSchema } from './tag';
-import { contentSchema, dateSchema, filteredArray } from './utils';
+import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 const tombstoneSchema = z.object({
   reason: z.enum(['deleted']),
@@ -59,6 +63,17 @@ const baseStatusSchema = z.object({
 const statusSchema = baseStatusSchema.extend({
   quote: baseStatusSchema.nullable().catch(null),
   reblog: baseStatusSchema.nullable().catch(null),
+}).transform((status) => {
+  const emojiMap = makeCustomEmojiMap(status.emojis);
+
+  const contentHtml = stripCompatibilityFeatures(emojify(status.content, emojiMap));
+  const spoilerHtml = emojify(escapeTextContentForBrowser(status.spoiler_text), emojiMap);
+
+  return {
+    ...status,
+    contentHtml,
+    spoilerHtml,
+  };
 });
 
 type Status = z.infer<typeof statusSchema>;
