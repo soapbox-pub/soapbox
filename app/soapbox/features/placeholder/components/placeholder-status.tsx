@@ -8,11 +8,11 @@ import PlaceholderDisplayName from './placeholder-display-name';
 import PlaceholderStatusContent from './placeholder-status-content';
 
 interface IPlaceholderStatus {
-  variant?: 'rounded' | 'slim'
+  variant?: 'rounded' | 'slim' | 'default'
 }
 
 /** Fake status to display while data is loading. */
-const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant = 'rounded' }) => (
+const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
   <div
     className={clsx({
       'status-placeholder bg-white dark:bg-primary-900': true,

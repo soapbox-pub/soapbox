@@ -57,7 +57,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
           <FormGroup
             labelText={passwordLabel}
             hintText={
-              <Link to='/reset-password' className='hover:underline'>
+              <Link to='/reset-password' className='hover:underline' tabIndex={-1}>
                 <FormattedMessage
                   id='login.reset_password_hint'
                   defaultMessage='Trouble logging in?'

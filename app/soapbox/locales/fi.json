@@ -417,7 +417,6 @@
   "toast.view": "View",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {henkilö} other {henkilöä}} keskustelee",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Lataa raahaamalla ja pudottamalla tähän",
   "upload_button.label": "Lisää mediaa",
   "upload_error.limit": "Tiedostolatauksien raja ylitetty.",
   "upload_error.poll": "Tiedon lataaminen ei ole sallittua kyselyissä.",

@@ -11,10 +11,9 @@ import {
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { normalizePoll } from 'soapbox/normalizers/poll';
+import { cardSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
@@ -36,6 +35,10 @@ export const EventRecord = ImmutableRecord({
   banner: null as Attachment | null,
   links: ImmutableList<Attachment>(),
 });
+
+interface Tombstone {
+  reason: 'deleted'
+}
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
@@ -73,6 +76,7 @@ export const StatusRecord = ImmutableRecord({
   sensitive: false,
   spoiler_text: '',
   tags: ImmutableList<ImmutableMap<string, any>>(),
+  tombstone: null as Tombstone | null,
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
@@ -109,18 +113,29 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
 
 // Normalize the poll in the status, if applicable
 const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
-  if (status.hasIn(['poll', 'options'])) {
-    return status.update('poll', ImmutableMap(), normalizePoll);
-  } else {
+  try {
+    const poll = pollSchema.parse(status.get('poll').toJS());
+    return status.set('poll', poll);
+  } catch (_e) {
     return status.set('poll', null);
+  }
+};
+
+const normalizeTombstone = (status: ImmutableMap<string, any>) => {
+  try {
+    const tombstone = tombstoneSchema.parse(status.get('tombstone').toJS());
+    return status.set('tombstone', tombstone);
+  } catch (_e) {
+    return status.set('tombstone', null);
   }
 };
 
 // Normalize card
 const normalizeStatusCard = (status: ImmutableMap<string, any>) => {
-  if (status.get('card')) {
-    return status.update('card', ImmutableMap(), normalizeCard);
-  } else {
+  try {
+    const card = cardSchema.parse(status.get('card').toJS());
+    return status.set('card', card);
+  } catch (e) {
     return status.set('card', null);
   }
 };
@@ -245,6 +260,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixContent(status);
       normalizeFilterResults(status);
       normalizeDislikes(status);
+      normalizeTombstone(status);
     }),
   );
 };

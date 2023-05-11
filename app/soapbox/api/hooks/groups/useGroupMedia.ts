@@ -1,7 +1,10 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntities } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
-import { statusSchema } from 'soapbox/schemas/status';
+import { normalizeStatus } from 'soapbox/normalizers';
+import { toSchema } from 'soapbox/utils/normalizers';
+
+const statusSchema = toSchema(normalizeStatus);
 
 function useGroupMedia(groupId: string) {
   const api = useApi();

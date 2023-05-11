@@ -54,7 +54,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
       <Link
         key={account.id}
         to={`/@${account.acct}`}
-        className='reply-mentions__account'
+        className='reply-mentions__account max-w-[200px] truncate align-bottom'
         onClick={(e) => e.stopPropagation()}
       >
         @{isPubkey(account.username) ? account.username.slice(0, 8) : account.username}

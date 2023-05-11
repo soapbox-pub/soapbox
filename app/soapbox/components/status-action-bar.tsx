@@ -7,18 +7,20 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { editEvent } from 'soapbox/actions/events';
-import { groupBlock, groupDeleteStatus, groupKick } from 'soapbox/actions/groups';
 import { toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
+import { deleteFromTimelines } from 'soapbox/actions/timelines';
+import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
 import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
@@ -87,16 +89,7 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
   replies_disabled_group: { id: 'status.disabled_replies.group_membership', defaultMessage: 'Only group members can reply' },
   groupModDelete: { id: 'status.group_mod_delete', defaultMessage: 'Delete post from group' },
-  groupModKick: { id: 'status.group_mod_kick', defaultMessage: 'Kick @{name} from group' },
-  groupModBlock: { id: 'status.group_mod_block', defaultMessage: 'Block @{name} from group' },
-  deleteFromGroupHeading: { id: 'confirmations.delete_from_group.heading', defaultMessage: 'Delete from group' },
   deleteFromGroupMessage: { id: 'confirmations.delete_from_group.message', defaultMessage: 'Are you sure you want to delete @{name}\'s post?' },
-  kickFromGroupHeading: { id: 'confirmations.kick_from_group.heading', defaultMessage: 'Kick group member' },
-  kickFromGroupMessage: { id: 'confirmations.kick_from_group.message', defaultMessage: 'Are you sure you want to kick @{name} from this group?' },
-  kickFromGroupConfirm: { id: 'confirmations.kick_from_group.confirm', defaultMessage: 'Kick' },
-  blockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Block group member' },
-  blockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to block @{name} from interacting with this group?' },
-  blockFromGroupConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Block' },
 });
 
 interface IStatusActionBar {
@@ -121,6 +114,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const features = useFeatures();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
+  const deleteGroupStatus = useDeleteGroupStatus(status?.group as Group, status.id);
 
   const { allowedEmoji } = soapboxConfig;
 
@@ -258,8 +252,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
-      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(blockAccount(account.id)),
       secondary: intl.formatMessage(messages.blockAndReport),
@@ -313,31 +307,15 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
-      message: intl.formatMessage(messages.deleteFromGroupMessage, { name: account.username }),
+      message: intl.formatMessage(messages.deleteFromGroupMessage, { name: <strong className='break-words'>{account.username}</strong> }),
       confirm: intl.formatMessage(messages.deleteConfirm),
-      onConfirm: () => dispatch(groupDeleteStatus((status.group as Group).id, status.id)),
-    }));
-  };
-
-  const handleKickFromGroup: React.EventHandler<React.MouseEvent> = () => {
-    const account = status.account as Account;
-
-    dispatch(openModal('CONFIRM', {
-      heading: intl.formatMessage(messages.kickFromGroupHeading),
-      message: intl.formatMessage(messages.kickFromGroupMessage, { name: account.username }),
-      confirm: intl.formatMessage(messages.kickFromGroupConfirm),
-      onConfirm: () => dispatch(groupKick((status.group as Group).id, account.id)),
-    }));
-  };
-
-  const handleBlockFromGroup: React.EventHandler<React.MouseEvent> = () => {
-    const account = status.account as Account;
-
-    dispatch(openModal('CONFIRM', {
-      heading: intl.formatMessage(messages.blockFromGroupHeading),
-      message: intl.formatMessage(messages.blockFromGroupMessage, { name: account.username }),
-      confirm: intl.formatMessage(messages.blockFromGroupConfirm),
-      onConfirm: () => dispatch(groupBlock((status.group as Group).id, account.id)),
+      onConfirm: () => {
+        deleteGroupStatus.mutate(status.id, {
+          onSuccess() {
+            dispatch(deleteFromTimelines(status.id));
+          },
+        });
+      },
     }));
   };
 
@@ -362,7 +340,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       menu.push({
         text: intl.formatMessage(messages.copy),
         action: handleCopy,
-        icon: require('@tabler/icons/link.svg'),
+        icon: require('@tabler/icons/clipboard-copy.svg'),
       });
 
       if (features.embeds && isLocal(account)) {
@@ -466,7 +444,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       menu.push({
         text: intl.formatMessage(messages.mute, { name: username }),
         action: handleMuteClick,
-        icon: require('@tabler/icons/circle-x.svg'),
+        icon: require('@tabler/icons/volume-3.svg'),
       });
       menu.push({
         text: intl.formatMessage(messages.block, { name: username }),
@@ -480,23 +458,17 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       });
     }
 
-    if (status.group && groupRelationship?.role && ['admin', 'moderator'].includes(groupRelationship.role)) {
+    if (status.group &&
+      groupRelationship?.role &&
+      [GroupRoles.OWNER].includes(groupRelationship.role) &&
+      !ownAccount
+    ) {
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.groupModDelete),
         action: handleDeleteFromGroup,
         icon: require('@tabler/icons/trash.svg'),
-      });
-      // TODO: figure out when an account is not in the group anymore
-      menu.push({
-        text: intl.formatMessage(messages.groupModKick, { name: account.get('username') }),
-        action: handleKickFromGroup,
-        icon: require('@tabler/icons/user-minus.svg'),
-      });
-      menu.push({
-        text: intl.formatMessage(messages.groupModBlock, { name: account.get('username') }),
-        action: handleBlockFromGroup,
-        icon: require('@tabler/icons/ban.svg'),
+        destructive: true,
       });
     }
 

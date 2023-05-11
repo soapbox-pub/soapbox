@@ -4,7 +4,6 @@ import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
-import { deleteFromTimelines } from './timelines';
 
 import type { AxiosError } from 'axios';
 import type { GroupRole } from 'soapbox/reducers/group-memberships';
@@ -34,10 +33,6 @@ const GROUPS_FETCH_FAIL    = 'GROUPS_FETCH_FAIL';
 const GROUP_RELATIONSHIPS_FETCH_REQUEST = 'GROUP_RELATIONSHIPS_FETCH_REQUEST';
 const GROUP_RELATIONSHIPS_FETCH_SUCCESS = 'GROUP_RELATIONSHIPS_FETCH_SUCCESS';
 const GROUP_RELATIONSHIPS_FETCH_FAIL    = 'GROUP_RELATIONSHIPS_FETCH_FAIL';
-
-const GROUP_DELETE_STATUS_REQUEST = 'GROUP_DELETE_STATUS_REQUEST';
-const GROUP_DELETE_STATUS_SUCCESS = 'GROUP_DELETE_STATUS_SUCCESS';
-const GROUP_DELETE_STATUS_FAIL    = 'GROUP_DELETE_STATUS_FAIL';
 
 const GROUP_KICK_REQUEST = 'GROUP_KICK_REQUEST';
 const GROUP_KICK_SUCCESS = 'GROUP_KICK_SUCCESS';
@@ -204,36 +199,6 @@ const fetchGroupRelationshipsFail = (error: AxiosError) => ({
   error,
   skipLoading: true,
   skipNotFound: true,
-});
-
-const groupDeleteStatus = (groupId: string, statusId: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(groupDeleteStatusRequest(groupId, statusId));
-
-    return api(getState).delete(`/api/v1/groups/${groupId}/statuses/${statusId}`)
-      .then(() => {
-        dispatch(deleteFromTimelines(statusId));
-        dispatch(groupDeleteStatusSuccess(groupId, statusId));
-      }).catch(err => dispatch(groupDeleteStatusFail(groupId, statusId, err)));
-  };
-
-const groupDeleteStatusRequest = (groupId: string, statusId: string) => ({
-  type: GROUP_DELETE_STATUS_REQUEST,
-  groupId,
-  statusId,
-});
-
-const groupDeleteStatusSuccess = (groupId: string, statusId: string) => ({
-  type: GROUP_DELETE_STATUS_SUCCESS,
-  groupId,
-  statusId,
-});
-
-const groupDeleteStatusFail = (groupId: string, statusId: string, error: AxiosError) => ({
-  type: GROUP_DELETE_STATUS_SUCCESS,
-  groupId,
-  statusId,
-  error,
 });
 
 const groupKick = (groupId: string, accountId: string) =>
@@ -677,9 +642,6 @@ export {
   GROUP_RELATIONSHIPS_FETCH_REQUEST,
   GROUP_RELATIONSHIPS_FETCH_SUCCESS,
   GROUP_RELATIONSHIPS_FETCH_FAIL,
-  GROUP_DELETE_STATUS_REQUEST,
-  GROUP_DELETE_STATUS_SUCCESS,
-  GROUP_DELETE_STATUS_FAIL,
   GROUP_KICK_REQUEST,
   GROUP_KICK_SUCCESS,
   GROUP_KICK_FAIL,
@@ -735,10 +697,6 @@ export {
   fetchGroupRelationshipsRequest,
   fetchGroupRelationshipsSuccess,
   fetchGroupRelationshipsFail,
-  groupDeleteStatus,
-  groupDeleteStatusRequest,
-  groupDeleteStatusSuccess,
-  groupDeleteStatusFail,
   groupKick,
   groupKickRequest,
   groupKickSuccess,

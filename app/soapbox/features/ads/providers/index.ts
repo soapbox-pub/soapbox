@@ -6,7 +6,6 @@ import type { Card } from 'soapbox/types/entities';
 /** Map of available provider modules. */
 const PROVIDERS: Record<string, () => Promise<AdProvider>> = {
   soapbox: async() => (await import(/* webpackChunkName: "features/ads/soapbox" */'./soapbox-config')).default,
-  rumble: async() => (await import(/* webpackChunkName: "features/ads/rumble" */'./rumble')).default,
   truth: async() => (await import(/* webpackChunkName: "features/ads/truth" */'./truth')).default,
 };
 

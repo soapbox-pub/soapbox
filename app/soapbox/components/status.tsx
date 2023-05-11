@@ -21,6 +21,7 @@ import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import StatusInfo from './statuses/status-info';
+import Tombstone from './tombstone';
 import { Card, Icon, Stack, Text } from './ui';
 
 import type {
@@ -388,6 +389,17 @@ const Status: React.FC<IStatus> = (props) => {
 
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
+  const isSoftDeleted = status.tombstone?.reason === 'deleted';
+
+  if (isSoftDeleted) {
+    return (
+      <Tombstone
+        id={status.id}
+        onMoveUp={(id) => onMoveUp ? onMoveUp(id) : null}
+        onMoveDown={(id) => onMoveDown ? onMoveDown(id) : null}
+      />
+    );
+  }
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>

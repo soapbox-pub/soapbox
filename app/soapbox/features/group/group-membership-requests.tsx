@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -58,7 +59,7 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
 
   const { group } = useGroup(id);
 
-  const { accounts, authorize, reject, isLoading } = useGroupMembershipRequests(id);
+  const { accounts, authorize, reject, refetch, isLoading } = useGroupMembershipRequests(id);
   const { invalidate } = useGroupMembers(id, GroupRoles.USER);
 
   useEffect(() => {
@@ -80,19 +81,35 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   }
 
   async function handleAuthorize(account: AccountEntity) {
-    try {
-      await authorize(account.id);
-    } catch (_e) {
-      toast.error(intl.formatMessage(messages.authorizeFail, { name: account.username }));
-    }
+    return authorize(account.id)
+      .then(() => Promise.resolve())
+      .catch((error: AxiosError) => {
+        refetch();
+
+        let message = intl.formatMessage(messages.authorizeFail, { name: account.username });
+        if (error.response?.status === 409) {
+          message = (error.response?.data as any).error;
+        }
+        toast.error(message);
+
+        return Promise.reject();
+      });
   }
 
   async function handleReject(account: AccountEntity) {
-    try {
-      await reject(account.id);
-    } catch (_e) {
-      toast.error(intl.formatMessage(messages.rejectFail, { name: account.username }));
-    }
+    return reject(account.id)
+      .then(() => Promise.resolve())
+      .catch((error: AxiosError) => {
+        refetch();
+
+        let message = intl.formatMessage(messages.rejectFail, { name: account.username });
+        if (error.response?.status === 409) {
+          message = (error.response?.data as any).error;
+        }
+        toast.error(message);
+
+        return Promise.reject();
+      });
   }
 
   return (

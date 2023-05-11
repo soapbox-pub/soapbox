@@ -207,7 +207,7 @@ const FeedCarousel = () => {
                   style={{ width: widthPerAvatar || 'auto' }}
                   key={idx}
                 >
-                  <PlaceholderAvatar size={56} withText />
+                  <PlaceholderAvatar size={56} withText className='py-3' />
                 </div>
               ))
             ) : (

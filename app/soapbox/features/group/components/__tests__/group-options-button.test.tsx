@@ -17,7 +17,7 @@ describe('<GroupOptionsButton />', () => {
           requested: false,
           member: true,
           blocked_by: true,
-          role: 'user',
+          role: GroupRoles.USER,
         }),
       });
     });

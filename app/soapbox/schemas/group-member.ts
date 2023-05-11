@@ -16,4 +16,4 @@ const groupMemberSchema = z.object({
 
 type GroupMember = z.infer<typeof groupMemberSchema>;
 
-export { groupMemberSchema, GroupMember, GroupRoles };
+export { groupMemberSchema, type GroupMember, GroupRoles };
