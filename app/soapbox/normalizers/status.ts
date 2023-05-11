@@ -10,6 +10,7 @@ import {
   fromJS,
 } from 'immutable';
 
+import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
@@ -91,6 +92,15 @@ export const StatusRecord = ImmutableRecord({
   spoilerHtml: '',
   translation: null as ImmutableMap<string, string> | null,
 });
+
+const normalizeStatusAccount = (status: ImmutableMap<string, any>) => {
+  const account = status.get('account');
+  if (account) {
+    return status.set('account', normalizeAccount(account));
+  } else {
+    return status;
+  }
+};
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
   return status.update('media_attachments', ImmutableList(), attachments => {
@@ -247,6 +257,7 @@ const normalizeDislikes = (status: ImmutableMap<string, any>) => {
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
+      normalizeStatusAccount(status);
       normalizeAttachments(status);
       normalizeMentions(status);
       normalizeEmojis(status);
