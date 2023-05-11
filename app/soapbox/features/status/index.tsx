@@ -230,14 +230,6 @@ const Thread: React.FC<IThread> = (props) => {
     dispatch(mentionCompose(account));
   };
 
-  const handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
-    dispatch(openModal('MEDIA', { media, status, index }));
-  };
-
-  const handleOpenVideo = (media: ImmutableList<AttachmentEntity>, time: number) => {
-    dispatch(openModal('VIDEO', { media, time }));
-  };
-
   const handleHotkeyOpenMedia = (e?: KeyboardEvent) => {
     const { onOpenMedia, onOpenVideo } = props;
     const firstAttachment = status?.media_attachments.get(0);
@@ -478,9 +470,6 @@ const Thread: React.FC<IThread> = (props) => {
 
           <DetailedStatus
             status={status}
-            onOpenVideo={handleOpenVideo}
-            onOpenMedia={handleOpenMedia}
-            onToggleHidden={handleToggleHidden}
             showMedia={showMedia}
             onToggleMediaVisibility={handleToggleMediaVisibility}
             onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
