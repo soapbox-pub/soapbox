@@ -1,6 +1,6 @@
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { Group, groupSchema } from 'soapbox/schemas';
+import { accountSchema, statusSchema, groupSchema, type Group } from 'soapbox/schemas';
 import { filteredArray } from 'soapbox/schemas/utils';
 
 import { getSettings } from '../settings';
@@ -21,24 +21,41 @@ const importAccount = (account: APIEntity) =>
   ({ type: ACCOUNT_IMPORT, account });
 
 const importAccounts = (accounts: APIEntity[]) =>
-  ({ type: ACCOUNTS_IMPORT, accounts });
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    const filtered = filteredArray(accountSchema).parse(accounts);
 
-const importGroup = (group: Group) =>
-  importEntities([group], Entities.GROUPS);
+    if (filtered.length > 0) {
+      dispatch(importEntities(filtered, Entities.ACCOUNTS));
+    }
 
-const importGroups = (groups: Group[]) =>
-  importEntities(groups, Entities.GROUPS);
+    dispatch({ type: ACCOUNTS_IMPORT, accounts });
+  };
+
+const importGroup = (group: Group) => importEntities([group], Entities.GROUPS);
+const importGroups = (groups: Group[]) => importEntities(groups, Entities.GROUPS);
 
 const importStatus = (status: APIEntity, idempotencyKey?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
+    const result = statusSchema.safeParse(status);
+
+    if (result.success) {
+      dispatch(importEntities([result.data], Entities.STATUSES));
+    }
+
     const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
+    dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
   };
 
 const importStatuses = (statuses: APIEntity[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
+    const filtered = filteredArray(statusSchema).parse(statuses);
+
+    if (filtered.length > 0) {
+      dispatch(importEntities(filtered, Entities.STATUSES));
+    }
+
     const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
+    dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
   };
 
 const importPolls = (polls: APIEntity[]) =>
