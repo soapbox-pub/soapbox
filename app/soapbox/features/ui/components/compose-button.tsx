@@ -10,8 +10,12 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 const ComposeButton = () => {
   const location = useLocation();
+  const isOnGroupPage = location.pathname.startsWith('/group/');
+  const match = useRouteMatch<{ groupSlug: string }>('/group/:groupSlug');
+  const { entity: group } = useGroupLookup(match?.params.groupSlug || '');
+  const isGroupMember = !!group?.relationship?.member;
 
-  if (location.pathname.startsWith('/group/')) {
+  if (isOnGroupPage && isGroupMember) {
     return <GroupComposeButton />;
   }
 

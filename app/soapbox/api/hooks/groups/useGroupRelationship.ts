@@ -7,14 +7,17 @@ import { useEntity } from 'soapbox/entity-store/hooks';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
 import { type GroupRelationship, groupRelationshipSchema } from 'soapbox/schemas';
 
-function useGroupRelationship(groupId: string) {
+function useGroupRelationship(groupId: string | undefined) {
   const api = useApi();
   const dispatch = useAppDispatch();
 
   const { entity: groupRelationship, ...result } = useEntity<GroupRelationship>(
-    [Entities.GROUP_RELATIONSHIPS, groupId],
+    [Entities.GROUP_RELATIONSHIPS, groupId as string],
     () => api.get(`/api/v1/groups/relationships?id[]=${groupId}`),
-    { schema: z.array(groupRelationshipSchema).transform(arr => arr[0]) },
+    {
+      enabled: !!groupId,
+      schema: z.array(groupRelationshipSchema).transform(arr => arr[0]),
+    },
   );
 
   useEffect(() => {
