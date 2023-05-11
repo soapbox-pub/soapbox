@@ -858,6 +858,7 @@
   "hashtag.column_header.tag_mode.all": "and {additional}",
   "hashtag.column_header.tag_mode.any": "or {additional}",
   "hashtag.column_header.tag_mode.none": "without {additional}",
+  "hashtag.follow": "Follow hashtag",
   "header.home.label": "Home",
   "header.login.email.placeholder": "E-mail address",
   "header.login.forgot_password": "Forgot password?",
