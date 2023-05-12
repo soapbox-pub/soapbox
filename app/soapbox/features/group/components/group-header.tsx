@@ -155,6 +155,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
                 theme='muted'
                 align='center'
                 dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+                className='[&_a]:text-primary-600 [&_a]:hover:underline [&_a]:dark:text-accent-blue'
               />
             </Stack>
 
