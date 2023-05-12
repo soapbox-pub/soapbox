@@ -50,6 +50,10 @@ export function Status() {
   return import(/* webpackChunkName: "features/status" */'../../status');
 }
 
+export function V2Context() {
+  return import(/* webpackChunkName: "features/status/v2-context" */'../../status/v2-context');
+}
+
 export function PinnedStatuses() {
   return import(/* webpackChunkName: "features/pinned_statuses" */'../../pinned-statuses');
 }

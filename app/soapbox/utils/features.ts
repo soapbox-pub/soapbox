@@ -933,6 +933,13 @@ const getInstanceFeatures = (instance: Instance) => {
     truthSuggestions: v.software === TRUTHSOCIAL,
 
     /**
+     * Truth Social context.
+     * @see GET /api/v2/statuses/:id/context/ancestors
+     * @see GET /api/v2/statuses/:id/context/descendants
+     */
+    truthThread: v.software === TRUTHSOCIAL,
+
+    /**
      * Whether the backend allows adding users you don't follow to lists.
      * @see POST /api/v1/lists/:id/accounts
      */
