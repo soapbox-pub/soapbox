@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { useUpdateGroupTag } from 'soapbox/api/hooks';
-import { HStack, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
+import { HStack, Icon, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -84,6 +84,20 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
   };
 
   const renderPinIcon = () => {
+    if (!isOwner && tag.pinned) {
+      return (
+        <Icon
+          src={require('@tabler/icons/pin-filled.svg')}
+          className='h-5 w-5 text-gray-600'
+          data-testid='pin-icon'
+        />
+      );
+    }
+
+    if (!isOwner) {
+      return null;
+    }
+
     if (isPinnable) {
       return (
         <Tooltip
@@ -149,12 +163,12 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
         </Stack>
       </Link>
 
-      {isOwner ? (
-        <HStack alignItems='center' space={2}>
-          {tag.visible ? (
-            renderPinIcon()
-          ) : null}
+      <HStack alignItems='center' space={2}>
+        {tag.visible ? (
+          renderPinIcon()
+        ) : null}
 
+        {isOwner ? (
           <Tooltip
             text={
               tag.visible ?
@@ -173,8 +187,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
               iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             />
           </Tooltip>
-        </HStack>
-      ) : null}
+        ) : null}
+      </HStack>
     </HStack>
   );
 };

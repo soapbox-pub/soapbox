@@ -19,7 +19,7 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
   return (
     <Stack className='cursor-default overflow-hidden rounded-lg border border-gray-300 text-center dark:border-gray-800'>
       <div
-        className='-mb-8 h-32 w-full bg-center'
+        className='-mb-8 h-32 w-full bg-cover bg-center'
         style={{ backgroundImage: `url(${group.header})` }}
       />
 
