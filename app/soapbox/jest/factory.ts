@@ -79,7 +79,7 @@ function buildRelationship(props: Partial<Relationship> = {}): Relationship {
   }, props));
 }
 
-function buildStatus(props: Partial<Status> = {}): Status {
+function buildStatus(props: Partial<Status> = {}) {
   return normalizeStatus(Object.assign({
     id: uuidv4(),
   }, props));
