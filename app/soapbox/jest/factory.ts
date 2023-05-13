@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { normalizeStatus } from 'soapbox/normalizers';
 import {
   accountSchema,
   adSchema,
@@ -17,9 +18,9 @@ import {
   type GroupRelationship,
   type GroupTag,
   type Relationship,
+  type Status,
 } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
-import { statusSchema, type Status } from 'soapbox/schemas/status';
 
 // TODO: there's probably a better way to create these factory functions.
 // This looks promising but didn't work on my first attempt: https://github.com/anatine/zod-plugins/tree/main/packages/zod-mock
@@ -79,7 +80,7 @@ function buildRelationship(props: Partial<Relationship> = {}): Relationship {
 }
 
 function buildStatus(props: Partial<Status> = {}): Status {
-  return statusSchema.parse(Object.assign({
+  return normalizeStatus(Object.assign({
     id: uuidv4(),
   }, props));
 }
