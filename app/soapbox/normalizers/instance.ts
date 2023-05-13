@@ -52,7 +52,6 @@ export const InstanceRecord = ImmutableRecord({
     approval_required: false,
     enabled: false,
     message: '',
-
   }),
   rules: ImmutableList(),
   source_url: '',
