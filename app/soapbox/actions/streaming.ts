@@ -183,7 +183,7 @@ const connectTimelineStream = (
           break;
         case 'nostr.sign':
           (async () => {
-            const event = await window.nostr?.signEvent(JSON.parse(data.payload));
+            const event = await window.nostr?.signEvent(JSON.parse(data.payload)).catch(() => undefined);
 
             if (event) {
               websocket.send(JSON.stringify({ event: 'nostr.sign', payload: JSON.stringify(event) }));
