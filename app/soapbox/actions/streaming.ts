@@ -181,12 +181,12 @@ const connectTimelineStream = (
         case 'marker':
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
           break;
-        case 'nostr:signEvent':
+        case 'nostr.sign':
           (async () => {
             const event = await window.nostr?.signEvent(JSON.parse(data.payload));
 
             if (event) {
-              websocket.send(JSON.stringify({ event: 'nostr:event', payload: event }));
+              websocket.send(JSON.stringify({ event: 'nostr.sign', payload: JSON.stringify(event) }));
             }
           })();
           break;
@@ -201,7 +201,7 @@ const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => 
       dispatch(fetchAnnouncements(done))))));
 
 const connectUserStream      = (opts?: StreamOpts) =>
-  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
+  connectTimelineStream('home', `user${'nostr' in window ? '&nostr=true' : ''}`, refreshHomeTimelineAndNotification, null, opts);
 
 const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
