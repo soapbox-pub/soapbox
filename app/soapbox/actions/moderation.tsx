@@ -142,7 +142,7 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/trash.svg'),
       heading: intl.formatMessage(messages.deleteStatusHeading),
-      message: intl.formatMessage(messages.deleteStatusPrompt, { acct }),
+      message: intl.formatMessage(messages.deleteStatusPrompt, { acct: <strong className='break-words'>{acct}</strong> }),
       confirm: intl.formatMessage(messages.deleteStatusConfirm),
       onConfirm: () => {
         dispatch(deleteStatus(statusId)).then(() => {

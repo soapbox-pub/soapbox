@@ -14,6 +14,8 @@ interface UseEntityOpts<TEntity extends Entity> {
   schema?: EntitySchema<TEntity>
   /** Whether to refetch this entity every time the hook mounts, even if it's already in the store. */
   refetch?: boolean
+  /** A flag to potentially disable sending requests to the API. */
+  enabled?: boolean
 }
 
 function useEntity<TEntity extends Entity>(
@@ -21,7 +23,7 @@ function useEntity<TEntity extends Entity>(
   entityFn: EntityFn<void>,
   opts: UseEntityOpts<TEntity> = {},
 ) {
-  const [isFetching, setPromise] = useLoading();
+  const [isFetching, setPromise] = useLoading(true);
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;
@@ -31,6 +33,7 @@ function useEntity<TEntity extends Entity>(
 
   const entity = useAppSelector(state => state.entities[entityType]?.store[entityId] as TEntity | undefined);
 
+  const isEnabled = opts.enabled ?? true;
   const isLoading = isFetching && !entity;
 
   const fetchEntity = async () => {
@@ -44,10 +47,11 @@ function useEntity<TEntity extends Entity>(
   };
 
   useEffect(() => {
+    if (!isEnabled) return;
     if (!entity || opts.refetch) {
       fetchEntity();
     }
-  }, []);
+  }, [isEnabled]);
 
   return {
     entity,
@@ -59,4 +63,5 @@ function useEntity<TEntity extends Entity>(
 
 export {
   useEntity,
+  type UseEntityOpts,
 };

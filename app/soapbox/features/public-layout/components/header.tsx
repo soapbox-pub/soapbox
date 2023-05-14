@@ -7,7 +7,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import { useSoapboxConfig, useOwnAccount, useAppDispatch, useRegistrationStatus } from 'soapbox/hooks';
+import { useSoapboxConfig, useOwnAccount, useAppDispatch, useRegistrationStatus, useFeatures } from 'soapbox/hooks';
 
 import Sonar from './sonar';
 
@@ -18,7 +18,8 @@ const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
   register: { id: 'header.register.label', defaultMessage: 'Register' },
-  username: { id: 'header.login.username.placeholder', defaultMessage: 'Email or username' },
+  username: { id: 'header.login.username.placeholder', defaultMessage: 'E-mail or username' },
+  email: { id: 'header.login.email.placeholder', defaultMessage: 'E-mail address' },
   password: { id: 'header.login.password.label', defaultMessage: 'Password' },
   forgotPassword: { id: 'header.login.forgot_password', defaultMessage: 'Forgot password?' },
 });
@@ -26,6 +27,7 @@ const messages = defineMessages({
 const Header = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
   const account = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
@@ -123,7 +125,7 @@ const Header = () => {
                 value={username}
                 onChange={(event) => setUsername(event.target.value.trim())}
                 type='text'
-                placeholder={intl.formatMessage(messages.username)}
+                placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
                 className='max-w-[200px]'
                 autoCorrect='off'
                 autoCapitalize='off'
@@ -147,7 +149,6 @@ const Header = () => {
                     src={require('@tabler/icons/help.svg')}
                     className='cursor-pointer bg-transparent text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
                     iconClassName='h-5 w-5'
-                    transparent
                   />
                 </Tooltip>
               </Link>

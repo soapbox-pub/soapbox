@@ -1,120 +1,51 @@
-import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { Avatar, Button, Column, Form, FormActions, FormGroup, HStack, Input, Spinner, Text, Textarea } from 'soapbox/components/ui';
+import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks';
+import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
-import { useGroup, useUpdateGroup } from 'soapbox/hooks/api';
 import { useImageField, useTextField } from 'soapbox/hooks/forms';
+import toast from 'soapbox/toast';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
+
+import AvatarPicker from './components/group-avatar-picker';
+import HeaderPicker from './components/group-header-picker';
+import GroupTagsField from './components/group-tags-field';
 
 import type { List as ImmutableList } from 'immutable';
 
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
 const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;
 
-interface IMediaInput {
-  src: string | undefined
-  accept: string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  disabled: boolean
-}
-
 const messages = defineMessages({
   heading: { id: 'navigation_bar.edit_group', defaultMessage: 'Edit Group' },
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
-});
-
-const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, accept, disabled }, ref) => {
-  return (
-    <label
-      className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
-    >
-      {src && <img className='h-full w-full object-cover' src={src} alt='' />}
-      <HStack
-        className={clsx('absolute top-0 h-full w-full transition-opacity', {
-          'opacity-0 hover:opacity-90 bg-primary-100 dark:bg-gray-800': src,
-        })}
-        space={1.5}
-        alignItems='center'
-        justifyContent='center'
-      >
-        <Icon
-          src={require('@tabler/icons/photo-plus.svg')}
-          className='h-4.5 w-4.5'
-        />
-
-        <Text size='md' theme='primary' weight='semibold'>
-          <FormattedMessage id='group.upload_banner' defaultMessage='Upload photo' />
-        </Text>
-
-        <input
-          ref={ref}
-          name='header'
-          type='file'
-          accept={accept}
-          onChange={onChange}
-          disabled={disabled}
-          className='hidden'
-        />
-      </HStack>
-    </label>
-  );
-});
-
-const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, accept, disabled }, ref) => {
-  return (
-    <label className='absolute bottom-0 left-1/2 h-20 w-20 -translate-x-1/2 translate-y-1/2 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
-      {src && <Avatar src={src} size={80} />}
-      <HStack
-        alignItems='center'
-        justifyContent='center'
-
-        className={clsx('absolute left-0 top-0 h-full w-full rounded-full transition-opacity', {
-          'opacity-0 hover:opacity-90 bg-primary-500': src,
-        })}
-      >
-        <Icon
-          src={require('@tabler/icons/camera-plus.svg')}
-          className='h-5 w-5 text-white'
-        />
-      </HStack>
-      <span className='sr-only'>Upload avatar</span>
-      <input
-        ref={ref}
-        name='avatar'
-        type='file'
-        accept={accept}
-        onChange={onChange}
-        disabled={disabled}
-        className='hidden'
-      />
-    </label>
-  );
+  groupSaved: { id: 'group.update.success', defaultMessage: 'Group successfully saved' },
 });
 
 interface IEditGroup {
   params: {
-    id: string
+    groupId: string
   }
 }
 
-const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
+const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
   const intl = useIntl();
   const instance = useInstance();
 
   const { group, isLoading } = useGroup(groupId);
   const { updateGroup } = useUpdateGroup(groupId);
+  const { invalidate } = useGroupTags(groupId);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tags, setTags] = useState<string[]>(['']);
 
   const avatar = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(group?.avatar) });
   const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
 
   const displayName = useTextField(group?.display_name);
-  const note = useTextField(group?.note);
+  const note = useTextField(group?.note_plain);
 
   const maxName = Number(instance.configuration.getIn(['groups', 'max_characters_name']));
   const maxNote = Number(instance.configuration.getIn(['groups', 'max_characters_description']));
@@ -131,10 +62,39 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
       note: note.value,
       avatar: avatar.file,
       header: header.file,
+      tags,
+    }, {
+      onSuccess() {
+        invalidate();
+        toast.success(intl.formatMessage(messages.groupSaved));
+      },
+      onError(error) {
+        const message = (error.response?.data as any)?.error;
+
+        if (error.response?.status === 422 && typeof message !== 'undefined') {
+          toast.error(message);
+        }
+      },
     });
 
     setIsSubmitting(false);
   }
+
+  const handleAddTag = () => {
+    setTags([...tags, '']);
+  };
+
+  const handleRemoveTag = (i: number) => {
+    const newTags = [...tags];
+    newTags.splice(i, 1);
+    setTags(newTags);
+  };
+
+  useEffect(() => {
+    if (group) {
+      setTags(group.tags.map((t) => t.name));
+    }
+  }, [group?.id]);
 
   if (isLoading) {
     return <Spinner />;
@@ -170,6 +130,15 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { id: groupId } }) => {
             {...note}
           />
         </FormGroup>
+
+        <div className='pb-6'>
+          <GroupTagsField
+            tags={tags}
+            onChange={setTags}
+            onAddItem={handleAddTag}
+            onRemoveItem={handleRemoveTag}
+          />
+        </div>
 
         <FormActions>
           <Button theme='primary' type='submit' disabled={isSubmitting} block>

@@ -181,7 +181,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   };
 
   const getSiblings = () => {
-    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[])).filter(node => node !== ref.current);
+    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[]))
+      .filter(node => (node as HTMLDivElement).id !== 'toaster')
+      .filter(node => node !== ref.current);
   };
 
   useEffect(() => {

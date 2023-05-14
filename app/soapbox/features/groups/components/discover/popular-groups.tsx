@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { usePopularGroups } from 'soapbox/api/hooks';
 import Link from 'soapbox/components/link';
 import { Carousel, HStack, Stack, Text } from 'soapbox/components/ui';
 import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover';
-import { usePopularGroups } from 'soapbox/hooks/api/usePopularGroups';
 
 import GroupGridItem from './group-grid-item';
 
@@ -15,7 +15,7 @@ const PopularGroups = () => {
   const [groupCover, setGroupCover] = useState<HTMLDivElement | null>(null);
 
   return (
-    <Stack space={4}>
+    <Stack space={4} data-testid='popular-groups'>
       <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
           <FormattedMessage
@@ -53,7 +53,7 @@ const PopularGroups = () => {
               {isFetching ? (
                 new Array(4).fill(0).map((_, idx) => (
                   <div
-                    className='relative flex shrink-0 flex-col space-y-2 px-0.5'
+                    className='relative flex shrink-0 flex-col space-y-2 px-1'
                     style={{ width: width || 'auto' }}
                     key={idx}
                   >

@@ -120,7 +120,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
-              <Text size='sm' theme='muted' direction='ltr'>
+              <Text size='sm' theme='muted' direction='ltr' truncate>
                 @{username}
               </Text>
             </HStack>
@@ -141,7 +141,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
       <Stack space={2}>
         <Stack>
           <HStack space={1} alignItems='center'>
-            <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+            <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} truncate />
 
             {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
 
@@ -153,7 +153,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           </HStack>
 
           <HStack alignItems='center' space={0.5}>
-            <Text size='sm' theme='muted' direction='ltr'>
+            <Text size='sm' theme='muted' direction='ltr' truncate>
               @{displayFqn ? account.fqn : account.acct}
             </Text>
 

@@ -1,11 +1,10 @@
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
+import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { useGroup } from 'soapbox/hooks/api';
-import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
-import { useGroupMembers } from 'soapbox/hooks/api/useGroupMembers';
+import { useFeatures } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account';
@@ -14,12 +13,17 @@ import GroupMemberListItem from './components/group-member-list-item';
 
 import type { Group } from 'soapbox/types/entities';
 
+
 interface IGroupMembers {
-  params: { id: string }
+  params: { groupId: string }
 }
 
+export const MAX_ADMIN_COUNT = 5;
+
 const GroupMembers: React.FC<IGroupMembers> = (props) => {
-  const groupId = props.params.id;
+  const { groupId } = props.params;
+
+  const features = useFeatures();
 
   const { group, isFetching: isFetchingGroup } = useGroup(groupId);
   const { groupMembers: owners, isFetching: isFetchingOwners } = useGroupMembers(groupId, GroupRoles.OWNER);
@@ -35,6 +39,10 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
     ...users,
   ], [owners, admins, users]);
 
+  const canPromoteToAdmin = features.groupsAdminMax
+    ? members.filter((member) => member.role === GroupRoles.ADMIN).length < MAX_ADMIN_COUNT
+    : true;
+
   return (
     <>
       <ScrollableList
@@ -49,7 +57,10 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
         itemClassName='py-3 last:pb-0'
         prepend={(pendingCount > 0) && (
           <div className={clsx('py-3', { 'border-b border-gray-200 dark:border-gray-800': members.length })}>
-            <PendingItemsRow to={`/groups/${groupId}/manage/requests`} count={pendingCount} />
+            <PendingItemsRow
+              to={`/group/${group?.slug}/manage/requests`}
+              count={pendingCount}
+            />
           </div>
         )}
       >
@@ -58,6 +69,7 @@ const GroupMembers: React.FC<IGroupMembers> = (props) => {
             group={group as Group}
             member={member}
             key={member.account.id}
+            canPromoteToAdmin={canPromoteToAdmin}
           />
         ))}
       </ScrollableList>

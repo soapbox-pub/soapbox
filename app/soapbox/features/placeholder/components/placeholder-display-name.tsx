@@ -21,4 +21,4 @@ const PlaceholderDisplayName: React.FC<IPlaceholderDisplayName> = ({ minLength, 
   );
 };
 
-export default PlaceholderDisplayName;
+export default React.memo(PlaceholderDisplayName);

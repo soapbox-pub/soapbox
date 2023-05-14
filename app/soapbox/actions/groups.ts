@@ -1,21 +1,14 @@
-import { defineMessages } from 'react-intl';
-
 import { deleteEntities } from 'soapbox/entity-store/actions';
-import toast from 'soapbox/toast';
 
 import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
-import { closeModal, openModal } from './modals';
-import { deleteFromTimelines } from './timelines';
 
 import type { AxiosError } from 'axios';
 import type { GroupRole } from 'soapbox/reducers/group-memberships';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Group } from 'soapbox/types/entities';
-
-const GROUP_EDITOR_SET = 'GROUP_EDITOR_SET';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const GROUP_CREATE_REQUEST = 'GROUP_CREATE_REQUEST';
 const GROUP_CREATE_SUCCESS = 'GROUP_CREATE_SUCCESS';
@@ -40,10 +33,6 @@ const GROUPS_FETCH_FAIL    = 'GROUPS_FETCH_FAIL';
 const GROUP_RELATIONSHIPS_FETCH_REQUEST = 'GROUP_RELATIONSHIPS_FETCH_REQUEST';
 const GROUP_RELATIONSHIPS_FETCH_SUCCESS = 'GROUP_RELATIONSHIPS_FETCH_SUCCESS';
 const GROUP_RELATIONSHIPS_FETCH_FAIL    = 'GROUP_RELATIONSHIPS_FETCH_FAIL';
-
-const GROUP_DELETE_STATUS_REQUEST = 'GROUP_DELETE_STATUS_REQUEST';
-const GROUP_DELETE_STATUS_SUCCESS = 'GROUP_DELETE_STATUS_SUCCESS';
-const GROUP_DELETE_STATUS_FAIL    = 'GROUP_DELETE_STATUS_FAIL';
 
 const GROUP_KICK_REQUEST = 'GROUP_KICK_REQUEST';
 const GROUP_KICK_SUCCESS = 'GROUP_KICK_SUCCESS';
@@ -96,100 +85,6 @@ const GROUP_MEMBERSHIP_REQUEST_AUTHORIZE_FAIL    = 'GROUP_MEMBERSHIP_REQUEST_AUT
 const GROUP_MEMBERSHIP_REQUEST_REJECT_REQUEST = 'GROUP_MEMBERSHIP_REQUEST_REJECT_REQUEST';
 const GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS = 'GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS';
 const GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL    = 'GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL';
-
-const GROUP_EDITOR_TITLE_CHANGE       = 'GROUP_EDITOR_TITLE_CHANGE';
-const GROUP_EDITOR_DESCRIPTION_CHANGE = 'GROUP_EDITOR_DESCRIPTION_CHANGE';
-const GROUP_EDITOR_PRIVACY_CHANGE     = 'GROUP_EDITOR_PRIVACY_CHANGE';
-const GROUP_EDITOR_MEDIA_CHANGE       = 'GROUP_EDITOR_MEDIA_CHANGE';
-
-const GROUP_EDITOR_RESET = 'GROUP_EDITOR_RESET';
-
-const messages = defineMessages({
-  success: { id: 'manage_group.submit_success', defaultMessage: 'The group was created' },
-  editSuccess: { id: 'manage_group.edit_success', defaultMessage: 'The group was edited' },
-  joinSuccess: { id: 'group.join.success', defaultMessage: 'Joined the group' },
-  joinRequestSuccess: { id: 'group.join.request_success', defaultMessage: 'Requested to join the group' },
-  leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
-  view: { id: 'toast.view', defaultMessage: 'View' },
-});
-
-const editGroup = (group: Group) => (dispatch: AppDispatch) => {
-  dispatch({
-    type: GROUP_EDITOR_SET,
-    group,
-  });
-  dispatch(openModal('MANAGE_GROUP'));
-};
-
-const createGroup = (params: Record<string, any>, shouldReset?: boolean) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(createGroupRequest());
-
-    return api(getState).post('/api/v1/groups', params, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(({ data }) => {
-        dispatch(importFetchedGroups([data]));
-        dispatch(createGroupSuccess(data));
-        toast.success(messages.success, {
-          actionLabel: messages.view,
-          actionLink: `/groups/${data.id}`,
-        });
-
-        if (shouldReset) {
-          dispatch(resetGroupEditor());
-        }
-
-        return data;
-      }).catch(err => dispatch(createGroupFail(err)));
-  };
-
-const createGroupRequest = () => ({
-  type: GROUP_CREATE_REQUEST,
-});
-
-const createGroupSuccess = (group: APIEntity) => ({
-  type: GROUP_CREATE_SUCCESS,
-  group,
-});
-
-const createGroupFail = (error: AxiosError) => ({
-  type: GROUP_CREATE_FAIL,
-  error,
-});
-
-const updateGroup = (id: string, params: Record<string, any>, shouldReset?: boolean) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(updateGroupRequest());
-
-    return api(getState).put(`/api/v1/groups/${id}`, params)
-      .then(({ data }) => {
-        dispatch(importFetchedGroups([data]));
-        dispatch(updateGroupSuccess(data));
-        toast.success(messages.editSuccess);
-
-        if (shouldReset) {
-          dispatch(resetGroupEditor());
-        }
-        dispatch(closeModal('MANAGE_GROUP'));
-      }).catch(err => dispatch(updateGroupFail(err)));
-  };
-
-const updateGroupRequest = () => ({
-  type: GROUP_UPDATE_REQUEST,
-});
-
-const updateGroupSuccess = (group: APIEntity) => ({
-  type: GROUP_UPDATE_SUCCESS,
-  group,
-});
-
-const updateGroupFail = (error: AxiosError) => ({
-  type: GROUP_UPDATE_FAIL,
-  error,
-});
 
 const deleteGroup = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch(deleteEntities([id], 'Group'));
@@ -304,36 +199,6 @@ const fetchGroupRelationshipsFail = (error: AxiosError) => ({
   error,
   skipLoading: true,
   skipNotFound: true,
-});
-
-const groupDeleteStatus = (groupId: string, statusId: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(groupDeleteStatusRequest(groupId, statusId));
-
-    return api(getState).delete(`/api/v1/groups/${groupId}/statuses/${statusId}`)
-      .then(() => {
-        dispatch(deleteFromTimelines(statusId));
-        dispatch(groupDeleteStatusSuccess(groupId, statusId));
-      }).catch(err => dispatch(groupDeleteStatusFail(groupId, statusId, err)));
-  };
-
-const groupDeleteStatusRequest = (groupId: string, statusId: string) => ({
-  type: GROUP_DELETE_STATUS_REQUEST,
-  groupId,
-  statusId,
-});
-
-const groupDeleteStatusSuccess = (groupId: string, statusId: string) => ({
-  type: GROUP_DELETE_STATUS_SUCCESS,
-  groupId,
-  statusId,
-});
-
-const groupDeleteStatusFail = (groupId: string, statusId: string, error: AxiosError) => ({
-  type: GROUP_DELETE_STATUS_SUCCESS,
-  groupId,
-  statusId,
-  error,
 });
 
 const groupKick = (groupId: string, accountId: string) =>
@@ -758,57 +623,7 @@ const rejectGroupMembershipRequestFail = (groupId: string, accountId: string, er
   error,
 });
 
-const changeGroupEditorTitle = (value: string) => ({
-  type: GROUP_EDITOR_TITLE_CHANGE,
-  value,
-});
-
-const changeGroupEditorDescription = (value: string) => ({
-  type: GROUP_EDITOR_DESCRIPTION_CHANGE,
-  value,
-});
-
-const changeGroupEditorPrivacy = (value: boolean) => ({
-  type: GROUP_EDITOR_PRIVACY_CHANGE,
-  value,
-});
-
-const changeGroupEditorMedia = (mediaType: 'header' | 'avatar', file: File) => ({
-  type: GROUP_EDITOR_MEDIA_CHANGE,
-  mediaType,
-  value: file,
-});
-
-const resetGroupEditor = () => ({
-  type: GROUP_EDITOR_RESET,
-});
-
-const submitGroupEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, getState: () => RootState) => {
-  const groupId     = getState().group_editor.groupId;
-  const displayName = getState().group_editor.displayName;
-  const note        = getState().group_editor.note;
-  const avatar      = getState().group_editor.avatar;
-  const header      = getState().group_editor.header;
-  const visibility  = getState().group_editor.locked ? 'members_only' : 'everyone'; // Truth Social
-
-  const params: Record<string, any> = {
-    display_name: displayName,
-    group_visibility: visibility,
-    note,
-  };
-
-  if (avatar) params.avatar = avatar;
-  if (header) params.header = header;
-
-  if (groupId === null) {
-    return dispatch(createGroup(params, shouldReset));
-  } else {
-    return dispatch(updateGroup(groupId, params, shouldReset));
-  }
-};
-
 export {
-  GROUP_EDITOR_SET,
   GROUP_CREATE_REQUEST,
   GROUP_CREATE_SUCCESS,
   GROUP_CREATE_FAIL,
@@ -827,9 +642,6 @@ export {
   GROUP_RELATIONSHIPS_FETCH_REQUEST,
   GROUP_RELATIONSHIPS_FETCH_SUCCESS,
   GROUP_RELATIONSHIPS_FETCH_FAIL,
-  GROUP_DELETE_STATUS_REQUEST,
-  GROUP_DELETE_STATUS_SUCCESS,
-  GROUP_DELETE_STATUS_FAIL,
   GROUP_KICK_REQUEST,
   GROUP_KICK_SUCCESS,
   GROUP_KICK_FAIL,
@@ -869,20 +681,6 @@ export {
   GROUP_MEMBERSHIP_REQUEST_REJECT_REQUEST,
   GROUP_MEMBERSHIP_REQUEST_REJECT_SUCCESS,
   GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL,
-  GROUP_EDITOR_TITLE_CHANGE,
-  GROUP_EDITOR_DESCRIPTION_CHANGE,
-  GROUP_EDITOR_PRIVACY_CHANGE,
-  GROUP_EDITOR_MEDIA_CHANGE,
-  GROUP_EDITOR_RESET,
-  editGroup,
-  createGroup,
-  createGroupRequest,
-  createGroupSuccess,
-  createGroupFail,
-  updateGroup,
-  updateGroupRequest,
-  updateGroupSuccess,
-  updateGroupFail,
   deleteGroup,
   deleteGroupRequest,
   deleteGroupSuccess,
@@ -899,10 +697,6 @@ export {
   fetchGroupRelationshipsRequest,
   fetchGroupRelationshipsSuccess,
   fetchGroupRelationshipsFail,
-  groupDeleteStatus,
-  groupDeleteStatusRequest,
-  groupDeleteStatusSuccess,
-  groupDeleteStatusFail,
   groupKick,
   groupKickRequest,
   groupKickSuccess,
@@ -955,10 +749,4 @@ export {
   rejectGroupMembershipRequestRequest,
   rejectGroupMembershipRequestSuccess,
   rejectGroupMembershipRequestFail,
-  changeGroupEditorTitle,
-  changeGroupEditorDescription,
-  changeGroupEditorPrivacy,
-  changeGroupEditorMedia,
-  resetGroupEditor,
-  submitGroupEditor,
 };

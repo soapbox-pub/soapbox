@@ -3,11 +3,12 @@ import React, { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { Column, HStack, Icon } from 'soapbox/components/ui';
-import { usePopularGroups } from 'soapbox/hooks/api/usePopularGroups';
+import { usePopularGroups } from 'soapbox/api/hooks';
+import { Column } from 'soapbox/components/ui';
 
 import GroupGridItem from './components/discover/group-grid-item';
 import GroupListItem from './components/discover/group-list-item';
+import LayoutButtons, { GroupLayout } from './components/discover/layout-buttons';
 
 import type { Group } from 'soapbox/schemas';
 
@@ -15,21 +16,15 @@ const messages = defineMessages({
   label: { id: 'groups.popular.label', defaultMessage: 'Popular Groups' },
 });
 
-enum Layout {
-  LIST = 'LIST',
-  GRID = 'GRID'
-}
-
 const GridList: Components['List'] = React.forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='flex flex-wrap' />;
 });
 
-
 const Popular: React.FC = () => {
   const intl = useIntl();
 
-  const [layout, setLayout] = useState<Layout>(Layout.LIST);
+  const [layout, setLayout] = useState<GroupLayout>(GroupLayout.LIST);
 
   const { groups, hasNextPage, fetchNextPage } = usePopularGroups();
 
@@ -51,42 +46,21 @@ const Popular: React.FC = () => {
     </div>
   ), []);
 
-  const renderGroupGrid = useCallback((group: Group, index: number) => (
-    <div className='pb-4'>
-      <GroupGridItem group={group} />
-    </div>
+  const renderGroupGrid = useCallback((group: Group) => (
+    <GroupGridItem group={group} />
   ), []);
 
   return (
     <Column
       label={intl.formatMessage(messages.label)}
       action={
-        <HStack alignItems='center'>
-          <button onClick={() => setLayout(Layout.LIST)}>
-            <Icon
-              src={require('@tabler/icons/layout-list.svg')}
-              className={
-                clsx('h-5 w-5 text-gray-600', {
-                  'text-primary-600': layout === Layout.LIST,
-                })
-              }
-            />
-          </button>
-
-          <button onClick={() => setLayout(Layout.GRID)}>
-            <Icon
-              src={require('@tabler/icons/layout-grid.svg')}
-              className={
-                clsx('h-5 w-5 text-gray-600', {
-                  'text-primary-600': layout === Layout.GRID,
-                })
-              }
-            />
-          </button>
-        </HStack>
+        <LayoutButtons
+          layout={layout}
+          onSelect={(selectedLayout) => setLayout(selectedLayout)}
+        />
       }
     >
-      {layout === Layout.LIST ? (
+      {layout === GroupLayout.LIST ? (
         <Virtuoso
           useWindowScroll
           data={groups}
@@ -97,10 +71,10 @@ const Popular: React.FC = () => {
         <VirtuosoGrid
           useWindowScroll
           data={groups}
-          itemContent={(index, group) => renderGroupGrid(group, index)}
+          itemContent={(_index, group) => renderGroupGrid(group)}
           components={{
             Item: (props) => (
-              <div {...props} className='w-1/2 flex-none' />
+              <div {...props} className='w-1/2 flex-none pb-4 [&:nth-last-of-type(-n+2)]:pb-0' />
             ),
             List: GridList,
           }}

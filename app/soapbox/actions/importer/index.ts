@@ -74,7 +74,7 @@ const importFetchedGroup = (group: APIEntity) =>
   importFetchedGroups([group]);
 
 const importFetchedGroups = (groups: APIEntity[]) => {
-  const entities = filteredArray(groupSchema).catch([]).parse(groups);
+  const entities = filteredArray(groupSchema).parse(groups);
   return importGroups(entities);
 };
 

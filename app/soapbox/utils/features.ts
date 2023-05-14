@@ -17,6 +17,12 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
+ * Ditto, a Nostr server with Mastodon API.
+ * @see {@link https://gitlab.com/soapbox-pub/ditto}
+ */
+export const DITTO = 'Ditto';
+
+/**
  * Friendica, decentralized social platform implementing multiple federation protocols.
  * @see {@link https://friendi.ca/}
  */
@@ -137,6 +143,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
+      v.software === DITTO,
     ]),
 
     /**
@@ -254,7 +261,7 @@ const getInstanceFeatures = (instance: Instance) => {
     /**
      * Ability to add reactions to chat messages.
      */
-    chatEmojiReactions: v.software === TRUTHSOCIAL && v.build === UNRELEASED,
+    chatEmojiReactions: v.software === TRUTHSOCIAL,
 
     /**
      * Pleroma chats API.
@@ -487,6 +494,16 @@ const getInstanceFeatures = (instance: Instance) => {
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
 
     /**
+     * Ability to follow hashtags.
+     * @see POST /api/v1/tags/:name/follow
+     * @see POST /api/v1/tags/:name/unfollow
+     */
+    followHashtags: any([
+      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+      v.software === PLEROMA && v.build === AKKOMA,
+    ]),
+
+    /**
      * Ability to lock accounts and manually approve followers.
      * @see PATCH /api/v1/accounts/update_credentials
      */
@@ -494,6 +511,12 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON,
       v.software === PLEROMA,
     ]),
+
+    /**
+     * Ability to list followed hashtags.
+     * @see GET /api/v1/followed_tags
+     */
+    followedHashtagsList: v.software === MASTODON && gte(v.compatVersion, '4.1.0'),
 
     /**
      * Whether client settings can be retrieved from the API.
@@ -530,6 +553,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groups: v.build === UNRELEASED,
 
     /**
+     * Cap # of Group Admins to 5
+     */
+    groupsAdminMax: v.software === TRUTHSOCIAL,
+
+    /**
      * Can see trending/suggested Groups.
      */
     groupsDiscovery: v.software === TRUTHSOCIAL,
@@ -553,6 +581,11 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can search my own groups.
      */
     groupsSearch: v.software === TRUTHSOCIAL,
+
+    /**
+     * Can see topics for Groups.
+     */
+    groupsTags: v.software === TRUTHSOCIAL,
 
     /**
      * Can validate group names.
@@ -590,6 +623,14 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+
+    /**
+     * Can sign in using username instead of e-mail address.
+     */
+    logInWithUsername: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
     ]),
 
     /**

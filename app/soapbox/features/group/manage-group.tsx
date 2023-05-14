@@ -3,28 +3,29 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import { useDeleteGroup, useGroup } from 'soapbox/api/hooks';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useGroupsPath } from 'soapbox/hooks';
-import { useDeleteGroup, useGroup } from 'soapbox/hooks/api';
+import { useAppDispatch, useBackend, useGroupsPath } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
+import { TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 const messages = defineMessages({
-  heading: { id: 'column.manage_group', defaultMessage: 'Manage group' },
-  editGroup: { id: 'manage_group.edit_group', defaultMessage: 'Edit group' },
-  pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending requests' },
-  blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned members' },
-  deleteGroup: { id: 'manage_group.delete_group', defaultMessage: 'Delete group' },
+  heading: { id: 'column.manage_group', defaultMessage: 'Manage Group' },
+  editGroup: { id: 'manage_group.edit_group', defaultMessage: 'Edit Group' },
+  pendingRequests: { id: 'manage_group.pending_requests', defaultMessage: 'Pending Requests' },
+  blockedMembers: { id: 'manage_group.blocked_members', defaultMessage: 'Banned Members' },
+  deleteGroup: { id: 'manage_group.delete_group', defaultMessage: 'Delete Group' },
   deleteConfirm: { id: 'confirmations.delete_group.confirm', defaultMessage: 'Delete' },
-  deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete group' },
+  deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete Group' },
   deleteMessage: { id: 'confirmations.delete_group.message', defaultMessage: 'Are you sure you want to delete this group? This is a permanent action that cannot be undone.' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
-  other: { id: 'settings.other', defaultMessage: 'Other options' },
+  other: { id: 'settings.other', defaultMessage: 'Other Options' },
   deleteSuccess: { id: 'group.delete.success', defaultMessage: 'Group successfully deleted' },
 });
 
@@ -33,11 +34,13 @@ interface IManageGroup {
 }
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
-  const { id } = params;
-  const intl = useIntl();
-  const history = useHistory();
+  const { groupId: id } = params;
+
+  const backend = useBackend();
   const dispatch = useAppDispatch();
   const groupsPath = useGroupsPath();
+  const history = useHistory();
+  const intl = useIntl();
 
   const { group } = useGroup(id);
 
@@ -73,12 +76,12 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
       },
     }));
 
-  const navigateToEdit = () => history.push(`/groups/${id}/manage/edit`);
-  const navigateToPending = () => history.push(`/groups/${id}/manage/requests`);
-  const navigateToBlocks = () => history.push(`/groups/${id}/manage/blocks`);
+  const navigateToEdit = () => history.push(`/group/${group.slug}/manage/edit`);
+  const navigateToPending = () => history.push(`/group/${group.slug}/manage/requests`);
+  const navigateToBlocks = () => history.push(`/group/${group.slug}/manage/blocks`);
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} backHref={`/groups/${id}`}>
+    <Column label={intl.formatMessage(messages.heading)} backHref={`/group/${group.slug}`}>
       <CardBody className='space-y-4'>
         {isOwner && (
           <>
@@ -99,7 +102,10 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
         </CardHeader>
 
         <List>
-          <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+          {backend.software !== TRUTHSOCIAL && (
+            <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+          )}
+
           <ListItem label={intl.formatMessage(messages.blockedMembers)} onClick={navigateToBlocks} />
         </List>
 

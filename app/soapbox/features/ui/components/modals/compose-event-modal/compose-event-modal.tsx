@@ -184,7 +184,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <Icon src={ADDRESS_ICONS[location.type] || require('@tabler/icons/map-pin.svg')} />
       <Stack className='grow'>
         <Text>{location.description}</Text>
-        <Text theme='muted' size='xs'>{[location.street, location.locality, location.country].filter(val => val.trim()).join(' · ')}</Text>
+        <Text theme='muted' size='xs'>{[location.street, location.locality, location.country].filter(val => val?.trim()).join(' · ')}</Text>
       </Stack>
       <IconButton title={intl.formatMessage(messages.resetLocation)} src={require('@tabler/icons/x.svg')} onClick={() => onChangeLocation(null)} />
     </HStack>

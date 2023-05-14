@@ -184,7 +184,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
           ref={scroller}
           hasMore={!!next}
           onLoadMore={handleLoadMore}
-          placeholderComponent={() => <PlaceholderStatus thread />}
+          placeholderComponent={() => <PlaceholderStatus variant='slim' />}
           initialTopMostItemIndex={0}
           emptyMessage={<FormattedMessage id='event.discussion.empty' defaultMessage='No one has commented this event yet. When someone does, they will appear here.' />}
         >

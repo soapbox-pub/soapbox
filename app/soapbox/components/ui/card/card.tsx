@@ -16,11 +16,13 @@ const messages = defineMessages({
   back: { id: 'card.back.label', defaultMessage: 'Back' },
 });
 
+export type CardSizes = keyof typeof sizes
+
 interface ICard {
   /** The type of card. */
-  variant?: 'default' | 'rounded'
+  variant?: 'default' | 'rounded' | 'slim'
   /** Card size preset. */
-  size?: keyof typeof sizes
+  size?: CardSizes
   /** Extra classnames for the <div> element. */
   className?: string
   /** Elements inside the card. */
@@ -33,8 +35,9 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
     ref={ref}
     {...filteredProps}
     className={clsx({
-      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
+      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
+      'py-4': variant === 'slim',
     }, className)}
   >
     {children}
@@ -72,7 +75,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
   };
 
   return (
-    <HStack alignItems='center' space={2} className={clsx('mb-4', className)}>
+    <HStack alignItems='center' space={2} className={className}>
       {renderBackButton()}
 
       {children}

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { connectHashtagStream } from 'soapbox/actions/streaming';
+import { fetchHashtag, followHashtag, unfollowHashtag } from 'soapbox/actions/tags';
 import { expandHashtagTimeline, clearTimeline } from 'soapbox/actions/timelines';
-import { Column } from 'soapbox/components/ui';
+import List, { ListItem } from 'soapbox/components/list';
+import { Column, Toggle } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { Tag as TagEntity } from 'soapbox/types/entities';
 
@@ -32,9 +34,11 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const intl = useIntl();
   const id = params?.id || '';
   const tags = params?.tags || { any: [], all: [], none: [] };
-
+  
+  const features = useFeatures();
   const dispatch = useAppDispatch();
   const disconnects = useRef<(() => void)[]>([]);
+  const tag = useAppSelector((state) => state.tags.get(id));
 
   // Mastodon supports displaying results from multiple hashtags.
   // https://github.com/mastodon/mastodon/issues/6359
@@ -88,9 +92,18 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
     dispatch(expandHashtagTimeline(id, { maxId, tags }));
   };
 
+  const handleFollow = () => {
+    if (tag?.following) {
+      dispatch(unfollowHashtag(id));
+    } else {
+      dispatch(followHashtag(id));
+    }
+  };
+
   useEffect(() => {
     subscribe();
     dispatch(expandHashtagTimeline(id, { tags }));
+    dispatch(fetchHashtag(id));
 
     return () => {
       unsubscribe();
@@ -105,7 +118,19 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   }, [id]);
 
   return (
-    <Column label={title()} transparent>
+    <Column bodyClassName='space-y-3' label={title()} transparent>
+      {features.followHashtags && (
+        <List>
+          <ListItem
+            label={<FormattedMessage id='hashtag.follow' defaultMessage='Follow hashtag' />}
+          >
+            <Toggle
+              checked={tag?.following}
+              onChange={handleFollow}
+            />
+          </ListItem>
+        </List>
+      )}
       <Timeline
         scrollKey='hashtag_timeline'
         timelineId={`hashtag:${id}`}

@@ -16,6 +16,7 @@ const messages = defineMessages({
 export type StreamfieldComponent<T> = React.ComponentType<{
   value: T
   onChange: (value: T) => void
+  autoFocus: boolean
 }>;
 
 interface IStreamfield {
@@ -69,14 +70,19 @@ const Streamfield: React.FC<IStreamfield> = ({
       </Stack>
 
       {(values.length > 0) && (
-        <Stack>
+        <Stack space={1}>
           {values.map((value, i) => value?._destroy ? null : (
             <HStack space={2} alignItems='center'>
-              <Component key={i} onChange={handleChange(i)} value={value} />
+              <Component
+                key={i}
+                onChange={handleChange(i)}
+                value={value}
+                autoFocus={i > 0}
+              />
               {values.length > minItems && onRemoveItem && (
                 <IconButton
                   iconClassName='h-4 w-4'
-                  className='bg-transparent text-gray-400 hover:text-gray-600'
+                  className='bg-transparent text-gray-600 hover:text-gray-600'
                   src={require('@tabler/icons/x.svg')}
                   onClick={() => onRemoveItem(i)}
                   title={intl.formatMessage(messages.remove)}
@@ -87,11 +93,9 @@ const Streamfield: React.FC<IStreamfield> = ({
         </Stack>
       )}
 
-      {onAddItem && (
+      {(onAddItem && (values.length < maxItems)) && (
         <Button
-          icon={require('@tabler/icons/plus.svg')}
           onClick={onAddItem}
-          disabled={values.length >= maxItems}
           theme='secondary'
           block
         >

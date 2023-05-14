@@ -1,4 +1,4 @@
-import { normalizeAd } from 'soapbox/normalizers';
+import { buildAd } from 'soapbox/jest/factory';
 
 import { isExpired } from '../ads';
 
@@ -14,10 +14,10 @@ test('isExpired()', () => {
   const epoch = now.getTime();
 
   // Sanity tests.
-  expect(isExpired(normalizeAd({ expires_at: iso }))).toBe(true);
-  expect(isExpired(normalizeAd({ expires_at: new Date(epoch + 999999).toISOString() }))).toBe(false);
+  expect(isExpired(buildAd({ expires_at: iso }))).toBe(true);
+  expect(isExpired(buildAd({ expires_at: new Date(epoch + 999999).toISOString() }))).toBe(false);
 
   // Testing the 5-minute mark.
-  expect(isExpired(normalizeAd({ expires_at: new Date(epoch + threeMins).toISOString() }), fiveMins)).toBe(true);
-  expect(isExpired(normalizeAd({ expires_at: new Date(epoch + fiveMins + 1000).toISOString() }), fiveMins)).toBe(false);
+  expect(isExpired(buildAd({ expires_at: new Date(epoch + threeMins).toISOString() }), fiveMins)).toBe(true);
+  expect(isExpired(buildAd({ expires_at: new Date(epoch + fiveMins + 1000).toISOString() }), fiveMins)).toBe(false);
 });

@@ -15,7 +15,7 @@ function useDeleteEntity(
 ) {
   const dispatch = useAppDispatch();
   const getState = useGetState();
-  const [isLoading, setPromise] = useLoading();
+  const [isSubmitting, setPromise] = useLoading();
 
   async function deleteEntity(entityId: string, callbacks: EntityCallbacks<string> = {}): Promise<void> {
     // Get the entity before deleting, so we can reverse the action if the API request fails.
@@ -47,7 +47,7 @@ function useDeleteEntity(
 
   return {
     deleteEntity,
-    isLoading,
+    isSubmitting,
   };
 }
 

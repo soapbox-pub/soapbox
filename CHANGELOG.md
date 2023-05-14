@@ -7,16 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Hashtags: let users follow hashtags (Mastodon, Akkoma).
 - Posts: Support posts filtering on recent Mastodon versions
 - Reactions: Support custom emoji reactions
 - Compatbility: Support Mastodon v2 timeline filters.
+- Compatbility: Preliminary support for Ditto backend.
 - Posts: Support dislikes on Friendica.
 - UI: added a character counter to some textareas.
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
 - Posts: upgraded emoji picker component.
+- Posts: improved design of threads.
 - UI: unified design of "approve" and "reject" buttons in follow requests and waitlist.
+- UI: added sticky column header.
+- UI: add specific zones the user can drag-and-drop files.
 
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
@@ -27,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 18n: fixed Chinese language being detected from the browser.
 - Conversations: fixed pagination (Mastodon).
 - Compatibility: fix version parsing for Friendica.
+- UI: fixed various overflow issues related to long usernames.
+- UI: fixed display of Markdown code blocks in the reply indicator.
 
 ## [3.2.0] - 2023-02-15
 

@@ -28,7 +28,7 @@ import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
-import group_editor from './group-editor';
+import followed_tags from './followed_tags';
 import group_memberships from './group-memberships';
 import group_relationships from './group-relationships';
 import groups from './groups';
@@ -62,6 +62,7 @@ import status_hover_card from './status-hover-card';
 import status_lists from './status-lists';
 import statuses from './statuses';
 import suggestions from './suggestions';
+import tags from './tags';
 import timelines from './timelines';
 import trending_statuses from './trending-statuses';
 import trends from './trends';
@@ -93,7 +94,7 @@ const reducers = {
   dropdown_menu,
   entities,
   filters,
-  group_editor,
+  followed_tags,
   group_memberships,
   group_relationships,
   groups,
@@ -127,6 +128,7 @@ const reducers = {
   status_lists,
   statuses,
   suggestions,
+  tags,
   timelines,
   trending_statuses,
   trends,

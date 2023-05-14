@@ -5,7 +5,7 @@ import emojify from 'soapbox/features/emoji';
 
 import { customEmojiSchema } from './custom-emoji';
 import { relationshipSchema } from './relationship';
-import { filteredArray, makeCustomEmojiMap } from './utils';
+import { contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 const avatarMissing = require('assets/images/avatar-missing.png');
 const headerMissing = require('assets/images/header-missing.png');
@@ -22,7 +22,7 @@ const accountSchema = z.object({
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
-  emojis: filteredArray(customEmojiSchema).catch([]),
+  emojis: filteredArray(customEmojiSchema),
   favicon: z.string().catch(''),
   fields: z.any(), // TODO
   followers_count: z.number().catch(0),
@@ -39,12 +39,12 @@ const accountSchema = z.object({
     z.string(),
     z.null(),
   ]).catch(null),
-  note: z.string().catch(''),
+  note: contentSchema,
   pleroma: z.any(), // TODO
   source: z.any(), // TODO
   statuses_count: z.number().catch(0),
-  uri: z.string().catch(''),
-  url: z.string().catch(''),
+  uri: z.string().url().catch(''),
+  url: z.string().url().catch(''),
   username: z.string().catch(''),
   verified: z.boolean().default(false),
   website: z.string().catch(''),
@@ -121,4 +121,4 @@ const accountSchema = z.object({
 
 type Account = z.infer<typeof accountSchema>;
 
-export { accountSchema, Account };
+export { accountSchema, type Account };

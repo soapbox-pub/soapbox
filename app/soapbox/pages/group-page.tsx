@@ -1,7 +1,9 @@
-import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import React, { useMemo } from 'react';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
+import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
+import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import { Column, Icon, Layout, Stack, Text } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
@@ -12,45 +14,76 @@ import {
   SignUpPanel,
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { useOwnAccount } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/hooks/api';
-import { useGroupMembershipRequests } from 'soapbox/hooks/api/groups/useGroupMembershipRequests';
-import { Group } from 'soapbox/schemas';
+import { useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 import { Tabs } from '../components/ui';
+
+import type { Group } from 'soapbox/schemas';
 
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
+  media: { id: 'group.tabs.media', defaultMessage: 'Media' },
+  tags: { id: 'group.tabs.tags', defaultMessage: 'Topics' },
 });
 
 interface IGroupPage {
   params?: {
-    id?: string
+    groupId?: string
   }
   children: React.ReactNode
 }
 
-const PrivacyBlankslate = () => (
+const DeletedBlankslate = () => (
   <Stack space={4} className='py-10' alignItems='center'>
-    <div className='rounded-full bg-gray-200 p-3'>
-      <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-gray-600' />
+    <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
+      <Icon
+        src={require('@tabler/icons/trash.svg')}
+        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+      />
     </div>
 
     <Text theme='muted'>
-      Content is only visible to group members
+      <FormattedMessage
+        id='group.deleted.message'
+        defaultMessage='This group has been deleted.'
+      />
+    </Text>
+  </Stack>
+);
+
+const PrivacyBlankslate = () => (
+  <Stack space={4} className='py-10' alignItems='center'>
+    <div className='rounded-full bg-gray-200 p-3 dark:bg-gray-800'>
+      <Icon
+        src={require('@tabler/icons/eye-off.svg')}
+        className='h-6 w-6 text-gray-600 dark:text-gray-600'
+      />
+    </div>
+
+    <Text theme='muted'>
+      <FormattedMessage
+        id='group.private.message'
+        defaultMessage='Content is only visible to group members'
+      />
     </Text>
   </Stack>
 );
 
 const BlockedBlankslate = ({ group }: { group: Group }) => (
   <Stack space={4} className='py-10' alignItems='center'>
-    <div className='rounded-full bg-danger-200 p-3'>
-      <Icon src={require('@tabler/icons/eye-off.svg')} className='h-6 w-6 text-danger-600' />
+    <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
+      <Icon
+        src={require('@tabler/icons/ban.svg')}
+        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+      />
     </div>
 
     <Text theme='muted'>
-      You are banned from
+      <FormattedMessage
+        id='group.banned.message'
+        defaultMessage='You are banned from'
+      />
       {' '}
       <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
     </Text>
@@ -60,10 +93,11 @@ const BlockedBlankslate = ({ group }: { group: Group }) => (
 /** Page to display a group. */
 const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const intl = useIntl();
+  const features = useFeatures();
   const match = useRouteMatch();
   const me = useOwnAccount();
 
-  const id = params?.id || '';
+  const id = params?.groupId || '';
 
   const { group } = useGroup(id);
   const { accounts: pending } = useGroupMembershipRequests(id);
@@ -71,23 +105,45 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const isMember = !!group?.relationship?.member;
   const isBlocked = group?.relationship?.blocked_by;
   const isPrivate = group?.locked;
+  const isDeleted = !!group?.deleted_at;
 
-  const items = [
-    {
+  const tabItems = useMemo(() => {
+    const items = [];
+    items.push({
       text: intl.formatMessage(messages.all),
-      to: `/groups/${group?.id}`,
-      name: '/groups/:id',
-    },
-    {
-      text: intl.formatMessage(messages.members),
-      to: `/groups/${group?.id}/members`,
-      name: '/groups/:id/members',
-      count: pending.length,
-    },
-  ];
+      to: `/group/${group?.slug}`,
+      name: '/group/:groupSlug',
+    });
+
+    if (features.groupsTags) {
+      items.push({
+        text: intl.formatMessage(messages.tags),
+        to: `/group/${group?.slug}/tags`,
+        name: '/group/:groupSlug/tags',
+      });
+    }
+
+    items.push(
+      {
+        text: intl.formatMessage(messages.media),
+        to: `/group/${group?.slug}/media`,
+        name: '/group/:groupSlug/media',
+      },
+      {
+        text: intl.formatMessage(messages.members),
+        to: `/group/${group?.slug}/members`,
+        name: '/group/:groupSlug/members',
+        count: pending.length,
+      },
+    );
+
+    return items;
+  }, [features.groupsTags, pending.length]);
 
   const renderChildren = () => {
-    if (!isMember && isPrivate) {
+    if (isDeleted) {
+      return <DeletedBlankslate />;
+    } else if (!isMember && isPrivate) {
       return <PrivacyBlankslate />;
     } else if (isBlocked) {
       return <BlockedBlankslate group={group} />;
@@ -99,11 +155,11 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   return (
     <>
       <Layout.Main>
-        <Column label={group ? group.display_name : ''} withHeader={false}>
+        <Column size='lg' label={group ? group.display_name : ''} withHeader={false}>
           <GroupHeader group={group} />
 
           <Tabs
-            items={items}
+            items={tabItems}
             activeItem={match.path}
           />
 
@@ -135,4 +191,4 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   );
 };
 
-export default GroupPage;
+export default GroupLookupHoc(GroupPage as any) as any;

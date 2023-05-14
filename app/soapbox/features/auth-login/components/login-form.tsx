@@ -3,13 +3,18 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Button, Form, FormActions, FormGroup, Input, Stack } from 'soapbox/components/ui';
+import { useFeatures } from 'soapbox/hooks';
 
 import ConsumersList from './consumers-list';
 
 const messages = defineMessages({
   username: {
     id: 'login.fields.username_label',
-    defaultMessage: 'Email or username',
+    defaultMessage: 'E-mail or username',
+  },
+  email: {
+    id: 'login.fields.email_label',
+    defaultMessage: 'E-mail address',
   },
   password: {
     id: 'login.fields.password_placeholder',
@@ -24,6 +29,10 @@ interface ILoginForm {
 
 const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
   const intl = useIntl();
+  const features = useFeatures();
+
+  const usernameLabel = intl.formatMessage(features.logInWithUsername ? messages.username : messages.email);
+  const passwordLabel = intl.formatMessage(messages.password);
 
   return (
     <div>
@@ -33,10 +42,10 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
 
       <Stack className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2' space={5}>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(messages.username)}>
+          <FormGroup labelText={usernameLabel}>
             <Input
-              aria-label={intl.formatMessage(messages.username)}
-              placeholder={intl.formatMessage(messages.username)}
+              aria-label={usernameLabel}
+              placeholder={usernameLabel}
               type='text'
               name='username'
               autoCorrect='off'
@@ -46,9 +55,9 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
           </FormGroup>
 
           <FormGroup
-            labelText={intl.formatMessage(messages.password)}
+            labelText={passwordLabel}
             hintText={
-              <Link to='/reset-password' className='hover:underline'>
+              <Link to='/reset-password' className='hover:underline' tabIndex={-1}>
                 <FormattedMessage
                   id='login.reset_password_hint'
                   defaultMessage='Trouble logging in?'
@@ -57,8 +66,8 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
             }
           >
             <Input
-              aria-label={intl.formatMessage(messages.password)}
-              placeholder={intl.formatMessage(messages.password)}
+              aria-label={passwordLabel}
+              placeholder={passwordLabel}
               type='password'
               name='password'
               autoComplete='off'

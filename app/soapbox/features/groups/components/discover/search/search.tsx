@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useGroupSearch } from 'soapbox/api/hooks';
 import { Stack } from 'soapbox/components/ui';
 import PlaceholderGroupSearch from 'soapbox/features/placeholder/components/placeholder-group-search';
 import { useDebounce, useOwnAccount } from 'soapbox/hooks';
-import { useGroupSearch } from 'soapbox/hooks/api';
 import { saveGroupSearch } from 'soapbox/utils/groups';
 
 import Blankslate from './blankslate';
@@ -26,7 +26,7 @@ export default (props: Props) => {
   const debouncedValueToSave = debounce(searchValue as string, 1000);
 
   const groupSearchResult = useGroupSearch(debouncedValue);
-  const { groups, isFetching, isFetched, isError } = groupSearchResult;
+  const { groups, isLoading, isFetched, isError } = groupSearchResult;
 
   const hasSearchResults = isFetched && groups.length > 0;
   const hasNoSearchResults = isFetched && groups.length === 0;
@@ -37,7 +37,7 @@ export default (props: Props) => {
     }
   }, [debouncedValueToSave]);
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <Stack space={4}>
         <PlaceholderGroupSearch />

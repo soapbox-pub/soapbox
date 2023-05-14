@@ -399,7 +399,6 @@
   "toast.view": "View",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person duke folur} other {persona që flasin}}",
   "unauthorized_modal.title": "Sign up for {site_title}",
-  "upload_area.title": "Merreni & vëreni që të ngarkohet",
   "upload_button.label": "Shtoni media (JPEG, PNG, GIF, WebM, MP4, MOV)",
   "upload_error.limit": "U tejkalua kufi ngarkimi kartelash.",
   "upload_form.description": "Përshkruajeni për persona me probleme shikimi",

@@ -374,10 +374,6 @@ export function SidebarMenu() {
   return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar-menu');
 }
 
-export function UploadArea() {
-  return import(/* webpackChunkName: "features/compose" */'../components/upload-area');
-}
-
 export function ModalContainer() {
   return import(/* webpackChunkName: "features/ui" */'../containers/modal-container');
 }
@@ -562,12 +558,28 @@ export function GroupsSuggested() {
   return import(/* webpackChunkName: "features/groups" */'../../groups/suggested');
 }
 
+export function GroupsTag() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups/tag');
+}
+
+export function GroupsTags() {
+  return import(/* webpackChunkName: "features/groups" */'../../groups/tags');
+}
+
 export function PendingGroupRequests() {
   return import(/* webpackChunkName: "features/groups" */'../../groups/pending-requests');
 }
 
 export function GroupMembers() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-members');
+}
+
+export function GroupTags() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-tags');
+}
+
+export function GroupTagTimeline() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-tag-timeline');
 }
 
 export function GroupTimeline() {
@@ -590,8 +602,12 @@ export function GroupMembershipRequests() {
   return import(/* webpackChunkName: "features/groups" */'../../group/group-membership-requests');
 }
 
-export function ManageGroupModal() {
-  return import(/* webpackChunkName: "features/manage_group_modal" */'../components/modals/manage-group-modal/manage-group-modal');
+export function GroupGallery() {
+  return import(/* webpackChunkName: "features/groups" */'../../group/group-gallery');
+}
+
+export function CreateGroupModal() {
+  return import(/* webpackChunkName: "features/groups" */'../components/modals/manage-group-modal/create-group-modal');
 }
 
 export function NewGroupPanel() {

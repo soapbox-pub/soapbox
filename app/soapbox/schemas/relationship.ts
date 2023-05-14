@@ -19,4 +19,4 @@ const relationshipSchema = z.object({
 
 type Relationship = z.infer<typeof relationshipSchema>;
 
-export { relationshipSchema, Relationship };
+export { relationshipSchema, type Relationship };

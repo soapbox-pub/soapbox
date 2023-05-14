@@ -1,34 +1,41 @@
-import React, { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import clsx from 'clsx';
+import React, { useEffect, useRef } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { groupCompose, setGroupTimelineVisible } from 'soapbox/actions/compose';
+import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
 import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupTimeline } from 'soapbox/actions/timelines';
+import { useGroup } from 'soapbox/api/hooks';
 import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { useGroup } from 'soapbox/hooks/api';
+import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
-type RouteParams = { id: string };
+type RouteParams = { groupId: string };
 
 interface IGroupTimeline {
   params: RouteParams
 }
 
 const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
+  const intl = useIntl();
   const account = useOwnAccount();
   const dispatch = useAppDispatch();
+  const composer = useRef<HTMLDivElement>(null);
 
-  const groupId = props.params.id;
+  const { groupId } = props.params;
 
   const { group } = useGroup(groupId);
 
   const composeId = `group:${groupId}`;
   const canComposeGroupStatus = !!account && group?.relationship?.member;
   const groupTimelineVisible = useAppSelector((state) => !!state.compose.get(composeId)?.group_timeline_visible);
+
+  const { isDragging, isDraggedOver } = useDraggedFiles(composer, (files) => {
+    dispatch(uploadCompose(composeId, files, intl));
+  });
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandGroupTimeline(groupId, { maxId }));
@@ -56,8 +63,16 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   return (
     <Stack space={2}>
       {canComposeGroupStatus && (
-        <div className='border-b border-solid border-gray-200 px-2 py-4 dark:border-gray-800'>
-          <HStack alignItems='start' space={4}>
+        <div className='border-b border-solid border-gray-200 py-6 dark:border-gray-800'>
+          <HStack
+            ref={composer}
+            alignItems='start'
+            space={4}
+            className={clsx('relative rounded-xl transition', {
+              'border-2 border-primary-600 border-dashed z-[99] p-4': isDragging,
+              'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
+            })}
+          >
             <Link to={`/@${account.acct}`}>
               <Avatar src={account.avatar} size={46} />
             </Link>
@@ -93,7 +108,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
         onLoadMore={handleLoadMore}
         emptyMessage={
           <Stack space={4} className='py-6' justifyContent='center' alignItems='center'>
-            <div className='rounded-full bg-gray-200 p-4'>
+            <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
               <Icon
                 src={require('@tabler/icons/message-2.svg')}
                 className='h-6 w-6 text-gray-600'

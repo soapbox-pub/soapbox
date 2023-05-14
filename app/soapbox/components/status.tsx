@@ -2,13 +2,12 @@ import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
 import TranslateButton from 'soapbox/components/translate-button';
 import AccountContainer from 'soapbox/containers/account-container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
@@ -22,7 +21,8 @@ import StatusMedia from './status-media';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 import StatusInfo from './statuses/status-info';
-import { Card, Stack, Text } from './ui';
+import Tombstone from './tombstone';
+import { Card, Icon, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
@@ -51,7 +51,7 @@ export interface IStatus {
   featured?: boolean
   hideActionBar?: boolean
   hoverable?: boolean
-  variant?: 'default' | 'rounded'
+  variant?: 'default' | 'rounded' | 'slim'
   showGroup?: boolean
   accountAction?: React.ReactElement
 }
@@ -212,26 +212,67 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const renderStatusInfo = () => {
-    if (isReblog) {
+    if (isReblog && showGroup && group) {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          to={`/@${status.getIn(['account', 'acct'])}`}
-          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='text-green-600' />}
+          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='h-4 w-4 text-green-600' />}
+          text={
+            <FormattedMessage
+              id='status.reblogged_by_with_group'
+              defaultMessage='{name} reposted from {group}'
+              values={{
+                name: (
+                  <Link
+                    to={`/@${status.getIn(['account', 'acct'])}`}
+                    className='hover:underline'
+                  >
+                    <bdi className='truncate'>
+                      <strong
+                        className='text-gray-800 dark:text-gray-200'
+                        dangerouslySetInnerHTML={{
+                          __html: String(status.getIn(['account', 'display_name_html'])),
+                        }}
+                      />
+                    </bdi>
+                  </Link>
+                ),
+                group: (
+                  <Link to={`/group/${(status.group as GroupEntity).slug}`} className='hover:underline'>
+                    <strong
+                      className='text-gray-800 dark:text-gray-200'
+                      dangerouslySetInnerHTML={{
+                        __html: (status.group as GroupEntity).display_name_html,
+                      }}
+                    />
+                  </Link>
+                ),
+              }}
+            />
+          }
+        />
+      );
+    } else if (isReblog) {
+      return (
+        <StatusInfo
+          avatarSize={avatarSize}
+          icon={<Icon src={require('@tabler/icons/repeat.svg')} className='h-4 w-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by'
               defaultMessage='{name} reposted'
               values={{
                 name: (
-                  <bdi className='truncate pr-1 rtl:pl-1'>
-                    <strong
-                      className='text-gray-800 dark:text-gray-200'
-                      dangerouslySetInnerHTML={{
-                        __html: String(status.getIn(['account', 'display_name_html'])),
-                      }}
-                    />
-                  </bdi>
+                  <Link to={`/@${status.getIn(['account', 'acct'])}`} className='hover:underline'>
+                    <bdi className='truncate'>
+                      <strong
+                        className='text-gray-800 dark:text-gray-200'
+                        dangerouslySetInnerHTML={{
+                          __html: String(status.getIn(['account', 'display_name_html'])),
+                        }}
+                      />
+                    </bdi>
+                  </Link>
                 ),
               }}
             />
@@ -242,11 +283,9 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={require('@tabler/icons/pinned.svg')} className='h-4 w-4 text-gray-600 dark:text-gray-400' />}
           text={
-            <Text size='xs' theme='muted' weight='medium'>
-              <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
-            </Text>
+            <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
           }
         />
       );
@@ -254,18 +293,23 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          to={`/groups/${group.id}`}
-          icon={<Icon src={require('@tabler/icons/circles.svg')} className='text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={require('@tabler/icons/circles.svg')} className='h-4 w-4 text-primary-600 dark:text-accent-blue' />}
           text={
-            <Text size='xs' theme='muted' weight='medium'>
-              <FormattedMessage
-                id='status.group'
-                defaultMessage='Posted in {group}'
-                values={{ group: (
-                  <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
-                ) }}
-              />
-            </Text>
+            <FormattedMessage
+              id='status.group'
+              defaultMessage='Posted in {group}'
+              values={{
+                group: (
+                  <Link to={`/group/${group.slug}`} className='hover:underline'>
+                    <bdi className='truncate'>
+                      <strong className='text-gray-800 dark:text-gray-200'>
+                        <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                      </strong>
+                    </bdi>
+                  </Link>
+                ),
+              }}
+            />
           }
         />
       );
@@ -345,6 +389,17 @@ const Status: React.FC<IStatus> = (props) => {
 
   const isUnderReview = actualStatus.visibility === 'self';
   const isSensitive = actualStatus.hidden;
+  const isSoftDeleted = status.tombstone?.reason === 'deleted';
+
+  if (isSoftDeleted) {
+    return (
+      <Tombstone
+        id={status.id}
+        onMoveUp={(id) => onMoveUp ? onMoveUp(id) : null}
+        onMoveDown={(id) => onMoveDown ? onMoveDown(id) : null}
+      />
+    );
+  }
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>

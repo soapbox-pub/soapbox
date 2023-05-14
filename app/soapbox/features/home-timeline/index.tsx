@@ -27,9 +27,10 @@ const HomeTimeline: React.FC = () => {
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
   const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId as string | undefined);
   const currentAccountRelationship = useAppSelector(state => currentAccountId ? state.relationships.get(currentAccountId) : null);
+  const next = useAppSelector(state => state.timelines.get('home')?.next);
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandHomeTimeline({ maxId, accountId: currentAccountId }));
+    dispatch(expandHomeTimeline({ url: next, maxId, accountId: currentAccountId }));
   };
 
   // Mastodon generates the feed in Redis, and can return a partial timeline
@@ -52,7 +53,7 @@ const HomeTimeline: React.FC = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandHomeTimeline({ maxId: null, accountId: currentAccountId }));
+    return dispatch(expandHomeTimeline({ accountId: currentAccountId }));
   };
 
   useEffect(() => {

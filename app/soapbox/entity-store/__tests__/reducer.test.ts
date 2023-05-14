@@ -110,7 +110,7 @@ test('import entities with override', () => {
 
   const now = new Date();
 
-  const action = entitiesFetchSuccess(entities, 'TestEntity', 'thingies', {
+  const action = entitiesFetchSuccess(entities, 'TestEntity', 'thingies', 'end', {
     next: undefined,
     prev: undefined,
     totalCount: 2,

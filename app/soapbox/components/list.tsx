@@ -56,14 +56,13 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
 
   return (
     <Comp
-      className={clsx({
-        'flex items-center justify-between px-4 py-2 first:rounded-t-lg last:rounded-b-lg bg-gradient-to-r from-gradient-start/20 to-gradient-end/20 dark:from-gradient-start/10 dark:to-gradient-end/10': true,
+      className={clsx('flex items-center justify-between overflow-hidden bg-gradient-to-r from-gradient-start/20 to-gradient-end/20 px-4 py-2 first:rounded-t-lg last:rounded-b-lg dark:from-gradient-start/10 dark:to-gradient-end/10', {
         'cursor-pointer hover:from-gradient-start/30 hover:to-gradient-end/30 dark:hover:from-gradient-start/5 dark:hover:to-gradient-end/5': typeof onClick !== 'undefined' || typeof onSelect !== 'undefined',
       })}
       {...linkProps}
     >
       <div className='flex flex-col py-1.5 pr-4 rtl:pl-4 rtl:pr-0'>
-        <LabelComp className='font-medium text-gray-900 dark:text-gray-100' htmlFor={domId}>{label}</LabelComp>
+        <LabelComp className='text-gray-900 dark:text-gray-100' htmlFor={domId}>{label}</LabelComp>
 
         {hint ? (
           <span className='text-sm text-gray-700 dark:text-gray-600'>{hint}</span>
@@ -71,7 +70,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
       </div>
 
       {onClick ? (
-        <HStack space={1} alignItems='center' className='text-gray-700 dark:text-gray-600'>
+        <HStack space={1} alignItems='center' className='overflow-hidden text-gray-700 dark:text-gray-600'>
           {children}
 
           <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1 rtl:rotate-180' />

@@ -5,6 +5,7 @@ import { shouldHaveCard } from 'soapbox/utils/status';
 import api, { getNextLink } from '../api';
 
 import { setComposeToStatus } from './compose';
+import { fetchGroupRelationships } from './groups';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
@@ -124,6 +125,9 @@ const fetchStatus = (id: string) => {
 
     return api(getState).get(`/api/v1/statuses/${id}`).then(({ data: status }) => {
       dispatch(importFetchedStatus(status));
+      if (status.group) {
+        dispatch(fetchGroupRelationships([status.group.id]));
+      }
       dispatch({ type: STATUS_FETCH_SUCCESS, status, skipLoading });
       return status;
     }).catch(error => {

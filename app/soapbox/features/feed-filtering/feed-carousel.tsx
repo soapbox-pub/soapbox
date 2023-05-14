@@ -30,7 +30,7 @@ const CarouselItem = React.forwardRef((
     setLoading(true);
 
     if (isSelected) {
-      dispatch(replaceHomeTimeline(null, { maxId: null }, () => setLoading(false)));
+      dispatch(replaceHomeTimeline(undefined, { maxId: null }, () => setLoading(false)));
 
       if (onPinned) {
         onPinned(null);
@@ -207,7 +207,7 @@ const FeedCarousel = () => {
                   style={{ width: widthPerAvatar || 'auto' }}
                   key={idx}
                 >
-                  <PlaceholderAvatar size={56} withText />
+                  <PlaceholderAvatar size={56} withText className='py-3' />
                 </div>
               ))
             ) : (

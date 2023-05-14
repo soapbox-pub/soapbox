@@ -57,7 +57,7 @@ export default () => {
         showLoading={isLoading && groups.length === 0}
       >
         {groups.map((group) => (
-          <Link key={group.id} to={`/groups/${group.id}`}>
+          <Link key={group.id} to={`/group/${group.slug}`}>
             <GroupCard group={group} />
           </Link>
         ))}

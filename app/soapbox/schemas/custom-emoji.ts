@@ -14,4 +14,4 @@ const customEmojiSchema = z.object({
 
 type CustomEmoji = z.infer<typeof customEmojiSchema>;
 
-export { customEmojiSchema, CustomEmoji };
+export { customEmojiSchema, type CustomEmoji };

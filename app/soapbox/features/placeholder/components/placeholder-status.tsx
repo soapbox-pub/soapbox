@@ -8,15 +8,16 @@ import PlaceholderDisplayName from './placeholder-display-name';
 import PlaceholderStatusContent from './placeholder-status-content';
 
 interface IPlaceholderStatus {
-  thread?: boolean
+  variant?: 'rounded' | 'slim' | 'default'
 }
 
 /** Fake status to display while data is loading. */
-const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => (
+const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
   <div
     className={clsx({
       'status-placeholder bg-white dark:bg-primary-900': true,
-      'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': !thread,
+      'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': variant === 'rounded',
+      'py-4': variant === 'slim',
     })}
   >
     <div className='w-full animate-pulse overflow-hidden'>

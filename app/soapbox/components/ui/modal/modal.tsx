@@ -55,10 +55,11 @@ interface IModal {
   title?: React.ReactNode
   width?: keyof typeof widths
   children?: React.ReactNode
+  className?: string
 }
 
 /** Displays a modal dialog box. */
-const Modal: React.FC<IModal> = ({
+const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   cancelAction,
   cancelText,
   children,
@@ -76,7 +77,8 @@ const Modal: React.FC<IModal> = ({
   skipFocus = false,
   title,
   width = 'xl',
-}) => {
+  className,
+}, ref) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
@@ -87,7 +89,11 @@ const Modal: React.FC<IModal> = ({
   }, [skipFocus, buttonRef]);
 
   return (
-    <div data-testid='modal' className={clsx('pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}>
+    <div
+      ref={ref}
+      data-testid='modal'
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}
+    >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
           {title && (
@@ -96,7 +102,7 @@ const Modal: React.FC<IModal> = ({
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
-              <h3 className='grow text-lg font-bold leading-6 text-gray-900 dark:text-white'>
+              <h3 className='grow truncate text-lg font-bold leading-6 text-gray-900 dark:text-white'>
                 {title}
               </h3>
 
@@ -157,6 +163,6 @@ const Modal: React.FC<IModal> = ({
       )}
     </div>
   );
-};
+});
 
 export default Modal;

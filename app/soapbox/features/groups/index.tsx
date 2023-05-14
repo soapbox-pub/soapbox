@@ -3,11 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
+import { useGroups } from 'soapbox/api/hooks';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Input, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks';
-import { useGroups } from 'soapbox/hooks/api';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
@@ -30,11 +30,15 @@ const Groups: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedValue = debounce(searchValue, 300);
 
-  const { groups, isLoading } = useGroups(debouncedValue);
+  const { groups, isLoading, hasNextPage, fetchNextPage } = useGroups(debouncedValue);
 
-  const createGroup = () => {
-    dispatch(openModal('MANAGE_GROUP'));
+  const handleLoadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
   };
+
+  const createGroup = () => dispatch(openModal('CREATE_GROUP'));
 
   const renderBlankslate = () => (
     <Stack space={4} alignItems='center' justifyContent='center' className='py-6'>
@@ -104,9 +108,11 @@ const Groups: React.FC = () => {
         showLoading={isLoading && groups.length === 0}
         placeholderComponent={PlaceholderGroupCard}
         placeholderCount={3}
+        onLoadMore={handleLoadMore}
+        hasMore={hasNextPage}
       >
         {groups.map((group) => (
-          <Link key={group.id} to={`/groups/${group.id}`}>
+          <Link key={group.id} to={`/group/${group.slug}`}>
             <GroupCard group={group} />
           </Link>
         ))}

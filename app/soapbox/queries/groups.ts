@@ -9,10 +9,7 @@ import { flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 
 const GroupKeys = {
   group: (id: string) => ['groups', 'group', id] as const,
-  myGroups: (userId: string) => ['groups', userId] as const,
   pendingGroups: (userId: string) => ['groups', userId, 'pending'] as const,
-  popularGroups: ['groups', 'popular'] as const,
-  suggestedGroups: ['groups', 'suggested'] as const,
 };
 
 const useGroupsApi = () => {
@@ -47,50 +44,6 @@ const useGroupsApi = () => {
   };
 
   return { fetchGroups };
-};
-
-const useGroups = () => {
-  const account = useOwnAccount();
-  const features = useFeatures();
-  const { fetchGroups } = useGroupsApi();
-
-  const getGroups = async (pageParam?: any): Promise<PaginatedResult<Group>> => {
-    const endpoint = '/api/v1/groups';
-    const nextPageLink = pageParam?.link;
-    const uri = nextPageLink || endpoint;
-    const { response, groups } = await fetchGroups(uri);
-
-    const link = getNextLink(response);
-    const hasMore = !!link;
-
-    return {
-      result: groups,
-      hasMore,
-      link,
-    };
-  };
-
-  const queryInfo = useInfiniteQuery(
-    GroupKeys.myGroups(account?.id as string),
-    ({ pageParam }: any) => getGroups(pageParam),
-    {
-      enabled: !!account && features.groups,
-      keepPreviousData: true,
-      getNextPageParam: (config) => {
-        if (config?.hasMore) {
-          return { nextLink: config?.link };
-        }
-
-        return undefined;
-      },
-    });
-
-  const data = flattenPages(queryInfo.data);
-
-  return {
-    ...queryInfo,
-    groups: data || [],
-  };
 };
 
 const usePendingGroups = () => {
@@ -160,6 +113,6 @@ const useGroup = (id: string) => {
 
 export {
   useGroup,
-  useGroups,
   usePendingGroups,
+  GroupKeys,
 };

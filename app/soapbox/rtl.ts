@@ -19,7 +19,12 @@ export function isRtl(text: string): boolean {
   if (text.length === 0) {
     return false;
   }
-
+  // Remove http(s), (s)ftp, ws(s), blob and smtp(s) links
+  text = text.replace(/(?:https?|ftp|sftp|ws|wss|blob|smtp|smtps):\/\/[\S]+/g, '');
+  // Remove email address links
+  text = text.replace(/(mailto:)([^\s@]+@[^\s@]+\.[^\s@]+)/g, '');
+  // Remove Phone numbe links
+  text = text.replace(/(tel:)([+\d\s()-]+)/g, '');
   text = text.replace(/(?:^|[^\/\w])@([a-z0-9_]+(@[a-z0-9\.\-]+)?)/ig, '');
   text = text.replace(/(?:^|[^\/\w])#([\S]+)/ig, '');
   text = text.replace(/\s+/g, '');
@@ -27,6 +32,7 @@ export function isRtl(text: string): boolean {
   const matches = text.match(rtlChars);
 
   if (!matches) {
+
     return false;
   }
 

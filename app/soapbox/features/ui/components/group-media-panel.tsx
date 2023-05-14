@@ -21,6 +21,9 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const isMember = !!group?.relationship?.member;
+  const isPrivate = group?.locked;
+
   const attachments: ImmutableList<Attachment> = useAppSelector((state) => group ? getGroupGallery(state, group?.id) : ImmutableList());
 
   const handleOpenMedia = (attachment: Attachment): void => {
@@ -37,13 +40,13 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
   useEffect(() => {
     setLoading(true);
 
-    if (group) {
+    if (group && !group.deleted_at && (isMember || !isPrivate)) {
       dispatch(expandGroupMediaTimeline(group.id))
       // @ts-ignore
         .then(() => setLoading(false))
         .catch(() => {});
     }
-  }, [group?.id]);
+  }, [group?.id, isMember, isPrivate]);
 
   const renderAttachments = () => {
     const nineAttachments = attachments.slice(0, 9);
@@ -68,6 +71,10 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
       );
     }
   };
+
+  if ((isPrivate && !isMember) || group?.deleted_at) {
+    return null;
+  }
 
   return (
     <Widget title={<FormattedMessage id='media_panel.title' defaultMessage='Media' />}>
