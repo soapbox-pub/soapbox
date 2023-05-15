@@ -17,10 +17,6 @@ import { isNumber } from 'soapbox/utils/numbers';
 // Use Mastodon defaults
 // https://docs.joinmastodon.org/entities/instance/
 export const InstanceRecord = ImmutableRecord({
-  contact: ImmutableMap<string, any>({
-    account: ImmutableMap<string, any>(),
-    email: '',
-  }),
   configuration: ImmutableMap<string, any>({
     chats: ImmutableMap<string, number>({
       max_characters: 5000,
@@ -45,24 +41,15 @@ export const InstanceRecord = ImmutableRecord({
     urls: ImmutableMap<string, string>(),
   }),
   description: '',
-  domain: '',
-  email: '',
-  languages: ImmutableList(),
   registrations: ImmutableMap<string, any>({
     approval_required: false,
     enabled: false,
     message: '',
   }),
   rules: ImmutableList(),
-  source_url: '',
   stats: ImmutableMap<string, number>(),
   title: '',
   thumbnail: ImmutableMap<string, any>(),
-  usage: ImmutableMap<string, any>({
-    users: ImmutableMap<string, number>({
-      active_month: 0,
-    }),
-  }),
   version: '0.0.0',
 
   pleroma: ImmutableMap<string, any>({
@@ -81,7 +68,6 @@ export const InstanceRecord = ImmutableRecord({
   }),
 
   feature_quote: false,
-  fedibird_capabilities: ImmutableList(),
 
   login_message: '',
 });
@@ -141,11 +127,6 @@ const fixTakahe = (instance: ImmutableMap<string, any>) => {
 /** Convert /api/v1/instance format to v2 */
 const fixInstanceV1 = (instance: ImmutableMap<string, any>) => {
   instance.setIn(['configuration', 'urls', 'streaming'], instance.getIn(['urls', 'streaming_api'], ''));
-
-  instance.set('contact', ImmutableMap({
-    account: instance.get('contact_account'),
-    email: instance.get('email'),
-  }));
 
   instance.set('description', instance.get('short_description') || instance.get('description'));
 

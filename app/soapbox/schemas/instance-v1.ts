@@ -1,10 +1,8 @@
 import z from 'zod';
 
-const instanceSchema = z.object({
-  contact: z.object({
-    account: z.any().optional(),
-    email: z.string(),
-  }).optional(),
+const instanceV1Schema = z.object({
+  approval_required: z.boolean().default(false),
+  contact_account: z.any().optional(),
   configuration: z.object({
     chats: z.object({
       max_characters: z.number().default(5000),
@@ -32,23 +30,20 @@ const instanceSchema = z.object({
       max_characters: z.number().default(500),
       max_media_attachments: z.number().default(4),
     }).default({}),
-    translation: z.any(),
-    urls: z.record(z.string()).default({}),
   }).default({}),
   description: z.string().default(''),
   domain: z.string().default(''),
   email: z.string().default(''),
   languages: z.array(z.string()).default([]),
-  registrations: z.object({
-    approval_required: z.boolean().default(false),
-    enabled: z.boolean().default(false),
-    message: z.string().default(''),
-  }).default({}),
+  registrations: z.boolean().default(false),
   rules: z.any(),
-  source_url: z.string().default(''),
+  short_description: z.string().default(''),
   stats: z.any(),
   title: z.string().default(''),
-  thumbnail: z.any(),
+  thumbnail: z.string().default(''),
+  urls: z.object({
+    streaming_api: z.string().default(''),
+  }).optional(),
   usage: z.object({
     users: z.object({
       active_month: z.number().default(0),
@@ -56,12 +51,12 @@ const instanceSchema = z.object({
   }).default({}),
   version: z.string().default(''),
 
+  description_limit: z.number().default(1500),
   pleroma: z.object({
     metadata: z.object({
       account_activation_required: z.boolean().default(false),
       birthday_min_age: z.number().default(0),
       birthday_required: z.boolean().default(false),
-      description_limit: z.number().default(1500),
       features: z.array(z.string()).default([]),
       federation: z.object({
         enabled: z.boolean().default(false),
@@ -88,6 +83,6 @@ const instanceSchema = z.object({
   login_message: z.string().default(''),
 });
 
-type Instance = z.infer<typeof instanceSchema>;
+type InstanceV1 = z.infer<typeof instanceV1Schema>;
 
-export { instanceSchema, Instance };
+export { instanceV1Schema, InstanceV1 };
