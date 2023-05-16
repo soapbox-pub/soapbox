@@ -42,6 +42,7 @@ import { TO_WYSIWYG_TRANSFORMERS } from './transformers';
 
 interface IComposeEditor {
   className?: string
+  placeholderClassName?: string
   composeId: string
   condensed?: boolean
   eventDiscussion?: boolean
@@ -55,6 +56,7 @@ interface IComposeEditor {
 
 const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
   className,
+  placeholderClassName,
   composeId,
   condensed,
   eventDiscussion,
@@ -159,7 +161,10 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           }
           placeholder={(
             <div
-              className='pointer-events-none absolute top-0 select-none text-gray-600 dark:placeholder:text-gray-600'
+              className={clsx(
+                'pointer-events-none absolute top-0 select-none text-gray-600 dark:placeholder:text-gray-600',
+                placeholderClassName,
+              )}
             >
               {textareaPlaceholder}
             </div>

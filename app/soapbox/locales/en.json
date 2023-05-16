@@ -392,7 +392,6 @@
   "compose_event.edit_success": "Your event was edited",
   "compose_event.fields.approval_required": "I want to approve participation requests manually",
   "compose_event.fields.banner_label": "Event banner",
-  "compose_event.fields.description_hint": "Markdown syntax is supported",
   "compose_event.fields.description_label": "Event description",
   "compose_event.fields.description_placeholder": "Description",
   "compose_event.fields.end_time_label": "Event end date",
