@@ -19,6 +19,7 @@ export const TagRecord = ImmutableRecord({
   name: '',
   url: '',
   history: null as ImmutableList<History> | null,
+  following: false,
 });
 
 const normalizeHistoryList = (tag: ImmutableMap<string, any>) => {

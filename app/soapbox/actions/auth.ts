@@ -242,7 +242,8 @@ export const fetchOwnAccounts = () =>
     return state.auth.users.forEach((user) => {
       const account = state.accounts.get(user.id);
       if (!account) {
-        dispatch(verifyCredentials(user.access_token, user.url));
+        dispatch(verifyCredentials(user.access_token, user.url))
+          .catch(() => console.warn(`Failed to load account: ${user.url}`));
       }
     });
   };

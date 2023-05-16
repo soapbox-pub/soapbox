@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Input, Streamfield } from 'soapbox/components/ui';
@@ -36,15 +36,19 @@ const GroupTagsField: React.FC<IGroupTagsField> = ({ tags, onChange, onAddItem, 
 const HashtagField: StreamfieldComponent<string> = ({ value, onChange, autoFocus = false }) => {
   const intl = useIntl();
 
+  const formattedValue = useMemo(() => {
+    return `#${value}`;
+  }, [value]);
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    onChange(target.value);
+    onChange(target.value.replace('#', ''));
   };
 
   return (
     <Input
       outerClassName='w-full'
       type='text'
-      value={value}
+      value={formattedValue}
       onChange={handleChange}
       placeholder={intl.formatMessage(messages.hashtagPlaceholder)}
       autoFocus={autoFocus}

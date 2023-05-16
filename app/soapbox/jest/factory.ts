@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { normalizeStatus } from 'soapbox/normalizers';
 import {
   accountSchema,
   adSchema,
@@ -17,6 +18,7 @@ import {
   type GroupRelationship,
   type GroupTag,
   type Relationship,
+  type Status,
 } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
@@ -77,6 +79,12 @@ function buildRelationship(props: Partial<Relationship> = {}): Relationship {
   }, props));
 }
 
+function buildStatus(props: Partial<Status> = {}) {
+  return normalizeStatus(Object.assign({
+    id: uuidv4(),
+  }, props));
+}
+
 export {
   buildAd,
   buildCard,
@@ -85,4 +93,5 @@ export {
   buildGroupRelationship,
   buildGroupTag,
   buildRelationship,
+  buildStatus,
 };

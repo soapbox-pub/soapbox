@@ -51,6 +51,8 @@ export interface IColumn {
   withHeader?: boolean
   /** Extra class name for top <div> element. */
   className?: string
+  /** Extra class name for the <CardBody> element. */
+  bodyClassName?: string
   /** Ref forwarded to column. */
   ref?: React.Ref<HTMLDivElement>
   /** Children to display in the column. */
@@ -63,7 +65,7 @@ export interface IColumn {
 
 /** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className, action, size } = props;
+  const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -109,7 +111,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
           />
         )}
 
-        <CardBody>
+        <CardBody className={bodyClassName}>
           {children}
         </CardBody>
       </Card>
