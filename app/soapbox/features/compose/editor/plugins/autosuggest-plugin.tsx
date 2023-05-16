@@ -7,11 +7,14 @@
  */
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { mergeRegister } from '@lexical/utils';
 import clsx from 'clsx';
 import {
   $getSelection,
   $isRangeSelection,
   $isTextNode,
+  COMMAND_PRIORITY_LOW,
+  KEY_ESCAPE_COMMAND,
   LexicalEditor,
   RangeSelection,
 } from 'lexical';
@@ -358,8 +361,8 @@ const AutosuggestPlugin = ({
   };
 
   const renderSuggestion = (suggestion: AutoSuggestion, i: number) => {
-    let inner;
-    let key;
+    let inner: string | JSX.Element;
+    let key: React.Key;
 
     if (typeof suggestion === 'object') {
       inner = <AutosuggestEmoji emoji={suggestion} />;
@@ -446,6 +449,35 @@ const AutosuggestPlugin = ({
   useEffect(() => {
     if (suggestions && suggestions.size > 0) setSuggestionsHidden(false);
   }, [suggestions]);
+
+  useEffect(() => {
+    if (resolution !== null && !suggestionsHidden && !suggestions.isEmpty()) {
+      const handleClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+
+        if (!editor._rootElement?.contains(target) && !anchorElementRef.current.contains(target)) {
+          setResolution(null);
+        }
+      };
+      document.addEventListener('click', handleClick);
+
+      return () => document.removeEventListener('click', handleClick);
+    }
+  }, [resolution, suggestionsHidden, suggestions.isEmpty()]);
+
+  useEffect(() => mergeRegister(
+    editor.registerCommand<KeyboardEvent>(
+      KEY_ESCAPE_COMMAND,
+      (payload) => {
+        const event = payload;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setResolution(null);
+        return true;
+      },
+      COMMAND_PRIORITY_LOW,
+    ),
+  ), [editor]);
 
   return resolution === null || editor === null ? null : (
     <LexicalPopoverMenu
