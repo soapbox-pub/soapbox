@@ -10,7 +10,7 @@ import { getBaseURL } from 'soapbox/utils/state';
 
 import { baseClient } from '../api';
 
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store';
 
 export const OAUTH_TOKEN_CREATE_REQUEST = 'OAUTH_TOKEN_CREATE_REQUEST';
 export const OAUTH_TOKEN_CREATE_SUCCESS = 'OAUTH_TOKEN_CREATE_SUCCESS';
