@@ -156,7 +156,7 @@ const EmptyPage = HomePage;
 const keyMap = {
   help: '?',
   new: 'n',
-  search: 's',
+  search: ['s', '/'],
   forceNew: 'option+n',
   reply: 'r',
   favourite: 'f',
