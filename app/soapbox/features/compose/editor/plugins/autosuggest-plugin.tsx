@@ -14,7 +14,11 @@ import {
   $isRangeSelection,
   $isTextNode,
   COMMAND_PRIORITY_LOW,
+  KEY_ARROW_DOWN_COMMAND,
+  KEY_ARROW_UP_COMMAND,
+  KEY_ENTER_COMMAND,
   KEY_ESCAPE_COMMAND,
+  KEY_TAB_COMMAND,
   LexicalEditor,
   RangeSelection,
 } from 'lexical';
@@ -288,19 +292,24 @@ const AutosuggestPlugin = ({
 
   const [editor] = useLexicalComposerContext();
   const [resolution, setResolution] = useState<Resolution | null>(null);
-  const [selectedSuggestion] = useState(0);
+  const [selectedSuggestion, setSelectedSuggestion] = useState(0);
   const anchorElementRef = useMenuAnchorRef(
     resolution,
     setResolution,
   );
 
-  const onSelectSuggestion: React.MouseEventHandler<HTMLDivElement> = (e) => {
+  const handleSelectSuggestion: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
 
-    const suggestion = suggestions.get(e.currentTarget.getAttribute('data-index') as any) as AutoSuggestion;
+    const index = e.currentTarget.getAttribute('data-index');
+
+    return onSelectSuggestion(index);
+  };
+
+  const onSelectSuggestion = (index: any) => {
+    const suggestion = suggestions.get(index) as AutoSuggestion;
 
     editor.update(() => {
-
       dispatch((dispatch, getState) => {
         const state = editor.getEditorState();
         const node = (state._selection as RangeSelection)?.anchor?.getNode();
@@ -385,7 +394,7 @@ const AutosuggestPlugin = ({
           'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
           'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
         })}
-        onMouseDown={onSelectSuggestion}
+        onMouseDown={handleSelectSuggestion}
       >
         {inner}
       </div>
@@ -467,6 +476,62 @@ const AutosuggestPlugin = ({
 
   useEffect(() => mergeRegister(
     editor.registerCommand<KeyboardEvent>(
+      KEY_ARROW_UP_COMMAND,
+      (payload) => {
+        const event = payload;
+        if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+          const newSelectedSuggestion = selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1;
+          setSelectedSuggestion(newSelectedSuggestion);
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+        return true;
+      },
+      COMMAND_PRIORITY_LOW,
+    ),
+    editor.registerCommand<KeyboardEvent>(
+      KEY_ARROW_DOWN_COMMAND,
+      (payload) => {
+        const event = payload;
+        if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+          const newSelectedSuggestion = selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0;
+          setSelectedSuggestion(newSelectedSuggestion);
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+        return true;
+      },
+      COMMAND_PRIORITY_LOW,
+    ),
+    editor.registerCommand<KeyboardEvent>(
+      KEY_TAB_COMMAND,
+      (payload) => {
+        const event = payload;
+        if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+          const newSelectedSuggestion = event.shiftKey
+            ? (selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1)
+            : (selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0);
+          setSelectedSuggestion(newSelectedSuggestion);
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+        return true;
+      },
+      COMMAND_PRIORITY_LOW,
+    ),
+    editor.registerCommand<KeyboardEvent>(
+      KEY_ENTER_COMMAND,
+      (payload) => {
+        const event = payload;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        onSelectSuggestion(selectedSuggestion);
+        setResolution(null);
+        return true;
+      },
+      COMMAND_PRIORITY_LOW,
+    ),
+    editor.registerCommand<KeyboardEvent>(
       KEY_ESCAPE_COMMAND,
       (payload) => {
         const event = payload;
@@ -477,7 +542,7 @@ const AutosuggestPlugin = ({
       },
       COMMAND_PRIORITY_LOW,
     ),
-  ), [editor]);
+  ), [editor, selectedSuggestion]);
 
   return resolution === null || editor === null ? null : (
     <LexicalPopoverMenu
