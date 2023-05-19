@@ -40,6 +40,9 @@ const baseStatusSchema = z.object({
   mentions: filteredArray(mentionSchema),
   muted: z.coerce.boolean(),
   pinned: z.coerce.boolean(),
+  pleroma: z.object({
+    quote_visible: z.boolean().catch(true),
+  }).optional().catch(undefined),
   poll: pollSchema.nullable().catch(null),
   quote: z.literal(null).catch(null),
   quotes_count: z.number().catch(0),
@@ -58,7 +61,7 @@ const baseStatusSchema = z.object({
 });
 
 type BaseStatus = z.infer<typeof baseStatusSchema>;
-type TransformableStatus = Omit<BaseStatus, 'reblog' | 'quote'>;
+type TransformableStatus = Omit<BaseStatus, 'reblog' | 'quote' | 'pleroma'>;
 
 /** Creates search index from the status. */
 const buildSearchIndex = (status: TransformableStatus): string => {
@@ -76,6 +79,11 @@ const buildSearchIndex = (status: TransformableStatus): string => {
   return new DOMParser().parseFromString(searchContent, 'text/html').documentElement.textContent || '';
 };
 
+type Translation = {
+  content: string
+  provider: string
+}
+
 /** Add internal fields to the status. */
 const transformStatus = <T extends TransformableStatus>(status: T) => {
   const emojiMap = makeCustomEmojiMap(status.emojis);
@@ -89,6 +97,11 @@ const transformStatus = <T extends TransformableStatus>(status: T) => {
     spoilerHtml,
     search_index: buildSearchIndex(status),
     hidden: false,
+    filtered: [],
+    showFiltered: false, // TODO: this should be removed from the schema and done somewhere else
+    approval_status: 'approval' as const,
+    translation: undefined as Translation | undefined,
+    expectsCard: false,
   };
 };
 
@@ -103,12 +116,19 @@ const statusSchema = baseStatusSchema.extend({
   pleroma: z.object({
     event: eventSchema,
     quote: embeddedStatusSchema,
-  }),
+    quote_visible: z.boolean().catch(true),
+  }).optional().catch(undefined),
 }).transform(({ pleroma, ...status }) => {
   return {
     ...status,
-    event: pleroma.event,
-    quote: pleroma.quote || status.quote,
+    event: pleroma?.event,
+    quote: pleroma?.quote || status.quote || null,
+    // There's apparently no better way to do this...
+    // Just trying to remove the `event` and `quote` keys from the object.
+    pleroma: pleroma ? (() => {
+      const { event, quote, ...rest } = pleroma;
+      return rest;
+    })() : undefined,
   };
 }).transform(transformStatus);
 

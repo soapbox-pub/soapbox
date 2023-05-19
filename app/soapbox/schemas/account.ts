@@ -49,7 +49,7 @@ const accountSchema = z.object({
   verified: z.boolean().default(false),
   website: z.string().catch(''),
 
-  /**
+  /*
    * Internal fields
    */
   display_name_html: z.string().catch(''),
@@ -57,7 +57,7 @@ const accountSchema = z.object({
   note_emojified: z.string().catch(''),
   relationship: relationshipSchema.nullable().catch(null),
 
-  /**
+  /*
    * Misc
    */
   other_settings: z.any(),
@@ -99,7 +99,7 @@ const accountSchema = z.object({
   // Notes
   account.note_emojified = emojify(account.note, customEmojiMap);
 
-  /**
+  /*
    * Todo
    * - internal fields
    * - donor
