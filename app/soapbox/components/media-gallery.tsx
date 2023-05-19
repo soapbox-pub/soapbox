@@ -6,14 +6,13 @@ import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
 import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is-mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
 
 import type { Property } from 'csstype';
-import type { List as ImmutableList } from 'immutable';
+import type { Attachment } from 'soapbox/schemas';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -40,8 +39,18 @@ const withinLimits = (aspectRatio: number) => {
   return aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
 };
 
+/** Get aspect ratio for the attachment, if applicable. */
+const getAspectRatio = (attachment: Attachment): number | undefined => {
+  switch (attachment.type) {
+    case 'image':
+    case 'video':
+    case 'gifv':
+      return attachment.meta.original?.aspect;
+  }
+};
+
 const shouldLetterbox = (attachment: Attachment): boolean => {
-  const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']) as number | undefined;
+  const aspectRatio = getAspectRatio(attachment);
   if (!aspectRatio) return true;
 
   return !withinLimits(aspectRatio);
@@ -147,7 +156,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <Icon
         className='h-16 w-16 text-gray-800 dark:text-gray-200'
-        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/paperclip.svg')}
+        src={MIMETYPE_ICONS[attachment.pleroma?.mime_type!] || require('@tabler/icons/paperclip.svg')}
       />
     );
 
@@ -276,9 +285,9 @@ const Item: React.FC<IItem> = ({
 
 export interface IMediaGallery {
   sensitive?: boolean
-  media: ImmutableList<Attachment>
+  media: Attachment[]
   height?: number
-  onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void
+  onOpenMedia: (media: Attachment[], index: number) => void
   defaultWidth?: number
   cacheWidth?: (width: number) => void
   visible?: boolean
@@ -308,7 +317,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
 
   const getSizeDataSingle = (): SizeData => {
     const w = width || defaultWidth;
-    const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']) as number | undefined;
+    const aspectRatio = getAspectRatio(media[0]);
 
     const getHeight = () => {
       if (!aspectRatio) return w * 9 / 16;
@@ -334,7 +343,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     let itemsDimensions: Dimensions[] = [];
 
     const ratios = Array(size).fill(null).map((_, i) =>
-      media.getIn([i, 'meta', 'original', 'aspect']) as number,
+      getAspectRatio(media[i]) ?? 0,
     );
 
     const [ar1, ar2, ar3, ar4] = ratios;
@@ -532,9 +541,9 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     };
   };
 
-  const sizeData: SizeData = getSizeData(media.size);
+  const sizeData: SizeData = getSizeData(media.length);
 
-  const children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
+  const children = media.slice(0, ATTACHMENT_LIMIT).map((attachment, i) => (
     <Item
       key={attachment.id}
       onClick={handleClick}
@@ -545,7 +554,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
       visible={!!props.visible}
       dimensions={sizeData.itemsDimensions[i]}
       last={i === ATTACHMENT_LIMIT - 1}
-      total={media.size}
+      total={media.length}
     />
   ));
 

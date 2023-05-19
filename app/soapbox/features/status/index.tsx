@@ -42,12 +42,12 @@ import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { RootState } from 'soapbox/store';
 import type {
   Account as AccountEntity,
   Attachment as AttachmentEntity,
   Status as StatusEntity,
-} from 'soapbox/types/entities';
+} from 'soapbox/schemas';
+import type { RootState } from 'soapbox/store';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },

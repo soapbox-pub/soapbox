@@ -10,8 +10,9 @@ import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
+import type { Status } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';

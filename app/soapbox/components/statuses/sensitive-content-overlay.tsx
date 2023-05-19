@@ -10,7 +10,7 @@ import { defaultMediaVisibility } from 'soapbox/utils/status';
 import DropdownMenu from '../dropdown-menu';
 import { Button, HStack, Text } from '../ui';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -42,7 +42,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
   const { links } = useSoapboxConfig();
 
   const isUnderReview = status.visibility === 'self';
-  const isOwnStatus = status.getIn(['account', 'id']) === account?.id;
+  const isOwnStatus = status.account.id === account?.id;
   const displayMedia = settings.get('displayMedia') as string;
 
   const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 
+import { useStatus } from 'soapbox/api/hooks/statuses/useStatus';
 import StatusContainer from 'soapbox/containers/status-container';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { useAppSelector } from 'soapbox/hooks';
@@ -18,9 +19,9 @@ interface IThreadStatus {
 const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
   const { id, focusedStatusId } = props;
 
+  const { isLoading } = useStatus(id);
   const replyToId = useAppSelector(state => state.contexts.inReplyTos.get(id));
   const replyCount = useAppSelector(state => state.contexts.replies.get(id, ImmutableOrderedSet()).size);
-  const isLoaded = useAppSelector(state => Boolean(state.statuses.get(id)));
 
   const renderConnector = (): JSX.Element | null => {
     const isConnectedTop = replyToId && replyToId !== focusedStatusId;
@@ -41,11 +42,11 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
   return (
     <div className='thread__status'>
       {renderConnector()}
-      {isLoaded ? (
+      {isLoading ? (
+        <PlaceholderStatus variant='default' />
+      ) : (
         // @ts-ignore FIXME
         <StatusContainer {...props} showGroup={false} />
-      ) : (
-        <PlaceholderStatus variant='default' />
       )}
     </div>
   );

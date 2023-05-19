@@ -8,7 +8,7 @@ import { isLocal } from 'soapbox/utils/accounts';
 
 import { Stack, Button, Text } from './ui';
 
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Account, Status } from 'soapbox/schemas';
 
 interface ITranslateButton {
   status: Status
@@ -47,7 +47,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
     const languageName = languageNames.of(status.language!);
-    const provider     = status.translation.get('provider');
+    const provider     = status.translation.provider;
 
     return (
       <Stack space={3} alignItems='start'>

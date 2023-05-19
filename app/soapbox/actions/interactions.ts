@@ -9,8 +9,9 @@ import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 
 import type { AxiosError } from 'axios';
+import type { Status as StatusEntity } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -84,7 +85,7 @@ const reblog = (status: StatusEntity) =>
 
     dispatch(reblogRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/reblog`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then(function(response) {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
       // interested in how the original is modified, hence passing it skipping the wrapper
       dispatch(importFetchedStatus(response.data.reblog));
@@ -100,7 +101,7 @@ const unreblog = (status: StatusEntity) =>
 
     dispatch(unreblogRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/unreblog`).then(() => {
+    api(getState).post(`/api/v1/statuses/${status.id}/unreblog`).then(() => {
       dispatch(unreblogSuccess(status));
     }).catch(error => {
       dispatch(unreblogFail(status, error));
@@ -233,7 +234,7 @@ const dislike = (status: StatusEntity) =>
 
     dispatch(dislikeRequest(status));
 
-    api(getState).post(`/api/friendica/statuses/${status.get('id')}/dislike`).then(function() {
+    api(getState).post(`/api/friendica/statuses/${status.id}/dislike`).then(function() {
       dispatch(dislikeSuccess(status));
     }).catch(function(error) {
       dispatch(dislikeFail(status, error));
@@ -246,7 +247,7 @@ const undislike = (status: StatusEntity) =>
 
     dispatch(undislikeRequest(status));
 
-    api(getState).post(`/api/friendica/statuses/${status.get('id')}/undislike`).then(() => {
+    api(getState).post(`/api/friendica/statuses/${status.id}/undislike`).then(() => {
       dispatch(undislikeSuccess(status));
     }).catch(error => {
       dispatch(undislikeFail(status, error));
@@ -304,7 +305,7 @@ const bookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(bookmarkRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.id}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
       toast.success(messages.bookmarkAdded, {
@@ -320,7 +321,7 @@ const unbookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(unbookmarkRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
+    api(getState).post(`/api/v1/statuses/${status.id}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unbookmarkSuccess(status, response.data));
       toast.success(messages.bookmarkRemoved);
@@ -503,7 +504,7 @@ const pin = (status: StatusEntity) =>
 
     dispatch(pinRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/pin`).then(response => {
+    api(getState).post(`/api/v1/statuses/${status.id}/pin`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(pinSuccess(status));
     }).catch(error => {
@@ -536,7 +537,7 @@ const unpin = (status: StatusEntity) =>
 
     dispatch(unpinRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/unpin`).then(response => {
+    api(getState).post(`/api/v1/statuses/${status.id}/unpin`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unpinSuccess(status));
     }).catch(error => {

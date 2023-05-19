@@ -10,7 +10,7 @@ import Icon from './icon';
 import { Button, HStack, Stack, Text } from './ui';
 import VerificationBadge from './verification-badge';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },

@@ -25,10 +25,9 @@ import Tombstone from './tombstone';
 import { Card, Icon, Stack, Text } from './ui';
 
 import type {
-  Account as AccountEntity,
   Group as GroupEntity,
   Status as StatusEntity,
-} from 'soapbox/types/entities';
+} from 'soapbox/schemas';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number, top: number };
@@ -90,10 +89,10 @@ const Status: React.FC<IStatus> = (props) => {
 
   const actualStatus = getActualStatus(status);
   const isReblog = status.reblog && typeof status.reblog === 'object';
-  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
+  const statusUrl = `/@${actualStatus.account.acct}/posts/${actualStatus.id}`;
   const group = actualStatus.group as GroupEntity | null;
 
-  const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
+  const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -135,7 +134,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const status = actualStatus;
-    const firstAttachment = status.media_attachments.first();
+    const [firstAttachment] = status.media_attachments;
 
     e?.preventDefault();
 
@@ -169,7 +168,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(mentionCompose(actualStatus.account as AccountEntity));
+    dispatch(mentionCompose(actualStatus.account));
   };
 
   const handleHotkeyOpen = (): void => {
@@ -177,7 +176,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyOpenProfile = (): void => {
-    history.push(`/@${actualStatus.getIn(['account', 'acct'])}`);
+    history.push(`/@${actualStatus.account.acct}`);
   };
 
   const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
@@ -204,7 +203,7 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
-  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.size ? status.id : actualStatus.id));
+  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.length ? status.id : actualStatus.id));
 
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
@@ -224,21 +223,21 @@ const Status: React.FC<IStatus> = (props) => {
               values={{
                 name: (
                   <Link
-                    to={`/@${status.getIn(['account', 'acct'])}`}
+                    to={`/@${status.account.acct}`}
                     className='hover:underline'
                   >
                     <bdi className='truncate'>
                       <strong
                         className='text-gray-800 dark:text-gray-200'
                         dangerouslySetInnerHTML={{
-                          __html: String(status.getIn(['account', 'display_name_html'])),
+                          __html: String(status.account.display_name_html),
                         }}
                       />
                     </bdi>
                   </Link>
                 ),
                 group: (
-                  <Link to={`/group/${(status.group as GroupEntity).slug}`} className='hover:underline'>
+                  <Link to={`/group/${status.group?.slug}`} className='hover:underline'>
                     <strong
                       className='text-gray-800 dark:text-gray-200'
                       dangerouslySetInnerHTML={{
@@ -263,12 +262,12 @@ const Status: React.FC<IStatus> = (props) => {
               defaultMessage='{name} reposted'
               values={{
                 name: (
-                  <Link to={`/@${status.getIn(['account', 'acct'])}`} className='hover:underline'>
+                  <Link to={`/@${status.account.acct}`} className='hover:underline'>
                     <bdi className='truncate'>
                       <strong
                         className='text-gray-800 dark:text-gray-200'
                         dangerouslySetInnerHTML={{
-                          __html: String(status.getIn(['account', 'display_name_html'])),
+                          __html: String(status.account.display_name_html),
                         }}
                       />
                     </bdi>
@@ -322,7 +321,7 @@ const Status: React.FC<IStatus> = (props) => {
     return (
       <div ref={node}>
         <>
-          {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
+          {actualStatus.account.display_name || actualStatus.account.username}
           {actualStatus.content}
         </>
       </div>
@@ -354,21 +353,21 @@ const Status: React.FC<IStatus> = (props) => {
   if (status.reblog && typeof status.reblog === 'object') {
     rebloggedByText = intl.formatMessage(
       messages.reblogged_by,
-      { name: String(status.getIn(['account', 'acct'])) },
+      { name: status.account.acct },
     );
   }
 
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+    if (actualStatus.pleroma?.quote_visible === false) {
       quote = (
         <div className='quoted-status-tombstone'>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
     } else {
-      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+      quote = <QuotedStatus statusId={actualStatus.quote?.id} />;
     }
   }
 
@@ -425,8 +424,8 @@ const Status: React.FC<IStatus> = (props) => {
           {renderStatusInfo()}
 
           <AccountContainer
-            key={String(actualStatus.getIn(['account', 'id']))}
-            id={String(actualStatus.getIn(['account', 'id']))}
+            key={actualStatus.account.id}
+            id={actualStatus.account.id}
             timestamp={actualStatus.created_at}
             timestampUrl={statusUrl}
             action={accountAction}

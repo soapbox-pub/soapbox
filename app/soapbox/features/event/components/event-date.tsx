@@ -4,7 +4,7 @@ import { FormattedDate } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import { HStack } from 'soapbox/components/ui';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/schemas';
 
 interface IEventDate {
   status: StatusEntity

@@ -22,9 +22,9 @@ import { createStatus } from './statuses';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import type { Emoji } from 'soapbox/features/emoji';
-import type { Group } from 'soapbox/schemas';
+import type { Group, Status, Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Account, APIEntity, Status, Tag } from 'soapbox/types/entities';
+import type { APIEntity, Tag } from 'soapbox/types/entities';
 import type { History } from 'soapbox/types/history';
 
 const { CancelToken, isCancel } = axios;

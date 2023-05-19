@@ -5,11 +5,10 @@ import { openModal } from 'soapbox/actions/modals';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 
-import type { List as ImmutableList } from 'immutable';
-import type { Attachment } from 'soapbox/types/entities';
+import type { Attachment } from 'soapbox/schemas';
 
 interface IAttachmentThumbs {
-  media: ImmutableList<Attachment>
+  media: Attachment[]
   onClick?(): void
   sensitive?: boolean
 }
@@ -19,7 +18,7 @@ const AttachmentThumbs = (props: IAttachmentThumbs) => {
   const dispatch = useDispatch();
 
   const renderLoading = () => <div className='media-gallery--compact' />;
-  const onOpenMedia = (media: ImmutableList<Attachment>, index: number) => dispatch(openModal('MEDIA', { media, index }));
+  const onOpenMedia = (media: Attachment[], index: number) => dispatch(openModal('MEDIA', { media, index }));
 
   return (
     <div className='attachment-thumbs'>
