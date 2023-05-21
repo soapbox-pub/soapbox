@@ -182,13 +182,9 @@ const connectTimelineStream = (
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
           break;
         case 'nostr.sign':
-          (async () => {
-            const event = await window.nostr?.signEvent(JSON.parse(data.payload)).catch(() => undefined);
-
-            if (event) {
-              websocket.send(JSON.stringify({ event: 'nostr.sign', payload: JSON.stringify(event) }));
-            }
-          })();
+          window.nostr?.signEvent(JSON.parse(data.payload))
+            .then((data) => websocket.send(JSON.stringify({ type: 'nostr.sign', data })))
+            .catch(() => console.warn('Failed to sign Nostr event.'));
           break;
       }
     },
@@ -201,7 +197,7 @@ const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => 
       dispatch(fetchAnnouncements(done))))));
 
 const connectUserStream      = (opts?: StreamOpts) =>
-  connectTimelineStream('home', `user${'nostr' in window ? '&nostr=true' : ''}`, refreshHomeTimelineAndNotification, null, opts);
+  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
 
 const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
@@ -224,6 +220,9 @@ const connectListStream      = (id: string) =>
 const connectGroupStream     = (id: string) =>
   connectTimelineStream(`group:${id}`, `group&group=${id}`);
 
+const connectNostrStream     = () =>
+  connectTimelineStream('nostr', 'nostr');
+
 export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
@@ -236,4 +235,5 @@ export {
   connectDirectStream,
   connectListStream,
   connectGroupStream,
+  connectNostrStream,
 };
