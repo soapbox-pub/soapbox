@@ -32,7 +32,7 @@ const LINK_MATCHERS = [
   ),
 ];
 
-import nodes from './nodes';
+import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
@@ -69,6 +69,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 }, editorStateRef) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
+  const nodes = useNodes();
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
 
