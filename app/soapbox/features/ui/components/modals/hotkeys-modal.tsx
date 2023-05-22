@@ -113,7 +113,7 @@ const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
               <TableCell><FormattedMessage id='keyboard_shortcuts.back' defaultMessage='to navigate back' /></TableCell>
             </tr>
             <tr>
-              <TableCell><Hotkey>s</Hotkey></TableCell>
+              <TableCell><Hotkey>s</Hotkey>, <Hotkey>/</Hotkey></TableCell>
               <TableCell><FormattedMessage id='keyboard_shortcuts.search' defaultMessage='to focus search' /></TableCell>
             </tr>
             <tr>

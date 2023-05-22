@@ -10,6 +10,7 @@
   "account.block_domain": "Hide everything from {domain}",
   "account.blocked": "Blocked",
   "account.chat": "Chat with @{name}",
+  "account.copy": "Copy link to profile",
   "account.deactivated": "Deactivated",
   "account.direct": "Direct message @{name}",
   "account.domain_blocked": "Domain hidden",

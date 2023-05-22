@@ -6,9 +6,11 @@
  * @see module:soapbox/actions/auth
  */
 
+import { getBaseURL } from 'soapbox/utils/state';
+
 import { baseClient } from '../api';
 
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store';
 
 export const OAUTH_TOKEN_CREATE_REQUEST = 'OAUTH_TOKEN_CREATE_REQUEST';
 export const OAUTH_TOKEN_CREATE_SUCCESS = 'OAUTH_TOKEN_CREATE_SUCCESS';
@@ -31,9 +33,10 @@ export const obtainOAuthToken = (params: Record<string, string | undefined>, bas
   };
 
 export const revokeOAuthToken = (params: Record<string, string>) =>
-  (dispatch: AppDispatch) => {
+  (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: OAUTH_TOKEN_REVOKE_REQUEST, params });
-    return baseClient().post('/oauth/revoke', params).then(({ data }) => {
+    const baseURL = getBaseURL(getState());
+    return baseClient(null, baseURL).post('/oauth/revoke', params).then(({ data }) => {
       dispatch({ type: OAUTH_TOKEN_REVOKE_SUCCESS, params, data });
       return data;
     }).catch(error => {

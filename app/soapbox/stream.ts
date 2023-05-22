@@ -8,10 +8,18 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 
 const randomIntUpTo = (max: number) => Math.floor(Math.random() * Math.floor(max));
 
+interface ConnectStreamCallbacks {
+  onConnect(): void
+  onDisconnect(): void
+  onReceive(websocket: WebSocket, data: unknown): void
+}
+
+type PollingRefreshFn = (dispatch: AppDispatch, done?: () => void) => void
+
 export function connectStream(
   path: string,
-  pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
-  callbacks: (dispatch: AppDispatch, getState: () => RootState) => Record<string, any> = () => ({ onConnect() {}, onDisconnect() {}, onReceive() {} }),
+  pollingRefresh: PollingRefreshFn | null = null,
+  callbacks: (dispatch: AppDispatch, getState: () => RootState) => ConnectStreamCallbacks,
 ) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const streamingAPIBaseURL = getState().instance.urls.get('streaming_api');
@@ -35,7 +43,7 @@ export function connectStream(
       }
     };
 
-    let subscription: WebSocketClient;
+    let subscription: WebSocket;
 
     // If the WebSocket fails to be created, don't crash the whole page,
     // just proceed without a subscription.
@@ -58,7 +66,7 @@ export function connectStream(
         },
 
         received(data) {
-          onReceive(data);
+          onReceive(subscription, data);
         },
 
         reconnected() {
