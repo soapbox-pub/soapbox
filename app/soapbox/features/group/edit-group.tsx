@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useGroup, useUpdateGroup } from 'soapbox/api/hooks';
+import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks';
 import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui';
 import { useAppSelector, useInstance } from 'soapbox/hooks';
 import { useImageField, useTextField } from 'soapbox/hooks/forms';
@@ -36,6 +36,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
 
   const { group, isLoading } = useGroup(groupId);
   const { updateGroup } = useUpdateGroup(groupId);
+  const { invalidate } = useGroupTags(groupId);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tags, setTags] = useState<string[]>(['']);
@@ -64,6 +65,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
       tags,
     }, {
       onSuccess() {
+        invalidate();
         toast.success(intl.formatMessage(messages.groupSaved));
       },
       onError(error) {

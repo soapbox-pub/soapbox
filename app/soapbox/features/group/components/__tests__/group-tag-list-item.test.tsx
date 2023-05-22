@@ -91,31 +91,32 @@ describe('<GroupTagListItem />', () => {
           expect(screen.queryAllByTestId('pin-icon')).toHaveLength(0);
         });
       });
+    });
 
-      describe('as a non-owner', () => {
-        const group = buildGroup({
-          relationship: buildGroupRelationship({
-            role: GroupRoles.ADMIN,
-            member: true,
-          }),
+    describe('as a non-owner', () => {
+      const group = buildGroup({
+        relationship: buildGroupRelationship({
+          role: GroupRoles.ADMIN,
+          member: true,
+        }),
+      });
+
+      describe('when the tag is pinned', () => {
+        const tag = buildGroupTag({ pinned: true, visible: true });
+
+        it('does render the pin icon', () => {
+          render(<GroupTagListItem group={group} tag={tag} isPinnable />);
+          screen.debug();
+          expect(screen.queryAllByTestId('pin-icon')).toHaveLength(1);
         });
+      });
 
-        describe('when the tag is visible', () => {
-          const tag = buildGroupTag({ visible: true });
+      describe('when the tag is not pinned', () => {
+        const tag = buildGroupTag({ pinned: false, visible: true });
 
-          it('does not render the pin icon', () => {
-            render(<GroupTagListItem group={group} tag={tag} isPinnable />);
-            expect(screen.queryAllByTestId('pin-icon')).toHaveLength(0);
-          });
-        });
-
-        describe('when the tag is not visible', () => {
-          const tag = buildGroupTag({ visible: false });
-
-          it('does not render the pin icon', () => {
-            render(<GroupTagListItem group={group} tag={tag} isPinnable />);
-            expect(screen.queryAllByTestId('pin-icon')).toHaveLength(0);
-          });
+        it('does not render the pin icon', () => {
+          render(<GroupTagListItem group={group} tag={tag} isPinnable />);
+          expect(screen.queryAllByTestId('pin-icon')).toHaveLength(0);
         });
       });
     });

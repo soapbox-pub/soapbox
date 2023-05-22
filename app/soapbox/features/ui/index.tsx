@@ -16,7 +16,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
-import { connectUserStream } from 'soapbox/actions/streaming';
+import { connectNostrStream, connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
@@ -157,7 +157,7 @@ const EmptyPage = HomePage;
 const keyMap = {
   help: '?',
   new: 'n',
-  search: 's',
+  search: ['s', '/'],
   forceNew: 'option+n',
   reply: 'r',
   favourite: 'f',
@@ -392,7 +392,8 @@ const UI: React.FC<IUI> = ({ children }) => {
   const instance = useInstance();
   const statContext = useStatContext();
 
-  const disconnect = useRef<any>(null);
+  const userStream = useRef<any>(null);
+  const nostrStream = useRef<any>(null);
   const node = useRef<HTMLDivElement | null>(null);
   const hotkeys = useRef<HTMLDivElement | null>(null);
 
@@ -417,15 +418,24 @@ const UI: React.FC<IUI> = ({ children }) => {
   };
 
   const connectStreaming = () => {
-    if (!disconnect.current && accessToken && streamingUrl) {
-      disconnect.current = dispatch(connectUserStream({ statContext }));
+    if (accessToken && streamingUrl) {
+      if (!userStream.current) {
+        userStream.current = dispatch(connectUserStream({ statContext }));
+      }
+      if (!nostrStream.current && window.nostr) {
+        nostrStream.current = dispatch(connectNostrStream());
+      }
     }
   };
 
   const disconnectStreaming = () => {
-    if (disconnect.current) {
-      disconnect.current();
-      disconnect.current = null;
+    if (userStream.current) {
+      userStream.current();
+      userStream.current = null;
+    }
+    if (nostrStream.current) {
+      nostrStream.current();
+      nostrStream.current = null;
     }
   };
 

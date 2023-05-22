@@ -19,6 +19,7 @@ const messages = defineMessages({
   leave: { id: 'group.leave.label', defaultMessage: 'Leave' },
   leaveSuccess: { id: 'group.leave.success', defaultMessage: 'Left the group' },
   report: { id: 'group.report.label', defaultMessage: 'Report' },
+  share: { id: 'group.share.label', defaultMessage: 'Share' },
 });
 
 interface IGroupActionButton {
@@ -35,6 +36,15 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
   const isAdmin = group.relationship?.role === GroupRoles.ADMIN;
   const isBlocked = group.relationship?.blocked_by;
 
+  const handleShare = () => {
+    navigator.share({
+      text: group.display_name,
+      url: group.url,
+    }).catch((e) => {
+      if (e.name !== 'AbortError') console.error(e);
+    });
+  };
+
   const onLeaveGroup = () =>
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.confirmationHeading),
@@ -49,6 +59,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     }));
 
   const menu: Menu = useMemo(() => {
+    const canShare = 'share' in navigator;
     const items = [];
 
     if (isMember || isAdmin) {
@@ -56,6 +67,14 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
         text: intl.formatMessage(messages.report),
         icon: require('@tabler/icons/flag.svg'),
         action: () => dispatch(initReport(ReportableEntities.GROUP, account as Account, { group })),
+      });
+    }
+
+    if (canShare) {
+      items.push({
+        text: intl.formatMessage(messages.share),
+        icon: require('@tabler/icons/share.svg'),
+        action: handleShare,
       });
     }
 

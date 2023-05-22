@@ -30,6 +30,7 @@ import { queryClient } from 'soapbox/queries/client';
 import toast from 'soapbox/toast';
 import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
+import copy from 'soapbox/utils/copy';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
 
 const messages = defineMessages({
@@ -44,6 +45,7 @@ const messages = defineMessages({
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
+  copy: { id: 'account.copy', defaultMessage: 'Copy link to profile' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
   media: { id: 'account.media', defaultMessage: 'Media' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Hide everything from {domain}' },
@@ -273,6 +275,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
     });
   };
 
+  const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
+    copy(account.url);
+  };
+
   const makeMenu = () => {
     const menu: Menu = [];
 
@@ -306,7 +312,21 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
+    menu.push({
+      text: intl.formatMessage(messages.copy),
+      action: handleCopy,
+      icon: require('@tabler/icons/clipboard-copy.svg'),
+    });
+
     if (!ownAccount) return menu;
+
+    if (features.searchFromAccount) {
+      menu.push({
+        text: intl.formatMessage(account.id === ownAccount.id ? messages.searchSelf : messages.search, { name: account.username }),
+        action: onSearch,
+        icon: require('@tabler/icons/search.svg'),
+      });
+    }
 
     if (menu.length) {
       menu.push(null);
@@ -323,13 +343,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
         to: '/settings',
         icon: require('@tabler/icons/settings.svg'),
       });
-      if (features.searchFromAccount) {
-        menu.push({
-          text: intl.formatMessage(messages.searchSelf, { name: account.username }),
-          action: onSearch,
-          icon: require('@tabler/icons/search.svg'),
-        });
-      }
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.mutes),
@@ -386,8 +399,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
             icon: require('@tabler/icons/user-check.svg'),
           });
         }
-
-        menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
           text: intl.formatMessage(messages.add_or_remove_from_list),
@@ -396,13 +407,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         });
       }
 
-      if (features.searchFromAccount) {
-        menu.push({
-          text: intl.formatMessage(messages.search, { name: account.username }),
-          action: onSearch,
-          icon: require('@tabler/icons/search.svg'),
-        });
-      }
+      menu.push(null);
 
       if (features.removeFromFollowers && account.relationship?.followed_by) {
         menu.push({

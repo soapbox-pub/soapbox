@@ -95,7 +95,7 @@ const connectTimelineStream = (
       dispatch(disconnectTimeline(timelineId));
     },
 
-    onReceive(data: any) {
+    onReceive(websocket, data: any) {
       switch (data.event) {
         case 'update':
           dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
@@ -181,6 +181,11 @@ const connectTimelineStream = (
         case 'marker':
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
           break;
+        case 'nostr.sign':
+          window.nostr?.signEvent(JSON.parse(data.payload))
+            .then((data) => websocket.send(JSON.stringify({ type: 'nostr.sign', data })))
+            .catch(() => console.warn('Failed to sign Nostr event.'));
+          break;
       }
     },
   };
@@ -215,6 +220,9 @@ const connectListStream      = (id: string) =>
 const connectGroupStream     = (id: string) =>
   connectTimelineStream(`group:${id}`, `group&group=${id}`);
 
+const connectNostrStream     = () =>
+  connectTimelineStream('nostr', 'nostr');
+
 export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
@@ -227,4 +235,5 @@ export {
   connectDirectStream,
   connectListStream,
   connectGroupStream,
+  connectNostrStream,
 };
