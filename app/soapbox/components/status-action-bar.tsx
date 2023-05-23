@@ -1,6 +1,5 @@
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
@@ -29,7 +28,7 @@ import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 import GroupPopover from './groups/popover/group-popover';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
-import type { Account, Group, Status } from 'soapbox/types/entities';
+import type { Account, Group, Status } from 'soapbox/schemas';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -116,7 +115,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const soapboxConfig = useSoapboxConfig();
   const deleteGroupStatus = useDeleteGroupStatus(status?.group as Group, status.id);
 
-  const { allowedEmoji } = soapboxConfig;
+  const allowedEmoji = soapboxConfig.allowedEmoji.toArray();
 
   const account = useOwnAccount();
   const isStaff = account ? account.staff : false;
@@ -239,16 +238,16 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.account as Account;
+    const account = status.account;
     dispatch(launchChat(account.id, history));
   };
 
   const handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initMuteModal(status.account as Account));
+    dispatch(initMuteModal(status.account));
   };
 
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.get('account') as Account;
+    const account = status.account;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
@@ -265,18 +264,18 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
+    history.push(`/@${status.account.acct}/posts/${status.id}`);
   };
 
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
-      url: status.get('url'),
+      url: status.url,
       onError: (error: any) => toast.showAlertForError(error),
     }));
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(ReportableEntities.STATUS, status.account as Account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, status.account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -320,10 +319,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const _makeMenu = (publicStatus: boolean) => {
-    const mutingConversation = status.muted;
-    const ownAccount = status.getIn(['account', 'id']) === me;
-    const username = String(status.getIn(['account', 'username']));
-    const account = status.account as Account;
+    const { account, muted } = status;
+    const { username } = account;
+    const ownAccount = account.id === me;
     const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
@@ -375,9 +373,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     menu.push(null);
 
     menu.push({
-      text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
+      text: intl.formatMessage(muted ? messages.unmuteConversation : messages.muteConversation),
       action: handleConversationMuteClick,
-      icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
+      icon: muted ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
     });
 
     menu.push(null);
@@ -426,7 +424,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+      if (status.account.pleroma?.accepts_chat_messages) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
@@ -514,17 +512,17 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const reblogCount = status.reblogs_count;
   const favouriteCount = status.favourites_count;
 
-  const emojiReactCount = reduceEmoji(
-    (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
+  const emojiReactCount = status.pleroma?.emoji_reactions ? reduceEmoji(
+    status.pleroma?.emoji_reactions,
     favouriteCount,
     status.favourited,
     allowedEmoji,
-  ).reduce((acc, cur) => acc + cur.get('count'), 0);
+  ).reduce<number>((acc, cur) => acc + (cur.count || 0), 0) : 0;
 
   const meEmojiReact = getReactForStatus(status, allowedEmoji);
-  const meEmojiName = meEmojiReact?.get('name') as keyof typeof reactMessages | undefined;
+  const meEmojiName = meEmojiReact?.name;
 
-  const reactMessages = {
+  const reactMessages: Record<string, MessageDescriptor> = {
     '👍': messages.reactionLike,
     '❤️': messages.reactionHeart,
     '😆': messages.reactionLaughing,

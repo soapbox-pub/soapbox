@@ -464,7 +464,7 @@ const Status: React.FC<IStatus> = (props) => {
 
                   <TranslateButton status={actualStatus} />
 
-                  {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                  {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
                         status={actualStatus}

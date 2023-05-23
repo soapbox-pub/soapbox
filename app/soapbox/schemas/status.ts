@@ -8,12 +8,18 @@ import { accountSchema } from './account';
 import { attachmentSchema } from './attachment';
 import { cardSchema } from './card';
 import { customEmojiSchema } from './custom-emoji';
+import { emojiReactionSchema } from './emoji-reaction';
 import { eventSchema } from './event';
 import { groupSchema } from './group';
 import { mentionSchema } from './mention';
 import { pollSchema } from './poll';
 import { tagSchema } from './tag';
 import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils';
+
+const statusPleromaSchema = z.object({
+  quote_visible: z.boolean().catch(true),
+  emoji_reactions: filteredArray(emojiReactionSchema),
+});
 
 const baseStatusSchema = z.object({
   account: accountSchema,
@@ -40,9 +46,7 @@ const baseStatusSchema = z.object({
   mentions: filteredArray(mentionSchema),
   muted: z.coerce.boolean(),
   pinned: z.coerce.boolean(),
-  pleroma: z.object({
-    quote_visible: z.boolean().catch(true),
-  }).optional().catch(undefined),
+  pleroma: statusPleromaSchema.optional().catch(undefined),
   poll: pollSchema.nullable().catch(null),
   quote: z.literal(null).catch(null),
   quotes_count: z.number().catch(0),
@@ -113,10 +117,9 @@ const embeddedStatusSchema = baseStatusSchema
 const statusSchema = baseStatusSchema.extend({
   quote: embeddedStatusSchema,
   reblog: embeddedStatusSchema,
-  pleroma: z.object({
+  pleroma: statusPleromaSchema.extend({
     event: eventSchema,
     quote: embeddedStatusSchema,
-    quote_visible: z.boolean().catch(true),
   }).optional().catch(undefined),
 }).transform(({ pleroma, ...status }) => {
   return {

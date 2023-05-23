@@ -8,8 +8,9 @@ import { importFetchedAccounts } from './importer';
 import { openModal } from './modals';
 
 import type { AxiosError } from 'axios';
+import type { Entity } from 'soapbox/entity-store/types';
+import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Account as AccountEntity } from 'soapbox/types/entities';
 
 const MUTES_FETCH_REQUEST = 'MUTES_FETCH_REQUEST';
 const MUTES_FETCH_SUCCESS = 'MUTES_FETCH_SUCCESS';
@@ -34,7 +35,7 @@ const fetchMutes = () =>
       const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchMutesSuccess(response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(fetchRelationships(response.data.map((item: Entity) => item.id)));
     }).catch(error => dispatch(fetchMutesFail(error)));
   };
 
@@ -42,7 +43,7 @@ const fetchMutesRequest = () => ({
   type: MUTES_FETCH_REQUEST,
 });
 
-const fetchMutesSuccess = (accounts: APIEntity[], next: string | null) => ({
+const fetchMutesSuccess = (accounts: Entity[], next: string | null) => ({
   type: MUTES_FETCH_SUCCESS,
   accounts,
   next,
@@ -70,7 +71,7 @@ const expandMutes = () =>
       const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(expandMutesSuccess(response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(fetchRelationships(response.data.map((item: Entity) => item.id)));
     }).catch(error => dispatch(expandMutesFail(error)));
   };
 
@@ -78,7 +79,7 @@ const expandMutesRequest = () => ({
   type: MUTES_EXPAND_REQUEST,
 });
 
-const expandMutesSuccess = (accounts: APIEntity[], next: string | null) => ({
+const expandMutesSuccess = (accounts: Account[], next: string | null) => ({
   type: MUTES_EXPAND_SUCCESS,
   accounts,
   next,
@@ -89,7 +90,7 @@ const expandMutesFail = (error: AxiosError) => ({
   error,
 });
 
-const initMuteModal = (account: AccountEntity) =>
+const initMuteModal = (account: Account) =>
   (dispatch: AppDispatch) => {
     dispatch({
       type: MUTES_INIT_MODAL,
