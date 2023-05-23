@@ -15,7 +15,7 @@ import ProfileFamiliarFollowers from './profile-familiar-followers';
 import ProfileField from './profile-field';
 import ProfileStats from './profile-stats';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 /** Basically ensure the URL isn't `javascript:alert('hi')` or something like that */
 const isSafeUrl = (text: string): boolean => {
@@ -46,9 +46,9 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const { displayFqn } = useSoapboxConfig();
 
   const getStaffBadge = (): React.ReactNode => {
-    if (account?.admin) {
+    if (account.admin) {
       return <Badge slug='admin' title={<FormattedMessage id='account_moderation_modal.roles.admin' defaultMessage='Admin' />} key='staff' />;
-    } else if (account?.moderator) {
+    } else if (account.moderator) {
       return <Badge slug='moderator' title={<FormattedMessage id='account_moderation_modal.roles.moderator' defaultMessage='Moderator' />} key='staff' />;
     } else {
       return null;
@@ -70,7 +70,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const getBadges = (): React.ReactNode[] => {
     const custom = getCustomBadges();
     const staffBadge = getStaffBadge();
-    const isPatron = account.getIn(['patron', 'is_patron']) === true;
+    const isPatron = account.patron.is_patron;
 
     const badges = [];
 
@@ -86,7 +86,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const renderBirthday = (): React.ReactNode => {
-    const birthday = account.birthday;
+    const { birthday } = account.pleroma;
     if (!birthday) return null;
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
@@ -131,7 +131,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   }
 
   const content = { __html: account.note_emojified };
-  const deactivated = !account.pleroma.get('is_active', true) === true;
+  const deactivated = account.suspended;
   const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const badges = getBadges();
@@ -229,7 +229,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <ProfileFamiliarFollowers account={account} />
       </Stack>
 
-      {account.fields.size > 0 && (
+      {account.fields.length > 0 && (
         <Stack space={2} className='mt-4 xl:hidden'>
           {account.fields.map((field, i) => (
             <ProfileField field={field} key={i} />

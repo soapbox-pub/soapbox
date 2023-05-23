@@ -28,10 +28,11 @@ import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import toast from 'soapbox/toast';
-import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
+
+import type { Account, Relationship } from 'soapbox/schemas';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -78,9 +79,10 @@ const messages = defineMessages({
 
 interface IHeader {
   account?: Account
+  relationship?: Relationship
 }
 
-const Header: React.FC<IHeader> = ({ account }) => {
+const Header: React.FC<IHeader> = ({ account, relationship }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -126,7 +128,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   }
 
   const onBlock = () => {
-    if (account.relationship?.blocking) {
+    if (relationship?.blocking) {
       dispatch(unblockAccount(account.id));
     } else {
       dispatch(openModal('CONFIRM', {
@@ -153,7 +155,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onReblogToggle = () => {
-    if (account.relationship?.showing_reblogs) {
+    if (relationship?.showing_reblogs) {
       dispatch(followAccount(account.id, { reblogs: false }));
     } else {
       dispatch(followAccount(account.id, { reblogs: true }));
@@ -161,7 +163,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onEndorseToggle = () => {
-    if (account.relationship?.endorsed) {
+    if (relationship?.endorsed) {
       dispatch(unpinAccount(account.id))
         .then(() => toast.success(intl.formatMessage(messages.userUnendorsed, { acct: account.acct })))
         .catch(() => { });
@@ -177,7 +179,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const onMute = () => {
-    if (account.relationship?.muting) {
+    if (relationship?.muting) {
       dispatch(unmuteAccount(account.id));
     } else {
       dispatch(initMuteModal(account));
@@ -369,8 +371,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
         });
       }
 
-      if (account.relationship?.following) {
-        if (account.relationship?.showing_reblogs) {
+      if (relationship?.following) {
+        if (relationship?.showing_reblogs) {
           menu.push({
             text: intl.formatMessage(messages.hideReblogs, { name: account.username }),
             action: onReblogToggle,
@@ -394,7 +396,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
         if (features.accountEndorsements) {
           menu.push({
-            text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse),
+            text: intl.formatMessage(relationship?.endorsed ? messages.unendorse : messages.endorse),
             action: onEndorseToggle,
             icon: require('@tabler/icons/user-check.svg'),
           });
@@ -409,7 +411,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       menu.push(null);
 
-      if (features.removeFromFollowers && account.relationship?.followed_by) {
+      if (features.removeFromFollowers && relationship?.followed_by) {
         menu.push({
           text: intl.formatMessage(messages.removeFromFollowers),
           action: onRemoveFromFollowers,
@@ -417,7 +419,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         });
       }
 
-      if (account.relationship?.muting) {
+      if (relationship?.muting) {
         menu.push({
           text: intl.formatMessage(messages.unmute, { name: account.username }),
           action: onMute,
@@ -431,7 +433,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         });
       }
 
-      if (account.relationship?.blocking) {
+      if (relationship?.blocking) {
         menu.push({
           text: intl.formatMessage(messages.unblock, { name: account.username }),
           action: onBlock,
@@ -457,7 +459,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       menu.push(null);
 
-      if (account.relationship?.domain_blocking) {
+      if (relationship?.domain_blocking) {
         menu.push({
           text: intl.formatMessage(messages.unblockDomain, { domain }),
           action: () => onUnblockDomain(domain),
@@ -490,7 +492,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     if (!account || !ownAccount) return info;
 
-    if (ownAccount.id !== account.id && account.relationship?.followed_by) {
+    if (ownAccount.id !== account.id && relationship?.followed_by) {
       info.push(
         <Badge
           key='followed_by'
@@ -498,7 +500,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}
         />,
       );
-    } else if (ownAccount.id !== account.id && account.relationship?.blocking) {
+    } else if (ownAccount.id !== account.id && relationship?.blocking) {
       info.push(
         <Badge
           key='blocked'
@@ -508,7 +510,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       );
     }
 
-    if (ownAccount.id !== account.id && account.relationship?.muting) {
+    if (ownAccount.id !== account.id && relationship?.muting) {
       info.push(
         <Badge
           key='muted'
@@ -516,7 +518,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           title={<FormattedMessage id='account.muted' defaultMessage='Muted' />}
         />,
       );
-    } else if (ownAccount.id !== account.id && account.relationship?.domain_blocking) {
+    } else if (ownAccount.id !== account.id && relationship?.domain_blocking) {
       info.push(
         <Badge
           key='domain_blocked'
@@ -558,7 +560,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
 
     if (features.chatsWithFollowers) { // Truth Social
-      const canChat = account.relationship?.followed_by;
+      const canChat = relationship?.followed_by;
       if (!canChat) {
         return null;
       }
@@ -574,7 +576,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           disabled={createAndNavigateToChat.isLoading}
         />
       );
-    } else if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
+    } else if (account.pleroma.accepts_chat_messages) {
       return (
         <IconButton
           src={require('@tabler/icons/messages.svg')}
@@ -649,7 +651,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
           <div className='mt-6 flex w-full justify-end sm:pb-1'>
             <HStack space={2} className='mt-10'>
-              <SubscriptionButton account={account} />
+              <SubscriptionButton account={account} relationship={relationship} />
               {renderMessageButton()}
               {renderShareButton()}
 

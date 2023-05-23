@@ -10,7 +10,7 @@ import { IconButton } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account, Relationship } from 'soapbox/schemas';
 
 const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
@@ -22,22 +22,23 @@ const messages = defineMessages({
 });
 
 interface ISubscriptionButton {
-  account: AccountEntity
+  account: Account
+  relationship: Relationship | undefined
 }
 
-const SubscriptionButton = ({ account }: ISubscriptionButton) => {
+const SubscriptionButton: React.FC<ISubscriptionButton> = ({ account, relationship }) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 
-  const isFollowing = account.relationship?.following;
-  const isRequested = account.relationship?.requested;
+  const isFollowing = relationship?.following;
+  const isRequested = relationship?.requested;
   const isSubscribed = features.accountNotifies
-    ? account.relationship?.notifying
-    : account.relationship?.subscribing;
+    ? relationship?.notifying
+    : relationship?.subscribing;
   const title = isSubscribed
-    ? intl.formatMessage(messages.unsubscribe, { name: account.get('username') })
-    : intl.formatMessage(messages.subscribe, { name: account.get('username') });
+    ? intl.formatMessage(messages.unsubscribe, { name: account.username })
+    : intl.formatMessage(messages.subscribe, { name: account.username });
 
   const onSubscribeSuccess = () =>
     toast.success(intl.formatMessage(messages.subscribeSuccess));
@@ -52,24 +53,24 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
     toast.error(intl.formatMessage(messages.unsubscribeFailure));
 
   const onNotifyToggle = () => {
-    if (account.relationship?.notifying) {
-      dispatch(followAccount(account.get('id'), { notify: false } as any))
+    if (relationship?.notifying) {
+      dispatch(followAccount(account.id, { notify: false } as any))
         ?.then(() => onUnsubscribeSuccess())
         .catch(() => onUnsubscribeFailure());
     } else {
-      dispatch(followAccount(account.get('id'), { notify: true } as any))
+      dispatch(followAccount(account.id, { notify: true } as any))
         ?.then(() => onSubscribeSuccess())
         .catch(() => onSubscribeFailure());
     }
   };
 
   const onSubscriptionToggle = () => {
-    if (account.relationship?.subscribing) {
-      dispatch(unsubscribeAccount(account.get('id')))
+    if (relationship?.subscribing) {
+      dispatch(unsubscribeAccount(account.id))
         ?.then(() => onUnsubscribeSuccess())
         .catch(() => onUnsubscribeFailure());
     } else {
-      dispatch(subscribeAccount(account.get('id')))
+      dispatch(subscribeAccount(account.id))
         ?.then(() => onSubscribeSuccess())
         .catch(() => onSubscribeFailure());
     }

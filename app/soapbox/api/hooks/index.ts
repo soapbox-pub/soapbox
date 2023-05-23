@@ -3,6 +3,7 @@
  * Accounts
  */
 export { useAccount } from './accounts/useAccount';
+export { useAccountLookup } from './accounts/useAccountLookup';
 
 /**
  * Groups
@@ -37,4 +38,5 @@ export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
 /**
  * Relationships
  */
+export { useRelationship } from './accounts/useRelationship';
 export { useRelationships } from './accounts/useRelationships';

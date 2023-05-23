@@ -52,6 +52,8 @@ const baseAccountSchema = z.object({
   pleroma: z.object({
     accepts_chat_messages: z.boolean().catch(false),
     birthday: birthdaySchema.nullish().catch(undefined),
+    deactivated: z.boolean().catch(false),
+    hide_favorites: z.boolean().catch(false),
     is_admin: z.boolean().catch(false),
     is_moderator: z.boolean().catch(false),
     favicon: z.string().url().optional().catch(undefined),
@@ -65,6 +67,7 @@ const baseAccountSchema = z.object({
     }).optional().catch(undefined),
   }).optional().catch(undefined),
   statuses_count: z.number().catch(0),
+  suspended: z.boolean().catch(false),
   uri: z.string().url().catch(''),
   url: z.string().url().catch(''),
   username: z.string().catch(''),
@@ -76,10 +79,10 @@ type BaseAccount = z.infer<typeof baseAccountSchema>;
 type TransformableAccount = Omit<BaseAccount, 'moved'>;
 
 /** Add internal fields to the account. */
-const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, ...account }: T) => {
+const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, fields, ...account }: T) => {
   const customEmojiMap = makeCustomEmojiMap(account.emojis);
 
-  const fields = account.fields.map((field) => ({
+  const newFields = fields.map((field) => ({
     ...field,
     name_emojified: emojify(escapeTextContentForBrowser(field.name), customEmojiMap),
     value_emojified: emojify(field.value, customEmojiMap),
@@ -88,19 +91,24 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
 
   return {
     ...account,
+    admin: pleroma?.is_admin || false,
     avatar_static: account.avatar_static || account.avatar,
     discoverable: account.discoverable || account.source?.pleroma?.discoverable || false,
     display_name: account.display_name.trim().length === 0 ? account.username : account.display_name,
     display_name_html: emojify(escapeTextContentForBrowser(account.display_name), customEmojiMap),
-    fields,
+    fields: newFields,
     fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${new URL(account.url).host}`),
     header_static: account.header_static || account.header,
+    moderator: pleroma?.is_moderator || false,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: emojify(account.note, customEmojiMap),
     pleroma: {
-      birthday: pleroma?.birthday || other_settings?.birthday,
       accepts_chat_messages: pleroma?.accepts_chat_messages || false,
+      birthday: pleroma?.birthday || other_settings?.birthday,
+      hide_favorites: pleroma?.hide_favorites || false,
+      tags: pleroma?.tags || [],
     },
+    suspended: account.suspended || pleroma?.deactivated || false,
     verified: account.verified || pleroma?.tags.includes('verified') || false,
   };
 };

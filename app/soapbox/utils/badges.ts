@@ -1,12 +1,15 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
+
+/** Custom tag with a `badge:` prefix. */
+type Badge = `badge:${string}`;
 
 /** Convert a plain tag into a badge. */
-const tagToBadge = (tag: string) => `badge:${tag}`;
+const tagToBadge = (tag: string): Badge => `badge:${tag}`;
 
 /** Convert a badge into a plain tag. */
-const badgeToTag = (badge: string) => badge.replace(/^badge:/, '');
+const badgeToTag = (badge: Badge): string => badge.replace(/^badge:/, '');
 
 /** Difference between an old and new set of tags. */
 interface TagDiff {
@@ -27,15 +30,17 @@ const getTagDiff = (oldTags: string[], newTags: string[]): TagDiff => {
   };
 };
 
+/** Determine whether a tag is a custom badge. */
+const isBadge = (tag: string): tag is Badge => tag.startsWith('badge:');
+
 /** Returns only tags which are badges. */
-const filterBadges = (tags: string[]): string[] => {
-  return tags.filter(tag => tag.startsWith('badge:'));
+const filterBadges = (tags: string[]): Badge[] => {
+  return tags.filter(isBadge);
 };
 
 /** Get badges from an account. */
-const getBadges = (account: Account) => {
-  const tags = Array.from(account?.getIn(['pleroma', 'tags']) as Iterable<string> || []);
-  return filterBadges(tags);
+const getBadges = (account: Account): Badge[] => {
+  return filterBadges(account.pleroma.tags);
 };
 
 export {

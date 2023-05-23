@@ -2,16 +2,14 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { useAccount } from 'soapbox/api/hooks';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
-
-const getAccount = makeGetAccount();
 
 interface IUserPanel {
   accountId: string
@@ -22,7 +20,7 @@ interface IUserPanel {
 
 const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) => {
   const intl = useIntl();
-  const account = useAppSelector((state) => getAccount(state, accountId));
+  const { account } = useAccount(accountId);
   const fqn = useAppSelector((state) => displayFqn(state));
 
   if (!account) return null;
