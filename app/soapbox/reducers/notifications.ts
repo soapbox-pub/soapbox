@@ -88,12 +88,12 @@ const isValid = (notification: APIEntity) => {
     }
 
     // https://gitlab.com/soapbox-pub/soapbox/-/issues/424
-    if (!notification.account.id) {
+    if (!notification.account.get('id')) {
       return false;
     }
 
     // Mastodon can return status notifications with a null status
-    if (['mention', 'reblog', 'favourite', 'poll', 'status'].includes(notification.type) && !notification.status.id) {
+    if (['mention', 'reblog', 'favourite', 'poll', 'status'].includes(notification.type) && !notification.status.get('id')) {
       return false;
     }
 
@@ -131,6 +131,7 @@ const importNotification = (state: State, notification: APIEntity) => {
 export const processRawNotifications = (notifications: APIEntity[]) => (
   ImmutableOrderedMap(
     notifications
+      .map(normalizeNotification)
       .filter(isValid)
       .map(n => [n.id, fixNotification(n)]),
   ));
