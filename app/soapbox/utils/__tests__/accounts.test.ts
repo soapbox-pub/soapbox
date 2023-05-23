@@ -1,16 +1,16 @@
-import { AccountRecord } from 'soapbox/normalizers';
+import { accountSchema } from 'soapbox/schemas';
 
 import {
   getDomain,
 } from '../accounts';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
-
 describe('getDomain', () => {
-  const account = AccountRecord({
+  const account = accountSchema.parse({
+    id: '1',
     acct: 'alice',
     url: 'https://party.com/users/alice',
-  }) as ReducerAccount;
+  });
+
   it('returns the domain', () => {
     expect(getDomain(account)).toEqual('party.com');
   });
