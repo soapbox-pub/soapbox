@@ -6,7 +6,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
+import type { Account } from 'soapbox/schemas';
 
 const messages = defineMessages({
   accountEntity: { id: 'report.confirmation.entity.account', defaultMessage: 'account' },
@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 interface IOtherActionsStep {
-  account: ReducerAccount
+  account: Account
 }
 
 const termsOfServiceText = (<FormattedMessage

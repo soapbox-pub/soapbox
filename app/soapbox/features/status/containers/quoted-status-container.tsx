@@ -1,24 +1,16 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import QuotedStatus from 'soapbox/components/quoted-status';
 import Tombstone from 'soapbox/components/tombstone';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+
+import type { Status } from 'soapbox/schemas';
 
 interface IQuotedStatusContainer {
-  /** Status ID to the quoted status. */
-  statusId: string
+  /** The quoted status. */
+  status: Status
 }
 
-const QuotedStatusContainer: React.FC<IQuotedStatusContainer> = ({ statusId }) => {
-  const getStatus = useCallback(makeGetStatus(), []);
-
-  const status = useAppSelector(state => getStatus(state, { id: statusId }));
-
-  if (!status) {
-    return null;
-  }
-
+const QuotedStatusContainer: React.FC<IQuotedStatusContainer> = ({ status }) => {
   if (status.tombstone) {
     return <Tombstone id={status.id} />;
   }

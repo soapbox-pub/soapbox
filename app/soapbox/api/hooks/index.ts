@@ -40,3 +40,5 @@ export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
  */
 export { useRelationship } from './accounts/useRelationship';
 export { useRelationships } from './accounts/useRelationships';
+
+export { useStatus } from './statuses/useStatus';

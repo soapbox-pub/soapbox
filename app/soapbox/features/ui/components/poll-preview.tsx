@@ -3,20 +3,13 @@ import React from 'react';
 
 import PollOption from 'soapbox/components/polls/poll-option';
 import { Stack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { Poll as PollEntity } from 'soapbox/types/entities';
+import { Poll } from 'soapbox/schemas';
 
 interface IPollPreview {
-  pollId: string
+  poll: Poll
 }
 
-const PollPreview: React.FC<IPollPreview> = ({ pollId }) => {
-  const poll = useAppSelector((state) => state.polls.get(pollId) as PollEntity);
-
-  if (!poll) {
-    return null;
-  }
-
+const PollPreview: React.FC<IPollPreview> = ({ poll }) => {
   return (
     <Stack space={2}>
       {poll.options.map((option, i) => (

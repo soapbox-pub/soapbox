@@ -4,13 +4,14 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail, ReportableEntities } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
+import { useAccount, useStatus } from 'soapbox/api/hooks';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import GroupCard from 'soapbox/components/group-card';
 import List, { ListItem } from 'soapbox/components/list';
 import StatusContent from 'soapbox/components/status-content';
 import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import ConfirmationStep from './steps/confirmation-step';
 import OtherActionsStep from './steps/other-actions-step';
@@ -59,8 +60,12 @@ const reportSteps = {
   },
 };
 
-const SelectedStatus = ({ statusId }: { statusId: string }) => {
-  const status = useAppSelector((state) => state.statuses.get(statusId));
+interface ISelectedStatus {
+  statusId: string
+}
+
+const SelectedStatus: React.FC<ISelectedStatus> = ({ statusId }) => {
+  const { status } = useStatus(statusId);
 
   if (!status) {
     return null;
@@ -69,7 +74,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
   return (
     <Stack space={2} className='rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
       <AccountContainer
-        id={status.account as any}
+        id={status.account.id}
         showProfileHoverCard={false}
         withLinkToProfile={false}
         timestamp={status.created_at}
@@ -81,7 +86,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
         collapsable
       />
 
-      {status.media_attachments.size > 0 && (
+      {status.media_attachments.length && (
         <AttachmentThumbs
           media={status.media_attachments}
           sensitive={status.sensitive}
@@ -100,7 +105,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const intl = useIntl();
 
   const accountId = useAppSelector((state) => state.reports.new.account_id);
-  const account = useAccount(accountId as string);
+  const { account } = useAccount(accountId as string);
 
   const entityType = useAppSelector((state) => state.reports.new.entityType);
   const isBlocked = useAppSelector((state) => state.reports.new.block);

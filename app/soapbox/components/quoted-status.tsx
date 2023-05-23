@@ -15,7 +15,7 @@ import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
@@ -133,7 +133,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
                 collapsable
               />
 
-              {status.media_attachments.size > 0 && (
+              {status.media_attachments.length && (
                 <StatusMedia
                   status={status}
                   muted={compose}

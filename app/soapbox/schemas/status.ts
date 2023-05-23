@@ -17,8 +17,10 @@ import { tagSchema } from './tag';
 import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 const statusPleromaSchema = z.object({
-  quote_visible: z.boolean().catch(true),
   emoji_reactions: filteredArray(emojiReactionSchema),
+  event: eventSchema.nullish().catch(undefined),
+  quote: z.literal(null).catch(null),
+  quote_visible: z.boolean().catch(true),
 });
 
 const baseStatusSchema = z.object({
@@ -50,6 +52,7 @@ const baseStatusSchema = z.object({
   poll: pollSchema.nullable().catch(null),
   quote: z.literal(null).catch(null),
   quotes_count: z.number().catch(0),
+  reblog: z.literal(null).catch(null),
   reblogged: z.coerce.boolean(),
   reblogs_count: z.number().catch(0),
   replies_count: z.number().catch(0),
@@ -65,7 +68,9 @@ const baseStatusSchema = z.object({
 });
 
 type BaseStatus = z.infer<typeof baseStatusSchema>;
-type TransformableStatus = Omit<BaseStatus, 'reblog' | 'quote' | 'pleroma'>;
+type TransformableStatus = Omit<BaseStatus, 'reblog' | 'quote' | 'pleroma'> & {
+  pleroma?: Omit<z.infer<typeof statusPleromaSchema>, 'quote'>
+};
 
 /** Creates search index from the status. */
 const buildSearchIndex = (status: TransformableStatus): string => {
@@ -89,7 +94,7 @@ type Translation = {
 }
 
 /** Add internal fields to the status. */
-const transformStatus = <T extends TransformableStatus>(status: T) => {
+const transformStatus = <T extends TransformableStatus>({ pleroma, ...status }: T) => {
   const emojiMap = makeCustomEmojiMap(status.emojis);
 
   const contentHtml = stripCompatibilityFeatures(emojify(status.content, emojiMap));
@@ -97,15 +102,20 @@ const transformStatus = <T extends TransformableStatus>(status: T) => {
 
   return {
     ...status,
-    contentHtml,
-    spoilerHtml,
-    search_index: buildSearchIndex(status),
-    hidden: false,
-    filtered: [],
-    showFiltered: false, // TODO: this should be removed from the schema and done somewhere else
     approval_status: 'approval' as const,
-    translation: undefined as Translation | undefined,
+    contentHtml,
     expectsCard: false,
+    event: pleroma?.event,
+    filtered: [],
+    hidden: false,
+    pleroma: pleroma ? (() => {
+      const { event, ...rest } = pleroma;
+      return rest;
+    })() : undefined,
+    search_index: buildSearchIndex(status),
+    showFiltered: false, // TODO: this should be removed from the schema and done somewhere else
+    spoilerHtml,
+    translation: undefined as Translation | undefined,
   };
 };
 
@@ -118,7 +128,6 @@ const statusSchema = baseStatusSchema.extend({
   quote: embeddedStatusSchema,
   reblog: embeddedStatusSchema,
   pleroma: statusPleromaSchema.extend({
-    event: eventSchema,
     quote: embeddedStatusSchema,
   }).optional().catch(undefined),
 }).transform(({ pleroma, ...status }) => {

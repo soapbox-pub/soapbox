@@ -6,7 +6,7 @@ import { SelectDropdown } from 'soapbox/features/forms';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/schemas';
 
 /** Staff role. */
 type AccountRole = 'user' | 'moderator' | 'admin';
