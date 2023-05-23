@@ -25,8 +25,19 @@ export const NotificationRecord = ImmutableRecord({
   total_count: null as number | null, // grouped notifications
 });
 
+const normalizeType = (notification: ImmutableMap<string, any>) => {
+  if (notification.get('type') === 'group_mention') {
+    return notification.set('type', 'mention');
+  }
+
+  return notification;
+};
+
 export const normalizeNotification = (notification: Record<string, any>) => {
   return NotificationRecord(
-    ImmutableMap(fromJS(notification)),
+    ImmutableMap(fromJS(notification))
+      .withMutations((notification: ImmutableMap<string, any>) => {
+        normalizeType(notification);
+      }),
   );
 };

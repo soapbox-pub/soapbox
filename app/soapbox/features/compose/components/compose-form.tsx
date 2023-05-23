@@ -31,6 +31,7 @@ import MarkdownButton from './markdown-button';
 import PollButton from './poll-button';
 import PollForm from './polls/poll-form';
 import PrivacyDropdown from './privacy-dropdown';
+import ReplyGroupIndicator from './reply-group-indicator';
 import ReplyMentions from './reply-mentions';
 import ScheduleButton from './schedule-button';
 import SpoilerButton from './spoiler-button';
@@ -294,6 +295,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       )}
 
       <WarningContainer composeId={id} />
+
+      {!shouldCondense && !event && !group && groupId && <ReplyGroupIndicator composeId={id} />}
 
       {!shouldCondense && !event && !group && <ReplyIndicatorContainer composeId={id} />}
 
