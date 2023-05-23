@@ -95,14 +95,14 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+    if (actualStatus.pleroma?.quote_visible === false) {
       quote = (
         <div className='quoted-actualStatus-tombstone'>
           <p><FormattedMessage id='actualStatuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
     } else {
-      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+      quote = <QuotedStatus status={actualStatus.quote} />;
     }
   }
 
@@ -151,7 +151,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
             <TranslateButton status={actualStatus} />
 
-            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+            {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
               <Stack space={4}>
                 <StatusMedia
                   status={actualStatus}

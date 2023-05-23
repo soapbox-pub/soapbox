@@ -128,7 +128,7 @@ export const statusToMentionsArray = (status: ImmutableMap<string, any>, account
 
   return ImmutableOrderedSet([author])
     .concat(mentions)
-    .delete(account.get('acct')) as ImmutableOrderedSet<string>;
+    .delete(account.acct) as ImmutableOrderedSet<string>;
 };
 
 export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: AccountEntity) => {

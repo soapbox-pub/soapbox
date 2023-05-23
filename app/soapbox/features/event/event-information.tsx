@@ -67,14 +67,14 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
         <HStack space={2} alignItems='center'>
           <Icon src={require('@tabler/icons/map-pin.svg')} />
           <Text>
-            {event.location.get('name')}
+            {event.location.name}
             <br />
-            {!!event.location.get('street')?.trim() && (<>
-              {event.location.get('street')}
+            {!!event.location.street?.trim() && (<>
+              {event.location.street}
               <br />
             </>)}
-            {[event.location.get('postalCode'), event.location.get('locality'), event.location.get('country')].filter(text => text).join(', ')}
-            {tileServer && event.location.get('latitude') && (<>
+            {[event.location.postal_code, event.location.locality, event.location.country].filter(text => text).join(', ')}
+            {tileServer && event.location.latitude && (<>
               <br />
               <a href='#' className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleShowMap}>
                 <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
@@ -132,7 +132,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   }, [status]);
 
   const renderLinks = useCallback(() => {
-    if (!status.event?.links.size) return null;
+    if (!status.event?.links?.length) return null;
 
     return (
       <Stack space={1}>
@@ -178,8 +178,8 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
         onToggleVisibility={handleToggleMediaVisibility}
       />
 
-      {status.quote && status.pleroma.get('quote_visible', true) && (
-        <QuotedStatus statusId={status.quote as string} />
+      {status.quote && status.pleroma?.quote_visible !== false && (
+        <QuotedStatus status={status.quote} />
       )}
 
       {renderEventLocation()}

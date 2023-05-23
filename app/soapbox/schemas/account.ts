@@ -51,21 +51,33 @@ const baseAccountSchema = z.object({
   }).optional().catch(undefined),
   pleroma: z.object({
     accepts_chat_messages: z.boolean().catch(false),
+    accepts_email_list: z.boolean().catch(false),
     birthday: birthdaySchema.nullish().catch(undefined),
     deactivated: z.boolean().catch(false),
+    favicon: z.string().url().optional().catch(undefined),
     hide_favorites: z.boolean().catch(false),
+    hide_followers: z.boolean().catch(false),
+    hide_followers_count: z.boolean().catch(false),
+    hide_follows: z.boolean().catch(false),
+    hide_follows_count: z.boolean().catch(false),
     is_admin: z.boolean().catch(false),
     is_moderator: z.boolean().catch(false),
     is_suggested: z.boolean().catch(false),
-    favicon: z.string().url().optional().catch(undefined),
     location: z.string().optional().catch(undefined),
+    notification_settings: z.object({
+      block_from_strangers: z.boolean().catch(false),
+    }).optional().catch(undefined),
     tags: z.array(z.string()).catch([]),
   }).optional().catch(undefined),
   source: z.object({
+    approved: z.boolean().catch(true),
     chats_onboarded: z.boolean().catch(true),
+    fields: filteredArray(fieldSchema),
+    note: z.string().catch(''),
     pleroma: z.object({
       discoverable: z.boolean().catch(true),
     }).optional().catch(undefined),
+    sms_verified: z.boolean().catch(false),
   }).optional().catch(undefined),
   statuses_count: z.number().catch(0),
   suspended: z.boolean().catch(false),
@@ -79,6 +91,14 @@ const baseAccountSchema = z.object({
 type BaseAccount = z.infer<typeof baseAccountSchema>;
 type TransformableAccount = Omit<BaseAccount, 'moved'>;
 
+const getDomain = (url: string) => {
+  try {
+    return new URL(url).host;
+  } catch (e) {
+    return '';
+  }
+};
+
 /** Add internal fields to the account. */
 const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, fields, ...account }: T) => {
   const customEmojiMap = makeCustomEmojiMap(account.emojis);
@@ -90,6 +110,12 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     value_plain: unescapeHTML(field.value),
   }));
 
+  const domain = getDomain(account.url || account.uri);
+
+  if (pleroma) {
+    pleroma.birthday = pleroma.birthday || other_settings?.birthday;
+  }
+
   return {
     ...account,
     admin: pleroma?.is_admin || false,
@@ -97,19 +123,15 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     discoverable: account.discoverable || account.source?.pleroma?.discoverable || false,
     display_name: account.display_name.trim().length === 0 ? account.username : account.display_name,
     display_name_html: emojify(escapeTextContentForBrowser(account.display_name), customEmojiMap),
+    domain,
     fields: newFields,
-    fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${new URL(account.url).host}`),
+    fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${domain}`),
     header_static: account.header_static || account.header,
     moderator: pleroma?.is_moderator || false,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: emojify(account.note, customEmojiMap),
-    pleroma: {
-      accepts_chat_messages: pleroma?.accepts_chat_messages || false,
-      birthday: pleroma?.birthday || other_settings?.birthday,
-      hide_favorites: pleroma?.hide_favorites || false,
-      is_suggested: pleroma?.is_suggested || false,
-      tags: pleroma?.tags || [],
-    },
+    pleroma,
+    staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,
     verified: account.verified || pleroma?.tags.includes('verified') || false,
   };

@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -20,7 +19,7 @@ import {
   Toggle,
 } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
-import { normalizeAccount } from 'soapbox/normalizers';
+import { accountSchema } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
 import resizeImage from 'soapbox/utils/resize-image';
 
@@ -34,7 +33,8 @@ import type { Account } from 'soapbox/types/entities';
  * Pleroma's config is granular, but we simplify it into one setting.
  */
 const hidesNetwork = (account: Account): boolean => {
-  const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = account.pleroma.toJS();
+  if (!account.pleroma) return false;
+  const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = account.pleroma;
   return Boolean(hide_followers && hide_follows && hide_followers_count && hide_follows_count);
 };
 
@@ -124,18 +124,18 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     discoverable: account.discoverable,
     bot: account.bot,
     display_name: account.display_name,
-    note: account.source.get('note', ''),
+    note: account.source?.note || '',
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', ImmutableList()).toJS()],
-    stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
-    accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
+    fields_attributes: account.source?.fields?.map(({ name, value }) => ({ name, value })) ?? [],
+    stranger_notifications: account.pleroma?.notification_settings?.block_from_strangers === true,
+    accepts_email_list: account.pleroma?.accepts_email_list === true,
     hide_followers: hideNetwork,
     hide_follows: hideNetwork,
     hide_followers_count: hideNetwork,
     hide_follows_count: hideNetwork,
     website: account.website,
     location: account.location,
-    birthday: account.birthday,
+    birthday: account.pleroma?.birthday || undefined,
   };
 };
 
@@ -185,7 +185,7 @@ const EditProfile: React.FC = () => {
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
-      const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true;
+      const strangerNotifications = account.pleroma?.notification_settings?.block_from_strangers === true;
       setData(credentials);
       setMuteStrangers(strangerNotifications);
     }
@@ -298,13 +298,13 @@ const EditProfile: React.FC = () => {
   }, [data.header, account?.header]);
 
   /** Preview account data. */
-  const previewAccount = useMemo(() => {
-    return normalizeAccount({
-      ...account?.toJS(),
+  const previewAccount = useMemo((): Account => {
+    return accountSchema.parse({
+      ...account,
       ...data,
       avatar: avatarUrl,
       header: headerUrl,
-    }) as Account;
+    });
   }, [account?.id, data.display_name, avatarUrl, headerUrl]);
 
   return (

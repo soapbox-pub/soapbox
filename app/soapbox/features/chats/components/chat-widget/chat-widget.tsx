@@ -13,7 +13,7 @@ const ChatWidget = () => {
   const path = history.location.pathname;
   const shouldHideWidget = Boolean(path.match(/^\/chats/));
 
-  if (!account?.chats_onboarded || shouldHideWidget) {
+  if (account?.source?.chats_onboarded === false || shouldHideWidget) {
     return null;
   }
 

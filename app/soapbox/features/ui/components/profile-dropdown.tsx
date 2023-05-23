@@ -13,7 +13,7 @@ import { makeGetAccount } from 'soapbox/selectors';
 
 import ThemeToggle from './theme-toggle';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
@@ -71,7 +71,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
     menu.push({ text: renderAccount(account), to: `/@${account.acct}` });
 
-    otherAccounts.forEach((otherAccount: AccountEntity) => {
+    otherAccounts.forEach((otherAccount) => {
       if (otherAccount && otherAccount.id !== account.id) {
         menu.push({
           text: renderAccount(otherAccount),

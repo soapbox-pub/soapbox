@@ -74,7 +74,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                 </div>
               )}
 
-              {version.media_attachments.size > 0 && (
+              {version.media_attachments.length > 0 && (
                 <AttachmentThumbs media={version.media_attachments} />
               )}
 

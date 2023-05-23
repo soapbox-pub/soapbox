@@ -46,7 +46,6 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
   }
 
   return (
-    // @ts-ignore
     <StatusContainer
       id={lastStatusId}
       unread={unread}

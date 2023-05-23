@@ -10,7 +10,7 @@ export const useAccount = (accountId: string, refetch = false) => {
   const { entity: account, ...result } = useEntity(
     [Entities.ACCOUNTS, accountId],
     () => api.get(`/api/v1/accounts/${accountId}`),
-    { schema: accountSchema, refetch },
+    { schema: accountSchema, refetch, enabled: !!accountId },
   );
   const { relationship } = useRelationship(accountId);
 

@@ -53,14 +53,14 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
           collapsable
         />
 
-        {status.media_attachments.size > 0 && (
+        {status.media_attachments.length > 0 && (
           <AttachmentThumbs
             media={status.media_attachments}
             sensitive={status.sensitive}
           />
         )}
 
-        {status.poll && <PollPreview pollId={status.poll as string} />}
+        {status.poll && <PollPreview poll={status.poll} />}
 
         <ScheduledStatusActionBar status={status} {...other} />
       </div>

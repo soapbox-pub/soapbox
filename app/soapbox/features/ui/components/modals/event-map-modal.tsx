@@ -31,12 +31,12 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
   const map = useRef<L.Map>();
 
   useEffect(() => {
-    const latlng: [number, number] = [+location.get('latitude'), +location.get('longitude')];
+    const latlng: [number, number] = [+location.latitude, +location.longitude];
 
     map.current = L.map('event-map').setView(latlng, 15);
 
     L.marker(latlng, {
-      title: location.get('name'),
+      title: location.name,
     }).addTo(map.current);
 
     L.tileLayer(tileServer, {
@@ -53,7 +53,7 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
   };
 
   const onClickNavigate = () => {
-    window.open(`https://www.openstreetmap.org/directions?from=&to=${location.get('latitude')},${location.get('longitude')}#map=14/${location.get('latitude')}/${location.get('longitude')}`, '_blank');
+    window.open(`https://www.openstreetmap.org/directions?from=&to=${location.latitude},${location.longitude}#map=14/${location.latitude}/${location.longitude}`, '_blank');
   };
 
   return (

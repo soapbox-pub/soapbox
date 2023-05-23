@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
+import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
+import { useAppDispatch } from 'soapbox/hooks';
 
 interface IAccountAuthorize {
   id: string
@@ -12,9 +12,7 @@ interface IAccountAuthorize {
 
 const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
   const dispatch = useAppDispatch();
-
-  const getAccount = useCallback(makeGetAccount(), []);
-  const account = useAppSelector((state) => getAccount(state, id));
+  const { account }  = useAccount(id);
 
   const onAuthorize = () => dispatch(authorizeFollowRequest(id));
   const onReject = () => dispatch(rejectFollowRequest(id));

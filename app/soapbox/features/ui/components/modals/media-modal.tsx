@@ -14,7 +14,7 @@ import { useAppDispatch } from 'soapbox/hooks';
 import ImageLoader from '../image-loader';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/schemas';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -161,9 +161,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
 
   const content = media.map((attachment, i) => {
-    const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
-    const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
-
     const link = (status && (
       <a href={status.url} onClick={handleStatusClick}>
         <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
@@ -175,8 +172,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         <ImageLoader
           previewSrc={attachment.preview_url}
           src={attachment.url}
-          width={width}
-          height={height}
+          width={attachment.meta?.original?.width}
+          height={attachment.meta?.original?.height}
           alt={attachment.description}
           key={attachment.url}
           onClick={toggleNavigation}
@@ -188,8 +185,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           preview={attachment.preview_url}
           blurhash={attachment.blurhash}
           src={attachment.url}
-          width={width}
-          height={height}
+          width={attachment.meta?.original?.width}
+          height={attachment.meta?.original?.height}
           startTime={time}
           detailed
           autoFocus={i === getIndex()}
@@ -204,11 +201,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         <Audio
           src={attachment.url}
           alt={attachment.description}
-          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status?.getIn(['account', 'avatar_static'])) as string | undefined}
-          backgroundColor={attachment.meta.getIn(['colors', 'background']) as string | undefined}
-          foregroundColor={attachment.meta.getIn(['colors', 'foreground']) as string | undefined}
-          accentColor={attachment.meta.getIn(['colors', 'accent']) as string | undefined}
-          duration={attachment.meta.getIn(['original', 'duration'], 0) as number | undefined}
+          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status?.account.avatar_static}
+          backgroundColor={attachment.meta?.colors?.background}
+          foregroundColor={attachment.meta?.colors?.foreground}
+          accentColor={attachment.meta?.colors?.accent}
+          duration={attachment.meta?.duration || 0}
           key={attachment.url}
         />
       );
@@ -218,8 +215,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           src={attachment.url}
           muted
           controls={false}
-          width={width}
-          height={height}
+          width={attachment.meta?.original?.width}
+          height={attachment.meta?.original?.height}
           key={attachment.preview_url}
           alt={attachment.description}
           onClick={toggleNavigation}

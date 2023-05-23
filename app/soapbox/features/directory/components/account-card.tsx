@@ -3,16 +3,14 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import Badge from 'soapbox/components/badge';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Stack, Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
-
-const getAccount = makeGetAccount();
 
 interface IAccountCard {
   id: string
@@ -20,12 +18,12 @@ interface IAccountCard {
 
 const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const me = useAppSelector((state) => state.me);
-  const account = useAppSelector((state) => getAccount(state, id));
+  const { account, relationship } = useAccount(id);
   const autoPlayGif = useAppSelector((state) => getSettings(state).get('autoPlayGif'));
 
   if (!account) return null;
 
-  const followedBy = me !== account.id && account.relationship?.followed_by;
+  const followedBy = me !== account.id && relationship?.followed_by;
 
   return (
     <div className='flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow dark:divide-primary-700 dark:bg-primary-800'>
@@ -39,9 +37,11 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
           </div>
         )}
 
-        <div className='absolute bottom-2.5 right-2.5'>
-          <ActionButton account={account} small />
-        </div>
+        {relationship && (
+          <div className='absolute bottom-2.5 right-2.5'>
+            <ActionButton account={account} relationship={relationship} small />
+          </div>
+        )}
 
         <img
           src={autoPlayGif ? account.header : account.header_static}
@@ -87,10 +87,10 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
         <Stack>
           <Text theme='primary' size='md' weight='medium'>
-            {account.last_status_at === null ? (
-              <FormattedMessage id='account.never_active' defaultMessage='Never' />
-            ) : (
+            {account.last_status_at ? (
               <RelativeTimestamp theme='inherit' timestamp={account.last_status_at} />
+            ) : (
+              <FormattedMessage id='account.never_active' defaultMessage='Never' />
             )}
           </Text>
 

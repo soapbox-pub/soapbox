@@ -275,7 +275,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+      if (status.account?.pleroma?.accepts_chat_messages) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
@@ -467,7 +467,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
             <HStack alignItems='center' space={2}>
               <Icon src={require('@tabler/icons/map-pin.svg')} />
               <span>
-                {event.location.get('name')}
+                {event.location.name}
               </span>
             </HStack>
           )}

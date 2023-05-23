@@ -273,7 +273,7 @@ const deleteToken = (state: State, token: string) => {
 };
 
 const deleteUser = (state: State, account: AccountEntity) => {
-  const accountUrl = account.get('url');
+  const accountUrl = account.url;
 
   return state.withMutations(state => {
     state.update('users', users => users.delete(accountUrl));

@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
@@ -62,10 +61,10 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
   const getNormalizedReacts = () => {
     return reduceEmoji(
-      ImmutableList(status.pleroma.get('emoji_reactions') as any),
+      status.pleroma?.emoji_reactions || [],
       status.favourites_count,
       status.favourited,
-      allowedEmoji,
+      allowedEmoji.toArray(),
     );
   };
 
@@ -95,7 +94,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const navigateToQuotes: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
 
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
+    history.push(`/@${status.account.acct}/posts/${status.id}/quotes`);
   };
 
   const getQuotes = () => {
@@ -173,20 +172,20 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getEmojiReacts = () => {
     const emojiReacts = getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
-      acc + cur.get('count')
+      acc + (cur.count || 0)
     ), 0);
 
     if (count) {
       return (
         <InteractionCounter count={count} onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}>
           <HStack space={0.5} alignItems='center'>
-            {emojiReacts.take(3).map((e, i) => {
+            {emojiReacts.slice(0, 3).map(({ name, url }, i) => {
               return (
                 <Emoji
                   key={i}
                   className='h-4.5 w-4.5 flex-none'
-                  emoji={e.get('name')}
-                  src={e.get('url')}
+                  emoji={name}
+                  src={url}
                 />
               );
             })}

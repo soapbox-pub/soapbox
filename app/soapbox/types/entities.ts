@@ -1,7 +1,6 @@
 import {
   AdminAccountRecord,
   AdminReportRecord,
-  AccountRecord,
   AnnouncementRecord,
   AnnouncementReactionRecord,
   AttachmentRecord,
@@ -19,7 +18,6 @@ import {
   MentionRecord,
   NotificationRecord,
   StatusEditRecord,
-  StatusRecord,
   TagRecord,
 } from 'soapbox/normalizers';
 import { LogEntryRecord } from 'soapbox/reducers/admin-log';
@@ -48,18 +46,6 @@ type Notification = ReturnType<typeof NotificationRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
 type Tag = ReturnType<typeof TagRecord>;
 
-interface Account extends ReturnType<typeof AccountRecord> {
-  // HACK: we can't do a circular reference in the Record definition itself,
-  // so do it here.
-  moved: EmbeddedEntity<Account>
-}
-
-interface Status extends ReturnType<typeof StatusRecord> {
-  // HACK: same as above
-  quote: EmbeddedEntity<Status>
-  reblog: EmbeddedEntity<Status>
-}
-
 // Utility types
 type APIEntity = Record<string, any>;
 type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableRecord.Factory<T>>;
@@ -68,7 +54,6 @@ export {
   AdminAccount,
   AdminLog,
   AdminReport,
-  Account,
   Announcement,
   AnnouncementReaction,
   Attachment,
@@ -85,7 +70,6 @@ export {
   Location,
   Mention,
   Notification,
-  Status,
   StatusEdit,
   Tag,
 
@@ -95,6 +79,7 @@ export {
 };
 
 export type {
+  Account,
   Card,
   EmojiReaction,
   Group,
@@ -103,4 +88,5 @@ export type {
   Poll,
   PollOption,
   Relationship,
+  Status,
 } from 'soapbox/schemas';
