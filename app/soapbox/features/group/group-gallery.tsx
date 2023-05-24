@@ -38,12 +38,12 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
 
   const handleOpenMedia = (attachment: Attachment) => {
     if (attachment.type === 'video') {
-      dispatch(openModal('VIDEO', { media: attachment, status: attachment.status, account: attachment.account }));
+      dispatch(openModal('VIDEO', { media: attachment, status: attachment.status, account: attachment.account, showLink: true }));
     } else {
       const media = (attachment.status as Status).media_attachments;
       const index = media.findIndex((x) => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
+      dispatch(openModal('MEDIA', { media, index, status: attachment.status, showLink: true }));
     }
   };
 

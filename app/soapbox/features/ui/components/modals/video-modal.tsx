@@ -12,9 +12,10 @@ interface IVideoModal {
   account: Account
   time: number
   onClose: () => void
+  showLink?: boolean
 }
 
-const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClose }) => {
+const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, showLink }) => {
   const history = useHistory();
 
   const handleStatusClick: React.MouseEventHandler = e => {
@@ -24,7 +25,7 @@ const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClo
     }
   };
 
-  const link = status && account && (
+  const link = showLink && status && (
     <a href={status.url} onClick={handleStatusClick}>
       <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
     </a>

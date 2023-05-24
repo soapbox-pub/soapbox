@@ -28,12 +28,12 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
 
   const handleOpenMedia = (attachment: Attachment): void => {
     if (attachment.type === 'video') {
-      dispatch(openModal('VIDEO', { media: attachment, status: attachment.status }));
+      dispatch(openModal('VIDEO', { media: attachment, status: attachment.status, showLink: true }));
     } else {
       const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
       const index = media.findIndex(x => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status, account: attachment.account }));
+      dispatch(openModal('MEDIA', { media, index, status: attachment.status, account: attachment.account, showLink: true }));
     }
   };
 

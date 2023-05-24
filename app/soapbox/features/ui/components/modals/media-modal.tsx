@@ -28,6 +28,7 @@ interface IMediaModal {
   index: number
   time?: number
   onClose: () => void
+  showLink?: boolean
 }
 
 const MediaModal: React.FC<IMediaModal> = (props) => {
@@ -36,6 +37,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     status,
     onClose,
     time = 0,
+    showLink,
   } = props;
 
   const intl = useIntl();
@@ -164,11 +166,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
     const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
 
-    const link = (status && (
+    const link = showLink && status && (
       <a href={status.url} onClick={handleStatusClick}>
         <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
       </a>
-    ));
+    );
 
     if (attachment.type === 'image') {
       return (
@@ -275,7 +277,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         {leftNav}
         {rightNav}
 
-        {(status && !isMultiMedia[getIndex()]) && (
+        {(showLink && status && !isMultiMedia[getIndex()]) && (
           <div className={clsx('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
             <a href={status.url} onClick={handleStatusClick}>
               <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
