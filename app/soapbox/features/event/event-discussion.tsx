@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 import ComposeForm from '../compose/components/compose-form';
-import { getDescendantsIds } from '../status';
+import { getDescendantsIds } from '../status/components/thread';
 import ThreadStatus from '../status/components/thread-status';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -89,7 +89,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
       index,
       behavior: 'smooth',
       done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
+        const element = node.current?.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
 
         if (element) {
           element.focus();

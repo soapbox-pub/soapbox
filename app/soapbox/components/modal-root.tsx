@@ -250,8 +250,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       <div
         role='dialog'
         className={clsx({
-          'my-2 mx-auto relative pointer-events-none flex items-center min-h-[calc(100%-3.5rem)]': true,
-          'p-4 md:p-0': type !== 'MEDIA',
+          'mx-auto relative pointer-events-none flex items-center': true,
+          'p-4 md:p-0 my-2 min-h-[calc(100%-3.5rem)]': type !== 'MEDIA',
+          'min-h-screen': type === 'MEDIA',
         })}
       >
         {children}

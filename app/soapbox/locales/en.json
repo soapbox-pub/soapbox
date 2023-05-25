@@ -993,6 +993,8 @@
   "manage_group.privacy.public.hint": "Discoverable. Anyone can join.",
   "manage_group.privacy.public.label": "Public",
   "manage_group.tagline": "Groups connect you with others based on shared interests.",
+  "media_modal.collapse": "Collapse",
+  "media_modal.expand": "Expand",
   "media_panel.empty_message": "No media found.",
   "media_panel.title": "Media",
   "mfa.confirm.success_message": "MFA confirmed",

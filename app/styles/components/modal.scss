@@ -136,19 +136,21 @@
     }
   }
 
-  &__close {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    height: 48px;
-    width: 48px;
-    z-index: 100;
-    color: #fff;
+  &__close,
+  &__expand {
+    @apply absolute top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50;
 
     .svg-icon {
-      height: 48px;
-      width: 48px;
+      @apply h-5 w-5 text-black dark:text-white;
     }
+  }
+
+  &__expand {
+    @apply right-2;
+  }
+
+  &__close {
+    @apply left-2;
   }
 }
 

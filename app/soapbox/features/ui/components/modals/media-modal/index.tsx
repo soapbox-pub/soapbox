@@ -1,22 +1,25 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { defineMessages, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import ExtendedVideoPlayer from 'soapbox/components/extended-video-player';
 import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon-button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useDebouncedWindowSize } from 'soapbox/hooks';
 
-import ImageLoader from '../image-loader';
+import ImageLoader from '../../image-loader';
+
+import ThreadView from './thread-view';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
+  collapse: { id: 'media_modal.collapse', defaultMessage: 'Collapse' },
+  expand: { id: 'media_modal.expand', defaultMessage: 'Expand' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   previous: { id: 'lightbox.previous', defaultMessage: 'Previous' },
   next: { id: 'lightbox.next', defaultMessage: 'Next' },
@@ -39,11 +42,14 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   } = props;
 
   const intl = useIntl();
-  const history = useHistory();
-  const dispatch = useAppDispatch();
+
+  const { width } = useDebouncedWindowSize();
 
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(width < 976);
+
+  const showThread = width && width >= 768;
 
   const handleSwipe = (index: number) => {
     setIndex(index % media.size);
@@ -91,20 +97,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     setNavigationHidden(!navigationHidden);
   };
 
-  const handleStatusClick: React.MouseEventHandler = e => {
-    if (status && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-
-      dispatch((_, getState) => {
-        const account = typeof status.account === 'string' ? getState().accounts.get(status.account) : status.account;
-        if (!account) return;
-
-        history.push(`/@${account.acct}/posts/${status?.id}`);
-        onClose();
-      });
-    }
-  };
-
   const handleCloserClick: React.MouseEventHandler = ({ target }) => {
     const whitelist = ['zoomable-image'];
     const activeSlide = document.querySelector('.media-modal .react-swipeable-view-container > div[aria-hidden="false"]');
@@ -115,6 +107,10 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     if (isClickOutside || isWhitelisted) {
       onClose();
     }
+  };
+
+  const handleCollapseClick = () => {
+    setCollapsed(value => !value);
   };
 
   let pagination: React.ReactNode[] = [];
@@ -158,17 +154,9 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     ));
   }
 
-  const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
-
   const content = media.map((attachment, i) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
     const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
-
-    const link = (status && (
-      <a href={status.url} onClick={handleStatusClick}>
-        <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
-      </a>
-    ));
 
     if (attachment.type === 'image') {
       return (
@@ -193,7 +181,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           startTime={time}
           detailed
           autoFocus={i === getIndex()}
-          link={link}
           alt={attachment.description}
           key={attachment.url}
           visible
@@ -248,45 +235,60 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   });
 
   return (
-    <div className='modal-root__modal media-modal'>
-      <div
-        className='media-modal__closer'
-        role='presentation'
-        onClick={handleCloserClick}
-      >
-        <ReactSwipeableViews
-          style={swipeableViewsStyle}
-          containerStyle={containerStyle}
-          onChangeIndex={handleSwipe}
-          index={getIndex()}
+    <div className='pointer-events-auto absolute inset-0 z-[9999] flex h-full max-h-screen w-full overflow-y-hidden'>
+      <div className='relative grow'>
+        <div
+          className='media-modal__closer'
+          role='presentation'
+          onClick={handleCloserClick}
         >
-          {content}
-        </ReactSwipeableViews>
+          <ReactSwipeableViews
+            style={swipeableViewsStyle}
+            containerStyle={containerStyle}
+            onChangeIndex={handleSwipe}
+            index={getIndex()}
+          >
+            {content}
+          </ReactSwipeableViews>
+        </div>
+
+        <div className={navigationClassName}>
+          {status && (showThread ? (
+            <button
+              className='media-modal__expand'
+              title={collapsed ? intl.formatMessage(messages.expand) : intl.formatMessage(messages.collapse)}
+              onClick={handleCollapseClick}
+            >
+              <Icon src={collapsed ? require('@tabler/icons/chevrons-left.svg') : require('@tabler/icons/chevrons-right.svg')} />
+            </button>
+          ) : (
+            <Link
+              to={`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`}
+              className='media-modal__expand'
+              title={collapsed ? intl.formatMessage(messages.expand) : intl.formatMessage(messages.collapse)}
+            >
+              <Icon src={collapsed ? require('@tabler/icons/external-link.svg') : require('@tabler/icons/external-link.svg')} />
+            </Link>
+          ))}
+
+          <button
+            className='media-modal__close'
+            title={intl.formatMessage(messages.close)}
+            onClick={onClose}
+          >
+            <Icon src={require('@tabler/icons/x.svg')} />
+          </button>
+
+          {leftNav}
+          {rightNav}
+
+          <ul className='media-modal__pagination'>
+            {pagination}
+          </ul>
+        </div>
       </div>
 
-      <div className={navigationClassName}>
-        <IconButton
-          className='media-modal__close'
-          title={intl.formatMessage(messages.close)}
-          src={require('@tabler/icons/x.svg')}
-          onClick={onClose}
-        />
-
-        {leftNav}
-        {rightNav}
-
-        {(status && !isMultiMedia[getIndex()]) && (
-          <div className={clsx('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
-            <a href={status.url} onClick={handleStatusClick}>
-              <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
-            </a>
-          </div>
-        )}
-
-        <ul className='media-modal__pagination'>
-          {pagination}
-        </ul>
-      </div>
+      {showThread && status && <ThreadView statusId={status.id} visible={!collapsed} />}
     </div>
   );
 };
