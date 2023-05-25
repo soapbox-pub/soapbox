@@ -83,6 +83,8 @@ interface IScrollableList extends VirtuosoProps<any, any> {
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility. */
 const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
+  atTopStateChange,
+  atBottomStateChange,
   scrollKey,
   prepend = null,
   alwaysPrepend,
@@ -191,7 +193,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
     }
   };
 
-  const loadMore = () => {
+  const Footer = () => {
     if (autoloadMore || !hasMore || !onLoadMore) {
       return null;
     } else {
@@ -229,6 +231,8 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       useWindowScroll={useWindowScroll}
       className={className}
       data={data}
+      atTopStateChange={atTopStateChange}
+      atBottomStateChange={atBottomStateChange}
       startReached={onScrollToTop}
       endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
@@ -246,7 +250,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
         EmptyPlaceholder: () => renderEmpty(),
         List,
         Item,
-        Footer: loadMore,
+        Footer,
       }}
     />
   );

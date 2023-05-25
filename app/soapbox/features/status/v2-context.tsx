@@ -84,7 +84,7 @@ const Thread: React.FC<IThread> = (props) => {
   const statusId = props.params.statusId;
 
   const { status, isLoading: isStatusLoading } = useStatus(statusId);
-  const { statuses: ancestors, isLoading: isAncestorsLoading } = useStatusAncestors(statusId);
+  const { statuses: ancestors, isLoading: isAncestorsLoading, fetchPreviousPage } = useStatusAncestors(statusId);
   const { statuses: descendants, isLoading: isDescendantsLoading, hasNextPage, fetchNextPage } = useStatusDescendants(statusId);
 
   const ancestorsIds = ancestors.map(status => status.id);
@@ -317,13 +317,17 @@ const Thread: React.FC<IThread> = (props) => {
     });
 
     setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
-  }, [props.params.statusId, status?.id, ancestorsIds.length, isLoaded]);
+  }, [props.params.statusId, status?.id, isLoaded]);
 
   const handleRefresh = async () => {
     // TODO
   };
 
-  const handleLoadMore = useCallback(debounce(() => {
+  const handleLoadPrevious = useCallback(debounce(() => {
+    fetchPreviousPage();
+  }, 300, { leading: true }), [fetchPreviousPage]);
+
+  const handleLoadNext = useCallback(debounce(() => {
     fetchNextPage();
   }, 300, { leading: true }), [fetchNextPage]);
 
@@ -441,7 +445,8 @@ const Thread: React.FC<IThread> = (props) => {
               id='thread'
               ref={scroller}
               hasMore={hasNextPage}
-              onLoadMore={handleLoadMore}
+              onLoadMore={handleLoadNext}
+              atTopStateChange={(atTop) => atTop && handleLoadPrevious()}
               placeholderComponent={() => <PlaceholderStatus variant='slim' />}
               initialTopMostItemIndex={ancestorsIds.length}
             >

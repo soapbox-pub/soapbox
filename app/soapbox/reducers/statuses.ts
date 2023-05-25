@@ -1,6 +1,8 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
+import { ENTITIES_FETCH_SUCCESS } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
 import emojify from 'soapbox/features/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
@@ -327,6 +329,12 @@ export default function statuses(state = initialState, action: AnyAction): State
       return state.setIn([action.id, 'event', 'join_state'], null);
     case EVENT_LEAVE_FAIL:
       return state.setIn([action.id, 'event', 'join_state'], action.previousState);
+    case ENTITIES_FETCH_SUCCESS:
+      if (action.entityType === Entities.STATUSES) {
+        return importStatuses(state, action.entities, true);
+      } else {
+        return state;
+      }
     default:
       return state;
   }
