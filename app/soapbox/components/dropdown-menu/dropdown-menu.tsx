@@ -1,4 +1,4 @@
-import { offset, Placement, useFloating, flip, arrow } from '@floating-ui/react';
+import { offset, Placement, useFloating, flip, arrow, shift } from '@floating-ui/react';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -65,6 +65,9 @@ const DropdownMenu = (props: IDropdownMenu) => {
     middleware: [
       offset(12),
       flip(),
+      shift({
+        padding: 8,
+      }),
       arrow({
         element: arrowRef,
       }),
