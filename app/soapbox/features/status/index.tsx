@@ -43,11 +43,7 @@ import ThreadStatus from './components/thread-status';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { RootState } from 'soapbox/store';
-import type {
-  Account as AccountEntity,
-  Attachment as AttachmentEntity,
-  Status as StatusEntity,
-} from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },
@@ -123,8 +119,6 @@ type RouteParams = {
 
 interface IThread {
   params: RouteParams
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
-  onOpenVideo: (video: AttachmentEntity, time: number) => void
 }
 
 const Thread: React.FC<IThread> = (props) => {
@@ -231,16 +225,17 @@ const Thread: React.FC<IThread> = (props) => {
   };
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent) => {
-    const { onOpenMedia, onOpenVideo } = props;
-    const firstAttachment = status?.media_attachments.get(0);
+    const media = status?.media_attachments;
 
     e?.preventDefault();
 
-    if (status && firstAttachment) {
-      if (firstAttachment.type === 'video') {
-        onOpenVideo(firstAttachment, 0);
+    if (media && media.size) {
+      const firstAttachment = media.first()!;
+
+      if (media.size === 1 && firstAttachment.type === 'video') {
+        dispatch(openModal('VIDEO', { media: firstAttachment, status: status }));
       } else {
-        onOpenMedia(status.media_attachments, 0);
+        dispatch(openModal('MEDIA', { media, index: 0, status: status }));
       }
     }
   };
