@@ -94,6 +94,7 @@ const Thread: React.FC<IThread> = (props) => {
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
   const isUnderReview = status?.visibility === 'self';
   const isLoaded = !isStatusLoading && !isAncestorsLoading && !isDescendantsLoading;
+  const [firstItemIndex, setFirstItemIndex] = useState(100000);
 
   const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status as any, displayMedia));
 
@@ -323,8 +324,13 @@ const Thread: React.FC<IThread> = (props) => {
     // TODO
   };
 
-  const handleLoadPrevious = useCallback(debounce(() => {
-    fetchPreviousPage();
+  const handleLoadPrevious = useCallback(debounce(async () => {
+    if (!isAncestorsLoading) {
+      const result = await fetchPreviousPage();
+      if (typeof result === 'number') {
+        setFirstItemIndex(firstItemIndex - result);
+      }
+    }
   }, 300, { leading: true }), [fetchPreviousPage]);
 
   const handleLoadNext = useCallback(debounce(() => {
@@ -446,6 +452,7 @@ const Thread: React.FC<IThread> = (props) => {
               ref={scroller}
               hasMore={hasNextPage}
               onLoadMore={handleLoadNext}
+              firstItemIndex={firstItemIndex}
               atTopStateChange={(atTop) => atTop && handleLoadPrevious()}
               placeholderComponent={() => <PlaceholderStatus variant='slim' />}
               initialTopMostItemIndex={ancestorsIds.length}

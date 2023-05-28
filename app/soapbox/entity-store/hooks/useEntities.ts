@@ -54,7 +54,7 @@ function useEntities<TEntity extends Entity>(
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
 
-  const fetchPage = async(req: EntityFn<void>, pos: 'start' | 'end', overwrite = false): Promise<void> => {
+  const fetchPage = async(req: EntityFn<void>, pos: 'start' | 'end', overwrite = false): Promise<number | undefined> => {
     // Get `isFetching` state from the store again to prevent race conditions.
     const isFetching = selectListState(getState(), path, 'fetching');
     if (isFetching) return;
@@ -67,7 +67,7 @@ function useEntities<TEntity extends Entity>(
       const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
       const totalCount = parsedCount.success ? parsedCount.data : undefined;
 
-      dispatch(entitiesFetchSuccess(entities, entityType, listKey, pos, {
+      const state: EntityListState = {
         next: getNextLink(response),
         prev: getPrevLink(response),
         totalCount: Number(totalCount) >= entities.length ? totalCount : undefined,
@@ -76,25 +76,28 @@ function useEntities<TEntity extends Entity>(
         error: null,
         lastFetchedAt: new Date(),
         invalid: false,
-      }, overwrite));
+      };
+
+      dispatch(entitiesFetchSuccess(entities, entityType, listKey, pos, state, overwrite));
+      return entities.length;
     } catch (error) {
       dispatch(entitiesFetchFail(entityType, listKey, error));
     }
   };
 
-  const fetchEntities = async(): Promise<void> => {
-    await fetchPage(entityFn, 'end', true);
+  const fetchEntities = (): Promise<number | undefined> => {
+    return fetchPage(entityFn, 'end', true);
   };
 
-  const fetchNextPage = async(): Promise<void> => {
+  const fetchNextPage = async (): Promise<number | undefined> => {
     if (next) {
-      await fetchPage(() => api.get(next), 'end');
+      return fetchPage(() => api.get(next), 'end');
     }
   };
 
-  const fetchPreviousPage = async(): Promise<void> => {
+  const fetchPreviousPage = async (): Promise<number | undefined> => {
     if (prev) {
-      await fetchPage(() => api.get(prev), 'start');
+      return fetchPage(() => api.get(prev), 'start');
     }
   };
 

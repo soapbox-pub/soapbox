@@ -106,6 +106,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   initialTopMostItemIndex = 0,
   style = {},
   useWindowScroll = true,
+  firstItemIndex,
 }, ref) => {
   const history = useHistory();
   const settings = useSettings();
@@ -233,6 +234,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       data={data}
       atTopStateChange={atTopStateChange}
       atBottomStateChange={atBottomStateChange}
+      firstItemIndex={firstItemIndex}
       startReached={onScrollToTop}
       endReached={handleEndReached}
       isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
