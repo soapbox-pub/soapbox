@@ -34,6 +34,7 @@ import { normalizeStatus } from 'soapbox/normalizers';
 import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import DetailedStatus from './components/detailed-status';
+import { SortButton, type Sort } from './components/sort-button';
 import ThreadLoginCta from './components/thread-login-cta';
 import ThreadStatus from './components/thread-status';
 
@@ -83,6 +84,7 @@ const Thread: React.FC<IThread> = (props) => {
   const settings = useSettings();
   const statusId = props.params.statusId;
 
+  const [sort, setSort] = useState<Sort>('oldest');
   const { status, isLoading: isStatusLoading } = useStatus(statusId);
   const { statuses: ancestors, isLoading: isAncestorsLoading, fetchPreviousPage } = useStatusAncestors(statusId);
   const { statuses: descendants, isLoading: isDescendantsLoading, hasNextPage, fetchNextPage } = useStatusDescendants(statusId);
@@ -413,9 +415,13 @@ const Thread: React.FC<IThread> = (props) => {
         </div>
       </HotKeys>
 
-      {hasDescendants && (
+      {hasDescendants && <>
         <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 dark:border-primary-800' />
-      )}
+
+        <div className='my-4 text-center'>
+          <SortButton sort={sort} onChange={setSort} />
+        </div>
+      </>}
     </div>
   );
 
@@ -467,5 +473,6 @@ const Thread: React.FC<IThread> = (props) => {
     </Column>
   );
 };
+
 
 export default Thread;
