@@ -8,10 +8,12 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { Card, CardBody, CardHeader, CardTitle, type CardSizes } from '../card/card';
 
-type IColumnHeader = Pick<IColumn, 'label' | 'backHref' | 'className' | 'action'>;
+interface IColumnHeader extends Pick<IColumn, 'backHref' | 'className' | 'action'> {
+  children: React.ReactNode
+}
 
 /** Contains the column title with optional back button. */
-const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className, action }) => {
+const ColumnHeader: React.FC<IColumnHeader> = ({ children, backHref, className, action }) => {
   const history = useHistory();
 
   const handleBackClick = () => {
@@ -29,7 +31,7 @@ const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className, act
 
   return (
     <CardHeader className={className} onBackClick={handleBackClick}>
-      <CardTitle title={label} />
+      <CardTitle title={children} />
 
       {action && (
         <div className='flex grow justify-end'>
@@ -45,6 +47,8 @@ export interface IColumn {
   backHref?: string
   /** Column title text. */
   label?: string
+  /** JSX element to replace `label` during render. label must be a string for aria stuff and tab title. */
+  header?: React.ReactNode
   /** Whether this column should have a transparent background. */
   transparent?: boolean
   /** Whether this column should have a title and back button. */
@@ -63,7 +67,7 @@ export interface IColumn {
 
 /** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className, action, size } = props;
+  const { backHref, children, label, header, transparent = false, withHeader = true, className, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -80,7 +84,13 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
   }, []);
 
   return (
-    <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
+    <div
+      role='region'
+      className='relative'
+      ref={ref}
+      aria-label={label}
+      column-type={transparent ? 'transparent' : 'filled'}
+    >
       <Helmet>
         <title>{label}</title>
 
@@ -96,7 +106,6 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
       <Card size={size} variant={transparent ? undefined : 'rounded'} className={className}>
         {withHeader && (
           <ColumnHeader
-            label={label}
             backHref={backHref}
             className={clsx({
               'rounded-t-3xl': !isScrolled && !transparent,
@@ -106,7 +115,9 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
               '-mt-4 -mx-4 p-4 sm:-mt-6 sm:-mx-6 sm:p-6': size === 'lg' && !transparent,
             })}
             action={action}
-          />
+          >
+            {header || label}
+          </ColumnHeader>
         )}
 
         <CardBody>

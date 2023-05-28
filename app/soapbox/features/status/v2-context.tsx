@@ -26,7 +26,7 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
 import Tombstone from 'soapbox/components/tombstone';
-import { Column, Stack } from 'soapbox/components/ui';
+import { Column, HStack, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import PendingStatus from 'soapbox/features/ui/components/pending-status';
 import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
@@ -449,7 +449,15 @@ const Thread: React.FC<IThread> = (props) => {
   };
 
   return (
-    <Column label={intl.formatMessage(titleMessage())}>
+    <Column
+      label={intl.formatMessage(titleMessage())}
+      header={(
+        <HStack space={2} alignItems='center' justifyContent='between'>
+          <span>{intl.formatMessage(titleMessage())}</span>
+          <SortButton sort={sort} onChange={setSort} />
+        </HStack>
+      )}
+    >
       <PullToRefresh onRefresh={handleRefresh}>
         <Stack space={2} className='mt-2'>
           <div ref={node} className='thread'>
