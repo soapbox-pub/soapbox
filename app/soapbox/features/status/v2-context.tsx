@@ -87,7 +87,7 @@ const Thread: React.FC<IThread> = (props) => {
   const [sort, setSort] = useState<Sort>('oldest');
   const { status, isLoading: isStatusLoading } = useStatus(statusId);
   const { statuses: ancestors, isLoading: isAncestorsLoading, fetchPreviousPage } = useStatusAncestors(statusId);
-  const { statuses: descendants, isLoading: isDescendantsLoading, hasNextPage, fetchNextPage } = useStatusDescendants(statusId);
+  const { statuses: descendants, isLoading: isDescendantsLoading, hasNextPage, fetchNextPage } = useStatusDescendants(statusId, sort);
 
   const ancestorsIds = ancestors.map(status => status.id);
   const descendantsIds = descendants.map(status => status.id);
