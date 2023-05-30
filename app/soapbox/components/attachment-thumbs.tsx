@@ -1,9 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Attachment } from 'soapbox/types/entities';
@@ -16,7 +16,7 @@ interface IAttachmentThumbs {
 
 const AttachmentThumbs = (props: IAttachmentThumbs) => {
   const { media, onClick, sensitive } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const renderLoading = () => <div className='media-gallery--compact' />;
   const onOpenMedia = (media: ImmutableList<Attachment>, index: number) => dispatch(openModal('MEDIA', { media, index }));

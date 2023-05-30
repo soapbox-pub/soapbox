@@ -1,9 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import CopyableInput from 'soapbox/components/copyable-input';
 import { Text, Icon, Stack, HStack } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import { getExplorerUrl } from '../utils/block-explorer';
 import { getTitle } from '../utils/coin-db';
@@ -19,7 +19,7 @@ export interface ICryptoAddress {
 const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
   const { address, ticker, note } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleModalClick = (e: React.MouseEvent<HTMLElement>): void => {
     dispatch(openModal('CRYPTO_DONATE', props));
