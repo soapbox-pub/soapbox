@@ -96,14 +96,16 @@ interface IStatusActionBar {
   status: Status
   withLabels?: boolean
   expandable?: boolean
-  space?: 'expand' | 'compact'
+  space?: 'sm' | 'md' | 'lg'
+  statusActionButtonTheme?: 'default' | 'inverse'
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
   status,
   withLabels = false,
   expandable = true,
-  space = 'compact',
+  space = 'sm',
+  statusActionButtonTheme = 'default',
 }) => {
   const intl = useIntl();
   const history = useHistory();
@@ -572,6 +574,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       onClick={handleReblogClick}
       count={reblogCount}
       text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
+      theme={statusActionButtonTheme}
     />
   );
 
@@ -583,13 +586,22 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
 
+  const spacing: {
+    [key: string]: React.ComponentProps<typeof HStack>['space']
+  } = {
+    'sm': 2,
+    'md': 8,
+    'lg': 0, // using justifyContent instead on the HStack
+  };
+
   return (
     <HStack data-testid='status-action-bar'>
       <HStack
-        justifyContent={space === 'expand' ? 'between' : undefined}
-        space={space === 'compact' ? 2 : undefined}
-        grow={space === 'expand'}
+        justifyContent={space === 'lg' ? 'between' : undefined}
+        space={spacing[space]}
+        grow={space === 'lg'}
         onClick={e => e.stopPropagation()}
+        alignItems='center'
       >
         <GroupPopover
           group={status.group as any}
@@ -602,6 +614,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             count={replyCount}
             text={withLabels ? intl.formatMessage(messages.reply) : undefined}
             disabled={replyDisabled}
+            theme={statusActionButtonTheme}
           />
         </GroupPopover>
 
@@ -628,6 +641,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               count={emojiReactCount}
               emoji={meEmojiReact}
               text={withLabels ? meEmojiTitle : undefined}
+              theme={statusActionButtonTheme}
             />
           </StatusReactionWrapper>
         ) : (
@@ -640,6 +654,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             active={Boolean(meEmojiName)}
             count={favouriteCount}
             text={withLabels ? meEmojiTitle : undefined}
+            theme={statusActionButtonTheme}
           />
         )}
 
@@ -653,6 +668,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             active={status.disliked}
             count={status.dislikes_count}
             text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined}
+            theme={statusActionButtonTheme}
           />
         )}
 
@@ -661,6 +677,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             title={intl.formatMessage(messages.share)}
             icon={require('@tabler/icons/upload.svg')}
             onClick={handleShareClick}
+            theme={statusActionButtonTheme}
           />
         )}
 
@@ -668,6 +685,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={require('@tabler/icons/dots.svg')}
+            theme={statusActionButtonTheme}
           />
         </DropdownMenu>
       </HStack>
