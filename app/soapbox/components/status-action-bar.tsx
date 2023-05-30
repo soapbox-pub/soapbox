@@ -460,18 +460,24 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       });
     }
 
-    if (status.group &&
-      groupRelationship?.role &&
-      [GroupRoles.OWNER].includes(groupRelationship.role) &&
-      !ownAccount
-    ) {
-      menu.push(null);
-      menu.push({
-        text: intl.formatMessage(messages.groupModDelete),
-        action: handleDeleteFromGroup,
-        icon: require('@tabler/icons/trash.svg'),
-        destructive: true,
-      });
+    const isGroupStatus = typeof status.group === 'object';
+    if (isGroupStatus && !!status.group) {
+      const group = status.group as Group;
+      const account = status.account as Account;
+      const isGroupOwner = groupRelationship?.role === GroupRoles.OWNER;
+      const isGroupAdmin = groupRelationship?.role === GroupRoles.ADMIN;
+      const isStatusFromOwner = group.owner.id === account.id;
+      const canDeleteStatus = !ownAccount && (isGroupOwner || (isGroupAdmin && !isStatusFromOwner));
+
+      if (canDeleteStatus) {
+        menu.push(null);
+        menu.push({
+          text: intl.formatMessage(messages.groupModDelete),
+          action: handleDeleteFromGroup,
+          icon: require('@tabler/icons/trash.svg'),
+          destructive: true,
+        });
+      }
     }
 
     if (isStaff) {
