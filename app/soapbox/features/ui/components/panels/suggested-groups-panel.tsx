@@ -19,7 +19,7 @@ const SuggestedGroupsPanel = () => {
     >
       {isFetching ? (
         new Array(3).fill(0).map((_, idx) => (
-          <PlaceholderGroupSearch key={idx} />
+          <PlaceholderGroupSearch key={idx} withJoinAction={false} />
         ))
       ) : (
         groups.slice(0, 3).map((group) => (

@@ -4,7 +4,7 @@ import { HStack, Stack, Text } from 'soapbox/components/ui';
 
 import { generateText, randomIntFromInterval } from '../utils';
 
-export default () => {
+export default ({ withJoinAction = true }: { withJoinAction?: boolean }) => {
   const groupNameLength = randomIntFromInterval(12, 20);
 
   return (
@@ -13,7 +13,7 @@ export default () => {
       justifyContent='between'
       className='animate-pulse'
     >
-      <HStack alignItems='center' space={2}>
+      <HStack alignItems='center' space={2} className='overflow-hidden'>
         {/* Group Avatar */}
         <div className='h-11 w-11 rounded-full bg-gray-500 dark:bg-gray-700 dark:ring-primary-900' />
 
@@ -37,7 +37,9 @@ export default () => {
       </HStack>
 
       {/* Join Group Button */}
-      <div className='h-10 w-36 rounded-full bg-gray-300 dark:bg-gray-800' />
+      {withJoinAction && (
+        <div className='h-10 w-36 rounded-full bg-gray-300 dark:bg-gray-800' />
+      )}
     </HStack>
   );
 };
