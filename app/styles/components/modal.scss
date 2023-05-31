@@ -7,9 +7,6 @@
 }
 
 .media-modal {
-  // https://stackoverflow.com/a/8468131
-  @apply w-full h-full absolute inset-0;
-
   .audio-player.detailed,
   .extended-video-player {
     display: flex;
@@ -28,126 +25,6 @@
 
     video {
       @apply max-w-full max-h-[80%];
-    }
-  }
-
-  &__closer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  &__navigation {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    transition: opacity 0.3s linear;
-    will-change: opacity;
-
-    * {
-      pointer-events: auto;
-    }
-
-    &--hidden {
-      opacity: 0;
-
-      * {
-        pointer-events: none;
-      }
-    }
-  }
-
-  &__nav {
-    @apply absolute top-0 bottom-0 my-auto mx-0 box-border flex h-[20vmax] cursor-pointer items-center border-0 bg-black/50 text-2xl text-white;
-    padding: 30px 15px;
-
-    @media screen and (max-width: 600px) {
-      @apply px-0.5;
-    }
-
-    .svg-icon {
-      @apply h-6 w-6;
-    }
-
-    &--left {
-      left: 0;
-    }
-
-    &--right {
-      right: 0;
-    }
-  }
-
-  &__pagination {
-    width: 100%;
-    text-align: center;
-    position: absolute;
-    left: 0;
-    bottom: 20px;
-    pointer-events: none;
-  }
-
-  &__meta {
-    text-align: center;
-    position: absolute;
-    left: 0;
-    bottom: 20px;
-    width: 100%;
-    pointer-events: none;
-
-    &--shifted {
-      bottom: 62px;
-    }
-
-    a {
-      text-decoration: none;
-      font-weight: 500;
-      color: #fff;
-
-      &:hover,
-      &:focus,
-      &:active {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  &__page-dot {
-    display: inline-block;
-  }
-
-  &__button {
-    background-color: #fff;
-    height: 12px;
-    width: 12px;
-    border-radius: 6px;
-    margin: 10px;
-    padding: 0;
-    border: 0;
-    font-size: 0;
-
-    &--active {
-      @apply bg-accent-500;
-    }
-  }
-
-  &__close {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    height: 48px;
-    width: 48px;
-    z-index: 100;
-    color: #fff;
-
-    .svg-icon {
-      height: 48px;
-      width: 48px;
     }
   }
 }
@@ -196,24 +73,6 @@
 
     & > div {
       min-width: 33px;
-    }
-  }
-
-  &__nav {
-    border: 0;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 10px 25px;
-    line-height: inherit;
-    height: auto;
-    margin: -10px;
-    border-radius: 4px;
-    background-color: transparent;
-
-    &:hover,
-    &:focus,
-    &:active {
-      @apply text-gray-400;
     }
   }
 }

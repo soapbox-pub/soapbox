@@ -252,6 +252,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
         className={clsx({
           'my-2 mx-auto relative pointer-events-none flex items-center min-h-[calc(100%-3.5rem)]': true,
           'p-4 md:p-0': type !== 'MEDIA',
+          '!my-0': type === 'MEDIA',
         })}
       >
         {children}

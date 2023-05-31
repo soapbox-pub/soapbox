@@ -1,15 +1,21 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import debounce from 'lodash/debounce';
+import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
+import { fetchNext, fetchStatusWithContext } from 'soapbox/actions/statuses';
 import ExtendedVideoPlayer from 'soapbox/components/extended-video-player';
-import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon-button';
+import MissingIndicator from 'soapbox/components/missing-indicator';
+import StatusActionBar from 'soapbox/components/status-action-bar';
+import { Icon, IconButton, HStack, Stack } from 'soapbox/components/ui';
 import Audio from 'soapbox/features/audio';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
+import Thread from 'soapbox/features/status/components/thread';
 import Video from 'soapbox/features/video';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { makeGetStatus } from 'soapbox/selectors';
 
 import ImageLoader from '../image-loader';
 
@@ -18,16 +24,31 @@ import type { Attachment, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
-  previous: { id: 'lightbox.previous', defaultMessage: 'Previous' },
+  expand: { id: 'lightbox.expand', defaultMessage: 'Expand' },
+  minimize: { id: 'lightbox.minimize', defaultMessage: 'Minimize' },
   next: { id: 'lightbox.next', defaultMessage: 'Next' },
+  previous: { id: 'lightbox.previous', defaultMessage: 'Previous' },
 });
+
+// you can't use 100vh, because the viewport height is taller
+// than the visible part of the document in some mobile
+// browsers when it's address bar is visible.
+// https://developers.google.com/web/updates/2016/12/url-bar-resizing
+const swipeableViewsStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+};
+
+const containerStyle: React.CSSProperties = {
+  alignItems: 'center', // center vertically
+};
 
 interface IMediaModal {
   media: ImmutableList<Attachment>
   status?: Status
   index: number
   time?: number
-  onClose: () => void
+  onClose(): void
 }
 
 const MediaModal: React.FC<IMediaModal> = (props) => {
@@ -38,29 +59,24 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     time = 0,
   } = props;
 
-  const intl = useIntl();
-  const history = useHistory();
   const dispatch = useAppDispatch();
+  const history = useHistory();
+  const intl = useIntl();
 
+  const getStatus = useCallback(makeGetStatus(), []);
+  const actualStatus = useAppSelector((state) => getStatus(state, { id: status?.id as string }));
+
+  const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
+  const [next, setNext] = useState<string>();
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const handleSwipe = (index: number) => {
-    setIndex(index % media.size);
-  };
+  const hasMultipleImages = media.size > 1;
 
-  const handleNextClick = () => {
-    setIndex((getIndex() + 1) % media.size);
-  };
-
-  const handlePrevClick = () => {
-    setIndex((media.size + getIndex() - 1) % media.size);
-  };
-
-  const handleChangeIndex: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    const index = Number(e.currentTarget.getAttribute('data-index'));
-    setIndex(index % media.size);
-  };
+  const handleSwipe = (index: number) => setIndex(index % media.size);
+  const handleNextClick = () => setIndex((getIndex() + 1) % media.size);
+  const handlePrevClick = () => setIndex((media.size + getIndex() - 1) % media.size);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
@@ -77,13 +93,10 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown, false);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [index]);
+  const handleDownload = () => {
+    const mediaItem = hasMultipleImages ? media.get(index as number) : media.get(0);
+    window.open(mediaItem?.url);
+  };
 
   const getIndex = () => index !== null ? index : props.index;
 
@@ -104,61 +117,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
       });
     }
   };
-
-  const handleCloserClick: React.MouseEventHandler = ({ target }) => {
-    const whitelist = ['zoomable-image'];
-    const activeSlide = document.querySelector('.media-modal .react-swipeable-view-container > div[aria-hidden="false"]');
-
-    const isClickOutside = target === activeSlide || !activeSlide?.contains(target as Element);
-    const isWhitelisted = whitelist.some(w => (target as Element).classList.contains(w));
-
-    if (isClickOutside || isWhitelisted) {
-      onClose();
-    }
-  };
-
-  let pagination: React.ReactNode[] = [];
-
-  const leftNav = media.size > 1 && (
-    <button
-      tabIndex={0}
-      className='media-modal__nav media-modal__nav--left'
-      onClick={handlePrevClick}
-      aria-label={intl.formatMessage(messages.previous)}
-    >
-      <Icon src={require('@tabler/icons/arrow-left.svg')} />
-    </button>
-  );
-
-  const rightNav = media.size > 1 && (
-    <button
-      tabIndex={0}
-      className='media-modal__nav  media-modal__nav--right'
-      onClick={handleNextClick}
-      aria-label={intl.formatMessage(messages.next)}
-    >
-      <Icon src={require('@tabler/icons/arrow-right.svg')} />
-    </button>
-  );
-
-  if (media.size > 1) {
-    pagination = media.toArray().map((item, i) => (
-      <li className='media-modal__page-dot' key={i}>
-        <button
-          tabIndex={0}
-          className={clsx('media-modal__button', {
-            'media-modal__button--active': i === getIndex(),
-          })}
-          onClick={handleChangeIndex}
-          data-index={i}
-        >
-          {i + 1}
-        </button>
-      </li>
-    ));
-  }
-
-  const isMultiMedia = media.map((image) => image.type !== 'image').toArray();
 
   const content = media.map((attachment, i) => {
     const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
@@ -230,62 +188,154 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     return null;
   }).toArray();
 
-  // you can't use 100vh, because the viewport height is taller
-  // than the visible part of the document in some mobile
-  // browsers when it's address bar is visible.
-  // https://developers.google.com/web/updates/2016/12/url-bar-resizing
-  const swipeableViewsStyle: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
+  const handleLoadMore = useCallback(debounce(() => {
+    if (next && status) {
+      dispatch(fetchNext(status?.id, next)).then(({ next }) => {
+        setNext(next);
+      }).catch(() => { });
+    }
+  }, 300, { leading: true }), [next, status]);
+
+  /** Fetch the status (and context) from the API. */
+  const fetchData = async () => {
+    const { next } = await dispatch(fetchStatusWithContext(status?.id as string));
+    setNext(next);
   };
 
-  const containerStyle: React.CSSProperties = {
-    alignItems: 'center', // center vertically
-  };
+  // Load data.
+  useEffect(() => {
+    fetchData().then(() => {
+      setIsLoaded(true);
+    }).catch(() => {
+      setIsLoaded(true);
+    });
+  }, [status?.id]);
 
-  const navigationClassName = clsx('media-modal__navigation', {
-    'media-modal__navigation--hidden': navigationHidden,
-  });
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown, false);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [index]);
+
+  if (!actualStatus && isLoaded) {
+    return (
+      <MissingIndicator />
+    );
+  } else if (!actualStatus) {
+    return <PlaceholderStatus />;
+  }
 
   return (
-    <div className='modal-root__modal media-modal'>
+    <div className='media-modal pointer-events-auto fixed inset-0 z-[9999] h-full bg-gray-900/90'>
       <div
-        className='media-modal__closer'
+        className='absolute inset-0'
         role='presentation'
-        onClick={handleCloserClick}
       >
-        <ReactSwipeableViews
-          style={swipeableViewsStyle}
-          containerStyle={containerStyle}
-          onChangeIndex={handleSwipe}
-          index={getIndex()}
+        <Stack
+          className={
+            clsx('fixed inset-0 h-full grow transition-all', {
+              'xl:pr-96': !isFullScreen,
+              'xl:pr-0': isFullScreen,
+            })
+          }
+          justifyContent='between'
         >
-          {content}
-        </ReactSwipeableViews>
-      </div>
+          <HStack alignItems='center' justifyContent='between' className='flex-[0_0_60px] p-4'>
+            <IconButton
+              title={intl.formatMessage(messages.close)}
+              src={require('@tabler/icons/x.svg')}
+              onClick={onClose}
+              theme='dark'
+              className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+              iconClassName='h-5 w-5'
+            />
 
-      <div className={navigationClassName}>
-        <IconButton
-          className='media-modal__close'
-          title={intl.formatMessage(messages.close)}
-          src={require('@tabler/icons/x.svg')}
-          onClick={onClose}
-        />
+            <HStack alignItems='center' space={2}>
+              <IconButton
+                src={require('@tabler/icons/download.svg')}
+                // title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
+                theme='dark'
+                className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+                iconClassName='h-5 w-5'
+                onClick={handleDownload}
+              />
 
-        {leftNav}
-        {rightNav}
+              <IconButton
+                src={isFullScreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
+                title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
+                theme='dark'
+                className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+                iconClassName='h-5 w-5'
+                onClick={() => setIsFullScreen(!isFullScreen)}
+              />
+            </HStack>
+          </HStack>
 
-        {(status && !isMultiMedia[getIndex()]) && (
-          <div className={clsx('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
-            <a href={status.url} onClick={handleStatusClick}>
-              <FormattedMessage id='lightbox.view_context' defaultMessage='View context' />
-            </a>
+          {/* Height based on height of top/bottom bars */}
+          <div className='relative h-[calc(100vh-120px)] w-full grow'>
+            {hasMultipleImages && (
+              <div className='absolute inset-y-0 left-5 z-10 flex items-center'>
+                <button
+                  tabIndex={0}
+                  className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                  onClick={handlePrevClick}
+                  aria-label={intl.formatMessage(messages.previous)}
+                >
+                  <Icon src={require('@tabler/icons/arrow-left.svg')} className='h-5 w-5' />
+                </button>
+              </div>
+            )}
+
+            <ReactSwipeableViews
+              style={swipeableViewsStyle}
+              containerStyle={containerStyle}
+              onChangeIndex={handleSwipe}
+              index={getIndex()}
+            >
+              {content}
+            </ReactSwipeableViews>
+
+            {hasMultipleImages && (
+              <div className='absolute inset-y-0 right-5 z-10 flex items-center'>
+                <button
+                  tabIndex={0}
+                  className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                  onClick={handleNextClick}
+                  aria-label={intl.formatMessage(messages.next)}
+                >
+                  <Icon src={require('@tabler/icons/arrow-right.svg')} className='h-5 w-5' />
+                </button>
+              </div>
+            )}
           </div>
-        )}
 
-        <ul className='media-modal__pagination'>
-          {pagination}
-        </ul>
+          <HStack justifyContent='center' className='flex-[0_0_60px]'>
+            <StatusActionBar
+              status={actualStatus}
+              space='md'
+              statusActionButtonTheme='inverse'
+            />
+          </HStack>
+        </Stack>
+
+        <div
+          className={
+            clsx('-right-96 hidden bg-white transition-all xl:fixed xl:inset-y-0 xl:right-0 xl:flex xl:w-96 xl:flex-col', {
+              'xl:!-right-96': isFullScreen,
+            })
+          }
+        >
+          <Thread
+            status={actualStatus}
+            withMedia={false}
+            useWindowScroll={false}
+            itemClassName='px-4'
+            next={next}
+            handleLoadMore={handleLoadMore}
+          />
+        </div>
       </div>
     </div>
   );

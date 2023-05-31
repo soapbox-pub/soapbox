@@ -16,6 +16,7 @@ const spaces = {
 };
 
 const justifyContentOptions = {
+  between: 'justify-between',
   center: 'justify-center',
   end: 'justify-end',
 };

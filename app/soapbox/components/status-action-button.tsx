@@ -35,10 +35,11 @@ interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonEleme
   filled?: boolean
   emoji?: ImmutableMap<string, any>
   text?: React.ReactNode
+  theme?: 'default' | 'inverse'
 }
 
 const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
-  const { icon, className, iconClassName, active, color, filled = false, count = 0, emoji, text, ...filteredProps } = props;
+  const { icon, className, iconClassName, active, color, filled = false, count = 0, emoji, text, theme = 'default', ...filteredProps } = props;
 
   const renderIcon = () => {
     if (emoji) {
@@ -82,10 +83,10 @@ const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButt
       type='button'
       className={clsx(
         'flex items-center rounded-full p-1 rtl:space-x-reverse',
-        'text-gray-600 hover:text-gray-600 dark:hover:text-white',
-        'bg-white dark:bg-transparent',
         'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-offset-0',
         {
+          'text-gray-600 hover:text-gray-600 dark:hover:text-white bg-white dark:bg-transparent': theme === 'default',
+          'text-white/80 hover:text-white bg-transparent dark:bg-transparent': theme === 'inverse',
           'text-black dark:text-white': active && emoji,
           'hover:text-gray-600 dark:hover:text-white': !filteredProps.disabled,
           'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && !emoji && color === COLORS.accent,

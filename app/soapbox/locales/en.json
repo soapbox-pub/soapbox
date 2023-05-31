@@ -931,6 +931,8 @@
   "landing_page_modal.download": "Download",
   "landing_page_modal.helpCenter": "Help Center",
   "lightbox.close": "Cancel",
+  "lightbox.expand": "Expand",
+  "lightbox.minimize": "Minimize",
   "lightbox.next": "Next",
   "lightbox.previous": "Previous",
   "lightbox.view_context": "View context",
