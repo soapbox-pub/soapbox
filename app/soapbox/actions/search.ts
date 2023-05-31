@@ -119,17 +119,22 @@ const setFilter = (filterType: SearchFilter) =>
   };
 
 const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: () => RootState) => {
-  const value  = getState().search.value;
-  const offset = getState().search.results[type].size;
+  const value     = getState().search.value;
+  const offset    = getState().search.results[type].size;
+  const accountId = getState().search.accountId;
 
   dispatch(expandSearchRequest(type));
 
+  const params: Record<string, any> = {
+    q: value,
+    type,
+    offset,
+  };
+
+  if (accountId) params.account_id = accountId;
+
   api(getState).get('/api/v2/search', {
-    params: {
-      q: value,
-      type,
-      offset,
-    },
+    params,
   }).then(({ data }) => {
     if (data.accounts) {
       dispatch(importFetchedAccounts(data.accounts));
