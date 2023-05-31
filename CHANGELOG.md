@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compatbility: Preliminary support for Ditto backend.
 - Posts: Support dislikes on Friendica.
 - UI: added a character counter to some textareas.
+- UI: added new experience for viewing Media
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
