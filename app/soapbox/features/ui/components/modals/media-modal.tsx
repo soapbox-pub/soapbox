@@ -229,6 +229,12 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     }
   }
 
+  const handleClickOutside: React.MouseEventHandler<HTMLElement> = (e) => {
+    if ((e.target as HTMLElement).tagName === 'DIV') {
+      onClose();
+    }
+  };
+
   return (
     <div className='media-modal pointer-events-auto fixed inset-0 z-[9999] h-full bg-gray-900/90'>
       <div
@@ -236,6 +242,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         role='presentation'
       >
         <Stack
+          onClick={handleClickOutside}
           className={
             clsx('fixed inset-0 h-full grow transition-all', {
               'xl:pr-96': !isFullScreen,
