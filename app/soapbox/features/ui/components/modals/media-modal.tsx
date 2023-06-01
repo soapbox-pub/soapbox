@@ -70,7 +70,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const [next, setNext] = useState<string>();
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(!status);
 
   const hasMultipleImages = media.size > 1;
 
@@ -219,12 +219,14 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     };
   }, [index]);
 
-  if (!actualStatus && isLoaded) {
-    return (
-      <MissingIndicator />
-    );
-  } else if (!actualStatus) {
-    return <PlaceholderStatus />;
+  if (status) {
+    if (!actualStatus && isLoaded) {
+      return (
+        <MissingIndicator />
+      );
+    } else if (!actualStatus) {
+      return <PlaceholderStatus />;
+    }
   }
 
   return (
@@ -255,21 +257,22 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             <HStack alignItems='center' space={2}>
               <IconButton
                 src={require('@tabler/icons/download.svg')}
-                // title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
                 theme='dark'
                 className='!p-1.5 hover:scale-105 hover:bg-gray-900'
                 iconClassName='h-5 w-5'
                 onClick={handleDownload}
               />
 
-              <IconButton
-                src={isFullScreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
-                title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
-                theme='dark'
-                className='!p-1.5 hover:scale-105 hover:bg-gray-900'
-                iconClassName='h-5 w-5'
-                onClick={() => setIsFullScreen(!isFullScreen)}
-              />
+              {status && (
+                <IconButton
+                  src={isFullScreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
+                  title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
+                  theme='dark'
+                  className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+                  iconClassName='h-5 w-5'
+                  onClick={() => setIsFullScreen(!isFullScreen)}
+                />
+              )}
             </HStack>
           </HStack>
 
@@ -311,31 +314,35 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             )}
           </div>
 
-          <HStack justifyContent='center' className='flex-[0_0_60px]'>
-            <StatusActionBar
-              status={actualStatus}
-              space='md'
-              statusActionButtonTheme='inverse'
-            />
-          </HStack>
+          {actualStatus && (
+            <HStack justifyContent='center' className='flex-[0_0_60px]'>
+              <StatusActionBar
+                status={actualStatus}
+                space='md'
+                statusActionButtonTheme='inverse'
+              />
+            </HStack>
+          )}
         </Stack>
 
-        <div
-          className={
-            clsx('-right-96 hidden bg-white transition-all xl:fixed xl:inset-y-0 xl:right-0 xl:flex xl:w-96 xl:flex-col', {
-              'xl:!-right-96': isFullScreen,
-            })
-          }
-        >
-          <Thread
-            status={actualStatus}
-            withMedia={false}
-            useWindowScroll={false}
-            itemClassName='px-4'
-            next={next}
-            handleLoadMore={handleLoadMore}
-          />
-        </div>
+        {actualStatus && (
+          <div
+            className={
+              clsx('-right-96 hidden bg-white transition-all xl:fixed xl:inset-y-0 xl:right-0 xl:flex xl:w-96 xl:flex-col', {
+                'xl:!-right-96': isFullScreen,
+              })
+            }
+          >
+            <Thread
+              status={actualStatus}
+              withMedia={false}
+              useWindowScroll={false}
+              itemClassName='px-4'
+              next={next}
+              handleLoadMore={handleLoadMore}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
