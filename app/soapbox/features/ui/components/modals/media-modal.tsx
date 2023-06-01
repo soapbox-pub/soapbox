@@ -268,7 +268,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                   src={isFullScreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
                   title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
                   theme='dark'
-                  className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+                  className='hidden !p-1.5 hover:scale-105 hover:bg-gray-900 xl:block'
                   iconClassName='h-5 w-5'
                   onClick={() => setIsFullScreen(!isFullScreen)}
                 />
