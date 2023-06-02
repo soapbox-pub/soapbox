@@ -195,8 +195,8 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
             data-testid='role-badge'
             className={
               clsx('inline-flex items-center rounded px-2 py-1 text-xs font-medium capitalize', {
-                'bg-primary-200 text-primary-500': isMemberOwner,
-                'bg-gray-200 text-gray-900': isMemberAdmin,
+                'bg-primary-200 text-primary-500 dark:bg-primary-800 dark:text-primary-200': isMemberOwner,
+                'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100': isMemberAdmin,
               })
             }
           >
