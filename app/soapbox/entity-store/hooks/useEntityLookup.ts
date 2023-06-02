@@ -25,6 +25,7 @@ function useEntityLookup<TEntity extends Entity>(
   const [isFetching, setPromise] = useLoading(true);
 
   const entity = useAppSelector(state => findEntity(state, entityType, lookupFn));
+  const isEnabled = opts.enabled ?? true;
   const isLoading = isFetching && !entity;
 
   const fetchEntity = async () => {
@@ -38,10 +39,12 @@ function useEntityLookup<TEntity extends Entity>(
   };
 
   useEffect(() => {
+    if (!isEnabled) return;
+
     if (!entity || opts.refetch) {
       fetchEntity();
     }
-  }, []);
+  }, [isEnabled]);
 
   return {
     entity,
