@@ -15,6 +15,7 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import Thread from 'soapbox/features/status/components/thread';
 import Video from 'soapbox/features/video';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { isUserTouching } from 'soapbox/is-mobile';
 import { makeGetStatus } from 'soapbox/selectors';
 
 import ImageLoader from '../image-loader';
@@ -78,6 +79,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const handleNextClick = () => setIndex((getIndex() + 1) % media.size);
   const handlePrevClick = () => setIndex((media.size + getIndex() - 1) % media.size);
 
+  const navigationHiddenClassName = navigationHidden ? 'pointer-events-none opacity-0' : '';
+
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case 'ArrowLeft':
@@ -101,7 +104,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const getIndex = () => index !== null ? index : props.index;
 
   const toggleNavigation = () => {
-    setNavigationHidden(!navigationHidden);
+    setNavigationHidden(value => !value && isUserTouching());
   };
 
   const handleStatusClick: React.MouseEventHandler = e => {
@@ -251,7 +254,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           }
           justifyContent='between'
         >
-          <HStack alignItems='center' justifyContent='between' className='flex-[0_0_60px] p-4'>
+          <HStack
+            alignItems='center'
+            justifyContent='between'
+            className={clsx('flex-[0_0_60px] p-4 transition-opacity', navigationHiddenClassName)}
+          >
             <IconButton
               title={intl.formatMessage(messages.close)}
               src={require('@tabler/icons/x.svg')}
@@ -284,9 +291,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           </HStack>
 
           {/* Height based on height of top/bottom bars */}
-          <div className='relative h-[calc(100vh-120px)] w-full grow'>
+          <div
+            className='relative h-[calc(100vh-120px)] w-full grow'
+          >
             {hasMultipleImages && (
-              <div className='absolute inset-y-0 left-5 z-10 flex items-center'>
+              <div className={clsx('absolute inset-y-0 left-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
                 <button
                   tabIndex={0}
                   className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white'
@@ -308,7 +317,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             </ReactSwipeableViews>
 
             {hasMultipleImages && (
-              <div className='absolute inset-y-0 right-5 z-10 flex items-center'>
+              <div className={clsx('absolute inset-y-0 right-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
                 <button
                   tabIndex={0}
                   className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white'
@@ -322,7 +331,10 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           </div>
 
           {actualStatus && (
-            <HStack justifyContent='center' className='flex-[0_0_60px]'>
+            <HStack
+              justifyContent='center'
+              className={clsx('flex-[0_0_60px] transition-opacity', navigationHiddenClassName)}
+            >
               <StatusActionBar
                 status={actualStatus}
                 space='md'
