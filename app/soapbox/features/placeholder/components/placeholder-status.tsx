@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import { HStack } from 'soapbox/components/ui';
@@ -8,21 +8,22 @@ import PlaceholderDisplayName from './placeholder-display-name';
 import PlaceholderStatusContent from './placeholder-status-content';
 
 interface IPlaceholderStatus {
-  thread?: boolean
+  variant?: 'rounded' | 'slim' | 'default'
 }
 
 /** Fake status to display while data is loading. */
-const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => (
+const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
   <div
-    className={classNames({
+    className={clsx({
       'status-placeholder bg-white dark:bg-primary-900': true,
-      'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': !thread,
+      'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': variant === 'rounded',
+      'py-4': variant === 'slim',
     })}
   >
     <div className='w-full animate-pulse overflow-hidden'>
       <div>
         <HStack space={3} alignItems='center'>
-          <div className='flex-shrink-0'>
+          <div className='shrink-0'>
             <PlaceholderAvatar size={42} />
           </div>
 
@@ -32,7 +33,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ thread = false }) => 
         </HStack>
       </div>
 
-      <div className='mt-4 status__content-wrapper'>
+      <div className='status__content-wrapper mt-4'>
         <PlaceholderStatusContent minLength={5} maxLength={120} />
       </div>
     </div>

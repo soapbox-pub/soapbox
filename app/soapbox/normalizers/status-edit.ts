@@ -9,10 +9,10 @@ import {
   fromJS,
 } from 'immutable';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { normalizePoll } from 'soapbox/normalizers/poll';
+import { pollSchema } from 'soapbox/schemas';
 import { stripCompatibilityFeatures } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -50,9 +50,10 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
 
 // Normalize the poll in the status, if applicable
 const normalizeStatusPoll = (statusEdit: ImmutableMap<string, any>) => {
-  if (statusEdit.hasIn(['poll', 'options'])) {
-    return statusEdit.update('poll', ImmutableMap(), normalizePoll);
-  } else {
+  try {
+    const poll = pollSchema.parse(statusEdit.get('poll').toJS());
+    return statusEdit.set('poll', poll);
+  } catch (_e) {
     return statusEdit.set('poll', null);
   }
 };

@@ -11,15 +11,15 @@ import {
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { normalizePoll } from 'soapbox/normalizers/poll';
+import { cardSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
 
 import type { ReducerAccount } from 'soapbox/reducers/accounts';
-import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
-export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self';
+export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
+export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self' | 'group';
 
 export type EventJoinMode = 'free' | 'restricted' | 'invite';
 export type EventJoinState = 'pending' | 'reject' | 'accept';
@@ -36,19 +36,27 @@ export const EventRecord = ImmutableRecord({
   links: ImmutableList<Attachment>(),
 });
 
+interface Tombstone {
+  reason: 'deleted'
+}
+
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account | ReducerAccount>,
   application: null as ImmutableMap<string, any> | null,
+  approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
   card: null as Card | null,
   content: '',
   created_at: '',
+  dislikes_count: 0,
+  disliked: false,
   edited_at: null as string | null,
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
-  group: null as EmbeddedEntity<any>,
+  filtered: ImmutableList<string>(),
+  group: null as EmbeddedEntity<Group>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',
@@ -68,6 +76,7 @@ export const StatusRecord = ImmutableRecord({
   sensitive: false,
   spoiler_text: '',
   tags: ImmutableList<ImmutableMap<string, any>>(),
+  tombstone: null as Tombstone | null,
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
@@ -76,9 +85,9 @@ export const StatusRecord = ImmutableRecord({
   // Internal fields
   contentHtml: '',
   expectsCard: false,
-  filtered: false,
   hidden: false,
   search_index: '',
+  showFiltered: true,
   spoilerHtml: '',
   translation: null as ImmutableMap<string, string> | null,
 });
@@ -104,18 +113,29 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
 
 // Normalize the poll in the status, if applicable
 const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
-  if (status.hasIn(['poll', 'options'])) {
-    return status.update('poll', ImmutableMap(), normalizePoll);
-  } else {
+  try {
+    const poll = pollSchema.parse(status.get('poll').toJS());
+    return status.set('poll', poll);
+  } catch (_e) {
     return status.set('poll', null);
+  }
+};
+
+const normalizeTombstone = (status: ImmutableMap<string, any>) => {
+  try {
+    const tombstone = tombstoneSchema.parse(status.get('tombstone').toJS());
+    return status.set('tombstone', tombstone);
+  } catch (_e) {
+    return status.set('tombstone', null);
   }
 };
 
 // Normalize card
 const normalizeStatusCard = (status: ImmutableMap<string, any>) => {
-  if (status.get('card')) {
-    return status.update('card', ImmutableMap(), normalizeCard);
-  } else {
+  try {
+    const card = cardSchema.parse(status.get('card').toJS());
+    return status.set('card', card);
+  } catch (e) {
     return status.set('card', null);
   }
 };
@@ -164,11 +184,6 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-// Workaround for not yet implemented filtering from Mastodon 3.6
-const fixFiltered = (status: ImmutableMap<string, any>) => {
-  status.delete('filtered');
-};
-
 /** If the status contains spoiler text, treat it as sensitive. */
 const fixSensitivity = (status: ImmutableMap<string, any>) => {
   if (status.get('spoiler_text')) {
@@ -203,6 +218,32 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
   }
 };
 
+/** Rewrite `<p></p>` to empty string. */
+const fixContent = (status: ImmutableMap<string, any>) => {
+  if (status.get('content') === '<p></p>') {
+    return status.set('content', '');
+  } else {
+    return status;
+  }
+};
+
+const normalizeFilterResults = (status: ImmutableMap<string, any>) =>
+  status.update('filtered', ImmutableList(), filterResults =>
+    filterResults.map((filterResult: ImmutableMap<string, any>) =>
+      filterResult.getIn(['filter', 'title']),
+    ),
+  );
+
+const normalizeDislikes = (status: ImmutableMap<string, any>) => {
+  if (status.get('friendica')) {
+    return status
+      .set('dislikes_count', status.getIn(['friendica', 'dislikes_count']))
+      .set('disliked', status.getIn(['friendica', 'disliked']));
+  }
+
+  return status;
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -214,9 +255,12 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
-      fixFiltered(status);
       fixSensitivity(status);
       normalizeEvent(status);
+      fixContent(status);
+      normalizeFilterResults(status);
+      normalizeDislikes(status);
+      normalizeTombstone(status);
     }),
   );
 };

@@ -7,24 +7,29 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { editEvent } from 'soapbox/actions/events';
-import { toggleBookmark, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
+import { toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport } from 'soapbox/actions/reports';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
-import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
+import { deleteFromTimelines } from 'soapbox/actions/timelines';
+import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
+import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
 import { HStack } from 'soapbox/components/ui';
-import DropdownMenuContainer from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
+import GroupPopover from './groups/popover/group-popover';
+
 import type { Menu } from 'soapbox/components/dropdown-menu';
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Account, Group, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -44,6 +49,7 @@ const messages = defineMessages({
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   favourite: { id: 'status.favourite', defaultMessage: 'Like' },
+  disfavourite: { id: 'status.disfavourite', defaultMessage: 'Disike' },
   open: { id: 'status.open', defaultMessage: 'Expand this post' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
@@ -81,31 +87,36 @@ const messages = defineMessages({
   redraftHeading: { id: 'confirmations.redraft.heading', defaultMessage: 'Delete & redraft' },
   replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
+  replies_disabled_group: { id: 'status.disabled_replies.group_membership', defaultMessage: 'Only group members can reply' },
+  groupModDelete: { id: 'status.group_mod_delete', defaultMessage: 'Delete post from group' },
+  deleteFromGroupMessage: { id: 'confirmations.delete_from_group.message', defaultMessage: 'Are you sure you want to delete @{name}\'s post?' },
 });
 
 interface IStatusActionBar {
-  status: Status,
-  withDismiss?: boolean,
-  withLabels?: boolean,
-  expandable?: boolean,
-  space?: 'expand' | 'compact',
+  status: Status
+  withLabels?: boolean
+  expandable?: boolean
+  space?: 'sm' | 'md' | 'lg'
+  statusActionButtonTheme?: 'default' | 'inverse'
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
   status,
-  withDismiss = false,
   withLabels = false,
   expandable = true,
-  space = 'compact',
+  space = 'sm',
+  statusActionButtonTheme = 'default',
 }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
+  const groupRelationship = useAppSelector(state => status.group ? state.group_relationships.get((status.group as Group).id) : null);
   const features = useFeatures();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
+  const deleteGroupStatus = useDeleteGroupStatus(status?.group as Group, status.id);
 
   const { allowedEmoji } = soapboxConfig;
 
@@ -146,6 +157,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       dispatch(toggleFavourite(status));
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
+    }
+  };
+
+  const handleDislikeClick: React.EventHandler<React.MouseEvent> = (e) => {
+    if (me) {
+      dispatch(toggleDislike(status));
+    } else {
+      onOpenUnauthorizedModal('DISLIKE');
     }
   };
 
@@ -235,14 +254,14 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
-      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(blockAccount(account.id)),
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(account, { status }));
+        dispatch(initReport(ReportableEntities.STATUS, account, { status }));
       },
     }));
   };
@@ -259,7 +278,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(status.account as Account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, status.account as Account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -285,6 +304,23 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
   };
 
+  const handleDeleteFromGroup: React.EventHandler<React.MouseEvent> = () => {
+    const account = status.account as Account;
+
+    dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.deleteHeading),
+      message: intl.formatMessage(messages.deleteFromGroupMessage, { name: <strong className='break-words'>{account.username}</strong> }),
+      confirm: intl.formatMessage(messages.deleteConfirm),
+      onConfirm: () => {
+        deleteGroupStatus.mutate(status.id, {
+          onSuccess() {
+            dispatch(deleteFromTimelines(status.id));
+          },
+        });
+      },
+    }));
+  };
+
   const _makeMenu = (publicStatus: boolean) => {
     const mutingConversation = status.muted;
     const ownAccount = status.getIn(['account', 'id']) === me;
@@ -306,7 +342,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       menu.push({
         text: intl.formatMessage(messages.copy),
         action: handleCopy,
-        icon: require('@tabler/icons/link.svg'),
+        icon: require('@tabler/icons/clipboard-copy.svg'),
       });
 
       if (features.embeds && isLocal(account)) {
@@ -340,14 +376,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     menu.push(null);
 
-    if (ownAccount || withDismiss) {
-      menu.push({
-        text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
-        action: handleConversationMuteClick,
-        icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
-      });
-      menu.push(null);
-    }
+    menu.push({
+      text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
+      action: handleConversationMuteClick,
+      icon: mutingConversation ? require('@tabler/icons/bell.svg') : require('@tabler/icons/bell-off.svg'),
+    });
+
+    menu.push(null);
 
     if (ownAccount) {
       if (publicStatus) {
@@ -411,7 +446,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       menu.push({
         text: intl.formatMessage(messages.mute, { name: username }),
         action: handleMuteClick,
-        icon: require('@tabler/icons/circle-x.svg'),
+        icon: require('@tabler/icons/volume-3.svg'),
       });
       menu.push({
         text: intl.formatMessage(messages.block, { name: username }),
@@ -422,6 +457,20 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         text: intl.formatMessage(messages.report, { name: username }),
         action: handleReport,
         icon: require('@tabler/icons/flag.svg'),
+      });
+    }
+
+    if (status.group &&
+      groupRelationship?.role &&
+      [GroupRoles.OWNER].includes(groupRelationship.role) &&
+      !ownAccount
+    ) {
+      menu.push(null);
+      menu.push({
+        text: intl.formatMessage(messages.groupModDelete),
+        action: handleDeleteFromGroup,
+        icon: require('@tabler/icons/trash.svg'),
+        destructive: true,
       });
     }
 
@@ -461,7 +510,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     return menu;
   };
 
-  const publicStatus = ['public', 'unlisted'].includes(status.visibility);
+  const publicStatus = ['public', 'unlisted', 'group'].includes(status.visibility);
 
   const replyCount = status.replies_count;
   const reblogCount = status.reblogs_count;
@@ -474,7 +523,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     allowedEmoji,
   ).reduce((acc, cur) => acc + cur.get('count'), 0);
 
-  const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+  const meEmojiReact = getReactForStatus(status, allowedEmoji);
+  const meEmojiName = meEmojiReact?.get('name') as keyof typeof reactMessages | undefined;
 
   const reactMessages = {
     '👍': messages.reactionLike,
@@ -486,16 +536,22 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     '': messages.favourite,
   };
 
-  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
+  const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiName || ''] || messages.favourite);
 
   const menu = _makeMenu(publicStatus);
   let reblogIcon = require('@tabler/icons/repeat.svg');
   let replyTitle;
+  let replyDisabled = false;
 
   if (status.visibility === 'direct') {
     reblogIcon = require('@tabler/icons/mail.svg');
   } else if (status.visibility === 'private') {
     reblogIcon = require('@tabler/icons/lock.svg');
+  }
+
+  if ((status.group as Group)?.membership_required && !groupRelationship?.member) {
+    replyDisabled = true;
+    replyTitle = intl.formatMessage(messages.replies_disabled_group);
   }
 
   const reblogMenu = [{
@@ -518,6 +574,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       onClick={handleReblogClick}
       count={reblogCount}
       text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
+      theme={statusActionButtonTheme}
     />
   );
 
@@ -527,59 +584,91 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     replyTitle = intl.formatMessage(messages.replyAll);
   }
 
-  const canShare = ('share' in navigator) && status.visibility === 'public';
+  const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
+
+  const spacing: {
+    [key: string]: React.ComponentProps<typeof HStack>['space']
+  } = {
+    'sm': 2,
+    'md': 8,
+    'lg': 0, // using justifyContent instead on the HStack
+  };
 
   return (
     <HStack data-testid='status-action-bar'>
       <HStack
-        justifyContent={space === 'expand' ? 'between' : undefined}
-        space={space === 'compact' ? 2 : undefined}
-        grow={space === 'expand'}
+        justifyContent={space === 'lg' ? 'between' : undefined}
+        space={spacing[space]}
+        grow={space === 'lg'}
         onClick={e => e.stopPropagation()}
+        alignItems='center'
       >
-        <StatusActionButton
-          title={replyTitle}
-          icon={require('@tabler/icons/message-circle-2.svg')}
-          onClick={handleReplyClick}
-          count={replyCount}
-          text={withLabels ? intl.formatMessage(messages.reply) : undefined}
-        />
+        <GroupPopover
+          group={status.group as any}
+          isEnabled={replyDisabled}
+        >
+          <StatusActionButton
+            title={replyTitle}
+            icon={require('@tabler/icons/message-circle-2.svg')}
+            onClick={handleReplyClick}
+            count={replyCount}
+            text={withLabels ? intl.formatMessage(messages.reply) : undefined}
+            disabled={replyDisabled}
+            theme={statusActionButtonTheme}
+          />
+        </GroupPopover>
 
         {(features.quotePosts && me) ? (
-          <DropdownMenuContainer
+          <DropdownMenu
             items={reblogMenu}
             disabled={!publicStatus}
             onShiftClick={handleReblogClick}
           >
             {reblogButton}
-          </DropdownMenuContainer>
+          </DropdownMenu>
         ) : (
           reblogButton
         )}
 
         {features.emojiReacts ? (
-          <EmojiButtonWrapper statusId={status.id}>
+          <StatusReactionWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
               icon={require('@tabler/icons/heart.svg')}
               filled
               color='accent'
-              active={Boolean(meEmojiReact)}
+              active={Boolean(meEmojiName)}
               count={emojiReactCount}
               emoji={meEmojiReact}
               text={withLabels ? meEmojiTitle : undefined}
+              theme={statusActionButtonTheme}
             />
-          </EmojiButtonWrapper>
+          </StatusReactionWrapper>
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
-            icon={require('@tabler/icons/heart.svg')}
+            icon={features.dislikes ? require('@tabler/icons/thumb-up.svg') : require('@tabler/icons/heart.svg')}
             color='accent'
             filled
             onClick={handleFavouriteClick}
-            active={Boolean(meEmojiReact)}
+            active={Boolean(meEmojiName)}
             count={favouriteCount}
             text={withLabels ? meEmojiTitle : undefined}
+            theme={statusActionButtonTheme}
+          />
+        )}
+
+        {features.dislikes && (
+          <StatusActionButton
+            title={intl.formatMessage(messages.disfavourite)}
+            icon={require('@tabler/icons/thumb-down.svg')}
+            color='accent'
+            filled
+            onClick={handleDislikeClick}
+            active={status.disliked}
+            count={status.dislikes_count}
+            text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined}
+            theme={statusActionButtonTheme}
           />
         )}
 
@@ -588,15 +677,17 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             title={intl.formatMessage(messages.share)}
             icon={require('@tabler/icons/upload.svg')}
             onClick={handleShareClick}
+            theme={statusActionButtonTheme}
           />
         )}
 
-        <DropdownMenuContainer items={menu} status={status}>
+        <DropdownMenu items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={require('@tabler/icons/dots.svg')}
+            theme={statusActionButtonTheme}
           />
-        </DropdownMenuContainer>
+        </DropdownMenu>
       </HStack>
     </HStack>
   );

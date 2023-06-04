@@ -14,8 +14,8 @@ const messages = defineMessages({
 });
 
 interface IEnableOtpForm {
-  displayOtpForm: boolean,
-  handleSetupProceedClick: (event: React.MouseEvent) => void,
+  displayOtpForm: boolean
+  handleSetupProceedClick: (event: React.MouseEvent) => void
 }
 
 const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupProceedClick }) => {
@@ -41,14 +41,14 @@ const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupPr
           <FormattedMessage id='mfa.setup_warning' defaultMessage="Write these codes down or save them somewhere secure - otherwise you won't see them again. If you lose access to your 2FA app and recovery codes you'll be locked out of your account." />
         </Text>
 
-        <div className='border-2 border-solid border-gray-200 dark:border-gray-800 rounded-lg p-4'>
+        <div className='rounded-lg border-2 border-solid border-gray-200 p-4 dark:border-gray-800'>
           <Stack space={3}>
             <Text weight='medium' align='center'>
               <FormattedMessage id='mfa.setup_recoverycodes' defaultMessage='Recovery codes' />
             </Text>
 
             {backupCodes.length > 0 ? (
-              <div className='grid gap-3 grid-cols-2 rounded-lg text-center'>
+              <div className='grid grid-cols-2 gap-3 rounded-lg text-center'>
                 {backupCodes.map((code, i) => (
                   <Text key={i} theme='muted' size='sm'>
                     {code}

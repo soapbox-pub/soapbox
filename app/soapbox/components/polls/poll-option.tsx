@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Motion, presets, spring } from 'react-motion';
@@ -20,7 +20,7 @@ const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ pe
     <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { ...presets.gentle, precision: 0.1 }) }}>
       {({ width }) => (
         <span
-          className='absolute inset-0 h-full inline-block bg-primary-100 dark:bg-primary-500 rounded-l-md'
+          className='absolute inset-0 inline-block h-full rounded-l-md bg-primary-100 dark:bg-primary-500'
           style={{ width: `${width}%` }}
         />
       )}
@@ -29,7 +29,7 @@ const PollPercentageBar: React.FC<{ percent: number, leading: boolean }> = ({ pe
 };
 
 interface IPollOptionText extends IPollOption {
-  percent: number,
+  percent: number
 }
 
 const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active, onToggle }) => {
@@ -46,7 +46,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
   return (
     <label
       className={
-        classNames('flex relative p-2 bg-white dark:bg-primary-900 cursor-pointer rounded-3xl border border-solid hover:bg-primary-50 dark:hover:bg-primary-800/50', {
+        clsx('relative flex cursor-pointer rounded-3xl border border-solid bg-white p-2 hover:bg-primary-50 dark:bg-primary-900 dark:hover:bg-primary-800/50', {
           'border-primary-600 ring-1 ring-primary-600 bg-primary-50 dark:bg-primary-800/50 dark:border-primary-300 dark:ring-primary-300': active,
           'border-primary-300 dark:border-primary-500': !active,
         })
@@ -61,8 +61,8 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
         onChange={handleOptionChange}
       />
 
-      <div className='grid items-center w-full'>
-        <div className='col-start-1 row-start-1 justify-self-center ml-4 mr-6'>
+      <div className='grid w-full items-center'>
+        <div className='col-start-1 row-start-1 ml-4 mr-6 justify-self-center'>
           <div className='text-primary-600 dark:text-white'>
             <Text
               theme='inherit'
@@ -72,9 +72,9 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
           </div>
         </div>
 
-        <div className='col-start-1 row-start-1 justify-self-end flex items-center'>
+        <div className='col-start-1 row-start-1 flex items-center justify-self-end'>
           <span
-            className={classNames('flex items-center justify-center w-6 h-6 flex-none border border-solid rounded-full', {
+            className={clsx('flex h-6 w-6 flex-none items-center justify-center rounded-full border border-solid', {
               'bg-primary-600 border-primary-600 dark:bg-primary-300 dark:border-primary-300': active,
               'border-primary-300 bg-white dark:bg-primary-900 dark:border-primary-500': !active,
             })}
@@ -85,7 +85,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             aria-label={option.title}
           >
             {active && (
-              <Icon src={require('@tabler/icons/check.svg')} className='text-white dark:text-primary-900 w-4 h-4' />
+              <Icon src={require('@tabler/icons/check.svg')} className='h-4 w-4 text-white dark:text-primary-900' />
             )}
           </span>
         </div>
@@ -95,12 +95,12 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 };
 
 interface IPollOption {
-  poll: PollEntity,
-  option: PollOptionEntity,
-  index: number,
-  showResults?: boolean,
-  active: boolean,
-  onToggle: (value: number) => void,
+  poll: PollEntity
+  option: PollOptionEntity
+  index: number
+  showResults?: boolean
+  active: boolean
+  onToggle: (value: number) => void
 }
 
 const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
@@ -112,9 +112,12 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
 
   const pollVotesCount = poll.voters_count || poll.votes_count;
   const percent = pollVotesCount === 0 ? 0 : (option.votes_count / pollVotesCount) * 100;
-  const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
   const voted = poll.own_votes?.includes(index);
   const message = intl.formatMessage(messages.votes, { votes: option.votes_count });
+
+  const leading = poll.options
+    .filter(other => other.title !== option.title)
+    .every(other => option.votes_count >= other.votes_count);
 
   return (
     <div key={option.title}>
@@ -123,7 +126,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
           <HStack
             justifyContent='between'
             alignItems='center'
-            className='relative p-2 w-full bg-white dark:bg-primary-800 rounded-md overflow-hidden'
+            className='relative w-full overflow-hidden rounded-md bg-white p-2 dark:bg-primary-800'
           >
             <PollPercentageBar percent={percent} leading={leading} />
 
@@ -141,7 +144,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
                 <Icon
                   src={require('@tabler/icons/circle-check.svg')}
                   alt={intl.formatMessage(messages.voted)}
-                  className='text-primary-600 dark:text-primary-800 dark:fill-white w-4 h-4'
+                  className='h-4 w-4 text-primary-600 dark:fill-white dark:text-primary-800'
                 />
               ) : (
                 <div className='svg-icon' />

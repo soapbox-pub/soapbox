@@ -19,8 +19,9 @@ const getStatus = makeGetStatus();
 
 interface IEventPage {
   params?: {
-    statusId?: string,
-  },
+    statusId?: string
+  }
+  children: React.ReactNode
 }
 
 const EventPage: React.FC<IEventPage> = ({ params, children }) => {

@@ -1,8 +1,12 @@
 import React from 'react';
 import { FormattedNumber } from 'react-intl';
+import { z } from 'zod';
 
 /** Check if a value is REALLY a number. */
 export const isNumber = (value: unknown): value is number => typeof value === 'number' && !isNaN(value);
+
+/** The input is a number and is not NaN. */
+export const realNumberSchema = z.coerce.number().refine(n => !isNaN(n));
 
 export const secondsToDays = (seconds: number) => Math.floor(seconds / (3600 * 24));
 

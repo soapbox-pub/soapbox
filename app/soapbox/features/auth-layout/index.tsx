@@ -4,7 +4,7 @@ import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-ro
 
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
-import { useAppSelector, useFeatures, useSoapboxConfig, useOwnAccount, useInstance } from 'soapbox/hooks';
+import { useOwnAccount, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 
 import { Button, Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth-login/components/login-page';
@@ -28,29 +28,23 @@ const AuthLayout = () => {
 
   const account = useOwnAccount();
   const instance = useInstance();
-  const features = useFeatures();
-  const soapboxConfig = useSoapboxConfig();
-
-  const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-  const isOpen = features.accountCreation && instance.registrations;
-  const pepeOpen = useAppSelector(state => state.verification.instance.get('registrations') === true);
+  const { isOpen } = useRegistrationStatus();
   const isLoginPage = history.location.pathname === '/login';
-  const shouldShowRegisterLink = (isLoginPage && (isOpen || (pepeEnabled && pepeOpen)));
 
   return (
     <div className='h-full'>
       <LandingGradient />
 
       <main className='relative h-full sm:flex sm:justify-center'>
-        <div className='w-full h-full flex flex-col sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
-          <header className='flex justify-between relative py-12 px-2 mb-auto'>
-            <div className='relative z-0 flex-1 px-2 lg:flex lg:items-center lg:justify-center lg:absolute lg:inset-0'>
+        <div className='flex h-full w-full flex-col sm:max-w-lg md:max-w-2xl lg:max-w-6xl'>
+          <header className='relative mb-auto flex justify-between px-2 py-12'>
+            <div className='relative z-0 flex-1 px-2 lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center'>
               <Link to='/' className='cursor-pointer'>
                 <SiteLogo alt={instance.title} className='h-7' />
               </Link>
             </div>
 
-            {shouldShowRegisterLink && (
+            {(isLoginPage && isOpen) && (
               <div className='relative z-10 ml-auto flex items-center'>
                 <Button
                   theme='tertiary'
@@ -63,8 +57,8 @@ const AuthLayout = () => {
             )}
           </header>
 
-          <div className='flex flex-col justify-center items-center'>
-            <div className='pb-10 sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
+          <div className='flex flex-col items-center justify-center'>
+            <div className='w-full pb-10 sm:mx-auto sm:max-w-lg md:max-w-2xl'>
               <Card variant='rounded' size='xl'>
                 <CardBody>
                   <Switch>

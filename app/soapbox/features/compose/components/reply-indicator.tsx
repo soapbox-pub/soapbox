@@ -1,19 +1,22 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import { Stack, Text } from 'soapbox/components/ui';
+import Markup from 'soapbox/components/markup';
+import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isRtl } from 'soapbox/rtl';
 
 import type { Status } from 'soapbox/types/entities';
 
 interface IReplyIndicator {
-  status?: Status,
-  onCancel?: () => void,
-  hideActions: boolean,
+  className?: string
+  status?: Status
+  onCancel?: () => void
+  hideActions: boolean
 }
 
-const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCancel }) => {
+const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActions, onCancel }) => {
   const handleClick = () => {
     onCancel!();
   };
@@ -33,17 +36,18 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ status, hideActions, onCanc
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
+    <Stack space={2} className={clsx('rounded-lg bg-gray-100 p-4 dark:bg-gray-800', className)}>
       <AccountContainer
         {...actions}
         id={status.getIn(['account', 'id']) as string}
         timestamp={status.created_at}
         showProfileHoverCard={false}
         withLinkToProfile={false}
+        hideActions={hideActions}
       />
 
-      <Text
-        className='break-words status__content'
+      <Markup
+        className='break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
         direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}

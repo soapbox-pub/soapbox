@@ -10,7 +10,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -34,6 +34,8 @@ export const AnnouncementRecord = ImmutableRecord({
   tags: ImmutableList<ImmutableMap<string, any>>(),
   emojis: ImmutableList<Emoji>(),
   updated_at: Date,
+
+  pleroma: ImmutableMap<string, any>(),
 
   // Internal fields
   contentHtml: '',

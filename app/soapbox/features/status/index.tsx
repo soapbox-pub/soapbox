@@ -1,56 +1,23 @@
-import classNames from 'clsx';
-import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { HotKeys } from 'react-hotkeys';
+import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Redirect, useHistory } from 'react-router-dom';
-import { createSelector } from 'reselect';
+import { Redirect } from 'react-router-dom';
 
 import {
-  replyCompose,
-  mentionCompose,
-} from 'soapbox/actions/compose';
-import {
-  favourite,
-  unfavourite,
-  reblog,
-  unreblog,
-} from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { getSettings } from 'soapbox/actions/settings';
-import {
-  hideStatus,
-  revealStatus,
   fetchStatusWithContext,
   fetchNext,
 } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import StatusActionBar from 'soapbox/components/status-action-bar';
-import Tombstone from 'soapbox/components/tombstone';
-import { Column, Stack } from 'soapbox/components/ui';
+import { Column } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import PendingStatus from 'soapbox/features/ui/components/pending-status';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
-import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
-import DetailedStatus from './components/detailed-status';
-import ThreadLoginCta from './components/thread-login-cta';
-import ThreadStatus from './components/thread-status';
-
-import type { VirtuosoHandle } from 'react-virtuoso';
-import type { RootState } from 'soapbox/store';
-import type {
-  Account as AccountEntity,
-  Attachment as AttachmentEntity,
-  Status as StatusEntity,
-} from 'soapbox/types/entities';
+import Thread from './components/thread';
 
 const messages = defineMessages({
-  title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
+  title: { id: 'status.title', defaultMessage: 'Post Details' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
@@ -67,100 +34,25 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
 });
 
-const getAncestorsIds = createSelector([
-  (_: RootState, statusId: string | undefined) => statusId,
-  (state: RootState) => state.contexts.inReplyTos,
-], (statusId, inReplyTos) => {
-  let ancestorsIds = ImmutableOrderedSet<string>();
-  let id: string | undefined = statusId;
+type RouteParams = {
+  statusId: string
+  groupId?: string
+  groupSlug?: string
+};
 
-  while (id && !ancestorsIds.includes(id)) {
-    ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
-    id = inReplyTos.get(id);
-  }
-
-  return ancestorsIds;
-});
-
-export const getDescendantsIds = createSelector([
-  (_: RootState, statusId: string) => statusId,
-  (state: RootState) => state.contexts.replies,
-], (statusId, contextReplies) => {
-  let descendantsIds = ImmutableOrderedSet<string>();
-  const ids = [statusId];
-
-  while (ids.length > 0) {
-    const id = ids.shift();
-    if (!id) break;
-
-    const replies = contextReplies.get(id);
-
-    if (descendantsIds.includes(id)) {
-      break;
-    }
-
-    if (statusId !== id) {
-      descendantsIds = descendantsIds.union([id]);
-    }
-
-    if (replies) {
-      replies.reverse().forEach((reply: string) => {
-        ids.unshift(reply);
-      });
-    }
-  }
-
-  return descendantsIds;
-});
-
-type DisplayMedia = 'default' | 'hide_all' | 'show_all';
-type RouteParams = { statusId: string };
-
-interface IThread {
-  params: RouteParams,
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
-  onOpenVideo: (video: AttachmentEntity, time: number) => void,
+interface IStatusDetails {
+  params: RouteParams
 }
 
-const Thread: React.FC<IThread> = (props) => {
-  const intl = useIntl();
-  const history = useHistory();
+const StatusDetails: React.FC<IStatusDetails> = (props) => {
   const dispatch = useAppDispatch();
+  const intl = useIntl();
 
-  const settings = useSettings();
   const getStatus = useCallback(makeGetStatus(), []);
+  const status = useAppSelector((state) => getStatus(state, { id: props.params.statusId }));
 
-  const me = useAppSelector(state => state.me);
-  const status = useAppSelector(state => getStatus(state, { id: props.params.statusId }));
-  const displayMedia = settings.get('displayMedia') as DisplayMedia;
-  const isUnderReview = status?.visibility === 'self';
-
-  const { ancestorsIds, descendantsIds } = useAppSelector(state => {
-    let ancestorsIds = ImmutableOrderedSet<string>();
-    let descendantsIds = ImmutableOrderedSet<string>();
-
-    if (status) {
-      const statusId = status.id;
-      ancestorsIds = getAncestorsIds(state, state.contexts.inReplyTos.get(statusId));
-      descendantsIds = getDescendantsIds(state, statusId);
-      ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
-      descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
-    }
-
-    return {
-      status,
-      ancestorsIds,
-      descendantsIds,
-    };
-  });
-
-  const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
-
-  const node = useRef<HTMLDivElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const scroller = useRef<VirtuosoHandle>(null);
 
   /** Fetch the status (and context) from the API. */
   const fetchData = async () => {
@@ -174,239 +66,10 @@ const Thread: React.FC<IThread> = (props) => {
   useEffect(() => {
     fetchData().then(() => {
       setIsLoaded(true);
-    }).catch(error => {
+    }).catch(() => {
       setIsLoaded(true);
     });
   }, [props.params.statusId]);
-
-  const handleToggleMediaVisibility = () => {
-    setShowMedia(!showMedia);
-  };
-
-  const handleHotkeyReact = () => {
-    if (statusRef.current) {
-      const firstEmoji: HTMLButtonElement | null = statusRef.current.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
-      firstEmoji?.focus();
-    }
-  };
-
-  const handleFavouriteClick = (status: StatusEntity) => {
-    if (status.favourited) {
-      dispatch(unfavourite(status));
-    } else {
-      dispatch(favourite(status));
-    }
-  };
-
-  const handleReplyClick = (status: StatusEntity) => {
-    dispatch(replyCompose(status));
-  };
-
-  const handleModalReblog = (status: StatusEntity) => {
-    dispatch(reblog(status));
-  };
-
-  const handleReblogClick = (status: StatusEntity, e?: React.MouseEvent) => {
-    dispatch((_, getState) => {
-      const boostModal = getSettings(getState()).get('boostModal');
-      if (status.reblogged) {
-        dispatch(unreblog(status));
-      } else {
-        if ((e && e.shiftKey) || !boostModal) {
-          handleModalReblog(status);
-        } else {
-          dispatch(openModal('BOOST', { status, onReblog: handleModalReblog }));
-        }
-      }
-    });
-  };
-
-  const handleMentionClick = (account: AccountEntity) => {
-    dispatch(mentionCompose(account));
-  };
-
-  const handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
-    dispatch(openModal('MEDIA', { media, status, index }));
-  };
-
-  const handleOpenVideo = (media: ImmutableList<AttachmentEntity>, time: number) => {
-    dispatch(openModal('VIDEO', { media, time }));
-  };
-
-  const handleHotkeyOpenMedia = (e?: KeyboardEvent) => {
-    const { onOpenMedia, onOpenVideo } = props;
-    const firstAttachment = status?.media_attachments.get(0);
-
-    e?.preventDefault();
-
-    if (status && firstAttachment) {
-      if (firstAttachment.type === 'video') {
-        onOpenVideo(firstAttachment, 0);
-      } else {
-        onOpenMedia(status.media_attachments, 0);
-      }
-    }
-  };
-
-  const handleToggleHidden = (status: StatusEntity) => {
-    if (status.hidden) {
-      dispatch(revealStatus(status.id));
-    } else {
-      dispatch(hideStatus(status.id));
-    }
-  };
-
-  const handleHotkeyMoveUp = () => {
-    handleMoveUp(status!.id);
-  };
-
-  const handleHotkeyMoveDown = () => {
-    handleMoveDown(status!.id);
-  };
-
-  const handleHotkeyReply = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    handleReplyClick(status!);
-  };
-
-  const handleHotkeyFavourite = () => {
-    handleFavouriteClick(status!);
-  };
-
-  const handleHotkeyBoost = () => {
-    handleReblogClick(status!);
-  };
-
-  const handleHotkeyMention = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    const { account } = status!;
-    if (!account || typeof account !== 'object') return;
-    handleMentionClick(account);
-  };
-
-  const handleHotkeyOpenProfile = () => {
-    history.push(`/@${status!.getIn(['account', 'acct'])}`);
-  };
-
-  const handleHotkeyToggleHidden = () => {
-    handleToggleHidden(status!);
-  };
-
-  const handleHotkeyToggleSensitive = () => {
-    handleToggleMediaVisibility();
-  };
-
-  const handleMoveUp = (id: string) => {
-    if (id === status?.id) {
-      _selectChild(ancestorsIds.size - 1);
-    } else {
-      let index = ImmutableList(ancestorsIds).indexOf(id);
-
-      if (index === -1) {
-        index = ImmutableList(descendantsIds).indexOf(id);
-        _selectChild(ancestorsIds.size + index);
-      } else {
-        _selectChild(index - 1);
-      }
-    }
-  };
-
-  const handleMoveDown = (id: string) => {
-    if (id === status?.id) {
-      _selectChild(ancestorsIds.size + 1);
-    } else {
-      let index = ImmutableList(ancestorsIds).indexOf(id);
-
-      if (index === -1) {
-        index = ImmutableList(descendantsIds).indexOf(id);
-        _selectChild(ancestorsIds.size + index + 2);
-      } else {
-        _selectChild(index + 1);
-      }
-    }
-  };
-
-  const _selectChild = (index: number) => {
-    scroller.current?.scrollIntoView({
-      index,
-      behavior: 'smooth',
-      done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
-
-        if (element) {
-          element.focus();
-        }
-      },
-    });
-  };
-
-  const renderTombstone = (id: string) => {
-    return (
-      <div className='py-4 pb-8'>
-        <Tombstone
-          key={id}
-          id={id}
-          onMoveUp={handleMoveUp}
-          onMoveDown={handleMoveDown}
-        />
-      </div>
-    );
-  };
-
-  const renderStatus = (id: string) => {
-    return (
-      <ThreadStatus
-        key={id}
-        id={id}
-        focusedStatusId={status!.id}
-        onMoveUp={handleMoveUp}
-        onMoveDown={handleMoveDown}
-      />
-    );
-  };
-
-  const renderPendingStatus = (id: string) => {
-    const idempotencyKey = id.replace(/^末pending-/, '');
-
-    return (
-      <PendingStatus
-        key={id}
-        idempotencyKey={idempotencyKey}
-        thread
-      />
-    );
-  };
-
-  const renderChildren = (list: ImmutableOrderedSet<string>) => {
-    return list.map(id => {
-      if (id.endsWith('-tombstone')) {
-        return renderTombstone(id);
-      } else if (id.startsWith('末pending-')) {
-        return renderPendingStatus(id);
-      } else {
-        return renderStatus(id);
-      }
-    });
-  };
-
-  // Reset media visibility if status changes.
-  useEffect(() => {
-    setShowMedia(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
-  }, [status?.id]);
-
-  // Scroll focused status into view when thread updates.
-  useEffect(() => {
-    scroller.current?.scrollToIndex({
-      index: ancestorsIds.size,
-      offset: -80,
-    });
-
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
-  }, [props.params.statusId, status?.id, ancestorsIds.size, isLoaded]);
-
-  const handleRefresh = () => {
-    return fetchData();
-  };
 
   const handleLoadMore = useCallback(debounce(() => {
     if (next && status) {
@@ -416,14 +79,9 @@ const Thread: React.FC<IThread> = (props) => {
     }
   }, 300, { leading: true }), [next, status]);
 
-  const handleOpenCompareHistoryModal = (status: StatusEntity) => {
-    dispatch(openModal('COMPARE_HISTORY', {
-      statusId: status.id,
-    }));
+  const handleRefresh = () => {
+    return fetchData();
   };
-
-  const hasAncestors = ancestorsIds.size > 0;
-  const hasDescendants = descendantsIds.size > 0;
 
   if (status?.event) {
     return (
@@ -437,105 +95,34 @@ const Thread: React.FC<IThread> = (props) => {
     );
   } else if (!status) {
     return (
-      <PlaceholderStatus />
+      <Column>
+        <PlaceholderStatus />
+      </Column>
     );
   }
 
-  type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
+  if (status.group && typeof status.group === 'object') {
+    if (status.group.slug && !props.params.groupSlug) {
+      return <Redirect to={`/group/${status.group.slug}/posts/${props.params.statusId}`} />;
+    }
+  }
 
-  const handlers: HotkeyHandlers = {
-    moveUp: handleHotkeyMoveUp,
-    moveDown: handleHotkeyMoveDown,
-    reply: handleHotkeyReply,
-    favourite: handleHotkeyFavourite,
-    boost: handleHotkeyBoost,
-    mention: handleHotkeyMention,
-    openProfile: handleHotkeyOpenProfile,
-    toggleHidden: handleHotkeyToggleHidden,
-    toggleSensitive: handleHotkeyToggleSensitive,
-    openMedia: handleHotkeyOpenMedia,
-    react: handleHotkeyReact,
+  const titleMessage = () => {
+    if (status.visibility === 'direct') return messages.titleDirect;
+    return messages.title;
   };
 
-  const username = String(status.getIn(['account', 'acct']));
-  const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
-
-  const focusedStatus = (
-    <div className={classNames({ 'pb-4': hasDescendants })} key={status.id}>
-      <HotKeys handlers={handlers}>
-        <div
-          ref={statusRef}
-          className='focusable relative'
-          tabIndex={0}
-          // FIXME: no "reblogged by" text is added for the screen reader
-          aria-label={textForScreenReader(intl, status)}
-        >
-
-          <DetailedStatus
-            status={status}
-            onOpenVideo={handleOpenVideo}
-            onOpenMedia={handleOpenMedia}
-            onToggleHidden={handleToggleHidden}
-            showMedia={showMedia}
-            onToggleMediaVisibility={handleToggleMediaVisibility}
-            onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
-          />
-
-          {!isUnderReview ? (
-            <>
-              <hr className='mb-2 border-t-2 dark:border-primary-800' />
-
-              <StatusActionBar
-                status={status}
-                expandable={false}
-                space='expand'
-                withLabels
-              />
-            </>
-          ) : null}
-        </div>
-      </HotKeys>
-
-      {hasDescendants && (
-        <hr className='mt-2 border-t-2 dark:border-primary-800' />
-      )}
-    </div>
-  );
-
-  const children: JSX.Element[] = [];
-
-  if (hasAncestors) {
-    children.push(...renderChildren(ancestorsIds).toArray());
-  }
-
-  children.push(focusedStatus);
-
-  if (hasDescendants) {
-    children.push(...renderChildren(descendantsIds).toArray());
-  }
-
   return (
-    <Column label={intl.formatMessage(titleMessage, { username })} transparent>
+    <Column label={intl.formatMessage(titleMessage())}>
       <PullToRefresh onRefresh={handleRefresh}>
-        <Stack space={2}>
-          <div ref={node} className='thread'>
-            <ScrollableList
-              id='thread'
-              ref={scroller}
-              hasMore={!!next}
-              onLoadMore={handleLoadMore}
-              placeholderComponent={() => <PlaceholderStatus thread />}
-              initialTopMostItemIndex={ancestorsIds.size}
-            >
-              {children}
-            </ScrollableList>
-          </div>
-
-          {!me && <ThreadLoginCta />}
-        </Stack>
+        <Thread
+          status={status}
+          next={next}
+          handleLoadMore={handleLoadMore}
+        />
       </PullToRefresh>
     </Column>
   );
 };
 
-export default Thread;
+export default StatusDetails;

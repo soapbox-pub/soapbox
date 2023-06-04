@@ -2,7 +2,7 @@ import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import get from 'lodash/get';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
-import { normalizeRelationship } from 'soapbox/normalizers/relationship';
+import { type Relationship, relationshipSchema } from 'soapbox/schemas';
 
 import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes';
 import {
@@ -33,15 +33,18 @@ import {
 } from '../actions/importer';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
-type Relationship = ReturnType<typeof normalizeRelationship>;
 type State = ImmutableMap<string, Relationship>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 const normalizeRelationships = (state: State, relationships: APIEntities) => {
   relationships.forEach(relationship => {
-    state = state.set(relationship.id, normalizeRelationship(relationship));
+    try {
+      state = state.set(relationship.id, relationshipSchema.parse(relationship));
+    } catch (_e) {
+      // do nothing
+    }
   });
 
   return state;
@@ -57,7 +60,7 @@ const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocki
 
 const importPleromaAccount = (state: State, account: APIEntity) => {
   const relationship = get(account, ['pleroma', 'relationship'], {});
-  if (relationship.id && relationship !== {})
+  if (relationship.id)
     return normalizeRelationships(state, [relationship]);
   return state;
 };
@@ -84,8 +87,12 @@ const followStateToRelationship = (followState: string) => {
 };
 
 const updateFollowRelationship = (state: State, id: string, followState: string) => {
-  const map = followStateToRelationship(followState);
-  return state.update(id, normalizeRelationship({}), relationship => relationship.merge(map));
+  const relationship = state.get(id) || relationshipSchema.parse({ id });
+
+  return state.set(id, {
+    ...relationship,
+    ...followStateToRelationship(followState),
+  });
 };
 
 export default function relationships(state: State = ImmutableMap<string, Relationship>(), action: AnyAction) {

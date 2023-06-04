@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import Avatar from 'soapbox/components/avatar';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Accordion, Button, Stack, HStack, Text } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
+import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetReport } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
@@ -24,7 +23,7 @@ const messages = defineMessages({
 });
 
 interface IReport {
-  id: string;
+  id: string
 }
 
 const Report: React.FC<IReport> = ({ id }) => {
@@ -86,7 +85,7 @@ const Report: React.FC<IReport> = ({ id }) => {
     <HStack space={3} className='p-3' key={report.id}>
       <HoverRefWrapper accountId={targetAccount.id} inline>
         <Link to={`/@${acct}`} title={acct}>
-          <Avatar account={targetAccount} size={32} />
+          <Avatar src={targetAccount.avatar} size={32} className='overflow-hidden' />
         </Link>
       </HoverRefWrapper>
 
@@ -96,7 +95,7 @@ const Report: React.FC<IReport> = ({ id }) => {
             id='admin.reports.report_title'
             defaultMessage='Report on {acct}'
             values={{ acct: (
-              <HoverRefWrapper accountId={account.id} inline>
+              <HoverRefWrapper accountId={targetAccount.id} inline>
                 <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
               </HoverRefWrapper>
             ) }}
@@ -136,7 +135,7 @@ const Report: React.FC<IReport> = ({ id }) => {
               <Link
                 to={`/@${reporterAcct}`}
                 title={reporterAcct}
-                className='text-primary-600 dark:text-accent-blue hover:underline'
+                className='text-primary-600 hover:underline dark:text-accent-blue'
               >
                 @{reporterAcct}
               </Link>

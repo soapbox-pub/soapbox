@@ -3,9 +3,9 @@ import React from 'react';
 import { randomIntFromInterval, generateText } from '../utils';
 
 interface IPlaceholderDisplayName {
-  maxLength: number,
-  minLength: number,
-  withSuffix?: boolean,
+  maxLength: number
+  minLength: number
+  withSuffix?: boolean
 }
 
 /** Fake display name to show when data is loading. */
@@ -21,4 +21,4 @@ const PlaceholderDisplayName: React.FC<IPlaceholderDisplayName> = ({ minLength, 
   );
 };
 
-export default PlaceholderDisplayName;
+export default React.memo(PlaceholderDisplayName);

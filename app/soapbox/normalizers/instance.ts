@@ -22,7 +22,8 @@ export const InstanceRecord = ImmutableRecord({
   configuration: ImmutableMap<string, any>({
     media_attachments: ImmutableMap<string, any>(),
     chats: ImmutableMap<string, number>({
-      max_characters: 500,
+      max_characters: 5000,
+      max_media_attachments: 1,
     }),
     polls: ImmutableMap<string, number>({
       max_options: 4,
@@ -33,6 +34,10 @@ export const InstanceRecord = ImmutableRecord({
     statuses: ImmutableMap<string, number>({
       max_characters: 500,
       max_media_attachments: 4,
+    }),
+    groups: ImmutableMap<string, number>({
+      max_characters_name: 50,
+      max_characters_description: 160,
     }),
   }),
   description: '',
@@ -112,7 +117,7 @@ const fixAkkoma = (instance: ImmutableMap<string, any>) => {
   }
 };
 
-/** Set Takahe version to a Pleroma-like string */
+/** Set Takahē version to a Pleroma-like string */
 const fixTakahe = (instance: ImmutableMap<string, any>) => {
   const version: string = instance.get('version', '');
 
@@ -139,6 +144,9 @@ export const normalizeInstance = (instance: Record<string, any>) => {
       instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
         return isNumber(value) ? value : getAttachmentLimit(software);
       });
+
+      // Urls can't be null, fix for Friendica
+      if (instance.get('urls') === null) instance.delete('urls');
 
       // Normalize version
       normalizeVersion(instance);

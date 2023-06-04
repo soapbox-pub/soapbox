@@ -3,8 +3,8 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
-import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useFeatures, useSoapboxConfig, useInstance } from 'soapbox/hooks';
+import { Button, Form, Input, Modal, Stack, Text } from 'soapbox/components/ui';
+import { useAppSelector, useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
@@ -15,13 +15,13 @@ const messages = defineMessages({
 
 interface IUnauthorizedModal {
   /** Unauthorized action type. */
-  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'POLL_VOTE' | 'JOIN',
+  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'DISLIKE' | 'POLL_VOTE' | 'JOIN'
   /** Close event handler. */
-  onClose: (modalType: string) => void,
+  onClose: (modalType: string) => void
   /** ActivityPub ID of the account OR status being acted upon. */
-  ap_id?: string,
+  ap_id?: string
   /** Account ID of the account being acted upon. */
-  account?: string,
+  account?: string
 }
 
 /** Modal to display when a logged-out user tries to do something that requires login. */
@@ -30,8 +30,8 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const history = useHistory();
   const dispatch = useAppDispatch();
   const instance = useInstance();
+  const { isOpen } = useRegistrationStatus();
 
-  const { singleUserMode } = useSoapboxConfig();
   const username = useAppSelector(state => state.accounts.get(accountId)?.display_name);
   const features = useFeatures();
 
@@ -86,6 +86,9 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     } else if (action === 'FAVOURITE') {
       header = <FormattedMessage id='remote_interaction.favourite_title' defaultMessage='Like a post remotely' />;
       button = <FormattedMessage id='remote_interaction.favourite' defaultMessage='Proceed to like' />;
+    } else if (action === 'DISLIKE') {
+      header = <FormattedMessage id='remote_interaction.dislike_title' defaultMessage='Dislike a post remotely' />;
+      button = <FormattedMessage id='remote_interaction.dislike' defaultMessage='Proceed to dislike' />;
     } else if (action === 'POLL_VOTE') {
       header = <FormattedMessage id='remote_interaction.poll_vote_title' defaultMessage='Vote in a poll remotely' />;
       button = <FormattedMessage id='remote_interaction.poll_vote' defaultMessage='Proceed to vote' />;
@@ -98,15 +101,14 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       <Modal
         title={header}
         onClose={onClickClose}
-        confirmationAction={!singleUserMode ? onLogin : undefined}
+        confirmationAction={onLogin}
         confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
-        secondaryAction={onRegister}
-        secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
+        secondaryAction={isOpen ? onRegister : undefined}
+        secondaryText={isOpen ? <FormattedMessage id='account.register' defaultMessage='Sign up' /> : undefined}
       >
         <div className='remote-interaction-modal__content'>
-          <form className='simple_form remote-interaction-modal__fields' onSubmit={onSubmit}>
-            <input
-              type='text'
+          <Form className='remote-interaction-modal__fields' onSubmit={onSubmit}>
+            <Input
               placeholder={intl.formatMessage(messages.accountPlaceholder)}
               name='remote_follow[acct]'
               value={account}
@@ -116,13 +118,13 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
               required
             />
             <Button type='submit' theme='primary'>{button}</Button>
-          </form>
+          </Form>
           <div className='remote-interaction-modal__divider'>
             <Text align='center'>
               <FormattedMessage id='remote_interaction.divider' defaultMessage='or' />
             </Text>
           </div>
-          {!singleUserMode && (
+          {isOpen && (
             <Text size='lg' weight='medium'>
               <FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: instance.title }} />
             </Text>
@@ -142,8 +144,8 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
       onClose={onClickClose}
       confirmationAction={onLogin}
       confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
-      secondaryAction={onRegister}
-      secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
+      secondaryAction={isOpen ? onRegister : undefined}
+      secondaryText={isOpen ? <FormattedMessage id='account.register' defaultMessage='Sign up' /> : undefined}
     >
       <Stack>
         <Text>

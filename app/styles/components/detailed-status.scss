@@ -1,5 +1,5 @@
 .thread {
-  @apply bg-white dark:bg-primary-900 p-4 shadow-xl dark:shadow-none sm:p-6 sm:rounded-xl;
+  @apply bg-white dark:bg-primary-900;
 
   &__status {
     @apply relative pb-4;
@@ -11,15 +11,5 @@
 
   .status__content-wrapper {
     @apply pl-[calc(42px+12px)] rtl:pl-0 rtl:pr-[calc(42px+12px)];
-  }
-
-  &__connector {
-    @apply bg-gray-200 dark:bg-primary-800 absolute w-0.5 left-5 hidden z-[1] rtl:right-5 rtl:left-auto;
-
-    &--bottom {
-      @apply block;
-      height: calc(100% - 42px - 8px - 1rem);
-      top: calc(12px + 42px);
-    }
   }
 }

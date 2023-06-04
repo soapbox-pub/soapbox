@@ -1,3 +1,4 @@
+import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -56,18 +57,18 @@ const messages = defineMessages({
  * (By default, max 4 fields and 255 characters per property/value)
  */
 interface AccountCredentialsField {
-  name: string,
-  value: string,
+  name: string
+  value: string
 }
 
 /** Private information (settings) for the account. */
 interface AccountCredentialsSource {
   /** Default post privacy for authored statuses. */
-  privacy?: string,
+  privacy?: string
   /** Whether to mark authored statuses as sensitive by default. */
-  sensitive?: boolean,
+  sensitive?: boolean
   /** Default language to use for authored statuses. (ISO 6391) */
-  language?: string,
+  language?: string
 }
 
 /**
@@ -76,43 +77,43 @@ interface AccountCredentialsSource {
  */
 interface AccountCredentials {
   /** Whether the account should be shown in the profile directory. */
-  discoverable?: boolean,
+  discoverable?: boolean
   /** Whether the account has a bot flag. */
-  bot?: boolean,
+  bot?: boolean
   /** The display name to use for the profile. */
-  display_name?: string,
+  display_name?: string
   /** The account bio. */
-  note?: string,
+  note?: string
   /** Avatar image encoded using multipart/form-data */
-  avatar?: File,
+  avatar?: File
   /** Header image encoded using multipart/form-data */
-  header?: File,
+  header?: File
   /** Whether manual approval of follow requests is required. */
-  locked?: boolean,
+  locked?: boolean
   /** Private information (settings) about the account. */
-  source?: AccountCredentialsSource,
+  source?: AccountCredentialsSource
   /** Custom profile fields. */
-  fields_attributes?: AccountCredentialsField[],
+  fields_attributes?: AccountCredentialsField[]
 
   // Non-Mastodon fields
   /** Pleroma: whether to accept notifications from people you don't follow. */
-  stranger_notifications?: boolean,
+  stranger_notifications?: boolean
   /** Soapbox BE: whether the user opts-in to email communications. */
-  accepts_email_list?: boolean,
+  accepts_email_list?: boolean
   /** Pleroma: whether to publicly display followers. */
-  hide_followers?: boolean,
+  hide_followers?: boolean
   /** Pleroma: whether to publicly display follows. */
-  hide_follows?: boolean,
+  hide_follows?: boolean
   /** Pleroma: whether to publicly display follower count. */
-  hide_followers_count?: boolean,
+  hide_followers_count?: boolean
   /** Pleroma: whether to publicly display follows count. */
-  hide_follows_count?: boolean,
+  hide_follows_count?: boolean
   /** User's website URL. */
-  website?: string,
+  website?: string
   /** User's location. */
-  location?: string,
+  location?: string
   /** User's birthday. */
-  birthday?: string,
+  birthday?: string
 }
 
 /** Convert an account into an update_credentials request object. */
@@ -123,9 +124,9 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     discoverable: account.discoverable,
     bot: account.bot,
     display_name: account.display_name,
-    note: account.source.get('note'),
+    note: account.source.get('note', ''),
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', []).toJS()],
+    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', ImmutableList()).toJS()],
     stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
     accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
     hide_followers: hideNetwork,
@@ -151,14 +152,14 @@ const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, on
     <HStack space={2} grow>
       <Input
         type='text'
-        outerClassName='w-2/5 flex-grow'
+        outerClassName='w-2/5 grow'
         value={value.name}
         onChange={handleChange('name')}
         placeholder={intl.formatMessage(messages.metaFieldLabel)}
       />
       <Input
         type='text'
-        outerClassName='w-3/5 flex-grow'
+        outerClassName='w-3/5 grow'
         value={value.value}
         onChange={handleChange('value')}
         placeholder={intl.formatMessage(messages.metaFieldContent)}
@@ -309,7 +310,7 @@ const EditProfile: React.FC = () => {
   return (
     <Column label={intl.formatMessage(messages.header)}>
       <Form onSubmit={handleSubmit}>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
           <ProfilePreview account={previewAccount} />
 
           <div className='space-y-4'>

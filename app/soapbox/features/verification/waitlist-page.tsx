@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
@@ -8,10 +7,10 @@ import { openModal } from 'soapbox/actions/modals';
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useInstance, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
 
 const WaitlistPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const instance = useInstance();
 
   const me = useOwnAccount();
@@ -34,10 +33,10 @@ const WaitlistPage = () => {
     <div>
       <LandingGradient />
 
-      <main className='relative flex flex-col h-screen max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
-        <header className='relative flex justify-between h-16'>
-          <div className='flex-1 flex items-stretch justify-center relative'>
-            <Link to='/' className='cursor-pointer flex-shrink-0 flex items-center'>
+      <main className='relative mx-auto flex h-screen max-w-7xl flex-col px-2 sm:px-6 lg:px-8'>
+        <header className='relative flex h-16 justify-between'>
+          <div className='relative flex flex-1 items-stretch justify-center'>
+            <Link to='/' className='flex shrink-0 cursor-pointer items-center'>
               <SiteLogo alt='Logo' className='h-7' />
             </Link>
 
@@ -49,10 +48,10 @@ const WaitlistPage = () => {
           </div>
         </header>
 
-        <div className='-mt-16 flex flex-col justify-center items-center h-full'>
+        <div className='-mt-16 flex h-full flex-col items-center justify-center'>
           <div className='max-w-xl'>
             <Stack space={4}>
-              <img src='/instance/images/waitlist.png' className='mx-auto w-32 h-32' alt='Waitlisted' />
+              <img src='/instance/images/waitlist.png' className='mx-auto h-32 w-32' alt='Waitlisted' />
 
               <Stack space={2}>
                 <Text size='lg' theme='muted' align='center' weight='medium'>

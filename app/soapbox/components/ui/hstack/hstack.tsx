@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { forwardRef } from 'react';
 
 const justifyContentOptions = {
@@ -18,6 +18,7 @@ const alignItemsOptions = {
 };
 
 const spaces = {
+  0: 'space-x-0',
   [0.5]: 'space-x-0.5',
   1: 'space-x-1',
   1.5: 'space-x-1.5',
@@ -44,7 +45,7 @@ interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> 
   /** Whether to let the flexbox grow. */
   grow?: boolean
   /** HTML element to use for container. */
-  element?: keyof JSX.IntrinsicElements,
+  element?: keyof JSX.IntrinsicElements
   /** Extra CSS styles for the <div> */
   style?: React.CSSProperties
   /** Whether to let the flexbox wrap onto multiple lines. */
@@ -61,14 +62,14 @@ const HStack = forwardRef<HTMLDivElement, IHStack>((props, ref) => {
     <Elem
       {...filteredProps}
       ref={ref}
-      className={classNames('flex rtl:space-x-reverse', {
+      className={clsx('flex rtl:space-x-reverse', {
         // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
         // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
         // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
-        'flex-grow': grow,
+        'grow': grow,
         'flex-wrap': wrap,
       }, className)}
     />

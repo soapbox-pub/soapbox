@@ -123,6 +123,7 @@ describe('deleteStatus()', () => {
             withRedraft: true,
             id: 'compose-modal',
           },
+          { type: 'MODAL_CLOSE', modalType: 'COMPOSE', modalProps: undefined },
           { type: 'MODAL_OPEN', modalType: 'COMPOSE', modalProps: undefined },
         ];
         await store.dispatch(deleteStatus(statusId, true));

@@ -9,12 +9,12 @@ const PlaceholderEventPreview = () => {
   const nameLength = randomIntFromInterval(5, 15);
 
   return (
-    <div className='w-full rounded-lg bg-gray-100 dark:bg-primary-800 relative overflow-hidden animate-pulse text-primary-50 dark:text-primary-800'>
-      <div className='bg-primary-200 dark:bg-gray-600 h-40' />
+    <div className='relative w-full animate-pulse overflow-hidden rounded-lg bg-gray-100 text-primary-50 dark:bg-primary-800 dark:text-primary-800'>
+      <div className='h-40 bg-primary-200 dark:bg-gray-600' />
       <Stack className='p-2.5' space={2}>
         <Text weight='semibold'>{generateText(eventNameLength)}</Text>
 
-        <div className='flex gap-y-1 gap-x-2 flex-wrap text-gray-700 dark:text-gray-600'>
+        <div className='flex flex-wrap gap-x-2 gap-y-1 text-gray-700 dark:text-gray-600'>
           <span>{generateText(nameLength)}</span>
           <span>{generateText(nameLength)}</span>
           <span>{generateText(nameLength)}</span>

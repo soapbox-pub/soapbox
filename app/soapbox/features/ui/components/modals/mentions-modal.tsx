@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 interface IMentionsModal {
-  onClose: (type: string) => void,
-  statusId: string,
+  onClose: (type: string) => void
+  statusId: string
 }
 
 const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {
@@ -41,6 +41,7 @@ const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {
     body = (
       <ScrollableList
         scrollKey='mentions'
+        className='max-w-full'
         itemClassName='pb-3'
       >
         {accountIds.map(id =>

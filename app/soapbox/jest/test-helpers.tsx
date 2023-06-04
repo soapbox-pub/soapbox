@@ -51,21 +51,23 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   };
 
   return (
-    <Provider store={props.store}>
-      <MemoryRouter {...routerProps}>
-        <StatProvider>
-          <QueryClientProvider client={queryClient}>
-            <ChatProvider>
-              <IntlProvider locale={props.locale}>
-                {children}
+    <div id='soapbox'>
+      <Provider store={props.store}>
+        <MemoryRouter {...routerProps}>
+          <StatProvider>
+            <QueryClientProvider client={queryClient}>
+              <ChatProvider>
+                <IntlProvider locale={props.locale}>
+                  {children}
 
-                <Toaster />
-              </IntlProvider>
-            </ChatProvider>
-          </QueryClientProvider>
-        </StatProvider>
-      </MemoryRouter>
-    </Provider>
+                  <Toaster />
+                </IntlProvider>
+              </ChatProvider>
+            </QueryClientProvider>
+          </StatProvider>
+        </MemoryRouter>
+      </Provider>
+    </div>
   );
 };
 
@@ -80,7 +82,7 @@ const customRender = (
 });
 
 /** Like renderHook, but with access to the Redux store. */
-const customRenderHook = <T extends {}>(
+const customRenderHook = <T extends { children?: React.ReactNode }>(
   callback: (props?: any) => any,
   options?: Omit<RenderHookOptions<T>, 'wrapper'>,
   store?: any,

@@ -31,14 +31,14 @@ const AGE: Challenge = 'age';
 export type Challenge = 'age' | 'sms' | 'email'
 
 type Challenges = {
-  email?: 0 | 1,
-  sms?: 0 | 1,
-  age?: 0 | 1,
+  email?: 0 | 1
+  sms?: 0 | 1
+  age?: 0 | 1
 }
 
 type Verification = {
-  token?: string,
-  challenges?: Challenges,
+  token?: string
+  challenges?: Challenges
   challengeTypes?: Array<'age' | 'sms' | 'email'>
 };
 

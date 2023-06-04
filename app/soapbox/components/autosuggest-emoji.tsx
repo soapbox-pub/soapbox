@@ -1,38 +1,30 @@
 import React from 'react';
 
-import unicodeMapping from 'soapbox/features/emoji/emoji-unicode-mapping-light';
+import { isCustomEmoji } from 'soapbox/features/emoji';
+import unicodeMapping from 'soapbox/features/emoji/mapping';
 import { joinPublicPath } from 'soapbox/utils/static';
 
-export type Emoji = {
-  id: string,
-  custom: boolean,
-  imageUrl: string,
-  native: string,
-  colons: string,
-}
-
-type UnicodeMapping = {
-  filename: string,
-}
+import type { Emoji } from 'soapbox/features/emoji';
 
 interface IAutosuggestEmoji {
-  emoji: Emoji,
+  emoji: Emoji
 }
 
 const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
-  let url;
+  let url, alt;
 
-  if (emoji.custom) {
+  if (isCustomEmoji(emoji)) {
     url = emoji.imageUrl;
+    alt = emoji.colons;
   } else {
-    // @ts-ignore
-    const mapping: UnicodeMapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
+    const mapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
 
     if (!mapping) {
       return null;
     }
 
-    url = joinPublicPath(`packs/emoji/${mapping.filename}.svg`);
+    url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
+    alt = emoji.native;
   }
 
   return (
@@ -40,7 +32,7 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
       <img
         className='emojione'
         src={url}
-        alt={emoji.native || emoji.colons}
+        alt={alt}
       />
 
       {emoji.colons}

@@ -6,7 +6,7 @@ import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { usePendingPolicy, useAcceptPolicy } from 'soapbox/queries/policies';
 
 interface IPolicyModal {
-  onClose: (type: string) => void,
+  onClose: (type: string) => void
 }
 
 const DirectMessageUpdates = () => {
@@ -15,7 +15,7 @@ const DirectMessageUpdates = () => {
 
   return (
     <Stack space={3}>
-      <Stack space={4} className='border-2 border-solid border-primary-200 dark:border-primary-800 rounded-lg p-4'>
+      <Stack space={4} className='rounded-lg border-2 border-solid border-primary-200 p-4 dark:border-primary-800'>
         <HStack alignItems='center' space={3}>
           <svg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path d='M0 22.5306C0 10.0873 10.0873 0 22.5306 0H26.4828C38.3664 0 48 9.6336 48 21.5172V21.5172C48 36.1433 36.1433 48 21.5172 48H18.4615C8.26551 48 0 39.7345 0 29.5385V22.5306Z' fill='url(#paint0_linear_2190_131524)' fillOpacity='0.2' />
@@ -43,7 +43,7 @@ const DirectMessageUpdates = () => {
         </Text>
       </Stack>
 
-      <Stack space={4} className='border-2 border-solid border-primary-200 dark:border-primary-800 rounded-lg p-4'>
+      <Stack space={4} className='rounded-lg border-2 border-solid border-primary-200 p-4 dark:border-primary-800'>
         <HStack alignItems='center' space={3}>
           <svg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path d='M0 25.7561C0 22.2672 0 20.5228 0.197492 19.0588C1.52172 9.24259 9.24259 1.52172 19.0588 0.197492C20.5228 0 22.2672 0 25.7561 0H30.1176C39.9938 0 48 8.0062 48 17.8824C48 34.5159 34.5159 48 17.8824 48H15.3192C15.0228 48 14.8747 48 14.7494 47.9979C6.66132 47.8627 0.137263 41.3387 0.0020943 33.2506C0 33.1253 0 32.9772 0 32.6808V25.7561Z' fill='url(#paint0_linear_2190_131532)' fillOpacity='0.2' />
@@ -61,21 +61,21 @@ const DirectMessageUpdates = () => {
 
         <ul className='space-y-2'>
           <li className='flex items-center space-x-2'>
-            <span className='text-primary-500 dark:text-primary-300 h-8 w-8 flex items-center justify-center text-sm font-bold rounded-full border-2 border-solid border-gray-200 dark:border-gray-800'>
+            <span className='flex h-8 w-8 items-center justify-center rounded-full border-2 border-solid border-gray-200 text-sm font-bold text-primary-500 dark:border-gray-800 dark:text-primary-300'>
               1
             </span>
 
             <Text theme='muted'>Consolidates previously-separate policies</Text>
           </li>
           <li className='flex items-center space-x-2'>
-            <span className='text-primary-500 dark:text-primary-300 h-8 w-8 flex items-center justify-center text-sm font-bold rounded-full border-2 border-solid border-gray-200 dark:border-gray-800'>
+            <span className='flex h-8 w-8 items-center justify-center rounded-full border-2 border-solid border-gray-200 text-sm font-bold text-primary-500 dark:border-gray-800 dark:text-primary-300'>
               2
             </span>
 
             <Text theme='muted'>Reaffirms jurisdiction-specific requirements</Text>
           </li>
           <li className='flex items-center space-x-2'>
-            <span className='text-primary-500 dark:text-primary-300 h-8 w-8 flex items-center justify-center text-sm font-bold rounded-full border-2 border-solid border-gray-200 dark:border-gray-800'>
+            <span className='flex h-8 w-8 items-center justify-center rounded-full border-2 border-solid border-gray-200 text-sm font-bold text-primary-500 dark:border-gray-800 dark:text-primary-300'>
               3
             </span>
 
@@ -85,7 +85,7 @@ const DirectMessageUpdates = () => {
 
         {links.get('privacyPolicy') ? (
           <a
-            className='text-primary-600 dark:text-accent-blue text-center font-bold hover:underline'
+            className='text-center font-bold text-primary-600 hover:underline dark:text-accent-blue'
             href={links.get('privacyPolicy')}
             target='_blank'
           >

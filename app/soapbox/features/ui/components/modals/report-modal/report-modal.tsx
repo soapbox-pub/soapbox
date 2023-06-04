@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';
-import { submitReport, submitReportSuccess, submitReportFail } from 'soapbox/actions/reports';
+import { submitReport, submitReportSuccess, submitReportFail, ReportableEntities } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import GroupCard from 'soapbox/components/group-card';
 import List, { ListItem } from 'soapbox/components/list';
 import StatusContent from 'soapbox/components/status-content';
 import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
@@ -24,6 +25,7 @@ const messages = defineMessages({
   submit: { id: 'report.submit', defaultMessage: 'Submit' },
   reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.' },
   reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },
+  reportGroup: { id: 'report.group.title', defaultMessage: 'Report Group' },
   cancel: {  id: 'common.cancel', defaultMessage: 'Cancel' },
   previous: {  id: 'report.previous', defaultMessage: 'Previous' },
 });
@@ -35,9 +37,26 @@ enum Steps {
 }
 
 const reportSteps = {
-  ONE: ReasonStep,
-  TWO: OtherActionsStep,
-  THREE: ConfirmationStep,
+  [ReportableEntities.ACCOUNT]: {
+    ONE: ReasonStep,
+    TWO: OtherActionsStep,
+    THREE: ConfirmationStep,
+  },
+  [ReportableEntities.CHAT_MESSAGE]: {
+    ONE: ReasonStep,
+    TWO: OtherActionsStep,
+    THREE: ConfirmationStep,
+  },
+  [ReportableEntities.STATUS]: {
+    ONE: ReasonStep,
+    TWO: OtherActionsStep,
+    THREE: ConfirmationStep,
+  },
+  [ReportableEntities.GROUP]: {
+    ONE: ReasonStep,
+    TWO: null,
+    THREE: ConfirmationStep,
+  },
 };
 
 const SelectedStatus = ({ statusId }: { statusId: string }) => {
@@ -48,7 +67,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
   }
 
   return (
-    <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-gray-800'>
+    <Stack space={2} className='rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
       <AccountContainer
         id={status.account as any}
         showProfileHoverCard={false}
@@ -76,12 +95,6 @@ interface IReportModal {
   onClose: () => void
 }
 
-enum ReportedEntities {
-  Account = 'Account',
-  Status = 'Status',
-  ChatMessage = 'ChatMessage'
-}
-
 const ReportModal = ({ onClose }: IReportModal) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
@@ -89,27 +102,20 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const accountId = useAppSelector((state) => state.reports.new.account_id);
   const account = useAccount(accountId as string);
 
+  const entityType = useAppSelector((state) => state.reports.new.entityType);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
   const rules = useAppSelector((state) => state.rules.items);
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
   const selectedChatMessage = useAppSelector((state) => state.reports.new.chat_message);
+  const selectedGroup = useAppSelector((state) => state.reports.new.group);
 
   const shouldRequireRule = rules.length > 0;
 
-  const reportedEntity = useMemo(() => {
-    if (selectedStatusIds.size === 0 && !selectedChatMessage) {
-      return ReportedEntities.Account;
-    } else if (selectedChatMessage) {
-      return ReportedEntities.ChatMessage;
-    } else {
-      return ReportedEntities.Status;
-    }
-  }, []);
-
-  const isReportingAccount = reportedEntity === ReportedEntities.Account;
-  const isReportingStatus = reportedEntity === ReportedEntities.Status;
+  const isReportingAccount = entityType === ReportableEntities.ACCOUNT;
+  const isReportingStatus = entityType === ReportableEntities.STATUS;
+  const isReportingGroup = entityType === ReportableEntities.GROUP;
 
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.ONE);
 
@@ -127,7 +133,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
     switch (selectedStatusIds.size) {
       case 0:
         return (
-          <div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex items-center justify-center w-full'>
+          <div className='flex w-full items-center justify-center rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
             <Text theme='muted'>{intl.formatMessage(messages.blankslate)}</Text>
           </div>
         );
@@ -160,22 +166,41 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
   const confirmationText = useMemo(() => {
     switch (currentStep) {
+      case Steps.ONE:
+        if (isReportingGroup) {
+          return intl.formatMessage(messages.submit);
+        } else {
+          return intl.formatMessage(messages.next);
+        }
       case Steps.TWO:
-        return intl.formatMessage(messages.submit);
+        if (isReportingGroup) {
+          return intl.formatMessage(messages.done);
+        } else {
+          return intl.formatMessage(messages.submit);
+        }
       case Steps.THREE:
         return intl.formatMessage(messages.done);
       default:
         return intl.formatMessage(messages.next);
     }
-  }, [currentStep]);
+  }, [currentStep, isReportingGroup]);
 
   const handleNextStep = () => {
     switch (currentStep) {
       case Steps.ONE:
-        setCurrentStep(Steps.TWO);
+        if (isReportingGroup) {
+          handleSubmit();
+        } else {
+          setCurrentStep(Steps.TWO);
+        }
         break;
       case Steps.TWO:
-        handleSubmit();
+        if (isReportingGroup) {
+          dispatch(submitReportSuccess());
+          onClose();
+        } else {
+          handleSubmit();
+        }
         break;
       case Steps.THREE:
         dispatch(submitReportSuccess());
@@ -190,12 +215,12 @@ const ReportModal = ({ onClose }: IReportModal) => {
     if (account) {
       return (
         <Stack space={4}>
-          <HStack alignItems='center' space={4} className='rounded-md border dark:border-2 border-solid border-gray-400 dark:border-gray-800 p-4'>
+          <HStack alignItems='center' space={4} className='rounded-md border border-solid border-gray-400 p-4 dark:border-2 dark:border-gray-800'>
             <div>
-              <Avatar src={account.avatar} className='w-8 h-8' />
+              <Avatar src={account.avatar} className='h-8 w-8' />
             </div>
 
-            <div className='bg-gray-200 dark:bg-primary-800 rounded-md p-4 flex-grow'>
+            <div className='grow rounded-md bg-gray-200 p-4 dark:bg-primary-800'>
               <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
             </div>
           </HStack>
@@ -212,19 +237,35 @@ const ReportModal = ({ onClose }: IReportModal) => {
     }
   };
 
+  const renderSelectedGroup = () => {
+    if (selectedGroup) {
+      return <GroupCard group={selectedGroup} />;
+    }
+  };
+
   const renderSelectedEntity = () => {
-    switch (reportedEntity) {
-      case ReportedEntities.Status:
+    switch (entityType) {
+      case ReportableEntities.STATUS:
         return renderSelectedStatuses();
-      case ReportedEntities.ChatMessage:
+      case ReportableEntities.CHAT_MESSAGE:
         return renderSelectedChatMessage();
+      case ReportableEntities.GROUP:
+        if (currentStep === Steps.TWO) {
+          return null;
+        }
+
+        return renderSelectedGroup();
+      default:
+        return null;
     }
   };
 
   const renderTitle = () => {
-    switch (reportedEntity) {
-      case ReportedEntities.ChatMessage:
+    switch (entityType) {
+      case ReportableEntities.CHAT_MESSAGE:
         return intl.formatMessage(messages.reportMessage);
+      case ReportableEntities.GROUP:
+        return intl.formatMessage(messages.reportGroup);
       default:
         return <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account?.acct}</strong> }} />;
     }
@@ -252,16 +293,16 @@ const ReportModal = ({ onClose }: IReportModal) => {
   }, [currentStep]);
 
   useEffect(() => {
-    if (account) {
+    if (account?.id) {
       dispatch(expandAccountTimeline(account.id, { withReplies: true, maxId: null }));
     }
-  }, [account]);
+  }, [account?.id]);
 
   if (!account) {
     return null;
   }
 
-  const StepToRender = reportSteps[currentStep];
+  const StepToRender = reportSteps[entityType][currentStep];
 
   return (
     <Modal
@@ -279,7 +320,9 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
         {(currentStep !== Steps.THREE && !isReportingAccount) && renderSelectedEntity()}
 
-        <StepToRender account={account} />
+        {StepToRender && (
+          <StepToRender account={account} />
+        )}
       </Stack>
     </Modal>
   );

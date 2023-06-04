@@ -21,7 +21,7 @@ const BRAND_ICONS: Record<string, string> = {
 };
 
 interface IConsumerButton {
-  provider: string,
+  provider: string
 }
 
 /** OAuth consumer button for logging in with a third-party service. */
@@ -40,7 +40,7 @@ const ConsumerButton: React.FC<IConsumerButton> = ({ provider }) => {
       <IconButton
         theme='outlined'
         className='p-2.5'
-        iconClassName='w-6 h-6'
+        iconClassName='h-6 w-6'
         src={icon}
         onClick={handleClick}
       />

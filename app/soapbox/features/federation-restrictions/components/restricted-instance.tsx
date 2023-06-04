@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import Icon from 'soapbox/components/icon';
@@ -10,7 +10,7 @@ import InstanceRestrictions from './instance-restrictions';
 const getRemoteInstance = makeGetRemoteInstance();
 
 interface IRestrictedInstance {
-  host: string,
+  host: string
 }
 
 const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
@@ -27,12 +27,12 @@ const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
     <div>
       <a href='#' className='flex items-center gap-1 py-2.5 no-underline' onClick={toggleExpanded}>
         <Icon src={expanded ? require('@tabler/icons/caret-down.svg') : require('@tabler/icons/caret-right.svg')} />
-        <div className={classNames({ 'line-through': remoteInstance.getIn(['federation', 'reject']) })}>
+        <div className={clsx({ 'line-through': remoteInstance.getIn(['federation', 'reject']) })}>
           {remoteInstance.get('host')}
         </div>
       </a>
       <div
-        className={classNames({
+        className={clsx({
           'h-0 overflow-hidden': !expanded,
           'h-auto': expanded,
         })}

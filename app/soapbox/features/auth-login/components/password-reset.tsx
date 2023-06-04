@@ -4,17 +4,19 @@ import { Redirect } from 'react-router-dom';
 
 import { resetPassword } from 'soapbox/actions/security';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
-  nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'Email or username' },
+  nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'E-mail or username' },
+  email: { id: 'password_reset.fields.email_placeholder', defaultMessage: 'E-mail address' },
   confirmation: { id: 'password_reset.confirmation', defaultMessage: 'Check your email for confirmation.' },
 });
 
 const PasswordReset = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -35,15 +37,15 @@ const PasswordReset = () => {
 
   return (
     <div>
-      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 dark:border-gray-600 border-solid -mx-4 sm:-mx-10'>
-        <h1 className='text-center font-bold text-2xl'>
+      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-600 sm:-mx-10 sm:pb-10'>
+        <h1 className='text-center text-2xl font-bold'>
           <FormattedMessage id='password_reset.header' defaultMessage='Reset Password' />
         </h1>
       </div>
 
-      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(messages.nicknameOrEmail)}>
+          <FormGroup labelText={intl.formatMessage(features.logInWithUsername ? messages.nicknameOrEmail : messages.email)}>
             <Input
               type='text'
               name='nickname_or_email'

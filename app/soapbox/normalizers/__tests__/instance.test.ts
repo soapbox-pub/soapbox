@@ -10,7 +10,8 @@ describe('normalizeInstance()', () => {
       configuration: {
         media_attachments: {},
         chats: {
-          max_characters: 500,
+          max_characters: 5000,
+          max_media_attachments: 1,
         },
         polls: {
           max_options: 4,
@@ -21,6 +22,10 @@ describe('normalizeInstance()', () => {
         statuses: {
           max_characters: 500,
           max_media_attachments: 4,
+        },
+        groups: {
+          max_characters_name: 50,
+          max_characters_description: 160,
         },
       },
       description: '',

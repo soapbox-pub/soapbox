@@ -9,8 +9,8 @@ import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 interface IReblogsModal {
-  onClose: (string: string) => void,
-  statusId: string,
+  onClose: (string: string) => void
+  statusId: string
 }
 
 const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
@@ -41,6 +41,7 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
       <ScrollableList
         scrollKey='reblogs'
         emptyMessage={emptyMessage}
+        className='max-w-full'
         itemClassName='pb-3'
       >
         {accountIds.map((id) =>

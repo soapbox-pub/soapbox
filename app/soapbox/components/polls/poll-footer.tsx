@@ -16,9 +16,9 @@ const messages = defineMessages({
 });
 
 interface IPollFooter {
-  poll: PollEntity,
-  showResults: boolean,
-  selected: Selected,
+  poll: PollEntity
+  showResults: boolean
+  selected: Selected
 }
 
 const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX.Element => {
@@ -40,21 +40,21 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
   let votesCount = null;
 
   if (poll.voters_count !== null && poll.voters_count !== undefined) {
-    votesCount = <FormattedMessage id='poll.total_people' defaultMessage='{count, plural, one {# person} other {# people}}' values={{ count: poll.get('voters_count') }} />;
+    votesCount = <FormattedMessage id='poll.total_people' defaultMessage='{count, plural, one {# person} other {# people}}' values={{ count: poll.voters_count }} />;
   } else {
-    votesCount = <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.get('votes_count') }} />;
+    votesCount = <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.votes_count }} />;
   }
 
   return (
     <Stack space={4} data-testid='poll-footer'>
-      {(!showResults && poll?.multiple) && (
+      {(!showResults && poll.multiple) && (
         <Button onClick={handleVote} theme='primary' block>
           <FormattedMessage id='poll.vote' defaultMessage='Vote' />
         </Button>
       )}
 
       <HStack space={1.5} alignItems='center' wrap>
-        {poll.pleroma.get('non_anonymous') && (
+        {poll.pleroma?.non_anonymous && (
           <>
             <Tooltip text={intl.formatMessage(messages.nonAnonymous)}>
               <Text theme='muted' weight='medium'>

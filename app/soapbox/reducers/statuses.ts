@@ -1,7 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import emojify from 'soapbox/features/emoji/emoji';
+import emojify from 'soapbox/features/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
 import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
@@ -26,6 +26,9 @@ import {
   FAVOURITE_REQUEST,
   UNFAVOURITE_REQUEST,
   FAVOURITE_FAIL,
+  DISLIKE_REQUEST,
+  UNDISLIKE_REQUEST,
+  DISLIKE_FAIL,
 } from '../actions/interactions';
 import {
   STATUS_CREATE_REQUEST,
@@ -38,24 +41,26 @@ import {
   STATUS_DELETE_FAIL,
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_UNDO,
+  STATUS_UNFILTER,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const domParser = new DOMParser();
 
 type StatusRecord = ReturnType<typeof normalizeStatus>;
-type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
 type State = ImmutableMap<string, ReducerStatus>;
 
 export interface ReducerStatus extends StatusRecord {
-  account: string | null,
-  reblog: string | null,
-  poll: string | null,
-  quote: string | null,
+  account: string | null
+  reblog: string | null
+  poll: string | null
+  quote: string | null
+  group: string | null
 }
 
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
@@ -64,15 +69,16 @@ const minifyStatus = (status: StatusRecord): ReducerStatus => {
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
+    group: normalizeId(status.getIn(['group', 'id'])),
   }) as ReducerStatus;
 };
 
 // Gets titles of poll options from status
-const getPollOptionTitles = ({ poll }: StatusRecord): ImmutableList<string> => {
+const getPollOptionTitles = ({ poll }: StatusRecord): readonly string[] => {
   if (poll && typeof poll === 'object') {
     return poll.options.map(({ title }) => title);
   } else {
-    return ImmutableList();
+    return [];
   }
 };
 
@@ -201,10 +207,29 @@ const simulateFavourite = (
   return state.set(statusId, updatedStatus);
 };
 
+/** Simulate dislike/undislike of status for optimistic interactions */
+const simulateDislike = (
+  state: State,
+  statusId: string,
+  disliked: boolean,
+): State => {
+  const status = state.get(statusId);
+  if (!status) return state;
+
+  const delta = disliked ? +1 : -1;
+
+  const updatedStatus = status.merge({
+    disliked,
+    dislikes_count: Math.max(0, status.dislikes_count + delta),
+  });
+
+  return state.set(statusId, updatedStatus);
+};
+
 interface Translation {
-  content: string,
-  detected_source_language: string,
-  provider: string,
+  content: string
+  detected_source_language: string
+  provider: string
 }
 
 /** Import translation from translation service into the store. */
@@ -235,11 +260,15 @@ export default function statuses(state = initialState, action: AnyAction): State
       return simulateFavourite(state, action.status.id, true);
     case UNFAVOURITE_REQUEST:
       return simulateFavourite(state, action.status.id, false);
+    case DISLIKE_REQUEST:
+      return simulateDislike(state, action.status.id, true);
+    case UNDISLIKE_REQUEST:
+      return simulateDislike(state, action.status.id, false);
     case EMOJI_REACT_REQUEST:
       return state
         .updateIn(
           [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-          emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji),
+          emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji, action.custom),
         );
     case UNEMOJI_REACT_REQUEST:
       return state
@@ -249,6 +278,8 @@ export default function statuses(state = initialState, action: AnyAction): State
         );
     case FAVOURITE_FAIL:
       return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);
+    case DISLIKE_FAIL:
+      return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'disliked'], false);
     case REBLOG_REQUEST:
       return state.setIn([action.status.get('id'), 'reblogged'], true);
     case REBLOG_FAIL:
@@ -285,6 +316,8 @@ export default function statuses(state = initialState, action: AnyAction): State
       return importTranslation(state, action.id, action.translation);
     case STATUS_TRANSLATE_UNDO:
       return deleteTranslation(state, action.id);
+    case STATUS_UNFILTER:
+      return state.setIn([action.id, 'showFiltered'], false);
     case TIMELINE_DELETE:
       return deleteStatus(state, action.id, action.references);
     case EVENT_JOIN_REQUEST:

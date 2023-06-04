@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
@@ -54,7 +54,7 @@ const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
 };
 
 interface IProfileHoverCard {
-  visible: boolean,
+  visible: boolean
 }
 
 /** Popup profile preview that appears when hovering avatars and display names. */
@@ -95,7 +95,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
 
   return (
     <div
-      className={classNames({
+      className={clsx({
         'absolute transition-opacity w-[320px] z-[101] top-0 left-0': true,
         'opacity-100': visible,
         'opacity-0 pointer-events-none': !visible,
@@ -106,7 +106,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >
-      <Card variant='rounded' className='relative isolate'>
+      <Card variant='rounded' className='relative isolate overflow-hidden'>
         <CardBody>
           <Stack space={2}>
             <BundleContainer fetchComponent={UserPanel}>
@@ -123,7 +123,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/calendar.svg')}
-                  className='w-4 h-4 text-gray-800 dark:text-gray-200'
+                  className='h-4 w-4 text-gray-800 dark:text-gray-200'
                 />
 
                 <Text size='sm'>
@@ -142,7 +142,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
           </Stack>
 
           {followedBy && (
-            <div className='absolute top-2 left-2'>
+            <div className='absolute left-2 top-2'>
               <Badge
                 slug='opaque'
                 title={<FormattedMessage id='account.follows_you' defaultMessage='Follows you' />}

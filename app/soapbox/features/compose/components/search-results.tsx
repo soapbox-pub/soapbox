@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -48,7 +48,8 @@ const SearchResults = () => {
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
   const renderFilterBar = () => {
-    const items = [
+    const items = [];
+    items.push(
       {
         text: intl.formatMessage(messages.accounts),
         action: () => selectFilter('accounts'),
@@ -59,12 +60,15 @@ const SearchResults = () => {
         action: () => selectFilter('statuses'),
         name: 'statuses',
       },
+    );
+
+    items.push(
       {
         text: intl.formatMessage(messages.hashtags),
         action: () => selectFilter('hashtags'),
         name: 'hashtags',
       },
-    ];
+    );
 
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
@@ -195,13 +199,13 @@ const SearchResults = () => {
   return (
     <>
       {filterByAccount ? (
-        <HStack className='mb-4 pb-4 px-2 border-solid border-b border-gray-200 dark:border-gray-800' space={2}>
+        <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/x.svg')} onClick={handleUnsetAccount} />
-          <Text>
+          <Text truncate>
             <FormattedMessage
               id='search_results.filter_message'
               defaultMessage='You are searching for posts from @{acct}.'
-              values={{ acct: account }}
+              values={{ acct: <strong className='break-words'>{account}</strong> }}
             />
           </Text>
         </HStack>
@@ -219,10 +223,10 @@ const SearchResults = () => {
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
-          className={classNames({
+          className={clsx({
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={classNames({
+          itemClassName={clsx({
             'pb-4': selectedFilter === 'accounts',
             'pb-3': selectedFilter === 'hashtags',
           })}

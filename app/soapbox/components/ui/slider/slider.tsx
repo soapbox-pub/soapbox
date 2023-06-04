@@ -53,14 +53,14 @@ const Slider: React.FC<ISlider> = ({ value, onChange }) => {
 
   return (
     <div
-      className='inline-flex cursor-pointer h-6 relative transition'
+      className='relative inline-flex h-6 cursor-pointer transition'
       onMouseDown={handleMouseDown}
       ref={node}
     >
-      <div className='w-full h-1 bg-primary-200 dark:bg-primary-700 absolute top-1/2 -translate-y-1/2 rounded-full' />
-      <div className='h-1 bg-accent-500 absolute top-1/2 -translate-y-1/2 rounded-full' style={{ width: `${value * 100}%` }} />
+      <div className='absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full bg-primary-200 dark:bg-primary-700' />
+      <div className='absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-accent-500' style={{ width: `${value * 100}%` }} />
       <span
-        className='bg-accent-500 absolute rounded-full w-3 h-3 -ml-1.5 top-1/2 -translate-y-1/2 z-10 shadow'
+        className='absolute top-1/2 z-10 -ml-1.5 h-3 w-3 -translate-y-1/2 rounded-full bg-accent-500 shadow'
         tabIndex={0}
         style={{ left: `${value * 100}%` }}
       />

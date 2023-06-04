@@ -1,7 +1,5 @@
 import { Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
-import { ChatMessage } from 'soapbox/types/entities';
-
 import {
   REPORT_INIT,
   REPORT_SUBMIT_REQUEST,
@@ -13,15 +11,19 @@ import {
   REPORT_FORWARD_CHANGE,
   REPORT_BLOCK_CHANGE,
   REPORT_RULE_CHANGE,
+  ReportableEntities,
 } from '../actions/reports';
 
 import type { AnyAction } from 'redux';
+import type { ChatMessage, Group } from 'soapbox/types/entities';
 
 const NewReportRecord = ImmutableRecord({
   isSubmitting: false,
+  entityType: '' as ReportableEntities,
   account_id: null as string | null,
   status_ids: ImmutableSet<string>(),
   chat_message: null as null | ChatMessage,
+  group: null as null | Group,
   comment: '',
   forward: false,
   block: false,
@@ -40,9 +42,14 @@ export default function reports(state: State = ReducerRecord(), action: AnyActio
       return state.withMutations(map => {
         map.setIn(['new', 'isSubmitting'], false);
         map.setIn(['new', 'account_id'], action.account.id);
+        map.setIn(['new', 'entityType'], action.entityType);
 
         if (action.chatMessage) {
           map.setIn(['new', 'chat_message'], action.chatMessage);
+        }
+
+        if (action.group) {
+          map.setIn(['new', 'group'], action.group);
         }
 
         if (state.new.account_id !== action.account.id) {

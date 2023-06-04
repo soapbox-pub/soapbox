@@ -2,14 +2,12 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { Stack } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useGroupsPath, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
 
+import DropdownMenu, { Menu } from './dropdown-menu';
 import SidebarNavigationLink from './sidebar-navigation-link';
-
-import type { Menu } from 'soapbox/components/dropdown-menu';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
@@ -27,6 +25,8 @@ const SidebarNavigation = () => {
   const features = useFeatures();
   const settings = useSettings();
   const account = useOwnAccount();
+  const groupsPath = useGroupsPath();
+
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
@@ -135,6 +135,14 @@ const SidebarNavigation = () => {
 
             {renderMessagesLink()}
 
+            {features.groups && (
+              <SidebarNavigationLink
+                to={groupsPath}
+                icon={require('@tabler/icons/circles.svg')}
+                text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
+              />
+            )}
+
             <SidebarNavigationLink
               to={`/@${account.acct}`}
               icon={require('@tabler/icons/user.svg')}
@@ -177,7 +185,7 @@ const SidebarNavigation = () => {
         )}
 
         {menu.length > 0 && (
-          <DropdownMenu items={menu}>
+          <DropdownMenu items={menu} placement='top'>
             <SidebarNavigationLink
               icon={require('@tabler/icons/dots-circle-horizontal.svg')}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}

@@ -2,10 +2,10 @@ import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { deleteStatusModal } from 'soapbox/actions/moderation';
+import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import { HStack, Stack } from 'soapbox/components/ui';
-import DropdownMenu from 'soapbox/containers/dropdown-menu-container';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { AdminReport, Status } from 'soapbox/types/entities';
@@ -16,8 +16,8 @@ const messages = defineMessages({
 });
 
 interface IReportStatus {
-  status: Status,
-  report?: AdminReport,
+  status: Status
+  report?: AdminReport
 }
 
 const ReportStatus: React.FC<IReportStatus> = ({ status }) => {

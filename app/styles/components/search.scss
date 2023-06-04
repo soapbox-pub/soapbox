@@ -13,7 +13,7 @@
   }
 
   .svg-icon {
-    @apply right-4 rtl:left-4 rtl:right-auto;
+    @apply right-4 rtl:left-4 rtl:right-auto text-gray-400;
     @include font-size(16);
     cursor: default;
     display: inline-block;
@@ -23,7 +23,6 @@
     z-index: 2;
     width: 18px;
     height: 18px;
-    color: var(--primary-text-color--faint);
     opacity: 0;
     pointer-events: none;
 
@@ -39,24 +38,7 @@
 
   .svg-icon--backspace {
     cursor: pointer;
-    color: var(--highlight-text-color);
     width: 22px;
     height: 22px;
-
-    &:hover {
-      color: var(--brand-color);
-    }
-  }
-}
-
-.column {
-  .search {
-    padding: 10px 15px;
-    background-color: var(--foreground-color);
-    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
-  }
-
-  .search__icon .svg-icon {
-    right: 24px;
   }
 }

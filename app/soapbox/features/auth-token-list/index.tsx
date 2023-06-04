@@ -3,11 +3,9 @@ import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { Token } from 'soapbox/reducers/security';
-
-import type { Map as ImmutableMap } from 'immutable';
 
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
@@ -18,8 +16,8 @@ const messages = defineMessages({
 });
 
 interface IAuthToken {
-  token: Token,
-  isCurrent: boolean,
+  token: Token
+  isCurrent: boolean
 }
 
 const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
@@ -43,28 +41,29 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
   };
 
   return (
-    <div className='p-4 rounded-lg bg-gray-100 dark:bg-primary-800'>
+    <div className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
       <Stack space={2}>
         <Stack>
           <Text size='md' weight='medium'>{token.app_name}</Text>
-          <Text size='sm' theme='muted'>
-            <FormattedDate
-              value={new Date(token.valid_until)}
-              hour12
-              year='numeric'
-              month='short'
-              day='2-digit'
-              hour='numeric'
-              minute='2-digit'
-            />
-          </Text>
+          {token.valid_until && (
+            <Text size='sm' theme='muted'>
+              <FormattedDate
+                value={token.valid_until}
+                hour12
+                year='numeric'
+                month='short'
+                day='2-digit'
+                hour='numeric'
+                minute='2-digit'
+              />
+            </Text>
+          )}
         </Stack>
-
-        <div className='flex justify-end'>
+        <HStack justifyContent='end'>
           <Button theme={isCurrent ? 'danger' : 'primary'} onClick={handleRevoke}>
             {intl.formatMessage(messages.revoke)}
           </Button>
-        </div>
+        </HStack>
       </Stack>
     </div>
   );
@@ -75,9 +74,9 @@ const AuthTokenList: React.FC = () => {
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());
   const currentTokenId = useAppSelector(state => {
-    const currentToken = state.auth.get('tokens').valueSeq().find((token: ImmutableMap<string, any>) => token.get('me') === state.auth.get('me'));
+    const currentToken = state.auth.tokens.valueSeq().find((token) => token.me === state.auth.me);
 
-    return currentToken?.get('id');
+    return currentToken?.id;
   });
 
   useEffect(() => {
@@ -85,7 +84,7 @@ const AuthTokenList: React.FC = () => {
   }, []);
 
   const body = tokens ? (
-    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
       {tokens.map((token) => (
         <AuthToken key={token.id} token={token} isCurrent={token.id === currentTokenId} />
       ))}

@@ -8,13 +8,13 @@ import { hueShift } from 'soapbox/utils/theme';
 import Color from './color';
 
 interface ColorGroup {
-  [tint: string]: string,
+  [tint: string]: string
 }
 
 interface IPalette {
-  palette: ColorGroup,
-  onChange: (palette: ColorGroup) => void,
-  resetKey?: string,
+  palette: ColorGroup
+  onChange: (palette: ColorGroup) => void
+  resetKey?: string
 }
 
 /** Editable color palette. */
@@ -50,7 +50,7 @@ const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
 
   return (
     <Stack className='w-full'>
-      <HStack className='h-8 rounded-md overflow-hidden'>
+      <HStack className='h-8 overflow-hidden rounded-md'>
         {tints.map(tint => (
           <Color color={palette[tint]} onChange={handleChange(tint)} />
         ))}

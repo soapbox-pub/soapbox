@@ -6,10 +6,11 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
+import { adSchema } from 'soapbox/schemas';
+import { filteredArray } from 'soapbox/schemas/utils';
+import { normalizeUsername } from 'soapbox/utils/input';
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
-
-import { normalizeAd } from './ad';
 
 import type {
   Ad,
@@ -106,8 +107,6 @@ export const SoapboxConfigRecord = ImmutableRecord({
   }),
   aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
   authenticatedProfile: true,
-  singleUserMode: false,
-  singleUserModeProfile: '',
   linkFooterMessage: '',
   links: ImmutableMap<string, string>(),
   displayCta: true,
@@ -115,13 +114,23 @@ export const SoapboxConfigRecord = ImmutableRecord({
   feedInjection: true,
   tileServer: '',
   tileServerAttribution: '',
+  redirectRootNoLogin: '',
+  /**
+   * Whether to use the preview URL for media thumbnails.
+   * On some platforms this can be too blurry without additional configuration.
+   */
+  mediaPreview: false,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
 
 const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const ads = ImmutableList<Record<string, any>>(soapboxConfig.get('ads'));
-  return soapboxConfig.set('ads', ads.map(normalizeAd));
+  if (soapboxConfig.has('ads')) {
+    const ads = filteredArray(adSchema).parse(ImmutableList(soapboxConfig.get('ads')).toJS());
+    return soapboxConfig.set('ads', ads);
+  } else {
+    return soapboxConfig;
+  }
 };
 
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
@@ -192,6 +201,45 @@ const normalizeAdsAlgorithm = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   }
 };
 
+/** Single user mode is now managed by `redirectRootNoLogin`. */
+const upgradeSingleUserMode = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const singleUserMode = soapboxConfig.get('singleUserMode') as boolean | undefined;
+  const singleUserModeProfile = soapboxConfig.get('singleUserModeProfile') as string | undefined;
+  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin') as string | undefined;
+
+  if (!redirectRootNoLogin && singleUserMode && singleUserModeProfile) {
+    return soapboxConfig
+      .set('redirectRootNoLogin', `/@${normalizeUsername(singleUserModeProfile)}`)
+      .deleteAll(['singleUserMode', 'singleUserModeProfile']);
+  } else {
+    return soapboxConfig
+      .deleteAll(['singleUserMode', 'singleUserModeProfile']);
+  }
+};
+
+/** Ensure a valid path is used. */
+const normalizeRedirectRootNoLogin = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin');
+
+  if (!redirectRootNoLogin) return soapboxConfig;
+
+  try {
+    // Basically just get the pathname with a leading slash.
+    const normalized = new URL(redirectRootNoLogin, 'http://a').pathname;
+
+    if (normalized !== '/') {
+      return soapboxConfig.set('redirectRootNoLogin', normalized);
+    } else {
+      // Prevent infinite redirect(?)
+      return soapboxConfig.delete('redirectRootNoLogin');
+    }
+  } catch (e) {
+    console.error('You have configured an invalid redirect in Soapbox Config.');
+    console.error(e);
+    return soapboxConfig.delete('redirectRootNoLogin');
+  }
+};
+
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
@@ -204,6 +252,8 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeCryptoAddresses(soapboxConfig);
       normalizeAds(soapboxConfig);
       normalizeAdsAlgorithm(soapboxConfig);
+      upgradeSingleUserMode(soapboxConfig);
+      normalizeRedirectRootNoLogin(soapboxConfig);
     }),
   );
 };

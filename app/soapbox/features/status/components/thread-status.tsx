@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 
@@ -7,10 +7,11 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IThreadStatus {
-  id: string,
-  focusedStatusId: string,
-  onMoveUp: (id: string) => void,
-  onMoveDown: (id: string) => void,
+  id: string
+  contextType?: string
+  focusedStatusId: string
+  onMoveUp: (id: string) => void
+  onMoveDown: (id: string) => void
 }
 
 /** Status with reply-connector in threads. */
@@ -30,9 +31,8 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
 
     return (
       <div
-        className={classNames('thread__connector', {
-          'thread__connector--top': isConnectedTop,
-          'thread__connector--bottom': isConnectedBottom,
+        className={clsx('absolute left-5 z-[1] hidden w-0.5 bg-gray-200 rtl:left-auto rtl:right-5 dark:bg-primary-800', {
+          '!block top-[calc(12px+42px)] h-[calc(100%-42px-8px-1rem)]': isConnectedBottom,
         })}
       />
     );
@@ -43,9 +43,9 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
       {renderConnector()}
       {isLoaded ? (
         // @ts-ignore FIXME
-        <StatusContainer {...props} />
+        <StatusContainer {...props} showGroup={false} />
       ) : (
-        <PlaceholderStatus thread />
+        <PlaceholderStatus variant='default' />
       )}
     </div>
   );

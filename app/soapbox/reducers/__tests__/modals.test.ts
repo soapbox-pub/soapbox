@@ -23,7 +23,7 @@ describe('modal reducer', () => {
   });
 
   it('should handle MODAL_CLOSE', () => {
-    const state = ImmutableList([
+    const state = ImmutableList<any>([
       ImmutableRecord({
         modalType: 'type1',
         modalProps: { props1: '1' },

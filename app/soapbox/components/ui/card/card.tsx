@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -16,11 +16,13 @@ const messages = defineMessages({
   back: { id: 'card.back.label', defaultMessage: 'Back' },
 });
 
+export type CardSizes = keyof typeof sizes
+
 interface ICard {
   /** The type of card. */
-  variant?: 'default' | 'rounded'
+  variant?: 'default' | 'rounded' | 'slim'
   /** Card size preset. */
-  size?: keyof typeof sizes
+  size?: CardSizes
   /** Extra classnames for the <div> element. */
   className?: string
   /** Elements inside the card. */
@@ -32,9 +34,10 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
   <div
     ref={ref}
     {...filteredProps}
-    className={classNames({
-      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none overflow-hidden': variant === 'rounded',
+    className={clsx({
+      'bg-white dark:bg-primary-900 text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none': variant === 'rounded',
       [sizes[size]]: variant === 'rounded',
+      'py-4': variant === 'slim',
     }, className)}
   >
     {children}
@@ -42,9 +45,10 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
 ));
 
 interface ICardHeader {
-  backHref?: string,
+  backHref?: string
   onBackClick?: (event: React.MouseEvent) => void
   className?: string
+  children?: React.ReactNode
 }
 
 /**
@@ -63,7 +67,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
     const backAttributes = backHref ? { to: backHref } : { onClick: onBackClick };
 
     return (
-      <Comp {...backAttributes} className='text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:ring-2' aria-label={intl.formatMessage(messages.back)}>
+      <Comp {...backAttributes} className='rounded-full text-gray-900 focus:ring-2 focus:ring-primary-500 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
         <SvgIcon src={require('@tabler/icons/arrow-left.svg')} className='h-6 w-6 rtl:rotate-180' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
@@ -71,7 +75,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
   };
 
   return (
-    <HStack alignItems='center' space={2} className={classNames('mb-4', className)}>
+    <HStack alignItems='center' space={2} className={className}>
       {renderBackButton()}
 
       {children}
@@ -91,6 +95,8 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
 interface ICardBody {
   /** Classnames for the <div> element. */
   className?: string
+  /** Children to appear inside the card. */
+  children: React.ReactNode
 }
 
 /** A card's body. */

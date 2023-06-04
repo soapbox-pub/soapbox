@@ -17,9 +17,6 @@ const rule: RuleSetRule = {
       loader: 'babel-loader',
       options: {
         babelrc: false,
-        plugins: [
-          'transform-react-remove-prop-types',
-        ],
         cacheDirectory: join(settings.cache_path, 'babel-loader-node-modules'),
         cacheCompression: env.NODE_ENV === 'production',
         compact: false,

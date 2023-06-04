@@ -26,13 +26,15 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-type Props = ReturnType<typeof mapStateToProps>;
+interface Props extends ReturnType<typeof mapStateToProps> {
+  children: React.ReactNode
+}
 
 type State = {
-  hasError: boolean,
-  error: any,
-  componentStack: any,
-  browser?: Bowser.Parser.Parser,
+  hasError: boolean
+  error: any
+  componentStack: any
+  browser?: Bowser.Parser.Parser
 }
 
 class ErrorBoundary extends React.PureComponent<Props, State> {
@@ -42,7 +44,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     error: undefined,
     componentStack: undefined,
     browser: undefined,
-  }
+  };
 
   textarea: HTMLTextAreaElement | null = null;
 
@@ -71,7 +73,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
   setTextareaRef: React.RefCallback<HTMLTextAreaElement> = c => {
     this.textarea = c;
-  }
+  };
 
   handleCopy: React.MouseEventHandler = () => {
     if (!this.textarea) return;
@@ -80,12 +82,12 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     this.textarea.setSelectionRange(0, 99999);
 
     document.execCommand('copy');
-  }
+  };
 
   getErrorText = (): string => {
     const { error, componentStack } = this.state;
     return error + componentStack;
-  }
+  };
 
   clearCookies: React.MouseEventHandler = (e) => {
     localStorage.clear();
@@ -96,7 +98,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
       e.preventDefault();
       unregisterSw().then(goHome).catch(goHome);
     }
-  }
+  };
 
   render() {
     const { browser, hasError } = this.state;
@@ -111,17 +113,17 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     const errorText = this.getErrorText();
 
     return (
-      <div className='h-screen pt-16 pb-12 flex flex-col bg-white dark:bg-primary-900'>
-        <main className='flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex-shrink-0 flex justify-center'>
+      <div className='flex h-screen flex-col bg-white pb-12 pt-16 dark:bg-primary-900'>
+        <main className='mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
+          <div className='flex shrink-0 justify-center'>
             <a href='/' className='inline-flex'>
               <SiteLogo alt='Logo' className='h-12 w-auto cursor-pointer' />
             </a>
           </div>
 
           <div className='py-8'>
-            <div className='text-center max-w-xl mx-auto space-y-2'>
-              <h1 className='text-3xl font-extrabold text-gray-900 dark:text-gray-500 tracking-tight sm:text-4xl'>
+            <div className='mx-auto max-w-xl space-y-2 text-center'>
+              <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-500 sm:text-4xl'>
                 <FormattedMessage id='alert.unexpected.message' defaultMessage='Something went wrong.' />
               </h1>
               <p className='text-lg text-gray-700 dark:text-gray-600'>
@@ -130,7 +132,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                   defaultMessage="We're sorry for the interruption. If the problem persists, please reach out to our support team. You may also try to {clearCookies} (this will log you out)."
                   values={{
                     clearCookies: (
-                      <a href='/' onClick={this.clearCookies} className='text-primary-600 dark:text-accent-blue hover:underline'>
+                      <a href='/' onClick={this.clearCookies} className='text-primary-600 hover:underline dark:text-accent-blue'>
                         <FormattedMessage
                           id='alert.unexpected.clear_cookies'
                           defaultMessage='clear cookies and browser data'
@@ -148,7 +150,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
               </Text>
 
               <div className='mt-10'>
-                <a href='/' className='text-base font-medium text-primary-600 dark:text-accent-blue hover:underline'>
+                <a href='/' className='text-base font-medium text-primary-600 hover:underline dark:text-accent-blue'>
                   <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
                   <span aria-hidden='true'> &rarr;</span>
                 </a>
@@ -156,11 +158,11 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
             </div>
 
             {!isProduction && (
-              <div className='py-16 max-w-lg mx-auto space-y-4'>
+              <div className='mx-auto max-w-lg space-y-4 py-16'>
                 {errorText && (
                   <textarea
                     ref={this.setTextareaRef}
-                    className='h-48 p-4 shadow-sm bg-gray-100 text-gray-900 dark:text-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-700 rounded-md font-mono'
+                    className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
                     value={errorText}
                     onClick={this.handleCopy}
                     readOnly
@@ -178,11 +180,11 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
           </div>
         </main>
 
-        <footer className='flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
+        <footer className='mx-auto w-full max-w-7xl shrink-0 px-4 sm:px-6 lg:px-8'>
           <HStack justifyContent='center' space={4} element='nav'>
             {links.get('status') && (
               <>
-                <a href={links.get('status')} className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'>
+                <a href={links.get('status')} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
                   <FormattedMessage id='alert.unexpected.links.status' defaultMessage='Status' />
                 </a>
               </>
@@ -191,7 +193,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
             {links.get('help') && (
               <>
                 <span className='inline-block border-l border-gray-300' aria-hidden='true' />
-                <a href={links.get('help')} className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'>
+                <a href={links.get('help')} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
                   <FormattedMessage id='alert.unexpected.links.help' defaultMessage='Help Center' />
                 </a>
               </>
@@ -200,7 +202,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
             {links.get('support') && (
               <>
                 <span className='inline-block border-l border-gray-300' aria-hidden='true' />
-                <a href={links.get('support')} className='text-sm font-medium text-gray-700 dark:text-gray-600 hover:underline'>
+                <a href={links.get('support')} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
                   <FormattedMessage id='alert.unexpected.links.support' defaultMessage='Support' />
                 </a>
               </>
@@ -213,4 +215,4 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
 }
 
-export default connect(mapStateToProps)(ErrorBoundary as any);
+export default connect(mapStateToProps)(ErrorBoundary);

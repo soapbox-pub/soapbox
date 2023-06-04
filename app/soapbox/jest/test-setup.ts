@@ -1,5 +1,6 @@
 'use strict';
 
+import { act } from '@testing-library/react';
 import { toast } from 'react-hot-toast';
 
 import { __clear as clearApiMocks } from '../api/__mocks__';
@@ -15,12 +16,11 @@ jest.mock('soapbox/queries/client');
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
 require('fake-indexeddb/auto');
 
-// Mock external dependencies
-jest.mock('uuid', () => ({ v4: jest.fn(() => '1') }));
-
 // Clear toasts after each test.
 afterEach(() => {
-  toast.remove();
+  act(() => {
+    toast.remove();
+  });
 });
 
 const intersectionObserverMock = () => ({ observe: () => null, disconnect: () => null });

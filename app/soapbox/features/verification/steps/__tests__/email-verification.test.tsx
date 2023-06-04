@@ -60,7 +60,9 @@ describe('<EmailVerification />', () => {
         );
       });
 
-      expect(screen.getByTestId('form-group-error')).toHaveTextContent('is taken');
+      await waitFor(() => {
+        expect(screen.getByTestId('form-group-error')).toHaveTextContent('is taken');
+      });
     });
   });
 });

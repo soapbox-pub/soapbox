@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import 'wicg-inert';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -11,13 +11,12 @@ import { useAppDispatch, usePrevious } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
-import type { UnregisterCallback } from 'history';
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
 import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event';
 
 const messages = defineMessages({
-  confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
@@ -40,9 +39,10 @@ export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComp
 };
 
 interface IModalRoot {
-  onCancel?: () => void,
-  onClose: (type?: ModalType) => void,
-  type: ModalType,
+  onCancel?: () => void
+  onClose: (type?: ModalType) => void
+  type: ModalType
+  children: React.ReactNode
 }
 
 const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) => {
@@ -55,7 +55,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   const ref = useRef<HTMLDivElement>(null);
   const activeElement = useRef<HTMLDivElement | null>(revealed ? document.activeElement as HTMLDivElement | null : null);
   const modalHistoryKey = useRef<number>();
-  const unlistenHistory = useRef<UnregisterCallback>();
+  const unlistenHistory = useRef<ReturnType<typeof history.listen>>();
 
   const prevChildren = usePrevious(children);
   const prevType = usePrevious(type);
@@ -80,10 +80,10 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
           icon: require('@tabler/icons/trash.svg'),
           heading: isEditing
             ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' />
-            : <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
+            : <FormattedMessage id='confirmations.cancel.heading' defaultMessage='Discard post' />,
           message: isEditing
             ? <FormattedMessage id='confirmations.cancel_editing.message' defaultMessage='Are you sure you want to cancel editing this post? All changes will be lost.' />
-            : <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
+            : <FormattedMessage id='confirmations.cancel.message' defaultMessage='Are you sure you want to cancel creating this post?' />,
           confirm: intl.formatMessage(messages.confirm),
           onConfirm: () => {
             dispatch(closeModal('COMPOSE'));
@@ -129,10 +129,10 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     });
   };
 
-  const handleKeyDown = useCallback((e) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Tab') {
       const focusable = Array.from(ref.current!.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((x) => window.getComputedStyle(x).display !== 'none');
-      const index = focusable.indexOf(e.target);
+      const index = focusable.indexOf(e.target as Element);
 
       let element;
 
@@ -152,8 +152,10 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const handleModalOpen = () => {
     modalHistoryKey.current = Date.now();
-    unlistenHistory.current = history.listen((_, action) => {
-      if (action === 'POP') {
+    unlistenHistory.current = history.listen(({ state }, action) => {
+      if (!(state as any)?.soapboxModalKey) {
+        onClose();
+      } else if (action === 'POP') {
         handleOnClose();
 
         if (onCancel) onCancel();
@@ -165,11 +167,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
     if (unlistenHistory.current) {
       unlistenHistory.current();
     }
-    if (!['FAVOURITES', 'MENTIONS', 'REACTIONS', 'REBLOGS', 'MEDIA'].includes(type)) {
-      const { state } = history.location;
-      if (state && (state as any).soapboxModalKey === modalHistoryKey.current) {
-        history.goBack();
-      }
+    const { state } = history.location;
+    if (state && (state as any).soapboxModalKey === modalHistoryKey.current) {
+      history.goBack();
     }
   };
 
@@ -181,7 +181,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   };
 
   const getSiblings = () => {
-    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[])).filter(node => node !== ref.current);
+    return Array(...(ref.current!.parentElement!.childNodes as any as ChildNode[]))
+      .filter(node => (node as HTMLDivElement).id !== 'toaster')
+      .filter(node => node !== ref.current);
   };
 
   useEffect(() => {
@@ -221,7 +223,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
       ensureHistoryBuffer();
     }
-  });
+  }, [children]);
 
   if (!visible) {
     return (
@@ -232,7 +234,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
   return (
     <div
       ref={ref}
-      className={classNames({
+      className={clsx({
         'fixed top-0 left-0 z-[100] w-full h-full overflow-x-hidden overflow-y-auto': true,
         'pointer-events-none': !visible,
       })}
@@ -241,17 +243,17 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       <div
         role='presentation'
         id='modal-overlay'
-        className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90'
+        className='fixed inset-0 bg-gray-500/90 backdrop-blur dark:bg-gray-700/90'
         onClick={handleOnClose}
       />
 
       <div
         role='dialog'
-        className={classNames({
-          'my-2 mx-auto relative pointer-events-none flex items-center': true,
+        className={clsx({
+          'my-2 mx-auto relative pointer-events-none flex items-center min-h-[calc(100%-3.5rem)]': true,
           'p-4 md:p-0': type !== 'MEDIA',
+          '!my-0': type === 'MEDIA',
         })}
-        style={{ minHeight: 'calc(100% - 3.5rem)' }}
       >
         {children}
       </div>

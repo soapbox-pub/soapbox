@@ -21,8 +21,9 @@ import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 interface IProfilePage {
   params?: {
-    username?: string,
-  },
+    username?: string
+  }
+  children: React.ReactNode
 }
 
 const getAccount = makeGetAccount();
@@ -96,7 +97,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   return (
     <>
       <Layout.Main>
-        <Column label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
+        <Column size='lg' label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />
 

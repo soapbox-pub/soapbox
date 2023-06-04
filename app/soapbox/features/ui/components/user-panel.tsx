@@ -2,9 +2,8 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Avatar from 'soapbox/components/avatar';
 import StillImage from 'soapbox/components/still-image';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -15,10 +14,10 @@ import { displayFqn } from 'soapbox/utils/state';
 const getAccount = makeGetAccount();
 
 interface IUserPanel {
-  accountId: string,
-  action?: JSX.Element,
-  badges?: JSX.Element[],
-  domain?: string,
+  accountId: string
+  action?: JSX.Element
+  badges?: JSX.Element[]
+  domain?: string
 }
 
 const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) => {
@@ -27,16 +26,16 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
   const fqn = useAppSelector((state) => displayFqn(state));
 
   if (!account) return null;
-  const displayNameHtml = { __html: account.get('display_name_html') };
-  const acct = !account.get('acct').includes('@') && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
-  const header = account.get('header');
-  const verified = account.get('verified');
+  const displayNameHtml = { __html: account.display_name_html };
+  const acct = !account.acct.includes('@') && domain ? `${account.acct}@${domain}` : account.acct;
+  const header = account.header;
+  const verified = account.verified;
 
   return (
     <div className='relative'>
       <Stack space={2}>
         <Stack>
-          <div className='-mt-4 -mx-4 h-24 bg-gray-200 relative overflow-hidden'>
+          <div className='relative -mx-4 -mt-4 h-24 overflow-hidden bg-gray-200'>
             {header && (
               <StillImage src={account.header} />
             )}
@@ -44,14 +43,11 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
 
           <HStack justifyContent='between'>
             <Link
-              to={`/@${account.get('acct')}`}
+              to={`/@${account.acct}`}
               title={acct}
               className='-mt-12 block'
             >
-              <Avatar
-                account={account}
-                className='h-20 w-20 bg-gray-50 ring-2 ring-white'
-              />
+              <Avatar src={account.avatar} size={80} className='h-20 w-20 overflow-hidden bg-gray-50 ring-2 ring-white' />
             </Link>
 
             {action && (
@@ -61,9 +57,9 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
         </Stack>
 
         <Stack>
-          <Link to={`/@${account.get('acct')}`}>
+          <Link to={`/@${account.acct}`}>
             <HStack space={1} alignItems='center'>
-              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} truncate />
 
               {verified && <VerificationBadge />}
 
@@ -75,17 +71,17 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
             </HStack>
           </Link>
 
-          <Text size='sm' theme='muted'>
+          <Text size='sm' theme='muted' truncate>
             @{getAcct(account, fqn)}
           </Text>
         </Stack>
 
         <HStack alignItems='center' space={3}>
-          {account.get('followers_count') >= 0 && (
-            <Link to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+          {account.followers_count >= 0 && (
+            <Link to={`/@${account.acct}/followers`} title={intl.formatNumber(account.followers_count)}>
               <HStack alignItems='center' space={1}>
                 <Text theme='primary' weight='bold' size='sm'>
-                  {shortNumberFormat(account.get('followers_count'))}
+                  {shortNumberFormat(account.followers_count)}
                 </Text>
                 <Text weight='bold' size='sm'>
                   <FormattedMessage id='account.followers' defaultMessage='Followers' />
@@ -94,11 +90,11 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
             </Link>
           )}
 
-          {account.get('following_count') >= 0 && (
-            <Link to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+          {account.following_count >= 0 && (
+            <Link to={`/@${account.acct}/following`} title={intl.formatNumber(account.following_count)}>
               <HStack alignItems='center' space={1}>
                 <Text theme='primary' weight='bold' size='sm'>
-                  {shortNumberFormat(account.get('following_count'))}
+                  {shortNumberFormat(account.following_count)}
                 </Text>
                 <Text weight='bold' size='sm'>
                   <FormattedMessage id='account.follows' defaultMessage='Follows' />

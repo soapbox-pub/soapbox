@@ -4,14 +4,22 @@ import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 
 import { __stub } from 'soapbox/api';
-import { normalizePoll } from 'soapbox/normalizers/poll';
+import { mockStore, render, screen, rootState } from 'soapbox/jest/test-helpers';
+import { type Poll } from 'soapbox/schemas';
 
-import { mockStore, render, screen, rootState } from '../../../jest/test-helpers';
 import PollFooter from '../poll-footer';
 
-let poll = normalizePoll({
-  id: 1,
-  options: [{ title: 'Apples', votes_count: 0 }],
+let poll: Poll = {
+  id: '1',
+  options: [{
+    title: 'Apples',
+    votes_count: 0,
+    title_emojified: 'Apples',
+  }, {
+    title: 'Oranges',
+    votes_count: 0,
+    title_emojified: 'Oranges',
+  }],
   emojis: [],
   expired: false,
   expires_at: '2020-03-24T19:33:06.000Z',
@@ -20,7 +28,7 @@ let poll = normalizePoll({
   votes_count: 0,
   own_votes: null,
   voted: false,
-});
+};
 
 describe('<PollFooter />', () => {
   describe('with "showResults" enabled', () => {
@@ -62,10 +70,10 @@ describe('<PollFooter />', () => {
 
     describe('when the Poll has not expired', () => {
       beforeEach(() => {
-        poll = normalizePoll({
-          ...poll.toJS(),
+        poll = {
+          ...poll,
           expired: false,
-        });
+        };
       });
 
       it('renders time remaining', () => {
@@ -77,10 +85,10 @@ describe('<PollFooter />', () => {
 
     describe('when the Poll has expired', () => {
       beforeEach(() => {
-        poll = normalizePoll({
-          ...poll.toJS(),
+        poll = {
+          ...poll,
           expired: true,
-        });
+        };
       });
 
       it('renders closed', () => {
@@ -100,10 +108,10 @@ describe('<PollFooter />', () => {
 
     describe('when the Poll is multiple', () => {
       beforeEach(() => {
-        poll = normalizePoll({
-          ...poll.toJS(),
+        poll = {
+          ...poll,
           multiple: true,
-        });
+        };
       });
 
       it('renders the Vote button', () => {
@@ -115,10 +123,10 @@ describe('<PollFooter />', () => {
 
     describe('when the Poll is not multiple', () => {
       beforeEach(() => {
-        poll = normalizePoll({
-          ...poll.toJS(),
+        poll = {
+          ...poll,
           multiple: false,
-        });
+        };
       });
 
       it('does not render the Vote button', () => {

@@ -12,7 +12,11 @@ import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import { Layout } from '../components/ui';
 
-const DefaultPage: React.FC = ({ children }) => {
+interface IDefaultPage {
+  children: React.ReactNode
+}
+
+const DefaultPage: React.FC<IDefaultPage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
 

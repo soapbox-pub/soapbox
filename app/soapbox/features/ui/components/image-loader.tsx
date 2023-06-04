@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 
 import ZoomableImage from './zoomable-image';
@@ -6,12 +6,12 @@ import ZoomableImage from './zoomable-image';
 type EventRemover = () => void;
 
 interface IImageLoader {
-  alt?: string,
-  src: string,
-  previewSrc?: string,
-  width?: number,
-  height?: number,
-  onClick?: React.MouseEventHandler,
+  alt?: string
+  src: string
+  previewSrc?: string
+  width?: number
+  height?: number
+  onClick?: React.MouseEventHandler
 }
 
 class ImageLoader extends React.PureComponent<IImageLoader> {
@@ -26,7 +26,7 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
     loading: true,
     error: false,
     width: null,
-  }
+  };
 
   removers: EventRemover[] = [];
   canvas: HTMLCanvasElement | null = null;
@@ -87,7 +87,7 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
     image.addEventListener('load', handleLoad);
     image.src = previewSrc || '';
     this.removers.push(removeEventListeners);
-  })
+  });
 
   clearPreviewCanvas() {
     if (this.canvas && this.canvasContext) {
@@ -129,13 +129,13 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
   setCanvasRef = (c: HTMLCanvasElement) => {
     this.canvas = c;
     if (c) this.setState({ width: c.offsetWidth });
-  }
+  };
 
   render() {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 
-    const className = classNames('image-loader', {
+    const className = clsx('image-loader', {
       'image-loader--loading': loading,
       'image-loader--amorphous': !this.hasSize(),
     });

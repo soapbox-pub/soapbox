@@ -31,9 +31,9 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
   }
 
   return (
-    <HStack {...rest} alignItems='center' justifyContent='between' className='rounded-t-xl h-16 py-3 px-4'>
+    <HStack {...rest} alignItems='center' justifyContent='between' className='h-16 rounded-t-xl px-4 py-3'>
       <ButtonComp
-        className='flex-grow flex items-center flex-row space-x-1 h-16'
+        className='flex h-16 grow flex-row items-center space-x-1'
         data-testid='title'
         {...buttonProps}
       >
@@ -47,7 +47,7 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
               ({unreadCount})
             </Text>
 
-            <div className='bg-accent-300 w-2.5 h-2.5 rounded-full' />
+            <div className='h-2.5 w-2.5 rounded-full bg-accent-300' />
           </HStack>
         )}
       </ButtonComp>
@@ -57,14 +57,14 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
           <IconButton
             onClick={secondaryAction}
             src={secondaryActionIcon as string}
-            iconClassName='w-5 h-5 text-gray-600'
+            iconClassName='h-5 w-5 text-gray-600'
           />
         ) : null}
 
         <IconButton
           onClick={onToggle}
           src={isOpen ? require('@tabler/icons/chevron-down.svg') : require('@tabler/icons/chevron-up.svg')}
-          iconClassName='w-5 h-5 text-gray-600'
+          iconClassName='h-5 w-5 text-gray-600'
         />
       </HStack>
     </HStack>

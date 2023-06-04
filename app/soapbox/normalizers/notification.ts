@@ -17,6 +17,7 @@ export const NotificationRecord = ImmutableRecord({
   chat_message: null as ImmutableMap<string, any> | string | null, // pleroma:chat_mention
   created_at: new Date(),
   emoji: null as string | null, // pleroma:emoji_reaction
+  emoji_url: null as string | null, // pleroma:emoji_reaction
   id: '',
   status: null as EmbeddedEntity<Status>,
   target: null as EmbeddedEntity<Account>, // move
@@ -24,8 +25,19 @@ export const NotificationRecord = ImmutableRecord({
   total_count: null as number | null, // grouped notifications
 });
 
+const normalizeType = (notification: ImmutableMap<string, any>) => {
+  if (notification.get('type') === 'group_mention') {
+    return notification.set('type', 'mention');
+  }
+
+  return notification;
+};
+
 export const normalizeNotification = (notification: Record<string, any>) => {
   return NotificationRecord(
-    ImmutableMap(fromJS(notification)),
+    ImmutableMap(fromJS(notification))
+      .withMutations((notification: ImmutableMap<string, any>) => {
+        normalizeType(notification);
+      }),
   );
 };

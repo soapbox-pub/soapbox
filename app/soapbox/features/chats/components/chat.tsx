@@ -1,29 +1,31 @@
 import { AxiosError } from 'axios';
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';
 import { Stack } from 'soapbox/components/ui';
-import Upload from 'soapbox/components/upload';
-import UploadProgress from 'soapbox/components/upload-progress';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { IChat, useChatActions } from 'soapbox/queries/chats';
+import toast from 'soapbox/toast';
 
 import ChatComposer from './chat-composer';
 import ChatMessageList from './chat-message-list';
+
+import type { Attachment } from 'soapbox/types/entities';
 
 const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
 const messages = defineMessages({
   failedToSend: { id: 'chat.failed_to_send', defaultMessage: 'Message failed to send.' },
+  uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
 });
 
 interface ChatInterface {
-  chat: IChat,
-  inputRef?: MutableRefObject<HTMLTextAreaElement | null>,
-  className?: string,
+  chat: IChat
+  inputRef?: MutableRefObject<HTMLTextAreaElement | null>
+  className?: string
 }
 
 /**
@@ -51,18 +53,20 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const dispatch = useAppDispatch();
 
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
+  const attachmentLimit = useAppSelector(state => state.instance.configuration.getIn(['chats', 'max_media_attachments']) as number);
 
   const [content, setContent] = useState<string>('');
-  const [attachment, setAttachment] = useState<any>(undefined);
-  const [isUploading, setIsUploading] = useState(false);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [uploadCount, setUploadCount] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [resetContentKey, setResetContentKey] = useState<number>(fileKeyGen());
   const [resetFileKey, setResetFileKey] = useState<number>(fileKeyGen());
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const isSubmitDisabled = content.length === 0 && !attachment;
+  const isSubmitDisabled = content.length === 0 && attachments.length === 0;
 
   const submitMessage = () => {
-    createChatMessage.mutate({ chatId: chat.id, content, mediaId: attachment?.id }, {
+    createChatMessage.mutate({ chatId: chat.id, content, mediaIds: attachments.map(a => a.id) }, {
       onSuccess: () => {
         setErrorMessage(undefined);
       },
@@ -81,10 +85,11 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       clearNativeInputValue(inputRef.current);
     }
     setContent('');
-    setAttachment(undefined);
-    setIsUploading(false);
+    setAttachments([]);
+    setUploadCount(0);
     setUploadProgress(0);
     setResetFileKey(fileKeyGen());
+    setResetContentKey(fileKeyGen());
   };
 
   const sendMessage = () => {
@@ -128,8 +133,10 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
 
   const handleMouseOver = () => markRead();
 
-  const handleRemoveFile = () => {
-    setAttachment(undefined);
+  const handleRemoveFile = (i: number) => {
+    const newAttachments = [...attachments];
+    newAttachments.splice(i, 1);
+    setAttachments(newAttachments);
     setResetFileKey(fileKeyGen());
   };
 
@@ -139,17 +146,26 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   };
 
   const handleFiles = (files: FileList) => {
-    setIsUploading(true);
+    if (files.length + attachments.length > attachmentLimit) {
+      toast.error(messages.uploadErrorLimit);
+      return;
+    }
 
-    const data = new FormData();
-    data.append('file', files[0]);
+    setUploadCount(files.length);
 
-    dispatch(uploadMedia(data, onUploadProgress)).then((response: any) => {
-      setAttachment(normalizeAttachment(response.data));
-      setIsUploading(false);
-    }).catch(() => {
-      setIsUploading(false);
+    const promises = Array.from(files).map(async(file) => {
+      const data = new FormData();
+      data.append('file', file);
+      const response = await dispatch(uploadMedia(data, onUploadProgress));
+      return normalizeAttachment(response.data);
     });
+
+    return Promise.all(promises)
+      .then((newAttachments) => {
+        setAttachments([...attachments, ...newAttachments]);
+        setUploadCount(0);
+      })
+      .catch(() => setUploadCount(0));
   };
 
   useEffect(() => {
@@ -159,26 +175,10 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   }, [chat.id, inputRef?.current]);
 
   return (
-    <Stack className={classNames('overflow-hidden flex flex-grow', className)} onMouseOver={handleMouseOver}>
-      <div className='flex-grow h-full overflow-hidden flex justify-center'>
+    <Stack className={clsx('flex grow overflow-hidden', className)} onMouseOver={handleMouseOver}>
+      <div className='flex h-full grow justify-center overflow-hidden'>
         <ChatMessageList chat={chat} />
       </div>
-
-      {attachment && (
-        <div className='relative h-48'>
-          <Upload
-            media={attachment}
-            onDelete={handleRemoveFile}
-            withPreview
-          />
-        </div>
-      )}
-
-      {isUploading && (
-        <div className='p-4'>
-          <UploadProgress progress={uploadProgress * 100} />
-        </div>
-      )}
 
       <ChatComposer
         ref={inputRef}
@@ -189,8 +189,12 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
         errorMessage={errorMessage}
         onSelectFile={handleFiles}
         resetFileKey={resetFileKey}
+        resetContentKey={resetContentKey}
         onPaste={handlePaste}
-        hasAttachment={!!attachment}
+        attachments={attachments}
+        onDeleteAttachment={handleRemoveFile}
+        uploadCount={uploadCount}
+        uploadProgress={uploadProgress}
       />
     </Stack>
   );

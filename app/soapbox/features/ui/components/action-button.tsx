@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import {
   followAccount,
@@ -14,8 +13,9 @@ import {
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import { Button, HStack } from 'soapbox/components/ui';
-import { useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
+import type { Account } from 'soapbox/schemas';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -36,7 +36,7 @@ const messages = defineMessages({
 
 interface IActionButton {
   /** Target account for the action. */
-  account: AccountEntity
+  account: AccountEntity | Account
   /** Type of action to prioritize, eg on Blocks and Mutes pages. */
   actionType?: 'muting' | 'blocking' | 'follow_request'
   /** Displays shorter text on the "Awaiting approval" button. */
@@ -49,7 +49,7 @@ interface IActionButton {
  * `actionType` prop.
  */
 const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 
@@ -157,6 +157,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
           onClick={handleRemoteFollow}
           icon={require('@tabler/icons/plus.svg')}
           text={intl.formatMessage(messages.follow)}
+          size='sm'
         />
       );
       // Pleroma's classic remote follow form.
@@ -165,7 +166,11 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
         <form method='POST' action='/main/ostatus'>
           <input type='hidden' name='nickname' value={account.acct} />
           <input type='hidden' name='profile' value='' />
-          <Button text={intl.formatMessage(messages.remote_follow)} type='submit' />
+          <Button
+            text={intl.formatMessage(messages.remote_follow)}
+            type='submit'
+            size='sm'
+          />
         </form>
       );
     }

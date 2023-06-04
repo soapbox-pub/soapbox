@@ -1,4 +1,4 @@
-import classNames from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -19,7 +19,7 @@ const messages = defineMessages({
   accept: { id: 'chat_message_list_intro.actions.accept', defaultMessage: 'Accept' },
   leaveChat: { id: 'chat_message_list_intro.actions.leave_chat', defaultMessage: 'Leave chat' },
   report: { id: 'chat_message_list_intro.actions.report', defaultMessage: 'Report' },
-  messageLifespan: { id: 'chat_message_list_intro.actions.message_lifespan', defaultMessage: 'Messages older than {day} days are deleted.' },
+  messageLifespan: { id: 'chat_message_list_intro.actions.message_lifespan', defaultMessage: 'Messages older than {day, plural, one {# day} other {# days}} are deleted.' },
 });
 
 const ChatMessageListIntro = () => {
@@ -60,7 +60,7 @@ const ChatMessageListIntro = () => {
       alignItems='center'
       space={4}
       className={
-        classNames({
+        clsx({
           'w-3/4 mx-auto': needsAcceptance,
           'py-6': true, // needs to be padding to prevent Virtuoso bugs
         })
@@ -106,8 +106,8 @@ const ChatMessageListIntro = () => {
           </Button>
         </HStack>
       ) : (
-        <HStack justifyContent='center' alignItems='center' space={1} className='flex-shrink-0'>
-          <Icon src={require('@tabler/icons/clock.svg')} className='text-gray-600 w-4 h-4' />
+        <HStack justifyContent='center' alignItems='center' space={1} className='shrink-0'>
+          <Icon src={require('@tabler/icons/clock.svg')} className='h-4 w-4 text-gray-600' />
           {chat.message_expiration && (
             <Text size='sm' theme='muted'>
               {intl.formatMessage(messages.messageLifespan, { day: secondsToDays(chat.message_expiration) })}

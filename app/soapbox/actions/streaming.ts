@@ -1,8 +1,8 @@
-import { getSettings } from 'soapbox/actions/settings';
+import { getLocale, getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
-import { getUnreadChatsCount, updateChatListItem } from 'soapbox/utils/chats';
+import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats';
 import { removePageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
@@ -33,13 +33,6 @@ import type { APIEntity, Chat } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
-
-const validLocale = (locale: string) => Object.keys(messages).includes(locale);
-
-const getLocale = (state: RootState) => {
-  const locale = getSettings(state).get('locale') as string;
-  return validLocale(locale) ? locale : 'en';
-};
 
 const updateFollowRelationships = (relationships: APIEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -81,7 +74,7 @@ const updateChatQuery = (chat: IChat) => {
 };
 
 interface StreamOpts {
-  statContext?: IStatContext,
+  statContext?: IStatContext
 }
 
 const connectTimelineStream = (
@@ -102,7 +95,7 @@ const connectTimelineStream = (
       dispatch(disconnectTimeline(timelineId));
     },
 
-    onReceive(data: any) {
+    onReceive(websocket, data: any) {
       switch (data.event) {
         case 'update':
           dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
@@ -170,6 +163,9 @@ const connectTimelineStream = (
             }
           });
           break;
+        case 'chat_message.reaction': // TruthSocial
+          updateChatMessage(JSON.parse(data.payload));
+          break;
         case 'pleroma:follow_relationships_update':
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
           break;
@@ -184,6 +180,11 @@ const connectTimelineStream = (
           break;
         case 'marker':
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
+          break;
+        case 'nostr.sign':
+          window.nostr?.signEvent(JSON.parse(data.payload))
+            .then((data) => websocket.send(JSON.stringify({ type: 'nostr.sign', data })))
+            .catch(() => console.warn('Failed to sign Nostr event.'));
           break;
       }
     },
@@ -219,6 +220,9 @@ const connectListStream      = (id: string) =>
 const connectGroupStream     = (id: string) =>
   connectTimelineStream(`group:${id}`, `group&group=${id}`);
 
+const connectNostrStream     = () =>
+  connectTimelineStream('nostr', 'nostr');
+
 export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
@@ -231,4 +235,5 @@ export {
   connectDirectStream,
   connectListStream,
   connectGroupStream,
+  connectNostrStream,
 };
