@@ -82,10 +82,11 @@ const BlockedBlankslate = ({ group }: { group: Group }) => (
     <Text theme='muted'>
       <FormattedMessage
         id='group.banned.message'
-        defaultMessage='You are banned from'
+        defaultMessage='You are banned from {group}'
+        values={{
+          group: <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />,
+        }}
       />
-      {' '}
-      <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
     </Text>
   </Stack>
 );
