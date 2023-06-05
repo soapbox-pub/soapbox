@@ -11,8 +11,9 @@ const index = new Index({
   context: true,
 });
 
-for (const [key, emoji] of Object.entries(data.emojis)) {
-  index.add('n' + key, emoji.name);
+const sortedEmojis = Object.entries(data.emojis).sort((a, b) => a[0].localeCompare(b[0]));
+for (const [key, emoji] of sortedEmojis) {
+  index.add('n' + key, `${emoji.id} ${emoji.name} ${emoji.keywords.join(' ')}`);
 }
 
 export interface searchOptions {
