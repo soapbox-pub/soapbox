@@ -139,7 +139,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
     );
 
     return items;
-  }, [features.groupsTags, pending.length]);
+  }, [features.groupsTags, pending.length, group?.slug]);
 
   const renderChildren = () => {
     if (isDeleted) {
@@ -160,6 +160,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
           <GroupHeader group={group} />
 
           <Tabs
+            key={`group-tabs-${id}`}
             items={tabItems}
             activeItem={match.path}
           />
