@@ -19,22 +19,12 @@ describe('emoji_index', () => {
 
   it('orders search results correctly', () => {
     const expected = [
-      {
-        id: 'pineapple',
-        unified: '1f34d',
-        native: '🍍',
-      },
-      {
-        id: 'apple',
-        unified: '1f34e',
-        native: '🍎',
-      },
-      {
-        id: 'green_apple',
-        unified: '1f34f',
-        native: '🍏',
-      },
+      { id: 'apple', unified: '1f34e', native: '🍎' },
+      { id: 'pineapple', unified: '1f34d', native: '🍍' },
+      { id: 'green_apple', unified: '1f34f', native: '🍏' },
+      { id: 'iphone', unified: '1f4f1', native: '📱' },
     ];
+
     expect(search('apple').map(trimEmojis)).toEqual(expected);
   });
 
