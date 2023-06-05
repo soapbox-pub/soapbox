@@ -12,7 +12,7 @@ const index = new Index({
 });
 
 for (const [key, emoji] of Object.entries(data.emojis)) {
-  index.add('n' + key, emoji.name);
+  index.add('n' + key, `${emoji.keywords.join(' ')} ${emoji.name}`);
 }
 
 export interface searchOptions {
