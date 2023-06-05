@@ -157,7 +157,7 @@
   "admin_nav.awaiting_approval": "Waitlist",
   "admin_nav.dashboard": "Dashboard",
   "admin_nav.reports": "Reports",
-  "age_verification.body": "{siteTitle} requires users to be at least {ageMinimum, plural, one {# year} other {# years}} years old to access its platform. Anyone under the age of {ageMinimum, plural, one {# year} other {# years}} old cannot access this platform.",
+  "age_verification.body": "{siteTitle} requires users to be at least {ageMinimum, plural, one {# year} other {# years}} old to access its platform. Anyone under the age of {ageMinimum, plural, one {# year} other {# years}} old cannot access this platform.",
   "age_verification.fail": "You must be {ageMinimum, plural, one {# year} other {# years}} old or older.",
   "age_verification.header": "Enter your birth date",
   "alert.unexpected.body": "We're sorry for the interruption. If the problem persists, please reach out to our support team. You may also try to {clearCookies} (this will log you out).",

@@ -61,7 +61,7 @@ const AgeVerification = () => {
           <Text theme='muted' size='sm'>
             <FormattedMessage
               id='age_verification.body'
-              defaultMessage='{siteTitle} requires users to be at least {ageMinimum, plural, one {# year} other {# years}} years old to access its platform. Anyone under the age of {ageMinimum, plural, one {# year} other {# years}} old cannot access this platform.'
+              defaultMessage='{siteTitle} requires users to be at least {ageMinimum, plural, one {# year} other {# years}} old to access its platform. Anyone under the age of {ageMinimum, plural, one {# year} other {# years}} old cannot access this platform.'
               values={{
                 siteTitle: instance.title,
                 ageMinimum,
