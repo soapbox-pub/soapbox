@@ -6,6 +6,7 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 
 import api, { getNextLink, getPrevLink } from '../api';
 
+import { fetchGroupRelationships } from './groups';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 
 import type { AxiosError } from 'axios';
@@ -177,6 +178,10 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
 
     return api(getState).get(path, { params }).then(response => {
       dispatch(importFetchedStatuses(response.data));
+
+      const statusesFromGroups = (response.data as Status[]).filter((status) => !!status.group);
+      dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));
+
       dispatch(expandTimelineSuccess(
         timelineId,
         response.data,
