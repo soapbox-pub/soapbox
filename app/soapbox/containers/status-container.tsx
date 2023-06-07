@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
+import { useStatus } from 'soapbox/api/hooks';
 import Status, { IStatus } from 'soapbox/components/status';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
 
 interface IStatusContainer extends Omit<IStatus, 'status'> {
   id: string
@@ -21,9 +20,7 @@ interface IStatusContainer extends Omit<IStatus, 'status'> {
  */
 const StatusContainer: React.FC<IStatusContainer> = (props) => {
   const { id, contextType, ...rest } = props;
-
-  const getStatus = useCallback(makeGetStatus(), []);
-  const status = useAppSelector(state => getStatus(state, { id, contextType }));
+  const { status } = useStatus(id);
 
   if (status) {
     return <Status status={status} {...rest} />;
