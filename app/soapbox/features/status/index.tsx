@@ -7,12 +7,12 @@ import {
   fetchStatusWithContext,
   fetchNext,
 } from 'soapbox/actions/statuses';
+import { useStatus } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import Thread from './components/thread';
 
@@ -48,8 +48,7 @@ const StatusDetails: React.FC<IStatusDetails> = (props) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const getStatus = useCallback(makeGetStatus(), []);
-  const status = useAppSelector((state) => getStatus(state, { id: props.params.statusId }));
+  const { status } = useStatus(props.params.statusId);
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();

@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import { fetchNext, fetchStatusWithContext } from 'soapbox/actions/statuses';
+import { useStatus } from 'soapbox/api/hooks';
 import ExtendedVideoPlayer from 'soapbox/components/extended-video-player';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusActionBar from 'soapbox/components/status-action-bar';
@@ -14,9 +15,8 @@ import Audio from 'soapbox/features/audio';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import Thread from 'soapbox/features/status/components/thread';
 import Video from 'soapbox/features/video';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
-import { makeGetStatus } from 'soapbox/selectors';
 
 import ImageLoader from '../image-loader';
 
@@ -64,8 +64,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const history = useHistory();
   const intl = useIntl();
 
-  const getStatus = useCallback(makeGetStatus(), []);
-  const actualStatus = useAppSelector((state) => getStatus(state, { id: status?.id as string }));
+  const { status: actualStatus } = useStatus(status?.id!);
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
