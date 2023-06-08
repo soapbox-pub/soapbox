@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchBlocks, expandBlocks } from 'soapbox/actions/blocks';
@@ -9,7 +9,7 @@ import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
-  heading: { id: 'column.blocks', defaultMessage: 'Blocked users' },
+  heading: { id: 'column.blocks', defaultMessage: 'Blocks' },
 });
 
 const handleLoadMore = debounce((dispatch) => {
@@ -23,7 +23,7 @@ const Blocks: React.FC = () => {
   const accountIds = useAppSelector((state) => state.user_lists.blocks.items);
   const hasMore = useAppSelector((state) => !!state.user_lists.blocks.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchBlocks());
   }, []);
 
@@ -44,7 +44,8 @@ const Blocks: React.FC = () => {
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
-        itemClassName='pb-4'
+        emptyMessageCard={false}
+        itemClassName='pb-4 last:pb-0'
       >
         {accountIds.map((id) =>
           <AccountContainer key={id} id={id} actionType='blocking' />,

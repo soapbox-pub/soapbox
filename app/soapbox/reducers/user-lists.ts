@@ -64,10 +64,6 @@ import {
   REACTIONS_FETCH_SUCCESS,
 } from 'soapbox/actions/interactions';
 import {
-  MUTES_FETCH_SUCCESS,
-  MUTES_EXPAND_SUCCESS,
-} from 'soapbox/actions/mutes';
-import {
   NOTIFICATIONS_UPDATE,
 } from 'soapbox/actions/notifications';
 
@@ -197,10 +193,6 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
       return normalizeList(state, ['blocks'], action.accounts, action.next);
     case BLOCKS_EXPAND_SUCCESS:
       return appendToList(state, ['blocks'], action.accounts, action.next);
-    case MUTES_FETCH_SUCCESS:
-      return normalizeList(state, ['mutes'], action.accounts, action.next);
-    case MUTES_EXPAND_SUCCESS:
-      return appendToList(state, ['mutes'], action.accounts, action.next);
     case DIRECTORY_FETCH_SUCCESS:
       return normalizeList(state, ['directory'], action.accounts, action.next);
     case DIRECTORY_EXPAND_SUCCESS:

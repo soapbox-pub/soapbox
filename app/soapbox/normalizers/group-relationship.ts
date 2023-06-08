@@ -16,6 +16,7 @@ export const GroupRelationshipRecord = ImmutableRecord({
   member: false,
   notifying: null,
   requested: false,
+  muting: false,
   role: 'user' as GroupRoles,
   pending_requests: false,
 });
