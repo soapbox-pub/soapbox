@@ -1,48 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { useMutes } from 'soapbox/api/hooks';
-import Account from 'soapbox/components/account';
+import { useMutes, useGroupMutes } from 'soapbox/api/hooks';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner } from 'soapbox/components/ui';
+import { Column, Stack, Tabs } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account-container';
+import { useFeatures } from 'soapbox/hooks';
+
+import GroupListItem from './components/group-list-item';
 
 const messages = defineMessages({
-  heading: { id: 'column.mutes', defaultMessage: 'Muted users' },
+  heading: { id: 'column.mutes', defaultMessage: 'Mutes' },
 });
+
+enum TabItems {
+  ACCOUNTS = 'ACCOUNTS',
+  GROUPS = 'GROUPS'
+}
 
 const Mutes: React.FC = () => {
   const intl = useIntl();
+  const features = useFeatures();
 
   const {
     accounts,
-    hasNextPage,
-    fetchNextPage,
-    isLoading,
+    hasNextPage: hasNextAccountsPage,
+    fetchNextPage: fetchNextAccounts,
+    isLoading: isLoadingAccounts,
   } = useMutes();
 
-  if (isLoading) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
+  const {
+    mutes: groupMutes,
+    isLoading: isLoadingGroups,
+    hasNextPage: hasNextGroupsPage,
+    fetchNextPage: fetchNextGroups,
+    fetchEntities: fetchMutedGroups,
+  } = useGroupMutes();
 
-  const emptyMessage = <FormattedMessage id='empty_column.mutes' defaultMessage="You haven't muted any users yet." />;
+  const [activeItem, setActiveItem] = useState<TabItems>(TabItems.ACCOUNTS);
+  const isAccountsTabSelected = activeItem === TabItems.ACCOUNTS;
+
+  const scrollableListProps = {
+    itemClassName: 'pb-4 last:pb-0',
+    scrollKey: 'mutes',
+    emptyMessageCard: false,
+  };
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <ScrollableList
-        scrollKey='mutes'
-        onLoadMore={fetchNextPage}
-        hasMore={hasNextPage}
-        emptyMessage={emptyMessage}
-        itemClassName='pb-4'
-      >
-        {accounts.map((account) => (
-          <Account key={account.id} account={account} actionType='muting' />
-        ))}
-      </ScrollableList>
+      <Stack space={4}>
+        {features.groupsMuting && (
+          <Tabs
+            items={[
+              {
+                text: 'Users',
+                action: () => setActiveItem(TabItems.ACCOUNTS),
+                name: TabItems.ACCOUNTS,
+              },
+              {
+                text: 'Groups',
+                action: () => setActiveItem(TabItems.GROUPS),
+                name: TabItems.GROUPS,
+              },
+            ]}
+            activeItem={activeItem}
+          />
+        )}
+
+        {isAccountsTabSelected ? (
+          <ScrollableList
+            {...scrollableListProps}
+            isLoading={isLoadingAccounts}
+            onLoadMore={fetchNextAccounts}
+            hasMore={hasNextAccountsPage}
+            emptyMessage={
+              <FormattedMessage id='empty_column.mutes' defaultMessage="You haven't muted any users yet." />
+            }
+          >
+            {accounts.map((accounts) =>
+              <AccountContainer key={accounts.id} id={accounts.id} actionType='muting' />,
+            )}
+          </ScrollableList>
+        ) : (
+          <ScrollableList
+            {...scrollableListProps}
+            isLoading={isLoadingGroups}
+            onLoadMore={fetchNextGroups}
+            hasMore={hasNextGroupsPage}
+            emptyMessage={
+              <FormattedMessage id='mutes.empty.groups' defaultMessage="You haven't muted any groups yet." />
+            }
+          >
+            {groupMutes.map((group) =>(
+              <GroupListItem
+                group={group}
+                onUnmute={fetchMutedGroups}
+              />
+            ))}
+          </ScrollableList>
+        )}
+      </Stack>
     </Column>
   );
 };
