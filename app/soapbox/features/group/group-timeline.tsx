@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 
 import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
 import { connectGroupStream } from 'soapbox/actions/streaming';
-import { expandGroupTimeline } from 'soapbox/actions/timelines';
+import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines';
 import { useGroup } from 'soapbox/api/hooks';
 import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
 import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
+import { makeGetStatusIds } from 'soapbox/selectors';
 
 import Timeline from '../ui/components/timeline';
 
@@ -18,6 +19,8 @@ type RouteParams = { groupId: string };
 interface IGroupTimeline {
   params: RouteParams
 }
+
+const getStatusIds = makeGetStatusIds();
 
 const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   const intl = useIntl();
@@ -32,6 +35,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   const composeId = `group:${groupId}`;
   const canComposeGroupStatus = !!account && group?.relationship?.member;
   const groupTimelineVisible = useAppSelector((state) => !!state.compose.get(composeId)?.group_timeline_visible);
+  const featuredStatusIds = useAppSelector((state) => getStatusIds(state, { type: `group:${group?.id}:pinned` }));
 
   const { isDragging, isDraggedOver } = useDraggedFiles(composer, (files) => {
     dispatch(uploadCompose(composeId, files, intl));
@@ -47,6 +51,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
 
   useEffect(() => {
     dispatch(expandGroupTimeline(groupId));
+    dispatch(expandGroupFeaturedTimeline(groupId));
     dispatch(groupCompose(composeId, groupId));
 
     const disconnect = dispatch(connectGroupStream(groupId));
@@ -123,6 +128,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
         emptyMessageCard={false}
         divideType='border'
         showGroup={false}
+        featuredStatusIds={featuredStatusIds}
       />
     </Stack>
   );
