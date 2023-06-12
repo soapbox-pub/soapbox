@@ -7,10 +7,11 @@ import api from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { expandGroupFeaturedTimeline } from './timelines';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -511,6 +512,20 @@ const pin = (status: StatusEntity) =>
     });
   };
 
+const pinToGroup = (status: StatusEntity, group: Group) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    return api(getState)
+      .post(`/api/v1/groups/${group.id}/statuses/${status.get('id')}/pin`)
+      .then(() => dispatch(expandGroupFeaturedTimeline(group.id)));
+  };
+
+const unpinFromGroup = (status: StatusEntity, group: Group) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    return api(getState)
+      .post(`/api/v1/groups/${group.id}/statuses/${status.get('id')}/unpin`)
+      .then(() => dispatch(expandGroupFeaturedTimeline(group.id)));
+  };
+
 const pinRequest = (status: StatusEntity) => ({
   type: PIN_REQUEST,
   status,
@@ -715,6 +730,8 @@ export {
   unpinSuccess,
   unpinFail,
   togglePin,
+  pinToGroup,
+  unpinFromGroup,
   remoteInteraction,
   remoteInteractionRequest,
   remoteInteractionSuccess,

@@ -40,6 +40,9 @@ function buildCard(props: Partial<Card> = {}): Card {
 function buildGroup(props: Partial<Group> = {}): Group {
   return groupSchema.parse(Object.assign({
     id: uuidv4(),
+    owner: {
+      id: uuidv4(),
+    },
   }, props));
 }
 
