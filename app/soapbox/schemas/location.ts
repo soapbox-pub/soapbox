@@ -12,6 +12,9 @@ const locationSchema = z.object({
   origin_provider: z.string().catch(''),
   type: z.string().catch(''),
   timezone: z.string().catch(''),
+  name: z.string().catch(''),
+  latitude: z.number().catch(0),
+  longitude: z.number().catch(0),
   geom: z.object({
     coordinates: z.tuple([z.number(), z.number()]).nullable().catch(null),
     srid: z.string().catch(''),

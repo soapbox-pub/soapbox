@@ -23,8 +23,8 @@ export const getBaseURL = (account: AccountEntity): string => {
   }
 };
 
-export const getAcct = (account: AccountEntity | Account, displayFqn: boolean): string => (
-  displayFqn === true ? account.fqn : account.acct
+export const getAcct = (account: Pick<Account, 'fqn' | 'acct'>, displayFqn: boolean): string => (
+  displayFqn === true ? account.fqn as string : account.acct
 );
 
 export const isLocal = (account: AccountEntity | Account): boolean => {
