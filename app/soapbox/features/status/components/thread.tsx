@@ -4,10 +4,10 @@ import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immuta
 import React, { useEffect, useRef, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { type VirtuosoHandle } from 'react-virtuoso';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
+import { mentionCompose, replyCompose, replyMediaModalCompose } from 'soapbox/actions/compose';
 import { favourite, reblog, unfavourite, unreblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
@@ -15,7 +15,8 @@ import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
 import Tombstone from 'soapbox/components/tombstone';
-import { Stack } from 'soapbox/components/ui';
+import { Avatar, HStack, Stack } from 'soapbox/components/ui';
+import ComposeForm from 'soapbox/features/compose/components/compose-form';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import PendingStatus from 'soapbox/features/ui/components/pending-status';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSettings } from 'soapbox/hooks';
@@ -76,12 +77,13 @@ export const getDescendantsIds = createSelector([
 });
 
 interface IThread {
-  status: Status
-  withMedia?: boolean
-  useWindowScroll?: boolean
+  handleLoadMore: () => void
   itemClassName?: string
   next: string | undefined
-  handleLoadMore: () => void
+  status: Status
+  useWindowScroll?: boolean
+  withComposer?: boolean
+  withMedia?: boolean
 }
 
 const Thread = (props: IThread) => {
@@ -91,6 +93,7 @@ const Thread = (props: IThread) => {
     next,
     status,
     useWindowScroll = true,
+    withComposer = false,
     withMedia = true,
   } = props;
 
@@ -341,6 +344,12 @@ const Thread = (props: IThread) => {
     setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
   }, [status.id, ancestorsIds.size]);
 
+  useEffect(() => {
+    if (withComposer) {
+      dispatch(replyMediaModalCompose(status));
+    }
+  }, [withComposer]);
+
   const handleOpenCompareHistoryModal = (status: Status) => {
     dispatch(openModal('COMPARE_HISTORY', {
       statusId: status.id,
@@ -400,8 +409,32 @@ const Thread = (props: IThread) => {
         </div>
       </HotKeys>
 
-      {hasDescendants && (
+      {(hasDescendants || withComposer) && (
         <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 dark:border-gray-800' />
+      )}
+
+      {(withComposer && me) && (
+        <div className='border-b border-solid border-gray-200 py-6 dark:border-gray-800'>
+          <HStack
+          // ref={composer}
+            alignItems='start'
+            space={4}
+            className={clsx('relative rounded-xl transition', {
+            // 'border-2 border-primary-600 border-dashed z-[99] p-4': isDragging,
+            // 'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
+            })}
+          >
+            <Link to={`/@${me.acct}`}>
+              <Avatar src={me.avatar} size={46} />
+            </Link>
+
+            <ComposeForm
+              id='media-viewer-compose'
+              shouldCondense
+              autoFocus={false}
+            />
+          </HStack>
+        </div>
       )}
     </div>
   );

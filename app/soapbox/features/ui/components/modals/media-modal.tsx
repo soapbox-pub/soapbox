@@ -353,12 +353,13 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             }
           >
             <Thread
-              status={actualStatus}
-              withMedia={false}
-              useWindowScroll={false}
+              handleLoadMore={handleLoadMore}
               itemClassName='px-4'
               next={next}
-              handleLoadMore={handleLoadMore}
+              status={actualStatus}
+              useWindowScroll={false}
+              withComposer
+              withMedia={false}
             />
           </div>
         )}

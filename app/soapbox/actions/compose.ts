@@ -125,6 +125,21 @@ const changeCompose = (composeId: string, text: string) => ({
   text: text,
 });
 
+const replyMediaModalCompose = (status: Status) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState();
+    const instance = state.instance;
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: COMPOSE_REPLY,
+      id: 'media-viewer-compose',
+      status,
+      account: state.accounts.get(state.me),
+      explicitAddressing,
+    });
+  };
+
 const replyCompose = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
@@ -284,7 +299,11 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     }
 
     dispatch(submitComposeRequest(composeId));
-    dispatch(closeModal());
+
+    const isMediaModalOpen = state.modals.last()!.modalType === 'MEDIA';
+    if (!isMediaModalOpen) {
+      dispatch(closeModal());
+    }
 
     const idempotencyKey = compose.idempotencyKey;
 
@@ -815,6 +834,7 @@ export {
   setComposeToStatus,
   changeCompose,
   replyCompose,
+  replyMediaModalCompose,
   cancelReplyCompose,
   quoteCompose,
   cancelQuoteCompose,
