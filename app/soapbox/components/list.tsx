@@ -43,6 +43,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, onClick, onSelec
         const isSelect = child.type === SelectDropdown || child.type === Select;
 
         return React.cloneElement(child, {
+          // @ts-ignore
           id: domId,
           className: clsx({
             'w-auto': isSelect,
