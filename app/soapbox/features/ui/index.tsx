@@ -38,6 +38,7 @@ import HomePage from 'soapbox/pages/home-page';
 import ManageGroupsPage from 'soapbox/pages/manage-groups-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
+import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
 import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
@@ -275,7 +276,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-      <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
+      <WrappedRoute path='/search' page={SearchPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
       {features.events && <WrappedRoute path='/events' page={EventsPage} component={Events} content={children} />}
