@@ -7,6 +7,8 @@ import { unescapeHTML } from 'soapbox/utils/html';
 import { customEmojiSchema } from './custom-emoji';
 import { contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
+import type { Resolve } from 'soapbox/utils/types';
+
 const avatarMissing = require('assets/images/avatar-missing.png');
 const headerMissing = require('assets/images/header-missing.png');
 
@@ -142,6 +144,6 @@ const accountSchema = baseAccountSchema.extend({
   moved: baseAccountSchema.transform(transformAccount).nullable().catch(null),
 }).transform(transformAccount);
 
-type Account = z.infer<typeof accountSchema>;
+type Account = Resolve<z.infer<typeof accountSchema>>;
 
 export { accountSchema, type Account };

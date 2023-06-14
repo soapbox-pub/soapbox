@@ -16,6 +16,8 @@ import { pollSchema } from './poll';
 import { tagSchema } from './tag';
 import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
+import type { Resolve } from 'soapbox/utils/types';
+
 const statusPleromaSchema = z.object({
   emoji_reactions: filteredArray(emojiReactionSchema),
   event: eventSchema.nullish().catch(undefined),
@@ -144,6 +146,6 @@ const statusSchema = baseStatusSchema.extend({
   };
 }).transform(transformStatus);
 
-type Status = z.infer<typeof statusSchema>;
+type Status = Resolve<z.infer<typeof statusSchema>>;
 
 export { statusSchema, type Status };
