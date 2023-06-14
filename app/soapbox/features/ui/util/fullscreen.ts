@@ -34,25 +34,3 @@ export const requestFullscreen = (el: Element): void => {
     el.mozRequestFullScreen();
   }
 };
-
-type FullscreenListener = (this: Document, ev: Event) => void;
-
-export const attachFullscreenListener = (listener: FullscreenListener): void => {
-  if ('onfullscreenchange' in document) {
-    document.addEventListener('fullscreenchange', listener);
-  } else if ('onwebkitfullscreenchange' in document) {
-    document.addEventListener('webkitfullscreenchange', listener);
-  } else if ('onmozfullscreenchange' in document) {
-    document.addEventListener('mozfullscreenchange', listener);
-  }
-};
-
-export const detachFullscreenListener = (listener: FullscreenListener): void => {
-  if ('onfullscreenchange' in document) {
-    document.removeEventListener('fullscreenchange', listener);
-  } else if ('onwebkitfullscreenchange' in document) {
-    document.removeEventListener('webkitfullscreenchange', listener);
-  } else if ('onmozfullscreenchange' in document) {
-    document.removeEventListener('mozfullscreenchange', listener);
-  }
-};

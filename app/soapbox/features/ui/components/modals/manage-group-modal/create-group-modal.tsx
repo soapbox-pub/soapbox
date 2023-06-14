@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { z } from 'zod';
 
 import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks';
 import { Modal, Stack } from 'soapbox/components/ui';
@@ -71,9 +72,9 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
           },
           onError(error) {
             if (error instanceof AxiosError) {
-              const msg = error.response?.data.error;
-              if (typeof msg === 'string') {
-                toast.error(msg);
+              const msg = z.object({ error: z.string() }).safeParse(error.response?.data);
+              if (msg.success) {
+                toast.error(msg.data.error);
               }
             }
           },

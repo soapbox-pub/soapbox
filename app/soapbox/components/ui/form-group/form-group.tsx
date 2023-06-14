@@ -29,9 +29,12 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
   if (React.isValidElement(inputChildren[0])) {
     firstChild = React.cloneElement(
       inputChildren[0],
+      // @ts-ignore
       { id: formFieldId },
     );
   }
+
+  // @ts-ignore
   const isCheckboxFormGroup = firstChild?.type === Checkbox;
 
   if (isCheckboxFormGroup) {
