@@ -221,29 +221,29 @@ const expandHomeTimeline = ({ url, accountId, maxId }: ExpandHomeTimelineOpts = 
   return expandTimeline('home', endpoint, params, done);
 };
 
-const expandPublicTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`public${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { max_id: maxId, only_media: !!onlyMedia }, done);
+const expandPublicTimeline = ({ url, maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`public${onlyMedia ? ':media' : ''}`, url || '/api/v1/timelines/public', url ? {} : { max_id: maxId, only_media: !!onlyMedia }, done);
 
-const expandRemoteTimeline = (instance: string, { maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`remote${onlyMedia ? ':media' : ''}:${instance}`, '/api/v1/timelines/public', { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia }, done);
+const expandRemoteTimeline = (instance: string, { url, maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`remote${onlyMedia ? ':media' : ''}:${instance}`, url || '/api/v1/timelines/public', url ? {} : { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia }, done);
 
-const expandCommunityTimeline = ({ maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`community${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { local: true, max_id: maxId, only_media: !!onlyMedia }, done);
+const expandCommunityTimeline = ({ url, maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`community${onlyMedia ? ':media' : ''}`, url || '/api/v1/timelines/public', url ? {} : { local: true, max_id: maxId, only_media: !!onlyMedia }, done);
 
-const expandDirectTimeline = ({ maxId }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline('direct', '/api/v1/timelines/direct', { max_id: maxId }, done);
+const expandDirectTimeline = ({ url, maxId }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline('direct', url || '/api/v1/timelines/direct', url ? {} : { max_id: maxId }, done);
 
-const expandAccountTimeline = (accountId: string, { maxId, withReplies }: Record<string, any> = {}) =>
-  expandTimeline(`account:${accountId}${withReplies ? ':with_replies' : ''}`, `/api/v1/accounts/${accountId}/statuses`, { exclude_replies: !withReplies, max_id: maxId, with_muted: true });
+const expandAccountTimeline = (accountId: string, { url, maxId, withReplies }: Record<string, any> = {}) =>
+  expandTimeline(`account:${accountId}${withReplies ? ':with_replies' : ''}`, url || `/api/v1/accounts/${accountId}/statuses`, url ? {} : { exclude_replies: !withReplies, max_id: maxId, with_muted: true });
 
 const expandAccountFeaturedTimeline = (accountId: string) =>
   expandTimeline(`account:${accountId}:pinned`, `/api/v1/accounts/${accountId}/statuses`, { pinned: true, with_muted: true });
 
-const expandAccountMediaTimeline = (accountId: string | number, { maxId }: Record<string, any> = {}) =>
-  expandTimeline(`account:${accountId}:media`, `/api/v1/accounts/${accountId}/statuses`, { max_id: maxId, only_media: true, limit: 40, with_muted: true });
+const expandAccountMediaTimeline = (accountId: string | number, { url, maxId }: Record<string, any> = {}) =>
+  expandTimeline(`account:${accountId}:media`, url || `/api/v1/accounts/${accountId}/statuses`, url ? {} : { max_id: maxId, only_media: true, limit: 40, with_muted: true });
 
-const expandListTimeline = (id: string, { maxId }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`list:${id}`, `/api/v1/timelines/list/${id}`, { max_id: maxId }, done);
+const expandListTimeline = (id: string, { url, maxId }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`list:${id}`, url || `/api/v1/timelines/list/${id}`, url ? {} : { max_id: maxId }, done);
 
 const expandGroupTimeline = (id: string, { maxId }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`group:${id}`, `/api/v1/timelines/group/${id}`, { max_id: maxId }, done);
@@ -254,8 +254,8 @@ const expandGroupTimelineFromTag = (id: string, tagName: string, { maxId }: Reco
 const expandGroupMediaTimeline = (id: string | number, { maxId }: Record<string, any> = {}) =>
   expandTimeline(`group:${id}:media`, `/api/v1/timelines/group/${id}`, { max_id: maxId, only_media: true, limit: 40, with_muted: true });
 
-const expandHashtagTimeline = (hashtag: string, { maxId, tags }: Record<string, any> = {}, done = noOp) => {
-  return expandTimeline(`hashtag:${hashtag}`, `/api/v1/timelines/tag/${hashtag}`, {
+const expandHashtagTimeline = (hashtag: string, { url, maxId, tags }: Record<string, any> = {}, done = noOp) => {
+  return expandTimeline(`hashtag:${hashtag}`, url || `/api/v1/timelines/tag/${hashtag}`, url ? {} : {
     max_id: maxId,
     any: parseTags(tags, 'any'),
     all: parseTags(tags, 'all'),

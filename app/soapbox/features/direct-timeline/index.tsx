@@ -6,7 +6,7 @@ import { connectDirectStream } from 'soapbox/actions/streaming';
 import { expandDirectTimeline } from 'soapbox/actions/timelines';
 import AccountSearch from 'soapbox/components/account-search';
 import { Column } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
@@ -18,6 +18,7 @@ const messages = defineMessages({
 const DirectTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const next = useAppSelector(state => state.timelines.get('direct')?.next);
 
   useEffect(() => {
     dispatch(expandDirectTimeline());
@@ -33,7 +34,7 @@ const DirectTimeline = () => {
   };
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandDirectTimeline({ maxId }));
+    dispatch(expandDirectTimeline({ url: next, maxId }));
   };
 
   return (
