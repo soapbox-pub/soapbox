@@ -82,10 +82,11 @@ const BlockedBlankslate = ({ group }: { group: Group }) => (
     <Text theme='muted'>
       <FormattedMessage
         id='group.banned.message'
-        defaultMessage='You are banned from'
+        defaultMessage='You are banned from {group}'
+        values={{
+          group: <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />,
+        }}
       />
-      {' '}
-      <Text theme='inherit' tag='span' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
     </Text>
   </Stack>
 );
@@ -138,7 +139,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
     );
 
     return items;
-  }, [features.groupsTags, pending.length]);
+  }, [features.groupsTags, pending.length, group?.slug]);
 
   const renderChildren = () => {
     if (isDeleted) {
@@ -159,6 +160,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
           <GroupHeader group={group} />
 
           <Tabs
+            key={`group-tabs-${id}`}
             items={tabItems}
             activeItem={match.path}
           />

@@ -12,7 +12,7 @@ function useGroupLookup(slug: string) {
     Entities.GROUPS,
     (group) => group.slug === slug,
     () => api.get(`/api/v1/groups/lookup?name=${slug}`),
-    { schema: groupSchema },
+    { schema: groupSchema, enabled: !!slug },
   );
 
   const { entity: relationship } = useGroupRelationship(group?.id);

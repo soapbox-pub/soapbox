@@ -126,7 +126,7 @@ type SoapboxConfigMap = ImmutableMap<string, any>;
 
 const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   if (soapboxConfig.has('ads')) {
-    const ads = filteredArray(adSchema).parse(soapboxConfig.get('ads').toJS());
+    const ads = filteredArray(adSchema).parse(ImmutableList(soapboxConfig.get('ads')).toJS());
     return soapboxConfig.set('ads', ads);
   } else {
     return soapboxConfig;

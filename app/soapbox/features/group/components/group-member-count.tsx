@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { Text } from 'soapbox/components/ui';
 import { Group } from 'soapbox/types/entities';
@@ -11,17 +12,19 @@ interface IGroupMemberCount {
 
 const GroupMemberCount = ({ group }: IGroupMemberCount) => {
   return (
-    <Text theme='inherit' tag='span' size='sm' weight='medium' data-testid='group-member-count'>
-      {shortNumberFormat(group.members_count)}
-      {' '}
-      <FormattedMessage
-        id='groups.discover.search.results.member_count'
-        defaultMessage='{members, plural, one {member} other {members}}'
-        values={{
-          members: group.members_count,
-        }}
-      />
-    </Text>
+    <Link to={`/group/${group.slug}/members`} className='hover:underline'>
+      <Text theme='inherit' tag='span' size='sm' weight='medium' data-testid='group-member-count'>
+        {shortNumberFormat(group.members_count)}
+        {' '}
+        <FormattedMessage
+          id='groups.discover.search.results.member_count'
+          defaultMessage='{members, plural, one {member} other {members}}'
+          values={{
+            members: group.members_count,
+          }}
+        />
+      </Text>
+    </Link>
   );
 };
 

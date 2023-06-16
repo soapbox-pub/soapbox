@@ -22,7 +22,7 @@ import type { Group, GroupMember } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   adminLimitTitle: { id: 'group.member.admin.limit.title', defaultMessage: 'Admin limit reached' },
-  adminLimitSummary: { id: 'group.member.admin.limit.summary', defaultMessage: 'You can assign up to {count} admins for the group at this time.' },
+  adminLimitSummary: { id: 'group.member.admin.limit.summary', defaultMessage: 'You can assign up to {count, plural, one {admin} other {admins}} for the group at this time.' },
   blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },
   blockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Ban From Group' },
   blockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to ban @{name} from the group?' },
@@ -195,8 +195,8 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
             data-testid='role-badge'
             className={
               clsx('inline-flex items-center rounded px-2 py-1 text-xs font-medium capitalize', {
-                'bg-primary-200 text-primary-500': isMemberOwner,
-                'bg-gray-200 text-gray-900': isMemberAdmin,
+                'bg-primary-200 text-primary-500 dark:bg-primary-800 dark:text-primary-200': isMemberOwner,
+                'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100': isMemberAdmin,
               })
             }
           >

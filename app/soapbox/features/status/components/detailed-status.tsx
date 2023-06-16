@@ -15,15 +15,12 @@ import { getActualStatus } from 'soapbox/utils/status';
 
 import StatusInteractionBar from './status-interaction-bar';
 
-import type { List as ImmutableList } from 'immutable';
-import type { Attachment as AttachmentEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Group, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IDetailedStatus {
   status: StatusEntity
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
-  onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void
-  onToggleHidden: (status: StatusEntity) => void
-  showMedia: boolean
+  showMedia?: boolean
+  withMedia?: boolean
   onOpenCompareHistoryModal: (status: StatusEntity) => void
   onToggleMediaVisibility: () => void
 }
@@ -33,6 +30,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
+  withMedia = true,
 }) => {
   const intl = useIntl();
 
@@ -155,7 +153,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
             <TranslateButton status={actualStatus} />
 
-            {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+            {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.size > 0)) && (
               <Stack space={4}>
                 <StatusMedia
                   status={actualStatus}

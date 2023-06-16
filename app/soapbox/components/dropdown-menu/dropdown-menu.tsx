@@ -1,15 +1,12 @@
-import { offset, Placement, useFloating, flip, arrow } from '@floating-ui/react';
+import { offset, Placement, useFloating, flip, arrow, shift } from '@floating-ui/react';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import {
-  closeDropdownMenu as closeDropdownMenuRedux,
-  openDropdownMenu,
-} from 'soapbox/actions/dropdown-menu';
+import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
 import { closeModal, openModal } from 'soapbox/actions/modals';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 import { isUserTouching } from 'soapbox/is-mobile';
 
 import { IconButton, Portal } from '../ui';
@@ -53,10 +50,8 @@ const DropdownMenu = (props: IDropdownMenu) => {
   const history = useHistory();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isOpenRedux = useAppSelector(state => state.dropdown_menu.isOpen);
 
   const arrowRef = useRef<HTMLDivElement>(null);
-  const activeElement = useRef<Element | null>(null);
 
   const isOnMobile = isUserTouching();
 
@@ -65,6 +60,9 @@ const DropdownMenu = (props: IDropdownMenu) => {
     middleware: [
       offset(12),
       flip(),
+      shift({
+        padding: 8,
+      }),
       arrow({
         element: arrowRef,
       }),
@@ -113,10 +111,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   };
 
   const handleClose = () => {
-    if (activeElement.current && activeElement.current === refs.reference.current) {
-      (activeElement.current as any).focus();
-      activeElement.current = null;
-    }
+    (refs.reference.current as HTMLButtonElement)?.focus();
 
     if (isOnMobile) {
       dispatch(closeModal('ACTIONS'));
@@ -131,24 +126,13 @@ const DropdownMenu = (props: IDropdownMenu) => {
   };
 
   const closeDropdownMenu = () => {
-    if (isOpenRedux) {
-      dispatch(closeDropdownMenuRedux());
-    }
-  };
+    dispatch((dispatch, getState) => {
+      const isOpenRedux = getState().dropdown_menu.isOpen;
 
-  const handleMouseDown: React.EventHandler<React.MouseEvent | React.KeyboardEvent> = () => {
-    if (!isOpen) {
-      activeElement.current = document.activeElement;
-    }
-  };
-
-  const handleButtonKeyDown: React.EventHandler<React.KeyboardEvent> = (event) => {
-    switch (event.key) {
-      case ' ':
-      case 'Enter':
-        handleMouseDown(event);
-        break;
-    }
+      if (isOpenRedux) {
+        dispatch(closeDropdownMenuRedux());
+      }
+    });
   };
 
   const handleKeyPress: React.EventHandler<React.KeyboardEvent<HTMLButtonElement>> = (event) => {
@@ -260,16 +244,22 @@ const DropdownMenu = (props: IDropdownMenu) => {
   }, []);
 
   useEffect(() => {
-    document.addEventListener('click', handleDocumentClick, false);
-    document.addEventListener('keydown', handleKeyDown, false);
-    document.addEventListener('touchend', handleDocumentClick, listenerOptions);
+    if (isOpen) {
+      if (refs.floating.current) {
+        (refs.floating.current?.querySelector('li a[role=\'button\']') as HTMLAnchorElement)?.focus();
+      }
 
-    return () => {
-      document.removeEventListener('click', handleDocumentClick);
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('touchend', handleDocumentClick);
-    };
-  }, [refs.floating.current]);
+      document.addEventListener('click', handleDocumentClick, false);
+      document.addEventListener('keydown', handleKeyDown, false);
+      document.addEventListener('touchend', handleDocumentClick, listenerOptions);
+
+      return () => {
+        document.removeEventListener('click', handleDocumentClick);
+        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener('touchend', handleDocumentClick);
+      };
+    }
+  }, [isOpen, refs.floating.current]);
 
   if (items.length === 0) {
     return null;
@@ -281,8 +271,6 @@ const DropdownMenu = (props: IDropdownMenu) => {
         React.cloneElement(children, {
           disabled,
           onClick: handleClick,
-          onMouseDown: handleMouseDown,
-          onKeyDown: handleButtonKeyDown,
           onKeyPress: handleKeyPress,
           ref: refs.setReference,
         })
@@ -296,8 +284,6 @@ const DropdownMenu = (props: IDropdownMenu) => {
           title={title}
           src={src}
           onClick={handleClick}
-          onMouseDown={handleMouseDown}
-          onKeyDown={handleButtonKeyDown}
           onKeyPress={handleKeyPress}
           ref={refs.setReference}
         />

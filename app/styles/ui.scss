@@ -36,24 +36,6 @@
   }
 }
 
-.invisible {
-  font-size: 0 !important;
-  line-height: 0 !important;
-  display: inline-block;
-  width: 0;
-  height: 0;
-  position: absolute;
-
-  img,
-  svg {
-    margin: 0 !important;
-    border: 0 !important;
-    padding: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-}
-
 .react-datepicker-popper {
   z-index: 9999 !important;
 }

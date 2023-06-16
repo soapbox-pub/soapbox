@@ -12,7 +12,7 @@ interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Text to display next ot the button. */
   text?: string
   /** Predefined styles to display for the button. */
-  theme?: 'seamless' | 'outlined' | 'secondary' | 'transparent'
+  theme?: 'seamless' | 'outlined' | 'secondary' | 'transparent' | 'dark'
   /** Override the data-testid */
   'data-testid'?: string
 }
@@ -29,6 +29,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
         'bg-white dark:bg-transparent': theme === 'seamless',
         'border border-solid bg-transparent border-gray-400 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 focus:border-primary-500 text-gray-900 dark:text-gray-100 focus:ring-primary-500': theme === 'outlined',
         'border-transparent bg-primary-100 dark:bg-primary-800 hover:bg-primary-50 dark:hover:bg-primary-700 focus:bg-primary-100 dark:focus:bg-primary-800 text-primary-500 dark:text-primary-200': theme === 'secondary',
+        'bg-gray-900 text-white': theme === 'dark',
         'opacity-50': filteredProps.disabled,
       }, className)}
       {...filteredProps}

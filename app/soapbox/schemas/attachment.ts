@@ -62,6 +62,12 @@ const audioAttachmentSchema = baseAttachmentSchema.extend({
   type: z.literal('audio'),
   meta: z.object({
     duration: z.number().optional().catch(undefined),
+    colors: z.object({
+      background: z.string().optional().catch(undefined),
+      foreground: z.string().optional().catch(undefined),
+      accent: z.string().optional().catch(undefined),
+      duration: z.number().optional().catch(undefined),
+    }).optional().catch(undefined),
   }).catch({}),
 });
 

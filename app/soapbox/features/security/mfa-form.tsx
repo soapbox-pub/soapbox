@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
-import { Card, CardBody, CardHeader, CardTitle, Column, Stack } from 'soapbox/components/ui';
+import { Column, Stack } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import DisableOtpForm from './mfa/disable-otp-form';
@@ -37,23 +37,15 @@ const MfaForm: React.FC = () => {
   const mfa = useAppSelector((state) => state.security.get('mfa'));
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} transparent withHeader={false}>
-      <Card variant='rounded'>
-        <CardHeader backHref='/settings'>
-          <CardTitle title={intl.formatMessage(messages.heading)} />
-        </CardHeader>
-
-        <CardBody>
-          {mfa.getIn(['settings', 'totp']) ? (
-            <DisableOtpForm />
-          ) : (
-            <Stack space={4}>
-              <EnableOtpForm displayOtpForm={displayOtpForm} handleSetupProceedClick={handleSetupProceedClick} />
-              {displayOtpForm && <OtpConfirmForm />}
-            </Stack>
-          )}
-        </CardBody>
-      </Card>
+    <Column label={intl.formatMessage(messages.heading)}>
+      {mfa.getIn(['settings', 'totp']) ? (
+        <DisableOtpForm />
+      ) : (
+        <Stack space={4}>
+          <EnableOtpForm displayOtpForm={displayOtpForm} handleSetupProceedClick={handleSetupProceedClick} />
+          {displayOtpForm && <OtpConfirmForm />}
+        </Stack>
+      )}
     </Column>
   );
 };

@@ -27,6 +27,7 @@ const groupSchema = z.object({
   locked: z.boolean().catch(false),
   membership_required: z.boolean().catch(false),
   members_count: z.number().catch(0),
+  owner: z.object({ id: z.string() }),
   note: z.string().transform(note => note === '<p></p>' ? '' : note).catch(''),
   relationship: groupRelationshipSchema.nullable().catch(null), // Dummy field to be overwritten later
   slug: z.string().catch(''), // TruthSocial

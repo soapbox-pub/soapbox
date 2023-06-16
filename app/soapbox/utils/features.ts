@@ -550,7 +550,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/admin/groups/:group_id/unsuspend
      * @see DELETE /api/v1/admin/groups/:group_id
      */
-    groups: v.build === UNRELEASED,
+    groups: v.software === TRUTHSOCIAL,
 
     /**
      * Cap # of Group Admins to 5

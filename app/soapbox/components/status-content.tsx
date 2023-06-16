@@ -4,8 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
-import { useSoapboxConfig } from 'soapbox/hooks';
-import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
 import { isRtl } from '../rtl';
@@ -53,8 +51,6 @@ const StatusContent: React.FC<IStatusContent> = ({
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
-
-  const { greentext } = useSoapboxConfig();
 
   const onMentionClick = (mention: Mention, e: MouseEvent) => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
@@ -134,13 +130,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   });
 
   const parsedHtml = useMemo((): string => {
-    const html = translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
-
-    if (greentext) {
-      return addGreentext(html);
-    } else {
-      return html;
-    }
+    return translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
   }, [status.contentHtml, status.translation]);
 
   if (status.content.length === 0) {

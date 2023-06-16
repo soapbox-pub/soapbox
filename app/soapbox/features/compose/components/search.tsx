@@ -138,7 +138,7 @@ const Search = (props: ISearch) => {
   useEffect(() => {
     return () => {
       const newPath = history.location.pathname;
-      const shouldPersistSearch = !!newPath.match(/@.+\/posts\/\d+/g)
+      const shouldPersistSearch = !!newPath.match(/@.+\/posts\/[a-zA-Z0-9]+/g)
         || !!newPath.match(/\/tags\/.+/g);
 
       if (!shouldPersistSearch) {

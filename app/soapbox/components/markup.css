@@ -85,3 +85,21 @@ body.underline-links [data-markup] a {
 [data-markup] .status-link {
   @apply hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue;
 }
+
+[data-markup] .invisible {
+  font-size: 0 !important;
+  line-height: 0 !important;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+[data-markup] .invisible img,
+[data-markup] .invisible svg {
+  margin: 0 !important;
+  border: 0 !important;
+  padding: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}

@@ -81,6 +81,7 @@ describe('initAccountNoteModal()', () => {
     }) as Account;
     const expectedActions = [
       { type: 'ACCOUNT_NOTE_INIT_MODAL', account, comment: 'hello' },
+      { type: 'MODAL_CLOSE', modalType: 'ACCOUNT_NOTE' },
       { type: 'MODAL_OPEN', modalType: 'ACCOUNT_NOTE' },
     ];
     await store.dispatch(initAccountNoteModal(account));
