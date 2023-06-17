@@ -5,7 +5,7 @@ import { connectCommunityStream } from 'soapbox/actions/streaming';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
@@ -19,11 +19,12 @@ const CommunityTimeline = () => {
 
   const settings = useSettings();
   const onlyMedia = settings.getIn(['community', 'other', 'onlyMedia']);
+  const next = useAppSelector(state => state.timelines.get('community')?.next);
 
   const timelineId = 'community';
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandCommunityTimeline({ maxId, onlyMedia }));
+    dispatch(expandCommunityTimeline({ url: next, maxId, onlyMedia }));
   };
 
   const handleRefresh = () => {

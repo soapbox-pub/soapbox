@@ -7,7 +7,7 @@ import { connectPublicStream } from 'soapbox/actions/streaming';
 import { expandPublicTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Accordion, Column } from 'soapbox/components/ui';
-import { useAppDispatch, useInstance, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useInstance, useSettings } from 'soapbox/hooks';
 
 import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker';
 import Timeline from '../ui/components/timeline';
@@ -24,6 +24,7 @@ const CommunityTimeline = () => {
   const instance = useInstance();
   const settings = useSettings();
   const onlyMedia = settings.getIn(['public', 'other', 'onlyMedia']);
+  const next = useAppSelector(state => state.timelines.get('public')?.next);
 
   const timelineId = 'public';
 
@@ -39,7 +40,7 @@ const CommunityTimeline = () => {
   };
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandPublicTimeline({ maxId, onlyMedia }));
+    dispatch(expandPublicTimeline({ url: next, maxId, onlyMedia }));
   };
 
   const handleRefresh = () => {

@@ -6,7 +6,7 @@ import { connectRemoteStream } from 'soapbox/actions/streaming';
 import { expandRemoteTimeline } from 'soapbox/actions/timelines';
 import IconButton from 'soapbox/components/icon-button';
 import { Column, HStack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
@@ -30,6 +30,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
 
   const timelineId = 'remote';
   const onlyMedia = !!settings.getIn(['remote', 'other', 'onlyMedia']);
+  const next = useAppSelector(state => state.timelines.get('remote')?.next);
 
   const pinned: boolean = (settings.getIn(['remote_timeline', 'pinnedHosts']) as any).includes(instance);
 
@@ -44,7 +45,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   };
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandRemoteTimeline(instance, { maxId, onlyMedia }));
+    dispatch(expandRemoteTimeline(instance, { url: next, maxId, onlyMedia }));
   };
 
   useEffect(() => {
