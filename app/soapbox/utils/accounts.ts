@@ -1,7 +1,7 @@
 import type { Account } from 'soapbox/schemas';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
-const getDomainFromURL = (account: AccountEntity): string => {
+const getDomainFromURL = (account: Pick<AccountEntity, 'url'>): string => {
   try {
     const url = account.url;
     return new URL(url).host;
@@ -10,7 +10,7 @@ const getDomainFromURL = (account: AccountEntity): string => {
   }
 };
 
-export const getDomain = (account: AccountEntity): string => {
+export const getDomain = (account: Pick<AccountEntity, 'acct' | 'url'>): string => {
   const domain = account.acct.split('@')[1];
   return domain ? domain : getDomainFromURL(account);
 };
