@@ -1,12 +1,13 @@
 import { Record as ImmutableRecord } from 'immutable';
+import { default as lodashGet } from 'lodash/get';
 import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
+import { Entities } from 'soapbox/entity-store/entities';
 import entities from 'soapbox/entity-store/reducer';
 
 import account_notes from './account-notes';
-import accounts from './accounts';
 import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
@@ -69,9 +70,46 @@ import trends from './trends';
 import user_lists from './user-lists';
 import verification from './verification';
 
+import type { EntityStore } from 'soapbox/entity-store/types';
+import type { Account } from 'soapbox/schemas';
+
+interface LegacyImmutable<T> {
+  get(key: string): (T & LegacyImmutable<T>) | undefined
+  getIn(keyPath: string[]): unknown
+  find(predicate: (value: T & LegacyImmutable<T>, key: string) => boolean): T & LegacyImmutable<T> | undefined
+  toJS(): any
+}
+
+function immutableize<T, S extends Record<string, T | undefined>>(state: S): S & LegacyImmutable<T> {
+  return {
+    ...state,
+
+    get(id: string): T & LegacyImmutable<T> | undefined {
+      const entity = state[id];
+      return entity ? immutableize(entity) : undefined;
+    },
+
+    getIn(keyPath: string[]): unknown {
+      return lodashGet(state, keyPath);
+    },
+
+    find(predicate: (value: T & LegacyImmutable<T>, key: string) => boolean): T & LegacyImmutable<T> | undefined {
+      const result = Object.entries(state).find(([key, value]) => value && predicate(immutableize(value), key))?.[1];
+      return result ? immutableize(result) : undefined;
+    },
+
+    toJS() {
+      return state;
+    },
+  };
+}
+
 const reducers = {
   account_notes,
-  accounts,
+  accounts: (state: any, action: any) => {
+    const result = entities(state, action)[Entities.ACCOUNTS]?.store as EntityStore<Account> || {};
+    return immutableize<Account, typeof result>(result);
+  },
   accounts_counters,
   accounts_meta,
   admin,
