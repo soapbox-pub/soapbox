@@ -1,10 +1,13 @@
 import { isIntegerId } from 'soapbox/utils/numbers';
 
 import type { IntlShape } from 'react-intl';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities';
 
 /** Get the initial visibility of media attachments from user settings. */
-export const defaultMediaVisibility = (status: StatusEntity | undefined | null, displayMedia: string): boolean => {
+export const defaultMediaVisibility = (
+  status: Pick<Status, 'reblog' | 'visibility' | 'sensitive'> | undefined | null,
+  displayMedia: string,
+): boolean => {
   if (!status) return false;
 
   if (status.reblog && typeof status.reblog === 'object') {
@@ -21,7 +24,7 @@ export const defaultMediaVisibility = (status: StatusEntity | undefined | null, 
 };
 
 /** Grab the first external link from a status. */
-export const getFirstExternalLink = (status: StatusEntity): HTMLAnchorElement | null => {
+export const getFirstExternalLink = (status: Pick<Status, 'content'>): HTMLAnchorElement | null => {
   try {
     // Pulled from Pleroma's media parser
     const selector = 'a:not(.mention,.hashtag,.attachment,[rel~="tag"])';
@@ -34,18 +37,22 @@ export const getFirstExternalLink = (status: StatusEntity): HTMLAnchorElement | 
 };
 
 /** Whether the status is expected to have a Card after it loads. */
-export const shouldHaveCard = (status: StatusEntity): boolean => {
+export const shouldHaveCard = (status: Pick<Status, 'content'>): boolean => {
   return Boolean(getFirstExternalLink(status));
 };
 
 /** Whether the media IDs on this status have integer IDs (opposed to FlakeIds). */
 // https://gitlab.com/soapbox-pub/soapbox/-/merge_requests/1087
-export const hasIntegerMediaIds = (status: StatusEntity): boolean => {
+export const hasIntegerMediaIds = (status: Pick<Status, 'media_attachments'>): boolean => {
   return status.media_attachments.some(({ id }) => isIntegerId(id));
 };
 
 /** Sanitize status text for use with screen readers. */
-export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
+export const textForScreenReader = (
+  intl: IntlShape,
+  status: Pick<Status, 'account' | 'spoiler_text' | 'hidden' | 'search_index' | 'created_at'>,
+  rebloggedByText?: string,
+): string => {
   const { account } = status;
   if (!account || typeof account !== 'object') return '';
 
@@ -55,7 +62,7 @@ export const textForScreenReader = (intl: IntlShape, status: StatusEntity, reblo
     displayName.length === 0 ? account.acct.split('@')[0] : displayName,
     status.spoiler_text && status.hidden ? status.spoiler_text : status.search_index.slice(status.spoiler_text.length),
     intl.formatDate(status.created_at, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
-    status.getIn(['account', 'acct']),
+    account.acct,
   ];
 
   if (rebloggedByText) {
@@ -68,12 +75,12 @@ export const textForScreenReader = (intl: IntlShape, status: StatusEntity, reblo
 /** Get reblogged status if any, otherwise return the original status. */
 // @ts-ignore The type seems right, but TS doesn't like it.
 export const getActualStatus: {
-  (status: StatusEntity): StatusEntity
+  <T extends Pick<Status, 'reblog'>>(status: T): T
   (status: undefined): undefined
   (status: null): null
-} = (status) => {
+} = <T extends Pick<Status, 'reblog'>>(status: T | null | undefined) => {
   if (status?.reblog && typeof status?.reblog === 'object') {
-    return status.reblog as StatusEntity;
+    return status.reblog as Status;
   } else {
     return status;
   }
