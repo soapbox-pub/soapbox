@@ -74,8 +74,8 @@ import type { EntityStore } from 'soapbox/entity-store/types';
 import type { Account } from 'soapbox/schemas';
 
 interface LegacyImmutable<T> {
-  get(key: string): (T & LegacyImmutable<T>) | undefined
-  getIn(keyPath: string[]): unknown
+  get(key: any): (T & LegacyImmutable<T>) | undefined
+  getIn(keyPath: any[]): unknown
   find(predicate: (value: T & LegacyImmutable<T>, key: string) => boolean): T & LegacyImmutable<T> | undefined
   toJS(): any
 }
@@ -84,12 +84,12 @@ function immutableize<T, S extends Record<string, T | undefined>>(state: S): S &
   return {
     ...state,
 
-    get(id: string): T & LegacyImmutable<T> | undefined {
+    get(id: any): T & LegacyImmutable<T> | undefined {
       const entity = state[id];
       return entity ? immutableize(entity) : undefined;
     },
 
-    getIn(keyPath: string[]): unknown {
+    getIn(keyPath: any[]): unknown {
       return lodashGet(state, keyPath);
     },
 
