@@ -1,6 +1,7 @@
 import { Record as ImmutableRecord } from 'immutable';
 import { default as lodashGet } from 'lodash/get';
 import { combineReducers } from 'redux-immutable';
+import { createSelector } from 'reselect';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
@@ -70,6 +71,7 @@ import trends from './trends';
 import user_lists from './user-lists';
 import verification from './verification';
 
+import type { AnyAction, Reducer } from 'redux';
 import type { EntityStore } from 'soapbox/entity-store/types';
 import type { Account } from 'soapbox/schemas';
 
@@ -106,10 +108,6 @@ function immutableize<T, S extends Record<string, T | undefined>>(state: S): S &
 
 const reducers = {
   account_notes,
-  accounts: (state: any, action: any) => {
-    const result = entities(state, action)[Entities.ACCOUNTS]?.store as EntityStore<Account> || {};
-    return immutableize<Account, typeof result>(result);
-  },
   accounts_counters,
   accounts_meta,
   admin,
@@ -209,4 +207,19 @@ const rootReducer: typeof appReducer = (state, action) => {
   }
 };
 
-export default rootReducer;
+type InferState<R> = R extends Reducer<infer S> ? S : never;
+
+const accountsSelector = createSelector(
+  (state: InferState<typeof appReducer>) => state.entities[Entities.ACCOUNTS]?.store as EntityStore<Account> || {},
+  (accounts) => immutableize<Account, EntityStore<Account>>(accounts),
+);
+
+const extendedRootReducer = (state: InferState<typeof appReducer>, action: AnyAction) => {
+  const extendedState = rootReducer(state, action);
+  return {
+    ...extendedState,
+    accounts: accountsSelector(extendedState),
+  };
+};
+
+export default extendedRootReducer as Reducer<ReturnType<typeof extendedRootReducer>>;
