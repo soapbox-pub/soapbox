@@ -45,17 +45,18 @@ export const makeGetAccount = () => {
   ], (base, counters, relationship, moved, meta, admin, patron) => {
     if (!base) return null;
 
-    return base.withMutations(map => {
-      if (counters) map.merge(counters);
-      if (meta) {
-        map.merge(meta);
-        map.set('pleroma', meta.pleroma.merge(base.get('pleroma', ImmutableMap()))); // Lol, thanks Pleroma
-      }
-      if (relationship) map.set('relationship', relationship);
-      map.set('moved', moved || null);
-      map.set('patron', patron || null);
-      map.setIn(['pleroma', 'admin'], admin);
-    });
+    return base;
+    // return base.withMutations(map => {
+    //   if (counters) map.merge(counters);
+    //   if (meta) {
+    //     map.merge(meta);
+    //     map.set('pleroma', meta.pleroma.merge(base.get('pleroma') || ImmutableMap())); // Lol, thanks Pleroma
+    //   }
+    //   if (relationship) map.set('relationship', relationship);
+    //   map.set('moved', moved || null);
+    //   map.set('patron', patron || null);
+    //   map.setIn(['pleroma', 'admin'], admin);
+    // });
   });
 };
 
@@ -70,7 +71,7 @@ const findAccountsByUsername = (state: RootState, username: string) => {
 export const findAccountByUsername = (state: RootState, username: string) => {
   const accounts = findAccountsByUsername(state, username);
 
-  if (accounts.size > 1) {
+  if (accounts.length > 1) {
     const me = state.me;
     const meURL = state.accounts.get(me)?.url || '';
 
@@ -85,7 +86,7 @@ export const findAccountByUsername = (state: RootState, username: string) => {
       }
     });
   } else {
-    return accounts.first();
+    return accounts[0];
   }
 };
 
@@ -355,7 +356,7 @@ const getSimplePolicy = createSelector([
 });
 
 const getRemoteInstanceFavicon = (state: RootState, host: string) => (
-  (state.accounts.find(account => getDomain(account) === host, null) || ImmutableMap())
+  (state.accounts.find(account => getDomain(account) === host) || ImmutableMap())
     .getIn(['pleroma', 'favicon'])
 );
 

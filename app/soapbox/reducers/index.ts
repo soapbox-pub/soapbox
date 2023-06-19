@@ -75,29 +75,57 @@ import type { AnyAction, Reducer } from 'redux';
 import type { EntityStore } from 'soapbox/entity-store/types';
 import type { Account } from 'soapbox/schemas';
 
-interface LegacyImmutable<T> {
-  get(key: any): (T & LegacyImmutable<T>) | undefined
+interface LegacyMap {
+  get(key: any): unknown
   getIn(keyPath: any[]): unknown
-  find(predicate: (value: T & LegacyImmutable<T>, key: string) => boolean): T & LegacyImmutable<T> | undefined
   toJS(): any
 }
 
-function immutableize<T, S extends Record<string, T | undefined>>(state: S): S & LegacyImmutable<T> {
+interface LegacyStore<T> extends LegacyMap {
+  get(key: any): T & LegacyMap | undefined
+  getIn(keyPath: any[]): unknown
+  find(predicate: (value: T & LegacyMap, key: string) => boolean): T & LegacyMap | undefined
+  filter(predicate: (value: T & LegacyMap, key: string) => boolean): (T & LegacyMap)[]
+}
+
+function immutableizeEntity<T extends Record<any, any>>(entity: T): T & LegacyMap {
+  return {
+    ...entity,
+
+    get(key: any): unknown {
+      return entity[key];
+    },
+
+    getIn(keyPath: any[]): unknown {
+      return lodashGet(entity, keyPath);
+    },
+
+    toJS() {
+      return entity;
+    },
+  };
+}
+
+function immutableizeStore<T, S extends Record<string, T | undefined>>(state: S): S & LegacyStore<T> {
   return {
     ...state,
 
-    get(id: any): T & LegacyImmutable<T> | undefined {
+    get(id: any): T & LegacyMap | undefined {
       const entity = state[id];
-      return entity ? immutableize(entity) : undefined;
+      return entity ? immutableizeEntity(entity) : undefined;
     },
 
     getIn(keyPath: any[]): unknown {
       return lodashGet(state, keyPath);
     },
 
-    find(predicate: (value: T & LegacyImmutable<T>, key: string) => boolean): T & LegacyImmutable<T> | undefined {
-      const result = Object.entries(state).find(([key, value]) => value && predicate(immutableize(value), key))?.[1];
-      return result ? immutableize(result) : undefined;
+    find(predicate: (value: T & LegacyMap, key: string) => boolean): T & LegacyMap | undefined {
+      const result = Object.entries(state).find(([key, value]) => value && predicate(immutableizeEntity(value), key))?.[1];
+      return result ? immutableizeEntity(result) : undefined;
+    },
+
+    filter(predicate: (value: T & LegacyMap, key: string) => boolean): (T & LegacyMap)[] {
+      return Object.entries(state).filter(([key, value]) => value && predicate(immutableizeEntity(value), key)).map(([key, value]) => immutableizeEntity(value!));
     },
 
     toJS() {
@@ -211,7 +239,7 @@ type InferState<R> = R extends Reducer<infer S> ? S : never;
 
 const accountsSelector = createSelector(
   (state: InferState<typeof appReducer>) => state.entities[Entities.ACCOUNTS]?.store as EntityStore<Account> || {},
-  (accounts) => immutableize<Account, EntityStore<Account>>(accounts),
+  (accounts) => immutableizeStore<Account, EntityStore<Account>>(accounts),
 );
 
 const extendedRootReducer = (state: InferState<typeof appReducer>, action: AnyAction) => {
