@@ -64,6 +64,7 @@ const AccountGallery = () => {
   const attachments: ImmutableList<Attachment> = useAppSelector((state) => getAccountGallery(state, accountId as string));
   const isLoading = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.isLoading);
   const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
+  const next = useAppSelector(state => state.timelines.get(`account:${accountId}:media`)?.next);
 
   const node = useRef<HTMLDivElement>(null);
 
@@ -75,7 +76,7 @@ const AccountGallery = () => {
 
   const handleLoadMore = (maxId: string | null) => {
     if (accountId && accountId !== -1) {
-      dispatch(expandAccountMediaTimeline(accountId, { maxId }));
+      dispatch(expandAccountMediaTimeline(accountId, { url: next, maxId }));
     }
   };
 

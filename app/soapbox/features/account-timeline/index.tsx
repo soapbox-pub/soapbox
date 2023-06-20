@@ -40,6 +40,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const patronEnabled = soapboxConfig.getIn(['extensions', 'patron', 'enabled']) === true;
   const isLoading = useAppSelector(state => state.getIn(['timelines', `account:${path}`, 'isLoading']) === true);
   const hasMore = useAppSelector(state => state.getIn(['timelines', `account:${path}`, 'hasMore']) === true);
+  const next = useAppSelector(state => state.timelines.get(`account:${path}`)?.next);
 
   const accountUsername = account?.username || params.username;
 
@@ -69,7 +70,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
 
   const handleLoadMore = (maxId: string) => {
     if (account) {
-      dispatch(expandAccountTimeline(account.id, { maxId, withReplies }));
+      dispatch(expandAccountTimeline(account.id, { url: next, maxId, withReplies }));
     }
   };
 
