@@ -136,8 +136,12 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     moderator: pleroma?.is_moderator || false,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: emojify(account.note, customEmojiMap),
-    pleroma,
-    relationship: relationshipSchema.parse({ id: account.id, ...pleroma?.relationship }),
+    pleroma: (() => {
+      if (!pleroma) return undefined;
+      const { relationship, ...rest } = pleroma;
+      return rest;
+    })(),
+    relationship: pleroma?.relationship,
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,
     verified: account.verified || pleroma?.tags.includes('verified') || false,

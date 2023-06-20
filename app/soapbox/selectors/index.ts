@@ -43,19 +43,8 @@ export const makeGetAccount = () => {
     getAccountPatron,
   ], (base, counters, relationship, moved, meta, admin, patron) => {
     if (!base) return null;
-
+    base.relationship = base.relationship ?? relationship;
     return base;
-    // return base.withMutations(map => {
-    //   if (counters) map.merge(counters);
-    //   if (meta) {
-    //     map.merge(meta);
-    //     map.set('pleroma', meta.pleroma.merge(base.get('pleroma') || ImmutableMap())); // Lol, thanks Pleroma
-    //   }
-    //   if (relationship) map.set('relationship', relationship);
-    //   map.set('moved', moved || null);
-    //   map.set('patron', patron || null);
-    //   map.setIn(['pleroma', 'admin'], admin);
-    // });
   });
 };
 
