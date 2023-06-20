@@ -15,7 +15,6 @@ import { getFeatures } from 'soapbox/utils/features';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
 import type { ContextType } from 'soapbox/normalizers/filter';
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
 import type { Filter as FilterEntity, Notification, Status, Group } from 'soapbox/types/entities';
@@ -168,8 +167,6 @@ export const makeGetStatus = () => {
     [
       (state: RootState, { id }: APIStatus) => state.statuses.get(id) as Status | undefined,
       (state: RootState, { id }: APIStatus) => state.statuses.get(state.statuses.get(id)?.reblog || '') as Status | undefined,
-      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(id)?.account || '') as ReducerAccount | undefined,
-      (state: RootState, { id }: APIStatus) => state.accounts.get(state.statuses.get(state.statuses.get(id)?.reblog || '')?.account || '') as ReducerAccount | undefined,
       (state: RootState, { id }: APIStatus) => state.entities[Entities.GROUPS]?.store[state.statuses.get(id)?.group || ''] as Group | undefined,
       (_state: RootState, { username }: APIStatus) => username,
       getFilters,
@@ -177,20 +174,14 @@ export const makeGetStatus = () => {
       (state: RootState) => getFeatures(state.instance),
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, group, username, filters, me, features) => {
-      if (!statusBase || !accountBase) return null;
+    (statusBase, statusReblog, group, username, filters, me, features) => {
+      if (!statusBase) return null;
+      const accountBase = statusBase.account;
 
       const accountUsername = accountBase.acct;
       //Must be owner of status if username exists
       if (accountUsername !== username && username !== undefined) {
         return null;
-      }
-
-      if (statusReblog && accountReblog) {
-        // @ts-ignore AAHHHHH
-        statusReblog = statusReblog.set('account', accountReblog);
-      } else {
-        statusReblog = undefined;
       }
 
       return statusBase.withMutations((map: Status) => {
@@ -200,7 +191,7 @@ export const makeGetStatus = () => {
         // @ts-ignore
         map.set('group', group || null);
 
-        if ((features.filters) && (accountReblog || accountBase).id !== me) {
+        if ((features.filters) && accountBase.id !== me) {
           const filtered = checkFiltered(statusReblog?.search_index || statusBase.search_index, filters);
 
           map.set('filtered', filtered);

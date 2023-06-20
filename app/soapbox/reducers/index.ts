@@ -183,12 +183,15 @@ const accountsSelector = createSelector(
   (accounts) => immutableizeStore<Account, EntityStore<Account>>(accounts),
 );
 
-const extendedRootReducer = (state: InferState<typeof appReducer>, action: AnyAction) => {
+const extendedRootReducer = (
+  state: InferState<typeof appReducer>,
+  action: AnyAction,
+): ReturnType<typeof rootReducer> & { accounts: ReturnType<typeof accountsSelector> } => {
   const extendedState = rootReducer(state, action);
-  return {
-    ...extendedState,
-    accounts: accountsSelector(extendedState),
-  };
+  // @ts-ignore
+  extendedState.accounts = accountsSelector(extendedState);
+  // @ts-ignore
+  return extendedState;
 };
 
 export default extendedRootReducer as Reducer<ReturnType<typeof extendedRootReducer>>;
