@@ -87,6 +87,7 @@ function buildRelationship(props: PartialDeep<Relationship> = {}): Relationship 
 function buildStatus(props: PartialDeep<Status> = {}) {
   return statusSchema.parse(Object.assign({
     id: uuidv4(),
+    account: buildAccount(),
   }, props));
 }
 
