@@ -6,7 +6,7 @@ import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
 import { Entities } from 'soapbox/entity-store/entities';
 import entities from 'soapbox/entity-store/reducer';
-import { immutableizeStore } from 'soapbox/utils/legacy';
+import { immutableizeStore, type LegacyStore } from 'soapbox/utils/legacy';
 
 import account_notes from './account-notes';
 import accounts_counters from './accounts-counters';
@@ -76,6 +76,7 @@ import type { EntityStore } from 'soapbox/entity-store/types';
 import type { Account } from 'soapbox/schemas';
 
 const reducers = {
+  accounts: ((state: any = {}) => state) as (state: any) => EntityStore<Account> & LegacyStore<Account>,
   account_notes,
   accounts_counters,
   accounts_meta,
@@ -188,10 +189,7 @@ const extendedRootReducer = (
   action: AnyAction,
 ): ReturnType<typeof rootReducer> & { accounts: ReturnType<typeof accountsSelector> } => {
   const extendedState = rootReducer(state, action);
-  // @ts-ignore
-  extendedState.accounts = accountsSelector(extendedState);
-  // @ts-ignore
-  return extendedState;
+  return extendedState.set('accounts', accountsSelector(extendedState));
 };
 
 export default extendedRootReducer as Reducer<ReturnType<typeof extendedRootReducer>>;
