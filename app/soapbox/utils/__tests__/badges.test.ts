@@ -1,4 +1,4 @@
-import { normalizeAccount } from 'soapbox/normalizers';
+import { buildAccount } from 'soapbox/jest/factory';
 
 import {
   tagToBadge,
@@ -7,8 +7,6 @@ import {
   getTagDiff,
   getBadges,
 } from '../badges';
-
-import type { Account } from 'soapbox/types/entities';
 
 test('tagToBadge', () => {
   expect(tagToBadge('yolo')).toEqual('badge:yolo');
@@ -38,6 +36,6 @@ test('getTagDiff', () => {
 });
 
 test('getBadges', () => {
-  const account = normalizeAccount({ id: '1', pleroma: { tags: ['a', 'b', 'badge:c'] } }) as Account;
+  const account = buildAccount({ id: '1', pleroma: { tags: ['a', 'b', 'badge:c'] } });
   expect(getBadges(account)).toEqual(['badge:c']);
 });

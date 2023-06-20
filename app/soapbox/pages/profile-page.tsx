@@ -71,7 +71,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   if (account) {
     const ownAccount = account.id === me;
-    if (ownAccount || !account.pleroma.get('hide_favorites', true)) {
+    if (ownAccount || account.pleroma?.hide_favorites !== true) {
       tabItems.push({
         text: <FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' />,
         to: `/@${account.acct}/favorites`,
@@ -129,7 +129,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         <BundleContainer fetchComponent={ProfileMediaPanel}>
           {Component => <Component account={account} />}
         </BundleContainer>
-        {account && !account.fields.isEmpty() && (
+        {account && !account.fields.length && (
           <BundleContainer fetchComponent={ProfileFieldsPanel}>
             {Component => <Component account={account} />}
           </BundleContainer>

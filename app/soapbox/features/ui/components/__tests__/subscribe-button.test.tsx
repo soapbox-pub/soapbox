@@ -1,12 +1,9 @@
 import React from 'react';
 
-import { buildRelationship } from 'soapbox/jest/factory';
+import { buildAccount, buildRelationship } from 'soapbox/jest/factory';
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeAccount } from 'soapbox/normalizers';
 
 import SubscribeButton from '../subscription-button';
-
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 
 const justin = {
   id: '1',
@@ -20,7 +17,7 @@ describe('<SubscribeButton />', () => {
 
   describe('with "accountNotifies" disabled', () => {
     it('renders nothing', () => {
-      const account = normalizeAccount({ ...justin, relationship: buildRelationship({ following: true }) }) as ReducerAccount;
+      const account = buildAccount({ ...justin, relationship: buildRelationship({ following: true }) });
 
       render(<SubscribeButton account={account} />, undefined, store);
       expect(screen.queryAllByTestId('icon-button')).toHaveLength(0);

@@ -76,9 +76,14 @@ describe('fetchAccount()', () => {
       });
 
       const state = rootState
-        .set('accounts', ImmutableMap({
-          [id]: account,
-        }) as any);
+        .set('entities', {
+          'ACCOUNTS': {
+            store: {
+              [id]: account,
+            },
+            lists: {},
+          },
+        });
 
       store = mockStore(state);
 
@@ -168,9 +173,14 @@ describe('fetchAccountByUsername()', () => {
     });
 
     state = rootState
-      .set('accounts', ImmutableMap({
-        [id]: account,
-      }));
+      .set('entities', {
+        'ACCOUNTS': {
+          store: {
+            [id]: account,
+          },
+          lists: {},
+        },
+      });
 
     store = mockStore(state);
 

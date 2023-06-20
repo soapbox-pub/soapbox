@@ -215,7 +215,7 @@ const filterTimelines = (state: State, relationship: APIEntity, statuses: Immuta
     statuses.forEach(status => {
       if (status.get('account') !== relationship.id) return;
       const references = buildReferencesTo(statuses, status);
-      deleteStatus(state, status.get('id'), status.get('account') as string, references, relationship.id);
+      deleteStatus(state, status.id, status.account!.id, references, relationship.id);
     });
   });
 };

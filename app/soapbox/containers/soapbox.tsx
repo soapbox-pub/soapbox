@@ -96,7 +96,7 @@ const SoapboxMount = () => {
   const features = useFeatures();
   const { pepeEnabled } = useRegistrationStatus();
 
-  const waitlisted = account && !account.source.get('approved', true);
+  const waitlisted = account && account.source?.approved === false;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
   const { redirectRootNoLogin } = soapboxConfig;

@@ -27,7 +27,7 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
     <HStack space={4} justifyContent='between'>
       <Stack space={1}>
         <Text weight='semibold'>
-          @{account.get('acct')}
+          @{account.acct}
         </Text>
         <Text tag='blockquote' size='sm'>
           {adminAccount?.invite_request || ''}

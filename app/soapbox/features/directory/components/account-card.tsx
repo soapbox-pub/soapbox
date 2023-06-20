@@ -87,10 +87,10 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
 
         <Stack>
           <Text theme='primary' size='md' weight='medium'>
-            {account.last_status_at === null ? (
-              <FormattedMessage id='account.never_active' defaultMessage='Never' />
-            ) : (
+            {account.last_status_at ? (
               <RelativeTimestamp theme='inherit' timestamp={account.last_status_at} />
+            ) : (
+              <FormattedMessage id='account.never_active' defaultMessage='Never' />
             )}
           </Text>
 

@@ -14,7 +14,7 @@ const WaitlistPage = () => {
   const instance = useInstance();
 
   const me = useOwnAccount();
-  const isSmsVerified = me?.source.get('sms_verified');
+  const isSmsVerified = me?.source?.sms_verified ?? true;
 
   const onClickLogOut: React.MouseEventHandler = (event) => {
     event.preventDefault();

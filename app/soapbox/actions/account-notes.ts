@@ -4,8 +4,8 @@ import { openModal, closeModal } from './modals';
 
 import type { AxiosError } from 'axios';
 import type { AnyAction } from 'redux';
+import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Account } from 'soapbox/types/entities';
 
 const ACCOUNT_NOTE_SUBMIT_REQUEST = 'ACCOUNT_NOTE_SUBMIT_REQUEST';
 const ACCOUNT_NOTE_SUBMIT_SUCCESS = 'ACCOUNT_NOTE_SUBMIT_SUCCESS';

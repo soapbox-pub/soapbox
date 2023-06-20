@@ -17,8 +17,8 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-import type { ReducerStatus } from './statuses';
 import type { AnyAction } from 'redux';
+import type { Status } from 'soapbox/schemas';
 
 export const ReducerRecord = ImmutableRecord({
   inReplyTos: ImmutableMap<string, string>(),
@@ -163,10 +163,10 @@ const filterContexts = (
   state: State,
   relationship: { id: string },
   /** The entire statuses map from the store. */
-  statuses: ImmutableMap<string, ReducerStatus>,
+  statuses: ImmutableMap<string, Status>,
 ): State => {
   const ownedStatusIds = statuses
-    .filter(status => status.account === relationship.id)
+    .filter(status => status.account.id === relationship.id)
     .map(status => status.id)
     .toList()
     .toArray();

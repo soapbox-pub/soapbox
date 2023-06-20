@@ -18,7 +18,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useAppDispatch();
 
   const account = useOwnAccount();
-  const [value, setValue] = React.useState<string>(account?.source.get('note') || '');
+  const [value, setValue] = React.useState<string>(account?.source?.note ?? '');
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<string[]>([]);
 

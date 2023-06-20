@@ -394,7 +394,7 @@ export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type, prefix }: ColumnQuery) => getSettings(state).get(prefix || type, ImmutableMap()),
   (state: RootState, { type }: ColumnQuery) => state.timelines.get(type)?.items || ImmutableOrderedSet(),
   (state: RootState) => state.statuses,
-], (columnSettings, statusIds: ImmutableOrderedSet<string>, statuses) => {
+], (columnSettings: any, statusIds: ImmutableOrderedSet<string>, statuses) => {
   return statusIds.filter((id: string) => {
     const status = statuses.get(id);
     if (!status) return true;

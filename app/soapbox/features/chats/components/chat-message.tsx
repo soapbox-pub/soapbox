@@ -13,7 +13,6 @@ import emojify from 'soapbox/features/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { normalizeAccount } from 'soapbox/normalizers';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { stripHTML } from 'soapbox/utils/html';
@@ -24,7 +23,7 @@ import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-mes
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
 import type { IMediaGallery } from 'soapbox/components/media-gallery';
-import type { Account, ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
+import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
@@ -178,7 +177,7 @@ const ChatMessage = (props: IChatMessage) => {
       if (features.reportChats) {
         menu.push({
           text: intl.formatMessage(messages.report),
-          action: () => dispatch(initReport(ReportableEntities.CHAT_MESSAGE, normalizeAccount(chat.account) as Account, { chatMessage })),
+          action: () => dispatch(initReport(ReportableEntities.CHAT_MESSAGE, chat.account, { chatMessage })),
           icon: require('@tabler/icons/flag.svg'),
         });
       }

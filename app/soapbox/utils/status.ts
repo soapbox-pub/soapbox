@@ -1,18 +1,15 @@
 import { isIntegerId } from 'soapbox/utils/numbers';
 
 import type { IntlShape } from 'react-intl';
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/schemas';
 
 /** Get the initial visibility of media attachments from user settings. */
-export const defaultMediaVisibility = (
-  status: Pick<Status, 'reblog' | 'visibility' | 'sensitive'> | undefined | null,
+export const defaultMediaVisibility = <T extends { reblog: T | string | null } & Pick<Status, 'visibility' | 'sensitive'>>(
+  status: T | undefined | null,
   displayMedia: string,
 ): boolean => {
   if (!status) return false;
-
-  if (status.reblog && typeof status.reblog === 'object') {
-    status = status.reblog;
-  }
+  status = getActualStatus(status);
 
   const isUnderReview = status.visibility === 'self';
 
@@ -73,14 +70,9 @@ export const textForScreenReader = (
 };
 
 /** Get reblogged status if any, otherwise return the original status. */
-// @ts-ignore The type seems right, but TS doesn't like it.
-export const getActualStatus: {
-  <T extends Pick<Status, 'reblog'>>(status: T): T
-  (status: undefined): undefined
-  (status: null): null
-} = <T extends Pick<Status, 'reblog'>>(status: T | null | undefined) => {
+export const getActualStatus = <T extends { reblog: T | string | null }>(status: T): T => {
   if (status?.reblog && typeof status?.reblog === 'object') {
-    return status.reblog as Status;
+    return status.reblog;
   } else {
     return status;
   }

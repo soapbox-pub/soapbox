@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -28,11 +27,11 @@ const Aliases = () => {
 
   const aliases = useAppSelector((state) => {
     if (features.accountMoving) {
-      return state.aliases.aliases.items;
+      return state.aliases.aliases.items.toArray();
     } else {
-      return account!.pleroma.get('also_known_as');
+      return account?.pleroma?.also_known_as ?? [];
     }
-  }) as ImmutableList<string>;
+  });
 
   const searchAccountIds = useAppSelector((state) => state.aliases.suggestions.items);
   const loaded = useAppSelector((state) => state.aliases.suggestions.loaded);

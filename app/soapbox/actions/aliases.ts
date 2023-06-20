@@ -111,7 +111,7 @@ const addToAliases = (account: Account) =>
 
       dispatch(addToAliasesRequest());
 
-      api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.pleroma.get('ap_id')] })
+      api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.pleroma?.ap_id] })
         .then((response => {
           toast.success(messages.createSuccess);
           dispatch(addToAliasesSuccess);

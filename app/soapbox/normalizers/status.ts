@@ -13,9 +13,8 @@ import {
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { cardSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
+import { accountSchema, cardSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
 export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
@@ -42,7 +41,7 @@ interface Tombstone {
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account | ReducerAccount>,
+  account: null as unknown as Account,
   application: null as ImmutableMap<string, any> | null,
   approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
@@ -244,6 +243,15 @@ const normalizeDislikes = (status: ImmutableMap<string, any>) => {
   return status;
 };
 
+const parseAccount = (status: ImmutableMap<string, any>) => {
+  try {
+    const account = accountSchema.parse(status.get('account').toJS());
+    return status.set('account', account);
+  } catch (_e) {
+    return status.set('account', null);
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -261,6 +269,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       normalizeFilterResults(status);
       normalizeDislikes(status);
       normalizeTombstone(status);
+      parseAccount(status);
     }),
   );
 };

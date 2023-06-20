@@ -22,7 +22,7 @@ const messages = defineMessages({
 });
 
 interface ISubscriptionButton {
-  account: AccountEntity
+  account: Pick<AccountEntity, 'id' | 'username' | 'relationship'>
 }
 
 const SubscriptionButton = ({ account }: ISubscriptionButton) => {
@@ -36,8 +36,8 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
     ? account.relationship?.notifying
     : account.relationship?.subscribing;
   const title = isSubscribed
-    ? intl.formatMessage(messages.unsubscribe, { name: account.get('username') })
-    : intl.formatMessage(messages.subscribe, { name: account.get('username') });
+    ? intl.formatMessage(messages.unsubscribe, { name: account.username })
+    : intl.formatMessage(messages.subscribe, { name: account.username });
 
   const onSubscribeSuccess = () =>
     toast.success(intl.formatMessage(messages.subscribeSuccess));
@@ -53,11 +53,11 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
 
   const onNotifyToggle = () => {
     if (account.relationship?.notifying) {
-      dispatch(followAccount(account.get('id'), { notify: false } as any))
+      dispatch(followAccount(account.id, { notify: false } as any))
         ?.then(() => onUnsubscribeSuccess())
         .catch(() => onUnsubscribeFailure());
     } else {
-      dispatch(followAccount(account.get('id'), { notify: true } as any))
+      dispatch(followAccount(account.id, { notify: true } as any))
         ?.then(() => onSubscribeSuccess())
         .catch(() => onSubscribeFailure());
     }
@@ -65,11 +65,11 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
 
   const onSubscriptionToggle = () => {
     if (account.relationship?.subscribing) {
-      dispatch(unsubscribeAccount(account.get('id')))
+      dispatch(unsubscribeAccount(account.id))
         ?.then(() => onUnsubscribeSuccess())
         .catch(() => onUnsubscribeFailure());
     } else {
-      dispatch(subscribeAccount(account.get('id')))
+      dispatch(subscribeAccount(account.id))
         ?.then(() => onSubscribeSuccess())
         .catch(() => onSubscribeFailure());
     }

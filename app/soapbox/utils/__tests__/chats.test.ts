@@ -1,5 +1,5 @@
+import { buildAccount } from 'soapbox/jest/factory';
 import { normalizeChatMessage } from 'soapbox/normalizers';
-import { IAccount } from 'soapbox/queries/accounts';
 import { ChatKeys, IChat } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 
@@ -7,7 +7,7 @@ import { updateChatMessage } from '../chats';
 
 const chat: IChat = {
   accepted: true,
-  account: {
+  account: buildAccount({
     username: 'username',
     verified: true,
     id: '1',
@@ -15,7 +15,7 @@ const chat: IChat = {
     avatar: 'avatar',
     avatar_static: 'avatar',
     display_name: 'my name',
-  } as IAccount,
+  }),
   chat_type: 'direct',
   created_at: '2020-06-10T02:05:06.000Z',
   created_by_account: '1',

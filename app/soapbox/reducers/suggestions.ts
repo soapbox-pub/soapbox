@@ -68,7 +68,7 @@ const dismissAccount = (state: State, accountId: string) => {
   return state.update('items', items => items.filterNot(item => item.account === accountId));
 };
 
-const dismissAccounts = (state: State, accountIds: Array<string>) => {
+const dismissAccounts = (state: State, accountIds: string[]) => {
   return state.update('items', items => items.filterNot(item => accountIds.includes(item.account)));
 };
 

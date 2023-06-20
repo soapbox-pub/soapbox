@@ -126,9 +126,9 @@ export const statusToMentionsArray = (status: ImmutableMap<string, any>, account
   const author = status.getIn(['account', 'acct']) as string;
   const mentions = status.get('mentions')?.map((m: ImmutableMap<string, any>) => m.get('acct')) || [];
 
-  return ImmutableOrderedSet([author])
+  return ImmutableOrderedSet<string>([author])
     .concat(mentions)
-    .delete(account.get('acct')) as ImmutableOrderedSet<string>;
+    .delete(account.acct) as ImmutableOrderedSet<string>;
 };
 
 export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: AccountEntity) => {

@@ -56,7 +56,6 @@ type APIEntities = Array<APIEntity>;
 type State = ImmutableMap<string, ReducerStatus>;
 
 export interface ReducerStatus extends StatusRecord {
-  account: string | null
   reblog: string | null
   poll: string | null
   quote: string | null
@@ -65,7 +64,6 @@ export interface ReducerStatus extends StatusRecord {
 
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
   return status.mergeWith((o, n) => n || o, {
-    account: normalizeId(status.getIn(['account', 'id'])),
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
