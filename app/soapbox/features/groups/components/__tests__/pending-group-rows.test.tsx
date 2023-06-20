@@ -1,25 +1,27 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { __stub } from 'soapbox/api';
+import { buildAccount } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeAccount, normalizeGroup, normalizeGroupRelationship, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeGroup, normalizeGroupRelationship, normalizeInstance } from 'soapbox/normalizers';
 
 import PendingGroupsRow from '../pending-groups-row';
 
 const userId = '1';
 let store: any = {
   me: userId,
-  accounts: ImmutableMap({
-    [userId]: normalizeAccount({
+  accounts: {
+    [userId]: buildAccount({
       id: userId,
       acct: 'justin-username',
       display_name: 'Justin L',
       avatar: 'test.jpg',
-      chats_onboarded: false,
+      source: {
+        chats_onboarded: false,
+      },
     }),
-  }),
+  },
 };
 
 const renderApp = (store: any) => (

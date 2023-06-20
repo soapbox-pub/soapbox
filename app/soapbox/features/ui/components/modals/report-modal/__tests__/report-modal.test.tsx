@@ -4,9 +4,10 @@ import React from 'react';
 
 import { ReportableEntities } from 'soapbox/actions/reports';
 import { __stub } from 'soapbox/api';
+import { buildAccount } from 'soapbox/jest/factory';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
+import { normalizeStatus } from 'soapbox/normalizers';
 
-import { render, screen, waitFor } from '../../../../../../jest/test-helpers';
-import { normalizeAccount, normalizeStatus } from '../../../../../../normalizers';
 import ReportModal from '../report-modal';
 
 describe('<ReportModal />', () => {
@@ -17,14 +18,14 @@ describe('<ReportModal />', () => {
     const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
 
     store = {
-      accounts: ImmutableMap({
-        '1': normalizeAccount({
+      accounts: {
+        '1': buildAccount({
           id: '1',
           acct: 'username',
           display_name: 'My name',
           avatar: 'test.jpg',
         }),
-      }),
+      },
       reports: ImmutableRecord({
         new: ImmutableRecord({
           account_id: '1',

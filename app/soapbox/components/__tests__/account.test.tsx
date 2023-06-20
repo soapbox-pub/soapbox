@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 
 import { buildAccount } from 'soapbox/jest/factory';
@@ -16,9 +15,9 @@ describe('<Account />', () => {
     });
 
     const store = {
-      accounts: ImmutableMap({
+      accounts: {
         '1': account,
-      }),
+      },
     };
 
     render(<Account account={account} />, undefined, store);
@@ -37,9 +36,9 @@ describe('<Account />', () => {
       });
 
       const store = {
-        accounts: ImmutableMap({
+        accounts: {
           '1': account,
-        }),
+        },
       };
 
       render(<Account account={account} />, undefined, store);
@@ -56,9 +55,9 @@ describe('<Account />', () => {
       });
 
       const store = {
-        accounts: ImmutableMap({
+        accounts: {
           '1': account,
-        }),
+        },
       };
 
       render(<Account account={account} />, undefined, store);

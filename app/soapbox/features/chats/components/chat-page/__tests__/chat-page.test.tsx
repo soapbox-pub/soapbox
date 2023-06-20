@@ -1,12 +1,10 @@
 import userEvent from '@testing-library/user-event';
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 
 import { __stub } from 'soapbox/api';
-import { normalizeAccount } from 'soapbox/normalizers';
-import { ReducerAccount } from 'soapbox/reducers/accounts';
+import { buildAccount } from 'soapbox/jest/factory';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
 
-import { render, screen, waitFor } from '../../../../../jest/test-helpers';
 import ChatPage from '../chat-page';
 
 describe('<ChatPage />', () => {
@@ -25,15 +23,17 @@ describe('<ChatPage />', () => {
       beforeEach(() => {
         store = {
           me: id,
-          accounts: ImmutableMap({
-            [id]: normalizeAccount({
+          accounts: {
+            [id]: buildAccount({
               id,
               acct: 'justin-username',
               display_name: 'Justin L',
               avatar: 'test.jpg',
-              chats_onboarded: false,
-            }) as ReducerAccount,
-          }),
+              source: {
+                chats_onboarded: false,
+              },
+            }),
+          },
         };
 
         __stub((mock) => {
@@ -59,15 +59,17 @@ describe('<ChatPage />', () => {
       beforeEach(() => {
         store = {
           me: '1',
-          accounts: ImmutableMap({
-            '1': normalizeAccount({
+          accounts: {
+            '1': buildAccount({
               id: '1',
               acct: 'justin-username',
               display_name: 'Justin L',
               avatar: 'test.jpg',
-              chats_onboarded: false,
-            }) as ReducerAccount,
-          }),
+              source: {
+                chats_onboarded: false,
+              },
+            }),
+          },
         };
 
         __stub((mock) => {
