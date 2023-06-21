@@ -1,17 +1,18 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import clsx from 'clsx';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
+import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
 import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
-import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
+import { makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
 
@@ -76,16 +77,14 @@ const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) 
   );
 };
 
-const getOtherAccounts = makeGetOtherAccounts();
-
 const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const getOtherAccounts = useCallback(makeGetOtherAccounts(), []);
   const features = useFeatures();
-  const getAccount = makeGetAccount();
   const me = useAppSelector((state) => state.me);
-  const account = useAppSelector((state) => me ? getAccount(state, me) : null);
+  const { account } = useAccount(me || undefined);
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
