@@ -3,6 +3,7 @@
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
+import { usePatronUser } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
@@ -35,7 +36,7 @@ const messages = defineMessages({
 });
 
 interface IProfileInfoPanel {
-  account: Account
+  account?: Account
   /** Username from URL params, in case the account isn't found. */
   username: string
 }
@@ -44,6 +45,7 @@ interface IProfileInfoPanel {
 const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) => {
   const intl = useIntl();
   const { displayFqn } = useSoapboxConfig();
+  const { patronUser } = usePatronUser(account?.url);
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
@@ -56,7 +58,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const getCustomBadges = (): React.ReactNode[] => {
-    const badges = getAccountBadges(account);
+    const badges = account ? getAccountBadges(account) : [];
 
     return badges.map(badge => (
       <Badge
@@ -70,7 +72,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const getBadges = (): React.ReactNode[] => {
     const custom = getCustomBadges();
     const staffBadge = getStaffBadge();
-    const isPatron = account.getIn(['patron', 'is_patron']) === true;
+    const isPatron = patronUser?.is_patron === true;
 
     const badges = [];
 
@@ -86,7 +88,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const renderBirthday = (): React.ReactNode => {
-    const birthday = account.pleroma?.birthday;
+    const birthday = account?.pleroma?.birthday;
     if (!birthday) return null;
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
