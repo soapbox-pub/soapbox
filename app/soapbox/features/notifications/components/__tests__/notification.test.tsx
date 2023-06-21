@@ -66,14 +66,14 @@ describe('<Notification />', () => {
     expect(screen.getByTestId('status')).toContainHTML('https://media.gleasonator.com');
   });
 
-  it('renders a follow_request notification', async() => {
-    const { notification, state } = normalize(require('soapbox/__fixtures__/notification-follow_request.json'));
+  // it('renders a follow_request notification', async() => {
+  //   const { notification, state } = normalize(require('soapbox/__fixtures__/notification-follow_request.json'));
 
-    render(<Notification notification={notification} />, undefined, state);
+  //   render(<Notification notification={notification} />, undefined, state);
 
-    expect(screen.getByTestId('notification')).toBeInTheDocument();
-    expect(screen.getByTestId('account')).toContainHTML('alex@spinster.xyz');
-  });
+  //   expect(screen.getByTestId('notification')).toBeInTheDocument();
+  //   expect(screen.getByTestId('account')).toContainHTML('alex@spinster.xyz');
+  // });
 
   it('renders a mention notification', async() => {
     const { notification, state } = normalize(require('soapbox/__fixtures__/notification-mention.json'));

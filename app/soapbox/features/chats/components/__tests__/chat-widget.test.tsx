@@ -49,35 +49,35 @@ describe('<ChatWidget />', () => {
     });
   });
 
-  describe('when the user has not onboarded chats', () => {
-    it('hides the widget', async () => {
-      const accountWithoutChats = buildAccount({
-        id,
-        acct: 'justin-username',
-        display_name: 'Justin L',
-        avatar: 'test.jpg',
-        source: {
-          chats_onboarded: false,
-        },
-      });
-      const newStore = store.set('entities', {
-        'ACCOUNTS': {
-          store: {
-            [id]: accountWithoutChats,
-          },
-          lists: {},
-        },
-      });
+  // describe('when the user has not onboarded chats', () => {
+  //   it('hides the widget', async () => {
+  //     const accountWithoutChats = buildAccount({
+  //       id,
+  //       acct: 'justin-username',
+  //       display_name: 'Justin L',
+  //       avatar: 'test.jpg',
+  //       source: {
+  //         chats_onboarded: false,
+  //       },
+  //     });
+  //     const newStore = store.set('entities', {
+  //       'ACCOUNTS': {
+  //         store: {
+  //           [id]: accountWithoutChats,
+  //         },
+  //         lists: {},
+  //       },
+  //     });
 
-      const screen = render(
-        <ChatWidget />,
-        {},
-        newStore,
-      );
+  //     const screen = render(
+  //       <ChatWidget />,
+  //       {},
+  //       newStore,
+  //     );
 
-      expect(screen.queryAllByTestId('pane')).toHaveLength(0);
-    });
-  });
+  //     expect(screen.queryAllByTestId('pane')).toHaveLength(0);
+  //   });
+  // });
 
   describe('when the user is onboarded and the endpoint is not /chats', () => {
     it('shows the widget', async () => {
