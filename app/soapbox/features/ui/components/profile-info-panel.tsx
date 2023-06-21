@@ -86,7 +86,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const renderBirthday = (): React.ReactNode => {
-    const birthday = account.birthday;
+    const birthday = account.pleroma?.birthday;
     if (!birthday) return null;
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
@@ -131,7 +131,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   }
 
   const content = { __html: account.note_emojified };
-  const deactivated = !account.pleroma.get('is_active', true) === true;
+  const deactivated = account.pleroma?.deactivated ?? false;
   const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const badges = getBadges();
@@ -229,7 +229,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <ProfileFamiliarFollowers account={account} />
       </Stack>
 
-      {account.fields.size > 0 && (
+      {account.fields.length > 0 && (
         <Stack space={2} className='mt-4 xl:hidden'>
           {account.fields.map((field, i) => (
             <ProfileField field={field} key={i} />

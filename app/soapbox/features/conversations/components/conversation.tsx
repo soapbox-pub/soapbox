@@ -19,7 +19,7 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
     const conversation = state.conversations.items.find(x => x.id === conversationId)!;
 
     return {
-      accounts: conversation.accounts.map((accountId: string) => state.accounts.get(accountId, null)!),
+      accounts: conversation.accounts.map((accountId: string) => state.accounts.get(accountId)!),
       unread: conversation.unread,
       lastStatusId: conversation.last_status || null,
     };

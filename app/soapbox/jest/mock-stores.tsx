@@ -1,7 +1,9 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 
 import alexJson from 'soapbox/__fixtures__/pleroma-account.json';
-import { normalizeAccount, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeInstance } from 'soapbox/normalizers';
+
+import { buildAccount } from './factory';
 
 /** Store with registrations open. */
 const storeOpen = { instance: normalizeInstance({ registrations: true }) };
@@ -26,9 +28,9 @@ const storePepeClosed = {
 /** Store with a logged-in user. */
 const storeLoggedIn = {
   me: alexJson.id,
-  accounts: ImmutableMap({
-    [alexJson.id]: normalizeAccount(alexJson),
-  }),
+  accounts: {
+    [alexJson.id]: buildAccount(alexJson as any),
+  },
 };
 
 export {

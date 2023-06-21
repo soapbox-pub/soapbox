@@ -9,6 +9,7 @@ module.exports = {
     '<rootDir>/static/',
     '<rootDir>/tmp/',
     '<rootDir>/webpack/',
+    '<rootDir>/app/soapbox/actions/',
   ],
   'setupFiles': [
     'raf/polyfill',

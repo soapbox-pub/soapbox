@@ -8,10 +8,10 @@ import { getAcct } from '../utils/accounts';
 import { HStack, Text } from './ui';
 import VerificationBadge from './verification-badge';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 interface IDisplayName {
-  account: Account
+  account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>
   withSuffix?: boolean
   children?: React.ReactNode
 }
@@ -37,7 +37,7 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = t
 
   return (
     <span className='display-name' data-testid='display-name'>
-      <HoverRefWrapper accountId={account.get('id')} inline>
+      <HoverRefWrapper accountId={account.id} inline>
         {displayName}
       </HoverRefWrapper>
       {withSuffix && suffix}

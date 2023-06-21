@@ -1,9 +1,7 @@
-import { Map as ImmutableMap } from 'immutable';
-
 import { __stub } from 'soapbox/api';
-import { buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
+import { buildAccount, buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeAccount, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeInstance } from 'soapbox/normalizers';
 
 import { useGroupsPath } from '../useGroupsPath';
 
@@ -30,15 +28,17 @@ describe('useGroupsPath()', () => {
           version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)',
         }),
         me: userId,
-        accounts: ImmutableMap({
-          [userId]: normalizeAccount({
+        accounts: {
+          [userId]: buildAccount({
             id: userId,
             acct: 'justin-username',
             display_name: 'Justin L',
             avatar: 'test.jpg',
-            chats_onboarded: false,
+            source: {
+              chats_onboarded: false,
+            },
           }),
-        }),
+        },
       };
     });
 

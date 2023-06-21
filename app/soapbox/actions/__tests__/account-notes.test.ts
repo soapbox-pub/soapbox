@@ -1,14 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { buildRelationship } from 'soapbox/jest/factory';
+import { buildAccount, buildRelationship } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ReducerRecord, EditRecord } from 'soapbox/reducers/account-notes';
 
-import { normalizeAccount } from '../../normalizers';
 import { changeAccountNoteComment, initAccountNoteModal, submitAccountNote } from '../account-notes';
-
-import type { Account } from 'soapbox/types/entities';
 
 describe('submitAccountNote()', () => {
   let store: ReturnType<typeof mockStore>;
@@ -72,13 +69,13 @@ describe('initAccountNoteModal()', () => {
   });
 
   it('dispatches the proper actions', async() => {
-    const account = normalizeAccount({
+    const account = buildAccount({
       id: '1',
       acct: 'justin-username',
       display_name: 'Justin L',
       avatar: 'test.jpg',
       verified: true,
-    }) as Account;
+    });
     const expectedActions = [
       { type: 'ACCOUNT_NOTE_INIT_MODAL', account, comment: 'hello' },
       { type: 'MODAL_CLOSE', modalType: 'ACCOUNT_NOTE' },

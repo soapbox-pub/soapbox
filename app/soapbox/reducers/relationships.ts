@@ -1,4 +1,4 @@
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 import get from 'lodash/get';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
@@ -50,7 +50,7 @@ const normalizeRelationships = (state: State, relationships: APIEntities) => {
   return state;
 };
 
-const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocking: boolean) => {
+const setDomainBlocking = (state: State, accounts: string[], blocking: boolean) => {
   return state.withMutations(map => {
     accounts.forEach(id => {
       map.setIn([id, 'domain_blocking'], blocking);

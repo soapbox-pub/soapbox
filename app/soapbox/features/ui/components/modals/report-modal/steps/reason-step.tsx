@@ -7,7 +7,7 @@ import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
+import type { Account } from 'soapbox/schemas';
 
 const messages = defineMessages({
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
@@ -15,12 +15,12 @@ const messages = defineMessages({
 });
 
 interface IReasonStep {
-  account: ReducerAccount
+  account?: Account
 }
 
 const RULES_HEIGHT = 385;
 
-const ReasonStep = (_props: IReasonStep) => {
+const ReasonStep: React.FC<IReasonStep> = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 

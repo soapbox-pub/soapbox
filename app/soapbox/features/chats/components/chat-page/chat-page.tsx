@@ -19,7 +19,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
   const account = useOwnAccount();
   const history = useHistory();
 
-  const isOnboarded = account?.chats_onboarded;
+  const isOnboarded = account?.source?.chats_onboarded ?? true;
 
   const path = history.location.pathname;
   const isSidebarHidden = matchPath(path, {

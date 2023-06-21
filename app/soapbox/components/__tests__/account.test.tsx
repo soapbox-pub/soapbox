@@ -1,25 +1,23 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 
-import { render, screen } from '../../jest/test-helpers';
-import { normalizeAccount } from '../../normalizers';
-import Account from '../account';
+import { buildAccount } from 'soapbox/jest/factory';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
+import { render, screen } from '../../jest/test-helpers';
+import Account from '../account';
 
 describe('<Account />', () => {
   it('renders account name and username', () => {
-    const account = normalizeAccount({
+    const account = buildAccount({
       id: '1',
       acct: 'justin-username',
       display_name: 'Justin L',
       avatar: 'test.jpg',
-    }) as ReducerAccount;
+    });
 
     const store = {
-      accounts: ImmutableMap({
+      accounts: {
         '1': account,
-      }),
+      },
     };
 
     render(<Account account={account} />, undefined, store);
@@ -29,18 +27,18 @@ describe('<Account />', () => {
 
   describe('verification badge', () => {
     it('renders verification badge', () => {
-      const account = normalizeAccount({
+      const account = buildAccount({
         id: '1',
         acct: 'justin-username',
         display_name: 'Justin L',
         avatar: 'test.jpg',
         verified: true,
-      }) as ReducerAccount;
+      });
 
       const store = {
-        accounts: ImmutableMap({
+        accounts: {
           '1': account,
-        }),
+        },
       };
 
       render(<Account account={account} />, undefined, store);
@@ -48,18 +46,18 @@ describe('<Account />', () => {
     });
 
     it('does not render verification badge', () => {
-      const account = normalizeAccount({
+      const account = buildAccount({
         id: '1',
         acct: 'justin-username',
         display_name: 'Justin L',
         avatar: 'test.jpg',
         verified: false,
-      }) as ReducerAccount;
+      });
 
       const store = {
-        accounts: ImmutableMap({
+        accounts: {
           '1': account,
-        }),
+        },
       };
 
       render(<Account account={account} />, undefined, store);

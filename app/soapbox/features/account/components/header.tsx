@@ -615,7 +615,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   return (
     <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
       {(account.moved && typeof account.moved === 'object') && (
-        <MovedNote from={account} to={account.moved} />
+        <MovedNote from={account} to={account.moved as Account} />
       )}
 
       <div>

@@ -3,8 +3,9 @@ import api from '../api';
 import { openModal } from './modals';
 
 import type { AxiosError } from 'axios';
+import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Account, ChatMessage, Group, Status } from 'soapbox/types/entities';
+import type { ChatMessage, Group, Status } from 'soapbox/types/entities';
 
 const REPORT_INIT   = 'REPORT_INIT';
 const REPORT_CANCEL = 'REPORT_CANCEL';

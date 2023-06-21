@@ -1,9 +1,10 @@
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import { buildAccount } from 'soapbox/jest/factory';
+
 import { render, screen, waitFor } from '../../../jest/test-helpers';
-import { normalizeAccount, normalizeInstance } from '../../../normalizers';
+import { normalizeInstance } from '../../../normalizers';
 import UI from '../index';
 import { WrappedRoute } from '../util/react-router-helpers';
 
@@ -25,14 +26,14 @@ describe('<UI />', () => {
   beforeEach(() => {
     store = {
       me: false,
-      accounts: ImmutableMap({
-        '1': normalizeAccount({
+      accounts: {
+        '1': buildAccount({
           id: '1',
           acct: 'username',
           display_name: 'My name',
           avatar: 'test.jpg',
         }),
-      }),
+      },
       instance: normalizeInstance({ registrations: true }),
     };
   });

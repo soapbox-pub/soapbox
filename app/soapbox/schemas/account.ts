@@ -5,6 +5,7 @@ import emojify from 'soapbox/features/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
+import { relationshipSchema } from './relationship';
 import { contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
@@ -54,6 +55,8 @@ const baseAccountSchema = z.object({
   pleroma: z.object({
     accepts_chat_messages: z.boolean().catch(false),
     accepts_email_list: z.boolean().catch(false),
+    also_known_as: z.array(z.string().url()).catch([]),
+    ap_id: z.string().url().optional().catch(undefined),
     birthday: birthdaySchema.nullish().catch(undefined),
     deactivated: z.boolean().catch(false),
     favicon: z.string().url().optional().catch(undefined),
@@ -69,6 +72,7 @@ const baseAccountSchema = z.object({
     notification_settings: z.object({
       block_from_strangers: z.boolean().catch(false),
     }).optional().catch(undefined),
+    relationship: relationshipSchema.optional().catch(undefined),
     tags: z.array(z.string()).catch([]),
   }).optional().catch(undefined),
   source: z.object({
@@ -132,8 +136,12 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     moderator: pleroma?.is_moderator || false,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: emojify(account.note, customEmojiMap),
-    pleroma,
-    relationship: undefined,
+    pleroma: (() => {
+      if (!pleroma) return undefined;
+      const { relationship, ...rest } = pleroma;
+      return rest;
+    })(),
+    relationship: pleroma?.relationship,
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,
     verified: account.verified || pleroma?.tags.includes('verified') || false,

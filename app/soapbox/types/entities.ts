@@ -1,7 +1,6 @@
 import {
   AdminAccountRecord,
   AdminReportRecord,
-  AccountRecord,
   AnnouncementRecord,
   AnnouncementReactionRecord,
   AttachmentRecord,
@@ -23,8 +22,10 @@ import {
   TagRecord,
 } from 'soapbox/normalizers';
 import { LogEntryRecord } from 'soapbox/reducers/admin-log';
+import { Account as SchemaAccount } from 'soapbox/schemas';
 
 import type { Record as ImmutableRecord } from 'immutable';
+import type { LegacyMap } from 'soapbox/utils/legacy';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
 type AdminLog = ReturnType<typeof LogEntryRecord>;
@@ -48,11 +49,7 @@ type Notification = ReturnType<typeof NotificationRecord>;
 type StatusEdit = ReturnType<typeof StatusEditRecord>;
 type Tag = ReturnType<typeof TagRecord>;
 
-interface Account extends ReturnType<typeof AccountRecord> {
-  // HACK: we can't do a circular reference in the Record definition itself,
-  // so do it here.
-  moved: EmbeddedEntity<Account>
-}
+type Account = SchemaAccount & LegacyMap;
 
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
@@ -65,10 +62,10 @@ type APIEntity = Record<string, any>;
 type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableRecord.Factory<T>>;
 
 export {
+  Account,
   AdminAccount,
   AdminLog,
   AdminReport,
-  Account,
   Announcement,
   AnnouncementReaction,
   Attachment,

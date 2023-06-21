@@ -9,7 +9,7 @@ import StatusCheckBox from 'soapbox/features/report/components/status-check-box'
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
+import type { Account } from 'soapbox/schemas';
 
 const messages = defineMessages({
   addAdditionalStatuses: { id: 'report.otherActions.addAdditional', defaultMessage: 'Would you like to add additional statuses to this report?' },
@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 interface IOtherActionsStep {
-  account: ReducerAccount
+  account: Account
 }
 
 const OtherActionsStep = ({ account }: IOtherActionsStep) => {
@@ -104,7 +104,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
             />
 
             <Text theme='muted' tag='label' size='sm' htmlFor='report-block'>
-              <FormattedMessage id='report.block' defaultMessage='Block {target}' values={{ target: `@${account.get('acct')}` }} />
+              <FormattedMessage id='report.block' defaultMessage='Block {target}' values={{ target: `@${account.acct}` }} />
             </Text>
           </HStack>
         </FormGroup>

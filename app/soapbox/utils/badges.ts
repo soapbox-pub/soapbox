@@ -33,8 +33,8 @@ const filterBadges = (tags: string[]): string[] => {
 };
 
 /** Get badges from an account. */
-const getBadges = (account: Account) => {
-  const tags = Array.from(account?.getIn(['pleroma', 'tags']) as Iterable<string> || []);
+const getBadges = (account: Pick<Account, 'pleroma'>) => {
+  const tags = account?.pleroma?.tags ?? [];
   return filterBadges(tags);
 };
 

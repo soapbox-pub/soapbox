@@ -1,10 +1,9 @@
 import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, EmbeddedEntity } from 'soapbox/types/entities';
 
 export const ChatRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account | ReducerAccount>,
+  account: null as EmbeddedEntity<Account>,
   id: '',
   unread: 0,
   last_message: '' as string || null,

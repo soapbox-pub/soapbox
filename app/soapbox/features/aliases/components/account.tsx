@@ -8,15 +8,13 @@ import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
-import type { List as ImmutableList } from 'immutable';
-
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },
 });
 
 interface IAccount {
   accountId: string
-  aliases: ImmutableList<string>
+  aliases: string[]
 }
 
 const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
@@ -30,8 +28,9 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
 
   const added = useAppSelector((state) => {
     const account = getAccount(state, accountId);
-    const apId = account?.pleroma.get('ap_id');
+    const apId = account?.pleroma?.ap_id;
     const name = features.accountMoving ? account?.acct : apId;
+    if (!name) return false;
 
     return aliases.includes(name);
   });

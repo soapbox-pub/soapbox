@@ -7,7 +7,7 @@ import { HStack, Icon } from 'soapbox/components/ui';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
-import type { Field } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 const getTicker = (value: string): string => (value.match(/\$([a-zA-Z]*)/i) || [])[1];
 const isTicker = (value: string): boolean => Boolean(getTicker(value));
@@ -26,7 +26,7 @@ const dateFormatOptions: FormatDateOptions = {
 };
 
 interface IProfileField {
-  field: Field
+  field: Account['fields'][number]
 }
 
 /** Renders a single profile field. */

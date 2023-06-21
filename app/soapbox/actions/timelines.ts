@@ -40,7 +40,7 @@ const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((st
     const hasPendingStatuses = !getState().pending_statuses.isEmpty();
 
     const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
-    const shouldSkipQueue = shouldFilter(normalizeStatus(status) as Status, columnSettings);
+    const shouldSkipQueue = shouldFilter(normalizeStatus(status) as Status, columnSettings as any);
 
     if (ownStatus && hasPendingStatuses) {
       // WebSockets push statuses without the Idempotency-Key,
