@@ -1,4 +1,3 @@
-export { useAccount } from './useAccount';
 export { useApi } from './useApi';
 export { useAppDispatch } from './useAppDispatch';
 export { useAppSelector } from './useAppSelector';
