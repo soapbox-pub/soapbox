@@ -13,13 +13,13 @@ describe('shouldFilter', () => {
 
   it('reblog: returns true when `shows.reblog == false`', () => {
     const columnSettings = fromJS({ shows: { reblog: false } });
-    const status = buildStatus({ reblog: {} });
+    const status = buildStatus({ reblog: buildStatus() as any });
     expect(shouldFilter(status, columnSettings)).toBe(true);
   });
 
   it('reblog: returns false when `shows.reblog == true`', () => {
     const columnSettings = fromJS({ shows: { reblog: true } });
-    const status = buildStatus({ reblog: {} });
+    const status = buildStatus({ reblog: buildStatus() as any });
     expect(shouldFilter(status, columnSettings)).toBe(false);
   });
 
