@@ -3,6 +3,7 @@
  * Accounts
  */
 export { useAccount } from './accounts/useAccount';
+export { usePatronUser } from './accounts/usePatronUser';
 
 /**
  * Groups
