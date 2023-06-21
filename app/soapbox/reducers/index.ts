@@ -187,7 +187,7 @@ const accountsSelector = createSelector(
 const extendedRootReducer = (
   state: InferState<typeof appReducer>,
   action: AnyAction,
-): ReturnType<typeof rootReducer> & { accounts: ReturnType<typeof accountsSelector> } => {
+): ReturnType<typeof rootReducer> => {
   const extendedState = rootReducer(state, action);
   return extendedState.set('accounts', accountsSelector(extendedState));
 };

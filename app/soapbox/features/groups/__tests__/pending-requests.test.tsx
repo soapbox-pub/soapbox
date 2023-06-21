@@ -24,7 +24,6 @@ const store: any = {
   },
   instance: normalizeInstance({
     version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-    software: 'TRUTHSOCIAL',
   }),
 };
 
