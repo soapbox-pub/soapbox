@@ -27,7 +27,7 @@ const Aliases = () => {
 
   const aliases = useAppSelector((state) => {
     if (features.accountMoving) {
-      return state.aliases.aliases.items.toArray();
+      return [...state.aliases.aliases.items];
     } else {
       return account?.pleroma?.also_known_as ?? [];
     }
