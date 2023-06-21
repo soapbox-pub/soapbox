@@ -6,13 +6,13 @@ import { SelectDropdown } from 'soapbox/features/forms';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/schemas';
 
 /** Staff role. */
 type AccountRole = 'user' | 'moderator' | 'admin';
 
 /** Get the highest staff role associated with the account. */
-const getRole = (account: AccountEntity): AccountRole => {
+const getRole = (account: Pick<AccountEntity, 'admin' | 'moderator'>): AccountRole => {
   if (account.admin) {
     return 'admin';
   } else if (account.moderator) {
@@ -34,7 +34,7 @@ const messages = defineMessages({
 
 interface IStaffRolePicker {
   /** Account whose role to change. */
-  account: AccountEntity
+  account: Pick<AccountEntity, 'id' | 'acct' | 'admin' | 'moderator'>
 }
 
 /** Picker for setting the staff role of an account. */

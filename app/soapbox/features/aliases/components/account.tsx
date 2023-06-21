@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addToAliases } from 'soapbox/actions/aliases';
+import { useAccount } from 'soapbox/api/hooks';
 import AccountComponent from 'soapbox/components/account';
 import IconButton from 'soapbox/components/icon-button';
 import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },
@@ -22,18 +22,12 @@ const Account: React.FC<IAccount> = ({ accountId, aliases }) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
-  const getAccount = useCallback(makeGetAccount(), []);
-  const account = useAppSelector((state) => getAccount(state, accountId));
   const me = useAppSelector((state) => state.me);
+  const { account } = useAccount(accountId);
 
-  const added = useAppSelector((state) => {
-    const account = getAccount(state, accountId);
-    const apId = account?.pleroma?.ap_id;
-    const name = features.accountMoving ? account?.acct : apId;
-    if (!name) return false;
-
-    return aliases.includes(name);
-  });
+  const apId = account?.pleroma?.ap_id;
+  const name = features.accountMoving ? account?.acct : apId;
+  const added = name ? aliases.includes(name) : false;
 
   const handleOnAdd = () => dispatch(addToAliases(account!));
 

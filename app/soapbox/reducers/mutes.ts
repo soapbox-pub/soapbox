@@ -10,7 +10,7 @@ import type { AnyAction } from 'redux';
 
 const NewMuteRecord = ImmutableRecord({
   isSubmitting: false,
-  accountId: null,
+  accountId: null as string | null,
   notifications: true,
   duration: 0,
 });

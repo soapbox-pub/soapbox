@@ -4,13 +4,14 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { blockAccount } from 'soapbox/actions/accounts';
 import { submitReport, submitReportSuccess, submitReportFail, ReportableEntities } from 'soapbox/actions/reports';
 import { expandAccountTimeline } from 'soapbox/actions/timelines';
+import { useAccount } from 'soapbox/api/hooks';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import GroupCard from 'soapbox/components/group-card';
 import List, { ListItem } from 'soapbox/components/list';
 import StatusContent from 'soapbox/components/status-content';
 import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { useAccount, useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import ConfirmationStep from './steps/confirmation-step';
 import OtherActionsStep from './steps/other-actions-step';
@@ -100,7 +101,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const intl = useIntl();
 
   const accountId = useAppSelector((state) => state.reports.new.account_id);
-  const account = useAccount(accountId as string);
+  const { account } = useAccount(accountId || undefined);
 
   const entityType = useAppSelector((state) => state.reports.new.entityType);
   const isBlocked = useAppSelector((state) => state.reports.new.block);

@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { useAccount } from 'soapbox/api/hooks';
 import AccountComponent from 'soapbox/components/account';
 import Icon from 'soapbox/components/icon';
 import { HStack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   birthday: { id: 'account.birthday', defaultMessage: 'Born {date}' },
@@ -17,9 +16,7 @@ interface IAccount {
 
 const Account: React.FC<IAccount> = ({ accountId }) => {
   const intl = useIntl();
-  const getAccount = useCallback(makeGetAccount(), []);
-
-  const account = useAppSelector((state) => getAccount(state, accountId));
+  const { account } = useAccount(accountId);
 
   if (!account) return null;
 

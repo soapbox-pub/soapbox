@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
+import { useAccount } from 'soapbox/api/hooks';
 import AccountComponent from 'soapbox/components/account';
 import IconButton from 'soapbox/components/icon-button';
 import { HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
+import { useAppDispatch, useCompose } from 'soapbox/hooks';
 
 const messages = defineMessages({
   remove: { id: 'reply_mentions.account.remove', defaultMessage: 'Remove from mentions' },
@@ -23,11 +23,9 @@ interface IAccount {
 const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const getAccount = useCallback(makeGetAccount(), []);
 
   const compose = useCompose(composeId);
-
-  const account = useAppSelector((state) => getAccount(state, accountId));
+  const { account } = useAccount(accountId);
   const added = !!account && compose.to?.includes(account.acct);
 
   const onRemove = () => dispatch(removeFromMentions(composeId, accountId));

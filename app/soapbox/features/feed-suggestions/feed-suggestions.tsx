@@ -2,21 +2,25 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { useAccount } from 'soapbox/api/hooks';
 import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAccount, useAppSelector } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 
 import { Card, CardBody, CardTitle, HStack, Stack, Text } from '../../components/ui';
 import ActionButton from '../ui/components/action-button';
-
-import type { Account } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   heading: { id: 'feed_suggestions.heading', defaultMessage: 'Suggested Profiles' },
   viewAll: { id: 'feed_suggestions.view_all', defaultMessage: 'View all' },
 });
 
-const SuggestionItem = ({ accountId }: { accountId: string }) => {
-  const account = useAccount(accountId) as Account;
+interface ISuggestionItem {
+  accountId: string
+}
+
+const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
+  const { account } = useAccount(accountId);
+  if (!account) return null;
 
   return (
     <Stack space={3} className='w-52 shrink-0 rounded-md border border-solid border-gray-300 p-4 dark:border-gray-800 md:w-full md:shrink md:border-transparent md:p-0 dark:md:border-transparent'>
