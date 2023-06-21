@@ -3,16 +3,14 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import Badge from 'soapbox/components/badge';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp';
 import { Stack, Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
-
-const getAccount = makeGetAccount();
 
 interface IAccountCard {
   id: string
@@ -20,7 +18,7 @@ interface IAccountCard {
 
 const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const me = useAppSelector((state) => state.me);
-  const account = useAppSelector((state) => getAccount(state, id));
+  const { account } = useAccount(id);
   const autoPlayGif = useAppSelector((state) => getSettings(state).get('autoPlayGif'));
 
   if (!account) return null;
