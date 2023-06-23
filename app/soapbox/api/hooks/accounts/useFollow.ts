@@ -1,5 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useChangeEntity } from 'soapbox/entity-store/hooks';
+import { useLoggedIn } from 'soapbox/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
 import { type Account } from 'soapbox/schemas';
 
@@ -8,8 +9,15 @@ function useChangeAccount() {
   return { changeAccount };
 }
 
+interface FollowOpts {
+  reblogs?: boolean
+  notify?: boolean
+  languages?: string[]
+}
+
 function useFollow() {
   const api = useApi();
+  const { isLoggedIn } = useLoggedIn();
   const { changeAccount } = useChangeAccount();
 
   function incrementFollowers(accountId: string) {
@@ -26,7 +34,8 @@ function useFollow() {
     }));
   }
 
-  async function follow(accountId: string, options = {}) {
+  async function follow(accountId: string, options: FollowOpts = {}) {
+    if (!isLoggedIn) return;
     incrementFollowers(accountId);
 
     try {
@@ -36,11 +45,12 @@ function useFollow() {
     }
   }
 
-  async function unfollow(accountId: string, options = {}) {
+  async function unfollow(accountId: string) {
+    if (!isLoggedIn) return;
     decrementFollowers(accountId);
 
     try {
-      await api.post(`/api/v1/accounts/${accountId}/unfollow`, options);
+      await api.post(`/api/v1/accounts/${accountId}/unfollow`);
     } catch (e) {
       incrementFollowers(accountId);
     }

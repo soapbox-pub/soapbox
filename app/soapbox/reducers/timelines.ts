@@ -10,7 +10,6 @@ import sample from 'lodash/sample';
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
-  ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
 import {
   STATUS_CREATE_REQUEST,
@@ -204,11 +203,11 @@ const buildReferencesTo = (statuses: ImmutableMap<string, Status>, status: Statu
     .map(statusToReference) as ImmutableMap<string, [string, string]>
 );
 
-const filterTimeline = (state: State, timelineId: string, relationship: APIEntity, statuses: ImmutableList<ImmutableMap<string, any>>) =>
-  state.updateIn([timelineId, 'items'], ImmutableOrderedSet(), (ids) =>
-    (ids as ImmutableOrderedSet<string>).filterNot(statusId =>
-      statuses.getIn([statusId, 'account']) === relationship.id,
-    ));
+// const filterTimeline = (state: State, timelineId: string, relationship: APIEntity, statuses: ImmutableList<ImmutableMap<string, any>>) =>
+//   state.updateIn([timelineId, 'items'], ImmutableOrderedSet(), (ids) =>
+//     (ids as ImmutableOrderedSet<string>).filterNot(statusId =>
+//       statuses.getIn([statusId, 'account']) === relationship.id,
+//     ));
 
 const filterTimelines = (state: State, relationship: APIEntity, statuses: ImmutableMap<string, Status>) => {
   return state.withMutations(state => {
@@ -356,8 +355,8 @@ export default function timelines(state: State = initialState, action: AnyAction
     case ACCOUNT_BLOCK_SUCCESS:
     case ACCOUNT_MUTE_SUCCESS:
       return filterTimelines(state, action.relationship, action.statuses);
-    case ACCOUNT_UNFOLLOW_SUCCESS:
-      return filterTimeline(state, 'home', action.relationship, action.statuses);
+    // case ACCOUNT_UNFOLLOW_SUCCESS:
+    //   return filterTimeline(state, 'home', action.relationship, action.statuses);
     case TIMELINE_SCROLL_TOP:
       return updateTop(state, action.timeline, action.top);
     case TIMELINE_CONNECT:

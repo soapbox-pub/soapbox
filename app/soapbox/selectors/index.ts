@@ -22,7 +22,6 @@ import type { Filter as FilterEntity, Notification, Status, Group } from 'soapbo
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
 const getAccountBase         = (state: RootState, id: string) => state.accounts.get(id);
-const getAccountCounters     = (state: RootState, id: string) => state.accounts_counters.get(id);
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
 const getAccountMoved        = (state: RootState, id: string) => state.accounts.get(state.accounts.get(id)?.moved || '');
 const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id);
@@ -35,13 +34,12 @@ const getAccountPatron       = (state: RootState, id: string) => {
 export const makeGetAccount = () => {
   return createSelector([
     getAccountBase,
-    getAccountCounters,
     getAccountRelationship,
     getAccountMoved,
     getAccountMeta,
     getAccountAdminData,
     getAccountPatron,
-  ], (base, counters, relationship, moved, meta, admin, patron) => {
+  ], (base, relationship, moved, meta, admin, patron) => {
     if (!base) return null;
     base.relationship = base.relationship ?? relationship;
     return base;

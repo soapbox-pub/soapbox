@@ -2,10 +2,10 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
-  followAccount,
   subscribeAccount,
   unsubscribeAccount,
 } from 'soapbox/actions/accounts';
+import { useFollow } from 'soapbox/api/hooks';
 import { IconButton } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -29,6 +29,7 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
+  const { follow } = useFollow();
 
   const isFollowing = account.relationship?.following;
   const isRequested = account.relationship?.requested;
@@ -53,11 +54,11 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
 
   const onNotifyToggle = () => {
     if (account.relationship?.notifying) {
-      dispatch(followAccount(account.id, { notify: false } as any))
+      follow(account.id, { notify: false })
         ?.then(() => onUnsubscribeSuccess())
         .catch(() => onUnsubscribeFailure());
     } else {
-      dispatch(followAccount(account.id, { notify: true } as any))
+      follow(account.id, { notify: true })
         ?.then(() => onSubscribeSuccess())
         .catch(() => onSubscribeFailure());
     }

@@ -13,6 +13,7 @@ export { useFeatures } from './useFeatures';
 export { useInstance } from './useInstance';
 export { useLoading } from './useLoading';
 export { useLocale } from './useLocale';
+export { useLoggedIn } from './useLoggedIn';
 export { useOnScreen } from './useOnScreen';
 export { useOwnAccount } from './useOwnAccount';
 export { usePrevious } from './usePrevious';

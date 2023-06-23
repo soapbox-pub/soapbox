@@ -2,8 +2,6 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
-  followAccount,
-  unfollowAccount,
   blockAccount,
   unblockAccount,
   muteAccount,
@@ -12,8 +10,9 @@ import {
   rejectFollowRequest,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
+import { useFollow } from 'soapbox/api/hooks';
 import { Button, HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useLoggedIn } from 'soapbox/hooks';
 
 import type { Account } from 'soapbox/schemas';
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -53,13 +52,14 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
   const features = useFeatures();
   const intl = useIntl();
 
-  const me = useAppSelector((state) => state.me);
+  const { isLoggedIn, me } = useLoggedIn();
+  const { follow, unfollow } = useFollow();
 
   const handleFollow = () => {
     if (account.relationship?.following || account.relationship?.requested) {
-      dispatch(unfollowAccount(account.id));
+      unfollow(account.id);
     } else {
-      dispatch(followAccount(account.id));
+      follow(account.id);
     }
   };
 
@@ -187,7 +187,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
     return null;
   };
 
-  if (!me) {
+  if (!isLoggedIn) {
     return renderLoggedOut();
   }
 

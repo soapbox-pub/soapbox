@@ -7,7 +7,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
+import { blockAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -15,6 +15,7 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
+import { useFollow } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
 import StillImage from 'soapbox/components/still-image';
@@ -87,6 +88,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+  const { follow } = useFollow();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
@@ -154,9 +156,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onReblogToggle = () => {
     if (account.relationship?.showing_reblogs) {
-      dispatch(followAccount(account.id, { reblogs: false }));
+      follow(account.id, { reblogs: false });
     } else {
-      dispatch(followAccount(account.id, { reblogs: true }));
+      follow(account.id, { reblogs: true });
     }
   };
 
