@@ -50,11 +50,19 @@ interface EntityCache<TEntity extends Entity = Entity> {
 /** Whether to import items at the start or end of the list. */
 type ImportPosition = 'start' | 'end'
 
-export {
+/** Map of entity mutation functions to perform at once on the store. */
+interface EntitiesTransaction {
+  [entityType: string]: {
+    [entityId: string]: <TEntity extends Entity>(entity: TEntity) => TEntity
+  }
+}
+
+export type {
   Entity,
   EntityStore,
   EntityList,
   EntityListState,
   EntityCache,
   ImportPosition,
+  EntitiesTransaction,
 };

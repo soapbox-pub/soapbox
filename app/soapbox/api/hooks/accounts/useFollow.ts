@@ -1,13 +1,9 @@
+import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { useChangeEntity } from 'soapbox/entity-store/hooks';
-import { useLoggedIn } from 'soapbox/hooks';
+import { useTransaction } from 'soapbox/entity-store/hooks';
+import { useAppDispatch, useLoggedIn } from 'soapbox/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
-import { type Account } from 'soapbox/schemas';
-
-function useChangeAccount() {
-  const { changeEntity: changeAccount } = useChangeEntity<Account>(Entities.ACCOUNTS);
-  return { changeAccount };
-}
+import { relationshipSchema } from 'soapbox/schemas';
 
 interface FollowOpts {
   reblogs?: boolean
@@ -17,50 +13,75 @@ interface FollowOpts {
 
 function useFollow() {
   const api = useApi();
+  const dispatch = useAppDispatch();
   const { isLoggedIn } = useLoggedIn();
-  const { changeAccount } = useChangeAccount();
+  const { transaction } = useTransaction();
 
-  function incrementFollowers(accountId: string) {
-    changeAccount(accountId, (account) => ({
-      ...account,
-      followers_count: account.followers_count + 1,
-    }));
+  function followEffect(accountId: string) {
+    transaction({
+      Accounts: {
+        [accountId]: (account) => ({
+          ...account,
+          followers_count: account.followers_count + 1,
+        }),
+      },
+      Relationships: {
+        [accountId]: (relationship) => ({
+          ...relationship,
+          following: true,
+        }),
+      },
+    });
   }
 
-  function decrementFollowers(accountId: string) {
-    changeAccount(accountId, (account) => ({
-      ...account,
-      followers_count: Math.max(0, account.followers_count - 1),
-    }));
+  function unfollowEffect(accountId: string) {
+    transaction({
+      Accounts: {
+        [accountId]: (account) => ({
+          ...account,
+          followers_count: Math.max(0, account.followers_count - 1),
+        }),
+      },
+      Relationships: {
+        [accountId]: (relationship) => ({
+          ...relationship,
+          following: false,
+        }),
+      },
+    });
   }
 
   async function follow(accountId: string, options: FollowOpts = {}) {
     if (!isLoggedIn) return;
-    incrementFollowers(accountId);
+    followEffect(accountId);
 
     try {
-      await api.post(`/api/v1/accounts/${accountId}/follow`, options);
+      const response = await api.post(`/api/v1/accounts/${accountId}/follow`, options);
+      const result = relationshipSchema.safeParse(response.data);
+      if (result.success) {
+        dispatch(importEntities([result.data], Entities.RELATIONSHIPS));
+      }
     } catch (e) {
-      decrementFollowers(accountId);
+      unfollowEffect(accountId);
     }
   }
 
   async function unfollow(accountId: string) {
     if (!isLoggedIn) return;
-    decrementFollowers(accountId);
+    unfollowEffect(accountId);
 
     try {
       await api.post(`/api/v1/accounts/${accountId}/unfollow`);
     } catch (e) {
-      incrementFollowers(accountId);
+      followEffect(accountId);
     }
   }
 
   return {
     follow,
     unfollow,
-    incrementFollowers,
-    decrementFollowers,
+    followEffect,
+    unfollowEffect,
   };
 }
 
