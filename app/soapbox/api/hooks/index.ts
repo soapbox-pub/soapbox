@@ -1,13 +1,11 @@
 
-/**
- * Accounts
- */
+// Accounts
 export { useAccount } from './accounts/useAccount';
+export { useFollow } from './accounts/useFollow';
+export { useRelationships } from './accounts/useRelationships';
 export { usePatronUser } from './accounts/usePatronUser';
 
-/**
- * Groups
- */
+// Groups
 export { useBlockGroupMember } from './groups/useBlockGroupMember';
 export { useCancelMembershipRequest } from './groups/useCancelMembershipRequest';
 export { useCreateGroup, type CreateGroupParams } from './groups/useCreateGroup';
@@ -34,8 +32,3 @@ export { usePromoteGroupMember } from './groups/usePromoteGroupMember';
 export { useSuggestedGroups } from './groups/useSuggestedGroups';
 export { useUpdateGroup } from './groups/useUpdateGroup';
 export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
-
-/**
- * Relationships
- */
-export { useRelationships } from './accounts/useRelationships';

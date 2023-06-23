@@ -6,3 +6,4 @@ export { useCreateEntity } from './useCreateEntity';
 export { useDeleteEntity } from './useDeleteEntity';
 export { useDismissEntity } from './useDismissEntity';
 export { useIncrementEntity } from './useIncrementEntity';
+export { useChangeEntity } from './useChangeEntity';
