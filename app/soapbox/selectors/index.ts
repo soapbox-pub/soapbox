@@ -216,12 +216,9 @@ export const getAccountGallery = createSelector([
     const status = statuses.get(statusId);
     if (!status) return medias;
     if (status.reblog) return medias;
-    if (typeof status.account !== 'string') return medias;
-
-    const account = accounts.get(status.account);
 
     return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
+      status.media_attachments.map(media => media.merge({ status, account: status.account })));
   }, ImmutableList());
 });
 
