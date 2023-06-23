@@ -26,7 +26,7 @@ interface EntityListState {
   /** Total number of items according to the API. */
   totalCount: number | undefined
   /** Error returned from the API, if any. */
-  error: any
+  error: unknown
   /** Whether data has already been fetched */
   fetched: boolean
   /** Whether data for this list is currently being fetched. */
