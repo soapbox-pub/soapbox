@@ -43,6 +43,8 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
         emptyMessage={emptyMessage}
         className='max-w-full'
         itemClassName='pb-3'
+        style={{ height: '80vh' }}
+        useWindowScroll={false}
       >
         {accountIds.map((id) =>
           <AccountContainer key={id} id={id} />,
