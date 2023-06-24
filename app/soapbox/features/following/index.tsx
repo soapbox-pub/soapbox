@@ -9,12 +9,12 @@ import {
   expandFollowing,
   fetchAccountByUsername,
 } from 'soapbox/actions/accounts';
+import { useAccountLookup } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
-import { findAccountByUsername } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.following', defaultMessage: 'Following' },
@@ -36,7 +36,7 @@ const Following: React.FC<IFollowing> = (props) => {
   const [loading, setLoading] = useState(true);
 
   const username = props.params?.username || '';
-  const account = useAppSelector(state => findAccountByUsername(state, username));
+  const { account } = useAccountLookup(username);
   const isOwnAccount = username.toLowerCase() === ownAccount?.username?.toLowerCase();
 
   const accountIds = useAppSelector(state => state.user_lists.following.get(account!?.id)?.items || ImmutableOrderedSet<string>());

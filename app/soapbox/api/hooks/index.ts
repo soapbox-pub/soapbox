@@ -1,6 +1,7 @@
 
 // Accounts
 export { useAccount } from './accounts/useAccount';
+export { useAccountLookup } from './accounts/useAccountLookup';
 export { useFollow } from './accounts/useFollow';
 export { useRelationships } from './accounts/useRelationships';
 export { usePatronUser } from './accounts/usePatronUser';

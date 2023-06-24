@@ -7,10 +7,11 @@ import { type Relationship, relationshipSchema } from 'soapbox/schemas';
 function useRelationships(ids: string[]) {
   const api = useApi();
   const { isLoggedIn } = useLoggedIn();
+  const q = ids.map(id => `id[]=${id}`).join('&');
 
   const { entities: relationships, ...result } = useEntities<Relationship>(
-    [Entities.RELATIONSHIPS],
-    () => api.get(`/api/v1/accounts/relationships?${ids.map(id => `id[]=${id}`).join('&')}`),
+    [Entities.RELATIONSHIPS, q],
+    () => api.get(`/api/v1/accounts/relationships?${q}`),
     { schema: relationshipSchema, enabled: isLoggedIn && ids.filter(Boolean).length > 0 },
   );
 

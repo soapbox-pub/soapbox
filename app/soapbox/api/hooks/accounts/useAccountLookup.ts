@@ -1,23 +1,24 @@
 import { Entities } from 'soapbox/entity-store/entities';
-import { useEntity } from 'soapbox/entity-store/hooks';
+import { useEntityLookup } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
 import { type Account, accountSchema } from 'soapbox/schemas';
 
 import { useRelationships } from './useRelationships';
 
-function useAccount(accountId?: string) {
+function useAccountLookup(acct?: string) {
   const api = useApi();
 
-  const { entity: account, ...result } = useEntity<Account>(
-    [Entities.ACCOUNTS, accountId!],
-    () => api.get(`/api/v1/accounts/${accountId}`),
-    { schema: accountSchema, enabled: !!accountId },
+  const { entity: account, ...result } = useEntityLookup<Account>(
+    Entities.ACCOUNTS,
+    (account) => account.acct === acct,
+    () => api.get(`/api/v1/accounts/lookup?acct=${acct}`),
+    { schema: accountSchema, enabled: !!acct },
   );
 
   const {
     relationships,
     isLoading: isRelationshipLoading,
-  } = useRelationships(accountId ? [accountId] : []);
+  } = useRelationships(account ? [account.id] : []);
 
   return {
     ...result,
@@ -27,4 +28,4 @@ function useAccount(accountId?: string) {
   };
 }
 
-export { useAccount };
+export { useAccountLookup };

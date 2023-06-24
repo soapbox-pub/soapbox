@@ -8,8 +8,9 @@ import { importFetchedAccounts } from './importer';
 import { openModal } from './modals';
 
 import type { AxiosError } from 'axios';
+import type { Account as AccountEntity } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Account as AccountEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const MUTES_FETCH_REQUEST = 'MUTES_FETCH_REQUEST';
 const MUTES_FETCH_SUCCESS = 'MUTES_FETCH_SUCCESS';

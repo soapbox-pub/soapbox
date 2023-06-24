@@ -28,8 +28,8 @@ import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soap
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
+import { Account } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
-import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
@@ -576,7 +576,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           disabled={createAndNavigateToChat.isLoading}
         />
       );
-    } else if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
+    } else if (account.pleroma?.accepts_chat_messages) {
       return (
         <IconButton
           src={require('@tabler/icons/messages.svg')}
