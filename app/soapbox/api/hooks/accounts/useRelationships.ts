@@ -7,12 +7,16 @@ import { type Relationship, relationshipSchema } from 'soapbox/schemas';
 function useRelationships(listKey: string[], ids: string[]) {
   const api = useApi();
   const { isLoggedIn } = useLoggedIn();
-  const q = ids.map(id => `id[]=${id}`).join('&');
+
+  function fetchRelationships(ids: string[]) {
+    const q = ids.map((id) => `id[]=${id}`).join('&');
+    return api.get(`/api/v1/accounts/relationships?${q}`);
+  }
 
   const { entityMap: relationships, ...result } = useBatchedEntities<Relationship>(
     [Entities.RELATIONSHIPS, ...listKey],
     ids,
-    () => api.get(`/api/v1/accounts/relationships?${q}`),
+    fetchRelationships,
     { schema: relationshipSchema, enabled: isLoggedIn },
   );
 
