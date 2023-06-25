@@ -3,10 +3,15 @@ import { useEntity } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
 import { type Account, accountSchema } from 'soapbox/schemas';
 
-import { useRelationships } from './useRelationships';
+import { useRelationship } from './useRelationship';
 
-function useAccount(accountId?: string) {
+interface UseAccountOpts {
+  withRelationship?: boolean
+}
+
+function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
   const api = useApi();
+  const { withRelationship } = opts;
 
   const { entity: account, ...result } = useEntity<Account>(
     [Entities.ACCOUNTS, accountId!],
@@ -15,15 +20,15 @@ function useAccount(accountId?: string) {
   );
 
   const {
-    relationships,
+    relationship,
     isLoading: isRelationshipLoading,
-  } = useRelationships(accountId ? [accountId] : []);
+  } = useRelationship(accountId, { enabled: withRelationship });
 
   return {
     ...result,
     isLoading: result.isLoading,
     isRelationshipLoading,
-    account: account ? { ...account, relationship: relationships[0] || null } : undefined,
+    account: account ? { ...account, relationship } : undefined,
   };
 }
 

@@ -3,10 +3,15 @@ import { useEntityLookup } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks/useApi';
 import { type Account, accountSchema } from 'soapbox/schemas';
 
-import { useRelationships } from './useRelationships';
+import { useRelationship } from './useRelationship';
 
-function useAccountLookup(acct?: string) {
+interface UseAccountLookupOpts {
+  withRelationship?: boolean
+}
+
+function useAccountLookup(acct: string | undefined, opts: UseAccountLookupOpts = {}) {
   const api = useApi();
+  const { withRelationship } = opts;
 
   const { entity: account, ...result } = useEntityLookup<Account>(
     Entities.ACCOUNTS,
@@ -16,15 +21,15 @@ function useAccountLookup(acct?: string) {
   );
 
   const {
-    relationships,
+    relationship,
     isLoading: isRelationshipLoading,
-  } = useRelationships(account ? [account.id] : []);
+  } = useRelationship(account?.id, { enabled: withRelationship });
 
   return {
     ...result,
     isLoading: result.isLoading,
     isRelationshipLoading,
-    account: account ? { ...account, relationship: relationships[0] || null } : undefined,
+    account: account ? { ...account, relationship } : undefined,
   };
 }
 

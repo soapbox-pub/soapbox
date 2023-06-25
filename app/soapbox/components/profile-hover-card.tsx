@@ -23,7 +23,10 @@ import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
 import type { Account, PatronUser } from 'soapbox/schemas';
 import type { AppDispatch } from 'soapbox/store';
 
-const getBadges = (account?: Account, patronUser?: PatronUser): JSX.Element[] => {
+const getBadges = (
+  account?: Pick<Account, 'admin' | 'moderator'>,
+  patronUser?: Pick<PatronUser, 'is_patron'>,
+): JSX.Element[] => {
   const badges = [];
 
   if (account?.admin) {
@@ -65,7 +68,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
 
   const me = useAppSelector(state => state.me);
   const accountId: string | undefined = useAppSelector(state => state.profile_hover_card.accountId || undefined);
-  const { account } = useAccount(accountId);
+  const { account } = useAccount(accountId, { withRelationship: true });
   const { patronUser } = usePatronUser(account?.url);
   const targetRef = useAppSelector(state => state.profile_hover_card.ref?.current);
   const badges = getBadges(account, patronUser);
