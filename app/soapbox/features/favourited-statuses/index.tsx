@@ -5,11 +5,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
+import { useAccount } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
-import { findAccountByUsername } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.favourited_statuses', defaultMessage: 'Liked posts' },
@@ -22,14 +22,14 @@ interface IFavourites {
 }
 
 /** Timeline displaying a user's favourited statuses. */
-const Favourites: React.FC<IFavourites> = (props) => {
+const Favourites: React.FC<IFavourites> = ({ params }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const ownAccount = useOwnAccount();
+  const { account } = useAccount(params?.username, { withRelationship: true });
 
-  const username = props.params?.username || '';
-  const account = useAppSelector(state => findAccountByUsername(state, username));
+  const username = params?.username || '';
   const isOwnAccount = username.toLowerCase() === ownAccount?.username?.toLowerCase();
 
   const timelineKey = isOwnAccount ? 'favourites' : `favourites:${account?.id}`;
