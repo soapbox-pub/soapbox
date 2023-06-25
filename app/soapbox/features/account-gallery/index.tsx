@@ -8,7 +8,7 @@ import { useAccountLookup } from 'soapbox/api/hooks';
 import LoadMore from 'soapbox/components/load-more';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useLoggedIn } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getAccountGallery } from 'soapbox/selectors';
 
 import MediaItem from './components/media-item';
@@ -34,16 +34,12 @@ const LoadMoreMedia: React.FC<ILoadMoreMedia> = ({ maxId, onLoadMore }) => {
 const AccountGallery = () => {
   const dispatch = useAppDispatch();
   const { username } = useParams<{ username: string }>();
-  const features = useFeatures();
-  const { me } = useLoggedIn();
 
   const {
     account,
     isLoading: accountLoading,
+    isUnavailable,
   } = useAccountLookup(username, { withRelationship: true });
-
-  const isBlocked = account?.relationship?.blocked_by === true;
-  const unavailable = (me === account?.id) ? false : (isBlocked && !features.blockersVisible);
 
   const attachments: ImmutableList<Attachment> = useAppSelector((state) => getAccountGallery(state, account!.id));
   const isLoading = useAppSelector((state) => state.timelines.get(`account:${account?.id}:media`)?.isLoading);
@@ -106,7 +102,7 @@ const AccountGallery = () => {
     loadOlder = <LoadMore className='my-auto' visible={!isLoading} onClick={handleLoadOlder} />;
   }
 
-  if (unavailable) {
+  if (isUnavailable) {
     return (
       <Column>
         <div className='empty-column-indicator'>
