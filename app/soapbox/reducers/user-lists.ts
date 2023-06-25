@@ -60,6 +60,7 @@ import {
 import {
   REBLOGS_FETCH_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,
+  FAVOURITES_EXPAND_SUCCESS,
   DISLIKES_FETCH_SUCCESS,
   REACTIONS_FETCH_SUCCESS,
 } from 'soapbox/actions/interactions';
@@ -174,7 +175,9 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
     case REBLOGS_FETCH_SUCCESS:
       return normalizeList(state, ['reblogged_by', action.id], action.accounts);
     case FAVOURITES_FETCH_SUCCESS:
-      return normalizeList(state, ['favourited_by', action.id], action.accounts);
+      return normalizeList(state, ['favourited_by', action.id], action.accounts, action.next);
+    case FAVOURITES_EXPAND_SUCCESS:
+      return appendToList(state, ['favourited_by', action.id], action.accounts, action.next);
     case DISLIKES_FETCH_SUCCESS:
       return normalizeList(state, ['disliked_by', action.id], action.accounts);
     case REACTIONS_FETCH_SUCCESS:
