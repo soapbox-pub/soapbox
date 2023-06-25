@@ -45,6 +45,7 @@ import modals from './modals';
 import mutes from './mutes';
 import notifications from './notifications';
 import onboarding from './onboarding';
+import patron from './patron';
 import pending_statuses from './pending-statuses';
 import polls from './polls';
 import profile_hover_card from './profile-hover-card';
@@ -113,6 +114,7 @@ const reducers = {
   mutes,
   notifications,
   onboarding,
+  patron,
   pending_statuses,
   polls,
   profile_hover_card,
