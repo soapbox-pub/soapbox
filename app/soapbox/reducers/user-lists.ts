@@ -59,6 +59,7 @@ import {
 } from 'soapbox/actions/groups';
 import {
   REBLOGS_FETCH_SUCCESS,
+  REBLOGS_EXPAND_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,
   FAVOURITES_EXPAND_SUCCESS,
   DISLIKES_FETCH_SUCCESS,
@@ -173,7 +174,9 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
     case FOLLOWING_EXPAND_SUCCESS:
       return appendToList(state, ['following', action.id], action.accounts, action.next);
     case REBLOGS_FETCH_SUCCESS:
-      return normalizeList(state, ['reblogged_by', action.id], action.accounts);
+      return normalizeList(state, ['reblogged_by', action.id], action.accounts, action.next);
+    case REBLOGS_EXPAND_SUCCESS:
+      return appendToList(state, ['reblogged_by', action.id], action.accounts, action.next);
     case FAVOURITES_FETCH_SUCCESS:
       return normalizeList(state, ['favourited_by', action.id], action.accounts, action.next);
     case FAVOURITES_EXPAND_SUCCESS:
