@@ -5,17 +5,17 @@ import { Account, accountSchema } from 'soapbox/schemas';
 
 import { useRelationships } from './useRelationships';
 
-function useFollowing(accountId: string | undefined) {
+function useFollowing(accountId: string | undefined, type: 'followers' | 'following') {
   const api = useApi();
 
   const { entities, ...rest } = useEntities(
-    [Entities.ACCOUNTS, accountId!, 'following'],
-    () => api.get(`/api/v1/accounts/${accountId}/following`),
+    [Entities.ACCOUNTS, accountId!, type],
+    () => api.get(`/api/v1/accounts/${accountId}/${type}`),
     { schema: accountSchema, enabled: !!accountId },
   );
 
   const { relationships } = useRelationships(
-    [accountId!, 'following'],
+    [accountId!, type],
     entities.map(({ id }) => id),
   );
 
