@@ -1,33 +1,26 @@
-import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchMutes, expandMutes } from 'soapbox/actions/mutes';
+import { useBlocks } from 'soapbox/api/hooks';
+import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.mutes', defaultMessage: 'Muted users' },
 });
 
-const handleLoadMore = debounce((dispatch) => {
-  dispatch(expandMutes());
-}, 300, { leading: true });
-
 const Mutes: React.FC = () => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const accountIds = useAppSelector((state) => state.user_lists.mutes.items);
-  const hasMore = useAppSelector((state) => !!state.user_lists.mutes.next);
+  const {
+    accounts,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+  } = useBlocks('mutes');
 
-  React.useEffect(() => {
-    dispatch(fetchMutes());
-  }, []);
-
-  if (!accountIds) {
+  if (isLoading) {
     return (
       <Column>
         <Spinner />
@@ -41,14 +34,14 @@ const Mutes: React.FC = () => {
     <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='mutes'
-        onLoadMore={() => handleLoadMore(dispatch)}
-        hasMore={hasMore}
+        onLoadMore={fetchNextPage}
+        hasMore={hasNextPage}
         emptyMessage={emptyMessage}
         itemClassName='pb-4'
       >
-        {accountIds.map((id) =>
-          <AccountContainer key={id} id={id} actionType='muting' />,
-        )}
+        {accounts.map((account) => (
+          <Account key={account.id} account={account} actionType='muting' />
+        ))}
       </ScrollableList>
     </Column>
   );

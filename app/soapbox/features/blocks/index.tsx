@@ -1,33 +1,26 @@
-import debounce from 'lodash/debounce';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchBlocks, expandBlocks } from 'soapbox/actions/blocks';
+import { useBlocks } from 'soapbox/api/hooks';
+import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.blocks', defaultMessage: 'Blocked users' },
 });
 
-const handleLoadMore = debounce((dispatch) => {
-  dispatch(expandBlocks());
-}, 300, { leading: true });
-
 const Blocks: React.FC = () => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const accountIds = useAppSelector((state) => state.user_lists.blocks.items);
-  const hasMore = useAppSelector((state) => !!state.user_lists.blocks.next);
+  const {
+    accounts,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+  } = useBlocks();
 
-  React.useEffect(() => {
-    dispatch(fetchBlocks());
-  }, []);
-
-  if (!accountIds) {
+  if (isLoading) {
     return (
       <Column>
         <Spinner />
@@ -41,14 +34,14 @@ const Blocks: React.FC = () => {
     <Column label={intl.formatMessage(messages.heading)}>
       <ScrollableList
         scrollKey='blocks'
-        onLoadMore={() => handleLoadMore(dispatch)}
-        hasMore={hasMore}
+        onLoadMore={fetchNextPage}
+        hasMore={hasNextPage}
         emptyMessage={emptyMessage}
         itemClassName='pb-4'
       >
-        {accountIds.map((id) =>
-          <AccountContainer key={id} id={id} actionType='blocking' />,
-        )}
+        {accounts.map((account) => (
+          <Account key={account.id} account={account} actionType='blocking' />
+        ))}
       </ScrollableList>
     </Column>
   );
