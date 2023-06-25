@@ -5,11 +5,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
-import { useAccount } from 'soapbox/api/hooks';
+import { useAccountLookup } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.favourited_statuses', defaultMessage: 'Liked posts' },
@@ -25,9 +25,8 @@ interface IFavourites {
 const Favourites: React.FC<IFavourites> = ({ params }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const features = useFeatures();
   const { account: ownAccount } = useOwnAccount();
-  const { account } = useAccount(params?.username, { withRelationship: true });
+  const { account, isUnavailable } = useAccountLookup(params?.username, { withRelationship: true });
 
   const username = params?.username || '';
   const isOwnAccount = username.toLowerCase() === ownAccount?.username?.toLowerCase();
@@ -36,11 +35,6 @@ const Favourites: React.FC<IFavourites> = ({ params }) => {
   const statusIds = useAppSelector(state => state.status_lists.get(timelineKey)?.items || ImmutableOrderedSet<string>());
   const isLoading = useAppSelector(state => state.status_lists.get(timelineKey)?.isLoading === true);
   const hasMore = useAppSelector(state => !!state.status_lists.get(timelineKey)?.next);
-
-  const isUnavailable = useAppSelector(state => {
-    const blockedBy = state.relationships.getIn([account?.id, 'blocked_by']) === true;
-    return isOwnAccount ? false : (blockedBy && !features.blockersVisible);
-  });
 
   const handleLoadMore = useCallback(debounce(() => {
     if (isOwnAccount) {
