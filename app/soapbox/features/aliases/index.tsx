@@ -23,7 +23,7 @@ const Aliases = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const aliases = useAppSelector((state) => {
     if (features.accountMoving) {

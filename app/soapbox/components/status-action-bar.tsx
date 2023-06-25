@@ -123,7 +123,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const { allowedEmoji } = soapboxConfig;
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
 

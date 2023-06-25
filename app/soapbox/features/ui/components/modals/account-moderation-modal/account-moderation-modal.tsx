@@ -45,7 +45,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
   const features = useFeatures();
   const { account } = useAccount(accountId);
 

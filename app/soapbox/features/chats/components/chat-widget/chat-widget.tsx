@@ -7,7 +7,7 @@ import { useOwnAccount } from 'soapbox/hooks';
 import ChatPane from '../chat-pane/chat-pane';
 
 const ChatWidget = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const history = useHistory();
 
   const path = history.location.pathname;

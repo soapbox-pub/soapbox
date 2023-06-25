@@ -19,7 +19,7 @@ interface Props {
 export default (props: Props) => {
   const { onSelect, searchValue } = props;
 
-  const me = useOwnAccount();
+  const { account: me } = useOwnAccount();
   const debounce = useDebounce;
 
   const debouncedValue = debounce(searchValue as string, 300);

@@ -32,7 +32,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
 

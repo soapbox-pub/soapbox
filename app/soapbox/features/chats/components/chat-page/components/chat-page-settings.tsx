@@ -24,7 +24,7 @@ const messages = defineMessages({
 });
 
 const ChatPageSettings = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();

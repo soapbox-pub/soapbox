@@ -399,7 +399,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const hotkeys = useRef<HTMLDivElement | null>(null);
 
   const me = useAppSelector(state => state.me);
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 

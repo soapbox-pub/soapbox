@@ -27,7 +27,7 @@ const ChatProvider: React.FC<IChatProvider> = ({ children }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const settings = useSettings();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const path = history.location.pathname;
   const isUsingMainChatPage = Boolean(path.match(/^\/chats/));

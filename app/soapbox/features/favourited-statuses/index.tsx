@@ -26,7 +26,7 @@ const Favourites: React.FC<IFavourites> = ({ params }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
   const { account } = useAccount(params?.username, { withRelationship: true });
 
   const username = params?.username || '';

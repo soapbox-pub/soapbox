@@ -31,7 +31,7 @@ const messages = defineMessages({
 const GroupActionButton = ({ group }: IGroupActionButton) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const joinGroup = useJoinGroup(group);
   const leaveGroup = useLeaveGroup(group);

@@ -6,7 +6,7 @@ import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useAppSelector, useFeatures, useGroupsPath, useOwnAccount } from 'soapbox/hooks';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const groupsPath = useGroupsPath();
 

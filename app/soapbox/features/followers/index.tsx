@@ -31,7 +31,7 @@ const Followers: React.FC<IFollowers> = (props) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
 
   const [loading, setLoading] = useState(true);
 

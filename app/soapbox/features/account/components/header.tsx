@@ -87,7 +87,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const dispatch = useAppDispatch();
 
   const features = useFeatures();
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
   const { follow } = useFollow();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));

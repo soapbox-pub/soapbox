@@ -91,7 +91,7 @@ const SoapboxMount = () => {
 
   const me = useAppSelector(state => state.me);
   const instance = useInstance();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
   const { pepeEnabled } = useRegistrationStatus();
@@ -217,7 +217,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const swUpdating = useAppSelector(state => state.meta.swUpdating);
   const { locale } = useLocale();
 

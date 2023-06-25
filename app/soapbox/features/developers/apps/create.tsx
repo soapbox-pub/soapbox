@@ -25,7 +25,7 @@ type Params = typeof BLANK_PARAMS;
 const CreateApp: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const [app, setApp] = useState<Record<string, any> | null>(null);
   const [token, setToken] = useState<string | null>(null);
