@@ -23,23 +23,12 @@ const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
 const getAccountBase         = (state: RootState, id: string) => state.accounts.get(id);
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
-const getAccountMoved        = (state: RootState, id: string) => state.accounts.get(state.accounts.get(id)?.moved || '');
-const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id);
-const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
-const getAccountPatron       = (state: RootState, id: string) => {
-  const url = state.accounts.get(id)?.url;
-  return url ? state.patron.accounts.get(url) : null;
-};
 
 export const makeGetAccount = () => {
   return createSelector([
     getAccountBase,
     getAccountRelationship,
-    getAccountMoved,
-    getAccountMeta,
-    getAccountAdminData,
-    getAccountPatron,
-  ], (base, relationship, moved, meta, admin, patron) => {
+  ], (base, relationship) => {
     if (!base) return null;
     base.relationship = base.relationship ?? relationship;
     return base;
