@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useAccountLookup, useFollowing } from 'soapbox/api/hooks';
+import { useAccountLookup, useFollowers } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import ScrollableList from 'soapbox/components/scrollable-list';
@@ -28,7 +28,7 @@ const Followers: React.FC<IFollowers> = ({ params }) => {
     hasNextPage,
     fetchNextPage,
     isLoading,
-  } = useFollowing(account?.id, 'followers');
+  } = useFollowers(account?.id);
 
   if (isLoading) {
     return (
