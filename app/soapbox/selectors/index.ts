@@ -328,16 +328,3 @@ export const makeGetStatusIds = () => createSelector([
     return !shouldFilter(status, columnSettings);
   });
 });
-
-export const makeGetGroup = () => {
-  return createSelector([
-    (state: RootState, id: string) => state.groups.items.get(id),
-    (state: RootState, id: string) => state.group_relationships.get(id),
-  ], (base, relationship) => {
-    if (!base) return null;
-
-    return base.withMutations(map => {
-      if (relationship) map.set('relationship', relationship);
-    });
-  });
-};
