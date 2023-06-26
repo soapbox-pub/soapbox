@@ -282,7 +282,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
+    history.push(`/@${status.account.acct}/posts/${status.id}`);
   };
 
   const handleEmbed = () => {
@@ -338,9 +338,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const _makeMenu = (publicStatus: boolean) => {
     const mutingConversation = status.muted;
-    const ownAccount = status.getIn(['account', 'id']) === me;
-    const username = String(status.getIn(['account', 'username']));
-    const account = status.account as Account;
+    const ownAccount = status.account.id === me;
+    const username = status.account.username;
+    const account = status.account;
     const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
@@ -456,7 +456,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+      if (status.account.pleroma?.accepts_chat_messages === true) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
