@@ -20,7 +20,7 @@ function usePopularGroups() {
     },
   );
 
-  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
+  const { relationships } = useGroupRelationships(['popular'], entities.map(entity => entity.id));
 
   const groups = entities.map((group) => ({
     ...group,

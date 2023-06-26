@@ -18,7 +18,7 @@ function useSuggestedGroups() {
     },
   );
 
-  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
+  const { relationships } = useGroupRelationships(['suggested'], entities.map(entity => entity.id));
 
   const groups = entities.map((group) => ({
     ...group,
