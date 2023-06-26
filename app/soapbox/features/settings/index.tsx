@@ -40,7 +40,7 @@ const Settings = () => {
 
   const mfa = useAppSelector((state) => state.security.get('mfa'));
   const features = useFeatures();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const navigateToChangeEmail = () => history.push('/settings/email');
   const navigateToChangePassword = () => history.push('/settings/password');

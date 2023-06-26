@@ -16,7 +16,7 @@ function useGroupRelationship(groupId: string | undefined) {
     () => api.get(`/api/v1/groups/relationships?id[]=${groupId}`),
     {
       enabled: !!groupId,
-      schema: z.array(groupRelationshipSchema).transform(arr => arr[0]),
+      schema: z.array(groupRelationshipSchema).nonempty().transform(arr => arr[0]),
     },
   );
 

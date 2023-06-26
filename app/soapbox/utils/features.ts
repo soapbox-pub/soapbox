@@ -681,6 +681,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to sign Nostr events over websocket.
+     * @see GET /api/v1/streaming?stream=nostr
+     */
+    nostrSign: v.software === DITTO,
+
+    /**
      * Add private notes to accounts.
      * @see POST /api/v1/accounts/:id/note
      * @see GET /api/v1/accounts/relationships

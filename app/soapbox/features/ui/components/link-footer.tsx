@@ -25,7 +25,7 @@ const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JS
 };
 
 const LinkFooter: React.FC = (): JSX.Element => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
 

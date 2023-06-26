@@ -10,11 +10,12 @@ import {
   EntityAction,
   ENTITIES_INVALIDATE_LIST,
   ENTITIES_INCREMENT,
+  ENTITIES_TRANSACTION,
 } from './actions';
 import { createCache, createList, updateStore, updateList } from './utils';
 
 import type { DeleteEntitiesOpts } from './actions';
-import type { Entity, EntityCache, EntityListState, ImportPosition } from './types';
+import type { EntitiesTransaction, Entity, EntityCache, EntityListState, ImportPosition } from './types';
 
 enableMapSet();
 
@@ -156,6 +157,20 @@ const invalidateEntityList = (state: State, entityType: string, listKey: string)
   });
 };
 
+const doTransaction = (state: State, transaction: EntitiesTransaction) => {
+  return produce(state, draft => {
+    for (const [entityType, changes] of Object.entries(transaction)) {
+      const cache = draft[entityType] ?? createCache();
+      for (const [id, change] of Object.entries(changes)) {
+        const entity = cache.store[id];
+        if (entity) {
+          cache.store[id] = change(entity);
+        }
+      }
+    }
+  });
+};
+
 /** Stores various entity data and lists in a one reducer. */
 function reducer(state: Readonly<State> = {}, action: EntityAction): State {
   switch (action.type) {
@@ -175,6 +190,8 @@ function reducer(state: Readonly<State> = {}, action: EntityAction): State {
       return setFetching(state, action.entityType, action.listKey, false, action.error);
     case ENTITIES_INVALIDATE_LIST:
       return invalidateEntityList(state, action.entityType, action.listKey);
+    case ENTITIES_TRANSACTION:
+      return doTransaction(state, action.transaction);
     default:
       return state;
   }

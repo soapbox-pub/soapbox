@@ -20,7 +20,7 @@ const messages = defineMessages({
 const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const fileInput = React.useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = React.useState<string | null>();

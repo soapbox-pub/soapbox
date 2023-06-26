@@ -42,7 +42,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
 }) => {
   const history = useHistory();
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const settings = useSettings();
 
   const renderComponent = ({ match }: RouteComponentProps) => {

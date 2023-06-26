@@ -1,4 +1,4 @@
-import type { Entity, EntityListState, ImportPosition } from './types';
+import type { EntitiesTransaction, Entity, EntityListState, ImportPosition } from './types';
 
 const ENTITIES_IMPORT = 'ENTITIES_IMPORT' as const;
 const ENTITIES_DELETE = 'ENTITIES_DELETE' as const;
@@ -8,6 +8,7 @@ const ENTITIES_FETCH_REQUEST = 'ENTITIES_FETCH_REQUEST' as const;
 const ENTITIES_FETCH_SUCCESS = 'ENTITIES_FETCH_SUCCESS' as const;
 const ENTITIES_FETCH_FAIL = 'ENTITIES_FETCH_FAIL' as const;
 const ENTITIES_INVALIDATE_LIST = 'ENTITIES_INVALIDATE_LIST' as const;
+const ENTITIES_TRANSACTION = 'ENTITIES_TRANSACTION' as const;
 
 /** Action to import entities into the cache. */
 function importEntities(entities: Entity[], entityType: string, listKey?: string, pos?: ImportPosition) {
@@ -95,6 +96,13 @@ function invalidateEntityList(entityType: string, listKey: string) {
   };
 }
 
+function entitiesTransaction(transaction: EntitiesTransaction) {
+  return {
+    type: ENTITIES_TRANSACTION,
+    transaction,
+  };
+}
+
 /** Any action pertaining to entities. */
 type EntityAction =
   ReturnType<typeof importEntities>
@@ -104,7 +112,8 @@ type EntityAction =
   | ReturnType<typeof entitiesFetchRequest>
   | ReturnType<typeof entitiesFetchSuccess>
   | ReturnType<typeof entitiesFetchFail>
-  | ReturnType<typeof invalidateEntityList>;
+  | ReturnType<typeof invalidateEntityList>
+  | ReturnType<typeof entitiesTransaction>;
 
 export {
   ENTITIES_IMPORT,
@@ -115,6 +124,7 @@ export {
   ENTITIES_FETCH_SUCCESS,
   ENTITIES_FETCH_FAIL,
   ENTITIES_INVALIDATE_LIST,
+  ENTITIES_TRANSACTION,
   importEntities,
   deleteEntities,
   dismissEntities,
@@ -123,7 +133,7 @@ export {
   entitiesFetchSuccess,
   entitiesFetchFail,
   invalidateEntityList,
-  EntityAction,
+  entitiesTransaction,
 };
 
-export type { DeleteEntitiesOpts };
+export type { DeleteEntitiesOpts, EntityAction };

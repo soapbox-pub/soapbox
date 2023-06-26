@@ -15,10 +15,9 @@ import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountSchema } from 'soapbox/schemas';
-import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
-  account: AccountEntity | AccountSchema
+  account: AccountSchema
   disabled?: boolean
 }
 
@@ -68,7 +67,7 @@ const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children 
 };
 
 export interface IAccount {
-  account: AccountEntity | AccountSchema
+  account: AccountSchema
   action?: React.ReactElement
   actionAlignment?: 'center' | 'top'
   actionIcon?: string

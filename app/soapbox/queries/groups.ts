@@ -48,7 +48,7 @@ const useGroupsApi = () => {
 
 const usePendingGroups = () => {
   const features = useFeatures();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const { fetchGroups } = useGroupsApi();
 
   const getGroups = async (pageParam?: any): Promise<PaginatedResult<Group>> => {

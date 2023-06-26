@@ -35,7 +35,7 @@ interface ISensitiveContentOverlay {
 const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {
   const { onToggleVisibility, status } = props;
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const settings = useSettings();

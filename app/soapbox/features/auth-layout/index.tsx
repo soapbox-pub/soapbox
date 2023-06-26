@@ -26,7 +26,7 @@ const AuthLayout = () => {
   const history = useHistory();
   const { search } = useLocation();
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const instance = useInstance();
   const { isOpen } = useRegistrationStatus();
   const isLoginPage = history.location.pathname === '/login';

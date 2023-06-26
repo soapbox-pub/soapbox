@@ -96,7 +96,7 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   const intl = useIntl();
   const features = useFeatures();
   const match = useRouteMatch();
-  const me = useOwnAccount();
+  const { account: me } = useOwnAccount();
 
   const id = params?.groupId || '';
 

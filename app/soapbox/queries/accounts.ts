@@ -35,7 +35,7 @@ type UpdateCredentialsData = {
 }
 
 const useUpdateCredentials = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const api = useApi();
   const dispatch = useAppDispatch();
 

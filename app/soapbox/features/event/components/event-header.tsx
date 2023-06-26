@@ -73,7 +73,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const features = useFeatures();
   const settings = useSettings();
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
 

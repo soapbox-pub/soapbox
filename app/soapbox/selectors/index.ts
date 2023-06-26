@@ -22,60 +22,17 @@ import type { Filter as FilterEntity, Notification, Status, Group } from 'soapbo
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
 const getAccountBase         = (state: RootState, id: string) => state.accounts.get(id);
-const getAccountCounters     = (state: RootState, id: string) => state.accounts_counters.get(id);
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
-const getAccountMoved        = (state: RootState, id: string) => state.accounts.get(state.accounts.get(id)?.moved || '');
-const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta.get(id);
-const getAccountAdminData    = (state: RootState, id: string) => state.admin.users.get(id);
-const getAccountPatron       = (state: RootState, id: string) => {
-  const url = state.accounts.get(id)?.url;
-  return url ? state.patron.accounts.get(url) : null;
-};
 
 export const makeGetAccount = () => {
   return createSelector([
     getAccountBase,
-    getAccountCounters,
     getAccountRelationship,
-    getAccountMoved,
-    getAccountMeta,
-    getAccountAdminData,
-    getAccountPatron,
-  ], (base, counters, relationship, moved, meta, admin, patron) => {
+  ], (base, relationship) => {
     if (!base) return null;
     base.relationship = base.relationship ?? relationship;
     return base;
   });
-};
-
-const findAccountsByUsername = (state: RootState, username: string) => {
-  const accounts = state.accounts;
-
-  return accounts.filter(account => {
-    return username.toLowerCase() === account?.acct.toLowerCase();
-  });
-};
-
-export const findAccountByUsername = (state: RootState, username: string) => {
-  const accounts = findAccountsByUsername(state, username);
-
-  if (accounts.length > 1) {
-    const me = state.me;
-    const meURL = state.accounts.get(me)?.url || '';
-
-    return accounts.find(account => {
-      try {
-        // If more than one account has the same username, try matching its host
-        const { host } = new URL(account.url);
-        const { host: meHost } = new URL(meURL);
-        return host === meHost;
-      } catch {
-        return false;
-      }
-    });
-  } else {
-    return accounts[0];
-  }
 };
 
 const toServerSideType = (columnType: string): ContextType => {
@@ -210,39 +167,29 @@ export const makeGetNotification = () => {
 
 export const getAccountGallery = createSelector([
   (state: RootState, id: string) => state.timelines.get(`account:${id}:media`)?.items || ImmutableOrderedSet<string>(),
-  (state: RootState)       => state.statuses,
-  (state: RootState)       => state.accounts,
-], (statusIds, statuses, accounts) => {
-
+  (state: RootState) => state.statuses,
+], (statusIds, statuses) => {
   return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
     const status = statuses.get(statusId);
     if (!status) return medias;
     if (status.reblog) return medias;
-    if (typeof status.account !== 'string') return medias;
-
-    const account = accounts.get(status.account);
 
     return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
+      status.media_attachments.map(media => media.merge({ status, account: status.account })));
   }, ImmutableList());
 });
 
 export const getGroupGallery = createSelector([
   (state: RootState, id: string) => state.timelines.get(`group:${id}:media`)?.items || ImmutableOrderedSet<string>(),
   (state: RootState) => state.statuses,
-  (state: RootState) => state.accounts,
-], (statusIds, statuses, accounts) => {
-
+], (statusIds, statuses) => {
   return statusIds.reduce((medias: ImmutableList<any>, statusId: string) => {
     const status = statuses.get(statusId);
     if (!status) return medias;
     if (status.reblog) return medias;
-    if (typeof status.account !== 'string') return medias;
-
-    const account = accounts.get(status.account);
 
     return medias.concat(
-      status.media_attachments.map(media => media.merge({ status, account })));
+      status.media_attachments.map(media => media.merge({ status, account: status.account })));
   }, ImmutableList());
 });
 

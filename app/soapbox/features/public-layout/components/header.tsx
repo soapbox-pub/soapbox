@@ -29,7 +29,7 @@ const Header = () => {
   const intl = useIntl();
   const features = useFeatures();
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const { isOpen } = useRegistrationStatus();
   const { links } = soapboxConfig;

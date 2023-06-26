@@ -2,17 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import {
-  fetchAccount,
-  fetchAccountByUsername,
-} from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
+import { useAccountLookup } from 'soapbox/api/hooks';
 import LoadMore from 'soapbox/components/load-more';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { getAccountGallery } from 'soapbox/selectors';
 
 import MediaItem from './components/media-item';
 
@@ -37,34 +34,17 @@ const LoadMoreMedia: React.FC<ILoadMoreMedia> = ({ maxId, onLoadMore }) => {
 const AccountGallery = () => {
   const dispatch = useAppDispatch();
   const { username } = useParams<{ username: string }>();
-  const features = useFeatures();
 
-  const { accountId, unavailable, accountUsername } = useAppSelector((state) => {
-    const me = state.me;
-    const accountFetchError = (state.accounts.get(-1)?.username || '').toLowerCase() === username.toLowerCase();
+  const {
+    account,
+    isLoading: accountLoading,
+    isUnavailable,
+  } = useAccountLookup(username, { withRelationship: true });
 
-    let accountId: string | -1 | null = -1;
-    let accountUsername = username;
-    if (accountFetchError) {
-      accountId = null;
-    } else {
-      const account = findAccountByUsername(state, username);
-      accountId = account ? (account.id || null) : -1;
-      accountUsername = account?.acct || '';
-    }
-
-    const isBlocked = state.relationships.get(String(accountId))?.blocked_by || false;
-    return {
-      accountId,
-      unavailable: (me === accountId) ? false : (isBlocked && !features.blockersVisible),
-      accountUsername,
-    };
-  });
-  const isAccount = useAppSelector((state) => !!state.accounts.get(accountId));
-  const attachments: ImmutableList<Attachment> = useAppSelector((state) => getAccountGallery(state, accountId as string));
-  const isLoading = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.isLoading);
-  const hasMore = useAppSelector((state) => state.timelines.get(`account:${accountId}:media`)?.hasMore);
-  const next = useAppSelector(state => state.timelines.get(`account:${accountId}:media`)?.next);
+  const attachments: ImmutableList<Attachment> = useAppSelector((state) => getAccountGallery(state, account!.id));
+  const isLoading = useAppSelector((state) => state.timelines.get(`account:${account?.id}:media`)?.isLoading);
+  const hasMore = useAppSelector((state) => state.timelines.get(`account:${account?.id}:media`)?.hasMore);
+  const next = useAppSelector(state => state.timelines.get(`account:${account?.id}:media`)?.next);
 
   const node = useRef<HTMLDivElement>(null);
 
@@ -75,8 +55,8 @@ const AccountGallery = () => {
   };
 
   const handleLoadMore = (maxId: string | null) => {
-    if (accountId && accountId !== -1) {
-      dispatch(expandAccountMediaTimeline(accountId, { url: next, maxId }));
+    if (account) {
+      dispatch(expandAccountMediaTimeline(account.id, { url: next, maxId }));
     }
   };
 
@@ -97,25 +77,22 @@ const AccountGallery = () => {
   };
 
   useEffect(() => {
-    if (accountId && accountId !== -1) {
-      dispatch(fetchAccount(accountId));
-      dispatch(expandAccountMediaTimeline(accountId));
-    } else {
-      dispatch(fetchAccountByUsername(username));
+    if (account) {
+      dispatch(expandAccountMediaTimeline(account.id));
     }
-  }, [accountId]);
+  }, [account?.id]);
 
-  if (!isAccount && accountId !== -1) {
-    return (
-      <MissingIndicator />
-    );
-  }
-
-  if (accountId === -1 || (!attachments && isLoading)) {
+  if (accountLoading || (!attachments && isLoading)) {
     return (
       <Column>
         <Spinner />
       </Column>
+    );
+  }
+
+  if (!account) {
+    return (
+      <MissingIndicator />
     );
   }
 
@@ -125,7 +102,7 @@ const AccountGallery = () => {
     loadOlder = <LoadMore className='my-auto' visible={!isLoading} onClick={handleLoadOlder} />;
   }
 
-  if (unavailable) {
+  if (isUnavailable) {
     return (
       <Column>
         <div className='empty-column-indicator'>
@@ -136,7 +113,7 @@ const AccountGallery = () => {
   }
 
   return (
-    <Column label={`@${accountUsername}`} transparent withHeader={false}>
+    <Column label={`@${account.acct}`} transparent withHeader={false}>
       <div role='feed' className='grid grid-cols-2 gap-2 sm:grid-cols-3' ref={node}>
         {attachments.map((attachment, index) => attachment === null ? (
           <LoadMoreMedia key={'more:' + attachments.get(index + 1)?.id} maxId={index > 0 ? (attachments.get(index - 1)?.id || null) : null} onLoadMore={handleLoadMore} />

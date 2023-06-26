@@ -9,7 +9,6 @@ import entities from 'soapbox/entity-store/reducer';
 import { immutableizeStore, type LegacyStore } from 'soapbox/utils/legacy';
 
 import account_notes from './account-notes';
-import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_announcements from './admin-announcements';
@@ -78,7 +77,6 @@ import type { Account } from 'soapbox/schemas';
 const reducers = {
   accounts: ((state: any = {}) => state) as (state: any) => EntityStore<Account> & LegacyStore<Account>,
   account_notes,
-  accounts_counters,
   accounts_meta,
   admin,
   admin_announcements,

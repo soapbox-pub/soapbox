@@ -200,7 +200,7 @@ const useChat = (chatId?: string) => {
 };
 
 const useChatActions = (chatId: string) => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const api = useApi();
   // const dispatch = useAppDispatch();
 

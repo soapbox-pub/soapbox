@@ -69,7 +69,7 @@ interface IChatMessageList {
 /** Scrollable list of chat messages. */
 const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
   const intl = useIntl();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const myLastReadMessageDateString = chat.latest_read_message_by_account?.find((latest) => latest.id === account?.id)?.date;
   const myLastReadMessageTimestamp = myLastReadMessageDateString ? new Date(myLastReadMessageDateString) : null;

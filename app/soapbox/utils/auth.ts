@@ -34,8 +34,10 @@ export const isLoggedIn = (getState: () => RootState) => {
 export const getAppToken = (state: RootState) => state.auth.app.access_token as string;
 
 export const getUserToken = (state: RootState, accountId?: string | false | null) => {
-  const accountUrl = state.accounts.getIn([accountId, 'url']) as string;
-  return state.auth.users.get(accountUrl)?.access_token as string;
+  if (!accountId) return;
+  const accountUrl = state.accounts[accountId]?.url;
+  if (!accountUrl) return;
+  return state.auth.users.get(accountUrl)?.access_token;
 };
 
 export const getAccessToken = (state: RootState) => {

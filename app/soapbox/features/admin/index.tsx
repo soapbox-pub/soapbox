@@ -16,7 +16,7 @@ const messages = defineMessages({
 
 const Admin: React.FC = () => {
   const intl = useIntl();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   if (!account) return null;
 

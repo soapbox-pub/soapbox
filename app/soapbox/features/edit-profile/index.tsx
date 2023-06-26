@@ -177,7 +177,7 @@ const EditProfile: React.FC = () => {
   const dispatch = useAppDispatch();
   const instance = useInstance();
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const maxFields = instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number;
 

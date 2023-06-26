@@ -7,12 +7,12 @@ import { filteredArray } from 'soapbox/schemas/utils';
 import { realNumberSchema } from 'soapbox/utils/numbers';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions';
+import { selectEntities, selectListState, useListState } from '../selectors';
 
 import { parseEntitiesPath } from './utils';
 
-import type { Entity, EntityListState } from '../types';
-import type { EntitiesPath, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
-import type { RootState } from 'soapbox/store';
+import type { Entity } from '../types';
+import type { EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
 
 /** Additional options for the hook. */
 interface UseEntitiesOpts<TEntity extends Entity> {
@@ -42,6 +42,7 @@ function useEntities<TEntity extends Entity>(
 
   const { entityType, listKey, path } = parseEntitiesPath(expandedPath);
   const entities = useAppSelector(state => selectEntities<TEntity>(state, path));
+  const schema = opts.schema || z.custom<TEntity>();
 
   const isEnabled = opts.enabled ?? true;
   const isFetching = useListState(path, 'fetching');
@@ -62,7 +63,6 @@ function useEntities<TEntity extends Entity>(
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
       const response = await req();
-      const schema = opts.schema || z.custom<TEntity>();
       const entities = filteredArray(schema).parse(response.data);
       const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
       const totalCount = parsedCount.success ? parsedCount.data : undefined;
@@ -131,46 +131,6 @@ function useEntities<TEntity extends Entity>(
     /** The `X-Total-Count` from the API if available, or the length of items in the store. */
     count: typeof totalCount === 'number' ? totalCount : entities.length,
   };
-}
-
-/** Get cache at path from Redux. */
-const selectCache = (state: RootState, path: EntitiesPath) => state.entities[path[0]];
-
-/** Get list at path from Redux. */
-const selectList = (state: RootState, path: EntitiesPath) => {
-  const [, ...listKeys] = path;
-  const listKey = listKeys.join(':');
-
-  return selectCache(state, path)?.lists[listKey];
-};
-
-/** Select a particular item from a list state. */
-function selectListState<K extends keyof EntityListState>(state: RootState, path: EntitiesPath, key: K) {
-  const listState = selectList(state, path)?.state;
-  return listState ? listState[key] : undefined;
-}
-
-/** Hook to get a particular item from a list state. */
-function useListState<K extends keyof EntityListState>(path: EntitiesPath, key: K) {
-  return useAppSelector(state => selectListState(state, path, key));
-}
-
-/** Get list of entities from Redux. */
-function selectEntities<TEntity extends Entity>(state: RootState, path: EntitiesPath): readonly TEntity[] {
-  const cache = selectCache(state, path);
-  const list = selectList(state, path);
-
-  const entityIds = list?.ids;
-
-  return entityIds ? (
-    Array.from(entityIds).reduce<TEntity[]>((result, id) => {
-      const entity = cache?.store[id];
-      if (entity) {
-        result.push(entity as TEntity);
-      }
-      return result;
-    }, [])
-  ) : [];
 }
 
 export {

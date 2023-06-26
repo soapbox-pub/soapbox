@@ -23,14 +23,6 @@ const ACCOUNT_FETCH_REQUEST = 'ACCOUNT_FETCH_REQUEST';
 const ACCOUNT_FETCH_SUCCESS = 'ACCOUNT_FETCH_SUCCESS';
 const ACCOUNT_FETCH_FAIL    = 'ACCOUNT_FETCH_FAIL';
 
-const ACCOUNT_FOLLOW_REQUEST = 'ACCOUNT_FOLLOW_REQUEST';
-const ACCOUNT_FOLLOW_SUCCESS = 'ACCOUNT_FOLLOW_SUCCESS';
-const ACCOUNT_FOLLOW_FAIL    = 'ACCOUNT_FOLLOW_FAIL';
-
-const ACCOUNT_UNFOLLOW_REQUEST = 'ACCOUNT_UNFOLLOW_REQUEST';
-const ACCOUNT_UNFOLLOW_SUCCESS = 'ACCOUNT_UNFOLLOW_SUCCESS';
-const ACCOUNT_UNFOLLOW_FAIL    = 'ACCOUNT_UNFOLLOW_FAIL';
-
 const ACCOUNT_BLOCK_REQUEST = 'ACCOUNT_BLOCK_REQUEST';
 const ACCOUNT_BLOCK_SUCCESS = 'ACCOUNT_BLOCK_SUCCESS';
 const ACCOUNT_BLOCK_FAIL    = 'ACCOUNT_BLOCK_FAIL';
@@ -225,81 +217,6 @@ const fetchAccountFail = (id: string | null, error: AxiosError) => ({
   id,
   error,
   skipAlert: true,
-});
-
-type FollowAccountOpts = {
-  reblogs?: boolean
-  notify?: boolean
-};
-
-const followAccount = (id: string, options?: FollowAccountOpts) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return null;
-
-    const alreadyFollowing = getState().relationships.get(id)?.following || undefined;
-    const locked = getState().accounts.get(id)?.locked || false;
-
-    dispatch(followAccountRequest(id, locked));
-
-    return api(getState)
-      .post(`/api/v1/accounts/${id}/follow`, options)
-      .then(response => dispatch(followAccountSuccess(response.data, alreadyFollowing)))
-      .catch(error => {
-        dispatch(followAccountFail(error, locked));
-        throw error;
-      });
-  };
-
-const unfollowAccount = (id: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return null;
-
-    dispatch(unfollowAccountRequest(id));
-
-    return api(getState)
-      .post(`/api/v1/accounts/${id}/unfollow`)
-      .then(response => dispatch(unfollowAccountSuccess(response.data, getState().statuses)))
-      .catch(error => dispatch(unfollowAccountFail(error)));
-  };
-
-const followAccountRequest = (id: string, locked: boolean) => ({
-  type: ACCOUNT_FOLLOW_REQUEST,
-  id,
-  locked,
-  skipLoading: true,
-});
-
-const followAccountSuccess = (relationship: APIEntity, alreadyFollowing?: boolean) => ({
-  type: ACCOUNT_FOLLOW_SUCCESS,
-  relationship,
-  alreadyFollowing,
-  skipLoading: true,
-});
-
-const followAccountFail = (error: AxiosError, locked: boolean) => ({
-  type: ACCOUNT_FOLLOW_FAIL,
-  error,
-  locked,
-  skipLoading: true,
-});
-
-const unfollowAccountRequest = (id: string) => ({
-  type: ACCOUNT_UNFOLLOW_REQUEST,
-  id,
-  skipLoading: true,
-});
-
-const unfollowAccountSuccess = (relationship: APIEntity, statuses: ImmutableMap<string, Status>) => ({
-  type: ACCOUNT_UNFOLLOW_SUCCESS,
-  relationship,
-  statuses,
-  skipLoading: true,
-});
-
-const unfollowAccountFail = (error: AxiosError) => ({
-  type: ACCOUNT_UNFOLLOW_FAIL,
-  error,
-  skipLoading: true,
 });
 
 const blockAccount = (id: string) =>
@@ -988,12 +905,6 @@ export {
   ACCOUNT_FETCH_REQUEST,
   ACCOUNT_FETCH_SUCCESS,
   ACCOUNT_FETCH_FAIL,
-  ACCOUNT_FOLLOW_REQUEST,
-  ACCOUNT_FOLLOW_SUCCESS,
-  ACCOUNT_FOLLOW_FAIL,
-  ACCOUNT_UNFOLLOW_REQUEST,
-  ACCOUNT_UNFOLLOW_SUCCESS,
-  ACCOUNT_UNFOLLOW_FAIL,
   ACCOUNT_BLOCK_REQUEST,
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_BLOCK_FAIL,
@@ -1069,14 +980,6 @@ export {
   fetchAccountRequest,
   fetchAccountSuccess,
   fetchAccountFail,
-  followAccount,
-  unfollowAccount,
-  followAccountRequest,
-  followAccountSuccess,
-  followAccountFail,
-  unfollowAccountRequest,
-  unfollowAccountSuccess,
-  unfollowAccountFail,
   blockAccount,
   unblockAccount,
   blockAccountRequest,

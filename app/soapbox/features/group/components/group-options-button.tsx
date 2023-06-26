@@ -27,7 +27,7 @@ interface IGroupActionButton {
 }
 
 const GroupOptionsButton = ({ group }: IGroupActionButton) => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const leaveGroup = useLeaveGroup(group);

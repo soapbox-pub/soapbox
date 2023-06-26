@@ -399,7 +399,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const hotkeys = useRef<HTMLDivElement | null>(null);
 
   const me = useAppSelector(state => state.me);
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
@@ -423,7 +423,7 @@ const UI: React.FC<IUI> = ({ children }) => {
       if (!userStream.current) {
         userStream.current = dispatch(connectUserStream({ statContext }));
       }
-      if (!nostrStream.current && window.nostr) {
+      if (!nostrStream.current && features.nostrSign && window.nostr) {
         nostrStream.current = dispatch(connectNostrStream());
       }
     }

@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 const Welcome = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const intl = useIntl();
   const updateCredentials = useUpdateCredentials();
 

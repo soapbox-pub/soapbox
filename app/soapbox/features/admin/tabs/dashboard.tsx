@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
   const history = useHistory();
   const instance = useInstance();
   const features = useFeatures();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
 
   const handleSubscribersClick: React.MouseEventHandler = e => {
     dispatch(getSubscribersCsv()).then(({ data }) => {

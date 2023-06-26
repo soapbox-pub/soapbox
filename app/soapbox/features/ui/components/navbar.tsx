@@ -28,7 +28,7 @@ const Navbar = () => {
   const intl = useIntl();
   const features = useFeatures();
   const { isOpen } = useRegistrationStatus();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const node = useRef(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);

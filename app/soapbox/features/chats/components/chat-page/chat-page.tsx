@@ -16,7 +16,7 @@ interface IChatPage {
 }
 
 const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const history = useHistory();
 
   const isOnboarded = account?.source?.chats_onboarded ?? true;

@@ -97,7 +97,7 @@ const Thread = (props: IThread) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
-  const me = useOwnAccount();
+  const { account: me } = useOwnAccount();
   const settings = useSettings();
 
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
