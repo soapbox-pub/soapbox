@@ -14,6 +14,7 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import { deleteFromTimelines } from 'soapbox/actions/timelines';
+import { useGroupRelationship } from 'soapbox/api/hooks';
 import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
@@ -115,7 +116,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
-  const groupRelationship = useAppSelector(state => status.group ? state.group_relationships.get((status.group as Group).id) : null);
+  const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();

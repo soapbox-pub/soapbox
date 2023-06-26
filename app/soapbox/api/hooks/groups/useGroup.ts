@@ -13,7 +13,7 @@ function useGroup(groupId: string, refetch = true) {
     () => api.get(`/api/v1/groups/${groupId}`),
     { schema: groupSchema, refetch },
   );
-  const { entity: relationship } = useGroupRelationship(groupId);
+  const { groupRelationship: relationship } = useGroupRelationship(groupId);
 
   return {
     ...result,
