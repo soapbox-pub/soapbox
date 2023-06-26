@@ -26,7 +26,6 @@ import { Card, Icon, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
-  Group as GroupEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
@@ -90,8 +89,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const actualStatus = getActualStatus(status);
   const isReblog = status.reblog && typeof status.reblog === 'object';
-  const statusUrl = `/@${actualStatus.getIn(['account', 'acct'])}/posts/${actualStatus.id}`;
-  const group = actualStatus.group as GroupEntity | null;
+  const statusUrl = `/@${actualStatus.account.acct}/posts/${actualStatus.id}`;
+  const group = actualStatus.group;
 
   const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
 
@@ -177,7 +176,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyOpenProfile = (): void => {
-    history.push(`/@${actualStatus.getIn(['account', 'acct'])}`);
+    history.push(`/@${actualStatus.account.acct}`);
   };
 
   const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
@@ -224,25 +223,25 @@ const Status: React.FC<IStatus> = (props) => {
               values={{
                 name: (
                   <Link
-                    to={`/@${status.getIn(['account', 'acct'])}`}
+                    to={`/@${status.account.acct}`}
                     className='hover:underline'
                   >
                     <bdi className='truncate'>
                       <strong
                         className='text-gray-800 dark:text-gray-200'
                         dangerouslySetInnerHTML={{
-                          __html: String(status.getIn(['account', 'display_name_html'])),
+                          __html: status.account.display_name_html,
                         }}
                       />
                     </bdi>
                   </Link>
                 ),
                 group: (
-                  <Link to={`/group/${(status.group as GroupEntity).slug}`} className='hover:underline'>
+                  <Link to={`/group/${group.slug}`} className='hover:underline'>
                     <strong
                       className='text-gray-800 dark:text-gray-200'
                       dangerouslySetInnerHTML={{
-                        __html: (status.group as GroupEntity).display_name_html,
+                        __html: group.display_name_html,
                       }}
                     />
                   </Link>
@@ -263,12 +262,12 @@ const Status: React.FC<IStatus> = (props) => {
               defaultMessage='{name} reposted'
               values={{
                 name: (
-                  <Link to={`/@${status.getIn(['account', 'acct'])}`} className='hover:underline'>
+                  <Link to={`/@${status.account.acct}`} className='hover:underline'>
                     <bdi className='truncate'>
                       <strong
                         className='text-gray-800 dark:text-gray-200'
                         dangerouslySetInnerHTML={{
-                          __html: String(status.getIn(['account', 'display_name_html'])),
+                          __html: status.account.display_name_html,
                         }}
                       />
                     </bdi>
@@ -322,7 +321,7 @@ const Status: React.FC<IStatus> = (props) => {
     return (
       <div ref={node}>
         <>
-          {actualStatus.getIn(['account', 'display_name']) || actualStatus.getIn(['account', 'username'])}
+          {actualStatus.account.display_name || actualStatus.account.username}
           {actualStatus.content}
         </>
       </div>
@@ -354,7 +353,7 @@ const Status: React.FC<IStatus> = (props) => {
   if (status.reblog && typeof status.reblog === 'object') {
     rebloggedByText = intl.formatMessage(
       messages.reblogged_by,
-      { name: String(status.getIn(['account', 'acct'])) },
+      { name: status.account.acct },
     );
   }
 
@@ -425,8 +424,8 @@ const Status: React.FC<IStatus> = (props) => {
           {renderStatusInfo()}
 
           <AccountContainer
-            key={String(actualStatus.getIn(['account', 'id']))}
-            id={String(actualStatus.getIn(['account', 'id']))}
+            key={actualStatus.account.id}
+            id={actualStatus.account.id}
             timestamp={actualStatus.created_at}
             timestampUrl={statusUrl}
             action={accountAction}

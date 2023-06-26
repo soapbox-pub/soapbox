@@ -19,7 +19,10 @@ function useGroupsFromTag(tagId: string) {
       enabled: features.groupsDiscovery,
     },
   );
-  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
+  const { relationships } = useGroupRelationships(
+    ['tags', tagId],
+    entities.map(entity => entity.id),
+  );
 
   const groups = entities.map((group) => ({
     ...group,

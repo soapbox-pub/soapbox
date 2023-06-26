@@ -14,6 +14,7 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import { deleteFromTimelines } from 'soapbox/actions/timelines';
+import { useGroupRelationship } from 'soapbox/api/hooks';
 import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
@@ -115,7 +116,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
-  const groupRelationship = useAppSelector(state => status.group ? state.group_relationships.get((status.group as Group).id) : null);
+  const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
@@ -282,7 +283,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
+    history.push(`/@${status.account.acct}/posts/${status.id}`);
   };
 
   const handleEmbed = () => {
@@ -338,9 +339,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const _makeMenu = (publicStatus: boolean) => {
     const mutingConversation = status.muted;
-    const ownAccount = status.getIn(['account', 'id']) === me;
-    const username = String(status.getIn(['account', 'username']));
-    const account = status.account as Account;
+    const ownAccount = status.account.id === me;
+    const username = status.account.username;
+    const account = status.account;
     const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
@@ -456,7 +457,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+      if (status.account.pleroma?.accepts_chat_messages === true) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,

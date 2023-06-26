@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { useBlocks } from 'soapbox/api/hooks';
+import { useMutes } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
@@ -18,7 +18,7 @@ const Mutes: React.FC = () => {
     hasNextPage,
     fetchNextPage,
     isLoading,
-  } = useBlocks('mutes');
+  } = useMutes();
 
   if (isLoading) {
     return (

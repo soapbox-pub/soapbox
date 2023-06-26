@@ -15,7 +15,7 @@ function useGroupLookup(slug: string) {
     { schema: groupSchema, enabled: !!slug },
   );
 
-  const { entity: relationship } = useGroupRelationship(group?.id);
+  const { groupRelationship: relationship } = useGroupRelationship(group?.id);
 
   return {
     ...result,

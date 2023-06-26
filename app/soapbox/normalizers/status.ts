@@ -13,7 +13,7 @@ import {
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { accountSchema, cardSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
+import { accountSchema, cardSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
 
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
@@ -55,7 +55,7 @@ export const StatusRecord = ImmutableRecord({
   favourited: false,
   favourites_count: 0,
   filtered: ImmutableList<string>(),
-  group: null as EmbeddedEntity<Group>,
+  group: null as Group | null,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',
@@ -252,6 +252,15 @@ const parseAccount = (status: ImmutableMap<string, any>) => {
   }
 };
 
+const parseGroup = (status: ImmutableMap<string, any>) => {
+  try {
+    const group = groupSchema.parse(status.get('group').toJS());
+    return status.set('group', group);
+  } catch (_e) {
+    return status.set('group', null);
+  }
+};
+
 export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
@@ -270,6 +279,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       normalizeDislikes(status);
       normalizeTombstone(status);
       parseAccount(status);
+      parseGroup(status);
     }),
   );
 };

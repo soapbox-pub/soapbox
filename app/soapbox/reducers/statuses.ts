@@ -59,7 +59,6 @@ export interface ReducerStatus extends StatusRecord {
   reblog: string | null
   poll: string | null
   quote: string | null
-  group: string | null
 }
 
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
@@ -67,7 +66,6 @@ const minifyStatus = (status: StatusRecord): ReducerStatus => {
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
-    group: normalizeId(status.getIn(['group', 'id'])),
   }) as ReducerStatus;
 };
 

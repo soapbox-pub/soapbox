@@ -28,7 +28,7 @@ const Following: React.FC<IFollowing> = ({ params }) => {
     hasNextPage,
     fetchNextPage,
     isLoading,
-  } = useFollowing(account?.id, 'following');
+  } = useFollowing(account?.id);
 
   if (isLoading) {
     return (

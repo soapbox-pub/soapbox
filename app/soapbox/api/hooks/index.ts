@@ -2,9 +2,13 @@
 // Accounts
 export { useAccount } from './accounts/useAccount';
 export { useAccountLookup } from './accounts/useAccountLookup';
-export { useBlocks } from './accounts/useBlocks';
+export {
+  useBlocks,
+  useMutes,
+  useFollowers,
+  useFollowing,
+} from './accounts/useAccountList';
 export { useFollow } from './accounts/useFollow';
-export { useFollowing } from './accounts/useFollowing';
 export { useRelationships } from './accounts/useRelationships';
 export { usePatronUser } from './accounts/usePatronUser';
 
