@@ -4,15 +4,13 @@ import { FormattedDate } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import { HStack } from 'soapbox/components/ui';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Event } from 'soapbox/schemas';
 
 interface IEventDate {
-  status: StatusEntity
+  event: Event
 }
 
-const EventDate: React.FC<IEventDate> = ({ status }) => {
-  const event = status.event!;
-
+const EventDate: React.FC<IEventDate> = ({ event }) => {
   if (!event.start_time) return null;
 
   const startDate = new Date(event.start_time);

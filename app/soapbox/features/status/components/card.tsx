@@ -1,14 +1,12 @@
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { normalizeAttachment } from 'soapbox/normalizers';
 import { addAutoPlay } from 'soapbox/utils/media';
 
-import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
+import type { Card as CardEntity, Attachment } from 'soapbox/schemas';
 
 const trim = (text: string, len: number): string => {
   const cut = text.indexOf(' ', len);
@@ -24,7 +22,7 @@ interface ICard {
   card: CardEntity
   maxTitle?: number
   maxDescription?: number
-  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void
+  onOpenMedia: (attachments: Attachment[], index: number) => void
   compact?: boolean
   defaultWidth?: number
   cacheWidth?: (width: number) => void
@@ -52,19 +50,24 @@ const Card: React.FC<ICard> = ({
   const trimmedDescription = trim(card.description, maxDescription);
 
   const handlePhotoClick = () => {
-    const attachment = normalizeAttachment({
+    const attachment: Attachment = {
+      id: '',
       type: 'image',
       url: card.embed_url,
+      preview_url: card.embed_url,
+      remote_url: null,
       description: trimmedTitle,
+      blurhash: null,
       meta: {
         original: {
           width: card.width,
           height: card.height,
+          aspect: card.width / card.height,
         },
       },
-    });
+    };
 
-    onOpenMedia(ImmutableList([attachment]), 0);
+    onOpenMedia([attachment], 0);
   };
 
   const handleEmbedClick: React.MouseEventHandler = (e) => {

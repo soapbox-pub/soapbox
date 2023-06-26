@@ -61,7 +61,6 @@ import sidebar from './sidebar';
 import soapbox from './soapbox';
 import status_hover_card from './status-hover-card';
 import status_lists from './status-lists';
-import statuses from './statuses';
 import suggestions from './suggestions';
 import tags from './tags';
 import timelines from './timelines';
@@ -71,11 +70,13 @@ import user_lists from './user-lists';
 import verification from './verification';
 
 import type { AnyAction, Reducer } from 'redux';
-import type { EntityStore } from 'soapbox/entity-store/types';
-import type { Account } from 'soapbox/schemas';
+import type { Entity, EntityStore } from 'soapbox/entity-store/types';
+import type { Account, Status } from 'soapbox/schemas';
+
+type LegacyReducer<T extends Entity> = EntityStore<T> & LegacyStore<T>
 
 const reducers = {
-  accounts: ((state: any = {}) => state) as (state: any) => EntityStore<Account> & LegacyStore<Account>,
+  accounts: ((state: any = {}) => state) as (state: any) => LegacyReducer<Account>,
   account_notes,
   accounts_meta,
   admin,
@@ -130,7 +131,7 @@ const reducers = {
   soapbox,
   status_hover_card,
   status_lists,
-  statuses,
+  statuses: ((state: any = {}) => state) as (state: any) => LegacyReducer<Status>,
   suggestions,
   tags,
   timelines,
@@ -182,12 +183,19 @@ const accountsSelector = createSelector(
   (accounts) => immutableizeStore<Account, EntityStore<Account>>(accounts),
 );
 
+const statusesSelector = createSelector(
+  (state: InferState<typeof appReducer>) => state.entities[Entities.STATUSES]?.store as EntityStore<Status> || {},
+  (statuses) => immutableizeStore<Status, EntityStore<Status>>(statuses),
+);
+
 const extendedRootReducer = (
   state: InferState<typeof appReducer>,
   action: AnyAction,
 ): ReturnType<typeof rootReducer> => {
   const extendedState = rootReducer(state, action);
-  return extendedState.set('accounts', accountsSelector(extendedState));
+  return extendedState
+    .set('accounts', accountsSelector(extendedState))
+    .set('statuses', statusesSelector(extendedState));
 };
 
 export default extendedRootReducer as Reducer<ReturnType<typeof extendedRootReducer>>;

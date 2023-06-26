@@ -110,7 +110,7 @@ interface IVideo {
   inline?: boolean
   cacheWidth?: (width: number) => void
   visible?: boolean
-  blurhash?: string
+  blurhash?: string | null
   link?: React.ReactNode
   aspectRatio?: number
   displayMedia?: string

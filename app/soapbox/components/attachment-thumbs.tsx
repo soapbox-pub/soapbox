@@ -6,10 +6,10 @@ import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Attachment } from 'soapbox/types/entities';
+import type { Attachment } from 'soapbox/schemas';
 
 interface IAttachmentThumbs {
-  media: ImmutableList<Attachment>
+  media: Attachment[]
   onClick?(): void
   sensitive?: boolean
 }

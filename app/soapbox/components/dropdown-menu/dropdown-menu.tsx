@@ -13,7 +13,7 @@ import { IconButton, Portal } from '../ui';
 
 import DropdownMenuItem, { MenuItem } from './dropdown-menu-item';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/schemas';
 
 export type Menu = Array<MenuItem | null>;
 

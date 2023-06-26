@@ -18,7 +18,6 @@ import {
   MentionRecord,
   NotificationRecord,
   StatusEditRecord,
-  StatusRecord,
   TagRecord,
 } from 'soapbox/normalizers';
 import { LogEntryRecord } from 'soapbox/reducers/admin-log';
@@ -51,12 +50,6 @@ type Tag = ReturnType<typeof TagRecord>;
 
 type Account = SchemaAccount & LegacyMap;
 
-interface Status extends ReturnType<typeof StatusRecord> {
-  // HACK: same as above
-  quote: EmbeddedEntity<Status>
-  reblog: EmbeddedEntity<Status>
-}
-
 // Utility types
 type APIEntity = Record<string, any>;
 type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableRecord.Factory<T>>;
@@ -82,7 +75,6 @@ export {
   Location,
   Mention,
   Notification,
-  Status,
   StatusEdit,
   Tag,
 
@@ -100,4 +92,5 @@ export type {
   Poll,
   PollOption,
   Relationship,
+  Status,
 } from 'soapbox/schemas';

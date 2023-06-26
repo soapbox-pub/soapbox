@@ -4,6 +4,7 @@ export { cardSchema, type Card } from './card';
 export { chatMessageSchema, type ChatMessage } from './chat-message';
 export { customEmojiSchema, type CustomEmoji } from './custom-emoji';
 export { emojiReactionSchema, type EmojiReaction } from './emoji-reaction';
+export { eventSchema, type Event } from './event';
 export { groupSchema, type Group } from './group';
 export { groupMemberSchema, type GroupMember } from './group-member';
 export { groupRelationshipSchema, type GroupRelationship } from './group-relationship';

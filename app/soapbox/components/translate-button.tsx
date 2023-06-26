@@ -8,10 +8,10 @@ import { isLocal } from 'soapbox/utils/accounts';
 
 import { Stack, Button, Text } from './ui';
 
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/schemas';
 
 interface ITranslateButton {
-  status: Status
+  status: Pick<Status, 'id' | 'account' | 'language' | 'translation' | 'visibility' | 'contentHtml'>
 }
 
 const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
@@ -28,7 +28,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   const sourceLanguages = instance.pleroma.getIn(['metadata', 'translation', 'source_languages']) as ImmutableList<string>;
   const targetLanguages = instance.pleroma.getIn(['metadata', 'translation', 'target_languages']) as ImmutableList<string>;
 
-  const renderTranslate = (me || allowUnauthenticated) && (allowRemote || isLocal(status.account as Account)) && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
+  const renderTranslate = (me || allowUnauthenticated) && (allowRemote || isLocal(status.account)) && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
 
   const supportsLanguages = (!sourceLanguages || sourceLanguages.includes(status.language!)) && (!targetLanguages || targetLanguages.includes(intl.locale));
 
@@ -47,7 +47,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
     const languageName = languageNames.of(status.language!);
-    const provider     = status.translation.get('provider');
+    const provider     = status.translation.provider;
 
     return (
       <Stack space={3} alignItems='start'>

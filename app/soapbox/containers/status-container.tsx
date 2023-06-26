@@ -1,18 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
+import { useStatus } from 'soapbox/api/hooks';
 import Status, { IStatus } from 'soapbox/components/status';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
 
 interface IStatusContainer extends Omit<IStatus, 'status'> {
   id: string
   contextType?: string
-  /** @deprecated Unused. */
-  otherAccounts?: any
-  /** @deprecated Unused. */
-  getScrollPosition?: any
-  /** @deprecated Unused. */
-  updateScrollBottom?: any
 }
 
 /**
@@ -20,10 +13,8 @@ interface IStatusContainer extends Omit<IStatus, 'status'> {
  * @deprecated Use the Status component directly.
  */
 const StatusContainer: React.FC<IStatusContainer> = (props) => {
-  const { id, contextType, ...rest } = props;
-
-  const getStatus = useCallback(makeGetStatus(), []);
-  const status = useAppSelector(state => getStatus(state, { id, contextType }));
+  const { id, ...rest } = props;
+  const { status } = useStatus(id);
 
   if (status) {
     return <Status status={status} {...rest} />;

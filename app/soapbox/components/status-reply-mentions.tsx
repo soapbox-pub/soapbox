@@ -8,20 +8,19 @@ import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
 import { isPubkey } from 'soapbox/utils/nostr';
 
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/schemas';
 
 interface IStatusReplyMentions {
-  status: Status
+  status: Pick<Status, 'id' | 'account' | 'mentions' | 'in_reply_to_id'>
   hoverable?: boolean
 }
 
 const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable = true }) => {
   const dispatch = useAppDispatch();
+  const { account, mentions } = status;
 
   const handleOpenMentionsModal: React.MouseEventHandler<HTMLSpanElement> = (e) => {
     e.stopPropagation();
-
-    const account = status.account as Account;
 
     dispatch(openModal('MENTIONS', {
       username: account.acct,
@@ -33,11 +32,9 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
     return null;
   }
 
-  const to = status.mentions;
-
   // The post is a reply, but it has no mentions.
   // Rare, but it can happen.
-  if (to.size === 0) {
+  if (mentions.length === 0) {
     return (
       <div className='reply-mentions'>
         <FormattedMessage
@@ -49,15 +46,15 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   }
 
   // The typical case with a reply-to and a list of mentions.
-  const accounts = to.slice(0, 2).map(account => {
+  const accounts = mentions.slice(0, 2).map((mention) => {
     const link = (
       <Link
-        key={account.id}
-        to={`/@${account.acct}`}
+        key={mention.id}
+        to={`/@${mention.acct}`}
         className='reply-mentions__account max-w-[200px] truncate align-bottom'
         onClick={(e) => e.stopPropagation()}
       >
-        @{isPubkey(account.username) ? account.username.slice(0, 8) : account.username}
+        @{isPubkey(mention.username) ? mention.username.slice(0, 8) : mention.username}
       </Link>
     );
 
@@ -70,12 +67,12 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
     } else {
       return link;
     }
-  }).toArray();
+  });
 
-  if (to.size > 2) {
+  if (mentions.length > 2) {
     accounts.push(
       <span key='more' className='cursor-pointer hover:underline' role='button' onClick={handleOpenMentionsModal} tabIndex={0}>
-        <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />
+        <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: mentions.length - 2 }} />
       </span>,
     );
   }

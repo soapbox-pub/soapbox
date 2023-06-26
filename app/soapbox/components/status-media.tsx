@@ -10,13 +10,12 @@ import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-compo
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { addAutoPlay } from 'soapbox/utils/media';
 
-import type { List as ImmutableList } from 'immutable';
 import type VideoType from 'soapbox/features/video';
-import type { Status, Attachment } from 'soapbox/types/entities';
+import type { Status, Attachment } from 'soapbox/schemas';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: Status
+  status: Pick<Status, 'media_attachments' | 'card' | 'sensitive' | 'account' | 'spoiler_text' | 'quote' | 'expectsCard'>
   /** Whether to display compact media. */
   muted?: boolean
   /** Callback when compact media is clicked. */
@@ -41,8 +40,8 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
   const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
-  const size = status.media_attachments.size;
-  const firstAttachment = status.media_attachments.first();
+  const size = status.media_attachments.length;
+  const [firstAttachment] = status.media_attachments;
 
   let media: JSX.Element | null = null;
 
@@ -64,7 +63,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
   };
 
-  const openMedia = (media: ImmutableList<Attachment>, index: number) => {
+  const openMedia = (media: Attachment[], index: number) => {
     dispatch(openModal('MEDIA', { media, status, index }));
   };
 
@@ -82,8 +81,8 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 
       if (video.external_video_id && status.card) {
         const getHeight = (): number => {
-          const width = Number(video.meta.getIn(['original', 'width']));
-          const height = Number(video.meta.getIn(['original', 'height']));
+          const width = Number(video.meta.original?.width);
+          const height = Number(video.meta.original?.height);
           return Number(mediaWrapperWidth) / (width / height);
         };
 
@@ -110,7 +109,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
                 blurhash={video.blurhash}
                 src={video.url}
                 alt={video.description}
-                aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
+                aspectRatio={video.meta.original?.aspect}
                 height={285}
                 visible={showMedia}
                 inline
@@ -128,11 +127,11 @@ const StatusMedia: React.FC<IStatusMedia> = ({
             <Component
               src={attachment.url}
               alt={attachment.description}
-              poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static'])}
-              backgroundColor={attachment.meta.getIn(['colors', 'background'])}
-              foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
-              accentColor={attachment.meta.getIn(['colors', 'accent'])}
-              duration={attachment.meta.getIn(['original', 'duration'], 0)}
+              poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.account.avatar_static}
+              backgroundColor={attachment.meta.colors?.background}
+              foregroundColor={attachment.meta.colors?.foreground}
+              accentColor={attachment.meta.colors?.accent}
+              duration={attachment.meta.duration ?? 0}
               height={263}
             />
           )}

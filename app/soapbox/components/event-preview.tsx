@@ -10,7 +10,7 @@ import Icon from './icon';
 import { Button, HStack, Stack, Text } from './ui';
 import VerificationBadge from './verification-badge';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status, Event } from 'soapbox/schemas';
 
 const messages = defineMessages({
   eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -19,7 +19,7 @@ const messages = defineMessages({
 });
 
 interface IEventPreview {
-  status: StatusEntity
+  status: Status & { event: Event }
   className?: string
   hideAction?: boolean
   floatingAction?: boolean
@@ -30,7 +30,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
   const me = useAppSelector((state) => state.me);
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
   const event = status.event!;
 
   const banner = event.banner;
@@ -74,13 +74,13 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
             </HStack>
           </HStack>
 
-          <EventDate status={status} />
+          <EventDate event={status.event} />
 
           {event.location && (
             <HStack alignItems='center' space={2}>
               <Icon src={require('@tabler/icons/map-pin.svg')} />
               <span>
-                {event.location.get('name')}
+                {event.location.name}
               </span>
             </HStack>
           )}

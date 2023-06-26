@@ -1,4 +1,4 @@
-import { List as ImmutableList } from 'immutable';
+import { fromJS, List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -30,7 +30,7 @@ import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 import GroupPopover from './groups/popover/group-popover';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
-import type { Account, Group, Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/schemas';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
@@ -120,7 +120,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const features = useFeatures();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
-  const deleteGroupStatus = useDeleteGroupStatus(status?.group as Group, status.id);
+  const deleteGroupStatus = useDeleteGroupStatus(status?.group!, status.id);
 
   const { allowedEmoji } = soapboxConfig;
 
@@ -237,7 +237,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleGroupPinClick: React.EventHandler<React.MouseEvent> = () => {
-    const group = status.group as Group;
+    const group = status.group!;
 
     if (status.pinned) {
       dispatch(unpinFromGroup(status, group));
@@ -249,24 +249,24 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(mentionCompose(status.account as Account));
+    dispatch(mentionCompose(status.account));
   };
 
   const handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(directCompose(status.account as Account));
+    dispatch(directCompose(status.account));
   };
 
   const handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.account as Account;
+    const account = status.account;
     dispatch(launchChat(account.id, history));
   };
 
   const handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initMuteModal(status.account as Account));
+    dispatch(initMuteModal(status.account));
   };
 
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.get('account') as Account;
+    const account = status.account;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
@@ -288,13 +288,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
-      url: status.get('url'),
+      url: status.url,
       onError: (error: any) => toast.showAlertForError(error),
     }));
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(ReportableEntities.STATUS, status.account as Account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, status.account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -308,7 +308,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const onModerate: React.MouseEventHandler = (e) => {
-    const account = status.account as Account;
+    const account = status.account;
     dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
 
@@ -321,7 +321,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleDeleteFromGroup: React.EventHandler<React.MouseEvent> = () => {
-    const account = status.account as Account;
+    const account = status.account;
 
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
@@ -490,8 +490,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
 
     if (isGroupStatus && !!status.group) {
-      const group = status.group as Group;
-      const account = status.account as Account;
+      const group = status.group;
+      const account = status.account;
       const isGroupOwner = groupRelationship?.role === GroupRoles.OWNER;
       const isGroupAdmin = groupRelationship?.role === GroupRoles.ADMIN;
       const isStatusFromOwner = group.owner.id === account.id;
@@ -551,7 +551,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const favouriteCount = status.favourites_count;
 
   const emojiReactCount = reduceEmoji(
-    (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
+    fromJS(status.pleroma?.emoji_reactions ?? []) as ImmutableList<any>,
     favouriteCount,
     status.favourited,
     allowedEmoji,
@@ -583,7 +583,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     reblogIcon = require('@tabler/icons/lock.svg');
   }
 
-  if ((status.group as Group)?.membership_required && !groupRelationship?.member) {
+  if (status.group?.membership_required && !groupRelationship?.member) {
     replyDisabled = true;
     replyTitle = intl.formatMessage(messages.replies_disabled_group);
   }

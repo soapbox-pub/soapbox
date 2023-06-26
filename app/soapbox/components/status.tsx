@@ -26,8 +26,9 @@ import { Card, Icon, Stack, Text } from './ui';
 
 import type {
   Account as AccountEntity,
+  Event,
   Status as StatusEntity,
-} from 'soapbox/types/entities';
+} from 'soapbox/schemas';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number, top: number };
@@ -92,7 +93,7 @@ const Status: React.FC<IStatus> = (props) => {
   const statusUrl = `/@${actualStatus.account.acct}/posts/${actualStatus.id}`;
   const group = actualStatus.group;
 
-  const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
+  const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -134,7 +135,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const status = actualStatus;
-    const firstAttachment = status.media_attachments.first();
+    const [firstAttachment] = status.media_attachments;
 
     e?.preventDefault();
 
@@ -203,7 +204,7 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
-  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.size ? status.id : actualStatus.id));
+  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.length ? status.id : actualStatus.id));
 
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
@@ -360,14 +361,14 @@ const Status: React.FC<IStatus> = (props) => {
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+    if ((actualStatus.pleroma?.quote_visible ?? true) === false) {
       quote = (
         <div className='quoted-status-tombstone'>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
     } else {
-      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+      quote = <QuotedStatus statusId={actualStatus.quote.id} />;
     }
   }
 
@@ -453,7 +454,9 @@ const Status: React.FC<IStatus> = (props) => {
                 />
               )}
 
-              {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
+              {actualStatus.event ? (
+                <EventPreview className='shadow-xl' status={actualStatus as StatusEntity & { event: Event }} />
+              ) : (
                 <Stack space={4}>
                   <StatusContent
                     status={actualStatus}
@@ -464,7 +467,7 @@ const Status: React.FC<IStatus> = (props) => {
 
                   <TranslateButton status={actualStatus} />
 
-                  {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                  {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
                         status={actualStatus}

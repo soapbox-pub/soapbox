@@ -12,7 +12,7 @@ import Markup from './markup';
 import Poll from './polls/poll';
 
 import type { Sizes } from 'soapbox/components/ui/text/text';
-import type { Status, Mention } from 'soapbox/types/entities';
+import type { Status, Mention } from 'soapbox/schemas';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
@@ -130,7 +130,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   });
 
   const parsedHtml = useMemo((): string => {
-    return translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
+    return translatable && status.translation ? status.translation.content : status.contentHtml;
   }, [status.contentHtml, status.translation]);
 
   if (status.content.length === 0) {
@@ -168,12 +168,11 @@ const StatusContent: React.FC<IStatusContent> = ({
       output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
     }
 
-    const hasPoll = status.poll && typeof status.poll === 'string';
-    if (hasPoll) {
-      output.push(<Poll id={status.poll} key='poll' status={status.url} />);
+    if (status.poll) {
+      output.push(<Poll id={status.poll.id} key='poll' status={status.url} />);
     }
 
-    return <div className={clsx({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
+    return <div className={clsx({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': status.poll })}>{output}</div>;
   } else {
     const output = [
       <Markup

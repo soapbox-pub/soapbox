@@ -7,7 +7,7 @@ import { Button } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/schemas';
 
 const messages = defineMessages({
   leaveConfirm: { id: 'confirmations.leave_event.confirm', defaultMessage: 'Leave event' },
@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 interface IEventAction {
-  status: StatusEntity
+  status: Status
   theme?: ButtonThemes
 }
 

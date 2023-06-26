@@ -12,6 +12,9 @@ export { useFollow } from './accounts/useFollow';
 export { useRelationships } from './accounts/useRelationships';
 export { usePatronUser } from './accounts/usePatronUser';
 
+// Statuses
+export { useStatus } from './statuses/useStatus';
+
 // Groups
 export { useBlockGroupMember } from './groups/useBlockGroupMember';
 export { useCancelMembershipRequest } from './groups/useCancelMembershipRequest';
