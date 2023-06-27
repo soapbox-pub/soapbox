@@ -7,7 +7,7 @@ import { usePatronUser } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
@@ -46,6 +46,8 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const intl = useIntl();
   const { displayFqn } = useSoapboxConfig();
   const { patronUser } = usePatronUser(account?.url);
+  const me = useAppSelector(state => state.me);
+  const ownAccount = account?.id === me;
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
@@ -228,7 +230,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {renderBirthday()}
         </div>
 
-        <ProfileFamiliarFollowers account={account} />
+        {ownAccount ? null : <ProfileFamiliarFollowers account={account} />}
       </Stack>
 
       {account.fields.length > 0 && (
