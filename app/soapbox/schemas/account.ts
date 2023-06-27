@@ -116,6 +116,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     value_plain: unescapeHTML(field.value),
   }));
 
+  const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;
   const domain = getDomain(account.url || account.uri);
 
   if (pleroma) {
@@ -127,8 +128,8 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     admin: pleroma?.is_admin || false,
     avatar_static: account.avatar_static || account.avatar,
     discoverable: account.discoverable || account.source?.pleroma?.discoverable || false,
-    display_name: account.display_name.trim().length === 0 ? account.username : account.display_name,
-    display_name_html: emojify(escapeTextContentForBrowser(account.display_name), customEmojiMap),
+    display_name: displayName,
+    display_name_html: emojify(escapeTextContentForBrowser(displayName), customEmojiMap),
     domain,
     fields: newFields,
     fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${domain}`),
