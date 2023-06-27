@@ -1,3 +1,5 @@
+import { importEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 
@@ -607,7 +609,10 @@ const fetchRelationships = (accountIds: string[]) =>
 
     return api(getState)
       .get(`/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}`).join('&')}`)
-      .then(response => dispatch(fetchRelationshipsSuccess(response.data)))
+      .then(response => {
+        dispatch(importEntities(response.data, Entities.RELATIONSHIPS));
+        dispatch(fetchRelationshipsSuccess(response.data));
+      })
       .catch(error => dispatch(fetchRelationshipsFail(error)));
   };
 
