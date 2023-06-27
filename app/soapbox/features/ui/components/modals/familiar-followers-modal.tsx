@@ -35,6 +35,8 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
         scrollKey='familiar_followers'
         emptyMessage={emptyMessage}
         itemClassName='pb-3'
+        style={{ height: '80vh' }}
+        useWindowScroll={false}
       >
         {familiarFollowerIds.map(id =>
           <AccountContainer key={id} id={id} />,
