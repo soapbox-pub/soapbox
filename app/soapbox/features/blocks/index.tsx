@@ -7,7 +7,7 @@ import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Spinner } from 'soapbox/components/ui';
 
 const messages = defineMessages({
-  heading: { id: 'column.blocks', defaultMessage: 'Blocked users' },
+  heading: { id: 'column.blocks', defaultMessage: 'Blocks' },
 });
 
 const Blocks: React.FC = () => {
@@ -37,7 +37,8 @@ const Blocks: React.FC = () => {
         onLoadMore={fetchNextPage}
         hasMore={hasNextPage}
         emptyMessage={emptyMessage}
-        itemClassName='pb-4'
+        emptyMessageCard={false}
+        itemClassName='pb-4 last:pb-0'
       >
         {accounts.map((account) => (
           <Account key={account.id} account={account} actionType='blocking' />

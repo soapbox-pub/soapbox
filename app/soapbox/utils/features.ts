@@ -568,6 +568,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsKick: v.software !== TRUTHSOCIAL,
 
     /**
+     * Can mute a Group.
+     */
+    groupsMuting: v.software === TRUTHSOCIAL,
+
+    /**
      * Can query pending Group requests.
     */
     groupsPending: v.software === TRUTHSOCIAL,

@@ -59,10 +59,10 @@ describe('<GroupOptionsButton />', () => {
       });
     });
 
-    it('should render null', () => {
+    it('should render one option for muting the group', () => {
       render(<GroupOptionsButton group={group} />);
 
-      expect(screen.queryAllByTestId('dropdown-menu-button')).toHaveLength(0);
+      expect(screen.queryAllByTestId('dropdown-menu-button')).toHaveLength(1);
     });
   });
 
