@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchReblogs } from 'soapbox/actions/interactions';
+import { fetchReblogs, expandReblogs } from 'soapbox/actions/interactions';
 import { fetchStatus } from 'soapbox/actions/statuses';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Modal, Spinner } from 'soapbox/components/ui';
@@ -16,6 +16,7 @@ interface IReblogsModal {
 const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
   const accountIds = useAppSelector((state) => state.user_lists.reblogged_by.get(statusId)?.items);
+  const next = useAppSelector((state) => state.user_lists.reblogged_by.get(statusId)?.next);
 
   const fetchData = () => {
     dispatch(fetchReblogs(statusId));
@@ -28,6 +29,12 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
 
   const onClickClose = () => {
     onClose('REBLOGS');
+  };
+
+  const handleLoadMore = () => {
+    if (next) {
+      dispatch(expandReblogs(statusId, next!));
+    }
   };
 
   let body;
@@ -43,6 +50,10 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
         emptyMessage={emptyMessage}
         className='max-w-full'
         itemClassName='pb-3'
+        style={{ height: '80vh' }}
+        useWindowScroll={false}
+        onLoadMore={handleLoadMore}
+        hasMore={!!next}
       >
         {accountIds.map((id) =>
           <AccountContainer key={id} id={id} />,

@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
-import api from '../api';
+import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
@@ -72,6 +72,12 @@ const UNBOOKMARK_FAIL    = 'UNBOOKMARKED_FAIL';
 const REMOTE_INTERACTION_REQUEST = 'REMOTE_INTERACTION_REQUEST';
 const REMOTE_INTERACTION_SUCCESS = 'REMOTE_INTERACTION_SUCCESS';
 const REMOTE_INTERACTION_FAIL    = 'REMOTE_INTERACTION_FAIL';
+
+const FAVOURITES_EXPAND_SUCCESS = 'FAVOURITES_EXPAND_SUCCESS';
+const FAVOURITES_EXPAND_FAIL = 'FAVOURITES_EXPAND_FAIL';
+
+const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
+const REBLOGS_EXPAND_FAIL = 'REBLOGS_EXPAND_FAIL';
 
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
@@ -380,9 +386,10 @@ const fetchReblogs = (id: string) =>
     dispatch(fetchReblogsRequest(id));
 
     api(getState).get(`/api/v1/statuses/${id}/reblogged_by`).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(fetchReblogsSuccess(id, response.data));
+      dispatch(fetchReblogsSuccess(id, response.data, next ? next.uri : null));
     }).catch(error => {
       dispatch(fetchReblogsFail(id, error));
     });
@@ -393,14 +400,40 @@ const fetchReblogsRequest = (id: string) => ({
   id,
 });
 
-const fetchReblogsSuccess = (id: string, accounts: APIEntity[]) => ({
+const fetchReblogsSuccess = (id: string, accounts: APIEntity[], next: string | null) => ({
   type: REBLOGS_FETCH_SUCCESS,
   id,
   accounts,
+  next,
 });
 
 const fetchReblogsFail = (id: string, error: AxiosError) => ({
   type: REBLOGS_FETCH_FAIL,
+  id,
+  error,
+});
+
+const expandReblogs = (id: string, path: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    api(getState).get(path).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(expandReblogsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(expandReblogsFail(id, error));
+    });
+  };
+
+const expandReblogsSuccess = (id: string, accounts: APIEntity[], next: string | null) => ({
+  type: REBLOGS_EXPAND_SUCCESS,
+  id,
+  accounts,
+  next,
+});
+
+const expandReblogsFail = (id: string, error: AxiosError) => ({
+  type: REBLOGS_EXPAND_FAIL,
   id,
   error,
 });
@@ -412,9 +445,10 @@ const fetchFavourites = (id: string) =>
     dispatch(fetchFavouritesRequest(id));
 
     api(getState).get(`/api/v1/statuses/${id}/favourited_by`).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(fetchFavouritesSuccess(id, response.data));
+      dispatch(fetchFavouritesSuccess(id, response.data, next ? next.uri : null));
     }).catch(error => {
       dispatch(fetchFavouritesFail(id, error));
     });
@@ -425,14 +459,40 @@ const fetchFavouritesRequest = (id: string) => ({
   id,
 });
 
-const fetchFavouritesSuccess = (id: string, accounts: APIEntity[]) => ({
+const fetchFavouritesSuccess = (id: string, accounts: APIEntity[], next: string | null) => ({
   type: FAVOURITES_FETCH_SUCCESS,
   id,
   accounts,
+  next,
 });
 
 const fetchFavouritesFail = (id: string, error: AxiosError) => ({
   type: FAVOURITES_FETCH_FAIL,
+  id,
+  error,
+});
+
+const expandFavourites = (id: string, path: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    api(getState).get(path).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(expandFavouritesSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(expandFavouritesFail(id, error));
+    });
+  };
+
+const expandFavouritesSuccess = (id: string, accounts: APIEntity[], next: string | null) => ({
+  type: FAVOURITES_EXPAND_SUCCESS,
+  id,
+  accounts,
+  next,
+});
+
+const expandFavouritesFail = (id: string, error: AxiosError) => ({
+  type: FAVOURITES_EXPAND_FAIL,
   id,
   error,
 });
@@ -669,6 +729,10 @@ export {
   REMOTE_INTERACTION_REQUEST,
   REMOTE_INTERACTION_SUCCESS,
   REMOTE_INTERACTION_FAIL,
+  FAVOURITES_EXPAND_SUCCESS,
+  FAVOURITES_EXPAND_FAIL,
+  REBLOGS_EXPAND_SUCCESS,
+  REBLOGS_EXPAND_FAIL,
   reblog,
   unreblog,
   toggleReblog,
@@ -709,10 +773,12 @@ export {
   fetchReblogsRequest,
   fetchReblogsSuccess,
   fetchReblogsFail,
+  expandReblogs,
   fetchFavourites,
   fetchFavouritesRequest,
   fetchFavouritesSuccess,
   fetchFavouritesFail,
+  expandFavourites,
   fetchDislikes,
   fetchDislikesRequest,
   fetchDislikesSuccess,
