@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { usePendingGroups } from 'soapbox/api/hooks';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import { Divider } from 'soapbox/components/ui';
 import { useFeatures } from 'soapbox/hooks';
-import { usePendingGroups } from 'soapbox/queries/groups';
 
 export default () => {
   const features = useFeatures();

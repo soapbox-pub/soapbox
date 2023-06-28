@@ -2,10 +2,10 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { usePendingGroups } from 'soapbox/api/hooks';
 import GroupCard from 'soapbox/components/group-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Stack, Text } from 'soapbox/components/ui';
-import { usePendingGroups } from 'soapbox/queries/groups';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
 

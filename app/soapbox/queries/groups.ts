@@ -1,11 +1,9 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
 
-import { getNextLink } from 'soapbox/api';
-import { useApi, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { useApi, useFeatures } from 'soapbox/hooks';
 import { normalizeGroup, normalizeGroupRelationship } from 'soapbox/normalizers';
 import { Group, GroupRelationship } from 'soapbox/types/entities';
-import { flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 
 const GroupKeys = {
   group: (id: string) => ['groups', 'group', id] as const,
@@ -46,52 +44,6 @@ const useGroupsApi = () => {
   return { fetchGroups };
 };
 
-const usePendingGroups = () => {
-  const features = useFeatures();
-  const { account } = useOwnAccount();
-  const { fetchGroups } = useGroupsApi();
-
-  const getGroups = async (pageParam?: any): Promise<PaginatedResult<Group>> => {
-    const endpoint = '/api/v1/groups';
-    const nextPageLink = pageParam?.link;
-    const uri = nextPageLink || endpoint;
-    const { response, groups } = await fetchGroups(uri, {
-      pending: true,
-    });
-
-    const link = getNextLink(response);
-    const hasMore = !!link;
-
-    return {
-      result: groups,
-      hasMore,
-      link,
-    };
-  };
-
-  const queryInfo = useInfiniteQuery(
-    GroupKeys.pendingGroups(account?.id as string),
-    ({ pageParam }: any) => getGroups(pageParam),
-    {
-      enabled: !!account && features.groupsPending,
-      keepPreviousData: true,
-      getNextPageParam: (config) => {
-        if (config?.hasMore) {
-          return { nextLink: config?.link };
-        }
-
-        return undefined;
-      },
-    });
-
-  const data = flattenPages(queryInfo.data);
-
-  return {
-    ...queryInfo,
-    groups: data || [],
-  };
-};
-
 const useGroup = (id: string) => {
   const features = useFeatures();
   const { fetchGroups } = useGroupsApi();
@@ -113,6 +65,4 @@ const useGroup = (id: string) => {
 
 export {
   useGroup,
-  usePendingGroups,
-  GroupKeys,
 };
