@@ -304,6 +304,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             id={account.id}
             hidden={hidden}
             avatarSize={avatarSize}
+            withRelationship
           />
         ) : null;
       case 'follow_request':
@@ -313,6 +314,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             hidden={hidden}
             avatarSize={avatarSize}
             actionType='follow_request'
+            withRelationship
           />
         ) : null;
       case 'move':
@@ -321,6 +323,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             id={notification.target.id}
             hidden={hidden}
             avatarSize={avatarSize}
+            withRelationship
           />
         ) : null;
       case 'favourite':
