@@ -13,23 +13,23 @@ import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
-const TIMELINE_UPDATE = 'TIMELINE_UPDATE';
-const TIMELINE_DELETE = 'TIMELINE_DELETE';
-const TIMELINE_CLEAR = 'TIMELINE_CLEAR';
-const TIMELINE_UPDATE_QUEUE = 'TIMELINE_UPDATE_QUEUE';
-const TIMELINE_DEQUEUE = 'TIMELINE_DEQUEUE';
-const TIMELINE_SCROLL_TOP = 'TIMELINE_SCROLL_TOP';
+const TIMELINE_UPDATE = 'TIMELINE_UPDATE' as const;
+const TIMELINE_DELETE = 'TIMELINE_DELETE' as const;
+const TIMELINE_CLEAR = 'TIMELINE_CLEAR' as const;
+const TIMELINE_UPDATE_QUEUE = 'TIMELINE_UPDATE_QUEUE' as const;
+const TIMELINE_DEQUEUE = 'TIMELINE_DEQUEUE' as const;
+const TIMELINE_SCROLL_TOP = 'TIMELINE_SCROLL_TOP' as const;
 
-const TIMELINE_EXPAND_REQUEST = 'TIMELINE_EXPAND_REQUEST';
-const TIMELINE_EXPAND_SUCCESS = 'TIMELINE_EXPAND_SUCCESS';
-const TIMELINE_EXPAND_FAIL = 'TIMELINE_EXPAND_FAIL';
+const TIMELINE_EXPAND_REQUEST = 'TIMELINE_EXPAND_REQUEST' as const;
+const TIMELINE_EXPAND_SUCCESS = 'TIMELINE_EXPAND_SUCCESS' as const;
+const TIMELINE_EXPAND_FAIL = 'TIMELINE_EXPAND_FAIL' as const;
 
-const TIMELINE_CONNECT = 'TIMELINE_CONNECT';
-const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT';
+const TIMELINE_CONNECT = 'TIMELINE_CONNECT' as const;
+const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT' as const;
 
-const TIMELINE_REPLACE = 'TIMELINE_REPLACE';
-const TIMELINE_INSERT = 'TIMELINE_INSERT';
-const TIMELINE_CLEAR_FEED_ACCOUNT_ID = 'TIMELINE_CLEAR_FEED_ACCOUNT_ID';
+const TIMELINE_REPLACE = 'TIMELINE_REPLACE' as const;
+const TIMELINE_INSERT = 'TIMELINE_INSERT' as const;
+const TIMELINE_CLEAR_FEED_ACCOUNT_ID = 'TIMELINE_CLEAR_FEED_ACCOUNT_ID' as const;
 
 const MAX_QUEUED_ITEMS = 40;
 
@@ -111,19 +111,29 @@ const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string)
     }
   };
 
+interface TimelineDeleteAction {
+  type: typeof TIMELINE_DELETE
+  id: string
+  accountId: string
+  references: ImmutableMap<string, readonly [statusId: string, accountId: string]>
+  reblogOf: unknown
+}
+
 const deleteFromTimelines = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const accountId = getState().statuses.get(id)?.account;
-    const references = getState().statuses.filter(status => status.reblog === id).map(status => [status.id, status.account]);
+    const accountId = getState().statuses.get(id)?.account?.id!;
+    const references = getState().statuses.filter(status => status.reblog === id).map(status => [status.id, status.account.id] as const);
     const reblogOf = getState().statuses.getIn([id, 'reblog'], null);
 
-    dispatch({
+    const action: TimelineDeleteAction = {
       type: TIMELINE_DELETE,
       id,
       accountId,
       references,
       reblogOf,
-    });
+    };
+
+    dispatch(action);
   };
 
 const clearTimeline = (timeline: string) =>
@@ -327,6 +337,9 @@ const clearFeedAccountId = () => (dispatch: AppDispatch, _getState: () => RootSt
   dispatch({ type: TIMELINE_CLEAR_FEED_ACCOUNT_ID });
 };
 
+// TODO: other actions
+type TimelineAction = TimelineDeleteAction;
+
 export {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
@@ -373,4 +386,5 @@ export {
   scrollTopTimeline,
   insertSuggestionsIntoTimeline,
   clearFeedAccountId,
+  type TimelineAction,
 };
