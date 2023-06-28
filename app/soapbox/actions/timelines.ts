@@ -114,7 +114,7 @@ const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string)
 const deleteFromTimelines = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const accountId = getState().statuses.get(id)?.account;
-    const references = getState().statuses.filter(status => status.get('reblog') === id).map(status => [status.get('id'), status.get('account')]);
+    const references = getState().statuses.filter(status => status.reblog === id).map(status => [status.id, status.account]);
     const reblogOf = getState().statuses.getIn([id, 'reblog'], null);
 
     dispatch({

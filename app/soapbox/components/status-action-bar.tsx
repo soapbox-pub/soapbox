@@ -305,7 +305,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.get('account') as Account;
+    const account = status.account as Account;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
@@ -327,7 +327,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
-      url: status.get('url'),
+      url: status.url,
       onError: (error: any) => toast.showAlertForError(error),
     }));
   };
