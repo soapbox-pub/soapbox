@@ -30,7 +30,6 @@ const baseAccountSchema = z.object({
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
   emojis: filteredArray(customEmojiSchema),
-  favicon: z.string().catch(''),
   fields: filteredArray(fieldSchema),
   followers_count: z.number().catch(0),
   following_count: z.number().catch(0),
