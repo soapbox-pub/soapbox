@@ -212,7 +212,7 @@ const buildReferencesTo = (statuses: ImmutableMap<string, Status>, status: Statu
 const filterTimelines = (state: State, relationship: APIEntity, statuses: ImmutableMap<string, Status>) => {
   return state.withMutations(state => {
     statuses.forEach(status => {
-      if (status.get('account') !== relationship.id) return;
+      if (status.account !== relationship.id) return;
       const references = buildReferencesTo(statuses, status);
       deleteStatus(state, status.id, status.account!.id, references, relationship.id);
     });

@@ -263,27 +263,27 @@ export default function statuses(state = initialState, action: AnyAction): State
     case EMOJI_REACT_REQUEST:
       return state
         .updateIn(
-          [action.status.get('id'), 'pleroma', 'emoji_reactions'],
+          [action.status.id, 'pleroma', 'emoji_reactions'],
           emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji, action.custom),
         );
     case UNEMOJI_REACT_REQUEST:
       return state
         .updateIn(
-          [action.status.get('id'), 'pleroma', 'emoji_reactions'],
+          [action.status.id, 'pleroma', 'emoji_reactions'],
           emojiReacts => simulateUnEmojiReact(emojiReacts as any, action.emoji),
         );
     case FAVOURITE_FAIL:
-      return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);
+      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'favourited'], false);
     case DISLIKE_FAIL:
-      return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'disliked'], false);
+      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'disliked'], false);
     case REBLOG_REQUEST:
-      return state.setIn([action.status.get('id'), 'reblogged'], true);
+      return state.setIn([action.status.id, 'reblogged'], true);
     case REBLOG_FAIL:
-      return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'reblogged'], false);
+      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'reblogged'], false);
     case UNREBLOG_REQUEST:
-      return state.setIn([action.status.get('id'), 'reblogged'], false);
+      return state.setIn([action.status.id, 'reblogged'], false);
     case UNREBLOG_FAIL:
-      return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'reblogged'], true);
+      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'reblogged'], true);
     case STATUS_MUTE_SUCCESS:
       return state.setIn([action.id, 'muted'], true);
     case STATUS_UNMUTE_SUCCESS:
