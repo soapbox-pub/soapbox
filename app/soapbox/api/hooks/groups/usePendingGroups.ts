@@ -17,7 +17,7 @@ function usePendingGroups() {
     }),
     {
       schema: groupSchema,
-      enabled: !!account && features.groupsPending,
+      enabled: features.groupsPending,
     },
   );
 
