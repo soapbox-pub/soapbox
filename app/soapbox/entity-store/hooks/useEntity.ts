@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
 import z from 'zod';
 
 import { useAppDispatch, useAppSelector, useLoading } from 'soapbox/hooks';
@@ -24,6 +25,8 @@ function useEntity<TEntity extends Entity>(
   opts: UseEntityOpts<TEntity> = {},
 ) {
   const [isFetching, setPromise] = useLoading(true);
+  const [error, setError] = useState<unknown>();
+
   const dispatch = useAppDispatch();
 
   const [entityType, entityId] = path;
@@ -35,6 +38,7 @@ function useEntity<TEntity extends Entity>(
 
   const isEnabled = opts.enabled ?? true;
   const isLoading = isFetching && !entity;
+  const isLoaded = !isFetching && !!entity;
 
   const fetchEntity = async () => {
     try {
@@ -42,7 +46,7 @@ function useEntity<TEntity extends Entity>(
       const entity = schema.parse(response.data);
       dispatch(importEntities([entity], entityType));
     } catch (e) {
-      // do nothing
+      setError(e);
     }
   };
 
@@ -58,6 +62,10 @@ function useEntity<TEntity extends Entity>(
     fetchEntity,
     isFetching,
     isLoading,
+    isLoaded,
+    error,
+    isUnauthorized: error instanceof AxiosError && error.response?.status === 401,
+    isForbidden: error instanceof AxiosError && error.response?.status === 403,
   };
 }
 
