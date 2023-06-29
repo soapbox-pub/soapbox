@@ -7,6 +7,7 @@ import {
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
+import { Entities } from 'soapbox/entity-store/entities';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
@@ -16,21 +17,20 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 import type { ContextType } from 'soapbox/normalizers/filter';
 import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
-import type { Filter as FilterEntity, Notification, Status } from 'soapbox/types/entities';
+import type { Account, Filter as FilterEntity, Notification, Status } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
-const getAccountBase         = (state: RootState, id: string) => state.accounts.get(id);
+const getAccountBase         = (state: RootState, id: string) => state.entities[Entities.ACCOUNTS]?.store[id] as Account | undefined;
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
 
 export const makeGetAccount = () => {
   return createSelector([
     getAccountBase,
     getAccountRelationship,
-  ], (base, relationship) => {
-    if (!base) return null;
-    base.relationship = base.relationship ?? relationship;
-    return base;
+  ], (account, relationship) => {
+    if (!account) return null;
+    return { ...account, relationship };
   });
 };
 
