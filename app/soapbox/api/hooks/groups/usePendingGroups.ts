@@ -9,7 +9,7 @@ function usePendingGroups() {
   const features = useFeatures();
 
   const { entities, ...result } = useEntities<Group>(
-    [Entities.GROUPS, account?.id as string, 'pending'],
+    [Entities.GROUPS, account?.id!, 'pending'],
     () => api.get('/api/v1/groups', {
       params: {
         pending: true,
@@ -17,7 +17,7 @@ function usePendingGroups() {
     }),
     {
       schema: groupSchema,
-      enabled: features.groupsPending,
+      enabled: !!account && features.groupsPending,
     },
   );
 

@@ -1,15 +1,32 @@
 import { __stub } from 'soapbox/api';
-import { buildGroup } from 'soapbox/jest/factory';
+import { Entities } from 'soapbox/entity-store/entities';
+import { buildAccount, buildGroup } from 'soapbox/jest/factory';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
 import { normalizeInstance } from 'soapbox/normalizers';
 
 import { usePendingGroups } from '../usePendingGroups';
 
-const group = buildGroup({ id: '1', display_name: 'soapbox' });
+const id = '1';
+const group = buildGroup({ id, display_name: 'soapbox' });
 const store = {
   instance: normalizeInstance({
     version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)',
   }),
+  me: '1',
+  entities: {
+    [Entities.ACCOUNTS]: {
+      store: {
+        [id]: buildAccount({
+          id,
+          acct: 'tiger',
+          display_name: 'Tiger',
+          avatar: 'test.jpg',
+          verified: true,
+        }),
+      },
+      lists: {},
+    },
+  },
 };
 
 describe('usePendingGroups hook', () => {
