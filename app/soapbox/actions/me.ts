@@ -10,14 +10,14 @@ import type { AxiosError, RawAxiosRequestHeaders } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST';
-const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS';
-const ME_FETCH_FAIL    = 'ME_FETCH_FAIL';
-const ME_FETCH_SKIP    = 'ME_FETCH_SKIP';
+const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST' as const;
+const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS' as const;
+const ME_FETCH_FAIL    = 'ME_FETCH_FAIL' as const;
+const ME_FETCH_SKIP    = 'ME_FETCH_SKIP' as const;
 
-const ME_PATCH_REQUEST = 'ME_PATCH_REQUEST';
-const ME_PATCH_SUCCESS = 'ME_PATCH_SUCCESS';
-const ME_PATCH_FAIL    = 'ME_PATCH_FAIL';
+const ME_PATCH_REQUEST = 'ME_PATCH_REQUEST' as const;
+const ME_PATCH_SUCCESS = 'ME_PATCH_SUCCESS' as const;
+const ME_PATCH_FAIL    = 'ME_PATCH_FAIL' as const;
 
 const noOp = () => new Promise(f => f(undefined));
 
@@ -85,13 +85,10 @@ const fetchMeRequest = () => ({
   type: ME_FETCH_REQUEST,
 });
 
-const fetchMeSuccess = (me: APIEntity) =>
-  (dispatch: AppDispatch) => {
-    dispatch({
-      type: ME_FETCH_SUCCESS,
-      me,
-    });
-  };
+const fetchMeSuccess = (me: APIEntity) => ({
+  type: ME_FETCH_SUCCESS,
+  me,
+});
 
 const fetchMeFail = (error: APIEntity) => ({
   type: ME_FETCH_FAIL,
@@ -103,13 +100,20 @@ const patchMeRequest = () => ({
   type: ME_PATCH_REQUEST,
 });
 
+interface MePatchSuccessAction {
+  type: typeof ME_PATCH_SUCCESS
+  me: APIEntity
+}
+
 const patchMeSuccess = (me: APIEntity) =>
   (dispatch: AppDispatch) => {
-    dispatch(importFetchedAccount(me));
-    dispatch({
+    const action: MePatchSuccessAction = {
       type: ME_PATCH_SUCCESS,
       me,
-    });
+    };
+
+    dispatch(importFetchedAccount(me));
+    dispatch(action);
   };
 
 const patchMeFail = (error: AxiosError) => ({
@@ -117,6 +121,14 @@ const patchMeFail = (error: AxiosError) => ({
   error,
   skipAlert: true,
 });
+
+type MeAction =
+  | ReturnType<typeof fetchMeRequest>
+  | ReturnType<typeof fetchMeSuccess>
+  | ReturnType<typeof fetchMeFail>
+  | ReturnType<typeof patchMeRequest>
+  | MePatchSuccessAction
+  | ReturnType<typeof patchMeFail>;
 
 export {
   ME_FETCH_REQUEST,
@@ -134,4 +146,5 @@ export {
   patchMeRequest,
   patchMeSuccess,
   patchMeFail,
+  type MeAction,
 };
