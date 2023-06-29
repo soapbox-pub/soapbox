@@ -1,10 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useGroupTags } from 'soapbox/api/hooks';
+import { useGroup, useGroupTags } from 'soapbox/api/hooks';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Icon, Stack, Text } from 'soapbox/components/ui';
-import { useGroup } from 'soapbox/queries/groups';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account';
 

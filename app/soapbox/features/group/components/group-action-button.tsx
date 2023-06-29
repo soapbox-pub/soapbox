@@ -3,13 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups';
 import { openModal } from 'soapbox/actions/modals';
-import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup } from 'soapbox/api/hooks';
+import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup, usePendingGroups } from 'soapbox/api/hooks';
 import { Button } from 'soapbox/components/ui';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { queryClient } from 'soapbox/queries/client';
-import { GroupKeys } from 'soapbox/queries/groups';
+import { useAppDispatch } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 
@@ -31,11 +29,11 @@ const messages = defineMessages({
 const GroupActionButton = ({ group }: IGroupActionButton) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const { account } = useOwnAccount();
 
   const joinGroup = useJoinGroup(group);
   const leaveGroup = useLeaveGroup(group);
   const cancelRequest = useCancelMembershipRequest(group);
+  const { invalidate: invalidatePendingGroups } = usePendingGroups();
 
   const isRequested = group.relationship?.requested;
   const isNonMember = !group.relationship?.member && !isRequested;
@@ -46,8 +44,8 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
   const onJoinGroup = () => joinGroup.mutate({}, {
     onSuccess(entity) {
       joinGroup.invalidate();
+      invalidatePendingGroups();
       dispatch(fetchGroupRelationshipsSuccess([entity]));
-      queryClient.invalidateQueries(GroupKeys.pendingGroups(account?.id as string));
 
       toast.success(
         group.locked
@@ -84,7 +82,7 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
         requested: false,
       };
       dispatch(importEntities([entity], Entities.GROUP_RELATIONSHIPS));
-      queryClient.invalidateQueries(GroupKeys.pendingGroups(account?.id as string));
+      invalidatePendingGroups();
     },
   });
 

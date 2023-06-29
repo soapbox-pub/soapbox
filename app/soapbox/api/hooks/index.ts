@@ -35,6 +35,7 @@ export { useGroupsFromTag } from './groups/useGroupsFromTag';
 export { useJoinGroup } from './groups/useJoinGroup';
 export { useMuteGroup } from './groups/useMuteGroup';
 export { useLeaveGroup } from './groups/useLeaveGroup';
+export { usePendingGroups } from './groups/usePendingGroups';
 export { usePopularGroups } from './groups/usePopularGroups';
 export { usePopularTags } from './groups/usePopularTags';
 export { usePromoteGroupMember } from './groups/usePromoteGroupMember';
