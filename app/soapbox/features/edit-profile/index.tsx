@@ -188,7 +188,7 @@ const EditProfile: React.FC = () => {
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
-      const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true;
+      const strangerNotifications = account.pleroma?.notification_settings?.block_from_strangers === true;
       setData(credentials);
       setMuteStrangers(strangerNotifications);
     }
