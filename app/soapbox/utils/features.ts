@@ -992,7 +992,7 @@ interface Backend {
 
 /** Get information about the software from its version string */
 export const parseVersion = (version: string): Backend => {
-  const regex = /^([\w+.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
+  const regex = /^([\w+.-]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
   const semverString = match && (match[3] || match[1]);

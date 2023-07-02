@@ -40,6 +40,7 @@ describe('parseVersion', () => {
       software: 'TruthSocial',
       version: '1.0.0',
       compatVersion: '3.4.1',
+      build: 'nightly-20230627',
     });
   });
 
@@ -60,6 +61,15 @@ describe('parseVersion', () => {
       version: '2.4.2',
       compatVersion: '2.7.2',
       build: 'cofe',
+    });
+  });
+
+  it('with Mastodon nightly build', () => {
+    const version = '4.1.2+nightly-20230627';
+    expect(parseVersion(version)).toEqual({
+      software: 'Mastodon',
+      version: '4.1.2',
+      compatVersion: '4.1.2',
     });
   });
 });
