@@ -28,6 +28,7 @@ const messages = defineMessages({
   domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  followedTags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed hashtags' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
@@ -301,6 +302,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/filters'
                       icon={require('@tabler/icons/filter.svg')}
                       text={intl.formatMessage(messages.filters)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.followedHashtagsList && (
+                    <SidebarLink
+                      to='/followed_tags'
+                      icon={require('@tabler/icons/hash.svg')}
+                      text={intl.formatMessage(messages.followedTags)}
                       onClick={onClose}
                     />
                   )}

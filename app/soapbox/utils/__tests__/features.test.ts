@@ -62,6 +62,16 @@ describe('parseVersion', () => {
       build: 'cofe',
     });
   });
+
+  it('with Mastodon nightly build', () => {
+    const version = '4.1.2+nightly-20230627';
+    expect(parseVersion(version)).toEqual({
+      software: 'Mastodon',
+      version: '4.1.2',
+      compatVersion: '4.1.2',
+      build: 'nightly-20230627',
+    });
+  });
 });
 
 describe('getFeatures', () => {
