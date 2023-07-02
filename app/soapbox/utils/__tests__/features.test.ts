@@ -40,7 +40,6 @@ describe('parseVersion', () => {
       software: 'TruthSocial',
       version: '1.0.0',
       compatVersion: '3.4.1',
-      build: 'nightly-20230627',
     });
   });
 
@@ -70,6 +69,7 @@ describe('parseVersion', () => {
       software: 'Mastodon',
       version: '4.1.2',
       compatVersion: '4.1.2',
+      build: 'nightly-20230627',
     });
   });
 });

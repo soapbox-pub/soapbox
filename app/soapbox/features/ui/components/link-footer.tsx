@@ -48,6 +48,9 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {(features.filters || features.filtersV2) && (
             <FooterLink to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></FooterLink>
           )}
+          {features.followedHashtagsList && (
+            <FooterLink to='/followed_tags'><FormattedMessage id='navigation_bar.followed_tags' defaultMessage='Followed hashtags' /></FooterLink>
+          )}
           {features.federating && (
             <FooterLink to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></FooterLink>
           )}

@@ -29,7 +29,7 @@ import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
-import followed_tags from './followed_tags';
+import followed_tags from './followed-tags';
 import group_memberships from './group-memberships';
 import group_relationships from './group-relationships';
 import groups from './groups';
