@@ -109,8 +109,12 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
       return [];
     }
 
+    const currentYear = new Date().getFullYear();
+
     return chatMessages.reduce((acc: any, curr: any, idx: number) => {
       const lastMessage = formattedChatMessages[idx - 1];
+
+      const messageDate = new Date(curr.created_at);
 
       if (lastMessage) {
         switch (timeChange(lastMessage, curr)) {
@@ -123,7 +127,14 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
           case 'date':
             acc.push({
               type: 'divider',
-              text: intl.formatDate(new Date(curr.created_at), { weekday: 'short', hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' }),
+              text: intl.formatDate(messageDate, {
+                weekday: 'short',
+                hour: 'numeric',
+                minute: '2-digit',
+                month: 'short',
+                day: 'numeric',
+                year: messageDate.getFullYear() !== currentYear ? '2-digit' : undefined,
+              }),
             });
             break;
         }
