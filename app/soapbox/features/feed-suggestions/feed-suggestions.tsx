@@ -1,4 +1,5 @@
 import React from 'react';
+import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -61,34 +62,59 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
   );
 };
 
-const FeedSuggestions = () => {
+interface IFeedSuggesetions {
+  statusId: string
+  onMoveUp?: (statusId: string, featured?: boolean) => void
+  onMoveDown?: (statusId: string, featured?: boolean) => void
+}
+
+const FeedSuggestions: React.FC<IFeedSuggesetions> = ({ statusId, onMoveUp, onMoveDown }) => {
   const intl = useIntl();
   const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
   const isLoading = useAppSelector((state) => state.suggestions.isLoading);
 
   if (!isLoading && suggestedProfiles.size === 0) return null;
 
+  const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
+    if (onMoveUp) {
+      onMoveUp(statusId);
+    }
+  };
+
+  const handleHotkeyMoveDown = (e?: KeyboardEvent): void => {
+    if (onMoveDown) {
+      onMoveDown(statusId);
+    }
+  };
+
+  const handlers = {
+    moveUp: handleHotkeyMoveUp,
+    moveDown: handleHotkeyMoveDown,
+  };
+
   return (
-    <Card size='lg' variant='rounded' className='space-y-6'>
-      <HStack justifyContent='between' alignItems='center'>
-        <CardTitle title={intl.formatMessage(messages.heading)} />
+    <HotKeys handlers={handlers}>
+      <Card size='lg' variant='rounded' className='focusable space-y-6' tabIndex={0}>
+        <HStack justifyContent='between' alignItems='center'>
+          <CardTitle title={intl.formatMessage(messages.heading)} />
 
-        <Link
-          to='/suggestions'
-          className='text-primary-600 hover:underline dark:text-accent-blue'
-        >
-          {intl.formatMessage(messages.viewAll)}
-        </Link>
-      </HStack>
-
-      <CardBody>
-        <HStack space={4} alignItems='center' className='overflow-x-auto md:space-x-0 lg:overflow-x-hidden'>
-          {suggestedProfiles.slice(0, 4).map((suggestedProfile) => (
-            <SuggestionItem key={suggestedProfile.account} accountId={suggestedProfile.account} />
-          ))}
+          <Link
+            to='/suggestions'
+            className='text-primary-600 hover:underline dark:text-accent-blue'
+          >
+            {intl.formatMessage(messages.viewAll)}
+          </Link>
         </HStack>
-      </CardBody>
-    </Card>
+
+        <CardBody>
+          <HStack space={4} alignItems='center' className='overflow-x-auto md:space-x-0 lg:overflow-x-hidden'>
+            {suggestedProfiles.slice(0, 4).map((suggestedProfile) => (
+              <SuggestionItem key={suggestedProfile.account} accountId={suggestedProfile.account} />
+            ))}
+          </HStack>
+        </CardBody>
+      </Card>
+    </HotKeys>
   );
 };
 

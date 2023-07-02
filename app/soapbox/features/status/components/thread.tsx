@@ -263,15 +263,12 @@ const Thread = (props: IThread) => {
   };
 
   const _selectChild = (index: number) => {
+    if (!useWindowScroll) index = index + 1;
     scroller.current?.scrollIntoView({
       index,
       behavior: 'smooth',
       done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
-
-        if (element) {
-          element.focus();
-        }
+        node.current?.querySelector<HTMLDivElement>(`[data-index="${index}"] .focusable`)?.focus();
       },
     });
   };
