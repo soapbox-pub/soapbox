@@ -11,7 +11,6 @@ import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
-
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -30,6 +29,7 @@ import {
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
+import GlobalHotkeys from 'soapbox/features/ui/util/global-hotkeys';
 import { createGlobals } from 'soapbox/globals';
 import {
   useAppSelector,
@@ -176,31 +176,33 @@ const SoapboxMount = () => {
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            <Switch>
-              <Route
-                path='/embed/:statusId'
-                render={(props) => <EmbeddedStatus params={props.match.params} />}
-              />
-              <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
+            <GlobalHotkeys>
+              <Switch>
+                <Route
+                  path='/embed/:statusId'
+                  render={(props) => <EmbeddedStatus params={props.match.params} />}
+                />
+                <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
-              <Route>
-                {renderBody()}
+                <Route>
+                  {renderBody()}
 
-                <BundleContainer fetchComponent={ModalContainer}>
-                  {Component => <Component />}
-                </BundleContainer>
+                  <BundleContainer fetchComponent={ModalContainer}>
+                    {Component => <Component />}
+                  </BundleContainer>
 
-                <GdprBanner />
+                  <GdprBanner />
 
-                <div id='toaster'>
-                  <Toaster
-                    position='top-right'
-                    containerClassName='top-10'
-                    containerStyle={{ top: 75 }}
-                  />
-                </div>
-              </Route>
-            </Switch>
+                  <div id='toaster'>
+                    <Toaster
+                      position='top-right'
+                      containerClassName='top-10'
+                      containerStyle={{ top: 75 }}
+                    />
+                  </div>
+                </Route>
+              </Switch>
+            </GlobalHotkeys>
           </ScrollContext>
         </CompatRouter>
       </BrowserRouter>
