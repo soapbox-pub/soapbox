@@ -2,21 +2,17 @@
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import clsx from 'clsx';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { HotKeys } from 'react-hotkeys';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Switch, Redirect, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
-
-import { resetCompose } from 'soapbox/actions/compose';
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
-import { openModal } from 'soapbox/actions/modals';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import * as BuildConfig from 'soapbox/build-config';
@@ -33,6 +29,7 @@ import {
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
+import GlobalHotkeys from 'soapbox/features/ui/util/global-hotkeys';
 import { createGlobals } from 'soapbox/globals';
 import {
   useAppSelector,
@@ -67,34 +64,6 @@ store.dispatch(preload() as any);
 // This happens synchronously
 store.dispatch(checkOnboardingStatus() as any);
 
-const keyMap = {
-  help: '?',
-  new: 'n',
-  search: ['s', '/'],
-  forceNew: 'option+n',
-  reply: 'r',
-  favourite: 'f',
-  react: 'e',
-  boost: 'b',
-  mention: 'm',
-  open: ['enter', 'o'],
-  openProfile: 'p',
-  moveDown: ['down', 'j'],
-  moveUp: ['up', 'k'],
-  back: 'backspace',
-  goToHome: 'g h',
-  goToNotifications: 'g n',
-  goToFavourites: 'g f',
-  goToPinned: 'g p',
-  goToProfile: 'g u',
-  goToBlocked: 'g b',
-  goToMuted: 'g m',
-  goToRequests: 'g r',
-  toggleHidden: 'x',
-  toggleSensitive: 'h',
-  openMedia: 'a',
-};
-
 /** Load initial data from the backend */
 const loadInitial = () => {
   // @ts-ignore
@@ -120,10 +89,6 @@ const loadInitial = () => {
 const SoapboxMount = () => {
   useCachedLocationHandler();
 
-  const hotkeys = useRef<HTMLDivElement | null>(null);
-
-  const history = useHistory();
-  const dispatch = useAppDispatch();
   const me = useAppSelector(state => state.me);
   const instance = useInstance();
   const { account } = useOwnAccount();
@@ -139,109 +104,6 @@ const SoapboxMount = () => {
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
-  };
-
-  const handleHotkeyNew = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    if (!hotkeys.current) return;
-
-    const element = hotkeys.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
-
-    if (element) {
-      element.focus();
-    }
-  };
-
-  const handleHotkeySearch = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    if (!hotkeys.current) return;
-
-    const element = hotkeys.current.querySelector('input#search') as HTMLInputElement;
-
-    if (element) {
-      element.focus();
-    }
-  };
-
-  const handleHotkeyForceNew = (e?: KeyboardEvent) => {
-    handleHotkeyNew(e);
-    dispatch(resetCompose());
-  };
-
-  const handleHotkeyBack = () => {
-    if (window.history && window.history.length === 1) {
-      history.push('/');
-    } else {
-      history.goBack();
-    }
-  };
-
-  const setHotkeysRef: React.LegacyRef<HotKeys> = (c: any) => {
-    hotkeys.current = c;
-
-    if (!me || !hotkeys.current) return;
-
-    // @ts-ignore
-    hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName);
-    };
-  };
-
-  const handleHotkeyToggleHelp = () => {
-    dispatch(openModal('HOTKEYS'));
-  };
-
-  const handleHotkeyGoToHome = () => {
-    history.push('/');
-  };
-
-  const handleHotkeyGoToNotifications = () => {
-    history.push('/notifications');
-  };
-
-  const handleHotkeyGoToFavourites = () => {
-    if (!account) return;
-    history.push(`/@${account.username}/favorites`);
-  };
-
-  const handleHotkeyGoToPinned = () => {
-    if (!account) return;
-    history.push(`/@${account.username}/pins`);
-  };
-
-  const handleHotkeyGoToProfile = () => {
-    if (!account) return;
-    history.push(`/@${account.username}`);
-  };
-
-  const handleHotkeyGoToBlocked = () => {
-    history.push('/blocks');
-  };
-
-  const handleHotkeyGoToMuted = () => {
-    history.push('/mutes');
-  };
-
-  const handleHotkeyGoToRequests = () => {
-    history.push('/follow_requests');
-  };
-
-  type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
-
-  const handlers: HotkeyHandlers = {
-    help: handleHotkeyToggleHelp,
-    new: handleHotkeyNew,
-    search: handleHotkeySearch,
-    forceNew: handleHotkeyForceNew,
-    back: handleHotkeyBack,
-    goToHome: handleHotkeyGoToHome,
-    goToNotifications: handleHotkeyGoToNotifications,
-    goToFavourites: handleHotkeyGoToFavourites,
-    goToPinned: handleHotkeyGoToPinned,
-    goToProfile: handleHotkeyGoToProfile,
-    goToBlocked: handleHotkeyGoToBlocked,
-    goToMuted: handleHotkeyGoToMuted,
-    goToRequests: handleHotkeyGoToRequests,
   };
 
   /** Render the onboarding flow. */
@@ -314,7 +176,7 @@ const SoapboxMount = () => {
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
+            <GlobalHotkeys>
               <Switch>
                 <Route
                   path='/embed/:statusId'
@@ -340,7 +202,7 @@ const SoapboxMount = () => {
                   </div>
                 </Route>
               </Switch>
-            </HotKeys>
+            </GlobalHotkeys>
           </ScrollContext>
         </CompatRouter>
       </BrowserRouter>
