@@ -36,9 +36,10 @@ const keyMap = {
 
 interface IGlobalHotkeys {
   children: React.ReactNode
+  node: React.MutableRefObject<HTMLDivElement | null>
 }
 
-const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children }) => {
+const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
   const hotkeys = useRef<HTMLDivElement | null>(null);
 
   const history = useHistory();
@@ -48,9 +49,9 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children }) => {
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
-    if (!hotkeys.current) return;
+    if (!node.current) return;
 
-    const element = hotkeys.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
+    const element = node.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
 
     if (element) {
       element.focus();
@@ -59,9 +60,9 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children }) => {
 
   const handleHotkeySearch = (e?: KeyboardEvent) => {
     e?.preventDefault();
-    if (!hotkeys.current) return;
+    if (!node.current) return;
 
-    const element = hotkeys.current.querySelector('input#search') as HTMLInputElement;
+    const element = node.current.querySelector('input#search') as HTMLInputElement;
 
     if (element) {
       element.focus();

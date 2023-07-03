@@ -29,7 +29,6 @@ import {
   OnboardingWizard,
   WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
-import GlobalHotkeys from 'soapbox/features/ui/util/global-hotkeys';
 import { createGlobals } from 'soapbox/globals';
 import {
   useAppSelector,
@@ -176,33 +175,31 @@ const SoapboxMount = () => {
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
-            <GlobalHotkeys>
-              <Switch>
-                <Route
-                  path='/embed/:statusId'
-                  render={(props) => <EmbeddedStatus params={props.match.params} />}
-                />
-                <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
+            <Switch>
+              <Route
+                path='/embed/:statusId'
+                render={(props) => <EmbeddedStatus params={props.match.params} />}
+              />
+              <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
-                <Route>
-                  {renderBody()}
+              <Route>
+                {renderBody()}
 
-                  <BundleContainer fetchComponent={ModalContainer}>
-                    {Component => <Component />}
-                  </BundleContainer>
+                <BundleContainer fetchComponent={ModalContainer}>
+                  {Component => <Component />}
+                </BundleContainer>
 
-                  <GdprBanner />
+                <GdprBanner />
 
-                  <div id='toaster'>
-                    <Toaster
-                      position='top-right'
-                      containerClassName='top-10'
-                      containerStyle={{ top: 75 }}
-                    />
-                  </div>
-                </Route>
-              </Switch>
-            </GlobalHotkeys>
+                <div id='toaster'>
+                  <Toaster
+                    position='top-right'
+                    containerClassName='top-10'
+                    containerStyle={{ top: 75 }}
+                  />
+                </div>
+              </Route>
+            </Switch>
           </ScrollContext>
         </CompatRouter>
       </BrowserRouter>
