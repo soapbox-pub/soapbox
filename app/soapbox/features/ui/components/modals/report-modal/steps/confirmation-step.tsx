@@ -6,7 +6,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
+import type { Account } from 'soapbox/schemas';
 
 const messages = defineMessages({
   accountEntity: { id: 'report.confirmation.entity.account', defaultMessage: 'account' },
@@ -15,8 +15,8 @@ const messages = defineMessages({
   content: { id: 'report.confirmation.content', defaultMessage: 'If we find that this {entity} is violating the {link} we will take further action on the matter.' },
 });
 
-interface IOtherActionsStep {
-  account: ReducerAccount
+interface IConfirmationStep {
+  account?: Account
 }
 
 const termsOfServiceText = (<FormattedMessage
@@ -34,7 +34,7 @@ const renderTermsOfServiceLink = (href: string) => (
   </a>
 );
 
-const ConfirmationStep = ({ account }: IOtherActionsStep) => {
+const ConfirmationStep: React.FC<IConfirmationStep> = () => {
   const intl = useIntl();
   const links = useAppSelector((state) => getSoapboxConfig(state).get('links') as any);
   const entityType = useAppSelector((state) => state.reports.new.entityType);

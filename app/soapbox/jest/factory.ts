@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { normalizeStatus } from 'soapbox/normalizers';
 import {
   accountSchema,
   adSchema,
@@ -10,6 +9,7 @@ import {
   groupSchema,
   groupTagSchema,
   relationshipSchema,
+  statusSchema,
   type Account,
   type Ad,
   type Card,
@@ -22,22 +22,24 @@ import {
 } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 
+import type { PartialDeep } from 'type-fest';
+
 // TODO: there's probably a better way to create these factory functions.
 // This looks promising but didn't work on my first attempt: https://github.com/anatine/zod-plugins/tree/main/packages/zod-mock
 
-function buildAccount(props: Partial<Account> = {}): Account {
+function buildAccount(props: PartialDeep<Account> = {}): Account {
   return accountSchema.parse(Object.assign({
     id: uuidv4(),
   }, props));
 }
 
-function buildCard(props: Partial<Card> = {}): Card {
+function buildCard(props: PartialDeep<Card> = {}): Card {
   return cardSchema.parse(Object.assign({
     url: 'https://soapbox.test',
   }, props));
 }
 
-function buildGroup(props: Partial<Group> = {}): Group {
+function buildGroup(props: PartialDeep<Group> = {}): Group {
   return groupSchema.parse(Object.assign({
     id: uuidv4(),
     owner: {
@@ -46,13 +48,13 @@ function buildGroup(props: Partial<Group> = {}): Group {
   }, props));
 }
 
-function buildGroupRelationship(props: Partial<GroupRelationship> = {}): GroupRelationship {
+function buildGroupRelationship(props: PartialDeep<GroupRelationship> = {}): GroupRelationship {
   return groupRelationshipSchema.parse(Object.assign({
     id: uuidv4(),
   }, props));
 }
 
-function buildGroupTag(props: Partial<GroupTag> = {}): GroupTag {
+function buildGroupTag(props: PartialDeep<GroupTag> = {}): GroupTag {
   return groupTagSchema.parse(Object.assign({
     id: uuidv4(),
     name: uuidv4(),
@@ -60,8 +62,8 @@ function buildGroupTag(props: Partial<GroupTag> = {}): GroupTag {
 }
 
 function buildGroupMember(
-  props: Partial<GroupMember> = {},
-  accountProps: Partial<Account> = {},
+  props: PartialDeep<GroupMember> = {},
+  accountProps: PartialDeep<Account> = {},
 ): GroupMember {
   return groupMemberSchema.parse(Object.assign({
     id: uuidv4(),
@@ -70,25 +72,27 @@ function buildGroupMember(
   }, props));
 }
 
-function buildAd(props: Partial<Ad> = {}): Ad {
+function buildAd(props: PartialDeep<Ad> = {}): Ad {
   return adSchema.parse(Object.assign({
     card: buildCard(),
   }, props));
 }
 
-function buildRelationship(props: Partial<Relationship> = {}): Relationship {
+function buildRelationship(props: PartialDeep<Relationship> = {}): Relationship {
   return relationshipSchema.parse(Object.assign({
     id: uuidv4(),
   }, props));
 }
 
-function buildStatus(props: Partial<Status> = {}) {
-  return normalizeStatus(Object.assign({
+function buildStatus(props: PartialDeep<Status> = {}) {
+  return statusSchema.parse(Object.assign({
     id: uuidv4(),
+    account: buildAccount(),
   }, props));
 }
 
 export {
+  buildAccount,
   buildAd,
   buildCard,
   buildGroup,

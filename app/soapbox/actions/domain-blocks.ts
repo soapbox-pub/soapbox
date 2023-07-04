@@ -3,7 +3,6 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 import api, { getLinks } from '../api';
 
 import type { AxiosError } from 'axios';
-import type { List as ImmutableList } from 'immutable';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 const DOMAIN_BLOCK_REQUEST = 'DOMAIN_BLOCK_REQUEST';
@@ -30,8 +29,11 @@ const blockDomain = (domain: string) =>
 
     api(getState).post('/api/v1/domain_blocks', { domain }).then(() => {
       const at_domain = '@' + domain;
-      const accounts = getState().accounts.filter(item => item.acct.endsWith(at_domain)).valueSeq().map(item => item.id);
-      dispatch(blockDomainSuccess(domain, accounts.toList()));
+      const accounts = getState().accounts
+        .filter(item => item.acct.endsWith(at_domain))
+        .map(item => item.id);
+
+      dispatch(blockDomainSuccess(domain, accounts));
     }).catch(err => {
       dispatch(blockDomainFail(domain, err));
     });
@@ -42,7 +44,7 @@ const blockDomainRequest = (domain: string) => ({
   domain,
 });
 
-const blockDomainSuccess = (domain: string, accounts: ImmutableList<string>) => ({
+const blockDomainSuccess = (domain: string, accounts: string[]) => ({
   type: DOMAIN_BLOCK_SUCCESS,
   domain,
   accounts,
@@ -68,8 +70,8 @@ const unblockDomain = (domain: string) =>
 
     api(getState).delete('/api/v1/domain_blocks', params).then(() => {
       const at_domain = '@' + domain;
-      const accounts = getState().accounts.filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
-      dispatch(unblockDomainSuccess(domain, accounts.toList()));
+      const accounts = getState().accounts.filter(item => item.acct.endsWith(at_domain)).map(item => item.id);
+      dispatch(unblockDomainSuccess(domain, accounts));
     }).catch(err => {
       dispatch(unblockDomainFail(domain, err));
     });
@@ -80,7 +82,7 @@ const unblockDomainRequest = (domain: string) => ({
   domain,
 });
 
-const unblockDomainSuccess = (domain: string, accounts: ImmutableList<string>) => ({
+const unblockDomainSuccess = (domain: string, accounts: string[]) => ({
   type: DOMAIN_UNBLOCK_SUCCESS,
   domain,
   accounts,

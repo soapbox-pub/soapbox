@@ -24,7 +24,7 @@ const messages = defineMessages({
 });
 
 const ChatPageSettings = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ const ChatPageSettings = () => {
 
   const [data, setData] = useState<FormData>({
     chats_onboarded: true,
-    accepts_chat_messages: account?.accepts_chat_messages,
+    accepts_chat_messages: account?.pleroma?.accepts_chat_messages === true,
   });
 
   const onToggleChange = (key: string[], checked: boolean) => {

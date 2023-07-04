@@ -11,9 +11,13 @@ function useGroup(groupId: string, refetch = true) {
   const { entity: group, ...result } = useEntity<Group>(
     [Entities.GROUPS, groupId],
     () => api.get(`/api/v1/groups/${groupId}`),
-    { schema: groupSchema, refetch },
+    {
+      schema: groupSchema,
+      refetch,
+      enabled: !!groupId,
+    },
   );
-  const { entity: relationship } = useGroupRelationship(groupId);
+  const { groupRelationship: relationship } = useGroupRelationship(groupId);
 
   return {
     ...result,

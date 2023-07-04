@@ -17,6 +17,7 @@ const ListTimeline: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const list = useAppSelector((state) => state.lists.get(id));
+  const next = useAppSelector(state => state.timelines.get(`list:${id}`)?.next);
 
   useEffect(() => {
     dispatch(fetchList(id));
@@ -30,7 +31,7 @@ const ListTimeline: React.FC = () => {
   }, [id]);
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandListTimeline(id, { maxId }));
+    dispatch(expandListTimeline(id, { url: next, maxId }));
   };
 
   const handleEditClick = () => {

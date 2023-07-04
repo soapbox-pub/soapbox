@@ -1,6 +1,6 @@
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { Group, groupSchema } from 'soapbox/schemas';
+import { Group, accountSchema, groupSchema } from 'soapbox/schemas';
 import { filteredArray } from 'soapbox/schemas/utils';
 
 import { getSettings } from '../settings';
@@ -17,11 +17,27 @@ const STATUSES_IMPORT = 'STATUSES_IMPORT';
 const POLLS_IMPORT    = 'POLLS_IMPORT';
 const ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP = 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP';
 
-const importAccount = (account: APIEntity) =>
-  ({ type: ACCOUNT_IMPORT, account });
+const importAccount = (data: APIEntity) =>
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    dispatch({ type: ACCOUNT_IMPORT, account: data });
+    try {
+      const account = accountSchema.parse(data);
+      dispatch(importEntities([account], Entities.ACCOUNTS));
+    } catch (e) {
+      //
+    }
+  };
 
-const importAccounts = (accounts: APIEntity[]) =>
-  ({ type: ACCOUNTS_IMPORT, accounts });
+const importAccounts = (data: APIEntity[]) =>
+  (dispatch: AppDispatch, _getState: () => RootState) => {
+    dispatch({ type: ACCOUNTS_IMPORT, accounts: data });
+    try {
+      const accounts = filteredArray(accountSchema).parse(data);
+      dispatch(importEntities(accounts, Entities.ACCOUNTS));
+    } catch (e) {
+      //
+    }
+  };
 
 const importGroup = (group: Group) =>
   importEntities([group], Entities.GROUPS);

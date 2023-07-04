@@ -11,7 +11,7 @@ const messages = defineMessages({
 });
 
 const MessagesSettings = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const intl = useIntl();
   const updateCredentials = useUpdateCredentials();
 
@@ -29,7 +29,7 @@ const MessagesSettings = () => {
         label={intl.formatMessage(messages.label)}
       >
         <Toggle
-          checked={account.accepts_chat_messages}
+          checked={account.pleroma?.accepts_chat_messages}
           onChange={handleChange}
         />
       </ListItem>

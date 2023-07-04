@@ -8,12 +8,12 @@ import GroupActionButton from 'soapbox/features/group/components/group-action-bu
 import { Group as GroupEntity } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
-interface IGroup {
+interface IGroupListItem {
   group: GroupEntity
   withJoinAction?: boolean
 }
 
-const GroupListItem = (props: IGroup) => {
+const GroupListItem = (props: IGroupListItem) => {
   const { group, withJoinAction = true } = props;
 
   return (

@@ -93,7 +93,7 @@ const isValid = (notification: APIEntity) => {
     }
 
     // Mastodon can return status notifications with a null status
-    if (['mention', 'reblog', 'favourite', 'poll', 'status'].includes(notification.type) && !notification.status.get('id')) {
+    if (['mention', 'reblog', 'favourite', 'poll', 'status'].includes(notification.type) && !notification.getIn(['status', 'id'])) {
       return false;
     }
 

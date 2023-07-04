@@ -24,7 +24,7 @@ const getStatusIds = makeGetStatusIds();
 
 const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
   const intl = useIntl();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const dispatch = useAppDispatch();
   const composer = useRef<HTMLDivElement>(null);
 

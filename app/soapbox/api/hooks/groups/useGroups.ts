@@ -15,7 +15,10 @@ function useGroups(q: string = '') {
     () => api.get('/api/v1/groups', { params: { q } }),
     { enabled: features.groups, schema: groupSchema },
   );
-  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
+  const { relationships } = useGroupRelationships(
+    ['search', q],
+    entities.map(entity => entity.id),
+  );
 
   const groups = entities.map((group) => ({
     ...group,

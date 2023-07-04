@@ -568,6 +568,11 @@ const getInstanceFeatures = (instance: Instance) => {
     groupsKick: v.software !== TRUTHSOCIAL,
 
     /**
+     * Can mute a Group.
+     */
+    groupsMuting: v.software === TRUTHSOCIAL,
+
+    /**
      * Can query pending Group requests.
     */
     groupsPending: v.software === TRUTHSOCIAL,
@@ -679,6 +684,12 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA && gte(v.version, '2.3.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
     ]),
+
+    /**
+     * Ability to sign Nostr events over websocket.
+     * @see GET /api/v1/streaming?stream=nostr
+     */
+    nostrSign: v.software === DITTO,
 
     /**
      * Add private notes to accounts.
@@ -981,7 +992,7 @@ interface Backend {
 
 /** Get information about the software from its version string */
 export const parseVersion = (version: string): Backend => {
-  const regex = /^([\w+.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
+  const regex = /^([\w+.-]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
   const semverString = match && (match[3] || match[1]);

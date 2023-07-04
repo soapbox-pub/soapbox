@@ -5,10 +5,8 @@ import Account from 'soapbox/components/account';
 import { Button, Card, CardBody, Icon, Stack, Text } from 'soapbox/components/ui';
 import { useInstance, useOwnAccount } from 'soapbox/hooks';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
-
 const FediverseStep = ({ onNext }: { onNext: () => void }) => {
-  const account = useOwnAccount() as AccountEntity;
+  const { account } = useOwnAccount();
   const instance = useInstance();
 
   return (
@@ -49,9 +47,11 @@ const FediverseStep = ({ onNext }: { onNext: () => void }) => {
               </Stack>
             </div>
 
-            <div className='rounded-lg bg-primary-50 p-4 text-center dark:bg-gray-800'>
-              <Account account={account} />
-            </div>
+            {account && (
+              <div className='rounded-lg bg-primary-50 p-4 text-center dark:bg-gray-800'>
+                <Account account={account} />
+              </div>
+            )}
 
             <Text theme='muted'>
               <FormattedMessage

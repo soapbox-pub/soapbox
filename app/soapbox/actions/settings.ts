@@ -10,9 +10,9 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-const SETTING_CHANGE = 'SETTING_CHANGE';
-const SETTING_SAVE   = 'SETTING_SAVE';
-const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
+const SETTING_CHANGE = 'SETTING_CHANGE' as const;
+const SETTING_SAVE   = 'SETTING_SAVE' as const;
+const SETTINGS_UPDATE = 'SETTINGS_UPDATE' as const;
 
 const FE_NAME = 'soapbox_fe';
 
@@ -181,25 +181,33 @@ const getSettings = createSelector([
     .mergeDeep(settings);
 });
 
+interface SettingChangeAction {
+  type: typeof SETTING_CHANGE
+  path: string[]
+  value: any
+}
+
 const changeSettingImmediate = (path: string[], value: any, opts?: SettingOpts) =>
   (dispatch: AppDispatch) => {
-    dispatch({
+    const action: SettingChangeAction = {
       type: SETTING_CHANGE,
       path,
       value,
-    });
+    };
 
+    dispatch(action);
     dispatch(saveSettingsImmediate(opts));
   };
 
 const changeSetting = (path: string[], value: any, opts?: SettingOpts) =>
   (dispatch: AppDispatch) => {
-    dispatch({
+    const action: SettingChangeAction = {
       type: SETTING_CHANGE,
       path,
       value,
-    });
+    };
 
+    dispatch(action);
     return dispatch(saveSettings(opts));
   };
 
@@ -236,6 +244,10 @@ const getLocale = (state: RootState, fallback = 'en') => {
   return Object.keys(messages).includes(localeWithVariant) ? localeWithVariant : Object.keys(messages).includes(locale) ? locale : fallback;
 };
 
+type SettingsAction =
+  | SettingChangeAction
+  | { type: typeof SETTING_SAVE }
+
 export {
   SETTING_CHANGE,
   SETTING_SAVE,
@@ -248,4 +260,5 @@ export {
   saveSettingsImmediate,
   saveSettings,
   getLocale,
+  type SettingsAction,
 };

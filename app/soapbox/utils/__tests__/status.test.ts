@@ -1,16 +1,14 @@
 
-import { normalizeStatus } from 'soapbox/normalizers/status';
+import { buildStatus } from 'soapbox/jest/factory';
 
 import {
   hasIntegerMediaIds,
   defaultMediaVisibility,
 } from '../status';
 
-import type { ReducerStatus } from 'soapbox/reducers/statuses';
-
 describe('hasIntegerMediaIds()', () => {
   it('returns true for a Pleroma deleted status', () => {
-    const status = normalizeStatus(require('soapbox/__fixtures__/pleroma-status-deleted.json')) as ReducerStatus;
+    const status = buildStatus(require('soapbox/__fixtures__/pleroma-status-deleted.json'));
     expect(hasIntegerMediaIds(status)).toBe(true);
   });
 });
@@ -21,17 +19,17 @@ describe('defaultMediaVisibility()', () => {
   });
 
   it('hides sensitive media by default', () => {
-    const status = normalizeStatus({ sensitive: true }) as ReducerStatus;
+    const status = buildStatus({ sensitive: true });
     expect(defaultMediaVisibility(status, 'default')).toBe(false);
   });
 
   it('hides media when displayMedia is hide_all', () => {
-    const status = normalizeStatus({}) as ReducerStatus;
+    const status = buildStatus({});
     expect(defaultMediaVisibility(status, 'hide_all')).toBe(false);
   });
 
   it('shows sensitive media when displayMedia is show_all', () => {
-    const status = normalizeStatus({ sensitive: true }) as ReducerStatus;
+    const status = buildStatus({ sensitive: true });
     expect(defaultMediaVisibility(status, 'show_all')).toBe(true);
   });
 });

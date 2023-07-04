@@ -14,7 +14,7 @@ const PolicyKeys = {
 
 function usePendingPolicy() {
   const api = useApi();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
 
   const getPolicy = async() => {

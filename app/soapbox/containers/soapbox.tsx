@@ -90,12 +90,12 @@ const SoapboxMount = () => {
 
   const me = useAppSelector(state => state.me);
   const instance = useInstance();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
   const { pepeEnabled } = useRegistrationStatus();
 
-  const waitlisted = account && !account.source.get('approved', true);
+  const waitlisted = account && account.source?.approved === false;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && !waitlisted && needsOnboarding;
   const { redirectRootNoLogin } = soapboxConfig;
@@ -216,7 +216,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const swUpdating = useAppSelector(state => state.meta.swUpdating);
   const { locale } = useLocale();
 

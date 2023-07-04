@@ -20,7 +20,6 @@ type ChatRecord = ReturnType<typeof normalizeChat>;
 type APIEntities = Array<APIEntity>;
 
 export interface ReducerChat extends ChatRecord {
-  account: string | null
   last_message: string | null
 }
 
@@ -34,7 +33,6 @@ type State = ReturnType<typeof ReducerRecord>;
 
 const minifyChat = (chat: ChatRecord): ReducerChat => {
   return chat.mergeWith((o, n) => n || o, {
-    account: normalizeId(chat.getIn(['account', 'id'])),
     last_message: normalizeId(chat.getIn(['last_message', 'id'])),
   }) as ReducerChat;
 };

@@ -48,7 +48,7 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
     const message = (
       <Stack space={4}>
         <OutlineBox>
-          <AccountContainer id={accountId} />
+          <AccountContainer id={accountId} hideActions />
         </OutlineBox>
 
         <Text>
@@ -83,7 +83,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const message = (
       <Stack space={4}>
         <OutlineBox>
-          <AccountContainer id={accountId} />
+          <AccountContainer id={accountId} hideActions />
         </OutlineBox>
 
         <Text>

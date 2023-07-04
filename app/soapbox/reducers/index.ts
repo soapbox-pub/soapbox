@@ -1,13 +1,14 @@
 import { Record as ImmutableRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
+import { createSelector } from 'reselect';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
+import { Entities } from 'soapbox/entity-store/entities';
 import entities from 'soapbox/entity-store/reducer';
+import { immutableizeStore, type LegacyStore } from 'soapbox/utils/legacy';
 
 import account_notes from './account-notes';
-import accounts from './accounts';
-import accounts_counters from './accounts-counters';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_announcements from './admin-announcements';
@@ -28,7 +29,7 @@ import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
-import followed_tags from './followed_tags';
+import followed_tags from './followed-tags';
 import group_memberships from './group-memberships';
 import group_relationships from './group-relationships';
 import groups from './groups';
@@ -69,10 +70,13 @@ import trends from './trends';
 import user_lists from './user-lists';
 import verification from './verification';
 
+import type { AnyAction, Reducer } from 'redux';
+import type { EntityStore } from 'soapbox/entity-store/types';
+import type { Account } from 'soapbox/schemas';
+
 const reducers = {
+  accounts: ((state: any = {}) => state) as (state: any) => EntityStore<Account> & LegacyStore<Account>,
   account_notes,
-  accounts,
-  accounts_counters,
   accounts_meta,
   admin,
   admin_announcements,
@@ -171,4 +175,19 @@ const rootReducer: typeof appReducer = (state, action) => {
   }
 };
 
-export default rootReducer;
+type InferState<R> = R extends Reducer<infer S> ? S : never;
+
+const accountsSelector = createSelector(
+  (state: InferState<typeof appReducer>) => state.entities[Entities.ACCOUNTS]?.store as EntityStore<Account> || {},
+  (accounts) => immutableizeStore<Account, EntityStore<Account>>(accounts),
+);
+
+const extendedRootReducer = (
+  state: InferState<typeof appReducer>,
+  action: AnyAction,
+): ReturnType<typeof rootReducer> => {
+  const extendedState = rootReducer(state, action);
+  return extendedState.set('accounts', accountsSelector(extendedState));
+};
+
+export default extendedRootReducer as Reducer<ReturnType<typeof extendedRootReducer>>;

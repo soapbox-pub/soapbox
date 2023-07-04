@@ -1,55 +1,105 @@
-import debounce from 'lodash/debounce';
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchMutes, expandMutes } from 'soapbox/actions/mutes';
+import { useMutes, useGroupMutes } from 'soapbox/api/hooks';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner } from 'soapbox/components/ui';
+import { Column, Stack, Tabs } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useFeatures } from 'soapbox/hooks';
+
+import GroupListItem from './components/group-list-item';
 
 const messages = defineMessages({
-  heading: { id: 'column.mutes', defaultMessage: 'Muted users' },
+  heading: { id: 'column.mutes', defaultMessage: 'Mutes' },
 });
 
-const handleLoadMore = debounce((dispatch) => {
-  dispatch(expandMutes());
-}, 300, { leading: true });
+enum TabItems {
+  ACCOUNTS = 'ACCOUNTS',
+  GROUPS = 'GROUPS'
+}
 
 const Mutes: React.FC = () => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
+  const features = useFeatures();
 
-  const accountIds = useAppSelector((state) => state.user_lists.mutes.items);
-  const hasMore = useAppSelector((state) => !!state.user_lists.mutes.next);
+  const {
+    accounts,
+    hasNextPage: hasNextAccountsPage,
+    fetchNextPage: fetchNextAccounts,
+    isLoading: isLoadingAccounts,
+  } = useMutes();
 
-  React.useEffect(() => {
-    dispatch(fetchMutes());
-  }, []);
+  const {
+    mutes: groupMutes,
+    isLoading: isLoadingGroups,
+    hasNextPage: hasNextGroupsPage,
+    fetchNextPage: fetchNextGroups,
+    fetchEntities: fetchMutedGroups,
+  } = useGroupMutes();
 
-  if (!accountIds) {
-    return (
-      <Column>
-        <Spinner />
-      </Column>
-    );
-  }
+  const [activeItem, setActiveItem] = useState<TabItems>(TabItems.ACCOUNTS);
+  const isAccountsTabSelected = activeItem === TabItems.ACCOUNTS;
 
-  const emptyMessage = <FormattedMessage id='empty_column.mutes' defaultMessage="You haven't muted any users yet." />;
+  const scrollableListProps = {
+    itemClassName: 'pb-4 last:pb-0',
+    scrollKey: 'mutes',
+    emptyMessageCard: false,
+  };
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <ScrollableList
-        scrollKey='mutes'
-        onLoadMore={() => handleLoadMore(dispatch)}
-        hasMore={hasMore}
-        emptyMessage={emptyMessage}
-        itemClassName='pb-4'
-      >
-        {accountIds.map((id) =>
-          <AccountContainer key={id} id={id} actionType='muting' />,
+      <Stack space={4}>
+        {features.groupsMuting && (
+          <Tabs
+            items={[
+              {
+                text: 'Users',
+                action: () => setActiveItem(TabItems.ACCOUNTS),
+                name: TabItems.ACCOUNTS,
+              },
+              {
+                text: 'Groups',
+                action: () => setActiveItem(TabItems.GROUPS),
+                name: TabItems.GROUPS,
+              },
+            ]}
+            activeItem={activeItem}
+          />
         )}
-      </ScrollableList>
+
+        {isAccountsTabSelected ? (
+          <ScrollableList
+            {...scrollableListProps}
+            isLoading={isLoadingAccounts}
+            onLoadMore={fetchNextAccounts}
+            hasMore={hasNextAccountsPage}
+            emptyMessage={
+              <FormattedMessage id='empty_column.mutes' defaultMessage="You haven't muted any users yet." />
+            }
+          >
+            {accounts.map((accounts) =>
+              <AccountContainer key={accounts.id} id={accounts.id} actionType='muting' />,
+            )}
+          </ScrollableList>
+        ) : (
+          <ScrollableList
+            {...scrollableListProps}
+            isLoading={isLoadingGroups}
+            onLoadMore={fetchNextGroups}
+            hasMore={hasNextGroupsPage}
+            emptyMessage={
+              <FormattedMessage id='mutes.empty.groups' defaultMessage="You haven't muted any groups yet." />
+            }
+          >
+            {groupMutes.map((group) =>(
+              <GroupListItem
+                group={group}
+                onUnmute={fetchMutedGroups}
+              />
+            ))}
+          </ScrollableList>
+        )}
+      </Stack>
     </Column>
   );
 };

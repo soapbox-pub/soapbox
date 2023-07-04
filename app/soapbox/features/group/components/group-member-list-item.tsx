@@ -53,7 +53,7 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
   const features = useFeatures();
   const intl = useIntl();
 
-  const blockGroupMember = useBlockGroupMember(group, member);
+  const blockGroupMember = useBlockGroupMember(group, member.account);
   const promoteGroupMember = usePromoteGroupMember(group, member);
   const demoteGroupMember = useDemoteGroupMember(group, member);
 

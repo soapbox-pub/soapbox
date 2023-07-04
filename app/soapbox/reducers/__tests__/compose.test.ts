@@ -48,7 +48,7 @@ describe('compose reducer', () => {
         withRedraft: true,
       };
 
-      const result = reducer(undefined, action);
+      const result = reducer(undefined, action as any);
       expect(result.get('compose-modal')!.media_attachments.isEmpty()).toBe(true);
     });
 
@@ -59,7 +59,7 @@ describe('compose reducer', () => {
         status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
       };
 
-      const result = reducer(undefined, action);
+      const result = reducer(undefined, action as any);
       expect(result.get('compose-modal')!.media_attachments.getIn([0, 'id'])).toEqual('508107650');
     });
 
@@ -71,7 +71,7 @@ describe('compose reducer', () => {
         status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
       };
 
-      const result = reducer(undefined, action);
+      const result = reducer(undefined, action as any);
       expect(result.get('compose-modal')!.id).toEqual('AHU2RrX0wdcwzCYjFQ');
     });
 
@@ -83,7 +83,7 @@ describe('compose reducer', () => {
         status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
       };
 
-      const result = reducer(undefined, action);
+      const result = reducer(undefined, action as any);
       expect(result.get('compose-modal')!.id).toEqual(null);
     });
   });
@@ -95,7 +95,7 @@ describe('compose reducer', () => {
       status: ImmutableRecord({})(),
       account: ImmutableRecord({})(),
     };
-    expect(reducer(undefined, action).toJS()['compose-modal']).toMatchObject({ privacy: 'public' });
+    expect(reducer(undefined, action as any).toJS()['compose-modal']).toMatchObject({ privacy: 'public' });
   });
 
   it('uses \'direct\' scope when replying to a DM', () => {
@@ -106,7 +106,7 @@ describe('compose reducer', () => {
       status: ImmutableRecord({ visibility: 'direct' })(),
       account: ImmutableRecord({})(),
     };
-    expect(reducer(state as any, action).toJS()['compose-modal']).toMatchObject({ privacy: 'direct' });
+    expect(reducer(state as any, action as any).toJS()['compose-modal']).toMatchObject({ privacy: 'direct' });
   });
 
   it('uses \'private\' scope when replying to a private post', () => {
@@ -117,7 +117,7 @@ describe('compose reducer', () => {
       status: ImmutableRecord({ visibility: 'private' })(),
       account: ImmutableRecord({})(),
     };
-    expect(reducer(state as any, action).toJS()['compose-modal']).toMatchObject({ privacy: 'private' });
+    expect(reducer(state as any, action as any).toJS()['compose-modal']).toMatchObject({ privacy: 'private' });
   });
 
   it('uses \'unlisted\' scope when replying to an unlisted post', () => {
@@ -128,7 +128,7 @@ describe('compose reducer', () => {
       status: ImmutableRecord({ visibility: 'unlisted' })(),
       account: ImmutableRecord({})(),
     };
-    expect(reducer(state, action).toJS()['compose-modal']).toMatchObject({ privacy: 'unlisted' });
+    expect(reducer(state, action as any).toJS()['compose-modal']).toMatchObject({ privacy: 'unlisted' });
   });
 
   it('uses \'private\' scope when set as preference and replying to a public post', () => {
@@ -139,7 +139,7 @@ describe('compose reducer', () => {
       status: ImmutableRecord({ visibility: 'public' })(),
       account: ImmutableRecord({})(),
     };
-    expect(reducer(state, action).toJS()['compose-modal']).toMatchObject({ privacy: 'private' });
+    expect(reducer(state, action as any).toJS()['compose-modal']).toMatchObject({ privacy: 'private' });
   });
 
   it('uses \'unlisted\' scope when set as preference and replying to a public post', () => {
@@ -150,7 +150,7 @@ describe('compose reducer', () => {
       status: ImmutableRecord({ visibility: 'public' })(),
       account: ImmutableRecord({})(),
     };
-    expect(reducer(state, action).toJS()['compose-modal']).toMatchObject({ privacy: 'unlisted' });
+    expect(reducer(state, action as any).toJS()['compose-modal']).toMatchObject({ privacy: 'unlisted' });
   });
 
   it('sets preferred scope on user login', () => {
@@ -238,18 +238,6 @@ describe('compose reducer', () => {
     });
   });
 
-  it('should handle COMPOSE_COMPOSING_CHANGE', () => {
-    const state = initialState.set('home', ReducerCompose({ is_composing: true }));
-    const action = {
-      type: actions.COMPOSE_COMPOSING_CHANGE,
-      id: 'home',
-      value: false,
-    };
-    expect(reducer(state, action).toJS().home).toMatchObject({
-      is_composing: false,
-    });
-  });
-
   it('should handle COMPOSE_SUBMIT_REQUEST', () => {
     const state = initialState.set('home', ReducerCompose({ is_submitting: false }));
     const action = {
@@ -267,7 +255,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_UPLOAD_CHANGE_REQUEST,
       id: 'home',
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       is_changing_upload: true,
     });
   });
@@ -278,7 +266,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_SUBMIT_SUCCESS,
       id: 'home',
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       privacy: 'public',
     });
   });
@@ -289,7 +277,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_SUBMIT_FAIL,
       id: 'home',
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       is_submitting: false,
     });
   });
@@ -300,7 +288,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_UPLOAD_CHANGE_FAIL,
       composeId: 'home',
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       is_changing_upload: false,
     });
   });
@@ -311,7 +299,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_UPLOAD_REQUEST,
       id: 'home',
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       is_uploading: true,
     });
   });
@@ -338,7 +326,7 @@ describe('compose reducer', () => {
       media: media,
       skipLoading: true,
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       is_uploading: false,
     });
   });
@@ -349,7 +337,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_UPLOAD_FAIL,
       id: 'home',
     };
-    expect(reducer(state, action).toJS().home).toMatchObject({
+    expect(reducer(state, action as any).toJS().home).toMatchObject({
       is_uploading: false,
     });
   });
@@ -414,7 +402,7 @@ describe('compose reducer', () => {
       type: TIMELINE_DELETE,
       id: '9wk6pmImMrZjgrK7iC',
     };
-    expect(reducer(state, action).toJS()['compose-modal']).toMatchObject({
+    expect(reducer(state, action as any).toJS()['compose-modal']).toMatchObject({
       in_reply_to: null,
     });
   });

@@ -47,6 +47,7 @@ const ReducerRecord = ImmutableRecord({
   results: ResultsRecord(),
   filter: 'accounts' as SearchFilter,
   accountId: null as string | null,
+  next: null as string | null,
 });
 
 type State = ReturnType<typeof ReducerRecord>;
@@ -57,7 +58,7 @@ const toIds = (items: APIEntities = []) => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter) => {
+const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter, next: string | null) => {
   return state.withMutations(state => {
     if (state.value === searchTerm && state.filter === searchType) {
       state.set('results', ResultsRecord({
@@ -76,15 +77,17 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
       }));
 
       state.set('submitted', true);
+      state.set('next', next);
     }
   });
 };
 
-const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string) => {
+const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string, next: string | null) => {
   return state.withMutations(state => {
     if (state.value === searchTerm) {
       state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
       state.setIn(['results', `${searchType}Loaded`], true);
+      state.set('next', next);
       state.updateIn(['results', searchType], items => {
         const data = results[searchType];
         // Hashtags are a list of maps. Others are IDs.
@@ -129,13 +132,13 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
     case SEARCH_FETCH_REQUEST:
       return handleSubmitted(state, action.value);
     case SEARCH_FETCH_SUCCESS:
-      return importResults(state, action.results, action.searchTerm, action.searchType);
+      return importResults(state, action.results, action.searchTerm, action.searchType, action.next);
     case SEARCH_FILTER_SET:
       return state.set('filter', action.value);
     case SEARCH_EXPAND_REQUEST:
       return state.setIn(['results', `${action.searchType}Loaded`], false);
     case SEARCH_EXPAND_SUCCESS:
-      return paginateResults(state, action.searchType, action.results, action.searchTerm);
+      return paginateResults(state, action.searchType, action.results, action.searchTerm, action.next);
     case SEARCH_ACCOUNT_SET:
       if (!action.accountId) return state.merge({
         results: ResultsRecord(),

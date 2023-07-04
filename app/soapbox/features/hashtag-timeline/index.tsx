@@ -39,6 +39,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const dispatch = useAppDispatch();
   const disconnects = useRef<(() => void)[]>([]);
   const tag = useAppSelector((state) => state.tags.get(id));
+  const next = useAppSelector(state => state.timelines.get(`hashtag:${id}`)?.next);
 
   // Mastodon supports displaying results from multiple hashtags.
   // https://github.com/mastodon/mastodon/issues/6359
@@ -89,7 +90,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   };
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandHashtagTimeline(id, { maxId, tags }));
+    dispatch(expandHashtagTimeline(id, { url: next, maxId, tags }));
   };
 
   const handleFollow = () => {

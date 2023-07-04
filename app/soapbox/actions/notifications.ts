@@ -12,6 +12,7 @@ import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';
 import { joinPublicPath } from 'soapbox/utils/static';
 
 import { fetchRelationships } from './accounts';
+import { fetchGroupRelationships } from './groups';
 import {
   importFetchedAccount,
   importFetchedAccounts,
@@ -23,7 +24,7 @@ import { getSettings, saveSettings } from './settings';
 
 import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -236,6 +237,9 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
 
       dispatch(importFetchedAccounts(Object.values(entries.accounts)));
       dispatch(importFetchedStatuses(Object.values(entries.statuses)));
+
+      const statusesFromGroups = (Object.values(entries.statuses) as Status[]).filter((status) => !!status.group);
+      dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));
 
       dispatch(expandNotificationsSuccess(response.data, next ? next.uri : null, isLoadingMore));
       fetchRelatedRelationships(dispatch, response.data);

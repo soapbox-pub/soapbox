@@ -146,7 +146,7 @@ const minifyReport = (report: AdminReportRecord): ReducerAdminReport => {
     action_taken_by_account: normalizeId(report.getIn(['action_taken_by_account', 'id'])),
     assigned_account: normalizeId(report.getIn(['assigned_account', 'id'])),
 
-    statuses: report.get('statuses').map((status: any) => normalizeId(status.get('id'))),
+    statuses: report.get('statuses').map((status: any) => normalizeId(status.id)),
   }) as ReducerAdminReport;
 };
 

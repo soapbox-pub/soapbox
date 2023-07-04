@@ -15,7 +15,7 @@ import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/que
 import { queryClient } from './client';
 import { useFetchRelationships } from './relationships';
 
-import type { IAccount } from './accounts';
+import type { Account } from 'soapbox/schemas';
 
 export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
 
@@ -28,7 +28,7 @@ export enum MessageExpirationValues {
 
 export interface IChat {
   accepted: boolean
-  account: IAccount
+  account: Account
   chat_type: 'channel' | 'direct'
   created_at: string
   created_by_account: string
@@ -200,7 +200,7 @@ const useChat = (chatId?: string) => {
 };
 
 const useChatActions = (chatId: string) => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const api = useApi();
   // const dispatch = useAppDispatch();
 

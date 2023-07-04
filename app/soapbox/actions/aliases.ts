@@ -10,8 +10,8 @@ import { importFetchedAccounts } from './importer';
 import { patchMeSuccess } from './me';
 
 import type { AxiosError } from 'axios';
+import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Account } from 'soapbox/types/entities';
 
 const ALIASES_FETCH_REQUEST = 'ALIASES_FETCH_REQUEST';
 const ALIASES_FETCH_SUCCESS = 'ALIASES_FETCH_SUCCESS';
@@ -56,7 +56,7 @@ const fetchAliasesRequest = () => ({
   type: ALIASES_FETCH_REQUEST,
 });
 
-const fetchAliasesSuccess = (aliases: APIEntity[]) => ({
+const fetchAliasesSuccess = (aliases: unknown[]) => ({
   type: ALIASES_FETCH_SUCCESS,
   value: aliases,
 });
@@ -82,7 +82,7 @@ const fetchAliasesSuggestions = (q: string) =>
     }).catch(error => toast.showAlertForError(error));
   };
 
-const fetchAliasesSuggestionsReady = (query: string, accounts: APIEntity[]) => ({
+const fetchAliasesSuggestionsReady = (query: string, accounts: unknown[]) => ({
   type: ALIASES_SUGGESTIONS_READY,
   query,
   accounts,
@@ -111,7 +111,7 @@ const addToAliases = (account: Account) =>
 
       dispatch(addToAliasesRequest());
 
-      api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.pleroma.get('ap_id')] })
+      api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.pleroma?.ap_id] })
         .then((response => {
           toast.success(messages.createSuccess);
           dispatch(addToAliasesSuccess);

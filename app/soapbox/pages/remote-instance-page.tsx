@@ -23,7 +23,7 @@ interface IRemoteInstancePage {
 const RemoteInstancePage: React.FC<IRemoteInstancePage> = ({ children, params }) => {
   const host = params?.instance;
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const disclosed = useAppSelector(federationRestrictionsDisclosed);
 
   return (

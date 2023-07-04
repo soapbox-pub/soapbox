@@ -3,19 +3,18 @@ import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';
 
 import { __stub } from 'soapbox/api';
-import { buildRelationship } from 'soapbox/jest/factory';
+import { buildAccount, buildRelationship } from 'soapbox/jest/factory';
 import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 import { Store } from 'soapbox/store';
 import { ChatMessage } from 'soapbox/types/entities';
 import { flattenPages } from 'soapbox/utils/queries';
 
-import { IAccount } from '../accounts';
 import { ChatKeys, IChat, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from '../chats';
 
 const chat: IChat = {
   accepted: true,
-  account: {
+  account: buildAccount({
     username: 'username',
     verified: true,
     id: '1',
@@ -23,7 +22,7 @@ const chat: IChat = {
     avatar: 'avatar',
     avatar_static: 'avatar',
     display_name: 'my name',
-  } as IAccount,
+  }),
   chat_type: 'direct',
   created_at: '2020-06-10T02:05:06.000Z',
   created_by_account: '1',

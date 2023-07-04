@@ -3,10 +3,11 @@
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
+import { usePatronUser } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
@@ -35,7 +36,7 @@ const messages = defineMessages({
 });
 
 interface IProfileInfoPanel {
-  account: Account
+  account?: Account
   /** Username from URL params, in case the account isn't found. */
   username: string
 }
@@ -44,6 +45,9 @@ interface IProfileInfoPanel {
 const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) => {
   const intl = useIntl();
   const { displayFqn } = useSoapboxConfig();
+  const { patronUser } = usePatronUser(account?.url);
+  const me = useAppSelector(state => state.me);
+  const ownAccount = account?.id === me;
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
@@ -56,7 +60,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const getCustomBadges = (): React.ReactNode[] => {
-    const badges = getAccountBadges(account);
+    const badges = account ? getAccountBadges(account) : [];
 
     return badges.map(badge => (
       <Badge
@@ -70,7 +74,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const getBadges = (): React.ReactNode[] => {
     const custom = getCustomBadges();
     const staffBadge = getStaffBadge();
-    const isPatron = account.getIn(['patron', 'is_patron']) === true;
+    const isPatron = patronUser?.is_patron === true;
 
     const badges = [];
 
@@ -86,7 +90,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const renderBirthday = (): React.ReactNode => {
-    const birthday = account.birthday;
+    const birthday = account?.pleroma?.birthday;
     if (!birthday) return null;
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
@@ -131,7 +135,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   }
 
   const content = { __html: account.note_emojified };
-  const deactivated = !account.pleroma.get('is_active', true) === true;
+  const deactivated = account.pleroma?.deactivated ?? false;
   const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const badges = getBadges();
@@ -226,10 +230,10 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {renderBirthday()}
         </div>
 
-        <ProfileFamiliarFollowers account={account} />
+        {ownAccount ? null : <ProfileFamiliarFollowers account={account} />}
       </Stack>
 
-      {account.fields.size > 0 && (
+      {account.fields.length > 0 && (
         <Stack space={2} className='mt-4 xl:hidden'>
           {account.fields.map((field, i) => (
             <ProfileField field={field} key={i} />

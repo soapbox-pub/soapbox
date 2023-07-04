@@ -1,26 +1,26 @@
 import userEvent from '@testing-library/user-event';
-import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { VirtuosoGridMockContext, VirtuosoMockContext } from 'react-virtuoso';
 
-import { buildGroup } from 'soapbox/jest/factory';
+import { buildAccount, buildGroup } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeAccount } from 'soapbox/normalizers';
 
 import Results from '../results';
 
 const userId = '1';
 const store = {
   me: userId,
-  accounts: ImmutableMap({
-    [userId]: normalizeAccount({
+  accounts: {
+    [userId]: buildAccount({
       id: userId,
       acct: 'justin-username',
       display_name: 'Justin L',
       avatar: 'test.jpg',
-      chats_onboarded: false,
+      source: {
+        chats_onboarded: false,
+      },
     }),
-  }),
+  },
 };
 
 const renderApp = (children: React.ReactNode) => (

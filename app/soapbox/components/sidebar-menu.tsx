@@ -1,17 +1,18 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import clsx from 'clsx';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
+import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
 import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
-import { makeGetAccount, makeGetOtherAccounts } from 'soapbox/selectors';
+import { makeGetOtherAccounts } from 'soapbox/selectors';
 
 import { Divider, HStack, Icon, IconButton, Text } from './ui';
 
@@ -27,6 +28,7 @@ const messages = defineMessages({
   domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  followedTags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed hashtags' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
@@ -76,16 +78,14 @@ const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) 
   );
 };
 
-const getOtherAccounts = makeGetOtherAccounts();
-
 const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const getOtherAccounts = useCallback(makeGetOtherAccounts(), []);
   const features = useFeatures();
-  const getAccount = makeGetAccount();
   const me = useAppSelector((state) => state.me);
-  const account = useAppSelector((state) => me ? getAccount(state, me) : null);
+  const { account } = useAccount(me || undefined);
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
@@ -302,6 +302,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/filters'
                       icon={require('@tabler/icons/filter.svg')}
                       text={intl.formatMessage(messages.filters)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {features.followedHashtagsList && (
+                    <SidebarLink
+                      to='/followed_tags'
+                      icon={require('@tabler/icons/hash.svg')}
+                      text={intl.formatMessage(messages.followedTags)}
                       onClick={onClose}
                     />
                   )}

@@ -15,7 +15,7 @@ interface IStatusReactionWrapper {
 /** Provides emoji reaction functionality to the underlying button component */
 const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, children }): JSX.Element | null => {
   const dispatch = useAppDispatch();
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
   const status = useAppSelector(state => state.statuses.get(statusId));
   const soapboxConfig = useSoapboxConfig();
 

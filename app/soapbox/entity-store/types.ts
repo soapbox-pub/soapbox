@@ -26,7 +26,7 @@ interface EntityListState {
   /** Total number of items according to the API. */
   totalCount: number | undefined
   /** Error returned from the API, if any. */
-  error: any
+  error: unknown
   /** Whether data has already been fetched */
   fetched: boolean
   /** Whether data for this list is currently being fetched. */
@@ -50,11 +50,19 @@ interface EntityCache<TEntity extends Entity = Entity> {
 /** Whether to import items at the start or end of the list. */
 type ImportPosition = 'start' | 'end'
 
-export {
+/** Map of entity mutation functions to perform at once on the store. */
+interface EntitiesTransaction {
+  [entityType: string]: {
+    [entityId: string]: <TEntity extends Entity>(entity: TEntity) => TEntity
+  }
+}
+
+export type {
   Entity,
   EntityStore,
   EntityList,
   EntityListState,
   EntityCache,
   ImportPosition,
+  EntitiesTransaction,
 };

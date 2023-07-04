@@ -1,7 +1,7 @@
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
@@ -14,6 +14,7 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
 import { deleteFromTimelines } from 'soapbox/actions/timelines';
+import { useBlockGroupMember, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks';
 import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusActionButton from 'soapbox/components/status-action-button';
@@ -35,6 +36,7 @@ const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  blocked: { id: 'group.group_mod_block.success', defaultMessage: '@{name} is banned' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
@@ -56,6 +58,9 @@ const messages = defineMessages({
   embed: { id: 'status.embed', defaultMessage: 'Embed' },
   external: { id: 'status.external', defaultMessage: 'View post on {domain}' },
   favourite: { id: 'status.favourite', defaultMessage: 'Like' },
+  groupBlockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },
+  groupBlockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Ban From Group' },
+  groupBlockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to ban @{name} from the group?' },
   groupModDelete: { id: 'status.group_mod_delete', defaultMessage: 'Delete post from group' },
   group_remove_account: { id: 'status.remove_account_from_group', defaultMessage: 'Remove account from group' },
   group_remove_post: { id: 'status.remove_post_from_group', defaultMessage: 'Remove post from group' },
@@ -64,12 +69,16 @@ const messages = defineMessages({
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
   more: { id: 'status.more', defaultMessage: 'More' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
+  muteConfirm: { id: 'confirmations.mute_group.confirm', defaultMessage: 'Mute' },
   muteConversation: { id: 'status.mute_conversation', defaultMessage: 'Mute conversation' },
+  muteGroup: { id: 'group.mute.long_label', defaultMessage: 'Mute Group' },
+  muteHeading: { id: 'confirmations.mute_group.heading', defaultMessage: 'Mute Group' },
+  muteMessage: { id: 'confirmations.mute_group.message', defaultMessage: 'You are about to mute the group. Do you want to continue?' },
+  muteSuccess: { id: 'group.mute.success', defaultMessage: 'Muted the group' },
   open: { id: 'status.open', defaultMessage: 'Expand this post' },
   pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
   pinToGroup: { id: 'status.pin_to_group', defaultMessage: 'Pin to Group' },
   pinToGroupSuccess: { id: 'status.pin_to_group.success', defaultMessage: 'Pinned to Group!' },
-  unpinFromGroup: { id: 'status.unpin_to_group', defaultMessage: 'Unpin from Group' },
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
   reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
   reactionHeart: { id: 'status.reactions.heart', defaultMessage: 'Love' },
@@ -92,7 +101,10 @@ const messages = defineMessages({
   share: { id: 'status.share', defaultMessage: 'Share' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
   unmuteConversation: { id: 'status.unmute_conversation', defaultMessage: 'Unmute conversation' },
+  unmuteGroup: { id: 'group.unmute.long_label', defaultMessage: 'Unmute Group' },
+  unmuteSuccess: { id: 'group.unmute.success', defaultMessage: 'Unmuted the group' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
+  unpinFromGroup: { id: 'status.unpin_to_group', defaultMessage: 'Unpin from Group' },
 });
 
 interface IStatusActionBar {
@@ -113,17 +125,24 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const match = useRouteMatch<{ groupSlug: string }>('/group/:groupSlug');
+
+  const { group } = useGroup((status.group as Group)?.id as string);
+  const muteGroup = useMuteGroup(group as Group);
+  const unmuteGroup = useUnmuteGroup(group as Group);
+  const isMutingGroup = !!group?.relationship?.muting;
+  const deleteGroupStatus = useDeleteGroupStatus(group as Group, status.id);
+  const blockGroupMember = useBlockGroupMember(group as Group, status?.account as any);
 
   const me = useAppSelector(state => state.me);
-  const groupRelationship = useAppSelector(state => status.group ? state.group_relationships.get((status.group as Group).id) : null);
+  const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
-  const deleteGroupStatus = useDeleteGroupStatus(status?.group as Group, status.id);
 
   const { allowedEmoji } = soapboxConfig;
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
 
@@ -264,8 +283,29 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     dispatch(initMuteModal(status.account as Account));
   };
 
+  const handleMuteGroupClick: React.EventHandler<React.MouseEvent> = () =>
+    dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.muteHeading),
+      message: intl.formatMessage(messages.muteMessage),
+      confirm: intl.formatMessage(messages.muteConfirm),
+      confirmationTheme: 'primary',
+      onConfirm: () => muteGroup.mutate(undefined, {
+        onSuccess() {
+          toast.success(intl.formatMessage(messages.muteSuccess));
+        },
+      }),
+    }));
+
+  const handleUnmuteGroupClick: React.EventHandler<React.MouseEvent> = () => {
+    unmuteGroup.mutate(undefined, {
+      onSuccess() {
+        toast.success(intl.formatMessage(messages.unmuteSuccess));
+      },
+    });
+  };
+
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.get('account') as Account;
+    const account = status.account as Account;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
@@ -282,12 +322,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}`);
+    history.push(`/@${status.account.acct}/posts/${status.id}`);
   };
 
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
-      url: status.get('url'),
+      url: status.url,
       onError: (error: any) => toast.showAlertForError(error),
     }));
   };
@@ -336,11 +376,26 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }));
   };
 
+  const handleBlockFromGroup = () => {
+    dispatch(openModal('CONFIRM', {
+      heading: intl.formatMessage(messages.groupBlockFromGroupHeading),
+      message: intl.formatMessage(messages.groupBlockFromGroupMessage, { name: (status.account as any).username }),
+      confirm: intl.formatMessage(messages.groupBlockConfirm),
+      onConfirm: () => {
+        blockGroupMember({ account_ids: [(status.account as any).id] }, {
+          onSuccess() {
+            toast.success(intl.formatMessage(messages.blocked, { name: account?.acct }));
+          },
+        });
+      },
+    }));
+  };
+
   const _makeMenu = (publicStatus: boolean) => {
     const mutingConversation = status.muted;
-    const ownAccount = status.getIn(['account', 'id']) === me;
-    const username = String(status.getIn(['account', 'username']));
-    const account = status.account as Account;
+    const ownAccount = status.account.id === me;
+    const username = status.account.username;
+    const account = status.account;
     const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
@@ -456,7 +511,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/at.svg'),
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+      if (status.account.pleroma?.accepts_chat_messages === true) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
@@ -471,6 +526,15 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       }
 
       menu.push(null);
+      if (features.groupsMuting && status.group) {
+        menu.push({
+          text: isMutingGroup ? intl.formatMessage(messages.unmuteGroup) : intl.formatMessage(messages.muteGroup),
+          icon: require('@tabler/icons/volume-3.svg'),
+          action: isMutingGroup ? handleUnmuteGroupClick : handleMuteGroupClick,
+        });
+        menu.push(null);
+      }
+
       menu.push({
         text: intl.formatMessage(messages.mute, { name: username }),
         action: handleMuteClick,
@@ -494,10 +558,24 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       const isGroupOwner = groupRelationship?.role === GroupRoles.OWNER;
       const isGroupAdmin = groupRelationship?.role === GroupRoles.ADMIN;
       const isStatusFromOwner = group.owner.id === account.id;
+
+      const canBanUser = match?.isExact && (isGroupOwner || isGroupAdmin) && !isStatusFromOwner && !ownAccount;
       const canDeleteStatus = !ownAccount && (isGroupOwner || (isGroupAdmin && !isStatusFromOwner));
 
-      if (canDeleteStatus) {
+      if (canBanUser || canDeleteStatus) {
         menu.push(null);
+      }
+
+      if (canBanUser) {
+        menu.push({
+          text: 'Ban from Group',
+          action: handleBlockFromGroup,
+          icon: require('@tabler/icons/ban.svg'),
+          destructive: true,
+        });
+      }
+
+      if (canDeleteStatus) {
         menu.push({
           text: intl.formatMessage(messages.groupModDelete),
           action: handleDeleteFromGroup,

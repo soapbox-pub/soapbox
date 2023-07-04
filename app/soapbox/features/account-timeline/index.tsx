@@ -5,11 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { fetchPatronAccount } from 'soapbox/actions/patron';
 import { expandAccountFeaturedTimeline, expandAccountTimeline } from 'soapbox/actions/timelines';
+import { useAccountLookup } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusList from 'soapbox/components/status-list';
 import { Card, CardBody, Spinner, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
+import { makeGetStatusIds } from 'soapbox/selectors';
 
 const getStatusIds = makeGetStatusIds();
 
@@ -27,7 +28,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
-  const account = useAppSelector(state => findAccountByUsername(state, params.username));
+  const { account } = useAccountLookup(params.username, { withRelationship: true });
   const [accountLoading, setAccountLoading] = useState<boolean>(!account);
 
   const path = withReplies ? `${account?.id}:with_replies` : account?.id;
@@ -40,6 +41,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const patronEnabled = soapboxConfig.getIn(['extensions', 'patron', 'enabled']) === true;
   const isLoading = useAppSelector(state => state.getIn(['timelines', `account:${path}`, 'isLoading']) === true);
   const hasMore = useAppSelector(state => state.getIn(['timelines', `account:${path}`, 'hasMore']) === true);
+  const next = useAppSelector(state => state.timelines.get(`account:${path}`)?.next);
 
   const accountUsername = account?.username || params.username;
 
@@ -69,7 +71,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
 
   const handleLoadMore = (maxId: string) => {
     if (account) {
-      dispatch(expandAccountTimeline(account.id, { maxId, withReplies }));
+      dispatch(expandAccountTimeline(account.id, { url: next, maxId, withReplies }));
     }
   };
 

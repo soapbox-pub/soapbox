@@ -7,13 +7,14 @@ import { useOwnAccount } from 'soapbox/hooks';
 import ChatPane from '../chat-pane/chat-pane';
 
 const ChatWidget = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const history = useHistory();
 
   const path = history.location.pathname;
-  const shouldHideWidget = Boolean(path.match(/^\/chats/));
+  const isChatsPath = Boolean(path.match(/^\/chats/));
+  const isOnboarded = account?.source?.chats_onboarded ?? true;
 
-  if (!account?.chats_onboarded || shouldHideWidget) {
+  if (!isOnboarded || isChatsPath) {
     return null;
   }
 

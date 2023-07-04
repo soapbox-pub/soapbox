@@ -48,7 +48,7 @@ export function connectStream(
     // If the WebSocket fails to be created, don't crash the whole page,
     // just proceed without a subscription.
     try {
-      subscription = getStream(streamingAPIBaseURL!, accessToken, path, {
+      subscription = getStream(streamingAPIBaseURL!, accessToken!, path, {
         connected() {
           if (pollingRefresh) {
             clearPolling();

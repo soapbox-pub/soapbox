@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -20,22 +19,26 @@ import {
   Toggle,
 } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
-import { normalizeAccount } from 'soapbox/normalizers';
+import { accountSchema } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import ProfilePreview from './components/profile-preview';
 
 import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 /**
  * Whether the user is hiding their follows and/or followers.
  * Pleroma's config is granular, but we simplify it into one setting.
  */
-const hidesNetwork = (account: Account): boolean => {
-  const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = account.pleroma.toJS();
-  return Boolean(hide_followers && hide_follows && hide_followers_count && hide_follows_count);
+const hidesNetwork = ({ pleroma }: Account): boolean => {
+  return Boolean(
+    pleroma?.hide_followers &&
+    pleroma?.hide_follows &&
+    pleroma?.hide_followers_count &&
+    pleroma?.hide_follows_count,
+  );
 };
 
 const messages = defineMessages({
@@ -124,18 +127,18 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     discoverable: account.discoverable,
     bot: account.bot,
     display_name: account.display_name,
-    note: account.source.get('note', ''),
+    note: account.source?.note ?? '',
     locked: account.locked,
-    fields_attributes: [...account.source.get<Iterable<AccountCredentialsField>>('fields', ImmutableList()).toJS()],
-    stranger_notifications: account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true,
-    accepts_email_list: account.getIn(['pleroma', 'accepts_email_list']) === true,
+    fields_attributes: [...account.source?.fields ?? []],
+    stranger_notifications: account.pleroma?.notification_settings?.block_from_strangers === true,
+    accepts_email_list: account.pleroma?.accepts_email_list === true,
     hide_followers: hideNetwork,
     hide_follows: hideNetwork,
     hide_followers_count: hideNetwork,
     hide_follows_count: hideNetwork,
     website: account.website,
     location: account.location,
-    birthday: account.birthday,
+    birthday: account.pleroma?.birthday ?? undefined,
   };
 };
 
@@ -174,7 +177,7 @@ const EditProfile: React.FC = () => {
   const dispatch = useAppDispatch();
   const instance = useInstance();
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const maxFields = instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number;
 
@@ -185,7 +188,7 @@ const EditProfile: React.FC = () => {
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
-      const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true;
+      const strangerNotifications = account.pleroma?.notification_settings?.block_from_strangers === true;
       setData(credentials);
       setMuteStrangers(strangerNotifications);
     }
@@ -299,12 +302,13 @@ const EditProfile: React.FC = () => {
 
   /** Preview account data. */
   const previewAccount = useMemo(() => {
-    return normalizeAccount({
-      ...account?.toJS(),
+    return accountSchema.parse({
+      id: '1',
+      ...account,
       ...data,
       avatar: avatarUrl,
       header: headerUrl,
-    }) as Account;
+    });
   }, [account?.id, data.display_name, avatarUrl, headerUrl]);
 
   return (

@@ -26,7 +26,7 @@ const InstanceModerationPanel: React.FC<IInstanceModerationPanel> = ({ host }) =
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const remoteInstance = useAppSelector(state => getRemoteInstance(state, host));
 
   const handleEditFederation = () => {

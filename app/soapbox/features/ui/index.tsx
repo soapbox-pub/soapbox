@@ -2,13 +2,11 @@
 
 import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchAnnouncements } from 'soapbox/actions/announcements';
-import { resetCompose } from 'soapbox/actions/compose';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
@@ -38,6 +36,7 @@ import HomePage from 'soapbox/pages/home-page';
 import ManageGroupsPage from 'soapbox/pages/manage-groups-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
+import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
 import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
@@ -134,7 +133,9 @@ import {
   GroupMembershipRequests,
   Announcements,
   EditGroup,
+  FollowedTags,
 } from './util/async-components';
+import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -152,34 +153,6 @@ const GroupBlockedMembersSlug = withHoc(GroupBlockedMembers as any, GroupLookupH
 const GroupMembershipRequestsSlug = withHoc(GroupMembershipRequests as any, GroupLookupHoc);
 
 const EmptyPage = HomePage;
-
-const keyMap = {
-  help: '?',
-  new: 'n',
-  search: ['s', '/'],
-  forceNew: 'option+n',
-  reply: 'r',
-  favourite: 'f',
-  react: 'e',
-  boost: 'b',
-  mention: 'm',
-  open: ['enter', 'o'],
-  openProfile: 'p',
-  moveDown: ['down', 'j'],
-  moveUp: ['up', 'k'],
-  back: 'backspace',
-  goToHome: 'g h',
-  goToNotifications: 'g n',
-  goToFavourites: 'g f',
-  goToPinned: 'g p',
-  goToProfile: 'g u',
-  goToBlocked: 'g b',
-  goToMuted: 'g m',
-  goToRequests: 'g r',
-  toggleHidden: 'x',
-  toggleSensitive: 'h',
-  openMedia: 'a',
-};
 
 interface ISwitchingColumnsArea {
   children: React.ReactNode
@@ -275,7 +248,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-      <WrappedRoute path='/search' page={DefaultPage} component={Search} content={children} />
+      <WrappedRoute path='/search' page={SearchPage} component={Search} content={children} />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
       {features.events && <WrappedRoute path='/events' page={EventsPage} component={Events} content={children} />}
@@ -292,6 +265,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {(features.filters || features.filtersV2) && <WrappedRoute path='/filters/new' page={DefaultPage} component={EditFilter} content={children} />}
       {(features.filters || features.filtersV2) && <WrappedRoute path='/filters/:id' page={DefaultPage} component={EditFilter} content={children} />}
       {(features.filters || features.filtersV2) && <WrappedRoute path='/filters' page={DefaultPage} component={Filters} content={children} />}
+      {(features.followedHashtagsList) && <WrappedRoute path='/followed_tags' page={DefaultPage} component={FollowedTags} content={children} />}
       <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
       <WrappedRoute path='/@:username/with_replies' publicRoute={!authenticatedProfile} component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
       <WrappedRoute path='/@:username/followers' publicRoute={!authenticatedProfile} component={Followers} page={ProfilePage} content={children} />
@@ -395,10 +369,9 @@ const UI: React.FC<IUI> = ({ children }) => {
   const userStream = useRef<any>(null);
   const nostrStream = useRef<any>(null);
   const node = useRef<HTMLDivElement | null>(null);
-  const hotkeys = useRef<HTMLDivElement | null>(null);
 
   const me = useAppSelector(state => state.me);
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
@@ -422,7 +395,7 @@ const UI: React.FC<IUI> = ({ children }) => {
       if (!userStream.current) {
         userStream.current = dispatch(connectUserStream({ statContext }));
       }
-      if (!nostrStream.current && window.nostr) {
+      if (!nostrStream.current && features.nostrSign && window.nostr) {
         nostrStream.current = dispatch(connectNostrStream());
       }
     }
@@ -526,91 +499,6 @@ const UI: React.FC<IUI> = ({ children }) => {
     }
   }, [pendingPolicy, !!account]);
 
-  const handleHotkeyNew = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    if (!node.current) return;
-
-    const element = node.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
-
-    if (element) {
-      element.focus();
-    }
-  };
-
-  const handleHotkeySearch = (e?: KeyboardEvent) => {
-    e?.preventDefault();
-    if (!node.current) return;
-
-    const element = node.current.querySelector('input#search') as HTMLInputElement;
-
-    if (element) {
-      element.focus();
-    }
-  };
-
-  const handleHotkeyForceNew = (e?: KeyboardEvent) => {
-    handleHotkeyNew(e);
-    dispatch(resetCompose());
-  };
-
-  const handleHotkeyBack = () => {
-    if (window.history && window.history.length === 1) {
-      history.push('/');
-    } else {
-      history.goBack();
-    }
-  };
-
-  const setHotkeysRef: React.LegacyRef<HotKeys> = (c: any) => {
-    hotkeys.current = c;
-
-    if (!me || !hotkeys.current) return;
-
-    // @ts-ignore
-    hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName) || !!element.closest('[contenteditable]');
-    };
-  };
-
-  const handleHotkeyToggleHelp = () => {
-    dispatch(openModal('HOTKEYS'));
-  };
-
-  const handleHotkeyGoToHome = () => {
-    history.push('/');
-  };
-
-  const handleHotkeyGoToNotifications = () => {
-    history.push('/notifications');
-  };
-
-  const handleHotkeyGoToFavourites = () => {
-    if (!account) return;
-    history.push(`/@${account.username}/favorites`);
-  };
-
-  const handleHotkeyGoToPinned = () => {
-    if (!account) return;
-    history.push(`/@${account.username}/pins`);
-  };
-
-  const handleHotkeyGoToProfile = () => {
-    if (!account) return;
-    history.push(`/@${account.username}`);
-  };
-
-  const handleHotkeyGoToBlocked = () => {
-    history.push('/blocks');
-  };
-
-  const handleHotkeyGoToMuted = () => {
-    history.push('/mutes');
-  };
-
-  const handleHotkeyGoToRequests = () => {
-    history.push('/follow_requests');
-  };
-
   const shouldHideFAB = (): boolean => {
     const path = location.pathname;
     return Boolean(path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/));
@@ -619,30 +507,12 @@ const UI: React.FC<IUI> = ({ children }) => {
   // Wait for login to succeed or fail
   if (me === null) return null;
 
-  type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
-
-  const handlers: HotkeyHandlers = {
-    help: handleHotkeyToggleHelp,
-    new: handleHotkeyNew,
-    search: handleHotkeySearch,
-    forceNew: handleHotkeyForceNew,
-    back: handleHotkeyBack,
-    goToHome: handleHotkeyGoToHome,
-    goToNotifications: handleHotkeyGoToNotifications,
-    goToFavourites: handleHotkeyGoToFavourites,
-    goToPinned: handleHotkeyGoToPinned,
-    goToProfile: handleHotkeyGoToProfile,
-    goToBlocked: handleHotkeyGoToBlocked,
-    goToMuted: handleHotkeyGoToMuted,
-    goToRequests: handleHotkeyGoToRequests,
-  };
-
   const style: React.CSSProperties = {
     pointerEvents: dropdownMenuIsOpen ? 'none' : undefined,
   };
 
   return (
-    <HotKeys keyMap={keyMap} handlers={me ? handlers : undefined} ref={setHotkeysRef} attach={window} focused>
+    <GlobalHotkeys node={node}>
       <div ref={node} style={style}>
         <div
           className={clsx('pointer-events-none fixed z-[90] h-screen w-screen transition', {
@@ -697,7 +567,7 @@ const UI: React.FC<IUI> = ({ children }) => {
           </BundleContainer>
         </div>
       </div>
-    </HotKeys>
+    </GlobalHotkeys>
   );
 };
 

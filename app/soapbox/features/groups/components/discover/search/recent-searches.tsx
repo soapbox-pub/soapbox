@@ -14,7 +14,7 @@ interface Props {
 export default (props: Props) => {
   const { onSelect } = props;
 
-  const me = useOwnAccount();
+  const { account: me } = useOwnAccount();
 
   const [recentSearches, setRecentSearches] = useState<string[]>(groupSearchHistory.get(me?.id as string) || []);
 

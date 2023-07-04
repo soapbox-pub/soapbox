@@ -7,7 +7,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { blockAccount, followAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
+import { blockAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -15,6 +15,7 @@ import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { setSearchAccount } from 'soapbox/actions/search';
 import { getSettings } from 'soapbox/actions/settings';
+import { useFollow } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
 import StillImage from 'soapbox/components/still-image';
@@ -27,8 +28,8 @@ import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soap
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
+import { Account } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
-import { Account } from 'soapbox/types/entities';
 import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
@@ -86,7 +87,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const dispatch = useAppDispatch();
 
   const features = useFeatures();
-  const ownAccount = useOwnAccount();
+  const { account: ownAccount } = useOwnAccount();
+  const { follow } = useFollow();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
@@ -154,9 +156,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onReblogToggle = () => {
     if (account.relationship?.showing_reblogs) {
-      dispatch(followAccount(account.id, { reblogs: false }));
+      follow(account.id, { reblogs: false });
     } else {
-      dispatch(followAccount(account.id, { reblogs: true }));
+      follow(account.id, { reblogs: true });
     }
   };
 
@@ -574,7 +576,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           disabled={createAndNavigateToChat.isLoading}
         />
       );
-    } else if (account.getIn(['pleroma', 'accepts_chat_messages']) === true) {
+    } else if (account.pleroma?.accepts_chat_messages) {
       return (
         <IconButton
           src={require('@tabler/icons/messages.svg')}
@@ -615,7 +617,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   return (
     <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
       {(account.moved && typeof account.moved === 'object') && (
-        <MovedNote from={account} to={account.moved} />
+        <MovedNote from={account} to={account.moved as Account} />
       )}
 
       <div>

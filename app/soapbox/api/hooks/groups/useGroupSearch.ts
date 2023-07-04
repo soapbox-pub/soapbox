@@ -21,7 +21,10 @@ function useGroupSearch(search: string) {
     { enabled: features.groupsDiscovery && !!search, schema: groupSchema },
   );
 
-  const { relationships } = useGroupRelationships(entities.map(entity => entity.id));
+  const { relationships } = useGroupRelationships(
+    ['discover', 'search', search],
+    entities.map(entity => entity.id),
+  );
 
   const groups = entities.map((group) => ({
     ...group,

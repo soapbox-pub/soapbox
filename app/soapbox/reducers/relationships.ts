@@ -1,4 +1,4 @@
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 import get from 'lodash/get';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
@@ -6,12 +6,6 @@ import { type Relationship, relationshipSchema } from 'soapbox/schemas';
 
 import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes';
 import {
-  ACCOUNT_FOLLOW_SUCCESS,
-  ACCOUNT_FOLLOW_REQUEST,
-  ACCOUNT_FOLLOW_FAIL,
-  ACCOUNT_UNFOLLOW_SUCCESS,
-  ACCOUNT_UNFOLLOW_REQUEST,
-  ACCOUNT_UNFOLLOW_FAIL,
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_UNBLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
@@ -50,7 +44,7 @@ const normalizeRelationships = (state: State, relationships: APIEntities) => {
   return state;
 };
 
-const setDomainBlocking = (state: State, accounts: ImmutableList<string>, blocking: boolean) => {
+const setDomainBlocking = (state: State, accounts: string[], blocking: boolean) => {
   return state.withMutations(map => {
     accounts.forEach(id => {
       map.setIn([id, 'domain_blocking'], blocking);
@@ -101,16 +95,16 @@ export default function relationships(state: State = ImmutableMap<string, Relati
       return importPleromaAccount(state, action.account);
     case ACCOUNTS_IMPORT:
       return importPleromaAccounts(state, action.accounts);
-    case ACCOUNT_FOLLOW_REQUEST:
-      return state.setIn([action.id, 'following'], true);
-    case ACCOUNT_FOLLOW_FAIL:
-      return state.setIn([action.id, 'following'], false);
-    case ACCOUNT_UNFOLLOW_REQUEST:
-      return state.setIn([action.id, 'following'], false);
-    case ACCOUNT_UNFOLLOW_FAIL:
-      return state.setIn([action.id, 'following'], true);
-    case ACCOUNT_FOLLOW_SUCCESS:
-    case ACCOUNT_UNFOLLOW_SUCCESS:
+    // case ACCOUNT_FOLLOW_REQUEST:
+    //   return state.setIn([action.id, 'following'], true);
+    // case ACCOUNT_FOLLOW_FAIL:
+    //   return state.setIn([action.id, 'following'], false);
+    // case ACCOUNT_UNFOLLOW_REQUEST:
+    //   return state.setIn([action.id, 'following'], false);
+    // case ACCOUNT_UNFOLLOW_FAIL:
+    //   return state.setIn([action.id, 'following'], true);
+    // case ACCOUNT_FOLLOW_SUCCESS:
+    // case ACCOUNT_UNFOLLOW_SUCCESS:
     case ACCOUNT_BLOCK_SUCCESS:
     case ACCOUNT_UNBLOCK_SUCCESS:
     case ACCOUNT_MUTE_SUCCESS:

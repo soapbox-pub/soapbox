@@ -20,13 +20,13 @@ const messages = defineMessages({
 });
 
 const Welcome = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const intl = useIntl();
   const updateCredentials = useUpdateCredentials();
 
   const [data, setData] = useState<FormData>({
     chats_onboarded: true,
-    accepts_chat_messages: account?.accepts_chat_messages,
+    accepts_chat_messages: account?.pleroma?.accepts_chat_messages === true,
   });
 
   const handleSubmit = (event: React.FormEvent) => {

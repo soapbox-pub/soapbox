@@ -6,7 +6,7 @@ import type { Group } from 'soapbox/schemas';
 
 function useCancelMembershipRequest(group: Group) {
   const api = useApi();
-  const me = useOwnAccount();
+  const { account: me } = useOwnAccount();
 
   const { createEntity, isSubmitting } = useCreateEntity(
     [Entities.GROUP_RELATIONSHIPS],

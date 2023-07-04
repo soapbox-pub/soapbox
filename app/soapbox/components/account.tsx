@@ -15,10 +15,9 @@ import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
 
 import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountSchema } from 'soapbox/schemas';
-import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 interface IInstanceFavicon {
-  account: AccountEntity | AccountSchema
+  account: AccountSchema
   disabled?: boolean
 }
 
@@ -42,13 +41,17 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
     }
   };
 
+  if (!account.pleroma?.favicon) {
+    return null;
+  }
+
   return (
     <button
       className='h-4 w-4 flex-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
       onClick={handleClick}
       disabled={disabled}
     >
-      <img src={account.favicon} alt='' title={account.domain} className='max-h-full w-full' />
+      <img src={account.pleroma.favicon} alt='' title={account.domain} className='max-h-full w-full' />
     </button>
   );
 };
@@ -68,7 +71,7 @@ const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children 
 };
 
 export interface IAccount {
-  account: AccountEntity | AccountSchema
+  account: AccountSchema
   action?: React.ReactElement
   actionAlignment?: 'center' | 'top'
   actionIcon?: string
@@ -230,7 +233,7 @@ const Account = ({
               <HStack alignItems='center' space={1}>
                 <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
 
-                {account.favicon && (
+                {account.pleroma?.favicon && (
                   <InstanceFavicon account={account} disabled={!withLinkToProfile} />
                 )}
 

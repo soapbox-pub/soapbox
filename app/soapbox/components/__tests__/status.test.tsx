@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { render, screen, rootState } from '../../jest/test-helpers';
-import { normalizeStatus, normalizeAccount } from '../../normalizers';
+import { buildAccount } from 'soapbox/jest/factory';
+import { render, screen, rootState } from 'soapbox/jest/test-helpers';
+import { normalizeStatus } from 'soapbox/normalizers';
+
 import Status from '../status';
 
 import type { ReducerStatus } from 'soapbox/reducers/statuses';
 
-const account = normalizeAccount({
+const account = buildAccount({
   id: '1',
   acct: 'alex',
 });
@@ -34,7 +36,7 @@ describe('<Status />', () => {
     });
 
     it('is not rendered if status is under review', () => {
-      const inReviewStatus = normalizeStatus({ ...status, visibility: 'self' });
+      const inReviewStatus = status.set('visibility', 'self');
       render(<Status status={inReviewStatus as ReducerStatus} />, undefined, state);
       expect(screen.queryAllByTestId('status-action-bar')).toHaveLength(0);
     });

@@ -3,23 +3,22 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeAccountNoteComment, submitAccountNote } from 'soapbox/actions/account-notes';
 import { closeModal } from 'soapbox/actions/modals';
+import { useAccount } from 'soapbox/api/hooks';
 import { Modal, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   placeholder: { id: 'account_note.placeholder', defaultMessage: 'No comment provided' },
   save: { id: 'account_note.save', defaultMessage: 'Save' },
 });
 
-const getAccount = makeGetAccount();
-
 const AccountNoteModal = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const isSubmitting = useAppSelector((state) => state.account_notes.edit.isSubmitting);
-  const account = useAppSelector((state) => getAccount(state, state.account_notes.edit.account!));
+  const accountId = useAppSelector((state) => state.account_notes.edit.account);
+  const { account } = useAccount(accountId || undefined);
   const comment = useAppSelector((state) => state.account_notes.edit.comment);
 
   const onClose = () => {

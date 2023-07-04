@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups';
-import { useGroup } from 'soapbox/api/hooks';
+import { useAccount, useGroup } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
 import ColumnForbidden from '../ui/components/column-forbidden';
@@ -28,10 +27,7 @@ interface IBlockedMember {
 const BlockedMember: React.FC<IBlockedMember> = ({ accountId, groupId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-
-  const getAccount = useCallback(makeGetAccount(), []);
-
-  const account = useAppSelector((state) => getAccount(state, accountId));
+  const { account } = useAccount(accountId);
 
   if (!account) return null;
 

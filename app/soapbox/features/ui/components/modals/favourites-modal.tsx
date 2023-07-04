@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchFavourites } from 'soapbox/actions/interactions';
+import { fetchFavourites, expandFavourites } from 'soapbox/actions/interactions';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
@@ -16,6 +16,7 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
 
   const accountIds = useAppSelector((state) => state.user_lists.favourited_by.get(statusId)?.items);
+  const next = useAppSelector((state) => state.user_lists.favourited_by.get(statusId)?.next);
 
   const fetchData = () => {
     dispatch(fetchFavourites(statusId));
@@ -27,6 +28,12 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
 
   const onClickClose = () => {
     onClose('FAVOURITES');
+  };
+
+  const handleLoadMore = () => {
+    if (next) {
+      dispatch(expandFavourites(statusId, next!));
+    }
   };
 
   let body;
@@ -42,6 +49,10 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
         emptyMessage={emptyMessage}
         className='max-w-full'
         itemClassName='pb-3'
+        style={{ height: '80vh' }}
+        useWindowScroll={false}
+        onLoadMore={handleLoadMore}
+        hasMore={!!next}
       >
         {accountIds.map(id =>
           <AccountContainer key={id} id={id} />,

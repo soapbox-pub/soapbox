@@ -5,6 +5,7 @@ import emojify from 'soapbox/features/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
+import { relationshipSchema } from './relationship';
 import { contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
@@ -29,7 +30,6 @@ const baseAccountSchema = z.object({
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
   emojis: filteredArray(customEmojiSchema),
-  favicon: z.string().catch(''),
   fields: filteredArray(fieldSchema),
   followers_count: z.number().catch(0),
   following_count: z.number().catch(0),
@@ -54,6 +54,8 @@ const baseAccountSchema = z.object({
   pleroma: z.object({
     accepts_chat_messages: z.boolean().catch(false),
     accepts_email_list: z.boolean().catch(false),
+    also_known_as: z.array(z.string().url()).catch([]),
+    ap_id: z.string().url().optional().catch(undefined),
     birthday: birthdaySchema.nullish().catch(undefined),
     deactivated: z.boolean().catch(false),
     favicon: z.string().url().optional().catch(undefined),
@@ -69,6 +71,7 @@ const baseAccountSchema = z.object({
     notification_settings: z.object({
       block_from_strangers: z.boolean().catch(false),
     }).optional().catch(undefined),
+    relationship: relationshipSchema.optional().catch(undefined),
     tags: z.array(z.string()).catch([]),
   }).optional().catch(undefined),
   source: z.object({
@@ -112,6 +115,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     value_plain: unescapeHTML(field.value),
   }));
 
+  const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;
   const domain = getDomain(account.url || account.uri);
 
   if (pleroma) {
@@ -123,8 +127,8 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     admin: pleroma?.is_admin || false,
     avatar_static: account.avatar_static || account.avatar,
     discoverable: account.discoverable || account.source?.pleroma?.discoverable || false,
-    display_name: account.display_name.trim().length === 0 ? account.username : account.display_name,
-    display_name_html: emojify(escapeTextContentForBrowser(account.display_name), customEmojiMap),
+    display_name: displayName,
+    display_name_html: emojify(escapeTextContentForBrowser(displayName), customEmojiMap),
     domain,
     fields: newFields,
     fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${domain}`),
@@ -132,8 +136,12 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     moderator: pleroma?.is_moderator || false,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: emojify(account.note, customEmojiMap),
-    pleroma,
-    relationship: undefined,
+    pleroma: (() => {
+      if (!pleroma) return undefined;
+      const { relationship, ...rest } = pleroma;
+      return rest;
+    })(),
+    relationship: pleroma?.relationship,
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,
     verified: account.verified || pleroma?.tags.includes('verified') || false,

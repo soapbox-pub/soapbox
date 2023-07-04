@@ -1,4 +1,4 @@
-import api from '../api';
+import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatuses } from './importer';
@@ -83,7 +83,9 @@ const submitSearch = (filter?: SearchFilter) =>
         dispatch(importFetchedStatuses(response.data.statuses));
       }
 
-      dispatch(fetchSearchSuccess(response.data, value, type));
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      dispatch(fetchSearchSuccess(response.data, value, type, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.accounts.map((item: APIEntity) => item.id)));
     }).catch(error => {
       dispatch(fetchSearchFail(error));
@@ -95,11 +97,12 @@ const fetchSearchRequest = (value: string) => ({
   value,
 });
 
-const fetchSearchSuccess = (results: APIEntity[], searchTerm: string, searchType: SearchFilter) => ({
+const fetchSearchSuccess = (results: APIEntity[], searchTerm: string, searchType: SearchFilter, next: string | null) => ({
   type: SEARCH_FETCH_SUCCESS,
   results,
   searchTerm,
   searchType,
+  next,
 });
 
 const fetchSearchFail = (error: AxiosError) => ({
@@ -125,17 +128,26 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
 
   dispatch(expandSearchRequest(type));
 
-  const params: Record<string, any> = {
-    q: value,
-    type,
-    offset,
-  };
+  let url = getState().search.next as string;
+  let params: Record<string, any> = {};
 
-  if (accountId) params.account_id = accountId;
+  // if no URL was extracted from the Link header,
+  // fall back on querying with the offset
+  if (!url) {
+    url = '/api/v2/search';
+    params = {
+      q: value,
+      type,
+      offset,
+    };
+    if (accountId) params.account_id = accountId;
+  }
 
-  api(getState).get('/api/v2/search', {
+  api(getState).get(url, {
     params,
-  }).then(({ data }) => {
+  }).then(response => {
+    const data = response.data;
+
     if (data.accounts) {
       dispatch(importFetchedAccounts(data.accounts));
     }
@@ -144,7 +156,9 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
       dispatch(importFetchedStatuses(data.statuses));
     }
 
-    dispatch(expandSearchSuccess(data, value, type));
+    const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+    dispatch(expandSearchSuccess(data, value, type, next ? next.uri : null));
     dispatch(fetchRelationships(data.accounts.map((item: APIEntity) => item.id)));
   }).catch(error => {
     dispatch(expandSearchFail(error));
@@ -156,11 +170,12 @@ const expandSearchRequest = (searchType: SearchFilter) => ({
   searchType,
 });
 
-const expandSearchSuccess = (results: APIEntity[], searchTerm: string, searchType: SearchFilter) => ({
+const expandSearchSuccess = (results: APIEntity[], searchTerm: string, searchType: SearchFilter, next: string | null) => ({
   type: SEARCH_EXPAND_SUCCESS,
   results,
   searchTerm,
   searchType,
+  next,
 });
 
 const expandSearchFail = (error: AxiosError) => ({

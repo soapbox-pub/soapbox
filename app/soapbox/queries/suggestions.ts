@@ -123,7 +123,7 @@ const useDismissSuggestion = () => {
 
   return useMutation((accountId: string) => api.delete(`/api/v1/suggestions/${accountId}`), {
     onMutate(accountId: string) {
-      removePageItem(SuggestionKeys.suggestions, accountId, (o: any, n: any) => o.account_id === n);
+      removePageItem(SuggestionKeys.suggestions, accountId, (o: any, n: any) => o.account === n);
     },
   });
 };

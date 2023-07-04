@@ -35,14 +35,14 @@ type UpdateCredentialsData = {
 }
 
 const useUpdateCredentials = () => {
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const api = useApi();
   const dispatch = useAppDispatch();
 
   return useMutation((data: UpdateCredentialsData) => api.patch('/api/v1/accounts/update_credentials', data), {
     onMutate(variables) {
-      const cachedAccount = account?.toJS();
-      dispatch(patchMeSuccess({ ...cachedAccount, ...variables }));
+      const cachedAccount = account;
+      dispatch(patchMeSuccess({ ...account, ...variables }));
 
       return { cachedAccount };
     },

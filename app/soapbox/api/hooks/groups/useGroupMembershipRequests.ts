@@ -12,7 +12,7 @@ function useGroupMembershipRequests(groupId: string) {
   const api = useApi();
   const path: ExpandedEntitiesPath = [Entities.ACCOUNTS, 'membership_requests', groupId];
 
-  const { entity: relationship } = useGroupRelationship(groupId);
+  const { groupRelationship: relationship } = useGroupRelationship(groupId);
 
   const { entities, invalidate, fetchEntities, ...rest } = useEntities(
     path,

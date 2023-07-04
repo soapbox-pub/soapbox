@@ -24,7 +24,7 @@ const SidebarNavigation = () => {
 
   const features = useFeatures();
   const settings = useSettings();
-  const account = useOwnAccount();
+  const { account } = useOwnAccount();
   const groupsPath = useGroupsPath();
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);

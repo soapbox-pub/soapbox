@@ -1,13 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
+import { buildAccount } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { AccountRecord } from 'soapbox/normalizers';
+import { AuthUserRecord, ReducerRecord } from 'soapbox/reducers/auth';
 
-import { AuthUserRecord, ReducerRecord } from '../../reducers/auth';
-import {
-  fetchMe, patchMe,
-} from '../me';
+import { fetchMe, patchMe } from '../me';
 
 jest.mock('../../storage/kv-store', () => ({
   __esModule: true,
@@ -48,11 +46,15 @@ describe('fetchMe()', () => {
             }),
           }),
         }))
-        .set('accounts', ImmutableMap({
-          [accountUrl]: AccountRecord({
-            url: accountUrl,
-          }),
-        }) as any);
+        .set('entities', {
+          'ACCOUNTS': {
+            store: {
+              [accountUrl]: buildAccount({ url: accountUrl }),
+            },
+            lists: {},
+          },
+        });
+
       store = mockStore(state);
     });
 
