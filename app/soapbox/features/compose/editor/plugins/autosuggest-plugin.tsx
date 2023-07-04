@@ -474,75 +474,79 @@ const AutosuggestPlugin = ({
     }
   }, [resolution, suggestionsHidden, suggestions.isEmpty()]);
 
-  useEffect(() => mergeRegister(
-    editor.registerCommand<KeyboardEvent>(
-      KEY_ARROW_UP_COMMAND,
-      (payload) => {
-        const event = payload;
-        if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
-          const newSelectedSuggestion = selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1;
-          setSelectedSuggestion(newSelectedSuggestion);
+  useEffect(() => {
+    if (resolution === null) return;
+
+    return mergeRegister(
+      editor.registerCommand<KeyboardEvent>(
+        KEY_ARROW_UP_COMMAND,
+        (payload) => {
+          const event = payload;
+          if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+            const newSelectedSuggestion = selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1;
+            setSelectedSuggestion(newSelectedSuggestion);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+          return true;
+        },
+        COMMAND_PRIORITY_LOW,
+      ),
+      editor.registerCommand<KeyboardEvent>(
+        KEY_ARROW_DOWN_COMMAND,
+        (payload) => {
+          const event = payload;
+          if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+            const newSelectedSuggestion = selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0;
+            setSelectedSuggestion(newSelectedSuggestion);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+          return true;
+        },
+        COMMAND_PRIORITY_LOW,
+      ),
+      editor.registerCommand<KeyboardEvent>(
+        KEY_TAB_COMMAND,
+        (payload) => {
+          const event = payload;
+          if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+            const newSelectedSuggestion = event.shiftKey
+              ? (selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1)
+              : (selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0);
+            setSelectedSuggestion(newSelectedSuggestion);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+          return true;
+        },
+        COMMAND_PRIORITY_LOW,
+      ),
+      editor.registerCommand<KeyboardEvent>(
+        KEY_ENTER_COMMAND,
+        (payload) => {
+          const event = payload;
           event.preventDefault();
           event.stopImmediatePropagation();
-        }
-        return true;
-      },
-      COMMAND_PRIORITY_LOW,
-    ),
-    editor.registerCommand<KeyboardEvent>(
-      KEY_ARROW_DOWN_COMMAND,
-      (payload) => {
-        const event = payload;
-        if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
-          const newSelectedSuggestion = selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0;
-          setSelectedSuggestion(newSelectedSuggestion);
+          onSelectSuggestion(selectedSuggestion);
+          setResolution(null);
+          return true;
+        },
+        COMMAND_PRIORITY_LOW,
+      ),
+      editor.registerCommand<KeyboardEvent>(
+        KEY_ESCAPE_COMMAND,
+        (payload) => {
+          const event = payload;
           event.preventDefault();
           event.stopImmediatePropagation();
-        }
-        return true;
-      },
-      COMMAND_PRIORITY_LOW,
-    ),
-    editor.registerCommand<KeyboardEvent>(
-      KEY_TAB_COMMAND,
-      (payload) => {
-        const event = payload;
-        if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
-          const newSelectedSuggestion = event.shiftKey
-            ? (selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1)
-            : (selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0);
-          setSelectedSuggestion(newSelectedSuggestion);
-          event.preventDefault();
-          event.stopImmediatePropagation();
-        }
-        return true;
-      },
-      COMMAND_PRIORITY_LOW,
-    ),
-    editor.registerCommand<KeyboardEvent>(
-      KEY_ENTER_COMMAND,
-      (payload) => {
-        const event = payload;
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        onSelectSuggestion(selectedSuggestion);
-        setResolution(null);
-        return true;
-      },
-      COMMAND_PRIORITY_LOW,
-    ),
-    editor.registerCommand<KeyboardEvent>(
-      KEY_ESCAPE_COMMAND,
-      (payload) => {
-        const event = payload;
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        setResolution(null);
-        return true;
-      },
-      COMMAND_PRIORITY_LOW,
-    ),
-  ), [editor, selectedSuggestion]);
+          setResolution(null);
+          return true;
+        },
+        COMMAND_PRIORITY_LOW,
+      ),
+    );
+  }, [editor, selectedSuggestion, resolution]);
 
   return resolution === null || editor === null ? null : (
     <LexicalPopoverMenu
