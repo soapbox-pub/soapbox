@@ -8,8 +8,9 @@ import { useImageField, useTextField } from 'soapbox/hooks/forms';
 import toast from 'soapbox/toast';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 
-import AvatarPicker from './components/group-avatar-picker';
-import HeaderPicker from './components/group-header-picker';
+import AvatarPicker from '../edit-profile/components/avatar-picker';
+import HeaderPicker from '../edit-profile/components/header-picker';
+
 import GroupTagsField from './components/group-tags-field';
 
 import type { List as ImmutableList } from 'immutable';
@@ -60,8 +61,8 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
     await updateGroup({
       display_name: displayName.value,
       note: note.value,
-      avatar: avatar.file,
-      header: header.file,
+      avatar: avatar.file === null ? '' : avatar.file,
+      header: header.file === null ? '' : header.file,
       tags,
     }, {
       onSuccess() {
