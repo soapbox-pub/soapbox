@@ -86,7 +86,7 @@ interface IToolbarButton extends React.HTMLAttributes<HTMLButtonElement> {
   icon: string
 }
 
-const ToolbarButton: React.FC<IToolbarButton> = ({ active, icon, ...props }) => (
+export const ToolbarButton: React.FC<IToolbarButton> = ({ active, icon, ...props }) => (
   <button
     className={clsx(
       'flex cursor-pointer rounded-lg border-0 bg-none p-1 align-middle hover:bg-gray-100 disabled:cursor-not-allowed disabled:hover:bg-none hover:dark:bg-primary-700',
@@ -125,10 +125,7 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
     if (blockType !== headingSize) {
       editor.update(() => {
         const selection = $getSelection();
-        if (
-          $isRangeSelection(selection) ||
-          DEPRECATED_$isGridSelection(selection)
-        ) {
+        if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
           $setBlocksType(selection, () => $createHeadingNode(headingSize));
         }
       });
@@ -155,10 +152,7 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
     if (blockType !== 'quote') {
       editor.update(() => {
         const selection = $getSelection();
-        if (
-          $isRangeSelection(selection) ||
-          DEPRECATED_$isGridSelection(selection)
-        ) {
+        if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
           $setBlocksType(selection, () => $createQuoteNode());
         }
       });
@@ -170,10 +164,7 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
       editor.update(() => {
         let selection = $getSelection();
 
-        if (
-          $isRangeSelection(selection) ||
-          DEPRECATED_$isGridSelection(selection)
-        ) {
+        if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
           if (selection.isCollapsed()) {
             $setBlocksType(selection, () => $createCodeNode());
           } else {

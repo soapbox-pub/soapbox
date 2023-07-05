@@ -34,6 +34,7 @@ const LINK_MATCHERS = [
 
 import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
+import FloatingBlockTypeToolbarPlugin from './plugins/floating-block-type-toolbar-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import MentionPlugin from './plugins/mention-plugin';
@@ -188,6 +189,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         {features.richText && <ListPlugin />}
         {features.richText && floatingAnchorElem && (
           <>
+            <FloatingBlockTypeToolbarPlugin anchorElem={floatingAnchorElem} />
             <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
             <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
           </>
