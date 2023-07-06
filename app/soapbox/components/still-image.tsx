@@ -67,7 +67,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
         <canvas
           ref={canvas}
           className={clsx(baseClassName, {
-            'group-hover:invisible': hoverToPlay,
+            'absolute group-hover:invisible top-0': hoverToPlay,
           })}
         />
       )}

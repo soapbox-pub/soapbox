@@ -6,8 +6,8 @@ import { groupSchema } from 'soapbox/schemas';
 interface UpdateGroupParams {
   display_name?: string
   note?: string
-  avatar?: File
-  header?: File
+  avatar?: File | ''
+  header?: File | ''
   group_visibility?: string
   discoverable?: boolean
   tags?: string[]
