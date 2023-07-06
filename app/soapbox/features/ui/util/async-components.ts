@@ -637,3 +637,7 @@ export function Announcements() {
 export function EditAnnouncementModal() {
   return import(/* webpackChunkName: "features/admin/announcements" */'../components/modals/edit-announcement-modal');
 }
+
+export function FollowedTags() {
+  return import(/* webpackChunkName: "features/followed-tags" */'../../followed-tags');
+}

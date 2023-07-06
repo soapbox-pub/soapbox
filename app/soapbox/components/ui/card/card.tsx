@@ -27,6 +27,7 @@ interface ICard {
   className?: string
   /** Elements inside the card. */
   children: React.ReactNode
+  tabIndex?: number
 }
 
 /** An opaque backdrop to hold a collection of related elements. */

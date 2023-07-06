@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
@@ -8,7 +8,6 @@ import List, { ListItem } from 'soapbox/components/list';
 import {
   Button,
   Column,
-  FileInput,
   Form,
   FormActions,
   FormGroup,
@@ -18,15 +17,20 @@ import {
   Textarea,
   Toggle,
 } from 'soapbox/components/ui';
-import { useAppDispatch, useOwnAccount, useFeatures, useInstance } from 'soapbox/hooks';
-import { accountSchema } from 'soapbox/schemas';
+import { useAppDispatch, useOwnAccount, useFeatures, useInstance, useAppSelector } from 'soapbox/hooks';
+import { useImageField } from 'soapbox/hooks/forms';
 import toast from 'soapbox/toast';
-import resizeImage from 'soapbox/utils/resize-image';
+import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 
-import ProfilePreview from './components/profile-preview';
+import AvatarPicker from './components/avatar-picker';
+import HeaderPicker from './components/header-picker';
 
+import type { List as ImmutableList } from 'immutable';
 import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import type { Account } from 'soapbox/schemas';
+
+const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
+const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;
 
 /**
  * Whether the user is hiding their follows and/or followers.
@@ -88,9 +92,9 @@ interface AccountCredentials {
   /** The account bio. */
   note?: string
   /** Avatar image encoded using multipart/form-data */
-  avatar?: File
+  avatar?: File | ''
   /** Header image encoded using multipart/form-data */
-  header?: File
+  header?: File | ''
   /** Whether manual approval of follow requests is required. */
   locked?: boolean
   /** Private information (settings) about the account. */
@@ -181,14 +185,21 @@ const EditProfile: React.FC = () => {
   const features = useFeatures();
   const maxFields = instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number;
 
+  const attachmentTypes = useAppSelector(
+    state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
+  )?.filter(type => type.startsWith('image/')).toArray().join(',');
+
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<AccountCredentials>({});
   const [muteStrangers, setMuteStrangers] = useState(false);
 
+  const avatar = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(account?.avatar) });
+  const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(account?.header) });
+
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
-      const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']) === true;
+      const strangerNotifications = account.pleroma?.notification_settings?.block_from_strangers === true;
       setData(credentials);
       setMuteStrangers(strangerNotifications);
     }
@@ -206,6 +217,8 @@ const EditProfile: React.FC = () => {
 
     const params = { ...data };
     if (params.fields_attributes?.length === 0) params.fields_attributes = [{ name: '', value: '' }];
+    if (header.file !== undefined) params.header = header.file || '';
+    if (avatar.file !== undefined) params.avatar = avatar.file || '';
 
     promises.push(dispatch(patchMe(params, true)));
 
@@ -259,20 +272,6 @@ const EditProfile: React.FC = () => {
     });
   };
 
-  const handleFileChange = (
-    name: keyof AccountCredentials,
-    maxPixels: number,
-  ): React.ChangeEventHandler<HTMLInputElement> => {
-    return e => {
-      const f = e.target.files?.item(0);
-      if (!f) return;
-
-      resizeImage(f, maxPixels).then(file => {
-        updateData(name, file);
-      }).catch(console.error);
-    };
-  };
-
   const handleFieldsChange = (fields: AccountCredentialsField[]) => {
     updateData('fields_attributes', fields);
   };
@@ -290,48 +289,12 @@ const EditProfile: React.FC = () => {
     updateData('fields_attributes', fields);
   };
 
-  /** Memoized avatar preview URL. */
-  const avatarUrl = useMemo(() => {
-    return data.avatar ? URL.createObjectURL(data.avatar) : account?.avatar;
-  }, [data.avatar, account?.avatar]);
-
-  /** Memoized header preview URL. */
-  const headerUrl = useMemo(() => {
-    return data.header ? URL.createObjectURL(data.header) : account?.header;
-  }, [data.header, account?.header]);
-
-  /** Preview account data. */
-  const previewAccount = useMemo(() => {
-    return accountSchema.parse({
-      id: '1',
-      ...account,
-      ...data,
-      avatar: avatarUrl,
-      header: headerUrl,
-    });
-  }, [account?.id, data.display_name, avatarUrl, headerUrl]);
-
   return (
     <Column label={intl.formatMessage(messages.header)}>
       <Form onSubmit={handleSubmit}>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-          <ProfilePreview account={previewAccount} />
-
-          <div className='space-y-4'>
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-            >
-              <FileInput onChange={handleFileChange('header', 1920 * 1080)} />
-            </FormGroup>
-
-            <FormGroup
-              labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
-              hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
-            >
-              <FileInput onChange={handleFileChange('avatar', 400 * 400)} />
-            </FormGroup>
-          </div>
+        <div className='relative mb-12 flex'>
+          <HeaderPicker accept={attachmentTypes} disabled={isLoading} {...header} />
+          <AvatarPicker className='!sm:left-6 !left-4 !translate-x-0' accept={attachmentTypes} disabled={isLoading} {...avatar} />
         </div>
 
         <FormGroup

@@ -122,6 +122,9 @@ const Thread = (props: IThread) => {
     };
   });
 
+  let initialTopMostItemIndex = ancestorsIds.size;
+  if (!useWindowScroll && initialTopMostItemIndex !== 0) initialTopMostItemIndex = ancestorsIds.size + 1;
+
   const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
 
   const node = useRef<HTMLDivElement>(null);
@@ -263,15 +266,12 @@ const Thread = (props: IThread) => {
   };
 
   const _selectChild = (index: number) => {
+    if (!useWindowScroll) index = index + 1;
     scroller.current?.scrollIntoView({
       index,
       behavior: 'smooth',
       done: () => {
-        const element = document.querySelector<HTMLDivElement>(`#thread [data-index="${index}"] .focusable`);
-
-        if (element) {
-          element.focus();
-        }
+        node.current?.querySelector<HTMLDivElement>(`[data-index="${index}"] .focusable`)?.focus();
       },
     });
   };
@@ -410,7 +410,7 @@ const Thread = (props: IThread) => {
 
   if (!useWindowScroll) {
     // Add padding to the top of the Thread (for Media Modal)
-    children.push(<div className='h-4' />);
+    children.push(<div key='padding' className='h-4' />);
   }
 
   if (hasAncestors) {
@@ -447,7 +447,7 @@ const Thread = (props: IThread) => {
           hasMore={!!next}
           onLoadMore={handleLoadMore}
           placeholderComponent={() => <PlaceholderStatus variant='slim' />}
-          initialTopMostItemIndex={ancestorsIds.size}
+          initialTopMostItemIndex={initialTopMostItemIndex}
           useWindowScroll={useWindowScroll}
           itemClassName={itemClassName}
           className={

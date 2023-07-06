@@ -120,7 +120,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         <BundleContainer fetchComponent={ProfileMediaPanel}>
           {Component => <Component account={account} />}
         </BundleContainer>
-        {account && !account.fields.length && (
+        {(account && account.fields.length > 0) && (
           <BundleContainer fetchComponent={ProfileFieldsPanel}>
             {Component => <Component account={account} />}
           </BundleContainer>
