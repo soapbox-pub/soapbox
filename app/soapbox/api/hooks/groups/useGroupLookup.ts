@@ -16,7 +16,7 @@ function useGroupLookup(slug: string) {
 
   const { entity: group, isUnauthorized, ...result } = useEntityLookup(
     Entities.GROUPS,
-    (group) => group.slug === slug,
+    (group) => group.slug.toLowerCase() === slug.toLowerCase(),
     () => api.get(`/api/v1/groups/lookup?name=${slug}`),
     { schema: groupSchema, enabled: features.groups && !!slug },
   );
