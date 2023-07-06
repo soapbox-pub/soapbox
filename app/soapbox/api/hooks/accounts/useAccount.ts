@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntity } from 'soapbox/entity-store/hooks';
 import { useFeatures, useLoggedIn } from 'soapbox/hooks';
@@ -12,11 +15,12 @@ interface UseAccountOpts {
 
 function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
   const api = useApi();
+  const history = useHistory();
   const features = useFeatures();
   const { me } = useLoggedIn();
   const { withRelationship } = opts;
 
-  const { entity: account, ...result } = useEntity<Account>(
+  const { entity: account, isUnauthorized, ...result } = useEntity<Account>(
     [Entities.ACCOUNTS, accountId!],
     () => api.get(`/api/v1/accounts/${accountId}`),
     { schema: accountSchema, enabled: !!accountId },
@@ -30,10 +34,17 @@ function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
   const isBlocked = account?.relationship?.blocked_by === true;
   const isUnavailable = (me === account?.id) ? false : (isBlocked && !features.blockersVisible);
 
+  useEffect(() => {
+    if (isUnauthorized) {
+      history.push('/login');
+    }
+  }, [isUnauthorized]);
+
   return {
     ...result,
     isLoading: result.isLoading,
     isRelationshipLoading,
+    isUnauthorized,
     isUnavailable,
     account: account ? { ...account, relationship } : undefined,
   };
