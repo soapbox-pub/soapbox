@@ -19,6 +19,12 @@ interface IMediaInput {
 const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, onClear, accept, disabled }, ref) => {
   const intl = useIntl();
 
+  const handleClear: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+
+    onClear!();
+  };
+
   return (
     <label
       className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
@@ -54,7 +60,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
       </HStack>
       {onClear && src && (
         <IconButton
-          onClick={onClear}
+          onClick={handleClear}
           src={require('@tabler/icons/x.svg')}
           theme='dark'
           className='absolute right-2 top-2 z-10 hover:scale-105 hover:bg-gray-900'
