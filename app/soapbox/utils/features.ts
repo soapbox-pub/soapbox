@@ -17,6 +17,12 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
+ * Calckey, a fork of Misskey.
+ * @see {@link https://calckey.org/}
+ */
+export const CALCKEY = 'Calckey';
+
+/**
  * Ditto, a Nostr server with Mastodon API.
  * @see {@link https://gitlab.com/soapbox-pub/ditto}
  */
@@ -139,6 +145,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/accounts/lookup
      */
     accountLookup: any([
+      v.software === CALCKEY,
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TAKAHE && gte(v.version, '0.6.1'),
@@ -224,6 +231,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/bookmarks
      */
     bookmarks: any([
+      v.software === CALCKEY,
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
@@ -324,6 +332,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/conversations/}
      */
     conversations: any([
+      v.software === CALCKEY,
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
@@ -362,6 +371,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see PATCH /api/v1/accounts/update_credentials
      */
     editProfile: any([
+      v.software === CALCKEY,
       v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === MITRA,
@@ -447,6 +457,7 @@ const getInstanceFeatures = (instance: Instance) => {
 
     /** Whether the accounts who favourited or emoji-reacted to a status can be viewed through the API. */
     exposableReactions: any([
+      v.software === CALCKEY,
       v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === TAKAHE && gte(v.version, '0.6.1'),
@@ -625,6 +636,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/timelines/list/:list_id
      */
     lists: any([
+      v.software === CALCKEY,
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
@@ -737,6 +749,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/statuses
      */
     polls: any([
+      v.software === CALCKEY,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
       v.software === TRUTHSOCIAL,
@@ -773,6 +786,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/timelines/public
      */
     publicTimeline: any([
+      v.software === CALCKEY,
       v.software === FRIENDICA,
       v.software === MASTODON,
       v.software === PLEROMA,
