@@ -471,6 +471,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     familiarFollowers: any([
       v.software === MASTODON && gte(v.version, '3.5.0'),
+      v.software === PLEROMA && gte(v.version, '2.5.52') && v.build === REBASED,
       v.software === TAKAHE,
     ]),
 
