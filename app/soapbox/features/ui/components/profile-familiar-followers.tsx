@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 
 import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers';
 import { openModal } from 'soapbox/actions/modals';
+import AvatarStack from 'soapbox/components/avatar-stack';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Text } from 'soapbox/components/ui';
+import { HStack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -30,7 +31,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
     if (me && features.familiarFollowers) {
       dispatch(fetchAccountFamiliarFollowers(account.id));
     }
-  }, []);
+  }, [account.id]);
 
   const openFamiliarFollowersModal = () => {
     dispatch(openModal('FAMILIAR_FOLLOWERS', {
@@ -44,10 +45,18 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
 
   const accounts: Array<React.ReactNode> = familiarFollowers.map(account => !!account && (
     <HoverRefWrapper accountId={account.id} inline>
-      <Link className='mention' to={`/@${account.acct}`}>
-        <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
+      <Link className='mention inline-block' to={`/@${account.acct}`}>
+        <HStack space={1} alignItems='center' grow>
+          <Text
+            size='sm'
+            theme='primary'
+            truncate
+            dangerouslySetInnerHTML={{ __html: account.display_name_html }}
+          />
+          {/* <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} /> */}
 
-        {account.verified && <VerificationBadge />}
+          {account.verified && <VerificationBadge />}
+        </HStack>
       </Link>
     </HoverRefWrapper>
   )).toArray();
@@ -65,15 +74,18 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
   }
 
   return (
-    <Text theme='muted' size='sm'>
-      <FormattedMessage
-        id='account.familiar_followers'
-        defaultMessage='Followed by {accounts}'
-        values={{
-          accounts: <FormattedList type='conjunction' value={accounts} />,
-        }}
-      />
-    </Text>
+    <HStack space={2} alignItems='center'>
+      <AvatarStack accountIds={familiarFollowerIds} />
+      <Text theme='muted' size='sm'>
+        <FormattedMessage
+          id='account.familiar_followers'
+          defaultMessage='Followed by {accounts}'
+          values={{
+            accounts: <FormattedList type='conjunction' value={accounts} />,
+          }}
+        />
+      </Text>
+    </HStack>
   );
 };
 
