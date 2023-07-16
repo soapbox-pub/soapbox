@@ -25,6 +25,7 @@ const configuration: Configuration = {
     filename: 'packs/js/[name]-[chunkhash].js',
     chunkFilename: 'packs/js/[name]-[chunkhash].chunk.js',
     hotUpdateChunkFilename: 'packs/js/[id]-[contenthash].hot-update.js',
+    publicPath: process.env.FE_SUBDIRECTORY || '/',
   },
 
   optimization: {
