@@ -11,6 +11,7 @@ describe('<QuotedStatus />', () => {
     const account = normalizeAccount({
       id: '1',
       acct: 'alex',
+      url: 'https://soapbox.test/users/alex',
     });
 
     const status = normalizeStatus({

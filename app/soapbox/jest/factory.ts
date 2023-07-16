@@ -30,6 +30,7 @@ import type { PartialDeep } from 'type-fest';
 function buildAccount(props: PartialDeep<Account> = {}): Account {
   return accountSchema.parse(Object.assign({
     id: uuidv4(),
+    url: `https://soapbox.test/users/${uuidv4()}`,
   }, props));
 }
 
