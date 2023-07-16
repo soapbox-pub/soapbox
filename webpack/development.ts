@@ -109,7 +109,6 @@ const configuration: Configuration = {
 
   output: {
     pathinfo: true,
-    publicPath: process.env.FE_SUBDIRECTORY || '/',
   },
 
   watchOptions: Object.assign(
