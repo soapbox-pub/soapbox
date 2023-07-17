@@ -49,12 +49,13 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
-    if (!node.current) return;
 
-    const element = node.current.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
+    const element = node.current?.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
 
     if (element) {
       element.focus();
+    } else {
+      dispatch(openModal('COMPOSE'));
     }
   };
 
