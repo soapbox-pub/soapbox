@@ -58,7 +58,7 @@ const configuration: Configuration = {
     chunkFilename: 'packs/js/[name].chunk.js',
     hotUpdateChunkFilename: 'packs/js/[id].hot-update.js',
     path: output.path,
-    publicPath: join(FE_SUBDIRECTORY, '/'),
+    publicPath: FE_SUBDIRECTORY || '/',
   },
 
   optimization: {

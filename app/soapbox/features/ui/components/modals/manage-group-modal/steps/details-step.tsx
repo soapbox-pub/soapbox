@@ -3,8 +3,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { CreateGroupParams, useGroupValidation } from 'soapbox/api/hooks';
 import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
-import AvatarPicker from 'soapbox/features/group/components/group-avatar-picker';
-import HeaderPicker from 'soapbox/features/group/components/group-header-picker';
+import AvatarPicker from 'soapbox/features/edit-profile/components/avatar-picker';
+import HeaderPicker from 'soapbox/features/edit-profile/components/header-picker';
 import GroupTagsField from 'soapbox/features/group/components/group-tags-field';
 import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
 import { usePreview } from 'soapbox/hooks/forms';
@@ -66,6 +66,8 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
     };
   };
 
+  const handleImageClear = (property: keyof CreateGroupParams) => () => onChange({ [property]: undefined });
+
   const handleTagsChange = (tags: string[]) => {
     onChange({
       ...params,
@@ -92,7 +94,7 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
   return (
     <Form>
       <div className='relative mb-12 flex'>
-        <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleImageChange('header', 1920 * 1080)} />
+        <HeaderPicker src={headerSrc} accept={attachmentTypes} onChange={handleImageChange('header', 1920 * 1080)} onClear={handleImageClear('header')} />
         <AvatarPicker src={avatarSrc} accept={attachmentTypes} onChange={handleImageChange('avatar', 400 * 400)} />
       </div>
 

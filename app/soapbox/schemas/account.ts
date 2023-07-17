@@ -87,7 +87,7 @@ const baseAccountSchema = z.object({
   statuses_count: z.number().catch(0),
   suspended: z.boolean().catch(false),
   uri: z.string().url().catch(''),
-  url: z.string().url().catch(''),
+  url: z.string().url(),
   username: z.string().catch(''),
   verified: z.boolean().catch(false),
   website: z.string().catch(''),

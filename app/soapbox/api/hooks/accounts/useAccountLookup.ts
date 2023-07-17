@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntityLookup } from 'soapbox/entity-store/hooks';
 import { useFeatures, useLoggedIn } from 'soapbox/hooks';
@@ -13,12 +16,13 @@ interface UseAccountLookupOpts {
 function useAccountLookup(acct: string | undefined, opts: UseAccountLookupOpts = {}) {
   const api = useApi();
   const features = useFeatures();
+  const history = useHistory();
   const { me } = useLoggedIn();
   const { withRelationship } = opts;
 
-  const { entity: account, ...result } = useEntityLookup<Account>(
+  const { entity: account, isUnauthorized, ...result } = useEntityLookup<Account>(
     Entities.ACCOUNTS,
-    (account) => account.acct === acct,
+    (account) => account.acct.toLowerCase() === acct?.toLowerCase(),
     () => api.get(`/api/v1/accounts/lookup?acct=${acct}`),
     { schema: accountSchema, enabled: !!acct },
   );
@@ -31,10 +35,17 @@ function useAccountLookup(acct: string | undefined, opts: UseAccountLookupOpts =
   const isBlocked = account?.relationship?.blocked_by === true;
   const isUnavailable = (me === account?.id) ? false : (isBlocked && !features.blockersVisible);
 
+  useEffect(() => {
+    if (isUnauthorized) {
+      history.push('/login');
+    }
+  }, [isUnauthorized]);
+
   return {
     ...result,
     isLoading: result.isLoading,
     isRelationshipLoading,
+    isUnauthorized,
     isUnavailable,
     account: account ? { ...account, relationship } : undefined,
   };

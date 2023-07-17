@@ -33,5 +33,6 @@ export const fetchAccountFamiliarFollowers = (accountId: string) => (dispatch: A
       type: FAMILIAR_FOLLOWERS_FETCH_FAIL,
       id: accountId,
       error,
+      skipAlert: true,
     }));
 };
