@@ -14,6 +14,7 @@ import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { accountSchema, cardSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
+import { maybeFromJS } from 'soapbox/utils/normalizers';
 
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
@@ -245,7 +246,7 @@ const normalizeDislikes = (status: ImmutableMap<string, any>) => {
 
 const parseAccount = (status: ImmutableMap<string, any>) => {
   try {
-    const account = accountSchema.parse(status.get('account').toJS());
+    const account = accountSchema.parse(maybeFromJS(status.get('account')));
     return status.set('account', account);
   } catch (_e) {
     return status.set('account', null);
