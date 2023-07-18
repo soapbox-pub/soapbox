@@ -136,6 +136,7 @@ const Preferences = () => {
 
         <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}>
           <SelectDropdown
+            className='max-w-[200px]'
             items={languages}
             defaultValue={settings.get('locale') as string | undefined}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['locale'])}
@@ -144,6 +145,7 @@ const Preferences = () => {
 
         <ListItem label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Sensitive content' />}>
           <SelectDropdown
+            className='max-w-[200px]'
             items={displayMediaOptions}
             defaultValue={settings.get('displayMedia') as string | undefined}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['displayMedia'])}
@@ -153,6 +155,7 @@ const Preferences = () => {
         {features.privacyScopes && (
           <ListItem label={<FormattedMessage id='preferences.fields.privacy_label' defaultMessage='Default post privacy' />}>
             <SelectDropdown
+              className='max-w-[200px]'
               items={defaultPrivacyOptions}
               defaultValue={settings.get('defaultPrivacy') as string | undefined}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultPrivacy'])}
@@ -163,10 +166,17 @@ const Preferences = () => {
         {features.richText && (
           <ListItem label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Default post format' />}>
             <SelectDropdown
+              className='max-w-[200px]'
               items={defaultContentTypeOptions}
               defaultValue={settings.get('defaultContentType') as string | undefined}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultContentType'])}
             />
+          </ListItem>
+        )}
+
+        {features.spoilers && (
+          <ListItem label={<FormattedMessage id='preferences.fields.preserve_spoilers_label' defaultMessage='Preserve content warning when replying' />}>
+            <SettingToggle settings={settings} settingPath={['preserveSpoilers']} onChange={onToggleChange} />
           </ListItem>
         )}
       </List>

@@ -118,6 +118,7 @@ export const Checkbox: React.FC<ICheckbox> = (props) => (
 );
 
 interface ISelectDropdown {
+  className?: string
   label?: React.ReactNode
   hint?: React.ReactNode
   items: Record<string, string>

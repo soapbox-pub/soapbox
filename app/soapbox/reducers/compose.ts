@@ -312,6 +312,11 @@ export default function compose(state = initialState, action: ComposeAction | Me
         map.set('caretPosition', null);
         map.set('idempotencyKey', uuid());
         map.set('content_type', defaultCompose.content_type);
+        if (action.preserveSpoilers && action.status.spoiler_text) {
+          map.set('spoiler', true);
+          map.set('sensitive', true);
+          map.set('spoiler_text', action.status.spoiler_text);
+        }
       }));
     case COMPOSE_EVENT_REPLY:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
