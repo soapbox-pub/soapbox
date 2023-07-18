@@ -102,7 +102,7 @@ const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
             </tr>
             <tr>
               <TableCell><Hotkey>n</Hotkey></TableCell>
-              <TableCell><FormattedMessage id='keyboard_shortcuts.compose' defaultMessage='to focus the compose textarea' /></TableCell>
+              <TableCell><FormattedMessage id='keyboard_shortcuts.compose' defaultMessage='to open the compose textarea' /></TableCell>
             </tr>
             <tr>
               <TableCell><Hotkey>alt</Hotkey> + <Hotkey>n</Hotkey></TableCell>
