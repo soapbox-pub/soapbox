@@ -6,7 +6,6 @@ Copyright (c) Meta Platforms, Inc. and affiliates.
 This source code is licensed under the MIT license found in the
 LICENSE file in the /app/soapbox/features/compose/editor directory.
 */
-import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { AutoLinkPlugin, createLinkMatcherWithRegExp } from '@lexical/react/LexicalAutoLinkPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
@@ -20,6 +19,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import clsx from 'clsx';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
+import { $createRemarkExport, $createRemarkImport } from 'lexical-remark';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -39,7 +39,6 @@ import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
 import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import MentionPlugin from './plugins/mention-plugin';
 import StatePlugin from './plugins/state-plugin';
-import { TO_WYSIWYG_TRANSFORMERS } from './transformers';
 
 interface IComposeEditor {
   className?: string
@@ -107,7 +106,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 
       return function() {
         if (compose.content_type === 'text/markdown') {
-          $convertFromMarkdownString(compose.text, TO_WYSIWYG_TRANSFORMERS);
+          $createRemarkImport({})(compose.text);
         } else {
           const paragraph = $createParagraphNode();
           const textNode = $createTextNode(compose.text);
@@ -175,9 +174,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         />
         {autoFocus && <AutoFocusPlugin />}
         <OnChangePlugin onChange={(_, editor) => {
-          editor.update(() => {
-            if (editorStateRef) (editorStateRef as any).current = $convertToMarkdownString(TO_WYSIWYG_TRANSFORMERS);
-          });
+          if (editorStateRef) (editorStateRef as any).current = editor.getEditorState().read($createRemarkExport());
         }}
         />
         <HistoryPlugin />

@@ -160,6 +160,7 @@ const configuration: Configuration = {
       // https://github.com/facebook/react/issues/20235#issuecomment-1061708958
       'react/jsx-runtime': 'react/jsx-runtime.js',
       'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
+      'process/browser': require.resolve('process/browser'),
     },
   },
 
