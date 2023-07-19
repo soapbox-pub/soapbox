@@ -3,7 +3,13 @@ import type { Entity, EntityStore, EntityList, EntityCache, EntityListState, Imp
 /** Insert the entities into the store. */
 const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {
   return entities.reduce<EntityStore>((store, entity) => {
-    store[entity.id] = entity;
+    const cachedEntity = store[entity.id];
+
+    store[entity.id] = {
+      // Don't allow "undefined" values to override previously set values
+      ...(cachedEntity ? JSON.parse(JSON.stringify(cachedEntity)) : undefined),
+      ...JSON.parse(JSON.stringify(entity)),
+    };
     return store;
   }, { ...store });
 };
