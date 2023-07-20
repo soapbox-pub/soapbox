@@ -1,3 +1,4 @@
+import { selectAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -356,7 +357,7 @@ const resetListAdder = () => ({
 const setupListAdder = (accountId: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch({
     type: LIST_ADDER_SETUP,
-    account: getState().accounts.get(accountId),
+    account: selectAccount(getState(), accountId),
   });
   dispatch(fetchLists());
   dispatch(fetchAccountLists(accountId));

@@ -10,6 +10,7 @@ import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 
 import * as BuildConfig from 'soapbox/build-config';
+import { selectAccount } from 'soapbox/selectors';
 import { RootState } from 'soapbox/store';
 import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
 
@@ -46,7 +47,7 @@ const maybeParseJSON = (data: string) => {
 };
 
 const getAuthBaseURL = createSelector([
-  (state: RootState, me: string | false | null) => state.accounts.getIn([me, 'url']),
+  (state: RootState, me: string | false | null) => me ? selectAccount(state, me)?.url : undefined,
   (state: RootState, _me: string | false | null) => state.auth.me,
 ], (accountUrl, authUserUrl) => {
   const baseURL = parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);

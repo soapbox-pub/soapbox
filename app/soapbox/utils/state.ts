@@ -6,6 +6,7 @@
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
 import { isPrerendered } from 'soapbox/precheck';
+import { selectOwnAccount } from 'soapbox/selectors';
 import { isURL } from 'soapbox/utils/auth';
 
 import type { RootState } from 'soapbox/store';
@@ -39,6 +40,6 @@ const getHost = (url: any): string => {
 
 /** Get the baseURL of the instance. */
 export const getBaseURL = (state: RootState): string => {
-  const account = state.accounts.get(state.me);
+  const account = selectOwnAccount(state);
   return isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : getHost(account?.url);
 };

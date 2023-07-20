@@ -6,6 +6,7 @@ import { defineMessages, IntlShape } from 'react-intl';
 import api from 'soapbox/api';
 import { isNativeEmoji } from 'soapbox/features/emoji';
 import emojiSearch from 'soapbox/features/emoji/search';
+import { selectAccount, selectOwnAccount } from 'soapbox/selectors';
 import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
@@ -151,12 +152,14 @@ const replyCompose = (status: Status) =>
     const state = getState();
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
+    const account = selectOwnAccount(state);
+    if (!account) return;
 
     const action: ComposeReplyAction = {
       type: COMPOSE_REPLY,
       id: 'compose-modal',
       status: status,
-      account: state.accounts.get(state.me)!,
+      account,
       explicitAddressing,
     };
 
@@ -187,7 +190,7 @@ const quoteCompose = (status: Status) =>
       type: COMPOSE_QUOTE,
       id: 'compose-modal',
       status: status,
-      account: state.accounts.get(state.me),
+      account: selectOwnAccount(state),
       explicitAddressing,
     };
 
@@ -251,7 +254,7 @@ const directCompose = (account: Account) =>
 
 const directComposeById = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const account = getState().accounts.get(accountId);
+    const account = selectAccount(getState(), accountId);
     if (!account) return;
 
     const action: ComposeDirectAction = {
@@ -651,10 +654,12 @@ const selectComposeSuggestion = (composeId: string, position: number, token: str
     } else if (typeof suggestion === 'string' && suggestion[0] === '#') {
       completion    = suggestion;
       startPosition = position - 1;
-    } else {
-      completion    = getState().accounts.get(suggestion)!.acct;
+    } else if (typeof suggestion === 'string') {
+      completion    = selectAccount(getState(), suggestion)!.acct;
       startPosition = position;
     }
+
+    if (!startPosition || !completion) return;
 
     const action: ComposeSuggestionSelectAction = {
       type: COMPOSE_SUGGESTION_SELECT,
@@ -798,12 +803,13 @@ interface ComposeAddToMentionsAction {
 const addToMentions = (composeId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const acct = state.accounts.get(accountId)!.acct;
+    const account = selectAccount(state, accountId);
+    if (!account) return;
 
     const action: ComposeAddToMentionsAction = {
       type: COMPOSE_ADD_TO_MENTIONS,
       id: composeId,
-      account: acct,
+      account: account.acct,
     };
 
     return dispatch(action);
@@ -818,12 +824,13 @@ interface ComposeRemoveFromMentionsAction {
 const removeFromMentions = (composeId: string, accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const acct = state.accounts.get(accountId)!.acct;
+    const account = selectAccount(state, accountId);
+    if (!account) return;
 
     const action: ComposeRemoveFromMentionsAction = {
       type: COMPOSE_REMOVE_FROM_MENTIONS,
       id: composeId,
-      account: acct,
+      account: account.acct,
     };
 
     return dispatch(action);
@@ -847,7 +854,7 @@ const eventDiscussionCompose = (composeId: string, status: Status) =>
       type: COMPOSE_EVENT_REPLY,
       id: composeId,
       status: status,
-      account: state.accounts.get(state.me),
+      account: selectOwnAccount(state),
       explicitAddressing,
     });
   };

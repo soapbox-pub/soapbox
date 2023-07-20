@@ -7,6 +7,7 @@ import MissingIndicator from 'soapbox/components/missing-indicator';
 import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { selectOwnAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.pins', defaultMessage: 'Pinned posts' },
@@ -17,7 +18,7 @@ const PinnedStatuses = () => {
   const dispatch = useAppDispatch();
   const { username } = useParams<{ username: string }>();
 
-  const meUsername = useAppSelector((state) => state.accounts.get(state.me)?.username || '');
+  const meUsername = useAppSelector((state) => selectOwnAccount(state)?.username || '');
   const statusIds = useAppSelector((state) => state.status_lists.get('pins')!.items);
   const isLoading = useAppSelector((state) => !!state.status_lists.get('pins')!.isLoading);
   const hasMore = useAppSelector((state) => !!state.status_lists.get('pins')!.next);
