@@ -3,15 +3,10 @@ import get from 'lodash/get';
 
 import KVStore from 'soapbox/storage/kv-store';
 import { RootState } from 'soapbox/store';
-import { getAuthUserUrl } from 'soapbox/utils/auth';
+import { getAuthUserUrl, getMeUrl } from 'soapbox/utils/auth';
 import { parseVersion } from 'soapbox/utils/features';
 
 import api from '../api';
-
-const getMeUrl = (state: RootState) => {
-  const me = state.me;
-  return state.accounts.get(me)?.url;
-};
 
 /** Figure out the appropriate instance to fetch depending on the state */
 export const getHost = (state: RootState) => {

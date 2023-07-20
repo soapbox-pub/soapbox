@@ -1,8 +1,11 @@
+import { Entities } from 'soapbox/entity-store/entities';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
 import api, { getLinks } from '../api';
 
 import type { AxiosError } from 'axios';
+import type { EntityStore } from 'soapbox/entity-store/types';
+import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 const DOMAIN_BLOCK_REQUEST = 'DOMAIN_BLOCK_REQUEST';
@@ -28,11 +31,8 @@ const blockDomain = (domain: string) =>
     dispatch(blockDomainRequest(domain));
 
     api(getState).post('/api/v1/domain_blocks', { domain }).then(() => {
-      const at_domain = '@' + domain;
-      const accounts = getState().accounts
-        .filter(item => item.acct.endsWith(at_domain))
-        .map(item => item.id);
-
+      const accounts = selectAccountsByDomain(getState(), domain);
+      if (!accounts) return;
       dispatch(blockDomainSuccess(domain, accounts));
     }).catch(err => {
       dispatch(blockDomainFail(domain, err));
@@ -69,8 +69,8 @@ const unblockDomain = (domain: string) =>
     };
 
     api(getState).delete('/api/v1/domain_blocks', params).then(() => {
-      const at_domain = '@' + domain;
-      const accounts = getState().accounts.filter(item => item.acct.endsWith(at_domain)).map(item => item.id);
+      const accounts = selectAccountsByDomain(getState(), domain);
+      if (!accounts) return;
       dispatch(unblockDomainSuccess(domain, accounts));
     }).catch(err => {
       dispatch(unblockDomainFail(domain, err));
@@ -142,6 +142,15 @@ const expandDomainBlocks = () =>
       dispatch(expandDomainBlocksFail(err));
     });
   };
+
+function selectAccountsByDomain(state: RootState, domain: string): string[] {
+  const store = state.entities[Entities.ACCOUNTS]?.store as EntityStore<Account> | undefined;
+  const entries = store ? Object.entries(store) : undefined;
+  const accounts = entries
+    ?.filter(([_, item]) => item && item.acct.endsWith(`@${domain}`))
+    .map(([_, item]) => item!.id);
+  return accounts || [];
+}
 
 const expandDomainBlocksRequest = () => ({
   type: DOMAIN_BLOCKS_EXPAND_REQUEST,

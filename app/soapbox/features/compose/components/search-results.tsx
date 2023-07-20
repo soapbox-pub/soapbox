@@ -4,6 +4,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending-statuses';
+import { useAccount } from 'soapbox/api/hooks';
 import Hashtag from 'soapbox/components/hashtag';
 import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable-list';
@@ -38,8 +39,8 @@ const SearchResults = () => {
   const trends = useAppSelector((state) => state.trends.items);
   const submitted = useAppSelector((state) => state.search.submitted);
   const selectedFilter = useAppSelector((state) => state.search.filter);
-  const filterByAccount = useAppSelector((state) => state.search.accountId);
-  const account = useAppSelector((state) => state.accounts.get(filterByAccount)?.acct);
+  const filterByAccount = useAppSelector((state) => state.search.accountId || undefined);
+  const { account } = useAccount(filterByAccount);
 
   const handleLoadMore = () => dispatch(expandSearch(selectedFilter));
 
@@ -205,7 +206,7 @@ const SearchResults = () => {
             <FormattedMessage
               id='search_results.filter_message'
               defaultMessage='You are searching for posts from @{acct}.'
-              values={{ acct: <strong className='break-words'>{account}</strong> }}
+              values={{ acct: <strong className='break-words'>{account?.acct}</strong> }}
             />
           </Text>
         </HStack>

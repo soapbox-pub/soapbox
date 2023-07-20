@@ -2,6 +2,7 @@ import { defineMessages } from 'react-intl';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import { selectAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 import { getFeatures } from 'soapbox/utils/features';
@@ -121,7 +122,7 @@ const messages = defineMessages({
   announcementUpdateSuccess: { id: 'admin.edit_announcement.updated', defaultMessage: 'Announcement edited' },
 });
 
-const nicknamesFromIds = (getState: () => RootState, ids: string[]) => ids.map(id => getState().accounts.get(id)!.acct);
+const nicknamesFromIds = (getState: () => RootState, ids: string[]) => ids.map((id) => selectAccount(getState(), id)!.acct);
 
 const fetchConfig = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
