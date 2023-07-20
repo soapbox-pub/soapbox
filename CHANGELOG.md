@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: unified design of "approve" and "reject" buttons in follow requests and waitlist.
 - UI: added sticky column header.
 - UI: add specific zones the user can drag-and-drop files.
+- UI: disable toast notifications for API errors.
 
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
