@@ -21,10 +21,72 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
+import { useIntl } from 'react-intl';
 
+import { uploadFiles } from 'soapbox/actions/compose';
+import { useAppDispatch, useInstance } from 'soapbox/hooks';
+
+import { onlyImages } from '../../components/upload-button';
+import { $createImageNode } from '../nodes/image-node';
 import { setFloatingElemPosition } from '../utils/set-floating-elem-position';
 
 import { ToolbarButton } from './floating-text-format-toolbar-plugin';
+
+import type { List as ImmutableList } from 'immutable';
+
+interface IUploadButton {
+  onSelectFile: (src: string) =>  void
+}
+
+const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
+  const intl = useIntl();
+  const { configuration } = useInstance();
+  const dispatch = useAppDispatch();
+
+  const fileElement = useRef<HTMLInputElement>(null);
+  const attachmentTypes = configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>;
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (e.target.files?.length) {
+      // @ts-ignore
+      dispatch(uploadFiles([e.target.files.item(0)] as any, intl));
+    }
+  };
+
+  const handleClick = () => {
+    fileElement.current?.click();
+  };
+
+  // if (unavailable) {
+  //   return null;
+  // }
+
+  const src = (
+    onlyImages(attachmentTypes)
+      ? require('@tabler/icons/photo.svg')
+      : require('@tabler/icons/paperclip.svg')
+  );
+
+  return (
+    <label>
+      <ToolbarButton
+        onClick={handleClick}
+        aria-label='Upload media'
+        icon={src}
+      />
+      <input
+        // key={resetFileKey}
+        ref={fileElement}
+        type='file'
+        multiple
+        accept={attachmentTypes && attachmentTypes.toArray().join(',')}
+        onChange={handleChange}
+        // disabled={disabled}
+        className='hidden'
+      />
+    </label>
+  );
+};
 
 const BlockTypeFloatingToolbar = ({
   editor,
@@ -112,6 +174,16 @@ const BlockTypeFloatingToolbar = ({
     });
   };
 
+  const createImage = (src: string) => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
+        const selectionNode = selection.anchor.getNode();
+        selectionNode.replace($createImageNode({ src }));
+      }
+    });
+  };
+
   return (
     <div
       ref={popupCharStylesEditorRef}
@@ -124,6 +196,7 @@ const BlockTypeFloatingToolbar = ({
             aria-label='Insert horizontal line'
             icon={require('@tabler/icons/line-dashed.svg')}
           />
+          <UploadButton onSelectFile={createImage} />
         </>
       )}
     </div>

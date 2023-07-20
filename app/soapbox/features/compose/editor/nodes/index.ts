@@ -17,6 +17,7 @@ import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { useFeatures, useInstance } from 'soapbox/hooks';
 
 import { EmojiNode } from './emoji-node';
+import { ImageNode } from './image-node';
 import { MentionNode } from './mention-node';
 
 import type { Klass, LexicalNode } from 'lexical';
@@ -45,6 +46,7 @@ const useNodes = () => {
   }
 
   if (instance.pleroma.getIn(['metadata', 'markup', 'allow_headings'])) nodes.push(HeadingNode);
+  if (instance.pleroma.getIn(['metadata', 'markup', 'allow_inline_images'])) nodes.push(ImageNode);
 
   return nodes;
 };

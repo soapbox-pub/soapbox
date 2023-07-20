@@ -33,6 +33,11 @@ const { CancelToken, isCancel } = axios;
 
 let cancelFetchComposeSuggestions: Canceler;
 
+const FILES_UPLOAD_REQUEST  = 'FILES_UPLOAD_REQUEST' as const;
+const FILES_UPLOAD_SUCCESS  = 'FILES_UPLOAD_SUCCESS' as const;
+const FILES_UPLOAD_FAIL     = 'FILES_UPLOAD_FAIL' as const;
+const FILES_UPLOAD_PROGRESS = 'FILES_UPLOAD_PROGRESS' as const;
+
 const COMPOSE_CHANGE          = 'COMPOSE_CHANGE' as const;
 const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST' as const;
 const COMPOSE_SUBMIT_SUCCESS  = 'COMPOSE_SUBMIT_SUCCESS' as const;
@@ -388,6 +393,102 @@ const submitComposeFail = (composeId: string, error: AxiosError) => ({
   error: error,
 });
 
+const uploadFiles = (files: FileList, intl: IntlShape) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (!isLoggedIn(getState)) return;
+    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
+    const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
+    const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
+
+    const progress = new Array(files.length).fill(0);
+    let total = Array.from(files).reduce((a, v) => a + v.size, 0);
+
+    dispatch(uploadFilesRequest());
+
+    return Array.from(files).forEach(async(f, i) => {
+      const isImage = f.type.match(/image.*/);
+      const isVideo = f.type.match(/video.*/);
+      const videoDurationInSeconds = (isVideo && maxVideoDuration) ? await getVideoDuration(f) : 0;
+
+      if (isImage && maxImageSize && (f.size > maxImageSize)) {
+        const limit = formatBytes(maxImageSize);
+        const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
+        toast.error(message);
+        dispatch(uploadFilesFail(true));
+        return;
+      } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
+        const limit = formatBytes(maxVideoSize);
+        const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
+        toast.error(message);
+        dispatch(uploadFilesFail(true));
+        return;
+      } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
+        const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
+        toast.error(message);
+        dispatch(uploadFilesFail(true));
+        return;
+      }
+
+      // FIXME: Don't define const in loop
+      resizeImage(f).then(file => {
+        const data = new FormData();
+        data.append('file', file);
+        // Account for disparity in size of original image and resized data
+        total += file.size - f.size;
+
+        const onUploadProgress = ({ loaded }: any) => {
+          progress[i] = loaded;
+          dispatch(uploadFilesProgress(progress.reduce((a, v) => a + v, 0), total));
+        };
+
+        return dispatch(uploadMedia(data, onUploadProgress))
+          .then(({ status, data }) => {
+            // If server-side processing of the media attachment has not completed yet,
+            // poll the server until it is, before showing the media attachment as uploaded
+            if (status === 200) {
+              dispatch(uploadFilesSuccess(data, f));
+            } else if (status === 202) {
+              const poll = () => 
+                dispatch(fetchMedia(data.id)).then(({ status, data }) => {
+                  if (status === 200) {
+                    dispatch(uploadFilesSuccess(data, f));
+                    return data;
+                  } else if (status === 206) {
+                    setTimeout(() => poll(), 1000);
+                  }
+                }).catch(error => dispatch(uploadFilesFail(error)));
+
+              poll();
+            }
+          });
+      }).catch(error => dispatch(uploadFilesFail(error)));
+    });
+  };
+
+const uploadFilesRequest = () => ({
+  type: FILES_UPLOAD_REQUEST,
+  skipLoading: true,
+});
+
+const uploadFilesProgress = (loaded: number, total: number) => ({
+  type: FILES_UPLOAD_PROGRESS,
+  loaded: loaded,
+  total: total,
+});
+
+const uploadFilesSuccess = (media: APIEntity, file: File) => ({
+  type: FILES_UPLOAD_SUCCESS,
+  media: media,
+  file,
+  skipLoading: true,
+});
+
+const uploadFilesFail = (error: AxiosError | true) => ({
+  type: FILES_UPLOAD_FAIL,
+  error: error,
+  skipLoading: true,
+});
+
 const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
@@ -436,7 +537,6 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
       }
 
       // FIXME: Don't define const in loop
-      /* eslint-disable no-loop-func */
       resizeImage(f).then(file => {
         const data = new FormData();
         data.append('file', file);
@@ -469,9 +569,36 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
             }
           });
       }).catch(error => dispatch(uploadComposeFail(composeId, error)));
-      /* eslint-enable no-loop-func */
     });
   };
+
+const uploadComposeRequest = (composeId: string) => ({
+  type: COMPOSE_UPLOAD_REQUEST,
+  id: composeId,
+  skipLoading: true,
+});
+
+const uploadComposeProgress = (composeId: string, loaded: number, total: number) => ({
+  type: COMPOSE_UPLOAD_PROGRESS,
+  id: composeId,
+  loaded: loaded,
+  total: total,
+});
+
+const uploadComposeSuccess = (composeId: string, media: APIEntity, file: File) => ({
+  type: COMPOSE_UPLOAD_SUCCESS,
+  id: composeId,
+  media: media,
+  file,
+  skipLoading: true,
+});
+
+const uploadComposeFail = (composeId: string, error: AxiosError | true) => ({
+  type: COMPOSE_UPLOAD_FAIL,
+  id: composeId,
+  error: error,
+  skipLoading: true,
+});
 
 const changeUploadCompose = (composeId: string, id: string, params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -503,34 +630,6 @@ const changeUploadComposeFail = (composeId: string, id: string, error: AxiosErro
   type: COMPOSE_UPLOAD_CHANGE_FAIL,
   composeId,
   id,
-  error: error,
-  skipLoading: true,
-});
-
-const uploadComposeRequest = (composeId: string) => ({
-  type: COMPOSE_UPLOAD_REQUEST,
-  id: composeId,
-  skipLoading: true,
-});
-
-const uploadComposeProgress = (composeId: string, loaded: number, total: number) => ({
-  type: COMPOSE_UPLOAD_PROGRESS,
-  id: composeId,
-  loaded: loaded,
-  total: total,
-});
-
-const uploadComposeSuccess = (composeId: string, media: APIEntity, file: File) => ({
-  type: COMPOSE_UPLOAD_SUCCESS,
-  id: composeId,
-  media: media,
-  file,
-  skipLoading: true,
-});
-
-const uploadComposeFail = (composeId: string, error: AxiosError | true) => ({
-  type: COMPOSE_UPLOAD_FAIL,
-  id: composeId,
   error: error,
   skipLoading: true,
 });
@@ -1001,6 +1100,11 @@ export {
   submitComposeRequest,
   submitComposeSuccess,
   submitComposeFail,
+  uploadFiles,
+  uploadFilesRequest,
+  uploadFilesSuccess,
+  uploadFilesProgress,
+  uploadFilesFail,
   uploadCompose,
   changeUploadCompose,
   changeUploadComposeRequest,
