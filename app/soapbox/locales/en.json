@@ -1196,6 +1196,7 @@
   "preferences.fields.language_label": "Display Language",
   "preferences.fields.media_display_label": "Sensitive content",
   "preferences.fields.missing_description_modal_label": "Show confirmation dialog before sending a post without media descriptions",
+  "preferences.fields.preserve_spoilers_label": "Preserve content warning when replying",
   "preferences.fields.privacy_label": "Default post privacy",
   "preferences.fields.reduce_motion_label": "Reduce motion in animations",
   "preferences.fields.system_font_label": "Use system's default font",
