@@ -11,12 +11,10 @@ import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
-import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
-import resizeImage from 'soapbox/utils/resize-image';
 
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
-import { uploadMedia, fetchMedia, updateMedia } from './media';
+import { uploadFile, updateMedia } from './media';
 import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
@@ -32,11 +30,6 @@ import type { History } from 'soapbox/types/history';
 const { CancelToken, isCancel } = axios;
 
 let cancelFetchComposeSuggestions: Canceler;
-
-const FILES_UPLOAD_REQUEST  = 'FILES_UPLOAD_REQUEST' as const;
-const FILES_UPLOAD_SUCCESS  = 'FILES_UPLOAD_SUCCESS' as const;
-const FILES_UPLOAD_FAIL     = 'FILES_UPLOAD_FAIL' as const;
-const FILES_UPLOAD_PROGRESS = 'FILES_UPLOAD_PROGRESS' as const;
 
 const COMPOSE_CHANGE          = 'COMPOSE_CHANGE' as const;
 const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST' as const;
@@ -96,9 +89,6 @@ const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS' as const;
 const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET' as const;
 
 const messages = defineMessages({
-  exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
-  exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
-  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit, plural, one {# second} other {# seconds}})' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
@@ -393,109 +383,10 @@ const submitComposeFail = (composeId: string, error: AxiosError) => ({
   error: error,
 });
 
-const uploadFiles = (files: FileList, intl: IntlShape) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
-    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
-    const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
-    const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
-
-    const progress = new Array(files.length).fill(0);
-    let total = Array.from(files).reduce((a, v) => a + v.size, 0);
-
-    dispatch(uploadFilesRequest());
-
-    return Array.from(files).forEach(async(f, i) => {
-      const isImage = f.type.match(/image.*/);
-      const isVideo = f.type.match(/video.*/);
-      const videoDurationInSeconds = (isVideo && maxVideoDuration) ? await getVideoDuration(f) : 0;
-
-      if (isImage && maxImageSize && (f.size > maxImageSize)) {
-        const limit = formatBytes(maxImageSize);
-        const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-        toast.error(message);
-        dispatch(uploadFilesFail(true));
-        return;
-      } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
-        const limit = formatBytes(maxVideoSize);
-        const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
-        toast.error(message);
-        dispatch(uploadFilesFail(true));
-        return;
-      } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
-        const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
-        toast.error(message);
-        dispatch(uploadFilesFail(true));
-        return;
-      }
-
-      // FIXME: Don't define const in loop
-      resizeImage(f).then(file => {
-        const data = new FormData();
-        data.append('file', file);
-        // Account for disparity in size of original image and resized data
-        total += file.size - f.size;
-
-        const onUploadProgress = ({ loaded }: any) => {
-          progress[i] = loaded;
-          dispatch(uploadFilesProgress(progress.reduce((a, v) => a + v, 0), total));
-        };
-
-        return dispatch(uploadMedia(data, onUploadProgress))
-          .then(({ status, data }) => {
-            // If server-side processing of the media attachment has not completed yet,
-            // poll the server until it is, before showing the media attachment as uploaded
-            if (status === 200) {
-              dispatch(uploadFilesSuccess(data, f));
-            } else if (status === 202) {
-              const poll = () => 
-                dispatch(fetchMedia(data.id)).then(({ status, data }) => {
-                  if (status === 200) {
-                    dispatch(uploadFilesSuccess(data, f));
-                    return data;
-                  } else if (status === 206) {
-                    setTimeout(() => poll(), 1000);
-                  }
-                }).catch(error => dispatch(uploadFilesFail(error)));
-
-              poll();
-            }
-          });
-      }).catch(error => dispatch(uploadFilesFail(error)));
-    });
-  };
-
-const uploadFilesRequest = () => ({
-  type: FILES_UPLOAD_REQUEST,
-  skipLoading: true,
-});
-
-const uploadFilesProgress = (loaded: number, total: number) => ({
-  type: FILES_UPLOAD_PROGRESS,
-  loaded: loaded,
-  total: total,
-});
-
-const uploadFilesSuccess = (media: APIEntity, file: File) => ({
-  type: FILES_UPLOAD_SUCCESS,
-  media: media,
-  file,
-  skipLoading: true,
-});
-
-const uploadFilesFail = (error: AxiosError | true) => ({
-  type: FILES_UPLOAD_FAIL,
-  error: error,
-  skipLoading: true,
-});
-
 const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const attachmentLimit = getState().instance.configuration.getIn(['statuses', 'max_media_attachments']) as number;
-    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
-    const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
-    const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
 
     const media  = getState().compose.get(composeId)?.media_attachments;
     const progress = new Array(files.length).fill(0);
@@ -513,62 +404,18 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     Array.from(files).forEach(async(f, i) => {
       if (mediaCount + i > attachmentLimit - 1) return;
 
-      const isImage = f.type.match(/image.*/);
-      const isVideo = f.type.match(/video.*/);
-      const videoDurationInSeconds = (isVideo && maxVideoDuration) ? await getVideoDuration(f) : 0;
-
-      if (isImage && maxImageSize && (f.size > maxImageSize)) {
-        const limit = formatBytes(maxImageSize);
-        const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-        toast.error(message);
-        dispatch(uploadComposeFail(composeId, true));
-        return;
-      } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
-        const limit = formatBytes(maxVideoSize);
-        const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
-        toast.error(message);
-        dispatch(uploadComposeFail(composeId, true));
-        return;
-      } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
-        const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
-        toast.error(message);
-        dispatch(uploadComposeFail(composeId, true));
-        return;
-      }
-
-      // FIXME: Don't define const in loop
-      resizeImage(f).then(file => {
-        const data = new FormData();
-        data.append('file', file);
-        // Account for disparity in size of original image and resized data
-        total += file.size - f.size;
-
-        const onUploadProgress = ({ loaded }: any) => {
+      dispatch(uploadFile(
+        f,
+        intl,
+        (data) => dispatch(uploadComposeSuccess(composeId, data, f)),
+        (error) => dispatch(uploadComposeFail(composeId, error)),
+        ({ loaded }: any) => {
           progress[i] = loaded;
           dispatch(uploadComposeProgress(composeId, progress.reduce((a, v) => a + v, 0), total));
-        };
+        },
+        (value) => total += value,
+      ));
 
-        return dispatch(uploadMedia(data, onUploadProgress))
-          .then(({ status, data }) => {
-            // If server-side processing of the media attachment has not completed yet,
-            // poll the server until it is, before showing the media attachment as uploaded
-            if (status === 200) {
-              dispatch(uploadComposeSuccess(composeId, data, f));
-            } else if (status === 202) {
-              const poll = () => {
-                dispatch(fetchMedia(data.id)).then(({ status, data }) => {
-                  if (status === 200) {
-                    dispatch(uploadComposeSuccess(composeId, data, f));
-                  } else if (status === 206) {
-                    setTimeout(() => poll(), 1000);
-                  }
-                }).catch(error => dispatch(uploadComposeFail(composeId, error)));
-              };
-
-              poll();
-            }
-          });
-      }).catch(error => dispatch(uploadComposeFail(composeId, error)));
     });
   };
 
@@ -1100,11 +947,7 @@ export {
   submitComposeRequest,
   submitComposeSuccess,
   submitComposeFail,
-  uploadFiles,
-  uploadFilesRequest,
-  uploadFilesSuccess,
-  uploadFilesProgress,
-  uploadFilesFail,
+  uploadFile,
   uploadCompose,
   changeUploadCompose,
   changeUploadComposeRequest,

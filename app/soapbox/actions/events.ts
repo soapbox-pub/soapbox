@@ -2,11 +2,9 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
 import toast from 'soapbox/toast';
-import { formatBytes } from 'soapbox/utils/media';
-import resizeImage from 'soapbox/utils/resize-image';
 
 import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
-import { fetchMedia, uploadMedia } from './media';
+import { uploadFile } from './media';
 import { closeModal, openModal } from './modals';
 import {
   STATUS_FETCH_SOURCE_FAIL,
@@ -154,52 +152,21 @@ const changeEditEventLocation = (value: string | null) =>
   };
 
 const uploadEventBanner = (file: File, intl: IntlShape) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
-
+  (dispatch: AppDispatch) => {
     let progress = 0;
 
     dispatch(uploadEventBannerRequest());
 
-    if (maxImageSize && (file.size > maxImageSize)) {
-      const limit = formatBytes(maxImageSize);
-      const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-      toast.error(message);
-      dispatch(uploadEventBannerFail(true));
-      return;
-    }
-
-    resizeImage(file).then(file => {
-      const data = new FormData();
-      data.append('file', file);
-      // Account for disparity in size of original image and resized data
-
-      const onUploadProgress = ({ loaded }: any) => {
+    dispatch(uploadFile(
+      file,
+      intl,
+      (data) => dispatch(uploadEventBannerSuccess(data, file)),
+      (error) => dispatch(uploadEventBannerFail(error)),
+      ({ loaded }: any) => {
         progress = loaded;
         dispatch(uploadEventBannerProgress(progress));
-      };
-
-      return dispatch(uploadMedia(data, onUploadProgress))
-        .then(({ status, data }) => {
-          // If server-side processing of the media attachment has not completed yet,
-          // poll the server until it is, before showing the media attachment as uploaded
-          if (status === 200) {
-            dispatch(uploadEventBannerSuccess(data, file));
-          } else if (status === 202) {
-            const poll = () => {
-              dispatch(fetchMedia(data.id)).then(({ status, data }) => {
-                if (status === 200) {
-                  dispatch(uploadEventBannerSuccess(data, file));
-                } else if (status === 206) {
-                  setTimeout(() => poll(), 1000);
-                }
-              }).catch(error => dispatch(uploadEventBannerFail(error)));
-            };
-
-            poll();
-          }
-        });
-    }).catch(error => dispatch(uploadEventBannerFail(error)));
+      },
+    ));
   };
 
 const uploadEventBannerRequest = () => ({

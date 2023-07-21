@@ -23,7 +23,7 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { useIntl } from 'react-intl';
 
-import { uploadFiles } from 'soapbox/actions/compose';
+import { uploadFile } from 'soapbox/actions/compose';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 
 import { onlyImages } from '../../components/upload-button';
@@ -49,7 +49,11 @@ const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) {
       // @ts-ignore
-      dispatch(uploadFiles([e.target.files.item(0)] as any, intl));
+      dispatch(uploadFile(
+        e.target.files.item(0) as File,
+        intl,
+        ({ url }) => onSelectFile(url),
+      ));
     }
   };
 
