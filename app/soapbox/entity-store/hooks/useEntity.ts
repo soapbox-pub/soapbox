@@ -51,7 +51,7 @@ function useEntity<TEntity extends Entity>(
   };
 
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isEnabled || error) return;
     if (!entity || opts.refetch) {
       fetchEntity();
     }

@@ -26,7 +26,7 @@ const importMessagesWithCustom = (locale: string): Promise<MessageJson> => {
   });
 };
 
-const locales: string[] = [
+const locales = [
   'ar',
   'ast',
   'bg',
@@ -91,7 +91,7 @@ const locales: string[] = [
   'zh-CN',
   'zh-HK',
   'zh-TW',
-];
+] as const;
 
 /** Soapbox locales map */
 const messages = locales.reduce((acc, locale) => {
@@ -100,3 +100,4 @@ const messages = locales.reduce((acc, locale) => {
 }, {} as Record<string, () => Promise<MessageJson>>);
 
 export default messages;
+export { locales };

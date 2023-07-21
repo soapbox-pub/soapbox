@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 
 import {
   AUTH_APP_CREATED,
@@ -300,7 +300,7 @@ describe('auth reducer', () => {
     it('sets the value of `me`', () => {
       const action = {
         type: SWITCH_ACCOUNT,
-        account: fromJS({ url: 'https://gleasonator.com/users/benis' }),
+        account: { url: 'https://gleasonator.com/users/benis' },
       };
 
       const result = reducer(undefined, action);

@@ -14,12 +14,26 @@ import ConfigDB from 'soapbox/utils/config-db';
 import { getFeatures } from 'soapbox/utils/features';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
+import type { EntityStore } from 'soapbox/entity-store/types';
 import type { ContextType } from 'soapbox/normalizers/filter';
 import type { ReducerChat } from 'soapbox/reducers/chats';
+import type { Account as AccountSchema } from 'soapbox/schemas';
 import type { RootState } from 'soapbox/store';
 import type { Account, Filter as FilterEntity, Notification, Status } from 'soapbox/types/entities';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
+
+export function selectAccount(state: RootState, accountId: string) {
+  return state.entities[Entities.ACCOUNTS]?.store[accountId] as AccountSchema | undefined;
+}
+
+export function selectOwnAccount(state: RootState) {
+  if (state.me) {
+    return selectAccount(state, state.me);
+  }
+}
+
+export const accountIdsToAccts = (state: RootState, ids: string[]) => ids.map((id) => selectAccount(state, id)!.acct);
 
 const getAccountBase         = (state: RootState, id: string) => state.entities[Entities.ACCOUNTS]?.store[id] as Account | undefined;
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
@@ -144,8 +158,8 @@ export const makeGetStatus = () => {
 export const makeGetNotification = () => {
   return createSelector([
     (_state: RootState, notification: Notification) => notification,
-    (state: RootState, notification: Notification) => state.accounts.get(normalizeId(notification.account)),
-    (state: RootState, notification: Notification) => state.accounts.get(normalizeId(notification.target)),
+    (state: RootState, notification: Notification) => selectAccount(state, normalizeId(notification.account)),
+    (state: RootState, notification: Notification) => selectAccount(state, normalizeId(notification.target)),
     (state: RootState, notification: Notification) => state.statuses.get(normalizeId(notification.status)),
   ], (notification, account, target, status) => {
     return notification.merge({
@@ -193,7 +207,7 @@ export const makeGetChat = () => {
   return createSelector(
     [
       (state: RootState, { id }: APIChat) => state.chats.items.get(id) as ReducerChat,
-      (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.items.getIn([id, 'account'])),
+      (state: RootState, { id }: APIChat) => selectAccount(state, state.chats.items.getIn([id, 'account']) as string),
       (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
     ],
 
@@ -216,10 +230,8 @@ export const makeGetReport = () => {
   return createSelector(
     [
       (state: RootState, id: string) => state.admin.reports.get(id),
-      (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.account || ''),
-      (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.target_account || ''),
-      // (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.action_taken_by_account || ''),
-      // (state: RootState, id: string) => state.accounts.get(state.admin.reports.get(id)?.assigned_account || ''),
+      (state: RootState, id: string) => selectAccount(state, state.admin.reports.get(id)?.account || ''),
+      (state: RootState, id: string) => selectAccount(state, state.admin.reports.get(id)?.target_account || ''),
       (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.get(id)?.statuses)).map(
         statusId => state.statuses.get(normalizeId(statusId)))
         .filter((s: any) => s)
@@ -255,7 +267,7 @@ const getAuthUserIds = createSelector([
 
 export const makeGetOtherAccounts = () => {
   return createSelector([
-    (state: RootState) => state.accounts,
+    (state: RootState) => state.entities[Entities.ACCOUNTS]?.store as EntityStore<AccountSchema>,
     getAuthUserIds,
     (state: RootState) => state.me,
   ],
@@ -263,7 +275,7 @@ export const makeGetOtherAccounts = () => {
     return authUserIds
       .reduce((list: ImmutableList<any>, id: string) => {
         if (id === me) return list;
-        const account = accounts.get(id);
+        const account = accounts[id];
         return account ? list.push(account) : list;
       }, ImmutableList());
   });
@@ -276,10 +288,11 @@ const getSimplePolicy = createSelector([
   return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
 });
 
-const getRemoteInstanceFavicon = (state: RootState, host: string) => (
-  (state.accounts.find(account => getDomain(account) === host) || ImmutableMap())
-    .getIn(['pleroma', 'favicon'])
-);
+const getRemoteInstanceFavicon = (state: RootState, host: string) => {
+  const accounts = state.entities[Entities.ACCOUNTS]?.store as EntityStore<AccountSchema>;
+  const account = Object.entries(accounts).find(([_, account]) => account && getDomain(account) === host)?.[1];
+  return account?.pleroma?.favicon;
+};
 
 const getRemoteInstanceFederation = (state: RootState, host: string) => (
   getSimplePolicy(state)

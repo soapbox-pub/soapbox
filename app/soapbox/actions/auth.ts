@@ -16,6 +16,7 @@ import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import { custom } from 'soapbox/custom';
 import { queryClient } from 'soapbox/queries/client';
+import { selectAccount } from 'soapbox/selectors';
 import KVStore from 'soapbox/storage/kv-store';
 import toast from 'soapbox/toast';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
@@ -227,7 +228,7 @@ export const logOut = () =>
 
 export const switchAccount = (accountId: string, background = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const account = getState().accounts.get(accountId);
+    const account = selectAccount(getState(), accountId);
     // Clear all stored cache from React Query
     queryClient.invalidateQueries();
     queryClient.clear();
@@ -239,7 +240,7 @@ export const fetchOwnAccounts = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     return state.auth.users.forEach((user) => {
-      const account = state.accounts.get(user.id);
+      const account = selectAccount(state, user.id);
       if (!account) {
         dispatch(verifyCredentials(user.access_token, user.url))
           .catch(() => console.warn(`Failed to load account: ${user.url}`));

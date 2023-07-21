@@ -7,6 +7,7 @@ import { fetchUsers } from 'soapbox/actions/admin';
 import { Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { selectAccount } from 'soapbox/selectors';
 import { compareId } from 'soapbox/utils/comparators';
 
 const messages = defineMessages({
@@ -24,7 +25,7 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
   const dispatch = useAppDispatch();
 
   const accountIds = useAppSelector<ImmutableOrderedSet<string>>((state) => state.admin.get('latestUsers').take(limit));
-  const hasDates = useAppSelector((state) => accountIds.every(id => !!state.accounts.getIn([id, 'created_at'])));
+  const hasDates = useAppSelector((state) => accountIds.every(id => !!selectAccount(state, id)?.created_at));
 
   const [total, setTotal] = useState(accountIds.size);
 

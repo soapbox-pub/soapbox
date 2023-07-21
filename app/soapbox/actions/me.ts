@@ -1,3 +1,4 @@
+import { selectAccount } from 'soapbox/selectors';
 import KVStore from 'soapbox/storage/kv-store';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 
@@ -25,7 +26,9 @@ const getMeId = (state: RootState) => state.me || getAuthUserId(state);
 
 const getMeUrl = (state: RootState) => {
   const accountId = getMeId(state);
-  return state.accounts.get(accountId)?.url || getAuthUserUrl(state);
+  if (accountId) {
+    return selectAccount(state, accountId)?.url || getAuthUserUrl(state);
+  }
 };
 
 const getMeToken = (state: RootState) => {

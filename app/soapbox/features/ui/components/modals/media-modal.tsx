@@ -110,14 +110,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const handleStatusClick: React.MouseEventHandler = e => {
     if (status && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-
-      dispatch((_, getState) => {
-        const account = typeof status.account === 'string' ? getState().accounts.get(status.account) : status.account;
-        if (!account) return;
-
-        history.push(`/@${account.acct}/posts/${status?.id}`);
-        onClose();
-      });
+      history.push(`/@${status.account.acct}/posts/${status?.id}`);
+      onClose();
     }
   };
 

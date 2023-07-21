@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 import { isPubkey } from 'soapbox/utils/nostr';
@@ -21,7 +21,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   const getStatus = useCallback(makeGetStatus(), []);
   const status = useAppSelector<StatusEntity | null>(state => getStatus(state, { id: compose.in_reply_to! }));
   const to = compose.to;
-  const account = useAppSelector((state) => state.accounts.get(state.me));
+  const { account } = useOwnAccount();
 
   if (!features.explicitAddressing || !status || !to) {
     return null;

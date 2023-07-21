@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { markConversationRead } from 'soapbox/actions/conversations';
 import StatusContainer from 'soapbox/containers/status-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { selectAccount } from 'soapbox/selectors';
 
 interface IConversation {
   conversationId: string
@@ -19,7 +20,7 @@ const Conversation: React.FC<IConversation> = ({ conversationId, onMoveUp, onMov
     const conversation = state.conversations.items.find(x => x.id === conversationId)!;
 
     return {
-      accounts: conversation.accounts.map((accountId: string) => state.accounts.get(accountId)!),
+      accounts: conversation.accounts.map((accountId: string) => selectAccount(state, accountId)!),
       unread: conversation.unread,
       lastStatusId: conversation.last_status || null,
     };

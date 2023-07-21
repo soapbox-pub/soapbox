@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import { Button, Form, Input, Modal, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
+import { selectAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
@@ -32,7 +33,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const instance = useInstance();
   const { isOpen } = useRegistrationStatus();
 
-  const username = useAppSelector(state => state.accounts.get(accountId)?.display_name);
+  const username = useAppSelector(state => selectAccount(state, accountId!)?.display_name);
   const features = useFeatures();
 
   const [account, setAccount] = useState('');

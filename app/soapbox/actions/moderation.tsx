@@ -7,6 +7,7 @@ import { openModal } from 'soapbox/actions/modals';
 import OutlineBox from 'soapbox/components/outline-box';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
+import { selectAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 import { isLocal } from 'soapbox/utils/accounts';
 
@@ -42,8 +43,8 @@ const messages = defineMessages({
 const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const acct = state.accounts.get(accountId)!.acct;
-    const name = state.accounts.get(accountId)!.username;
+    const acct = selectAccount(state, accountId)!.acct;
+    const name = selectAccount(state, accountId)!.username;
 
     const message = (
       <Stack space={4}>
@@ -75,7 +76,7 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
 const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const account = state.accounts.get(accountId)!;
+    const account = selectAccount(state, accountId)!;
     const acct = account.acct;
     const name = account.username;
     const local = isLocal(account);
@@ -115,8 +116,8 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
 const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensitive: boolean, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const accountId = state.statuses.get(statusId)!.account;
-    const acct = state.accounts.get(accountId)!.acct;
+    const accountId = state.statuses.get(statusId)!.account.id;
+    const acct = selectAccount(state, accountId)!.acct;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/alert-triangle.svg'),
@@ -136,8 +137,8 @@ const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensiti
 const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const accountId = state.statuses.get(statusId)!.account;
-    const acct = state.accounts.get(accountId)!.acct;
+    const accountId = state.statuses.get(statusId)!.account.id;
+    const acct = selectAccount(state, accountId)!.acct;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/trash.svg'),
