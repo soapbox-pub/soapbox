@@ -44,10 +44,24 @@ function selectEntities<TEntity extends Entity>(state: RootState, path: Entities
   ) : [];
 }
 
+/** Find an entity using a finder function. */
+function findEntity<TEntity extends Entity>(
+  state: RootState,
+  entityType: string,
+  lookupFn: (entity: TEntity) => boolean,
+) {
+  const cache = state.entities[entityType];
+
+  if (cache) {
+    return (Object.values(cache.store) as TEntity[]).find(lookupFn);
+  }
+}
+
 export {
   selectCache,
   selectList,
   selectListState,
   useListState,
   selectEntities,
+  findEntity,
 };

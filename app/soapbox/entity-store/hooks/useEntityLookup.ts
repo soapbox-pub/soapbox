@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 import { useAppDispatch, useAppSelector, useLoading } from 'soapbox/hooks';
-import { type RootState } from 'soapbox/store';
 
 import { importEntities } from '../actions';
+import { findEntity } from '../selectors';
 import { Entity } from '../types';
 
 import { EntityFn } from './types';
@@ -56,18 +56,6 @@ function useEntityLookup<TEntity extends Entity>(
     isUnauthorized: error instanceof AxiosError && error.response?.status === 401,
     isForbidden: error instanceof AxiosError && error.response?.status === 403,
   };
-}
-
-function findEntity<TEntity extends Entity>(
-  state: RootState,
-  entityType: string,
-  lookupFn: LookupFn<TEntity>,
-) {
-  const cache = state.entities[entityType];
-
-  if (cache) {
-    return (Object.values(cache.store) as TEntity[]).find(lookupFn);
-  }
 }
 
 export { useEntityLookup };

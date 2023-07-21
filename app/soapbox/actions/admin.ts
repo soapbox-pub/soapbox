@@ -75,14 +75,6 @@ const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GROUP_REQ
 const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
 const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
 
-const ADMIN_USERS_SUGGEST_REQUEST = 'ADMIN_USERS_SUGGEST_REQUEST';
-const ADMIN_USERS_SUGGEST_SUCCESS = 'ADMIN_USERS_SUGGEST_SUCCESS';
-const ADMIN_USERS_SUGGEST_FAIL    = 'ADMIN_USERS_SUGGEST_FAIL';
-
-const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
-const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
-const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
-
 const ADMIN_USER_INDEX_EXPAND_FAIL    = 'ADMIN_USER_INDEX_EXPAND_FAIL';
 const ADMIN_USER_INDEX_EXPAND_REQUEST = 'ADMIN_USER_INDEX_EXPAND_REQUEST';
 const ADMIN_USER_INDEX_EXPAND_SUCCESS = 'ADMIN_USER_INDEX_EXPAND_SUCCESS';
@@ -563,32 +555,6 @@ const setRole = (accountId: string, role: 'user' | 'moderator' | 'admin') =>
     }
   };
 
-const suggestUsers = (accountIds: string[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
-    dispatch({ type: ADMIN_USERS_SUGGEST_REQUEST, accountIds });
-    return api(getState)
-      .patch('/api/v1/pleroma/admin/users/suggest', { nicknames })
-      .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_SUGGEST_SUCCESS, users, accountIds });
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_SUGGEST_FAIL, error, accountIds });
-      });
-  };
-
-const unsuggestUsers = (accountIds: string[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
-    dispatch({ type: ADMIN_USERS_UNSUGGEST_REQUEST, accountIds });
-    return api(getState)
-      .patch('/api/v1/pleroma/admin/users/unsuggest', { nicknames })
-      .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_UNSUGGEST_SUCCESS, users, accountIds });
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_UNSUGGEST_FAIL, error, accountIds });
-      });
-  };
-
 const setUserIndexQuery = (query: string) => ({ type: ADMIN_USER_INDEX_QUERY_SET, query });
 
 const fetchUserIndex = () =>
@@ -766,12 +732,6 @@ export {
   ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
   ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS,
   ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
-  ADMIN_USERS_SUGGEST_REQUEST,
-  ADMIN_USERS_SUGGEST_SUCCESS,
-  ADMIN_USERS_SUGGEST_FAIL,
-  ADMIN_USERS_UNSUGGEST_REQUEST,
-  ADMIN_USERS_UNSUGGEST_SUCCESS,
-  ADMIN_USERS_UNSUGGEST_FAIL,
   ADMIN_USER_INDEX_EXPAND_FAIL,
   ADMIN_USER_INDEX_EXPAND_REQUEST,
   ADMIN_USER_INDEX_EXPAND_SUCCESS,
@@ -820,8 +780,6 @@ export {
   promoteToModerator,
   demoteToUser,
   setRole,
-  suggestUsers,
-  unsuggestUsers,
   setUserIndexQuery,
   fetchUserIndex,
   expandUserIndex,
