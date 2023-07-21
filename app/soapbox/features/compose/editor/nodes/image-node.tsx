@@ -29,14 +29,14 @@ interface ImagePayload {
   src: string
 }
 
-function convertImageElement(domNode: Node): null | DOMConversionOutput {
+const convertImageElement = (domNode: Node): null | DOMConversionOutput => {
   if (domNode instanceof HTMLImageElement) {
     const { alt: altText, src } = domNode;
     const node = $createImageNode({ altText, src });
     return { node };
   }
   return null;
-}
+};
 
 type SerializedImageNode = Spread<
   {
@@ -146,11 +146,11 @@ class ImageNode extends DecoratorNode<JSX.Element> {
 
 }
 
-function $createImageNode({
+const $createImageNode = ({
   altText = '',
   src,
   key,
-}: ImagePayload): ImageNode {
+}: ImagePayload): ImageNode => {
   return $applyNodeReplacement(
     new ImageNode(
       src,
@@ -158,7 +158,7 @@ function $createImageNode({
       key,
     ),
   );
-}
+};
 
 const $isImageNode = (
   node: LexicalNode | null | undefined,

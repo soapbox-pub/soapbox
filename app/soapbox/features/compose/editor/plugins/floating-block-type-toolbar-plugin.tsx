@@ -183,7 +183,7 @@ const BlockTypeFloatingToolbar = ({
       const selection = $getSelection();
       if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
         const selectionNode = selection.anchor.getNode();
-        selectionNode.replace($createImageNode({ src }));
+        selectionNode.replace($createImageNode({ altText: '', src }));
       }
     });
   };

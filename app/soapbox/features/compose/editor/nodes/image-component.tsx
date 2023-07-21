@@ -10,6 +10,7 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
+import clsx from 'clsx';
 import {
   $getNodeByKey,
   $getSelection,
@@ -26,6 +27,8 @@ import {
 } from 'lexical';
 import * as React from 'react';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+
+import { IconButton } from 'soapbox/components/ui';
 
 import { $isImageNode } from './image-node';
 
@@ -94,15 +97,24 @@ export default function ImageComponent({
   >(null);
   const activeEditorRef = useRef<LexicalEditor | null>(null);
 
+  const deleteNode = useCallback(
+    () => {
+      editor.update(() => {
+        const node = $getNodeByKey(nodeKey);
+        if ($isImageNode(node)) {
+          node.remove();
+        }
+      });
+    },
+    [nodeKey],
+  );
+
   const onDelete = useCallback(
     (payload: KeyboardEvent) => {
       if (isSelected && $isNodeSelection($getSelection())) {
         const event: KeyboardEvent = payload;
         event.preventDefault();
-        const node = $getNodeByKey(nodeKey);
-        if ($isImageNode(node)) {
-          node.remove();
-        }
+        deleteNode();
       }
       return false;
     },
@@ -235,12 +247,20 @@ export default function ImageComponent({
   return (
     <Suspense fallback={null}>
       <>
-        <div draggable={draggable}>
+        <div className='relative' draggable={draggable}>
+          <IconButton
+            onClick={deleteNode}
+            src={require('@tabler/icons/x.svg')}
+            theme='dark'
+            className='absolute right-2 top-2 z-10 hover:scale-105 hover:bg-gray-900'
+            iconClassName='h-5 w-5'
+          />
           <LazyImage
             className={
-              isFocused
-                ? `focused ${$isNodeSelection(selection) ? 'draggable' : ''}`
-                : null
+              clsx('cursor-default', {
+                'select-none': isFocused,
+                'cursor-grab active:cursor-grabbing': isFocused && $isNodeSelection(selection),
+              })
             }
             src={src}
             altText={altText}

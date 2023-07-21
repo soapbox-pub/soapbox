@@ -152,7 +152,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           contentEditable={
             <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
-                className={clsx('mr-4 outline-none transition-[min-height] motion-reduce:transition-none', {
+                className={clsx('mr-4 pb-8 outline-none transition-[min-height] motion-reduce:transition-none', {
                   'min-h-[40px]': condensed,
                   'min-h-[100px]': !condensed,
                 })}
