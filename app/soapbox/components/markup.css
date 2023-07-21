@@ -70,7 +70,7 @@
 
 /* Markdown inline images (Pleroma) */
 [data-markup] img:not(.emojione) {
-  @apply max-h-[500px] rounded-sm;
+  @apply max-h-[500px] mx-auto rounded-sm;
 }
 
 /* User setting to underline links */
