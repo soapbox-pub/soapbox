@@ -1,20 +1,16 @@
-import { Entities } from 'soapbox/entity-store/entities';
 import { useTransaction } from 'soapbox/entity-store/hooks';
 import { EntityCallbacks } from 'soapbox/entity-store/hooks/types';
-import { findEntity } from 'soapbox/entity-store/selectors';
 import { useApi, useGetState } from 'soapbox/hooks';
+import { accountIdsToAccts } from 'soapbox/selectors';
 
 import type { Account } from 'soapbox/schemas';
-import type { RootState } from 'soapbox/store';
 
 function useSuggest() {
   const api = useApi();
   const getState = useGetState();
   const { transaction } = useTransaction();
 
-  function suggestEffect(accts: string[], suggested: boolean) {
-    const ids = selectIdsForAccts(getState(), accts);
-
+  function suggestEffect(accountIds: string[], suggested: boolean) {
     const updater = (account: Account): Account => {
       if (account.pleroma) {
         account.pleroma.is_suggested = suggested;
@@ -23,31 +19,33 @@ function useSuggest() {
     };
 
     transaction({
-      Accounts: ids.reduce<Record<string, (account: Account) => Account>>(
+      Accounts: accountIds.reduce<Record<string, (account: Account) => Account>>(
         (result, id) => ({ ...result, [id]: updater }),
       {}),
     });
   }
 
-  async function suggest(accts: string[], callbacks?: EntityCallbacks<void, unknown>) {
-    suggestEffect(accts, true);
+  async function suggest(accountIds: string[], callbacks?: EntityCallbacks<void, unknown>) {
+    const accts = accountIdsToAccts(getState(), accountIds);
+    suggestEffect(accountIds, true);
     try {
       await api.patch('/api/v1/pleroma/admin/users/suggest', { nicknames: accts });
       callbacks?.onSuccess?.();
     } catch (e) {
       callbacks?.onError?.(e);
-      suggestEffect(accts, false);
+      suggestEffect(accountIds, false);
     }
   }
 
-  async function unsuggest(accts: string[], callbacks?: EntityCallbacks<void, unknown>) {
-    suggestEffect(accts, false);
+  async function unsuggest(accountIds: string[], callbacks?: EntityCallbacks<void, unknown>) {
+    const accts = accountIdsToAccts(getState(), accountIds);
+    suggestEffect(accountIds, false);
     try {
       await api.patch('/api/v1/pleroma/admin/users/unsuggest', { nicknames: accts });
       callbacks?.onSuccess?.();
     } catch (e) {
       callbacks?.onError?.(e);
-      suggestEffect(accts, true);
+      suggestEffect(accountIds, true);
     }
   }
 
@@ -55,17 +53,6 @@ function useSuggest() {
     suggest,
     unsuggest,
   };
-}
-
-function selectIdsForAccts(state: RootState, accts: string[]): string[] {
-  return accts.map((acct) => {
-    const account = findEntity<Account>(
-      state,
-      Entities.ACCOUNTS,
-      (account) => account.acct === acct,
-    );
-    return account!.id;
-  });
 }
 
 export { useSuggest };

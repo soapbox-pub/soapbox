@@ -69,7 +69,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     const message = checked ? messages.userVerified : messages.userUnverified;
     const action = checked ? verify : unverify;
 
-    action([account.acct], {
+    action([account.id], {
       onSuccess: () => toast.success(intl.formatMessage(message, { acct: account.acct })),
     });
   };
@@ -80,7 +80,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     const message = checked ? messages.userSuggested : messages.userUnsuggested;
     const action = checked ? suggest : unsuggest;
 
-    action([account.acct], {
+    action([account.id], {
       onSuccess: () => toast.success(intl.formatMessage(message, { acct: account.acct })),
     });
   };

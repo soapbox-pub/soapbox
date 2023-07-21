@@ -33,6 +33,8 @@ export function selectOwnAccount(state: RootState) {
   }
 }
 
+export const accountIdsToAccts = (state: RootState, ids: string[]) => ids.map((id) => selectAccount(state, id)!.acct);
+
 const getAccountBase         = (state: RootState, id: string) => state.entities[Entities.ACCOUNTS]?.store[id] as Account | undefined;
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
 
