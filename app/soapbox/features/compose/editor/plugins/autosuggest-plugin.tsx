@@ -37,6 +37,7 @@ import { useEmoji } from 'soapbox/actions/emojis';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import { isNativeEmoji } from 'soapbox/features/emoji';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { selectAccount } from 'soapbox/selectors';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../../components/autosuggest-account';
@@ -314,7 +315,9 @@ const AutosuggestPlugin = ({
         const state = editor.getEditorState();
         const node = (state._selection as RangeSelection)?.anchor?.getNode();
 
-        if (typeof suggestion === 'object' && suggestion.id) {
+        if (typeof suggestion === 'object') {
+          if (!suggestion.id) return;
+
           dispatch(useEmoji(suggestion)); // eslint-disable-line react-hooks/rules-of-hooks
 
           const { leadOffset, matchingString } = resolution!.match;
@@ -333,11 +336,11 @@ const AutosuggestPlugin = ({
 
             emojiText?.replace($createEmojiNode(completion, suggestion.imageUrl));
           }
-        } else if ((suggestion as string)[0] === '#') {
+        } else if (suggestion[0] === '#') {
           node.setTextContent(`${suggestion} `);
           node.select();
         } else {
-          const content = getState().accounts.get(suggestion)!.acct;
+          const content = selectAccount(getState(), suggestion)!.acct;
 
           node.setTextContent(`@${content} `);
           node.select();
