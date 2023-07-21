@@ -1,14 +1,11 @@
 import React, { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import {
-  verifyUser,
-  unverifyUser,
-  setBadges as saveBadges,
-} from 'soapbox/actions/admin';
+import { setBadges as saveBadges } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import { useAccount } from 'soapbox/api/hooks';
 import { useSuggest } from 'soapbox/api/hooks/admin/useSuggest';
+import { useVerify } from 'soapbox/api/hooks/admin/useVerify';
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
 import MissingIndicator from 'soapbox/components/missing-indicator';
@@ -45,6 +42,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
   const dispatch = useAppDispatch();
 
   const { suggest, unsuggest } = useSuggest();
+  const { verify, unverify } = useVerify();
   const { account: ownAccount } = useOwnAccount();
   const features = useFeatures();
   const { account } = useAccount(accountId);
@@ -70,11 +68,11 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     const { checked } = e.target;
 
     const message = checked ? messages.userVerified : messages.userUnverified;
-    const action = checked ? verifyUser : unverifyUser;
+    const action = checked ? verify : unverify;
 
-    dispatch(action(account.id))
-      .then(() => toast.success(intl.formatMessage(message, { acct: account.acct })))
-      .catch(() => {});
+    action([account.acct], {
+      onSuccess: () => toast.success(intl.formatMessage(message, { acct: account.acct })),
+    });
   };
 
   const handleSuggestedChange: ChangeEventHandler<HTMLInputElement> = (e) => {

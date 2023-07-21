@@ -488,14 +488,6 @@ const setBadges = (accountId: string, oldTags: string[], newTags: string[]) =>
     return dispatch(setTags(accountId, oldBadges, newBadges));
   };
 
-const verifyUser = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(tagUsers([accountId], ['verified']));
-
-const unverifyUser = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(untagUsers([accountId], ['verified']));
-
 const addPermission = (accountIds: string[], permissionGroup: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
@@ -772,8 +764,6 @@ export {
   untagUsers,
   setTags,
   setBadges,
-  verifyUser,
-  unverifyUser,
   addPermission,
   removePermission,
   promoteToAdmin,
