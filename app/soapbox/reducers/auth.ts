@@ -347,7 +347,7 @@ const reducer = (state: State, action: AnyAction) => {
     case VERIFY_CREDENTIALS_FAIL:
       return deleteForbiddenToken(state, action.error, action.token);
     case SWITCH_ACCOUNT:
-      return state.set('me', action.account.get('url'));
+      return state.set('me', action.account.url);
     case ME_FETCH_SKIP:
       return state.set('me', null);
     case MASTODON_PRELOAD_IMPORT:

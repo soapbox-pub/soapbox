@@ -1,5 +1,6 @@
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
+import { selectAccount } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
 
@@ -141,9 +142,9 @@ const fetchAccount = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchRelationships([id]));
 
-    const account = getState().accounts.get(id);
+    const account = selectAccount(getState(), id);
 
-    if (account && !account.get('should_refetch')) {
+    if (account) {
       return null;
     }
 

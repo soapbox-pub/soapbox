@@ -2,6 +2,7 @@ import { defineMessages } from 'react-intl';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import { accountIdsToAccts } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 import { getFeatures } from 'soapbox/utils/features';
@@ -74,14 +75,6 @@ const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GROUP_REQ
 const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
 const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
 
-const ADMIN_USERS_SUGGEST_REQUEST = 'ADMIN_USERS_SUGGEST_REQUEST';
-const ADMIN_USERS_SUGGEST_SUCCESS = 'ADMIN_USERS_SUGGEST_SUCCESS';
-const ADMIN_USERS_SUGGEST_FAIL    = 'ADMIN_USERS_SUGGEST_FAIL';
-
-const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
-const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
-const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
-
 const ADMIN_USER_INDEX_EXPAND_FAIL    = 'ADMIN_USER_INDEX_EXPAND_FAIL';
 const ADMIN_USER_INDEX_EXPAND_REQUEST = 'ADMIN_USER_INDEX_EXPAND_REQUEST';
 const ADMIN_USER_INDEX_EXPAND_SUCCESS = 'ADMIN_USER_INDEX_EXPAND_SUCCESS';
@@ -120,8 +113,6 @@ const messages = defineMessages({
   announcementDeleteSuccess: { id: 'admin.edit_announcement.deleted', defaultMessage: 'Announcement deleted' },
   announcementUpdateSuccess: { id: 'admin.edit_announcement.updated', defaultMessage: 'Announcement edited' },
 });
-
-const nicknamesFromIds = (getState: () => RootState, ids: string[]) => ids.map(id => getState().accounts.get(id)!.acct);
 
 const fetchConfig = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -329,7 +320,7 @@ const deactivateMastodonUsers = (accountIds: string[], reportId?: string) =>
 
 const deactivatePleromaUsers = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
     return api(getState)
       .patch('/api/v1/pleroma/admin/users/deactivate', { nicknames })
       .then(({ data: { users } }) => {
@@ -357,7 +348,7 @@ const deactivateUsers = (accountIds: string[], reportId?: string) =>
 
 const deleteUsers = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
     dispatch({ type: ADMIN_USERS_DELETE_REQUEST, accountIds });
     return api(getState)
       .delete('/api/v1/pleroma/admin/users', { data: { nicknames } })
@@ -382,7 +373,7 @@ const approveMastodonUsers = (accountIds: string[]) =>
 
 const approvePleromaUsers = (accountIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
     return api(getState)
       .patch('/api/v1/pleroma/admin/users/approve', { nicknames })
       .then(({ data: { users } }) => {
@@ -447,7 +438,7 @@ const fetchModerationLog = (params?: Record<string, any>) =>
 
 const tagUsers = (accountIds: string[], tags: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
     dispatch({ type: ADMIN_USERS_TAG_REQUEST, accountIds, tags });
     return api(getState)
       .put('/api/v1/pleroma/admin/users/tag', { nicknames, tags })
@@ -460,7 +451,7 @@ const tagUsers = (accountIds: string[], tags: string[]) =>
 
 const untagUsers = (accountIds: string[], tags: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
 
     // Legacy: allow removing legacy 'donor' tags.
     if (tags.includes('badge:donor')) {
@@ -495,17 +486,9 @@ const setBadges = (accountId: string, oldTags: string[], newTags: string[]) =>
     return dispatch(setTags(accountId, oldBadges, newBadges));
   };
 
-const verifyUser = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(tagUsers([accountId], ['verified']));
-
-const unverifyUser = (accountId: string) =>
-  (dispatch: AppDispatch) =>
-    dispatch(untagUsers([accountId], ['verified']));
-
 const addPermission = (accountIds: string[], permissionGroup: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
     dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
       .post(`/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { nicknames })
@@ -518,7 +501,7 @@ const addPermission = (accountIds: string[], permissionGroup: string) =>
 
 const removePermission = (accountIds: string[], permissionGroup: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
+    const nicknames = accountIdsToAccts(getState(), accountIds);
     dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
       .delete(`/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { data: { nicknames } })
@@ -560,32 +543,6 @@ const setRole = (accountId: string, role: 'user' | 'moderator' | 'admin') =>
       case 'admin':
         return dispatch(promoteToAdmin(accountId));
     }
-  };
-
-const suggestUsers = (accountIds: string[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
-    dispatch({ type: ADMIN_USERS_SUGGEST_REQUEST, accountIds });
-    return api(getState)
-      .patch('/api/v1/pleroma/admin/users/suggest', { nicknames })
-      .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_SUGGEST_SUCCESS, users, accountIds });
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_SUGGEST_FAIL, error, accountIds });
-      });
-  };
-
-const unsuggestUsers = (accountIds: string[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = nicknamesFromIds(getState, accountIds);
-    dispatch({ type: ADMIN_USERS_UNSUGGEST_REQUEST, accountIds });
-    return api(getState)
-      .patch('/api/v1/pleroma/admin/users/unsuggest', { nicknames })
-      .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_UNSUGGEST_SUCCESS, users, accountIds });
-      }).catch(error => {
-        dispatch({ type: ADMIN_USERS_UNSUGGEST_FAIL, error, accountIds });
-      });
   };
 
 const setUserIndexQuery = (query: string) => ({ type: ADMIN_USER_INDEX_QUERY_SET, query });
@@ -765,12 +722,6 @@ export {
   ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
   ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS,
   ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
-  ADMIN_USERS_SUGGEST_REQUEST,
-  ADMIN_USERS_SUGGEST_SUCCESS,
-  ADMIN_USERS_SUGGEST_FAIL,
-  ADMIN_USERS_UNSUGGEST_REQUEST,
-  ADMIN_USERS_UNSUGGEST_SUCCESS,
-  ADMIN_USERS_UNSUGGEST_FAIL,
   ADMIN_USER_INDEX_EXPAND_FAIL,
   ADMIN_USER_INDEX_EXPAND_REQUEST,
   ADMIN_USER_INDEX_EXPAND_SUCCESS,
@@ -811,16 +762,12 @@ export {
   untagUsers,
   setTags,
   setBadges,
-  verifyUser,
-  unverifyUser,
   addPermission,
   removePermission,
   promoteToAdmin,
   promoteToModerator,
   demoteToUser,
   setRole,
-  suggestUsers,
-  unsuggestUsers,
   setUserIndexQuery,
   fetchUserIndex,
   expandUserIndex,

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Entities } from 'soapbox/entity-store/entities';
@@ -20,7 +20,7 @@ function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
   const { me } = useLoggedIn();
   const { withRelationship } = opts;
 
-  const { entity: account, isUnauthorized, ...result } = useEntity<Account>(
+  const { entity, isUnauthorized, ...result } = useEntity<Account>(
     [Entities.ACCOUNTS, accountId!],
     () => api.get(`/api/v1/accounts/${accountId}`),
     { schema: accountSchema, enabled: !!accountId },
@@ -31,8 +31,13 @@ function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
     isLoading: isRelationshipLoading,
   } = useRelationship(accountId, { enabled: withRelationship });
 
-  const isBlocked = account?.relationship?.blocked_by === true;
-  const isUnavailable = (me === account?.id) ? false : (isBlocked && !features.blockersVisible);
+  const isBlocked = entity?.relationship?.blocked_by === true;
+  const isUnavailable = (me === entity?.id) ? false : (isBlocked && !features.blockersVisible);
+
+  const account = useMemo(
+    () => entity ? { ...entity, relationship } : undefined,
+    [entity, relationship],
+  );
 
   useEffect(() => {
     if (isUnauthorized) {
@@ -46,7 +51,7 @@ function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
     isRelationshipLoading,
     isUnauthorized,
     isUnavailable,
-    account: account ? { ...account, relationship } : undefined,
+    account,
   };
 }
 
