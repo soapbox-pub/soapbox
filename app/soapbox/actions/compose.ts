@@ -644,7 +644,7 @@ interface ComposeSuggestionSelectAction {
 
 const selectComposeSuggestion = (composeId: string, position: number, token: string | null, suggestion: AutoSuggestion, path: Array<string | number>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    let completion, startPosition;
+    let completion = '', startPosition = position;
 
     if (typeof suggestion === 'object' && suggestion.id) {
       completion    = isNativeEmoji(suggestion) ? suggestion.native : suggestion.colons;
@@ -658,8 +658,6 @@ const selectComposeSuggestion = (composeId: string, position: number, token: str
       completion    = selectAccount(getState(), suggestion)!.acct;
       startPosition = position;
     }
-
-    if (!startPosition || !completion) return;
 
     const action: ComposeSuggestionSelectAction = {
       type: COMPOSE_SUGGESTION_SELECT,
