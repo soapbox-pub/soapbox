@@ -6,7 +6,6 @@ Copyright (c) Meta Platforms, Inc. and affiliates.
 This source code is licensed under the MIT license found in the
 LICENSE file in the /app/soapbox/features/compose/editor directory.
 */
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { AutoLinkPlugin, createLinkMatcherWithRegExp } from '@lexical/react/LexicalAutoLinkPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -25,20 +24,21 @@ import { FormattedMessage } from 'react-intl';
 
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
+import { useNodes } from './nodes';
+import AutosuggestPlugin from './plugins/autosuggest-plugin';
+import FloatingBlockTypeToolbarPlugin from './plugins/floating-block-type-toolbar-plugin';
+import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
+import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
+import FocusPlugin from './plugins/focus-plugin';
+import MentionPlugin from './plugins/mention-plugin';
+import StatePlugin from './plugins/state-plugin';
+
 const LINK_MATCHERS = [
   createLinkMatcherWithRegExp(
     /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
     (text) => text.startsWith('http') ? text : `https://${text}`,
   ),
 ];
-
-import { useNodes } from './nodes';
-import AutosuggestPlugin from './plugins/autosuggest-plugin';
-import FloatingBlockTypeToolbarPlugin from './plugins/floating-block-type-toolbar-plugin';
-import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
-import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
-import MentionPlugin from './plugins/mention-plugin';
-import StatePlugin from './plugins/state-plugin';
 
 interface IComposeEditor {
   className?: string
@@ -104,7 +104,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         return compose.editorState;
       }
 
-      return function() {
+      return () => {
         if (compose.content_type === 'text/markdown') {
           $createRemarkImport({})(compose.text);
         } else {
@@ -152,11 +152,10 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           contentEditable={
             <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
-                className={clsx('mr-4 pb-8 outline-none transition-[min-height] motion-reduce:transition-none', {
-                  'min-h-[40px]': condensed,
-                  'min-h-[100px]': !condensed,
+                className={clsx('outline-none transition-[min-height] motion-reduce:transition-none', {
+                  'min-h-[40px] pb-4': condensed,
+                  'min-h-[100px] pb-8': !condensed,
                 })}
-                autoFocus={autoFocus}
               />
             </div>
           }
@@ -172,7 +171,6 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           )}
           ErrorBoundary={LexicalErrorBoundary}
         />
-        {autoFocus && <AutoFocusPlugin />}
         <OnChangePlugin onChange={(_, editor) => {
           if (editorStateRef) (editorStateRef as any).current = editor.getEditorState().read($createRemarkExport());
         }}
@@ -192,6 +190,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           </>
         )}
         <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
+        <FocusPlugin autoFocus={autoFocus} />
       </div>
     </LexicalComposer>
   );

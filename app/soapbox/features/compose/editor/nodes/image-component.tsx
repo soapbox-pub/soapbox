@@ -42,7 +42,7 @@ import type {
 
 const imageCache = new Set();
 
-function useSuspenseImage(src: string) {
+const useSuspenseImage = (src: string) => {
   if (!imageCache.has(src)) {
     throw new Promise((resolve) => {
       const img = new Image();
@@ -53,9 +53,9 @@ function useSuspenseImage(src: string) {
       };
     });
   }
-}
+};
 
-function LazyImage({
+const LazyImage = ({
   altText,
   className,
   imageRef,
@@ -65,7 +65,7 @@ function LazyImage({
   className: string | null
   imageRef: {current: null | HTMLImageElement}
   src: string
-}): JSX.Element {
+}): JSX.Element => {
   useSuspenseImage(src);
   return (
     <img
@@ -76,9 +76,9 @@ function LazyImage({
       draggable='false'
     />
   );
-}
+};
 
-export default function ImageComponent({
+const ImageComponent = ({
   src,
   altText,
   nodeKey,
@@ -86,7 +86,7 @@ export default function ImageComponent({
   altText: string
   nodeKey: NodeKey
   src: string
-}): JSX.Element {
+}): JSX.Element => {
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] =
@@ -270,4 +270,6 @@ export default function ImageComponent({
       </>
     </Suspense>
   );
-}
+};
+
+export default ImageComponent;
