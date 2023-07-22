@@ -190,9 +190,6 @@ const connectTimelineStream = (
   };
 });
 
-const connectPublicStream    = ({ onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
-
 const connectRemoteStream    = (instance: string, { onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`remote${onlyMedia ? ':media' : ''}:${instance}`, `public:remote${onlyMedia ? ':media' : ''}&instance=${instance}`);
 
@@ -212,7 +209,6 @@ export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
   connectTimelineStream,
-  connectPublicStream,
   connectRemoteStream,
   connectHashtagStream,
   connectDirectStream,
