@@ -10,18 +10,16 @@ import { connectStream } from '../stream';
 
 import {
   deleteAnnouncement,
-  fetchAnnouncements,
   updateAnnouncements,
   updateReaction as updateAnnouncementsReaction,
 } from './announcements';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { MARKER_FETCH_SUCCESS } from './markers';
-import { updateNotificationsQueue, expandNotifications } from './notifications';
+import { updateNotificationsQueue } from './notifications';
 import { updateStatus } from './statuses';
 import {
   // deleteFromTimelines,
-  expandHomeTimeline,
   connectTimeline,
   disconnectTimeline,
   processTimelineUpdate,
@@ -73,8 +71,9 @@ const updateChatQuery = (chat: IChat) => {
   queryClient.setQueryData<Chat>(ChatKeys.chat(chat.id), newChat as any);
 };
 
-interface StreamOpts {
+interface TimelineStreamOpts {
   statContext?: IStatContext
+  enabled?: boolean
 }
 
 const connectTimelineStream = (
@@ -82,7 +81,7 @@ const connectTimelineStream = (
   path: string,
   pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
   accept: ((status: APIEntity) => boolean) | null = null,
-  opts?: StreamOpts,
+  opts?: TimelineStreamOpts,
 ) => connectStream(path, pollingRefresh, (dispatch: AppDispatch, getState: () => RootState) => {
   const locale = getLocale(getState());
 
@@ -191,49 +190,9 @@ const connectTimelineStream = (
   };
 });
 
-const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => void) =>
-  dispatch(expandHomeTimeline({}, () =>
-    dispatch(expandNotifications({}, () =>
-      dispatch(fetchAnnouncements(done))))));
-
-const connectUserStream      = (opts?: StreamOpts) =>
-  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
-
-const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
-
-const connectPublicStream    = ({ onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
-
-const connectRemoteStream    = (instance: string, { onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`remote${onlyMedia ? ':media' : ''}:${instance}`, `public:remote${onlyMedia ? ':media' : ''}&instance=${instance}`);
-
-const connectHashtagStream   = (id: string, tag: string, accept: (status: APIEntity) => boolean) =>
-  connectTimelineStream(`hashtag:${id}`, `hashtag&tag=${tag}`, null, accept);
-
-const connectDirectStream    = () =>
-  connectTimelineStream('direct', 'direct');
-
-const connectListStream      = (id: string) =>
-  connectTimelineStream(`list:${id}`, `list&list=${id}`);
-
-const connectGroupStream     = (id: string) =>
-  connectTimelineStream(`group:${id}`, `group&group=${id}`);
-
-const connectNostrStream     = () =>
-  connectTimelineStream('nostr', 'nostr');
-
 export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
   connectTimelineStream,
-  connectUserStream,
-  connectCommunityStream,
-  connectPublicStream,
-  connectRemoteStream,
-  connectHashtagStream,
-  connectDirectStream,
-  connectListStream,
-  connectGroupStream,
-  connectNostrStream,
+  type TimelineStreamOpts,
 };

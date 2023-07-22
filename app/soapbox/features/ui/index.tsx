@@ -14,16 +14,15 @@ import { openModal } from 'soapbox/actions/modals';
 import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
-import { connectNostrStream, connectUserStream } from 'soapbox/actions/streaming';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
+import { useNostrStream, useUserStream } from 'soapbox/api/hooks';
 import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import withHoc from 'soapbox/components/hoc/with-hoc';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useInstance, useDraggedFiles } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -39,7 +38,7 @@ import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
 import { usePendingPolicy } from 'soapbox/queries/policies';
-import { getAccessToken, getVapidKey } from 'soapbox/utils/auth';
+import { getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import BackgroundShapes from './components/background-shapes';
@@ -363,21 +362,13 @@ const UI: React.FC<IUI> = ({ children }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { data: pendingPolicy } = usePendingPolicy();
-  const instance = useInstance();
-  const statContext = useStatContext();
-
-  const userStream = useRef<any>(null);
-  const nostrStream = useRef<any>(null);
   const node = useRef<HTMLDivElement | null>(null);
-
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.isOpen);
-  const accessToken = useAppSelector(state => getAccessToken(state));
-  const streamingUrl = instance.urls.get('streaming_api');
   const standalone = useAppSelector(isStandalone);
 
   const { isDragging } = useDraggedFiles(node);
@@ -387,28 +378,6 @@ const UI: React.FC<IUI> = ({ children }) => {
       history.push(data.path);
     } else {
       console.warn('Unknown message type:', data.type);
-    }
-  };
-
-  const connectStreaming = () => {
-    if (accessToken && streamingUrl) {
-      if (!userStream.current) {
-        userStream.current = dispatch(connectUserStream({ statContext }));
-      }
-      if (!nostrStream.current && features.nostrSign && window.nostr) {
-        nostrStream.current = dispatch(connectNostrStream());
-      }
-    }
-  };
-
-  const disconnectStreaming = () => {
-    if (userStream.current) {
-      userStream.current();
-      userStream.current = null;
-    }
-    if (nostrStream.current) {
-      nostrStream.current();
-      nostrStream.current = null;
     }
   };
 
@@ -458,10 +427,6 @@ const UI: React.FC<IUI> = ({ children }) => {
     if (window.Notification?.permission === 'default') {
       window.setTimeout(() => Notification.requestPermission(), 120 * 1000);
     }
-
-    return () => {
-      disconnectStreaming();
-    };
   }, []);
 
   useEffect(() => {
@@ -477,9 +442,8 @@ const UI: React.FC<IUI> = ({ children }) => {
     };
   }, []);
 
-  useEffect(() => {
-    connectStreaming();
-  }, [accessToken, streamingUrl]);
+  useUserStream();
+  useNostrStream();
 
   // The user has logged in
   useEffect(() => {
