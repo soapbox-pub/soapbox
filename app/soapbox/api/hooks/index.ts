@@ -48,5 +48,6 @@ export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
 export { useUserStream } from './streaming/useUserStream';
 export { useCommunityStream } from './streaming/useCommunityStream';
 export { usePublicStream } from './streaming/usePublicStream';
+export { useDirectStream } from './streaming/useDirectStream';
 export { useRemoteStream } from './streaming/useRemoteStream';
 export { useNostrStream } from './streaming/useNostrStream';

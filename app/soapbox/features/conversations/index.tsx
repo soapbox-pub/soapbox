@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { directComposeById } from 'soapbox/actions/compose';
 import { mountConversations, unmountConversations, expandConversations } from 'soapbox/actions/conversations';
-import { connectDirectStream } from 'soapbox/actions/streaming';
+import { useDirectStream } from 'soapbox/api/hooks';
 import AccountSearch from 'soapbox/components/account-search';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -19,15 +19,14 @@ const ConversationsTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  useDirectStream();
+
   useEffect(() => {
     dispatch(mountConversations());
     dispatch(expandConversations());
 
-    const disconnect = dispatch(connectDirectStream());
-
     return () => {
       dispatch(unmountConversations());
-      disconnect();
     };
   }, []);
 
