@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { connectRemoteStream } from 'soapbox/actions/streaming';
 import { expandRemoteTimeline } from 'soapbox/actions/timelines';
+import { useRemoteStream } from 'soapbox/api/hooks';
 import IconButton from 'soapbox/components/icon-button';
 import { Column, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
@@ -26,19 +26,11 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const instance = params?.instance as string;
   const settings = useSettings();
 
-  const stream = useRef<any>(null);
-
   const timelineId = 'remote';
   const onlyMedia = !!settings.getIn(['remote', 'other', 'onlyMedia']);
   const next = useAppSelector(state => state.timelines.get('remote')?.next);
 
   const pinned: boolean = (settings.getIn(['remote_timeline', 'pinnedHosts']) as any).includes(instance);
-
-  const disconnect = () => {
-    if (stream.current) {
-      stream.current();
-    }
-  };
 
   const handleCloseClick: React.MouseEventHandler = () => {
     history.push('/timeline/fediverse');
@@ -48,15 +40,10 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
     dispatch(expandRemoteTimeline(instance, { url: next, maxId, onlyMedia }));
   };
 
-  useEffect(() => {
-    disconnect();
-    dispatch(expandRemoteTimeline(instance, { onlyMedia, maxId: undefined }));
-    stream.current = dispatch(connectRemoteStream(instance, { onlyMedia }));
+  useRemoteStream({ instance, onlyMedia });
 
-    return () => {
-      disconnect();
-      stream.current = null;
-    };
+  useEffect(() => {
+    dispatch(expandRemoteTimeline(instance, { onlyMedia, maxId: undefined }));
   }, [onlyMedia]);
 
   return (
