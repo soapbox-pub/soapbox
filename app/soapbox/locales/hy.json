@@ -156,7 +156,6 @@
   "follow_request.authorize": "Վավերացնել",
   "follow_request.reject": "Մերժել",
   "getting_started.open_source_notice": "Մաստոդոնը բաց ելատեքստով ծրագրակազմ է։ Կարող ես ներդրում անել կամ վրեպներ զեկուցել ԳիթՀաբում՝ {code_link} (v{code_version})։",
-  "hashtag.column_header.tag_mode.any": "or {additional}",
   "header.home.label": "Home",
   "header.login.label": "Log in",
   "header.login.password.label": "Password",

@@ -115,7 +115,6 @@
   "empty_column.favourites": "No one has favorited this post yet. When someone does, they will show up here.",
   "empty_column.home.local_tab": "the {site_title} tab",
   "export_data.actions.export": "Export",
-  "hashtag.column_header.tag_mode.any": "or {additional}",
   "header.home.label": "Home",
   "header.login.label": "Log in",
   "header.login.password.label": "Password",

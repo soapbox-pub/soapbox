@@ -170,7 +170,6 @@
   "follow_request.authorize": "ავტორიზაცია",
   "follow_request.reject": "უარყოფა",
   "getting_started.open_source_notice": "მასტოდონი ღია პროგრამაა. შეგიძლიათ შეუწყოთ ხელი ან შექმნათ პრობემის რეპორტი {code_link} (v{code_version})-ზე.",
-  "hashtag.column_header.tag_mode.any": "or {additional}",
   "header.home.label": "Home",
   "header.login.label": "Log in",
   "header.login.password.label": "Password",
