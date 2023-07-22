@@ -50,5 +50,6 @@ export { useCommunityStream } from './streaming/useCommunityStream';
 export { usePublicStream } from './streaming/usePublicStream';
 export { useDirectStream } from './streaming/useDirectStream';
 export { useListStream } from './streaming/useListStream';
+export { useGroupStream } from './streaming/useGroupStream';
 export { useRemoteStream } from './streaming/useRemoteStream';
 export { useNostrStream } from './streaming/useNostrStream';

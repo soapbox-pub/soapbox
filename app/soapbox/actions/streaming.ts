@@ -193,14 +193,10 @@ const connectTimelineStream = (
 const connectHashtagStream   = (id: string, tag: string, accept: (status: APIEntity) => boolean) =>
   connectTimelineStream(`hashtag:${id}`, `hashtag&tag=${tag}`, null, accept);
 
-const connectGroupStream     = (id: string) =>
-  connectTimelineStream(`group:${id}`, `group&group=${id}`);
-
 export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
   connectTimelineStream,
   connectHashtagStream,
-  connectGroupStream,
   type TimelineStreamOpts,
 };
