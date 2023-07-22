@@ -1,4 +1,7 @@
 import { getLocale, getSettings } from 'soapbox/actions/settings';
+import { importEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
+import { selectEntity } from 'soapbox/entity-store/selectors';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
@@ -26,21 +29,11 @@ import {
 } from './timelines';
 
 import type { IStatContext } from 'soapbox/contexts/stat-context';
+import type { Relationship } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Chat } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
-const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
-
-const updateFollowRelationships = (relationships: APIEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const me = getState().me;
-    return dispatch({
-      type: STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
-      me,
-      ...relationships,
-    });
-  };
 
 const removeChatMessage = (payload: string) => {
   const data = JSON.parse(payload);
@@ -190,9 +183,52 @@ const connectTimelineStream = (
   };
 });
 
+function followStateToRelationship(followState: string) {
+  switch (followState) {
+    case 'follow_pending':
+      return { following: false, requested: true };
+    case 'follow_accept':
+      return { following: true, requested: false };
+    case 'follow_reject':
+      return { following: false, requested: false };
+    default:
+      return {};
+  }
+}
+
+interface FollowUpdate {
+  state: 'follow_pending' | 'follow_accept' | 'follow_reject'
+  follower: {
+    id: string
+    follower_count: number
+    following_count: number
+  }
+  following: {
+    id: string
+    follower_count: number
+    following_count: number
+  }
+}
+
+function updateFollowRelationships(update: FollowUpdate) {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    const me = getState().me;
+    const relationship = selectEntity<Relationship>(getState(), Entities.RELATIONSHIPS, update.following.id);
+
+    if (update.follower.id === me && relationship) {
+      const updated = {
+        ...relationship,
+        ...followStateToRelationship(update.state),
+      };
+
+      // Add a small delay to deal with API race conditions.
+      setTimeout(() => dispatch(importEntities([updated], Entities.RELATIONSHIPS)), 300);
+    }
+  };
+}
+
 export {
   STREAMING_CHAT_UPDATE,
-  STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
   connectTimelineStream,
   type TimelineStreamOpts,
 };
