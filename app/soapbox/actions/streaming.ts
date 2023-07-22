@@ -10,18 +10,16 @@ import { connectStream } from '../stream';
 
 import {
   deleteAnnouncement,
-  fetchAnnouncements,
   updateAnnouncements,
   updateReaction as updateAnnouncementsReaction,
 } from './announcements';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { MARKER_FETCH_SUCCESS } from './markers';
-import { updateNotificationsQueue, expandNotifications } from './notifications';
+import { updateNotificationsQueue } from './notifications';
 import { updateStatus } from './statuses';
 import {
   // deleteFromTimelines,
-  expandHomeTimeline,
   connectTimeline,
   disconnectTimeline,
   processTimelineUpdate,
@@ -192,14 +190,6 @@ const connectTimelineStream = (
   };
 });
 
-const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => void) =>
-  dispatch(expandHomeTimeline({}, () =>
-    dispatch(expandNotifications({}, () =>
-      dispatch(fetchAnnouncements(done))))));
-
-const connectUserStream      = (opts?: TimelineStreamOpts) =>
-  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
-
 const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
   connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
 
@@ -221,14 +211,10 @@ const connectListStream      = (id: string) =>
 const connectGroupStream     = (id: string) =>
   connectTimelineStream(`group:${id}`, `group&group=${id}`);
 
-const connectNostrStream     = () =>
-  connectTimelineStream('nostr', 'nostr');
-
 export {
   STREAMING_CHAT_UPDATE,
   STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
   connectTimelineStream,
-  connectUserStream,
   connectCommunityStream,
   connectPublicStream,
   connectRemoteStream,
@@ -236,6 +222,5 @@ export {
   connectDirectStream,
   connectListStream,
   connectGroupStream,
-  connectNostrStream,
   type TimelineStreamOpts,
 };
