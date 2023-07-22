@@ -46,4 +46,5 @@ export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
 
 // Streaming
 export { useUserStream } from './streaming/useUserStream';
+export { useCommunityStream } from './streaming/useCommunityStream';
 export { useNostrStream } from './streaming/useNostrStream';
