@@ -73,8 +73,9 @@ const updateChatQuery = (chat: IChat) => {
   queryClient.setQueryData<Chat>(ChatKeys.chat(chat.id), newChat as any);
 };
 
-interface StreamOpts {
+interface TimelineStreamOpts {
   statContext?: IStatContext
+  enabled?: boolean
 }
 
 const connectTimelineStream = (
@@ -82,7 +83,7 @@ const connectTimelineStream = (
   path: string,
   pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
   accept: ((status: APIEntity) => boolean) | null = null,
-  opts?: StreamOpts,
+  opts?: TimelineStreamOpts,
 ) => connectStream(path, pollingRefresh, (dispatch: AppDispatch, getState: () => RootState) => {
   const locale = getLocale(getState());
 
@@ -196,7 +197,7 @@ const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => 
     dispatch(expandNotifications({}, () =>
       dispatch(fetchAnnouncements(done))))));
 
-const connectUserStream      = (opts?: StreamOpts) =>
+const connectUserStream      = (opts?: TimelineStreamOpts) =>
   connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
 
 const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
@@ -236,4 +237,5 @@ export {
   connectListStream,
   connectGroupStream,
   connectNostrStream,
+  type TimelineStreamOpts,
 };

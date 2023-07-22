@@ -43,3 +43,7 @@ export { useSuggestedGroups } from './groups/useSuggestedGroups';
 export { useUnmuteGroup } from './groups/useUnmuteGroup';
 export { useUpdateGroup } from './groups/useUpdateGroup';
 export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
+
+// Streaming
+export { useUserStream } from './streaming/useUserStream';
+export { useNostrStream } from './streaming/useNostrStream';
