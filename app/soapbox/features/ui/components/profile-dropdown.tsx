@@ -112,7 +112,12 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
   return (
     <>
-      <button type='button' ref={refs.setReference} onClick={toggleVisible}>
+      <button
+        className='rounded-full focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-gray-800 dark:ring-offset-0 dark:focus:ring-primary-500'
+        type='button'
+        ref={refs.setReference}
+        onClick={toggleVisible}
+      >
         {children}
       </button>
 
