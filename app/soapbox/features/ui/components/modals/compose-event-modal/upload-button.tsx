@@ -34,7 +34,7 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
         onClick={handleClick}
       />
 
-      <Text size='sm' theme='primary' weight='semibold' transform='uppercase'>
+      <Text size='sm' theme='primary' weight='semibold' transform='uppercase' tabIndex={0}>
         <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
       </Text>
       <input

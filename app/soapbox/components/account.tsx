@@ -189,6 +189,7 @@ const Account = ({
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
           >
             <LinkEl
+              className='rounded-full'
               to={`/@${account.acct}`}
               title={account.acct}
               onClick={(event: React.MouseEvent) => event.stopPropagation()}

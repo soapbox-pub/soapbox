@@ -62,14 +62,21 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
     icon: require('@tabler/icons/logout.svg'),
   }], []);
 
+  const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      onClick(chat);
+    }
+  };
+
   return (
-    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div
       role='button'
       key={chat.id}
       onClick={() => onClick(chat)}
+      onKeyDown={handleKeyDown}
       className='group flex w-full flex-col rounded-lg px-2 py-3 hover:bg-gray-100 focus:shadow-inset-ring dark:hover:bg-gray-800'
       data-testid='chat-list-item'
+      tabIndex={0}
     >
       <HStack alignItems='center' justifyContent='between' space={2} className='w-full'>
         <HStack alignItems='center' space={2} className='overflow-hidden'>
