@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
 - Posts: fix audio player progress bar visibility.
+- Posts: fix audio player avatar aspect ratio for non-square avatars.
 - Posts: added missing gap in pending status.
 - Compatibility: fixed quote posting compatibility with custom Pleroma forks.
 - Profile: fix "load more" button height on account gallery page.
