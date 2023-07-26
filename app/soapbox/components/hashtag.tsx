@@ -23,7 +23,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
         </Link>
 
-        {hashtag.history && (
+        {Boolean(count) && (
           <Text theme='muted' size='sm'>
             <FormattedMessage
               id='trends.count_by_accounts'
