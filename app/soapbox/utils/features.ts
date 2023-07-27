@@ -760,7 +760,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can set privacy scopes on statuses.
      * @see POST /api/v1/statuses
      */
-    privacyScopes: v.software !== TRUTHSOCIAL,
+    privacyScopes: ![TRUTHSOCIAL, DITTO].includes(v.software!),
 
     /**
      * A directory of discoverable profiles from the instance.
