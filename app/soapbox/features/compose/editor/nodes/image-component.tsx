@@ -11,6 +11,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
 import clsx from 'clsx';
+import { List as ImmutableList } from 'immutable';
 import {
   $getNodeByKey,
   $getSelection,
@@ -28,7 +29,10 @@ import {
 import * as React from 'react';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
-import { IconButton } from 'soapbox/components/ui';
+import { openModal } from 'soapbox/actions/modals';
+import { HStack, IconButton } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
+import { normalizeAttachment } from 'soapbox/normalizers';
 
 import { $isImageNode } from './image-node';
 
@@ -39,6 +43,7 @@ import type {
   NodeSelection,
   RangeSelection,
 } from 'lexical';
+
 
 const imageCache = new Set();
 
@@ -87,6 +92,8 @@ const ImageComponent = ({
   nodeKey: NodeKey
   src: string
 }): JSX.Element => {
+  const dispatch = useAppDispatch();
+
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] =
@@ -108,6 +115,16 @@ const ImageComponent = ({
     },
     [nodeKey],
   );
+
+  const previewImage = () => {
+    const image = normalizeAttachment({
+      type: 'image',
+      url: src,
+      altText,
+    });
+
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(image), index: 0 }));
+  };
 
   const onDelete = useCallback(
     (payload: KeyboardEvent) => {
@@ -248,13 +265,22 @@ const ImageComponent = ({
     <Suspense fallback={null}>
       <>
         <div className='relative' draggable={draggable}>
-          <IconButton
-            onClick={deleteNode}
-            src={require('@tabler/icons/x.svg')}
-            theme='dark'
-            className='absolute right-2 top-2 z-10 hover:scale-105 hover:bg-gray-900'
-            iconClassName='h-5 w-5'
-          />
+          <HStack className='absolute right-2 top-2 z-10' space={2}>
+            <IconButton
+              onClick={previewImage}
+              src={require('@tabler/icons/zoom-in.svg')}
+              theme='dark'
+              className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+              iconClassName='h-5 w-5'
+            />
+            <IconButton
+              onClick={deleteNode}
+              src={require('@tabler/icons/x.svg')}
+              theme='dark'
+              className='!p-1.5 hover:scale-105 hover:bg-gray-900'
+              iconClassName='h-5 w-5'
+            />
+          </HStack>
           <LazyImage
             className={
               clsx('cursor-default', {
