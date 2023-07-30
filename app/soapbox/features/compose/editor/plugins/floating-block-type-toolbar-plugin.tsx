@@ -21,7 +21,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadFile } from 'soapbox/actions/compose';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
@@ -33,6 +33,11 @@ import { setFloatingElemPosition } from '../utils/set-floating-elem-position';
 import { ToolbarButton } from './floating-text-format-toolbar-plugin';
 
 import type { List as ImmutableList } from 'immutable';
+
+const messages = defineMessages({
+  createHorizontalLine: { id: 'compose_form.lexical.create_horizontal_line', defaultMessage: 'Create horizontal line' },
+  uploadMedia: { id: 'compose_form.lexical.upload_media', defaultMessage: 'Upload media' },
+});
 
 interface IUploadButton {
   onSelectFile: (src: string) =>  void
@@ -61,10 +66,6 @@ const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
     fileElement.current?.click();
   };
 
-  // if (unavailable) {
-  //   return null;
-  // }
-
   const src = (
     onlyImages(attachmentTypes)
       ? require('@tabler/icons/photo.svg')
@@ -75,7 +76,7 @@ const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
     <label>
       <ToolbarButton
         onClick={handleClick}
-        aria-label='Upload media'
+        aria-label={intl.formatMessage(messages.uploadMedia)}
         icon={src}
       />
       <input
@@ -99,6 +100,7 @@ const BlockTypeFloatingToolbar = ({
    editor: LexicalEditor
    anchorElem: HTMLElement
  }): JSX.Element => {
+  const intl = useIntl();
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
   const updateBlockTypeFloatingToolbar = useCallback(() => {
@@ -197,7 +199,7 @@ const BlockTypeFloatingToolbar = ({
         <>
           <ToolbarButton
             onClick={createHorizontalLine}
-            aria-label='Insert horizontal line'
+            aria-label={intl.formatMessage(messages.createHorizontalLine)}
             icon={require('@tabler/icons/line-dashed.svg')}
           />
           <UploadButton onSelectFile={createImage} />

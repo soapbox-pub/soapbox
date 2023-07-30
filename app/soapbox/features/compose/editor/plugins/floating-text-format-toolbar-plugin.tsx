@@ -43,6 +43,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { Icon } from 'soapbox/components/ui';
 import { useInstance } from 'soapbox/hooks';
@@ -50,6 +51,15 @@ import { useInstance } from 'soapbox/hooks';
 import { getDOMRangeRect } from '../utils/get-dom-range-rect';
 import { getSelectedNode } from '../utils/get-selected-node';
 import { setFloatingElemPosition } from '../utils/set-floating-elem-position';
+
+const messages = defineMessages({
+  formatBold: { id: 'compose_form.lexical.format_bold', defaultMessage: 'Format bold' },
+  formatItalic: { id: 'compose_form.lexical.format_italic', defaultMessage: 'Format italic' },
+  formatUnderline: { id: 'compose_form.lexical.format_underline', defaultMessage: 'Format underline' },
+  formatStrikethrough: { id: 'compose_form.lexical.format_strikethrough', defaultMessage: 'Format strikethrough' },
+  insertCodeBlock: { id: 'compose_form.lexical.insert_code_block', defaultMessage: 'Insert code block' },
+  insertLink: { id: 'compose_form.lexical.insert_link', defaultMessage: 'Insert link' },
+});
 
 const blockTypeToIcon = {
   bullet: require('@tabler/icons/list.svg'),
@@ -266,6 +276,7 @@ const TextFormatFloatingToolbar = ({
    isStrikethrough: boolean
    isUnderline: boolean
  }): JSX.Element => {
+  const intl = useIntl();
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
 
   const insertLink = useCallback(() => {
@@ -363,7 +374,7 @@ const TextFormatFloatingToolbar = ({
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
             }}
             active={isBold}
-            aria-label='Format text as bold'
+            aria-label={intl.formatMessage(messages.formatBold)}
             icon={require('@tabler/icons/bold.svg')}
           />
           <ToolbarButton
@@ -371,7 +382,7 @@ const TextFormatFloatingToolbar = ({
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
             }}
             active={isItalic}
-            aria-label='Format text as italics'
+            aria-label={intl.formatMessage(messages.formatItalic)}
             icon={require('@tabler/icons/italic.svg')}
           />
           <ToolbarButton
@@ -379,7 +390,7 @@ const TextFormatFloatingToolbar = ({
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
             }}
             active={isUnderline}
-            aria-label='Format text to underlined'
+            aria-label={intl.formatMessage(messages.formatUnderline)}
             icon={require('@tabler/icons/underline.svg')}
           />
           <ToolbarButton
@@ -387,7 +398,7 @@ const TextFormatFloatingToolbar = ({
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
             }}
             active={isStrikethrough}
-            aria-label='Format text with a strikethrough'
+            aria-label={intl.formatMessage(messages.formatStrikethrough)}
             icon={require('@tabler/icons/strikethrough.svg')}
           />
           <ToolbarButton
@@ -395,13 +406,13 @@ const TextFormatFloatingToolbar = ({
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
             }}
             active={isCode}
-            aria-label='Insert code block'
+            aria-label={intl.formatMessage(messages.insertCodeBlock)}
             icon={require('@tabler/icons/code.svg')}
           />
           <ToolbarButton
             onClick={insertLink}
             active={isLink}
-            aria-label='Insert link'
+            aria-label={intl.formatMessage(messages.insertLink)}
             icon={require('@tabler/icons/link.svg')}
           />
         </>
