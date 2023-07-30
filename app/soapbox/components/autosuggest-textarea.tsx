@@ -237,7 +237,7 @@ class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> 
     }
 
     return [
-      <div className='hidden' key='textarea'>
+      <div key='textarea'>
         <div className='relative'>
           <label>
             <span style={{ display: 'none' }}>{placeholder}</span>

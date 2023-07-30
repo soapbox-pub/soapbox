@@ -28,6 +28,7 @@ const settingsSchema = z.object({
   autoloadMore: z.boolean().catch(true),
   systemFont: z.boolean().catch(false),
   demetricator: z.boolean().catch(false),
+  wysiwyg: z.boolean().catch(false),
   isDeveloper: z.boolean().catch(false),
 });
 
