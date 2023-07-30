@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { directComposeById } from 'soapbox/actions/compose';
-import { connectDirectStream } from 'soapbox/actions/streaming';
 import { expandDirectTimeline } from 'soapbox/actions/timelines';
+import { useDirectStream } from 'soapbox/api/hooks';
 import AccountSearch from 'soapbox/components/account-search';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
@@ -20,13 +20,10 @@ const DirectTimeline = () => {
   const dispatch = useAppDispatch();
   const next = useAppSelector(state => state.timelines.get('direct')?.next);
 
+  useDirectStream();
+
   useEffect(() => {
     dispatch(expandDirectTimeline());
-    const disconnect = dispatch(connectDirectStream());
-
-    return (() => {
-      disconnect();
-    });
   }, []);
 
   const handleSuggestion = (accountId: string) => {

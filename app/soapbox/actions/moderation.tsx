@@ -116,8 +116,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
 const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensitive: boolean, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const accountId = state.statuses.get(statusId)!.account.id;
-    const acct = selectAccount(state, accountId)!.acct;
+    const acct = state.statuses.get(statusId)!.account.acct;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/alert-triangle.svg'),
@@ -137,8 +136,7 @@ const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensiti
 const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () => {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const accountId = state.statuses.get(statusId)!.account.id;
-    const acct = selectAccount(state, accountId)!.acct;
+    const acct = state.statuses.get(statusId)!.account.acct;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/trash.svg'),

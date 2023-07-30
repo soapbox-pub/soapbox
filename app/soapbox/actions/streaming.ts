@@ -1,4 +1,7 @@
 import { getLocale, getSettings } from 'soapbox/actions/settings';
+import { importEntities } from 'soapbox/entity-store/actions';
+import { Entities } from 'soapbox/entity-store/entities';
+import { selectEntity } from 'soapbox/entity-store/selectors';
 import messages from 'soapbox/locales/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
@@ -10,39 +13,27 @@ import { connectStream } from '../stream';
 
 import {
   deleteAnnouncement,
-  fetchAnnouncements,
   updateAnnouncements,
   updateReaction as updateAnnouncementsReaction,
 } from './announcements';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { MARKER_FETCH_SUCCESS } from './markers';
-import { updateNotificationsQueue, expandNotifications } from './notifications';
+import { updateNotificationsQueue } from './notifications';
 import { updateStatus } from './statuses';
 import {
   // deleteFromTimelines,
-  expandHomeTimeline,
   connectTimeline,
   disconnectTimeline,
   processTimelineUpdate,
 } from './timelines';
 
 import type { IStatContext } from 'soapbox/contexts/stat-context';
+import type { Relationship } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Chat } from 'soapbox/types/entities';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
-const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
-
-const updateFollowRelationships = (relationships: APIEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const me = getState().me;
-    return dispatch({
-      type: STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
-      me,
-      ...relationships,
-    });
-  };
 
 const removeChatMessage = (payload: string) => {
   const data = JSON.parse(payload);
@@ -73,8 +64,9 @@ const updateChatQuery = (chat: IChat) => {
   queryClient.setQueryData<Chat>(ChatKeys.chat(chat.id), newChat as any);
 };
 
-interface StreamOpts {
+interface TimelineStreamOpts {
   statContext?: IStatContext
+  enabled?: boolean
 }
 
 const connectTimelineStream = (
@@ -82,7 +74,7 @@ const connectTimelineStream = (
   path: string,
   pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
   accept: ((status: APIEntity) => boolean) | null = null,
-  opts?: StreamOpts,
+  opts?: TimelineStreamOpts,
 ) => connectStream(path, pollingRefresh, (dispatch: AppDispatch, getState: () => RootState) => {
   const locale = getLocale(getState());
 
@@ -191,49 +183,52 @@ const connectTimelineStream = (
   };
 });
 
-const refreshHomeTimelineAndNotification = (dispatch: AppDispatch, done?: () => void) =>
-  dispatch(expandHomeTimeline({}, () =>
-    dispatch(expandNotifications({}, () =>
-      dispatch(fetchAnnouncements(done))))));
+function followStateToRelationship(followState: string) {
+  switch (followState) {
+    case 'follow_pending':
+      return { following: false, requested: true };
+    case 'follow_accept':
+      return { following: true, requested: false };
+    case 'follow_reject':
+      return { following: false, requested: false };
+    default:
+      return {};
+  }
+}
 
-const connectUserStream      = (opts?: StreamOpts) =>
-  connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification, null, opts);
+interface FollowUpdate {
+  state: 'follow_pending' | 'follow_accept' | 'follow_reject'
+  follower: {
+    id: string
+    follower_count: number
+    following_count: number
+  }
+  following: {
+    id: string
+    follower_count: number
+    following_count: number
+  }
+}
 
-const connectCommunityStream = ({ onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
+function updateFollowRelationships(update: FollowUpdate) {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    const me = getState().me;
+    const relationship = selectEntity<Relationship>(getState(), Entities.RELATIONSHIPS, update.following.id);
 
-const connectPublicStream    = ({ onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
+    if (update.follower.id === me && relationship) {
+      const updated = {
+        ...relationship,
+        ...followStateToRelationship(update.state),
+      };
 
-const connectRemoteStream    = (instance: string, { onlyMedia }: Record<string, any> = {}) =>
-  connectTimelineStream(`remote${onlyMedia ? ':media' : ''}:${instance}`, `public:remote${onlyMedia ? ':media' : ''}&instance=${instance}`);
-
-const connectHashtagStream   = (id: string, tag: string, accept: (status: APIEntity) => boolean) =>
-  connectTimelineStream(`hashtag:${id}`, `hashtag&tag=${tag}`, null, accept);
-
-const connectDirectStream    = () =>
-  connectTimelineStream('direct', 'direct');
-
-const connectListStream      = (id: string) =>
-  connectTimelineStream(`list:${id}`, `list&list=${id}`);
-
-const connectGroupStream     = (id: string) =>
-  connectTimelineStream(`group:${id}`, `group&group=${id}`);
-
-const connectNostrStream     = () =>
-  connectTimelineStream('nostr', 'nostr');
+      // Add a small delay to deal with API race conditions.
+      setTimeout(() => dispatch(importEntities([updated], Entities.RELATIONSHIPS)), 300);
+    }
+  };
+}
 
 export {
   STREAMING_CHAT_UPDATE,
-  STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
   connectTimelineStream,
-  connectUserStream,
-  connectCommunityStream,
-  connectPublicStream,
-  connectRemoteStream,
-  connectHashtagStream,
-  connectDirectStream,
-  connectListStream,
-  connectGroupStream,
-  connectNostrStream,
+  type TimelineStreamOpts,
 };

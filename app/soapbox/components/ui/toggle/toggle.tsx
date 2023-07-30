@@ -16,7 +16,7 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', name, checked, onChange, r
 
   return (
     <button
-      className={clsx('flex-none rounded-full', {
+      className={clsx('flex-none rounded-full focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-gray-800 dark:ring-offset-0 dark:focus:ring-primary-500', {
         'bg-gray-500': !checked && !disabled,
         'bg-primary-600': checked && !disabled,
         'bg-gray-200': !checked && disabled,
@@ -46,6 +46,7 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', name, checked, onChange, r
         onChange={onChange}
         required={required}
         disabled={disabled}
+        tabIndex={-1}
       />
     </button>
   );

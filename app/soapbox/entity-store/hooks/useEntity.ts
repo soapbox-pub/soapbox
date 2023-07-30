@@ -5,6 +5,7 @@ import z from 'zod';
 import { useAppDispatch, useAppSelector, useLoading } from 'soapbox/hooks';
 
 import { importEntities } from '../actions';
+import { selectEntity } from '../selectors';
 
 import type { Entity } from '../types';
 import type { EntitySchema, EntityPath, EntityFn } from './types';
@@ -34,7 +35,7 @@ function useEntity<TEntity extends Entity>(
   const defaultSchema = z.custom<TEntity>();
   const schema = opts.schema || defaultSchema;
 
-  const entity = useAppSelector(state => state.entities[entityType]?.store[entityId] as TEntity | undefined);
+  const entity = useAppSelector(state => selectEntity<TEntity>(state, entityType, entityId));
 
   const isEnabled = opts.enabled ?? true;
   const isLoading = isFetching && !entity;

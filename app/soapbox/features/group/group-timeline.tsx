@@ -4,9 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
-import { connectGroupStream } from 'soapbox/actions/streaming';
 import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines';
-import { useGroup } from 'soapbox/api/hooks';
+import { useGroup, useGroupStream } from 'soapbox/api/hooks';
 import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
 import ComposeForm from 'soapbox/features/compose/components/compose-form';
 import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
@@ -49,16 +48,12 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
     dispatch(setGroupTimelineVisible(composeId, !groupTimelineVisible));
   };
 
+  useGroupStream(groupId);
+
   useEffect(() => {
     dispatch(expandGroupTimeline(groupId));
     dispatch(expandGroupFeaturedTimeline(groupId));
     dispatch(groupCompose(composeId, groupId));
-
-    const disconnect = dispatch(connectGroupStream(groupId));
-
-    return () => {
-      disconnect();
-    };
   }, [groupId]);
 
   if (!group) {

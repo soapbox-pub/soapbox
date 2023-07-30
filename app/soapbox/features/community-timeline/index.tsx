@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { connectCommunityStream } from 'soapbox/actions/streaming';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
+import { useCommunityStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
@@ -18,7 +18,7 @@ const CommunityTimeline = () => {
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
-  const onlyMedia = settings.getIn(['community', 'other', 'onlyMedia']);
+  const onlyMedia = !!settings.getIn(['community', 'other', 'onlyMedia'], false);
   const next = useAppSelector(state => state.timelines.get('community')?.next);
 
   const timelineId = 'community';
@@ -28,16 +28,13 @@ const CommunityTimeline = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandCommunityTimeline({ onlyMedia } as any));
+    return dispatch(expandCommunityTimeline({ onlyMedia }));
   };
 
-  useEffect(() => {
-    dispatch(expandCommunityTimeline({ onlyMedia } as any));
-    const disconnect = dispatch(connectCommunityStream({ onlyMedia } as any));
+  useCommunityStream({ onlyMedia });
 
-    return () => {
-      disconnect();
-    };
+  useEffect(() => {
+    dispatch(expandCommunityTimeline({ onlyMedia }));
   }, [onlyMedia]);
 
   return (

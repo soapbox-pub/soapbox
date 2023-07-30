@@ -3,8 +3,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { connectPublicStream } from 'soapbox/actions/streaming';
 import { expandPublicTimeline } from 'soapbox/actions/timelines';
+import { usePublicStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Accordion, Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useInstance, useSettings } from 'soapbox/hooks';
@@ -23,7 +23,7 @@ const CommunityTimeline = () => {
 
   const instance = useInstance();
   const settings = useSettings();
-  const onlyMedia = settings.getIn(['public', 'other', 'onlyMedia']);
+  const onlyMedia = !!settings.getIn(['public', 'other', 'onlyMedia'], false);
   const next = useAppSelector(state => state.timelines.get('public')?.next);
 
   const timelineId = 'public';
@@ -44,16 +44,13 @@ const CommunityTimeline = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandPublicTimeline({ onlyMedia } as any));
+    return dispatch(expandPublicTimeline({ onlyMedia }));
   };
 
-  useEffect(() => {
-    dispatch(expandPublicTimeline({ onlyMedia } as any));
-    const disconnect = dispatch(connectPublicStream({ onlyMedia }));
+  usePublicStream({ onlyMedia });
 
-    return () => {
-      disconnect();
-    };
+  useEffect(() => {
+    dispatch(expandPublicTimeline({ onlyMedia }));
   }, [onlyMedia]);
 
   return (

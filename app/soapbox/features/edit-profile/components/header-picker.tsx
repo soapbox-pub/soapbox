@@ -29,6 +29,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
     <label
       className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
       title={intl.formatMessage(messages.title)}
+      tabIndex={0}
     >
       {src && <img className='h-full w-full object-cover' src={src} alt='' />}
       <HStack

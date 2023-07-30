@@ -144,6 +144,7 @@ interface ComposeReplyAction {
   status: Status
   account: Account
   explicitAddressing: boolean
+  preserveSpoilers: boolean
 }
 
 const replyCompose = (status: Status) =>
@@ -151,7 +152,9 @@ const replyCompose = (status: Status) =>
     const state = getState();
     const instance = state.instance;
     const { explicitAddressing } = getFeatures(instance);
+    const preserveSpoilers = !!getSettings(state).get('preserveSpoilers');
     const account = selectOwnAccount(state);
+
     if (!account) return;
 
     const action: ComposeReplyAction = {
@@ -160,6 +163,7 @@ const replyCompose = (status: Status) =>
       status: status,
       account,
       explicitAddressing,
+      preserveSpoilers,
     };
 
     dispatch(action);
