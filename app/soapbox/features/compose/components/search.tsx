@@ -16,6 +16,7 @@ import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-inpu
 import { Input } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { selectAccount } from 'soapbox/selectors';
 import { AppDispatch, RootState } from 'soapbox/store';
 
 const messages = defineMessages({
@@ -25,7 +26,7 @@ const messages = defineMessages({
 
 function redirectToAccount(accountId: string, routerHistory: any) {
   return (_dispatch: AppDispatch, getState: () => RootState) => {
-    const acct = getState().getIn(['accounts', accountId, 'acct']);
+    const acct = selectAccount(getState(), accountId)!.acct;
 
     if (acct && routerHistory) {
       routerHistory.push(`/@${acct}`);
