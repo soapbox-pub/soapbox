@@ -132,6 +132,14 @@ class ImageNode extends DecoratorNode<JSX.Element> {
     return this.__altText;
   }
 
+  setAltText(altText: string): void {
+    const writable = this.getWritable();
+
+    if (altText !== undefined) {
+      writable.__altText = altText;
+    }
+  }
+
   decorate(): JSX.Element {
     return (
       <Suspense fallback={null}>

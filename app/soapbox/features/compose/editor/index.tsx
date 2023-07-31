@@ -24,6 +24,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 
+import { importImage } from './handlers/image';
 import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FloatingBlockTypeToolbarPlugin from './plugins/floating-block-type-toolbar-plugin';
@@ -106,7 +107,11 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 
       return () => {
         if (compose.content_type === 'text/markdown') {
-          $createRemarkImport({})(compose.text);
+          $createRemarkImport({
+            handlers: {
+              image: importImage,
+            },
+          })(compose.text);
         } else {
           const paragraph = $createParagraphNode();
           const textNode = $createTextNode(compose.text);

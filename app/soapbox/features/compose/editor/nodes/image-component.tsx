@@ -28,6 +28,7 @@ import {
 } from 'lexical';
 import * as React from 'react';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { HStack, IconButton } from 'soapbox/components/ui';
@@ -44,6 +45,9 @@ import type {
   RangeSelection,
 } from 'lexical';
 
+const messages = defineMessages({
+  description: { id: 'upload_form.description', defaultMessage: 'Describe for the visually impaired' },
+});
 
 const imageCache = new Set();
 
@@ -92,6 +96,7 @@ const ImageComponent = ({
   nodeKey: NodeKey
   src: string
 }): JSX.Element => {
+  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const imageRef = useRef<null | HTMLImageElement>(null);
@@ -103,6 +108,10 @@ const ImageComponent = ({
     RangeSelection | NodeSelection | GridSelection | null
   >(null);
   const activeEditorRef = useRef<LexicalEditor | null>(null);
+
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [dirtyDescription, setDirtyDescription] = useState<string | null>(null);
 
   const deleteNode = useCallback(
     () => {
@@ -178,6 +187,47 @@ const ImageComponent = ({
     },
     [editor, setSelected],
   );
+
+  const handleKeyDown: React.KeyboardEventHandler = (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      handleInputBlur();
+    }
+  };
+
+  const handleInputBlur = () => {
+    setFocused(false);
+
+    if (dirtyDescription !== null) {
+      editor.update(() => {
+        const node = $getNodeByKey(nodeKey);
+        if ($isImageNode(node)) {
+          node.setAltText(dirtyDescription);
+        }
+
+        setDirtyDescription(null);
+      });
+    }
+  };
+
+  const handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
+    setDirtyDescription(e.target.value);
+  };
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
+  const handleInputFocus = () => {
+    setFocused(true);
+  };
+
+  const handleClick = () => {
+    setFocused(true);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -259,12 +309,14 @@ const ImageComponent = ({
     setSelected,
   ]);
 
+  const active = hovered || focused;
+  const description = dirtyDescription || (dirtyDescription !== '' && altText) || '';
   const draggable = isSelected && $isNodeSelection(selection);
-  const isFocused = isSelected;
+
   return (
     <Suspense fallback={null}>
       <>
-        <div className='relative' draggable={draggable}>
+        <div className='relative' draggable={draggable} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick}  role='button'>
           <HStack className='absolute right-2 top-2 z-10' space={2}>
             <IconButton
               onClick={previewImage}
@@ -281,11 +333,27 @@ const ImageComponent = ({
               iconClassName='h-5 w-5'
             />
           </HStack>
+
+          <div className={clsx('compose-form__upload-description', { active })}>
+            <label>
+              <span style={{ display: 'none' }}>{intl.formatMessage(messages.description)}</span>
+
+              <textarea
+                placeholder={intl.formatMessage(messages.description)}
+                value={description}
+                onFocus={handleInputFocus}
+                onChange={handleInputChange}
+                onBlur={handleInputBlur}
+                onKeyDown={handleKeyDown}
+              />
+            </label>
+          </div>
+
           <LazyImage
             className={
               clsx('cursor-default', {
-                'select-none': isFocused,
-                'cursor-grab active:cursor-grabbing': isFocused && $isNodeSelection(selection),
+                'select-none': isSelected,
+                'cursor-grab active:cursor-grabbing': isSelected && $isNodeSelection(selection),
               })
             }
             src={src}

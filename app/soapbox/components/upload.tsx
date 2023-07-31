@@ -7,7 +7,7 @@ import { spring } from 'react-motion';
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import { IconButton } from 'soapbox/components/ui';
+import { HStack, IconButton } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional-motion';
 import { useAppDispatch } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
@@ -159,7 +159,7 @@ const Upload: React.FC<IUpload> = ({
               backgroundImage: mediaType === 'image' ? `url(${media.preview_url})` : undefined,
               backgroundPosition: typeof x === 'number' && typeof y === 'number' ? `${x}% ${y}%` : undefined }}
           >
-            <div className={clsx('compose-form__upload__actions', { active })}>
+            <HStack className='absolute right-2 top-2 z-10' space={2}>
               {(withPreview && mediaType !== 'unknown' && Boolean(media.url)) && (
                 <IconButton
                   onClick={handleOpenModal}
@@ -180,7 +180,7 @@ const Upload: React.FC<IUpload> = ({
                   title={intl.formatMessage(messages.delete)}
                 />
               )}
-            </div>
+            </HStack>
 
             {onDescriptionChange && (
               <div className={clsx('compose-form__upload-description', { active })}>
