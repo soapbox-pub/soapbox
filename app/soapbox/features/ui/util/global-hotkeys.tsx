@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 import { resetCompose } from 'soapbox/actions/compose';
 import { openModal } from 'soapbox/actions/modals';
-import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { FOCUS_EDITOR_COMMAND } from 'soapbox/features/compose/editor/plugins/focus-plugin';
+import { useAppSelector, useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
+
+import type { LexicalEditor } from 'lexical';
 
 const keyMap = {
   help: '?',
@@ -46,14 +49,25 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
   const dispatch = useAppDispatch();
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
+  const wysiwygEditor = useSettings().get('wysiwyg');
 
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
 
-    const element = node.current?.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
+    let element;
+
+    if (wysiwygEditor) {
+      element = node.current?.querySelector('div[data-lexical-editor="true"]') as HTMLTextAreaElement;
+    } else {
+      element = node.current?.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
+    }
 
     if (element) {
-      element.focus();
+      if (wysiwygEditor) {
+        ((element as any).__lexicalEditor as LexicalEditor).dispatchCommand(FOCUS_EDITOR_COMMAND, undefined);
+      } else {
+        element.focus();
+      }
     } else {
       dispatch(openModal('COMPOSE'));
     }
