@@ -1,11 +1,8 @@
 /**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
+ * This source code is derived from code from Meta Platforms, Inc.
+ * and affiliates, licensed under the MIT license located in the
+ * LICENSE file in the /app/soapbox/features/compose/editor directory.
  */
-
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';

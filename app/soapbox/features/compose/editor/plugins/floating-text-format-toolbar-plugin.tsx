@@ -1,11 +1,8 @@
-/*
-MIT License
-
-Copyright (c) Meta Platforms, Inc. and affiliates.
-
-This source code is licensed under the MIT license found in the
-LICENSE file in the /app/soapbox/features/compose/editor directory.
-*/
+/**
+ * This source code is derived from code from Meta Platforms, Inc.
+ * and affiliates, licensed under the MIT license located in the
+ * LICENSE file in the /app/soapbox/features/compose/editor directory.
+ */
 
 import { $createCodeNode, $isCodeHighlightNode } from '@lexical/code';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
