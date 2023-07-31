@@ -20,10 +20,7 @@ const FocusPlugin: React.FC<IFocusPlugin> = ({ autoFocus }) => {
       () => {
         const activeElement = document.activeElement;
         const rootElement = editor.getRootElement();
-        if (
-          rootElement !== null &&
-          (activeElement === null || !rootElement.contains(activeElement))
-        ) {
+        if (rootElement !== null && (activeElement === null || !rootElement.contains(activeElement))) {
           rootElement.focus({ preventScroll: true });
         }
       }, { defaultSelection: 'rootEnd' },

@@ -120,18 +120,12 @@ const getScrollParent = (
   if (style.position === 'fixed') {
     return document.body;
   }
-  for (
-    let parent: HTMLElement | null = element;
-    (parent = parent.parentElement);
-
-  ) {
+  for (let parent: HTMLElement | null = element; (parent = parent.parentElement);) {
     style = getComputedStyle(parent);
     if (excludeStaticParent && style.position === 'static') {
       continue;
     }
-    if (
-      overflowRegex.test(style.overflow + style.overflowY + style.overflowX)
-    ) {
+    if (overflowRegex.test(style.overflow + style.overflowY + style.overflowX)) {
       return parent;
     }
   }
@@ -418,17 +412,16 @@ const AutosuggestPlugin = ({
       editor.getEditorState().read(() => {
         const range = document.createRange();
         const match = getQueryTextForSearch(editor);
+        const nativeSelection = window.getSelection();
 
-        if (!match) {
+        if (!match || nativeSelection?.anchorOffset !== nativeSelection?.focusOffset) {
           closeTypeahead();
           return;
         }
 
         dispatch(fetchComposeSuggestions(composeId, match.matchingString.trim()));
 
-        if (
-          !isSelectionOnEntityBoundary(editor, match.leadOffset)
-        ) {
+        if (!isSelectionOnEntityBoundary(editor, match.leadOffset)) {
           const isRangePositioned = tryToPositionRange(match.leadOffset, range);
           if (isRangePositioned !== null) {
             startTransition(() =>

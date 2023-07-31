@@ -119,10 +119,7 @@ const BlockTypeDropdown = ({ editor, anchorElem, blockType, icon }: {
   const formatParagraph = () => {
     editor.update(() => {
       const selection = $getSelection();
-      if (
-        $isRangeSelection(selection) ||
-        DEPRECATED_$isGridSelection(selection)
-      ) {
+      if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
         $setBlocksType(selection, () => $createParagraphNode());
       }
     });
@@ -509,10 +506,7 @@ const useFloatingTextFormatToolbar = (
         setIsLink(false);
       }
 
-      if (
-        !$isCodeHighlightNode(selection.anchor.getNode()) &&
-        selection.getTextContent() !== ''
-      ) {
+      if (!$isCodeHighlightNode(selection.anchor.getNode()) && selection.getTextContent() !== '') {
         setIsText($isTextNode(node));
       } else {
         setIsText(false);
