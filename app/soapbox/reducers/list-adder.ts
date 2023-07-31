@@ -32,7 +32,7 @@ export default function listAdderReducer(state: State = ReducerRecord(), action:
       return ReducerRecord();
     case LIST_ADDER_SETUP:
       return state.withMutations(map => {
-        map.set('accountId', action.account.get('id'));
+        map.set('accountId', action.account.id);
       });
     case LIST_ADDER_LISTS_FETCH_REQUEST:
       return state.setIn(['lists', 'isLoading'], true);
