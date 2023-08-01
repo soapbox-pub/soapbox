@@ -6,10 +6,13 @@
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $createHorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
-import { mergeRegister } from '@lexical/utils';
+import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 import {
+  $createParagraphNode,
   $getSelection,
+  $insertNodes,
   $isRangeSelection,
+  $isRootOrShadowRoot,
   COMMAND_PRIORITY_LOW,
   DEPRECATED_$isGridSelection,
   LexicalEditor,
@@ -181,8 +184,11 @@ const BlockTypeFloatingToolbar = ({
     editor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection) || DEPRECATED_$isGridSelection(selection)) {
-        const selectionNode = selection.anchor.getNode();
-        selectionNode.replace($createImageNode({ altText: '', src }));
+        const imageNode = $createImageNode({ altText: '', src });
+        $insertNodes([imageNode]);
+        if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
+          $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
+        }
       }
     });
   };
