@@ -389,7 +389,6 @@
   "compose.character_counter.title": "{chars} sur {maxChars} {maxChars, plural, one {caractère} other {caractères}} {maxChars, plural, one {utilisé} other {utilisés}}",
   "compose.edit_success": "Votre publication a été modifiée",
   "compose.invalid_schedule": "Vous devez programmer votre publication avec un délai de 5 minutes au minimum",
-  "compose.reply_group_indicator.message": "",
   "compose.submit_success": "Votre publication a été envoyée !",
   "compose_event.create": "Créer",
   "compose_event.edit_success": "Votre évènement a été édité",
