@@ -41,7 +41,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   useEffect(() => {
     dispatch(expandHashtagTimeline(id));
     dispatch(fetchHashtag(id));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     dispatch(clearTimeline(`hashtag:${id}`));
