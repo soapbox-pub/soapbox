@@ -62,7 +62,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
 
   if (account) {
     const ownAccount = account.id === me;
-    if (ownAccount || account.pleroma?.hide_favorites !== true) {
+    if (ownAccount || account.pleroma?.hide_favorites === false) {
       tabItems.push({
         text: <FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' />,
         to: `/@${account.acct}/favorites`,
