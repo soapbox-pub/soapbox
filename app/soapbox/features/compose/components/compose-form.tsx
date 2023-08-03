@@ -17,6 +17,8 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
+import Bundle from 'soapbox/features/ui/components/bundle';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious, useSettings } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
@@ -25,7 +27,6 @@ import ReplyIndicatorContainer from '../containers/reply-indicator-container';
 import ScheduleFormContainer from '../containers/schedule-form-container';
 import UploadButtonContainer from '../containers/upload-button-container';
 import WarningContainer from '../containers/warning-container';
-import ComposeEditor from '../editor';
 import { countableText } from '../util/counter';
 
 import MarkdownButton from './markdown-button';
@@ -331,18 +332,22 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       {wysiwygEditor ? (
         <div>
-          <ComposeEditor
-            ref={editorStateRef}
-            className='my-2'
-            composeId={id}
-            condensed={condensed}
-            eventDiscussion={!!event}
-            autoFocus={shouldAutoFocus}
-            hasPoll={hasPoll}
-            handleSubmit={handleSubmit}
-            onFocus={handleComposeFocus}
-            onPaste={onPaste}
-          />
+          <Bundle fetchComponent={ComposeEditor}>
+            {(Component: any) => (
+              <Component
+                ref={editorStateRef}
+                className='my-2'
+                composeId={id}
+                condensed={condensed}
+                eventDiscussion={!!event}
+                autoFocus={shouldAutoFocus}
+                hasPoll={hasPoll}
+                handleSubmit={handleSubmit}
+                onFocus={handleComposeFocus}
+                onPaste={onPaste}
+              />
+            )}
+          </Bundle>
           {composeModifiers}
         </div>
       ) : (

@@ -641,3 +641,7 @@ export function EditAnnouncementModal() {
 export function FollowedTags() {
   return import(/* webpackChunkName: "features/followed-tags" */'../../followed-tags');
 }
+
+export function ComposeEditor() {
+  return import(/* webpackChunkName: "lexical" */'../../compose/editor');
+}

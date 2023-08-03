@@ -24,9 +24,8 @@ import { checkEventComposeContent } from 'soapbox/components/modal-root';
 import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
-import ComposeEditor from 'soapbox/features/compose/editor';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
-import { DatePicker } from 'soapbox/features/ui/util/async-components';
+import { ComposeEditor, DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import UploadButton from './upload-button';
@@ -236,14 +235,18 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.description_label' defaultMessage='Event description' />}
       >
-        <ComposeEditor
-          ref={editorStateRef}
-          className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500 sm:text-sm'
-          placeholderClassName='pt-2'
-          composeId='compose-event-modal'
-          placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
-          handleSubmit={handleSubmit}
-        />
+        <BundleContainer fetchComponent={ComposeEditor}>
+          {(Component: any) => (
+            <Component
+              ref={editorStateRef}
+              className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500 sm:text-sm'
+              placeholderClassName='pt-2'
+              composeId='compose-event-modal'
+              placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
+              handleSubmit={handleSubmit}
+            />
+          )}
+        </BundleContainer>
       </FormGroup>
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.location_label' defaultMessage='Event location' />}
