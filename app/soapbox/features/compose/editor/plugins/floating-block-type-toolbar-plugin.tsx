@@ -26,7 +26,6 @@ import { defineMessages, useIntl } from 'react-intl';
 import { uploadFile } from 'soapbox/actions/compose';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 
-import { onlyImages } from '../../components/upload-button';
 import { $createImageNode } from '../nodes/image-node';
 import { setFloatingElemPosition } from '../utils/set-floating-elem-position';
 
@@ -47,17 +46,24 @@ const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
   const intl = useIntl();
   const { configuration } = useInstance();
   const dispatch = useAppDispatch();
+  const [disabled, setDisabled] = useState(false);
 
   const fileElement = useRef<HTMLInputElement>(null);
   const attachmentTypes = configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) {
+      setDisabled(true);
+
       // @ts-ignore
       dispatch(uploadFile(
         e.target.files.item(0) as File,
         intl,
-        ({ url }) => onSelectFile(url),
+        ({ url }) => {
+          onSelectFile(url);
+          setDisabled(false);
+        },
+        () => setDisabled(false),
       ));
     }
   };
@@ -66,11 +72,7 @@ const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
     fileElement.current?.click();
   };
 
-  const src = (
-    onlyImages(attachmentTypes)
-      ? require('@tabler/icons/photo.svg')
-      : require('@tabler/icons/paperclip.svg')
-  );
+  const src = require('@tabler/icons/photo.svg');
 
   return (
     <label>
@@ -80,13 +82,12 @@ const UploadButton: React.FC<IUploadButton> = ({ onSelectFile }) => {
         icon={src}
       />
       <input
-        // key={resetFileKey}
         ref={fileElement}
         type='file'
         multiple
-        accept={attachmentTypes && attachmentTypes.toArray().join(',')}
+        accept={attachmentTypes ? attachmentTypes.filter(type => type.startsWith('image/')).toArray().join(',') : 'image/*'}
         onChange={handleChange}
-        // disabled={disabled}
+        disabled={disabled}
         className='hidden'
       />
     </label>
@@ -200,12 +201,12 @@ const BlockTypeFloatingToolbar = ({
     >
       {editor.isEditable() && (
         <>
+          <UploadButton onSelectFile={createImage} />
           <ToolbarButton
             onClick={createHorizontalLine}
             aria-label={intl.formatMessage(messages.createHorizontalLine)}
             icon={require('@tabler/icons/line-dashed.svg')}
           />
-          <UploadButton onSelectFile={createImage} />
         </>
       )}
     </div>
