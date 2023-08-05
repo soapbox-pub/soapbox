@@ -1,5 +1,4 @@
 import axios, { AxiosError, Canceler } from 'axios';
-import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
@@ -21,6 +20,7 @@ import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
+import type { List as ImmutableList } from 'immutable';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import type { Emoji } from 'soapbox/features/emoji';
 import type { Account, Group } from 'soapbox/schemas';

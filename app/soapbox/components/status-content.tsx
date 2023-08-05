@@ -139,7 +139,7 @@ const StatusContent: React.FC<IStatusContent> = ({
 
   const withSpoiler = status.spoiler_text.length > 0;
 
-  const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
+  const baseClassName = 'relative overflow-hidden text-ellipsis break-words text-gray-900 focus:outline-none dark:text-gray-100';
 
   const content = { __html: parsedHtml };
   const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';

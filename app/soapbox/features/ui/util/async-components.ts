@@ -223,11 +223,11 @@ export function ListEditor() {
 }
 
 export function ListAdder() {
-  return import(/*webpackChunkName: "features/list_adder" */'../../list-adder');
+  return import(/* webpackChunkName: "features/list_adder" */'../../list-adder');
 }
 
 export function Search() {
-  return import(/*webpackChunkName: "features/search" */'../../search');
+  return import(/* webpackChunkName: "features/search" */'../../search');
 }
 
 export function LoginPage() {
@@ -486,10 +486,6 @@ export function WaitlistPage() {
   return import(/* webpackChunkName: "features/verification" */'../../verification/waitlist-page');
 }
 
-export function CompareHistoryModal() {
-  return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/modals/compare-history-modal');
-}
-
 export function AuthTokenList() {
   return import(/* webpackChunkName: "features/auth_token_list" */'../../auth-token-list');
 }
@@ -499,7 +495,7 @@ export function VerifySmsModal() {
 }
 
 export function FamiliarFollowersModal() {
-  return import(/*webpackChunkName: "modals/familiar_followers_modal" */'../components/modals/familiar-followers-modal');
+  return import(/* webpackChunkName: "modals/familiar_followers_modal" */'../components/modals/familiar-followers-modal');
 }
 
 export function AnnouncementsPanel() {
@@ -507,7 +503,11 @@ export function AnnouncementsPanel() {
 }
 
 export function Quotes() {
-  return import(/*webpackChunkName: "features/quotes" */'../../quotes');
+  return import(/* webpackChunkName: "features/quotes" */'../../quotes');
+}
+
+export function StatusHistory() {
+  return import(/* webpackChunkName: "features/status-history" */'../../status-history');
 }
 
 export function ComposeEventModal() {

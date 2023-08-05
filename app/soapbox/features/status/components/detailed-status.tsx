@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedDate, FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import Account from 'soapbox/components/account';
@@ -17,17 +17,19 @@ import StatusInteractionBar from './status-interaction-bar';
 
 import type { Group, Status as StatusEntity } from 'soapbox/types/entities';
 
+const messages = defineMessages({
+  editHistory: { id: 'status.edit_history', defaultMessage: 'Show edit history' },
+});
+
 interface IDetailedStatus {
   status: StatusEntity
   showMedia?: boolean
   withMedia?: boolean
-  onOpenCompareHistoryModal: (status: StatusEntity) => void
   onToggleMediaVisibility: () => void
 }
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
-  onOpenCompareHistoryModal,
   onToggleMediaVisibility,
   showMedia,
   withMedia = true,
@@ -44,10 +46,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
       setMinHeight(overlay.current.getBoundingClientRect().height);
     }
   }, [overlay.current]);
-
-  const handleOpenCompareHistoryModal = () => {
-    onOpenCompareHistoryModal(status);
-  };
 
   const renderStatusInfo = () => {
     if (status.group) {
@@ -183,16 +181,11 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
               {actualStatus.edited_at && (
                 <>
                   {' · '}
-                  <div
-                    className='inline hover:underline'
-                    onClick={handleOpenCompareHistoryModal}
-                    role='button'
-                    tabIndex={0}
-                  >
+                  <Link to={`/@${account.acct}/posts/${status.id}/history`} className='hover:underline' title={intl.formatMessage(messages.editHistory)}>
                     <Text tag='span' theme='muted' size='sm'>
                       <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: true, month: 'short', day: '2-digit', hour: 'numeric', minute: '2-digit' }) }} />
                     </Text>
-                  </div>
+                  </Link>
                 </>
               )}
             </span>

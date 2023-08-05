@@ -75,7 +75,7 @@ const DeleteAccount = () => {
           </Form>
         </Stack>
       </CardBody>
-    </Card >
+    </Card>
   );
 };
 

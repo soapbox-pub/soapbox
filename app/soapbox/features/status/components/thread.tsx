@@ -341,12 +341,6 @@ const Thread = (props: IThread) => {
     setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
   }, [status.id, ancestorsIds.size]);
 
-  const handleOpenCompareHistoryModal = (status: Status) => {
-    dispatch(openModal('COMPARE_HISTORY', {
-      statusId: status.id,
-    }));
-  };
-
   const hasAncestors = ancestorsIds.size > 0;
   const hasDescendants = descendantsIds.size > 0;
 
@@ -382,7 +376,6 @@ const Thread = (props: IThread) => {
             showMedia={showMedia}
             withMedia={withMedia}
             onToggleMediaVisibility={handleToggleMediaVisibility}
-            onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
           />
 
           {!isUnderReview ? (

@@ -12,17 +12,16 @@ import {
 import emojify from 'soapbox/features/emoji';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { pollSchema } from 'soapbox/schemas';
+import { accountSchema, pollSchema } from 'soapbox/schemas';
 import { stripCompatibilityFeatures } from 'soapbox/utils/html';
-import { makeEmojiMap } from 'soapbox/utils/normalizers';
+import { makeEmojiMap, maybeFromJS } from 'soapbox/utils/normalizers';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from 'soapbox/types/entities';
 
 export const StatusEditRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account | ReducerAccount>,
+  account: null as unknown as Account,
   content: '',
-  created_at: new Date(),
+  created_at: '',
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   media_attachments: ImmutableList<Attachment>(),
@@ -68,6 +67,15 @@ const normalizeContent = (statusEdit: ImmutableMap<string, any>) => {
     .set('spoilerHtml', spoilerHtml);
 };
 
+const parseAccount = (statusEdit: ImmutableMap<string, any>) => {
+  try {
+    const account = accountSchema.parse(maybeFromJS(statusEdit.get('account')));
+    return statusEdit.set('account', account);
+  } catch (_e) {
+    return statusEdit.set('account', null);
+  }
+};
+
 export const normalizeStatusEdit = (statusEdit: Record<string, any>) => {
   return StatusEditRecord(
     ImmutableMap(fromJS(statusEdit)).withMutations(statusEdit => {
@@ -75,6 +83,7 @@ export const normalizeStatusEdit = (statusEdit: Record<string, any>) => {
       normalizeEmojis(statusEdit);
       normalizeStatusPoll(statusEdit);
       normalizeContent(statusEdit);
+      parseAccount(statusEdit);
     }),
   );
 };

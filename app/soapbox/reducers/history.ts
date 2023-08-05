@@ -26,7 +26,7 @@ export default function history(state: State = initialState, action: AnyAction) 
     case HISTORY_FETCH_SUCCESS:
       return state.update(action.statusId, HistoryRecord(), history => history!.withMutations(map => {
         map.set('loading', false);
-        map.set('items', ImmutableList(action.history.map((x: any, i: number) => ({ ...x, account: x.account.id, original: i === 0 })).reverse().map(normalizeStatusEdit)));
+        map.set('items', ImmutableList(action.history.map((x: any, i: number) => ({ ...x, original: i === 0 })).reverse().map(normalizeStatusEdit)));
       }));
     case HISTORY_FETCH_FAIL:
       return state.update(action.statusId, HistoryRecord(), history => history!.set('loading', false));

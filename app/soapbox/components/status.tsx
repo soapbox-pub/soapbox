@@ -489,7 +489,7 @@ const Status: React.FC<IStatus> = (props) => {
           </div>
         </Card>
       </div >
-    </HotKeys >
+    </HotKeys>
   );
 };
 

@@ -4,7 +4,7 @@ import { HStack, Text } from '../ui';
 
 interface IStatusInfo {
   avatarSize: number
-  icon: React.ReactNode
+  icon?: React.ReactNode
   text: React.ReactNode
 }
 
