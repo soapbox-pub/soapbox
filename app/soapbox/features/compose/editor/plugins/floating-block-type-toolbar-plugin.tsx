@@ -30,11 +30,13 @@ import { $createImageNode } from '../nodes/image-node';
 import { setFloatingElemPosition } from '../utils/set-floating-elem-position';
 
 import { ToolbarButton } from './floating-text-format-toolbar-plugin';
+import { INSERT_NEW_TABLE_COMMAND } from './table-plugin';
 
 import type { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
   createHorizontalLine: { id: 'compose_form.lexical.create_horizontal_line', defaultMessage: 'Create horizontal line' },
+  createTable: { id: 'compose_form.lexical.create_table', defaultMessage: 'Create table' },
   uploadMedia: { id: 'compose_form.lexical.upload_media', defaultMessage: 'Upload media' },
 });
 
@@ -103,6 +105,10 @@ const BlockTypeFloatingToolbar = ({
  }): JSX.Element => {
   const intl = useIntl();
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
+  const instance = useInstance();
+
+  const allowInlineImages = instance.pleroma.getIn(['metadata', 'markup', 'allow_inline_images']);
+  const allowInlineTables = instance.pleroma.getIn(['metadata', 'markup', 'allow_inline_tables']);
 
   const updateBlockTypeFloatingToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -181,6 +187,15 @@ const BlockTypeFloatingToolbar = ({
     });
   };
 
+  const createTable = () => {
+    editor.update(() => {
+      editor.dispatchCommand(INSERT_NEW_TABLE_COMMAND, {
+        columns: 3,
+        rows: 3,
+      });
+    });
+  };
+
   const createImage = (src: string) => {
     editor.update(() => {
       const selection = $getSelection();
@@ -201,7 +216,14 @@ const BlockTypeFloatingToolbar = ({
     >
       {editor.isEditable() && (
         <>
-          <UploadButton onSelectFile={createImage} />
+          {allowInlineImages && <UploadButton onSelectFile={createImage} />}
+          {allowInlineTables && (
+            <ToolbarButton
+              onClick={createTable}
+              aria-label={intl.formatMessage(messages.createTable)}
+              icon={require('@tabler/icons/table.svg')}
+            />
+          )}
           <ToolbarButton
             onClick={createHorizontalLine}
             aria-label={intl.formatMessage(messages.createHorizontalLine)}

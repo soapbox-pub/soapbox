@@ -14,16 +14,18 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 import clsx from 'clsx';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
 import { $createRemarkExport, $createRemarkImport } from 'lexical-remark';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useFeatures, useInstance } from 'soapbox/hooks';
 
 import { importImage } from './handlers/image';
 import { useNodes } from './nodes';
+import TableCellNodes from './nodes/table-cell-nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FloatingBlockTypeToolbarPlugin from './plugins/floating-block-type-toolbar-plugin';
 import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
@@ -31,6 +33,8 @@ import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-tool
 import FocusPlugin from './plugins/focus-plugin';
 import MentionPlugin from './plugins/mention-plugin';
 import StatePlugin from './plugins/state-plugin';
+import TableActionMenuPlugin from './plugins/table-action-menu-plugin';
+import { TablePlugin as NewTablePlugin } from './plugins/table-plugin';
 
 const LINK_MATCHERS = [
   createLinkMatcherWithRegExp(
@@ -53,6 +57,24 @@ interface IComposeEditor {
   placeholder?: JSX.Element | string
 }
 
+const theme = {
+  hashtag: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
+  mention: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
+  text: {
+    bold: 'font-bold',
+    code: 'font-mono',
+    italic: 'italic',
+    strikethrough: 'line-through',
+    underline: 'underline',
+    underlineStrikethrough: 'underline-line-through',
+  },
+  heading: {
+    h1: 'text-2xl font-bold',
+    h2: 'text-xl font-bold',
+    h3: 'text-lg font-semibold',
+  },
+};
+
 const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
   className,
   placeholderClassName,
@@ -69,6 +91,9 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const nodes = useNodes();
+  const instance = useInstance();
+
+  const allowInlineTables = !!instance.pleroma.getIn(['metadata', 'markup', 'allow_inline_tables']);
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
 
@@ -76,23 +101,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
     namespace: 'ComposeForm',
     onError: console.error,
     nodes,
-    theme: {
-      hashtag: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
-      mention: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
-      text: {
-        bold: 'font-bold',
-        code: 'font-mono',
-        italic: 'italic',
-        strikethrough: 'line-through',
-        underline: 'underline',
-        underlineStrikethrough: 'underline-line-through',
-      },
-      heading: {
-        h1: 'text-2xl font-bold',
-        h2: 'text-xl font-bold',
-        h3: 'text-lg font-semibold',
-      },
-    },
+    theme,
     editorState: dispatch((_, getState) => {
       const state = getState();
       const compose = state.compose.get(composeId);
@@ -122,6 +131,15 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         }
       };
     }),
+  }), []);
+
+  const cellEditorConfig = useMemo(() => ({
+    namespace: 'ComposeForm',
+    nodes: TableCellNodes,
+    onError: (error: Error) => {
+      throw error;
+    },
+    theme,
   }), []);
 
   const [floatingAnchorElem, setFloatingAnchorElem] =
@@ -181,6 +199,20 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         <HistoryPlugin />
         <HashtagPlugin />
         <MentionPlugin />
+        {allowInlineTables && <TablePlugin />}
+        {allowInlineTables && (
+          <NewTablePlugin cellEditorConfig={cellEditorConfig}>
+            <RichTextPlugin
+              contentEditable={<ContentEditable className='outline-none' />}
+              placeholder={null}
+              ErrorBoundary={LexicalErrorBoundary}
+            />
+            <HistoryPlugin />
+            <HashtagPlugin />
+            <MentionPlugin />
+          </NewTablePlugin>
+        )}
+        {allowInlineTables && <TableActionMenuPlugin anchorElem={floatingAnchorElem} cellMerge />}
         <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         <AutoLinkPlugin matchers={LINK_MATCHERS} />
         {features.richText && <LinkPlugin />}
