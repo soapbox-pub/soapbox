@@ -116,7 +116,6 @@
   "empty_column.public": "There is nothing here! Write something publicly, or manually follow users from other instances to fill it up",
   "export_data.actions.export": "Export",
   "getting_started.open_source_notice": "{code_name} е софтуер с отворен код. Можеш да помогнеш или да докладваш за проблеми в GitLab: {code_link} (v{code_version}).",
-  "hashtag.column_header.tag_mode.any": "or {additional}",
   "header.home.label": "Home",
   "header.login.label": "Log in",
   "header.login.password.label": "Password",
