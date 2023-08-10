@@ -231,6 +231,7 @@ const blockAccount = (id: string) =>
     return api(getState)
       .post(`/api/v1/accounts/${id}/block`)
       .then(response => {
+        dispatch(importEntities([response.data], Entities.RELATIONSHIPS));
         // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
         return dispatch(blockAccountSuccess(response.data, getState().statuses));
       }).catch(error => dispatch(blockAccountFail(error)));
@@ -244,7 +245,10 @@ const unblockAccount = (id: string) =>
 
     return api(getState)
       .post(`/api/v1/accounts/${id}/unblock`)
-      .then(response => dispatch(unblockAccountSuccess(response.data)))
+      .then(response => {
+        dispatch(importEntities([response.data], Entities.RELATIONSHIPS));
+        return dispatch(unblockAccountSuccess(response.data));
+      })
       .catch(error => dispatch(unblockAccountFail(error)));
   };
 
@@ -304,6 +308,7 @@ const muteAccount = (id: string, notifications?: boolean, duration = 0) =>
     return api(getState)
       .post(`/api/v1/accounts/${id}/mute`, params)
       .then(response => {
+        dispatch(importEntities([response.data], Entities.RELATIONSHIPS));
         // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
         return dispatch(muteAccountSuccess(response.data, getState().statuses));
       })
@@ -318,7 +323,10 @@ const unmuteAccount = (id: string) =>
 
     return api(getState)
       .post(`/api/v1/accounts/${id}/unmute`)
-      .then(response => dispatch(unmuteAccountSuccess(response.data)))
+      .then(response => {
+        dispatch(importEntities([response.data], Entities.RELATIONSHIPS));
+        return dispatch(unmuteAccountSuccess(response.data));
+      })
       .catch(error => dispatch(unmuteAccountFail(error)));
   };
 
