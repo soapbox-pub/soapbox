@@ -33,7 +33,7 @@ const Events = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)}>
-      <HStack className='mb-4' space={2} justifyContent='between'>
+      <HStack className='mb-2' space={2} justifyContent='between'>
         <CardTitle title={<FormattedMessage id='events.recent_events' defaultMessage='Recent events' />} />
         <Button
           className='ml-auto xl:hidden'
@@ -51,7 +51,7 @@ const Events = () => {
           emptyMessage={<FormattedMessage id='events.recent_events.empty' defaultMessage='There are no public events yet.' />}
         />
       </CardBody>
-      <CardHeader>
+      <CardHeader className='mb-2'>
         <CardTitle title={<FormattedMessage id='events.joined_events' defaultMessage='Joined events' />} />
       </CardHeader>
       <CardBody>
