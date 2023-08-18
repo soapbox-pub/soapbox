@@ -793,6 +793,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === PLEROMA,
       v.software === TAKAHE,
       v.software === WILDEBEEST,
+      v.software === DITTO,
     ]),
 
     /**
