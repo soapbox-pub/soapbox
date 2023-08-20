@@ -62,27 +62,38 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
     if (!event.location) return null;
 
     const text = [
-      <>{event.location.get('name')}</>,
+      <React.Fragment key='event-name'>
+        {event.location.get('name')}
+      </React.Fragment>,
     ];
 
     if (event.location.get('street')?.trim()) {
-      text.push (<><br />{event.location.get('street')}</>);
+      text.push (
+        <React.Fragment key='event-street'>
+          <br />{event.location.get('street')}
+        </React.Fragment>,
+      );
     }
 
     const address = [event.location.get('postalCode'), event.location.get('locality'), event.location.get('country')].filter(text => text).join(', ');
 
     if (address) {
-      text.push(<><br />{address}</>);
+      text.push(
+        <React.Fragment key='event-address'>
+          <br />
+          {address}
+        </React.Fragment>,
+      );
     }
 
     if (tileServer && event.location.get('latitude')) {
       text.push(
-        <>
+        <React.Fragment key='event-map'>
           <br />
           <a href='#' className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleShowMap}>
             <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
           </a>
-        </>,
+        </React.Fragment>,
       );
     }
 
