@@ -9344,10 +9344,9 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-lexical-remark@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/lexical-remark/-/lexical-remark-0.3.8.tgz#fd248626bce32f4108a2b302315182ab49826753"
-  integrity sha512-781wAQnfI2cPZjbJDhjDn8ntLjc5aSJmUNswXq1+9Rpox6l5Vwz/TUOqPgCJsL2S8CU9kPA/4L6N2bXm3gPsYA==
+"lexical-remark@https://github.com/mkljczk/lexical-remark#v0.3.9":
+  version "0.3.9"
+  resolved "https://github.com/mkljczk/lexical-remark#391a1993c09ae448982fce2e75aedae1f03febf2"
   dependencies:
     "@nexusmods/eslint-plugin-nexusmods" "^0.0.6"
     eslint "^8.41.0"
