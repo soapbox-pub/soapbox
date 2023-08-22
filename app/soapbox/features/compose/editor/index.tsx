@@ -14,9 +14,9 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { $createRemarkExport, $createRemarkImport } from '@mkljczk/lexical-remark';
 import clsx from 'clsx';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
-import { $createRemarkExport, $createRemarkImport } from 'lexical-remark';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
