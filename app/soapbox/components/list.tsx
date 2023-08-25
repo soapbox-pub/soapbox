@@ -35,9 +35,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
     }
   };
 
-  const Comp = to ? Link : (onClick ? 'a' : 'div');
   const LabelComp = to || onClick || onSelect ? 'span' : 'label';
-  const linkProps = to ? { to } : (onClick || onSelect ? { onClick: onClick || onSelect, onKeyDown, tabIndex: 0, role: 'link' } : {});
 
   const renderChildren = React.useCallback(() => {
     return React.Children.map(children, (child) => {
@@ -57,13 +55,12 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
     });
   }, [children, domId]);
 
-  return (
-    <Comp
-      className={clsx('flex items-center justify-between overflow-hidden bg-gradient-to-r from-gradient-start/20 to-gradient-end/20 px-4 py-2 first:rounded-t-lg last:rounded-b-lg dark:from-gradient-start/10 dark:to-gradient-end/10', {
-        'cursor-pointer hover:from-gradient-start/30 hover:to-gradient-end/30 dark:hover:from-gradient-start/5 dark:hover:to-gradient-end/5': typeof to !== 'undefined' || typeof onClick !== 'undefined' || typeof onSelect !== 'undefined',
-      })}
-      {...linkProps}
-    >
+  const className = clsx('flex items-center justify-between overflow-hidden bg-gradient-to-r from-gradient-start/20 to-gradient-end/20 px-4 py-2 first:rounded-t-lg last:rounded-b-lg dark:from-gradient-start/10 dark:to-gradient-end/10', {
+    'cursor-pointer hover:from-gradient-start/30 hover:to-gradient-end/30 dark:hover:from-gradient-start/5 dark:hover:to-gradient-end/5': typeof to !== 'undefined' || typeof onClick !== 'undefined' || typeof onSelect !== 'undefined',
+  });
+
+  const body = (
+    <>
       <div className='flex flex-col py-1.5 pr-4 rtl:pl-4 rtl:pr-0'>
         <LabelComp className='text-gray-900 dark:text-gray-100' htmlFor={domId}>{label}</LabelComp>
 
@@ -108,7 +105,23 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
       ) : null}
 
       {typeof to === 'undefined' && typeof onClick === 'undefined' && typeof onSelect === 'undefined' ? renderChildren() : null}
-    </Comp>
+    </>
+  );
+
+  if (to) return (
+    <Link className={className} to={to}>
+      {body}
+    </Link>
+  );
+
+  const Comp = onClick ? 'a' : 'div';
+  const linkProps = onClick || onSelect ? { onClick: onClick || onSelect, onKeyDown, tabIndex: 0, role: 'link' } : {};
+
+  return (
+    <Comp
+      className={className}
+      {...linkProps}
+    />
   );
 };
 
