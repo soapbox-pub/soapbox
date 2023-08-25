@@ -83,7 +83,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     }
 
     if (isPatron) {
-      badges.push(<Badge slug='patron' title='Patron' key='patron' />);
+      badges.push(<Badge slug='patron' title={<FormattedMessage id='account.patron' defaultMessage='Patron' />} key='patron' />);
     }
 
     return [...badges, ...custom];
