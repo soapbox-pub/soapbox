@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
 import List, { ListItem } from 'soapbox/components/list';
@@ -15,7 +14,6 @@ import RegistrationModePicker from '../components/registration-mode-picker';
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const instance = useInstance();
   const features = useFeatures();
   const { account } = useOwnAccount();
@@ -40,10 +38,6 @@ const Dashboard: React.FC = () => {
     }).catch(() => {});
     e.preventDefault();
   };
-
-  const navigateToSoapboxConfig = () => history.push('/soapbox/config');
-  const navigateToModerationLog = () => history.push('/soapbox/admin/log');
-  const navigateToAnnouncements = () => history.push('/soapbox/admin/announcements');
 
   const v = parseVersion(instance.version);
 
@@ -87,19 +81,19 @@ const Dashboard: React.FC = () => {
       <List>
         {account.admin && (
           <ListItem
-            onClick={navigateToSoapboxConfig}
+            to='/soapbox/config'
             label={<FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' />}
           />
         )}
 
         <ListItem
-          onClick={navigateToModerationLog}
+          to='/soapbox/admin/log'
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
 
         {features.announcements && (
           <ListItem
-            onClick={navigateToAnnouncements}
+            to='/soapbox/admin/announcements'
             label={<FormattedMessage id='column.admin.announcements' defaultMessage='Announcements' />}
           />
         )}

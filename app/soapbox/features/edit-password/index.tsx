@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changePassword } from 'soapbox/actions/security';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -55,57 +55,49 @@ const EditPassword = () => {
   }, [currentPassword, newPassword, newPasswordConfirmation, dispatch, intl]);
 
   return (
-    <Column label={intl.formatMessage(messages.header)} transparent withHeader={false}>
-      <Card variant='rounded'>
-        <CardHeader backHref='/settings'>
-          <CardTitle title={intl.formatMessage(messages.header)} />
-        </CardHeader>
+    <Column label={intl.formatMessage(messages.header)} backHref='/settings'>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup labelText={intl.formatMessage(messages.oldPasswordFieldLabel)}>
+          <Input
+            type='password'
+            name='currentPassword'
+            onChange={handleInputChange}
+            value={currentPassword}
+          />
+        </FormGroup>
 
-        <CardBody>
-          <Form onSubmit={handleSubmit}>
-            <FormGroup labelText={intl.formatMessage(messages.oldPasswordFieldLabel)}>
-              <Input
-                type='password'
-                name='currentPassword'
-                onChange={handleInputChange}
-                value={currentPassword}
-              />
-            </FormGroup>
+        <FormGroup labelText={intl.formatMessage(messages.newPasswordFieldLabel)}>
+          <Input
+            type='password'
+            name='newPassword'
+            onChange={handleInputChange}
+            value={newPassword}
+          />
 
-            <FormGroup labelText={intl.formatMessage(messages.newPasswordFieldLabel)}>
-              <Input
-                type='password'
-                name='newPassword'
-                onChange={handleInputChange}
-                value={newPassword}
-              />
+          {passwordRequirements && (
+            <PasswordIndicator password={newPassword} onChange={setHasValidPassword} />
+          )}
+        </FormGroup>
 
-              {passwordRequirements && (
-                <PasswordIndicator password={newPassword} onChange={setHasValidPassword} />
-              )}
-            </FormGroup>
+        <FormGroup labelText={intl.formatMessage(messages.confirmationFieldLabel)}>
+          <Input
+            type='password'
+            name='newPasswordConfirmation'
+            onChange={handleInputChange}
+            value={newPasswordConfirmation}
+          />
+        </FormGroup>
 
-            <FormGroup labelText={intl.formatMessage(messages.confirmationFieldLabel)}>
-              <Input
-                type='password'
-                name='newPasswordConfirmation'
-                onChange={handleInputChange}
-                value={newPasswordConfirmation}
-              />
-            </FormGroup>
+        <FormActions>
+          <Button to='/settings' theme='tertiary'>
+            {intl.formatMessage(messages.cancel)}
+          </Button>
 
-            <FormActions>
-              <Button to='/settings' theme='tertiary'>
-                {intl.formatMessage(messages.cancel)}
-              </Button>
-
-              <Button type='submit' theme='primary' disabled={isLoading || !hasValidPassword}>
-                {intl.formatMessage(messages.submit)}
-              </Button>
-            </FormActions>
-          </Form>
-        </CardBody>
-      </Card>
+          <Button type='submit' theme='primary' disabled={isLoading || !hasValidPassword}>
+            {intl.formatMessage(messages.submit)}
+          </Button>
+        </FormActions>
+      </Form>
     </Column>
   );
 };

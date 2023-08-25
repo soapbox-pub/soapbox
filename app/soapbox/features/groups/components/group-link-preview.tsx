@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { Avatar, Button, CardTitle, Stack } from 'soapbox/components/ui';
 import { type Card as StatusCard } from 'soapbox/types/entities';
@@ -9,12 +8,8 @@ interface IGroupLinkPreview {
 }
 
 const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
-  const history = useHistory();
-
   const { group } = card;
   if (!group) return null;
-
-  const navigateToGroup = () => history.push(`/group/${group.slug}`);
 
   return (
     <Stack className='cursor-default overflow-hidden rounded-lg border border-gray-300 text-center dark:border-gray-800'>
@@ -32,7 +27,7 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
       <Stack space={4} className='p-4'>
         <CardTitle title={<span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />} />
 
-        <Button theme='primary' onClick={navigateToGroup} block>
+        <Button theme='primary' to={`/group/${group.slug}`} block>
           View Group
         </Button>
       </Stack>

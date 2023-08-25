@@ -76,10 +76,6 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
       },
     }));
 
-  const navigateToEdit = () => history.push(`/group/${group.slug}/manage/edit`);
-  const navigateToPending = () => history.push(`/group/${group.slug}/manage/requests`);
-  const navigateToBlocks = () => history.push(`/group/${group.slug}/manage/blocks`);
-
   return (
     <Column label={intl.formatMessage(messages.heading)} backHref={`/group/${group.slug}`}>
       <CardBody className='space-y-4'>
@@ -90,7 +86,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
             </CardHeader>
 
             <List>
-              <ListItem label={intl.formatMessage(messages.editGroup)} onClick={navigateToEdit}>
+              <ListItem label={intl.formatMessage(messages.editGroup)} to={`/group/${group.slug}/manage/edit`}>
                 <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
               </ListItem>
             </List>
@@ -103,10 +99,10 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
 
         <List>
           {backend.software !== TRUTHSOCIAL && (
-            <ListItem label={intl.formatMessage(messages.pendingRequests)} onClick={navigateToPending} />
+            <ListItem label={intl.formatMessage(messages.pendingRequests)} to={`/group/${group.slug}/manage/requests`} />
           )}
 
-          <ListItem label={intl.formatMessage(messages.blockedMembers)} onClick={navigateToBlocks} />
+          <ListItem label={intl.formatMessage(messages.blockedMembers)} to={`/group/${group.slug}/manage/blocks`} />
         </List>
 
         {isOwner && (
