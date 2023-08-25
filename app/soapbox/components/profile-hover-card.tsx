@@ -30,13 +30,13 @@ const getBadges = (
   const badges = [];
 
   if (account?.admin) {
-    badges.push(<Badge key='admin' slug='admin' title='Admin' />);
+    badges.push(<Badge key='admin' slug='admin' title={<FormattedMessage id='account_moderation_modal.roles.admin' defaultMessage='Admin' />} />);
   } else if (account?.moderator) {
-    badges.push(<Badge key='moderator' slug='moderator' title='Moderator' />);
+    badges.push(<Badge key='moderator' slug='moderator' title={<FormattedMessage id='account_moderation_modal.roles.moderator' defaultMessage='Moderator' />} />);
   }
 
   if (patronUser?.is_patron) {
-    badges.push(<Badge key='patron' slug='patron' title='Patron' />);
+    badges.push(<Badge key='patron' slug='patron' title={<FormattedMessage id='account.patron' defaultMessage='Patron' />} />);
   }
 
   return badges;
