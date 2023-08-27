@@ -62,6 +62,10 @@ describe('normalizeInstance()', () => {
       uri: '',
       urls: {},
       version: '0.0.0',
+      nostr: {
+        pubkey: undefined,
+        relay: undefined,
+      },
     };
 
     const result = normalizeInstance(ImmutableMap());

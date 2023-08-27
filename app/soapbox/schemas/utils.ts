@@ -30,4 +30,13 @@ function makeCustomEmojiMap(customEmojis: CustomEmoji[]) {
   }, {});
 }
 
-export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema };
+const jsonSchema = z.string().transform((value, ctx) => {
+  try {
+    return JSON.parse(value) as unknown;
+  } catch (_e) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Invalid JSON' });
+    return z.NEVER;
+  }
+});
+
+export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema, jsonSchema };

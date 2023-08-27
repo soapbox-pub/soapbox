@@ -53,4 +53,3 @@ export { useHashtagStream } from './streaming/useHashtagStream';
 export { useListStream } from './streaming/useListStream';
 export { useGroupStream } from './streaming/useGroupStream';
 export { useRemoteStream } from './streaming/useRemoteStream';
-export { useNostrStream } from './streaming/useNostrStream';

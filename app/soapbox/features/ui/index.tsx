@@ -16,7 +16,8 @@ import { register as registerPushNotifications } from 'soapbox/actions/push-noti
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import { useNostrStream, useUserStream } from 'soapbox/api/hooks';
+import { useUserStream } from 'soapbox/api/hooks';
+import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
 import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import withHoc from 'soapbox/components/hoc/with-hoc';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
@@ -443,7 +444,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   }, []);
 
   useUserStream();
-  useNostrStream();
+  useSignerStream();
 
   // The user has logged in
   useEffect(() => {
