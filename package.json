@@ -131,7 +131,7 @@
     "localforage": "^1.10.0",
     "lodash": "^4.7.11",
     "mini-css-extract-plugin": "^2.6.0",
-    "nostr-tools": "^1.8.1",
+    "nostr-tools": "^1.14.2",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.14",
     "postcss-loader": "^7.0.0",

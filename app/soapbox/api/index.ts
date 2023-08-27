@@ -66,6 +66,7 @@ export const baseClient = (accessToken?: string | null, baseURL: string = ''): A
     baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,
     headers: Object.assign(accessToken ? {
       'Authorization': `Bearer ${accessToken}`,
+      'X-Nostr-Sign': 'true',
     } : {}),
     transformResponse: [maybeParseJSON],
   });

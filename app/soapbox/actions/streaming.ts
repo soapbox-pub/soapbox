@@ -173,11 +173,6 @@ const connectTimelineStream = (
         case 'marker':
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });
           break;
-        case 'nostr.sign':
-          window.nostr?.signEvent(JSON.parse(data.payload))
-            .then((data) => websocket.send(JSON.stringify({ type: 'nostr.sign', data })))
-            .catch(() => console.warn('Failed to sign Nostr event.'));
-          break;
       }
     },
   };

@@ -69,6 +69,10 @@ export const InstanceRecord = ImmutableRecord({
     status_count: 0,
     user_count: 0,
   }),
+  nostr: ImmutableMap<string, any>({
+    relay: undefined as string | undefined,
+    pubkey: undefined as string | undefined,
+  }),
   title: '',
   thumbnail: '',
   uri: '',
