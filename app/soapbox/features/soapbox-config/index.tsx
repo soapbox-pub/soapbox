@@ -1,7 +1,6 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import React, { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
@@ -70,7 +69,6 @@ const templates: Record<string, Template> = {
 
 const SoapboxConfig: React.FC = () => {
   const intl = useIntl();
-  const history = useHistory();
   const dispatch = useAppDispatch();
 
   const features = useFeatures();
@@ -82,8 +80,6 @@ const SoapboxConfig: React.FC = () => {
   const [jsonEditorExpanded, setJsonEditorExpanded] = useState(false);
   const [rawJSON, setRawJSON] = useState<string>(JSON.stringify(initialData, null, 2));
   const [jsonValid, setJsonValid] = useState(true);
-
-  const navigateToThemeEditor = () => history.push('/soapbox/admin/theme');
 
   const soapbox = useMemo(() => {
     return normalizeSoapboxConfig(data);
@@ -211,7 +207,7 @@ const SoapboxConfig: React.FC = () => {
 
             <ListItem
               label={<FormattedMessage id='soapbox_config.fields.edit_theme_label' defaultMessage='Edit theme' />}
-              onClick={navigateToThemeEditor}
+              to='/soapbox/admin/theme'
             />
           </List>
 

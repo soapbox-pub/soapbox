@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
@@ -17,8 +17,6 @@ interface IStatusInteractionBar {
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
-  const history = useHistory();
-
   const me = useAppSelector(({ me }) => me);
   const { allowedEmoji } = useSoapboxConfig();
   const dispatch = useAppDispatch();
@@ -91,16 +89,10 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     return null;
   };
 
-  const navigateToQuotes: React.EventHandler<React.MouseEvent> = (e) => {
-    e.preventDefault();
-
-    history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`);
-  };
-
   const getQuotes = () => {
     if (status.quotes_count) {
       return (
-        <InteractionCounter count={status.quotes_count} onClick={navigateToQuotes}>
+        <InteractionCounter count={status.quotes_count} to={`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`}>
           <FormattedMessage
             id='status.interactions.quotes'
             defaultMessage='{count, plural, one {Quote} other {Quotes}}'
@@ -209,34 +201,47 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
 interface IInteractionCounter {
   count: number
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
   children: React.ReactNode
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  to?: string
 }
 
-const InteractionCounter: React.FC<IInteractionCounter> = ({ count, onClick, children }) => {
+const InteractionCounter: React.FC<IInteractionCounter> = ({ count, children, onClick, to }) => {
   const features = useFeatures();
+
+  const className = clsx({
+    'text-gray-600 dark:text-gray-700': true,
+    'hover:underline': features.exposableReactions,
+    'cursor-default': !features.exposableReactions,
+  });
+
+  const body = (
+    <HStack space={1} alignItems='center'>
+      <Text weight='bold'>
+        {shortNumberFormat(count)}
+      </Text>
+
+      <Text tag='div' theme='muted'>
+        {children}
+      </Text>
+    </HStack>
+  );
+
+  if (to) {
+    return (
+      <Link to={to} className={className}>
+        {body}
+      </Link>
+    );
+  }
 
   return (
     <button
       type='button'
       onClick={onClick}
-      className={
-        clsx({
-          'text-gray-600 dark:text-gray-700': true,
-          'hover:underline': features.exposableReactions,
-          'cursor-default': !features.exposableReactions,
-        })
-      }
+      className={className}
     >
-      <HStack space={1} alignItems='center'>
-        <Text weight='bold'>
-          {shortNumberFormat(count)}
-        </Text>
-
-        <Text tag='div' theme='muted'>
-          {children}
-        </Text>
-      </HStack>
+      {body}
     </button>
   );
 };

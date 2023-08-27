@@ -2,7 +2,7 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeEmail } from 'soapbox/actions/security';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -48,47 +48,33 @@ const EditEmail = () => {
   }, [email, password, dispatch, intl]);
 
   return (
-    <Column
-      label={intl.formatMessage(messages.header)}
-      transparent
-      withHeader={false}
-    >
-      <Card variant='rounded'>
-        <CardHeader backHref='/settings'>
-          <CardTitle
-            title={intl.formatMessage(messages.header)}
+    <Column label={intl.formatMessage(messages.header)} backHref='/settings'>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup labelText={intl.formatMessage(messages.emailFieldLabel)}>
+          <Input
+            type='text'
+            placeholder={intl.formatMessage(messages.emailFieldPlaceholder)}
+            name='email'
+            autoComplete='off'
+            onChange={handleInputChange}
+            value={email}
           />
-        </CardHeader>
+        </FormGroup>
 
-        <CardBody>
-          <Form onSubmit={handleSubmit}>
-            <FormGroup labelText={intl.formatMessage(messages.emailFieldLabel)}>
-              <Input
-                type='text'
-                placeholder={intl.formatMessage(messages.emailFieldPlaceholder)}
-                name='email'
-                autoComplete='off'
-                onChange={handleInputChange}
-                value={email}
-              />
-            </FormGroup>
+        <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
+          <Input
+            type='password'
+            name='password'
+            onChange={handleInputChange}
+            value={password}
+          />
+        </FormGroup>
 
-            <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
-              <Input
-                type='password'
-                name='password'
-                onChange={handleInputChange}
-                value={password}
-              />
-            </FormGroup>
-
-            <FormActions>
-              <Button to='/settings' theme='tertiary'>{intl.formatMessage(messages.cancel)}</Button>
-              <Button type='submit' theme='primary' disabled={isLoading}>{intl.formatMessage(messages.submit)}</Button>
-            </FormActions>
-          </Form>
-        </CardBody>
-      </Card>
+        <FormActions>
+          <Button to='/settings' theme='tertiary'>{intl.formatMessage(messages.cancel)}</Button>
+          <Button type='submit' theme='primary' disabled={isLoading}>{intl.formatMessage(messages.submit)}</Button>
+        </FormActions>
+      </Form>
     </Column>
   );
 };

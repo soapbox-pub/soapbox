@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
 import List, { ListItem } from 'soapbox/components/list';
@@ -38,26 +37,11 @@ const messages = defineMessages({
 /** User settings page. */
 const Settings = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const intl = useIntl();
 
   const mfa = useAppSelector((state) => state.security.get('mfa'));
   const features = useFeatures();
   const { account } = useOwnAccount();
-
-  const navigateToChangeEmail = () => history.push('/settings/email');
-  const navigateToChangePassword = () => history.push('/settings/password');
-  const navigateToMfa = () => history.push('/settings/mfa');
-  const navigateToSessions = () => history.push('/settings/tokens');
-  const navigateToEditProfile = () => history.push('/settings/profile');
-  const navigateToDeleteAccount = () => history.push('/settings/account');
-  const navigateToMoveAccount = () => history.push('/settings/migration');
-  const navigateToAliases = () => history.push('/settings/aliases');
-  const navigateToBackups = () => history.push('/settings/backups');
-  const navigateToImportData = () => history.push('/settings/import');
-  const navigateToExportData = () => history.push('/settings/export');
-  const navigateToMutes = () => history.push('/mutes');
-  const navigateToBlocks = () => history.push('/blocks');
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -78,7 +62,7 @@ const Settings = () => {
 
         <CardBody>
           <List>
-            <ListItem label={intl.formatMessage(messages.editProfile)} onClick={navigateToEditProfile}>
+            <ListItem label={intl.formatMessage(messages.editProfile)} to='/settings/profile'>
               <span className='max-w-full truncate'>{displayName}</span>
             </ListItem>
           </List>
@@ -90,8 +74,8 @@ const Settings = () => {
 
         <CardBody>
           <List>
-            <ListItem label={intl.formatMessage(messages.mutes)} onClick={navigateToMutes} />
-            <ListItem label={intl.formatMessage(messages.blocks)} onClick={navigateToBlocks} />
+            <ListItem label={intl.formatMessage(messages.mutes)} to='/mutes' />
+            <ListItem label={intl.formatMessage(messages.blocks)} to='/blocks' />
           </List>
         </CardBody>
 
@@ -105,9 +89,9 @@ const Settings = () => {
               <List>
                 {features.security && (
                   <>
-                    <ListItem label={intl.formatMessage(messages.changeEmail)} onClick={navigateToChangeEmail} />
-                    <ListItem label={intl.formatMessage(messages.changePassword)} onClick={navigateToChangePassword} />
-                    <ListItem label={intl.formatMessage(messages.configureMfa)} onClick={navigateToMfa}>
+                    <ListItem label={intl.formatMessage(messages.changeEmail)} to='/settings/email' />
+                    <ListItem label={intl.formatMessage(messages.changePassword)} to='/settings/password' />
+                    <ListItem label={intl.formatMessage(messages.configureMfa)} to='/settings/mfa'>
                       <span>
                         {isMfaEnabled ?
                           intl.formatMessage(messages.mfaEnabled) :
@@ -117,7 +101,7 @@ const Settings = () => {
                   </>
                 )}
                 {features.sessions && (
-                  <ListItem label={intl.formatMessage(messages.sessions)} onClick={navigateToSessions} />
+                  <ListItem label={intl.formatMessage(messages.sessions)} to='/settings/tokens' />
                 )}
               </List>
             </CardBody>
@@ -153,25 +137,25 @@ const Settings = () => {
             <CardBody>
               <List>
                 {features.importData && (
-                  <ListItem label={intl.formatMessage(messages.importData)} onClick={navigateToImportData} />
+                  <ListItem label={intl.formatMessage(messages.importData)} to='/settings/import' />
                 )}
 
                 {features.exportData && (
-                  <ListItem label={intl.formatMessage(messages.exportData)} onClick={navigateToExportData} />
+                  <ListItem label={intl.formatMessage(messages.exportData)} to='/settings/export' />
                 )}
 
                 {features.backups && (
-                  <ListItem label={intl.formatMessage(messages.backups)} onClick={navigateToBackups} />
+                  <ListItem label={intl.formatMessage(messages.backups)} to='/settings/backups' />
                 )}
 
                 {features.federating && (features.accountMoving ? (
-                  <ListItem label={intl.formatMessage(messages.accountMigration)} onClick={navigateToMoveAccount} />
+                  <ListItem label={intl.formatMessage(messages.accountMigration)} to='/settings/migrations' />
                 ) : features.accountAliases && (
-                  <ListItem label={intl.formatMessage(messages.accountAliases)} onClick={navigateToAliases} />
+                  <ListItem label={intl.formatMessage(messages.accountAliases)} to='/settings/aliases' />
                 ))}
 
                 {features.security && (
-                  <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteAccount)}</Text>} onClick={navigateToDeleteAccount} />
+                  <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteAccount)}</Text>} to='/settings/account' />
                 )}
               </List>
             </CardBody>
