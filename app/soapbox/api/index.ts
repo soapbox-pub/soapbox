@@ -60,14 +60,25 @@ const getAuthBaseURL = createSelector([
   * @param {string} baseURL
   * @returns {object} Axios instance
   */
-export const baseClient = (accessToken?: string | null, baseURL: string = ''): AxiosInstance => {
+export const baseClient = (
+  accessToken?: string | null,
+  baseURL: string = '',
+  nostrSign = false,
+): AxiosInstance => {
+  const headers: Record<string, string> = {};
+
+  if (accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  if (nostrSign) {
+    headers['X-Nostr-Sign'] = 'true';
+  }
+
   return axios.create({
     // When BACKEND_URL is set, always use it.
     baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,
-    headers: Object.assign(accessToken ? {
-      'Authorization': `Bearer ${accessToken}`,
-      'X-Nostr-Sign': 'true',
-    } : {}),
+    headers,
     transformResponse: [maybeParseJSON],
   });
 };
@@ -95,7 +106,11 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
   const me = state.me;
   const baseURL = me ? getAuthBaseURL(state, me) : '';
 
-  return baseClient(accessToken, baseURL);
+  const relayUrl = state.getIn(['instance', 'nostr', 'relay']) as string | undefined;
+  const pubkey = state.getIn(['instance', 'nostr', 'pubkey']) as string | undefined;
+  const nostrSign = Boolean(relayUrl && pubkey);
+
+  return baseClient(accessToken, baseURL, nostrSign);
 };
 
 // The Jest mock exports these, so they're needed for TypeScript.
