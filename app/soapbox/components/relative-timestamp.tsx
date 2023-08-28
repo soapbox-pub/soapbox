@@ -16,7 +16,7 @@ const messages = defineMessages({
   days_remaining: { id: 'time_remaining.days', defaultMessage: '{number, plural, one {# day} other {# days}} left' },
 });
 
-const dateFormatOptions: FormatDateOptions = {
+export const dateFormatOptions: FormatDateOptions = {
   hour12: true,
   year: 'numeric',
   month: 'short',
