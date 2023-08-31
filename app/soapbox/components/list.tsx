@@ -121,7 +121,9 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
     <Comp
       className={className}
       {...linkProps}
-    />
+    >
+      {body}
+    </Comp>
   );
 };
 
