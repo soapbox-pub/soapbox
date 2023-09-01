@@ -29,7 +29,7 @@ const Favourites: React.FC<IFavourites> = ({ params }) => {
   const { account, isUnavailable } = useAccountLookup(params?.username, { withRelationship: true });
 
   const username = params?.username || '';
-  const isOwnAccount = username.toLowerCase() === ownAccount?.username?.toLowerCase();
+  const isOwnAccount = username.toLowerCase() === ownAccount?.acct?.toLowerCase();
 
   const timelineKey = isOwnAccount ? 'favourites' : `favourites:${account?.id}`;
   const statusIds = useAppSelector(state => state.status_lists.get(timelineKey)?.items || ImmutableOrderedSet<string>());
