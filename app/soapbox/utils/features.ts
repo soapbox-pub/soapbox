@@ -534,7 +534,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * Whether client settings can be retrieved from the API.
      * @see GET /api/pleroma/frontend_configurations
      */
-    frontendConfigurations: v.software === PLEROMA,
+    frontendConfigurations: any([
+      v.software === PLEROMA,
+      v.software === DITTO,
+    ]),
 
     /**
      * Groups.
