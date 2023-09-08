@@ -22,7 +22,7 @@ const HomeTimeline: React.FC = () => {
   const features = useFeatures();
   const instance = useInstance();
 
-  const polling = useRef<NodeJS.Timer | null>(null);
+  const polling = useRef<NodeJS.Timeout | null>(null);
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
   const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId as string | undefined);

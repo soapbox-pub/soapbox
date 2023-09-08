@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosHeaders } from 'axios';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 
@@ -73,7 +73,9 @@ describe('toasts', () =>{
       statusText: String(status),
       status,
       headers: {},
-      config: {},
+      config: {
+        headers: new AxiosHeaders(),
+      },
     });
 
     describe('with a 502 status code', () => {
