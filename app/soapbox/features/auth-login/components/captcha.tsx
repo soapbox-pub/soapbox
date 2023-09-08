@@ -38,7 +38,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   const dispatch = useAppDispatch();
 
   const [captcha, setCaptcha] = useState(ImmutableMap<string, any>());
-  const [refresh, setRefresh] = useState<NodeJS.Timer | undefined>(undefined);
+  const [refresh, setRefresh] = useState<NodeJS.Timeout | undefined>(undefined);
 
   const getCaptcha = () => {
     dispatch(fetchCaptcha()).then((response: AxiosResponse) => {
