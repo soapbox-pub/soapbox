@@ -18,6 +18,7 @@ import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
 
 import { showProfileHoverCard } from './hover-ref-wrapper';
+import { dateFormatOptions } from './relative-timestamp';
 import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
 
 import type { Account, PatronUser } from 'soapbox/schemas';
@@ -128,7 +129,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
                   className='h-4 w-4 text-gray-800 dark:text-gray-200'
                 />
 
-                <Text size='sm'>
+                <Text size='sm' title={intl.formatDate(account.created_at, dateFormatOptions)}>
                   <FormattedMessage
                     id='account.member_since' defaultMessage='Joined {date}' values={{
                       date: memberSinceDate,

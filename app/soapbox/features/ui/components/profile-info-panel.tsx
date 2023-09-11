@@ -6,6 +6,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { usePatronUser } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
+import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
@@ -184,7 +185,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
                 className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
-              <Text size='sm'>
+              <Text size='sm' title={intl.formatDate(account.created_at, dateFormatOptions)}>
                 <FormattedMessage
                   id='account.member_since' defaultMessage='Joined {date}' values={{
                     date: memberSinceDate,
