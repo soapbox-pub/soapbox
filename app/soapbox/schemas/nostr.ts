@@ -4,7 +4,7 @@ import { z } from 'zod';
 /** Schema to validate Nostr hex IDs such as event IDs and pubkeys. */
 const nostrIdSchema = z.string().regex(/^[0-9a-f]{64}$/);
 /** Nostr kinds are positive integers. */
-const kindSchema = z.number().int().positive();
+const kindSchema = z.number().int().nonnegative();
 
 /** Nostr event template schema. */
 const eventTemplateSchema = z.object({
