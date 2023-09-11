@@ -1,3 +1,4 @@
+import { nip19 } from 'nostr-tools';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import { getPublicKey } from 'soapbox/features/nostr/sign';
 import { useSoapboxConfig, useOwnAccount, useAppDispatch, useRegistrationStatus, useFeatures } from 'soapbox/hooks';
 
 import Sonar from './sonar';
@@ -61,6 +63,16 @@ const Header = () => {
           setMfaToken(data.mfa_token);
         }
       });
+  };
+
+  const handleNostrLogin = async () => {
+    const pubkey = await getPublicKey();
+    const npub = nip19.npubEncode(pubkey);
+
+    dispatch(verifyCredentials(npub))
+      .then(() => dispatch(fetchInstance()))
+      .then(() => setShouldRedirect(true))
+      .catch(console.error);
   };
 
   if (account && shouldRedirect) return <Redirect to='/' />;
@@ -124,7 +136,7 @@ const Header = () => {
                 <Button
                   theme='primary'
                   type='submit'
-                  disabled={isLoading}
+                  onClick={handleNostrLogin}
                 >
                   {intl.formatMessage(messages.login)}
                 </Button>
