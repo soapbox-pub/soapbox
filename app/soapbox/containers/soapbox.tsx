@@ -15,6 +15,7 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
+import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
 import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
@@ -169,6 +170,8 @@ const SoapboxMount = () => {
       return renderSwitch();
     }
   };
+
+  useSignerStream();
 
   return (
     <ErrorBoundary>
