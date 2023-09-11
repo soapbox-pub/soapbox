@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
+import { useDraggedFiles } from 'soapbox/hooks';
 
 const messages = defineMessages({
   title: { id: 'group.upload_banner.title', defaultMessage: 'Upload background picture' },
@@ -11,13 +12,19 @@ const messages = defineMessages({
 interface IMediaInput {
   src: string | undefined
   accept: string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onChange: (files: FileList | null) => void
   onClear?: () => void
   disabled?: boolean
 }
 
 const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, onClear, accept, disabled }, ref) => {
   const intl = useIntl();
+
+  const picker = useRef<HTMLLabelElement>(null);
+
+  const { isDragging, isDraggedOver } = useDraggedFiles(picker, (files) => {
+    onChange(files);
+  });
 
   const handleClear: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -27,7 +34,14 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
 
   return (
     <label
-      className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
+      ref={picker}
+      className={clsx(
+        'dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow',
+        {
+          'border-2 border-primary-600 border-dashed !z-[99]': isDragging,
+          'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
+        },
+      )}
       title={intl.formatMessage(messages.title)}
       tabIndex={0}
     >
@@ -54,7 +68,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
           name='header'
           type='file'
           accept={accept}
-          onChange={onChange}
+          onChange={({ target }) => onChange(target.files)}
           disabled={disabled}
           className='hidden'
         />
