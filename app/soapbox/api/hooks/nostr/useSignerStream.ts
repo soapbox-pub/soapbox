@@ -1,9 +1,12 @@
-import { relayInit, type Relay } from 'nostr-tools';
+import { RelayPool } from 'nostr-relaypool';
 import { useEffect } from 'react';
 
 import { useInstance } from 'soapbox/hooks';
 import { connectRequestSchema } from 'soapbox/schemas/nostr';
 import { jsonSchema } from 'soapbox/schemas/utils';
+
+/** Have one pool for the whole application. */
+let pool: RelayPool | undefined;
 
 function useSignerStream() {
   const { nostr } = useInstance();
@@ -12,16 +15,14 @@ function useSignerStream() {
   const pubkey = nostr.get('pubkey') as string | undefined;
 
   useEffect(() => {
-    let relay: Relay | undefined;
+    if (!pool && relayUrl && pubkey && window.nostr?.nip04) {
+      pool = new RelayPool([relayUrl]);
 
-    if (relayUrl && pubkey && window.nostr?.nip04) {
-      relay = relayInit(relayUrl);
-      relay.connect();
-
-      relay
-        .sub([{ kinds: [24133], authors: [pubkey], limit: 0 }])
-        .on('event', async (event) => {
-          if (!relay || !window.nostr?.nip04) return;
+      pool.subscribe(
+        [{ kinds: [24133], authors: [pubkey], limit: 0 }],
+        [relayUrl],
+        async (event) => {
+          if (!pool || !window.nostr?.nip04) return;
 
           const decrypted = await window.nostr.nip04.decrypt(pubkey, event.content);
           const reqMsg = jsonSchema.pipe(connectRequestSchema).safeParse(decrypted);
@@ -45,12 +46,10 @@ function useSignerStream() {
             created_at: Math.floor(Date.now() / 1000),
           });
 
-          relay.publish(respEvent);
-        });
+          pool.publish(respEvent, [relayUrl]);
+        },
+      );
     }
-    return () => {
-      relay?.close();
-    };
   }, [relayUrl, pubkey]);
 }
 
