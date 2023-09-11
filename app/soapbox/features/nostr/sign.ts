@@ -4,6 +4,7 @@ import {
   generatePrivateKey,
   getPublicKey as _getPublicKey,
   finishEvent,
+  nip04 as _nip04,
 } from 'nostr-tools';
 
 const privateKey = generatePrivateKey();
@@ -16,4 +17,17 @@ async function signEvent<K extends number>(event: EventTemplate<K>): Promise<Eve
   return window.nostr ? window.nostr.signEvent(event) as Promise<Event<K>> : finishEvent(event, privateKey) ;
 }
 
-export { getPublicKey, signEvent };
+const nip04 = {
+  encrypt: async (pubkey: string, content: string) => {
+    return window.nostr?.nip04
+      ? window.nostr.nip04.encrypt(pubkey, content)
+      : _nip04.encrypt(privateKey, pubkey, content);
+  },
+  decrypt: async (pubkey: string, content: string) => {
+    return window.nostr?.nip04
+      ? window.nostr.nip04.decrypt(pubkey, content)
+      : _nip04.decrypt(privateKey, pubkey, content);
+  },
+};
+
+export { getPublicKey, signEvent, nip04 };
