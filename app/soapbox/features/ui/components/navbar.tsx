@@ -107,43 +107,45 @@ const Navbar = () => {
               </div>
             ) : (
               <>
-                <Form className='hidden items-center space-x-2 rtl:space-x-reverse lg:flex' onSubmit={handleSubmit}>
-                  <Input
-                    required
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                    type='text'
-                    placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
-                    className='max-w-[200px]'
-                  />
+                {!features.nostrSignup && (
+                  <Form className='hidden items-center space-x-2 rtl:space-x-reverse lg:flex' onSubmit={handleSubmit}>
+                    <Input
+                      required
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      type='text'
+                      placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
+                      className='max-w-[200px]'
+                    />
 
-                  <Input
-                    required
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    type='password'
-                    placeholder={intl.formatMessage(messages.password)}
-                    className='max-w-[200px]'
-                  />
+                    <Input
+                      required
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      type='password'
+                      placeholder={intl.formatMessage(messages.password)}
+                      className='max-w-[200px]'
+                    />
 
-                  <Link to='/reset-password'>
-                    <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
-                      <IconButton
-                        src={require('@tabler/icons/help.svg')}
-                        className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
-                        iconClassName='h-5 w-5'
-                      />
-                    </Tooltip>
-                  </Link>
+                    <Link to='/reset-password'>
+                      <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
+                        <IconButton
+                          src={require('@tabler/icons/help.svg')}
+                          className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
+                          iconClassName='h-5 w-5'
+                        />
+                      </Tooltip>
+                    </Link>
 
-                  <Button
-                    theme='primary'
-                    type='submit'
-                    disabled={isLoading}
-                  >
-                    {intl.formatMessage(messages.login)}
-                  </Button>
-                </Form>
+                    <Button
+                      theme='primary'
+                      type='submit'
+                      disabled={isLoading}
+                    >
+                      {intl.formatMessage(messages.login)}
+                    </Button>
+                  </Form>
+                )}
 
                 <div className='space-x-1.5 lg:hidden'>
                   <Button theme='tertiary' to='/login' size='sm'>

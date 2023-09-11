@@ -708,6 +708,12 @@ const getInstanceFeatures = (instance: Instance) => {
     nostrSign: v.software === DITTO,
 
     /**
+     * Whether the backend use's Ditto's Nosteric way of registration.
+     * @see POST /api/v1/accounts
+     */
+    nostrSignup: v.software === DITTO,
+
+    /**
      * Add private notes to accounts.
      * @see POST /api/v1/accounts/:id/note
      * @see GET /api/v1/accounts/relationships

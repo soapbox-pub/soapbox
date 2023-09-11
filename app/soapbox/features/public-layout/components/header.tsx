@@ -119,48 +119,60 @@ const Header = () => {
               </HStack>
             </HStack>
 
-            <Form className='hidden items-center space-x-2 rtl:space-x-reverse xl:flex' onSubmit={handleSubmit}>
-              <Input
-                required
-                value={username}
-                onChange={(event) => setUsername(event.target.value.trim())}
-                type='text'
-                placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
-                className='max-w-[200px]'
-                autoCorrect='off'
-                autoCapitalize='off'
-              />
+            {features.nostrSignup ? (
+              <div className='hidden xl:flex'>
+                <Button
+                  theme='primary'
+                  type='submit'
+                  disabled={isLoading}
+                >
+                  {intl.formatMessage(messages.login)}
+                </Button>
+              </div>
+            ) : (
+              <Form className='hidden items-center space-x-2 rtl:space-x-reverse xl:flex' onSubmit={handleSubmit}>
+                <Input
+                  required
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value.trim())}
+                  type='text'
+                  placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
+                  className='max-w-[200px]'
+                  autoCorrect='off'
+                  autoCapitalize='off'
+                />
 
-              <Input
-                required
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                type='password'
-                placeholder={intl.formatMessage(messages.password)}
-                className='max-w-[200px]'
-                autoComplete='off'
-                autoCorrect='off'
-                autoCapitalize='off'
-              />
+                <Input
+                  required
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  type='password'
+                  placeholder={intl.formatMessage(messages.password)}
+                  className='max-w-[200px]'
+                  autoComplete='off'
+                  autoCorrect='off'
+                  autoCapitalize='off'
+                />
 
-              <Link to='/reset-password'>
-                <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
-                  <IconButton
-                    src={require('@tabler/icons/help.svg')}
-                    className='cursor-pointer bg-transparent text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
-                    iconClassName='h-5 w-5'
-                  />
-                </Tooltip>
-              </Link>
+                <Link to='/reset-password'>
+                  <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
+                    <IconButton
+                      src={require('@tabler/icons/help.svg')}
+                      className='cursor-pointer bg-transparent text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500'
+                      iconClassName='h-5 w-5'
+                    />
+                  </Tooltip>
+                </Link>
 
-              <Button
-                theme='primary'
-                type='submit'
-                disabled={isLoading}
-              >
-                {intl.formatMessage(messages.login)}
-              </Button>
-            </Form>
+                <Button
+                  theme='primary'
+                  type='submit'
+                  disabled={isLoading}
+                >
+                  {intl.formatMessage(messages.login)}
+                </Button>
+              </Form>
+            )}
           </HStack>
         </div>
       </nav>
