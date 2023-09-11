@@ -116,9 +116,15 @@ const Header = () => {
               </HStack>
 
               <HStack space={2} className='shrink-0 xl:hidden'>
-                <Button to='/login' theme='tertiary'>
-                  {intl.formatMessage(messages.login)}
-                </Button>
+                {features.nostrSignup ? (
+                  <Button onClick={handleNostrLogin} theme='tertiary'>
+                    {intl.formatMessage(messages.login)}
+                  </Button>
+                ) : (
+                  <Button to='/login' theme='tertiary'>
+                    {intl.formatMessage(messages.login)}
+                  </Button>
+                )}
 
                 {isOpen && (
                   <Button
