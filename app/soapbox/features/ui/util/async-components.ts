@@ -214,10 +214,6 @@ export function BirthdayPanel() {
   return import(/* webpackChunkName: "features/ui" */'../../../components/birthday-panel');
 }
 
-export function AccountNoteModal() {
-  return import(/* webpackChunkName: "features/ui" */'../components/modals/account-note-modal');
-}
-
 export function ListEditor() {
   return import(/* webpackChunkName: "features/list_editor" */'../../list-editor');
 }
@@ -640,4 +636,8 @@ export function EditAnnouncementModal() {
 
 export function FollowedTags() {
   return import(/* webpackChunkName: "features/followed-tags" */'../../followed-tags');
+}
+
+export function AccountNotePanel() {
+  return import(/* webpackChunkName: "features/account_note_panel" */'../components/panels/account-note-panel');
 }

@@ -12,11 +12,11 @@ const messages = defineMessages({
   join: { id: 'join_event.join', defaultMessage: 'Request join' },
 });
 
-interface IAccountNoteModal {
+interface IJoinEventModal {
   statusId: string
 }
 
-const AccountNoteModal: React.FC<IAccountNoteModal> = ({ statusId }) => {
+const JoinEventModal: React.FC<IJoinEventModal> = ({ statusId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
@@ -66,4 +66,4 @@ const AccountNoteModal: React.FC<IAccountNoteModal> = ({ statusId }) => {
   );
 };
 
-export default AccountNoteModal;
+export default JoinEventModal;
