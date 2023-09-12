@@ -44,7 +44,6 @@
   "account_moderation_modal.info.id": "ID: {id}",
   "account_moderation_modal.roles.admin": "Admin",
   "account_moderation_modal.roles.user": "User",
-  "account_note.target": "Note for @{target}",
   "admin.awaiting_approval.empty_message": "Ningú espera l'aprovació. Quan un nou usuari s'inicia sessió, podeu revisar-los aquí.",
   "admin.dashboard.registration_mode.approval_hint": "Els usuaris poden registrar-se, però el seu compte només s'activa quan un administrador l'aprova.",
   "admin.dashboard.registration_mode.approval_label": "Cal una aprovació",
