@@ -55,7 +55,7 @@ const AccountNotePanel: React.FC<IAccountNotePanel> = ({ account }) => {
     <Widget
       title={<HStack space={2} alignItems='center'>
         <label htmlFor={`account-note-${account.id}`}>
-          <FormattedMessage id='account.account_note_header' defaultMessage='Note' />
+          <FormattedMessage id='account_note.header' defaultMessage='Note' />
         </label>
         {saved && (
           <Text theme='success' tag='span' className='leading-none'>
