@@ -215,7 +215,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }, []);
 
   useEffect(() => {
-    if (firstRender.current) {
+    if (spoiler && firstRender.current) {
       focusTextarea();
       firstRender.current = false;
     } else if (!spoiler && prevSpoiler) {
