@@ -89,7 +89,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const [composeFocused, setComposeFocused] = useState(false);
 
-  const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
@@ -215,13 +214,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   }, []);
 
   useEffect(() => {
-    if (firstRender.current) {
-      focusTextarea();
-      firstRender.current = false;
+    if (spoiler && !prevSpoiler) {
+      focusSpoilerInput();
     } else if (!spoiler && prevSpoiler) {
       focusTextarea();
-    } else if (spoiler && !prevSpoiler) {
-      focusSpoilerInput();
     }
   }, [spoiler]);
 
@@ -324,22 +320,21 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
         id='compose-textarea'
       >
         {
-          !condensed && (
-            <Stack space={4} className='compose-form__modifiers'>
-              <UploadForm composeId={id} />
-              <PollForm composeId={id} />
+          !condensed &&
+          <Stack space={4} className='compose-form__modifiers'>
+            <UploadForm composeId={id} />
+            <PollForm composeId={id} />
 
-              <SpoilerInput
-                composeId={id}
-                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                onSuggestionSelected={onSpoilerSuggestionSelected}
-                ref={spoilerTextRef}
-              />
+            <SpoilerInput
+              composeId={id}
+              onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={onSuggestionsClearRequested}
+              onSuggestionSelected={onSpoilerSuggestionSelected}
+              ref={spoilerTextRef}
+            />
 
-              <ScheduleFormContainer composeId={id} />
-            </Stack>
-          )
+            <ScheduleFormContainer composeId={id} />
+          </Stack>
         }
       </AutosuggestTextarea>
 
