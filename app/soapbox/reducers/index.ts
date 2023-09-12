@@ -5,7 +5,6 @@ import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
 import entities from 'soapbox/entity-store/reducer';
 
-import account_notes from './account-notes';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_announcements from './admin-announcements';
@@ -68,7 +67,6 @@ import user_lists from './user-lists';
 import verification from './verification';
 
 const reducers = {
-  account_notes,
   accounts_meta,
   admin,
   admin_announcements,

@@ -78,7 +78,7 @@
   "account_moderation_modal.roles.user": "User",
   "account_moderation_modal.title": "Moderate @{acct}",
   "account_note.hint": "You can keep notes about this user for yourself (this will not be shared with them):",
-  "account_note.placeholder": "No comment provided",
+  "account_note.placeholder": "Click to add a note",
   "account_note.save": "Save",
   "account_note.target": "Note for @{target}",
   "account_search.placeholder": "חפש משתמש",

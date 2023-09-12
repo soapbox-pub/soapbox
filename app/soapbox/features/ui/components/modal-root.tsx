@@ -3,7 +3,6 @@ import React from 'react';
 import Base from 'soapbox/components/modal-root';
 import {
   AccountModerationModal,
-  AccountNoteModal,
   ActionsModal,
   BirthdaysModal,
   BoostModal,
@@ -50,7 +49,6 @@ import ModalLoading from './modal-loading';
 /* eslint sort-keys: "error" */
 const MODAL_COMPONENTS = {
   'ACCOUNT_MODERATION': AccountModerationModal,
-  'ACCOUNT_NOTE': AccountNoteModal,
   'ACTIONS': ActionsModal,
   'BIRTHDAYS': BirthdaysModal,
   'BOOST': BoostModal,

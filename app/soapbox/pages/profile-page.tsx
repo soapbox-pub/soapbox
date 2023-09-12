@@ -15,6 +15,7 @@ import {
   SignUpPanel,
   CtaBanner,
   PinnedAccountsPanel,
+  AccountNotePanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 import { getAcct, isLocal } from 'soapbox/utils/accounts';
@@ -115,6 +116,12 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         {!me && (
           <BundleContainer fetchComponent={SignUpPanel}>
             {Component => <Component key='sign-up-panel' />}
+          </BundleContainer>
+        )}
+
+        {features.notes && me !== account?.id && (
+          <BundleContainer fetchComponent={AccountNotePanel}>
+            {Component => <Component account={account} />}
           </BundleContainer>
         )}
         <BundleContainer fetchComponent={ProfileMediaPanel}>
