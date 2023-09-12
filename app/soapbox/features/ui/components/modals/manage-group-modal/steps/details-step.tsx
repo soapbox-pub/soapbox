@@ -53,8 +53,8 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
     };
   };
 
-  const handleImageChange = (property: keyof CreateGroupParams, maxPixels?: number): React.ChangeEventHandler<HTMLInputElement> => {
-    return async ({ target: { files } }) => {
+  const handleImageChange = (property: 'header' | 'avatar', maxPixels?: number) =>
+    async (files: FileList | null) => {
       const file = files ? files[0] : undefined;
       if (file) {
         const resized = await resizeImage(file, maxPixels);
@@ -64,7 +64,6 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
         });
       }
     };
-  };
 
   const handleImageClear = (property: keyof CreateGroupParams) => () => onChange({ [property]: undefined });
 

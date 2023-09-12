@@ -16,7 +16,7 @@ function useImageField(opts: UseImageFieldOpts = {}) {
   const [file, setFile] = useState<File | null>();
   const src = usePreview(file) || (file === null ? undefined : opts.preview);
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = async ({ target: { files } }) => {
+  const onChange = async (files: FileList | null) => {
     const file = files?.item(0);
     if (!file) return;
 
