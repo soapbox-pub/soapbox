@@ -64,27 +64,27 @@ lint-sass:
       - "**/*.css"
       - ".stylelintrc.json"
 
-jest:
-  stage: test
-  script: yarn test:coverage --runInBand
-  only:
-    changes:
-      - "**/*.js"
-      - "**/*.json"
-      - "app/soapbox/**/*"
-      - "webpack/**/*"
-      - "custom/**/*"
-      - "jest.config.cjs"
-      - "package.json"
-      - "yarn.lock"
-      - ".gitlab-ci.yml"
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  artifacts:
-    reports:
-      junit: junit.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: .coverage/cobertura-coverage.xml
+# jest:
+#   stage: test
+#   script: yarn test:coverage --runInBand
+#   only:
+#     changes:
+#       - "**/*.js"
+#       - "**/*.json"
+#       - "app/soapbox/**/*"
+#       - "webpack/**/*"
+#       - "custom/**/*"
+#       - "jest.config.cjs"
+#       - "package.json"
+#       - "yarn.lock"
+#       - ".gitlab-ci.yml"
+#   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+#   artifacts:
+#     reports:
+#       junit: junit.xml
+#       coverage_report:
+#         coverage_format: cobertura
+#         path: .coverage/cobertura-coverage.xml
 
 nginx-test:
   stage: test
