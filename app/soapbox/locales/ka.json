@@ -33,7 +33,6 @@
   "account_moderation_modal.info.id": "ID: {id}",
   "account_moderation_modal.roles.admin": "Admin",
   "account_moderation_modal.roles.user": "User",
-  "account_note.target": "Note for @{target}",
   "admin.dashboard.registration_mode.open_label": "Open",
   "admin.dashcounters.status_count_label": "posts",
   "admin.dashwidgets.email_list_header": "Email list",
