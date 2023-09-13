@@ -26,9 +26,9 @@ export default defineConfig({
     react({
       // Use React plugin in all *.jsx and *.tsx files
       include: '**/*.{jsx,tsx}',
-      // babel: {
-      //   configFile: './babel.config.cjs',
-      // },
+      babel: {
+        configFile: './babel.config.cjs',
+      },
     }),
     compileTime(),
     viteStaticCopy({
