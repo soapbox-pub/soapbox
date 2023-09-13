@@ -4,15 +4,19 @@
     "outDir": "build/",
     "sourceMap": true,
     "strict": true,
-    "module": "es2022",
-    "lib": ["es2019", "es6", "dom", "webworker"],
-    "target": "es2015",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "typeRoots": [ "./types", "./node_modules/@types"]
+    "typeRoots": [ "./types", "./node_modules/@types"],
+    "types": [
+      "vite/client",
+      "vite-plugin-compile-time/client"
+    ]
   },
   "ts-node": {
     "compilerOptions": {

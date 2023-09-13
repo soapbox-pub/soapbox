@@ -1,4 +1,4 @@
-import { Index } from 'flexsearch-ts';
+import Index from 'flexsearch/dist/module';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import data from './data';

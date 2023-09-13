@@ -1,4 +1,4 @@
-/* eslint-disable compat/compat */
+/// <reference lib="webworker" />
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import unescape from 'lodash/unescape';
