@@ -14,6 +14,9 @@ export default defineConfig({
     outDir: '../static',
     assetsDir: 'packs',
   },
+  server: {
+    port: 3036,
+  },
   plugins: [
     // @ts-ignore
     vitePluginRequire.default(),
