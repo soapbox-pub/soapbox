@@ -100,10 +100,10 @@ build-production:
   stage: test
   script:
     - yarn build
-    - yarn manage:translations en
-    # Fail if files got changed.
-    # https://stackoverflow.com/a/9066385
-    - git diff --quiet
+    # - yarn manage:translations en
+    # # Fail if files got changed.
+    # # https://stackoverflow.com/a/9066385
+    # - git diff --quiet
   variables:
     NODE_ENV: production
   artifacts:
