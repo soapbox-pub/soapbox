@@ -7,9 +7,8 @@ import * as BuildConfig from 'soapbox/build-config';
 export const custom = (filename: string, fallback: any = {}): any => {
   if (BuildConfig.NODE_ENV === 'test') return fallback;
 
-  // @ts-ignore: yes it does
-  const context = require.context('custom', false, /\.json$/);
-  const path = `./${filename}.json`;
+  const modules = import.meta.glob('../../custom/*.json', { eager: true });
+  const key = `../../custom/${filename}.json`;
 
-  return context.keys().includes(path) ? context(path) : fallback;
+  return modules[key] ? modules[key] : fallback;
 };

@@ -2,7 +2,7 @@ import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, 
 import trim from 'lodash/trim';
 
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import BuildConfig from 'soapbox/build-config';
+import * as BuildConfig from 'soapbox/build-config';
 import KVStore from 'soapbox/storage/kv-store';
 import { validId, isURL } from 'soapbox/utils/auth';
 
