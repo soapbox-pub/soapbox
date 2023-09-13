@@ -33,9 +33,8 @@
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
-    "> 0.2%",
+    "> 0.5%",
     "last 2 versions",
-    "last 4 years",
     "not dead"
   ],
   "dependencies": {
