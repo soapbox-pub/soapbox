@@ -338,7 +338,7 @@ const Thread = (props: IThread) => {
       offset: -146,
     });
 
-    setImmediate(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus());
+    setTimeout(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus(), 0);
   }, [status.id, ancestorsIds.size]);
 
   const handleOpenCompareHistoryModal = (status: Status) => {
