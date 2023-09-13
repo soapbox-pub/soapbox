@@ -19,8 +19,6 @@ module.exports = {
     ATTACHMENT_HOST: false,
   },
 
-  parser: '@babel/eslint-parser',
-
   plugins: [
     'react',
     'jsdoc',
