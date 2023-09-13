@@ -5,7 +5,7 @@
     "sourceMap": true,
     "strict": true,
     "module": "ESNext",
-    "lib": ["ESNext", "DOM", "WebWorker"],
+    "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "jsx": "react",
     "allowJs": true,
