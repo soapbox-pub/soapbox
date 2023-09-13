@@ -64,8 +64,6 @@
   "account_moderation_modal.roles.moderator": "Moderátor",
   "account_moderation_modal.roles.user": "Uživatel",
   "account_moderation_modal.title": "Moderace účtu @{acct}",
-  "account_note.save": "Uložit",
-  "account_note.target": "Note for @{target}",
   "actualStatuses.quote_tombstone": "Příspěvek není dostupný.",
   "admin.awaiting_approval.empty_message": "Na schválení nikdo nečeká. Až se nějaký nový uživatel zaregistruje, tady si můžete jeho žádost prohlédnout.",
   "admin.dashboard.registration_mode.approval_hint": "Uživatelé se mohou zaregistrovat, ale jejich účet se aktivuje až když ho schválí administrátor",
