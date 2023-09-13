@@ -2,6 +2,7 @@ image: node:20
 
 variables:
   NODE_ENV: test
+  DS_EXCLUDED_ANALYZERS: gemnasium-python
 
 default:
   interruptible: true
