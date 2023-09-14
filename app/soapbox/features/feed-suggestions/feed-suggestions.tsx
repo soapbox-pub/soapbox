@@ -1,5 +1,4 @@
 import React from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +8,7 @@ import { useAppSelector } from 'soapbox/hooks';
 
 import { Card, CardBody, CardTitle, HStack, Stack, Text } from '../../components/ui';
 import ActionButton from '../ui/components/action-button';
+import { HotKeys } from '../ui/components/hotkeys';
 
 const messages = defineMessages({
   heading: { id: 'feed_suggestions.heading', defaultMessage: 'Suggested Profiles' },

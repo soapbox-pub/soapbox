@@ -1,8 +1,8 @@
 import React from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { FormattedMessage } from 'react-intl';
 
 import { Text } from 'soapbox/components/ui';
+import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 
 interface ITombstone {
   id: string
