@@ -44,7 +44,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
   }
 
   const accounts: Array<React.ReactNode> = familiarFollowers.map(account => !!account && (
-    <HoverRefWrapper accountId={account.id} inline>
+    <HoverRefWrapper accountId={account.id} key={account.id} inline>
       <Link className='mention inline-block' to={`/@${account.acct}`}>
         <HStack space={1} alignItems='center' grow>
           <Text
@@ -53,17 +53,16 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
             truncate
             dangerouslySetInnerHTML={{ __html: account.display_name_html }}
           />
-          {/* <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} /> */}
 
           {account.verified && <VerificationBadge />}
         </HStack>
       </Link>
     </HoverRefWrapper>
-  )).toArray();
+  )).toArray().filter(Boolean);
 
   if (familiarFollowerIds.size > 2) {
     accounts.push(
-      <span className='cursor-pointer hover:underline' role='presentation' onClick={openFamiliarFollowersModal}>
+      <span key='_' className='cursor-pointer hover:underline' role='presentation' onClick={openFamiliarFollowersModal}>
         <FormattedMessage
           id='account.familiar_followers.more'
           defaultMessage='{count, plural, one {# other} other {# others}} you follow'
@@ -76,7 +75,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
   return (
     <HStack space={2} alignItems='center'>
       <AvatarStack accountIds={familiarFollowerIds} />
-      <Text theme='muted' size='sm'>
+      <Text theme='muted' size='sm' tag='div'>
         <FormattedMessage
           id='account.familiar_followers'
           defaultMessage='Followed by {accounts}'
