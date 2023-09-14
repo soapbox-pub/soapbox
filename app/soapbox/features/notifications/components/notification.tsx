@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -12,6 +11,7 @@ import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
+import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';

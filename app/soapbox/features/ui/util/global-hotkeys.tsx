@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
-import { HotKeys } from 'react-hotkeys';
 import { useHistory } from 'react-router-dom';
 
 import { resetCompose } from 'soapbox/actions/compose';
 import { openModal } from 'soapbox/actions/modals';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+
+import { HotKeys } from '../components/hotkeys';
 
 const keyMap = {
   help: '?',
@@ -83,7 +84,7 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
     }
   };
 
-  const setHotkeysRef: React.LegacyRef<HotKeys> = (c: any) => {
+  const setHotkeysRef: React.LegacyRef<typeof HotKeys> = (c: any) => {
     hotkeys.current = c;
 
     if (!me || !hotkeys.current) return;
