@@ -119,7 +119,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
           </BundleContainer>
         )}
 
-        {features.notes && me !== account?.id && (
+        {features.notes && account && account?.id !== me && (
           <BundleContainer fetchComponent={AccountNotePanel}>
             {Component => <Component account={account} />}
           </BundleContainer>
