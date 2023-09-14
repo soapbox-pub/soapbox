@@ -2,7 +2,7 @@ import { getLocale, getSettings } from 'soapbox/actions/settings';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { selectEntity } from 'soapbox/entity-store/selectors';
-import messages from 'soapbox/locales/messages';
+import messages from 'soapbox/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats';

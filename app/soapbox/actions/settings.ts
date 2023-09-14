@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import { v4 as uuid } from 'uuid';
 
 import { patchMe } from 'soapbox/actions/me';
-import messages from 'soapbox/locales/messages';
+import messages from 'soapbox/messages';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
