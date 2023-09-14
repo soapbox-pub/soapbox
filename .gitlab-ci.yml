@@ -105,6 +105,7 @@ build-production:
     # # Fail if files got changed.
     # # https://stackoverflow.com/a/9066385
     # - git diff --quiet
+    - cp static/index.html static/404.html
   variables:
     NODE_ENV: production
   artifacts:
