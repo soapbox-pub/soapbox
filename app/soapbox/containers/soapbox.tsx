@@ -42,7 +42,7 @@ import {
   useInstance,
   useRegistrationStatus,
 } from 'soapbox/hooks';
-import MESSAGES from 'soapbox/locales/messages';
+import MESSAGES from 'soapbox/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
