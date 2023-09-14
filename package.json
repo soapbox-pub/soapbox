@@ -19,7 +19,8 @@
   "scripts": {
     "start": "npx vite serve",
     "dev": "${npm_execpath} run start",
-    "build": "npx vite build",
+    "build": "npx vite build --emptyOutDir",
+    "preview": "npx vite preview",
     "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
     "i18n": "rm -rf build tmp && npx cross-env NODE_ENV=production ${npm_execpath} run build && ${npm_execpath} manage:translations en",
@@ -49,7 +50,6 @@
     "@fontsource/roboto-mono": "^4.5.8",
     "@gamestdio/websocket": "^0.3.2",
     "@jest/globals": "^29.0.0",
-    "@lcdp/offline-plugin": "^5.1.0",
     "@metamask/providers": "^10.0.0",
     "@popperjs/core": "^2.11.5",
     "@reach/combobox": "^0.18.0",

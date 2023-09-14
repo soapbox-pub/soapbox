@@ -1,6 +1,5 @@
 import './polyfills';
 
-import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -26,6 +25,7 @@ import './precheck';
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
 import ready from './ready';
+import { registerSW } from './registerSW';
 
 // Sentry
 monitoring.start();
@@ -42,8 +42,7 @@ ready(() => {
   root.render(<Soapbox />);
 
   if (BuildConfig.NODE_ENV === 'production') {
-    // avoid offline in dev mode because it's harder to debug
-    // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
-    OfflinePluginRuntime.install();
+    // Avoid ServiceWorker during development because it's harder to debug.
+    registerSW('/sw.js');
   }
 });

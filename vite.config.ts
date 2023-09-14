@@ -10,9 +10,27 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default defineConfig({
   root: 'app',
   build: {
-    // Relative to the root
     outDir: '../static',
     assetsDir: 'packs',
+    rollupOptions: {
+      input: {
+        main: 'app/index.html',
+        sw: 'app/soapbox/service-worker/sw.ts',
+      },
+      output: {
+        entryFileNames: ({ name }) => {
+          switch (name) {
+            case 'sw':
+              return 'sw.js';
+            default:
+              return 'packs/[name]-[hash].js';
+          }
+        },
+        manualChunks: {
+          'sw': ['app/soapbox/service-worker/sw.ts'],
+        },
+      },
+    },
   },
   server: {
     port: 3036,
