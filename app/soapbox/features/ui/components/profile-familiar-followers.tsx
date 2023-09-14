@@ -75,7 +75,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
   return (
     <HStack space={2} alignItems='center'>
       <AvatarStack accountIds={familiarFollowerIds} />
-      <Text theme='muted' size='sm'>
+      <Text theme='muted' size='sm' tag='div'>
         <FormattedMessage
           id='account.familiar_followers'
           defaultMessage='Followed by {accounts}'
