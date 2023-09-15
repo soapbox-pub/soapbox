@@ -1,6 +1,5 @@
 import './polyfills';
 
-import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -40,10 +39,4 @@ ready(() => {
   const root = createRoot(container);
 
   root.render(<Soapbox />);
-
-  if (BuildConfig.NODE_ENV === 'production') {
-    // avoid offline in dev mode because it's harder to debug
-    // https://github.com/NekR/offline-plugin/pull/201#issuecomment-285133572
-    OfflinePluginRuntime.install();
-  }
 });

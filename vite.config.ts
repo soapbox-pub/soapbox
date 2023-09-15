@@ -13,6 +13,14 @@ export default defineConfig({
     // Relative to the root
     outDir: '../static',
     assetsDir: 'packs',
+    assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        assetFileNames: 'packs/assets/[name]-[hash].[ext]',
+        chunkFileNames: 'packs/js/[name]-[hash].js',
+        entryFileNames: 'packs/[name]-[hash].js',
+      },
+    },
   },
   server: {
     port: 3036,
