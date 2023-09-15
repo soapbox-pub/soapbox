@@ -30,6 +30,8 @@ export default defineConfig({
         manualChunks: {
           'sw': ['app/soapbox/service-worker/sw.ts'],
         },
+        assetFileNames: 'packs/assets/[name]-[hash].[ext]',
+        chunkFileNames: 'packs/js/[name]-[hash].js',
       },
     },
   },
