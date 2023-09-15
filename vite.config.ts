@@ -13,6 +13,7 @@ export default defineConfig({
     // Relative to the root
     outDir: '../static',
     assetsDir: 'packs',
+    assetsInlineLimit: 0,
   },
   server: {
     port: 3036,
