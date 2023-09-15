@@ -1,6 +1,15 @@
+/** Register the ServiceWorker. */
+function registerSW(path: string) {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register(path, { scope: '/' });
+    });
+  }
+}
+
 /** Unregister the ServiceWorker */
 // https://stackoverflow.com/a/49771828/8811886
-const unregisterSw = async(): Promise<void> => {
+const unregisterSW = async(): Promise<void> => {
   if (navigator.serviceWorker) {
     // FIXME: this only works if using a single tab.
     // Send a message to sw.js instead to refresh all tabs.
@@ -11,5 +20,6 @@ const unregisterSw = async(): Promise<void> => {
 };
 
 export {
-  unregisterSw,
+  registerSW,
+  unregisterSW,
 };

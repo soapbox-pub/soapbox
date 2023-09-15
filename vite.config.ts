@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import compileTime from 'vite-plugin-compile-time';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import { VitePWA } from 'vite-plugin-pwa';
 import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
@@ -28,6 +29,7 @@ export default defineConfig({
   plugins: [
     // @ts-ignore
     vitePluginRequire.default(),
+    compileTime(),
     createHtmlPlugin({
       template: 'index.html',
     }),
@@ -38,7 +40,25 @@ export default defineConfig({
         configFile: './babel.config.cjs',
       },
     }),
-    compileTime(),
+    VitePWA({
+      injectRegister: null,
+      strategies: 'injectManifest',
+      injectManifest: {
+        injectionPoint: undefined,
+        plugins: [
+          // @ts-ignore
+          compileTime(),
+        ],
+      },
+      manifestFilename: 'manifest.json',
+      manifest: {
+        name: 'Soapbox',
+        short_name: 'Soapbox',
+        description: 'A social media frontend with a focus on custom branding and ease of use.',
+      },
+      srcDir: 'soapbox/service-worker',
+      filename: 'sw.ts',
+    }),
     viteStaticCopy({
       targets: [{
         src: '../node_modules/twemoji/assets/svg/*',

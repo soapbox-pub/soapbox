@@ -3,13 +3,13 @@ import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import unescape from 'lodash/unescape';
 
-import locales from './web-push-locales';
-
 import type {
   Account as AccountEntity,
   Notification as NotificationEntity,
   Status as StatusEntity,
 } from 'soapbox/types/entities';
+
+const locales = import.meta.compileTime('./web-push-locales.ts');
 
 /** Limit before we start grouping device notifications into a single notification. */
 const MAX_NOTIFICATIONS = 5;

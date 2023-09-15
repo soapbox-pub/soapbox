@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list';
 import { HStack, Text, Column, FormActions, Button, Stack, Icon } from 'soapbox/components/ui';
-import { unregisterSw } from 'soapbox/utils/sw';
+import { unregisterSW } from 'soapbox/utils/sw';
 
 import Indicator from './components/indicator';
 
@@ -99,7 +99,7 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
   };
 
   const handleRestart = async() => {
-    await unregisterSw();
+    await unregisterSW();
     window.location.reload();
   };
 
