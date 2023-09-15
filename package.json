@@ -24,7 +24,7 @@
     "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
     "i18n": "rm -rf build tmp && npx cross-env NODE_ENV=production ${npm_execpath} run build && ${npm_execpath} manage:translations en",
-    "test": "npx cross-env NODE_ENV=test npx vitest",
+    "test": "npx vitest",
     "test:coverage": "${npm_execpath} run test --coverage",
     "test:all": "${npm_execpath} run test:coverage && ${npm_execpath} run lint",
     "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
