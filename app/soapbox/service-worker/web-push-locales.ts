@@ -1,16 +1,14 @@
-/* @preval */
+import fs from 'node:fs';
+import path from 'path';
 
-const fs   = require('fs');
-const path = require('path');
-
-const filtered  = {};
+const filtered: Record<string, Record<string, string>> = {};
 const filenames = fs.readdirSync(path.resolve(__dirname, '../locales'));
 
 filenames.forEach(filename => {
   if (!filename.match(/\.json$/) || filename.match(/defaultMessages|whitelist/)) return;
 
   const content = fs.readFileSync(path.resolve(__dirname, `../locales/${filename}`), 'utf-8');
-  const full    = JSON.parse(content);
+  const full    = JSON.parse(content) as Record<string, string>;
   const locale  = filename.split('.')[0];
 
   filtered[locale] = {
@@ -35,4 +33,6 @@ filenames.forEach(filename => {
   };
 });
 
-module.exports = JSON.parse(JSON.stringify(filtered));
+export default () => ({
+  data: filtered,
+});
