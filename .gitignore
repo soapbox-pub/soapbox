@@ -9,6 +9,7 @@
 /.vs/
 yarn-error.log*
 /junit.xml
+*.timestamp-*
 
 /static/
 /static-test/
