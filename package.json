@@ -24,7 +24,7 @@
     "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
     "i18n": "rm -rf build tmp && npx cross-env NODE_ENV=production ${npm_execpath} run build && ${npm_execpath} manage:translations en",
-    "test": "npx cross-env NODE_ENV=test npx jest",
+    "test": "npx cross-env NODE_ENV=test npx vitest",
     "test:coverage": "${npm_execpath} run test --coverage",
     "test:all": "${npm_execpath} run test:coverage && ${npm_execpath} run lint",
     "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
@@ -186,6 +186,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "babel-plugin-transform-require-context": "^0.1.1",
     "cross-env": "^7.0.3",
     "danger": "^11.0.7",
     "eslint": "^8.0.0",
@@ -211,6 +212,7 @@
     "tailwindcss": "^3.3.3",
     "ts-jest": "^29.0.0",
     "vite-plugin-pwa": "^0.16.5",
+    "vitest": "^0.34.4",
     "yargs": "^17.6.2"
   },
   "resolutions": {
