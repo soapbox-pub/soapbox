@@ -12,6 +12,7 @@ export default defineConfig({
   build: {
     outDir: '../static',
     assetsDir: 'packs',
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: {
         main: 'app/index.html',
