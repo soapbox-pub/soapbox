@@ -19,7 +19,8 @@
   "scripts": {
     "start": "npx vite serve",
     "dev": "${npm_execpath} run start",
-    "build": "npx vite build",
+    "build": "npx vite build --emptyOutDir",
+    "preview": "npx vite preview",
     "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
     "i18n": "rm -rf build tmp && npx cross-env NODE_ENV=production ${npm_execpath} run build && ${npm_execpath} manage:translations en",
