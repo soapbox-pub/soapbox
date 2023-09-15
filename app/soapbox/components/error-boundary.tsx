@@ -8,7 +8,7 @@ import { HStack, Text, Stack } from 'soapbox/components/ui';
 import { captureException } from 'soapbox/monitoring';
 import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
-import { unregisterSw } from 'soapbox/utils/sw';
+import { unregisterSW } from 'soapbox/utils/sw';
 
 import SiteLogo from './site-logo';
 
@@ -96,7 +96,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
 
     if ('serviceWorker' in navigator) {
       e.preventDefault();
-      unregisterSw().then(goHome).catch(goHome);
+      unregisterSW().then(goHome).catch(goHome);
     }
   };
 
