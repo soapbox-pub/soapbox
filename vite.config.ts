@@ -33,6 +33,10 @@ export default defineConfig({
     compileTime(),
     createHtmlPlugin({
       template: 'index.html',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: false,
+      },
     }),
     react({
       // Use React plugin in all *.jsx and *.tsx files
