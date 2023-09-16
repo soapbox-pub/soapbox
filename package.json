@@ -39,6 +39,7 @@
     "not dead"
   ],
   "dependencies": {
+    "@akryum/flexsearch-es": "^0.7.32",
     "@babel/plugin-transform-react-inline-elements": "^7.22.5",
     "@babel/plugin-transform-runtime": "^7.22.15",
     "@babel/preset-env": "^7.22.15",
@@ -106,7 +107,6 @@
     "emoji-mart": "^5.5.2",
     "escape-html": "^1.0.3",
     "exif-js": "^2.3.0",
-    "flexsearch": "^0.7.31",
     "graphemesplit": "^2.4.4",
     "http-link-header": "^1.0.2",
     "immer": "^9.0.19",
