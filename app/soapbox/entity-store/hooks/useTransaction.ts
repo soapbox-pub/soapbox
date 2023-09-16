@@ -1,5 +1,5 @@
 import { entitiesTransaction } from 'soapbox/entity-store/actions';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
 
 import type { EntityTypes } from 'soapbox/entity-store/entities';
 import type { EntitiesTransaction, Entity } from 'soapbox/entity-store/types';

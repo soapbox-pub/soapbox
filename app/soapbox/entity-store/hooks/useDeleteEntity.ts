@@ -1,4 +1,6 @@
-import { useAppDispatch, useGetState, useLoading } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
+import { useGetState } from 'soapbox/hooks/useGetState';
+import { useLoading } from 'soapbox/hooks/useLoading';
 
 import { deleteEntities, importEntities } from '../actions';
 

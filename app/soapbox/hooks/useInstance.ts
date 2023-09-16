@@ -1,4 +1,4 @@
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector } from './useAppSelector';
 
 /** Get the Instance for the current backend. */
 export const useInstance = () => {

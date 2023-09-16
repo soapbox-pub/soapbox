@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { z } from 'zod';
 
-import { useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector';
+import { useGetState } from 'soapbox/hooks/useGetState';
 import { filteredArray } from 'soapbox/schemas/utils';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';

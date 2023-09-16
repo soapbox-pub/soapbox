@@ -3,8 +3,10 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { HStack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+
+import HStack from '../hstack/hstack';
+import Text from '../text/text';
 
 const sizes = {
   md: 'p-4 sm:rounded-xl',

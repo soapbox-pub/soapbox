@@ -1,5 +1,6 @@
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { useAppSelector } from 'soapbox/hooks';
+
+import { useAppSelector } from './useAppSelector';
 
 import type { SoapboxConfig } from 'soapbox/types/soapbox';
 

@@ -1,4 +1,5 @@
-import { useAppDispatch, useLoading } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
+import { useLoading } from 'soapbox/hooks/useLoading';
 
 import { incrementEntities } from '../actions';
 
