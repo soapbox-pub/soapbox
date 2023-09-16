@@ -9,8 +9,8 @@ import { useLoading } from 'soapbox/hooks/useLoading';
 import { importEntities } from '../actions';
 import { selectEntity } from '../selectors';
 
-import type { Entity } from '../types';
 import type { EntitySchema, EntityPath, EntityFn } from './types';
+import type { Entity } from '../types';
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {

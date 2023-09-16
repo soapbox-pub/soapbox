@@ -77,6 +77,7 @@ module.exports = {
       },
     ],
     'comma-style': ['warn', 'last'],
+    'import/no-duplicates': 'error',
     'space-before-function-paren': ['error', 'never'],
     'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],
@@ -258,7 +259,6 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
-    '@typescript-eslint/no-duplicate-imports': 'error',
     '@typescript-eslint/member-delimiter-style': [
       'error',
       {

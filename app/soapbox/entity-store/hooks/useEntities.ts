@@ -14,8 +14,8 @@ import { selectEntities, selectListState, useListState } from '../selectors';
 
 import { parseEntitiesPath } from './utils';
 
-import type { Entity } from '../types';
 import type { EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
+import type { Entity } from '../types';
 
 /** Additional options for the hook. */
 interface UseEntitiesOpts<TEntity extends Entity> {

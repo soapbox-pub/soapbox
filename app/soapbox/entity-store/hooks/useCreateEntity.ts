@@ -8,8 +8,8 @@ import { importEntities } from '../actions';
 
 import { parseEntitiesPath } from './utils';
 
-import type { Entity } from '../types';
 import type { EntityCallbacks, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
+import type { Entity } from '../types';
 
 interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
   schema?: EntitySchema<TEntity>
