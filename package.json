@@ -48,7 +48,7 @@
     "@emoji-mart/data": "^1.1.2",
     "@floating-ui/react": "^0.25.0",
     "@fontsource/inter": "^5.0.0",
-    "@fontsource/roboto-mono": "^4.5.8",
+    "@fontsource/roboto-mono": "^5.0.0",
     "@gamestdio/websocket": "^0.3.2",
     "@metamask/providers": "^10.0.0",
     "@popperjs/core": "^2.11.5",
