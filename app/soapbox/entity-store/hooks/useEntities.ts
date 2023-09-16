@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import z from 'zod';
 
 import { getNextLink, getPrevLink } from 'soapbox/api';
-import { useApi, useAppDispatch, useAppSelector, useGetState } from 'soapbox/hooks';
+import { useApi } from 'soapbox/hooks/useApi';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector';
+import { useGetState } from 'soapbox/hooks/useGetState';
 import { filteredArray } from 'soapbox/schemas/utils';
 import { realNumberSchema } from 'soapbox/utils/numbers';
 

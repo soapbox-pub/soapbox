@@ -1,7 +1,8 @@
 import { AxiosError } from 'axios';
 import { z } from 'zod';
 
-import { useAppDispatch, useLoading } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
+import { useLoading } from 'soapbox/hooks/useLoading';
 
 import { importEntities } from '../actions';
 

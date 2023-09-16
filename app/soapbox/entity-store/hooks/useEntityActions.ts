@@ -1,4 +1,4 @@
-import { useApi } from 'soapbox/hooks';
+import { useApi } from 'soapbox/hooks/useApi';
 
 import { useCreateEntity } from './useCreateEntity';
 import { useDeleteEntity } from './useDeleteEntity';
