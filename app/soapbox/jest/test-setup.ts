@@ -7,7 +7,9 @@ import { __clear as clearApiMocks } from '../api/__mocks__';
 
 // API mocking
 jest.mock('soapbox/api');
-afterEach(() => clearApiMocks());
+afterEach(() => {
+  clearApiMocks();
+});
 
 // Query mocking
 jest.mock('soapbox/queries/client');
