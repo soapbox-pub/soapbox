@@ -96,7 +96,7 @@
     "bootstrap-icons": "^1.5.0",
     "bowser": "^2.11.0",
     "browserslist": "^4.16.6",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "core-js": "^3.27.2",
     "cryptocurrency-icons": "^0.18.1",
     "cssnano": "^5.1.10",
