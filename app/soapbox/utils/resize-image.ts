@@ -124,7 +124,7 @@ const getOrientation = (img: HTMLImageElement, type = 'image/png') => new Promis
     return;
   }
 
-  import(/* webpackChunkName: "features/compose" */'exif-js').then(({ default: EXIF }) => {
+  import('exif-js').then(({ default: EXIF }) => {
     // @ts-ignore: The TypeScript definition is wrong.
     EXIF.getData(img, () => {
       const orientation = EXIF.getTag(img, 'Orientation');
