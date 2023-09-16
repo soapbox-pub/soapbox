@@ -1,4 +1,4 @@
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector } from './useAppSelector';
 
 import type { ReducerCompose } from 'soapbox/reducers/compose';
 

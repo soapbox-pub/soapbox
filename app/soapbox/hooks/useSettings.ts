@@ -1,5 +1,6 @@
 import { getSettings } from 'soapbox/actions/settings';
-import { useAppSelector } from 'soapbox/hooks';
+
+import { useAppSelector } from './useAppSelector';
 
 import type { Map as ImmutableMap } from 'immutable';
 
