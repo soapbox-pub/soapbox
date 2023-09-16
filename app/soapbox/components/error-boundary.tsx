@@ -62,7 +62,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
       componentStack: info && info.componentStack,
     });
 
-    import(/* webpackChunkName: "error" */'bowser')
+    import('bowser')
       .then(({ default: Bowser }) => {
         this.setState({
           browser: Bowser.getParser(window.navigator.userAgent),
