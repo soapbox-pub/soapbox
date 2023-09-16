@@ -108,7 +108,7 @@
     "exif-js": "^2.3.0",
     "graphemesplit": "^2.4.4",
     "http-link-header": "^1.0.2",
-    "immer": "^9.0.19",
+    "immer": "^10.0.0",
     "immutable": "^4.2.1",
     "intersection-observer": "^0.12.2",
     "intl-messageformat": "9.13.0",
