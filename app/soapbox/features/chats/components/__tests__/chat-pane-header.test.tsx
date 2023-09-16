@@ -6,7 +6,7 @@ import ChatPaneHeader from '../chat-widget/chat-pane-header';
 
 describe('<ChatPaneHeader />', () => {
   it('handles the onToggle prop', async () => {
-    const mockFn = jest.fn();
+    const mockFn = vi.fn();
     render(<ChatPaneHeader title='title' onToggle={mockFn} isOpen />);
 
     await userEvent.click(screen.getByTestId('icon-button'));
@@ -17,7 +17,7 @@ describe('<ChatPaneHeader />', () => {
     describe('when it is a string', () => {
       it('renders the title', () => {
         const title = 'Messages';
-        render(<ChatPaneHeader title={title} onToggle={jest.fn()} isOpen />);
+        render(<ChatPaneHeader title={title} onToggle={vi.fn()} isOpen />);
 
         expect(screen.getByTestId('title')).toHaveTextContent(title);
       });
@@ -28,7 +28,7 @@ describe('<ChatPaneHeader />', () => {
         const title = (
           <div><p>hello world</p></div>
         );
-        render(<ChatPaneHeader title={title} onToggle={jest.fn()} isOpen />);
+        render(<ChatPaneHeader title={title} onToggle={vi.fn()} isOpen />);
 
         expect(screen.getByTestId('title')).toHaveTextContent('hello world');
       });
@@ -39,7 +39,7 @@ describe('<ChatPaneHeader />', () => {
     describe('when present', () => {
       it('renders the unread count', () => {
         const count = 14;
-        render(<ChatPaneHeader title='title' onToggle={jest.fn()} isOpen unreadCount={count} />);
+        render(<ChatPaneHeader title='title' onToggle={vi.fn()} isOpen unreadCount={count} />);
 
         expect(screen.getByTestId('unread-count')).toHaveTextContent(String(count));
       });
@@ -48,7 +48,7 @@ describe('<ChatPaneHeader />', () => {
     describe('when 0', () => {
       it('does not render the unread count', () => {
         const count = 0;
-        render(<ChatPaneHeader title='title' onToggle={jest.fn()} isOpen unreadCount={count} />);
+        render(<ChatPaneHeader title='title' onToggle={vi.fn()} isOpen unreadCount={count} />);
 
         expect(screen.queryAllByTestId('unread-count')).toHaveLength(0);
       });
@@ -56,7 +56,7 @@ describe('<ChatPaneHeader />', () => {
 
     describe('when unprovided', () => {
       it('does not render the unread count', () => {
-        render(<ChatPaneHeader title='title' onToggle={jest.fn()} isOpen />);
+        render(<ChatPaneHeader title='title' onToggle={vi.fn()} isOpen />);
 
         expect(screen.queryAllByTestId('unread-count')).toHaveLength(0);
       });
@@ -65,11 +65,11 @@ describe('<ChatPaneHeader />', () => {
 
   describe('secondaryAction prop', () => {
     it('handles the secondaryAction callback', async () => {
-      const mockFn = jest.fn();
+      const mockFn = vi.fn();
       render(
         <ChatPaneHeader
           title='title'
-          onToggle={jest.fn()}
+          onToggle={vi.fn()}
           isOpen
           secondaryAction={mockFn}
           secondaryActionIcon='icon.svg'

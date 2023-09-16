@@ -6,7 +6,7 @@ import DurationSelector from '../duration-selector';
 
 describe('<DurationSelector />', () => {
   it('defaults to 2 days', () => {
-    const handler = jest.fn();
+    const handler = vi.fn();
     render(<DurationSelector onDurationChange={handler} />);
 
     expect(screen.getByTestId('duration-selector-days')).toHaveValue('2');
@@ -16,7 +16,7 @@ describe('<DurationSelector />', () => {
 
   describe('when changing the day', () => {
     it('calls the "onDurationChange" callback', async() => {
-      const handler = jest.fn();
+      const handler = vi.fn();
       render(<DurationSelector onDurationChange={handler} />);
 
       await userEvent.selectOptions(
@@ -29,7 +29,7 @@ describe('<DurationSelector />', () => {
     });
 
     it('should disable the hour/minute select if 7 days selected', async() => {
-      const handler = jest.fn();
+      const handler = vi.fn();
       render(<DurationSelector onDurationChange={handler} />);
 
       expect(screen.getByTestId('duration-selector-hours')).not.toBeDisabled();
@@ -47,7 +47,7 @@ describe('<DurationSelector />', () => {
 
   describe('when changing the hour', () => {
     it('calls the "onDurationChange" callback', async() => {
-      const handler = jest.fn();
+      const handler = vi.fn();
       render(<DurationSelector onDurationChange={handler} />);
 
       await userEvent.selectOptions(
@@ -62,7 +62,7 @@ describe('<DurationSelector />', () => {
 
   describe('when changing the minute', () => {
     it('calls the "onDurationChange" callback', async() => {
-      const handler = jest.fn();
+      const handler = vi.fn();
       render(<DurationSelector onDurationChange={handler} />);
 
       await userEvent.selectOptions(

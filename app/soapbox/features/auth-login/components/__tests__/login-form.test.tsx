@@ -7,7 +7,7 @@ import LoginForm from '../login-form';
 
 describe('<LoginForm />', () => {
   it('renders for Pleroma', () => {
-    const mockFn = jest.fn();
+    const mockFn = vi.fn();
     const store = {
       instance: normalizeInstance({
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
@@ -20,7 +20,7 @@ describe('<LoginForm />', () => {
   });
 
   it('renders for Mastodon', () => {
-    const mockFn = jest.fn();
+    const mockFn = vi.fn();
     const store = {
       instance: normalizeInstance({
         version: '3.0.0',
@@ -33,7 +33,7 @@ describe('<LoginForm />', () => {
   });
 
   it('responds to the handleSubmit prop', () => {
-    const mockFn = jest.fn();
+    const mockFn = vi.fn();
     render(<LoginForm handleSubmit={mockFn} isLoading={false} />);
     fireEvent.submit(screen.getByTestId(/button/i));
 

@@ -5,7 +5,7 @@ import Form from '../form';
 
 describe('<Form />', () => {
   it('renders children', () => {
-    const onSubmitMock = jest.fn();
+    const onSubmitMock = vi.fn();
     render(
       <Form onSubmit={onSubmitMock}>children</Form>,
     );
@@ -14,7 +14,7 @@ describe('<Form />', () => {
   });
 
   it('handles onSubmit prop', () => {
-    const onSubmitMock = jest.fn();
+    const onSubmitMock = vi.fn();
     render(
       <Form onSubmit={onSubmitMock}>children</Form>,
     );

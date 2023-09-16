@@ -41,7 +41,7 @@ describe('uploadCompose()', () => {
 
     it('creates an alert if exceeds max size', async() => {
       const mockIntl = {
-        formatMessage: jest.fn().mockReturnValue('Image exceeds the current file size limit (10 Bytes)'),
+        formatMessage: vi.fn().mockReturnValue('Image exceeds the current file size limit (10 Bytes)'),
       } as unknown as IntlShape;
 
       const expectedActions = [
@@ -87,7 +87,7 @@ describe('uploadCompose()', () => {
 
     it('creates an alert if exceeds max size', async() => {
       const mockIntl = {
-        formatMessage: jest.fn().mockReturnValue('Video exceeds the current file size limit (10 Bytes)'),
+        formatMessage: vi.fn().mockReturnValue('Video exceeds the current file size limit (10 Bytes)'),
       } as unknown as IntlShape;
 
       const expectedActions = [

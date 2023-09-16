@@ -30,7 +30,7 @@ const chat: any = {
 
 describe('<ChatListItem />', () => {
   it('renders correctly', () => {
-    render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
+    render(<ChatListItem chat={chat as IChat} onClick={vi.fn()} />);
 
     expect(screen.getByTestId('chat-list-item')).toBeInTheDocument();
     expect(screen.getByTestId('chat-list-item')).toHaveTextContent(chat.account.display_name);
@@ -38,28 +38,28 @@ describe('<ChatListItem />', () => {
 
   describe('last message content', () => {
     it('renders the last message', () => {
-      render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
+      render(<ChatListItem chat={chat as IChat} onClick={vi.fn()} />);
 
       expect(screen.getByTestId('chat-last-message')).toBeInTheDocument();
     });
 
     it('does not render the last message', () => {
       const changedChat = { ...chat, last_message: null };
-      render(<ChatListItem chat={changedChat as IChat} onClick={jest.fn()} />);
+      render(<ChatListItem chat={changedChat as IChat} onClick={vi.fn()} />);
 
       expect(screen.queryAllByTestId('chat-last-message')).toHaveLength(0);
     });
 
     describe('unread', () => {
       it('renders the unread dot', () => {
-        render(<ChatListItem chat={chat as IChat} onClick={jest.fn()} />);
+        render(<ChatListItem chat={chat as IChat} onClick={vi.fn()} />);
 
         expect(screen.getByTestId('chat-unread-indicator')).toBeInTheDocument();
       });
 
       it('does not render the unread dot', () => {
         const changedChat = { ...chat, last_message: { ...chat.last_message, unread: false } };
-        render(<ChatListItem chat={changedChat as IChat} onClick={jest.fn()} />);
+        render(<ChatListItem chat={changedChat as IChat} onClick={vi.fn()} />);
 
         expect(screen.queryAllByTestId('chat-unread-indicator')).toHaveLength(0);
       });

@@ -48,7 +48,7 @@ test.skip('skip', () => {});
 //     });
 
 //     it('should render the recent searches', async () => {
-//       renderApp(<RecentSearches onSelect={jest.fn()} />);
+//       renderApp(<RecentSearches onSelect={vi.fn()} />);
 
 //       await waitFor(() => {
 //         expect(screen.getByTestId('recent-search')).toBeInTheDocument();
@@ -56,7 +56,7 @@ test.skip('skip', () => {});
 //     });
 
 //     it('should support clearing recent searches', async () => {
-//       renderApp(<RecentSearches onSelect={jest.fn()} />);
+//       renderApp(<RecentSearches onSelect={vi.fn()} />);
 
 //       expect(groupSearchHistory.get(userId)).toHaveLength(1);
 //       await userEvent.click(screen.getByTestId('clear-recent-searches'));
@@ -64,7 +64,7 @@ test.skip('skip', () => {});
 //     });
 
 //     it('should support click events on the results', async () => {
-//       const handler = jest.fn();
+//       const handler = vi.fn();
 //       renderApp(<RecentSearches onSelect={handler} />);
 //       expect(handler.mock.calls.length).toEqual(0);
 //       await userEvent.click(screen.getByTestId('recent-search-result'));
@@ -74,7 +74,7 @@ test.skip('skip', () => {});
 
 //   describe('without recent searches', () => {
 //     it('should render the blankslate', async () => {
-//       renderApp(<RecentSearches onSelect={jest.fn()} />);
+//       renderApp(<RecentSearches onSelect={vi.fn()} />);
 
 //       expect(screen.getByTestId('recent-searches-blankslate')).toBeInTheDocument();
 //     });

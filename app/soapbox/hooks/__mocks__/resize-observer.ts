@@ -1,5 +1,5 @@
 let listener: ((rect: any) => void) | undefined = undefined;
-const mockDisconnect = jest.fn();
+const mockDisconnect = vi.fn();
 
 class ResizeObserver {
 

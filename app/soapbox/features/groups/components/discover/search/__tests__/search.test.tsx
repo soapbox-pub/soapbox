@@ -24,7 +24,7 @@ describe('<Search />', () => {
     });
 
     it('should render the blankslate', async () => {
-      renderApp(<Search searchValue={'some-search'} onSelect={jest.fn()} />);
+      renderApp(<Search searchValue={'some-search'} onSelect={vi.fn()} />);
 
       await waitFor(() => {
         expect(screen.getByTestId('no-results')).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('<Search />', () => {
     });
 
     it('should render the results', async () => {
-      renderApp(<Search searchValue={'some-search'} onSelect={jest.fn()} />);
+      renderApp(<Search searchValue={'some-search'} onSelect={vi.fn()} />);
 
       await waitFor(() => {
         expect(screen.getByTestId('results')).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('<Search />', () => {
 
   describe('before starting a search', () => {
     it('should render the RecentSearches component', () => {
-      renderApp(<Search searchValue={''} onSelect={jest.fn()} />);
+      renderApp(<Search searchValue={''} onSelect={vi.fn()} />);
 
       expect(screen.getByTestId('recent-searches')).toBeInTheDocument();
     });

@@ -6,7 +6,7 @@ import Datepicker from '../datepicker';
 
 describe('<Datepicker />', () => {
   it('defaults to the current date', () => {
-    const handler = jest.fn();
+    const handler = vi.fn();
     render(<Datepicker onChange={handler} />);
     const today = new Date();
 
@@ -16,7 +16,7 @@ describe('<Datepicker />', () => {
   });
 
   it('changes number of days based on selected month and year', async() => {
-    const handler = jest.fn();
+    const handler = vi.fn();
     render(<Datepicker onChange={handler} />);
 
     await userEvent.selectOptions(
@@ -43,7 +43,7 @@ describe('<Datepicker />', () => {
   });
 
   it('ranges from the current year to 120 years ago', () => {
-    const handler = jest.fn();
+    const handler = vi.fn();
     render(<Datepicker onChange={handler} />);
     const today = new Date();
 
@@ -54,7 +54,7 @@ describe('<Datepicker />', () => {
   });
 
   it('calls the onChange function when the inputs change', async() => {
-    const handler = jest.fn();
+    const handler = vi.fn();
     render(<Datepicker onChange={handler} />);
     const today = new Date();
 
