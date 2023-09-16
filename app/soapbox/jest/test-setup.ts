@@ -1,18 +1,18 @@
-'use strict';
-
 import { act } from '@testing-library/react';
 import { toast } from 'react-hot-toast';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import '@testing-library/jest-dom/vitest';
 
 import { __clear as clearApiMocks } from '../api/__mocks__';
 
 // API mocking
-jest.mock('soapbox/api');
+vi.mock('soapbox/api');
 afterEach(() => {
   clearApiMocks();
 });
 
 // Query mocking
-jest.mock('soapbox/queries/client');
+vi.mock('soapbox/queries/client');
 
 // Mock IndexedDB
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
@@ -26,18 +26,18 @@ afterEach(() => {
 });
 
 const intersectionObserverMock = () => ({ observe: () => null, disconnect: () => null });
-window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMock);
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
