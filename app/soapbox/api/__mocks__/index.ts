@@ -1,10 +1,10 @@
-import { jest } from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
 import LinkHeader from 'http-link-header';
+import { vi } from 'vitest';
 
 import type { AxiosInstance, AxiosResponse } from 'axios';
 
-const api = jest.requireActual('../index') as Record<string, Function>;
+const api = await vi.importActual('../index') as Record<string, Function>;
 let mocks: Array<Function> = [];
 
 export const __stub = (func: (mock: MockAdapter) => void) => mocks.push(func);
