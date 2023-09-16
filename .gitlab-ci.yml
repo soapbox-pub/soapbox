@@ -151,9 +151,9 @@ pages:
 
 docker:
   stage: deploy
-  image: docker:23.0.0
+  image: docker:24.0.6
   services:
-    - docker:23.0.0-dind
+    - docker:24.0.6-dind
   tags:
     - dind
   # https://medium.com/devops-with-valentine/how-to-build-a-docker-image-and-push-it-to-the-gitlab-container-registry-from-a-gitlab-ci-pipeline-acac0d1f26df
