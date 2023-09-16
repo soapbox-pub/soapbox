@@ -46,7 +46,7 @@
     "@babel/preset-react": "^7.22.15",
     "@babel/preset-typescript": "^7.22.15",
     "@emoji-mart/data": "^1.1.2",
-    "@floating-ui/react": "^0.24.0",
+    "@floating-ui/react": "^0.25.0",
     "@fontsource/inter": "^4.5.1",
     "@fontsource/roboto-mono": "^4.5.8",
     "@gamestdio/websocket": "^0.3.2",
