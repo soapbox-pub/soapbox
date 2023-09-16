@@ -11,8 +11,8 @@ import { selectCache, selectListState, useListState } from '../selectors';
 
 import { parseEntitiesPath } from './utils';
 
-import type { Entity } from '../types';
 import type { EntitiesPath, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
+import type { Entity } from '../types';
 import type { RootState } from 'soapbox/store';
 
 interface UseBatchedEntitiesOpts<TEntity extends Entity> {
