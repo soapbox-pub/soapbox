@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 
 import { MODAL_CLOSE, MODAL_OPEN } from 'soapbox/actions/modals';
