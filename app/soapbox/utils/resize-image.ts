@@ -118,24 +118,25 @@ const loadImage = (inputFile: File) => new Promise<HTMLImageElement>((resolve, r
 });
 
 /** Get the exif orientation for the image. */
-const getOrientation = (img: HTMLImageElement, type = 'image/png') => new Promise<number>(resolve => {
+async function getOrientation(img: HTMLImageElement, type = 'image/png'): Promise<number> {
   if (!['image/jpeg', 'image/webp'].includes(type)) {
-    resolve(1);
-    return;
+    return 1;
   }
 
-  import('exif-js').then(({ default: EXIF }) => {
-    // @ts-ignore: The TypeScript definition is wrong.
-    EXIF.getData(img, () => {
-      const orientation = EXIF.getTag(img, 'Orientation');
-      if (orientation !== 1) {
-        dropOrientationIfNeeded(orientation).then(resolve).catch(() => resolve(orientation));
-      } else {
-        resolve(orientation);
-      }
-    });
-  }).catch(() => {});
-});
+  try {
+    const exifr = await import('exifr');
+    const orientation = await exifr.orientation(img) ?? 1;
+
+    if (orientation !== 1) {
+      return await dropOrientationIfNeeded(orientation);
+    } else {
+      return orientation;
+    }
+  } catch (error) {
+    console.error('Failed to get orientation:', error);
+    return 1;
+  }
+}
 
 const processImage = (
   img: HTMLImageElement,
