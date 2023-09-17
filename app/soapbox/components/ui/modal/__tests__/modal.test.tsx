@@ -29,7 +29,7 @@ describe('<Modal />', () => {
 
   describe('onClose prop', () => {
     it('renders the Icon to close the modal', async() => {
-      const mockFn = jest.fn();
+      const mockFn = vi.fn();
       const user = userEvent.setup();
 
       render(<Modal title='Modal title' onClose={mockFn} />);
@@ -48,7 +48,7 @@ describe('<Modal />', () => {
 
   describe('confirmationAction prop', () => {
     it('renders the confirmation button', async() => {
-      const mockFn = jest.fn();
+      const mockFn = vi.fn();
       const user = userEvent.setup();
 
       render(
@@ -71,8 +71,8 @@ describe('<Modal />', () => {
 
     describe('with secondaryAction', () => {
       it('renders the secondary button', async() => {
-        const confirmationAction = jest.fn();
-        const secondaryAction = jest.fn();
+        const confirmationAction = vi.fn();
+        const secondaryAction = vi.fn();
         const user = userEvent.setup();
 
         render(
@@ -104,8 +104,8 @@ describe('<Modal />', () => {
 
     describe('with cancelAction', () => {
       it('renders the cancel button', async() => {
-        const confirmationAction = jest.fn();
-        const cancelAction = jest.fn();
+        const confirmationAction = vi.fn();
+        const cancelAction = vi.fn();
         const user = userEvent.setup();
 
         render(

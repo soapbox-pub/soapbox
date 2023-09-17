@@ -10,11 +10,11 @@ describe('checkOnboarding()', () => {
   });
 
   beforeEach(() => {
-    mockGetItem = jest.fn().mockReturnValue(null);
+    mockGetItem = vi.fn().mockReturnValue(null);
   });
 
   it('does nothing if localStorage item is not set', async() => {
-    mockGetItem = jest.fn().mockReturnValue(null);
+    mockGetItem = vi.fn().mockReturnValue(null);
 
     const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
@@ -27,7 +27,7 @@ describe('checkOnboarding()', () => {
   });
 
   it('does nothing if localStorage item is invalid', async() => {
-    mockGetItem = jest.fn().mockReturnValue('invalid');
+    mockGetItem = vi.fn().mockReturnValue('invalid');
 
     const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
@@ -40,7 +40,7 @@ describe('checkOnboarding()', () => {
   });
 
   it('dispatches the correct action', async() => {
-    mockGetItem = jest.fn().mockReturnValue('1');
+    mockGetItem = vi.fn().mockReturnValue('1');
 
     const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
     const store = mockStore(state);
@@ -61,7 +61,7 @@ describe('startOnboarding()', () => {
   });
 
   beforeEach(() => {
-    mockSetItem = jest.fn();
+    mockSetItem = vi.fn();
   });
 
   it('dispatches the correct action', async() => {
@@ -84,7 +84,7 @@ describe('endOnboarding()', () => {
   });
 
   beforeEach(() => {
-    mockRemoveItem = jest.fn();
+    mockRemoveItem = vi.fn();
   });
 
   it('dispatches the correct action', async() => {

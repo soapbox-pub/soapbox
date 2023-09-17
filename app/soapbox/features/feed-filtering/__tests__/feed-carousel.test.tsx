@@ -7,7 +7,7 @@ import { __stub } from 'soapbox/api';
 import { render, screen, waitFor } from '../../../jest/test-helpers';
 import FeedCarousel from '../feed-carousel';
 
-jest.mock('../../../hooks/useDimensions', () => ({
+vi.mock('../../../hooks/useDimensions', () => ({
   useDimensions: () => [{ scrollWidth: 190 }, null, { width: 300 }],
 }));
 
@@ -129,7 +129,7 @@ describe('<FeedCarousel />', () => {
             ]);
         });
 
-        Element.prototype.getBoundingClientRect = jest.fn(() => {
+        Element.prototype.getBoundingClientRect = vi.fn(() => {
           return {
             width: 200,
             height: 120,

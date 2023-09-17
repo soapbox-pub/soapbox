@@ -90,5 +90,6 @@ export default defineConfig({
     cache: {
       dir: '../node_modules/.vitest',
     },
+    setupFiles: 'soapbox/jest/test-setup.ts',
   },
 });

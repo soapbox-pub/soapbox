@@ -7,7 +7,7 @@ import { normalizeInstance } from 'soapbox/normalizers';
 
 import Discover from '../discover';
 
-jest.mock('../../../hooks/useDimensions', () => ({
+vi.mock('../../../hooks/useDimensions', () => ({
   useDimensions: () => [{ scrollWidth: 190 }, null, { width: 300 }],
 }));
 

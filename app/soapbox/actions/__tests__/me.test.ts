@@ -7,10 +7,10 @@ import { AuthUserRecord, ReducerRecord } from 'soapbox/reducers/auth';
 
 import { fetchMe, patchMe } from '../me';
 
-jest.mock('../../storage/kv-store', () => ({
+vi.mock('../../storage/kv-store', () => ({
   __esModule: true,
   default: {
-    getItemOrError: jest.fn().mockReturnValue(Promise.resolve({})),
+    getItemOrError: vi.fn().mockReturnValue(Promise.resolve({})),
   },
 }));
 

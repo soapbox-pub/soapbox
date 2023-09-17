@@ -39,7 +39,7 @@ const groupSearchResult = {
   groups: [buildGroup()],
   hasNextPage: false,
   isFetching: false,
-  fetchNextPage: jest.fn(),
+  fetchNextPage: vi.fn(),
 } as any;
 
 describe('<Results />', () => {

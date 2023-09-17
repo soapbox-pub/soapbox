@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { __stub } from 'soapbox/api';
+import { queryClient, render, screen, waitFor } from 'soapbox/jest/test-helpers';
 
-import { queryClient, render, screen, waitFor } from '../../../../jest/test-helpers';
 import TrendsPanel from '../trends-panel';
 
 describe('<TrendsPanel />', () => {

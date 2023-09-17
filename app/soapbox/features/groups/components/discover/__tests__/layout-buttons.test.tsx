@@ -8,7 +8,7 @@ import LayoutButtons, { GroupLayout } from '../layout-buttons';
 describe('<LayoutButtons', () => {
   describe('when LIST view', () => {
     it('should render correctly', async () => {
-      const onSelectFn = jest.fn();
+      const onSelectFn = vi.fn();
       const user = userEvent.setup();
 
       render(<LayoutButtons layout={GroupLayout.LIST} onSelect={onSelectFn} />);
@@ -23,7 +23,7 @@ describe('<LayoutButtons', () => {
 
   describe('when GRID view', () => {
     it('should render correctly', async () => {
-      const onSelectFn = jest.fn();
+      const onSelectFn = vi.fn();
       const user = userEvent.setup();
 
       render(<LayoutButtons layout={GroupLayout.GRID} onSelect={onSelectFn} />);

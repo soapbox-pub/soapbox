@@ -15,8 +15,8 @@ describe('<ChatMessageReaction />', () => {
     render(
       <ChatMessageReaction
         emojiReaction={emojiReaction}
-        onAddReaction={jest.fn()}
-        onRemoveReaction={jest.fn()}
+        onAddReaction={vi.fn()}
+        onRemoveReaction={vi.fn()}
       />,
     );
 
@@ -25,8 +25,8 @@ describe('<ChatMessageReaction />', () => {
   });
 
   it('triggers the "onAddReaction" function', async () => {
-    const onAddFn = jest.fn();
-    const onRemoveFn = jest.fn();
+    const onAddFn = vi.fn();
+    const onRemoveFn = vi.fn();
     const user = userEvent.setup();
 
     render(
@@ -48,8 +48,8 @@ describe('<ChatMessageReaction />', () => {
   });
 
   it('triggers the "onRemoveReaction" function', async () => {
-    const onAddFn = jest.fn();
-    const onRemoveFn = jest.fn();
+    const onAddFn = vi.fn();
+    const onRemoveFn = vi.fn();
     const user = userEvent.setup();
 
     render(

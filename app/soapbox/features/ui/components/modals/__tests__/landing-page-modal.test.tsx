@@ -7,25 +7,25 @@ import LandingPageModal from '../landing-page-modal';
 
 describe('<LandingPageModal />', () => {
   it('successfully renders', () => {
-    render(<LandingPageModal onClose={jest.fn} />);
+    render(<LandingPageModal onClose={vi.fn} />);
     expect(screen.getByTestId('modal')).toBeInTheDocument();
   });
 
   it('doesn\'t display the signup button by default', () => {
-    render(<LandingPageModal onClose={jest.fn} />);
+    render(<LandingPageModal onClose={vi.fn} />);
     expect(screen.queryByText('Register')).not.toBeInTheDocument();
   });
 
   describe('with registrations enabled', () => {
     it('displays the signup button', () => {
-      render(<LandingPageModal onClose={jest.fn} />, undefined, storeOpen);
+      render(<LandingPageModal onClose={vi.fn} />, undefined, storeOpen);
       expect(screen.getByText('Register')).toBeInTheDocument();
     });
   });
 
   describe('with registrations closed, Pepe enabled', () => {
     it('displays the signup button', () => {
-      render(<LandingPageModal onClose={jest.fn} />, undefined, storePepeOpen);
+      render(<LandingPageModal onClose={vi.fn} />, undefined, storePepeOpen);
       expect(screen.getByText('Register')).toBeInTheDocument();
     });
   });

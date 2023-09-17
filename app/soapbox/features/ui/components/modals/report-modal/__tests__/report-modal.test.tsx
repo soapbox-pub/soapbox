@@ -51,13 +51,13 @@ test.skip('skip', () => {});
 //   });
 
 //   it('successfully renders the first step', () => {
-//     render(<ReportModal onClose={jest.fn} />, {}, store);
+//     render(<ReportModal onClose={vi.fn} />, {}, store);
 //     expect(screen.getByText('Reason for reporting')).toBeInTheDocument();
 //   });
 
 //   it('successfully moves to the second step', async() => {
 //     const user = userEvent.setup();
-//     render(<ReportModal onClose={jest.fn} />, {}, store);
+//     render(<ReportModal onClose={vi.fn} />, {}, store);
 //     await user.click(screen.getByTestId('rule-1'));
 //     await user.click(screen.getByText('Next'));
 //     expect(screen.getByText(/Further actions:/)).toBeInTheDocument();
@@ -65,7 +65,7 @@ test.skip('skip', () => {});
 
 //   it('successfully moves to the third step', async() => {
 //     const user = userEvent.setup();
-//     render(<ReportModal onClose={jest.fn} />, {}, store);
+//     render(<ReportModal onClose={vi.fn} />, {}, store);
 //     await user.click(screen.getByTestId('rule-1'));
 //     await user.click(screen.getByText(/Next/));
 //     await user.click(screen.getByText(/Submit/));
