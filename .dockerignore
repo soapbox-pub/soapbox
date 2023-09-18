@@ -12,8 +12,8 @@
 yarn-error.log*
 /junit.xml
 
+/dist/
 /static/
-/static-test/
 /public/
 /dist/
 

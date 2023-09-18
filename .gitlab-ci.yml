@@ -97,7 +97,7 @@ nginx-test:
     changes:
       - "installation/mastodon.conf"
 
-build-production:
+build:
   stage: test
   script:
     - yarn build
@@ -105,12 +105,12 @@ build-production:
     # # Fail if files got changed.
     # # https://stackoverflow.com/a/9066385
     # - git diff --quiet
-    - cp static/index.html static/404.html
+    - cp dist/index.html dist/404.html
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-     - static
+     - dist/
 
 docs-deploy:
   stage: deploy
@@ -131,7 +131,7 @@ review:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
   script:
-    - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+    - npx -y surge dist $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
 
 pages:
@@ -139,7 +139,7 @@ pages:
   before_script: []
   script:
     # artifacts are kept between jobs
-    - mv static public
+    - mv dist public
   variables:
     NODE_ENV: production
   artifacts:

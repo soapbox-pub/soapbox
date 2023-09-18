@@ -11,8 +11,8 @@ yarn-error.log*
 /junit.xml
 *.timestamp-*
 
+/dist/
 /static/
-/static-test/
 /public/
 /dist/
 

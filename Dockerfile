@@ -14,4 +14,4 @@ ENV FALLBACK_PORT=4444
 ENV BACKEND_URL=http://localhost:4444
 ENV CSP=
 COPY installation/docker.conf.template /etc/nginx/templates/default.conf.template
-COPY --from=build /app/static /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html

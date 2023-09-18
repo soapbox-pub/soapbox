@@ -14,7 +14,7 @@ export default defineConfig({
   root: 'app',
   build: {
     // Relative to the root
-    outDir: '../static',
+    outDir: '../dist',
     assetsDir: 'packs',
     assetsInlineLimit: 0,
     rollupOptions: {
