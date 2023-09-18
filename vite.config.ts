@@ -67,6 +67,9 @@ export default defineConfig({
       targets: [{
         src: './node_modules/twemoji/assets/svg/*',
         dest: 'packs/emoji/',
+      }, {
+        src: './src/instance',
+        dest: '.',
       }],
     }),
     visualizer({
