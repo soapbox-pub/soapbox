@@ -31,7 +31,7 @@ export default defineConfig({
     vitePluginRequire.default(),
     compileTime(),
     createHtmlPlugin({
-      template: 'src/index.html',
+      template: 'index.html',
       minify: {
         collapseWhitespace: true,
         removeComments: false,
