@@ -11,7 +11,7 @@ import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  root: 'app',
+  root: 'src',
   build: {
     // Relative to the root
     outDir: '../dist',
@@ -79,8 +79,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: 'soapbox', replacement: path.resolve(__dirname, 'app', 'soapbox') },
-      { find: 'assets', replacement: path.resolve(__dirname, 'app', 'assets') },
+      { find: 'soapbox', replacement: path.resolve(__dirname, 'src', 'soapbox') },
+      { find: 'assets', replacement: path.resolve(__dirname, 'src', 'assets') },
     ],
   },
   assetsInclude: ['**/*.oga'],

@@ -48,7 +48,7 @@ Typically checks are done against `BACKEND_NAME` and `VERSION`.
 The version string is similar in purpose to a [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent) string.
 The format was first invented by Pleroma, but is now widely used, including by Pixelfed, Mitra, and Soapbox BE.
 
-See [`features.ts`](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/app/soapbox/utils/features.ts) for the complete list of features.
+See [`features.ts`](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/src/soapbox/utils/features.ts) for the complete list of features.
 
 ## Forks of other software
 
@@ -73,4 +73,4 @@ For Pleroma forks, the fork name should be in the compat section (eg Soapbox BE)
 
 ## Adding support for a new backend
 
-If the backend conforms to the above format, please modify [`features.ts`](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/app/soapbox/utils/features.ts) and submit a merge request to enable features for your backend!
+If the backend conforms to the above format, please modify [`features.ts`](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/src/soapbox/utils/features.ts) and submit a merge request to enable features for your backend!

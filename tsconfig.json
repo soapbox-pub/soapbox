@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "app/",
+    "baseUrl": "src/",
     "outDir": "build/",
     "sourceMap": true,
     "strict": true,

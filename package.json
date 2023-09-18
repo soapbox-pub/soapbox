@@ -29,7 +29,7 @@
     "test:all": "${npm_execpath} run test:coverage && ${npm_execpath} run lint",
     "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
     "lint:js": "npx eslint --ext .js,.jsx,.cjs,.mjs,.ts,.tsx . --cache",
-    "lint:sass": "npx stylelint app/styles/**/*.scss",
+    "lint:sass": "npx stylelint src/styles/**/*.scss",
     "prepare": "husky install"
   },
   "license": "AGPL-3.0-or-later",
