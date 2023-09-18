@@ -72,7 +72,7 @@ lint-sass:
 #     changes:
 #       - "**/*.js"
 #       - "**/*.json"
-#       - "src/soapbox/**/*"
+#       - "src/**/*"
 #       - "webpack/**/*"
 #       - "custom/**/*"
 #       - "jest.config.cjs"

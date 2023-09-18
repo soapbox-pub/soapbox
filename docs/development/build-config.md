@@ -71,7 +71,7 @@ For example:
 }
 ```
 
-See `src/soapbox/utils/features.js` for the full list of features.
+See `src/utils/features.js` for the full list of features.
 
 ### Embedded app (`custom/app.json`)
 
