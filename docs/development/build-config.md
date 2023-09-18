@@ -118,7 +118,7 @@ When compiling Soapbox, environment variables may be passed to change the build 
 For example:
 
 ```sh
-NODE_ENV="production" FE_BUILD_DIR="public" FE_SUBDIRECTORY="/soapbox" yarn build
+NODE_ENV="production" FE_SUBDIRECTORY="/soapbox" yarn build
 ```
 
 ### `NODE_ENV`
@@ -146,16 +146,6 @@ Options:
 - Empty string (`""`)`
 
 Default: `""`
-
-### `FE_BUILD_DIR`
-
-The folder to put build files in. This is mostly useful for CI tasks like GitLab Pages.
-
-Options:
-
-- Any directory name, eg `"public"`
-
-Default: `"dist"`
 
 ### `FE_SUBDIRECTORY`
 

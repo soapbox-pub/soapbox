@@ -12,7 +12,6 @@ const {
   NODE_ENV,
   BACKEND_URL,
   FE_SUBDIRECTORY,
-  FE_BUILD_DIR,
   FE_INSTANCE_SOURCE_DIR,
   SENTRY_DSN,
 } = process.env;
@@ -29,16 +28,11 @@ const sanitizeBasename = (path: string | undefined = ''): string => {
   return `/${trim(path, '/')}`;
 };
 
-const sanitizePath = (path: string | undefined = ''): string => {
-  return trim(path, '/');
-};
-
 export default () => ({
   data: {
     NODE_ENV: NODE_ENV || 'development',
     BACKEND_URL: sanitizeURL(BACKEND_URL),
     FE_SUBDIRECTORY: sanitizeBasename(FE_SUBDIRECTORY),
-    FE_BUILD_DIR: sanitizePath(FE_BUILD_DIR) || 'dist',
     FE_INSTANCE_SOURCE_DIR: FE_INSTANCE_SOURCE_DIR || 'instance',
     SENTRY_DSN,
   },
