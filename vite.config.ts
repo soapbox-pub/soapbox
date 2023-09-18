@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import path from 'path';
+import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -11,10 +11,7 @@ import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  root: 'app',
   build: {
-    // Relative to the root
-    outDir: '../dist',
     assetsDir: 'packs',
     assetsInlineLimit: 0,
     rollupOptions: {
@@ -25,6 +22,7 @@ export default defineConfig({
       },
     },
   },
+  assetsInclude: ['**/*.oga'],
   server: {
     port: 3036,
   },
@@ -62,13 +60,16 @@ export default defineConfig({
         short_name: 'Soapbox',
         description: 'A social media frontend with a focus on custom branding and ease of use.',
       },
-      srcDir: 'soapbox/service-worker',
+      srcDir: 'src/service-worker',
       filename: 'sw.ts',
     }),
     viteStaticCopy({
       targets: [{
-        src: '../node_modules/twemoji/assets/svg/*',
+        src: './node_modules/twemoji/assets/svg/*',
         dest: 'packs/emoji/',
+      }, {
+        src: './src/instance',
+        dest: '.',
       }],
     }),
     visualizer({
@@ -79,17 +80,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: 'soapbox', replacement: path.resolve(__dirname, 'app', 'soapbox') },
-      { find: 'assets', replacement: path.resolve(__dirname, 'app', 'assets') },
+      { find: 'soapbox', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
     ],
   },
-  assetsInclude: ['**/*.oga'],
   test: {
     globals: true,
     environment: 'jsdom',
-    cache: {
-      dir: '../node_modules/.vitest',
-    },
-    setupFiles: 'soapbox/jest/test-setup.ts',
+    setupFiles: 'src/jest/test-setup.ts',
   },
 });
