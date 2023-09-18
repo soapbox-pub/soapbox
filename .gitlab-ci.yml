@@ -99,6 +99,8 @@ nginx-test:
 
 build:
   stage: test
+  before_script:
+    - apt-get update -y && apt-get install -y zip
   script:
     - yarn build
     # - yarn manage:translations en
@@ -137,7 +139,6 @@ review:
 
 pages:
   stage: deploy
-  before_script: []
   script:
     # artifacts are kept between jobs
     - mv dist public
