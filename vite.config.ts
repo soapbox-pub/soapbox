@@ -11,10 +11,7 @@ import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  root: 'src',
   build: {
-    // Relative to the root
-    outDir: '../dist',
     assetsDir: 'packs',
     assetsInlineLimit: 0,
     rollupOptions: {
@@ -25,6 +22,7 @@ export default defineConfig({
       },
     },
   },
+  assetsInclude: ['**/*.oga'],
   server: {
     port: 3036,
   },
@@ -33,7 +31,7 @@ export default defineConfig({
     vitePluginRequire.default(),
     compileTime(),
     createHtmlPlugin({
-      template: 'index.html',
+      template: 'src/index.html',
       minify: {
         collapseWhitespace: true,
         removeComments: false,
@@ -62,12 +60,12 @@ export default defineConfig({
         short_name: 'Soapbox',
         description: 'A social media frontend with a focus on custom branding and ease of use.',
       },
-      srcDir: 'service-worker',
+      srcDir: 'src/service-worker',
       filename: 'sw.ts',
     }),
     viteStaticCopy({
       targets: [{
-        src: '../node_modules/twemoji/assets/svg/*',
+        src: './node_modules/twemoji/assets/svg/*',
         dest: 'packs/emoji/',
       }],
     }),
@@ -82,13 +80,9 @@ export default defineConfig({
       { find: 'soapbox', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
     ],
   },
-  assetsInclude: ['**/*.oga'],
   test: {
     globals: true,
     environment: 'jsdom',
-    cache: {
-      dir: '../node_modules/.vitest',
-    },
-    setupFiles: 'jest/test-setup.ts',
+    setupFiles: 'src/jest/test-setup.ts',
   },
 });
