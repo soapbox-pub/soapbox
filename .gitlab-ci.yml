@@ -136,8 +136,7 @@ review:
   before_script:
     - apt-get update -y && apt-get install -y unzip
   script:
-    - mkdir -p dist
-    - unzip soapbox.zip -o -d dist
+    - unzip soapbox.zip -d dist
     - npx -y surge dist $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
 
@@ -146,9 +145,8 @@ pages:
   before_script:
     - apt-get update -y && apt-get install -y unzip
   script:
-    - mkdir -p public
     # artifacts are kept between jobs
-    - unzip soapbox.zip -o -d public
+    - unzip soapbox.zip -d public
   variables:
     NODE_ENV: production
   artifacts:
