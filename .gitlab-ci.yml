@@ -42,9 +42,9 @@ danger:
       - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
   allow_failure: true
 
-lint-js:
+lint:
   stage: test
-  script: yarn lint:js
+  script: yarn lint
   only:
     changes:
       - "**/*.js"
@@ -53,16 +53,10 @@ lint-js:
       - "**/*.mjs"
       - "**/*.ts"
       - "**/*.tsx"
-      - ".eslintignore"
-      - ".eslintrc.cjs"
-
-lint-sass:
-  stage: test
-  script: yarn lint:sass
-  only:
-    changes:
       - "**/*.scss"
       - "**/*.css"
+      - ".eslintignore"
+      - ".eslintrc.cjs"
       - ".stylelintrc.json"
 
 # jest:
