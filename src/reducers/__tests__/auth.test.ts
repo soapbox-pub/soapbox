@@ -11,9 +11,8 @@ import {
 import { ME_FETCH_SKIP } from 'soapbox/actions/me';
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { buildAccount } from 'soapbox/jest/factory';
-import { AuthAppRecord, AuthTokenRecord, AuthUserRecord, ReducerRecord } from 'soapbox/reducers/auth';
 
-import reducer from '../auth';
+import reducer, { AuthAppRecord, AuthTokenRecord, AuthUserRecord, ReducerRecord } from '../auth';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {

@@ -4,7 +4,7 @@ import { useRouteMatch } from 'react-router-dom';
 
 import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
 import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
-import { Column, Icon, Layout, Stack, Text } from 'soapbox/components/ui';
+import { Column, Icon, Layout, Stack, Text, Tabs } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
@@ -15,8 +15,6 @@ import {
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useFeatures, useOwnAccount } from 'soapbox/hooks';
-
-import { Tabs } from '../components/ui';
 
 import type { Group } from 'soapbox/schemas';
 

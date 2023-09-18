@@ -11,9 +11,8 @@ import {
   SUGGESTIONS_V2_FETCH_SUCCESS,
   SUGGESTIONS_V2_FETCH_FAIL,
   SUGGESTIONS_TRUTH_FETCH_SUCCESS,
+  type SuggestedProfile,
 } from 'soapbox/actions/suggestions';
-
-import { SuggestedProfile } from '../actions/suggestions';
 
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';

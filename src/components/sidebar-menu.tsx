@@ -9,12 +9,10 @@ import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
-import { Stack } from 'soapbox/components/ui';
+import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
 import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
-
-import { Divider, HStack, Icon, IconButton, Text } from './ui';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Account as AccountEntity } from 'soapbox/types/entities';

@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
-import { expandHomeTimeline } from 'soapbox/actions/timelines';
+import { expandHomeTimeline, clearFeedAccountId } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
 import { useAppSelector, useAppDispatch, useFeatures, useInstance } from 'soapbox/hooks';
-
-import { clearFeedAccountId } from '../../actions/timelines';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
