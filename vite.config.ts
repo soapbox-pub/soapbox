@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import path from 'path';
+import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -62,7 +62,7 @@ export default defineConfig({
         short_name: 'Soapbox',
         description: 'A social media frontend with a focus on custom branding and ease of use.',
       },
-      srcDir: 'soapbox/service-worker',
+      srcDir: 'service-worker',
       filename: 'sw.ts',
     }),
     viteStaticCopy({
@@ -79,8 +79,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: 'soapbox', replacement: path.resolve(__dirname, 'src', 'soapbox') },
-      { find: 'assets', replacement: path.resolve(__dirname, 'src', 'assets') },
+      { find: 'soapbox', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
     ],
   },
   assetsInclude: ['**/*.oga'],
@@ -90,6 +89,6 @@ export default defineConfig({
     cache: {
       dir: '../node_modules/.vitest',
     },
-    setupFiles: 'soapbox/jest/test-setup.ts',
+    setupFiles: 'jest/test-setup.ts',
   },
 });

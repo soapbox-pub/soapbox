@@ -48,9 +48,8 @@ module.exports = {
       '\\.(css|scss|json)$',
     ],
     'import/resolver': {
-      node: {
-        paths: ['src'],
-      },
+      typescript: true,
+      node: true,
     },
     polyfills: [
       'es:all', // core-js

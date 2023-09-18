@@ -4,7 +4,7 @@ type MessageModule = { default: MessageJson };
 /** Import custom messages */
 const importCustom = async (locale: string): Promise<MessageModule> => {
   try {
-    return await import(`../../custom/locales/${locale}.json`);
+    return await import(`../custom/locales/${locale}.json`);
   } catch {
     return ({ default: {} });
   }

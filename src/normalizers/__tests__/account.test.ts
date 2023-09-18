@@ -2,8 +2,8 @@ import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import { normalizeAccount } from '../account';
 
-const AVATAR_MISSING = require('assets/images/avatar-missing.png');
-const HEADER_MISSING = require('assets/images/header-missing.png');
+const AVATAR_MISSING = require('soapbox/assets/images/avatar-missing.png');
+const HEADER_MISSING = require('soapbox/assets/images/header-missing.png');
 
 describe('normalizeAccount()', () => {
   it('adds base fields', () => {

@@ -53,7 +53,7 @@ export const GroupRecord = ImmutableRecord({
 const normalizeAvatar = (group: ImmutableMap<string, any>) => {
   const avatar = group.get('avatar');
   const avatarStatic = group.get('avatar_static');
-  const missing = require('assets/images/avatar-missing.png');
+  const missing = require('soapbox/assets/images/avatar-missing.png');
 
   return group.withMutations(group => {
     group.set('avatar', avatar || avatarStatic || missing);
@@ -65,7 +65,7 @@ const normalizeAvatar = (group: ImmutableMap<string, any>) => {
 const normalizeHeader = (group: ImmutableMap<string, any>) => {
   const header = group.get('header');
   const headerStatic = group.get('header_static');
-  const missing = require('assets/images/header-missing.png');
+  const missing = require('soapbox/assets/images/header-missing.png');
 
   return group.withMutations(group => {
     group.set('header', header || headerStatic || missing);

@@ -10,8 +10,8 @@ import { contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
 
-const avatarMissing = require('assets/images/avatar-missing.png');
-const headerMissing = require('assets/images/header-missing.png');
+const avatarMissing = require('soapbox/assets/images/avatar-missing.png');
+const headerMissing = require('soapbox/assets/images/header-missing.png');
 
 const birthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "src/",
-    "outDir": "build/",
+    "baseUrl": "./",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "module": "ESNext",
@@ -12,6 +12,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "paths": {
+      "soapbox/*": ["src/*"],
+    },
     "typeRoots": [
       "./types",
       "./node_modules/@types",

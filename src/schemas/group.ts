@@ -9,8 +9,8 @@ import { groupRelationshipSchema } from './group-relationship';
 import { groupTagSchema } from './group-tag';
 import { filteredArray, makeCustomEmojiMap } from './utils';
 
-const avatarMissing = require('assets/images/avatar-missing.png');
-const headerMissing = require('assets/images/header-missing.png');
+const avatarMissing = require('soapbox/assets/images/avatar-missing.png');
+const headerMissing = require('soapbox/assets/images/header-missing.png');
 
 const groupSchema = z.object({
   avatar: z.string().catch(avatarMissing),

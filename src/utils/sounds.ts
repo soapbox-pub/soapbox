@@ -35,21 +35,21 @@ const play = (audio: HTMLAudioElement): void => {
 const soundCache: Record<Sounds, HTMLAudioElement> = {
   boop: createAudio([
     {
-      src: require('../../assets/sounds/boop.ogg'),
+      src: require('../assets/sounds/boop.ogg'),
       type: 'audio/ogg',
     },
     {
-      src: require('../../assets/sounds/boop.mp3'),
+      src: require('../assets/sounds/boop.mp3'),
       type: 'audio/mpeg',
     },
   ]),
   chat: createAudio([
     {
-      src: require('../../assets/sounds/chat.oga'),
+      src: require('../assets/sounds/chat.oga'),
       type: 'audio/ogg',
     },
     {
-      src: require('../../assets/sounds/chat.mp3'),
+      src: require('../assets/sounds/chat.mp3'),
       type: 'audio/mpeg',
     },
   ]),

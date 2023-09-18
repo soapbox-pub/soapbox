@@ -37,7 +37,7 @@ export const isRemote = (account: Pick<Account, 'acct'>): boolean => !isLocal(ac
 const DEFAULT_HEADERS: string[] = [
   '/headers/original/missing.png', // Mastodon
   '/images/banner.png', // Pleroma
-  require('assets/images/header-missing.png'), // header not provided by backend
+  require('soapbox/assets/images/header-missing.png'), // header not provided by backend
 ];
 
 /** Check if the avatar is a default avatar */
@@ -49,7 +49,7 @@ export const isDefaultHeader = (url: string) => {
 const DEFAULT_AVATARS = [
   '/avatars/original/missing.png', // Mastodon
   '/images/avi.png', // Pleroma
-  require('assets/images/avatar-missing.png'), // avatar not provided by backend
+  require('soapbox/assets/images/avatar-missing.png'), // avatar not provided by backend
 ];
 
 /** Check if the avatar is a default avatar */

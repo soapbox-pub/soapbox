@@ -20,8 +20,8 @@ const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
 
   /** Soapbox logo. */
   const soapboxLogo = darkMode
-    ? require('assets/images/soapbox-logo-white.svg')
-    : require('assets/images/soapbox-logo.svg');
+    ? require('soapbox/assets/images/soapbox-logo-white.svg')
+    : require('soapbox/assets/images/soapbox-logo.svg');
 
   // Use the right logo if provided, then use fallbacks.
   const getSrc = () => {

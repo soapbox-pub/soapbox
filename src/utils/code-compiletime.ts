@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 
-import pkg from '../../../package.json';
+import pkg from '../../package.json';
 
 const { CI_COMMIT_TAG, CI_COMMIT_REF_NAME, CI_COMMIT_SHA } = process.env;
 

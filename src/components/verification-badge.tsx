@@ -18,7 +18,7 @@ const VerificationBadge: React.FC<IVerificationBadge> = ({ className }) => {
   const soapboxConfig = useSoapboxConfig();
 
   // Prefer a custom icon if found
-  const icon = soapboxConfig.verifiedIcon || require('assets/icons/verified.svg');
+  const icon = soapboxConfig.verifiedIcon || require('soapbox/assets/icons/verified.svg');
 
   // Render component based on file extension
   const Element = icon.endsWith('.svg') ? Icon : 'img';
