@@ -31,17 +31,6 @@ deps:
     <<: *cache
     policy: push
 
-danger:
-  stage: test
-  script:
-    # https://github.com/danger/danger-js/issues/1029#issuecomment-998915436
-    - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
-    - npx danger ci
-  except:
-    variables:
-      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
-  allow_failure: true
-
 lint:
   stage: test
   script: yarn lint
