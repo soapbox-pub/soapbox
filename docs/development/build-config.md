@@ -155,7 +155,7 @@ Options:
 
 - Any directory name, eg `"public"`
 
-Default: `"static"`
+Default: `"dist"`
 
 ### `FE_SUBDIRECTORY`
 

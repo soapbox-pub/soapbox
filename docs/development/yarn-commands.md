@@ -12,7 +12,7 @@ NODE_ENV=development
 - `yarn dev` - Run the local dev server.
 
 ## Building
-- `yarn build` - Compile without a dev server, into `/static` directory.
+- `yarn build` - Compile without a dev server, into `/dist` directory.
 
 ## Translations
 - `yarn i18n` - Rebuilds app and updates English locale to prepare for translations in other languages. Should always be run after editing i18n strings.
