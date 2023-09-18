@@ -134,14 +134,17 @@ review:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
   script:
+    - mkdir -p dist
+    - busybox unzip soapbox.zip -o -d dist
     - npx -y surge dist $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
 
 pages:
   stage: deploy
   script:
+    - mkdir -p public
     # artifacts are kept between jobs
-    - mv dist public
+    - busybox unzip soapbox.zip -o -d public
   variables:
     NODE_ENV: production
   artifacts:
