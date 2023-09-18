@@ -110,7 +110,7 @@ build:
     NODE_ENV: production
   artifacts:
     paths:
-     - dist/
+     - dist/**/*
 
 docs-deploy:
   stage: deploy
