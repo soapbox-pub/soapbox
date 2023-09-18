@@ -16,6 +16,7 @@ yarn-error.log*
 /static/
 /public/
 /dist/
+/soapbox.zip
 
 .idea
 .DS_Store

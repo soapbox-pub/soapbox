@@ -106,11 +106,12 @@ build:
     # # https://stackoverflow.com/a/9066385
     # - git diff --quiet
     - cp dist/index.html dist/404.html
+    - cd dist && zip -r ../soapbox.zip . && cd ..
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-     - dist/**/*
+     - soapbox.zip
 
 docs-deploy:
   stage: deploy
