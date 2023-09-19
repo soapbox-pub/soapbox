@@ -64,7 +64,6 @@ import timelines from './timelines';
 import trending_statuses from './trending-statuses';
 import trends from './trends';
 import user_lists from './user-lists';
-import verification from './verification';
 
 const reducers = {
   accounts_meta,
@@ -127,7 +126,6 @@ const reducers = {
   trending_statuses,
   trends,
   user_lists,
-  verification,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
