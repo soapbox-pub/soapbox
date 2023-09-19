@@ -15,7 +15,6 @@ const blurhashSchema = z.string().superRefine((value, ctx) => {
 const baseAttachmentSchema = z.object({
   blurhash: blurhashSchema.nullable().catch(null),
   description: z.string().catch(''),
-  external_video_id: z.string().optional().catch(undefined), // TruthSocial
   id: z.string(),
   pleroma: z.object({
     mime_type: z.string().regex(/^\w+\/[-+.\w]+$/),

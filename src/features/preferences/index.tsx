@@ -196,10 +196,6 @@ const Preferences = () => {
           <SettingToggle settings={settings} settingPath={['autoPlayGif']} onChange={onToggleChange} />
         </ListItem>
 
-        <ListItem label={<FormattedMessage id='preferences.fields.auto_play_video_label' defaultMessage='Auto-play videos' />}>
-          <SettingToggle settings={settings} settingPath={['autoPlayVideo']} onChange={onToggleChange} />
-        </ListItem>
-
         {features.spoilers && <ListItem label={<FormattedMessage id='preferences.fields.expand_spoilers_label' defaultMessage='Always expand posts marked with content warnings' />}>
           <SettingToggle settings={settings} settingPath={['expandSpoilers']} onChange={onToggleChange} />
         </ListItem>}

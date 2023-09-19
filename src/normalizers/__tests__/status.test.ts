@@ -198,10 +198,4 @@ describe('normalizeStatus()', () => {
     expect(card.type).toEqual('link');
     expect(card.provider_url).toEqual('https://soapbox.pub');
   });
-
-  it('preserves Truth Social external_video_id', () => {
-    const status = require('soapbox/__fixtures__/truthsocial-status-with-external-video.json');
-    const result = normalizeStatus(status);
-    expect(result.media_attachments.get(0)?.external_video_id).toBe('vwfnq9');
-  });
 });

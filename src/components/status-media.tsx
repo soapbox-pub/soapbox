@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
@@ -7,8 +7,7 @@ import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder
 import Card from 'soapbox/features/status/components/card';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
-import { addAutoPlay } from 'soapbox/utils/media';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import type { List as ImmutableList } from 'immutable';
 import type VideoType from 'soapbox/features/video';
@@ -36,21 +35,11 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   onToggleVisibility = () => { },
 }) => {
   const dispatch = useAppDispatch();
-  const settings = useSettings();
-  const shouldAutoPlayVideo = settings.get('autoPlayVideo');
-
-  const [mediaWrapperWidth, setMediaWrapperWidth] = useState<number | undefined>(undefined);
 
   const size = status.media_attachments.size;
   const firstAttachment = status.media_attachments.first();
 
   let media: JSX.Element | null = null;
-
-  const setRef = (c: HTMLDivElement): void => {
-    if (c) {
-      setMediaWrapperWidth(c.offsetWidth);
-    }
-  };
 
   const renderLoadingMediaGallery = (): JSX.Element => {
     return <div className='media_gallery' style={{ height: '285px' }} />;
@@ -80,45 +69,22 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     } else if (size === 1 && firstAttachment.type === 'video') {
       const video = firstAttachment;
 
-      if (video.external_video_id && status.card) {
-        const getHeight = (): number => {
-          const width = Number(video.meta.getIn(['original', 'width']));
-          const height = Number(video.meta.getIn(['original', 'height']));
-          return Number(mediaWrapperWidth) / (width / height);
-        };
-
-        const height = getHeight();
-
-        media = (
-          <div className='status-card horizontal compact interactive status-card--video'>
-            <div
-              ref={setRef}
-              className='status-card__image status-card-video'
-              style={height ? { height } : undefined}
-              dangerouslySetInnerHTML={{
-                __html: shouldAutoPlayVideo ? addAutoPlay(status.card.html) : status.card.html,
-              }}
+      media = (
+        <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer}>
+          {(Component: typeof VideoType) => (
+            <Component
+              preview={video.preview_url}
+              blurhash={video.blurhash}
+              src={video.url}
+              alt={video.description}
+              aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
+              height={285}
+              visible={showMedia}
+              inline
             />
-          </div>
-        );
-      } else {
-        media = (
-          <Bundle fetchComponent={Video} loading={renderLoadingVideoPlayer}>
-            {(Component: typeof VideoType) => (
-              <Component
-                preview={video.preview_url}
-                blurhash={video.blurhash}
-                src={video.url}
-                alt={video.description}
-                aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
-                height={285}
-                visible={showMedia}
-                inline
-              />
-            )}
-          </Bundle>
-        );
-      }
+          )}
+        </Bundle>
+      );
     } else if (size === 1 && firstAttachment.type === 'audio') {
       const attachment = firstAttachment;
 
