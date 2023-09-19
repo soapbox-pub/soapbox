@@ -76,6 +76,9 @@ export default defineConfig({
       }, {
         src: './src/instance',
         dest: '.',
+      }, {
+        src: './custom/instance',
+        dest: '.',
       }],
     }),
     visualizer({
