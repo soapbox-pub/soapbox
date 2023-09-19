@@ -7330,10 +7330,10 @@ react-onclickoutside@^6.12.0:
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.12.1.tgz#92dddd28f55e483a1838c5c2930e051168c1e96b"
   integrity sha512-a5Q7CkWznBRUWPmocCvE8b6lEYw1s6+opp/60dCunhO+G6E4tDTO2Sd2jKE+leEnnrLAE2Wj5DlDHNqj5wPv1Q==
 
-react-otp-input@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-otp-input/-/react-otp-input-2.4.0.tgz#0f0a3de1d8c8d564e2e4fbe5d6b7b56e29e3a6e6"
-  integrity sha512-AIgl7u4sS9BTNCxX1xlaS5fPWay/Zml8Ho5LszXZKXrH1C/TiFsTQGmtl13UecQYO3mSF3HUzG2rrDf0sjEFmg==
+react-otp-input@^3.0.0:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-otp-input/-/react-otp-input-3.0.4.tgz#4867cc7e7e42a76d4757423aca03644cb96bba98"
+  integrity sha512-24GWRCguMmCatD3u9+mtxOcvoHZBJEtzzKQ/2cIOpr1yRn/umjxXw5d6mwRV8JnGhQqtIigD+k3Vt1ieuDBypg==
 
 react-overlays@^0.9.0:
   version "0.9.3"
