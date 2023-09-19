@@ -19,8 +19,6 @@ module.exports = {
     ATTACHMENT_HOST: false,
   },
 
-  parser: '@babel/eslint-parser',
-
   plugins: [
     'react',
     'jsdoc',
@@ -50,9 +48,8 @@ module.exports = {
       '\\.(css|scss|json)$',
     ],
     'import/resolver': {
-      node: {
-        paths: ['app'],
-      },
+      typescript: true,
+      node: true,
     },
     polyfills: [
       'es:all', // core-js
@@ -79,6 +76,7 @@ module.exports = {
       },
     ],
     'comma-style': ['warn', 'last'],
+    'import/no-duplicates': 'error',
     'space-before-function-paren': ['error', 'never'],
     'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],
@@ -260,7 +258,6 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
-    '@typescript-eslint/no-duplicate-imports': 'error',
     '@typescript-eslint/member-delimiter-style': [
       'error',
       {
@@ -298,7 +295,7 @@ module.exports = {
     {
       // Only enforce JSDoc comments on UI components for now.
       // https://www.npmjs.com/package/eslint-plugin-jsdoc
-      files: ['app/soapbox/components/ui/**/*'],
+      files: ['src/components/ui/**/*'],
       rules: {
         'jsdoc/require-jsdoc': ['error', {
           publicOnly: true,

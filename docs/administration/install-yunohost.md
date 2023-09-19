@@ -7,7 +7,7 @@ If you want to install Soapbox to a Pleroma instance installed using [YunoHost](
 First, download the latest build of Soapbox from GitLab.
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production -o soapbox-fe.zip
+curl -O https://dl.soapbox.pub/main/soapbox.zip
 ```
 
 ## 2. Unzip the build
@@ -15,7 +15,7 @@ curl -L https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download
 Then, unzip the build to the Pleroma directory under YunoHost's directory:
 
 ```sh
-busybox unzip soapbox-fe.zip -o -d /home/yunohost.app/pleroma/
+busybox unzip soapbox.zip -o -d /home/yunohost.app/pleroma/static
 ```
 
 ## 3. Change YunoHost Admin Static directory

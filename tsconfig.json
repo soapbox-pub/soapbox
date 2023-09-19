@@ -1,18 +1,30 @@
 {
   "compilerOptions": {
-    "baseUrl": "app/",
-    "outDir": "build/",
+    "baseUrl": "./",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
-    "module": "es2022",
-    "lib": ["es2019", "es6", "dom", "webworker"],
-    "target": "es2015",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "typeRoots": [ "./types", "./node_modules/@types"]
+    "paths": {
+      "soapbox/*": ["src/*"],
+    },
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types",
+      "./node_modules"
+    ],
+    "types": [
+      "vite/client",
+      "vitest/globals",
+      "vite-plugin-compile-time/client"
+    ]
   },
   "ts-node": {
     "compilerOptions": {

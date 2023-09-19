@@ -15,7 +15,7 @@ When contributing to Soapbox, please first discuss the change you wish to make b
 
 When you push to a branch, the CI pipeline will run.
 
-[Soapbox uses GitLab CI](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/.gitlab-ci.yml) to lint, run tests, and verify changes.
+[Soapbox uses GitLab CI](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/.gitlab-ci.yml) to lint, run tests, and verify changes.
 It's important this pipeline passes, otherwise we cannot merge the change.
 
 New users of gitlab.com may see a "detatched pipeline" error.
@@ -31,4 +31,4 @@ We recommend developing Soapbox with [VSCodium](https://vscodium.com/) (or its p
 This will help give you feedback about your changes _in the editor itself_ before GitLab CI performs linting, etc.
 
 When this project is opened in Code it will automatically recommend extensions.
-See [`.vscode/extensions.json`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/.vscode/extensions.json) for the full list.
+See [`.vscode/extensions.json`](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/.vscode/extensions.json) for the full list.

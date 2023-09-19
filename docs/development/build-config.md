@@ -71,7 +71,7 @@ For example:
 }
 ```
 
-See `app/soapbox/utils/features.js` for the full list of features.
+See `src/utils/features.js` for the full list of features.
 
 ### Embedded app (`custom/app.json`)
 
@@ -118,7 +118,7 @@ When compiling Soapbox, environment variables may be passed to change the build 
 For example:
 
 ```sh
-NODE_ENV="production" FE_BUILD_DIR="public" FE_SUBDIRECTORY="/soapbox" yarn build
+NODE_ENV="production" FE_SUBDIRECTORY="/soapbox" yarn build
 ```
 
 ### `NODE_ENV`
@@ -146,16 +146,6 @@ Options:
 - Empty string (`""`)`
 
 Default: `""`
-
-### `FE_BUILD_DIR`
-
-The folder to put build files in. This is mostly useful for CI tasks like GitLab Pages.
-
-Options:
-
-- Any directory name, eg `"public"`
-
-Default: `"static"`
 
 ### `FE_SUBDIRECTORY`
 

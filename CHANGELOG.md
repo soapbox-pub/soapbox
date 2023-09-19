@@ -12,9 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reactions: Support custom emoji reactions
 - Compatbility: Support Mastodon v2 timeline filters.
 - Compatbility: Preliminary support for Ditto backend.
+- Compatibility: Support Firefish.
 - Posts: Support dislikes on Friendica.
 - UI: added a character counter to some textareas.
 - UI: added new experience for viewing Media
+- Hotkeys: Added `/` as a hotkey for search field.
 
 ### Changed
 - Posts: truncate Nostr pubkeys in reply mentions.
@@ -23,10 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: unified design of "approve" and "reject" buttons in follow requests and waitlist.
 - UI: added sticky column header.
 - UI: add specific zones the user can drag-and-drop files.
+- UI: disable toast notifications for API errors.
+- Chats: Display year for older messages creation date.
 
 ### Fixed
 - Posts: fixed emojis being cut off in reactions modal.
 - Posts: fix audio player progress bar visibility.
+- Posts: fix audio player avatar aspect ratio for non-square avatars.
 - Posts: added missing gap in pending status.
 - Compatibility: fixed quote posting compatibility with custom Pleroma forks.
 - Profile: fix "load more" button height on account gallery page.
@@ -36,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: fixed various overflow issues related to long usernames.
 - UI: fixed display of Markdown code blocks in the reply indicator.
 - Auth: fixed too many API requests when the server has an error.
+- Auth: Don't display "username or e-mail" if username is not allowed.
 
 ## [3.2.0] - 2023-02-15
 

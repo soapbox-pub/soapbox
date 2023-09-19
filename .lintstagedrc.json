@@ -4,5 +4,5 @@
   "*.mjs": "eslint --cache",
   "*.ts": "eslint --cache",
   "*.tsx": "eslint --cache",
-  "app/styles/**/*.scss": "stylelint"
+  "src/styles/**/*.scss": "stylelint"
 }
