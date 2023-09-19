@@ -179,6 +179,11 @@ const Account = ({
   if (withDate) timestamp = account.created_at;
 
   const LinkEl: any = withLinkToProfile ? Link : 'div';
+  const linkProps = withLinkToProfile ? {
+    to: `/@${account.acct}`,
+    title: account.acct,
+    onClick: (event: React.MouseEvent) => event.stopPropagation(),
+  } : {};
 
   return (
     <div data-testid='account' className='group block w-full shrink-0' ref={overflowRef}>
@@ -188,12 +193,7 @@ const Account = ({
             condition={showProfileHoverCard}
             wrapper={(children) => <HoverRefWrapper className='relative' accountId={account.id} inline>{children}</HoverRefWrapper>}
           >
-            <LinkEl
-              className='rounded-full'
-              to={`/@${account.acct}`}
-              title={account.acct}
-              onClick={(event: React.MouseEvent) => event.stopPropagation()}
-            >
+            <LinkEl className='rounded-full' {...linkProps}>
               <Avatar src={account.avatar} size={avatarSize} />
               {emoji && (
                 <Emoji
@@ -210,11 +210,7 @@ const Account = ({
               condition={showProfileHoverCard}
               wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
             >
-              <LinkEl
-                to={`/@${account.acct}`}
-                title={account.acct}
-                onClick={(event: React.MouseEvent) => event.stopPropagation()}
-              >
+              <LinkEl {...linkProps}>
                 <HStack space={1} alignItems='center' grow>
                   <Text
                     size='sm'
