@@ -14,8 +14,6 @@ import RegistrationForm from '../auth-login/components/registration-form';
 import ExternalLoginForm from '../external-login/components/external-login-form';
 import Footer from '../public-layout/components/footer';
 import RegisterInvite from '../register-invite';
-import Verification from '../verification';
-import EmailPassthru from '../verification/email-passthru';
 
 const messages = defineMessages({
   register: { id: 'auth_layout.register', defaultMessage: 'Create an account' },
@@ -65,8 +63,6 @@ const AuthLayout = () => {
                     {/* If already logged in, redirect home. */}
                     {account && <Redirect from='/login' to='/' exact />}
 
-                    <Route exact path='/verify' component={Verification} />
-                    <Route exact path='/verify/email/:token' component={EmailPassthru} />
                     <Route exact path='/login/external' component={ExternalLoginForm} />
                     <Route exact path='/login/add' component={LoginPage} />
                     <Route exact path='/login' component={LoginPage} />

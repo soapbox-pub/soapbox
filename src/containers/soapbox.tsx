@@ -13,8 +13,7 @@ import { ScrollContext } from 'react-router-scroll-4';
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
-import { loadSoapboxConfig, getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { fetchVerificationConfig } from 'soapbox/actions/verification';
+import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
 import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
@@ -27,7 +26,6 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
   OnboardingWizard,
-  WaitlistPage,
 } from 'soapbox/features/ui/util/async-components';
 import { createGlobals } from 'soapbox/globals';
 import {
@@ -40,7 +38,6 @@ import {
   useTheme,
   useLocale,
   useInstance,
-  useRegistrationStatus,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -73,14 +70,6 @@ const loadInitial = () => {
     await dispatch(loadInstance());
     // Await for configuration
     await dispatch(loadSoapboxConfig());
-
-    const state = getState();
-    const soapboxConfig = getSoapboxConfig(state);
-    const pepeEnabled = soapboxConfig.getIn(['extensions', 'pepe', 'enabled']) === true;
-
-    if (pepeEnabled && !state.me) {
-      await dispatch(fetchVerificationConfig());
-    }
   };
 };
 
@@ -93,11 +82,9 @@ const SoapboxMount = () => {
   const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
   const features = useFeatures();
-  const { pepeEnabled } = useRegistrationStatus();
 
-  const waitlisted = account && account.source?.approved === false;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
-  const showOnboarding = account && !waitlisted && needsOnboarding;
+  const showOnboarding = account && needsOnboarding;
   const { redirectRootNoLogin } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
@@ -115,25 +102,6 @@ const SoapboxMount = () => {
   /** Render the auth layout or UI. */
   const renderSwitch = () => (
     <Switch>
-      <Redirect from='/v1/verify_email/:token' to='/verify/email/:token' />
-
-      {/* Redirect signup route depending on Pepe enablement. */}
-      {/* We should prefer using /signup in components. */}
-      {pepeEnabled ? (
-        <Redirect from='/signup' to='/verify' />
-      ) : (
-        <Redirect from='/verify' to='/signup' />
-      )}
-
-      {waitlisted && (
-        <Route render={(props) => (
-          <BundleContainer fetchComponent={WaitlistPage} loading={LoadingScreen}>
-            {(Component) => <Component {...props} account={account} />}
-          </BundleContainer>
-        )}
-        />
-      )}
-
       {!me && (redirectRootNoLogin
         ? <Redirect exact from='/' to={redirectRootNoLogin} />
         : <Route exact path='/' component={PublicLayout} />)}
@@ -147,10 +115,6 @@ const SoapboxMount = () => {
 
       {(features.accountCreation && instance.registrations) && (
         <Route exact path='/signup' component={AuthLayout} />
-      )}
-
-      {pepeEnabled && (
-        <Route path='/verify' component={AuthLayout} />
       )}
 
       <Route path='/reset-password' component={AuthLayout} />

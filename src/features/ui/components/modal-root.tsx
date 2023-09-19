@@ -36,7 +36,6 @@ import {
   ReplyMentionsModal,
   ReportModal,
   UnauthorizedModal,
-  VerifySmsModal,
   VideoModal,
 } from 'soapbox/features/ui/util/async-components';
 
@@ -82,7 +81,6 @@ const MODAL_COMPONENTS = {
   'REPLY_MENTIONS': ReplyMentionsModal,
   'REPORT': ReportModal,
   'UNAUTHORIZED': UnauthorizedModal,
-  'VERIFY_SMS': VerifySmsModal,
   'VIDEO': VideoModal,
 };
 
