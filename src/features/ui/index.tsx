@@ -134,6 +134,7 @@ import {
   Announcements,
   EditGroup,
   FollowedTags,
+  AboutPage,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -349,6 +350,8 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.federating && <WrappedRoute path='/federation_restrictions' publicRoute page={DefaultPage} component={FederationRestrictions} content={children} />}
 
       <WrappedRoute path='/share' page={DefaultPage} component={Share} content={children} exact />
+
+      <WrappedRoute path='/about/:slug?' page={DefaultPage} component={AboutPage} publicRoute exact />
 
       <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
     </Switch>

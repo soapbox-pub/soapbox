@@ -5,7 +5,6 @@ import LandingGradient from 'soapbox/components/landing-gradient';
 import { useAppSelector } from 'soapbox/hooks';
 import { isStandalone } from 'soapbox/utils/state';
 
-import AboutPage from '../about';
 import LandingPage from '../landing-page';
 
 import Footer from './components/footer';
@@ -29,7 +28,6 @@ const PublicLayout = () => {
           <div className='relative'>
             <Switch>
               <Route exact path='/' component={LandingPage} />
-              <Route exact path='/about/:slug?' component={AboutPage} />
             </Switch>
           </div>
         </div>
