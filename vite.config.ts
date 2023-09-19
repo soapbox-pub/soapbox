@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+import fs from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
@@ -35,6 +36,11 @@ export default defineConfig({
       minify: {
         collapseWhitespace: true,
         removeComments: false,
+      },
+      inject: {
+        data: {
+          snippets: readFileContents('custom/snippets.html'),
+        },
       },
     }),
     react({
@@ -89,3 +95,12 @@ export default defineConfig({
     setupFiles: 'src/jest/test-setup.ts',
   },
 });
+
+/** Return file as string, or return empty string if the file isn't found. */
+function readFileContents(path: string) {
+  try {
+    return fs.readFileSync(path, 'utf8');
+  } catch {
+    return '';
+  }
+}
