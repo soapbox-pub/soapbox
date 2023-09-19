@@ -6,8 +6,6 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
-import { adSchema } from 'soapbox/schemas';
-import { filteredArray } from 'soapbox/schemas/utils';
 import { normalizeUsername } from 'soapbox/utils/input';
 import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
@@ -124,15 +122,6 @@ export const SoapboxConfigRecord = ImmutableRecord({
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
 
-const normalizeAds = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  if (soapboxConfig.has('ads')) {
-    const ads = filteredArray(adSchema).parse(ImmutableList(soapboxConfig.get('ads')).toJS());
-    return soapboxConfig.set('ads', ads);
-  } else {
-    return soapboxConfig;
-  }
-};
-
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
   return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
     return trimStart(ticker, '$').toLowerCase();
@@ -188,19 +177,6 @@ const normalizeFooterLinks = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap
   return soapboxConfig.setIn(path, items);
 };
 
-/** Migrate legacy ads config. */
-const normalizeAdsAlgorithm = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const interval = soapboxConfig.getIn(['extensions', 'ads', 'interval']);
-  const algorithm = soapboxConfig.getIn(['extensions', 'ads', 'algorithm']);
-
-  if (typeof interval === 'number' && !algorithm) {
-    const result = fromJS(['linear', { interval }]);
-    return soapboxConfig.setIn(['extensions', 'ads', 'algorithm'], result);
-  } else {
-    return soapboxConfig;
-  }
-};
-
 /** Single user mode is now managed by `redirectRootNoLogin`. */
 const upgradeSingleUserMode = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   const singleUserMode = soapboxConfig.get('singleUserMode') as boolean | undefined;
@@ -250,8 +226,6 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
       normalizeFooterLinks(soapboxConfig);
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
-      normalizeAds(soapboxConfig);
-      normalizeAdsAlgorithm(soapboxConfig);
       upgradeSingleUserMode(soapboxConfig);
       normalizeRedirectRootNoLogin(soapboxConfig);
     }),
