@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+import fs from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
@@ -36,6 +37,11 @@ export default defineConfig({
         collapseWhitespace: true,
         removeComments: false,
       },
+      inject: {
+        data: {
+          snippets: readFileContents('custom/snippets.html'),
+        },
+      },
     }),
     react({
       // Use React plugin in all *.jsx and *.tsx files
@@ -70,6 +76,9 @@ export default defineConfig({
       }, {
         src: './src/instance',
         dest: '.',
+      }, {
+        src: './custom/instance',
+        dest: '.',
       }],
     }),
     visualizer({
@@ -89,3 +98,12 @@ export default defineConfig({
     setupFiles: 'src/jest/test-setup.ts',
   },
 });
+
+/** Return file as string, or return empty string if the file isn't found. */
+function readFileContents(path: string) {
+  try {
+    return fs.readFileSync(path, 'utf8');
+  } catch {
+    return '';
+  }
+}

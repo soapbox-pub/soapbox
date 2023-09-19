@@ -2,7 +2,7 @@ const { parseColorMatrix } = require('./tailwind/colors.cjs');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './src/index.html'],
+  content: ['./src/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './index.html'],
   darkMode: 'class',
   theme: {
     screens: {
