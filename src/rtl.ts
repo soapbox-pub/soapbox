@@ -1,5 +1,3 @@
-'use strict';
-
 // U+0590  to U+05FF  - Hebrew
 // U+0600  to U+06FF  - Arabic
 // U+0700  to U+074F  - Syriac

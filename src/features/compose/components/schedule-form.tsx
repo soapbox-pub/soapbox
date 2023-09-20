@@ -1,5 +1,3 @@
-'use strict';
-
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';

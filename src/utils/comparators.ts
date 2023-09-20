@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Compare numerical primary keys represented as strings.
  * For example, '10' (as a string) is considered less than '9'
