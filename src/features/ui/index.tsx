@@ -135,6 +135,7 @@ import {
   AboutPage,
   RegistrationPage,
   LoginPage,
+  PasswordReset,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -359,6 +360,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       )}
 
       <WrappedRoute path='/login' page={DefaultPage} component={LoginPage} publicRoute exact />
+      <WrappedRoute path='/reset-password' page={DefaultPage} component={PasswordReset} publicRoute exact />
 
       <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
     </Switch>
