@@ -10,11 +10,13 @@
 yarn-error.log*
 /junit.xml
 *.timestamp-*
+*.bundled_*
 
+/dist/
 /static/
-/static-test/
 /public/
 /dist/
+/soapbox.zip
 
 .idea
 .DS_Store

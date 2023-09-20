@@ -1,0 +1,129 @@
+[data-markup] {
+  @apply whitespace-pre-wrap;
+}
+
+[data-markup] h1 {
+  @apply text-3xl font-semibold;
+}
+
+[data-markup] h2 {
+  @apply text-2xl font-semibold;
+}
+
+[data-markup] h3 {
+  @apply text-xl font-black;
+}
+
+[data-markup] p {
+  @apply mb-4 whitespace-pre-wrap;
+}
+
+[data-markup] p:last-child {
+  @apply mb-0;
+}
+
+[data-markup] a {
+  @apply text-primary-600 dark:text-accent-blue hover:underline;
+}
+
+[data-markup] strong {
+  @apply font-bold;
+}
+
+[data-markup] em {
+  @apply italic;
+}
+
+[data-markup] ul,
+[data-markup] ol {
+  @apply pl-10 mb-4;
+}
+
+[data-markup] ul {
+  @apply list-disc list-outside;
+}
+
+[data-markup] ol {
+  @apply list-decimal list-outside;
+}
+
+[data-markup] blockquote {
+  @apply py-1 pl-4 mb-4 border-l-4 border-solid border-gray-400 text-gray-500 dark:text-gray-400;
+}
+
+[data-markup] table {
+  @apply table-auto w-full bg-gray-200 dark:bg-gray-900 my-4 rounded-md;
+}
+
+[data-markup] table th, table td {
+  @apply text-center px-2;
+}
+
+[data-markup] table th {
+  @apply border-b-2 border-gray-600;
+}
+
+[data-markup] code,
+[data-markup] pre {
+  @apply cursor-text font-mono;
+}
+
+[data-markup] p > code,
+[data-markup] pre {
+  @apply bg-gray-100 dark:bg-primary-800;
+}
+
+/* Inline code */
+[data-markup] p > code {
+  @apply py-0.5 px-1 rounded-sm;
+}
+
+/* Code block */
+[data-markup] pre {
+  @apply py-2 px-3 mb-4 leading-6 overflow-x-auto rounded-md break-all;
+}
+
+[data-markup] pre:last-child {
+  @apply mb-0;
+}
+
+/* Emojis */
+[data-markup] img.emojione {
+  @apply w-5 h-5 m-0;
+}
+
+/* Hide Markdown images (Pleroma) */
+[data-markup] img:not(.emojione) {
+  @apply hidden;
+}
+
+/* User setting to underline links */
+body.underline-links [data-markup] a {
+  @apply underline;
+}
+
+[data-markup].big-emoji img.emojione {
+  @apply inline w-9 h-9 p-1;
+}
+
+[data-markup] .status-link {
+  @apply hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue;
+}
+
+[data-markup] .invisible {
+  font-size: 0 !important;
+  line-height: 0 !important;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+[data-markup] .invisible img,
+[data-markup] .invisible svg {
+  margin: 0 !important;
+  border: 0 !important;
+  padding: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}

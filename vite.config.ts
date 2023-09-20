@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
-import path from 'path';
+import fs from 'node:fs';
+import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -11,10 +12,7 @@ import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  root: 'app',
   build: {
-    // Relative to the root
-    outDir: '../static',
     assetsDir: 'packs',
     assetsInlineLimit: 0,
     rollupOptions: {
@@ -25,6 +23,7 @@ export default defineConfig({
       },
     },
   },
+  assetsInclude: ['**/*.oga'],
   server: {
     port: 3036,
   },
@@ -37,6 +36,11 @@ export default defineConfig({
       minify: {
         collapseWhitespace: true,
         removeComments: false,
+      },
+      inject: {
+        data: {
+          snippets: readFileContents('custom/snippets.html'),
+        },
       },
     }),
     react({
@@ -62,13 +66,19 @@ export default defineConfig({
         short_name: 'Soapbox',
         description: 'A social media frontend with a focus on custom branding and ease of use.',
       },
-      srcDir: 'soapbox/service-worker',
+      srcDir: 'src/service-worker',
       filename: 'sw.ts',
     }),
     viteStaticCopy({
       targets: [{
-        src: '../node_modules/twemoji/assets/svg/*',
+        src: './node_modules/twemoji/assets/svg/*',
         dest: 'packs/emoji/',
+      }, {
+        src: './src/instance',
+        dest: '.',
+      }, {
+        src: './custom/instance',
+        dest: '.',
       }],
     }),
     visualizer({
@@ -79,16 +89,21 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: 'soapbox', replacement: path.resolve(__dirname, 'app', 'soapbox') },
-      { find: 'assets', replacement: path.resolve(__dirname, 'app', 'assets') },
+      { find: 'soapbox', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
     ],
   },
-  assetsInclude: ['**/*.oga'],
   test: {
     globals: true,
     environment: 'jsdom',
-    cache: {
-      dir: '../node_modules/.vitest',
-    },
+    setupFiles: 'src/jest/test-setup.ts',
   },
 });
+
+/** Return file as string, or return empty string if the file isn't found. */
+function readFileContents(path: string) {
+  try {
+    return fs.readFileSync(path, 'utf8');
+  } catch {
+    return '';
+  }
+}
