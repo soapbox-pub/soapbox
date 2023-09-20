@@ -32,7 +32,8 @@ const stringSupplant = function(str: string, values: { [x: string]: any }) {
 export const urlRegex = (function() {
   regexen.spaces_group = /\x09-\x0D\x20\x85\xA0\u1680\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000/; // eslint-disable-line no-control-regex
   regexen.invalid_chars_group = /\uFFFE\uFEFF\uFFFF\u202A-\u202E/;
-  regexen.punct = /!'#%&'\(\)*\+,\\-\.\/:;<=>\?@\[\]\^_{|}~\$/;
+  // eslint-disable-next-line no-useless-escape
+  regexen.punct = /!'#%&@,:;<=>_~{}\$\?\^\*\+\-\.\(\)\[\]\|\/\\/;
   regexen.validUrlPrecedingChars = regexSupplant(/(?:[^A-Za-z0-9@＠$#＃#{invalid_chars_group}]|^)/);
   regexen.invalidDomainChars = stringSupplant('#{punct}#{spaces_group}#{invalid_chars_group}', regexen);
   regexen.validDomainChars = regexSupplant(/[^#{invalidDomainChars}]/);
