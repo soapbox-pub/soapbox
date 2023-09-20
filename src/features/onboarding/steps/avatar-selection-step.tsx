@@ -3,7 +3,8 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
-import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { BigCard } from 'soapbox/components/big-card';
+import { Avatar, Button, Icon, Spinner, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isDefaultAvatar } from 'soapbox/utils/accounts';
@@ -64,69 +65,54 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
   };
 
   return (
-    <Card variant='rounded' size='xl'>
-      <CardBody>
-        <div>
-          <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-900/50 sm:-mx-10 sm:pb-10'>
-            <Stack space={2}>
-              <Text size='2xl' align='center' weight='bold'>
-                <FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />
-              </Text>
+    <BigCard
+      title={<FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />}
+      subtitle={<FormattedMessage id='onboarding.avatar.subtitle' defaultMessage='Just have fun with it.' />}
+    >
+      <Stack space={10}>
+        <div className='relative mx-auto rounded-full bg-gray-200'>
+          {account && (
+            <Avatar src={selectedFile || account.avatar} size={175} />
+          )}
 
-              <Text theme='muted' align='center'>
-                <FormattedMessage id='onboarding.avatar.subtitle' defaultMessage='Just have fun with it.' />
-              </Text>
-            </Stack>
-          </div>
+          {isSubmitting && (
+            <div className='absolute inset-0 flex items-center justify-center rounded-full bg-white/80 dark:bg-primary-900/80'>
+              <Spinner withText={false} />
+            </div>
+          )}
 
-          <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
-            <Stack space={10}>
-              <div className='relative mx-auto rounded-full bg-gray-200'>
-                {account && (
-                  <Avatar src={selectedFile || account.avatar} size={175} />
-                )}
+          <button
+            onClick={openFilePicker}
+            type='button'
+            className={clsx({
+              'absolute bottom-3 right-2 p-1 bg-primary-600 rounded-full ring-2 ring-white dark:ring-primary-900 hover:bg-primary-700': true,
+              'opacity-50 pointer-events-none': isSubmitting,
+            })}
+            disabled={isSubmitting}
+          >
+            <Icon src={require('@tabler/icons/plus.svg')} className='h-5 w-5 text-white' />
+          </button>
 
-                {isSubmitting && (
-                  <div className='absolute inset-0 flex items-center justify-center rounded-full bg-white/80 dark:bg-primary-900/80'>
-                    <Spinner withText={false} />
-                  </div>
-                )}
-
-                <button
-                  onClick={openFilePicker}
-                  type='button'
-                  className={clsx({
-                    'absolute bottom-3 right-2 p-1 bg-primary-600 rounded-full ring-2 ring-white dark:ring-primary-900 hover:bg-primary-700': true,
-                    'opacity-50 pointer-events-none': isSubmitting,
-                  })}
-                  disabled={isSubmitting}
-                >
-                  <Icon src={require('@tabler/icons/plus.svg')} className='h-5 w-5 text-white' />
-                </button>
-
-                <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />
-              </div>
-
-              <Stack justifyContent='center' space={2}>
-                <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
-                  {isSubmitting ? (
-                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
-                  ) : (
-                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
-                  )}
-                </Button>
-
-                {isDisabled && (
-                  <Button block theme='tertiary' type='button' onClick={onNext}>
-                    <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
-                  </Button>
-                )}
-              </Stack>
-            </Stack>
-          </div>
+          <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />
         </div>
-      </CardBody>
-    </Card>
+
+        <Stack justifyContent='center' space={2}>
+          <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
+            {isSubmitting ? (
+              <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
+            ) : (
+              <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+            )}
+          </Button>
+
+          {isDisabled && (
+            <Button block theme='tertiary' type='button' onClick={onNext}>
+              <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
+            </Button>
+          )}
+        </Stack>
+      </Stack>
+    </BigCard>
   );
 };
 

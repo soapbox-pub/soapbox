@@ -3,6 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { resetPasswordConfirm } from 'soapbox/actions/security';
+import { BigCard } from 'soapbox/components/big-card';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -55,33 +56,25 @@ const PasswordResetConfirm = () => {
   }
 
   return (
-    <div>
-      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-600 sm:-mx-10 sm:pb-10'>
-        <h1 className='text-center text-2xl font-bold'>
-          <FormattedMessage id='reset_password.header' defaultMessage='Set New Password' />
-        </h1>
-      </div>
+    <BigCard title={<FormattedMessage id='reset_password.header' defaultMessage='Set New Password' />}>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup labelText={<FormattedMessage id='reset_password.password.label' defaultMessage='Password' />} errors={renderErrors()}>
+          <Input
+            type='password'
+            name='password'
+            placeholder={intl.formatMessage(messages.passwordPlaceholder)}
+            onChange={onChange}
+            required
+          />
+        </FormGroup>
 
-      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={<FormattedMessage id='reset_password.password.label' defaultMessage='Password' />} errors={renderErrors()}>
-            <Input
-              type='password'
-              name='password'
-              placeholder={intl.formatMessage(messages.passwordPlaceholder)}
-              onChange={onChange}
-              required
-            />
-          </FormGroup>
-
-          <FormActions>
-            <Button type='submit' theme='primary' disabled={isLoading}>
-              <FormattedMessage id='password_reset.reset' defaultMessage='Reset password' />
-            </Button>
-          </FormActions>
-        </Form>
-      </div>
-    </div>
+        <FormActions>
+          <Button type='submit' theme='primary' disabled={isLoading}>
+            <FormattedMessage id='password_reset.reset' defaultMessage='Reset password' />
+          </Button>
+        </FormActions>
+      </Form>
+    </BigCard>
   );
 };
 

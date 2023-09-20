@@ -3,6 +3,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { otpVerify, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
+import { BigCard } from 'soapbox/components/big-card';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -47,41 +48,33 @@ const OtpAuthForm: React.FC<IOtpAuthForm> = ({ mfa_token }) => {
   if (shouldRedirect) return <Redirect to='/' />;
 
   return (
-    <div>
-      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-600 sm:-mx-10 sm:pb-10'>
-        <h1 className='text-center text-2xl font-bold'>
-          <FormattedMessage id='login.otp_log_in' defaultMessage='OTP Login' />
-        </h1>
-      </div>
+    <BigCard title={<FormattedMessage id='login.otp_log_in' defaultMessage='OTP Login' />}>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup
+          labelText={intl.formatMessage(messages.otpCodeLabel)}
+          hintText={intl.formatMessage(messages.otpCodeHint)}
+          errors={codeError ? [intl.formatMessage(messages.otpLoginFail)] : []}
+        >
+          <Input
+            name='code'
+            type='text'
+            autoComplete='off'
+            autoFocus
+            required
+          />
+        </FormGroup>
 
-      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup
-            labelText={intl.formatMessage(messages.otpCodeLabel)}
-            hintText={intl.formatMessage(messages.otpCodeHint)}
-            errors={codeError ? [intl.formatMessage(messages.otpLoginFail)] : []}
+        <FormActions>
+          <Button
+            theme='primary'
+            type='submit'
+            disabled={isLoading}
           >
-            <Input
-              name='code'
-              type='text'
-              autoComplete='off'
-              autoFocus
-              required
-            />
-          </FormGroup>
-
-          <FormActions>
-            <Button
-              theme='primary'
-              type='submit'
-              disabled={isLoading}
-            >
-              <FormattedMessage id='login.sign_in' defaultMessage='Sign in' />
-            </Button>
-          </FormActions>
-        </Form>
-      </div>
-    </div>
+            <FormattedMessage id='login.sign_in' defaultMessage='Sign in' />
+          </Button>
+        </FormActions>
+      </Form>
+    </BigCard>
   );
 };
 

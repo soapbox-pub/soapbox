@@ -3,6 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { resetPassword } from 'soapbox/actions/security';
+import { BigCard } from 'soapbox/components/big-card';
 import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
@@ -36,32 +37,24 @@ const PasswordReset = () => {
   if (success) return <Redirect to='/' />;
 
   return (
-    <div>
-      <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-600 sm:-mx-10 sm:pb-10'>
-        <h1 className='text-center text-2xl font-bold'>
-          <FormattedMessage id='password_reset.header' defaultMessage='Reset Password' />
-        </h1>
-      </div>
+    <BigCard title={<FormattedMessage id='password_reset.header' defaultMessage='Reset Password' />}>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup labelText={intl.formatMessage(features.logInWithUsername ? messages.nicknameOrEmail : messages.email)}>
+          <Input
+            type='text'
+            name='nickname_or_email'
+            placeholder='me@example.com'
+            required
+          />
+        </FormGroup>
 
-      <div className='mx-auto sm:w-2/3 sm:pt-10 md:w-1/2'>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(features.logInWithUsername ? messages.nicknameOrEmail : messages.email)}>
-            <Input
-              type='text'
-              name='nickname_or_email'
-              placeholder='me@example.com'
-              required
-            />
-          </FormGroup>
-
-          <FormActions>
-            <Button type='submit' theme='primary' disabled={isLoading}>
-              <FormattedMessage id='password_reset.reset' defaultMessage='Reset password' />
-            </Button>
-          </FormActions>
-        </Form>
-      </div>
-    </div>
+        <FormActions>
+          <Button type='submit' theme='primary' disabled={isLoading}>
+            <FormattedMessage id='password_reset.reset' defaultMessage='Reset password' />
+          </Button>
+        </FormActions>
+      </Form>
+    </BigCard>
   );
 };
 
