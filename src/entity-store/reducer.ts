@@ -1,4 +1,4 @@
-import produce, { enableMapSet } from 'immer';
+import { produce, enableMapSet } from 'immer';
 
 import {
   ENTITIES_IMPORT,
