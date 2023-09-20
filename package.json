@@ -97,7 +97,7 @@
     "clsx": "^2.0.0",
     "core-js": "^3.27.2",
     "cryptocurrency-icons": "^0.18.1",
-    "cssnano": "^5.1.10",
+    "cssnano": "^6.0.0",
     "detect-passive-events": "^2.0.0",
     "dotenv": "^16.0.0",
     "emoji-datasource": "14.0.0",
