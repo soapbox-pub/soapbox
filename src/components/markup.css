@@ -3,15 +3,15 @@
 }
 
 [data-markup] h1 {
-  @apply text-3xl font-semibold
+  @apply text-3xl font-semibold;
 }
 
 [data-markup] h2 {
-  @apply text-2xl font-semibold
+  @apply text-2xl font-semibold;
 }
 
 [data-markup] h3 {
-  @apply text-xl font-black
+  @apply text-xl font-black;
 }
 
 [data-markup] p {
