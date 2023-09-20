@@ -1,6 +1,6 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
 import LandingGradient from 'soapbox/components/landing-gradient';
 import SiteLogo from 'soapbox/components/site-logo';
@@ -8,7 +8,6 @@ import { useOwnAccount, useInstance, useRegistrationStatus } from 'soapbox/hooks
 
 import { Button, Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth-login/components/login-page';
-import PasswordResetConfirm from '../auth-login/components/password-reset-confirm';
 import ExternalLoginForm from '../external-login/components/external-login-form';
 import Footer from '../public-layout/components/footer';
 import RegisterInvite from '../register-invite';
@@ -20,7 +19,6 @@ const messages = defineMessages({
 const AuthLayout = () => {
   const intl = useIntl();
   const history = useHistory();
-  const { search } = useLocation();
 
   const { account } = useOwnAccount();
   const instance = useInstance();
@@ -63,11 +61,7 @@ const AuthLayout = () => {
 
                     <Route exact path='/login/external' component={ExternalLoginForm} />
                     <Route exact path='/login/add' component={LoginPage} />
-                    <Route exact path='/edit-password' component={PasswordResetConfirm} />
                     <Route path='/invite/:token' component={RegisterInvite} />
-
-                    <Redirect from='/auth/password/new' to='/reset-password' />
-                    <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
                   </Switch>
                 </CardBody>
               </Card>
