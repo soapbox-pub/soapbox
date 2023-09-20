@@ -21,7 +21,7 @@ import withHoc from 'soapbox/components/hoc/with-hoc';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -133,6 +133,7 @@ import {
   EditGroup,
   FollowedTags,
   AboutPage,
+  RegistrationPage,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -158,6 +159,7 @@ interface ISwitchingColumnsArea {
 }
 
 const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
+  const instance = useInstance();
   const features = useFeatures();
   const { search } = useLocation();
 
@@ -350,6 +352,10 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/share' page={DefaultPage} component={Share} content={children} exact />
 
       <WrappedRoute path='/about/:slug?' page={DefaultPage} component={AboutPage} publicRoute exact />
+
+      {(features.accountCreation && instance.registrations) && (
+        <WrappedRoute path='/signup' page={DefaultPage} component={RegistrationPage} publicRoute exact />
+      )}
 
       <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
     </Switch>

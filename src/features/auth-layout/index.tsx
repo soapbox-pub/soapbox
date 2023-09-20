@@ -10,7 +10,6 @@ import { Button, Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth-login/components/login-page';
 import PasswordReset from '../auth-login/components/password-reset';
 import PasswordResetConfirm from '../auth-login/components/password-reset-confirm';
-import RegistrationForm from '../auth-login/components/registration-form';
 import ExternalLoginForm from '../external-login/components/external-login-form';
 import Footer from '../public-layout/components/footer';
 import RegisterInvite from '../register-invite';
@@ -66,7 +65,6 @@ const AuthLayout = () => {
                     <Route exact path='/login/external' component={ExternalLoginForm} />
                     <Route exact path='/login/add' component={LoginPage} />
                     <Route exact path='/login' component={LoginPage} />
-                    <Route exact path='/signup' component={RegistrationForm} />
                     <Route exact path='/reset-password' component={PasswordReset} />
                     <Route exact path='/edit-password' component={PasswordResetConfirm} />
                     <Route path='/invite/:token' component={RegisterInvite} />

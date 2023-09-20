@@ -242,6 +242,10 @@ export function LogoutPage() {
   return import('../../auth-login/components/logout');
 }
 
+export function RegistrationPage() {
+  return import('../../auth-login/components/registration-page');
+}
+
 export function Settings() {
   return import('../../settings');
 }

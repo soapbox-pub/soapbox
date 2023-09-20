@@ -30,12 +30,10 @@ import {
   useAppSelector,
   useAppDispatch,
   useOwnAccount,
-  useFeatures,
   useSoapboxConfig,
   useSettings,
   useTheme,
   useLocale,
-  useInstance,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
@@ -76,10 +74,8 @@ const SoapboxMount = () => {
   useCachedLocationHandler();
 
   const me = useAppSelector(state => state.me);
-  const instance = useInstance();
   const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
-  const features = useFeatures();
 
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
@@ -109,11 +105,6 @@ const SoapboxMount = () => {
       )}
 
       <Route path='/login' component={AuthLayout} />
-
-      {(features.accountCreation && instance.registrations) && (
-        <Route exact path='/signup' component={AuthLayout} />
-      )}
-
       <Route path='/reset-password' component={AuthLayout} />
       <Route path='/edit-password' component={AuthLayout} />
       <Route path='/invite/:token' component={AuthLayout} />
