@@ -17,7 +17,6 @@ import GdprBanner from 'soapbox/components/gdpr-banner';
 import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { StatProvider } from 'soapbox/contexts/stat-context';
-import AuthLayout from 'soapbox/features/auth-layout';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
 import PublicLayout from 'soapbox/features/public-layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
@@ -103,8 +102,6 @@ const SoapboxMount = () => {
       {!me && (
         <Route exact path='/' component={PublicLayout} />
       )}
-
-      <Route path='/invite/:token' component={AuthLayout} />
 
       <Route path='/' component={UI} />
     </Switch>

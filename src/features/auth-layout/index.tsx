@@ -10,7 +10,6 @@ import { Button, Card, CardBody } from '../../components/ui';
 import LoginPage from '../auth-login/components/login-page';
 import ExternalLoginForm from '../external-login/components/external-login-form';
 import Footer from '../public-layout/components/footer';
-import RegisterInvite from '../register-invite';
 
 const messages = defineMessages({
   register: { id: 'auth_layout.register', defaultMessage: 'Create an account' },
@@ -61,7 +60,6 @@ const AuthLayout = () => {
 
                     <Route exact path='/login/external' component={ExternalLoginForm} />
                     <Route exact path='/login/add' component={LoginPage} />
-                    <Route path='/invite/:token' component={RegisterInvite} />
                   </Switch>
                 </CardBody>
               </Card>
