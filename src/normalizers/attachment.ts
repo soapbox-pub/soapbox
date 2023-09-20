@@ -15,7 +15,6 @@ import { mergeDefined } from 'soapbox/utils/normalizers';
 export const AttachmentRecord = ImmutableRecord({
   blurhash: undefined,
   description: '',
-  external_video_id: null as string | null, // TruthSocial
   id: '',
   meta: ImmutableMap(),
   pleroma: ImmutableMap(),
