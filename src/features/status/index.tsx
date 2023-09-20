@@ -9,12 +9,13 @@ import {
 } from 'soapbox/actions/statuses';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Column } from 'soapbox/components/ui';
+import { Column, Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useLoggedIn } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 import Thread from './components/thread';
+import ThreadLoginCta from './components/thread-login-cta';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },
@@ -47,6 +48,7 @@ interface IStatusDetails {
 const StatusDetails: React.FC<IStatusDetails> = (props) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const { isLoggedIn } = useLoggedIn();
 
   const getStatus = useCallback(makeGetStatus(), []);
   const status = useAppSelector((state) => getStatus(state, { id: props.params.statusId }));
@@ -113,15 +115,19 @@ const StatusDetails: React.FC<IStatusDetails> = (props) => {
   };
 
   return (
-    <Column label={intl.formatMessage(titleMessage())}>
-      <PullToRefresh onRefresh={handleRefresh}>
-        <Thread
-          status={status}
-          next={next}
-          handleLoadMore={handleLoadMore}
-        />
-      </PullToRefresh>
-    </Column>
+    <Stack space={4}>
+      <Column label={intl.formatMessage(titleMessage())}>
+        <PullToRefresh onRefresh={handleRefresh}>
+          <Thread
+            status={status}
+            next={next}
+            handleLoadMore={handleLoadMore}
+          />
+        </PullToRefresh>
+      </Column>
+
+      {!isLoggedIn && <ThreadLoginCta />}
+    </Stack>
   );
 };
 

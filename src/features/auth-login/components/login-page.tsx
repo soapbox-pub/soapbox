@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { closeModal } from 'soapbox/actions/modals';
+import { BigCard } from 'soapbox/components/big-card';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { getRedirectUrl } from 'soapbox/utils/redirect';
 import { isStandalone } from 'soapbox/utils/state';
 
+import ConsumersList from './consumers-list';
 import LoginForm from './login-form';
 import OtpAuthForm from './otp-auth-form';
 
@@ -68,7 +71,12 @@ const LoginPage = () => {
 
   if (mfaAuthNeeded) return <OtpAuthForm mfa_token={mfaToken} />;
 
-  return <LoginForm handleSubmit={handleSubmit} isLoading={isLoading} />;
+  return (
+    <BigCard title={<FormattedMessage id='login_form.header' defaultMessage='Sign In' />}>
+      <LoginForm handleSubmit={handleSubmit} isLoading={isLoading} />
+      <ConsumersList />
+    </BigCard>
+  );
 };
 
 export default LoginPage;

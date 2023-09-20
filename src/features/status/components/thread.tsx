@@ -18,13 +18,12 @@ import { Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 import PendingStatus from 'soapbox/features/ui/components/pending-status';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 import { type Account, type Status } from 'soapbox/types/entities';
 import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
 
 import DetailedStatus from './detailed-status';
-import ThreadLoginCta from './thread-login-cta';
 import ThreadStatus from './thread-status';
 
 type DisplayMedia = 'default' | 'hide_all' | 'show_all';
@@ -97,7 +96,6 @@ const Thread = (props: IThread) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
-  const { account: me } = useOwnAccount();
   const settings = useSettings();
 
   const displayMedia = settings.get('displayMedia') as DisplayMedia;
@@ -459,8 +457,6 @@ const Thread = (props: IThread) => {
           {children}
         </ScrollableList>
       </div>
-
-      {!me && <ThreadLoginCta />}
     </Stack>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { Stack, CardTitle, Text } from 'soapbox/components/ui';
+import { BigCard } from 'soapbox/components/big-card';
 import RegistrationForm from 'soapbox/features/auth-login/components/registration-form';
 import { useInstance } from 'soapbox/hooks';
 
@@ -23,21 +23,17 @@ const RegisterInvite: React.FC = () => {
     />
   );
 
+  const subtitle = (
+    <FormattedMessage
+      id='register_invite.lead'
+      defaultMessage='Complete the form below to create an account.'
+    />
+  );
+
   return (
-    <Stack space={3}>
-      <Stack className='mb-4'>
-        <CardTitle title={title} />
-
-        <Text theme='muted'>
-          <FormattedMessage
-            id='register_invite.lead'
-            defaultMessage='Complete the form below to create an account.'
-          />
-        </Text>
-      </Stack>
-
+    <BigCard title={title} subtitle={subtitle}>
       <RegistrationForm inviteToken={token} />
-    </Stack>
+    </BigCard>
   );
 };
 
