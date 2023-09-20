@@ -2,6 +2,18 @@
   @apply whitespace-pre-wrap;
 }
 
+[data-markup] h1 {
+  @apply text-3xl font-semibold;
+}
+
+[data-markup] h2 {
+  @apply text-2xl font-semibold;
+}
+
+[data-markup] h3 {
+  @apply text-xl font-black;
+}
+
 [data-markup] p {
   @apply mb-4 whitespace-pre-wrap;
 }
