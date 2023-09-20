@@ -24,12 +24,6 @@ export const getQuirks = createSelector([
      * @see POST /oauth/token
      */
     noApps: v.software === MITRA,
-
-    /**
-     * There is no OAuth form available for login.
-     * @see GET /oauth/authorize
-     */
-    noOAuthForm: v.software === MITRA,
   };
 });
 

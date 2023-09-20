@@ -12,8 +12,6 @@ import { obtainOAuthToken } from 'soapbox/actions/oauth';
 import { normalizeInstance } from 'soapbox/normalizers';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
-import { getWalletAndSign } from 'soapbox/utils/ethereum';
-import { getFeatures } from 'soapbox/utils/features';
 import { getQuirks } from 'soapbox/utils/quirks';
 import { getInstanceScopes } from 'soapbox/utils/scopes';
 
@@ -74,45 +72,12 @@ const externalAuthorize = (instance: Instance, baseURL: string) =>
     });
   };
 
-const externalEthereumLogin = (instance: Instance, baseURL?: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const loginMessage = instance.login_message;
-
-    return getWalletAndSign(loginMessage).then(({ wallet, signature }) => {
-      return dispatch(createExternalApp(instance, baseURL)).then((app) => {
-        const { client_id, client_secret } = app as Record<string, string>;
-        const params = {
-          grant_type: 'ethereum',
-          wallet_address: wallet.toLowerCase(),
-          client_id: client_id,
-          client_secret: client_secret,
-          password: signature as string,
-          redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-          scope: getInstanceScopes(instance),
-        };
-
-        return dispatch(obtainOAuthToken(params, baseURL))
-          .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)))
-          .then(({ access_token }: any) => dispatch(verifyCredentials(access_token, baseURL)))
-          .then((account: { id: string }) => dispatch(switchAccount(account.id)))
-          .then(() => window.location.href = '/');
-      });
-    });
-  };
-
 export const externalLogin = (host: string) =>
   (dispatch: AppDispatch) => {
     const baseURL = parseBaseURL(host) || parseBaseURL(`https://${host}`);
 
     return fetchExternalInstance(baseURL).then((instance) => {
-      const features = getFeatures(instance);
-      const quirks = getQuirks(instance);
-
-      if (features.ethereumLogin && quirks.noOAuthForm) {
-        dispatch(externalEthereumLogin(instance, baseURL));
-      } else {
-        dispatch(externalAuthorize(instance, baseURL));
-      }
+      dispatch(externalAuthorize(instance, baseURL));
     });
   };
 
