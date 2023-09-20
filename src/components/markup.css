@@ -39,6 +39,18 @@
   @apply py-1 pl-4 mb-4 border-l-4 border-solid border-gray-400 text-gray-500 dark:text-gray-400;
 }
 
+[data-markup] table {
+  @apply table-auto w-full bg-gray-200 dark:bg-gray-900;
+}
+
+[data-markup] table th, table td {
+  @apply text-center px-2;
+}
+
+[data-markup] table th {
+  @apply border-b-2 border-gray-600
+}
+
 [data-markup] code,
 [data-markup] pre {
   @apply cursor-text font-mono;
