@@ -49,6 +49,16 @@
 
 [data-markup] table th {
   @apply border-b-2 border-gray-600
+[data-markup] table {
+  @apply table-auto w-full bg-gray-200 dark:bg-gray-900 my-4 rounded-md;
+}
+
+[data-markup] table th, table td {
+  @apply text-center px-2;
+}
+
+[data-markup] table th {
+  @apply border-b-2 border-gray-600;
 }
 
 [data-markup] code,
