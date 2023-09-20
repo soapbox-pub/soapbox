@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { storeOpen, storePepeOpen } from 'soapbox/jest/mock-stores';
+import { storeOpen } from 'soapbox/jest/mock-stores';
 import { render, screen } from 'soapbox/jest/test-helpers';
 
 import Header from '../header';
@@ -19,13 +19,6 @@ describe('<Header />', () => {
   describe('with registrations enabled', () => {
     it('displays the signup button', () => {
       render(<Header />, undefined, storeOpen);
-      expect(screen.getByText('Register')).toBeInTheDocument();
-    });
-  });
-
-  describe('with registrations closed, Pepe enabled', () => {
-    it('displays the signup button', () => {
-      render(<Header />, undefined, storePepeOpen);
       expect(screen.getByText('Register')).toBeInTheDocument();
     });
   });

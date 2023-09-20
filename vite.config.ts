@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
+import checker from 'vite-plugin-checker';
 import compileTime from 'vite-plugin-compile-time';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -28,6 +29,7 @@ export default defineConfig({
     port: 3036,
   },
   plugins: [
+    checker({ typescript: true }),
     // @ts-ignore
     vitePluginRequire.default(),
     compileTime(),

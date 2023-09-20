@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { storeOpen, storePepeOpen } from 'soapbox/jest/mock-stores';
+import { storeOpen } from 'soapbox/jest/mock-stores';
 import { render, screen } from 'soapbox/jest/test-helpers';
 
 import UnauthorizedModal from '../unauthorized-modal';
@@ -19,13 +19,6 @@ describe('<UnauthorizedModal />', () => {
   describe('with registrations enabled', () => {
     it('displays the signup button', () => {
       render(<UnauthorizedModal onClose={vi.fn} action='FOLLOW' />, undefined, storeOpen);
-      expect(screen.getByText('Sign up')).toBeInTheDocument();
-    });
-  });
-
-  describe('with registrations closed, Pepe enabled', () => {
-    it('displays the signup button', () => {
-      render(<UnauthorizedModal onClose={vi.fn} action='FOLLOW' />, undefined, storePepeOpen);
       expect(screen.getByText('Sign up')).toBeInTheDocument();
     });
   });

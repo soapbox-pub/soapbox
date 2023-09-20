@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   accountSchema,
-  adSchema,
   cardSchema,
   groupMemberSchema,
   groupRelationshipSchema,
@@ -11,7 +10,6 @@ import {
   relationshipSchema,
   statusSchema,
   type Account,
-  type Ad,
   type Card,
   type Group,
   type GroupMember,
@@ -73,12 +71,6 @@ function buildGroupMember(
   }, props));
 }
 
-function buildAd(props: PartialDeep<Ad> = {}): Ad {
-  return adSchema.parse(Object.assign({
-    card: buildCard(),
-  }, props));
-}
-
 function buildRelationship(props: PartialDeep<Relationship> = {}): Relationship {
   return relationshipSchema.parse(Object.assign({
     id: uuidv4(),
@@ -94,7 +86,6 @@ function buildStatus(props: PartialDeep<Status> = {}) {
 
 export {
   buildAccount,
-  buildAd,
   buildCard,
   buildGroup,
   buildGroupMember,

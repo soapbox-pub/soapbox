@@ -11,7 +11,6 @@ import { toTailwind } from 'soapbox/utils/tailwind';
 import { generateAccent } from 'soapbox/utils/theme';
 
 import type {
-  Ad,
   PromoPanelItem,
   FooterItem,
   CryptoAddress,
@@ -68,7 +67,6 @@ export const CryptoAddressRecord = ImmutableRecord({
 });
 
 export const SoapboxConfigRecord = ImmutableRecord({
-  ads: ImmutableList<Ad>(),
   appleAppId: null,
   authProvider: '',
   logo: '',
