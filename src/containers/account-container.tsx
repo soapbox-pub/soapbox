@@ -12,7 +12,7 @@ const AccountContainer: React.FC<IAccountContainer> = ({ id, withRelationship, .
   const { account } = useAccount(id, { withRelationship });
 
   return (
-    <Account account={account!} {...props} />
+    <Account withRelationship={withRelationship} account={account!} {...props} />
   );
 };
 
