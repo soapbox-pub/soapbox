@@ -110,7 +110,6 @@ const SoapboxMount = () => {
         <Route exact path='/' component={PublicLayout} />
       )}
 
-      <Route exact path='/about/:slug?' component={PublicLayout} />
       <Route path='/login' component={AuthLayout} />
 
       {(features.accountCreation && instance.registrations) && (

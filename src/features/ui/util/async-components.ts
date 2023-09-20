@@ -1,3 +1,7 @@
+export function AboutPage() {
+  return import('../../about');
+}
+
 export function EmojiPicker() {
   return import('../../emoji/components/emoji-picker');
 }

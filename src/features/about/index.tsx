@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import { fetchAboutPage } from 'soapbox/actions/about';
+import { Navlinks } from 'soapbox/components/navlinks';
+import { Card } from 'soapbox/components/ui';
 import { useSoapboxConfig, useSettings, useAppDispatch } from 'soapbox/hooks';
 
 import { languages } from '../preferences';
@@ -60,10 +62,15 @@ const AboutPage: React.FC = () => {
   );
 
   return (
-    <div className='prose mx-auto py-20 dark:prose-invert'>
-      <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
+    <div>
+      <Card variant='rounded'>
+        <div className='prose mx-auto py-4 dark:prose-invert sm:p-6'>
+          <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
+          {alsoAvailable}
+        </div>
+      </Card>
 
-      {alsoAvailable}
+      <Navlinks type='homeFooter' />
     </div>
   );
 };
