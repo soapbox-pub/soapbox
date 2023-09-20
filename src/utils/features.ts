@@ -41,7 +41,7 @@ export const FRIENDICA = 'Friendica';
 export const MASTODON = 'Mastodon';
 
 /**
- * Mitra, a Rust backend with deep Ethereum integrations.
+ * Mitra, a Rust backend with cryptocurrency integrations.
  * @see {@link https://codeberg.org/silverpill/mitra}
  */
 export const MITRA = 'Mitra';
@@ -420,12 +420,6 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
     emojiReactsNonRGI: v.software === PLEROMA && lt(v.version, '2.2.49'),
-
-    /**
-     * Sign in with an Ethereum wallet.
-     * @see POST /oauth/token
-     */
-    ethereumLogin: v.software === MITRA,
 
     /**
      * Ability to create and perform actions on events.

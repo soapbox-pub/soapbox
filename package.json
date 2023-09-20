@@ -50,7 +50,6 @@
     "@fontsource/inter": "^5.0.0",
     "@fontsource/roboto-mono": "^5.0.0",
     "@gamestdio/websocket": "^0.3.2",
-    "@metamask/providers": "^10.0.0",
     "@popperjs/core": "^2.11.5",
     "@reach/combobox": "^0.18.0",
     "@reach/menu-button": "^0.18.0",
