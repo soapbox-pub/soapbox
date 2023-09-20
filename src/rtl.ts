@@ -23,8 +23,8 @@ export function isRtl(text: string): boolean {
   text = text.replace(/(mailto:)([^\s@]+@[^\s@]+\.[^\s@]+)/g, '');
   // Remove Phone numbe links
   text = text.replace(/(tel:)([+\d\s()-]+)/g, '');
-  text = text.replace(/(?:^|[^\/\w])@([a-z0-9_]+(@[a-z0-9\.\-]+)?)/ig, '');
-  text = text.replace(/(?:^|[^\/\w])#([\S]+)/ig, '');
+  text = text.replace(/(?:^|[^/\w])@([a-z0-9_]+(@[a-z0-9.-]+)?)/ig, '');
+  text = text.replace(/(?:^|[^/\w])#([\S]+)/ig, '');
   text = text.replace(/\s+/g, '');
 
   const matches = text.match(rtlChars);

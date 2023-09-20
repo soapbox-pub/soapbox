@@ -102,7 +102,7 @@ const getAttachmentLimit = (software: string | null) => software === PLEROMA ? I
 const normalizeVersion = (instance: ImmutableMap<string, any>) => {
   return instance.update('version', '0.0.0', version => {
     // Handle Mastodon release candidates
-    if (new RegExp(/[0-9\.]+rc[0-9]+/g).test(version)) {
+    if (new RegExp(/[0-9.]+rc[0-9]+/g).test(version)) {
       return version.split('rc').join('-rc');
     } else {
       return version;

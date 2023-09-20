@@ -32,7 +32,7 @@ const stringSupplant = function(str: string, values: { [x: string]: any }) {
 export const urlRegex = (function() {
   regexen.spaces_group = /\x09-\x0D\x20\x85\xA0\u1680\u180E\u2000-\u200A\u2028\u2029\u202F\u205F\u3000/; // eslint-disable-line no-control-regex
   regexen.invalid_chars_group = /\uFFFE\uFEFF\uFFFF\u202A-\u202E/;
-  regexen.punct = /\!'#%&'\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$/;
+  regexen.punct = /!'#%&'\(\)*\+,\\-\.\/:;<=>\?@\[\]\^_{|}~\$/;
   regexen.validUrlPrecedingChars = regexSupplant(/(?:[^A-Za-z0-9@＠$#＃#{invalid_chars_group}]|^)/);
   regexen.invalidDomainChars = stringSupplant('#{punct}#{spaces_group}#{invalid_chars_group}', regexen);
   regexen.validDomainChars = regexSupplant(/[^#{invalidDomainChars}]/);
@@ -148,7 +148,7 @@ export const urlRegex = (function() {
   regexen.validDomain = regexSupplant(/(?:#{validSubdomain}*#{validDomainName}(?:#{validGTLD}|#{validCCTLD}|#{validPunycode}))/);
   regexen.validPortNumber = /[0-9]+/;
   regexen.pd = /\u002d\u058a\u05be\u1400\u1806\u2010-\u2015\u2e17\u2e1a\u2e3a\u2e40\u301c\u3030\u30a0\ufe31\ufe58\ufe63\uff0d/;
-  regexen.validGeneralUrlPathChars = regexSupplant(/[^#{spaces_group}\(\)\?]/i);
+  regexen.validGeneralUrlPathChars = regexSupplant(/[^#{spaces_group}()?]/i);
   // Allow URL paths to contain up to two nested levels of balanced parens
   //  1. Used in Wikipedia URLs like /Primer_(film)
   //  2. Used in IIS sessions like /S(dfd346)/
@@ -171,17 +171,18 @@ export const urlRegex = (function() {
     'i');
   // Valid end-of-path characters (so /foo. does not gobble the period).
   // 1. Allow =&# for empty URL parameters and other URL-join artifacts
-  regexen.validUrlPathEndingChars = regexSupplant(/[^#{spaces_group}\(\)\?!\*';:=\,\.\$%\[\]#{pd}~&\|@]|(?:#{validUrlBalancedParens})/i);
+  regexen.validUrlPathEndingChars = regexSupplant(/[^#{spaces_group}()?!*';:=,.$%[\]#{pd}~&|@]|(?:#{validUrlBalancedParens})/i);
   // Allow @ in a url, but only in the middle. Catch things like http://example.com/@user/
   regexen.validUrlPath = regexSupplant('(?:' +
     '(?:' +
       '#{validGeneralUrlPathChars}*' +
         '(?:#{validUrlBalancedParens}#{validGeneralUrlPathChars}*)*' +
         '#{validUrlPathEndingChars}' +
+      // eslint-disable-next-line no-useless-escape
       ')|(?:@#{validGeneralUrlPathChars}+\/)' +
     ')', 'i');
-  regexen.validUrlQueryChars = /[a-z0-9!?\*'@\(\);:&=\+\$\/%#\[\]\-_\.,~|]/i;
-  regexen.validUrlQueryEndingChars = /[a-z0-9_&=#\/]/i;
+  regexen.validUrlQueryChars = /[a-z0-9!?*'@();:&=+$/%#[\]\-_.,~|]/i;
+  regexen.validUrlQueryEndingChars = /[a-z0-9_&=#/]/i;
   regexen.validUrl = regexSupplant(
     '('                                                          + // $1 URL
       '(https?:\\/\\/)'                                          + // $2 Protocol
