@@ -134,6 +134,7 @@ import {
   FollowedTags,
   AboutPage,
   RegistrationPage,
+  LoginPage,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -356,6 +357,8 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {(features.accountCreation && instance.registrations) && (
         <WrappedRoute path='/signup' page={DefaultPage} component={RegistrationPage} publicRoute exact />
       )}
+
+      <WrappedRoute path='/login' page={DefaultPage} component={LoginPage} publicRoute exact />
 
       <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
     </Switch>

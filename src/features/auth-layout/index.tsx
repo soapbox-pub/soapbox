@@ -64,7 +64,6 @@ const AuthLayout = () => {
 
                     <Route exact path='/login/external' component={ExternalLoginForm} />
                     <Route exact path='/login/add' component={LoginPage} />
-                    <Route exact path='/login' component={LoginPage} />
                     <Route exact path='/reset-password' component={PasswordReset} />
                     <Route exact path='/edit-password' component={PasswordResetConfirm} />
                     <Route path='/invite/:token' component={RegisterInvite} />

@@ -104,7 +104,6 @@ const SoapboxMount = () => {
         <Route exact path='/' component={PublicLayout} />
       )}
 
-      <Route path='/login' component={AuthLayout} />
       <Route path='/reset-password' component={AuthLayout} />
       <Route path='/edit-password' component={AuthLayout} />
       <Route path='/invite/:token' component={AuthLayout} />
