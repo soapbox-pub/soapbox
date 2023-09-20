@@ -1,3 +1,3 @@
-const data: any = import.meta.compileTime('./code-compiletime.ts');
+import type { Code } from './code-compiletime';
 
-export default data;
+export default import.meta.compileTime<Code>('./code-compiletime.ts');
