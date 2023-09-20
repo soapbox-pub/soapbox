@@ -9,7 +9,7 @@ import type {
   Status as StatusEntity,
 } from 'soapbox/types/entities';
 
-const locales = import.meta.compileTime('./web-push-locales.ts');
+const locales = import.meta.compileTime<Record<string, Record<string, string>>>('./web-push-locales.ts');
 
 /** Limit before we start grouping device notifications into a single notification. */
 const MAX_NOTIFICATIONS = 5;

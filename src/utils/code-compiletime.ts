@@ -35,14 +35,18 @@ const version = (pkg: Record<string, any>) => {
   return pkg.version;
 };
 
+const code = {
+  name: pkg.name,
+  displayName: pkg.displayName,
+  url: pkg.repository.url,
+  repository: shortRepoName(pkg.repository.url),
+  version: version(pkg),
+  homepage: pkg.homepage,
+  ref: CI_COMMIT_TAG || CI_COMMIT_SHA || tryGit('git rev-parse HEAD'),
+};
+
+export type Code = typeof code;
+
 export default () => ({
-  data: {
-    name: pkg.name,
-    displayName: pkg.displayName,
-    url: pkg.repository.url,
-    repository: shortRepoName(pkg.repository.url),
-    version: version(pkg),
-    homepage: pkg.homepage,
-    ref: CI_COMMIT_TAG || CI_COMMIT_SHA || tryGit('git rev-parse HEAD'),
-  },
+  data: code,
 });
