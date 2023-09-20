@@ -3,7 +3,6 @@
  * @see {@link https://github.com/axios/axios}
  * @module soapbox/api
  */
-'use strict';
 
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import LinkHeader from 'http-link-header';

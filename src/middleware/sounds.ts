@@ -1,5 +1,3 @@
-'use strict';
-
 import { AnyAction } from 'redux';
 
 import { play, soundCache } from 'soapbox/utils/sounds';

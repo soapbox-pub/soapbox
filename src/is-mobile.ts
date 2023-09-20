@@ -1,5 +1,3 @@
-'use strict';
-
 import { supportsPassiveEvents } from 'detect-passive-events';
 
 /** Breakpoint at which the application is considered "mobile". */

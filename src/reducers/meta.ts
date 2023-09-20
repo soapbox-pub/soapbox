@@ -1,5 +1,3 @@
-'use strict';
-
 import { Record as ImmutableRecord } from 'immutable';
 
 import { fetchInstance } from 'soapbox/actions/instance';

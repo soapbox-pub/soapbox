@@ -1,5 +1,3 @@
-'use strict';
-
 import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';

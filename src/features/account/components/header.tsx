@@ -1,5 +1,3 @@
-'use strict';
-
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
