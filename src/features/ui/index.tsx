@@ -138,6 +138,7 @@ import {
   PasswordReset,
   PasswordResetConfirm,
   RegisterInvite,
+  ExternalLogin,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -361,6 +362,8 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         <WrappedRoute path='/signup' page={DefaultPage} component={RegistrationPage} publicRoute exact />
       )}
 
+      <WrappedRoute path='/login/external' page={DefaultPage} component={ExternalLogin} publicRoute exact />
+      <WrappedRoute path='/login/add' page={DefaultPage} component={LoginPage} publicRoute exact />
       <WrappedRoute path='/login' page={DefaultPage} component={LoginPage} publicRoute exact />
       <WrappedRoute path='/reset-password' page={DefaultPage} component={PasswordReset} publicRoute exact />
       <WrappedRoute path='/edit-password' page={DefaultPage} component={PasswordResetConfirm} publicRoute exact />
