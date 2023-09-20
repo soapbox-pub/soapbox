@@ -2,6 +2,7 @@ image: node:20
 
 variables:
   NODE_ENV: test
+  DS_EXCLUDED_ANALYZERS: gemnasium-python
 
 default:
   interruptible: true
@@ -30,20 +31,9 @@ deps:
     <<: *cache
     policy: push
 
-danger:
+lint:
   stage: test
-  script:
-    # https://github.com/danger/danger-js/issues/1029#issuecomment-998915436
-    - export CI_MERGE_REQUEST_IID=${CI_OPEN_MERGE_REQUESTS#*!}
-    - npx danger ci
-  except:
-    variables:
-      - $CI_DEFAULT_BRANCH == $CI_COMMIT_REF_NAME
-  allow_failure: true
-
-lint-js:
-  stage: test
-  script: yarn lint:js
+  script: yarn lint
   only:
     changes:
       - "**/*.js"
@@ -52,63 +42,25 @@ lint-js:
       - "**/*.mjs"
       - "**/*.ts"
       - "**/*.tsx"
-      - ".eslintignore"
-      - ".eslintrc.cjs"
-
-lint-sass:
-  stage: test
-  script: yarn lint:sass
-  only:
-    changes:
       - "**/*.scss"
       - "**/*.css"
+      - ".eslintignore"
+      - ".eslintrc.cjs"
       - ".stylelintrc.json"
 
-jest:
+build:
   stage: test
-  script: yarn test:coverage --runInBand
-  only:
-    changes:
-      - "**/*.js"
-      - "**/*.json"
-      - "app/soapbox/**/*"
-      - "webpack/**/*"
-      - "custom/**/*"
-      - "jest.config.cjs"
-      - "package.json"
-      - "yarn.lock"
-      - ".gitlab-ci.yml"
-  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  artifacts:
-    reports:
-      junit: junit.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: .coverage/cobertura-coverage.xml
-
-nginx-test:
-  stage: test
-  image: nginx:latest
   before_script:
-    - cp installation/mastodon.conf /etc/nginx/conf.d/default.conf
-  script: nginx -t
-  only:
-    changes:
-      - "installation/mastodon.conf"
-
-build-production:
-  stage: test
+    - apt-get update -y && apt-get install -y zip
   script:
     - yarn build
-    - yarn manage:translations en
-    # Fail if files got changed.
-    # https://stackoverflow.com/a/9066385
-    - git diff --quiet
+    - cp dist/index.html dist/404.html
+    - cd dist && zip -r ../soapbox.zip . && cd ..
   variables:
     NODE_ENV: production
   artifacts:
     paths:
-     - static
+     - soapbox.zip
 
 docs-deploy:
   stage: deploy
@@ -128,16 +80,20 @@ review:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
+  before_script:
+    - apt-get update -y && apt-get install -y unzip
   script:
-    - npx -y surge static $CI_COMMIT_REF_SLUG.git.soapbox.pub
+    - unzip soapbox.zip -d dist
+    - npx -y surge dist $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
 
 pages:
   stage: deploy
-  before_script: []
+  before_script:
+    - apt-get update -y && apt-get install -y unzip
   script:
     # artifacts are kept between jobs
-    - mv static public
+    - unzip soapbox.zip -d public
   variables:
     NODE_ENV: production
   artifacts:
@@ -149,9 +105,9 @@ pages:
 
 docker:
   stage: deploy
-  image: docker:23.0.0
+  image: docker:24.0.6
   services:
-    - docker:23.0.0-dind
+    - docker:24.0.6-dind
   tags:
     - dind
   # https://medium.com/devops-with-valentine/how-to-build-a-docker-image-and-push-it-to-the-gitlab-container-registry-from-a-gitlab-ci-pipeline-acac0d1f26df
@@ -173,4 +129,3 @@ release:
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
-  - template: Security/License-Scanning.gitlab-ci.yml

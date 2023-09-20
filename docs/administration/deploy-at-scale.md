@@ -11,7 +11,7 @@ The best way to get Soapbox builds is from a GitLab CI job.
 The official build URL is here:
 
 ```
-https://gitlab.com/soapbox-pub/soapbox/-/jobs/artifacts/develop/download?job=build-production
+https://dl.soapbox.pub/main/soapbox.zip
 ```
 
 (Note that `develop` in that URL can be replaced with any git ref, eg `v2.0.0`, and thus will be updated with the latest zip whenever a new commit is pushed to `develop`.)
@@ -44,7 +44,7 @@ location ~ ^/(api|oauth|admin) {
 }
 ```
 
-We recommend trying [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox/-/blob/develop/installation/mastodon.conf) as a starting point.
+We recommend trying [`mastodon.conf`](https://gitlab.com/soapbox-pub/soapbox/-/blob/main/installation/mastodon.conf) as a starting point.
 It is fine-tuned, includes support for federation, and should work with any backend.
 
 ## The ServiceWorker

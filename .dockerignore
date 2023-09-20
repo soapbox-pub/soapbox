@@ -12,10 +12,11 @@
 yarn-error.log*
 /junit.xml
 
+/dist/
 /static/
-/static-test/
 /public/
 /dist/
+/soapbox.zip
 
 .idea
 .DS_Store
