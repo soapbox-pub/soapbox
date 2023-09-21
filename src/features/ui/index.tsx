@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFea
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
+import EmptyPage from 'soapbox/pages/empty-page';
 import EventPage from 'soapbox/pages/event-page';
 import EventsPage from 'soapbox/pages/events-page';
 import GroupPage from 'soapbox/pages/group-page';
@@ -158,8 +159,6 @@ const ManageGroupSlug = withHoc(ManageGroup as any, GroupLookupHoc);
 const EditGroupSlug = withHoc(EditGroup as any, GroupLookupHoc);
 const GroupBlockedMembersSlug = withHoc(GroupBlockedMembers as any, GroupLookupHoc);
 const GroupMembershipRequestsSlug = withHoc(GroupMembershipRequests as any, GroupLookupHoc);
-
-const EmptyPage = HomePage;
 
 interface ISwitchingColumnsArea {
   children: React.ReactNode
@@ -366,7 +365,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/about/:slug?' page={DefaultPage} component={AboutPage} publicRoute exact />
 
       {(features.accountCreation && instance.registrations) && (
-        <WrappedRoute path='/signup' page={DefaultPage} component={RegistrationPage} publicRoute exact />
+        <WrappedRoute path='/signup' page={EmptyPage} component={RegistrationPage} publicRoute exact />
       )}
 
       <WrappedRoute path='/login/external' page={DefaultPage} component={ExternalLogin} publicRoute exact />
