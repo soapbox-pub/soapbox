@@ -148,7 +148,7 @@
   padding: 20px;
   border-radius: 10px;
 
-  @media screen and (max-width: 580px) {
+  @media screen and (width <= 580px) {
     border-radius: 0;
   }
 
