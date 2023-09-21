@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import { useCommunityStream } from 'soapbox/api/hooks';
@@ -12,12 +12,7 @@ import Timeline from '../ui/components/timeline';
 
 import { SiteBanner } from './components/site-banner';
 
-const messages = defineMessages({
-  title: { id: 'column.community', defaultMessage: 'Local timeline' },
-});
-
 const LandingTimeline = () => {
-  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const settings = useSettings();
@@ -41,7 +36,7 @@ const LandingTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent  withHeader={false}>
+    <Column className='-mt-3 sm:mt-0' transparent withHeader={false}>
       <div className='my-20 px-4'>
         <div className='absolute -z-10 -mt-64'>
           <Sonar />
