@@ -18,7 +18,6 @@ import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { StatProvider } from 'soapbox/contexts/stat-context';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
-import PublicLayout from 'soapbox/features/public-layout';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
@@ -95,12 +94,8 @@ const SoapboxMount = () => {
   /** Render the auth layout or UI. */
   const renderSwitch = () => (
     <Switch>
-      {!me && (redirectRootNoLogin
-        ? <Redirect exact from='/' to={redirectRootNoLogin} />
-        : <Route exact path='/' component={PublicLayout} />)}
-
-      {!me && (
-        <Route exact path='/' component={PublicLayout} />
+      {(!me && redirectRootNoLogin) && (
+        <Redirect exact from='/' to={redirectRootNoLogin} />
       )}
 
       <Route path='/' component={UI} />
