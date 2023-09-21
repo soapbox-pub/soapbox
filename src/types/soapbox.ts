@@ -19,7 +19,3 @@ export {
   CryptoAddress,
   SoapboxConfig,
 };
-
-export type {
-  Ad,
-} from 'soapbox/schemas';

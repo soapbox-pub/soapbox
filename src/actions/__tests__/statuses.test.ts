@@ -8,7 +8,7 @@ import { normalizeStatus } from 'soapbox/normalizers/status';
 import { deleteStatus, fetchContext } from '../statuses';
 
 describe('fetchContext()', () => {
-  it('handles Mitra context', done => {
+  it('handles Mitra context', async () => {
     const statuses = require('soapbox/__fixtures__/mitra-context.json');
 
     __stub(mock => {
@@ -17,15 +17,11 @@ describe('fetchContext()', () => {
     });
 
     const store = mockStore(rootState);
+    await store.dispatch(fetchContext('017ed505-5926-392f-256a-f86d5075df70'));
+    const actions = store.getActions();
 
-    store.dispatch(fetchContext('017ed505-5926-392f-256a-f86d5075df70')).then(() => {
-      const actions = store.getActions();
-
-      expect(actions[3].type).toEqual(STATUSES_IMPORT);
-      expect(actions[3].statuses[0].id).toEqual('017ed503-bc96-301a-e871-2c23b30ddd05');
-
-      done();
-    }).catch(console.error);
+    expect(actions[3].type).toEqual(STATUSES_IMPORT);
+    expect(actions[3].statuses[0].id).toEqual('017ed503-bc96-301a-e871-2c23b30ddd05');
   });
 });
 
