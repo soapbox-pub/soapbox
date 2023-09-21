@@ -108,12 +108,12 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
             {Component => <Component limit={5} />}
           </BundleContainer>
         )}
-        {hasPatron && (
+        {(hasPatron && me) && (
           <BundleContainer fetchComponent={FundingPanel}>
             {Component => <Component />}
           </BundleContainer>
         )}
-        {hasCrypto && cryptoLimit > 0 && (
+        {(hasCrypto && cryptoLimit > 0 && me) && (
           <BundleContainer fetchComponent={CryptoDonatePanel}>
             {Component => <Component limit={cryptoLimit} />}
           </BundleContainer>
