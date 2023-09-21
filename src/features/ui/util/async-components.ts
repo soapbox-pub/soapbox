@@ -10,6 +10,10 @@ export function Notifications() {
   return import('../../notifications');
 }
 
+export function LandingTimeline() {
+  return import('../../landing-timeline');
+}
+
 export function HomeTimeline() {
   return import('../../home-timeline');
 }
