@@ -7,7 +7,6 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
 
-import Sonar from '../public-layout/components/sonar';
 import Timeline from '../ui/components/timeline';
 
 import { SiteBanner } from './components/site-banner';
@@ -36,14 +35,9 @@ const LandingTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column className='-mt-3 sm:mt-0' transparent withHeader={false}>
-      <div className='my-20 px-4'>
-        <div className='absolute -z-10 -mt-64'>
-          <Sonar />
-        </div>
-        <div className='-mt-8'>
-          <SiteBanner />
-        </div>
+    <Column transparent withHeader={false}>
+      <div className='my-12 mb-16 px-4 sm:mb-20'>
+        <SiteBanner />
       </div>
 
       <PullToRefresh onRefresh={handleRefresh}>
