@@ -21,7 +21,7 @@ import withHoc from 'soapbox/components/hoc/with-hoc';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -31,6 +31,7 @@ import GroupPage from 'soapbox/pages/group-page';
 import GroupsPage from 'soapbox/pages/groups-page';
 import GroupsPendingPage from 'soapbox/pages/groups-pending-page';
 import HomePage from 'soapbox/pages/home-page';
+import LandingPage from 'soapbox/pages/landing-page';
 import ManageGroupsPage from 'soapbox/pages/manage-groups-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
@@ -139,6 +140,7 @@ import {
   PasswordResetConfirm,
   RegisterInvite,
   ExternalLogin,
+  LandingTimeline,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -167,6 +169,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
   const instance = useInstance();
   const features = useFeatures();
   const { search } = useLocation();
+  const { isLoggedIn } = useLoggedIn();
 
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
   const hasCrypto = cryptoAddresses.size > 0;
@@ -181,7 +184,11 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
-      <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
+      {isLoggedIn ? (
+        <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
+      ) : (
+        <WrappedRoute path='/' exact page={LandingPage} component={LandingTimeline} content={children} publicRoute />
+      )}
 
       {/*
         NOTE: we cannot nest routes in a fragment
