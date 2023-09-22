@@ -166,6 +166,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
   const features = useFeatures();
   const { search } = useLocation();
   const { isLoggedIn } = useLoggedIn();
+  const standalone = useAppSelector(isStandalone);
 
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
   const hasCrypto = cryptoAddresses.size > 0;
@@ -177,6 +178,8 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
   // Ex: use /login instead of /auth, but redirect /auth to /login
   return (
     <Switch>
+      {standalone && <Redirect from='/' to='/login/external' exact />}
+
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
