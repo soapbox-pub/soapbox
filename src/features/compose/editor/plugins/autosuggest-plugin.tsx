@@ -505,6 +505,7 @@ const AutosuggestPlugin = ({
         (payload) => {
           const event = payload;
           if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
+            // eslint-disable-next-line no-nested-ternary
             const newSelectedSuggestion = event.shiftKey
               ? (selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1)
               : (selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0);

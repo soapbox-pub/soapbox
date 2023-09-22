@@ -340,7 +340,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             {(Component: any) => (
               <Component
                 ref={editorStateRef}
-                className='my-2'
+                className='mt-2'
                 composeId={id}
                 condensed={condensed}
                 eventDiscussion={!!event}

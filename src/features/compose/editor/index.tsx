@@ -152,14 +152,14 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className={clsx('lexical relative', className)} data-markup>
+      <div className={clsx('relative', className)} data-markup>
         <RichTextPlugin
           contentEditable={
-            <div className='editor' ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
+            <div ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
                 className={clsx('outline-none transition-[min-height] motion-reduce:transition-none', {
-                  'min-h-[40px]': condensed,
-                  'min-h-[100px]': !condensed,
+                  'min-h-[39px]': condensed,
+                  'min-h-[99px]': !condensed,
                 })}
               />
             </div>
@@ -167,7 +167,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           placeholder={(
             <div
               className={clsx(
-                'pointer-events-none absolute top-0 select-none text-gray-600 dark:placeholder:text-gray-600',
+                'pointer-events-none absolute top-0 -z-10 select-none text-[1rem] text-gray-600 dark:placeholder:text-gray-600',
                 placeholderClassName,
               )}
             >
