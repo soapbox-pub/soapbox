@@ -248,7 +248,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.privacyScopes && !group && !groupId && <PrivacyDropdown composeId={id} />}
       {features.scheduledStatuses && <ScheduleButton composeId={id} />}
       {features.spoilers && <SpoilerButton composeId={id} />}
-      {!wysiwygEditor && features.richText && <MarkdownButton composeId={id} />}
+      {features.richText && <MarkdownButton composeId={id} />}
     </HStack>
   ), [features, id]);
 

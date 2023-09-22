@@ -1,7 +1,7 @@
 /**
  * This source code is derived from code from Meta Platforms, Inc.
  * and affiliates, licensed under the MIT license located in the
- * LICENSE file in the /app/soapbox/features/compose/editor directory.
+ * LICENSE file in the `/src/features/compose/editor` directory.
  */
 
 import { AutoLinkPlugin, createLinkMatcherWithRegExp } from '@lexical/react/LexicalAutoLinkPlugin';
@@ -10,24 +10,17 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { $createRemarkExport, $createRemarkImport } from '@mkljczk/lexical-remark';
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import clsx from 'clsx';
 import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 
-import { importImage } from './handlers/image';
 import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
-import FloatingBlockTypeToolbarPlugin from './plugins/floating-block-type-toolbar-plugin';
-import FloatingLinkEditorPlugin from './plugins/floating-link-editor-plugin';
-import FloatingTextFormatToolbarPlugin from './plugins/floating-text-format-toolbar-plugin';
 import FocusPlugin from './plugins/focus-plugin';
 import MentionPlugin from './plugins/mention-plugin';
 import StatePlugin from './plugins/state-plugin';
@@ -53,9 +46,10 @@ interface IComposeEditor {
   placeholder?: JSX.Element | string
 }
 
-const theme = {
+const theme: InitialConfigType['theme'] = {
   hashtag: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
   mention: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
+  link: 'hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue',
   text: {
     bold: 'font-bold',
     code: 'font-mono',
@@ -85,12 +79,11 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
   placeholder,
 }, editorStateRef) => {
   const dispatch = useAppDispatch();
-  const features = useFeatures();
   const nodes = useNodes();
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
 
-  const initialConfig: InitialConfigType = useMemo(() => ({
+  const initialConfig = useMemo<InitialConfigType>(() => ({
     namespace: 'ComposeForm',
     onError: console.error,
     nodes,
@@ -106,34 +99,17 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
       }
 
       return () => {
-        if (compose.content_type === 'text/markdown') {
-          $createRemarkImport({
-            handlers: {
-              image: importImage,
-            },
-          })(compose.text);
-        } else {
-          const paragraph = $createParagraphNode();
-          const textNode = $createTextNode(compose.text);
+        const paragraph = $createParagraphNode();
+        const textNode = $createTextNode(compose.text);
 
-          paragraph.append(textNode);
+        paragraph.append(textNode);
 
-          $getRoot()
-            .clear()
-            .append(paragraph);
-        }
+        $getRoot()
+          .clear()
+          .append(paragraph);
       };
     }),
   }), []);
-
-  const [floatingAnchorElem, setFloatingAnchorElem] =
-    useState<HTMLDivElement | null>(null);
-
-  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
-    if (_floatingAnchorElem !== null) {
-      setFloatingAnchorElem(_floatingAnchorElem);
-    }
-  };
 
   const handlePaste: React.ClipboardEventHandler<HTMLDivElement> = (e) => {
     if (onPaste && e.clipboardData && e.clipboardData.files.length === 1) {
@@ -152,12 +128,12 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className={clsx('relative', className)} data-markup>
-        <RichTextPlugin
+      <div className={clsx('relative', className)}>
+        <PlainTextPlugin
           contentEditable={
-            <div ref={onRef} onFocus={onFocus} onPaste={handlePaste}>
+            <div onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
-                className={clsx('outline-none transition-[min-height] motion-reduce:transition-none', {
+                className={clsx('text-[1rem] outline-none transition-[min-height] motion-reduce:transition-none', {
                   'min-h-[39px]': condensed,
                   'min-h-[99px]': !condensed,
                 })}
@@ -177,7 +153,9 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           ErrorBoundary={LexicalErrorBoundary}
         />
         <OnChangePlugin onChange={(_, editor) => {
-          if (editorStateRef) (editorStateRef as any).current = editor.getEditorState().read($createRemarkExport());
+          if (editorStateRef && typeof editorStateRef !== 'function') {
+            editorStateRef.current = editor.getEditorState().read(() => $getRoot().getTextContent());
+          }
         }}
         />
         <HistoryPlugin />
@@ -185,15 +163,6 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
         <MentionPlugin />
         <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         <AutoLinkPlugin matchers={LINK_MATCHERS} />
-        {features.richText && <LinkPlugin />}
-        {features.richText && <ListPlugin />}
-        {features.richText && floatingAnchorElem && (
-          <>
-            <FloatingBlockTypeToolbarPlugin anchorElem={floatingAnchorElem} />
-            <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
-            <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
-          </>
-        )}
         <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
         <FocusPlugin autoFocus={autoFocus} />
       </div>
