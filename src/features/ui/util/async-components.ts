@@ -122,10 +122,6 @@ export function AccountModerationModal() {
   return import('../components/modals/account-moderation-modal/account-moderation-modal');
 }
 
-export function PolicyModal() {
-  return import('../components/modals/policy-modal');
-}
-
 export function MediaGallery() {
   return import('../../../components/media-gallery');
 }

@@ -27,9 +27,7 @@ const TIMELINE_EXPAND_FAIL = 'TIMELINE_EXPAND_FAIL' as const;
 const TIMELINE_CONNECT = 'TIMELINE_CONNECT' as const;
 const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT' as const;
 
-const TIMELINE_REPLACE = 'TIMELINE_REPLACE' as const;
 const TIMELINE_INSERT = 'TIMELINE_INSERT' as const;
-const TIMELINE_CLEAR_FEED_ACCOUNT_ID = 'TIMELINE_CLEAR_FEED_ACCOUNT_ID' as const;
 
 const MAX_QUEUED_ITEMS = 40;
 
@@ -149,20 +147,6 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
   });
 };
 
-const replaceHomeTimeline = (
-  accountId: string | undefined,
-  { maxId }: Record<string, any> = {},
-  done?: () => void,
-) => (dispatch: AppDispatch, _getState: () => RootState) => {
-  dispatch({ type: TIMELINE_REPLACE, accountId });
-  dispatch(expandHomeTimeline({ accountId, maxId }, () => {
-    dispatch(insertSuggestionsIntoTimeline());
-    if (done) {
-      done();
-    }
-  }));
-};
-
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
@@ -209,7 +193,6 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
   };
 
 interface ExpandHomeTimelineOpts {
-  accountId?: string
   maxId?: string
   url?: string
 }
@@ -220,17 +203,12 @@ interface HomeTimelineParams {
   with_muted?: boolean
 }
 
-const expandHomeTimeline = ({ url, accountId, maxId }: ExpandHomeTimelineOpts = {}, done = noOp) => {
-  const endpoint = url || (accountId ? `/api/v1/accounts/${accountId}/statuses` : '/api/v1/timelines/home');
+const expandHomeTimeline = ({ url, maxId }: ExpandHomeTimelineOpts = {}, done = noOp) => {
+  const endpoint = url || '/api/v1/timelines/home';
   const params: HomeTimelineParams = {};
 
   if (!url && maxId) {
     params.max_id = maxId;
-  }
-
-  if (accountId) {
-    params.exclude_replies = true;
-    params.with_muted = true;
   }
 
   return expandTimeline('home', endpoint, params, done);
@@ -333,10 +311,6 @@ const insertSuggestionsIntoTimeline = () => (dispatch: AppDispatch, getState: ()
   dispatch({ type: TIMELINE_INSERT, timeline: 'home' });
 };
 
-const clearFeedAccountId = () => (dispatch: AppDispatch, _getState: () => RootState) => {
-  dispatch({ type: TIMELINE_CLEAR_FEED_ACCOUNT_ID });
-};
-
 // TODO: other actions
 type TimelineAction = TimelineDeleteAction;
 
@@ -352,8 +326,6 @@ export {
   TIMELINE_EXPAND_FAIL,
   TIMELINE_CONNECT,
   TIMELINE_DISCONNECT,
-  TIMELINE_REPLACE,
-  TIMELINE_CLEAR_FEED_ACCOUNT_ID,
   TIMELINE_INSERT,
   MAX_QUEUED_ITEMS,
   processTimelineUpdate,
@@ -363,7 +335,6 @@ export {
   deleteFromTimelines,
   clearTimeline,
   expandTimeline,
-  replaceHomeTimeline,
   expandHomeTimeline,
   expandPublicTimeline,
   expandRemoteTimeline,
@@ -385,6 +356,5 @@ export {
   disconnectTimeline,
   scrollTopTimeline,
   insertSuggestionsIntoTimeline,
-  clearFeedAccountId,
   type TimelineAction,
 };
