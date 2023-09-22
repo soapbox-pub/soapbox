@@ -19,7 +19,7 @@
   "scripts": {
     "start": "npx vite serve",
     "dev": "${npm_execpath} run start",
-    "build": "npx vite build --emptyOutDir",
+    "build": "npx vite build --emptyOutDir --outDir static",
     "preview": "npx vite preview",
     "audit:fix": "npx yarn-audit-fix",
     "manage:translations": "npx ts-node ./scripts/translationRunner.ts",
