@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { uploadCompose } from 'soapbox/actions/compose';
-import FeedCarousel from 'soapbox/features/feed-filtering/feed-carousel';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import {
   WhoToFollowPanel,
@@ -80,8 +79,6 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
             </CardBody>
           </Card>
         )}
-
-        {features.carousel && <FeedCarousel />}
 
         {children}
 

@@ -2,9 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
-import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
-import { expandHomeTimeline, clearFeedAccountId } from 'soapbox/actions/timelines';
+import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
@@ -23,12 +21,10 @@ const HomeTimeline: React.FC = () => {
   const polling = useRef<NodeJS.Timeout | null>(null);
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
-  const currentAccountId = useAppSelector(state => state.timelines.get('home')?.feedAccountId as string | undefined);
-  const currentAccountRelationship = useAppSelector(state => currentAccountId ? state.relationships.get(currentAccountId) : null);
   const next = useAppSelector(state => state.timelines.get('home')?.next);
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandHomeTimeline({ url: next, maxId, accountId: currentAccountId }));
+    dispatch(expandHomeTimeline({ url: next, maxId }));
   };
 
   // Mastodon generates the feed in Redis, and can return a partial timeline
@@ -51,7 +47,7 @@ const HomeTimeline: React.FC = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandHomeTimeline({ accountId: currentAccountId }));
+    return dispatch(expandHomeTimeline());
   };
 
   useEffect(() => {
@@ -61,25 +57,6 @@ const HomeTimeline: React.FC = () => {
       stopPolling();
     };
   }, [isPartial]);
-
-  useEffect(() => {
-    // Check to see if we still follow the user that is selected in the Feed Carousel.
-    if (currentAccountId) {
-      dispatch(fetchRelationships([currentAccountId]));
-    }
-  }, []);
-
-  useEffect(() => {
-    // If we unfollowed the currently selected user from the Feed Carousel,
-    // let's clear the feed filter and refetch fresh timeline data.
-    if (currentAccountRelationship && !currentAccountRelationship?.following) {
-      dispatch(clearFeedAccountId());
-
-      dispatch(expandHomeTimeline({}, () => {
-        dispatch(fetchSuggestionsForTimeline());
-      }));
-    }
-  }, [currentAccountId]);
 
   return (
     <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
