@@ -924,12 +924,6 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Truth Social trending statuses API.
-     * @see GET /api/v1/truth/trending/truths
-     */
-    trendingTruths: v.software === TRUTHSOCIAL,
-
-    /**
      * Can display trending hashtags.
      * @see GET /api/v1/trends
      */

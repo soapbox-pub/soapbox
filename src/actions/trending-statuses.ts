@@ -17,10 +17,10 @@ const fetchTrendingStatuses = () =>
     const instance = state.instance;
     const features = getFeatures(instance);
 
-    if (!features.trendingStatuses && !features.trendingTruths) return;
+    if (!features.trendingStatuses) return;
 
     dispatch({ type: TRENDING_STATUSES_FETCH_REQUEST });
-    return api(getState).get(features.trendingTruths ? '/api/v1/truth/trending/truths' : '/api/v1/trends/statuses').then(({ data: statuses }) => {
+    return api(getState).get('/api/v1/trends/statuses').then(({ data: statuses }) => {
       dispatch(importFetchedStatuses(statuses));
       dispatch({ type: TRENDING_STATUSES_FETCH_SUCCESS, statuses });
       return statuses;
