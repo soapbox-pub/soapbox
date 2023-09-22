@@ -2,9 +2,8 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccounts } from 'soapbox/actions/importer';
-import { SuggestedProfile } from 'soapbox/actions/suggestions';
 import { getLinks } from 'soapbox/api';
-import { useApi, useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
 
 import { PaginatedResult, removePageItem } from '../utils/queries';
 
@@ -15,16 +14,7 @@ type Suggestion = {
   account: IAccount
 }
 
-type TruthSuggestion = {
-  account_avatar: string
-  account_id: string
-  acct: string
-  display_name: string
-  note: string
-  verified: boolean
-}
-
-type Result = TruthSuggestion | {
+type Result = {
   account: string
 }
 
@@ -36,20 +26,9 @@ const SuggestionKeys = {
   suggestions: ['suggestions'] as const,
 };
 
-const mapSuggestedProfileToAccount = (suggestedProfile: SuggestedProfile) => ({
-  id: suggestedProfile.account_id,
-  avatar: suggestedProfile.account_avatar,
-  avatar_static: suggestedProfile.account_avatar,
-  acct: suggestedProfile.acct,
-  display_name: suggestedProfile.display_name,
-  note: suggestedProfile.note,
-  verified: suggestedProfile.verified,
-});
-
 const useSuggestions = () => {
   const api = useApi();
   const dispatch = useAppDispatch();
-  const features = useFeatures();
 
   const getV2Suggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
     const endpoint = pageParam?.link || '/api/v2/suggestions';
@@ -69,33 +48,9 @@ const useSuggestions = () => {
     };
   };
 
-  const getTruthSuggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
-    const endpoint = pageParam?.link || '/api/v1/truth/carousels/suggestions';
-    const response = await api.get<TruthSuggestion[]>(endpoint);
-    const hasMore = !!response.headers.link;
-    const nextLink = getLinks(response).refs.find(link => link.rel === 'next')?.uri;
-
-    const accounts = response.data.map(mapSuggestedProfileToAccount);
-    dispatch(importFetchedAccounts(accounts, { should_refetch: true }));
-
-    return {
-      result: response.data.map((x) => ({ ...x, account: x.account_id })),
-      link: nextLink,
-      hasMore,
-    };
-  };
-
-  const getSuggestions = (pageParam: PageParam) => {
-    if (features.truthSuggestions) {
-      return getTruthSuggestions(pageParam);
-    } else {
-      return getV2Suggestions(pageParam);
-    }
-  };
-
   const result = useInfiniteQuery(
     SuggestionKeys.suggestions,
-    ({ pageParam }: any) => getSuggestions(pageParam),
+    ({ pageParam }: any) => getV2Suggestions(pageParam),
     {
       keepPreviousData: true,
       getNextPageParam: (config) => {

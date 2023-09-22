@@ -248,19 +248,6 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Whether to show the Feed Carousel for suggested Statuses.
-     * @see GET /api/v1/truth/carousels/avatars
-     * @see GET /api/v1/truth/carousels/suggestions
-     */
-    carousel: v.software === TRUTHSOCIAL,
-
-    /**
-     * Ability to mark a carousel avatar as "seen."
-     * @see POST /api/v1/truth/carousels/avatars/seen
-     */
-    carouselSeen: v.software === TRUTHSOCIAL,
-
-    /**
      * Ability to accept a chat.
      * POST /api/v1/pleroma/chats/:id/accept
      */
@@ -937,12 +924,6 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Truth Social trending statuses API.
-     * @see GET /api/v1/truth/trending/truths
-     */
-    trendingTruths: v.software === TRUTHSOCIAL,
-
-    /**
      * Can display trending hashtags.
      * @see GET /api/v1/trends
      */
@@ -952,18 +933,6 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === TRUTHSOCIAL,
       v.software === DITTO,
     ]),
-
-    /**
-     * Truth Social policies.
-     * @see GET /api/v1/truth/policies/pending
-     * @see PATCH /api/v1/truth/policies/:policyId/accept
-     */
-    truthPolicies: v.software === TRUTHSOCIAL,
-
-    /**
-     * Supports Truth suggestions.
-     */
-    truthSuggestions: v.software === TRUTHSOCIAL,
 
     /**
      * Whether the backend allows adding users you don't follow to lists.

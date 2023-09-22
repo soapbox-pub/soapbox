@@ -6,7 +6,7 @@ import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'followRecommendations.heading', defaultMessage: 'Suggested Profiles' },
@@ -15,7 +15,6 @@ const messages = defineMessages({
 const FollowRecommendations: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const features = useFeatures();
 
   const suggestions = useAppSelector((state) => state.suggestions.items);
   const hasMore = useAppSelector((state) => !!state.suggestions.next);
@@ -53,25 +52,13 @@ const FollowRecommendations: React.FC = () => {
           hasMore={hasMore}
           itemClassName='pb-4'
         >
-          {features.truthSuggestions ? (
-            suggestions.map((suggestedProfile) => (
-              <AccountContainer
-                key={suggestedProfile.account}
-                id={suggestedProfile.account}
-                withAccountNote
-                showProfileHoverCard={false}
-                actionAlignment='top'
-              />
-            ))
-          ) : (
-            suggestions.map((suggestion) => (
-              <AccountContainer
-                key={suggestion.account}
-                id={suggestion.account}
-                withAccountNote
-              />
-            ))
-          )}
+          {suggestions.map((suggestion) => (
+            <AccountContainer
+              key={suggestion.account}
+              id={suggestion.account}
+              withAccountNote
+            />
+          ))}
         </ScrollableList>
       </Stack>
     </Column>

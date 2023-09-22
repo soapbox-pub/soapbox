@@ -28,9 +28,7 @@ import {
   TIMELINE_DEQUEUE,
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
-  TIMELINE_REPLACE,
   TIMELINE_INSERT,
-  TIMELINE_CLEAR_FEED_ACCOUNT_ID,
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
@@ -49,7 +47,6 @@ const TimelineRecord = ImmutableRecord({
   prev: undefined as string | undefined,
   items: ImmutableOrderedSet<string>(),
   queuedItems: ImmutableOrderedSet<string>(), //max= MAX_QUEUED_ITEMS
-  feedAccountId: null,
   totalQueuedItemsCount: 0, //used for queuedItems overflow for MAX_QUEUED_ITEMS+
   loadingFailed: false,
   isPartial: false,
@@ -363,12 +360,6 @@ export default function timelines(state: State = initialState, action: AnyAction
       return timelineConnect(state, action.timeline);
     case TIMELINE_DISCONNECT:
       return timelineDisconnect(state, action.timeline);
-    case TIMELINE_REPLACE:
-      return state
-        .update('home', TimelineRecord(), timeline => timeline.withMutations(timeline => {
-          timeline.set('items', ImmutableOrderedSet([]));
-        }))
-        .update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', action.accountId));
     case TIMELINE_INSERT:
       return state.update(action.timeline, TimelineRecord(), timeline => timeline.withMutations(timeline => {
         timeline.update('items', oldIds => {
@@ -386,8 +377,6 @@ export default function timelines(state: State = initialState, action: AnyAction
           return ImmutableOrderedSet(oldIdsArray);
         });
       }));
-    case TIMELINE_CLEAR_FEED_ACCOUNT_ID:
-      return state.update('home', TimelineRecord(), timeline => timeline.set('feedAccountId', null));
     default:
       return state;
   }

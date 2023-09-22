@@ -8,8 +8,6 @@ import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { cancelEventCompose } from 'soapbox/actions/events';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import { useAppDispatch, usePrevious } from 'soapbox/hooks';
-import { queryClient } from 'soapbox/queries/client';
-import { IPolicy, PolicyKeys } from 'soapbox/queries/policies';
 
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
 import type { ReducerCompose } from 'soapbox/reducers/compose';
@@ -114,15 +112,6 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
         }));
       } else if ((hasComposeContent || hasEventComposeContent) && type === 'CONFIRM') {
         dispatch(closeModal('CONFIRM'));
-      } else if (type === 'POLICY') {
-        // If the user has not accepted the Policy, prevent them
-        // from closing the Modal.
-        const pendingPolicy = queryClient.getQueryData(PolicyKeys.policy) as IPolicy;
-        if (pendingPolicy?.pending_policy_id) {
-          return;
-        }
-
-        onClose();
       } else {
         onClose();
       }
