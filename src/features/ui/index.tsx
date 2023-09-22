@@ -8,7 +8,6 @@ import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
-import { openModal } from 'soapbox/actions/modals';
 import { expandNotifications } from 'soapbox/actions/notifications';
 import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
@@ -38,13 +37,11 @@ import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
-import { usePendingPolicy } from 'soapbox/queries/policies';
 import { getVapidKey } from 'soapbox/utils/auth';
 import { isStandalone } from 'soapbox/utils/state';
 
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
-import { supportedPolicyIds } from './components/modals/policy-modal';
 import Navbar from './components/navbar';
 import BundleContainer from './containers/bundle-container';
 import {
@@ -389,7 +386,6 @@ interface IUI {
 const UI: React.FC<IUI> = ({ children }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const { data: pendingPolicy } = usePendingPolicy();
   const node = useRef<HTMLDivElement | null>(null);
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
@@ -482,14 +478,6 @@ const UI: React.FC<IUI> = ({ children }) => {
   useEffect(() => {
     dispatch(registerPushNotifications());
   }, [vapidKey]);
-
-  useEffect(() => {
-    if (account && pendingPolicy && supportedPolicyIds.includes(pendingPolicy.pending_policy_id)) {
-      setTimeout(() => {
-        dispatch(openModal('POLICY'));
-      }, 500);
-    }
-  }, [pendingPolicy, !!account]);
 
   const shouldHideFAB = (): boolean => {
     const path = location.pathname;

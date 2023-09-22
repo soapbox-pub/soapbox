@@ -935,13 +935,6 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Truth Social policies.
-     * @see GET /api/v1/truth/policies/pending
-     * @see PATCH /api/v1/truth/policies/:policyId/accept
-     */
-    truthPolicies: v.software === TRUTHSOCIAL,
-
-    /**
      * Whether the backend allows adding users you don't follow to lists.
      * @see POST /api/v1/lists/:id/accounts
      */
