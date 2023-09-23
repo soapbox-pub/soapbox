@@ -389,7 +389,6 @@
   "compose_event.edit_success": "Arrangementet ditt ble redigert",
   "compose_event.fields.approval_required": "Jeg vil godkjenne deltager forespørsler manuelt",
   "compose_event.fields.banner_label": "Banner for arrangement",
-  "compose_event.fields.description_hint": "Markdown syntaks er støttet",
   "compose_event.fields.description_label": "Arrangementbeskrivelse",
   "compose_event.fields.description_placeholder": "Beskrivelse",
   "compose_event.fields.end_time_label": "Sluttdato for arrangementet",

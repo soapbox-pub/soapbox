@@ -351,7 +351,6 @@
   "compose_event.edit_success": "Deine Veranstaltung wurde bearbeitet",
   "compose_event.fields.approval_required": "Ich möchte Teilnehmende manuell genehmigen",
   "compose_event.fields.banner_label": "Veranstaltungsbanner",
-  "compose_event.fields.description_hint": "Markdownsyntax wird unterstützt",
   "compose_event.fields.description_label": "Veranstaltungsbeschreibung",
   "compose_event.fields.description_placeholder": "Beschreibung",
   "compose_event.fields.end_time_label": "Veranstaltungsende",

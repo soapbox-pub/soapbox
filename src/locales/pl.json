@@ -392,7 +392,6 @@
   "compose_event.edit_success": "Wydarzenie zostało zedytowane",
   "compose_event.fields.approval_required": "Chcę ręcznie zatwierdzać prośby o dołączenie",
   "compose_event.fields.banner_label": "Baner wydarzenia",
-  "compose_event.fields.description_hint": "Obsługiwana jest składnia Markdown",
   "compose_event.fields.description_label": "Opis wydarzenia",
   "compose_event.fields.description_placeholder": "Opis",
   "compose_event.fields.end_time_label": "Data zakończenia wydarzenia",

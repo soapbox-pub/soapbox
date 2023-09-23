@@ -393,7 +393,6 @@
   "compose_event.edit_success": "您的活动被编辑了",
   "compose_event.fields.approval_required": "我想手动批准参与申请",
   "compose_event.fields.banner_label": "活动横幅",
-  "compose_event.fields.description_hint": "支持 Markdown 语法",
   "compose_event.fields.description_label": "活动说明",
   "compose_event.fields.description_placeholder": "说明",
   "compose_event.fields.end_time_label": "活动结束日期",

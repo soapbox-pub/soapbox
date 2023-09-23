@@ -394,7 +394,6 @@
   "compose_event.edit_success": "Evento modificato",
   "compose_event.fields.approval_required": "Voglio confermare manualmente richieste di partecipazione",
   "compose_event.fields.banner_label": "Banner dell'evento",
-  "compose_event.fields.description_hint": "Puoi usare la formattazione Markdown",
   "compose_event.fields.description_label": "Descrizione dell'evento",
   "compose_event.fields.description_placeholder": "Descrizione",
   "compose_event.fields.end_time_label": "Data di fine evento",
