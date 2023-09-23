@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { KEY_ENTER_COMMAND } from 'lexical';
+import { $getRoot, KEY_ENTER_COMMAND } from 'lexical';
 import { useEffect } from 'react';
 
 import { setEditorState } from 'soapbox/actions/compose';
@@ -23,7 +23,9 @@ const StatePlugin = ({ composeId, handleSubmit }: IStatePlugin) => {
       return false;
     }, 1);
     editor.registerUpdateListener(({ editorState }) => {
-      dispatch(setEditorState(composeId, editorState.isEmpty() ? null : JSON.stringify(editorState.toJSON())));
+      const isEmpty = editorState.read(() => $getRoot().getTextContent()) === '';
+      const data = isEmpty ? null : JSON.stringify(editorState.toJSON());
+      dispatch(setEditorState(composeId, data));
     });
   }, [editor]);
 
