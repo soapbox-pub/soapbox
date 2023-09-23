@@ -11,7 +11,6 @@ const messages = defineMessages({
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-
 interface IIconPickerMenu {
   icons: Record<string, Array<string>>
   onClose: () => void

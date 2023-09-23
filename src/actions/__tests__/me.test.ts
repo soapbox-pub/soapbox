@@ -66,7 +66,7 @@ describe('fetchMe()', () => {
       });
 
       it('dispatches the correct actions', async() => {
-        const expectedActions =  [
+        const expectedActions = [
           { type: 'ME_FETCH_REQUEST' },
           { type: 'AUTH_ACCOUNT_REMEMBER_REQUEST', accountUrl },
           { type: 'ACCOUNTS_IMPORT', accounts: [] },
@@ -102,7 +102,7 @@ describe('patchMe()', () => {
     });
 
     it('dispatches the correct actions', async() => {
-      const expectedActions =  [
+      const expectedActions = [
         { type: 'ME_PATCH_REQUEST' },
         { type: 'ACCOUNTS_IMPORT', accounts: [] },
         {

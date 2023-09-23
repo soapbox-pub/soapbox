@@ -1,6 +1,7 @@
 import clsx from 'clsx';
+import { CLEAR_EDITOR_COMMAND, type LexicalEditor } from 'lexical';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, MessageDescriptor, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -17,6 +18,8 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
+import Bundle from 'soapbox/features/ui/components/bundle';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
@@ -49,7 +52,6 @@ const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
   pollPlaceholder: { id: 'compose_form.poll_placeholder', defaultMessage: 'Add a poll topic…' },
   eventPlaceholder: { id: 'compose_form.event_placeholder', defaultMessage: 'Post to this event' },
-  spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here (optional)' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
@@ -75,12 +77,24 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
-  const isModalOpen = useAppSelector((state) => !!(state.modals.size && state.modals.last()!.modalType === 'COMPOSE'));
   const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
-  const { text, suggestions, spoiler, spoiler_text: spoilerText, privacy, focusDate, caretPosition, is_submitting: isSubmitting, is_changing_upload: isChangingUpload, is_uploading: isUploading, schedule: scheduledAt, group_id: groupId } = compose;
+  const {
+    spoiler,
+    spoiler_text: spoilerText,
+    privacy,
+    focusDate,
+    caretPosition,
+    is_submitting: isSubmitting,
+    is_changing_upload:
+    isChangingUpload,
+    is_uploading: isUploading,
+    schedule: scheduledAt,
+    group_id: groupId,
+  } = compose;
+
   const prevSpoiler = usePrevious(spoiler);
 
   const hasPoll = !!compose.poll;
@@ -88,24 +102,15 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const anyMedia = compose.media_attachments.size > 0;
 
   const [composeFocused, setComposeFocused] = useState(false);
+  const [text, setText] = useState('');
 
   const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
+  const editorRef = useRef<LexicalEditor>(null);
 
   const { isDraggedOver } = useDraggedFiles(formRef);
-
-  const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    dispatch(changeCompose(id, e.target.value));
-  };
-
-  const handleKeyDown: React.KeyboardEventHandler = (e) => {
-    if (e.keyCode === 13 && (e.ctrlKey || e.metaKey)) {
-      handleSubmit();
-      e.preventDefault(); // Prevent bubbling to other ComposeForm instances
-    }
-  };
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
@@ -141,11 +146,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleSubmit = (e?: React.FormEvent<Element>) => {
-    if (text !== autosuggestTextareaRef.current?.textarea?.value) {
-      // Something changed the text inside the textarea (e.g. browser extensions like Grammarly)
-      // Update the state to match the current text
-      dispatch(changeCompose(id, autosuggestTextareaRef.current!.textarea!.value));
-    }
+    dispatch(changeCompose(id, text));
 
     // Submit disabled:
     const fulltext = [spoilerText, countableText(text)].join('');
@@ -159,6 +160,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     }
 
     dispatch(submitCompose(id, history));
+    editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };
 
   const onSuggestionsClearRequested = () => {
@@ -167,10 +169,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const onSuggestionsFetchRequested = (token: string | number) => {
     dispatch(fetchComposeSuggestions(id, token as string));
-  };
-
-  const onSuggestionSelected = (tokenStart: number, token: string | null, value: string | undefined) => {
-    if (value) dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['text']));
   };
 
   const onSpoilerSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
@@ -249,32 +247,40 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const disabledButton = disabled || isUploading || isChangingUpload || length(countedText) > maxTootChars || (countedText.length !== 0 && countedText.trim().length === 0 && !anyMedia);
   const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
-  let publishText: string = '';
-  let publishIcon: string | undefined;
-  let textareaPlaceholder: MessageDescriptor;
+  const composeModifiers = !condensed && (
+    <Stack space={4} className='compose-form__modifiers'>
+      <UploadForm composeId={id} />
+      <PollForm composeId={id} />
+
+      <SpoilerInput
+        composeId={id}
+        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={onSuggestionsClearRequested}
+        onSuggestionSelected={onSpoilerSuggestionSelected}
+        ref={spoilerTextRef}
+      />
+
+      <ScheduleFormContainer composeId={id} />
+    </Stack>
+  );
+
+  let publishText: string | JSX.Element = '';
+  let publishIcon: string | undefined = undefined;
 
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishText = intl.formatMessage(messages.message);
     publishIcon = require('@tabler/icons/mail.svg');
+    publishText = intl.formatMessage(messages.message);
   } else if (privacy === 'private') {
-    publishText = intl.formatMessage(messages.publish);
     publishIcon = require('@tabler/icons/lock.svg');
+    publishText = intl.formatMessage(messages.publish);
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
   }
 
   if (scheduledAt) {
     publishText = intl.formatMessage(messages.schedule);
-  }
-
-  if (event) {
-    textareaPlaceholder = messages.eventPlaceholder;
-  } else if (hasPoll) {
-    textareaPlaceholder = messages.pollPlaceholder;
-  } else {
-    textareaPlaceholder = messages.placeholder;
   }
 
   return (
@@ -306,42 +312,26 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 
-      <AutosuggestTextarea
-        ref={(isModalOpen && shouldCondense) ? undefined : autosuggestTextareaRef}
-        placeholder={intl.formatMessage(textareaPlaceholder)}
-        disabled={disabled}
-        value={text}
-        onChange={handleChange}
-        suggestions={suggestions}
-        onKeyDown={handleKeyDown}
-        onFocus={handleComposeFocus}
-        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={onSuggestionsClearRequested}
-        onSuggestionSelected={onSuggestionSelected}
-        onPaste={onPaste}
-        autoFocus={shouldAutoFocus}
-        condensed={condensed}
-        id='compose-textarea'
-      >
-        {
-          !condensed && (
-            <Stack space={4} className='compose-form__modifiers'>
-              <UploadForm composeId={id} />
-              <PollForm composeId={id} />
-
-              <SpoilerInput
-                composeId={id}
-                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                onSuggestionSelected={onSpoilerSuggestionSelected}
-                ref={spoilerTextRef}
-              />
-
-              <ScheduleFormContainer composeId={id} />
-            </Stack>
-          )
-        }
-      </AutosuggestTextarea>
+      <div>
+        <Bundle fetchComponent={ComposeEditor}>
+          {(Component: any) => (
+            <Component
+              ref={editorRef}
+              className='mt-2'
+              composeId={id}
+              condensed={condensed}
+              eventDiscussion={!!event}
+              autoFocus={shouldAutoFocus}
+              hasPoll={hasPoll}
+              handleSubmit={handleSubmit}
+              onChange={setText}
+              onFocus={handleComposeFocus}
+              onPaste={onPaste}
+            />
+          )}
+        </Bundle>
+        {composeModifiers}
+      </div>
 
       <QuotedStatusContainer composeId={id} />
 
@@ -362,7 +352,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             </HStack>
           )}
 
-          <Button type='submit' theme='primary' text={publishText} icon={publishIcon} disabled={disabledButton} />
+          <Button type='submit' theme='primary' icon={publishIcon} text={publishText} disabled={disabledButton} />
         </HStack>
       </div>
     </Stack>

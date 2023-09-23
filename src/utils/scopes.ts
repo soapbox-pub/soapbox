@@ -24,7 +24,6 @@ const getScopes = (state: RootState) => {
   return getInstanceScopes(state.instance);
 };
 
-
 export {
   getInstanceScopes,
   getScopes,

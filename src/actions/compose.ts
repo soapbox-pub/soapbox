@@ -6,21 +6,21 @@ import { defineMessages, IntlShape } from 'react-intl';
 import api from 'soapbox/api';
 import { isNativeEmoji } from 'soapbox/features/emoji';
 import emojiSearch from 'soapbox/features/emoji/search';
+import { normalizeTag } from 'soapbox/normalizers';
 import { selectAccount, selectOwnAccount } from 'soapbox/selectors';
 import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
-import { formatBytes, getVideoDuration } from 'soapbox/utils/media';
-import resizeImage from 'soapbox/utils/resize-image';
 
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
-import { uploadMedia, fetchMedia, updateMedia } from './media';
+import { uploadFile, updateMedia } from './media';
 import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
+import type { EditorState } from 'lexical';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 import type { Emoji } from 'soapbox/features/emoji';
 import type { Account, Group } from 'soapbox/schemas';
@@ -30,7 +30,7 @@ import type { History } from 'soapbox/types/history';
 
 const { CancelToken, isCancel } = axios;
 
-let cancelFetchComposeSuggestionsAccounts: Canceler;
+let cancelFetchComposeSuggestions: Canceler;
 
 const COMPOSE_CHANGE          = 'COMPOSE_CHANGE' as const;
 const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST' as const;
@@ -87,10 +87,9 @@ const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS' as const;
 
 const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS' as const;
 
+const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET' as const;
+
 const messages = defineMessages({
-  exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
-  exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
-  exceededVideoDurationLimit: { id: 'upload_error.video_duration_limit', defaultMessage: 'Video exceeds the current duration limit ({limit, plural, one {# second} other {# seconds}})' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
@@ -304,6 +303,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const state = getState();
+    const { richText } = getFeatures(state.instance);
 
     const compose = state.compose.get(composeId)!;
 
@@ -311,6 +311,8 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     const media    = compose.media_attachments;
     const statusId = compose.id;
     let to         = compose.to;
+
+    const contentType = richText ? 'text/markdown' : 'text/plain';
 
     if (!validateSchedule(state, composeId)) {
       toast.error(messages.scheduleError);
@@ -350,7 +352,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       sensitive: compose.sensitive,
       spoiler_text: compose.spoiler_text,
       visibility: compose.privacy,
-      content_type: compose.content_type,
+      content_type: contentType,
       poll: compose.poll,
       scheduled_at: compose.schedule,
       to,
@@ -392,9 +394,6 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const attachmentLimit = getState().instance.configuration.getIn(['statuses', 'max_media_attachments']) as number;
-    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
-    const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
-    const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
 
     const media  = getState().compose.get(composeId)?.media_attachments;
     const progress = new Array(files.length).fill(0);
@@ -412,66 +411,48 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     Array.from(files).forEach(async(f, i) => {
       if (mediaCount + i > attachmentLimit - 1) return;
 
-      const isImage = f.type.match(/image.*/);
-      const isVideo = f.type.match(/video.*/);
-      const videoDurationInSeconds = (isVideo && maxVideoDuration) ? await getVideoDuration(f) : 0;
-
-      if (isImage && maxImageSize && (f.size > maxImageSize)) {
-        const limit = formatBytes(maxImageSize);
-        const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-        toast.error(message);
-        dispatch(uploadComposeFail(composeId, true));
-        return;
-      } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
-        const limit = formatBytes(maxVideoSize);
-        const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
-        toast.error(message);
-        dispatch(uploadComposeFail(composeId, true));
-        return;
-      } else if (isVideo && maxVideoDuration && (videoDurationInSeconds > maxVideoDuration)) {
-        const message = intl.formatMessage(messages.exceededVideoDurationLimit, { limit: maxVideoDuration });
-        toast.error(message);
-        dispatch(uploadComposeFail(composeId, true));
-        return;
-      }
-
-      // FIXME: Don't define const in loop
-      /* eslint-disable no-loop-func */
-      resizeImage(f).then(file => {
-        const data = new FormData();
-        data.append('file', file);
-        // Account for disparity in size of original image and resized data
-        total += file.size - f.size;
-
-        const onUploadProgress = ({ loaded }: any) => {
+      dispatch(uploadFile(
+        f,
+        intl,
+        (data) => dispatch(uploadComposeSuccess(composeId, data, f)),
+        (error) => dispatch(uploadComposeFail(composeId, error)),
+        ({ loaded }: any) => {
           progress[i] = loaded;
           dispatch(uploadComposeProgress(composeId, progress.reduce((a, v) => a + v, 0), total));
-        };
+        },
+        (value) => total += value,
+      ));
 
-        return dispatch(uploadMedia(data, onUploadProgress))
-          .then(({ status, data }) => {
-            // If server-side processing of the media attachment has not completed yet,
-            // poll the server until it is, before showing the media attachment as uploaded
-            if (status === 200) {
-              dispatch(uploadComposeSuccess(composeId, data, f));
-            } else if (status === 202) {
-              const poll = () => {
-                dispatch(fetchMedia(data.id)).then(({ status, data }) => {
-                  if (status === 200) {
-                    dispatch(uploadComposeSuccess(composeId, data, f));
-                  } else if (status === 206) {
-                    setTimeout(() => poll(), 1000);
-                  }
-                }).catch(error => dispatch(uploadComposeFail(composeId, error)));
-              };
-
-              poll();
-            }
-          });
-      }).catch(error => dispatch(uploadComposeFail(composeId, error)));
-      /* eslint-enable no-loop-func */
     });
   };
+
+const uploadComposeRequest = (composeId: string) => ({
+  type: COMPOSE_UPLOAD_REQUEST,
+  id: composeId,
+  skipLoading: true,
+});
+
+const uploadComposeProgress = (composeId: string, loaded: number, total: number) => ({
+  type: COMPOSE_UPLOAD_PROGRESS,
+  id: composeId,
+  loaded: loaded,
+  total: total,
+});
+
+const uploadComposeSuccess = (composeId: string, media: APIEntity, file: File) => ({
+  type: COMPOSE_UPLOAD_SUCCESS,
+  id: composeId,
+  media: media,
+  file,
+  skipLoading: true,
+});
+
+const uploadComposeFail = (composeId: string, error: AxiosError | true) => ({
+  type: COMPOSE_UPLOAD_FAIL,
+  id: composeId,
+  error: error,
+  skipLoading: true,
+});
 
 const changeUploadCompose = (composeId: string, id: string, params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -507,34 +488,6 @@ const changeUploadComposeFail = (composeId: string, id: string, error: AxiosErro
   skipLoading: true,
 });
 
-const uploadComposeRequest = (composeId: string) => ({
-  type: COMPOSE_UPLOAD_REQUEST,
-  id: composeId,
-  skipLoading: true,
-});
-
-const uploadComposeProgress = (composeId: string, loaded: number, total: number) => ({
-  type: COMPOSE_UPLOAD_PROGRESS,
-  id: composeId,
-  loaded: loaded,
-  total: total,
-});
-
-const uploadComposeSuccess = (composeId: string, media: APIEntity, file: File) => ({
-  type: COMPOSE_UPLOAD_SUCCESS,
-  id: composeId,
-  media: media,
-  file,
-  skipLoading: true,
-});
-
-const uploadComposeFail = (composeId: string, error: AxiosError | true) => ({
-  type: COMPOSE_UPLOAD_FAIL,
-  id: composeId,
-  error: error,
-  skipLoading: true,
-});
-
 const undoUploadCompose = (composeId: string, media_id: string) => ({
   type: COMPOSE_UPLOAD_UNDO,
   id: composeId,
@@ -554,8 +507,8 @@ const setGroupTimelineVisible = (composeId: string, groupTimelineVisible: boolea
 });
 
 const clearComposeSuggestions = (composeId: string) => {
-  if (cancelFetchComposeSuggestionsAccounts) {
-    cancelFetchComposeSuggestionsAccounts();
+  if (cancelFetchComposeSuggestions) {
+    cancelFetchComposeSuggestions();
   }
   return {
     type: COMPOSE_SUGGESTIONS_CLEAR,
@@ -564,12 +517,12 @@ const clearComposeSuggestions = (composeId: string) => {
 };
 
 const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId, token) => {
-  if (cancelFetchComposeSuggestionsAccounts) {
-    cancelFetchComposeSuggestionsAccounts(composeId);
+  if (cancelFetchComposeSuggestions) {
+    cancelFetchComposeSuggestions(composeId);
   }
   api(getState).get('/api/v1/accounts/search', {
     cancelToken: new CancelToken(cancel => {
-      cancelFetchComposeSuggestionsAccounts = cancel;
+      cancelFetchComposeSuggestions = cancel;
     }),
     params: {
       q: token.slice(1),
@@ -594,10 +547,37 @@ const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => Ro
 };
 
 const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
-  const state = getState();
-  const currentTrends = state.trends.items;
+  if (cancelFetchComposeSuggestions) {
+    cancelFetchComposeSuggestions(composeId);
+  }
 
-  dispatch(updateSuggestionTags(composeId, token, currentTrends));
+  const state = getState();
+
+  const instance = state.instance;
+  const { trends } = getFeatures(instance);
+
+  if (trends) {
+    const currentTrends = state.trends.items;
+
+    return dispatch(updateSuggestionTags(composeId, token, currentTrends));
+  }
+
+  api(getState).get('/api/v2/search', {
+    cancelToken: new CancelToken(cancel => {
+      cancelFetchComposeSuggestions = cancel;
+    }),
+    params: {
+      q: token.slice(1),
+      limit: 4,
+      type: 'hashtags',
+    },
+  }).then(response => {
+    dispatch(updateSuggestionTags(composeId, token, response.data?.hashtags.map(normalizeTag)));
+  }).catch(error => {
+    if (!isCancel(error)) {
+      toast.showAlertForError(error);
+    }
+  });
 };
 
 const fetchComposeSuggestions = (composeId: string, token: string) =>
@@ -675,11 +655,11 @@ const selectComposeSuggestion = (composeId: string, position: number, token: str
     dispatch(action);
   };
 
-const updateSuggestionTags = (composeId: string, token: string, currentTrends: ImmutableList<Tag>) => ({
+const updateSuggestionTags = (composeId: string, token: string, tags: ImmutableList<Tag>) => ({
   type: COMPOSE_SUGGESTION_TAGS_UPDATE,
   id: composeId,
   token,
-  currentTrends,
+  tags,
 });
 
 const updateTagHistory = (composeId: string, tags: string[]) => ({
@@ -861,6 +841,12 @@ const eventDiscussionCompose = (composeId: string, status: Status) =>
     });
   };
 
+const setEditorState = (composeId: string, editorState: EditorState | string | null) => ({
+  type: COMPOSE_EDITOR_STATE_SET,
+  id: composeId,
+  editorState: editorState,
+});
+
 type ComposeAction =
   ComposeSetStatusAction
   | ReturnType<typeof changeCompose>
@@ -906,6 +892,7 @@ type ComposeAction =
   | ComposeAddToMentionsAction
   | ComposeRemoveFromMentionsAction
   | ComposeEventReplyAction
+  | ReturnType<typeof setEditorState>
 
 export {
   COMPOSE_CHANGE,
@@ -952,6 +939,7 @@ export {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
+  COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   setComposeToStatus,
   changeCompose,
@@ -968,6 +956,7 @@ export {
   submitComposeRequest,
   submitComposeSuccess,
   submitComposeFail,
+  uploadFile,
   uploadCompose,
   changeUploadCompose,
   changeUploadComposeRequest,
@@ -1006,5 +995,6 @@ export {
   addToMentions,
   removeFromMentions,
   eventDiscussionCompose,
+  setEditorState,
   type ComposeAction,
 };

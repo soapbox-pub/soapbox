@@ -20,7 +20,7 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   scrollKey: string
   /** List of status IDs to display. */
   statusIds: ImmutableOrderedSet<string>
-  /** Last _unfiltered_ status ID (maxId) for pagination.  */
+  /** Last _unfiltered_ status ID (maxId) for pagination. */
   lastStatusId?: string
   /** Pinned statuses to show at the top of the feed. */
   featuredStatusIds?: ImmutableOrderedSet<string>

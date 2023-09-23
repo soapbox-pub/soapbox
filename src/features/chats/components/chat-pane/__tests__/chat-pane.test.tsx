@@ -5,7 +5,7 @@ import { __stub } from 'soapbox/api';
 import { ChatContext } from 'soapbox/contexts/chat-context';
 import { StatProvider } from 'soapbox/contexts/stat-context';
 import chats from 'soapbox/jest/fixtures/chats.json';
-import {  render, screen, waitFor } from 'soapbox/jest/test-helpers';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
 
 import ChatPane from '../chat-pane';
 

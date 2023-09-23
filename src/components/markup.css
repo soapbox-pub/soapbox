@@ -92,9 +92,9 @@
   @apply w-5 h-5 m-0;
 }
 
-/* Hide Markdown images (Pleroma) */
+/* Markdown inline images (Pleroma) */
 [data-markup] img:not(.emojione) {
-  @apply hidden;
+  @apply max-h-[500px] mx-auto rounded-sm;
 }
 
 /* User setting to underline links */

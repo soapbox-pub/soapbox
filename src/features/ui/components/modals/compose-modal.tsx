@@ -86,6 +86,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
       <ComposeForm
         id={composeId}
         extra={<ComposeFormGroupToggle composeId={composeId} groupId={groupId} />}
+        autoFocus
       />
     </Modal>
   );

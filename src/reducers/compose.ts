@@ -51,9 +51,11 @@ import {
   COMPOSE_REMOVE_FROM_MENTIONS,
   COMPOSE_SET_STATUS,
   COMPOSE_EVENT_REPLY,
+  COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   ComposeAction,
 } from '../actions/compose';
+import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET, type EventsAction } from '../actions/events';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME, SettingsAction } from '../actions/settings';
 import { TIMELINE_DELETE, TimelineAction } from '../actions/timelines';
@@ -80,6 +82,7 @@ const PollRecord = ImmutableRecord({
 export const ReducerCompose = ImmutableRecord({
   caretPosition: null as number | null,
   content_type: 'text/plain',
+  editorState: null as string | null,
   focusDate: null as Date | null,
   group_id: null as string | null,
   idempotencyKey: '',
@@ -180,11 +183,11 @@ const insertSuggestion = (compose: Compose, position: number, token: string | nu
   });
 };
 
-const updateSuggestionTags = (compose: Compose, token: string, currentTrends: ImmutableList<Tag>) => {
+const updateSuggestionTags = (compose: Compose, token: string, tags: ImmutableList<Tag>) => {
   const prefix = token.slice(1);
 
   return compose.merge({
-    suggestions: ImmutableList(currentTrends
+    suggestions: ImmutableList(tags
       .filter((tag) => tag.get('name').toLowerCase().startsWith(prefix.toLowerCase()))
       .slice(0, 4)
       .map((tag) => '#' + tag.name)),
@@ -273,7 +276,7 @@ export const initialState: State = ImmutableMap({
   default: ReducerCompose({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }),
 });
 
-export default function compose(state = initialState, action: ComposeAction | MeAction | SettingsAction | TimelineAction) {
+export default function compose(state = initialState, action: ComposeAction | EventsAction | MeAction | SettingsAction | TimelineAction) {
   switch (action.type) {
     case COMPOSE_TYPE_CHANGE:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
@@ -409,7 +412,7 @@ export default function compose(state = initialState, action: ComposeAction | Me
     case COMPOSE_SUGGESTION_SELECT:
       return updateCompose(state, action.id, compose => insertSuggestion(compose, action.position, action.token, action.completion, action.path));
     case COMPOSE_SUGGESTION_TAGS_UPDATE:
-      return updateCompose(state, action.id, compose => updateSuggestionTags(compose, action.token, action.currentTrends));
+      return updateCompose(state, action.id, compose => updateSuggestionTags(compose, action.token, action.tags));
     case COMPOSE_TAG_HISTORY_UPDATE:
       return updateCompose(state, action.id, compose => compose.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>));
     case TIMELINE_DELETE:
@@ -511,6 +514,12 @@ export default function compose(state = initialState, action: ComposeAction | Me
       return updateCompose(state, 'default', compose => importAccount(compose, action.me));
     case SETTING_CHANGE:
       return updateCompose(state, 'default', compose => updateSetting(compose, action.path, action.value));
+    case COMPOSE_EDITOR_STATE_SET:
+      return updateCompose(state, action.id, compose => compose.set('editorState', action.editorState as string));
+    case EVENT_COMPOSE_CANCEL:
+      return updateCompose(state, 'event-compose-modal', compose => compose.set('text', ''));
+    case EVENT_FORM_SET:
+      return updateCompose(state, 'event-compose-modal', compose => compose.set('text', action.text));
     default:
       return state;
   }

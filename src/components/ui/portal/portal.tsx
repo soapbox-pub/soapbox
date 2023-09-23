@@ -15,7 +15,6 @@ const Portal: React.FC<IPortal> = ({ children }) => {
     setIsRendered(true);
   }, []);
 
-
   if (!isRendered) {
     return null;
   }

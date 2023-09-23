@@ -3,9 +3,12 @@ import { useHistory } from 'react-router-dom';
 
 import { resetCompose } from 'soapbox/actions/compose';
 import { openModal } from 'soapbox/actions/modals';
+import { FOCUS_EDITOR_COMMAND } from 'soapbox/features/compose/editor/plugins/focus-plugin';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 
 import { HotKeys } from '../components/hotkeys';
+
+import type { LexicalEditor } from 'lexical';
 
 const keyMap = {
   help: '?',
@@ -51,10 +54,10 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
   const handleHotkeyNew = (e?: KeyboardEvent) => {
     e?.preventDefault();
 
-    const element = node.current?.querySelector('textarea#compose-textarea') as HTMLTextAreaElement;
+    const element = node.current?.querySelector('div[data-lexical-editor="true"]') as HTMLTextAreaElement;
 
     if (element) {
-      element.focus();
+      ((element as any).__lexicalEditor as LexicalEditor).dispatchCommand(FOCUS_EDITOR_COMMAND, undefined);
     } else {
       dispatch(openModal('COMPOSE'));
     }
@@ -91,7 +94,7 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
 
     // @ts-ignore
     hotkeys.current.__mousetrap__.stopCallback = (_e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName);
+      return ['TEXTAREA', 'SELECT', 'INPUT', 'EM-EMOJI-PICKER'].includes(element.tagName) || !!element.closest('[contenteditable]');
     };
   };
 

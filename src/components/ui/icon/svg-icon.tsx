@@ -1,7 +1,7 @@
 import React from 'react';
-import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
+import InlineSVG, { Props as InlineSVGProps } from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
-interface ISvgIcon {
+interface ISvgIcon extends InlineSVGProps {
   /** Class name for the <svg> */
   className?: string
   /** Tooltip text for the icon. */

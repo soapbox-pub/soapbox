@@ -2,11 +2,9 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import api, { getLinks } from 'soapbox/api';
 import toast from 'soapbox/toast';
-import { formatBytes } from 'soapbox/utils/media';
-import resizeImage from 'soapbox/utils/resize-image';
 
 import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
-import { fetchMedia, uploadMedia } from './media';
+import { uploadFile } from './media';
 import { closeModal, openModal } from './modals';
 import {
   STATUS_FETCH_SOURCE_FAIL,
@@ -15,73 +13,74 @@ import {
 } from './statuses';
 
 import type { AxiosError } from 'axios';
+import type { ReducerStatus } from 'soapbox/reducers/statuses';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
-const LOCATION_SEARCH_REQUEST = 'LOCATION_SEARCH_REQUEST';
-const LOCATION_SEARCH_SUCCESS = 'LOCATION_SEARCH_SUCCESS';
-const LOCATION_SEARCH_FAIL    = 'LOCATION_SEARCH_FAIL';
+const LOCATION_SEARCH_REQUEST = 'LOCATION_SEARCH_REQUEST' as const;
+const LOCATION_SEARCH_SUCCESS = 'LOCATION_SEARCH_SUCCESS' as const;
+const LOCATION_SEARCH_FAIL    = 'LOCATION_SEARCH_FAIL' as const;
 
-const EDIT_EVENT_NAME_CHANGE              = 'EDIT_EVENT_NAME_CHANGE';
-const EDIT_EVENT_DESCRIPTION_CHANGE       = 'EDIT_EVENT_DESCRIPTION_CHANGE';
-const EDIT_EVENT_START_TIME_CHANGE        = 'EDIT_EVENT_START_TIME_CHANGE';
-const EDIT_EVENT_HAS_END_TIME_CHANGE      = 'EDIT_EVENT_HAS_END_TIME_CHANGE';
-const EDIT_EVENT_END_TIME_CHANGE          = 'EDIT_EVENT_END_TIME_CHANGE';
-const EDIT_EVENT_APPROVAL_REQUIRED_CHANGE = 'EDIT_EVENT_APPROVAL_REQUIRED_CHANGE';
-const EDIT_EVENT_LOCATION_CHANGE          = 'EDIT_EVENT_LOCATION_CHANGE';
+const EDIT_EVENT_NAME_CHANGE              = 'EDIT_EVENT_NAME_CHANGE' as const;
+const EDIT_EVENT_DESCRIPTION_CHANGE       = 'EDIT_EVENT_DESCRIPTION_CHANGE' as const;
+const EDIT_EVENT_START_TIME_CHANGE        = 'EDIT_EVENT_START_TIME_CHANGE' as const;
+const EDIT_EVENT_HAS_END_TIME_CHANGE      = 'EDIT_EVENT_HAS_END_TIME_CHANGE' as const;
+const EDIT_EVENT_END_TIME_CHANGE          = 'EDIT_EVENT_END_TIME_CHANGE' as const;
+const EDIT_EVENT_APPROVAL_REQUIRED_CHANGE = 'EDIT_EVENT_APPROVAL_REQUIRED_CHANGE' as const;
+const EDIT_EVENT_LOCATION_CHANGE          = 'EDIT_EVENT_LOCATION_CHANGE' as const;
 
-const EVENT_BANNER_UPLOAD_REQUEST  = 'EVENT_BANNER_UPLOAD_REQUEST';
-const EVENT_BANNER_UPLOAD_PROGRESS = 'EVENT_BANNER_UPLOAD_PROGRESS';
-const EVENT_BANNER_UPLOAD_SUCCESS  = 'EVENT_BANNER_UPLOAD_SUCCESS';
-const EVENT_BANNER_UPLOAD_FAIL     = 'EVENT_BANNER_UPLOAD_FAIL';
-const EVENT_BANNER_UPLOAD_UNDO     = 'EVENT_BANNER_UPLOAD_UNDO';
+const EVENT_BANNER_UPLOAD_REQUEST  = 'EVENT_BANNER_UPLOAD_REQUEST' as const;
+const EVENT_BANNER_UPLOAD_PROGRESS = 'EVENT_BANNER_UPLOAD_PROGRESS' as const;
+const EVENT_BANNER_UPLOAD_SUCCESS  = 'EVENT_BANNER_UPLOAD_SUCCESS' as const;
+const EVENT_BANNER_UPLOAD_FAIL     = 'EVENT_BANNER_UPLOAD_FAIL' as const;
+const EVENT_BANNER_UPLOAD_UNDO     = 'EVENT_BANNER_UPLOAD_UNDO' as const;
 
-const EVENT_SUBMIT_REQUEST = 'EVENT_SUBMIT_REQUEST';
-const EVENT_SUBMIT_SUCCESS = 'EVENT_SUBMIT_SUCCESS';
-const EVENT_SUBMIT_FAIL    = 'EVENT_SUBMIT_FAIL';
+const EVENT_SUBMIT_REQUEST = 'EVENT_SUBMIT_REQUEST' as const;
+const EVENT_SUBMIT_SUCCESS = 'EVENT_SUBMIT_SUCCESS' as const;
+const EVENT_SUBMIT_FAIL    = 'EVENT_SUBMIT_FAIL' as const;
 
-const EVENT_JOIN_REQUEST = 'EVENT_JOIN_REQUEST';
-const EVENT_JOIN_SUCCESS = 'EVENT_JOIN_SUCCESS';
-const EVENT_JOIN_FAIL    = 'EVENT_JOIN_FAIL';
+const EVENT_JOIN_REQUEST = 'EVENT_JOIN_REQUEST' as const;
+const EVENT_JOIN_SUCCESS = 'EVENT_JOIN_SUCCESS' as const;
+const EVENT_JOIN_FAIL    = 'EVENT_JOIN_FAIL' as const;
 
-const EVENT_LEAVE_REQUEST = 'EVENT_LEAVE_REQUEST';
-const EVENT_LEAVE_SUCCESS = 'EVENT_LEAVE_SUCCESS';
-const EVENT_LEAVE_FAIL    = 'EVENT_LEAVE_FAIL';
+const EVENT_LEAVE_REQUEST = 'EVENT_LEAVE_REQUEST' as const;
+const EVENT_LEAVE_SUCCESS = 'EVENT_LEAVE_SUCCESS' as const;
+const EVENT_LEAVE_FAIL    = 'EVENT_LEAVE_FAIL' as const;
 
-const EVENT_PARTICIPATIONS_FETCH_REQUEST = 'EVENT_PARTICIPATIONS_FETCH_REQUEST';
-const EVENT_PARTICIPATIONS_FETCH_SUCCESS = 'EVENT_PARTICIPATIONS_FETCH_SUCCESS';
-const EVENT_PARTICIPATIONS_FETCH_FAIL    = 'EVENT_PARTICIPATIONS_FETCH_FAIL';
+const EVENT_PARTICIPATIONS_FETCH_REQUEST = 'EVENT_PARTICIPATIONS_FETCH_REQUEST' as const;
+const EVENT_PARTICIPATIONS_FETCH_SUCCESS = 'EVENT_PARTICIPATIONS_FETCH_SUCCESS' as const;
+const EVENT_PARTICIPATIONS_FETCH_FAIL    = 'EVENT_PARTICIPATIONS_FETCH_FAIL' as const;
 
-const EVENT_PARTICIPATIONS_EXPAND_REQUEST = 'EVENT_PARTICIPATIONS_EXPAND_REQUEST';
-const EVENT_PARTICIPATIONS_EXPAND_SUCCESS = 'EVENT_PARTICIPATIONS_EXPAND_SUCCESS';
-const EVENT_PARTICIPATIONS_EXPAND_FAIL    = 'EVENT_PARTICIPATIONS_EXPAND_FAIL';
+const EVENT_PARTICIPATIONS_EXPAND_REQUEST = 'EVENT_PARTICIPATIONS_EXPAND_REQUEST' as const;
+const EVENT_PARTICIPATIONS_EXPAND_SUCCESS = 'EVENT_PARTICIPATIONS_EXPAND_SUCCESS' as const;
+const EVENT_PARTICIPATIONS_EXPAND_FAIL    = 'EVENT_PARTICIPATIONS_EXPAND_FAIL' as const;
 
-const EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST = 'EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST';
-const EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS';
-const EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL';
+const EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST = 'EVENT_PARTICIPATION_REQUESTS_FETCH_REQUEST' as const;
+const EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS' as const;
+const EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL' as const;
 
-const EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST';
-const EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS';
-const EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL';
+const EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_REQUEST' as const;
+const EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_SUCCESS' as const;
+const EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL    = 'EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL' as const;
 
-const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST';
-const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS';
-const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL    = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL';
+const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_REQUEST' as const;
+const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS' as const;
+const EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL    = 'EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL' as const;
 
-const EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST = 'EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST';
-const EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS = 'EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS';
-const EVENT_PARTICIPATION_REQUEST_REJECT_FAIL    = 'EVENT_PARTICIPATION_REQUEST_REJECT_FAIL';
+const EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST = 'EVENT_PARTICIPATION_REQUEST_REJECT_REQUEST' as const;
+const EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS = 'EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS' as const;
+const EVENT_PARTICIPATION_REQUEST_REJECT_FAIL    = 'EVENT_PARTICIPATION_REQUEST_REJECT_FAIL' as const;
 
-const EVENT_COMPOSE_CANCEL = 'EVENT_COMPOSE_CANCEL';
+const EVENT_COMPOSE_CANCEL = 'EVENT_COMPOSE_CANCEL' as const;
 
-const EVENT_FORM_SET = 'EVENT_FORM_SET';
+const EVENT_FORM_SET = 'EVENT_FORM_SET' as const;
 
-const RECENT_EVENTS_FETCH_REQUEST = 'RECENT_EVENTS_FETCH_REQUEST';
-const RECENT_EVENTS_FETCH_SUCCESS = 'RECENT_EVENTS_FETCH_SUCCESS';
-const RECENT_EVENTS_FETCH_FAIL = 'RECENT_EVENTS_FETCH_FAIL';
-const JOINED_EVENTS_FETCH_REQUEST = 'JOINED_EVENTS_FETCH_REQUEST';
-const JOINED_EVENTS_FETCH_SUCCESS = 'JOINED_EVENTS_FETCH_SUCCESS';
-const JOINED_EVENTS_FETCH_FAIL = 'JOINED_EVENTS_FETCH_FAIL';
+const RECENT_EVENTS_FETCH_REQUEST = 'RECENT_EVENTS_FETCH_REQUEST' as const;
+const RECENT_EVENTS_FETCH_SUCCESS = 'RECENT_EVENTS_FETCH_SUCCESS' as const;
+const RECENT_EVENTS_FETCH_FAIL = 'RECENT_EVENTS_FETCH_FAIL' as const;
+const JOINED_EVENTS_FETCH_REQUEST = 'JOINED_EVENTS_FETCH_REQUEST' as const;
+const JOINED_EVENTS_FETCH_SUCCESS = 'JOINED_EVENTS_FETCH_SUCCESS' as const;
+const JOINED_EVENTS_FETCH_FAIL = 'JOINED_EVENTS_FETCH_FAIL' as const;
 
 const noOp = () => new Promise(f => f(undefined));
 
@@ -153,52 +152,21 @@ const changeEditEventLocation = (value: string | null) =>
   };
 
 const uploadEventBanner = (file: File, intl: IntlShape) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
-
+  (dispatch: AppDispatch) => {
     let progress = 0;
 
     dispatch(uploadEventBannerRequest());
 
-    if (maxImageSize && (file.size > maxImageSize)) {
-      const limit = formatBytes(maxImageSize);
-      const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
-      toast.error(message);
-      dispatch(uploadEventBannerFail(true));
-      return;
-    }
-
-    resizeImage(file).then(file => {
-      const data = new FormData();
-      data.append('file', file);
-      // Account for disparity in size of original image and resized data
-
-      const onUploadProgress = ({ loaded }: any) => {
+    dispatch(uploadFile(
+      file,
+      intl,
+      (data) => dispatch(uploadEventBannerSuccess(data, file)),
+      (error) => dispatch(uploadEventBannerFail(error)),
+      ({ loaded }: any) => {
         progress = loaded;
         dispatch(uploadEventBannerProgress(progress));
-      };
-
-      return dispatch(uploadMedia(data, onUploadProgress))
-        .then(({ status, data }) => {
-          // If server-side processing of the media attachment has not completed yet,
-          // poll the server until it is, before showing the media attachment as uploaded
-          if (status === 200) {
-            dispatch(uploadEventBannerSuccess(data, file));
-          } else if (status === 202) {
-            const poll = () => {
-              dispatch(fetchMedia(data.id)).then(({ status, data }) => {
-                if (status === 200) {
-                  dispatch(uploadEventBannerSuccess(data, file));
-                } else if (status === 206) {
-                  setTimeout(() => poll(), 1000);
-                }
-              }).catch(error => dispatch(uploadEventBannerFail(error)));
-            };
-
-            poll();
-          }
-        });
-    }).catch(error => dispatch(uploadEventBannerFail(error)));
+      },
+    ));
   };
 
 const uploadEventBannerRequest = () => ({
@@ -576,6 +544,13 @@ const cancelEventCompose = () => ({
   type: EVENT_COMPOSE_CANCEL,
 });
 
+interface EventFormSetAction {
+  type: typeof EVENT_FORM_SET
+  status: ReducerStatus
+  text: string
+  location: Record<string, any>
+}
+
 const editEvent = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   const status = getState().statuses.get(id)!;
 
@@ -612,7 +587,7 @@ const fetchRecentEvents = () =>
         next: next ? next.uri : null,
       });
     }).catch(error => {
-      dispatch({ type: RECENT_EVENTS_FETCH_FAIL,  error });
+      dispatch({ type: RECENT_EVENTS_FETCH_FAIL, error });
     });
   };
 
@@ -633,9 +608,13 @@ const fetchJoinedEvents = () =>
         next: next ? next.uri : null,
       });
     }).catch(error => {
-      dispatch({ type: JOINED_EVENTS_FETCH_FAIL,  error });
+      dispatch({ type: JOINED_EVENTS_FETCH_FAIL, error });
     });
   };
+
+type EventsAction =
+  | ReturnType<typeof cancelEventCompose>
+  | EventFormSetAction;
 
 export {
   LOCATION_SEARCH_REQUEST,
@@ -743,4 +722,5 @@ export {
   editEvent,
   fetchRecentEvents,
   fetchJoinedEvents,
+  type EventsAction,
 };

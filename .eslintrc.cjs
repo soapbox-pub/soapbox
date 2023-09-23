@@ -20,8 +20,8 @@ module.exports = {
   },
 
   plugins: [
-    'react',
     'jsdoc',
+    'react',
     'jsx-a11y',
     'import',
     'promise',

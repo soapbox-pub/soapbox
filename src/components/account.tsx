@@ -76,7 +76,7 @@ export interface IAccount {
   actionAlignment?: 'center' | 'top'
   actionIcon?: string
   actionTitle?: string
-  /** Override other actions for specificity like mute/unmute.  */
+  /** Override other actions for specificity like mute/unmute. */
   actionType?: 'muting' | 'blocking' | 'follow_request'
   avatarSize?: number
   hidden?: boolean

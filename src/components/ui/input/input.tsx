@@ -84,7 +84,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={clsx('text-base placeholder:text-gray-600 dark:placeholder:text-gray-600', {
-            'block w-full sm:text-sm dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
+            'block w-full sm:text-sm ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
               ['normal', 'search'].includes(theme),
             'text-gray-900 dark:text-gray-100': !props.disabled,
             'text-gray-600': props.disabled,

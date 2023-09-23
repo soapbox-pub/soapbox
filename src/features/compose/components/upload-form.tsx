@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import { HStack } from 'soapbox/components/ui';
 import { useCompose } from 'soapbox/hooks';
 
 import Upload from './upload';
@@ -14,19 +15,16 @@ interface IUploadForm {
 
 const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {
   const mediaIds = useCompose(composeId).media_attachments.map((item: AttachmentEntity) => item.id);
-  const classes = clsx('compose-form__uploads-wrapper', {
-    'contains-media': mediaIds.size !== 0,
-  });
 
   return (
-    <div className='compose-form__upload-wrapper'>
+    <div className='overflow-hidden'>
       <UploadProgress composeId={composeId} />
 
-      <div className={classes}>
+      <HStack wrap className={clsx('overflow-hidden', mediaIds.size !== 0 && 'p-1')}>
         {mediaIds.map((id: string) => (
           <Upload id={id} key={id} composeId={composeId} />
         ))}
-      </div>
+      </HStack>
     </div>
   );
 };

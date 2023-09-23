@@ -2,7 +2,6 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
-
 import { ChatContext } from 'soapbox/contexts/chat-context';
 import { buildAccount } from 'soapbox/jest/factory';
 import { normalizeChatMessage, normalizeInstance } from 'soapbox/normalizers';

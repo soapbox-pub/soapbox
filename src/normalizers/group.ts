@@ -140,7 +140,6 @@ const normalizeLocked = (group: ImmutableMap<string, any>) => {
   return group.set('locked', locked);
 };
 
-
 /** Rewrite `<p></p>` to empty string. */
 const fixNote = (group: ImmutableMap<string, any>) => {
   if (group.get('note') === '<p></p>') {

@@ -5,16 +5,21 @@ import { joinPublicPath } from 'soapbox/utils/static';
 
 interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
   /** Unicode emoji character. */
-  emoji: string
+  emoji?: string
 }
 
 /** A single emoji image. */
 const Emoji: React.FC<IEmoji> = (props): JSX.Element | null => {
   const { emoji, alt, src, ...rest } = props;
-  const codepoints = toCodePoints(removeVS16s(emoji));
-  const filename = codepoints.join('-');
 
-  if (!filename) return null;
+  let filename;
+
+  if (emoji) {
+    const codepoints = toCodePoints(removeVS16s(emoji));
+    filename = codepoints.join('-');
+  }
+
+  if (!filename && !src) return null;
 
   return (
     <img

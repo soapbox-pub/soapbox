@@ -374,7 +374,7 @@ describe('compose reducer', () => {
       type: actions.COMPOSE_SUGGESTION_TAGS_UPDATE,
       id: 'home',
       token: 'aaadken3',
-      currentTrends: ImmutableList([
+      tags: ImmutableList([
         TagRecord({ name: 'hashtag' }),
       ]),
     };

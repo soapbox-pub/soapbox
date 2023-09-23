@@ -162,7 +162,7 @@ const expandDomainBlocksSuccess = (domains: string[], next: string | null) => ({
   next,
 });
 
-const expandDomainBlocksFail = (error: AxiosError)  => ({
+const expandDomainBlocksFail = (error: AxiosError) => ({
   type: DOMAIN_BLOCKS_EXPAND_FAIL,
   error,
 });

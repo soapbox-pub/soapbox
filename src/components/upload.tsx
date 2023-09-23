@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon-button';
+import { HStack, IconButton } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional-motion';
 import { useAppDispatch } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
@@ -57,6 +57,7 @@ export const MIMETYPE_ICONS: Record<string, string> = {
 const messages = defineMessages({
   description: { id: 'upload_form.description', defaultMessage: 'Describe for the visually impaired' },
   delete: { id: 'upload_form.undo', defaultMessage: 'Delete' },
+  preview: { id: 'upload_form.preview', defaultMessage: 'Preview' },
 });
 
 interface IUpload {
@@ -152,30 +153,34 @@ const Upload: React.FC<IUpload> = ({
       <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
         {({ scale }) => (
           <div
-            className={clsx('compose-form__upload-thumbnail',  mediaType)}
+            className={clsx('compose-form__upload-thumbnail', mediaType)}
             style={{
               transform: `scale(${scale})`,
               backgroundImage: mediaType === 'image' ? `url(${media.preview_url})` : undefined,
               backgroundPosition: typeof x === 'number' && typeof y === 'number' ? `${x}% ${y}%` : undefined }}
           >
-            <div className={clsx('compose-form__upload__actions', { active })}>
-              {onDelete && (
-                <IconButton
-                  onClick={handleUndoClick}
-                  src={require('@tabler/icons/x.svg')}
-                  text={<FormattedMessage id='upload_form.undo' defaultMessage='Delete' />}
-                />
-              )}
-
-              {/* Only display the "Preview" button for a valid attachment with a URL */}
+            <HStack className='absolute right-2 top-2 z-10' space={2}>
               {(withPreview && mediaType !== 'unknown' && Boolean(media.url)) && (
                 <IconButton
                   onClick={handleOpenModal}
                   src={require('@tabler/icons/zoom-in.svg')}
-                  text={<FormattedMessage id='upload_form.preview' defaultMessage='Preview' />}
+                  theme='dark'
+                  className='hover:scale-105 hover:bg-gray-900'
+                  iconClassName='h-5 w-5'
+                  title={intl.formatMessage(messages.preview)}
                 />
               )}
-            </div>
+              {onDelete && (
+                <IconButton
+                  onClick={handleUndoClick}
+                  src={require('@tabler/icons/x.svg')}
+                  theme='dark'
+                  className='hover:scale-105 hover:bg-gray-900'
+                  iconClassName='h-5 w-5'
+                  title={intl.formatMessage(messages.delete)}
+                />
+              )}
+            </HStack>
 
             {onDescriptionChange && (
               <div className={clsx('compose-form__upload-description', { active })}>

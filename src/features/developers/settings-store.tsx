@@ -98,7 +98,7 @@ const SettingsStore: React.FC = () => {
         </FormActions>
       </Form>
 
-      <CardHeader>
+      <CardHeader className='mb-4'>
         <CardTitle title={intl.formatMessage(messages.advanced)} />
       </CardHeader>
 

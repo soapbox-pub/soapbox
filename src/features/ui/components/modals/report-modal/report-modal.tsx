@@ -27,8 +27,8 @@ const messages = defineMessages({
   reportContext: { id: 'report.chatMessage.context', defaultMessage: 'When reporting a user’s message, the five messages before and five messages after the one selected will be passed along to our moderation team for context.' },
   reportMessage: { id: 'report.chatMessage.title', defaultMessage: 'Report message' },
   reportGroup: { id: 'report.group.title', defaultMessage: 'Report Group' },
-  cancel: {  id: 'common.cancel', defaultMessage: 'Cancel' },
-  previous: {  id: 'report.previous', defaultMessage: 'Previous' },
+  cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
+  previous: { id: 'report.previous', defaultMessage: 'Previous' },
 });
 
 enum Steps {

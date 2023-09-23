@@ -641,3 +641,7 @@ export function FollowedTags() {
 export function AccountNotePanel() {
   return import('../components/panels/account-note-panel');
 }
+
+export function ComposeEditor() {
+  return import('../../compose/editor');
+}

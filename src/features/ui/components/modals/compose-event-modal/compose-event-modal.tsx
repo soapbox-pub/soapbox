@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -21,11 +21,11 @@ import { closeModal, openModal } from 'soapbox/actions/modals';
 import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
 import LocationSearch from 'soapbox/components/location-search';
 import { checkEventComposeContent } from 'soapbox/components/modal-root';
-import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Textarea, Toggle } from 'soapbox/components/ui';
+import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
 import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
-import { DatePicker } from 'soapbox/features/ui/util/async-components';
+import { ComposeEditor, DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import UploadButton from './upload-button';
@@ -94,13 +94,14 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const editorStateRef = useRef<string>(null);
+
   const [tab, setTab] = useState<'edit' | 'pending'>('edit');
 
   const banner = useAppSelector((state) => state.compose_event.banner);
   const isUploading = useAppSelector((state) => state.compose_event.is_uploading);
 
   const name = useAppSelector((state) => state.compose_event.name);
-  const description = useAppSelector((state) => state.compose_event.status);
   const startTime = useAppSelector((state) => state.compose_event.start_time);
   const endTime = useAppSelector((state) => state.compose_event.end_time);
   const approvalRequired = useAppSelector((state) => state.compose_event.approval_required);
@@ -112,10 +113,6 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
 
   const onChangeName: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     dispatch(changeEditEventName(target.value));
-  };
-
-  const onChangeDescription: React.ChangeEventHandler<HTMLTextAreaElement> = ({ target }) => {
-    dispatch(changeEditEventDescription(target.value));
   };
 
   const onChangeStartTime = (date: Date) => {
@@ -170,6 +167,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   };
 
   const handleSubmit = () => {
+    dispatch(changeEditEventDescription(editorStateRef.current!));
     dispatch(submitEvent());
   };
 
@@ -236,14 +234,19 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       </FormGroup>
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.description_label' defaultMessage='Event description' />}
-        hintText={<FormattedMessage id='compose_event.fields.description_hint' defaultMessage='Markdown syntax is supported' />}
       >
-        <Textarea
-          autoComplete='off'
-          placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
-          value={description}
-          onChange={onChangeDescription}
-        />
+        <BundleContainer fetchComponent={ComposeEditor}>
+          {(Component: any) => (
+            <Component
+              ref={editorStateRef}
+              className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500 sm:text-sm'
+              placeholderClassName='pt-2'
+              composeId='compose-event-modal'
+              placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
+              handleSubmit={handleSubmit}
+            />
+          )}
+        </BundleContainer>
       </FormGroup>
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.location_label' defaultMessage='Event location' />}
