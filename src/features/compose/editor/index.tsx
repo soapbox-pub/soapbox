@@ -5,6 +5,7 @@
  */
 
 import { AutoLinkPlugin, createLinkMatcherWithRegExp } from '@lexical/react/LexicalAutoLinkPlugin';
+import { ClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
 import { LexicalComposer, InitialConfigType } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
@@ -13,7 +14,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import clsx from 'clsx';
-import { $createParagraphNode, $createTextNode, $getRoot, type EditorState } from 'lexical';
+import { $createParagraphNode, $createTextNode, $getRoot, type LexicalEditor } from 'lexical';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -66,7 +67,7 @@ const theme: InitialConfigType['theme'] = {
   },
 };
 
-const ComposeEditor = React.forwardRef<EditorState, IComposeEditor>(({
+const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
   className,
   placeholderClassName,
   composeId,
@@ -157,7 +158,7 @@ const ComposeEditor = React.forwardRef<EditorState, IComposeEditor>(({
         <OnChangePlugin onChange={(_, editor) => {
           onChange?.(editor.getEditorState().read(() => $getRoot().getTextContent()));
           if (editorStateRef && typeof editorStateRef !== 'function') {
-            editorStateRef.current = editor.getEditorState();
+            editorStateRef.current = editor;
           }
         }}
         />
@@ -168,6 +169,7 @@ const ComposeEditor = React.forwardRef<EditorState, IComposeEditor>(({
         <AutoLinkPlugin matchers={LINK_MATCHERS} />
         <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
         <FocusPlugin autoFocus={autoFocus} />
+        <ClearEditorPlugin />
       </div>
     </LexicalComposer>
   );

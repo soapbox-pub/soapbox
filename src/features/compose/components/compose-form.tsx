@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type EditorState } from 'lexical';
+import { CLEAR_EDITOR_COMMAND, type LexicalEditor } from 'lexical';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -108,7 +108,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
-  const editorStateRef = useRef<EditorState>(null);
+  const editorRef = useRef<LexicalEditor>(null);
 
   const { isDraggedOver } = useDraggedFiles(formRef);
 
@@ -160,6 +160,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     }
 
     dispatch(submitCompose(id, history));
+    editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };
 
   const onSuggestionsClearRequested = () => {
@@ -315,7 +316,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
         <Bundle fetchComponent={ComposeEditor}>
           {(Component: any) => (
             <Component
-              ref={editorStateRef}
+              ref={editorRef}
               className='mt-2'
               composeId={id}
               condensed={condensed}
