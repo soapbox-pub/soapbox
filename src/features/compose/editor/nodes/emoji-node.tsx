@@ -61,8 +61,7 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
   }
 
   static importJSON(serializedNode: SerializedEmojiNode): EmojiNode {
-    const { name, src } =
-      serializedNode;
+    const { name, src } = serializedNode;
     const node = $createEmojiNode(name, src);
     return node;
   }
@@ -82,6 +81,10 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
 
   isTextEntity(): true {
     return true;
+  }
+
+  getTextContent(): string {
+    return this.__name;
   }
 
   decorate(): JSX.Element {
