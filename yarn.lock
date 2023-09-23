@@ -1709,7 +1709,7 @@
     "@lexical/selection" "0.11.3"
     "@lexical/utils" "0.11.3"
 
-"@lexical/code@0.11.3", "@lexical/code@^0.11.3":
+"@lexical/code@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/code/-/code-0.11.3.tgz#4a5ef193655557859c63dd4a54012c78580585fa"
   integrity sha512-BIMPd2op65iP4N9SkKIUVodZoWeSsnk6skNJ8UHBO/Rg0ZxyAqxLpnBhEgHq2QOoTBbEW6OEFtkc7/+f9LINZg==
@@ -1736,7 +1736,7 @@
   dependencies:
     "@lexical/utils" "0.11.3"
 
-"@lexical/html@0.11.3", "@lexical/html@^0.11.3":
+"@lexical/html@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/html/-/html-0.11.3.tgz#c02b38f512eb808726922c8215dd2374df6b77cc"
   integrity sha512-+8AYnxxml9PneZLkGfdTenqDjE2yD1ZfCmQLrD/L1TEn22OjZh4uvKVHb13wEhgUZTuLKF0PNdnuecko9ON/aQ==
@@ -1750,7 +1750,7 @@
   dependencies:
     "@lexical/utils" "0.11.3"
 
-"@lexical/list@0.11.3", "@lexical/list@^0.11.3":
+"@lexical/list@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/list/-/list-0.11.3.tgz#d158ac4b4b42d772b30a1cd2a42ca0462a5a154e"
   integrity sha512-Cs9071wDfqi4j1VgodceiR1jTHj13eCoEJDhr3e/FW0x5we7vfbTMtWlOWbveIoryAh+rQNgiD5e8SrAm6Zs3g==
@@ -1815,7 +1815,7 @@
     "@lexical/yjs" "0.11.3"
     react-error-boundary "^3.1.4"
 
-"@lexical/rich-text@0.11.3", "@lexical/rich-text@^0.11.3":
+"@lexical/rich-text@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/rich-text/-/rich-text-0.11.3.tgz#9501789bfe9671c220da7e95bf8589fa92cecf8c"
   integrity sha512-fBFs6wMS7GFLbk+mzIWtwpP+EmnTZZ5bHpveuQ5wXONBuUuLcsYF5KO7UhLxXNLmiViV6lxatZPavEzgZdW7oQ==
@@ -1825,7 +1825,7 @@
   resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.11.3.tgz#f7250fae305a84c6e264a413f5feab056aeabfa3"
   integrity sha512-15lQpcKT/vd7XZ5pnF1nb+kpKb72e9Yi1dVqieSxTeXkzt1cAZFKP3NB4RlhOKCv1N+glSBnjSxRwgsFfbD+NQ==
 
-"@lexical/table@0.11.3", "@lexical/table@^0.11.3":
+"@lexical/table@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/table/-/table-0.11.3.tgz#9b1980d828d7a588aaffa4cb8c6bb61401729034"
   integrity sha512-EyRnN39CSPsMceADBR7Kf+sBHNpNQlPEkn/52epeDSnakR6s80woyrA3kIzKo6mLB4afvoqdYc7RfR96M9JLIA==
