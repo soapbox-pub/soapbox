@@ -293,13 +293,11 @@ const AutosuggestPlugin = ({
 
   const handleSelectSuggestion: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
-
-    const index = e.currentTarget.getAttribute('data-index');
-
+    const index = Number(e.currentTarget.getAttribute('data-index'));
     return onSelectSuggestion(index);
   };
 
-  const onSelectSuggestion = (index: any) => {
+  const onSelectSuggestion = (index: number) => {
     const suggestion = suggestions.get(index) as AutoSuggestion;
 
     editor.update(() => {
@@ -349,15 +347,12 @@ const AutosuggestPlugin = ({
 
     if (['mention', 'hashtag'].includes(node.getType())) {
       const matchingString = node.getTextContent();
-
       return { leadOffset: 0, matchingString };
     }
 
     if (node.getType() === 'text') {
       const [leadOffset, matchingString] = textAtCursorMatchesToken(node.getTextContent(), (state._selection as RangeSelection)?.anchor?.offset, [':']);
-
       if (!leadOffset || !matchingString) return null;
-
       return { leadOffset, matchingString };
     }
 
@@ -536,7 +531,7 @@ const AutosuggestPlugin = ({
         COMMAND_PRIORITY_LOW,
       ),
     );
-  }, [editor, selectedSuggestion, resolution]);
+  }, [editor, suggestions, selectedSuggestion, resolution]);
 
   return resolution === null || editor === null ? null : (
     <LexicalPopoverMenu
