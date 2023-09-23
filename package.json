@@ -51,7 +51,7 @@
     "@fontsource/roboto-mono": "^5.0.0",
     "@gamestdio/websocket": "^0.3.2",
     "@lexical/clipboard": "^0.11.3",
-    "@lexical/code": "^0.11.3",
+    "@lexical/code": "^0.12.0",
     "@lexical/hashtag": "^0.11.3",
     "@lexical/html": "^0.11.3",
     "@lexical/link": "^0.11.3",
