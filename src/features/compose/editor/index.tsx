@@ -13,7 +13,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import clsx from 'clsx';
-import { $createParagraphNode, $createTextNode, $getRoot } from 'lexical';
+import { $createParagraphNode, $createTextNode, $getRoot, type EditorState } from 'lexical';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -40,9 +40,10 @@ interface IComposeEditor {
   eventDiscussion?: boolean
   hasPoll?: boolean
   autoFocus?: boolean
-  handleSubmit?: () => void
+  handleSubmit?(): void
+  onPaste?(files: FileList): void
+  onChange?(text: string): void
   onFocus?: React.FocusEventHandler<HTMLDivElement>
-  onPaste?: (files: FileList) => void
   placeholder?: JSX.Element | string
 }
 
@@ -65,7 +66,7 @@ const theme: InitialConfigType['theme'] = {
   },
 };
 
-const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
+const ComposeEditor = React.forwardRef<EditorState, IComposeEditor>(({
   className,
   placeholderClassName,
   composeId,
@@ -74,6 +75,7 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
   hasPoll,
   autoFocus,
   handleSubmit,
+  onChange,
   onFocus,
   onPaste,
   placeholder,
@@ -153,8 +155,9 @@ const ComposeEditor = React.forwardRef<string, IComposeEditor>(({
           ErrorBoundary={LexicalErrorBoundary}
         />
         <OnChangePlugin onChange={(_, editor) => {
+          onChange?.(editor.getEditorState().read(() => $getRoot().getTextContent()));
           if (editorStateRef && typeof editorStateRef !== 'function') {
-            editorStateRef.current = editor.getEditorState().read(() => $getRoot().getTextContent());
+            editorStateRef.current = editor.getEditorState();
           }
         }}
         />

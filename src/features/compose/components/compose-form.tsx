@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { type EditorState } from 'lexical';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -101,13 +102,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const anyMedia = compose.media_attachments.size > 0;
 
   const [composeFocused, setComposeFocused] = useState(false);
+  const [text, setText] = useState('');
 
   const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
-  const editorStateRef = useRef<string>(null);
-  const text = editorStateRef.current || '';
+  const editorStateRef = useRef<EditorState>(null);
 
   const { isDraggedOver } = useDraggedFiles(formRef);
 
@@ -145,7 +146,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleSubmit = (e?: React.FormEvent<Element>) => {
-    dispatch(changeCompose(id, editorStateRef.current!));
+    dispatch(changeCompose(id, text));
 
     // Submit disabled:
     const fulltext = [spoilerText, countableText(text)].join('');
@@ -322,6 +323,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
               autoFocus={shouldAutoFocus}
               hasPoll={hasPoll}
               handleSubmit={handleSubmit}
+              onChange={setText}
               onFocus={handleComposeFocus}
               onPaste={onPaste}
             />
