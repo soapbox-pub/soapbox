@@ -24,6 +24,7 @@ import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FocusPlugin from './plugins/focus-plugin';
 import MentionPlugin from './plugins/mention-plugin';
+import RefPlugin from './plugins/ref-plugin';
 import StatePlugin from './plugins/state-plugin';
 
 const LINK_MATCHERS = [
@@ -80,7 +81,7 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
   onFocus,
   onPaste,
   placeholder,
-}, editorStateRef) => {
+}, ref) => {
   const dispatch = useAppDispatch();
   const nodes = useNodes();
 
@@ -157,9 +158,6 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
         />
         <OnChangePlugin onChange={(_, editor) => {
           onChange?.(editor.getEditorState().read(() => $getRoot().getTextContent()));
-          if (editorStateRef && typeof editorStateRef !== 'function') {
-            editorStateRef.current = editor;
-          }
         }}
         />
         <HistoryPlugin />
@@ -170,6 +168,7 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
         <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
         <FocusPlugin autoFocus={autoFocus} />
         <ClearEditorPlugin />
+        <RefPlugin ref={ref} />
       </div>
     </LexicalComposer>
   );
