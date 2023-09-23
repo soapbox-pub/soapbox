@@ -140,12 +140,6 @@ const SettingsStore: React.FC = () => {
         >
           <SettingToggle settings={settings} settingPath={['demetricator']} onChange={onToggleChange} />
         </ListItem>
-
-        <ListItem
-          label={<FormattedMessage id='preferences.fields.wysiwyg_label' defaultMessage='Use WYSIWYG editor' />}
-        >
-          <SettingToggle settings={settings} settingPath={['wysiwyg']} onChange={onToggleChange} />
-        </ListItem>
       </List>
     </Column>
   );

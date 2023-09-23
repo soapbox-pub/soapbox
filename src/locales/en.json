@@ -1207,7 +1207,6 @@
   "preferences.fields.theme": "Theme",
   "preferences.fields.underline_links_label": "Always underline links in posts",
   "preferences.fields.unfollow_modal_label": "Show confirmation dialog before unfollowing someone",
-  "preferences.fields.wysiwyg_label": "Use WYSIWYG editor",
   "preferences.hints.demetricator": "Decrease social media anxiety by hiding all numbers from the site.",
   "preferences.notifications.advanced": "Show all notification categories",
   "preferences.options.content_type_markdown": "Markdown",
