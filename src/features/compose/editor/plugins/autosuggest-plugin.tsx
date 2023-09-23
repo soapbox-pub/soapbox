@@ -213,8 +213,8 @@ const useMenuAnchorRef = (
 
     if (rootElement !== null && resolution !== null) {
       const { left, top, width, height } = resolution.getRect();
-      containerDiv.style.top = `${top + window.pageYOffset}px`;
-      containerDiv.style.left = `${left + window.pageXOffset}px`;
+      containerDiv.style.top = `${top + window.scrollY}px`;
+      containerDiv.style.left = `${left + window.scrollX}px`;
       containerDiv.style.height = `${height}px`;
       containerDiv.style.width = `${width}px`;
 
