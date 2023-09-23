@@ -6,7 +6,7 @@ export const useRegistrationStatus = () => {
   const features = useFeatures();
 
   return {
-    /** Registrations are open, either through Pepe or traditional account creation. */
+    /** Registrations are open. */
     isOpen: features.accountCreation && instance.registrations,
   };
 };
