@@ -15,13 +15,18 @@ const StatePlugin = ({ composeId, handleSubmit }: IStatePlugin) => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    if (handleSubmit) editor.registerCommand(KEY_ENTER_COMMAND, (event) => {
-      if (event?.ctrlKey) {
-        handleSubmit();
-        return true;
-      }
-      return false;
-    }, 1);
+    if (handleSubmit) {
+      return editor.registerCommand(KEY_ENTER_COMMAND, (event) => {
+        if (event?.ctrlKey) {
+          handleSubmit();
+          return true;
+        }
+        return false;
+      }, 1);
+    }
+  }, [handleSubmit]);
+
+  useEffect(() => {
     editor.registerUpdateListener(({ editorState }) => {
       const isEmpty = editorState.read(() => $getRoot().getTextContent()) === '';
       const data = isEmpty ? null : JSON.stringify(editorState.toJSON());
