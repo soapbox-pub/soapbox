@@ -30,7 +30,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 
-import { fetchComposeSuggestions } from 'soapbox/actions/compose';
+import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose';
 import { useEmoji } from 'soapbox/actions/emojis';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import { isNativeEmoji } from 'soapbox/features/emoji';
@@ -335,6 +335,8 @@ const AutosuggestPlugin = ({
           node.setTextContent(`@${content} `);
           node.select();
         }
+
+        dispatch(clearComposeSuggestions(composeId));
       });
     });
   };
