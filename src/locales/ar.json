@@ -392,7 +392,6 @@
   "compose_event.edit_success": "تم تعديل الحدث",
   "compose_event.fields.approval_required": "أرغب في الموافقة على طلبات المشاركة يدويًا",
   "compose_event.fields.banner_label": "صورة الحدث",
-  "compose_event.fields.description_hint": "صيغة ماركداون مدعومة",
   "compose_event.fields.description_label": "وصف الحدث",
   "compose_event.fields.description_placeholder": "الوصف",
   "compose_event.fields.end_time_label": "الحدث والتاريخ",

@@ -391,7 +391,6 @@
   "compose_event.edit_success": "Votre évènement a été édité",
   "compose_event.fields.approval_required": "Approuver les requêtes de participation manuellement",
   "compose_event.fields.banner_label": "Bannière d'évènement",
-  "compose_event.fields.description_hint": "La syntaxe Markdown est supportée",
   "compose_event.fields.description_label": "Description de l'évènement",
   "compose_event.fields.description_placeholder": "Description",
   "compose_event.fields.end_time_label": "Date de fin de l'évènement",

@@ -388,7 +388,6 @@
   "compose_event.edit_success": "Tu evento fue modificado",
   "compose_event.fields.approval_required": "Quiero aprobar las solicitudes de participación manualmente",
   "compose_event.fields.banner_label": "Banner del evento",
-  "compose_event.fields.description_hint": "La sintaxis markdown es soportada",
   "compose_event.fields.description_label": "Descripción del evento",
   "compose_event.fields.description_placeholder": "Descripción",
   "compose_event.fields.end_time_label": "Fin del evento",

@@ -346,7 +346,6 @@
   "compose_event.edit_success": "Vaš događaj je uređen",
   "compose_event.fields.approval_required": "Želim ručno odobriti zahtjeve za sudjelovanje",
   "compose_event.fields.banner_label": "Transparent događaja",
-  "compose_event.fields.description_hint": "Markdown sintaksa je podržana",
   "compose_event.fields.description_label": "Opis događaja",
   "compose_event.fields.description_placeholder": "Opis",
   "compose_event.fields.end_time_label": "Datum završetka događaja",

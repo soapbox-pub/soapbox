@@ -392,7 +392,6 @@
   "compose_event.edit_success": "Etkinliğiniz düzenlendi",
   "compose_event.fields.approval_required": "Katılım isteklerini kendim onaylamak istiyorum",
   "compose_event.fields.banner_label": "Etkinlik afişi",
-  "compose_event.fields.description_hint": "Markdown sözdizimi destekleniyor",
   "compose_event.fields.description_label": "Etkinlik açıklaması",
   "compose_event.fields.description_placeholder": "Açıklama",
   "compose_event.fields.end_time_label": "Etkinlik bitiş tarihi",
