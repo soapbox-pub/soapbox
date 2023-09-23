@@ -137,7 +137,7 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
           contentEditable={
             <div onFocus={onFocus} onPaste={handlePaste}>
               <ContentEditable
-                className={clsx('text-[1rem] outline-none transition-[min-height] motion-reduce:transition-none', {
+                className={clsx('relative z-10 text-[1rem] outline-none transition-[min-height] motion-reduce:transition-none', {
                   'min-h-[39px]': condensed,
                   'min-h-[99px]': !condensed,
                 })}
@@ -147,7 +147,7 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
           placeholder={(
             <div
               className={clsx(
-                'pointer-events-none absolute top-0 -z-10 select-none text-[1rem] text-gray-600 dark:placeholder:text-gray-600',
+                'pointer-events-none absolute top-0 select-none text-[1rem] text-gray-600 dark:placeholder:text-gray-600',
                 placeholderClassName,
               )}
             >
