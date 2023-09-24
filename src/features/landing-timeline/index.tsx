@@ -7,6 +7,7 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useInstance } from 'soapbox/hooks';
 
+import AboutPage from '../about';
 import Timeline from '../ui/components/timeline';
 
 import { SiteBanner } from './components/site-banner';
@@ -46,7 +47,7 @@ const LandingTimeline = () => {
         <SiteBanner />
       </div>
 
-      {timelineEnabled && (
+      {timelineEnabled ? (
         <PullToRefresh onRefresh={handleRefresh}>
           <Timeline
             scrollKey={`${timelineId}_timeline`}
@@ -57,6 +58,8 @@ const LandingTimeline = () => {
             divideType='space'
           />
         </PullToRefresh>
+      ) : (
+        <AboutPage />
       )}
     </Column>
   );
