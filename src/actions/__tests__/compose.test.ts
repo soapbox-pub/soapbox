@@ -1,7 +1,7 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
+import { buildInstance } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { InstanceRecord } from 'soapbox/normalizers';
 import { ReducerCompose } from 'soapbox/reducers/compose';
 
 import { uploadCompose, submitCompose } from '../compose';
@@ -14,15 +14,15 @@ describe('uploadCompose()', () => {
     let files: FileList, store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-      const instance = InstanceRecord({
-        configuration: ImmutableMap({
-          statuses: ImmutableMap({
+      const instance = buildInstance({
+        configuration: {
+          statuses: {
             max_media_attachments: 4,
-          }),
-          media_attachments: ImmutableMap({
+          },
+          media_attachments: {
             image_size_limit: 10,
-          }),
-        }),
+          },
+        },
       });
 
       const state = rootState
@@ -60,15 +60,15 @@ describe('uploadCompose()', () => {
     let files: FileList, store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-      const instance = InstanceRecord({
-        configuration: ImmutableMap({
-          statuses: ImmutableMap({
+      const instance = buildInstance({
+        configuration: {
+          statuses: {
             max_media_attachments: 4,
-          }),
-          media_attachments: ImmutableMap({
+          },
+          media_attachments: {
             video_size_limit: 10,
-          }),
-        }),
+          },
+        },
       });
 
       const state = rootState

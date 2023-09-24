@@ -1,11 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { buildRelationship } from 'soapbox/jest/factory';
+import { buildInstance, buildRelationship } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ListRecord, ReducerRecord } from 'soapbox/reducers/user-lists';
 
-import { normalizeAccount, normalizeInstance } from '../../normalizers';
+import { normalizeAccount } from '../../normalizers';
 import {
   authorizeFollowRequest,
   blockAccount,
@@ -190,13 +190,13 @@ describe('fetchAccountByUsername()', () => {
   describe('when "accountByUsername" feature is enabled', () => {
     beforeEach(() => {
       const state = rootState
-        .set('instance', normalizeInstance({
+        .set('instance', buildInstance({
           version: '2.7.2 (compatible; Pleroma 2.4.52-1337-g4779199e.gleasonator+soapbox)',
-          pleroma: ImmutableMap({
-            metadata: ImmutableMap({
+          pleroma: {
+            metadata: {
               features: [],
-            }),
-          }),
+            },
+          },
         }))
         .set('me', '123');
       store = mockStore(state);
@@ -253,13 +253,13 @@ describe('fetchAccountByUsername()', () => {
   describe('when "accountLookup" feature is enabled', () => {
     beforeEach(() => {
       const state = rootState
-        .set('instance', normalizeInstance({
+        .set('instance', buildInstance({
           version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-          pleroma: ImmutableMap({
-            metadata: ImmutableMap({
+          pleroma: {
+            metadata: {
               features: [],
-            }),
-          }),
+            },
+          },
         }))
         .set('me', '123');
       store = mockStore(state);

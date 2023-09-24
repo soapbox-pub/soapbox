@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -22,11 +21,12 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   const me = useAppSelector((state) => state.me);
 
-  const allowUnauthenticated = instance.pleroma.getIn(['metadata', 'translation', 'allow_unauthenticated'], false);
-  const allowRemote = instance.pleroma.getIn(['metadata', 'translation', 'allow_remote'], true);
-
-  const sourceLanguages = instance.pleroma.getIn(['metadata', 'translation', 'source_languages']) as ImmutableList<string>;
-  const targetLanguages = instance.pleroma.getIn(['metadata', 'translation', 'target_languages']) as ImmutableList<string>;
+  const {
+    allow_remote: allowRemote,
+    allow_unauthenticated: allowUnauthenticated,
+    source_languages: sourceLanguages,
+    target_languages: targetLanguages,
+  } = instance.pleroma.metadata.translation;
 
   const renderTranslate = (me || allowUnauthenticated) && (allowRemote || isLocal(status.account as Account)) && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
 

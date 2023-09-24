@@ -8,6 +8,7 @@ export { groupSchema, type Group } from './group';
 export { groupMemberSchema, type GroupMember } from './group-member';
 export { groupRelationshipSchema, type GroupRelationship } from './group-relationship';
 export { groupTagSchema, type GroupTag } from './group-tag';
+export { instanceSchema, type Instance } from './instance';
 export { mentionSchema, type Mention } from './mention';
 export { notificationSchema, type Notification } from './notification';
 export { patronUserSchema, type PatronUser } from './patron';

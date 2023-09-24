@@ -8,7 +8,7 @@ import { useDraggedFiles } from 'soapbox/hooks';
 interface IMediaInput {
   className?: string
   src: string | undefined
-  accept: string
+  accept?: string
   onChange: (files: FileList | null) => void
   disabled?: boolean
 }

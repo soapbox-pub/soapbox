@@ -6,10 +6,10 @@ import { connectRequestSchema } from 'soapbox/schemas/nostr';
 import { jsonSchema } from 'soapbox/schemas/utils';
 
 function useSignerStream() {
-  const { nostr } = useInstance();
+  const instance = useInstance();
 
-  const relayUrl = nostr.get('relay') as string | undefined;
-  const pubkey = nostr.get('pubkey') as string | undefined;
+  const relayUrl = instance.nostr?.relay;
+  const pubkey = instance.nostr?.pubkey;
 
   useEffect(() => {
     let relay: Relay | undefined;

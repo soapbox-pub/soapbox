@@ -1,5 +1,4 @@
 /* eslint sort-keys: "error" */
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
 import semverCoerce from 'semver/functions/coerce';
 import gte from 'semver/functions/gte';
@@ -7,8 +6,7 @@ import lt from 'semver/functions/lt';
 import semverParse from 'semver/functions/parse';
 
 import { custom } from 'soapbox/custom';
-
-import type { Instance } from 'soapbox/types/entities';
+import { type Instance } from 'soapbox/schemas';
 
 /** Import custom overrides, if exists */
 const overrides = custom('features');
@@ -100,8 +98,7 @@ export const UNRELEASED = 'unreleased';
 /** Parse features for the given instance */
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
-  const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
-  const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
+  const { features, federation } = instance.pleroma.metadata;
 
   return {
     /**
@@ -457,7 +454,7 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /** Whether the instance federates. */
-    federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
+    federating: federation.enabled,
 
     /**
      * Can edit and manage timeline filters (aka "muted words").

@@ -25,7 +25,6 @@ import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
 import AvatarPicker from './components/avatar-picker';
 import HeaderPicker from './components/header-picker';
 
-import type { List as ImmutableList } from 'immutable';
 import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import type { Account } from 'soapbox/schemas';
 
@@ -183,11 +182,12 @@ const EditProfile: React.FC = () => {
 
   const { account } = useOwnAccount();
   const features = useFeatures();
-  const maxFields = instance.pleroma.getIn(['metadata', 'fields_limits', 'max_fields'], 4) as number;
+  const maxFields = instance.pleroma.metadata.fields_limits.max_fields;
 
   const attachmentTypes = useAppSelector(
-    state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
-  )?.filter(type => type.startsWith('image/')).toArray().join(',');
+    state => state.instance.configuration.media_attachments.supported_mime_types)
+    ?.filter(type => type.startsWith('image/'))
+    .join(',');
 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<AccountCredentials>({});

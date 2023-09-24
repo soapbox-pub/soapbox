@@ -4,9 +4,8 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { updateConfig } from 'soapbox/actions/admin';
 import { RadioGroup, RadioItem } from 'soapbox/components/radio';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
+import { Instance } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
-
-import type { Instance } from 'soapbox/types/entities';
 
 type RegistrationMode = 'open' | 'approval' | 'closed';
 

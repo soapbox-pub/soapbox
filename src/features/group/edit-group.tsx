@@ -13,8 +13,6 @@ import HeaderPicker from '../edit-profile/components/header-picker';
 
 import GroupTagsField from './components/group-tags-field';
 
-import type { List as ImmutableList } from 'immutable';
-
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
 const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;
 
@@ -48,12 +46,12 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
   const displayName = useTextField(group?.display_name);
   const note = useTextField(group?.note_plain);
 
-  const maxName = Number(instance.configuration.getIn(['groups', 'max_characters_name']));
-  const maxNote = Number(instance.configuration.getIn(['groups', 'max_characters_description']));
+  const maxName = Number(instance.configuration.groups.max_characters_name);
+  const maxNote = Number(instance.configuration.groups.max_characters_description);
 
-  const attachmentTypes = useAppSelector(
-    state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
-  )?.filter(type => type.startsWith('image/')).toArray().join(',');
+  const attachmentTypes = useAppSelector(state => state.instance.configuration.media_attachments.supported_mime_types)
+    ?.filter((type) => type.startsWith('image/'))
+    .join(',');
 
   async function handleSubmit() {
     setIsSubmitting(true);

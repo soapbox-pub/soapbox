@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -13,9 +12,9 @@ interface IConsumersList {
 /** Displays OAuth consumers to log in with. */
 const ConsumersList: React.FC<IConsumersList> = () => {
   const instance = useInstance();
-  const providers = ImmutableList<string>(instance.pleroma.get('oauth_consumer_strategies'));
+  const providers = instance.pleroma.oauth_consumer_strategies;
 
-  if (providers.size > 0) {
+  if (providers.length > 0) {
     return (
       <Card className='bg-gray-50 p-4 dark:bg-primary-800 sm:rounded-xl'>
         <Text size='xs' theme='muted'>

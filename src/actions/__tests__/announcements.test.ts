@@ -2,8 +2,9 @@ import { List as ImmutableList } from 'immutable';
 
 import { fetchAnnouncements, dismissAnnouncement, addReaction, removeReaction } from 'soapbox/actions/announcements';
 import { __stub } from 'soapbox/api';
+import { buildInstance } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { normalizeAnnouncement, normalizeInstance } from 'soapbox/normalizers';
+import { normalizeAnnouncement } from 'soapbox/normalizers';
 
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -13,7 +14,7 @@ describe('fetchAnnouncements()', () => {
   describe('with a successful API request', () => {
     it('should fetch announcements from the API', async() => {
       const state = rootState
-        .set('instance', normalizeInstance({ version: '3.5.3' }));
+        .set('instance', buildInstance({ version: '3.5.3' }));
       const store = mockStore(state);
 
       __stub((mock) => {

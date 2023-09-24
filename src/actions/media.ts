@@ -65,9 +65,9 @@ const uploadFile = (
 ) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
-    const maxImageSize = getState().instance.configuration.getIn(['media_attachments', 'image_size_limit']) as number | undefined;
-    const maxVideoSize = getState().instance.configuration.getIn(['media_attachments', 'video_size_limit']) as number | undefined;
-    const maxVideoDuration = getState().instance.configuration.getIn(['media_attachments', 'video_duration_limit']) as number | undefined;
+    const maxImageSize = getState().instance.configuration.media_attachments.image_size_limit;
+    const maxVideoSize = getState().instance.configuration.media_attachments.video_size_limit;
+    const maxVideoDuration = getState().instance.configuration.media_attachments.video_duration_limit;
 
     const isImage = file.type.match(/image.*/);
     const isVideo = file.type.match(/video.*/);

@@ -393,7 +393,7 @@ const submitComposeFail = (composeId: string, error: AxiosError) => ({
 const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
-    const attachmentLimit = getState().instance.configuration.getIn(['statuses', 'max_media_attachments']) as number;
+    const attachmentLimit = getState().instance.configuration.statuses.max_media_attachments;
 
     const media  = getState().compose.get(composeId)?.media_attachments;
     const progress = new Array(files.length).fill(0);
