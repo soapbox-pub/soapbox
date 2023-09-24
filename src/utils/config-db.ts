@@ -6,6 +6,8 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
+import { type MRFSimple, mrfSimpleSchema } from 'soapbox/schemas/pleroma';
+
 export type Config = ImmutableMap<string, any>;
 export type Policy = ImmutableMap<string, any>;
 
@@ -19,7 +21,7 @@ const find = (
   );
 };
 
-const toSimplePolicy = (configs: ImmutableList<Config>): Policy => {
+const toSimplePolicy = (configs: ImmutableList<Config>): MRFSimple => {
   const config = find(configs, ':pleroma', ':mrf_simple');
 
   const reducer = (acc: ImmutableMap<string, any>, curr: ImmutableMap<string, any>) => {
@@ -30,9 +32,10 @@ const toSimplePolicy = (configs: ImmutableList<Config>): Policy => {
 
   if (config?.get) {
     const value = config.get('value', ImmutableList());
-    return value.reduce(reducer, ImmutableMap());
+    const result = value.reduce(reducer, ImmutableMap());
+    return mrfSimpleSchema.parse(result.toJS());
   } else {
-    return ImmutableMap();
+    return mrfSimpleSchema.parse({});
   }
 };
 

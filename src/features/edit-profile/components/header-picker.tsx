@@ -11,7 +11,7 @@ const messages = defineMessages({
 
 interface IMediaInput {
   src: string | undefined
-  accept: string
+  accept?: string
   onChange: (files: FileList | null) => void
   onClear?: () => void
   disabled?: boolean

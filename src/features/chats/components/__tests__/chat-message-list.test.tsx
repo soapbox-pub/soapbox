@@ -3,8 +3,8 @@ import React from 'react';
 import { VirtuosoMockContext } from 'react-virtuoso';
 
 import { ChatContext } from 'soapbox/contexts/chat-context';
-import { buildAccount } from 'soapbox/jest/factory';
-import { normalizeChatMessage, normalizeInstance } from 'soapbox/normalizers';
+import { buildAccount, buildInstance } from 'soapbox/jest/factory';
+import { normalizeChatMessage } from 'soapbox/normalizers';
 import { ChatMessage } from 'soapbox/types/entities';
 
 import { __stub } from '../../../../api';
@@ -70,7 +70,7 @@ Object.assign(navigator, {
 
 const store = rootState
   .set('me', '1')
-  .set('instance', normalizeInstance({ version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)' }));
+  .set('instance', buildInstance({ version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)' }));
 
 const renderComponentWithChatContext = () => render(
   <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>

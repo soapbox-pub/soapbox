@@ -3,8 +3,8 @@ import { createSelector } from 'reselect';
 
 import { parseVersion, PLEROMA, MITRA } from './features';
 
+import type { Instance } from 'soapbox/schemas';
 import type { RootState } from 'soapbox/store';
-import type { Instance } from 'soapbox/types/entities';
 
 /** For solving bugs between API implementations. */
 export const getQuirks = createSelector([

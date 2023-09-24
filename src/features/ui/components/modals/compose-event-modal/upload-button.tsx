@@ -5,8 +5,6 @@ import Icon from 'soapbox/components/icon';
 import { HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { List as ImmutableList } from 'immutable';
-
 interface IUploadButton {
   disabled?: boolean
   onSelectFile: (files: FileList) => void
@@ -14,7 +12,8 @@ interface IUploadButton {
 
 const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
   const fileElement = useRef<HTMLInputElement>(null);
-  const attachmentTypes = useAppSelector(state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>)?.filter(type => type.startsWith('image/'));
+  const attachmentTypes = useAppSelector(state => state.instance.configuration.media_attachments.supported_mime_types)
+    ?.filter((type) => type.startsWith('image/'));
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) {
@@ -40,7 +39,7 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
       <input
         ref={fileElement}
         type='file'
-        accept={attachmentTypes && attachmentTypes.toArray().join(',')}
+        accept={attachmentTypes?.join(',')}
         onChange={handleChange}
         disabled={disabled}
         className='hidden'

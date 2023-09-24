@@ -14,7 +14,7 @@ function useTimelineStream(...args: Parameters<typeof connectTimelineStream>) {
   const stream = useRef<(() => void) | null>(null);
 
   const accessToken = useAppSelector(getAccessToken);
-  const streamingUrl = instance.urls.get('streaming_api');
+  const streamingUrl = instance.urls?.streaming_api;
 
   const connect = () => {
     if (enabled && streamingUrl && !stream.current) {

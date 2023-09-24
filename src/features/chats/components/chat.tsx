@@ -53,7 +53,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   const dispatch = useAppDispatch();
 
   const { createChatMessage, acceptChat } = useChatActions(chat.id);
-  const attachmentLimit = useAppSelector(state => state.instance.configuration.getIn(['chats', 'max_media_attachments']) as number);
+  const attachmentLimit = useAppSelector(state => state.instance.configuration.chats.max_media_attachments);
 
   const [content, setContent] = useState<string>('');
   const [attachments, setAttachments] = useState<Attachment[]>([]);

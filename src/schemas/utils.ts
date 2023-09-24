@@ -39,4 +39,12 @@ const jsonSchema = z.string().transform((value, ctx) => {
   }
 });
 
-export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema, jsonSchema };
+/** MIME schema, eg `image/png`. */
+const mimeSchema = z.string().regex(/^\w+\/[-+.\w]+$/);
+
+/** zod schema to force the value into an object, if it isn't already. */
+function coerceObject<T extends z.ZodRawShape>(shape: T) {
+  return z.object({}).passthrough().catch({}).pipe(z.object(shape));
+}
+
+export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };

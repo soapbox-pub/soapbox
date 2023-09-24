@@ -26,7 +26,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
   const instance = useInstance();
 
   const supportsBirthdays = features.birthdays;
-  const minAge = instance.pleroma.getIn(['metadata', 'birthday_min_age']) as number;
+  const minAge = instance.pleroma.metadata.birthday_min_age;
 
   const maxDate = useMemo(() => {
     if (!supportsBirthdays) return null;

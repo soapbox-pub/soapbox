@@ -1,6 +1,8 @@
 import { isBlurhashValid } from 'blurhash';
 import { z } from 'zod';
 
+import { mimeSchema } from './utils';
+
 const blurhashSchema = z.string().superRefine((value, ctx) => {
   const r = isBlurhashValid(value);
 
@@ -17,7 +19,7 @@ const baseAttachmentSchema = z.object({
   description: z.string().catch(''),
   id: z.string(),
   pleroma: z.object({
-    mime_type: z.string().regex(/^\w+\/[-+.\w]+$/),
+    mime_type: mimeSchema,
   }).optional().catch(undefined),
   preview_url: z.string().url().catch(''),
   remote_url: z.string().url().nullable().catch(null),

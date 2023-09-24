@@ -9,7 +9,7 @@
 import { createApp } from 'soapbox/actions/apps';
 import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { instanceSchema, type Instance } from 'soapbox/schemas';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getQuirks } from 'soapbox/utils/quirks';
@@ -18,17 +18,16 @@ import { getInstanceScopes } from 'soapbox/utils/scopes';
 import { baseClient } from '../api';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Instance } from 'soapbox/types/entities';
 
 const fetchExternalInstance = (baseURL?: string) => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
-    .then(({ data: instance }) => normalizeInstance(instance))
+    .then(({ data: instance }) => instanceSchema.parse(instance))
     .catch(error => {
       if (error.response?.status === 401) {
         // Authenticated fetch is enabled.
         // Continue with a limited featureset.
-        return normalizeInstance({});
+        return instanceSchema.parse({});
       } else {
         throw error;
       }

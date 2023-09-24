@@ -23,7 +23,7 @@ const Migration = () => {
   const dispatch = useAppDispatch();
   const instance = useInstance();
 
-  const cooldownPeriod = instance.pleroma.getIn(['metadata', 'migration_cooldown_period']) as number | undefined;
+  const cooldownPeriod = instance.pleroma.metadata.migration_cooldown_period;
 
   const [targetAccount, setTargetAccount] = useState('');
   const [password, setPassword] = useState('');

@@ -64,6 +64,6 @@ export const getAuthUserUrl = (state: RootState) => {
 
 /** Get the VAPID public key. */
 export const getVapidKey = (state: RootState) =>
-  (state.auth.app.vapid_key || state.instance.pleroma.get('vapid_public_key')) as string;
+  state.auth.app.vapid_key || state.instance.pleroma.vapid_public_key;
 
 export const getMeUrl = (state: RootState) => selectOwnAccount(state)?.url;

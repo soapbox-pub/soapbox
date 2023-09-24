@@ -10,8 +10,6 @@ import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
 import { usePreview } from 'soapbox/hooks/forms';
 import resizeImage from 'soapbox/utils/resize-image';
 
-import type { List as ImmutableList } from 'immutable';
-
 const messages = defineMessages({
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },
   groupDescriptionPlaceholder: { id: 'manage_group.fields.description_placeholder', defaultMessage: 'Description' },
@@ -40,9 +38,9 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
   const avatarSrc = usePreview(params.avatar);
   const headerSrc = usePreview(params.header);
 
-  const attachmentTypes = useAppSelector(
-    state => state.instance.configuration.getIn(['media_attachments', 'supported_mime_types']) as ImmutableList<string>,
-  )?.filter(type => type.startsWith('image/')).toArray().join(',');
+  const attachmentTypes = useAppSelector(state => state.instance.configuration.media_attachments.supported_mime_types)
+    ?.filter((type) => type.startsWith('image/'))
+    .join(',');
 
   const handleTextChange = (property: keyof CreateGroupParams): React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> => {
     return (e) => {
@@ -107,7 +105,7 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
           placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
           value={displayName}
           onChange={handleTextChange('display_name')}
-          maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_name']))}
+          maxLength={Number(instance.configuration.groups.max_characters_name)}
         />
       </FormGroup>
 
@@ -119,7 +117,7 @@ const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
           placeholder={intl.formatMessage(messages.groupDescriptionPlaceholder)}
           value={note}
           onChange={handleTextChange('note')}
-          maxLength={Number(instance.configuration.getIn(['groups', 'max_characters_description']))}
+          maxLength={Number(instance.configuration.groups.max_characters_description)}
         />
       </FormGroup>
 

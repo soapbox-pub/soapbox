@@ -77,7 +77,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
-  const maxTootChars = configuration.getIn(['statuses', 'max_characters']) as number;
+  const maxTootChars = configuration.statuses.max_characters;
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 

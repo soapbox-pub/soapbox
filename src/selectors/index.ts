@@ -8,6 +8,7 @@ import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
 import { Entities } from 'soapbox/entity-store/entities';
+import { type MRFSimple } from 'soapbox/schemas/pleroma';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
@@ -283,9 +284,12 @@ export const makeGetOtherAccounts = () => {
 
 const getSimplePolicy = createSelector([
   (state: RootState) => state.admin.configs,
-  (state: RootState) => state.instance.pleroma.getIn(['metadata', 'federation', 'mrf_simple'], ImmutableMap()) as ImmutableMap<string, any>,
-], (configs, instancePolicy: ImmutableMap<string, any>) => {
-  return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
+  (state: RootState) => state.instance.pleroma.metadata.federation.mrf_simple,
+], (configs, instancePolicy) => {
+  return {
+    ...instancePolicy,
+    ...ConfigDB.toSimplePolicy(configs),
+  };
 });
 
 const getRemoteInstanceFavicon = (state: RootState, host: string) => {
@@ -294,15 +298,24 @@ const getRemoteInstanceFavicon = (state: RootState, host: string) => {
   return account?.pleroma?.favicon;
 };
 
-const getRemoteInstanceFederation = (state: RootState, host: string) => (
-  getSimplePolicy(state)
-    .map(hosts => hosts.includes(host))
-);
+type HostFederation = {
+  [key in keyof MRFSimple]: boolean;
+};
+
+const getRemoteInstanceFederation = (state: RootState, host: string): HostFederation => {
+  const simplePolicy = getSimplePolicy(state);
+
+  return Object.fromEntries(
+    Object.entries(simplePolicy).map(([key, hosts]) => [key, hosts.includes(host)]),
+  ) as HostFederation;
+};
+
 
 export const makeGetHosts = () => {
   return createSelector([getSimplePolicy], (simplePolicy) => {
-    return simplePolicy
-      .deleteAll(['accept', 'reject_deletes', 'report_removal'])
+    const { accept, reject_deletes, report_removal, ...rest } = simplePolicy;
+
+    return Object.values(rest)
       .reduce((acc, hosts) => acc.union(hosts), ImmutableOrderedSet())
       .sort();
   });

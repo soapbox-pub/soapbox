@@ -1,8 +1,8 @@
 
 import { PLEROMA, parseVersion } from './features';
 
+import type { Instance } from 'soapbox/schemas';
 import type { RootState } from 'soapbox/store';
-import type { Instance } from 'soapbox/types/entities';
 
 /**
  * Get the OAuth scopes to use for login & signup.
@@ -20,9 +20,7 @@ const getInstanceScopes = (instance: Instance) => {
 };
 
 /** Convenience function to get scopes from instance in store. */
-const getScopes = (state: RootState) => {
-  return getInstanceScopes(state.instance);
-};
+const getScopes = (state: RootState) => getInstanceScopes(state.instance);
 
 export {
   getInstanceScopes,

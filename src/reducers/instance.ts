@@ -1,48 +1,28 @@
+import { produce } from 'immer';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { normalizeInstance } from 'soapbox/normalizers/instance';
+import { type Instance, instanceSchema } from 'soapbox/schemas';
 import KVStore from 'soapbox/storage/kv-store';
 import { ConfigDB } from 'soapbox/utils/config-db';
 
 import {
   rememberInstance,
   fetchInstance,
-  fetchNodeinfo,
 } from '../actions/instance';
 
 import type { AnyAction } from 'redux';
 
-const initialState = normalizeInstance(ImmutableMap());
+const initialState: Instance = instanceSchema.parse({});
 
-const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
-  // Match Pleroma's develop branch
-  return normalizeInstance(ImmutableMap({
-    pleroma: ImmutableMap({
-      metadata: ImmutableMap({
-        account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
-        features: nodeinfo.getIn(['metadata', 'features']),
-        federation: nodeinfo.getIn(['metadata', 'federation']),
-        fields_limits: ImmutableMap({
-          max_fields: nodeinfo.getIn(['metadata', 'fieldsLimits', 'maxFields']),
-        }),
-      }),
-    }),
-  }));
-};
-
-const importInstance = (_state: typeof initialState, instance: ImmutableMap<string, any>) => {
-  return normalizeInstance(instance);
-};
-
-const importNodeinfo = (state: typeof initialState, nodeinfo: ImmutableMap<string, any>) => {
-  return nodeinfoToInstance(nodeinfo).mergeDeep(state);
+const importInstance = (_state: typeof initialState, instance: unknown) => {
+  return instanceSchema.parse(instance);
 };
 
 const preloadImport = (state: typeof initialState, action: Record<string, any>, path: string) => {
   const instance = action.data[path];
-  return instance ? importInstance(state, ImmutableMap(fromJS(instance))) : state;
+  return instance ? importInstance(state, instance) : state;
 };
 
 const getConfigValue = (instanceConfig: ImmutableMap<string, any>, key: string) => {
@@ -59,28 +39,29 @@ const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) 
 
   if (!config && !simplePolicy) return state;
 
-  return state.withMutations(state => {
+  return produce(state, (draft) => {
     if (config) {
       const value = config.get('value', ImmutableList());
-      const registrationsOpen = getConfigValue(value, ':registrations_open');
-      const approvalRequired = getConfigValue(value, ':account_approval_required');
+      const registrationsOpen = getConfigValue(value, ':registrations_open') as boolean | undefined;
+      const approvalRequired = getConfigValue(value, ':account_approval_required') as boolean | undefined;
 
-      state.update('registrations', c => typeof registrationsOpen === 'boolean' ? registrationsOpen : c);
-      state.update('approval_required', c => typeof approvalRequired === 'boolean' ? approvalRequired : c);
+      draft.registrations = registrationsOpen ?? draft.registrations;
+      draft.approval_required = approvalRequired ?? draft.approval_required;
     }
 
     if (simplePolicy) {
-      state.setIn(['pleroma', 'metadata', 'federation', 'mrf_simple'], simplePolicy);
+      draft.pleroma.metadata.federation.mrf_simple = simplePolicy;
     }
   });
 };
 
 const handleAuthFetch = (state: typeof initialState) => {
   // Authenticated fetch is enabled, so make the instance appear censored
-  return state.mergeWith((o, n) => o || n, {
-    title: '██████',
-    description: '████████████',
-  });
+  return {
+    ...state,
+    title: state.title || '██████',
+    description: state.description || '████████████',
+  };
 };
 
 const getHost = (instance: { uri: string }) => {
@@ -116,14 +97,12 @@ export default function instance(state = initialState, action: AnyAction) {
     case PLEROMA_PRELOAD_IMPORT:
       return preloadImport(state, action, '/api/v1/instance');
     case rememberInstance.fulfilled.type:
-      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+      return importInstance(state, action.payload);
     case fetchInstance.fulfilled.type:
       persistInstance(action.payload);
-      return importInstance(state, ImmutableMap(fromJS(action.payload)));
+      return importInstance(state, action.payload);
     case fetchInstance.rejected.type:
       return handleInstanceFetchFail(state, action.error);
-    case fetchNodeinfo.fulfilled.type:
-      return importNodeinfo(state, ImmutableMap(fromJS(action.payload)));
     case ADMIN_CONFIG_UPDATE_REQUEST:
     case ADMIN_CONFIG_UPDATE_SUCCESS:
       return importConfigs(state, ImmutableList(fromJS(action.configs)));

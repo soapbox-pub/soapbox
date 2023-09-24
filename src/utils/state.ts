@@ -18,7 +18,7 @@ export const displayFqn = (state: RootState): boolean => {
 
 /** Whether the instance exposes instance blocks through the API. */
 export const federationRestrictionsDisclosed = (state: RootState): boolean => {
-  return state.instance.pleroma.hasIn(['metadata', 'federation', 'mrf_policies']);
+  return !!state.instance.pleroma.metadata.federation.mrf_policies;
 };
 
 /**

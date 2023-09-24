@@ -1,5 +1,3 @@
-import { Record } from 'immutable';
-
 import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin';
 import { rememberInstance } from 'soapbox/actions/instance';
 
@@ -30,8 +28,7 @@ describe('instance reducer', () => {
       version: '0.0.0',
     };
 
-    expect(Record.isRecord(result)).toBe(true);
-    expect(result.toJS()).toMatchObject(expected);
+    expect(result).toMatchObject(expected);
   });
 
   describe('rememberInstance.fulfilled', () => {
@@ -58,7 +55,7 @@ describe('instance reducer', () => {
         },
       };
 
-      expect(result.toJS()).toMatchObject(expected);
+      expect(result).toMatchObject(expected);
     });
 
     it('normalizes Mastodon instance with retained configuration', () => {
@@ -92,7 +89,7 @@ describe('instance reducer', () => {
         },
       };
 
-      expect(result.toJS()).toMatchObject(expected);
+      expect(result).toMatchObject(expected);
     });
 
     it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
@@ -118,7 +115,7 @@ describe('instance reducer', () => {
         },
       };
 
-      expect(result.toJS()).toMatchObject(expected);
+      expect(result).toMatchObject(expected);
     });
   });
 
