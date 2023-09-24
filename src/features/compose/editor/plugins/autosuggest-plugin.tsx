@@ -39,7 +39,6 @@ import { selectAccount } from 'soapbox/selectors';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../../components/autosuggest-account';
-import { $createEmojiNode } from '../nodes/emoji-node';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
@@ -315,16 +314,7 @@ const AutosuggestPlugin = ({
           if (isNativeEmoji(suggestion)) {
             node.spliceText(leadOffset - 1, matchingString.length, `${suggestion.native} `, true);
           } else {
-            const completion = suggestion.colons;
-
-            let emojiText;
-
-            if (leadOffset === 1) emojiText = node;
-            else [, emojiText] = node.splitText(leadOffset - 1);
-
-            [emojiText] = emojiText.splitText(matchingString.length);
-
-            emojiText?.replace($createEmojiNode(completion, suggestion.imageUrl));
+            node.spliceText(leadOffset - 1, matchingString.length, `${suggestion.colons} `, true);
           }
         } else if (suggestion[0] === '#') {
           node.setTextContent(`${suggestion} `);
