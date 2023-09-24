@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Stack } from 'soapbox/components/ui';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useGroupsPath, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useGroupsPath, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks';
 
 import DropdownMenu, { Menu } from './dropdown-menu';
 import SidebarNavigationLink from './sidebar-navigation-link';
@@ -22,6 +22,7 @@ const SidebarNavigation = () => {
   const intl = useIntl();
   const { unreadChatsCount } = useStatContext();
 
+  const instance = useInstance();
   const features = useFeatures();
   const settings = useSettings();
   const { account } = useOwnAccount();
@@ -30,6 +31,8 @@ const SidebarNavigation = () => {
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+
+  const restrictUnauth = instance.pleroma.metadata.restrict_unauthenticated;
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];
@@ -166,15 +169,17 @@ const SidebarNavigation = () => {
           </>
         )}
 
-        {features.publicTimeline && (
+        {(features.publicTimeline) && (
           <>
-            <SidebarNavigationLink
-              to='/timeline/local'
-              icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
-              text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
-            />
+            {(account || !restrictUnauth.timelines.local) && (
+              <SidebarNavigationLink
+                to='/timeline/local'
+                icon={features.federating ? require('@tabler/icons/affiliate.svg') : require('@tabler/icons/world.svg')}
+                text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+              />
+            )}
 
-            {features.federating && (
+            {(features.federating && (account || !restrictUnauth.timelines.federated)) && (
               <SidebarNavigationLink
                 to='/timeline/fediverse'
                 icon={require('@tabler/icons/topology-star-ring-3.svg')}
