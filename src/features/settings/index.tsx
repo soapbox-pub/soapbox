@@ -149,7 +149,7 @@ const Settings = () => {
                 )}
 
                 {features.federating && (features.accountMoving ? (
-                  <ListItem label={intl.formatMessage(messages.accountMigration)} to='/settings/migrations' />
+                  <ListItem label={intl.formatMessage(messages.accountMigration)} to='/settings/migration' />
                 ) : features.accountAliases && (
                   <ListItem label={intl.formatMessage(messages.accountAliases)} to='/settings/aliases' />
                 ))}
