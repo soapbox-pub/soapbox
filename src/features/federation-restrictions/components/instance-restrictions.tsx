@@ -8,10 +8,8 @@ import { useInstance } from 'soapbox/hooks';
 import type { Map as ImmutableMap } from 'immutable';
 
 const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean => {
-  return remoteInstance
-    .get('federation')
-    .deleteAll(['accept', 'reject_deletes', 'report_removal'])
-    .reduce((acc: boolean, value: boolean) => acc || value, false);
+  const { accept, reject_deletes, report_removal, ...federation } = remoteInstance.get('federation');
+  return !!Object.values(federation).reduce((acc, value) => Boolean(acc || value), false);
 };
 
 interface IRestriction {

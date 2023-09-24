@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import React, { useState, useEffect, useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -31,10 +30,10 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
   const getRemoteInstance = useCallback(makeGetRemoteInstance(), []);
   const remoteInstance = useAppSelector(state => getRemoteInstance(state, host));
 
-  const [data, setData] = useState(ImmutableMap<string, any>());
+  const [data, setData] = useState({} as any);
 
   useEffect(() => {
-    setData(remoteInstance.get('federation') as any);
+    setData(remoteInstance.get('federation'));
   }, [remoteInstance]);
 
   const handleDataChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
@@ -69,7 +68,7 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
     media_nsfw,
     media_removal,
     reject,
-  } = data.toJS() as Record<string, boolean>;
+  } = data;
 
   const fullMediaRemoval = avatar_removal && banner_removal && media_removal;
 
