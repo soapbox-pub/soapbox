@@ -53,6 +53,20 @@ const pleromaSchema = coerceObject({
     }),
     fields_limits: z.any(),
     migration_cooldown_period: z.number().optional().catch(undefined),
+    restrict_unauthenticated: coerceObject({
+      activities: coerceObject({
+        local: z.boolean().catch(false),
+        remote: z.boolean().catch(false),
+      }),
+      profiles: coerceObject({
+        local: z.boolean().catch(false),
+        remote: z.boolean().catch(false),
+      }),
+      timelines: coerceObject({
+        federated: z.boolean().catch(false),
+        local: z.boolean().catch(false),
+      }),
+    }),
     translation: coerceObject({
       allow_remote: z.boolean().catch(true),
       allow_unauthenticated: z.boolean().catch(false),
