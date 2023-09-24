@@ -303,7 +303,6 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
     const state = getState();
-    const { richText } = getFeatures(state.instance);
 
     const compose = state.compose.get(composeId)!;
 
@@ -311,8 +310,6 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
     const media    = compose.media_attachments;
     const statusId = compose.id;
     let to         = compose.to;
-
-    const contentType = richText ? 'text/markdown' : 'text/plain';
 
     if (!validateSchedule(state, composeId)) {
       toast.error(messages.scheduleError);
@@ -352,7 +349,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       sensitive: compose.sensitive,
       spoiler_text: compose.spoiler_text,
       visibility: compose.privacy,
-      content_type: contentType,
+      content_type: compose.content_type,
       poll: compose.poll,
       scheduled_at: compose.schedule,
       to,
