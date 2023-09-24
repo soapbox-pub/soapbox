@@ -29,7 +29,7 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: EmojiNode): EmojiNode {
-    return new EmojiNode(node.__name, node.__src);
+    return new EmojiNode(node.__name, node.__src, node.__key);
   }
 
   constructor(name: string, src: string, key?: NodeKey) {
@@ -79,7 +79,7 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
     return false;
   }
 
-  isTextEntity(): true {
+  isTextEntity(): boolean {
     return true;
   }
 
