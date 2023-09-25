@@ -342,11 +342,6 @@ const AutosuggestPlugin = ({
 
     if (!node) return null;
 
-    if (['hashtag'].includes(node.getType())) {
-      const matchingString = node.getTextContent();
-      return { leadOffset: 0, matchingString };
-    }
-
     if (node.getType() === 'text') {
       const [leadOffset, matchingString] = textAtCursorMatchesToken(
         node.getTextContent(),
