@@ -3,9 +3,9 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
-import { useEmoji } from 'soapbox/actions/emojis';
+import { chooseEmoji } from 'soapbox/actions/emojis';
 import { changeSetting } from 'soapbox/actions/settings';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 
 import { buildCustomEmojis } from '../../emoji';
@@ -130,10 +130,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
 }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const settings = useSettings();
   const title = intl.formatMessage(messages.emoji);
-  const userTheme = settings.get('themeMode');
-  const theme = (userTheme === 'dark' || userTheme === 'light') ? userTheme : 'auto';
+  const theme = useTheme();
 
   const customEmojis = useAppSelector((state) => getCustomEmojis(state));
   const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
@@ -162,7 +160,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
       } as CustomEmoji;
     }
 
-    dispatch(useEmoji(pickedEmoji)); // eslint-disable-line react-hooks/rules-of-hooks
+    dispatch(chooseEmoji(pickedEmoji));
 
     if (onPickEmoji) {
       onPickEmoji(pickedEmoji);

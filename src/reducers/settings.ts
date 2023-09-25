@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 
-import { EMOJI_USE } from '../actions/emojis';
+import { EMOJI_CHOOSE } from '../actions/emojis';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';
 import {
@@ -40,7 +40,7 @@ export default function settings(state: State = ImmutableMap<string, any>({ save
       return state
         .setIn(action.path, action.value)
         .set('saved', false);
-    case EMOJI_USE:
+    case EMOJI_CHOOSE:
       return updateFrequentEmojis(state, action.emoji);
     case SETTING_SAVE:
       return state.set('saved', true);

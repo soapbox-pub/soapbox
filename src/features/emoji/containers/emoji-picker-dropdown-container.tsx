@@ -18,7 +18,6 @@ const EmojiPickerDropdownContainer = (
 ) => {
   const intl = useIntl();
   const title = intl.formatMessage(messages.emoji);
-
   const [visible, setVisible] = useState(false);
 
   const { x, y, strategy, refs, update } = useFloating<HTMLButtonElement>({

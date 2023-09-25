@@ -18,6 +18,7 @@ import {
   KEY_ESCAPE_COMMAND,
   KEY_TAB_COMMAND,
   LexicalEditor,
+  LexicalNode,
   RangeSelection,
   TextNode,
 } from 'lexical';
@@ -32,14 +33,14 @@ import React, {
 import ReactDOM from 'react-dom';
 
 import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose';
-import { useEmoji } from 'soapbox/actions/emojis';
+import { chooseEmoji } from 'soapbox/actions/emojis';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
-import { isNativeEmoji } from 'soapbox/features/emoji';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 import { selectAccount } from 'soapbox/selectors';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../../components/autosuggest-account';
+import { $createEmojiNode } from '../nodes/emoji-node';
 import { $createMentionNode } from '../nodes/mention-node';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
@@ -309,25 +310,25 @@ const AutosuggestPlugin = ({
         /** Offset for the beginning of the matched text, including the token. */
         const offset = leadOffset - 1;
 
+        /** Replace the matched text with the given node. */
+        function replaceMatch(replaceWith: LexicalNode) {
+          const result = (node as TextNode).splitText(offset, offset + matchingString.length);
+          const textNode = result[1] ?? result[0];
+          const replacedNode = textNode.replace(replaceWith);
+          replacedNode.insertAfter(new TextNode(' '));
+          replacedNode.selectNext();
+        }
+
         if (typeof suggestion === 'object') {
           if (!suggestion.id) return;
-          dispatch(useEmoji(suggestion)); // eslint-disable-line react-hooks/rules-of-hooks
-
-          if (isNativeEmoji(suggestion)) {
-            node.spliceText(offset, matchingString.length, `${suggestion.native} `, true);
-          } else {
-            node.spliceText(offset, matchingString.length, `${suggestion.colons} `, true);
-          }
+          dispatch(chooseEmoji(suggestion));
+          replaceMatch($createEmojiNode(suggestion));
         } else if (suggestion[0] === '#') {
           node.setTextContent(`${suggestion} `);
           node.select();
         } else {
           const acct = selectAccount(getState(), suggestion)!.acct;
-          const result = (node as TextNode).splitText(offset, offset + matchingString.length);
-          const textNode = result[1] ?? result[0];
-          const mentionNode = textNode.replace($createMentionNode(`@${acct}`));
-          mentionNode.insertAfter(new TextNode(' '));
-          mentionNode.selectNext();
+          replaceMatch($createMentionNode(`@${acct}`));
         }
 
         dispatch(clearComposeSuggestions(composeId));
@@ -340,11 +341,6 @@ const AutosuggestPlugin = ({
     const node = (state._selection as RangeSelection)?.anchor?.getNode();
 
     if (!node) return null;
-
-    if (['hashtag'].includes(node.getType())) {
-      const matchingString = node.getTextContent();
-      return { leadOffset: 0, matchingString };
-    }
 
     if (node.getType() === 'text') {
       const [leadOffset, matchingString] = textAtCursorMatchesToken(
