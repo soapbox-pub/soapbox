@@ -1,7 +1,7 @@
 /**
  * This source code is derived from code from Meta Platforms, Inc.
  * and affiliates, licensed under the MIT license located in the
- * LICENSE file in the /app/soapbox/features/compose/editor directory.
+ * LICENSE file in the /src/features/compose/editor directory.
  */
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -14,13 +14,6 @@ import type { TextNode } from 'lexical';
 
 const MENTION_REGEX = new RegExp('(^|$|(?:^|\\s))([@])([a-z\\d_-]+(?:@[^@\\s]+)?)', 'i');
 
-const getMentionMatch = (text: string) => {
-  const matchArr = MENTION_REGEX.exec(text);
-
-  if (!matchArr) return null;
-  return matchArr;
-};
-
 const MentionPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
 
@@ -30,28 +23,25 @@ const MentionPlugin = (): JSX.Element | null => {
     }
   }, [editor]);
 
-  const createMentionNode = useCallback((textNode: TextNode): MentionNode => {
+  const createNode = useCallback((textNode: TextNode): MentionNode => {
     return $createMentionNode(textNode.getTextContent());
   }, []);
 
-  const getEntityMatch = useCallback((text: string) => {
-    const matchArr = getMentionMatch(text);
+  const getMatch = useCallback((text: string) => {
+    const match = MENTION_REGEX.exec(text);
+    if (!match) return null;
 
-    if (!matchArr) return null;
+    const length = match[3].length + 1;
+    const start = match.index + match[1].length;
+    const end = start + length;
 
-    const mentionLength = matchArr[3].length + 1;
-    const startOffset = matchArr.index + matchArr[1].length;
-    const endOffset = startOffset + mentionLength;
-    return {
-      end: endOffset,
-      start: startOffset,
-    };
+    return { start, end };
   }, []);
 
   useLexicalTextEntity<MentionNode>(
-    getEntityMatch,
+    getMatch,
     MentionNode,
-    createMentionNode,
+    createNode,
   );
 
   return null;
