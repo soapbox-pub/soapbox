@@ -62,7 +62,7 @@ class MentionNode extends TextNode {
 
 function $createMentionNode(text: string): MentionNode {
   const node = new MentionNode(text);
-  node.setMode('token').toggleDirectionless();
+  node.setMode('segmented').toggleDirectionless();
   return $applyNodeReplacement(node);
 }
 
