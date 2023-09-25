@@ -1,7 +1,7 @@
 /**
  * This source code is derived from code from Meta Platforms, Inc.
  * and affiliates, licensed under the MIT license located in the
- * LICENSE file in the /app/soapbox/features/compose/editor directory.
+ * LICENSE file in the /src/features/compose/editor directory.
  */
 
 import { addClassNamesToElement } from '@lexical/utils';
@@ -60,7 +60,11 @@ class MentionNode extends TextNode {
 
 }
 
-const $createMentionNode = (text = ''): MentionNode => $applyNodeReplacement(new MentionNode(text));
+function $createMentionNode(text: string): MentionNode {
+  const node = new MentionNode(text);
+  node.setMode('segmented').toggleDirectionless();
+  return $applyNodeReplacement(node);
+}
 
 const $isMentionNode = (
   node: LexicalNode | null | undefined,

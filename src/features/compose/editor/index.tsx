@@ -23,7 +23,6 @@ import { useAppDispatch } from 'soapbox/hooks';
 import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FocusPlugin from './plugins/focus-plugin';
-import MentionPlugin from './plugins/mention-plugin';
 import RefPlugin from './plugins/ref-plugin';
 import StatePlugin from './plugins/state-plugin';
 
@@ -162,7 +161,6 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
         />
         <HistoryPlugin />
         <HashtagPlugin />
-        <MentionPlugin />
         <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         <AutoLinkPlugin matchers={LINK_MATCHERS} />
         <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
