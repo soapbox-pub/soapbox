@@ -325,7 +325,7 @@ const AutosuggestPlugin = ({
           const acct = selectAccount(getState(), suggestion)!.acct;
           const result = (node as TextNode).splitText(offset, offset + matchingString.length);
           const textNode = result[1] ?? result[0];
-          const mentionNode = textNode?.replace($createMentionNode(`@${acct}`));
+          const mentionNode = textNode.replace($createMentionNode(`@${acct}`));
           mentionNode.insertAfter(new TextNode(' '));
           mentionNode.selectNext();
         }
