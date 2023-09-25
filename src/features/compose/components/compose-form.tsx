@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { CLEAR_EDITOR_COMMAND, type LexicalEditor } from 'lexical';
+import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor } from 'lexical';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -11,7 +11,6 @@ import {
   clearComposeSuggestions,
   fetchComposeSuggestions,
   selectComposeSuggestion,
-  insertEmojiCompose,
   uploadCompose,
 } from 'soapbox/actions/compose';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
@@ -28,6 +27,7 @@ import ReplyIndicatorContainer from '../containers/reply-indicator-container';
 import ScheduleFormContainer from '../containers/schedule-form-container';
 import UploadButtonContainer from '../containers/upload-button-container';
 import WarningContainer from '../containers/warning-container';
+import { $createEmojiNode } from '../editor/nodes/emoji-node';
 import { countableText } from '../util/counter';
 
 import MarkdownButton from './markdown-button';
@@ -45,8 +45,6 @@ import VisualCharacterCounter from './visual-character-counter';
 import Warning from './warning';
 
 import type { Emoji } from 'soapbox/features/emoji';
-
-const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
@@ -181,10 +179,12 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleEmojiPick = (data: Emoji) => {
-    const position   = autosuggestTextareaRef.current!.textarea!.selectionStart;
-    const needsSpace = !!data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+    const editor = editorRef.current;
+    if (!editor) return;
 
-    dispatch(insertEmojiCompose(id, position, data, needsSpace));
+    editor.update(() => {
+      editor.getEditorState()._selection?.insertNodes([$createEmojiNode(data), new TextNode(' ')]);
+    });
   };
 
   const onPaste = (files: FileList) => {
