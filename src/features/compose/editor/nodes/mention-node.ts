@@ -60,7 +60,11 @@ class MentionNode extends TextNode {
 
 }
 
-const $createMentionNode = (text = ''): MentionNode => $applyNodeReplacement(new MentionNode(text));
+function $createMentionNode(text: string): MentionNode {
+  const node = new MentionNode(text);
+  node.setMode('token').toggleDirectionless();
+  return $applyNodeReplacement(node);
+}
 
 const $isMentionNode = (
   node: LexicalNode | null | undefined,

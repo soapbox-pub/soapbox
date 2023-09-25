@@ -19,6 +19,7 @@ import {
   KEY_TAB_COMMAND,
   LexicalEditor,
   RangeSelection,
+  TextNode,
 } from 'lexical';
 import React, {
   MutableRefObject,
@@ -39,6 +40,7 @@ import { selectAccount } from 'soapbox/selectors';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestAccount from '../../components/autosuggest-account';
+import { $createMentionNode } from '../nodes/mention-node';
 
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
@@ -303,27 +305,29 @@ const AutosuggestPlugin = ({
       dispatch((dispatch, getState) => {
         const state = editor.getEditorState();
         const node = (state._selection as RangeSelection)?.anchor?.getNode();
+        const { leadOffset, matchingString } = resolution!.match;
+        /** Offset for the beginning of the matched text, including the token. */
+        const offset = leadOffset - 1;
 
         if (typeof suggestion === 'object') {
           if (!suggestion.id) return;
-
           dispatch(useEmoji(suggestion)); // eslint-disable-line react-hooks/rules-of-hooks
 
-          const { leadOffset, matchingString } = resolution!.match;
-
           if (isNativeEmoji(suggestion)) {
-            node.spliceText(leadOffset - 1, matchingString.length, `${suggestion.native} `, true);
+            node.spliceText(offset, matchingString.length, `${suggestion.native} `, true);
           } else {
-            node.spliceText(leadOffset - 1, matchingString.length, `${suggestion.colons} `, true);
+            node.spliceText(offset, matchingString.length, `${suggestion.colons} `, true);
           }
         } else if (suggestion[0] === '#') {
           node.setTextContent(`${suggestion} `);
           node.select();
         } else {
-          const content = selectAccount(getState(), suggestion)!.acct;
-
-          node.setTextContent(`@${content} `);
-          node.select();
+          const acct = selectAccount(getState(), suggestion)!.acct;
+          const result = (node as TextNode).splitText(offset, offset + matchingString.length);
+          const textNode = result[1] ?? result[0];
+          const mentionNode = textNode?.replace($createMentionNode(`@${acct}`));
+          mentionNode.insertAfter(new TextNode(' '));
+          mentionNode.selectNext();
         }
 
         dispatch(clearComposeSuggestions(composeId));
@@ -337,13 +341,18 @@ const AutosuggestPlugin = ({
 
     if (!node) return null;
 
-    if (['mention', 'hashtag'].includes(node.getType())) {
+    if (['hashtag'].includes(node.getType())) {
       const matchingString = node.getTextContent();
       return { leadOffset: 0, matchingString };
     }
 
     if (node.getType() === 'text') {
-      const [leadOffset, matchingString] = textAtCursorMatchesToken(node.getTextContent(), (state._selection as RangeSelection)?.anchor?.offset, [':']);
+      const [leadOffset, matchingString] = textAtCursorMatchesToken(
+        node.getTextContent(),
+        (state._selection as RangeSelection)?.anchor?.offset,
+        [':', '@'],
+      );
+
       if (!leadOffset || !matchingString) return null;
       return { leadOffset, matchingString };
     }
