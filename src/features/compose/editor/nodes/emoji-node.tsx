@@ -5,7 +5,6 @@ import { Emoji as Component } from 'soapbox/components/ui';
 import { isNativeEmoji, type Emoji } from 'soapbox/features/emoji';
 
 import type {
-  DOMExportOutput,
   EditorConfig,
   LexicalNode,
   NodeKey,
@@ -50,14 +49,6 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
     return false;
   }
 
-  exportDOM(): DOMExportOutput {
-    const element = document.createElement('img');
-    element.setAttribute('src', this.__src);
-    element.setAttribute('alt', this.__name);
-    element.classList.add('h-4', 'w-4');
-    return { element };
-  }
-
   static importJSON({ data }: SerializedEmojiNode): EmojiNode {
     return $createEmojiNode(data);
   }
@@ -79,12 +70,16 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
   }
 
   getTextContent(): string {
-    return this.__name;
+    const emoji = this.__emoji;
+    if (isNativeEmoji(emoji)) {
+      return emoji.native;
+    } else {
+      return emoji.colons;
+    }
   }
 
   decorate(): JSX.Element {
     const emoji = this.__emoji;
-
     if (isNativeEmoji(emoji)) {
       return  <Component emoji={emoji.native} alt={emoji.colons} className='emojione h-4 w-4' />;
     } else {
