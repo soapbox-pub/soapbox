@@ -12,7 +12,7 @@ import { $createMentionNode, MentionNode } from '../nodes/mention-node';
 
 import type { TextNode } from 'lexical';
 
-const MENTION_REGEX = /(?:^|\s)@(?:[a-z\d_-]+(?:@[^@\s]+)?)/i;
+const MENTION_REGEX = /(?:^|\s)@[^\s]+/i;
 
 const MentionPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
