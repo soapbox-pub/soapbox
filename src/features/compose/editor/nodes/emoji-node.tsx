@@ -95,7 +95,10 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
 
 }
 
-const $createEmojiNode = (name = '', src: string): EmojiNode => $applyNodeReplacement(new EmojiNode(name, src));
+function $createEmojiNode (name = '', src: string): EmojiNode {
+  const node = new EmojiNode(name, src);
+  return $applyNodeReplacement(node);
+}
 
 const $isEmojiNode = (
   node: LexicalNode | null | undefined,
