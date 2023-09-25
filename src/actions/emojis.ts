@@ -3,12 +3,12 @@ import { saveSettings } from './settings';
 import type { Emoji } from 'soapbox/features/emoji';
 import type { AppDispatch } from 'soapbox/store';
 
-const EMOJI_USE = 'EMOJI_USE';
+const EMOJI_CHOOSE = 'EMOJI_CHOOSE';
 
-const useEmoji = (emoji: Emoji) =>
+const chooseEmoji = (emoji: Emoji) =>
   (dispatch: AppDispatch) => {
     dispatch({
-      type: EMOJI_USE,
+      type: EMOJI_CHOOSE,
       emoji,
     });
 
@@ -16,6 +16,6 @@ const useEmoji = (emoji: Emoji) =>
   };
 
 export {
-  EMOJI_USE,
-  useEmoji,
+  EMOJI_CHOOSE,
+  chooseEmoji,
 };

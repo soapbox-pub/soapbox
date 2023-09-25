@@ -33,7 +33,7 @@ import React, {
 import ReactDOM from 'react-dom';
 
 import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose';
-import { useEmoji as chooseEmoji } from 'soapbox/actions/emojis';
+import { chooseEmoji } from 'soapbox/actions/emojis';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import { useAppDispatch, useCompose } from 'soapbox/hooks';
 import { selectAccount } from 'soapbox/selectors';

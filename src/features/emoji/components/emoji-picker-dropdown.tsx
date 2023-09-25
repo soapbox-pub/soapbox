@@ -3,7 +3,7 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
-import { useEmoji } from 'soapbox/actions/emojis';
+import { chooseEmoji } from 'soapbox/actions/emojis';
 import { changeSetting } from 'soapbox/actions/settings';
 import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
@@ -160,7 +160,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
       } as CustomEmoji;
     }
 
-    dispatch(useEmoji(pickedEmoji)); // eslint-disable-line react-hooks/rules-of-hooks
+    dispatch(chooseEmoji(pickedEmoji));
 
     if (onPickEmoji) {
       onPickEmoji(pickedEmoji);

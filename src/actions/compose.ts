@@ -13,7 +13,7 @@ import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion } from 'soapbox/utils/features';
 
-import { useEmoji } from './emojis';
+import { chooseEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { uploadFile, updateMedia } from './media';
 import { openModal, closeModal } from './modals';
@@ -631,7 +631,7 @@ const selectComposeSuggestion = (composeId: string, position: number, token: str
       completion    = isNativeEmoji(suggestion) ? suggestion.native : suggestion.colons;
       startPosition = position - 1;
 
-      dispatch(useEmoji(suggestion));
+      dispatch(chooseEmoji(suggestion));
     } else if (typeof suggestion === 'string' && suggestion[0] === '#') {
       completion    = suggestion;
       startPosition = position - 1;
