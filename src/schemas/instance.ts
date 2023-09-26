@@ -25,14 +25,14 @@ const configurationSchema = coerceObject({
     video_size_limit: z.number().optional().catch(undefined),
   }),
   polls: coerceObject({
-    max_characters_per_option: z.number().catch(25),
-    max_expiration: z.number().catch(2629746),
-    max_options: z.number().catch(4),
-    min_expiration: z.number().catch(300),
+    max_characters_per_option: z.number().optional().catch(undefined),
+    max_expiration: z.number().optional().catch(undefined),
+    max_options: z.number().optional().catch(undefined),
+    min_expiration: z.number().optional().catch(undefined),
   }),
   statuses: coerceObject({
     max_characters: z.number().optional().catch(undefined),
-    max_media_attachments: z.number().catch(4),
+    max_media_attachments: z.number().optional().catch(undefined),
   }),
 });
 
@@ -86,6 +86,13 @@ const pleromaSchema = coerceObject({
   vapid_public_key: z.string().catch(''),
 });
 
+const pleromaPollLimitsSchema = coerceObject({
+  max_expiration: z.number().optional().catch(undefined),
+  max_option_chars: z.number().optional().catch(undefined),
+  max_options: z.number().optional().catch(undefined),
+  min_expiration: z.number().optional().catch(undefined),
+});
+
 const statsSchema = coerceObject({
   domain_count: z.number().catch(0),
   status_count: z.number().catch(0),
@@ -112,9 +119,11 @@ const instanceSchema = coerceObject({
   feature_quote: z.boolean().catch(false),
   fedibird_capabilities: z.array(z.string()).catch([]),
   languages: z.string().array().catch([]),
+  max_media_attachments: z.number().optional().catch(undefined),
   max_toot_chars: z.number().optional().catch(undefined),
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
+  poll_limits: pleromaPollLimitsSchema,
   registrations: z.boolean().catch(false),
   rules: filteredArray(ruleSchema),
   short_description: z.string().catch(''),
@@ -124,18 +133,28 @@ const instanceSchema = coerceObject({
   urls: urlsSchema,
   usage: usageSchema,
   version: z.string().catch(''),
-}).transform(({ max_toot_chars, ...instance }) => {
+}).transform(({ max_media_attachments, max_toot_chars, poll_limits, ...instance }) => {
   const { configuration } = instance;
+
+  const polls = {
+    ...configuration.polls,
+    max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
+    max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
+    max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
+    min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
+  };
 
   const statuses = {
     ...configuration.statuses,
     max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
+    max_media_attachments: configuration.statuses.max_media_attachments ?? max_media_attachments ?? 4,
   };
 
   return {
     ...instance,
     configuration: {
-      ...instance.configuration,
+      ...configuration,
+      polls,
       statuses,
     },
   };
