@@ -100,7 +100,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const anyMedia = compose.media_attachments.size > 0;
 
   const [composeFocused, setComposeFocused] = useState(false);
-  const [text, setText] = useState('');
+  const [text, setText] = useState(compose.text);
 
   const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
