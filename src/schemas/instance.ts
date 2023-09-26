@@ -3,7 +3,8 @@ import z from 'zod';
 
 import { accountSchema } from './account';
 import { mrfSimpleSchema } from './pleroma';
-import { coerceObject, mimeSchema } from './utils';
+import { ruleSchema } from './rule';
+import { coerceObject, filteredArray, mimeSchema } from './utils';
 
 const configurationSchema = coerceObject({
   chats: coerceObject({
@@ -51,7 +52,11 @@ const pleromaSchema = coerceObject({
       mrf_policies: z.string().array().optional().catch(undefined),
       mrf_simple: mrfSimpleSchema,
     }),
-    fields_limits: z.any(),
+    fields_limits: coerceObject({
+      max_fields: z.number().nonnegative().catch(4),
+      name_length: z.number().nonnegative().catch(255),
+      value_length: z.number().nonnegative().catch(2047),
+    }),
     migration_cooldown_period: z.number().optional().catch(undefined),
     restrict_unauthenticated: coerceObject({
       activities: coerceObject({
@@ -111,7 +116,7 @@ const instanceSchema = coerceObject({
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
   registrations: z.boolean().catch(false),
-  rules: z.any(),
+  rules: filteredArray(ruleSchema),
   short_description: z.string().catch(''),
   stats: statsSchema,
   thumbnail: z.string().catch(''),
