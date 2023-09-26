@@ -30,7 +30,7 @@ const configurationSchema = coerceObject({
     min_expiration: z.number().catch(300),
   }),
   statuses: coerceObject({
-    max_characters: z.number().catch(500),
+    max_characters: z.number().optional().catch(undefined),
     max_media_attachments: z.number().catch(4),
   }),
 });
@@ -107,6 +107,7 @@ const instanceSchema = coerceObject({
   feature_quote: z.boolean().catch(false),
   fedibird_capabilities: z.array(z.string()).catch([]),
   languages: z.string().array().catch([]),
+  max_toot_chars: z.number().optional().catch(undefined),
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
   registrations: z.boolean().catch(false),
@@ -118,6 +119,21 @@ const instanceSchema = coerceObject({
   urls: urlsSchema,
   usage: usageSchema,
   version: z.string().catch(''),
+}).transform(({ max_toot_chars, ...instance }) => {
+  const { configuration } = instance;
+
+  const statuses = {
+    ...configuration.statuses,
+    max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
+  };
+
+  return {
+    ...instance,
+    configuration: {
+      ...instance.configuration,
+      statuses,
+    },
+  };
 });
 
 type Instance = z.infer<typeof instanceSchema>;
