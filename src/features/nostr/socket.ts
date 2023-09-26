@@ -1,29 +1,22 @@
+import { Machina } from './machina';
+
 async function * messages(socket: WebSocket, signal: AbortSignal): AsyncGenerator<MessageEvent> {
-  let resolve: ((ev: MessageEvent) => void) | undefined;
-  let reject: ((reason?: unknown) => void) | undefined;
+  const machina = new Machina<MessageEvent>();
 
   socket.addEventListener('message', handleMessage);
   socket.addEventListener('close', handleClose);
   signal.addEventListener('abort', handleClose);
 
   function handleMessage(ev: MessageEvent): void {
-    resolve?.(ev);
+    machina.push(ev);
   }
 
   function handleClose(): void {
-    reject?.();
+    machina.close();
   }
 
-  while (!signal.aborted) {
-    try {
-      // eslint-disable-next-line no-loop-func
-      yield await new Promise<MessageEvent>((_resolve, _reject) => {
-        resolve = _resolve;
-        reject = _reject;
-      });
-    } catch (_e) {
-      break;
-    }
+  for await (const msg of machina.stream()) {
+    yield msg;
   }
 
   socket.removeEventListener('message', handleMessage);
