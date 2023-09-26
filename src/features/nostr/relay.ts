@@ -1,9 +1,11 @@
 /* eslint-disable no-loop-func */
 import WebSocketClient from '@gamestdio/websocket';
+import { type Filter } from 'nostr-tools';
+
+import { RelayMsg, relayMsgSchema } from 'soapbox/schemas/nostr';
+import { jsonSchema } from 'soapbox/schemas/utils';
 
 import { AsyncSocket } from './socket';
-
-import type { Filter } from 'nostr-tools';
 
 class Relay {
 
@@ -19,13 +21,15 @@ class Relay {
   async #init() {
     const { signal } = this.#controller;
 
-    for await (const { data } of this.messages(signal)) {
-      console.log(data);
+    for await (const msg of this.messages(signal)) {
+      console.log(msg);
     }
   }
 
-  messages(signal: AbortSignal) {
-    return AsyncSocket.messages(this.socket, signal);
+  async * messages(signal: AbortSignal): AsyncGenerator<RelayMsg> {
+    for await (const { data } of AsyncSocket.messages(this.socket, signal)) {
+      yield jsonSchema.pipe(relayMsgSchema).parse(data);
+    }
   }
 
   listen() {
