@@ -43,7 +43,6 @@ const relayMsgSchema = z.union([
   relayOkSchema,
   relayEoseSchema,
   relayNoticeSchema,
-  relayUnknownSchema,
 ]);
 
 /** EVENT message from relay to client. */
@@ -54,6 +53,8 @@ type RelayOK = z.infer<typeof relayOkSchema>;
 type RelayEOSE = z.infer<typeof relayEoseSchema>;
 /** NOTICE message from relay to client. */
 type RelayNOTICE = z.infer<typeof relayNoticeSchema>;
+/** Unknown message from relay to client. */
+type RelayUnknownMsg = z.infer<typeof relayUnknownSchema>;
 /** Relay message to a Nostr client. */
 type RelayMsg = z.infer<typeof relayMsgSchema>;
 
@@ -63,10 +64,13 @@ export {
   eventSchema,
   signedEventSchema,
   connectRequestSchema,
+  relayOkSchema,
+  relayUnknownSchema,
   relayMsgSchema,
   type RelayEVENT,
   type RelayOK,
   type RelayEOSE,
   type RelayNOTICE,
+  type RelayUnknownMsg,
   type RelayMsg,
 };
