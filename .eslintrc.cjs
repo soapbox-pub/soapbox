@@ -103,6 +103,7 @@ module.exports = {
         ],
       },
     ],
+    'no-dupe-class-members': 'off',
     'no-extra-semi': 'error',
     'no-const-assign': 'error',
     'no-fallthrough': 'error',
