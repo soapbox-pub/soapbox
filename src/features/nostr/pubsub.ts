@@ -1,6 +1,6 @@
 import { Machina } from './machina';
 
-interface Subscription<T> {
+interface Sub<T> {
   stream(): AsyncGenerator<T>
   close(): void
 }
@@ -9,7 +9,7 @@ class Pubsub<T> {
 
   #subscribers = new Map<string, Set<Machina<T>>>();
 
-  subscribe(topic: string): Subscription<T> {
+  subscribe(topic: string): Sub<T> {
     if (!this.#subscribers.has(topic)) {
       this.#subscribers.set(topic, new Set<Machina<T>>());
     }
@@ -34,6 +34,16 @@ class Pubsub<T> {
     }
   }
 
+  close(): void {
+    for (const subscribers of this.#subscribers.values()) {
+      for (const machina of subscribers) {
+        machina.close();
+      }
+    }
+
+    this.#subscribers.clear();
+  }
+
 }
 
-export { Pubsub, type Subscription };
+export { Pubsub, type Sub };

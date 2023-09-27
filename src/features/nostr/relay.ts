@@ -1,20 +1,21 @@
 /* eslint-disable no-loop-func */
 import WebSocketClient from '@gamestdio/websocket';
-import { type Filter } from 'nostr-tools';
+import { matchFilters, type Filter } from 'nostr-tools';
 
-import { RelayMsg, relayMsgSchema } from 'soapbox/schemas/nostr';
+import { type RelayEOSE, type RelayEVENT, type RelayMsg, relayMsgSchema } from 'soapbox/schemas/nostr';
 import { jsonSchema } from 'soapbox/schemas/utils';
 
+import { Pubsub } from './pubsub';
 import { AsyncSocket } from './socket';
 
 class Relay {
 
   socket: WebSocket;
-  #controller: AbortController;
+  #subs = new Pubsub<RelayEVENT | RelayEOSE>();
+  #controller = new AbortController();
 
   constructor(url: string | URL) {
     this.socket = new WebSocketClient(url.toString());
-    this.#controller = new AbortController();
     this.#init();
   }
 
@@ -22,7 +23,12 @@ class Relay {
     const { signal } = this.#controller;
 
     for await (const msg of this.messages(signal)) {
-      console.log(msg);
+      switch (msg[0]) {
+        case 'EVENT':
+        case 'EOSE':
+          this.#subs.publish(msg[1], msg);
+          break;
+      }
     }
   }
 
@@ -48,9 +54,35 @@ class Relay {
   close() {
     this.#controller.abort();
     this.socket.close();
+    this.#subs.close();
   }
 
-  async req(filters: Filter[], abort?: AbortSignal) {
+  req(filters: Filter[]) {
+    const id = crypto.randomUUID();
+    const sub = this.#subs.subscribe(id);
+    this.send(['REQ', id, filters]);
+
+    return {
+      id,
+      close: () => {
+        this.send(['CLOSE', id]);
+        sub.close();
+      },
+      stream: async function* (): AsyncGenerator<RelayEVENT | RelayEOSE> {
+        for await (const msg of sub.stream()) {
+          switch (msg[0]) {
+            case 'EVENT':
+              if (matchFilters(filters, msg[2])) {
+                yield msg;
+              }
+              break;
+            case 'EOSE':
+              yield msg;
+              break;
+          }
+        }
+      },
+    };
   }
 
 }
