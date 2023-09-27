@@ -1,29 +1,33 @@
 /** Infinite async generator. Iterates messages pushed to it until closed. */
 class Machina<T> {
 
-  #resolve: ((data: T) => void) | undefined;
-  #reject: ((reason?: unknown) => void) | undefined;
+  #open = true;
+  #queue: T[] = [];
+  #resolve: (() => void) | undefined;
 
   async * stream(): AsyncGenerator<T> {
-    while (true) {
-      try {
-        // eslint-disable-next-line no-loop-func
-        yield await new Promise<T>((_resolve, _reject) => {
-          this.#resolve = _resolve;
-          this.#reject = _reject;
-        });
-      } catch (_e) {
-        break;
+    this.#open = true;
+
+    while (this.#open) {
+      if (this.#queue.length) {
+        yield this.#queue.shift()!;
+        continue;
       }
+
+      await new Promise<void>((_resolve) => {
+        this.#resolve = _resolve;
+      });
     }
   }
 
   push(data: T): void {
-    this.#resolve?.(data);
+    this.#queue.push(data);
+    this.#resolve?.();
   }
 
   close(): void {
-    this.#reject?.();
+    this.#open = false;
+    this.#resolve?.();
   }
 
 }
