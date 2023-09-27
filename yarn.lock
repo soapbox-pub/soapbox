@@ -2521,10 +2521,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-motion@^0.0.34":
-  version "0.0.34"
-  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.34.tgz#789ff2063e2f7fbb6085d291135c442e8b35291a"
-  integrity sha512-/rFI22Vg4Xzb47hXtS06WkzUGRu+Vb3yDleuxiqzGj0JbXYXQUCgwSa2ZU12K7ubKi4C8xsdIN3xt4Z4fjSdPw==
+"@types/react-motion@^0.0.35":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.35.tgz#63002d85791dc9c7c212044c7b89dfff99cd0b51"
+  integrity sha512-7e0rlyG4wgvL1F5G8FMpgEYgPF54i7tmOy3b9KSp6kPjU2hEAV6BiRrl3qMPGrJXZ9soH/OlUYx1Ae5C9AJLGA==
   dependencies:
     "@types/react" "*"
 

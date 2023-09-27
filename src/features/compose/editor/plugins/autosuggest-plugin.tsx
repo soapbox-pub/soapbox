@@ -538,7 +538,7 @@ const AutosuggestPlugin = ({
           ? ReactDOM.createPortal(
             <div
               className={clsx({
-                'mt-6 overflow-y-auto max-h-36 fixed z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
+                'mt-6 overflow-y-auto max-h-36 relative w-max z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
                 hidden: suggestionsHidden || suggestions.isEmpty(),
                 block: !suggestionsHidden && !suggestions.isEmpty(),
               })}
