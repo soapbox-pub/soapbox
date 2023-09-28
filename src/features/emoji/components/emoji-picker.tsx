@@ -6,7 +6,7 @@ import { joinPublicPath } from 'soapbox/utils/static';
 import data from '../data';
 
 const getSpritesheetURL = (set: string) => {
-  return require('emoji-datasource/img/twitter/sheets/32.png');
+  return require('emoji-datasource/img/google/sheets/32.png');
 };
 
 const getImageURL = (set: string, name: string) => {
