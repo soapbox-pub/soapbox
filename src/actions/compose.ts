@@ -524,7 +524,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
     params: {
       q: token.slice(1),
       resolve: false,
-      limit: 4,
+      limit: 10,
     },
   }).then(response => {
     dispatch(importFetchedAccounts(response.data));
@@ -538,7 +538,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
 
 const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
   const state = getState();
-  const results = emojiSearch(token.replace(':', ''), { maxResults: 5 }, state.custom_emojis);
+  const results = emojiSearch(token.replace(':', ''), { maxResults: 10 }, state.custom_emojis);
 
   dispatch(readyComposeSuggestionsEmojis(composeId, token, results));
 };
@@ -565,7 +565,7 @@ const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => Root
     }),
     params: {
       q: token.slice(1),
-      limit: 4,
+      limit: 10,
       type: 'hashtags',
     },
   }).then(response => {
