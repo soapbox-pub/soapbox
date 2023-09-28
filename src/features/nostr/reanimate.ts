@@ -21,15 +21,17 @@ const fibonacci: Backoff = (attempt, delay) => {
 };
 
 interface ReanimateOpts {
+  /** Function to compute the timeout between reconnections. */
   backoff?: Backoff
+  /** Initial delay for reconnections. */
   delay?: number
 }
 
-/**
- * Reconnect the WebSocket with configurable exponential backoff, unless it was closed manually.
- * The calling function MUST use the return value, or this will not work.
- */
-function reanimate(socket: WebSocket, opts: ReanimateOpts = {}): WebSocket {
+/** Callback when the socket is reconnected. */
+type Reanimator = (socket: WebSocket) => void;
+
+/** Reconnect the WebSocket with configurable exponential backoff, unless it was closed manually. */
+function reanimate(socket: WebSocket, onReanimate: Reanimator, opts: ReanimateOpts = {}): void {
   const { backoff = exponential, delay = 1000 } = opts;
 
   /** Whether the socket has been closed manually. */
@@ -42,8 +44,8 @@ function reanimate(socket: WebSocket, opts: ReanimateOpts = {}): WebSocket {
       setTimeout(() => {
         socket.removeEventListener('close', handleClose);
         socket = new WebSocket(socket.url);
-        socket.addEventListener('close', handleClose);
-        reanimate(socket, opts);
+        reanimate(socket, onReanimate, opts);
+        onReanimate(socket);
       }, backoff(attempt, delay));
       attempt++;
     }
@@ -56,8 +58,6 @@ function reanimate(socket: WebSocket, opts: ReanimateOpts = {}): WebSocket {
     closed = true;
     close(...args);
   };
-
-  return socket;
 }
 
 export { exponential, fibonacci, reanimate, type Backoff };

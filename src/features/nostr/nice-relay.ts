@@ -3,6 +3,7 @@ import { matchFilters as _matchFilters, type Filter, type Event } from 'nostr-to
 import { type RelayOK, relayOkSchema, RelayEVENT, RelayEOSE, relayMsgSchema } from 'soapbox/schemas/nostr';
 
 import { Pubsub } from './pubsub';
+import { reanimate } from './reanimate';
 import { Relay } from './relay';
 
 interface SendOpts {
@@ -29,9 +30,13 @@ class NiceRelay {
   #controller = new AbortController();
 
   constructor(url: string | URL) {
-    this.socket = new WebSocket(url.toString());
+    this.socket = new WebSocket(url);
     this.#relay = new Relay(this.socket);
     this.#init();
+
+    reanimate(this.socket, (socket) => {
+      this.#relay = new Relay(socket);
+    });
   }
 
   async #init() {
@@ -47,7 +52,6 @@ class NiceRelay {
       }
     }
   }
-
 
   req<K extends number>(filters: Filter<K>[], opts: ReqOpts = {}): RelaySub {
     const { id = crypto.randomUUID(), matchFilters = _matchFilters } = opts;
