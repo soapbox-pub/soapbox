@@ -31,25 +31,11 @@ interface ReanimateOpts {
 type Reanimator = (socket: WebSocket) => void;
 
 /** Reconnect the WebSocket with configurable exponential backoff, unless it was closed manually. */
-function reanimate(socket: WebSocket, onReanimate: Reanimator, opts: ReanimateOpts = {}): void {
+function reanimate(socket: WebSocket, onReanimate: Reanimator, opts: ReanimateOpts = {}, attempt = 0): void {
   const { backoff = exponential, delay = 1000 } = opts;
 
   /** Whether the socket has been closed manually. */
   let closed = false;
-  /** Number of attempts to reconnect. */
-  let attempt = 0;
-
-  const handleClose = () => {
-    if (!closed && socket.readyState === WebSocket.CLOSED) {
-      setTimeout(() => {
-        socket.removeEventListener('close', handleClose);
-        socket = new WebSocket(socket.url);
-        reanimate(socket, onReanimate, opts);
-        onReanimate(socket);
-      }, backoff(attempt, delay));
-      attempt++;
-    }
-  };
 
   socket.addEventListener('close', handleClose);
 
@@ -58,6 +44,17 @@ function reanimate(socket: WebSocket, onReanimate: Reanimator, opts: ReanimateOp
     closed = true;
     close(...args);
   };
+
+  function handleClose() {
+    if (!closed && socket.readyState === WebSocket.CLOSED) {
+      setTimeout(() => {
+        socket.removeEventListener('close', handleClose);
+        socket = new WebSocket(socket.url);
+        reanimate(socket, onReanimate, opts, attempt + 1);
+        onReanimate(socket);
+      }, backoff(attempt, delay));
+    }
+  }
 }
 
 export { exponential, fibonacci, reanimate, type Backoff };
