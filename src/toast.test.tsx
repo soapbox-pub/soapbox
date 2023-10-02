@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
 import { AxiosError, AxiosHeaders } from 'axios';
 import React from 'react';
+import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 
 import { act, screen } from 'soapbox/jest/test-helpers';
 
-function renderApp() {
-  const { Toaster } = require('react-hot-toast');
-  const toast = require('./toast').default;
+import toast from './toast';
 
+function renderApp() {
   return {
     toast,
     ...render(
