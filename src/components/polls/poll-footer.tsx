@@ -16,9 +16,9 @@ const messages = defineMessages({
 });
 
 interface IPollFooter {
-  poll: PollEntity
-  showResults: boolean
-  selected: Selected
+  poll: PollEntity;
+  showResults: boolean;
+  selected: Selected;
 }
 
 const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX.Element => {

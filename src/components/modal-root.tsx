@@ -37,10 +37,10 @@ export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComp
 };
 
 interface IModalRoot {
-  onCancel?: () => void
-  onClose: (type?: ModalType) => void
-  type: ModalType
-  children: React.ReactNode
+  onCancel?: () => void;
+  onClose: (type?: ModalType) => void;
+  type: ModalType;
+  children: React.ReactNode;
 }
 
 const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) => {

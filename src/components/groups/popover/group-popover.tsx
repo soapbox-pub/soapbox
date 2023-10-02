@@ -11,9 +11,9 @@ import GroupAvatar from '../group-avatar';
 import type { Group } from 'soapbox/schemas';
 
 interface IGroupPopoverContainer {
-  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>
-  isEnabled: boolean
-  group: Group
+  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  isEnabled: boolean;
+  group: Group;
 }
 
 const messages = defineMessages({

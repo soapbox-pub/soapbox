@@ -6,15 +6,15 @@ import HStack from '../hstack/hstack';
 import Icon from '../icon/icon';
 
 interface ICarousel {
-  children: any
+  children: any;
   /** Optional height to force on controls */
-  controlsHeight?: number
+  controlsHeight?: number;
   /** How many items in the carousel */
-  itemCount: number
+  itemCount: number;
   /** The minimum width per item */
-  itemWidth: number
+  itemWidth: number;
   /** Should the controls be disabled? */
-  isDisabled?: boolean
+  isDisabled?: boolean;
 }
 
 /**

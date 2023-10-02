@@ -16,14 +16,14 @@ const messages = defineMessages({
 });
 
 interface IAccordion {
-  headline: React.ReactNode
-  children?: React.ReactNode
-  menu?: Menu
-  expanded?: boolean
-  onToggle?: (value: boolean) => void
-  action?: () => void
-  actionIcon?: string
-  actionLabel?: string
+  headline: React.ReactNode;
+  children?: React.ReactNode;
+  menu?: Menu;
+  expanded?: boolean;
+  onToggle?: (value: boolean) => void;
+  action?: () => void;
+  actionIcon?: string;
+  actionLabel?: string;
 }
 
 /**

@@ -22,7 +22,7 @@ function importEntities(entities: Entity[], entityType: string, listKey?: string
 }
 
 interface DeleteEntitiesOpts {
-  preserveLists?: boolean
+  preserveLists?: boolean;
 }
 
 function deleteEntities(ids: Iterable<string>, entityType: string, opts: DeleteEntitiesOpts = {}) {

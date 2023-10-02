@@ -15,11 +15,11 @@ import type { Entity } from '../types';
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {
   /** A zod schema to parse the API entity. */
-  schema?: EntitySchema<TEntity>
+  schema?: EntitySchema<TEntity>;
   /** Whether to refetch this entity every time the hook mounts, even if it's already in the store. */
-  refetch?: boolean
+  refetch?: boolean;
   /** A flag to potentially disable sending requests to the API. */
-  enabled?: boolean
+  enabled?: boolean;
 }
 
 function useEntity<TEntity extends Entity>(

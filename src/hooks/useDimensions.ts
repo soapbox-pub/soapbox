@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
-type UseDimensionsRect = { width: number, height: number };
+type UseDimensionsRect = { width: number; height: number };
 type UseDimensionsResult = [Element | null, any, any]
 
 const defaultState: UseDimensionsRect = {

@@ -7,11 +7,11 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IThreadStatus {
-  id: string
-  contextType?: string
-  focusedStatusId: string
-  onMoveUp: (id: string) => void
-  onMoveDown: (id: string) => void
+  id: string;
+  contextType?: string;
+  focusedStatusId: string;
+  onMoveUp: (id: string) => void;
+  onMoveDown: (id: string) => void;
 }
 
 /** Status with reply-connector in threads. */

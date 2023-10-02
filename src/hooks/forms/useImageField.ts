@@ -6,9 +6,9 @@ import { usePreview } from './usePreview';
 
 interface UseImageFieldOpts {
   /** Resize the image to the max dimensions, if defined. */
-  maxPixels?: number
+  maxPixels?: number;
   /** Fallback URL before a file is uploaded. */
-  preview?: string
+  preview?: string;
 }
 
 /** Returns props for `<input type="file">`, and optionally resizes the file. */

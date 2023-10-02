@@ -7,7 +7,7 @@ import RegistrationForm from 'soapbox/features/auth-login/components/registratio
 import { useInstance } from 'soapbox/hooks';
 
 interface RegisterInviteParams {
-  token: string
+  token: string;
 }
 
 /** Page to register with an invitation. */

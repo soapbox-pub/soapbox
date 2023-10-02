@@ -8,8 +8,8 @@ import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 interface IEventParticipantsModal {
-  onClose: (type: string) => void
-  statusId: string
+  onClose: (type: string) => void;
+  statusId: string;
 }
 
 const EventParticipantsModal: React.FC<IEventParticipantsModal> = ({ onClose, statusId }) => {

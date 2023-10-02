@@ -3,8 +3,8 @@ import React from 'react';
 import { Stack, Text } from 'soapbox/components/ui';
 
 interface Props {
-  title: React.ReactNode | string
-  subtitle: React.ReactNode | string
+  title: React.ReactNode | string;
+  subtitle: React.ReactNode | string;
 }
 
 export default ({ title, subtitle }: Props) => (

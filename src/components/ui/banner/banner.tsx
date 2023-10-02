@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface IBanner {
-  theme: 'frosted' | 'opaque'
-  children: React.ReactNode
-  className?: string
+  theme: 'frosted' | 'opaque';
+  children: React.ReactNode;
+  className?: string;
 }
 
 /** Displays a sticky full-width banner at the bottom of the screen. */

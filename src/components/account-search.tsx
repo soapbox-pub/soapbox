@@ -12,9 +12,9 @@ const messages = defineMessages({
 
 interface IAccountSearch {
   /** Callback when a searched account is chosen. */
-  onSelected: (accountId: string) => void
+  onSelected: (accountId: string) => void;
   /** Override the default placeholder of the input. */
-  placeholder?: string
+  placeholder?: string;
 }
 
 /** Input to search for accounts. */

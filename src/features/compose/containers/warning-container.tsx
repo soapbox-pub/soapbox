@@ -10,7 +10,7 @@ import Warning from '../components/warning';
 const APPROX_HASHTAG_RE = /(?:^|[^/)\w])#(\w*[a-zA-Z·]\w*)/i;
 
 interface IWarningWrapper {
-  composeId: string
+  composeId: string;
 }
 
 const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {

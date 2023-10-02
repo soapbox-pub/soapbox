@@ -7,8 +7,8 @@ import { useOwnAccount } from 'soapbox/hooks';
 import { useUpdateCredentials } from 'soapbox/queries/accounts';
 
 type FormData = {
-  accepts_chat_messages?: boolean
-  chats_onboarded: boolean
+  accepts_chat_messages?: boolean;
+  chats_onboarded: boolean;
 }
 
 const messages = defineMessages({

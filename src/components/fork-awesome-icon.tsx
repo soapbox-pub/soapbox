@@ -9,9 +9,9 @@ import clsx from 'clsx';
 import React from 'react';
 
 export interface IForkAwesomeIcon extends React.HTMLAttributes<HTMLLIElement> {
-  id: string
-  className?: string
-  fixedWidth?: boolean
+  id: string;
+  className?: string;
+  fixedWidth?: boolean;
 }
 
 const ForkAwesomeIcon: React.FC<IForkAwesomeIcon> = ({ id, className, fixedWidth, ...rest }) => {

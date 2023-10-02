@@ -1,7 +1,7 @@
 import { useTimelineStream } from './useTimelineStream';
 
 interface UsePublicStreamOpts {
-  onlyMedia?: boolean
+  onlyMedia?: boolean;
 }
 
 function usePublicStream({ onlyMedia }: UsePublicStreamOpts = {}) {

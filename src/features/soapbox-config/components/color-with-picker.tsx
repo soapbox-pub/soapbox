@@ -9,9 +9,9 @@ import ColorPicker from './color-picker';
 import type { ColorChangeHandler } from 'react-color';
 
 interface IColorWithPicker {
-  value: string
-  onChange: ColorChangeHandler
-  className?: string
+  value: string;
+  onChange: ColorChangeHandler;
+  className?: string;
 }
 
 const ColorWithPicker: React.FC<IColorWithPicker> = ({ value, onChange, className }) => {

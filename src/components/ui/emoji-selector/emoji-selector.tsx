@@ -10,13 +10,13 @@ import type { Emoji } from 'soapbox/features/emoji';
 
 interface IEmojiButton {
   /** Unicode emoji character. */
-  emoji: string
+  emoji: string;
   /** Event handler when the emoji is clicked. */
-  onClick(emoji: string): void
+  onClick(emoji: string): void;
   /** Extra class name on the <button> element. */
-  className?: string
+  className?: string;
   /** Tab order of the button. */
-  tabIndex?: number
+  tabIndex?: number;
 }
 
 /** Clickable emoji button that scales when hovered. */
@@ -36,17 +36,17 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 };
 
 interface IEmojiSelector {
-  onClose?(): void
+  onClose?(): void;
   /** Event handler when an emoji is clicked. */
-  onReact(emoji: string, custom?: string): void
+  onReact(emoji: string, custom?: string): void;
   /** Element that triggers the EmojiSelector Popper */
-  referenceElement: HTMLElement | null
-  placement?: Placement
+  referenceElement: HTMLElement | null;
+  placement?: Placement;
   /** Whether the selector should be visible. */
-  visible?: boolean
-  offsetOptions?: OffsetOptions
+  visible?: boolean;
+  offsetOptions?: OffsetOptions;
   /** Whether to allow any emoji to be chosen. */
-  all?: boolean
+  all?: boolean;
 }
 
 /** Panel with a row of emoji buttons. */

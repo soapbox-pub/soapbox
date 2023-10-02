@@ -13,7 +13,7 @@ import MediaItem from '../../account-gallery/components/media-item';
 import type { Account, Attachment } from 'soapbox/types/entities';
 
 interface IProfileMediaPanel {
-  account?: Account
+  account?: Account;
 }
 
 const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {

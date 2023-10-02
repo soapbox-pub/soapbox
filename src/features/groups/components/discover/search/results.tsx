@@ -13,7 +13,7 @@ import LayoutButtons, { GroupLayout } from '../layout-buttons';
 import type { Group } from 'soapbox/types/entities';
 
 interface Props {
-  groupSearchResult: ReturnType<typeof useGroupSearch>
+  groupSearchResult: ReturnType<typeof useGroupSearch>;
 }
 
 const GridList: Components['List'] = React.forwardRef((props, ref) => {

@@ -23,8 +23,8 @@ const messages = defineMessages({
 });
 
 interface IChatListItemInterface {
-  chat: IChat
-  onClick: (chat: any) => void
+  chat: IChat;
+  onClick: (chat: any) => void;
 }
 
 const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {

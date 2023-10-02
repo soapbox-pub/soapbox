@@ -6,7 +6,7 @@ import { GroupRoles } from 'soapbox/schemas/group-member';
 import { Group } from 'soapbox/types/entities';
 
 interface IGroupRelationship {
-  group: Group
+  group: Group;
 }
 
 const GroupRelationship = ({ group }: IGroupRelationship) => {

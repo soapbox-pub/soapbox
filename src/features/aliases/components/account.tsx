@@ -13,8 +13,8 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  accountId: string
-  aliases: string[]
+  accountId: string;
+  aliases: string[];
 }
 
 const Account: React.FC<IAccount> = ({ accountId, aliases }) => {

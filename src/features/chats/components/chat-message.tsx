@@ -53,8 +53,8 @@ const parseContent = (chatMessage: ChatMessageEntity) => {
 };
 
 interface IChatMessage {
-  chat: IChat
-  chatMessage: ChatMessageEntity
+  chat: IChat;
+  chatMessage: ChatMessageEntity;
 }
 
 const ChatMessage = (props: IChatMessage) => {

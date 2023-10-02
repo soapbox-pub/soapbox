@@ -6,9 +6,9 @@ import emojify from 'soapbox/features/emoji';
 import { EmojiReaction } from 'soapbox/types/entities';
 
 interface IChatMessageReaction {
-  emojiReaction: EmojiReaction
-  onRemoveReaction(emoji: string): void
-  onAddReaction(emoji: string): void
+  emojiReaction: EmojiReaction;
+  onRemoveReaction(emoji: string): void;
+  onAddReaction(emoji: string): void;
 }
 
 const ChatMessageReaction = (props: IChatMessageReaction) => {

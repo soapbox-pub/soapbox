@@ -5,7 +5,7 @@ import { joinPublicPath } from 'soapbox/utils/static';
 
 interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
   /** Unicode emoji character. */
-  emoji?: string
+  emoji?: string;
 }
 
 /** A single emoji image. */

@@ -10,9 +10,9 @@ const messages = defineMessages({
 
 interface IBadgeInput {
   /** A badge is a tag that begins with `badge:` */
-  badges: string[]
+  badges: string[];
   /** Callback when badges change. */
-  onChange: (badges: string[]) => void
+  onChange: (badges: string[]) => void;
 }
 
 /** Manages user badges. */

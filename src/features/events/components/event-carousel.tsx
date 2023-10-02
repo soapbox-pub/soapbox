@@ -28,9 +28,9 @@ const Event = ({ id }: { id: string }) => {
 };
 
 interface IEventCarousel {
-  statusIds: ImmutableOrderedSet<string>
-  isLoading?: boolean | null
-  emptyMessage: React.ReactNode
+  statusIds: ImmutableOrderedSet<string>;
+  isLoading?: boolean | null;
+  emptyMessage: React.ReactNode;
 }
 
 const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMessage }) => {

@@ -7,7 +7,7 @@ import { Stack, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 interface IUnapprovedAccount {
-  accountId: string
+  accountId: string;
 }
 
 /** Displays an unapproved account for moderation purposes. */

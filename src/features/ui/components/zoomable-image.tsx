@@ -3,7 +3,7 @@ import React from 'react';
 const MIN_SCALE = 1;
 const MAX_SCALE = 4;
 
-type Point = { x: number, y: number };
+type Point = { x: number; y: number };
 
 const getMidpoint = (p1: React.Touch, p2: React.Touch): Point => ({
   x: (p1.clientX + p2.clientX) / 2,
@@ -16,9 +16,9 @@ const getDistance = (p1: React.Touch, p2: React.Touch): number =>
 const clamp = (min: number, max: number, value: number): number => Math.min(max, Math.max(min, value));
 
 interface IZoomableImage {
-  alt?: string
-  src: string
-  onClick?: React.MouseEventHandler
+  alt?: string;
+  src: string;
+  onClick?: React.MouseEventHandler;
 }
 
 class ZoomableImage extends React.PureComponent<IZoomableImage> {

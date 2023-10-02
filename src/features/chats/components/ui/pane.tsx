@@ -3,13 +3,13 @@ import React from 'react';
 
 interface IPane {
   /** Whether the pane is open or minimized. */
-  isOpen: boolean
+  isOpen: boolean;
   /** Positions the pane on the screen, with 0 at the right. */
-  index: number
+  index: number;
   /** Children to display in the pane. */
-  children: React.ReactNode
+  children: React.ReactNode;
   /** Whether this is the main chat pane. */
-  main?: boolean
+  main?: boolean;
 }
 
 /** Chat pane UI component for desktop. */

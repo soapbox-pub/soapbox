@@ -16,7 +16,7 @@ import ScheduledStatusActionBar from './scheduled-status-action-bar';
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IScheduledStatus {
-  statusId: string
+  statusId: string;
 }
 
 const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => {

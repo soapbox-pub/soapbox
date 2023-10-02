@@ -25,8 +25,8 @@ const messages = defineMessages({
 
 interface IEditGroup {
   params: {
-    groupId: string
-  }
+    groupId: string;
+  };
 }
 
 const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {

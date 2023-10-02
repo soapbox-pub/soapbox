@@ -16,8 +16,8 @@ const messages = defineMessages({
 });
 
 interface IAuthToken {
-  token: Token
-  isCurrent: boolean
+  token: Token;
+  isCurrent: boolean;
 }
 
 const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {

@@ -30,13 +30,13 @@ const messages = defineMessages({
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 interface IPrivacyDropdownMenu {
-  style?: React.CSSProperties
-  items: any[]
-  value: string
-  placement: string
-  onClose: () => void
-  onChange: (value: string | null) => void
-  unavailable?: boolean
+  style?: React.CSSProperties;
+  items: any[];
+  value: string;
+  placement: string;
+  onClose: () => void;
+  onChange: (value: string | null) => void;
+  unavailable?: boolean;
 }
 
 const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange }) => {
@@ -140,7 +140,7 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
 };
 
 interface IPrivacyDropdown {
-  composeId: string
+  composeId: string;
 }
 
 const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({

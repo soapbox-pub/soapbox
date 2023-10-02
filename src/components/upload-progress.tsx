@@ -5,7 +5,7 @@ import { HStack, Icon, ProgressBar, Stack, Text } from 'soapbox/components/ui';
 
 interface IUploadProgress {
   /** Number between 0 and 100 to represent the percentage complete. */
-  progress: number
+  progress: number;
 }
 
 /** Displays a progress bar for uploading files. */

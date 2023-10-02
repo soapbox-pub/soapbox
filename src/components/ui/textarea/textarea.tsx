@@ -7,33 +7,33 @@ import Text from '../text/text';
 
 interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'onKeyDown' | 'onPaste' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */
-  autoFocus?: boolean
+  autoFocus?: boolean;
   /** Allows the textarea height to grow while typing */
-  autoGrow?: boolean
+  autoGrow?: boolean;
   /** Used with "autoGrow". Sets a max number of rows. */
-  maxRows?: number
+  maxRows?: number;
   /** Used with "autoGrow". Sets a min number of rows. */
-  minRows?: number
+  minRows?: number;
   /** The initial text in the input. */
-  defaultValue?: string
+  defaultValue?: string;
   /** Internal input name. */
-  name?: string
+  name?: string;
   /** Renders the textarea as a code editor. */
-  isCodeEditor?: boolean
+  isCodeEditor?: boolean;
   /** Text to display before a value is entered. */
-  placeholder?: string
+  placeholder?: string;
   /** Text in the textarea. */
-  value?: string
+  value?: string;
   /** Whether the device should autocomplete text in this textarea. */
-  autoComplete?: string
+  autoComplete?: string;
   /** Whether to display the textarea in red. */
-  hasError?: boolean
+  hasError?: boolean;
   /** Whether or not you can resize the teztarea */
-  isResizeable?: boolean
+  isResizeable?: boolean;
   /** Textarea theme. */
-  theme?: 'default' | 'transparent'
+  theme?: 'default' | 'transparent';
   /** Whether to display a character counter below the textarea. */
-  withCounter?: boolean
+  withCounter?: boolean;
 }
 
 /** Textarea with custom styles. */

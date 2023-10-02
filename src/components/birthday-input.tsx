@@ -15,9 +15,9 @@ const messages = defineMessages({
 });
 
 interface IBirthdayInput {
-  value?: string
-  onChange: (value: string) => void
-  required?: boolean
+  value?: string;
+  onChange: (value: string) => void;
+  required?: boolean;
 }
 
 const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) => {
@@ -56,15 +56,15 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
     nextYearButtonDisabled,
     date,
   }: {
-    decreaseMonth(): void
-    increaseMonth(): void
-    prevMonthButtonDisabled: boolean
-    nextMonthButtonDisabled: boolean
-    decreaseYear(): void
-    increaseYear(): void
-    prevYearButtonDisabled: boolean
-    nextYearButtonDisabled: boolean
-    date: Date
+    decreaseMonth(): void;
+    increaseMonth(): void;
+    prevMonthButtonDisabled: boolean;
+    nextMonthButtonDisabled: boolean;
+    decreaseYear(): void;
+    increaseYear(): void;
+    prevYearButtonDisabled: boolean;
+    nextYearButtonDisabled: boolean;
+    date: Date;
   }) => {
     return (
       <div className='flex flex-col gap-2'>

@@ -9,9 +9,9 @@ import type { List as ImmutableList } from 'immutable';
 import type { Attachment } from 'soapbox/types/entities';
 
 interface IAttachmentThumbs {
-  media: ImmutableList<Attachment>
-  onClick?(): void
-  sensitive?: boolean
+  media: ImmutableList<Attachment>;
+  onClick?(): void;
+  sensitive?: boolean;
 }
 
 const AttachmentThumbs = (props: IAttachmentThumbs) => {

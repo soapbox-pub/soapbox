@@ -7,7 +7,7 @@ import { HStack } from 'soapbox/components/ui';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IEventDate {
-  status: StatusEntity
+  status: StatusEntity;
 }
 
 const EventDate: React.FC<IEventDate> = ({ status }) => {

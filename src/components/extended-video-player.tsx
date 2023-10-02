@@ -3,14 +3,14 @@ import React, { useEffect, useRef } from 'react';
 import { isIOS } from 'soapbox/is-mobile';
 
 interface IExtendedVideoPlayer {
-  src: string
-  alt?: string
-  width?: number
-  height?: number
-  time?: number
-  controls?: boolean
-  muted?: boolean
-  onClick?: () =>  void
+  src: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+  time?: number;
+  controls?: boolean;
+  muted?: boolean;
+  onClick?: () =>  void;
 }
 
 const ExtendedVideoPlayer: React.FC<IExtendedVideoPlayer> = ({ src, alt, time, controls, muted, onClick }) => {

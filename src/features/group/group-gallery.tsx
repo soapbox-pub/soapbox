@@ -13,7 +13,7 @@ import MediaItem from '../account-gallery/components/media-item';
 import type { Attachment, Status } from 'soapbox/types/entities';
 
 interface IGroupGallery {
-  params: { groupId: string }
+  params: { groupId: string };
 }
 
 const GroupGallery: React.FC<IGroupGallery> = (props) => {

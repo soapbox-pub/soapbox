@@ -158,7 +158,7 @@ const GroupBlockedMembersSlug = withHoc(GroupBlockedMembers as any, GroupLookupH
 const GroupMembershipRequestsSlug = withHoc(GroupMembershipRequests as any, GroupLookupHoc);
 
 interface ISwitchingColumnsArea {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
@@ -383,7 +383,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 };
 
 interface IUI {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 const UI: React.FC<IUI> = ({ children }) => {

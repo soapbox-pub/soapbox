@@ -6,8 +6,8 @@ import { setEditorState } from 'soapbox/actions/compose';
 import { useAppDispatch } from 'soapbox/hooks';
 
 interface IStatePlugin {
-  composeId: string
-  handleSubmit?: () => void
+  composeId: string;
+  handleSubmit?: () => void;
 }
 
 const StatePlugin = ({ composeId, handleSubmit }: IStatePlugin) => {

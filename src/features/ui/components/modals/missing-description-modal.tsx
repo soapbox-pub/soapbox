@@ -10,9 +10,9 @@ const messages = defineMessages({
 });
 
 interface IMissingDescriptionModal {
-  onClose: () => void
-  onContinue: () => void
-  intl: IntlShape
+  onClose: () => void;
+  onContinue: () => void;
+  intl: IntlShape;
 }
 
 const MissingDescriptionModal: React.FC<IMissingDescriptionModal> = ({ onClose, onContinue, intl }) => {

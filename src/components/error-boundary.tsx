@@ -27,14 +27,14 @@ const mapStateToProps = (state: RootState) => {
 };
 
 interface Props extends ReturnType<typeof mapStateToProps> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 type State = {
-  hasError: boolean
-  error: any
-  componentStack: any
-  browser?: Bowser.Parser.Parser
+  hasError: boolean;
+  error: any;
+  componentStack: any;
+  browser?: Bowser.Parser.Parser;
 }
 
 class ErrorBoundary extends React.PureComponent<Props, State> {

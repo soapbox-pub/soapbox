@@ -14,10 +14,10 @@ const showStatusHoverCard = debounce((dispatch, ref, statusId) => {
 }, 300);
 
 interface IHoverStatusWrapper {
-  statusId: any
-  inline: boolean
-  className?: string
-  children: React.ReactNode
+  statusId: any;
+  inline: boolean;
+  className?: string;
+  children: React.ReactNode;
 }
 
 /** Makes a status hover card appear when the wrapped element is hovered. */

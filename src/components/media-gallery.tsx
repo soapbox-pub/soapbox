@@ -19,21 +19,21 @@ const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 interface Dimensions {
-  w: Property.Width | number
-  h: Property.Height | number
-  t?: Property.Top
-  r?: Property.Right
-  b?: Property.Bottom
-  l?: Property.Left
-  float?: Property.Float
-  pos?: Property.Position
+  w: Property.Width | number;
+  h: Property.Height | number;
+  t?: Property.Top;
+  r?: Property.Right;
+  b?: Property.Bottom;
+  l?: Property.Left;
+  float?: Property.Float;
+  pos?: Property.Position;
 }
 
 interface SizeData {
-  style: React.CSSProperties
-  itemsDimensions: Dimensions[]
-  size: number
-  width: number
+  style: React.CSSProperties;
+  itemsDimensions: Dimensions[];
+  size: number;
+  width: number;
 }
 
 const withinLimits = (aspectRatio: number) => {
@@ -48,16 +48,16 @@ const shouldLetterbox = (attachment: Attachment): boolean => {
 };
 
 interface IItem {
-  attachment: Attachment
-  standalone?: boolean
-  index: number
-  size: number
-  onClick: (index: number) => void
-  displayWidth?: number
-  visible: boolean
-  dimensions: Dimensions
-  last?: boolean
-  total: number
+  attachment: Attachment;
+  standalone?: boolean;
+  index: number;
+  size: number;
+  onClick: (index: number) => void;
+  displayWidth?: number;
+  visible: boolean;
+  dimensions: Dimensions;
+  last?: boolean;
+  total: number;
 }
 
 const Item: React.FC<IItem> = ({
@@ -275,17 +275,17 @@ const Item: React.FC<IItem> = ({
 };
 
 export interface IMediaGallery {
-  sensitive?: boolean
-  media: ImmutableList<Attachment>
-  height?: number
-  onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void
-  defaultWidth?: number
-  cacheWidth?: (width: number) => void
-  visible?: boolean
-  onToggleVisibility?: () => void
-  displayMedia?: string
-  compact?: boolean
-  className?: string
+  sensitive?: boolean;
+  media: ImmutableList<Attachment>;
+  height?: number;
+  onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void;
+  defaultWidth?: number;
+  cacheWidth?: (width: number) => void;
+  visible?: boolean;
+  onToggleVisibility?: () => void;
+  displayMedia?: string;
+  compact?: boolean;
+  className?: string;
 }
 
 const MediaGallery: React.FC<IMediaGallery> = (props) => {

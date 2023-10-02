@@ -31,8 +31,8 @@ const getOrderedLists = createSelector([(state: RootState) => state.lists], list
 });
 
 interface IListAdder {
-  accountId: string
-  onClose: (type: string) => void
+  accountId: string;
+  onClose: (type: string) => void;
 }
 
 const ListAdder: React.FC<IListAdder> = ({ accountId, onClose }) => {

@@ -12,10 +12,10 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 
 interface IUserPanel {
-  accountId: string
-  action?: JSX.Element
-  badges?: JSX.Element[]
-  domain?: string
+  accountId: string;
+  action?: JSX.Element;
+  badges?: JSX.Element[];
+  domain?: string;
 }
 
 const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) => {

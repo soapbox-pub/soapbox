@@ -23,9 +23,9 @@ const messages = defineMessages({
 });
 
 interface ChatInterface {
-  chat: IChat
-  inputRef?: MutableRefObject<HTMLTextAreaElement | null>
-  className?: string
+  chat: IChat;
+  inputRef?: MutableRefObject<HTMLTextAreaElement | null>;
+  className?: string;
 }
 
 /**

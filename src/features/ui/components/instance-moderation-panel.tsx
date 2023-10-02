@@ -16,7 +16,7 @@ const messages = defineMessages({
 
 interface IInstanceModerationPanel {
   /** Host (eg "gleasonator.com") of the remote instance to moderate. */
-  host: string
+  host: string;
 }
 
 /** Widget for moderators to manage a remote instance. */

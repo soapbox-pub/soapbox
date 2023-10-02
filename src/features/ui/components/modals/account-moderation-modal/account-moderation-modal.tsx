@@ -30,9 +30,9 @@ const messages = defineMessages({
 
 interface IAccountModerationModal {
   /** Action to close the modal. */
-  onClose: (type: string) => void
+  onClose: (type: string) => void;
   /** ID of the account to moderate. */
-  accountId: string
+  accountId: string;
 }
 
 /** Moderator actions against accounts. */

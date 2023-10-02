@@ -4,9 +4,9 @@ import React from 'react';
 import { Stack } from 'soapbox/components/ui';
 
 interface IPlaceholderAvatar {
-  size: number
-  withText?: boolean
-  className?: string
+  size: number;
+  withText?: boolean;
+  className?: string;
 }
 
 /** Fake avatar to display while data is loading. */

@@ -19,7 +19,7 @@ export const ADDRESS_ICONS: Record<string, string> = {
 };
 
 interface IAutosuggestLocation {
-  id: string
+  id: string;
 }
 
 const AutosuggestLocation: React.FC<IAutosuggestLocation> = ({ id }) => {

@@ -7,15 +7,15 @@ import { Layout } from '../ui';
 
 interface IGroupLookup {
   params: {
-    groupSlug: string
-  }
+    groupSlug: string;
+  };
 }
 
 interface IMaybeGroupLookup {
   params?: {
-    groupSlug?: string
-    groupId?: string
-  }
+    groupSlug?: string;
+    groupId?: string;
+  };
 }
 
 function GroupLookupHoc(Component: React.ComponentType<{ params: { groupId: string } }>) {

@@ -21,42 +21,42 @@ declare const self: ServiceWorkerGlobalScope;
 
 /** Soapbox notification data from push event. */
 interface NotificationData {
-  access_token?: string
-  count?: number
-  hiddenBody?: string
-  hiddenImage?: string
-  id?: string
-  preferred_locale: string
-  url: string
+  access_token?: string;
+  count?: number;
+  hiddenBody?: string;
+  hiddenImage?: string;
+  id?: string;
+  preferred_locale: string;
+  url: string;
 }
 
 /** ServiceWorker Notification options with extra fields. */
 interface ExtendedNotificationOptions extends NotificationOptions {
-  data: NotificationData
-  title: string
+  data: NotificationData;
+  title: string;
 }
 
 /** Partial clone of ServiceWorker Notification with mutability. */
 interface ClonedNotification {
-  actions?: NotificationAction[]
-  body?: string
-  data: NotificationData
-  image?: string
-  tag?: string
-  title: string
+  actions?: NotificationAction[];
+  body?: string;
+  data: NotificationData;
+  image?: string;
+  tag?: string;
+  title: string;
 }
 
 /** Status entitiy from the API (kind of). */
 // HACK
 interface APIStatus extends Omit<StatusEntity, 'media_attachments'> {
-  media_attachments: { preview_url: string }[]
+  media_attachments: { preview_url: string }[];
 }
 
 /** Notification entity from the API (kind of). */
 // HACK
 interface APINotification extends Omit<NotificationEntity, 'account' | 'status'> {
-  account: AccountEntity
-  status?: APIStatus
+  account: AccountEntity;
+  status?: APIStatus;
 }
 
 /** Show the actual push notification on the device. */

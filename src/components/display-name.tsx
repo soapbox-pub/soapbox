@@ -11,9 +11,9 @@ import VerificationBadge from './verification-badge';
 import type { Account } from 'soapbox/schemas';
 
 interface IDisplayName {
-  account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>
-  withSuffix?: boolean
-  children?: React.ReactNode
+  account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>;
+  withSuffix?: boolean;
+  children?: React.ReactNode;
 }
 
 const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = true }) => {

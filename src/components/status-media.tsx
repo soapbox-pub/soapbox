@@ -15,15 +15,15 @@ import type { Status, Attachment } from 'soapbox/types/entities';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: Status
+  status: Status;
   /** Whether to display compact media. */
-  muted?: boolean
+  muted?: boolean;
   /** Callback when compact media is clicked. */
-  onClick?: () => void
+  onClick?: () => void;
   /** Whether or not the media is concealed behind a NSFW banner. */
-  showMedia?: boolean
+  showMedia?: boolean;
   /** Callback when visibility is toggled (eg clicked through NSFW). */
-  onToggleVisibility?: () => void
+  onToggleVisibility?: () => void;
 }
 
 /** Render media attachments for a status. */

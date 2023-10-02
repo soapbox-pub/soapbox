@@ -13,8 +13,8 @@ import PollOption from './poll-option';
 export type Selected = Record<number, boolean>;
 
 interface IPoll {
-  id: string
-  status?: string
+  id: string;
+  status?: string;
 }
 
 const messages = defineMessages({

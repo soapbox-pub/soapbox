@@ -2,10 +2,10 @@
 // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/ef5bbc4e5f84bb9e8da76a0440eea5d656d36977/src/services/favicon_service/favicon_service.js
 
 type Favicon = {
-  favcanvas: HTMLCanvasElement
-  favimg: HTMLImageElement
-  favcontext: CanvasRenderingContext2D | null
-  favicon: HTMLLinkElement
+  favcanvas: HTMLCanvasElement;
+  favimg: HTMLImageElement;
+  favcontext: CanvasRenderingContext2D | null;
+  favicon: HTMLLinkElement;
 };
 
 /** Service to draw and update a notifications dot on the favicon */

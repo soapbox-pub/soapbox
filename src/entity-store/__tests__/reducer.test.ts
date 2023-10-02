@@ -13,8 +13,8 @@ import { createListState } from '../utils';
 import type { EntityCache } from '../types';
 
 interface TestEntity {
-  id: string
-  msg: string
+  id: string;
+  msg: string;
 }
 
 test('import entities', () => {

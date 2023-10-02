@@ -18,8 +18,8 @@ const messages = defineMessages({
 });
 
 interface IListEditor {
-  listId: string
-  onClose: (type: string) => void
+  listId: string;
+  onClose: (type: string) => void;
 }
 
 const ListEditor: React.FC<IListEditor> = ({ listId, onClose }) => {

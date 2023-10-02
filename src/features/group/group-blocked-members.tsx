@@ -20,8 +20,8 @@ const messages = defineMessages({
 });
 
 interface IBlockedMember {
-  accountId: string
-  groupId: string
+  accountId: string;
+  groupId: string;
 }
 
 const BlockedMember: React.FC<IBlockedMember> = ({ accountId, groupId }) => {
@@ -51,7 +51,7 @@ const BlockedMember: React.FC<IBlockedMember> = ({ accountId, groupId }) => {
 };
 
 interface IGroupBlockedMembers {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {

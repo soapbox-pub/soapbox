@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface IMarkdownButton {
-  composeId: string
+  composeId: string;
 }
 
 const MarkdownButton: React.FC<IMarkdownButton> = ({ composeId }) => {

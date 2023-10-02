@@ -5,8 +5,8 @@ import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-wi
 import type { ColorChangeHandler } from 'react-color';
 
 interface IColor {
-  color: string
-  onChange: (color: string) => void
+  color: string;
+  onChange: (color: string) => void;
 }
 
 /** Color input. */

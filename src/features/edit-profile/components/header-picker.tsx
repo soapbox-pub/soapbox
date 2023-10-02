@@ -10,11 +10,11 @@ const messages = defineMessages({
 });
 
 interface IMediaInput {
-  src: string | undefined
-  accept?: string
-  onChange: (files: FileList | null) => void
-  onClear?: () => void
-  disabled?: boolean
+  src: string | undefined;
+  accept?: string;
+  onChange: (files: FileList | null) => void;
+  onClear?: () => void;
+  disabled?: boolean;
 }
 
 const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, onClear, accept, disabled }, ref) => {

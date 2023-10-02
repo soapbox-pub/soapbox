@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 interface ISuggestionItem {
-  accountId: string
+  accountId: string;
 }
 
 const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
@@ -63,9 +63,9 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
 };
 
 interface IFeedSuggesetions {
-  statusId: string
-  onMoveUp?: (statusId: string, featured?: boolean) => void
-  onMoveDown?: (statusId: string, featured?: boolean) => void
+  statusId: string;
+  onMoveUp?: (statusId: string, featured?: boolean) => void;
+  onMoveDown?: (statusId: string, featured?: boolean) => void;
 }
 
 const FeedSuggestions: React.FC<IFeedSuggesetions> = ({ statusId, onMoveUp, onMoveDown }) => {

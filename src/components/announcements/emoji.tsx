@@ -7,9 +7,9 @@ import { joinPublicPath } from 'soapbox/utils/static';
 import type { Map as ImmutableMap } from 'immutable';
 
 interface IEmoji {
-  emoji: string
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
-  hovered: boolean
+  emoji: string;
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
+  hovered: boolean;
 }
 
 const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {

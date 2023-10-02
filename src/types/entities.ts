@@ -53,8 +53,8 @@ type Account = SchemaAccount & LegacyMap;
 
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
-  quote: EmbeddedEntity<Status>
-  reblog: EmbeddedEntity<Status>
+  quote: EmbeddedEntity<Status>;
+  reblog: EmbeddedEntity<Status>;
 }
 
 // Utility types

@@ -75,12 +75,12 @@ export const getDescendantsIds = createSelector([
 });
 
 interface IThread {
-  status: Status
-  withMedia?: boolean
-  useWindowScroll?: boolean
-  itemClassName?: string
-  next: string | undefined
-  handleLoadMore: () => void
+  status: Status;
+  withMedia?: boolean;
+  useWindowScroll?: boolean;
+  itemClassName?: string;
+  next: string | undefined;
+  handleLoadMore: () => void;
 }
 
 const Thread = (props: IThread) => {

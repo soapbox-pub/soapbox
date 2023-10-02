@@ -4,7 +4,7 @@ import { Avatar, Button, CardTitle, Stack } from 'soapbox/components/ui';
 import { type Card as StatusCard } from 'soapbox/types/entities';
 
 interface IGroupLinkPreview {
-  card: StatusCard
+  card: StatusCard;
 }
 
 const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {

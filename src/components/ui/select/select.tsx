@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface ISelect extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  children: Iterable<React.ReactNode>
+  children: Iterable<React.ReactNode>;
 }
 
 /** Multiple-select dropdown. */

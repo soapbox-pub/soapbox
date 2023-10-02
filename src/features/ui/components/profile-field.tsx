@@ -26,7 +26,7 @@ const dateFormatOptions: FormatDateOptions = {
 };
 
 interface IProfileField {
-  field: Account['fields'][number]
+  field: Account['fields'][number];
 }
 
 /** Renders a single profile field. */

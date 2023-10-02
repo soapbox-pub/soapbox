@@ -25,10 +25,10 @@ type ButtonSizes = keyof typeof sizes
 type ButtonThemes = keyof typeof themes
 
 type IButtonStyles = {
-  theme: ButtonThemes
-  block: boolean
-  disabled: boolean
-  size: ButtonSizes
+  theme: ButtonThemes;
+  block: boolean;
+  disabled: boolean;
+  size: ButtonSizes;
 }
 
 /** Provides class names for the <Button> component. */

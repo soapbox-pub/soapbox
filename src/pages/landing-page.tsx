@@ -12,7 +12,7 @@ import { Layout } from '../components/ui';
 import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface ILandingPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const LandingPage: React.FC<ILandingPage> = ({ children }) => {

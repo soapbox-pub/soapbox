@@ -18,10 +18,10 @@ const AnimatedContext = React.createContext(null);
 
 interface IAnimatedInterface {
   /** Callback when a tab is chosen. */
-  onChange(index: number): void
+  onChange(index: number): void;
   /** Default tab index. */
-  defaultIndex: number
-  children: React.ReactNode
+  defaultIndex: number;
+  children: React.ReactNode;
 }
 
 /** Tabs with a sliding active state. */
@@ -63,15 +63,15 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
 
 interface IAnimatedTab {
   /** ARIA role. */
-  role: 'button'
+  role: 'button';
   /** Element to represent the tab. */
-  as: 'a' | 'button'
+  as: 'a' | 'button';
   /** Route to visit when the tab is chosen. */
-  href?: string
+  href?: string;
   /** Tab title text. */
-  title: string
+  title: string;
   /** Index value of the tab. */
-  index: number
+  index: number;
 }
 
 /** A single animated tab. */
@@ -104,26 +104,26 @@ const AnimatedTab: React.FC<IAnimatedTab> = ({ index, ...props }) => {
 /** Structure to represent a tab. */
 export type Item = {
   /** Tab text. */
-  text: React.ReactNode
+  text: React.ReactNode;
   /** Tab tooltip text. */
-  title?: string
+  title?: string;
   /** URL to visit when the tab is selected. */
-  href?: string
+  href?: string;
   /** Route to visit when the tab is selected. */
-  to?: string
+  to?: string;
   /** Callback when the tab is selected. */
-  action?: () => void
+  action?: () => void;
   /** Display a counter over the tab. */
-  count?: number
+  count?: number;
   /** Unique name for this tab. */
-  name: string
+  name: string;
 }
 
 interface ITabs {
   /** Array of structured tab items. */
-  items: Item[]
+  items: Item[];
   /** Name of the active tab item. */
-  activeItem: string
+  activeItem: string;
 }
 
 /** Animated tabs component. */

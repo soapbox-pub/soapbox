@@ -63,7 +63,7 @@ const messages = defineMessages({
 });
 
 interface IEventHeader {
-  status?: StatusEntity
+  status?: StatusEntity;
 }
 
 const EventHeader: React.FC<IEventHeader> = ({ status }) => {

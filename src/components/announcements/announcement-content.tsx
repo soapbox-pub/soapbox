@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/types/entities';
 
 interface IAnnouncementContent {
-  announcement: AnnouncementEntity
+  announcement: AnnouncementEntity;
 }
 
 const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) => {

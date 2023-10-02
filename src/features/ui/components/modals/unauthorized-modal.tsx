@@ -16,13 +16,13 @@ const messages = defineMessages({
 
 interface IUnauthorizedModal {
   /** Unauthorized action type. */
-  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'DISLIKE' | 'POLL_VOTE' | 'JOIN'
+  action: 'FOLLOW' | 'REPLY' | 'REBLOG' | 'FAVOURITE' | 'DISLIKE' | 'POLL_VOTE' | 'JOIN';
   /** Close event handler. */
-  onClose: (modalType: string) => void
+  onClose: (modalType: string) => void;
   /** ActivityPub ID of the account OR status being acted upon. */
-  ap_id?: string
+  ap_id?: string;
   /** Account ID of the account being acted upon. */
-  account?: string
+  account?: string;
 }
 
 /** Modal to display when a logged-out user tries to do something that requires login. */

@@ -10,7 +10,7 @@ import { type Account, accountSchema } from 'soapbox/schemas';
 import { useRelationship } from './useRelationship';
 
 interface UseAccountLookupOpts {
-  withRelationship?: boolean
+  withRelationship?: boolean;
 }
 
 function useAccountLookup(acct: string | undefined, opts: UseAccountLookupOpts = {}) {

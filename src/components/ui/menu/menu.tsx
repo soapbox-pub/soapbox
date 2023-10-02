@@ -15,8 +15,8 @@ import './menu.css';
 
 interface IMenuList extends Omit<MenuListProps, 'position'> {
   /** Position of the dropdown menu. */
-  position?: 'left' | 'right'
-  className?: string
+  position?: 'left' | 'right';
+  className?: string;
 }
 
 /** Renders children as a dropdown menu. */

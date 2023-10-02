@@ -21,14 +21,14 @@ const trim = (text: string, len: number): string => {
 };
 
 interface ICard {
-  card: CardEntity
-  maxTitle?: number
-  maxDescription?: number
-  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void
-  compact?: boolean
-  defaultWidth?: number
-  cacheWidth?: (width: number) => void
-  horizontal?: boolean
+  card: CardEntity;
+  maxTitle?: number;
+  maxDescription?: number;
+  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void;
+  compact?: boolean;
+  defaultWidth?: number;
+  cacheWidth?: (width: number) => void;
+  horizontal?: boolean;
 }
 
 const Card: React.FC<ICard> = ({

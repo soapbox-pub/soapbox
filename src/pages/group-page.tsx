@@ -27,9 +27,9 @@ const messages = defineMessages({
 
 interface IGroupPage {
   params?: {
-    groupId?: string
-  }
-  children: React.ReactNode
+    groupId?: string;
+  };
+  children: React.ReactNode;
 }
 
 const DeletedBlankslate = () => (

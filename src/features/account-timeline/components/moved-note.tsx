@@ -8,8 +8,8 @@ import { HStack, Text } from 'soapbox/components/ui';
 import type { Account as AccountEntity } from 'soapbox/schemas';
 
 interface IMovedNote {
-  from: AccountEntity
-  to: AccountEntity
+  from: AccountEntity;
+  to: AccountEntity;
 }
 
 const MovedNote: React.FC<IMovedNote> = ({ from, to }) => (

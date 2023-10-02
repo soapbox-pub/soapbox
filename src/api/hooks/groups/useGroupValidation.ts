@@ -4,8 +4,8 @@ import { useApi } from 'soapbox/hooks/useApi';
 import { useFeatures } from 'soapbox/hooks/useFeatures';
 
 type Validation = {
-  error: string
-  message: string
+  error: string;
+  message: string;
 }
 
 const ValidationKeys = {

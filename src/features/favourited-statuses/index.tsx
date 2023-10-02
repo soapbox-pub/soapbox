@@ -17,8 +17,8 @@ const messages = defineMessages({
 
 interface IFavourites {
   params?: {
-    username?: string
-  }
+    username?: string;
+  };
 }
 
 /** Timeline displaying a user's favourited statuses. */

@@ -46,13 +46,13 @@ import { $createMentionNode } from '../nodes/mention-node';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 
 type QueryMatch = {
-  leadOffset: number
-  matchingString: string
+  leadOffset: number;
+  matchingString: string;
 };
 
 type Resolution = {
-  match: QueryMatch
-  getRect: () => DOMRect
+  match: QueryMatch;
+  getRect: () => DOMRect;
 };
 
 type MenuRenderFn = (
@@ -199,8 +199,8 @@ const useDynamicPositioning = (
 };
 
 const LexicalPopoverMenu = ({ anchorElementRef, menuRenderFn }: {
-  anchorElementRef: MutableRefObject<HTMLElement>
-  menuRenderFn: MenuRenderFn
+  anchorElementRef: MutableRefObject<HTMLElement>;
+  menuRenderFn: MenuRenderFn;
 }): JSX.Element | null => menuRenderFn(anchorElementRef);
 
 const useMenuAnchorRef = (
@@ -272,9 +272,9 @@ const useMenuAnchorRef = (
 };
 
 type AutosuggestPluginProps = {
-  composeId: string
-  suggestionsHidden: boolean
-  setSuggestionsHidden: (value: boolean) => void
+  composeId: string;
+  suggestionsHidden: boolean;
+  setSuggestionsHidden: (value: boolean) => void;
 };
 
 const AutosuggestPlugin = ({

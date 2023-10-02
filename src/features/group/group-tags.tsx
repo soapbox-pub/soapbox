@@ -12,7 +12,7 @@ import GroupTagListItem from './components/group-tag-list-item';
 import type { Group } from 'soapbox/types/entities';
 
 interface IGroupTopics {
-  params: { groupId: string }
+  params: { groupId: string };
 }
 
 const GroupTopics: React.FC<IGroupTopics> = (props) => {

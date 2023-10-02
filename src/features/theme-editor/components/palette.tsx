@@ -8,13 +8,13 @@ import { hueShift } from 'soapbox/utils/theme';
 import Color from './color';
 
 interface ColorGroup {
-  [tint: string]: string
+  [tint: string]: string;
 }
 
 interface IPalette {
-  palette: ColorGroup
-  onChange: (palette: ColorGroup) => void
-  resetKey?: string
+  palette: ColorGroup;
+  onChange: (palette: ColorGroup) => void;
+  resetKey?: string;
 }
 
 /** Editable color palette. */

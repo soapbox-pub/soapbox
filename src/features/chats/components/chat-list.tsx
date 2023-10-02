@@ -12,9 +12,9 @@ import { useChats } from 'soapbox/queries/chats';
 import ChatListItem from './chat-list-item';
 
 interface IChatList {
-  onClickChat: (chat: any) => void
-  useWindowScroll?: boolean
-  searchValue?: string
+  onClickChat: (chat: any) => void;
+  useWindowScroll?: boolean;
+  searchValue?: string;
 }
 
 const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false, searchValue }) => {

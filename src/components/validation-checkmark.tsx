@@ -4,8 +4,8 @@ import React from 'react';
 import { HStack, Icon, Text } from 'soapbox/components/ui';
 
 interface IValidationCheckmark {
-  isValid: boolean
-  text: string
+  isValid: boolean;
+  text: string;
 }
 
 const ValidationCheckmark = ({ isValid, text }: IValidationCheckmark) => {

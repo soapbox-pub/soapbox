@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface IList {
-  listId: string
+  listId: string;
 }
 
 const List: React.FC<IList> = ({ listId }) => {

@@ -6,8 +6,8 @@ import Upload from 'soapbox/components/upload';
 import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks';
 
 interface IUploadCompose {
-  id: string
-  composeId: string
+  id: string;
+  composeId: string;
 }
 
 const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id }) => {

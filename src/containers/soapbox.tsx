@@ -149,7 +149,7 @@ const SoapboxMount = () => {
 };
 
 interface ISoapboxLoad {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Initial data loader. */
@@ -205,7 +205,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 };
 
 interface ISoapboxHead {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Injects metadata into site head with Helmet. */

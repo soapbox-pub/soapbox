@@ -10,7 +10,7 @@ import { useAppDispatch } from 'soapbox/hooks';
 import useTrends from 'soapbox/queries/trends';
 
 interface ITrendsPanel {
-  limit: number
+  limit: number;
 }
 
 const messages = defineMessages({

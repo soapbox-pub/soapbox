@@ -18,7 +18,7 @@ const messages = defineMessages({
 });
 
 interface ILocationSearch {
-  onSelected: (locationId: string) => void
+  onSelected: (locationId: string) => void;
 }
 
 const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {

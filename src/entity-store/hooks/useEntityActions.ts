@@ -8,13 +8,13 @@ import type { EntitySchema, ExpandedEntitiesPath } from './types';
 import type { Entity } from '../types';
 
 interface UseEntityActionsOpts<TEntity extends Entity = Entity> {
-  schema?: EntitySchema<TEntity>
+  schema?: EntitySchema<TEntity>;
 }
 
 interface EntityActionEndpoints {
-  delete?: string
-  patch?: string
-  post?: string
+  delete?: string;
+  patch?: string;
+  post?: string;
 }
 
 function useEntityActions<TEntity extends Entity = Entity, Data = any>(

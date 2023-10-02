@@ -17,7 +17,7 @@ import type { Account } from 'soapbox/types/entities';
 const getAccount = makeGetAccount();
 
 interface IProfileFamiliarFollowers {
-  account: Account
+  account: Account;
 }
 
 const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account }) => {

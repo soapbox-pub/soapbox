@@ -12,8 +12,8 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import type { Account } from 'soapbox/types/entities';
 
 interface IPinnedAccountsPanel {
-  account: Account
-  limit: number
+  account: Account;
+  limit: number;
 }
 
 const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit }) => {

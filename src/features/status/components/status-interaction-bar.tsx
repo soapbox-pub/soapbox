@@ -13,7 +13,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 import type { Status } from 'soapbox/types/entities';
 
 interface IStatusInteractionBar {
-  status: Status
+  status: Status;
 }
 
 const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.Element | null => {
@@ -200,10 +200,10 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 };
 
 interface IInteractionCounter {
-  count: number
-  children: React.ReactNode
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
-  to?: string
+  count: number;
+  children: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  to?: string;
 }
 
 const InteractionCounter: React.FC<IInteractionCounter> = ({ count, children, onClick, to }) => {

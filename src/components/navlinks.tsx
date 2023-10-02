@@ -5,7 +5,7 @@ import { Text } from 'soapbox/components/ui';
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
 
 interface INavlinks {
-  type: string
+  type: string;
 }
 
 const Navlinks: React.FC<INavlinks> = ({ type }) => {

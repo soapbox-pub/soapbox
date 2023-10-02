@@ -6,13 +6,13 @@ import IconWithCounter from 'soapbox/components/icon-with-counter';
 import { Icon, Text } from 'soapbox/components/ui';
 
 interface IThumbNavigationLink {
-  count?: number
-  countMax?: number
-  src: string
-  text: string | React.ReactElement
-  to: string
-  exact?: boolean
-  paths?: Array<string>
+  count?: number;
+  countMax?: number;
+  src: string;
+  text: string | React.ReactElement;
+  to: string;
+  exact?: boolean;
+  paths?: Array<string>;
 }
 
 const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, src, text, to, exact, paths }): JSX.Element => {

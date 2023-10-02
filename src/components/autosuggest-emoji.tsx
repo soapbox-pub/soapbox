@@ -7,7 +7,7 @@ import { joinPublicPath } from 'soapbox/utils/static';
 import type { Emoji } from 'soapbox/features/emoji';
 
 interface IAutosuggestEmoji {
-  emoji: Emoji
+  emoji: Emoji;
 }
 
 const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {

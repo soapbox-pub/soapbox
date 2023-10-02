@@ -98,7 +98,7 @@ export default function(baseColor: string): TailwindColorObject {
   };
 
   const intensityMap: {
-    [key: number]: number
+    [key: number]: number;
   } = {
     50: 0.95,
     100: 0.9,

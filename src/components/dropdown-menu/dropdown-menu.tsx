@@ -18,16 +18,16 @@ import type { Status } from 'soapbox/types/entities';
 export type Menu = Array<MenuItem | null>;
 
 interface IDropdownMenu {
-  children?: React.ReactElement
-  disabled?: boolean
-  items: Menu
-  onClose?: () => void
-  onOpen?: () => void
-  onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>
-  placement?: Placement
-  src?: string
-  status?: Status
-  title?: string
+  children?: React.ReactElement;
+  disabled?: boolean;
+  items: Menu;
+  onClose?: () => void;
+  onOpen?: () => void;
+  onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>;
+  placement?: Placement;
+  src?: string;
+  status?: Status;
+  title?: string;
 }
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;

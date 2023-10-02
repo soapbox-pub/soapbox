@@ -21,23 +21,23 @@ const TICK_SIZE = 10;
 const PADDING   = 180;
 
 interface IAudio {
-  src: string
-  alt?: string
-  poster?: string
-  duration?: number
-  width?: number
-  height?: number
-  editable?: boolean
-  fullscreen?: boolean
-  cacheWidth?: (width: number) => void
-  backgroundColor?: string
-  foregroundColor?: string
-  accentColor?: string
-  currentTime?: number
-  autoPlay?: boolean
-  volume?: number
-  muted?: boolean
-  deployPictureInPicture?: (type: string, opts: Record<string, any>) => void
+  src: string;
+  alt?: string;
+  poster?: string;
+  duration?: number;
+  width?: number;
+  height?: number;
+  editable?: boolean;
+  fullscreen?: boolean;
+  cacheWidth?: (width: number) => void;
+  backgroundColor?: string;
+  foregroundColor?: string;
+  accentColor?: string;
+  currentTime?: number;
+  autoPlay?: boolean;
+  volume?: number;
+  muted?: boolean;
+  deployPictureInPicture?: (type: string, opts: Record<string, any>) => void;
 }
 
 const Audio: React.FC<IAudio> = (props) => {

@@ -6,8 +6,8 @@ import ChatPage from './components/chat-page/chat-page';
 
 interface IChatIndex {
   params?: {
-    chatId?: string
-  }
+    chatId?: string;
+  };
 }
 
 const ChatIndex: React.FC<IChatIndex> = ({ params }) => (

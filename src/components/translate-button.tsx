@@ -10,7 +10,7 @@ import { Stack, Button, Text } from './ui';
 import type { Account, Status } from 'soapbox/types/entities';
 
 interface ITranslateButton {
-  status: Status
+  status: Status;
 }
 
 const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {

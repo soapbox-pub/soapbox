@@ -8,7 +8,7 @@ import { groupSearchHistory } from 'soapbox/settings';
 import { clearRecentGroupSearches } from 'soapbox/utils/groups';
 
 interface Props {
-  onSelect(value: string): void
+  onSelect(value: string): void;
 }
 
 export default (props: Props) => {

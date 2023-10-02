@@ -9,9 +9,9 @@ const getIcon = (ticker: string): string => {
 };
 
 interface ICryptoIcon {
-  ticker: string
-  title?: string
-  className?: string
+  ticker: string;
+  title?: string;
+  className?: string;
 }
 
 const CryptoIcon: React.FC<ICryptoIcon> = ({ ticker, title, className }): JSX.Element => {

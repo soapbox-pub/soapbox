@@ -6,7 +6,7 @@ import { useApi } from 'soapbox/hooks';
 import { type Relationship, relationshipSchema } from 'soapbox/schemas';
 
 interface UseRelationshipOpts {
-  enabled?: boolean
+  enabled?: boolean;
 }
 
 function useRelationship(accountId: string | undefined, opts: UseRelationshipOpts = {}) {

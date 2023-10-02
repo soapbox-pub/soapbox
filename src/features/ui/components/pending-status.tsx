@@ -21,14 +21,14 @@ const shouldHaveCard = (pendingStatus: StatusEntity) => {
 };
 
 interface IPendingStatus {
-  className?: string
-  idempotencyKey: string
-  muted?: boolean
-  thread?: boolean
+  className?: string;
+  idempotencyKey: string;
+  muted?: boolean;
+  thread?: boolean;
 }
 
 interface IPendingStatusMedia {
-  status: StatusEntity
+  status: StatusEntity;
 }
 
 const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {

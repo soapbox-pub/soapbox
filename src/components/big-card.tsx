@@ -3,9 +3,9 @@ import React from 'react';
 import { Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 
 interface IBigCard {
-  title: React.ReactNode
-  subtitle?: React.ReactNode
-  children: React.ReactNode
+  title: React.ReactNode;
+  subtitle?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const BigCard: React.FC<IBigCard> = ({ title, subtitle, children }) => {

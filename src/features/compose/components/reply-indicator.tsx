@@ -10,10 +10,10 @@ import { isRtl } from 'soapbox/rtl';
 import type { Status } from 'soapbox/types/entities';
 
 interface IReplyIndicator {
-  className?: string
-  status?: Status
-  onCancel?: () => void
-  hideActions: boolean
+  className?: string;
+  status?: Status;
+  onCancel?: () => void;
+  hideActions: boolean;
 }
 
 const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActions, onCancel }) => {

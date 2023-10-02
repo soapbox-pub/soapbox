@@ -18,11 +18,11 @@ import StatusInteractionBar from './status-interaction-bar';
 import type { Group, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IDetailedStatus {
-  status: StatusEntity
-  showMedia?: boolean
-  withMedia?: boolean
-  onOpenCompareHistoryModal: (status: StatusEntity) => void
-  onToggleMediaVisibility: () => void
+  status: StatusEntity;
+  showMedia?: boolean;
+  withMedia?: boolean;
+  onOpenCompareHistoryModal: (status: StatusEntity) => void;
+  onToggleMediaVisibility: () => void;
 }
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({

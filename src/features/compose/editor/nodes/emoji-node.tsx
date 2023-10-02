@@ -13,9 +13,9 @@ import type {
 } from 'lexical';
 
 type SerializedEmojiNode = Spread<{
-  data: Emoji
-  type: 'emoji'
-  version: 1
+  data: Emoji;
+  type: 'emoji';
+  version: 1;
 }, SerializedLexicalNode>;
 
 class EmojiNode extends DecoratorNode<JSX.Element> {

@@ -12,8 +12,8 @@ const messages = defineMessages({
 });
 
 interface IScheduleButton {
-  composeId: string
-  disabled?: boolean
+  composeId: string;
+  disabled?: boolean;
 }
 
 const ScheduleButton: React.FC<IScheduleButton> = ({ composeId, disabled }) => {

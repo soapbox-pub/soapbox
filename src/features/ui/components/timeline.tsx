@@ -16,9 +16,9 @@ const messages = defineMessages({
 
 interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
   /** ID of the timeline in Redux. */
-  timelineId: string
+  timelineId: string;
   /** Settings path to use instead of the timelineId. */
-  prefix?: string
+  prefix?: string;
 }
 
 /** Scrollable list of statuses from a timeline in the Redux store. */

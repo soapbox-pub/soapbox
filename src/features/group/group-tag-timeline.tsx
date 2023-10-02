@@ -8,10 +8,10 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
-type RouteParams = { tagId: string, groupId: string };
+type RouteParams = { tagId: string; groupId: string };
 
 interface IGroupTimeline {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const GroupTagTimeline: React.FC<IGroupTimeline> = (props) => {

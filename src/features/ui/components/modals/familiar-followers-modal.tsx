@@ -11,8 +11,8 @@ import { makeGetAccount } from 'soapbox/selectors';
 const getAccount = makeGetAccount();
 
 interface IFamiliarFollowersModal {
-  accountId: string
-  onClose: (string: string) => void
+  accountId: string;
+  onClose: (string: string) => void;
 }
 
 const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal) => {

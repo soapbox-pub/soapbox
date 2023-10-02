@@ -5,9 +5,9 @@ import HStack from '../hstack/hstack';
 import Tag from './tag';
 
 interface ITagInput {
-  tags: string[]
-  onChange: (tags: string[]) => void
-  placeholder?: string
+  tags: string[];
+  onChange: (tags: string[]) => void;
+  placeholder?: string;
 }
 
 /** Manage a list of tags. */

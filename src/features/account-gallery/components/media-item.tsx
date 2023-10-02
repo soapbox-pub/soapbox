@@ -10,8 +10,8 @@ import { isIOS } from 'soapbox/is-mobile';
 import type { Attachment } from 'soapbox/types/entities';
 
 interface IMediaItem {
-  attachment: Attachment
-  onOpenMedia: (attachment: Attachment) => void
+  attachment: Attachment;
+  onOpenMedia: (attachment: Attachment) => void;
 }
 
 const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {

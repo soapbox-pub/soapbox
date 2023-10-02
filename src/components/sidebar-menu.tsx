@@ -43,11 +43,11 @@ const messages = defineMessages({
 });
 
 interface ISidebarLink {
-  href?: string
-  to?: string
-  icon: string
-  text: string | JSX.Element
-  onClick: React.EventHandler<React.MouseEvent>
+  href?: string;
+  to?: string;
+  icon: string;
+  text: string | JSX.Element;
+  onClick: React.EventHandler<React.MouseEvent>;
 }
 
 const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {

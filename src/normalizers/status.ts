@@ -37,7 +37,7 @@ export const EventRecord = ImmutableRecord({
 });
 
 interface Tombstone {
-  reason: 'deleted'
+  reason: 'deleted';
 }
 
 // https://docs.joinmastodon.org/entities/status/

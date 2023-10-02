@@ -3,9 +3,9 @@ import data, { EmojiData } from './data';
 const stripLeadingZeros = /^0+/;
 interface UnicodeMap {
   [s: string]: {
-    unified: string
-    shortcode: string
-  }
+    unified: string;
+    shortcode: string;
+  };
 }
 
 /*

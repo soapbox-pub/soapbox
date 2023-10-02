@@ -2,14 +2,14 @@ declare module 'react-intl-translations-manager' {
   import type { MessageDescriptor } from 'react-intl';
 
   export interface ExtractedDescriptor extends Omit<MessageDescriptor, 'defaultMessage'> {
-    variables: Set<any>
-    descriptors?: ExtractedDescriptor[]
-    defaultMessage: string
+    variables: Set<any>;
+    descriptors?: ExtractedDescriptor[];
+    defaultMessage: string;
   }
 
   export interface ExtractedMessage {
-    path: string
-    descriptors: ExtractedDescriptor[]
+    path: string;
+    descriptors: ExtractedDescriptor[];
   }
 
   export interface ManageTranslationsConfig {
@@ -18,13 +18,13 @@ declare module 'react-intl-translations-manager' {
      *
      * example: `src/locales/extractedMessages`
      */
-    messagesDirectory: string
+    messagesDirectory: string;
     /**
      * Directory of the translation files the translation manager needs to maintain.
      *
      * example: `src/locales/lang`
      */
-    translationsDirectory: string
+    translationsDirectory: string;
     /**
      * Directory of the whitelist files the translation manager needs to maintain. These files contain the key of translations that have the exact same text in a specific language as the defaultMessage. Specifying this key will suppress `unmaintained translation` warnings.
      *
@@ -32,7 +32,7 @@ declare module 'react-intl-translations-manager' {
      *
      * (optional, default: `translationsDirectory`)
      */
-    whitelistsDirectory?: string
+    whitelistsDirectory?: string;
     /**
      * What languages the translation manager needs to maintain. Specifying no languages actually doesn't make sense, but won't break the translationManager either. (Please do not include the default language, react-intl will automatically include it.)
      *
@@ -40,7 +40,7 @@ declare module 'react-intl-translations-manager' {
      *
      * (optional, default: `[]`)
      */
-    languages?: string[]
+    languages?: string[];
     /**
      * Option to output a single JSON file containing the aggregate of all extracted messages, grouped by the file they were extracted from.
      *
@@ -63,21 +63,21 @@ declare module 'react-intl-translations-manager' {
      *
      * (optional, default: `false`)
      */
-    singleMessagesFile?: boolean
+    singleMessagesFile?: boolean;
     /**
      * If you want the translationManager to log duplicate message ids or not
      *
      * (optional, default: `true`)
      */
-    detectDuplicateIds?: boolean
+    detectDuplicateIds?: boolean;
     /**
      * If you want the translationManager to sort it's output, both json and console output
      *
      * (optional, default: `true`)
      */
-    sortKeys?: boolean
+    sortKeys?: boolean;
     /** (optional, default: `{ space: 2, trailingNewline: false }`)) */
-    jsonOptions?: any
+    jsonOptions?: any;
     /**
      * Here you can specify custom logging methods. If not specified a default printer is used.
      *
@@ -104,7 +104,7 @@ declare module 'react-intl-translations-manager' {
      *
      * (optional, default: `{}`)
      */
-    overridePrinters?: any
+    overridePrinters?: any;
     /**
      * Here you can specify overrides for the core hooks. If not specified, the default methods will be used.
      *
@@ -124,7 +124,7 @@ declare module 'react-intl-translations-manager' {
      * };
      * ```
      */
-    overrideCoreMethods?: any
+    overrideCoreMethods?: any;
   }
 
   /** This will maintain all translation files. Based on your config you will get output for duplicate ids, and per specified language you will get the deleted translations, added messages (new messages that need to be translated), and not yet translated messages. It will also maintain a whitelist file per language where you can specify translation keys where the translation is identical to the default message. This way you can avoid untranslated message warnings for these messages. */

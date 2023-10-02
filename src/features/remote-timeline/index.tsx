@@ -14,8 +14,8 @@ import PinnedHostsPicker from './components/pinned-hosts-picker';
 
 interface IRemoteTimeline {
   params?: {
-    instance?: string
-  }
+    instance?: string;
+  };
 }
 
 /** View statuses from a remote instance. */

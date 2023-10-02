@@ -6,11 +6,11 @@ import { Avatar, Icon, HStack } from 'soapbox/components/ui';
 import { useDraggedFiles } from 'soapbox/hooks';
 
 interface IMediaInput {
-  className?: string
-  src: string | undefined
-  accept?: string
-  onChange: (files: FileList | null) => void
-  disabled?: boolean
+  className?: string;
+  src: string | undefined;
+  accept?: string;
+  onChange: (files: FileList | null) => void;
+  disabled?: boolean;
 }
 
 const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ className, src, onChange, accept, disabled }, ref) => {

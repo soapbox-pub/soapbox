@@ -18,7 +18,7 @@ const messages = defineMessages({
 });
 
 interface IScheduledStatusActionBar {
-  status: StatusEntity
+  status: StatusEntity;
 }
 
 const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status }) => {

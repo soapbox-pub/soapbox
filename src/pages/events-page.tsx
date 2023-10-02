@@ -11,7 +11,7 @@ import {
 import { useFeatures } from 'soapbox/hooks';
 
 interface IEventsPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Page to display events list. */

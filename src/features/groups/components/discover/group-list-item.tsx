@@ -9,8 +9,8 @@ import { Group as GroupEntity } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IGroupListItem {
-  group: GroupEntity
-  withJoinAction?: boolean
+  group: GroupEntity;
+  withJoinAction?: boolean;
 }
 
 const GroupListItem = (props: IGroupListItem) => {

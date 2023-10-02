@@ -545,10 +545,10 @@ const cancelEventCompose = () => ({
 });
 
 interface EventFormSetAction {
-  type: typeof EVENT_FORM_SET
-  status: ReducerStatus
-  text: string
-  location: Record<string, any>
+  type: typeof EVENT_FORM_SET;
+  status: ReducerStatus;
+  text: string;
+  location: Record<string, any>;
 }
 
 const editEvent = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {

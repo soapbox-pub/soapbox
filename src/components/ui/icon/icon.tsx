@@ -6,19 +6,19 @@ import SvgIcon from './svg-icon';
 
 interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
   /** Class name for the <svg> element. */
-  className?: string
+  className?: string;
   /** Number to display a counter over the icon. */
-  count?: number
+  count?: number;
   /** Optional max to cap count (ie: N+) */
-  countMax?: number
+  countMax?: number;
   /** Tooltip text for the icon. */
-  alt?: string
+  alt?: string;
   /** URL to the svg icon. */
-  src: string
+  src: string;
   /** Width and height of the icon in pixels. */
-  size?: number
+  size?: number;
   /** Override the data-testid */
-  'data-testid'?: string
+  'data-testid'?: string;
 }
 
 /** Renders and SVG icon with optional counter. */

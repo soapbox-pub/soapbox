@@ -30,29 +30,29 @@ import type {
 } from 'soapbox/types/entities';
 
 // Defined in components/scrollable-list
-export type ScrollPosition = { height: number, top: number };
+export type ScrollPosition = { height: number; top: number };
 
 const messages = defineMessages({
   reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
 });
 
 export interface IStatus {
-  id?: string
-  avatarSize?: number
-  status: StatusEntity
-  onClick?: () => void
-  muted?: boolean
-  hidden?: boolean
-  unread?: boolean
-  onMoveUp?: (statusId: string, featured?: boolean) => void
-  onMoveDown?: (statusId: string, featured?: boolean) => void
-  focusable?: boolean
-  featured?: boolean
-  hideActionBar?: boolean
-  hoverable?: boolean
-  variant?: 'default' | 'rounded' | 'slim'
-  showGroup?: boolean
-  accountAction?: React.ReactElement
+  id?: string;
+  avatarSize?: number;
+  status: StatusEntity;
+  onClick?: () => void;
+  muted?: boolean;
+  hidden?: boolean;
+  unread?: boolean;
+  onMoveUp?: (statusId: string, featured?: boolean) => void;
+  onMoveDown?: (statusId: string, featured?: boolean) => void;
+  focusable?: boolean;
+  featured?: boolean;
+  hideActionBar?: boolean;
+  hoverable?: boolean;
+  variant?: 'default' | 'rounded' | 'slim';
+  showGroup?: boolean;
+  accountAction?: React.ReactElement;
 }
 
 const Status: React.FC<IStatus> = (props) => {

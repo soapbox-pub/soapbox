@@ -14,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface IWhoToFollowPanel {
-  limit: number
+  limit: number;
 }
 
 const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {

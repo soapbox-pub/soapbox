@@ -11,21 +11,21 @@ import ColumnsArea from '../components/columns-area';
 import BundleContainer from '../containers/bundle-container';
 
 type PageProps = {
-  params?: MatchType['params']
-  layout?: any
-  children: React.ReactNode
+  params?: MatchType['params'];
+  layout?: any;
+  children: React.ReactNode;
 };
 
 interface IWrappedRoute extends RouteProps {
-  component: (...args: any[]) => any
-  page?: React.ComponentType<PageProps>
-  content?: React.ReactNode
-  componentParams?: Record<string, any>
-  layout?: any
-  publicRoute?: boolean
-  staffOnly?: boolean
-  adminOnly?: boolean
-  developerOnly?: boolean
+  component: (...args: any[]) => any;
+  page?: React.ComponentType<PageProps>;
+  content?: React.ReactNode;
+  componentParams?: Record<string, any>;
+  layout?: any;
+  publicRoute?: boolean;
+  staffOnly?: boolean;
+  adminOnly?: boolean;
+  developerOnly?: boolean;
 }
 
 const WrappedRoute: React.FC<IWrappedRoute> = ({

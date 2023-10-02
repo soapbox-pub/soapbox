@@ -12,10 +12,10 @@ const messages = defineMessages({
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 interface IIconPickerMenu {
-  icons: Record<string, Array<string>>
-  onClose: () => void
-  onPick: (icon: string) => void
-  style?: React.CSSProperties
+  icons: Record<string, Array<string>>;
+  onClose: () => void;
+  onPick: (icon: string) => void;
+  style?: React.CSSProperties;
 }
 
 const IconPickerMenu: React.FC<IIconPickerMenu> = ({ icons, onClose, onPick, style }) => {

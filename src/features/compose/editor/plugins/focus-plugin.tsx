@@ -3,7 +3,7 @@ import { COMMAND_PRIORITY_NORMAL, createCommand, type LexicalCommand } from 'lex
 import { useEffect } from 'react';
 
 interface IFocusPlugin {
-  autoFocus?: boolean
+  autoFocus?: boolean;
 }
 
 export const FOCUS_EDITOR_COMMAND: LexicalCommand<void> = createCommand();

@@ -10,10 +10,10 @@ import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'so
 import sourceCode from 'soapbox/utils/code';
 
 interface IFooterLink {
-  to: string
-  className?: string
-  onClick?: React.EventHandler<React.MouseEvent>
-  children: React.ReactNode
+  to: string;
+  className?: string;
+  onClick?: React.EventHandler<React.MouseEvent>;
+  children: React.ReactNode;
 }
 
 const FooterLink: React.FC<IFooterLink> = ({ children, className, ...rest }): JSX.Element => {
