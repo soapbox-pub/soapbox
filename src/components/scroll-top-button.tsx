@@ -29,39 +29,40 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   const intl = useIntl();
   const settings = useSettings();
 
+  // Whether we are scrolled past the `threshold`.
   const [scrolled, setScrolled] = useState<boolean>(false);
-  const autoload = settings.get('autoloadTimelines') === true;
+  // Whether we are scrolled above the `autoloadThreshold`.
+  const [scrolledTop, setScrolledTop] = useState<boolean>(true);
 
+  const autoload = settings.get('autoloadTimelines') === true;
   const visible = count > 0 && scrolled;
 
+  /** Number of pixels scrolled down from the top of the page. */
   const getScrollTop = (): number => {
     return (document.scrollingElement || document.documentElement).scrollTop;
   };
 
-  const maybeUnload = () => {
-    if (autoload && getScrollTop() <= autoloadThreshold) {
+  /** Unload feed items if scrolled to the top. */
+  const maybeUnload = useCallback(() => {
+    if (autoload && scrolledTop) {
       onClick();
     }
-  };
+  }, [autoload, scrolledTop, onClick]);
 
+  /** Set state while scrolling. */
   const handleScroll = useCallback(throttle(() => {
-    maybeUnload();
+    const scrollTop = getScrollTop();
 
-    if (getScrollTop() > threshold) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  }, 150, { trailing: true }), [autoload, threshold, autoloadThreshold, onClick]);
+    setScrolled(scrollTop > threshold);
+    setScrolledTop(scrollTop <= autoloadThreshold);
 
-  const scrollUp = () => {
+  }, 150, { trailing: true }), [threshold, autoloadThreshold]);
+
+  /** Scroll to top and trigger `onClick`. */
+  const handleClick: React.MouseEventHandler = useCallback(() => {
     window.scrollTo({ top: 0 });
-  };
-
-  const handleClick: React.MouseEventHandler = () => {
-    setTimeout(scrollUp, 10);
     onClick();
-  };
+  }, [onClick]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -69,11 +70,11 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [onClick]);
+  }, [handleScroll]);
 
   useEffect(() => {
     maybeUnload();
-  }, [count]);
+  }, [maybeUnload]);
 
   if (!visible) {
     return null;
