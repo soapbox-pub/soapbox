@@ -3,8 +3,7 @@ import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { Text } from 'soapbox/components/ui';
+import { Icon, Text } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 
 interface IScrollTopButton {
@@ -87,7 +86,10 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
         className='flex cursor-pointer items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-600 px-4 py-2 text-white transition-transform hover:scale-105 hover:bg-primary-700 active:scale-100'
         onClick={handleClick}
       >
-        <Icon src={require('@tabler/icons/arrow-bar-to-up.svg')} />
+        <Icon
+          className='h-4 w-4'
+          src={require('@tabler/icons/arrow-bar-to-up.svg')}
+        />
 
         {(count > 0) && (
           <Text theme='inherit' size='sm'>
