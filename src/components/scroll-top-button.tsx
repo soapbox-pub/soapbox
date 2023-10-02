@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
@@ -34,10 +33,6 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   const autoload = settings.get('autoloadTimelines') === true;
 
   const visible = count > 0 && scrolled;
-
-  const classes = clsx('fixed left-1/2 top-20 z-50 -translate-x-1/2', {
-    'hidden': !visible,
-  });
 
   const getScrollTop = (): number => {
     return (document.scrollingElement || document.documentElement).scrollTop;
@@ -80,8 +75,12 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     maybeUnload();
   }, [count]);
 
+  if (!visible) {
+    return null;
+  }
+
   return (
-    <div className={classes}>
+    <div className='fixed left-1/2 top-20 z-50 -translate-x-1/2'>
       <button
         className='flex cursor-pointer items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-600 px-4 py-2 text-white transition-transform hover:scale-105 hover:bg-primary-700 active:scale-100'
         onClick={handleClick}
@@ -91,11 +90,9 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
           src={require('@tabler/icons/arrow-bar-to-up.svg')}
         />
 
-        {(count > 0) && (
-          <Text theme='inherit' size='sm'>
-            {intl.formatMessage(message, { count })}
-          </Text>
-        )}
+        <Text theme='inherit' size='sm'>
+          {intl.formatMessage(message, { count })}
+        </Text>
       </button>
     </div>
   );
