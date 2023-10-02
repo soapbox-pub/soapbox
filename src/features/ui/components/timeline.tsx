@@ -38,9 +38,9 @@ const Timeline: React.FC<ITimeline> = ({
   const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);
   const totalQueuedItemsCount = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
 
-  const handleDequeueTimeline = () => {
+  const handleDequeueTimeline = useCallback(() => {
     dispatch(dequeueTimeline(timelineId, onLoadMore));
-  };
+  }, []);
 
   const handleScrollToTop = useCallback(debounce(() => {
     dispatch(scrollTopTimeline(timelineId, true));

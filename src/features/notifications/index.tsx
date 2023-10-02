@@ -104,13 +104,13 @@ const Notifications = () => {
     });
   };
 
-  const handleDequeueNotifications = () => {
+  const handleDequeueNotifications = useCallback(() => {
     dispatch(dequeueNotifications());
-  };
+  }, []);
 
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     return dispatch(expandNotifications());
-  };
+  }, []);
 
   useEffect(() => {
     handleDequeueNotifications();
