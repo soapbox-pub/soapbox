@@ -32,7 +32,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   // Whether we are scrolled past the `threshold`.
   const [scrolled, setScrolled] = useState<boolean>(false);
   // Whether we are scrolled above the `autoloadThreshold`.
-  const [scrolledTop, setScrolledTop] = useState<boolean>(true);
+  const [scrolledTop, setScrolledTop] = useState<boolean>(false);
 
   const autoload = settings.get('autoloadTimelines') === true;
   const visible = count > 0 && scrolled;
@@ -65,7 +65,12 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   }, [onClick]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    // Delay adding the scroll listener so navigating back doesn't
+    // unload feed items before the feed is rendered.
+    setTimeout(() => {
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+    }, 250);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
