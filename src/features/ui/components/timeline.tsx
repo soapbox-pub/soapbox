@@ -6,6 +6,7 @@ import { defineMessages } from 'react-intl';
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';
 import ScrollTopButton from 'soapbox/components/scroll-top-button';
 import StatusList, { IStatusList } from 'soapbox/components/status-list';
+import { Portal } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatusIds } from 'soapbox/selectors';
 
@@ -51,12 +52,14 @@ const Timeline: React.FC<ITimeline> = ({
 
   return (
     <>
-      <ScrollTopButton
-        key='timeline-queue-button-header'
-        onClick={handleDequeueTimeline}
-        count={totalQueuedItemsCount}
-        message={messages.queue}
-      />
+      <Portal>
+        <ScrollTopButton
+          key='timeline-queue-button-header'
+          onClick={handleDequeueTimeline}
+          count={totalQueuedItemsCount}
+          message={messages.queue}
+        />
+      </Portal>
 
       <StatusList
         timelineId={timelineId}
