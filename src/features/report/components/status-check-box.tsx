@@ -10,8 +10,8 @@ import Bundle from '../../ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 
 interface IStatusCheckBox {
-  id: string
-  disabled?: boolean
+  id: string;
+  disabled?: boolean;
 }
 
 const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {

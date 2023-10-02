@@ -4,13 +4,13 @@ import { useApi } from 'soapbox/hooks/useApi';
 import { groupSchema } from 'soapbox/schemas';
 
 interface CreateGroupParams {
-  display_name?: string
-  note?: string
-  avatar?: File
-  header?: File
-  group_visibility?: 'members_only' | 'everyone'
-  discoverable?: boolean
-  tags?: string[]
+  display_name?: string;
+  note?: string;
+  avatar?: File;
+  header?: File;
+  group_visibility?: 'members_only' | 'everyone';
+  discoverable?: boolean;
+  tags?: string[];
 }
 
 function useCreateGroup() {

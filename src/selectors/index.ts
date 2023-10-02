@@ -120,7 +120,7 @@ const checkFiltered = (index: string, filters: ImmutableList<FilterEntity>) =>
       return result;
     }, ImmutableList<string>())), ImmutableList<string>());
 
-type APIStatus = { id: string, username?: string };
+type APIStatus = { id: string; username?: string };
 
 export const makeGetStatus = () => {
   return createSelector(
@@ -202,7 +202,7 @@ export const getGroupGallery = createSelector([
   }, ImmutableList());
 });
 
-type APIChat = { id: string, last_message: string };
+type APIChat = { id: string; last_message: string };
 
 export const makeGetChat = () => {
   return createSelector(
@@ -335,7 +335,7 @@ export const makeGetRemoteInstance = () => {
   });
 };
 
-type ColumnQuery = { type: string, prefix?: string };
+type ColumnQuery = { type: string; prefix?: string };
 
 export const makeGetStatusIds = () => createSelector([
   (state: RootState, { type, prefix }: ColumnQuery) => getSettings(state).get(prefix || type, ImmutableMap()),

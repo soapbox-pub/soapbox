@@ -15,7 +15,7 @@ const messages = defineMessages({
 
 interface IInstanceInfoPanel {
   /** Hostname (domain) of the remote instance, eg "gleasonator.com" */
-  host: string
+  host: string;
 }
 
 /** Widget that displays information about a remote instance to users. */

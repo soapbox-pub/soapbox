@@ -3,7 +3,7 @@ import { SIDEBAR_OPEN, SIDEBAR_CLOSE } from '../actions/sidebar';
 import type { AnyAction } from 'redux';
 
 type State = {
-  sidebarOpen: boolean
+  sidebarOpen: boolean;
 };
 
 const initialState: State = {

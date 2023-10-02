@@ -5,9 +5,9 @@ import { useSoapboxConfig, useSettings, useTheme } from 'soapbox/hooks';
 
 interface ISiteLogo extends React.ComponentProps<'img'> {
   /** Extra class names for the <img> element. */
-  className?: string
+  className?: string;
   /** Override theme setting for <SitePreview /> */
-  theme?: 'dark' | 'light'
+  theme?: 'dark' | 'light';
 }
 
 /** Display the most appropriate site logo based on the theme and configuration. */

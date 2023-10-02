@@ -7,12 +7,12 @@ const RULES_FETCH_REQUEST = 'RULES_FETCH_REQUEST';
 const RULES_FETCH_SUCCESS = 'RULES_FETCH_SUCCESS';
 
 type RulesFetchRequestAction = {
-  type: typeof RULES_FETCH_REQUEST
+  type: typeof RULES_FETCH_REQUEST;
 }
 
 type RulesFetchRequestSuccessAction = {
-  type: typeof RULES_FETCH_SUCCESS
-  payload: Rule[]
+  type: typeof RULES_FETCH_SUCCESS;
+  payload: Rule[];
 }
 
 export type RulesActions = RulesFetchRequestAction | RulesFetchRequestSuccessAction

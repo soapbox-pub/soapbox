@@ -4,7 +4,7 @@ import UploadProgress from 'soapbox/components/upload-progress';
 import { useCompose } from 'soapbox/hooks';
 
 interface IComposeUploadProgress {
-  composeId: string
+  composeId: string;
 }
 
 /** File upload progress bar for post composer. */

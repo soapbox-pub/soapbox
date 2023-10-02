@@ -5,9 +5,9 @@ import Text from '../text/text';
 
 interface ITag {
   /** Name of the tag. */
-  tag: string
+  tag: string;
   /** Callback when the X icon is pressed. */
-  onDelete: (tag: string) => void
+  onDelete: (tag: string) => void;
 }
 
 /** A single editable Tag (used by TagInput). */

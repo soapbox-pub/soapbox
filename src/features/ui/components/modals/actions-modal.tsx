@@ -13,10 +13,10 @@ import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IActionsModal {
-  status: StatusEntity
-  actions: Menu
-  onClick: () => void
-  onClose: () => void
+  status: StatusEntity;
+  actions: Menu;
+  onClick: () => void;
+  onClose: () => void;
 }
 
 const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClose }) => {

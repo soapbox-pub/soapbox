@@ -8,7 +8,7 @@ import PlaceholderDisplayName from './placeholder-display-name';
 import PlaceholderStatusContent from './placeholder-status-content';
 
 interface IPlaceholderStatus {
-  variant?: 'rounded' | 'slim' | 'default'
+  variant?: 'rounded' | 'slim' | 'default';
 }
 
 /** Fake status to display while data is loading. */

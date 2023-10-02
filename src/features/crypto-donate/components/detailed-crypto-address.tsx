@@ -10,9 +10,9 @@ import { getTitle } from '../utils/coin-db';
 import CryptoIcon from './crypto-icon';
 
 interface IDetailedCryptoAddress {
-  address: string
-  ticker: string
-  note?: string
+  address: string;
+  ticker: string;
+  note?: string;
 }
 
 const DetailedCryptoAddress: React.FC<IDetailedCryptoAddress> = ({ address, ticker, note }): JSX.Element => {

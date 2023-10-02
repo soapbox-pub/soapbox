@@ -6,8 +6,8 @@ import List, { ListItem } from 'soapbox/components/list';
 import { Form, FormGroup, Stack, Text } from 'soapbox/components/ui';
 
 interface IPrivacyStep {
-  params: CreateGroupParams
-  onChange(params: CreateGroupParams): void
+  params: CreateGroupParams;
+  onChange(params: CreateGroupParams): void;
 }
 
 const PrivacyStep: React.FC<IPrivacyStep> = ({ params, onChange }) => {

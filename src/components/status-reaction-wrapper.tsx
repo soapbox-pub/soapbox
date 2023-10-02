@@ -8,8 +8,8 @@ import { isUserTouching } from 'soapbox/is-mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji-reacts';
 
 interface IStatusReactionWrapper {
-  statusId: string
-  children: JSX.Element
+  statusId: string;
+  children: JSX.Element;
 }
 
 /** Provides emoji reaction functionality to the underlying button component */

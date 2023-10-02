@@ -16,8 +16,8 @@ const messages = defineMessages({
 });
 
 interface IReportStatus {
-  status: Status
-  report?: AdminReport
+  status: Status;
+  report?: AdminReport;
 }
 
 const ReportStatus: React.FC<IReportStatus> = ({ status }) => {

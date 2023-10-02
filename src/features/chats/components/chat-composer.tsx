@@ -33,22 +33,22 @@ const initialSuggestionState = {
 };
 
 interface Suggestion {
-  list: Emoji[]
-  tokenStart: number
-  token: string
+  list: Emoji[];
+  tokenStart: number;
+  token: string;
 }
 
 interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onKeyDown' | 'onChange' | 'onPaste' | 'disabled'> {
-  value: string
-  onSubmit: () => void
-  errorMessage: string | undefined
-  onSelectFile: (files: FileList, intl: IntlShape) => void
-  resetFileKey: number | null
-  resetContentKey: number | null
-  attachments?: Attachment[]
-  onDeleteAttachment?: (i: number) => void
-  uploadCount?: number
-  uploadProgress?: number
+  value: string;
+  onSubmit: () => void;
+  errorMessage: string | undefined;
+  onSelectFile: (files: FileList, intl: IntlShape) => void;
+  resetFileKey: number | null;
+  resetContentKey: number | null;
+  attachments?: Attachment[];
+  onDeleteAttachment?: (i: number) => void;
+  uploadCount?: number;
+  uploadProgress?: number;
 }
 
 /** Textarea input for chats. */

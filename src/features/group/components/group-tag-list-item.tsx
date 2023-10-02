@@ -26,9 +26,9 @@ const messages = defineMessages({
 });
 
 interface IGroupMemberListItem {
-  tag: GroupTag
-  group: Group
-  isPinnable: boolean
+  tag: GroupTag;
+  group: Group;
+  isPinnable: boolean;
 }
 
 const GroupTagListItem = (props: IGroupMemberListItem) => {

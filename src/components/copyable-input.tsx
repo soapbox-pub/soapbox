@@ -5,7 +5,7 @@ import { Button, HStack, Input } from './ui';
 
 interface ICopyableInput {
   /** Text to be copied. */
-  value: string
+  value: string;
 }
 
 /** An input with copy abilities. */

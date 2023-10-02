@@ -10,8 +10,8 @@ const messages = defineMessages({
 });
 
 interface IBundleModalError {
-  onRetry: () => void
-  onClose: () => void
+  onRetry: () => void;
+  onClose: () => void;
 }
 
 const BundleModalError: React.FC<IBundleModalError> = ({ onRetry, onClose }) => {

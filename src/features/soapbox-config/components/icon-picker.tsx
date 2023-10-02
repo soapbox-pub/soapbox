@@ -3,8 +3,8 @@ import React from 'react';
 import IconPickerDropdown from './icon-picker-dropdown';
 
 interface IIconPicker {
-  value: string
-  onChange: (icon: string) => void
+  value: string;
+  onChange: (icon: string) => void;
 }
 
 const IconPicker: React.FC<IIconPicker> = ({ value, onChange }) => (

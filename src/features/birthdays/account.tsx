@@ -11,7 +11,7 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  accountId: string
+  accountId: string;
 }
 
 const Account: React.FC<IAccount> = ({ accountId }) => {

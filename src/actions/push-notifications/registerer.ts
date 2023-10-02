@@ -37,8 +37,8 @@ const subscribe = (registration: ServiceWorkerRegistration, getState: () => Root
   });
 
 const unsubscribe = ({ registration, subscription }: {
-  registration: ServiceWorkerRegistration
-  subscription: PushSubscription | null
+  registration: ServiceWorkerRegistration;
+  subscription: PushSubscription | null;
 }) =>
   subscription ? subscription.unsubscribe().then(() => registration) : new Promise<ServiceWorkerRegistration>(r => r(registration));
 
@@ -82,8 +82,8 @@ const register = () =>
       .then(getPushSubscription)
       // @ts-ignore
       .then(({ registration, subscription }: {
-        registration: ServiceWorkerRegistration
-        subscription: PushSubscription | null
+        registration: ServiceWorkerRegistration;
+        subscription: PushSubscription | null;
       }) => {
         if (subscription !== null) {
           // We have a subscription, check if it is still valid

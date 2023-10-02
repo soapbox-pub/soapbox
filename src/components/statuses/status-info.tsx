@@ -3,9 +3,9 @@ import React from 'react';
 import { HStack, Text } from '../ui';
 
 interface IStatusInfo {
-  avatarSize: number
-  icon: React.ReactNode
-  text: React.ReactNode
+  avatarSize: number;
+  icon: React.ReactNode;
+  text: React.ReactNode;
 }
 
 const StatusInfo = (props: IStatusInfo) => {

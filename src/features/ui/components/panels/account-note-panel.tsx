@@ -22,7 +22,7 @@ const messages = defineMessages({
 });
 
 interface IAccountNotePanel {
-  account: AccountEntity
+  account: AccountEntity;
 }
 
 const AccountNotePanel: React.FC<IAccountNotePanel> = ({ account }) => {

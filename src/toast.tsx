@@ -10,11 +10,11 @@ export type ToastText = string | MessageDescriptor
 export type ToastType = 'success' | 'error' | 'info'
 
 interface IToastOptions {
-  action?(): void
-  actionLink?: string
-  actionLabel?: ToastText
-  duration?: number
-  summary?: string
+  action?(): void;
+  actionLink?: string;
+  actionLabel?: ToastText;
+  duration?: number;
+  summary?: string;
 }
 
 const DEFAULT_DURATION = 4000;

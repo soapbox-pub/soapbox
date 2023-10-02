@@ -8,10 +8,10 @@ import React from 'react';
 import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
 export interface IIcon extends React.HTMLAttributes<HTMLDivElement> {
-  src: string
-  id?: string
-  alt?: string
-  className?: string
+  src: string;
+  id?: string;
+  alt?: string;
+  className?: string;
 }
 
 /**

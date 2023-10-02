@@ -104,8 +104,8 @@ const patchMeRequest = () => ({
 });
 
 interface MePatchSuccessAction {
-  type: typeof ME_PATCH_SUCCESS
-  me: APIEntity
+  type: typeof ME_PATCH_SUCCESS;
+  me: APIEntity;
 }
 
 const patchMeSuccess = (me: APIEntity) =>

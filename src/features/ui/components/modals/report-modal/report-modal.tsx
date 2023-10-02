@@ -93,7 +93,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
 };
 
 interface IReportModal {
-  onClose: () => void
+  onClose: () => void;
 }
 
 const ReportModal = ({ onClose }: IReportModal) => {

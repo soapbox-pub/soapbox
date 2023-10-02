@@ -3,20 +3,20 @@ import React from 'react';
 import StickyBox from 'react-sticky-box';
 
 interface ISidebar {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 interface IAside {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 interface ILayout {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 interface LayoutComponent extends React.FC<ILayout> {
-  Sidebar: React.FC<ISidebar>
-  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>
-  Aside: React.FC<IAside>
+  Sidebar: React.FC<ISidebar>;
+  Main: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+  Aside: React.FC<IAside>;
 }
 
 /** Layout container, to hold Sidebar, Main, and Aside. */

@@ -8,9 +8,9 @@ import './spinner.css';
 
 interface ISpinner {
   /** Width and height of the spinner in pixels. */
-  size?: number
+  size?: number;
   /** Whether to display "Loading..." beneath the spinner. */
-  withText?: boolean
+  withText?: boolean;
 }
 
 /** Spinning loading placeholder. */

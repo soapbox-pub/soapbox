@@ -11,8 +11,8 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities';
 
 interface ICompareHistoryModal {
-  onClose: (string: string) => void
-  statusId: string
+  onClose: (string: string) => void;
+  statusId: string;
 }
 
 const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId }) => {

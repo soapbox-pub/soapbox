@@ -9,11 +9,11 @@ const messages = defineMessages({
 
 interface IChatSearchInput {
   /** Search term. */
-  value: string
+  value: string;
   /** Callback when the search value changes. */
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
   /** Callback when the input is cleared. */
-  onClear: React.MouseEventHandler<HTMLButtonElement>
+  onClear: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 /** Search input for filtering chats. */

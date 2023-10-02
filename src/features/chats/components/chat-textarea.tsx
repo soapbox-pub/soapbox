@@ -7,10 +7,10 @@ import ChatPendingUpload from './chat-pending-upload';
 import ChatUpload from './chat-upload';
 
 interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
-  attachments?: Attachment[]
-  onDeleteAttachment?: (i: number) => void
-  uploadCount?: number
-  uploadProgress?: number
+  attachments?: Attachment[];
+  onDeleteAttachment?: (i: number) => void;
+  uploadCount?: number;
+  uploadProgress?: number;
 }
 
 /** Custom textarea for chats. */

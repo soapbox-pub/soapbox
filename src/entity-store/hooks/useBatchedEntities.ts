@@ -16,8 +16,8 @@ import type { Entity } from '../types';
 import type { RootState } from 'soapbox/store';
 
 interface UseBatchedEntitiesOpts<TEntity extends Entity> {
-  schema?: EntitySchema<TEntity>
-  enabled?: boolean
+  schema?: EntitySchema<TEntity>;
+  enabled?: boolean;
 }
 
 function useBatchedEntities<TEntity extends Entity>(

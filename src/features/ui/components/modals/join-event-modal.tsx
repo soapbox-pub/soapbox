@@ -13,7 +13,7 @@ const messages = defineMessages({
 });
 
 interface IJoinEventModal {
-  statusId: string
+  statusId: string;
 }
 
 const JoinEventModal: React.FC<IJoinEventModal> = ({ statusId }) => {

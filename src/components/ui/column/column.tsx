@@ -42,25 +42,25 @@ const ColumnHeader: React.FC<IColumnHeader> = ({ label, backHref, className, act
 
 export interface IColumn {
   /** Route the back button goes to. */
-  backHref?: string
+  backHref?: string;
   /** Column title text. */
-  label?: string
+  label?: string;
   /** Whether this column should have a transparent background. */
-  transparent?: boolean
+  transparent?: boolean;
   /** Whether this column should have a title and back button. */
-  withHeader?: boolean
+  withHeader?: boolean;
   /** Extra class name for top <div> element. */
-  className?: string
+  className?: string;
   /** Extra class name for the <CardBody> element. */
-  bodyClassName?: string
+  bodyClassName?: string;
   /** Ref forwarded to column. */
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>;
   /** Children to display in the column. */
-  children?: React.ReactNode
+  children?: React.ReactNode;
   /** Action for the ColumnHeader, displayed at the end. */
-  action?: React.ReactNode
+  action?: React.ReactNode;
   /** Column size, inherited from Card. */
-  size?: CardSizes
+  size?: CardSizes;
 }
 
 /** A backdrop for the main section of the UI. */

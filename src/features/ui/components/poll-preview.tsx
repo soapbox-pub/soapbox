@@ -7,7 +7,7 @@ import { useAppSelector } from 'soapbox/hooks';
 import { Poll as PollEntity } from 'soapbox/types/entities';
 
 interface IPollPreview {
-  pollId: string
+  pollId: string;
 }
 
 const PollPreview: React.FC<IPollPreview> = ({ pollId }) => {

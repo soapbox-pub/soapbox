@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Card, CardBody, Stack, Text } from './ui';
 
 interface MissingIndicatorProps {
-  nested?: boolean
+  nested?: boolean;
 }
 
 const MissingIndicator = ({ nested = false }: MissingIndicatorProps): JSX.Element => (

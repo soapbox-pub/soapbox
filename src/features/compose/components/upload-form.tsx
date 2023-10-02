@@ -10,7 +10,7 @@ import UploadProgress from './upload-progress';
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
 interface IUploadForm {
-  composeId: string
+  composeId: string;
 }
 
 const UploadForm: React.FC<IUploadForm> = ({ composeId }) => {

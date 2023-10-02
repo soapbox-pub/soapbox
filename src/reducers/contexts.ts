@@ -29,8 +29,8 @@ type State = ReturnType<typeof ReducerRecord>;
 
 /** Minimal status fields needed to process context. */
 type ContextStatus = {
-  id: string
-  in_reply_to_id: string | null
+  id: string;
+  in_reply_to_id: string | null;
 }
 
 /** Import a single status into the reducer, setting replies and replyTos. */

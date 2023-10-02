@@ -19,18 +19,18 @@ import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox
  */
 
 export interface CustomEmoji {
-  id: string
-  colons: string
-  custom: true
-  imageUrl: string
+  id: string;
+  colons: string;
+  custom: true;
+  imageUrl: string;
 }
 
 export interface NativeEmoji {
-  id: string
-  colons: string
-  custom?: false
-  unified: string
-  native: string
+  id: string;
+  colons: string;
+  custom?: false;
+  unified: string;
+  native: string;
 }
 
 export type Emoji = CustomEmoji | NativeEmoji;
@@ -151,7 +151,7 @@ export const emojifyText = (str: string, customEmojis = {}) => {
   return buf;
 };
 
-export const parseHTML = (str: string): { text: boolean, data: string }[] => {
+export const parseHTML = (str: string): { text: boolean; data: string }[] => {
   const tokens = [];
   let buf = '';
   let stack = '';

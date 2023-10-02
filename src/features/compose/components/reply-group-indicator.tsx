@@ -8,7 +8,7 @@ import { Group } from 'soapbox/schemas';
 import { makeGetStatus } from 'soapbox/selectors';
 
 interface IReplyGroupIndicator {
-  composeId: string
+  composeId: string;
 }
 
 const ReplyGroupIndicator = (props: IReplyGroupIndicator) => {

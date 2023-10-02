@@ -1,7 +1,7 @@
 /** Soapbox audio clip. */
 type Sound = {
-  src: string
-  type: string
+  src: string;
+  type: string;
 }
 
 export type Sounds = 'boop' | 'chat'

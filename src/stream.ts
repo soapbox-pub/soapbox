@@ -7,9 +7,9 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 const randomIntUpTo = (max: number) => Math.floor(Math.random() * Math.floor(max));
 
 interface ConnectStreamCallbacks {
-  onConnect(): void
-  onDisconnect(): void
-  onReceive(websocket: WebSocket, data: unknown): void
+  onConnect(): void;
+  onDisconnect(): void;
+  onReceive(websocket: WebSocket, data: unknown): void;
 }
 
 type PollingRefreshFn = (dispatch: AppDispatch, done?: () => void) => void
@@ -98,10 +98,10 @@ export default function getStream(
   accessToken: string,
   stream: string,
   { connected, received, disconnected, reconnected }: {
-    connected: ((this: WebSocket, ev: Event) => any) | null
-    received: (data: any) => void
-    disconnected: ((this: WebSocket, ev: Event) => any) | null
-    reconnected: ((this: WebSocket, ev: Event) => any)
+    connected: ((this: WebSocket, ev: Event) => any) | null;
+    received: (data: any) => void;
+    disconnected: ((this: WebSocket, ev: Event) => any) | null;
+    reconnected: ((this: WebSocket, ev: Event) => any);
   },
 ) {
   const params = [ `stream=${stream}` ];

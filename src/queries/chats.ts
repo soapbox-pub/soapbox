@@ -27,39 +27,39 @@ export enum MessageExpirationValues {
 }
 
 export interface IChat {
-  accepted: boolean
-  account: Account
-  chat_type: 'channel' | 'direct'
-  created_at: string
-  created_by_account: string
-  discarded_at: null | string
-  id: string
+  accepted: boolean;
+  account: Account;
+  chat_type: 'channel' | 'direct';
+  created_at: string;
+  created_by_account: string;
+  discarded_at: null | string;
+  id: string;
   last_message: null | {
-    account_id: string
-    chat_id: string
-    content: string
-    created_at: string
-    discarded_at: string | null
-    id: string
-    unread: boolean
-  }
+    account_id: string;
+    chat_id: string;
+    content: string;
+    created_at: string;
+    discarded_at: string | null;
+    id: string;
+    unread: boolean;
+  };
   latest_read_message_by_account?: {
-    id: string
-    date: string
-  }[]
-  latest_read_message_created_at: null | string
-  message_expiration?: MessageExpirationValues
-  unread: number
+    id: string;
+    date: string;
+  }[];
+  latest_read_message_created_at: null | string;
+  message_expiration?: MessageExpirationValues;
+  unread: number;
 }
 
 type UpdateChatVariables = {
-  message_expiration: MessageExpirationValues
+  message_expiration: MessageExpirationValues;
 }
 
 type CreateReactionVariables = {
-  messageId: string
-  emoji: string
-  chatMessage?: ChatMessage
+  messageId: string;
+  emoji: string;
+  chatMessage?: ChatMessage;
 }
 
 const ChatKeys = {
@@ -231,7 +231,7 @@ const useChatActions = (chatId: string) => {
   };
 
   const createChatMessage = useMutation(
-    ({ chatId, content, mediaIds }: { chatId: string, content: string, mediaIds?: string[] }) => {
+    ({ chatId, content, mediaIds }: { chatId: string; content: string; mediaIds?: string[] }) => {
       return api.post<ChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, {
         content,
         media_id: (mediaIds && mediaIds.length === 1) ? mediaIds[0] : undefined, // Pleroma backwards-compat

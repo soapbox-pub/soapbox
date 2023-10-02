@@ -30,7 +30,7 @@ const messages = defineMessages({
 });
 
 interface IManageGroup {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const ManageGroup: React.FC<IManageGroup> = ({ params }) => {

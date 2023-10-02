@@ -76,7 +76,7 @@ const messages = defineMessages({
 });
 
 interface IHeader {
-  account?: Account
+  account?: Account;
 }
 
 const Header: React.FC<IHeader> = ({ account }) => {

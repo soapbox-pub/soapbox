@@ -26,7 +26,7 @@ const messages = defineMessages({
 });
 
 export interface IScheduleForm {
-  composeId: string
+  composeId: string;
 }
 
 const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {

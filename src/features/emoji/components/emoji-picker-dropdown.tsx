@@ -43,12 +43,12 @@ export const messages = defineMessages({
 });
 
 export interface IEmojiPickerDropdown {
-  onPickEmoji?: (emoji: Emoji) => void
-  condensed?: boolean
-  withCustom?: boolean
-  visible: boolean
-  setVisible: (value: boolean) => void
-  update: (() => any) | null
+  onPickEmoji?: (emoji: Emoji) => void;
+  condensed?: boolean;
+  withCustom?: boolean;
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+  update: (() => any) | null;
 }
 
 const perLine = 8;

@@ -20,7 +20,7 @@ enum ChatWidgetScreens {
 }
 
 interface IChatProvider {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const ChatProvider: React.FC<IChatProvider> = ({ children }) => {
@@ -76,14 +76,14 @@ const ChatProvider: React.FC<IChatProvider> = ({ children }) => {
 };
 
 interface IChatContext {
-  chat: IChat | null
-  isOpen: boolean
-  isUsingMainChatPage?: boolean
-  needsAcceptance: boolean
-  toggleChatPane(): void
-  screen: ChatWidgetScreens
-  currentChatId: string | null
-  changeScreen(screen: ChatWidgetScreens, currentChatId?: string | null): void
+  chat: IChat | null;
+  isOpen: boolean;
+  isUsingMainChatPage?: boolean;
+  needsAcceptance: boolean;
+  toggleChatPane(): void;
+  screen: ChatWidgetScreens;
+  currentChatId: string | null;
+  changeScreen(screen: ChatWidgetScreens, currentChatId?: string | null): void;
 }
 
 const useChatContext = (): IChatContext => useContext(ChatContext);

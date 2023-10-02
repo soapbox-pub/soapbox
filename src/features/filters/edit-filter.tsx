@@ -15,14 +15,14 @@ import { SelectDropdown } from '../forms';
 import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 
 interface IFilterField {
-  id?: string
-  keyword: string
-  whole_word: boolean
-  _destroy?: boolean
+  id?: string;
+  keyword: string;
+  whole_word: boolean;
+  _destroy?: boolean;
 }
 
 interface IEditFilter {
-  params: { id?: string }
+  params: { id?: string };
 }
 
 const messages = defineMessages({
@@ -143,7 +143,7 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
     });
   };
 
-  const handleChangeKeyword = (keywords: { keyword: string, whole_word: boolean }[]) => setKeywords(keywords);
+  const handleChangeKeyword = (keywords: { keyword: string; whole_word: boolean }[]) => setKeywords(keywords);
 
   const handleAddKeyword = () => setKeywords(keywords => [...keywords, { keyword: '', whole_word: false }]);
 

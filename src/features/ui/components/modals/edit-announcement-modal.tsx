@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 interface IEditAnnouncementModal {
-  onClose: (type?: string) => void
+  onClose: (type?: string) => void;
 }
 
 const EditAnnouncementModal: React.FC<IEditAnnouncementModal> = ({ onClose }) => {

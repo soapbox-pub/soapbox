@@ -21,7 +21,7 @@ const BRAND_ICONS: Record<string, string> = {
 };
 
 interface IConsumerButton {
-  provider: string
+  provider: string;
 }
 
 /** OAuth consumer button for logging in with a third-party service. */

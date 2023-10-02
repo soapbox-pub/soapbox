@@ -20,14 +20,14 @@ import type { Entity } from '../types';
 /** Additional options for the hook. */
 interface UseEntitiesOpts<TEntity extends Entity> {
   /** A zod schema to parse the API entities. */
-  schema?: EntitySchema<TEntity>
+  schema?: EntitySchema<TEntity>;
   /**
    * Time (milliseconds) until this query becomes stale and should be refetched.
    * It is 1 minute by default, and can be set to `Infinity` to opt-out of automatic fetching.
    */
-  staleTime?: number
+  staleTime?: number;
   /** A flag to potentially disable sending requests to the API. */
-  enabled?: boolean
+  enabled?: boolean;
 }
 
 /** A hook for fetching and displaying API entities. */

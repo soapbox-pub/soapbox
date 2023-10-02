@@ -3,8 +3,8 @@ import React from 'react';
 import { randomIntFromInterval, generateText } from '../utils';
 
 interface IPlaceholderStatusContent {
-  maxLength: number
-  minLength: number
+  maxLength: number;
+  minLength: number;
 }
 
 /** Fake status content while data is loading. */

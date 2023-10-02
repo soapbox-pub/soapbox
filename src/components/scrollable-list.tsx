@@ -10,14 +10,14 @@ import { Card, Spinner } from './ui';
 
 /** Custom Viruoso component context. */
 type Context = {
-  itemClassName?: string
-  listClassName?: string
+  itemClassName?: string;
+  listClassName?: string;
 }
 
 /** Scroll position saved in sessionStorage. */
 type SavedScrollPosition = {
-  index: number
-  offset: number
+  index: number;
+  offset: number;
 }
 
 /** Custom Virtuoso Item component representing a single scrollable item. */
@@ -37,48 +37,48 @@ const List: Components<JSX.Element, Context>['List'] = React.forwardRef((props, 
 
 interface IScrollableList extends VirtuosoProps<any, any> {
   /** Unique key to preserve the scroll position when navigating back. */
-  scrollKey?: string
+  scrollKey?: string;
   /** Pagination callback when the end of the list is reached. */
-  onLoadMore?: () => void
+  onLoadMore?: () => void;
   /** Whether the data is currently being fetched. */
-  isLoading?: boolean
+  isLoading?: boolean;
   /** Whether to actually display the loading state. */
-  showLoading?: boolean
+  showLoading?: boolean;
   /** Whether we expect an additional page of data. */
-  hasMore?: boolean
+  hasMore?: boolean;
   /** Additional element to display at the top of the list. */
-  prepend?: React.ReactNode
+  prepend?: React.ReactNode;
   /** Whether to display the prepended element. */
-  alwaysPrepend?: boolean
+  alwaysPrepend?: boolean;
   /** Message to display when the list is loaded but empty. */
-  emptyMessage?: React.ReactNode
+  emptyMessage?: React.ReactNode;
   /** Should the empty message be displayed in a Card */
-  emptyMessageCard?: boolean
+  emptyMessageCard?: boolean;
   /** Scrollable content. */
-  children: Iterable<React.ReactNode>
+  children: Iterable<React.ReactNode>;
   /** Callback when the list is scrolled to the top. */
-  onScrollToTop?: () => void
+  onScrollToTop?: () => void;
   /** Callback when the list is scrolled. */
-  onScroll?: () => void
+  onScroll?: () => void;
   /** Placeholder component to render while loading. */
-  placeholderComponent?: React.ComponentType | React.NamedExoticComponent
+  placeholderComponent?: React.ComponentType | React.NamedExoticComponent;
   /** Number of placeholders to render while loading. */
-  placeholderCount?: number
+  placeholderCount?: number;
   /**
    * Pull to refresh callback.
    * @deprecated Put a PTR around the component instead.
    */
-  onRefresh?: () => Promise<any>
+  onRefresh?: () => Promise<any>;
   /** Extra class names on the Virtuoso element. */
-  className?: string
+  className?: string;
   /** Class names on each item container. */
-  itemClassName?: string
+  itemClassName?: string;
   /** `id` attribute on the Virtuoso element. */
-  id?: string
+  id?: string;
   /** CSS styles on the Virtuoso element. */
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
   /** Whether to use the window to scroll the content instead of Virtuoso's container. */
-  useWindowScroll?: boolean
+  useWindowScroll?: boolean;
 }
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility. */

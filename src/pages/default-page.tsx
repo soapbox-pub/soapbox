@@ -13,7 +13,7 @@ import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { Layout } from '../components/ui';
 
 interface IDefaultPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const DefaultPage: React.FC<IDefaultPage> = ({ children }) => {

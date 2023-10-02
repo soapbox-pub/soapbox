@@ -14,7 +14,7 @@ import toast from 'soapbox/toast';
 import type { Group, GroupRelationship } from 'soapbox/types/entities';
 
 interface IGroupActionButton {
-  group: Group
+  group: Group;
 }
 
 const messages = defineMessages({

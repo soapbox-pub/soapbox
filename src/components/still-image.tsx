@@ -5,19 +5,19 @@ import { useSettings } from 'soapbox/hooks';
 
 export interface IStillImage {
   /** Image alt text. */
-  alt?: string
+  alt?: string;
   /** Extra class names for the outer <div> container. */
-  className?: string
+  className?: string;
   /** URL to the image */
-  src: string
+  src: string;
   /** Extra CSS styles on the outer <div> element. */
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
   /** Whether to display the image contained vs filled in its container. */
-  letterboxed?: boolean
+  letterboxed?: boolean;
   /** Whether to show the file extension in the corner. */
-  showExt?: boolean
+  showExt?: boolean;
   /** Callback function if the image fails to load */
-  onError?(): void
+  onError?(): void;
 }
 
 /** Renders images on a canvas, only playing GIFs if autoPlayGif is enabled. */
@@ -83,7 +83,7 @@ const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterb
 
 interface IExtensionBadge {
   /** File extension. */
-  ext: string
+  ext: string;
 }
 
 /** Badge displaying a file extension. */

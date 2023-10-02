@@ -13,7 +13,7 @@ import { Layout } from '../components/ui';
 import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface IStatusPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const StatusPage: React.FC<IStatusPage> = ({ children }) => {

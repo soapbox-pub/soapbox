@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ILogoText {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Big text in site colors, for displaying the site name. Resizes itself according to the screen size. */

@@ -7,7 +7,7 @@ import { makeGetStatus } from 'soapbox/selectors';
 
 interface IQuotedStatusContainer {
   /** Status ID to the quoted status. */
-  statusId: string
+  statusId: string;
 }
 
 const QuotedStatusContainer: React.FC<IQuotedStatusContainer> = ({ statusId }) => {

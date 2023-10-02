@@ -67,7 +67,7 @@ const ModerationLog = () => {
 };
 
 interface ILogItem {
-  log: AdminLog
+  log: AdminLog;
 }
 
 const LogItem: React.FC<ILogItem> = ({ log }) => {

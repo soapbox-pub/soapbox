@@ -4,19 +4,19 @@ const emptyComponent = () => null;
 const noop = () => { };
 
 export interface BundleProps {
-  fetchComponent: () => Promise<any>
-  loading: React.ComponentType
-  error: React.ComponentType<{ onRetry: (props?: BundleProps) => void }>
-  children: (mod: any) => React.ReactNode
-  renderDelay?: number
-  onFetch: () => void
-  onFetchSuccess: () => void
-  onFetchFail: (error: any) => void
+  fetchComponent: () => Promise<any>;
+  loading: React.ComponentType;
+  error: React.ComponentType<{ onRetry: (props?: BundleProps) => void }>;
+  children: (mod: any) => React.ReactNode;
+  renderDelay?: number;
+  onFetch: () => void;
+  onFetchSuccess: () => void;
+  onFetchFail: (error: any) => void;
 }
 
 interface BundleState {
-  mod: any
-  forceRender: boolean
+  mod: any;
+  forceRender: boolean;
 }
 
 /** Fetches and renders an async component. */

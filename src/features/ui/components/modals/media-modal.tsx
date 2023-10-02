@@ -45,11 +45,11 @@ const containerStyle: React.CSSProperties = {
 };
 
 interface IMediaModal {
-  media: ImmutableList<Attachment>
-  status?: Status
-  index: number
-  time?: number
-  onClose(): void
+  media: ImmutableList<Attachment>;
+  status?: Status;
+  index: number;
+  time?: number;
+  onClose(): void;
 }
 
 const MediaModal: React.FC<IMediaModal> = (props) => {

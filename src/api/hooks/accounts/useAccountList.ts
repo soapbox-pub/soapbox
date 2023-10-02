@@ -8,7 +8,7 @@ import { useRelationships } from './useRelationships';
 import type { EntityFn } from 'soapbox/entity-store/hooks/types';
 
 interface useAccountListOpts {
-  enabled?: boolean
+  enabled?: boolean;
 }
 
 function useAccountList(listKey: string[], entityFn: EntityFn<void>, opts: useAccountListOpts = {}) {

@@ -71,7 +71,7 @@ const baseStatusSchema = z.object({
 
 type BaseStatus = z.infer<typeof baseStatusSchema>;
 type TransformableStatus = Omit<BaseStatus, 'reblog' | 'quote' | 'pleroma'> & {
-  pleroma?: Omit<z.infer<typeof statusPleromaSchema>, 'quote'>
+  pleroma?: Omit<z.infer<typeof statusPleromaSchema>, 'quote'>;
 };
 
 /** Creates search index from the status. */
@@ -91,8 +91,8 @@ const buildSearchIndex = (status: TransformableStatus): string => {
 };
 
 type Translation = {
-  content: string
-  provider: string
+  content: string;
+  provider: string;
 }
 
 /** Add internal fields to the status. */

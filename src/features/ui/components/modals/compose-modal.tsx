@@ -18,8 +18,8 @@ const messages = defineMessages({
 });
 
 interface IComposeModal {
-  onClose: (type?: string) => void
-  composeId?: string
+  onClose: (type?: string) => void;
+  composeId?: string;
 }
 
 const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-modal' }) => {
@@ -93,8 +93,8 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
 };
 
 interface IComposeFormGroupToggle {
-  composeId: string
-  groupId: string | null
+  composeId: string;
+  groupId: string | null;
 }
 
 const ComposeFormGroupToggle: React.FC<IComposeFormGroupToggle> = ({ composeId, groupId }) => {

@@ -3,8 +3,8 @@ import React from 'react';
 import List, { ListItem } from './list';
 
 interface IRadioGroup {
-  onChange: React.ChangeEventHandler
-  children: React.ReactElement<{ onChange: React.ChangeEventHandler }>[]
+  onChange: React.ChangeEventHandler;
+  children: React.ReactElement<{ onChange: React.ChangeEventHandler }>[];
 }
 
 const RadioGroup = ({ onChange, children }: IRadioGroup) => {
@@ -16,11 +16,11 @@ const RadioGroup = ({ onChange, children }: IRadioGroup) => {
 };
 
 interface IRadioItem {
-  label: React.ReactNode
-  hint?: React.ReactNode
-  value: string
-  checked: boolean
-  onChange?: React.ChangeEventHandler
+  label: React.ReactNode;
+  hint?: React.ReactNode;
+  value: string;
+  checked: boolean;
+  onChange?: React.ChangeEventHandler;
 }
 
 const RadioItem: React.FC<IRadioItem> = ({ label, hint, checked = false, onChange, value }) => {

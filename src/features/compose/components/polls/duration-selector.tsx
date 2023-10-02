@@ -10,7 +10,7 @@ const messages = defineMessages({
 });
 
 interface IDurationSelector {
-  onDurationChange(expiresIn: number): void
+  onDurationChange(expiresIn: number): void;
 }
 
 const DurationSelector = ({ onDurationChange }: IDurationSelector) => {

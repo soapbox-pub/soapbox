@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 interface IQuotedStatusContainer {
-  composeId: string
+  composeId: string;
 }
 
 /** QuotedStatus shown in post composer. */

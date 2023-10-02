@@ -4,9 +4,9 @@ import { Portal } from 'soapbox/components/ui';
 import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector';
 
 interface IChatMessageReactionWrapper {
-  onOpen(isOpen: boolean): void
-  onSelect(emoji: string): void
-  children: JSX.Element
+  onOpen(isOpen: boolean): void;
+  onSelect(emoji: string): void;
+  children: JSX.Element;
 }
 
 /**

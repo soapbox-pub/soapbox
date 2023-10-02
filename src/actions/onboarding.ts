@@ -4,11 +4,11 @@ const ONBOARDING_END = 'ONBOARDING_END';
 const ONBOARDING_LOCAL_STORAGE_KEY = 'soapbox:onboarding';
 
 type OnboardingStartAction = {
-  type: typeof ONBOARDING_START
+  type: typeof ONBOARDING_START;
 }
 
 type OnboardingEndAction = {
-  type: typeof ONBOARDING_END
+  type: typeof ONBOARDING_END;
 }
 
 export type OnboardingActions = OnboardingStartAction | OnboardingEndAction

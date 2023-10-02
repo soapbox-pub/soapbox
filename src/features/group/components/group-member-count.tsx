@@ -7,7 +7,7 @@ import { Group } from 'soapbox/types/entities';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IGroupMemberCount {
-  group: Group
+  group: Group;
 }
 
 const GroupMemberCount = ({ group }: IGroupMemberCount) => {

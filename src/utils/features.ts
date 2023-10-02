@@ -953,13 +953,13 @@ export const getFeatures = createSelector([
 /** Fediverse backend */
 interface Backend {
   /** Build name, if this software is a fork */
-  build: string | null
+  build: string | null;
   /** Name of the software */
-  software: string | null
+  software: string | null;
   /** API version number */
-  version: string
+  version: string;
   /** Mastodon API version this backend is compatible with */
-  compatVersion: string
+  compatVersion: string;
 }
 
 /** Get information about the software from its version string */

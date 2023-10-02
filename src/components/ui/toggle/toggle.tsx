@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useRef } from 'react';
 
 interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'name' | 'checked' | 'onChange' | 'required' | 'disabled'> {
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md';
 }
 
 /** A glorified checkbox. */

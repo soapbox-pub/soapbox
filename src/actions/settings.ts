@@ -19,7 +19,7 @@ const FE_NAME = 'soapbox_fe';
 /** Options when changing/saving settings. */
 type SettingOpts = {
   /** Whether to display an alert when settings are saved. */
-  showAlert?: boolean
+  showAlert?: boolean;
 }
 
 const saveSuccessMessage = defineMessage({ id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' });
@@ -183,9 +183,9 @@ const getSettings = createSelector([
 });
 
 interface SettingChangeAction {
-  type: typeof SETTING_CHANGE
-  path: string[]
-  value: any
+  type: typeof SETTING_CHANGE;
+  path: string[];
+  value: any;
 }
 
 const changeSettingImmediate = (path: string[], value: any, opts?: SettingOpts) =>

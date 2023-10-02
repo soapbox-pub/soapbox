@@ -16,29 +16,29 @@ type InputThemes = 'normal' | 'search'
 
 interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
-  autoFocus?: boolean
+  autoFocus?: boolean;
   /** The initial text in the input. */
-  defaultValue?: string
+  defaultValue?: string;
   /** Extra class names for the <input> element. */
-  className?: string
+  className?: string;
   /** Extra class names for the outer <div> element. */
-  outerClassName?: string
+  outerClassName?: string;
   /** URL to the svg icon. Cannot be used with prepend. */
-  icon?: string
+  icon?: string;
   /** Internal input name. */
-  name?: string
+  name?: string;
   /** Text to display before a value is entered. */
-  placeholder?: string
+  placeholder?: string;
   /** Text in the input. */
-  value?: string | number
+  value?: string | number;
   /** Change event handler for the input. */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   /** An element to display as prefix to input. Cannot be used with icon. */
-  prepend?: React.ReactElement
+  prepend?: React.ReactElement;
   /** An element to display as suffix to input. Cannot be used with password type. */
-  append?: React.ReactElement
+  append?: React.ReactElement;
   /** Theme to style the input with. */
-  theme?: InputThemes
+  theme?: InputThemes;
 }
 
 /** Form input element. */

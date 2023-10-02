@@ -11,10 +11,10 @@ import type { Map as ImmutableMap } from 'immutable';
 import type { Announcement as AnnouncementEntity } from 'soapbox/types/entities';
 
 interface IAnnouncement {
-  announcement: AnnouncementEntity
-  addReaction: (id: string, name: string) => void
-  removeReaction: (id: string, name: string) => void
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>
+  announcement: AnnouncementEntity;
+  addReaction: (id: string, name: string) => void;
+  removeReaction: (id: string, name: string) => void;
+  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
 }
 
 const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, removeReaction, emojiMap }) => {

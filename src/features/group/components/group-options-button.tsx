@@ -30,7 +30,7 @@ const messages = defineMessages({
 });
 
 interface IGroupActionButton {
-  group: Group
+  group: Group;
 }
 
 const GroupOptionsButton = ({ group }: IGroupActionButton) => {

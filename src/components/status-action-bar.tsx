@@ -108,11 +108,11 @@ const messages = defineMessages({
 });
 
 interface IStatusActionBar {
-  status: Status
-  withLabels?: boolean
-  expandable?: boolean
-  space?: 'sm' | 'md' | 'lg'
-  statusActionButtonTheme?: 'default' | 'inverse'
+  status: Status;
+  withLabels?: boolean;
+  expandable?: boolean;
+  space?: 'sm' | 'md' | 'lg';
+  statusActionButtonTheme?: 'default' | 'inverse';
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
@@ -698,7 +698,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
 
   const spacing: {
-    [key: string]: React.ComponentProps<typeof HStack>['space']
+    [key: string]: React.ComponentProps<typeof HStack>['space'];
   } = {
     'sm': 2,
     'md': 8,

@@ -10,7 +10,7 @@ const messages = defineMessages({
 });
 
 interface IBundleColumnError {
-  onRetry: () => void
+  onRetry: () => void;
 }
 
 const BundleColumnError: React.FC<IBundleColumnError> = ({ onRetry }) => {

@@ -85,9 +85,9 @@ const MODAL_COMPONENTS = {
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;
 
 interface IModalRoot {
-  type: ModalType
-  props?: Record<string, any> | null
-  onClose: (type?: ModalType) => void
+  type: ModalType;
+  props?: Record<string, any> | null;
+  onClose: (type?: ModalType) => void;
 }
 
 export default class ModalRoot extends React.PureComponent<IModalRoot> {

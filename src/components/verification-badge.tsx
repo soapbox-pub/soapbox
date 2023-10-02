@@ -10,7 +10,7 @@ const messages = defineMessages({
 });
 
 interface IVerificationBadge {
-  className?: string
+  className?: string;
 }
 
 const VerificationBadge: React.FC<IVerificationBadge> = ({ className }) => {

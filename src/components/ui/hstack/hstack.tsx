@@ -33,23 +33,23 @@ const spaces = {
 
 interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   /** Vertical alignment of children. */
-  alignItems?: keyof typeof alignItemsOptions
+  alignItems?: keyof typeof alignItemsOptions;
   /** Extra class names on the <div> element. */
-  className?: string
+  className?: string;
   /** Children */
-  children?: React.ReactNode
+  children?: React.ReactNode;
   /** Horizontal alignment of children. */
-  justifyContent?: keyof typeof justifyContentOptions
+  justifyContent?: keyof typeof justifyContentOptions;
   /** Size of the gap between elements. */
-  space?: keyof typeof spaces
+  space?: keyof typeof spaces;
   /** Whether to let the flexbox grow. */
-  grow?: boolean
+  grow?: boolean;
   /** HTML element to use for container. */
-  element?: keyof JSX.IntrinsicElements
+  element?: keyof JSX.IntrinsicElements;
   /** Extra CSS styles for the <div> */
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
   /** Whether to let the flexbox wrap onto multiple lines. */
-  wrap?: boolean
+  wrap?: boolean;
 }
 
 /** Horizontal row of child elements. */

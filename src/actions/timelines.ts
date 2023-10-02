@@ -110,11 +110,11 @@ const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string)
   };
 
 interface TimelineDeleteAction {
-  type: typeof TIMELINE_DELETE
-  id: string
-  accountId: string
-  references: ImmutableMap<string, readonly [statusId: string, accountId: string]>
-  reblogOf: unknown
+  type: typeof TIMELINE_DELETE;
+  id: string;
+  accountId: string;
+  references: ImmutableMap<string, readonly [statusId: string, accountId: string]>;
+  reblogOf: unknown;
 }
 
 const deleteFromTimelines = (id: string) =>
@@ -193,14 +193,14 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
   };
 
 interface ExpandHomeTimelineOpts {
-  maxId?: string
-  url?: string
+  maxId?: string;
+  url?: string;
 }
 
 interface HomeTimelineParams {
-  max_id?: string
-  exclude_replies?: boolean
-  with_muted?: boolean
+  max_id?: string;
+  exclude_replies?: boolean;
+  with_muted?: boolean;
 }
 
 const expandHomeTimeline = ({ url, maxId }: ExpandHomeTimelineOpts = {}, done = noOp) => {

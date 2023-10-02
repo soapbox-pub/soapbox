@@ -23,7 +23,7 @@ const messages = defineMessages({
 });
 
 interface IReport {
-  id: string
+  id: string;
 }
 
 const Report: React.FC<IReport> = ({ id }) => {

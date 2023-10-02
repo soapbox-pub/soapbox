@@ -8,7 +8,7 @@ import ProfileField from './profile-field';
 import type { Account } from 'soapbox/types/entities';
 
 interface IProfileFieldsPanel {
-  account: Account
+  account: Account;
 }
 
 /** Custom profile fields for sidebar. */

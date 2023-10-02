@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface ICryptoDonatePanel {
-  limit: number
+  limit: number;
 }
 
 const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Element | null => {

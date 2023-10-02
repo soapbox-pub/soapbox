@@ -232,10 +232,10 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 };
 
 interface IPaletteListItem {
-  label: React.ReactNode
-  palette: ColorGroup
-  onChange: (palette: ColorGroup) => void
-  resetKey?: string
+  label: React.ReactNode;
+  palette: ColorGroup;
+  onChange: (palette: ColorGroup) => void;
+  resetKey?: string;
 }
 
 /** Palette editor inside a ListItem. */
@@ -248,9 +248,9 @@ const PaletteListItem: React.FC<IPaletteListItem> = ({ label, palette, onChange,
 };
 
 interface IColorListItem {
-  label: React.ReactNode
-  value: string
-  onChange: (hex: string) => void
+  label: React.ReactNode;
+  value: string;
+  onChange: (hex: string) => void;
 }
 
 /** Single-color picker. */

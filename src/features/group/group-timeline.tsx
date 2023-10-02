@@ -16,7 +16,7 @@ import Timeline from '../ui/components/timeline';
 type RouteParams = { groupId: string };
 
 interface IGroupTimeline {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const getStatusIds = makeGetStatusIds();

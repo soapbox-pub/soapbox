@@ -14,8 +14,8 @@ const messages = defineMessages({
 });
 
 interface IEnableOtpForm {
-  displayOtpForm: boolean
-  handleSetupProceedClick: (event: React.MouseEvent) => void
+  displayOtpForm: boolean;
+  handleSetupProceedClick: (event: React.MouseEvent) => void;
 }
 
 const EnableOtpForm: React.FC<IEnableOtpForm> = ({ displayOtpForm, handleSetupProceedClick }) => {

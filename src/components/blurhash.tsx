@@ -3,18 +3,18 @@ import React, { useRef, useEffect } from 'react';
 
 interface IBlurhash {
   /** Hash to render */
-  hash: string | null | undefined
+  hash: string | null | undefined;
   /**  Width of the blurred region in pixels. Defaults to 32. */
-  width?: number
+  width?: number;
   /** Height of the blurred region in pixels. Defaults to width. */
-  height?: number
+  height?: number;
   /**
    * Whether dummy mode is enabled. If enabled, nothing is rendered
    * and canvas left untouched.
    */
-  dummy?: boolean
+  dummy?: boolean;
   /** className of the canvas element. */
-  className?: string
+  className?: string;
 }
 
 /**

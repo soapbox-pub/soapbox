@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 interface IReasonStep {
-  account?: Account
+  account?: Account;
 }
 
 const RULES_HEIGHT = 385;

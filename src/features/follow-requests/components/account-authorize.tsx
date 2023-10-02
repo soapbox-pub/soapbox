@@ -7,7 +7,7 @@ import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-butt
 import { useAppDispatch } from 'soapbox/hooks';
 
 interface IAccountAuthorize {
-  id: string
+  id: string;
 }
 
 const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {

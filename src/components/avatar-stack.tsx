@@ -11,8 +11,8 @@ import type { Account } from 'soapbox/types/entities';
 const getAccount = makeGetAccount();
 
 interface IAvatarStack {
-  accountIds: ImmutableOrderedSet<string>
-  limit?: number
+  accountIds: ImmutableOrderedSet<string>;
+  limit?: number;
 }
 
 const AvatarStack: React.FC<IAvatarStack> = ({ accountIds, limit = 3 }) => {

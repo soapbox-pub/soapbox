@@ -5,8 +5,8 @@ import { queryClient } from 'soapbox/queries/client';
 import { PaginatedResult, sortQueryData, updatePageItem } from '../queries';
 
 interface Item {
-  id: number
-  text: string
+  id: number;
+  text: string;
 }
 
 const buildItem = (id: number): Item => ({ id, text: `item ${id}` });

@@ -5,9 +5,9 @@ import { Text } from 'soapbox/components/ui';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 
 interface ITombstone {
-  id: string
-  onMoveUp?: (statusId: string) => void
-  onMoveDown?: (statusId: string) => void
+  id: string;
+  onMoveUp?: (statusId: string) => void;
+  onMoveDown?: (statusId: string) => void;
 }
 
 /** Represents a deleted item. */

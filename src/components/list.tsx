@@ -8,7 +8,7 @@ import { SelectDropdown } from '../features/forms';
 import { Icon, HStack, Select } from './ui';
 
 interface IList {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const List: React.FC<IList> = ({ children }) => (
@@ -16,13 +16,13 @@ const List: React.FC<IList> = ({ children }) => (
 );
 
 interface IListItem {
-  label: React.ReactNode
-  hint?: React.ReactNode
-  to?: string
-  onClick?(): void
-  onSelect?(): void
-  isSelected?: boolean
-  children?: React.ReactNode
+  label: React.ReactNode;
+  hint?: React.ReactNode;
+  to?: string;
+  onClick?(): void;
+  onSelect?(): void;
+  isSelected?: boolean;
+  children?: React.ReactNode;
 }
 
 const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onSelect, isSelected }) => {

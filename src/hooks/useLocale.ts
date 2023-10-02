@@ -8,8 +8,8 @@ import type { CSSProperties } from 'react';
 const RTL_LOCALES = ['ar', 'ckb', 'fa', 'he'];
 
 interface UseLocaleResult {
-  locale: string
-  direction: CSSProperties['direction']
+  locale: string;
+  direction: CSSProperties['direction'];
 }
 
 /** Get valid locale from settings. */

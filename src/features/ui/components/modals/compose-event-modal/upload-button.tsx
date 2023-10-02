@@ -6,8 +6,8 @@ import { HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IUploadButton {
-  disabled?: boolean
-  onSelectFile: (files: FileList) => void
+  disabled?: boolean;
+  onSelectFile: (files: FileList) => void;
 }
 
 const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {

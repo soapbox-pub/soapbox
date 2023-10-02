@@ -14,7 +14,7 @@ import { useAppSelector, useFeatures } from 'soapbox/hooks';
 import { Layout } from '../components/ui';
 
 interface ISearchPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const SearchPage: React.FC<ISearchPage> = ({ children }) => {

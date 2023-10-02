@@ -9,8 +9,8 @@ enum GroupLayout {
 }
 
 interface ILayoutButtons {
-  layout: GroupLayout
-  onSelect(layout: GroupLayout): void
+  layout: GroupLayout;
+  onSelect(layout: GroupLayout): void;
 }
 
 const LayoutButtons = ({ layout, onSelect }: ILayoutButtons) => (

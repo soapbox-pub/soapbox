@@ -7,15 +7,15 @@ import { useSettings } from 'soapbox/hooks';
 
 interface IScrollTopButton {
   /** Callback when clicked, and also when scrolled to the top. */
-  onClick: () => void
+  onClick: () => void;
   /** Number of unread items. */
-  count: number
+  count: number;
   /** Message to display in the button (should contain a `{count}` value). */
-  message: MessageDescriptor
+  message: MessageDescriptor;
   /** Distance from the top of the screen (scrolling down) before the button appears. */
-  threshold?: number
+  threshold?: number;
   /** Distance from the top of the screen (scrolling up) before the action is triggered. */
-  autoloadThreshold?: number
+  autoloadThreshold?: number;
 }
 
 /** Floating new post counter above timelines, clicked to scroll to top. */

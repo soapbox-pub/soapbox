@@ -10,7 +10,7 @@ import { compareDate } from './comparators';
 import { appendPageItem, flattenPages, PaginatedResult, sortQueryData, updatePageItem } from './queries';
 
 interface ChatPayload extends Omit<Chat, 'last_message'> {
-  last_message: ChatMessage | null
+  last_message: ChatMessage | null;
 }
 
 /**

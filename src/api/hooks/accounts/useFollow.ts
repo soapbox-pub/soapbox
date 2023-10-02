@@ -6,9 +6,9 @@ import { useApi } from 'soapbox/hooks/useApi';
 import { relationshipSchema } from 'soapbox/schemas';
 
 interface FollowOpts {
-  reblogs?: boolean
-  notify?: boolean
-  languages?: string[]
+  reblogs?: boolean;
+  notify?: boolean;
+  languages?: string[];
 }
 
 function useFollow() {

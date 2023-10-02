@@ -16,9 +16,9 @@ const getStatusIds = makeGetStatusIds();
 
 interface IAccountTimeline {
   params: {
-    username: string
-  }
-  withReplies?: boolean
+    username: string;
+  };
+  withReplies?: boolean;
 }
 
 const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = false }) => {

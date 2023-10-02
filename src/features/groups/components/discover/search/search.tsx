@@ -12,8 +12,8 @@ import RecentSearches from './recent-searches';
 import Results from './results';
 
 interface Props {
-  onSelect(value: string): void
-  searchValue: string
+  onSelect(value: string): void;
+  searchValue: string;
 }
 
 export default (props: Props) => {

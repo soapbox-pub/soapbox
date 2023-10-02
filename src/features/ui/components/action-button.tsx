@@ -34,11 +34,11 @@ const messages = defineMessages({
 
 interface IActionButton {
   /** Target account for the action. */
-  account: Account
+  account: Account;
   /** Type of action to prioritize, eg on Blocks and Mutes pages. */
-  actionType?: 'muting' | 'blocking' | 'follow_request'
+  actionType?: 'muting' | 'blocking' | 'follow_request';
   /** Displays shorter text on the "Awaiting approval" button. */
-  small?: boolean
+  small?: boolean;
 }
 
 /**

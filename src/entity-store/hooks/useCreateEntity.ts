@@ -12,7 +12,7 @@ import type { EntityCallbacks, EntityFn, EntitySchema, ExpandedEntitiesPath } fr
 import type { Entity } from '../types';
 
 interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
-  schema?: EntitySchema<TEntity>
+  schema?: EntitySchema<TEntity>;
 }
 
 function useCreateEntity<TEntity extends Entity = Entity, Data = unknown>(

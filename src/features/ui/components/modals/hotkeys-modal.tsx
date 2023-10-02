@@ -5,7 +5,7 @@ import { Modal } from 'soapbox/components/ui';
 import { useFeatures } from 'soapbox/hooks';
 
 interface IHotkeysModal {
-  onClose: () => void
+  onClose: () => void;
 }
 
 const Hotkey: React.FC<{ children: React.ReactNode }> = ({ children }) => (

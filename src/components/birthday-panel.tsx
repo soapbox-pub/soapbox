@@ -15,7 +15,7 @@ const timeToMidnight = () => {
 };
 
 interface IBirthdayPanel {
-  limit: number
+  limit: number;
 }
 
 const BirthdayPanel = ({ limit }: IBirthdayPanel) => {

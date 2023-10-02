@@ -18,7 +18,7 @@ const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
 
 interface IReadMoreButton {
-  onClick: React.MouseEventHandler
+  onClick: React.MouseEventHandler;
 }
 
 /** Button to expand a truncated status (due to too much content) */
@@ -30,11 +30,11 @@ const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
 );
 
 interface IStatusContent {
-  status: Status
-  onClick?: () => void
-  collapsable?: boolean
-  translatable?: boolean
-  textSize?: Sizes
+  status: Status;
+  onClick?: () => void;
+  collapsable?: boolean;
+  translatable?: boolean;
+  textSize?: Sizes;
 }
 
 /** Renders the text content of a status */

@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
 type IStatContext = {
-  unreadChatsCount: number
-  setUnreadChatsCount: React.Dispatch<React.SetStateAction<number>>
+  unreadChatsCount: number;
+  setUnreadChatsCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const StatContext = createContext<any>({
@@ -10,7 +10,7 @@ const StatContext = createContext<any>({
 });
 
 interface IStatProvider {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const StatProvider: React.FC<IStatProvider> = ({ children }) => {

@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
 interface IPlaceholderMediaGallery {
-  media: ImmutableList<AttachmentEntity>
-  defaultWidth?: number
+  media: ImmutableList<AttachmentEntity>;
+  defaultWidth?: number;
 }
 
 const SizeData = ImmutableRecord({

@@ -3,16 +3,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useApi } from 'soapbox/hooks';
 
 type Embed = {
-  type: string
-  version: string
-  author_name: string
-  author_url: string
-  provider_name: string
-  provider_url: string
-  cache_age: number
-  html: string
-  width: number
-  height: number
+  type: string;
+  version: string;
+  author_name: string;
+  author_url: string;
+  provider_name: string;
+  provider_url: string;
+  cache_age: number;
+  html: string;
+  width: number;
+  height: number;
 }
 
 /** Fetch OEmbed information for a status by its URL. */

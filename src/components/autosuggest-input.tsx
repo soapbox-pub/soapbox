@@ -17,23 +17,23 @@ import type { Emoji } from 'soapbox/features/emoji';
 export type AutoSuggestion = string | Emoji;
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
-  value: string
-  suggestions: ImmutableList<any>
-  disabled?: boolean
-  placeholder?: string
-  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void
-  onSuggestionsClearRequested: () => void
-  onSuggestionsFetchRequested: (token: string) => void
-  autoFocus: boolean
-  autoSelect: boolean
-  className?: string
-  id?: string
-  searchTokens: string[]
-  maxLength?: number
-  menu?: Menu
-  renderSuggestion?: React.FC<{ id: string }>
-  hidePortal?: boolean
-  theme?: InputThemes
+  value: string;
+  suggestions: ImmutableList<any>;
+  disabled?: boolean;
+  placeholder?: string;
+  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void;
+  onSuggestionsClearRequested: () => void;
+  onSuggestionsFetchRequested: (token: string) => void;
+  autoFocus: boolean;
+  autoSelect: boolean;
+  className?: string;
+  id?: string;
+  searchTokens: string[];
+  maxLength?: number;
+  menu?: Menu;
+  renderSuggestion?: React.FC<{ id: string }>;
+  hidePortal?: boolean;
+  theme?: InputThemes;
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {

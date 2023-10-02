@@ -27,9 +27,9 @@ type ImportDataActions = {
   | typeof IMPORT_BLOCKS_FAIL
   | typeof IMPORT_MUTES_REQUEST
   | typeof IMPORT_MUTES_SUCCESS
-  | typeof IMPORT_MUTES_FAIL
-  error?: any
-  config?: string
+  | typeof IMPORT_MUTES_FAIL;
+  error?: any;
+  config?: string;
 }
 
 const messages = defineMessages({

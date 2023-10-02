@@ -23,7 +23,7 @@ import ComposeForm from '../features/compose/components/compose-form';
 import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface IHomePage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const HomePage: React.FC<IHomePage> = ({ children }) => {

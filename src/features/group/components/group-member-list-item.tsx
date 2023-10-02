@@ -41,9 +41,9 @@ const messages = defineMessages({
 });
 
 interface IGroupMemberListItem {
-  member: GroupMember
-  group: Group
-  canPromoteToAdmin: boolean
+  member: GroupMember;
+  group: Group;
+  canPromoteToAdmin: boolean;
 }
 
 const GroupMemberListItem = (props: IGroupMemberListItem) => {

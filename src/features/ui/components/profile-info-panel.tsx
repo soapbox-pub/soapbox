@@ -35,9 +35,9 @@ const messages = defineMessages({
 });
 
 interface IProfileInfoPanel {
-  account?: Account
+  account?: Account;
   /** Username from URL params, in case the account isn't found. */
-  username: string
+  username: string;
 }
 
 /** User profile metadata, such as location, birthday, etc. */

@@ -34,18 +34,18 @@ const LINK_MATCHERS = [
 ];
 
 interface IComposeEditor {
-  className?: string
-  placeholderClassName?: string
-  composeId: string
-  condensed?: boolean
-  eventDiscussion?: boolean
-  hasPoll?: boolean
-  autoFocus?: boolean
-  handleSubmit?(): void
-  onPaste?(files: FileList): void
-  onChange?(text: string): void
-  onFocus?: React.FocusEventHandler<HTMLDivElement>
-  placeholder?: JSX.Element | string
+  className?: string;
+  placeholderClassName?: string;
+  composeId: string;
+  condensed?: boolean;
+  eventDiscussion?: boolean;
+  hasPoll?: boolean;
+  autoFocus?: boolean;
+  handleSubmit?(): void;
+  onPaste?(files: FileList): void;
+  onChange?(text: string): void;
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
+  placeholder?: JSX.Element | string;
 }
 
 const theme: InitialConfigType['theme'] = {

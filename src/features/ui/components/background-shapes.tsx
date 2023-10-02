@@ -3,7 +3,7 @@ import React from 'react';
 
 interface IBackgroundShapes {
   /** Whether the shapes should be absolute positioned or fixed. */
-  position?: 'fixed' | 'absolute'
+  position?: 'fixed' | 'absolute';
 }
 
 /** Gradient that appears in the background of the UI. */

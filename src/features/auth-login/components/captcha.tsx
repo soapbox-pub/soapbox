@@ -15,14 +15,14 @@ const messages = defineMessages({
 });
 
 interface ICaptchaField {
-  name?: string
-  value: string
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
-  onFetch?: (captcha: ImmutableMap<string, any>) => void
-  onFetchFail?: (error: Error) => void
-  onClick?: React.MouseEventHandler
-  refreshInterval?: number
-  idempotencyKey: string
+  name?: string;
+  value: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onFetch?: (captcha: ImmutableMap<string, any>) => void;
+  onFetchFail?: (error: Error) => void;
+  onClick?: React.MouseEventHandler;
+  refreshInterval?: number;
+  idempotencyKey: string;
 }
 
 const CaptchaField: React.FC<ICaptchaField> = ({
@@ -97,11 +97,11 @@ const CaptchaField: React.FC<ICaptchaField> = ({
 };
 
 interface INativeCaptchaField {
-  captcha: ImmutableMap<string, any>
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  onClick: React.MouseEventHandler
-  name?: string
-  value: string
+  captcha: ImmutableMap<string, any>;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onClick: React.MouseEventHandler;
+  name?: string;
+  value: string;
 }
 
 const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, onClick, name, value }) => {

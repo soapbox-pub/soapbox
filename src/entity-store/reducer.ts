@@ -21,7 +21,7 @@ enableMapSet();
 
 /** Entity reducer state. */
 interface State {
-  [entityType: string]: EntityCache | undefined
+  [entityType: string]: EntityCache | undefined;
 }
 
 /** Import entities into the cache. */

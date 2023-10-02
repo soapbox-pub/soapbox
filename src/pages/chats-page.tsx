@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IChatsPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Custom layout for chats on desktop. */

@@ -8,8 +8,8 @@ import yargs from 'yargs';
 type Validator = (language: string) => void;
 
 interface LanguageResult {
-  language: string
-  error: any
+  language: string;
+  error: any;
 }
 
 const RFC5646_REGEXP = /^[a-z]{2,3}(?:-(?:x|[A-Za-z]{2,4}))*$/;
@@ -164,8 +164,8 @@ const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
 }, [] as ExtractedDescriptor[]);
 
 interface Translation {
-  language: string
-  data: Record<string, string>
+  language: string;
+  data: Record<string, string>;
 }
 
 const translations: Translation[] = languages.map((language: string) => {
@@ -188,10 +188,10 @@ function pushIfUnique<T>(arr: T[], newItem: T): void {
 }
 
 interface Problem {
-  language: string
-  id: ExtractedDescriptor['id']
-  severity: 'error' | 'warning'
-  type: string
+  language: string;
+  id: ExtractedDescriptor['id'];
+  severity: 'error' | 'warning';
+  type: string;
 }
 
 const problems: Problem[] = translations.reduce((acc, translation) => {

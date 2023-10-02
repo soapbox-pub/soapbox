@@ -10,7 +10,7 @@ import InstanceRestrictions from './instance-restrictions';
 const getRemoteInstance = makeGetRemoteInstance();
 
 interface IRestrictedInstance {
-  host: string
+  host: string;
 }
 
 const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {

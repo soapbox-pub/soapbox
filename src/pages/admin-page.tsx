@@ -9,7 +9,7 @@ import {
 import LinkFooter from '../features/ui/components/link-footer';
 
 interface IAdminPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const AdminPage: React.FC<IAdminPage> = ({ children }) => {

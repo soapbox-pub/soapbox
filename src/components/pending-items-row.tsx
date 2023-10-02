@@ -7,11 +7,11 @@ import { HStack, Icon, Text } from 'soapbox/components/ui';
 
 interface IPendingItemsRow {
   /** Path to navigate the user when clicked. */
-  to: string
+  to: string;
   /** Number of pending items. */
-  count: number
+  count: number;
   /** Size of the icon. */
-  size?: 'md' | 'lg'
+  size?: 'md' | 'lg';
 }
 
 const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count, size = 'md' }) => {

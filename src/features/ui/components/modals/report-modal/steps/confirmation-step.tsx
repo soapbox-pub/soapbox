@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 interface IConfirmationStep {
-  account?: Account
+  account?: Account;
 }
 
 const termsOfServiceText = (<FormattedMessage

@@ -31,17 +31,17 @@ const alignItemsOptions = {
 
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Horizontal alignment of children. */
-  alignItems?: keyof typeof alignItemsOptions
+  alignItems?: keyof typeof alignItemsOptions;
   /** Extra class names on the element. */
-  className?: string
+  className?: string;
   /** Vertical alignment of children. */
-  justifyContent?: keyof typeof justifyContentOptions
+  justifyContent?: keyof typeof justifyContentOptions;
   /** Size of the gap between elements. */
-  space?: keyof typeof spaces
+  space?: keyof typeof spaces;
   /** Whether to let the flexbox grow. */
-  grow?: boolean
+  grow?: boolean;
   /** HTML element to use for container. */
-  element?: keyof JSX.IntrinsicElements
+  element?: keyof JSX.IntrinsicElements;
 }
 
 /** Vertical stack of child elements. */

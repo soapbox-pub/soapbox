@@ -63,7 +63,7 @@ const Scroller: Components['Scroller'] = React.forwardRef((props, ref) => {
 
 interface IChatMessageList {
   /** Chat the messages are being rendered from. */
-  chat: IChat
+  chat: IChat;
 }
 
 /** Scrollable list of chat messages. */

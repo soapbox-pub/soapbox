@@ -11,8 +11,8 @@ const messages = defineMessages({
 });
 
 interface IGroupHeaderImage {
-  group?: Group | false | null
-  className?: string
+  group?: Group | false | null;
+  className?: string;
 }
 
 const GroupHeaderImage: React.FC<IGroupHeaderImage> = ({ className, group }) => {

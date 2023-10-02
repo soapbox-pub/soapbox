@@ -5,23 +5,23 @@ import { useHistory } from 'react-router-dom';
 import { Counter, Icon } from '../ui';
 
 export interface MenuItem {
-  action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>
-  active?: boolean
-  count?: number
-  destructive?: boolean
-  href?: string
-  icon?: string
-  meta?: string
-  middleClick?(event: React.MouseEvent): void
-  target?: React.HTMLAttributeAnchorTarget
-  text: string
-  to?: string
+  action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>;
+  active?: boolean;
+  count?: number;
+  destructive?: boolean;
+  href?: string;
+  icon?: string;
+  meta?: string;
+  middleClick?(event: React.MouseEvent): void;
+  target?: React.HTMLAttributeAnchorTarget;
+  text: string;
+  to?: string;
 }
 
 interface IDropdownMenuItem {
-  index: number
-  item: MenuItem | null
-  onClick?(): void
+  index: number;
+  item: MenuItem | null;
+  onClick?(): void;
 }
 
 const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {

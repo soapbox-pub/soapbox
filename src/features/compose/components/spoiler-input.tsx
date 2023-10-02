@@ -14,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface ISpoilerInput extends Pick<IAutosuggestInput, 'onSuggestionsFetchRequested' | 'onSuggestionsClearRequested' | 'onSuggestionSelected'> {
-  composeId: string extends 'default' ? never : string
+  composeId: string extends 'default' ? never : string;
 }
 
 /** Text input for content warning in composer. */

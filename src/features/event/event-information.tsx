@@ -18,7 +18,7 @@ import type { Status as StatusEntity } from 'soapbox/types/entities';
 type RouteParams = { statusId: string };
 
 interface IEventInformation {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const EventInformation: React.FC<IEventInformation> = ({ params }) => {

@@ -11,8 +11,8 @@ import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
 import type { Group } from 'soapbox/schemas';
 
 interface IGroup {
-  group: Group
-  width?: number
+  group: Group;
+  width?: number;
 }
 
 const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDivElement>) => {

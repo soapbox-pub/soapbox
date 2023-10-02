@@ -24,9 +24,9 @@ import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 type RouteParams = { statusId: string };
 
 interface IEventDiscussion {
-  params: RouteParams
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void
-  onOpenVideo: (video: AttachmentEntity, time: number) => void
+  params: RouteParams;
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void;
+  onOpenVideo: (video: AttachmentEntity, time: number) => void;
 }
 
 const EventDiscussion: React.FC<IEventDiscussion> = (props) => {

@@ -45,9 +45,9 @@ const messages = defineMessages({
 });
 
 interface IAccount {
-  eventId: string
-  id: string
-  participationMessage: string | null
+  eventId: string;
+  id: string;
+  participationMessage: string | null;
 }
 
 const Account: React.FC<IAccount> = ({ eventId, id, participationMessage }) => {
@@ -87,7 +87,7 @@ const Account: React.FC<IAccount> = ({ eventId, id, participationMessage }) => {
 };
 
 interface IComposeEventModal {
-  onClose: (type?: string) => void
+  onClose: (type?: string) => void;
 }
 
 const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {

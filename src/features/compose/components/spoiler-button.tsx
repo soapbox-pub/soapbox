@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface ISpoilerButton {
-  composeId: string
+  composeId: string;
 }
 
 const SpoilerButton: React.FC<ISpoilerButton> = ({ composeId }) => {

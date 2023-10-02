@@ -101,15 +101,15 @@ const messages = defineMessages({
 });
 
 interface ComposeSetStatusAction {
-  type: typeof COMPOSE_SET_STATUS
-  id: string
-  status: Status
-  rawText: string
-  explicitAddressing: boolean
-  spoilerText?: string
-  contentType?: string | false
-  v: ReturnType<typeof parseVersion>
-  withRedraft?: boolean
+  type: typeof COMPOSE_SET_STATUS;
+  id: string;
+  status: Status;
+  rawText: string;
+  explicitAddressing: boolean;
+  spoilerText?: string;
+  contentType?: string | false;
+  v: ReturnType<typeof parseVersion>;
+  withRedraft?: boolean;
 }
 
 const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
@@ -139,12 +139,12 @@ const changeCompose = (composeId: string, text: string) => ({
 });
 
 interface ComposeReplyAction {
-  type: typeof COMPOSE_REPLY
-  id: string
-  status: Status
-  account: Account
-  explicitAddressing: boolean
-  preserveSpoilers: boolean
+  type: typeof COMPOSE_REPLY;
+  id: string;
+  status: Status;
+  account: Account;
+  explicitAddressing: boolean;
+  preserveSpoilers: boolean;
 }
 
 const replyCompose = (status: Status) =>
@@ -176,11 +176,11 @@ const cancelReplyCompose = () => ({
 });
 
 interface ComposeQuoteAction {
-  type: typeof COMPOSE_QUOTE
-  id: string
-  status: Status
-  account: Account | undefined
-  explicitAddressing: boolean
+  type: typeof COMPOSE_QUOTE;
+  id: string;
+  status: Status;
+  account: Account | undefined;
+  explicitAddressing: boolean;
 }
 
 const quoteCompose = (status: Status) =>
@@ -220,9 +220,9 @@ const resetCompose = (composeId = 'compose-modal') => ({
 });
 
 interface ComposeMentionAction {
-  type: typeof COMPOSE_MENTION
-  id: string
-  account: Account
+  type: typeof COMPOSE_MENTION;
+  id: string;
+  account: Account;
 }
 
 const mentionCompose = (account: Account) =>
@@ -238,9 +238,9 @@ const mentionCompose = (account: Account) =>
   };
 
 interface ComposeDirectAction {
-  type: typeof COMPOSE_DIRECT
-  id: string
-  account: Account
+  type: typeof COMPOSE_DIRECT;
+  id: string;
+  account: Account;
 }
 
 const directCompose = (account: Account) =>
@@ -593,11 +593,11 @@ const fetchComposeSuggestions = (composeId: string, token: string) =>
   };
 
 interface ComposeSuggestionsReadyAction {
-  type: typeof COMPOSE_SUGGESTIONS_READY
-  id: string
-  token: string
-  emojis?: Emoji[]
-  accounts?: APIEntity[]
+  type: typeof COMPOSE_SUGGESTIONS_READY;
+  id: string;
+  token: string;
+  emojis?: Emoji[];
+  accounts?: APIEntity[];
 }
 
 const readyComposeSuggestionsEmojis = (composeId: string, token: string, emojis: Emoji[]) => ({
@@ -615,12 +615,12 @@ const readyComposeSuggestionsAccounts = (composeId: string, token: string, accou
 });
 
 interface ComposeSuggestionSelectAction {
-  type: typeof COMPOSE_SUGGESTION_SELECT
-  id: string
-  position: number
-  token: string | null
-  completion: string
-  path: Array<string | number>
+  type: typeof COMPOSE_SUGGESTION_SELECT;
+  id: string;
+  position: number;
+  token: string | null;
+  completion: string;
+  path: Array<string | number>;
 }
 
 const selectComposeSuggestion = (composeId: string, position: number, token: string | null, suggestion: AutoSuggestion, path: Array<string | number>) =>
@@ -774,9 +774,9 @@ const openComposeWithText = (composeId: string, text = '') =>
   };
 
 interface ComposeAddToMentionsAction {
-  type: typeof COMPOSE_ADD_TO_MENTIONS
-  id: string
-  account: string
+  type: typeof COMPOSE_ADD_TO_MENTIONS;
+  id: string;
+  account: string;
 }
 
 const addToMentions = (composeId: string, accountId: string) =>
@@ -795,9 +795,9 @@ const addToMentions = (composeId: string, accountId: string) =>
   };
 
 interface ComposeRemoveFromMentionsAction {
-  type: typeof COMPOSE_REMOVE_FROM_MENTIONS
-  id: string
-  account: string
+  type: typeof COMPOSE_REMOVE_FROM_MENTIONS;
+  id: string;
+  account: string;
 }
 
 const removeFromMentions = (composeId: string, accountId: string) =>
@@ -816,11 +816,11 @@ const removeFromMentions = (composeId: string, accountId: string) =>
   };
 
 interface ComposeEventReplyAction {
-  type: typeof COMPOSE_EVENT_REPLY
-  id: string
-  status: Status
-  account: Account
-  explicitAddressing: boolean
+  type: typeof COMPOSE_EVENT_REPLY;
+  id: string;
+  status: Status;
+  account: Account;
+  explicitAddressing: boolean;
 }
 
 const eventDiscussionCompose = (composeId: string, status: Status) =>

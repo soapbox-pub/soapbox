@@ -4,7 +4,7 @@ import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 
 interface IAutosuggestAccount {
-  id: string
+  id: string;
 }
 
 const AutosuggestAccount: React.FC<IAutosuggestAccount> = ({ id }) => {

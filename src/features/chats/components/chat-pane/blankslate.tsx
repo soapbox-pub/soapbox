@@ -10,7 +10,7 @@ const messages = defineMessages({
 });
 
 interface IBlankslate {
-  onSearch(): void
+  onSearch(): void;
 }
 
 const Blankslate = ({ onSearch }: IBlankslate) => {

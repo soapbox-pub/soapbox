@@ -56,7 +56,7 @@ const handleMouseLeave = (dispatch: AppDispatch): React.MouseEventHandler => {
 };
 
 interface IProfileHoverCard {
-  visible: boolean
+  visible: boolean;
 }
 
 /** Popup profile preview that appears when hovering avatars and display names. */

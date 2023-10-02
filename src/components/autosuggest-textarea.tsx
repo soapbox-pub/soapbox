@@ -14,23 +14,23 @@ import type { List as ImmutableList } from 'immutable';
 import type { Emoji } from 'soapbox/features/emoji';
 
 interface IAutosuggesteTextarea {
-  id?: string
-  value: string
-  suggestions: ImmutableList<string>
-  disabled: boolean
-  placeholder: string
-  onSuggestionSelected: (tokenStart: number, token: string | null, value: string | undefined) => void
-  onSuggestionsClearRequested: () => void
-  onSuggestionsFetchRequested: (token: string | number) => void
-  onChange: React.ChangeEventHandler<HTMLTextAreaElement>
-  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>
-  onPaste: (files: FileList) => void
-  autoFocus: boolean
-  onFocus: () => void
-  onBlur?: () => void
-  condensed?: boolean
-  children: React.ReactNode
+  id?: string;
+  value: string;
+  suggestions: ImmutableList<string>;
+  disabled: boolean;
+  placeholder: string;
+  onSuggestionSelected: (tokenStart: number, token: string | null, value: string | undefined) => void;
+  onSuggestionsClearRequested: () => void;
+  onSuggestionsFetchRequested: (token: string | number) => void;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onPaste: (files: FileList) => void;
+  autoFocus: boolean;
+  onFocus: () => void;
+  onBlur?: () => void;
+  condensed?: boolean;
+  children: React.ReactNode;
 }
 
 class AutosuggestTextarea extends ImmutablePureComponent<IAutosuggesteTextarea> {

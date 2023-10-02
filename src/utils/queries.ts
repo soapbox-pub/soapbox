@@ -3,13 +3,13 @@ import { queryClient } from 'soapbox/queries/client';
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 
 export interface PaginatedResult<T> {
-  result: T[]
-  hasMore: boolean
-  link?: string
+  result: T[];
+  hasMore: boolean;
+  link?: string;
 }
 
 interface Entity {
-  id: string
+  id: string;
 }
 
 const isEntity = <T = unknown>(object: T): object is T & Entity => {

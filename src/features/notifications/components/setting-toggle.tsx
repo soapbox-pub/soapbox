@@ -6,13 +6,13 @@ import type { Map as ImmutableMap } from 'immutable';
 
 interface ISettingToggle {
   /** Unique identifier for the Toggle. */
-  id?: string
+  id?: string;
   /** The full user settings map. */
-  settings: ImmutableMap<string, any>
+  settings: ImmutableMap<string, any>;
   /** Array of key names leading into the setting map. */
-  settingPath: string[]
+  settingPath: string[];
   /** Callback when the setting is toggled. */
-  onChange: (settingPath: string[], checked: boolean) => void
+  onChange: (settingPath: string[], checked: boolean) => void;
 }
 
 /** Stateful toggle to change user settings. */

@@ -1,8 +1,8 @@
 import { useTimelineStream } from './useTimelineStream';
 
 interface UseRemoteStreamOpts {
-  instance: string
-  onlyMedia?: boolean
+  instance: string;
+  onlyMedia?: boolean;
 }
 
 function useRemoteStream({ instance, onlyMedia }: UseRemoteStreamOpts) {

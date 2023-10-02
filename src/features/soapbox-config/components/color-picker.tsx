@@ -7,10 +7,10 @@ import { isMobile } from 'soapbox/is-mobile';
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 interface IColorPicker {
-  style?: React.CSSProperties
-  value: string
-  onChange: ColorChangeHandler
-  onClose: () => void
+  style?: React.CSSProperties;
+  value: string;
+  onChange: ColorChangeHandler;
+  onClose: () => void;
 }
 
 const ColorPicker: React.FC<IColorPicker> = ({ style, value, onClose, onChange }) => {

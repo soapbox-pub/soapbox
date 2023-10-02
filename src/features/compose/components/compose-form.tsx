@@ -58,13 +58,13 @@ const messages = defineMessages({
 });
 
 interface IComposeForm<ID extends string> {
-  id: ID extends 'default' ? never : ID
-  shouldCondense?: boolean
-  autoFocus?: boolean
-  clickableAreaRef?: React.RefObject<HTMLDivElement>
-  event?: string
-  group?: string
-  extra?: React.ReactNode
+  id: ID extends 'default' ? never : ID;
+  shouldCondense?: boolean;
+  autoFocus?: boolean;
+  clickableAreaRef?: React.RefObject<HTMLDivElement>;
+  event?: string;
+  group?: string;
+  extra?: React.ReactNode;
 }
 
 const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {

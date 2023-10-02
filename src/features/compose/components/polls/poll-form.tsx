@@ -25,14 +25,14 @@ const messages = defineMessages({
 });
 
 interface IOption {
-  composeId: string
-  index: number
-  maxChars: number
-  numOptions: number
-  onChange(index: number, value: string): void
-  onRemove(index: number): void
-  onRemovePoll(): void
-  title: string
+  composeId: string;
+  index: number;
+  maxChars: number;
+  numOptions: number;
+  onChange(index: number, value: string): void;
+  onRemove(index: number): void;
+  onRemovePoll(): void;
+  title: string;
 }
 
 const Option: React.FC<IOption> = ({
@@ -104,7 +104,7 @@ const Option: React.FC<IOption> = ({
 };
 
 interface IPollForm {
-  composeId: string
+  composeId: string;
 }
 
 const PollForm: React.FC<IPollForm> = ({ composeId }) => {

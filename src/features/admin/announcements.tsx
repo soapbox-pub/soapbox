@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 interface IAnnouncement {
-  announcement: AnnouncementEntity
+  announcement: AnnouncementEntity;
 }
 
 const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {

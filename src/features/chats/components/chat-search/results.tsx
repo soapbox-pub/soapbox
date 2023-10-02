@@ -9,8 +9,8 @@ import useAccountSearch from 'soapbox/queries/search';
 import type { Account } from 'soapbox/types/entities';
 
 interface IResults {
-  accountSearchResult: ReturnType<typeof useAccountSearch>
-  onSelect(id: string): void
+  accountSearchResult: ReturnType<typeof useAccountSearch>;
+  onSelect(id: string): void;
 }
 
 const Results = ({ accountSearchResult, onSelect }: IResults) => {

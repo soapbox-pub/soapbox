@@ -8,8 +8,8 @@ import { type Group } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
 
 interface IGroupListItem {
-  group: Group
-  onUnmute(): void
+  group: Group;
+  onUnmute(): void;
 }
 
 const messages = defineMessages({

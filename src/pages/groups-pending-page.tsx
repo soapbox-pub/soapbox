@@ -6,7 +6,7 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { NewGroupPanel, SuggestedGroupsPanel } from 'soapbox/features/ui/util/async-components';
 
 interface IGroupsPage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Page to display groups. */

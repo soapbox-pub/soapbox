@@ -5,8 +5,8 @@ import Text from '../text/text';
 import type { Sizes as TextSizes } from '../text/text';
 
 interface IDivider {
-  text?: string
-  textSize?: TextSizes
+  text?: string;
+  textSize?: TextSizes;
 }
 
 /** Divider */

@@ -14,7 +14,7 @@ const COLORS = {
 type Color = keyof typeof COLORS;
 
 interface IStatusActionCounter {
-  count: number
+  count: number;
 }
 
 /** Action button numerical counter, eg "5" likes. */
@@ -27,15 +27,15 @@ const StatusActionCounter: React.FC<IStatusActionCounter> = ({ count = 0 }): JSX
 };
 
 interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  iconClassName?: string
-  icon: string
-  count?: number
-  active?: boolean
-  color?: Color
-  filled?: boolean
-  emoji?: ImmutableMap<string, any>
-  text?: React.ReactNode
-  theme?: 'default' | 'inverse'
+  iconClassName?: string;
+  icon: string;
+  count?: number;
+  active?: boolean;
+  color?: Color;
+  filled?: boolean;
+  emoji?: ImmutableMap<string, any>;
+  text?: React.ReactNode;
+  theme?: 'default' | 'inverse';
 }
 
 const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { ProgressBar } from 'soapbox/components/ui';
 
 interface IChatPendingUpload {
-  progress: number
+  progress: number;
 }
 
 /** Displays a loading thumbnail for an upload in the chat composer. */
