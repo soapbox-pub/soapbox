@@ -1,6 +1,6 @@
 import type { CaptureContext } from '@sentry/types';
 
-/** Capture the exception and report it to Sentry. */
+/** Capture the exception in Sentry. */
 async function captureException (exception: any, captureContext?: CaptureContext | undefined): Promise<void> {
   try {
     const Sentry = await import('@sentry/react');
@@ -10,4 +10,4 @@ async function captureException (exception: any, captureContext?: CaptureContext
   }
 }
 
-export { captureException };
+export { startSentry, captureException };

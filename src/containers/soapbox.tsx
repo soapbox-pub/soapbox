@@ -28,8 +28,9 @@ import {
   useAppSelector,
   useAppDispatch,
   useOwnAccount,
-  useSoapboxConfig,
+  useSentry,
   useSettings,
+  useSoapboxConfig,
   useTheme,
   useLocale,
 } from 'soapbox/hooks';
@@ -223,6 +224,8 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     'underline-links': settings.get('underlineLinks'),
     'demetricator': settings.get('demetricator'),
   });
+
+  useSentry(soapboxConfig.sentryDsn);
 
   return (
     <>
