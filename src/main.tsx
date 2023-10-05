@@ -23,12 +23,8 @@ import './styles/tailwind.css';
 
 import './precheck';
 import { default as Soapbox } from './containers/soapbox';
-import * as monitoring from './monitoring';
 import ready from './ready';
 import { registerSW } from './utils/sw';
-
-// Sentry
-monitoring.start();
 
 if (BuildConfig.NODE_ENV === 'production') {
   printConsoleWarning();

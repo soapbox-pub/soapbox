@@ -116,6 +116,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
    * On some platforms this can be too blurry without additional configuration.
    */
   mediaPreview: false,
+  sentryDsn: undefined as string | undefined,
 }, 'SoapboxConfig');
 
 type SoapboxConfigMap = ImmutableMap<string, any>;

@@ -54,6 +54,8 @@ const messages = defineMessages({
   tileServerAttributionLabel: { id: 'soapbox_config.tile_server_attribution_label', defaultMessage: 'Map tiles attribution' },
   redirectRootNoLoginLabel: { id: 'soapbox_config.redirect_root_no_login_label', defaultMessage: 'Redirect homepage' },
   redirectRootNoLoginHint: { id: 'soapbox_config.redirect_root_no_login_hint', defaultMessage: 'Path to redirect the homepage when a user is not logged in.' },
+  sentryDsnLabel: { id: 'soapbox_config.sentry_dsn_label', defaultMessage: 'Sentry DSN' },
+  sentryDsnHint: { id: 'soapbox_config.sentry_dsn_hint', defaultMessage: 'DSN URL for error reporting. Works with Sentry and GlitchTip.' },
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
@@ -283,6 +285,18 @@ const SoapboxConfig: React.FC = () => {
                 placeholder='/timeline/local'
                 value={String(data.get('redirectRootNoLogin', ''))}
                 onChange={handleChange(['redirectRootNoLogin'], (e) => e.target.value)}
+              />
+            </ListItem>
+
+            <ListItem
+              label={intl.formatMessage(messages.sentryDsnLabel)}
+              hint={intl.formatMessage(messages.sentryDsnHint)}
+            >
+              <Input
+                type='text'
+                placeholder='https://01234abcdef@glitch.tip.tld/5678'
+                value={String(data.get('sentryDsn', ''))}
+                onChange={handleChange(['sentryDsn'], (e) => e.target.value)}
               />
             </ListItem>
           </List>
