@@ -15,7 +15,7 @@ import ProfileFamiliarFollowers from './profile-familiar-followers';
 import ProfileField from './profile-field';
 import ProfileStats from './profile-stats';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 /** Basically ensure the URL isn't `javascript:alert('hi')` or something like that */
 const isSafeUrl = (text: string): boolean => {

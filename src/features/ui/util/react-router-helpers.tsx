@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
 
 import { Layout } from 'soapbox/components/ui';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
-import BundleColumnError from '../components/bundle-column-error';
 import ColumnForbidden from '../components/column-forbidden';
 import ColumnLoading from '../components/column-loading';
 import ColumnsArea from '../components/columns-area';
-import BundleContainer from '../containers/bundle-container';
 
 type PageProps = {
   params?: MatchType['params'];
@@ -17,7 +15,7 @@ type PageProps = {
 };
 
 interface IWrappedRoute extends RouteProps {
-  component: (...args: any[]) => any;
+  component: React.LazyExoticComponent<any>;
   page?: React.ComponentType<PageProps>;
   content?: React.ReactNode;
   componentParams?: Record<string, any>;
@@ -29,7 +27,7 @@ interface IWrappedRoute extends RouteProps {
 }
 
 const WrappedRoute: React.FC<IWrappedRoute> = ({
-  component,
+  component: Component,
   page: Page,
   content,
   componentParams = {},
@@ -48,32 +46,24 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
   const renderComponent = ({ match }: RouteComponentProps) => {
     if (Page) {
       return (
-        <BundleContainer fetchComponent={component} loading={renderLoading} error={renderError}>
-          {Component =>
-            (
-              <Page params={match.params} layout={layout} {...componentParams}>
-                <Component params={match.params} {...componentParams}>
-                  {content}
-                </Component>
-              </Page>
-            )
-          }
-        </BundleContainer>
+        <Suspense fallback={renderLoading()}>
+          <Page params={match.params} layout={layout} {...componentParams}>
+            <Component params={match.params} {...componentParams}>
+              {content}
+            </Component>
+          </Page>
+        </Suspense>
       );
     }
 
     return (
-      <BundleContainer fetchComponent={component} loading={renderLoading} error={renderError}>
-        {Component =>
-          (
-            <ColumnsArea layout={layout}>
-              <Component params={match.params} {...componentParams}>
-                {content}
-              </Component>
-            </ColumnsArea>
-          )
-        }
-      </BundleContainer>
+      <Suspense fallback={renderLoading()}>
+        <ColumnsArea layout={layout}>
+          <Component params={match.params} {...componentParams}>
+            {content}
+          </Component>
+        </ColumnsArea>
+      </Suspense>
     );
   };
 
@@ -89,7 +79,6 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
 
   const renderLoading = () => renderWithLayout(<ColumnLoading />);
   const renderForbidden = () => renderWithLayout(<ColumnForbidden />);
-  const renderError = (props: any) => renderWithLayout(<BundleColumnError {...props} />);
 
   const loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${history.location.pathname}${history.location.search}`);

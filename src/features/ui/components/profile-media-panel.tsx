@@ -10,7 +10,8 @@ import { getAccountGallery } from 'soapbox/selectors';
 
 import MediaItem from '../../account-gallery/components/media-item';
 
-import type { Account, Attachment } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
+import type { Attachment } from 'soapbox/types/entities';
 
 interface IProfileMediaPanel {
   account?: Account;

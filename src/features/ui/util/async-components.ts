@@ -1,647 +1,164 @@
-export function AboutPage() {
-  return import('../../about');
-}
-
-export function EmojiPicker() {
-  return import('../../emoji/components/emoji-picker');
-}
-
-export function Notifications() {
-  return import('../../notifications');
-}
-
-export function LandingTimeline() {
-  return import('../../landing-timeline');
-}
-
-export function HomeTimeline() {
-  return import('../../home-timeline');
-}
-
-export function PublicTimeline() {
-  return import('../../public-timeline');
-}
-
-export function RemoteTimeline() {
-  return import('../../remote-timeline');
-}
-
-export function CommunityTimeline() {
-  return import('../../community-timeline');
-}
-
-export function HashtagTimeline() {
-  return import('../../hashtag-timeline');
-}
-
-export function DirectTimeline() {
-  return import('../../direct-timeline');
-}
-
-export function Conversations() {
-  return import('../../conversations');
-}
-
-export function ListTimeline() {
-  return import('../../list-timeline');
-}
-
-export function Lists() {
-  return import('../../lists');
-}
-
-export function Bookmarks() {
-  return import('../../bookmarks');
-}
-
-export function Status() {
-  return import('../../status');
-}
-
-export function PinnedStatuses() {
-  return import('../../pinned-statuses');
-}
-
-export function AccountTimeline() {
-  return import('../../account-timeline');
-}
-
-export function AccountGallery() {
-  return import('../../account-gallery');
-}
-
-export function Followers() {
-  return import('../../followers');
-}
-
-export function Following() {
-  return import('../../following');
-}
-
-export function FollowRequests() {
-  return import('../../follow-requests');
-}
-
-export function GenericNotFound() {
-  return import('../../generic-not-found');
-}
-
-export function FavouritedStatuses() {
-  return import('../../favourited-statuses');
-}
-
-export function Blocks() {
-  return import('../../blocks');
-}
-
-export function DomainBlocks() {
-  return import('../../domain-blocks');
-}
-
-export function Mutes() {
-  return import('../../mutes');
-}
-
-export function MuteModal() {
-  return import('../components/modals/mute-modal');
-}
-
-export function Filters() {
-  return import('../../filters');
-}
-
-export function EditFilter() {
-  return import('../../filters/edit-filter');
-}
-
-export function ReportModal() {
-  return import('../components/modals/report-modal/report-modal');
-}
-
-export function AccountModerationModal() {
-  return import('../components/modals/account-moderation-modal/account-moderation-modal');
-}
-
-export function MediaGallery() {
-  return import('../../../components/media-gallery');
-}
-
-export function Video() {
-  return import('../../video');
-}
-
-export function Audio() {
-  return import('../../audio');
-}
-
-export function MediaModal() {
-  return import('../components/modals/media-modal');
-}
-
-export function VideoModal() {
-  return import('../components/modals/video-modal');
-}
-
-export function BoostModal() {
-  return import('../components/modals/boost-modal');
-}
-
-export function ConfirmationModal() {
-  return import('../components/modals/confirmation-modal');
-}
-
-export function MissingDescriptionModal() {
-  return import('../components/modals/missing-description-modal');
-}
-
-export function ActionsModal() {
-  return import('../components/modals/actions-modal');
-}
-
-export function HotkeysModal() {
-  return import('../components/modals/hotkeys-modal');
-}
-
-export function ComposeModal() {
-  return import('../components/modals/compose-modal');
-}
-
-export function ReplyMentionsModal() {
-  return import('../components/modals/reply-mentions-modal');
-}
-
-export function UnauthorizedModal() {
-  return import('../components/modals/unauthorized-modal');
-}
-
-export function EditFederationModal() {
-  return import('../components/modals/edit-federation-modal');
-}
-
-export function EmbedModal() {
-  return import('../components/modals/embed-modal');
-}
-
-export function ComponentModal() {
-  return import('../components/modals/component-modal');
-}
-
-export function ReblogsModal() {
-  return import('../components/modals/reblogs-modal');
-}
-
-export function FavouritesModal() {
-  return import('../components/modals/favourites-modal');
-}
-
-export function DislikesModal() {
-  return import('../components/modals/dislikes-modal');
-}
-
-export function ReactionsModal() {
-  return import('../components/modals/reactions-modal');
-}
-
-export function MentionsModal() {
-  return import('../components/modals/mentions-modal');
-}
-
-export function LandingPageModal() {
-  return import('../components/modals/landing-page-modal');
-}
-
-export function BirthdaysModal() {
-  return import('../components/modals/birthdays-modal');
-}
-
-export function BirthdayPanel() {
-  return import('../../../components/birthday-panel');
-}
-
-export function ListEditor() {
-  return import('../../list-editor');
-}
-
-export function ListAdder() {
-  return import('../../list-adder');
-}
-
-export function Search() {
-  return import('../../search');
-}
-
-export function LoginPage() {
-  return import('../../auth-login/components/login-page');
-}
-
-export function ExternalLogin() {
-  return import('../../external-login');
-}
-
-export function LogoutPage() {
-  return import('../../auth-login/components/logout');
-}
-
-export function RegistrationPage() {
-  return import('../../auth-login/components/registration-page');
-}
-
-export function Settings() {
-  return import('../../settings');
-}
-
-export function EditProfile() {
-  return import('../../edit-profile');
-}
-
-export function EditEmail() {
-  return import('../../edit-email');
-}
-
-export function EmailConfirmation() {
-  return import('../../email-confirmation');
-}
-
-export function EditPassword() {
-  return import('../../edit-password');
-}
-
-export function DeleteAccount() {
-  return import('../../delete-account');
-}
-
-export function SoapboxConfig() {
-  return import('../../soapbox-config');
-}
-
-export function ExportData() {
-  return import('../../export-data');
-}
-
-export function ImportData() {
-  return import('../../import-data');
-}
-
-export function Backups() {
-  return import('../../backups');
-}
-
-export function PasswordReset() {
-  return import('../../auth-login/components/password-reset');
-}
-
-export function PasswordResetConfirm() {
-  return import('../../auth-login/components/password-reset-confirm');
-}
-
-export function MfaForm() {
-  return import('../../security/mfa-form');
-}
-
-export function ChatIndex() {
-  return import('../../chats');
-}
-
-export function ChatWidget() {
-  return import('../../chats/components/chat-widget/chat-widget');
-}
-
-export function ServerInfo() {
-  return import('../../server-info');
-}
-
-export function Dashboard() {
-  return import('../../admin');
-}
-
-export function ModerationLog() {
-  return import('../../admin/moderation-log');
-}
-
-export function ThemeEditor() {
-  return import('../../theme-editor');
-}
-
-export function UserPanel() {
-  return import('../components/user-panel');
-}
-
-export function PromoPanel() {
-  return import('../components/promo-panel');
-}
-
-export function SignUpPanel() {
-  return import('../components/panels/sign-up-panel');
-}
-
-export function CtaBanner() {
-  return import('../components/cta-banner');
-}
-
-export function FundingPanel() {
-  return import('../components/funding-panel');
-}
-
-export function TrendsPanel() {
-  return import('../components/trends-panel');
-}
-
-export function ProfileInfoPanel() {
-  return import('../components/profile-info-panel');
-}
-
-export function ProfileMediaPanel() {
-  return import('../components/profile-media-panel');
-}
-
-export function ProfileFieldsPanel() {
-  return import('../components/profile-fields-panel');
-}
-
-export function PinnedAccountsPanel() {
-  return import('../components/pinned-accounts-panel');
-}
-
-export function InstanceInfoPanel() {
-  return import('../components/instance-info-panel');
-}
-
-export function InstanceModerationPanel() {
-  return import('../components/instance-moderation-panel');
-}
-
-export function LatestAccountsPanel() {
-  return import('../../admin/components/latest-accounts-panel');
-}
-
-export function SidebarMenu() {
-  return import('../../../components/sidebar-menu');
-}
-
-export function ModalContainer() {
-  return import('../containers/modal-container');
-}
-
-export function ProfileHoverCard() {
-  return import('soapbox/components/profile-hover-card');
-}
-
-export function StatusHoverCard() {
-  return import('soapbox/components/status-hover-card');
-}
-
-export function CryptoDonate() {
-  return import('../../crypto-donate');
-}
-
-export function CryptoDonatePanel() {
-  return import('../../crypto-donate/components/crypto-donate-panel');
-}
-
-export function CryptoAddress() {
-  return import('../../crypto-donate/components/crypto-address');
-}
-
-export function CryptoDonateModal() {
-  return import('../components/modals/crypto-donate-modal');
-}
-
-export function ScheduledStatuses() {
-  return import('../../scheduled-statuses');
-}
-
-export function UserIndex() {
-  return import('../../admin/user-index');
-}
-
-export function FederationRestrictions() {
-  return import('../../federation-restrictions');
-}
-
-export function Aliases() {
-  return import('../../aliases');
-}
-
-export function Migration() {
-  return import('../../migration');
-}
-
-export function ScheduleForm() {
-  return import('../../compose/components/schedule-form');
-}
-
-export function WhoToFollowPanel() {
-  return import('../components/who-to-follow-panel');
-}
-
-export function FollowRecommendations() {
-  return import('../../follow-recommendations');
-}
-
-export function Directory() {
-  return import('../../directory');
-}
-
-export function RegisterInvite() {
-  return import('../../register-invite');
-}
-
-export function Share() {
-  return import('../../share');
-}
-
-export function NewStatus() {
-  return import('../../new-status');
-}
-
-export function IntentionalError() {
-  return import('../../intentional-error');
-}
-
-export function Developers() {
-  return import('../../developers');
-}
-
-export function CreateApp() {
-  return import('../../developers/apps/create');
-}
-
-export function SettingsStore() {
-  return import('../../developers/settings-store');
-}
-
-export function TestTimeline() {
-  return import('../../test-timeline');
-}
-
-export function ServiceWorkerInfo() {
-  return import('../../developers/service-worker-info');
-}
-
-export function DatePicker() {
-  return import('../../birthdays/date-picker');
-}
-
-export function OnboardingWizard() {
-  return import('../../onboarding/onboarding-wizard');
-}
-
-export function CompareHistoryModal() {
-  return import('../components/modals/compare-history-modal');
-}
-
-export function AuthTokenList() {
-  return import('../../auth-token-list');
-}
-
-export function FamiliarFollowersModal() {
-  return import('../components/modals/familiar-followers-modal');
-}
-
-export function AnnouncementsPanel() {
-  return import('../../../components/announcements/announcements-panel');
-}
-
-export function Quotes() {
-  return import('../../quotes');
-}
-
-export function ComposeEventModal() {
-  return import('../components/modals/compose-event-modal/compose-event-modal');
-}
-
-export function JoinEventModal() {
-  return import('../components/modals/join-event-modal');
-}
-
-export function EventHeader() {
-  return import('../../event/components/event-header');
-}
-
-export function EventInformation() {
-  return import('../../event/event-information');
-}
-
-export function EventDiscussion() {
-  return import('../../event/event-discussion');
-}
-
-export function EventMapModal() {
-  return import('../components/modals/event-map-modal');
-}
-
-export function EventParticipantsModal() {
-  return import('../components/modals/event-participants-modal');
-}
-
-export function Events() {
-  return import('../../events');
-}
-
-export function Groups() {
-  return import('../../groups');
-}
-
-export function GroupsDiscover() {
-  return import('../../groups/discover');
-}
-
-export function GroupsPopular() {
-  return import('../../groups/popular');
-}
-
-export function GroupsSuggested() {
-  return import('../../groups/suggested');
-}
-
-export function GroupsTag() {
-  return import('../../groups/tag');
-}
-
-export function GroupsTags() {
-  return import('../../groups/tags');
-}
-
-export function PendingGroupRequests() {
-  return import('../../groups/pending-requests');
-}
-
-export function GroupMembers() {
-  return import('../../group/group-members');
-}
-
-export function GroupTags() {
-  return import('../../group/group-tags');
-}
-
-export function GroupTagTimeline() {
-  return import('../../group/group-tag-timeline');
-}
-
-export function GroupTimeline() {
-  return import('../../group/group-timeline');
-}
-
-export function ManageGroup() {
-  return import('../../group/manage-group');
-}
-
-export function EditGroup() {
-  return import('../../group/edit-group');
-}
-
-export function GroupBlockedMembers() {
-  return import('../../group/group-blocked-members');
-}
-
-export function GroupMembershipRequests() {
-  return import('../../group/group-membership-requests');
-}
-
-export function GroupGallery() {
-  return import('../../group/group-gallery');
-}
-
-export function CreateGroupModal() {
-  return import('../components/modals/manage-group-modal/create-group-modal');
-}
-
-export function NewGroupPanel() {
-  return import('../components/panels/new-group-panel');
-}
-
-export function MyGroupsPanel() {
-  return import('../components/panels/my-groups-panel');
-}
-
-export function SuggestedGroupsPanel() {
-  return import('../components/panels/suggested-groups-panel');
-}
-
-export function GroupMediaPanel() {
-  return import('../components/group-media-panel');
-}
-
-export function NewEventPanel() {
-  return import('../components/panels/new-event-panel');
-}
-
-export function Announcements() {
-  return import('../../admin/announcements');
-}
-
-export function EditAnnouncementModal() {
-  return import('../components/modals/edit-announcement-modal');
-}
-
-export function FollowedTags() {
-  return import('../../followed-tags');
-}
-
-export function AccountNotePanel() {
-  return import('../components/panels/account-note-panel');
-}
-
-export function ComposeEditor() {
-  return import('../../compose/editor');
-}
+import { lazy } from 'react';
+
+export const AboutPage = lazy(() => import('soapbox/features/about'));
+export const EmojiPicker = lazy(() => import('soapbox/features/emoji/components/emoji-picker'));
+export const Notifications = lazy(() => import('soapbox/features/notifications'));
+export const LandingTimeline = lazy(() => import('soapbox/features/landing-timeline'));
+export const HomeTimeline = lazy(() => import('soapbox/features/home-timeline'));
+export const PublicTimeline = lazy(() => import('soapbox/features/public-timeline'));
+export const RemoteTimeline = lazy(() => import('soapbox/features/remote-timeline'));
+export const CommunityTimeline = lazy(() => import('soapbox/features/community-timeline'));
+export const HashtagTimeline = lazy(() => import('soapbox/features/hashtag-timeline'));
+export const DirectTimeline = lazy(() => import('soapbox/features/direct-timeline'));
+export const Conversations = lazy(() => import('soapbox/features/conversations'));
+export const ListTimeline = lazy(() => import('soapbox/features/list-timeline'));
+export const Lists = lazy(() => import('soapbox/features/lists'));
+export const Bookmarks = lazy(() => import('soapbox/features/bookmarks'));
+export const Status = lazy(() => import('soapbox/features/status'));
+export const PinnedStatuses = lazy(() => import('soapbox/features/pinned-statuses'));
+export const AccountTimeline = lazy(() => import('soapbox/features/account-timeline'));
+export const AccountGallery = lazy(() => import('soapbox/features/account-gallery'));
+export const Followers = lazy(() => import('soapbox/features/followers'));
+export const Following = lazy(() => import('soapbox/features/following'));
+export const FollowRequests = lazy(() => import('soapbox/features/follow-requests'));
+export const GenericNotFound = lazy(() => import('soapbox/features/generic-not-found'));
+export const FavouritedStatuses = lazy(() => import('soapbox/features/favourited-statuses'));
+export const Blocks = lazy(() => import('soapbox/features/blocks'));
+export const DomainBlocks = lazy(() => import('soapbox/features/domain-blocks'));
+export const Mutes = lazy(() => import('soapbox/features/mutes'));
+export const MuteModal = lazy(() => import('soapbox/features/ui/components/modals/mute-modal'));
+export const Filters = lazy(() => import('soapbox/features/filters'));
+export const EditFilter = lazy(() => import('soapbox/features/filters/edit-filter'));
+export const ReportModal = lazy(() => import('soapbox/features/ui/components/modals/report-modal/report-modal'));
+export const AccountModerationModal = lazy(() => import('soapbox/features/ui/components/modals/account-moderation-modal/account-moderation-modal'));
+export const MediaGallery = lazy(() => import('soapbox/components/media-gallery'));
+export const Video = lazy(() => import('soapbox/features/video'));
+export const Audio = lazy(() => import('soapbox/features/audio'));
+export const MediaModal = lazy(() => import('soapbox/features/ui/components/modals/media-modal'));
+export const VideoModal = lazy(() => import('soapbox/features/ui/components/modals/video-modal'));
+export const BoostModal = lazy(() => import('soapbox/features/ui/components/modals/boost-modal'));
+export const ConfirmationModal = lazy(() => import('soapbox/features/ui/components/modals/confirmation-modal'));
+export const MissingDescriptionModal = lazy(() => import('soapbox/features/ui/components/modals/missing-description-modal'));
+export const ActionsModal = lazy(() => import('soapbox/features/ui/components/modals/actions-modal'));
+export const HotkeysModal = lazy(() => import('soapbox/features/ui/components/modals/hotkeys-modal'));
+export const ComposeModal = lazy(() => import('soapbox/features/ui/components/modals/compose-modal'));
+export const ReplyMentionsModal = lazy(() => import('soapbox/features/ui/components/modals/reply-mentions-modal'));
+export const UnauthorizedModal = lazy(() => import('soapbox/features/ui/components/modals/unauthorized-modal'));
+export const EditFederationModal = lazy(() => import('soapbox/features/ui/components/modals/edit-federation-modal'));
+export const EmbedModal = lazy(() => import('soapbox/features/ui/components/modals/embed-modal'));
+export const ComponentModal = lazy(() => import('soapbox/features/ui/components/modals/component-modal'));
+export const ReblogsModal = lazy(() => import('soapbox/features/ui/components/modals/reblogs-modal'));
+export const FavouritesModal = lazy(() => import('soapbox/features/ui/components/modals/favourites-modal'));
+export const DislikesModal = lazy(() => import('soapbox/features/ui/components/modals/dislikes-modal'));
+export const ReactionsModal = lazy(() => import('soapbox/features/ui/components/modals/reactions-modal'));
+export const MentionsModal = lazy(() => import('soapbox/features/ui/components/modals/mentions-modal'));
+export const LandingPageModal = lazy(() => import('soapbox/features/ui/components/modals/landing-page-modal'));
+export const BirthdaysModal = lazy(() => import('soapbox/features/ui/components/modals/birthdays-modal'));
+export const BirthdayPanel = lazy(() => import('soapbox/components/birthday-panel'));
+export const ListEditor = lazy(() => import('soapbox/features/list-editor'));
+export const ListAdder = lazy(() => import('soapbox/features/list-adder'));
+export const Search = lazy(() => import('soapbox/features/search'));
+export const LoginPage = lazy(() => import('soapbox/features/auth-login/components/login-page'));
+export const ExternalLogin = lazy(() => import('soapbox/features/external-login'));
+export const LogoutPage = lazy(() => import('soapbox/features/auth-login/components/logout'));
+export const RegistrationPage = lazy(() => import('soapbox/features/auth-login/components/registration-page'));
+export const Settings = lazy(() => import('soapbox/features/settings'));
+export const EditProfile = lazy(() => import('soapbox/features/edit-profile'));
+export const EditEmail = lazy(() => import('soapbox/features/edit-email'));
+export const EmailConfirmation = lazy(() => import('soapbox/features/email-confirmation'));
+export const EditPassword = lazy(() => import('soapbox/features/edit-password'));
+export const DeleteAccount = lazy(() => import('soapbox/features/delete-account'));
+export const SoapboxConfig = lazy(() => import('soapbox/features/soapbox-config'));
+export const ExportData = lazy(() => import('soapbox/features/export-data'));
+export const ImportData = lazy(() => import('soapbox/features/import-data'));
+export const Backups = lazy(() => import('soapbox/features/backups'));
+export const PasswordReset = lazy(() => import('soapbox/features/auth-login/components/password-reset'));
+export const PasswordResetConfirm = lazy(() => import('soapbox/features/auth-login/components/password-reset-confirm'));
+export const MfaForm = lazy(() => import('soapbox/features/security/mfa-form'));
+export const ChatIndex = lazy(() => import('soapbox/features/chats'));
+export const ChatWidget = lazy(() => import('soapbox/features/chats/components/chat-widget/chat-widget'));
+export const ServerInfo = lazy(() => import('soapbox/features/server-info'));
+export const Dashboard = lazy(() => import('soapbox/features/admin'));
+export const ModerationLog = lazy(() => import('soapbox/features/admin/moderation-log'));
+export const ThemeEditor = lazy(() => import('soapbox/features/theme-editor'));
+export const UserPanel = lazy(() => import('soapbox/features/ui/components/user-panel'));
+export const PromoPanel = lazy(() => import('soapbox/features/ui/components/promo-panel'));
+export const SignUpPanel = lazy(() => import('soapbox/features/ui/components/panels/sign-up-panel'));
+export const CtaBanner = lazy(() => import('soapbox/features/ui/components/cta-banner'));
+export const FundingPanel = lazy(() => import('soapbox/features/ui/components/funding-panel'));
+export const TrendsPanel = lazy(() => import('soapbox/features/ui/components/trends-panel'));
+export const ProfileInfoPanel = lazy(() => import('soapbox/features/ui/components/profile-info-panel'));
+export const ProfileMediaPanel = lazy(() => import('soapbox/features/ui/components/profile-media-panel'));
+export const ProfileFieldsPanel = lazy(() => import('soapbox/features/ui/components/profile-fields-panel'));
+export const PinnedAccountsPanel = lazy(() => import('soapbox/features/ui/components/pinned-accounts-panel'));
+export const InstanceInfoPanel = lazy(() => import('soapbox/features/ui/components/instance-info-panel'));
+export const InstanceModerationPanel = lazy(() => import('soapbox/features/ui/components/instance-moderation-panel'));
+export const LatestAccountsPanel = lazy(() => import('soapbox/features/admin/components/latest-accounts-panel'));
+export const SidebarMenu = lazy(() => import('soapbox/components/sidebar-menu'));
+export const ModalContainer = lazy(() => import('soapbox/features/ui/containers/modal-container'));
+export const ProfileHoverCard = lazy(() => import('soapbox/components/profile-hover-card'));
+export const StatusHoverCard = lazy(() => import('soapbox/components/status-hover-card'));
+export const CryptoDonate = lazy(() => import('soapbox/features/crypto-donate'));
+export const CryptoDonatePanel = lazy(() => import('soapbox/features/crypto-donate/components/crypto-donate-panel'));
+export const CryptoAddress = lazy(() => import('soapbox/features/crypto-donate/components/crypto-address'));
+export const CryptoDonateModal = lazy(() => import('soapbox/features/ui/components/modals/crypto-donate-modal'));
+export const ScheduledStatuses = lazy(() => import('soapbox/features/scheduled-statuses'));
+export const UserIndex = lazy(() => import('soapbox/features/admin/user-index'));
+export const FederationRestrictions = lazy(() => import('soapbox/features/federation-restrictions'));
+export const Aliases = lazy(() => import('soapbox/features/aliases'));
+export const Migration = lazy(() => import('soapbox/features/migration'));
+export const ScheduleForm = lazy(() => import('soapbox/features/compose/components/schedule-form'));
+export const WhoToFollowPanel = lazy(() => import('soapbox/features/ui/components/who-to-follow-panel'));
+export const FollowRecommendations = lazy(() => import('soapbox/features/follow-recommendations'));
+export const Directory = lazy(() => import('soapbox/features/directory'));
+export const RegisterInvite = lazy(() => import('soapbox/features/register-invite'));
+export const Share = lazy(() => import('soapbox/features/share'));
+export const NewStatus = lazy(() => import('soapbox/features/new-status'));
+export const IntentionalError = lazy(() => import('soapbox/features/intentional-error'));
+export const Developers = lazy(() => import('soapbox/features/developers'));
+export const CreateApp = lazy(() => import('soapbox/features/developers/apps/create'));
+export const SettingsStore = lazy(() => import('soapbox/features/developers/settings-store'));
+export const TestTimeline = lazy(() => import('soapbox/features/test-timeline'));
+export const ServiceWorkerInfo = lazy(() => import('soapbox/features/developers/service-worker-info'));
+export const DatePicker = lazy(() => import('soapbox/features/birthdays/date-picker'));
+export const OnboardingWizard = lazy(() => import('soapbox/features/onboarding/onboarding-wizard'));
+export const CompareHistoryModal = lazy(() => import('soapbox/features/ui/components/modals/compare-history-modal'));
+export const AuthTokenList = lazy(() => import('soapbox/features/auth-token-list'));
+export const FamiliarFollowersModal = lazy(() => import('soapbox/features/ui/components/modals/familiar-followers-modal'));
+export const AnnouncementsPanel = lazy(() => import('soapbox/components/announcements/announcements-panel'));
+export const Quotes = lazy(() => import('soapbox/features/quotes'));
+export const ComposeEventModal = lazy(() => import('soapbox/features/ui/components/modals/compose-event-modal/compose-event-modal'));
+export const JoinEventModal = lazy(() => import('soapbox/features/ui/components/modals/join-event-modal'));
+export const EventHeader = lazy(() => import('soapbox/features/event/components/event-header'));
+export const EventInformation = lazy(() => import('soapbox/features/event/event-information'));
+export const EventDiscussion = lazy(() => import('soapbox/features/event/event-discussion'));
+export const EventMapModal = lazy(() => import('soapbox/features/ui/components/modals/event-map-modal'));
+export const EventParticipantsModal = lazy(() => import('soapbox/features/ui/components/modals/event-participants-modal'));
+export const Events = lazy(() => import('soapbox/features/events'));
+export const Groups = lazy(() => import('soapbox/features/groups'));
+export const GroupsDiscover = lazy(() => import('soapbox/features/groups/discover'));
+export const GroupsPopular = lazy(() => import('soapbox/features/groups/popular'));
+export const GroupsSuggested = lazy(() => import('soapbox/features/groups/suggested'));
+export const GroupsTag = lazy(() => import('soapbox/features/groups/tag'));
+export const GroupsTags = lazy(() => import('soapbox/features/groups/tags'));
+export const PendingGroupRequests = lazy(() => import('soapbox/features/groups/pending-requests'));
+export const GroupMembers = lazy(() => import('soapbox/features/group/group-members'));
+export const GroupTags = lazy(() => import('soapbox/features/group/group-tags'));
+export const GroupTagTimeline = lazy(() => import('soapbox/features/group/group-tag-timeline'));
+export const GroupTimeline = lazy(() => import('soapbox/features/group/group-timeline'));
+export const ManageGroup = lazy(() => import('soapbox/features/group/manage-group'));
+export const EditGroup = lazy(() => import('soapbox/features/group/edit-group'));
+export const GroupBlockedMembers = lazy(() => import('soapbox/features/group/group-blocked-members'));
+export const GroupMembershipRequests = lazy(() => import('soapbox/features/group/group-membership-requests'));
+export const GroupGallery = lazy(() => import('soapbox/features/group/group-gallery'));
+export const CreateGroupModal = lazy(() => import('soapbox/features/ui/components/modals/manage-group-modal/create-group-modal'));
+export const NewGroupPanel = lazy(() => import('soapbox/features/ui/components/panels/new-group-panel'));
+export const MyGroupsPanel = lazy(() => import('soapbox/features/ui/components/panels/my-groups-panel'));
+export const SuggestedGroupsPanel = lazy(() => import('soapbox/features/ui/components/panels/suggested-groups-panel'));
+export const GroupMediaPanel = lazy(() => import('soapbox/features/ui/components/group-media-panel'));
+export const NewEventPanel = lazy(() => import('soapbox/features/ui/components/panels/new-event-panel'));
+export const Announcements = lazy(() => import('soapbox/features/admin/announcements'));
+export const EditAnnouncementModal = lazy(() => import('soapbox/features/ui/components/modals/edit-announcement-modal'));
+export const FollowedTags = lazy(() => import('soapbox/features/followed-tags'));
+export const AccountNotePanel = lazy(() => import('soapbox/features/ui/components/panels/account-note-panel'));
+export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor'));

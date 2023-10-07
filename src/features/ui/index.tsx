@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import React, { lazy, useEffect, useRef } from 'react';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
@@ -15,8 +15,6 @@ import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import { useUserStream } from 'soapbox/api/hooks';
 import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
-import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
-import withHoc from 'soapbox/components/hoc/with-hoc';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
@@ -43,7 +41,6 @@ import { isStandalone } from 'soapbox/utils/state';
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
 import Navbar from './components/navbar';
-import BundleContainer from './containers/bundle-container';
 import {
   Status,
   CommunityTimeline,
@@ -146,16 +143,6 @@ import { WrappedRoute } from './util/react-router-helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import 'soapbox/components/status';
-
-const GroupTagsSlug = withHoc(GroupTags as any, GroupLookupHoc);
-const GroupTagTimelineSlug = withHoc(GroupTagTimeline as any, GroupLookupHoc);
-const GroupTimelineSlug = withHoc(GroupTimeline as any, GroupLookupHoc);
-const GroupMembersSlug = withHoc(GroupMembers as any, GroupLookupHoc);
-const GroupGallerySlug = withHoc(GroupGallery as any, GroupLookupHoc);
-const ManageGroupSlug = withHoc(ManageGroup as any, GroupLookupHoc);
-const EditGroupSlug = withHoc(EditGroup as any, GroupLookupHoc);
-const GroupBlockedMembersSlug = withHoc(GroupBlockedMembers as any, GroupLookupHoc);
-const GroupMembershipRequestsSlug = withHoc(GroupMembershipRequests as any, GroupLookupHoc);
 
 interface ISwitchingColumnsArea {
   children: React.ReactNode;
@@ -310,18 +297,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.groups && <WrappedRoute path='/groups/:groupId/manage/requests' exact page={ManageGroupsPage} component={GroupMembershipRequests} content={children} />}
       {features.groups && <WrappedRoute path='/groups/:groupId/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
 
-      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tags' exact page={GroupPage} component={GroupTagsSlug} content={children} />}
-      {features.groupsTags && <WrappedRoute path='/group/:groupSlug/tag/:tagId' exact page={GroupsPendingPage} component={GroupTagTimelineSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug' publicRoute exact page={GroupPage} component={GroupTimelineSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/members' exact page={GroupPage} component={GroupMembersSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/media' publicRoute={!authenticatedProfile} component={GroupGallerySlug} page={GroupPage} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/manage' exact page={ManageGroupsPage} component={ManageGroupSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/manage/edit' exact page={ManageGroupsPage} component={EditGroupSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/manage/blocks' exact page={ManageGroupsPage} component={GroupBlockedMembersSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/manage/requests' exact page={ManageGroupsPage} component={GroupMembershipRequestsSlug} content={children} />}
-      {features.groups && <WrappedRoute path='/group/:groupSlug/posts/:statusId' exact page={StatusPage} component={Status} content={children} />}
-      {features.groups && <Redirect from='/group/:groupSlug/statuses/:statusId' to='/group/:groupSlug/posts/:statusId' />}
-
       <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
       <WrappedRoute path='/statuses/:statusId' exact page={StatusPage} component={Status} content={children} />
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
@@ -354,7 +329,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
       <WrappedRoute path='/developers/sw' developerOnly page={DefaultPage} component={ServiceWorkerInfo} content={children} />
       <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
-      <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={() => new Promise((_resolve, reject) => reject())} content={children} />
+      <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={lazy(() => Promise.reject())} content={children} />
       <WrappedRoute path='/error' developerOnly page={EmptyPage} component={IntentionalError} content={children} />
 
       {hasCrypto && <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />}
@@ -525,29 +500,18 @@ const UI: React.FC<IUI> = ({ children }) => {
           )}
 
           {me && (
-            <BundleContainer fetchComponent={SidebarMenu}>
-              {Component => <Component />}
-            </BundleContainer>
+            <SidebarMenu />
           )}
 
           {me && features.chats && (
-            <BundleContainer fetchComponent={ChatWidget}>
-              {Component => (
-                <div className='hidden xl:block'>
-                  <Component />
-                </div>
-              )}
-            </BundleContainer>
+            <div className='hidden xl:block'>
+              <ChatWidget />
+            </div>
           )}
+
           <ThumbNavigation />
-
-          <BundleContainer fetchComponent={ProfileHoverCard}>
-            {Component => <Component />}
-          </BundleContainer>
-
-          <BundleContainer fetchComponent={StatusHoverCard}>
-            {Component => <Component />}
-          </BundleContainer>
+          <ProfileHoverCard />
+          <StatusHoverCard />
         </div>
       </div>
     </GlobalHotkeys>

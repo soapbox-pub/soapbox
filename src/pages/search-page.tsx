@@ -1,7 +1,6 @@
 import React from 'react';
 
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   WhoToFollowPanel,
   TrendsPanel,
@@ -27,38 +26,28 @@ const SearchPage: React.FC<ISearchPage> = ({ children }) => {
         {children}
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
 
         {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={5} key='trends-panel' />}
-          </BundleContainer>
+          <TrendsPanel limit={5} />
         )}
 
         {me && features.suggestions && (
-          <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={3} key='wtf-panel' />}
-          </BundleContainer>
+          <WhoToFollowPanel limit={3} />
         )}
 
         {features.groups && (
-          <BundleContainer fetchComponent={SuggestedGroupsPanel}>
-            {Component => <Component key='suggested-groups-panel' />}
-          </BundleContainer>
+          <SuggestedGroupsPanel />
         )}
 
-        <LinkFooter key='link-footer' />
+        <LinkFooter />
       </Layout.Aside>
     </>
   );

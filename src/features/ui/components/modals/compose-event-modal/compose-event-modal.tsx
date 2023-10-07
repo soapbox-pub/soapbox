@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -24,7 +24,6 @@ import { checkEventComposeContent } from 'soapbox/components/modal-root';
 import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { ComposeEditor, DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -94,9 +93,8 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const editorStateRef = useRef<string>(null);
-
   const [tab, setTab] = useState<'edit' | 'pending'>('edit');
+  const [text, setText] = useState('');
 
   const banner = useAppSelector((state) => state.compose_event.banner);
   const isUploading = useAppSelector((state) => state.compose_event.is_uploading);
@@ -167,7 +165,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   };
 
   const handleSubmit = () => {
-    dispatch(changeEditEventDescription(editorStateRef.current!));
+    dispatch(changeEditEventDescription(text));
     dispatch(submitEvent());
   };
 
@@ -235,18 +233,14 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.description_label' defaultMessage='Event description' />}
       >
-        <BundleContainer fetchComponent={ComposeEditor}>
-          {(Component: any) => (
-            <Component
-              ref={editorStateRef}
-              className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500 sm:text-sm'
-              placeholderClassName='pt-2'
-              composeId='compose-event-modal'
-              placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
-              handleSubmit={handleSubmit}
-            />
-          )}
-        </BundleContainer>
+        <ComposeEditor
+          className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500 sm:text-sm'
+          placeholderClassName='pt-2'
+          composeId='compose-event-modal'
+          placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}
+          handleSubmit={handleSubmit}
+          onChange={setText}
+        />
       </FormGroup>
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.location_label' defaultMessage='Event location' />}
@@ -260,18 +254,16 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.start_time_label' defaultMessage='Event start date' />}
       >
-        <BundleContainer fetchComponent={DatePicker}>
-          {Component => (<Component
-            showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
-            timeIntervals={15}
-            wrapperClassName='react-datepicker-wrapper'
-            placeholderText={intl.formatMessage(messages.eventStartTimePlaceholder)}
-            filterDate={isCurrentOrFutureDate}
-            selected={startTime}
-            onChange={onChangeStartTime}
-          />)}
-        </BundleContainer>
+        <DatePicker
+          showTimeSelect
+          dateFormat='MMMM d, yyyy h:mm aa'
+          timeIntervals={15}
+          wrapperClassName='react-datepicker-wrapper'
+          placeholderText={intl.formatMessage(messages.eventStartTimePlaceholder)}
+          filterDate={isCurrentOrFutureDate}
+          selected={startTime}
+          onChange={onChangeStartTime}
+        />
       </FormGroup>
       <HStack alignItems='center' space={2}>
         <Toggle
@@ -286,18 +278,16 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
         <FormGroup
           labelText={<FormattedMessage id='compose_event.fields.end_time_label' defaultMessage='Event end date' />}
         >
-          <BundleContainer fetchComponent={DatePicker}>
-            {Component => (<Component
-              showTimeSelect
-              dateFormat='MMMM d, yyyy h:mm aa'
-              timeIntervals={15}
-              wrapperClassName='react-datepicker-wrapper'
-              placeholderText={intl.formatMessage(messages.eventEndTimePlaceholder)}
-              filterDate={isCurrentOrFutureDate}
-              selected={endTime}
-              onChange={onChangeEndTime}
-            />)}
-          </BundleContainer>
+          <DatePicker
+            showTimeSelect
+            dateFormat='MMMM d, yyyy h:mm aa'
+            timeIntervals={15}
+            wrapperClassName='react-datepicker-wrapper'
+            placeholderText={intl.formatMessage(messages.eventEndTimePlaceholder)}
+            filterDate={isCurrentOrFutureDate}
+            selected={endTime}
+            onChange={onChangeEndTime}
+          />
         </FormGroup>
       )}
       {!id && (
