@@ -7,8 +7,8 @@ import { submitAccountNote } from 'soapbox/actions/account-notes';
 import { HStack, Text, Widget } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import type { Account as AccountEntity } from 'soapbox/schemas';
 import type { AppDispatch } from 'soapbox/store';
-import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const onSave = debounce(
   (dispatch: AppDispatch, id: string, value: string, callback: () => void) =>

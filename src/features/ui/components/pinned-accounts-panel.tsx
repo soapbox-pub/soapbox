@@ -9,7 +9,7 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 interface IPinnedAccountsPanel {
   account: Account;

@@ -5,7 +5,7 @@ import { Widget, Stack } from 'soapbox/components/ui';
 
 import ProfileField from './profile-field';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 interface IProfileFieldsPanel {
   account: Account;

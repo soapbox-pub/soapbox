@@ -12,7 +12,7 @@ import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 const getAccount = makeGetAccount();
 
