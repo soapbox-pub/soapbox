@@ -31,7 +31,7 @@ const EventPage: React.FC<IEventPage> = ({ params, children }) => {
   const history = useHistory();
   const statusId = params?.statusId!;
 
-  const status = useAppSelector(state => getStatus(state, { id: statusId }));
+  const status = useAppSelector(state => getStatus(state, { id: statusId }) || undefined);
 
   const event = status?.event;
 

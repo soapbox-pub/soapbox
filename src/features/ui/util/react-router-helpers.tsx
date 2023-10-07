@@ -4,7 +4,6 @@ import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as 
 import { Layout } from 'soapbox/components/ui';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
 
-import BundleColumnError from '../components/bundle-column-error';
 import ColumnForbidden from '../components/column-forbidden';
 import ColumnLoading from '../components/column-loading';
 import ColumnsArea from '../components/columns-area';
@@ -48,7 +47,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
   const renderComponent = ({ match }: RouteComponentProps) => {
     if (Page) {
       return (
-        <BundleContainer fetchComponent={component} loading={renderLoading} error={renderError}>
+        <BundleContainer fetchComponent={component} loading={renderLoading}>
           {Component =>
             (
               <Page params={match.params} layout={layout} {...componentParams}>
@@ -63,7 +62,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
     }
 
     return (
-      <BundleContainer fetchComponent={component} loading={renderLoading} error={renderError}>
+      <BundleContainer fetchComponent={component} loading={renderLoading}>
         {Component =>
           (
             <ColumnsArea layout={layout}>
@@ -89,7 +88,6 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
 
   const renderLoading = () => renderWithLayout(<ColumnLoading />);
   const renderForbidden = () => renderWithLayout(<ColumnForbidden />);
-  const renderError = (props: any) => renderWithLayout(<BundleColumnError {...props} />);
 
   const loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${history.location.pathname}${history.location.search}`);

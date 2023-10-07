@@ -3,7 +3,6 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
 import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
-import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import { Column, Icon, Layout, Stack, Text, Tabs } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
@@ -191,4 +190,4 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
   );
 };
 
-export default GroupLookupHoc(GroupPage as any) as any;
+export default GroupPage;

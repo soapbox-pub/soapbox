@@ -40,12 +40,10 @@ import {
 
 import BundleContainer from '../containers/bundle-container';
 
-import { BundleProps } from './bundle';
-import BundleModalError from './bundle-modal-error';
 import ModalLoading from './modal-loading';
 
 /* eslint sort-keys: "error" */
-const MODAL_COMPONENTS = {
+const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'ACCOUNT_MODERATION': AccountModerationModal,
   'ACTIONS': ActionsModal,
   'BIRTHDAYS': BirthdaysModal,
@@ -108,10 +106,6 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
   };
 
-  renderError: React.ComponentType<{ onRetry: (props?: BundleProps) => void }> = (props) => {
-    return <BundleModalError {...props} onClose={this.onClickClose} />;
-  };
-
   onClickClose = (_?: ModalType) => {
     const { onClose, type } = this.props;
     onClose(type);
@@ -124,7 +118,7 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
     return (
       <Base onClose={this.onClickClose} type={type}>
         {visible && (
-          <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
+          <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} renderDelay={200}>
             {(SpecificComponent) => <SpecificComponent {...props} onClose={this.onClickClose} />}
           </BundleContainer>
         )}
