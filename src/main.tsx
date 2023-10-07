@@ -25,7 +25,7 @@ import './precheck';
 import ready from './ready';
 import { registerSW } from './utils/sw';
 
-const Soapbox = React.lazy(() => import('./containers/soapbox'));
+const Soapbox = React.lazy(() => import('./init/soapbox'));
 
 if (BuildConfig.NODE_ENV === 'production') {
   printConsoleWarning();
