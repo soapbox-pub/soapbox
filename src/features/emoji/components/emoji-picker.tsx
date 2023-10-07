@@ -13,7 +13,7 @@ const getImageURL = (set: string, name: string) => {
   return joinPublicPath(`/packs/emoji/${name}.svg`);
 };
 
-const Picker = (props: any) => {
+const Picker: React.FC<any> = (props) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -25,6 +25,4 @@ const Picker = (props: any) => {
   return <div ref={ref} />;
 };
 
-export {
-  Picker,
-};
+export default Picker;
