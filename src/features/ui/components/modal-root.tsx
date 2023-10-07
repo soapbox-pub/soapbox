@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import Base from 'soapbox/components/modal-root';
 import {
@@ -37,8 +37,6 @@ import {
   UnauthorizedModal,
   VideoModal,
 } from 'soapbox/features/ui/util/async-components';
-
-import BundleContainer from '../containers/bundle-container';
 
 import ModalLoading from './modal-loading';
 
@@ -102,7 +100,7 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
     }
   }
 
-  renderLoading = (modalId: string) => () => {
+  renderLoading = (modalId: string) => {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
   };
 
@@ -113,14 +111,14 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
 
   render() {
     const { type, props } = this.props;
-    const visible = !!type;
+    const Component = type ? MODAL_COMPONENTS[type] : null;
 
     return (
       <Base onClose={this.onClickClose} type={type}>
-        {visible && (
-          <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} renderDelay={200}>
-            {(SpecificComponent) => <SpecificComponent {...props} onClose={this.onClickClose} />}
-          </BundleContainer>
+        {(Component && !!type) && (
+          <Suspense fallback={this.renderLoading(type)}>
+            <Component {...props} onClose={this.onClickClose} />
+          </Suspense>
         )}
       </Base>
     );

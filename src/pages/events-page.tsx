@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Layout } from 'soapbox/components/ui';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   WhoToFollowPanel,
   TrendsPanel,
@@ -25,18 +24,12 @@ const EventsPage: React.FC<IEventsPage> = ({ children }) => {
       </Layout.Main>
 
       <Layout.Aside>
-        <BundleContainer fetchComponent={NewEventPanel}>
-          {Component => <Component key='new-event-panel' />}
-        </BundleContainer>
+        <NewEventPanel />
         {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={5} key='trends-panel' />}
-          </BundleContainer>
+          <TrendsPanel limit={5} />
         )}
         {features.suggestions && (
-          <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={3} key='wtf-panel' />}
-          </BundleContainer>
+          <WhoToFollowPanel limit={3} />
         )}
         <LinkFooter key='link-footer' />
       </Layout.Aside>

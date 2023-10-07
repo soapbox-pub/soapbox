@@ -41,7 +41,6 @@ import { isStandalone } from 'soapbox/utils/state';
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
 import Navbar from './components/navbar';
-import BundleContainer from './containers/bundle-container';
 import {
   Status,
   CommunityTimeline,
@@ -501,29 +500,18 @@ const UI: React.FC<IUI> = ({ children }) => {
           )}
 
           {me && (
-            <BundleContainer fetchComponent={SidebarMenu}>
-              {Component => <Component />}
-            </BundleContainer>
+            <SidebarMenu />
           )}
 
           {me && features.chats && (
-            <BundleContainer fetchComponent={ChatWidget}>
-              {Component => (
-                <div className='hidden xl:block'>
-                  <Component />
-                </div>
-              )}
-            </BundleContainer>
+            <div className='hidden xl:block'>
+              <ChatWidget />
+            </div>
           )}
+
           <ThumbNavigation />
-
-          <BundleContainer fetchComponent={ProfileHoverCard}>
-            {Component => <Component />}
-          </BundleContainer>
-
-          <BundleContainer fetchComponent={StatusHoverCard}>
-            {Component => <Component />}
-          </BundleContainer>
+          <ProfileHoverCard />
+          <StatusHoverCard />
         </div>
       </div>
     </GlobalHotkeys>

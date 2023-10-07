@@ -4,7 +4,6 @@ import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
 import Markup from 'soapbox/components/markup';
 import { HStack, Icon } from 'soapbox/components/ui';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
 import type { Account } from 'soapbox/schemas';
@@ -35,14 +34,10 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
 
   if (isTicker(field.name)) {
     return (
-      <BundleContainer fetchComponent={CryptoAddress}>
-        {Component => (
-          <Component
-            ticker={getTicker(field.name).toLowerCase()}
-            address={field.value_plain}
-          />
-        )}
-      </BundleContainer>
+      <CryptoAddress
+        ticker={getTicker(field.name).toLowerCase()}
+        address={field.value_plain}
+      />
     );
   }
 

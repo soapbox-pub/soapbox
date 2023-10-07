@@ -10,7 +10,6 @@ import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji';
-import Bundle from 'soapbox/features/ui/components/bundle';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
@@ -22,7 +21,6 @@ import ChatMessageReaction from './chat-message-reaction';
 import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper';
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
-import type { IMediaGallery } from 'soapbox/components/media-gallery';
 import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -111,19 +109,15 @@ const ChatMessage = (props: IChatMessage) => {
     if (!chatMessage.media_attachments.size) return null;
 
     return (
-      <Bundle fetchComponent={MediaGallery}>
-        {(Component: React.FC<IMediaGallery>) => (
-          <Component
-            className={clsx({
-              'rounded-br-sm': isMyMessage && content,
-              'rounded-bl-sm': !isMyMessage && content,
-            })}
-            media={chatMessage.media_attachments}
-            onOpenMedia={onOpenMedia}
-            visible
-          />
-        )}
-      </Bundle>
+      <MediaGallery
+        className={clsx({
+          'rounded-br-sm': isMyMessage && content,
+          'rounded-bl-sm': !isMyMessage && content,
+        })}
+        media={chatMessage.media_attachments}
+        onOpenMedia={onOpenMedia}
+        visible
+      />
     );
   };
 

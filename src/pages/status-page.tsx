@@ -10,7 +10,6 @@ import {
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import { Layout } from '../components/ui';
-import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface IStatusPage {
   children: React.ReactNode;
@@ -26,29 +25,21 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
         {children}
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
         {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={5} key='trends-panel' />}
-          </BundleContainer>
+          <TrendsPanel limit={5} />
         )}
         {me && features.suggestions && (
-          <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={3} key='wtf-panel' />}
-          </BundleContainer>
+          <WhoToFollowPanel limit={3} />
         )}
-        <LinkFooter key='link-footer' />
+        <LinkFooter />
       </Layout.Aside>
     </>
   );

@@ -12,7 +12,6 @@ import {
 import { useAccount, usePatronUser } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 import { isLocal } from 'soapbox/utils/accounts';
@@ -112,15 +111,11 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
       <Card variant='rounded' className='relative isolate overflow-hidden'>
         <CardBody>
           <Stack space={2}>
-            <BundleContainer fetchComponent={UserPanel}>
-              {Component => (
-                <Component
-                  accountId={account.id}
-                  action={<ActionButton account={account} small />}
-                  badges={badges}
-                />
-              )}
-            </BundleContainer>
+            <UserPanel
+              accountId={account.id}
+              action={<ActionButton account={account} small />}
+              badges={badges}
+            />
 
             {isLocal(account) ? (
               <HStack alignItems='center' space={0.5}>

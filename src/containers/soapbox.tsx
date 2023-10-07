@@ -1,6 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import clsx from 'clsx';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
@@ -18,7 +18,6 @@ import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { StatProvider } from 'soapbox/contexts/stat-context';
 import EmbeddedStatus from 'soapbox/features/embedded-status';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   ModalContainer,
   OnboardingWizard,
@@ -87,9 +86,9 @@ const SoapboxMount = () => {
 
   /** Render the onboarding flow. */
   const renderOnboarding = () => (
-    <BundleContainer fetchComponent={OnboardingWizard} loading={LoadingScreen}>
-      {(Component) => <Component />}
-    </BundleContainer>
+    <Suspense fallback={<LoadingScreen />}>
+      <OnboardingWizard />
+    </Suspense>
   );
 
   /** Render the auth layout or UI. */
@@ -127,10 +126,7 @@ const SoapboxMount = () => {
               <Route>
                 {renderBody()}
 
-                <BundleContainer fetchComponent={ModalContainer}>
-                  {Component => <Component />}
-                </BundleContainer>
-
+                <ModalContainer />
                 <GdprBanner />
 
                 <div id='toaster'>

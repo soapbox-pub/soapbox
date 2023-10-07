@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Layout } from 'soapbox/components/ui';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   LatestAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
@@ -20,10 +19,7 @@ const AdminPage: React.FC<IAdminPage> = ({ children }) => {
       </Layout.Main>
 
       <Layout.Aside>
-        <BundleContainer fetchComponent={LatestAccountsPanel}>
-          {Component => <Component limit={5} />}
-        </BundleContainer>
-
+        <LatestAccountsPanel limit={5} />
         <LinkFooter />
       </Layout.Aside>
     </>

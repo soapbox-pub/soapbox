@@ -9,7 +9,6 @@ import {
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import { Layout } from '../components/ui';
-import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface ILandingPage {
   children: React.ReactNode;
@@ -25,22 +24,16 @@ const LandingPage: React.FC<ILandingPage> = ({ children }) => {
         {children}
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
         {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={5} />}
-          </BundleContainer>
+          <TrendsPanel limit={5} />
         )}
         <LinkFooter />
       </Layout.Aside>

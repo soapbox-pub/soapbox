@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import IconButton from 'soapbox/components/icon-button';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useInstance, useFeatures } from 'soapbox/hooks';
 
@@ -114,19 +113,17 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
 
   return (
     <div className='relative mt-1 rounded-md shadow-sm'>
-      <BundleContainer fetchComponent={DatePicker}>
-        {Component => (<Component
-          selected={selected}
-          wrapperClassName='react-datepicker-wrapper'
-          onChange={handleChange}
-          placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
-          minDate={new Date('1900-01-01')}
-          maxDate={maxDate}
-          required={required}
-          renderCustomHeader={renderCustomHeader}
-          isClearable={!required}
-        />)}
-      </BundleContainer>
+      <DatePicker
+        selected={selected}
+        wrapperClassName='react-datepicker-wrapper'
+        onChange={handleChange}
+        placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
+        minDate={new Date('1900-01-01')}
+        maxDate={maxDate}
+        required={required}
+        renderCustomHeader={renderCustomHeader}
+        isClearable={!required}
+      />
     </div>
   );
 };

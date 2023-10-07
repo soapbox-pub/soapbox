@@ -4,7 +4,6 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { changeAnnouncementAllDay, changeAnnouncementContent, changeAnnouncementEndTime, changeAnnouncementStartTime, handleCreateAnnouncement } from 'soapbox/actions/admin';
 import { closeModal } from 'soapbox/actions/modals';
 import { Form, FormGroup, HStack, Modal, Stack, Text, Textarea, Toggle } from 'soapbox/components/ui';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
@@ -67,34 +66,30 @@ const EditAnnouncementModal: React.FC<IEditAnnouncementModal> = ({ onClose }) =>
         <FormGroup
           labelText={<FormattedMessage id='admin.edit_announcement.fields.start_time_label' defaultMessage='Start date' />}
         >
-          <BundleContainer fetchComponent={DatePicker}>
-            {Component => (<Component
-              showTimeSelect
-              dateFormat='MMMM d, yyyy h:mm aa'
-              timeIntervals={15}
-              wrapperClassName='react-datepicker-wrapper'
-              placeholderText={intl.formatMessage(messages.announcementStartTimePlaceholder)}
-              selected={startTime}
-              onChange={onChangeStartTime}
-              isClearable
-            />)}
-          </BundleContainer>
+          <DatePicker
+            showTimeSelect
+            dateFormat='MMMM d, yyyy h:mm aa'
+            timeIntervals={15}
+            wrapperClassName='react-datepicker-wrapper'
+            placeholderText={intl.formatMessage(messages.announcementStartTimePlaceholder)}
+            selected={startTime}
+            onChange={onChangeStartTime}
+            isClearable
+          />
         </FormGroup>
         <FormGroup
           labelText={<FormattedMessage id='admin.edit_announcement.fields.end_time_label' defaultMessage='End date' />}
         >
-          <BundleContainer fetchComponent={DatePicker}>
-            {Component => (<Component
-              showTimeSelect
-              dateFormat='MMMM d, yyyy h:mm aa'
-              timeIntervals={15}
-              wrapperClassName='react-datepicker-wrapper'
-              placeholderText={intl.formatMessage(messages.announcementEndTimePlaceholder)}
-              selected={endTime}
-              onChange={onChangeEndTime}
-              isClearable
-            />)}
-          </BundleContainer>
+          <DatePicker
+            showTimeSelect
+            dateFormat='MMMM d, yyyy h:mm aa'
+            timeIntervals={15}
+            wrapperClassName='react-datepicker-wrapper'
+            placeholderText={intl.formatMessage(messages.announcementEndTimePlaceholder)}
+            selected={endTime}
+            onChange={onChangeEndTime}
+            isClearable
+          />
         </FormGroup>
         <HStack alignItems='center' space={2}>
           <Toggle

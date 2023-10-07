@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
 
 import { Layout } from 'soapbox/components/ui';
@@ -7,7 +7,6 @@ import { useOwnAccount, useSettings } from 'soapbox/hooks';
 import ColumnForbidden from '../components/column-forbidden';
 import ColumnLoading from '../components/column-loading';
 import ColumnsArea from '../components/columns-area';
-import BundleContainer from '../containers/bundle-container';
 
 type PageProps = {
   params?: MatchType['params'];
@@ -28,7 +27,7 @@ interface IWrappedRoute extends RouteProps {
 }
 
 const WrappedRoute: React.FC<IWrappedRoute> = ({
-  component,
+  component: Component,
   page: Page,
   content,
   componentParams = {},
@@ -47,32 +46,24 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
   const renderComponent = ({ match }: RouteComponentProps) => {
     if (Page) {
       return (
-        <BundleContainer fetchComponent={component} loading={renderLoading}>
-          {Component =>
-            (
-              <Page params={match.params} layout={layout} {...componentParams}>
-                <Component params={match.params} {...componentParams}>
-                  {content}
-                </Component>
-              </Page>
-            )
-          }
-        </BundleContainer>
+        <Suspense fallback={renderLoading()}>
+          <Page params={match.params} layout={layout} {...componentParams}>
+            <Component params={match.params} {...componentParams}>
+              {content}
+            </Component>
+          </Page>
+        </Suspense>
       );
     }
 
     return (
-      <BundleContainer fetchComponent={component} loading={renderLoading}>
-        {Component =>
-          (
-            <ColumnsArea layout={layout}>
-              <Component params={match.params} {...componentParams}>
-                {content}
-              </Component>
-            </ColumnsArea>
-          )
-        }
-      </BundleContainer>
+      <Suspense fallback={renderLoading()}>
+        <ColumnsArea layout={layout}>
+          <Component params={match.params} {...componentParams}>
+            {content}
+          </Component>
+        </ColumnsArea>
+      </Suspense>
     );
   };
 
