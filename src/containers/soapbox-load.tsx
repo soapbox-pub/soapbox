@@ -5,7 +5,6 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import { createGlobals } from 'soapbox/globals';
 import {
   useAppSelector,
   useAppDispatch,
@@ -13,19 +12,6 @@ import {
   useLocale,
 } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/messages';
-
-import { checkOnboardingStatus } from '../actions/onboarding';
-import { preload } from '../actions/preload';
-import { store } from '../store';
-
-// Configure global functions for developers
-createGlobals(store);
-
-// Preload happens synchronously
-store.dispatch(preload() as any);
-
-// This happens synchronously
-store.dispatch(checkOnboardingStatus() as any);
 
 /** Load initial data from the backend */
 const loadInitial = () => {
