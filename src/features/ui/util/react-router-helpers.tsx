@@ -17,7 +17,7 @@ type PageProps = {
 };
 
 interface IWrappedRoute extends RouteProps {
-  component: (...args: any[]) => any;
+  component: React.LazyExoticComponent<any>;
   page?: React.ComponentType<PageProps>;
   content?: React.ReactNode;
   componentParams?: Record<string, any>;

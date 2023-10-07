@@ -9,11 +9,9 @@ import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 
 import { buildCustomEmojis } from '../../emoji';
-import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
+import { EmojiPicker } from '../../ui/util/async-components';
 
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
-
-let EmojiPicker: any; // load asynchronously
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -136,8 +134,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   const customEmojis = useAppSelector((state) => getCustomEmojis(state));
   const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
 
-  const [loading, setLoading] = useState(false);
-
   const handlePick = (emoji: any) => {
     setVisible(false);
 
@@ -210,18 +206,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
     } else {
       document.body.style.overflow = '';
     }
-
-    if (!EmojiPicker) {
-      setLoading(true);
-
-      EmojiPickerAsync().then(EmojiMart => {
-        EmojiPicker = EmojiMart.Picker;
-
-        setLoading(false);
-      }).catch(() => {
-        setLoading(false);
-      });
-    }
   }, [visible]);
 
   useEffect(() => () => {
@@ -231,23 +215,21 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   return (
     visible ? (
       <RenderAfter update={update}>
-        {!loading && (
-          <EmojiPicker
-            custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
-            title={title}
-            onEmojiSelect={handlePick}
-            recent={frequentlyUsedEmojis}
-            perLine={8}
-            skin={handleSkinTone}
-            emojiSize={22}
-            emojiButtonSize={34}
-            set='twitter'
-            theme={theme}
-            i18n={getI18n()}
-            skinTonePosition='search'
-            previewPosition='none'
-          />
-        )}
+        <EmojiPicker
+          custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
+          title={title}
+          onEmojiSelect={handlePick}
+          recent={frequentlyUsedEmojis}
+          perLine={8}
+          skin={handleSkinTone}
+          emojiSize={22}
+          emojiButtonSize={34}
+          set='twitter'
+          theme={theme}
+          i18n={getI18n()}
+          skinTonePosition='search'
+          previewPosition='none'
+        />
       </RenderAfter>
     ) : null
   );
