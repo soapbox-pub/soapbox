@@ -22,9 +22,10 @@ import './styles/application.scss';
 import './styles/tailwind.css';
 
 import './precheck';
-import { default as Soapbox } from './containers/soapbox';
 import ready from './ready';
 import { registerSW } from './utils/sw';
+
+const Soapbox = React.lazy(() => import('./containers/soapbox'));
 
 if (BuildConfig.NODE_ENV === 'production') {
   printConsoleWarning();
