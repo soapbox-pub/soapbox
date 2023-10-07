@@ -1,17 +1,13 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import clsx from 'clsx';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
-import { loadInstance } from 'soapbox/actions/instance';
-import { fetchMe } from 'soapbox/actions/me';
-import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { StatProvider } from 'soapbox/contexts/stat-context';
@@ -19,10 +15,8 @@ import {
   ModalContainer,
   OnboardingWizard,
 } from 'soapbox/features/ui/util/async-components';
-import { createGlobals } from 'soapbox/globals';
 import {
   useAppSelector,
-  useAppDispatch,
   useOwnAccount,
   useSentry,
   useSettings,
@@ -30,43 +24,20 @@ import {
   useTheme,
   useLocale,
 } from 'soapbox/hooks';
-import MESSAGES from 'soapbox/messages';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { queryClient } from 'soapbox/queries/client';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-import { checkOnboardingStatus } from '../actions/onboarding';
-import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error-boundary';
 import { store } from '../store';
+
+import SoapboxLoad from './soapbox-load';
 
 const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
 const Helmet = React.lazy(() => import('soapbox/components/helmet'));
 const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
 const UI = React.lazy(() => import('soapbox/features/ui'));
-
-// Configure global functions for developers
-createGlobals(store);
-
-// Preload happens synchronously
-store.dispatch(preload() as any);
-
-// This happens synchronously
-store.dispatch(checkOnboardingStatus() as any);
-
-/** Load initial data from the backend */
-const loadInitial = () => {
-  // @ts-ignore
-  return async(dispatch, getState) => {
-    // Await for authenticated fetch
-    await dispatch(fetchMe());
-    // Await for feature detection
-    await dispatch(loadInstance());
-    // Await for configuration
-    await dispatch(loadSoapboxConfig());
-  };
-};
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
@@ -143,62 +114,6 @@ const SoapboxMount = () => {
         </CompatRouter>
       </BrowserRouter>
     </ErrorBoundary>
-  );
-};
-
-interface ISoapboxLoad {
-  children: React.ReactNode;
-}
-
-/** Initial data loader. */
-const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
-  const dispatch = useAppDispatch();
-
-  const me = useAppSelector(state => state.me);
-  const { account } = useOwnAccount();
-  const swUpdating = useAppSelector(state => state.meta.swUpdating);
-  const { locale } = useLocale();
-
-  const [messages, setMessages] = useState<Record<string, string>>({});
-  const [localeLoading, setLocaleLoading] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  /** Whether to display a loading indicator. */
-  const showLoading = [
-    me === null,
-    me && !account,
-    !isLoaded,
-    localeLoading,
-    swUpdating,
-  ].some(Boolean);
-
-  // Load the user's locale
-  useEffect(() => {
-    MESSAGES[locale]().then(messages => {
-      setMessages(messages);
-      setLocaleLoading(false);
-    }).catch(() => { });
-  }, [locale]);
-
-  // Load initial data from the API
-  useEffect(() => {
-    dispatch(loadInitial()).then(() => {
-      setIsLoaded(true);
-    }).catch(() => {
-      setIsLoaded(true);
-    });
-  }, []);
-
-  // intl is part of loading.
-  // It's important nothing in here depends on intl.
-  if (showLoading) {
-    return <LoadingScreen />;
-  }
-
-  return (
-    <IntlProvider locale={locale} messages={messages}>
-      {children}
-    </IntlProvider>
   );
 };
 
