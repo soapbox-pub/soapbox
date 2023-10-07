@@ -13,11 +13,8 @@ import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
-import GdprBanner from 'soapbox/components/gdpr-banner';
-import Helmet from 'soapbox/components/helmet';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { StatProvider } from 'soapbox/contexts/stat-context';
-import EmbeddedStatus from 'soapbox/features/embedded-status';
 import {
   ModalContainer,
   OnboardingWizard,
@@ -42,8 +39,12 @@ import { generateThemeCss } from 'soapbox/utils/theme';
 import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error-boundary';
-import UI from '../features/ui';
 import { store } from '../store';
+
+const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
+const Helmet = React.lazy(() => import('soapbox/components/helmet'));
+const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
+const UI = React.lazy(() => import('soapbox/features/ui'));
 
 // Configure global functions for developers
 createGlobals(store);
