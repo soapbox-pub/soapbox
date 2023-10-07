@@ -23,6 +23,7 @@ export default defineConfig({
         entryFileNames: 'packs/[name]-[hash].js',
       },
     },
+    sourcemap: true,
   },
   assetsInclude: ['**/*.oga'],
   server: {
