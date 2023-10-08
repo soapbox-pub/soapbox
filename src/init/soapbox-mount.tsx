@@ -76,15 +76,24 @@ const SoapboxMount = () => {
             <Switch>
               <Route
                 path='/embed/:statusId'
-                render={(props) => <EmbeddedStatus params={props.match.params} />}
+                render={(props) => (
+                  <Suspense>
+                    <EmbeddedStatus params={props.match.params} />
+                  </Suspense>
+                )}
               />
               <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
               <Route>
                 {renderBody()}
 
-                <ModalContainer />
-                <GdprBanner />
+                <Suspense>
+                  <ModalContainer />
+                </Suspense>
+
+                <Suspense>
+                  <GdprBanner />
+                </Suspense>
 
                 <div id='toaster'>
                   <Toaster
