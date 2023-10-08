@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { lazy, useEffect, useRef } from 'react';
+import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
@@ -510,7 +510,11 @@ const UI: React.FC<IUI> = ({ children }) => {
           )}
 
           <ThumbNavigation />
-          <ProfileHoverCard />
+
+          <Suspense>
+            <ProfileHoverCard />
+          </Suspense>
+
           <StatusHoverCard />
         </div>
       </div>
