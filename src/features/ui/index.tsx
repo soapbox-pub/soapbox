@@ -515,7 +515,9 @@ const UI: React.FC<IUI> = ({ children }) => {
             <ProfileHoverCard />
           </Suspense>
 
-          <StatusHoverCard />
+          <Suspense>
+            <StatusHoverCard />
+          </Suspense>
         </div>
       </div>
     </GlobalHotkeys>

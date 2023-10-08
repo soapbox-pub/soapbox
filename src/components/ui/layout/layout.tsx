@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { Suspense } from 'react';
 import StickyBox from 'react-sticky-box';
 
 interface ISidebar {
@@ -52,7 +52,9 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 const Aside: React.FC<IAside> = ({ children }) => (
   <aside className='hidden xl:col-span-3 xl:block'>
     <StickyBox offsetTop={80} className='space-y-6 pb-12'>
-      {children}
+      <Suspense>
+        {children}
+      </Suspense>
     </StickyBox>
   </aside>
 );

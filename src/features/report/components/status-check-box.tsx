@@ -1,5 +1,5 @@
 import noop from 'lodash/noop';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { toggleStatusReport } from 'soapbox/actions/reports';
 import StatusContent from 'soapbox/components/status-content';
@@ -73,7 +73,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
     <div className='status-check-box'>
       <div className='status-check-box__status'>
         <StatusContent status={status} />
-        {media}
+        <Suspense>{media}</Suspense>
       </div>
 
       <div className='status-check-box-toggle'>
