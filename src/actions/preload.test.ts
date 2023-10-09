@@ -11,8 +11,8 @@ import {
 } from './preload';
 
 describe('preloadMastodon()', () => {
-  it('creates the expected actions', () => {
-    const data = require('soapbox/__fixtures__/mastodon_initial_state.json');
+  it('creates the expected actions', async () => {
+    const data = await import('soapbox/__fixtures__/mastodon_initial_state.json');
 
     __stub(mock => {
       mock.onGet('/api/v1/accounts/verify_credentials')

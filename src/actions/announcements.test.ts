@@ -1,5 +1,6 @@
 import { List as ImmutableList } from 'immutable';
 
+import announcements from 'soapbox/__fixtures__/announcements.json';
 import { fetchAnnouncements, dismissAnnouncement, addReaction, removeReaction } from 'soapbox/actions/announcements';
 import { __stub } from 'soapbox/api';
 import { buildInstance } from 'soapbox/jest/factory';
@@ -7,8 +8,6 @@ import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { normalizeAnnouncement } from 'soapbox/normalizers';
 
 import type { APIEntity } from 'soapbox/types/entities';
-
-const announcements = require('soapbox/__fixtures__/announcements.json');
 
 describe('fetchAnnouncements()', () => {
   describe('with a successful API request', () => {

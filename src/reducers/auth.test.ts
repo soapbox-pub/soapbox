@@ -317,10 +317,12 @@ describe('auth reducer', () => {
   });
 
   describe('MASTODON_PRELOAD_IMPORT', () => {
-    it('imports the user and token', () => {
+    it('imports the user and token', async () => {
+      const data = await import('soapbox/__fixtures__/mastodon_initial_state.json');
+
       const action = {
         type: MASTODON_PRELOAD_IMPORT,
-        data: require('soapbox/__fixtures__/mastodon_initial_state.json'),
+        data,
       };
 
       const expected = {

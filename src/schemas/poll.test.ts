@@ -22,8 +22,8 @@ describe('normalizePoll()', () => {
     expect(result).toMatchObject(expected);
   });
 
-  it('normalizes a Pleroma logged-out poll', () => {
-    const { poll } = require('soapbox/__fixtures__/pleroma-status-with-poll.json');
+  it('normalizes a Pleroma logged-out poll', async () => {
+    const { poll } = await import('soapbox/__fixtures__/pleroma-status-with-poll.json');
     const result = pollSchema.parse(poll);
 
     // Adds logged-in fields
@@ -31,8 +31,8 @@ describe('normalizePoll()', () => {
     expect(result.own_votes).toBe(null);
   });
 
-  it('normalizes poll with emojis', () => {
-    const { poll } = require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
+  it('normalizes poll with emojis', async () => {
+    const { poll } = await import('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
     const result = pollSchema.parse(poll);
 
     // Emojifies poll options

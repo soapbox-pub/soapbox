@@ -72,8 +72,8 @@ describe('normalizeInstance()', () => {
     expect(result.toJS()).toEqual(expected);
   });
 
-  it('normalizes Pleroma instance with Mastodon configuration format', () => {
-    const instance = require('soapbox/__fixtures__/pleroma-instance.json');
+  it('normalizes Pleroma instance with Mastodon configuration format', async () => {
+    const instance = await import('soapbox/__fixtures__/pleroma-instance.json');
 
     const expected = {
       configuration: {
@@ -94,8 +94,8 @@ describe('normalizeInstance()', () => {
     expect(result.toJS()).toMatchObject(expected);
   });
 
-  it('normalizes Mastodon instance with retained configuration', () => {
-    const instance = require('soapbox/__fixtures__/mastodon-instance.json');
+  it('normalizes Mastodon instance with retained configuration', async () => {
+    const instance = await import('soapbox/__fixtures__/mastodon-instance.json');
 
     const expected = {
       configuration: {
@@ -124,8 +124,8 @@ describe('normalizeInstance()', () => {
     expect(result.toJS()).toMatchObject(expected);
   });
 
-  it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
-    const instance = require('soapbox/__fixtures__/mastodon-3.0.0-instance.json');
+  it('normalizes Mastodon 3.0.0 instance with default configuration', async () => {
+    const instance = await import('soapbox/__fixtures__/mastodon-3.0.0-instance.json');
 
     const expected = {
       configuration: {
@@ -146,8 +146,8 @@ describe('normalizeInstance()', () => {
     expect(result.toJS()).toMatchObject(expected);
   });
 
-  it('normalizes Fedibird instance', () => {
-    const instance = require('soapbox/__fixtures__/fedibird-instance.json');
+  it('normalizes Fedibird instance', async () => {
+    const instance = await import('soapbox/__fixtures__/fedibird-instance.json');
     const result = normalizeInstance(instance);
 
     // Sets description_limit
@@ -157,8 +157,8 @@ describe('normalizeInstance()', () => {
     expect(result.fedibird_capabilities).toEqual(fromJS(instance.fedibird_capabilities));
   });
 
-  it('normalizes Mitra instance', () => {
-    const instance = require('soapbox/__fixtures__/mitra-instance.json');
+  it('normalizes Mitra instance', async () => {
+    const instance = await import('soapbox/__fixtures__/mitra-instance.json');
     const result = normalizeInstance(instance);
 
     // Adds configuration and description_limit
@@ -166,8 +166,8 @@ describe('normalizeInstance()', () => {
     expect(result.get('description_limit')).toBe(1500);
   });
 
-  it('normalizes GoToSocial instance', () => {
-    const instance = require('soapbox/__fixtures__/gotosocial-instance.json');
+  it('normalizes GoToSocial instance', async () => {
+    const instance = await import('soapbox/__fixtures__/gotosocial-instance.json');
     const result = normalizeInstance(instance);
 
     // Normalizes max_toot_chars
@@ -179,8 +179,8 @@ describe('normalizeInstance()', () => {
     expect(result.get('description_limit')).toBe(1500);
   });
 
-  it('normalizes Friendica instance', () => {
-    const instance = require('soapbox/__fixtures__/friendica-instance.json');
+  it('normalizes Friendica instance', async () => {
+    const instance = await import('soapbox/__fixtures__/friendica-instance.json');
     const result = normalizeInstance(instance);
 
     // Normalizes max_toot_chars
@@ -192,24 +192,23 @@ describe('normalizeInstance()', () => {
     expect(result.get('description_limit')).toBe(1500);
   });
 
-  it('normalizes a Mastodon RC version', () => {
-    const instance = require('soapbox/__fixtures__/mastodon-instance-rc.json');
+  it('normalizes a Mastodon RC version', async () => {
+    const instance = await import('soapbox/__fixtures__/mastodon-instance-rc.json');
     const result = normalizeInstance(instance);
 
     expect(result.version).toEqual('3.5.0-rc1');
   });
 
-  it('normalizes Pixelfed instance', () => {
-    const instance = require('soapbox/__fixtures__/pixelfed-instance.json');
+  it('normalizes Pixelfed instance', async () => {
+    const instance = await import('soapbox/__fixtures__/pixelfed-instance.json');
     const result = normalizeInstance(instance);
     expect(result.title).toBe('pixelfed');
   });
 
-  it('renames Akkoma to Pleroma', () => {
-    const instance = require('soapbox/__fixtures__/akkoma-instance.json');
+  it('renames Akkoma to Pleroma', async () => {
+    const instance = await import('soapbox/__fixtures__/akkoma-instance.json');
     const result = normalizeInstance(instance);
 
     expect(result.version).toEqual('2.7.2 (compatible; Pleroma 2.4.50+akkoma)');
-
   });
 });

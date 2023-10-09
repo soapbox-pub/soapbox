@@ -18,8 +18,8 @@ describe('normalizeStatus()', () => {
     expect(result.visibility).toBe('public');
   });
 
-  it('fixes the order of mentions', () => {
-    const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
+  it('fixes the order of mentions', async () => {
+    const status = await import('soapbox/__fixtures__/status-unordered-mentions.json');
 
     const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
 
@@ -31,8 +31,8 @@ describe('normalizeStatus()', () => {
     expect(result).toEqual(expected);
   });
 
-  it('adds mention to self in self-reply on Mastodon', () => {
-    const status = require('soapbox/__fixtures__/mastodon-reply-to-self.json');
+  it('adds mention to self in self-reply on Mastodon', async () => {
+    const status = await import('soapbox/__fixtures__/mastodon-reply-to-self.json');
 
     const expected = {
       id: '106801667066418367',
@@ -64,8 +64,8 @@ describe('normalizeStatus()', () => {
     expect(result.toJS()).toEqual(expected);
   });
 
-  it('normalizes Mitra attachments', () => {
-    const status = require('soapbox/__fixtures__/mitra-status-with-attachments.json');
+  it('normalizes Mitra attachments', async () => {
+    const status = await import('soapbox/__fixtures__/mitra-status-with-attachments.json');
 
     const expected = [{
       id: '017eeb0e-e5df-30a4-77a7-a929145cb836',
@@ -98,8 +98,8 @@ describe('normalizeStatus()', () => {
     expect(result.media_attachments.toJS()).toMatchObject(expected);
   });
 
-  it('leaves Pleroma attachments alone', () => {
-    const status = require('soapbox/__fixtures__/pleroma-status-with-attachments.json');
+  it('leaves Pleroma attachments alone', async () => {
+    const status = await import('soapbox/__fixtures__/pleroma-status-with-attachments.json');
     const result = normalizeStatus(status).media_attachments;
 
     expect(result.size).toBe(4);
@@ -108,16 +108,16 @@ describe('normalizeStatus()', () => {
     expect(ImmutableRecord.isRecord(result.get(3))).toBe(true);
   });
 
-  it('normalizes Pleroma quote post', () => {
-    const status = require('soapbox/__fixtures__/pleroma-quote-post.json');
+  it('normalizes Pleroma quote post', async () => {
+    const status = await import('soapbox/__fixtures__/pleroma-quote-post.json');
     const result = normalizeStatus(status);
 
     expect(result.quote).toEqual(fromJS(status.pleroma.quote));
     expect(result.pleroma.get('quote')).toBe(undefined);
   });
 
-  it('normalizes GoToSocial status', () => {
-    const status = require('soapbox/__fixtures__/gotosocial-status.json');
+  it('normalizes GoToSocial status', async () => {
+    const status = await import('soapbox/__fixtures__/gotosocial-status.json');
     const result = normalizeStatus(status);
 
     // Adds missing fields
@@ -132,8 +132,8 @@ describe('normalizeStatus()', () => {
     expect(result).toMatchObject(missing);
   });
 
-  it('normalizes Friendica status', () => {
-    const status = require('soapbox/__fixtures__/friendica-status.json');
+  it('normalizes Friendica status', async () => {
+    const status = await import('soapbox/__fixtures__/friendica-status.json');
     const result = normalizeStatus(status);
 
     // Adds missing fields
@@ -168,8 +168,8 @@ describe('normalizeStatus()', () => {
     expect(poll).toMatchObject(expected);
   });
 
-  it('normalizes a Pleroma logged-out poll', () => {
-    const status = require('soapbox/__fixtures__/pleroma-status-with-poll.json');
+  it('normalizes a Pleroma logged-out poll', async () => {
+    const status = await import('soapbox/__fixtures__/pleroma-status-with-poll.json');
     const result = normalizeStatus(status);
     const poll = result.poll as Poll;
 
@@ -178,8 +178,8 @@ describe('normalizeStatus()', () => {
     expect(poll.own_votes).toBe(null);
   });
 
-  it('normalizes poll with emojis', () => {
-    const status = require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
+  it('normalizes poll with emojis', async () => {
+    const status = await import('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
     const result = normalizeStatus(status);
     const poll = result.poll as Poll;
 
@@ -190,8 +190,8 @@ describe('normalizeStatus()', () => {
     expect(poll.emojis[1].shortcode).toEqual('soapbox');
   });
 
-  it('normalizes a card', () => {
-    const status = require('soapbox/__fixtures__/status-with-card.json');
+  it('normalizes a card', async () => {
+    const status = await import('soapbox/__fixtures__/status-with-card.json');
     const result = normalizeStatus(status);
     const card = result.card as Card;
 

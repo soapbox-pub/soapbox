@@ -1,9 +1,9 @@
 import { Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { normalizeAccount } from './account';
+import AVATAR_MISSING from 'soapbox/assets/images/avatar-missing.png';
+import HEADER_MISSING from 'soapbox/assets/images/header-missing.png';
 
-const AVATAR_MISSING = require('soapbox/assets/images/avatar-missing.png');
-const HEADER_MISSING = require('soapbox/assets/images/header-missing.png');
+import { normalizeAccount } from './account';
 
 describe('normalizeAccount()', () => {
   it('adds base fields', () => {
@@ -33,29 +33,29 @@ describe('normalizeAccount()', () => {
     expect(result.verified).toBe(false);
   });
 
-  it('normalizes Fedibird birthday', () => {
-    const account = require('soapbox/__fixtures__/fedibird-account.json');
+  it('normalizes Fedibird birthday', async () => {
+    const account = await import('soapbox/__fixtures__/fedibird-account.json');
     const result = normalizeAccount(account);
 
     expect(result.birthday).toEqual('1993-07-03');
   });
 
-  it('normalizes Pleroma birthday', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  it('normalizes Pleroma birthday', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
     const result = normalizeAccount(account);
 
     expect(result.birthday).toEqual('1993-07-03');
   });
 
-  it('normalizes undefined birthday to empty string', () => {
-    const account = require('soapbox/__fixtures__/mastodon-account.json');
+  it('normalizes undefined birthday to empty string', async () => {
+    const account = await import('soapbox/__fixtures__/mastodon-account.json');
     const result = normalizeAccount(account);
 
     expect(result.birthday).toEqual('');
   });
 
-  it('normalizes Pleroma legacy fields', () => {
-    const account = require('soapbox/__fixtures__/pleroma-2.2.2-account.json');
+  it('normalizes Pleroma legacy fields', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-2.2.2-account.json');
     const result = normalizeAccount(account);
 
     expect(result.getIn(['pleroma', 'is_active'])).toBe(true);
@@ -65,8 +65,8 @@ describe('normalizeAccount()', () => {
     expect(result.hasIn(['pleroma', 'confirmation_pending'])).toBe(false);
   });
 
-  it('prefers new Pleroma fields', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  it('prefers new Pleroma fields', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
     const result = normalizeAccount(account);
 
     expect(result.getIn(['pleroma', 'is_active'])).toBe(true);
@@ -74,38 +74,38 @@ describe('normalizeAccount()', () => {
     expect(result.getIn(['pleroma', 'is_approved'])).toBe(true);
   });
 
-  it('normalizes a verified Pleroma user', () => {
-    const account = require('soapbox/__fixtures__/mk.json');
+  it('normalizes a verified Pleroma user', async () => {
+    const account = await import('soapbox/__fixtures__/mk.json');
     const result = normalizeAccount(account);
     expect(result.verified).toBe(true);
   });
 
-  it('normalizes an unverified Pleroma user', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  it('normalizes an unverified Pleroma user', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
     const result = normalizeAccount(account);
     expect(result.verified).toBe(false);
   });
 
-  it('normalizes a verified Truth Social user', () => {
-    const account = require('soapbox/__fixtures__/realDonaldTrump.json');
+  it('normalizes a verified Truth Social user', async () => {
+    const account = await import('soapbox/__fixtures__/realDonaldTrump.json');
     const result = normalizeAccount(account);
     expect(result.verified).toBe(true);
   });
 
-  it('normalizes Fedibird location', () => {
-    const account = require('soapbox/__fixtures__/fedibird-account.json');
+  it('normalizes Fedibird location', async () => {
+    const account = await import('soapbox/__fixtures__/fedibird-account.json');
     const result = normalizeAccount(account);
     expect(result.location).toBe('Texas, USA');
   });
 
-  it('normalizes Truth Social location', () => {
-    const account = require('soapbox/__fixtures__/truthsocial-account.json');
+  it('normalizes Truth Social location', async () => {
+    const account = await import('soapbox/__fixtures__/truthsocial-account.json');
     const result = normalizeAccount(account);
     expect(result.location).toBe('Texas');
   });
 
-  it('normalizes Truth Social website', () => {
-    const account = require('soapbox/__fixtures__/truthsocial-account.json');
+  it('normalizes Truth Social website', async () => {
+    const account = await import('soapbox/__fixtures__/truthsocial-account.json');
     const result = normalizeAccount(account);
     expect(result.website).toBe('https://soapbox.pub');
   });
@@ -128,27 +128,27 @@ describe('normalizeAccount()', () => {
     expect(result.display_name).toBe('alex');
   });
 
-  it('emojifies display name as `display_name_html`', () => {
-    const account = require('soapbox/__fixtures__/account-with-emojis.json');
+  it('emojifies display name as `display_name_html`', async () => {
+    const account = await import('soapbox/__fixtures__/account-with-emojis.json');
     const result = normalizeAccount(account);
     expect(result.display_name_html).toContain('emojione');
   });
 
-  it('emojifies note as `note_emojified`', () => {
-    const account = require('soapbox/__fixtures__/account-with-emojis.json');
+  it('emojifies note as `note_emojified`', async () => {
+    const account = await import('soapbox/__fixtures__/account-with-emojis.json');
     const result = normalizeAccount(account);
     expect(result.note_emojified).toContain('emojione');
   });
 
-  it('unescapes HTML note as `note_plain`', () => {
-    const account = require('soapbox/__fixtures__/account-with-emojis.json');
+  it('unescapes HTML note as `note_plain`', async () => {
+    const account = await import('soapbox/__fixtures__/account-with-emojis.json');
     const result = normalizeAccount(account);
     const expected = 'I create Fediverse software that empowers people online. :soapbox:\n\nI\'m vegan btw\n\nNote: If you have a question for me, please tag me publicly. This gives the opportunity for others to chime in, and bystanders to learn.';
     expect(result.note_plain).toBe(expected);
   });
 
-  it('emojifies custom profile field', () => {
-    const account = require('soapbox/__fixtures__/account-with-emojis.json');
+  it('emojifies custom profile field', async () => {
+    const account = await import('soapbox/__fixtures__/account-with-emojis.json');
     const result = normalizeAccount(account);
     const field = result.fields.get(1);
 
@@ -157,8 +157,8 @@ describe('normalizeAccount()', () => {
     expect(field?.value_plain).toBe('https://soapbox.pub :soapbox:');
   });
 
-  it('adds default avatar and banner to GoToSocial account', () => {
-    const account = require('soapbox/__fixtures__/gotosocial-account.json');
+  it('adds default avatar and banner to GoToSocial account', async () => {
+    const account = await import('soapbox/__fixtures__/gotosocial-account.json');
     const result = normalizeAccount(account);
 
     expect(result.avatar).toEqual(AVATAR_MISSING);
@@ -167,15 +167,15 @@ describe('normalizeAccount()', () => {
     expect(result.header_static).toEqual(HEADER_MISSING);
   });
 
-  it('adds fqn to Mastodon account', () => {
-    const account = require('soapbox/__fixtures__/mastodon-account.json');
+  it('adds fqn to Mastodon account', async () => {
+    const account = await import('soapbox/__fixtures__/mastodon-account.json');
     const result = normalizeAccount(account);
 
     expect(result.fqn).toEqual('benis911@mastodon.social');
   });
 
-  it('normalizes Pleroma staff', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  it('normalizes Pleroma staff', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
     const result = normalizeAccount(account);
 
     expect(result.admin).toBe(true);
@@ -183,15 +183,15 @@ describe('normalizeAccount()', () => {
     expect(result.moderator).toBe(false);
   });
 
-  it('normalizes Pleroma favicon', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  it('normalizes Pleroma favicon', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
     const result = normalizeAccount(account);
 
     expect(result.favicon).toEqual('https://gleasonator.com/favicon.png');
   });
 
-  it('adds account domain', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  it('adds account domain', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
     const result = normalizeAccount(account);
 
     expect(result.domain).toEqual('gleasonator.com');

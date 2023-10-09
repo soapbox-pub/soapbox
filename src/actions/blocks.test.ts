@@ -35,8 +35,8 @@ describe('fetchBlocks()', () => {
     });
 
     describe('with a successful API request', () => {
-      beforeEach(() => {
-        const blocks = require('soapbox/__fixtures__/blocks.json');
+      beforeEach(async () => {
+        const blocks = await import('soapbox/__fixtures__/blocks.json');
 
         __stub((mock) => {
           mock.onGet('/api/v1/blocks').reply(200, blocks, {
@@ -132,8 +132,8 @@ describe('expandBlocks()', () => {
       });
 
       describe('with a successful API request', () => {
-        beforeEach(() => {
-          const blocks = require('soapbox/__fixtures__/blocks.json');
+        beforeEach(async () => {
+          const blocks = await import('soapbox/__fixtures__/blocks.json');
 
           __stub((mock) => {
             mock.onGet('example').reply(200, blocks, {

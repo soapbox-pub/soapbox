@@ -32,10 +32,12 @@ describe('instance reducer', () => {
   });
 
   describe('rememberInstance.fulfilled', () => {
-    it('normalizes Pleroma instance with Mastodon configuration format', () => {
+    it('normalizes Pleroma instance with Mastodon configuration format', async () => {
+      const payload = await import('soapbox/__fixtures__/pleroma-instance.json');
+
       const action = {
         type: rememberInstance.fulfilled.type,
-        payload: require('soapbox/__fixtures__/pleroma-instance.json'),
+        payload,
       };
 
       const result = reducer(undefined, action);
@@ -58,10 +60,12 @@ describe('instance reducer', () => {
       expect(result).toMatchObject(expected);
     });
 
-    it('normalizes Mastodon instance with retained configuration', () => {
+    it('normalizes Mastodon instance with retained configuration', async () => {
+      const payload = await import('soapbox/__fixtures__/mastodon-instance.json');
+
       const action = {
         type: rememberInstance.fulfilled.type,
-        payload: require('soapbox/__fixtures__/mastodon-instance.json'),
+        payload,
       };
 
       const result = reducer(undefined, action);
@@ -92,10 +96,12 @@ describe('instance reducer', () => {
       expect(result).toMatchObject(expected);
     });
 
-    it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
+    it('normalizes Mastodon 3.0.0 instance with default configuration', async () => {
+      const payload = await import('soapbox/__fixtures__/mastodon-3.0.0-instance.json');
+
       const action = {
         type: rememberInstance.fulfilled.type,
-        payload: require('soapbox/__fixtures__/mastodon-3.0.0-instance.json'),
+        payload,
       };
 
       const result = reducer(undefined, action);
@@ -119,8 +125,8 @@ describe('instance reducer', () => {
     });
   });
 
-  describe('ADMIN_CONFIG_UPDATE_REQUEST', () => {
-    const { configs } = require('soapbox/__fixtures__/pleroma-admin-config.json');
+  describe('ADMIN_CONFIG_UPDATE_REQUEST', async () => {
+    const { configs } = await import('soapbox/__fixtures__/pleroma-admin-config.json');
 
     it('imports the configs', () => {
       const action = {
