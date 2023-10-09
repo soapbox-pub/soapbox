@@ -7,8 +7,8 @@ import {
 } from './status';
 
 describe('hasIntegerMediaIds()', () => {
-  it('returns true for a Pleroma deleted status', () => {
-    const status = buildStatus(require('soapbox/__fixtures__/pleroma-status-deleted.json'));
+  it('returns true for a Pleroma deleted status', async () => {
+    const status = buildStatus(await import('soapbox/__fixtures__/pleroma-status-deleted.json') as any);
     expect(hasIntegerMediaIds(status)).toBe(true);
   });
 });

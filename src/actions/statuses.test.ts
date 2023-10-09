@@ -9,7 +9,7 @@ import { deleteStatus, fetchContext } from './statuses';
 
 describe('fetchContext()', () => {
   it('handles Mitra context', async () => {
-    const statuses = require('soapbox/__fixtures__/mitra-context.json');
+    const statuses = await import('soapbox/__fixtures__/mitra-context.json');
 
     __stub(mock => {
       mock.onGet('/api/v1/statuses/017ed505-5926-392f-256a-f86d5075df70/context')
@@ -60,8 +60,8 @@ describe('deleteStatus()', () => {
     describe('with a successful API request', () => {
       let status: any;
 
-      beforeEach(() => {
-        status = require('soapbox/__fixtures__/pleroma-status-deleted.json');
+      beforeEach(async () => {
+        status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
 
         __stub((mock) => {
           mock.onDelete(`/api/v1/statuses/${statusId}`).reply(200, status);

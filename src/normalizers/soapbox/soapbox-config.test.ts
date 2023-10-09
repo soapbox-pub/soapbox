@@ -28,8 +28,9 @@ describe('normalizeSoapboxConfig()', () => {
     expect(result.toJS()).toMatchObject(expected);
   });
 
-  it('normalizes promoPanel', () => {
-    const result = normalizeSoapboxConfig(require('soapbox/__fixtures__/spinster-soapbox.json'));
+  it('normalizes promoPanel', async () => {
+    const soapboxConfig = await import('soapbox/__fixtures__/spinster-soapbox.json');
+    const result = normalizeSoapboxConfig(soapboxConfig);
     expect(ImmutableRecord.isRecord(result.promoPanel)).toBe(true);
     expect(ImmutableRecord.isRecord(result.promoPanel.items.get(0))).toBe(true);
     expect(result.promoPanel.items.get(2)?.icon).toBe('question-circle');

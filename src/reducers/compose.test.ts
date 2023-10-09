@@ -39,11 +39,13 @@ describe('compose reducer', () => {
   });
 
   describe('COMPOSE_SET_STATUS', () => {
-    it('strips Pleroma integer attachments', () => {
+    it('strips Pleroma integer attachments', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+
       const action = {
         type: actions.COMPOSE_SET_STATUS,
         id: 'compose-modal',
-        status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
+        status: normalizeStatus(fromJS(status)),
         v: { software: 'Pleroma' },
         withRedraft: true,
       };
@@ -52,35 +54,41 @@ describe('compose reducer', () => {
       expect(result.get('compose-modal')!.media_attachments.isEmpty()).toBe(true);
     });
 
-    it('leaves non-Pleroma integer attachments alone', () => {
+    it('leaves non-Pleroma integer attachments alone', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+
       const action = {
         type: actions.COMPOSE_SET_STATUS,
         id: 'compose-modal',
-        status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
+        status: normalizeStatus(fromJS(status)),
       };
 
       const result = reducer(undefined, action as any);
       expect(result.get('compose-modal')!.media_attachments.getIn([0, 'id'])).toEqual('508107650');
     });
 
-    it('sets the id when editing a post', () => {
+    it('sets the id when editing a post', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+
       const action = {
         id: 'compose-modal',
         withRedraft: false,
         type: actions.COMPOSE_SET_STATUS,
-        status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
+        status: normalizeStatus(fromJS(status)),
       };
 
       const result = reducer(undefined, action as any);
       expect(result.get('compose-modal')!.id).toEqual('AHU2RrX0wdcwzCYjFQ');
     });
 
-    it('does not set the id when redrafting a post', () => {
+    it('does not set the id when redrafting a post', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+
       const action = {
         id: 'compose-modal',
         withRedraft: true,
         type: actions.COMPOSE_SET_STATUS,
-        status: normalizeStatus(fromJS(require('soapbox/__fixtures__/pleroma-status-deleted.json'))),
+        status: normalizeStatus(fromJS(status)),
       };
 
       const result = reducer(undefined, action as any);

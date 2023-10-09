@@ -98,8 +98,8 @@ describe('fetchAccount()', () => {
     });
   });
 
-  describe('with a successful API request', () => {
-    const account = require('soapbox/__fixtures__/pleroma-account.json');
+  describe('with a successful API request', async () => {
+    const account = await import('soapbox/__fixtures__/pleroma-account.json');
 
     beforeEach(() => {
       const state = rootState;

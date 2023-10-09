@@ -20,16 +20,16 @@ describe('statuses reducer', () => {
   });
 
   describe('STATUS_IMPORT', () => {
-    it('parses the status as a Record', () => {
-      const status = require('soapbox/__fixtures__/pleroma-quote-post.json');
+    it('parses the status as a Record', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-quote-post.json');
       const action = { type: STATUS_IMPORT, status };
       const result = reducer(undefined, action).get('AFmFMSpITT9xcOJKcK');
 
       expect(ImmutableRecord.isRecord(result)).toBe(true);
     });
 
-    it('fixes the order of mentions', () => {
-      const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
+    it('fixes the order of mentions', async () => {
+      const status = await import('soapbox/__fixtures__/status-unordered-mentions.json');
       const action = { type: STATUS_IMPORT, status };
 
       const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
@@ -42,9 +42,9 @@ describe('statuses reducer', () => {
       expect(result).toEqual(expected);
     });
 
-    it('preserves the quote', () => {
-      const quotePost = require('soapbox/__fixtures__/pleroma-quote-post.json');
-      const quotedQuotePost = require('soapbox/__fixtures__/pleroma-quote-of-quote-post.json');
+    it('preserves the quote', async () => {
+      const quotePost = await import('soapbox/__fixtures__/pleroma-quote-post.json');
+      const quotedQuotePost = await import('soapbox/__fixtures__/pleroma-quote-of-quote-post.json');
 
       let state = undefined;
       state = reducer(state, { type: STATUS_IMPORT, status: quotePost });
@@ -53,8 +53,8 @@ describe('statuses reducer', () => {
       expect(state.getIn(['AFmFMSpITT9xcOJKcK', 'quote'])).toEqual('AFmFLcd6XYVdjWCrOS');
     });
 
-    it('normalizes Mitra attachments', () => {
-      const status = require('soapbox/__fixtures__/mitra-status-with-attachments.json');
+    it('normalizes Mitra attachments', async () => {
+      const status = await import('soapbox/__fixtures__/mitra-status-with-attachments.json');
 
       const state = reducer(undefined, { type: STATUS_IMPORT, status });
 
@@ -87,8 +87,8 @@ describe('statuses reducer', () => {
       expect(state.get('017eeb0e-e5e7-98fe-6b2b-ad02349251fb')?.media_attachments.toJS()).toMatchObject(expected);
     });
 
-    it('fixes Pleroma attachments', () => {
-      const status = require('soapbox/__fixtures__/pleroma-status-with-attachments.json');
+    it('fixes Pleroma attachments', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-status-with-attachments.json');
       const action = { type: STATUS_IMPORT, status };
       const state = reducer(undefined, action);
       const result = state.get('AGNkA21auFR5lnEAHw')?.media_attachments;
@@ -98,24 +98,24 @@ describe('statuses reducer', () => {
       expect(result?.getIn([1, 'pleroma', 'mime_type'])).toBe('application/x-nes-rom');
     });
 
-    it('hides CWs', () => {
-      const status = require('soapbox/__fixtures__/status-cw.json');
+    it('hides CWs', async () => {
+      const status = await import('soapbox/__fixtures__/status-cw.json');
       const action = { type: STATUS_IMPORT, status };
 
       const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
       expect(hidden).toBe(true);
     });
 
-    it('expands CWs when expandSpoilers is enabled', () => {
-      const status = require('soapbox/__fixtures__/status-cw.json');
+    it('expands CWs when expandSpoilers is enabled', async () => {
+      const status = await import('soapbox/__fixtures__/status-cw.json');
       const action = { type: STATUS_IMPORT, status, expandSpoilers: true };
 
       const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
       expect(hidden).toBe(false);
     });
 
-    it('parses custom emojis', () => {
-      const status = require('soapbox/__fixtures__/status-custom-emoji.json');
+    it('parses custom emojis', async () => {
+      const status = await import('soapbox/__fixtures__/status-custom-emoji.json');
       const action = { type: STATUS_IMPORT, status };
 
       const expected = 'Hello <img draggable="false" class="emojione" alt=":ablobcathyper:" title=":ablobcathyper:" src="https://gleasonator.com/emoji/blobcat/ablobcathyper.png"> <img draggable="false" class="emojione" alt=":ageblobcat:" title=":ageblobcat:" src="https://gleasonator.com/emoji/blobcat/ageblobcat.png"> <img draggable="false" class="emojione" alt="😂" title=":joy:" src="/packs/emoji/1f602.svg"> world <img draggable="false" class="emojione" alt="😋" title=":yum:" src="/packs/emoji/1f60b.svg"> test <img draggable="false" class="emojione" alt=":blobcatphoto:" title=":blobcatphoto:" src="https://gleasonator.com/emoji/blobcat/blobcatphoto.png">';
@@ -124,8 +124,8 @@ describe('statuses reducer', () => {
       expect(result).toBe(expected);
     });
 
-    it('builds search_index', () => {
-      const status = require('soapbox/__fixtures__/status-with-poll.json');
+    it('builds search_index', async () => {
+      const status = await import('soapbox/__fixtures__/status-with-poll.json');
       const action = { type: STATUS_IMPORT, status };
 
       const expected = `What is tolerance?
@@ -138,8 +138,8 @@ Promoting free speech, even for people and ideas you dislike`;
       expect(result).toEqual(expected);
     });
 
-    it('builds search_index with mentions', () => {
-      const status = require('soapbox/__fixtures__/pleroma-status-reply-with-mentions.json');
+    it('builds search_index with mentions', async () => {
+      const status = await import('soapbox/__fixtures__/pleroma-status-reply-with-mentions.json');
       const action = { type: STATUS_IMPORT, status };
 
       const expected = `DMs are definitely only federated to the servers of the recipients tho. So if I DM a kfcc user, the kfcc admins can see it, but no other instance admins can.

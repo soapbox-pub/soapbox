@@ -5,7 +5,7 @@ import { fetchRules, RULES_FETCH_REQUEST, RULES_FETCH_SUCCESS } from './rules';
 
 describe('fetchRules()', () => {
   it('sets the rules', async () => {
-    const rules = require('soapbox/__fixtures__/rules.json');
+    const rules = await import('soapbox/__fixtures__/rules.json');
 
     __stub((mock) => {
       mock.onGet('/api/v1/instance/rules').reply(200, rules);

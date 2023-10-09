@@ -1,5 +1,6 @@
 import { List as ImmutableList, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
+import announcements from 'soapbox/__fixtures__/announcements.json';
 import {
   ANNOUNCEMENTS_FETCH_SUCCESS,
   ANNOUNCEMENTS_UPDATE,
@@ -7,7 +8,6 @@ import {
 
 import reducer from './announcements';
 
-const announcements = require('soapbox/__fixtures__/announcements.json');
 
 describe('accounts reducer', () => {
   it('should return the initial state', () => {
