@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor } from 'lexical';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
@@ -311,19 +311,21 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 
       <div>
-        <ComposeEditor
-          ref={editorRef}
-          className='mt-2'
-          composeId={id}
-          condensed={condensed}
-          eventDiscussion={!!event}
-          autoFocus={shouldAutoFocus}
-          hasPoll={hasPoll}
-          handleSubmit={handleSubmit}
-          onChange={setText}
-          onFocus={handleComposeFocus}
-          onPaste={onPaste}
-        />
+        <Suspense>
+          <ComposeEditor
+            ref={editorRef}
+            className='mt-2'
+            composeId={id}
+            condensed={condensed}
+            eventDiscussion={!!event}
+            autoFocus={shouldAutoFocus}
+            hasPoll={hasPoll}
+            handleSubmit={handleSubmit}
+            onChange={setText}
+            onFocus={handleComposeFocus}
+            onPaste={onPaste}
+          />
+        </Suspense>
         {composeModifiers}
       </div>
 
