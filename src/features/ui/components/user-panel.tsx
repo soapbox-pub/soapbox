@@ -69,9 +69,11 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
             </HStack>
           </Link>
 
-          <Text size='sm' theme='muted' truncate>
-            @{getAcct(account, fqn)}
-          </Text>
+          <HStack>
+            <Text size='sm' theme='muted' direction='ltr' truncate>
+              @{getAcct(account, fqn)}
+            </Text>
+          </HStack>
         </Stack>
 
         <HStack alignItems='center' space={3}>
