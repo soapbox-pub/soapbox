@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor } from 'lexical';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
@@ -17,7 +17,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import { ComposeEditor, ScheduleForm } from 'soapbox/features/ui/util/async-components';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
@@ -35,6 +35,7 @@ import PrivacyDropdown from './privacy-dropdown';
 import ReplyGroupIndicator from './reply-group-indicator';
 import ReplyMentions from './reply-mentions';
 import ScheduleButton from './schedule-button';
+import ScheduleForm from './schedule-form';
 import SpoilerButton from './spoiler-button';
 import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text-character-counter';
@@ -311,19 +312,21 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 
       <div>
-        <ComposeEditor
-          ref={editorRef}
-          className='mt-2'
-          composeId={id}
-          condensed={condensed}
-          eventDiscussion={!!event}
-          autoFocus={shouldAutoFocus}
-          hasPoll={hasPoll}
-          handleSubmit={handleSubmit}
-          onChange={setText}
-          onFocus={handleComposeFocus}
-          onPaste={onPaste}
-        />
+        <Suspense>
+          <ComposeEditor
+            ref={editorRef}
+            className='mt-2'
+            composeId={id}
+            condensed={condensed}
+            eventDiscussion={!!event}
+            autoFocus={shouldAutoFocus}
+            hasPoll={hasPoll}
+            handleSubmit={handleSubmit}
+            onChange={setText}
+            onFocus={handleComposeFocus}
+            onPaste={onPaste}
+          />
+        </Suspense>
         {composeModifiers}
       </div>
 
