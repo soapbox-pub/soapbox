@@ -1,5 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -215,21 +215,23 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   return (
     visible ? (
       <RenderAfter update={update}>
-        <EmojiPicker
-          custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
-          title={title}
-          onEmojiSelect={handlePick}
-          recent={frequentlyUsedEmojis}
-          perLine={8}
-          skin={handleSkinTone}
-          emojiSize={22}
-          emojiButtonSize={34}
-          set='twitter'
-          theme={theme}
-          i18n={getI18n()}
-          skinTonePosition='search'
-          previewPosition='none'
-        />
+        <Suspense>
+          <EmojiPicker
+            custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
+            title={title}
+            onEmojiSelect={handlePick}
+            recent={frequentlyUsedEmojis}
+            perLine={8}
+            skin={handleSkinTone}
+            emojiSize={22}
+            emojiButtonSize={34}
+            set='twitter'
+            theme={theme}
+            i18n={getI18n()}
+            skinTonePosition='search'
+            previewPosition='none'
+          />
+        </Suspense>
       </RenderAfter>
     ) : null
   );
