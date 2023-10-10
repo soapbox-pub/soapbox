@@ -17,7 +17,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import { ComposeEditor, ScheduleForm } from 'soapbox/features/ui/util/async-components';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
@@ -35,6 +35,7 @@ import PrivacyDropdown from './privacy-dropdown';
 import ReplyGroupIndicator from './reply-group-indicator';
 import ReplyMentions from './reply-mentions';
 import ScheduleButton from './schedule-button';
+import ScheduleForm from './schedule-form';
 import SpoilerButton from './spoiler-button';
 import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text-character-counter';

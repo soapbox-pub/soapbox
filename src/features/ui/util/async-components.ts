@@ -107,7 +107,6 @@ export const UserIndex = lazy(() => import('soapbox/features/admin/user-index'))
 export const FederationRestrictions = lazy(() => import('soapbox/features/federation-restrictions'));
 export const Aliases = lazy(() => import('soapbox/features/aliases'));
 export const Migration = lazy(() => import('soapbox/features/migration'));
-export const ScheduleForm = lazy(() => import('soapbox/features/compose/components/schedule-form'));
 export const WhoToFollowPanel = lazy(() => import('soapbox/features/ui/components/who-to-follow-panel'));
 export const FollowRecommendations = lazy(() => import('soapbox/features/follow-recommendations'));
 export const Directory = lazy(() => import('soapbox/features/directory'));
