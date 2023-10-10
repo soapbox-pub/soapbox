@@ -49,6 +49,7 @@
     "@floating-ui/react": "^0.26.0",
     "@fontsource/inter": "^5.0.0",
     "@fontsource/roboto-mono": "^5.0.0",
+    "@fontsource/tajawal": "^5.0.8",
     "@gamestdio/websocket": "^0.3.2",
     "@lexical/clipboard": "^0.12.2",
     "@lexical/hashtag": "^0.12.2",
