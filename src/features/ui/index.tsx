@@ -505,7 +505,9 @@ const UI: React.FC<IUI> = ({ children }) => {
 
           {me && features.chats && (
             <div className='hidden xl:block'>
-              <ChatWidget />
+              <Suspense fallback={<div className='fixed bottom-0 z-[99] flex h-16 w-96 animate-pulse flex-col rounded-t-lg bg-white shadow-3xl ltr:right-5 rtl:left-5 dark:bg-gray-900' />}>
+                <ChatWidget />
+              </Suspense>
             </div>
           )}
 
