@@ -129,6 +129,16 @@ const isQuote = (status: StatusRecord) => {
   return Boolean(status.pleroma.get('quote_url'));
 };
 
+// Preserve translation if an existing status already has it
+const fixTranslation = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord => {
+  if (oldStatus?.translation && !status.translation) {
+    return status
+      .set('translation', oldStatus.translation);
+  } else {
+    return status;
+  }
+};
+
 // Preserve quote if an existing status already has it
 const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord => {
   if (oldStatus && !status.quote && isQuote(status)) {
@@ -144,6 +154,7 @@ const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): Re
   const oldStatus = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
+    fixTranslation(status, oldStatus);
     fixQuote(status, oldStatus);
     calculateStatus(status, oldStatus, expandSpoilers);
     minifyStatus(status);
