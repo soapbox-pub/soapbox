@@ -26,10 +26,5 @@
       "vitest/globals",
       "vite-plugin-compile-time/client"
     ]
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
   }
 }
