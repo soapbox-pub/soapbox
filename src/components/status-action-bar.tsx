@@ -55,7 +55,7 @@ const messages = defineMessages({
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
   disfavourite: { id: 'status.disfavourite', defaultMessage: 'Disike' },
   edit: { id: 'status.edit', defaultMessage: 'Edit' },
-  embed: { id: 'status.embed', defaultMessage: 'Embed' },
+  embed: { id: 'status.embed', defaultMessage: 'Embed post' },
   external: { id: 'status.external', defaultMessage: 'View post on {domain}' },
   favourite: { id: 'status.favourite', defaultMessage: 'Like' },
   groupBlockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },

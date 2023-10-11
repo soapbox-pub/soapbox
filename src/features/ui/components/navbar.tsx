@@ -170,7 +170,7 @@ const Navbar = () => {
                     size='sm'
                     {...(features.nostrSignup ? { onClick: handleNostrLogin } : { to: '/login' })}
                   >
-                    <FormattedMessage id='account.login' defaultMessage='Log In' />
+                    <FormattedMessage id='account.login' defaultMessage='Log in' />
                   </Button>
 
                   {(isOpen) && (

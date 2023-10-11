@@ -40,7 +40,7 @@ function error(message: ToastText, opts?: IToastOptions) {
 }
 
 const messages = defineMessages({
-  unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'An unexpected error occurred.' },
+  unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'Something went wrong.' },
 });
 
 function showAlertForError(networkError: AxiosError<any>) {

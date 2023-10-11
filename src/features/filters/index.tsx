@@ -17,7 +17,7 @@ const messages = defineMessages({
   conversations: { id: 'column.filters.conversations', defaultMessage: 'Conversations' },
   accounts: { id: 'column.filters.accounts', defaultMessage: 'Accounts' },
   delete_error: { id: 'column.filters.delete_error', defaultMessage: 'Error deleting filter' },
-  edit: { id: 'column.filters.edit', defaultMessage: 'Edit' },
+  edit: { id: 'column.filters.edit', defaultMessage: 'Edit Filter' },
   delete: { id: 'column.filters.delete', defaultMessage: 'Delete' },
 });
 
