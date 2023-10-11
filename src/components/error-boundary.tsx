@@ -152,7 +152,8 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
               <div className='mt-10'>
                 <a href='/' className='text-base font-medium text-primary-600 hover:underline dark:text-accent-blue'>
                   <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
-                  <span aria-hidden='true'> &rarr;</span>
+                  {' '}
+                  <span className='inline-block rtl:rotate-180' aria-hidden='true'>&rarr;</span>
                 </a>
               </div>
             </div>
