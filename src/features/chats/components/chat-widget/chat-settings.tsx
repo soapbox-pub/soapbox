@@ -96,7 +96,7 @@ const ChatSettings = () => {
             <button onClick={closeSettings}>
               <Icon
                 src={require('@tabler/icons/arrow-left.svg')}
-                className='h-6 w-6 text-gray-600 dark:text-gray-400'
+                className='h-6 w-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
               />
             </button>
 
