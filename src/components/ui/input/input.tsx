@@ -2,6 +2,9 @@ import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { useLocale } from 'soapbox/hooks';
+import { getTextDirection } from 'soapbox/utils/rtl';
+
 import Icon from '../icon/icon';
 import SvgIcon from '../icon/svg-icon';
 import Tooltip from '../tooltip/tooltip';
@@ -45,6 +48,7 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
 const Input = React.forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
+    const locale = useLocale();
 
     const { type = 'text', icon, className, outerClassName, append, prepend, theme = 'normal', ...filteredProps } = props;
 
@@ -90,10 +94,11 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             'text-gray-600': props.disabled,
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
             'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
-            'pr-7 rtl:pl-7 rtl:pr-3': isPassword || append,
+            'pr-10 rtl:pl-10 rtl:pr-3': isPassword || append,
             'pl-8': typeof icon !== 'undefined',
             'pl-16': typeof prepend !== 'undefined',
           }, className)}
+          dir={typeof props.value === 'string' ? getTextDirection(props.value, { fallback: locale.direction }) : undefined}
         />
 
         {append ? (

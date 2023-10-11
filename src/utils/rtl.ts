@@ -45,7 +45,7 @@ function isRtl(text: string, confidence = 0.3): boolean {
 
 interface GetTextDirectionOpts {
   /** The default direction to return if the text is empty. */
-  fallback?: 'ltr' | 'rtl';
+  fallback?: 'ltr' | 'rtl' | undefined;
   /** The confidence threshold (0-1) to use when determining the direction. */
   confidence?: number;
 }
