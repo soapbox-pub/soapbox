@@ -18,7 +18,7 @@ import type { List as ListEntity } from 'soapbox/types/entities';
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   subheading: { id: 'lists.subheading', defaultMessage: 'Your lists' },
-  add: { id: 'lists.new.create', defaultMessage: 'Add List' },
+  add: { id: 'lists.new.create', defaultMessage: 'Add list' },
 });
 
 // hack

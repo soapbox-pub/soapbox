@@ -19,13 +19,13 @@ import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
-  follows: { id: 'account.follows', defaultMessage: 'Follows' },
+  follows: { id: 'account.follows', defaultMessage: 'Following' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
-  blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
-  domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
-  mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
-  filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocks' },
+  domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Domain blocks' },
+  mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Mutes' },
+  filters: { id: 'navigation_bar.filters', defaultMessage: 'Filters' },
   followedTags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed hashtags' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   accountMigration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },

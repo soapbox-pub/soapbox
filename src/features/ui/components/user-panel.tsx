@@ -97,7 +97,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
                   {shortNumberFormat(account.following_count)}
                 </Text>
                 <Text weight='bold' size='sm'>
-                  <FormattedMessage id='account.follows' defaultMessage='Follows' />
+                  <FormattedMessage id='account.follows' defaultMessage='Following' />
                 </Text>
               </HStack>
             </Link>

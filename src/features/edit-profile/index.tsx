@@ -49,7 +49,7 @@ const messages = defineMessages({
   header: { id: 'edit_profile.header', defaultMessage: 'Edit Profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
-  success: { id: 'edit_profile.success', defaultMessage: 'Profile saved!' },
+  success: { id: 'edit_profile.success', defaultMessage: 'Your profile has been successfully saved!' },
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },

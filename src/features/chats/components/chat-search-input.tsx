@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Icon, Input } from 'soapbox/components/ui';
 
 const messages = defineMessages({
-  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Search inbox' },
+  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
 });
 
 interface IChatSearchInput {

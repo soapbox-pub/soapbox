@@ -23,7 +23,7 @@ import type { Group, GroupMember } from 'soapbox/types/entities';
 const messages = defineMessages({
   adminLimitTitle: { id: 'group.member.admin.limit.title', defaultMessage: 'Admin limit reached' },
   adminLimitSummary: { id: 'group.member.admin.limit.summary', defaultMessage: 'You can assign up to {count, plural, one {admin} other {admins}} for the group at this time.' },
-  blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },
+  blockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban User' },
   blockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Ban From Group' },
   blockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to ban @{name} from the group?' },
   blocked: { id: 'group.group_mod_block.success', defaultMessage: '@{name} is banned' },

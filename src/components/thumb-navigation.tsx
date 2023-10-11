@@ -72,7 +72,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       {account && (
         <ThumbNavigationLink
           src={require('@tabler/icons/bell.svg')}
-          text={<FormattedMessage id='navigation.notifications' defaultMessage='Alerts' />}
+          text={<FormattedMessage id='navigation.notifications' defaultMessage='Notifications' />}
           to='/notifications'
           exact
           count={notificationCount}

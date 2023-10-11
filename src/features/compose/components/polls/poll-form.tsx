@@ -13,7 +13,7 @@ import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },
   add_option: { id: 'compose_form.poll.add_option', defaultMessage: 'Add an answer' },
-  pollDuration: { id: 'compose_form.poll.duration', defaultMessage: 'Duration' },
+  pollDuration: { id: 'compose_form.poll.duration', defaultMessage: 'Poll duration' },
   removePoll: { id: 'compose_form.poll.remove', defaultMessage: 'Remove poll' },
   switchToMultiple: { id: 'compose_form.poll.switch_to_multiple', defaultMessage: 'Change poll to allow multiple answers' },
   switchToSingle: { id: 'compose_form.poll.switch_to_single', defaultMessage: 'Change poll to allow for a single answer' },
@@ -95,7 +95,7 @@ const Option: React.FC<IOption> = ({
       {index > 1 && (
         <div>
           <Button theme='danger' size='sm' onClick={handleOptionRemove}>
-            <FormattedMessage id='compose_form.poll.remove_option' defaultMessage='Delete' />
+            <FormattedMessage id='compose_form.poll.remove_option' defaultMessage='Remove this answer' />
           </Button>
         </div>
       )}

@@ -14,7 +14,7 @@ import type { Account, Group } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },
-  confirmationHeading: { id: 'confirmations.leave_group.heading', defaultMessage: 'Leave Group' },
+  confirmationHeading: { id: 'confirmations.leave_group.heading', defaultMessage: 'Leave group' },
   confirmationMessage: { id: 'confirmations.leave_group.message', defaultMessage: 'You are about to leave the group. Do you want to continue?' },
   muteConfirm: { id: 'confirmations.mute_group.confirm', defaultMessage: 'Mute' },
   muteHeading: { id: 'confirmations.mute_group.heading', defaultMessage: 'Mute Group' },

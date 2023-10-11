@@ -69,7 +69,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
     } else if (quote) {
       return <FormattedMessage id='navigation_bar.compose_quote' defaultMessage='Quote post' />;
     } else {
-      return <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />;
+      return <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose a post' />;
     }
   };
 

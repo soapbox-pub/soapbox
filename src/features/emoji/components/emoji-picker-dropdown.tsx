@@ -18,7 +18,7 @@ export const messages = defineMessages({
   emoji_pick: { id: 'emoji_button.pick', defaultMessage: 'Pick an emoji…' },
   emoji_oh_no: { id: 'emoji_button.oh_no', defaultMessage: 'Oh no!' },
   emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
-  emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emoji\'s found.' },
+  emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emojis found.' },
   emoji_add_custom: { id: 'emoji_button.add_custom', defaultMessage: 'Add custom emoji' },
   custom: { id: 'emoji_button.custom', defaultMessage: 'Custom' },
   recent: { id: 'emoji_button.recent', defaultMessage: 'Frequently used' },

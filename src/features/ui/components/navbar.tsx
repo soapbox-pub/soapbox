@@ -18,7 +18,7 @@ import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   login: { id: 'navbar.login.action', defaultMessage: 'Log in' },
-  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'E-mail or username' },
+  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'Email or username' },
   email: { id: 'navbar.login.email.placeholder', defaultMessage: 'E-mail address' },
   password: { id: 'navbar.login.password.label', defaultMessage: 'Password' },
   forgotPassword: { id: 'navbar.login.forgot_password', defaultMessage: 'Forgot password?' },
@@ -170,7 +170,7 @@ const Navbar = () => {
                     size='sm'
                     {...(features.nostrSignup ? { onClick: handleNostrLogin } : { to: '/login' })}
                   >
-                    <FormattedMessage id='account.login' defaultMessage='Log In' />
+                    <FormattedMessage id='account.login' defaultMessage='Log in' />
                   </Button>
 
                   {(isOpen) && (

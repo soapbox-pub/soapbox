@@ -17,7 +17,7 @@ const RegistrationPage: React.FC = () => {
         <Text theme='muted' align='center'>
           <FormattedMessage
             id='registration.closed_message'
-            defaultMessage='{instance} is not accepting new members.'
+            defaultMessage='{instance} is not accepting new members'
             values={{ instance: instance.title }}
           />
         </Text>
