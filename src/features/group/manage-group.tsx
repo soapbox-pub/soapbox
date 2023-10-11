@@ -25,7 +25,7 @@ const messages = defineMessages({
   deleteHeading: { id: 'confirmations.delete_group.heading', defaultMessage: 'Delete Group' },
   deleteMessage: { id: 'confirmations.delete_group.message', defaultMessage: 'Are you sure you want to delete this group? This is a permanent action that cannot be undone.' },
   members: { id: 'group.tabs.members', defaultMessage: 'Members' },
-  other: { id: 'settings.other', defaultMessage: 'Other options' },
+  other: { id: 'settings.other', defaultMessage: 'Other Options' },
   deleteSuccess: { id: 'group.delete.success', defaultMessage: 'Group successfully deleted' },
 });
 

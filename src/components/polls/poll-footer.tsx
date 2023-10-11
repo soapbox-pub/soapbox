@@ -49,7 +49,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
     <Stack space={4} data-testid='poll-footer'>
       {(!showResults && poll.multiple) && (
         <Button onClick={handleVote} theme='primary' block>
-          <FormattedMessage id='poll.vote' defaultMessage='Vote' />
+          <FormattedMessage id='poll.vote' defaultMessage='Submit Vote' />
         </Button>
       )}
 

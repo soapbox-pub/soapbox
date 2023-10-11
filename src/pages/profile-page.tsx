@@ -49,7 +49,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       name: 'profile',
     },
     {
-      text: <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />,
+      text: <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts & replies' />,
       to: `/@${username}/with_replies`,
       name: 'replies',
     },

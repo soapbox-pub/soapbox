@@ -19,7 +19,7 @@ import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
-  follows: { id: 'account.follows', defaultMessage: 'Follows' },
+  follows: { id: 'account.follows', defaultMessage: 'Following' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocks' },

@@ -9,7 +9,7 @@ import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
-  nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'E-mail or username' },
+  nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'Email or username' },
   email: { id: 'password_reset.fields.email_placeholder', defaultMessage: 'E-mail address' },
   confirmation: { id: 'password_reset.confirmation', defaultMessage: 'Check your email for confirmation.' },
 });

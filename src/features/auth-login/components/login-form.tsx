@@ -8,7 +8,7 @@ import { useFeatures } from 'soapbox/hooks';
 const messages = defineMessages({
   username: {
     id: 'login.fields.username_label',
-    defaultMessage: 'E-mail or username',
+    defaultMessage: 'Email or username',
   },
   email: {
     id: 'login.fields.email_label',

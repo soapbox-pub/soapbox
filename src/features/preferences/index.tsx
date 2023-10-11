@@ -134,7 +134,7 @@ const Preferences = () => {
           <ThemeToggle />
         </ListItem>
 
-        <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}>
+        <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Display Language' />}>
           <SelectDropdown
             className='max-w-[200px]'
             items={languages}
