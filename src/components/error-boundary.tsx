@@ -154,6 +154,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                     className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
                     value={errorText}
                     onClick={this.handleCopy}
+                    dir='ltr'
                     readOnly
                   />
                 )}
