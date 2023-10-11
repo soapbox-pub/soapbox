@@ -14,7 +14,6 @@ import {
   uploadCompose,
 } from 'soapbox/actions/compose';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
@@ -82,8 +81,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     spoiler,
     spoiler_text: spoilerText,
     privacy,
-    focusDate,
-    caretPosition,
     is_submitting: isSubmitting,
     is_changing_upload:
     isChangingUpload,
@@ -104,7 +101,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
-  const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
   const editorRef = useRef<LexicalEditor>(null);
 
   const { isDraggedOver } = useDraggedFiles(formRef);
@@ -172,11 +168,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['spoiler_text']));
   };
 
-  const setCursor = (start: number, end: number = start) => {
-    if (!autosuggestTextareaRef.current?.textarea) return;
-    autosuggestTextareaRef.current.textarea.setSelectionRange(start, end);
-  };
-
   const handleEmojiPick = (data: Emoji) => {
     const editor = editorRef.current;
     if (!editor) return;
@@ -194,17 +185,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     spoilerTextRef.current?.input?.focus();
   };
 
-  const focusTextarea = () => {
-    autosuggestTextareaRef.current?.textarea?.focus();
-  };
-
   useEffect(() => {
-    const length = text.length;
     document.addEventListener('click', handleClick, true);
-
-    if (length > 0) {
-      setCursor(length); // Set cursor at end
-    }
 
     return () => {
       document.removeEventListener('click', handleClick, true);
@@ -213,20 +195,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   useEffect(() => {
     if (spoiler && firstRender.current) {
-      focusTextarea();
       firstRender.current = false;
     } else if (!spoiler && prevSpoiler) {
-      focusTextarea();
+      //
     } else if (spoiler && !prevSpoiler) {
       focusSpoilerInput();
     }
   }, [spoiler]);
-
-  useEffect(() => {
-    if (typeof caretPosition === 'number') {
-      setCursor(caretPosition);
-    }
-  }, [focusDate]);
 
   const renderButtons = useCallback(() => (
     <HStack alignItems='center' space={2}>

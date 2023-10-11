@@ -152,7 +152,6 @@
     "react-sparklines": "^1.7.0",
     "react-sticky-box": "^2.0.0",
     "react-swipeable-views": "^0.14.0",
-    "react-textarea-autosize": "^8.3.4",
     "react-virtuoso": "^4.3.11",
     "redux": "^4.1.1",
     "redux-immutable": "^4.0.0",

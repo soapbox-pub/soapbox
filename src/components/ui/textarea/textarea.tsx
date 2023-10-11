@@ -2,10 +2,13 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useLocale } from 'soapbox/hooks';
+import { getTextDirection } from 'soapbox/utils/rtl';
+
 import Stack from '../stack/stack';
 import Text from '../text/text';
 
-interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'onKeyDown' | 'onPaste' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
+interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'id' | 'maxLength' | 'onChange' | 'onKeyDown' | 'onPaste' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean;
   /** Allows the textarea height to grow while typing */
@@ -52,6 +55,7 @@ const Textarea = React.forwardRef(({
 }: ITextarea, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
   const length = value?.length || 0;
   const [rows, setRows] = useState<number>(autoGrow ? 1 : 4);
+  const locale = useLocale();
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (autoGrow) {
@@ -94,6 +98,7 @@ const Textarea = React.forwardRef(({
           'text-red-600 border-red-600': hasError,
           'resize-none': !isResizeable,
         })}
+        dir={value?.length ? getTextDirection(value, { fallback: locale.direction }) : undefined}
       />
 
       {maxLength && (

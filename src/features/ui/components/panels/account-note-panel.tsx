@@ -1,10 +1,9 @@
 import debounce from 'lodash/debounce';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import Textarea from 'react-textarea-autosize';
 
 import { submitAccountNote } from 'soapbox/actions/account-notes';
-import { HStack, Text, Widget } from 'soapbox/components/ui';
+import { HStack, Text, Textarea, Widget } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/schemas';
@@ -64,14 +63,17 @@ const AccountNotePanel: React.FC<IAccountNotePanel> = ({ account }) => {
         )}
       </HStack>}
     >
-      <Textarea
-        id={`account-note-${account.id}`}
-        className='mx-[-8px] w-full resize-none rounded-md border-0 bg-transparent p-2 text-sm text-gray-800 transition-colors placeholder:text-gray-600 focus:border-0 focus:bg-white focus:shadow-none focus:ring-0 motion-reduce:transition-none dark:text-white dark:placeholder:text-gray-600 focus:dark:bg-primary-900'
-        placeholder={intl.formatMessage(messages.placeholder)}
-        value={value || ''}
-        onChange={handleChange}
-        ref={textarea}
-      />
+      <div className='-mx-2'>
+        <Textarea
+          id={`account-note-${account.id}`}
+          theme='transparent'
+          placeholder={intl.formatMessage(messages.placeholder)}
+          value={value || ''}
+          onChange={handleChange}
+          ref={textarea}
+          autoGrow
+        />
+      </div>
     </Widget>
   );
 };
