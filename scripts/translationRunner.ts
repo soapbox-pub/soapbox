@@ -1,9 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import * as parser from 'intl-messageformat-parser';
-import manageTranslations, { readMessageFiles, ExtractedDescriptor } from 'react-intl-translations-manager';
-import yargs from 'yargs';
+import manager from 'react-intl-translations-manager';
+import yargs from 'yargs/yargs';
+
+import type { ExtractedDescriptor } from 'react-intl-translations-manager';
+
+const { default: manageTranslations, readMessageFiles } = manager as unknown as typeof import('react-intl-translations-manager');
 
 type Validator = (language: string) => void;
 
@@ -14,6 +19,7 @@ interface LanguageResult {
 
 const RFC5646_REGEXP = /^[a-z]{2,3}(?:-(?:x|[A-Za-z]{2,4}))*$/;
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDirectory = path.resolve(__dirname, '..');
 const translationsDirectory = path.resolve(rootDirectory, 'src', 'locales');
 const messagesDirectory = path.resolve(rootDirectory, 'build', 'messages');
@@ -69,7 +75,7 @@ Available languages:
 ${availableLanguages.join(', ')}
 `;
 
-const argv = yargs
+const argv = yargs()
   .usage(usage)
   .option('f', {
     alias: 'force',
