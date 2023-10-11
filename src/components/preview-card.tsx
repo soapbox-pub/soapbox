@@ -5,8 +5,8 @@ import React, { useState, useEffect } from 'react';
 import Blurhash from 'soapbox/components/blurhash';
 import { HStack, Stack, Text, Icon } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
-import { getTextDirection } from 'soapbox/rtl';
 import { addAutoPlay } from 'soapbox/utils/media';
+import { getTextDirection } from 'soapbox/utils/rtl';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
 

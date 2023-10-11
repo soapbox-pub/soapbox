@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
-import { isRtl } from '../rtl';
+import { getTextDirection } from '../utils/rtl';
 
 import Markup from './markup';
 import Poll from './polls/poll';
@@ -142,7 +142,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
-  const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';
+  const direction = getTextDirection(status.search_index);
   const className = clsx(baseClassName, {
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,

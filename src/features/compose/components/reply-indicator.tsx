@@ -5,7 +5,7 @@ import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import Markup from 'soapbox/components/markup';
 import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { isRtl } from 'soapbox/rtl';
+import { getTextDirection } from 'soapbox/utils/rtl';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -50,7 +50,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         className='break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-        direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}
+        direction={getTextDirection(status.search_index)}
       />
 
       {status.media_attachments.size > 0 && (
