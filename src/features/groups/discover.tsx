@@ -37,7 +37,7 @@ const Discover: React.FC = () => {
           {isSearching ? (
             <IconButton
               src={require('@tabler/icons/arrow-left.svg')}
-              iconClassName='mr-2 h-5 w-5 fill-current text-gray-600'
+              iconClassName='mr-2 h-5 w-5 fill-current text-gray-600 rtl:rotate-180'
               onClick={cancelSearch}
               data-testid='group-search-icon'
             />

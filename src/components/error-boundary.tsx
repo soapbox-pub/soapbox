@@ -14,18 +14,6 @@ import SiteLogo from './site-logo';
 
 import type { RootState } from 'soapbox/store';
 
-const goHome = () => location.href = '/';
-
-const mapStateToProps = (state: RootState) => {
-  const { links, logo } = getSoapboxConfig(state);
-
-  return {
-    siteTitle: state.instance.title,
-    logo,
-    links,
-  };
-};
-
 interface Props extends ReturnType<typeof mapStateToProps> {
   children: React.ReactNode;
 }
@@ -152,7 +140,8 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
               <div className='mt-10'>
                 <a href='/' className='text-base font-medium text-primary-600 hover:underline dark:text-accent-blue'>
                   <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
-                  <span aria-hidden='true'> &rarr;</span>
+                  {' '}
+                  <span className='inline-block rtl:rotate-180' aria-hidden='true'>&rarr;</span>
                 </a>
               </div>
             </div>
@@ -165,6 +154,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
                     className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
                     value={errorText}
                     onClick={this.handleCopy}
+                    dir='ltr'
                     readOnly
                   />
                 )}
@@ -213,6 +203,20 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     );
   }
 
+}
+
+function goHome() {
+  location.href = '/';
+}
+
+function mapStateToProps(state: RootState) {
+  const { links, logo } = getSoapboxConfig(state);
+
+  return {
+    siteTitle: state.instance.title,
+    logo,
+    links,
+  };
 }
 
 export default connect(mapStateToProps)(ErrorBoundary);

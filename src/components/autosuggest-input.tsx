@@ -7,7 +7,7 @@ import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
 import { Input, Portal } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
-import { isRtl } from 'soapbox/rtl';
+import { isRtl } from 'soapbox/utils/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';

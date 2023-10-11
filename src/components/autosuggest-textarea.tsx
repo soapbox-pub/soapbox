@@ -5,7 +5,7 @@ import Textarea from 'react-textarea-autosize';
 
 import { Portal } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
-import { isRtl } from 'soapbox/rtl';
+import { isRtl } from 'soapbox/utils/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import AutosuggestEmoji from './autosuggest-emoji';
