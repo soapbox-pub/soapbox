@@ -14,18 +14,6 @@ import SiteLogo from './site-logo';
 
 import type { RootState } from 'soapbox/store';
 
-const goHome = () => location.href = '/';
-
-const mapStateToProps = (state: RootState) => {
-  const { links, logo } = getSoapboxConfig(state);
-
-  return {
-    siteTitle: state.instance.title,
-    logo,
-    links,
-  };
-};
-
 interface Props extends ReturnType<typeof mapStateToProps> {
   children: React.ReactNode;
 }
@@ -214,6 +202,20 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
     );
   }
 
+}
+
+function goHome() {
+  location.href = '/';
+}
+
+function mapStateToProps(state: RootState) {
+  const { links, logo } = getSoapboxConfig(state);
+
+  return {
+    siteTitle: state.instance.title,
+    logo,
+    links,
+  };
 }
 
 export default connect(mapStateToProps)(ErrorBoundary);
