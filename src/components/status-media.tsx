@@ -2,9 +2,9 @@ import React, { Suspense } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
+import PreviewCard from 'soapbox/components/preview-card';
 import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
-import Card from 'soapbox/features/status/components/card';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -118,7 +118,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     );
   } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
     media = (
-      <Card
+      <PreviewCard
         onOpenMedia={openMedia}
         card={status.card}
         compact

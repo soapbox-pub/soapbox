@@ -20,7 +20,7 @@ const trim = (text: string, len: number): string => {
   return text.substring(0, cut) + (text.length > len ? '…' : '');
 };
 
-interface ICard {
+interface IPreviewCard {
   card: CardEntity;
   maxTitle?: number;
   maxDescription?: number;
@@ -31,7 +31,7 @@ interface ICard {
   horizontal?: boolean;
 }
 
-const Card: React.FC<ICard> = ({
+const PreviewCard: React.FC<IPreviewCard> = ({
   card,
   defaultWidth = 467,
   maxTitle = 120,
@@ -253,4 +253,4 @@ const Card: React.FC<ICard> = ({
   );
 };
 
-export default Card;
+export default PreviewCard;
