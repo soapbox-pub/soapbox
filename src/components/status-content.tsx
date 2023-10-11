@@ -95,6 +95,7 @@ const StatusContent: React.FC<IStatusContent> = ({
       if (mention) {
         link.addEventListener('click', onMentionClick.bind(link, mention), false);
         link.setAttribute('title', mention.acct);
+        link.setAttribute('dir', 'ltr');
       } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
       } else {
