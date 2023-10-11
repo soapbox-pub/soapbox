@@ -3,23 +3,14 @@ import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
-import Icon from 'soapbox/components/icon';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text, Icon } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
+import { getTextDirection } from 'soapbox/rtl';
 import { addAutoPlay } from 'soapbox/utils/media';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
 
-const trim = (text: string, len: number): string => {
-  const cut = text.indexOf(' ', len);
-
-  if (cut === -1) {
-    return text;
-  }
-
-  return text.substring(0, cut) + (text.length > len ? '…' : '');
-};
-
+/** Props for `PreviewCard`. */
 interface IPreviewCard {
   card: CardEntity;
   maxTitle?: number;
@@ -31,6 +22,7 @@ interface IPreviewCard {
   horizontal?: boolean;
 }
 
+/** Displays a Mastodon link preview. Similar to OEmbed. */
 const PreviewCard: React.FC<IPreviewCard> = ({
   card,
   defaultWidth = 467,
@@ -47,6 +39,8 @@ const PreviewCard: React.FC<IPreviewCard> = ({
   useEffect(() => {
     setEmbedded(false);
   }, [card.url]);
+
+  const direction = getTextDirection(card.title + card.description);
 
   const trimmedTitle = trim(card.title, maxTitle);
   const trimmedDescription = trim(card.description, maxDescription);
@@ -123,26 +117,27 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       title={trimmedTitle}
       rel='noopener'
       target='_blank'
+      dir={direction}
     >
-      <span>{trimmedTitle}</span>
+      <span dir={direction}>{trimmedTitle}</span>
     </a>
   ) : (
-    <span title={trimmedTitle}>{trimmedTitle}</span>
+    <span title={trimmedTitle} dir={direction}>{trimmedTitle}</span>
   );
 
   const description = (
     <Stack space={2} className='flex-1 overflow-hidden p-4'>
       {trimmedTitle && (
-        <Text weight='bold'>{title}</Text>
+        <Text weight='bold' direction={direction}>{title}</Text>
       )}
       {trimmedDescription && (
-        <Text>{trimmedDescription}</Text>
+        <Text direction={direction}>{trimmedDescription}</Text>
       )}
       <HStack space={1} alignItems='center'>
         <Text tag='span' theme='muted'>
           <Icon src={require('@tabler/icons/link.svg')} />
         </Text>
-        <Text tag='span' theme='muted' size='sm'>
+        <Text tag='span' theme='muted' size='sm' direction={direction}>
           {card.provider_name}
         </Text>
       </HStack>
@@ -252,5 +247,16 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     </a>
   );
 };
+
+/** Trim the text, adding ellipses if it's too long. */
+function trim(text: string, len: number): string {
+  const cut = text.indexOf(' ', len);
+
+  if (cut === -1) {
+    return text;
+  }
+
+  return text.substring(0, cut) + (text.length > len ? '…' : '');
+}
 
 export default PreviewCard;
