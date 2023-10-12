@@ -1442,7 +1442,7 @@
   "status.unmute_conversation": "إلغاء كتم المحادثة",
   "status.unpin": "إلغاء التثبيت",
   "status.unpin_to_group": "قم بإلغاء التثبيت من المجموعة",
-  "status_list.queue_label": "إضغط لترى {count} {count, plural, one {post} other {posts}} جديدة",
+  "status_list.queue_label": "إضغط لترى {count} {count, plural, one {منشور} other {منشورات}} جديدة",
   "statuses.quote_tombstone": "المنشور غير متوفر.",
   "statuses.tombstone": "هناك منشور أو أكثر غير متاحين.",
   "streamfield.add": "إضافة",
