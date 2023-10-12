@@ -500,7 +500,9 @@ const UI: React.FC<IUI> = ({ children }) => {
           )}
 
           {me && (
-            <SidebarMenu />
+            <Suspense>
+              <SidebarMenu />
+            </Suspense>
           )}
 
           {me && features.chats && (
