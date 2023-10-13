@@ -15,8 +15,7 @@ import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
-import Icon from 'soapbox/components/icon';
-import { HStack, IconButton } from 'soapbox/components/ui';
+import { HStack, Icon, IconButton } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional-motion';
 import { useAppDispatch } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
