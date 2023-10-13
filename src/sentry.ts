@@ -1,3 +1,5 @@
+import type { Account } from './schemas';
+
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
   const [Sentry, { Integrations: Integrations }] = await Promise.all([
@@ -36,4 +38,14 @@ async function startSentry(dsn: string): Promise<void> {
   });
 }
 
-export { startSentry };
+/** Associate the account with Sentry events. */
+async function setSentryAccount(account: Account) {
+  const Sentry = await import('@sentry/react');
+
+  Sentry.setUser({
+    id: account.id,
+    username: account.acct,
+  });
+}
+
+export { startSentry, setSentryAccount };
