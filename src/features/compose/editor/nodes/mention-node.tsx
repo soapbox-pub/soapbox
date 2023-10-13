@@ -76,6 +76,7 @@ class MentionNode extends DecoratorNode<JSX.Element> {
 
   decorate(): JSX.Element {
     const acct = this.__acct;
+    const username = acct.split('@')[0];
 
     return (
       <button
@@ -84,7 +85,7 @@ class MentionNode extends DecoratorNode<JSX.Element> {
         title={`@${acct}`}
         dir='ltr'
       >
-        @{acct}
+        @{username}
       </button>
     );
   }
