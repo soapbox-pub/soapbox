@@ -299,8 +299,15 @@ const validateSchedule = (state: RootState, composeId: string) => {
   return schedule.getTime() > fiveMinutesFromNow.getTime();
 };
 
-const submitCompose = (composeId: string, routerHistory?: History, force = false) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+interface SubmitComposeOpts {
+  history?: History;
+  force?: boolean;
+}
+
+const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { history, force = false } = opts;
+
     if (!isLoggedIn(getState)) return;
     const state = getState();
 
@@ -324,7 +331,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       dispatch(openModal('MISSING_DESCRIPTION', {
         onContinue: () => {
           dispatch(closeModal('MISSING_DESCRIPTION'));
-          dispatch(submitCompose(composeId, routerHistory, true));
+          dispatch(submitCompose(composeId, { history, force: true }));
         },
       }));
       return;
@@ -360,9 +367,9 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       params.group_timeline_visible = compose.group_timeline_visible; // Truth Social
     }
 
-    dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
-      if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
-        routerHistory.push('/messages');
+    return dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
+      if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && history) {
+        history.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, composeId, data, status, !!statusId);
     }).catch(function(error) {
