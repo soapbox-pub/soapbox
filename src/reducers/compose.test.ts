@@ -167,7 +167,7 @@ describe('compose reducer', () => {
       type: ME_FETCH_SUCCESS,
       me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
     };
-    expect(reducer(state, action).toJS().default).toMatchObject({
+    expect(reducer(state, action as any).toJS().default).toMatchObject({
       privacy: 'unlisted',
     });
   });

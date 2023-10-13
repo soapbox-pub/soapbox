@@ -1,13 +1,4 @@
-import { useEffect } from 'react';
-
-/** Hook to start Sentry. Should only be called once. */
-function useSentry(dsn: string | undefined) {
-  useEffect(() => {
-    if (dsn) {
-      startSentry(dsn).catch(console.error);
-    }
-  }, [dsn]);
-}
+import type { Account } from './schemas';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
@@ -47,4 +38,14 @@ async function startSentry(dsn: string): Promise<void> {
   });
 }
 
-export { useSentry };
+/** Associate the account with Sentry events. */
+async function setSentryAccount(account: Account) {
+  const Sentry = await import('@sentry/react');
+
+  Sentry.setUser({
+    id: account.id,
+    username: account.acct,
+  });
+}
+
+export { startSentry, setSentryAccount };

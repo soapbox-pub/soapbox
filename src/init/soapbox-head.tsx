@@ -1,14 +1,14 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
-  useSentry,
   useSettings,
   useSoapboxConfig,
   useTheme,
   useLocale,
 } from 'soapbox/hooks';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
+import { startSentry } from 'soapbox/sentry';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 const Helmet = React.lazy(() => import('soapbox/components/helmet'));
@@ -26,6 +26,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const demo = !!settings.get('demo');
   const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
+  const dsn = soapboxConfig.sentryDsn;
 
   const bodyClass = clsx('h-full bg-white text-base dark:bg-gray-800', {
     'no-reduce-motion': !settings.get('reduceMotion'),
@@ -33,7 +34,11 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     'demetricator': settings.get('demetricator'),
   });
 
-  useSentry(soapboxConfig.sentryDsn);
+  useEffect(() => {
+    if (dsn) {
+      startSentry(dsn).catch(console.error);
+    }
+  }, [dsn]);
 
   return (
     <>
