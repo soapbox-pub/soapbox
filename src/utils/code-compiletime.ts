@@ -15,7 +15,7 @@ const tryGit = (cmd: string): string | undefined => {
   }
 };
 
-const version = (pkg: Record<string, any>) => {
+const version = (pkg: { version: string }): string => {
   // Try to discern from GitLab CI first
   if (CI_COMMIT_TAG === `v${pkg.version}` || CI_COMMIT_REF_NAME === 'stable') {
     return pkg.version;
