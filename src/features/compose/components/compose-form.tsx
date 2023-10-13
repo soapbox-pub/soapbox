@@ -223,7 +223,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const composeModifiers = !condensed && (
     <Stack space={4} className='compose-form__modifiers'>
-      <UploadForm composeId={id} />
+      <UploadForm composeId={id} onSubmit={handleSubmit} />
       <PollForm composeId={id} />
 
       <SpoilerInput
