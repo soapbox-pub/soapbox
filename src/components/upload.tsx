@@ -1,3 +1,12 @@
+import bookIcon from '@tabler/icons/book.svg';
+import fileCodeIcon from '@tabler/icons/file-code.svg';
+import fileSpreadsheetIcon from '@tabler/icons/file-spreadsheet.svg';
+import fileTextIcon from '@tabler/icons/file-text.svg';
+import fileZipIcon from '@tabler/icons/file-zip.svg';
+import defaultIcon from '@tabler/icons/paperclip.svg';
+import presentationIcon from '@tabler/icons/presentation.svg';
+import xIcon from '@tabler/icons/x.svg';
+import zoomInIcon from '@tabler/icons/zoom-in.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState } from 'react';
@@ -6,19 +15,10 @@ import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
-import Icon from 'soapbox/components/icon';
-import { HStack, IconButton } from 'soapbox/components/ui';
+import { HStack, Icon, IconButton } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional-motion';
 import { useAppDispatch } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
-
-const bookIcon = require('@tabler/icons/book.svg');
-const fileCodeIcon = require('@tabler/icons/file-code.svg');
-const fileSpreadsheetIcon = require('@tabler/icons/file-spreadsheet.svg');
-const fileTextIcon = require('@tabler/icons/file-text.svg');
-const fileZipIcon = require('@tabler/icons/file-zip.svg');
-const defaultIcon = require('@tabler/icons/paperclip.svg');
-const presentationIcon = require('@tabler/icons/presentation.svg');
 
 export const MIMETYPE_ICONS: Record<string, string> = {
   'application/x-freearc': fileZipIcon,
@@ -163,7 +163,7 @@ const Upload: React.FC<IUpload> = ({
               {(withPreview && mediaType !== 'unknown' && Boolean(media.url)) && (
                 <IconButton
                   onClick={handleOpenModal}
-                  src={require('@tabler/icons/zoom-in.svg')}
+                  src={zoomInIcon}
                   theme='dark'
                   className='hover:scale-105 hover:bg-gray-900'
                   iconClassName='h-5 w-5'
@@ -173,7 +173,7 @@ const Upload: React.FC<IUpload> = ({
               {onDelete && (
                 <IconButton
                   onClick={handleUndoClick}
-                  src={require('@tabler/icons/x.svg')}
+                  src={xIcon}
                   theme='dark'
                   className='hover:scale-105 hover:bg-gray-900'
                   iconClassName='h-5 w-5'
