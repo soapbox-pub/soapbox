@@ -8,6 +8,8 @@ import { addClassNamesToElement } from '@lexical/utils';
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 import React from 'react';
 
+import { Tooltip } from 'soapbox/components/ui';
+
 import type {
   EditorConfig,
   LexicalNode,
@@ -79,14 +81,15 @@ class MentionNode extends DecoratorNode<JSX.Element> {
     const username = acct.split('@')[0];
 
     return (
-      <button
-        className='text-accent-blue'
-        type='button'
-        title={`@${acct}`}
-        dir='ltr'
-      >
-        @{username}
-      </button>
+      <Tooltip text={`@${acct}`}>
+        <button
+          className='text-accent-blue'
+          type='button'
+          dir='ltr'
+        >
+          @{username}
+        </button>
+      </Tooltip>
     );
   }
 
