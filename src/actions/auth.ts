@@ -17,6 +17,7 @@ import { startOnboarding } from 'soapbox/actions/onboarding';
 import { custom } from 'soapbox/custom';
 import { queryClient } from 'soapbox/queries/client';
 import { selectAccount } from 'soapbox/selectors';
+import { unsetSentryAccount } from 'soapbox/sentry';
 import KVStore from 'soapbox/storage/kv-store';
 import toast from 'soapbox/toast';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
@@ -219,6 +220,9 @@ export const logOut = () =>
         // Clear all stored cache from React Query
         queryClient.invalidateQueries();
         queryClient.clear();
+
+        // Clear the account from Sentry.
+        unsetSentryAccount();
 
         dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
 

@@ -1,3 +1,5 @@
+import sourceCode from 'soapbox/utils/code';
+
 import type { Account } from './schemas';
 
 /** Start Sentry. */
@@ -36,6 +38,8 @@ async function startSentry(dsn: string): Promise<void> {
     // for finer control
     tracesSampleRate: 1.0,
   });
+
+  Sentry.setContext('soapbox', sourceCode);
 }
 
 /** Associate the account with Sentry events. */
@@ -45,7 +49,14 @@ async function setSentryAccount(account: Account) {
   Sentry.setUser({
     id: account.id,
     username: account.acct,
+    url: account.url,
   });
 }
 
-export { startSentry, setSentryAccount };
+/** Remove the account from Sentry events. */
+async function unsetSentryAccount() {
+  const Sentry = await import('@sentry/react');
+  Sentry.setUser(null);
+}
+
+export { startSentry, setSentryAccount, unsetSentryAccount };
