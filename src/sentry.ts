@@ -1,14 +1,3 @@
-import { useEffect } from 'react';
-
-/** Hook to start Sentry. Should only be called once. */
-function useSentry(dsn: string | undefined) {
-  useEffect(() => {
-    if (dsn) {
-      startSentry(dsn).catch(console.error);
-    }
-  }, [dsn]);
-}
-
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
   const [Sentry, { Integrations: Integrations }] = await Promise.all([
@@ -47,4 +36,4 @@ async function startSentry(dsn: string): Promise<void> {
   });
 }
 
-export { useSentry };
+export { startSentry };
