@@ -152,7 +152,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       return;
     }
 
-    dispatch(submitCompose(id, history));
+    dispatch(submitCompose(id, { history }));
     editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };
 
