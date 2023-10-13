@@ -305,7 +305,7 @@ interface SubmitComposeOpts {
 }
 
 const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const { history, force = false } = opts;
 
     if (!isLoggedIn(getState)) return;
@@ -367,7 +367,7 @@ const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
       params.group_timeline_visible = compose.group_timeline_visible; // Truth Social
     }
 
-    dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
+    return dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
       if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && history) {
         history.push('/messages');
       }
