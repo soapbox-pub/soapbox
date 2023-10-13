@@ -25,6 +25,7 @@ import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FocusPlugin from './plugins/focus-plugin';
 import RefPlugin from './plugins/ref-plugin';
 import StatePlugin from './plugins/state-plugin';
+import SubmitPlugin from './plugins/submit-plugin';
 
 const LINK_MATCHERS = [
   createLinkMatcherWithRegExp(
@@ -164,7 +165,8 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
         <HashtagPlugin />
         <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         <AutoLinkPlugin matchers={LINK_MATCHERS} />
-        <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
+        <StatePlugin composeId={composeId} />
+        <SubmitPlugin composeId={composeId} handleSubmit={handleSubmit} />
         <FocusPlugin autoFocus={autoFocus} />
         <ClearEditorPlugin />
         <RefPlugin ref={ref} />
