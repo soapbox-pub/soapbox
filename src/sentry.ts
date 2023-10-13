@@ -53,4 +53,10 @@ async function setSentryAccount(account: Account) {
   });
 }
 
-export { startSentry, setSentryAccount };
+/** Remove the account from Sentry events. */
+async function unsetSentryAccount() {
+  const Sentry = await import('@sentry/react');
+  Sentry.setUser(null);
+}
+
+export { startSentry, setSentryAccount, unsetSentryAccount };
