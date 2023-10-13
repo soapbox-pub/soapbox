@@ -4,6 +4,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import * as BuildConfig from 'soapbox/build-config';
+import Soapbox from 'soapbox/init/soapbox';
 import { printConsoleWarning } from 'soapbox/utils/console';
 
 import '@fontsource/inter/200.css';
@@ -25,8 +26,6 @@ import './styles/tailwind.css';
 import './precheck';
 import ready from './ready';
 import { registerSW } from './utils/sw';
-
-const Soapbox = React.lazy(() => import('./init/soapbox'));
 
 if (BuildConfig.NODE_ENV === 'production') {
   printConsoleWarning();

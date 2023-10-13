@@ -10,9 +10,9 @@ import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import { store } from '../store';
 
-const SoapboxHead = React.lazy(() => import('./soapbox-head'));
-const SoapboxLoad = React.lazy(() => import('./soapbox-load'));
-const SoapboxMount = React.lazy(() => import('./soapbox-mount'));
+import SoapboxHead from './soapbox-head';
+import SoapboxLoad from './soapbox-load';
+import SoapboxMount from './soapbox-mount';
 
 // Configure global functions for developers
 createGlobals(store);
