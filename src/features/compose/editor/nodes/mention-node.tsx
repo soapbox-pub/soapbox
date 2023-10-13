@@ -9,6 +9,7 @@ import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 import React from 'react';
 
 import { Tooltip } from 'soapbox/components/ui';
+import { isPubkey } from 'soapbox/utils/nostr';
 
 import type {
   EditorConfig,
@@ -87,7 +88,7 @@ class MentionNode extends DecoratorNode<JSX.Element> {
           type='button'
           dir='ltr'
         >
-          @{username}
+          @{isPubkey(username) ? username.slice(0, 8) : username}
         </button>
       </Tooltip>
     );
