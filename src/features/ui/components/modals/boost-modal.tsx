@@ -13,9 +13,9 @@ const messages = defineMessages({
 });
 
 interface IBoostModal {
-  status: StatusEntity
-  onReblog: (status: StatusEntity) => void
-  onClose: () => void
+  status: StatusEntity;
+  onReblog: (status: StatusEntity) => void;
+  onClose: () => void;
 }
 
 const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {

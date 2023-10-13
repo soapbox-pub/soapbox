@@ -42,7 +42,7 @@ type AccountMap = ImmutableMap<string, any>;
 type APIEntities = Array<APIEntity>;
 
 export interface ReducerAccount extends AccountRecord {
-  moved: string | null
+  moved: string | null;
 }
 
 type State = ImmutableMap<any, ReducerAccount>;

@@ -4,11 +4,11 @@ import React from 'react';
 import { IconButton } from 'soapbox/components/ui';
 
 interface IComposeFormButton {
-  icon: string
-  title?: string
-  active?: boolean
-  disabled?: boolean
-  onClick: () => void
+  icon: string;
+  title?: string;
+  active?: boolean;
+  disabled?: boolean;
+  onClick: () => void;
 }
 
 const ComposeFormButton: React.FC<IComposeFormButton> = ({

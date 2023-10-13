@@ -25,37 +25,37 @@ const widths = {
 
 interface IModal {
   /** Callback when the modal is cancelled. */
-  cancelAction?: () => void
+  cancelAction?: () => void;
   /** Cancel button text. */
-  cancelText?: React.ReactNode
+  cancelText?: React.ReactNode;
   /** URL to an SVG icon for the close button. */
-  closeIcon?: string
+  closeIcon?: string;
   /** Position of the close button. */
-  closePosition?: 'left' | 'right'
+  closePosition?: 'left' | 'right';
   /** Callback when the modal is confirmed. */
-  confirmationAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void
+  confirmationAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   /** Whether the confirmation button is disabled. */
-  confirmationDisabled?: boolean
+  confirmationDisabled?: boolean;
   /** Confirmation button text. */
-  confirmationText?: React.ReactNode
+  confirmationText?: React.ReactNode;
   /** Confirmation button theme. */
-  confirmationTheme?: ButtonThemes
+  confirmationTheme?: ButtonThemes;
   /** Whether to use full width style for confirmation button. */
-  confirmationFullWidth?: boolean
+  confirmationFullWidth?: boolean;
   /** Callback when the modal is closed. */
-  onClose?: () => void
+  onClose?: () => void;
   /** Callback when the secondary action is chosen. */
-  secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void
+  secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   /** Secondary button text. */
-  secondaryText?: React.ReactNode
-  secondaryDisabled?: boolean
+  secondaryText?: React.ReactNode;
+  secondaryDisabled?: boolean;
   /** Don't focus the "confirm" button on mount. */
-  skipFocus?: boolean
+  skipFocus?: boolean;
   /** Title text for the modal. */
-  title?: React.ReactNode
-  width?: keyof typeof widths
-  children?: React.ReactNode
-  className?: string
+  title?: React.ReactNode;
+  width?: keyof typeof widths;
+  children?: React.ReactNode;
+  className?: string;
 }
 
 /** Displays a modal dialog box. */

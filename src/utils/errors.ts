@@ -9,7 +9,7 @@ const toSentence = (arr: string[]) => arr
   .slice(0, -2);
 
 type Errors = {
-  [key: string]: string[]
+  [key: string]: string[];
 }
 
 const buildErrorMessage = (errors: Errors) => {
@@ -22,7 +22,7 @@ const buildErrorMessage = (errors: Errors) => {
   return toSentence(individualErrors);
 };
 
-const httpErrorMessages: { code: number, name: string, description: string }[] = [
+const httpErrorMessages: { code: number; name: string; description: string }[] = [
   {
     code: 100,
     name: 'Continue',

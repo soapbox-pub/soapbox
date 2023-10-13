@@ -7,11 +7,11 @@ import Video from 'soapbox/features/video';
 import type { Status, Account, Attachment } from 'soapbox/types/entities';
 
 interface IVideoModal {
-  media: Attachment
-  status: Status
-  account: Account
-  time: number
-  onClose: () => void
+  media: Attachment;
+  status: Status;
+  account: Account;
+  time: number;
+  onClose: () => void;
 }
 
 const VideoModal: React.FC<IVideoModal> = ({ status, account, media, time, onClose }) => {

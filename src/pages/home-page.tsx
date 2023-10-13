@@ -20,10 +20,9 @@ import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig, useDragge
 
 import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
-import BundleContainer from '../features/ui/containers/bundle-container';
 
 interface IHomePage {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const HomePage: React.FC<IHomePage> = ({ children }) => {
@@ -83,52 +82,34 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {children}
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
         {me && features.announcements && (
-          <BundleContainer fetchComponent={AnnouncementsPanel}>
-            {Component => <Component key='announcements-panel' />}
-          </BundleContainer>
+          <AnnouncementsPanel />
         )}
         {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={5} />}
-          </BundleContainer>
+          <TrendsPanel limit={5} />
         )}
         {(hasPatron && me) && (
-          <BundleContainer fetchComponent={FundingPanel}>
-            {Component => <Component />}
-          </BundleContainer>
+          <FundingPanel />
         )}
         {(hasCrypto && cryptoLimit > 0 && me) && (
-          <BundleContainer fetchComponent={CryptoDonatePanel}>
-            {Component => <Component limit={cryptoLimit} />}
-          </BundleContainer>
+          <CryptoDonatePanel limit={cryptoLimit} />
         )}
-        <BundleContainer fetchComponent={PromoPanel}>
-          {Component => <Component />}
-        </BundleContainer>
+        <PromoPanel />
         {features.birthdays && (
-          <BundleContainer fetchComponent={BirthdayPanel}>
-            {Component => <Component limit={10} />}
-          </BundleContainer>
+          <BirthdayPanel limit={10} />
         )}
         {me && features.suggestions && (
-          <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={3} />}
-          </BundleContainer>
+          <WhoToFollowPanel limit={3} />
         )}
-        <LinkFooter key='link-footer' />
+        <LinkFooter />
       </Layout.Aside>
     </>
   );

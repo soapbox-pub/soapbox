@@ -43,7 +43,7 @@ const messages = defineMessages({
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
-  copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
+  copy: { id: 'status.copy', defaultMessage: 'Copy Link to Post' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -55,10 +55,10 @@ const messages = defineMessages({
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
   disfavourite: { id: 'status.disfavourite', defaultMessage: 'Disike' },
   edit: { id: 'status.edit', defaultMessage: 'Edit' },
-  embed: { id: 'status.embed', defaultMessage: 'Embed' },
+  embed: { id: 'status.embed', defaultMessage: 'Embed post' },
   external: { id: 'status.external', defaultMessage: 'View post on {domain}' },
   favourite: { id: 'status.favourite', defaultMessage: 'Like' },
-  groupBlockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban' },
+  groupBlockConfirm: { id: 'confirmations.block_from_group.confirm', defaultMessage: 'Ban User' },
   groupBlockFromGroupHeading: { id: 'confirmations.block_from_group.heading', defaultMessage: 'Ban From Group' },
   groupBlockFromGroupMessage: { id: 'confirmations.block_from_group.message', defaultMessage: 'Are you sure you want to ban @{name} from the group?' },
   groupModDelete: { id: 'status.group_mod_delete', defaultMessage: 'Delete post from group' },
@@ -70,12 +70,12 @@ const messages = defineMessages({
   more: { id: 'status.more', defaultMessage: 'More' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   muteConfirm: { id: 'confirmations.mute_group.confirm', defaultMessage: 'Mute' },
-  muteConversation: { id: 'status.mute_conversation', defaultMessage: 'Mute conversation' },
+  muteConversation: { id: 'status.mute_conversation', defaultMessage: 'Mute Conversation' },
   muteGroup: { id: 'group.mute.long_label', defaultMessage: 'Mute Group' },
   muteHeading: { id: 'confirmations.mute_group.heading', defaultMessage: 'Mute Group' },
   muteMessage: { id: 'confirmations.mute_group.message', defaultMessage: 'You are about to mute the group. Do you want to continue?' },
   muteSuccess: { id: 'group.mute.success', defaultMessage: 'Muted the group' },
-  open: { id: 'status.open', defaultMessage: 'Expand this post' },
+  open: { id: 'status.open', defaultMessage: 'Show Post Details' },
   pin: { id: 'status.pin', defaultMessage: 'Pin on profile' },
   pinToGroup: { id: 'status.pin_to_group', defaultMessage: 'Pin to Group' },
   pinToGroupSuccess: { id: 'status.pin_to_group.success', defaultMessage: 'Pinned to Group!' },
@@ -100,7 +100,7 @@ const messages = defineMessages({
   report: { id: 'status.report', defaultMessage: 'Report @{name}' },
   share: { id: 'status.share', defaultMessage: 'Share' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
-  unmuteConversation: { id: 'status.unmute_conversation', defaultMessage: 'Unmute conversation' },
+  unmuteConversation: { id: 'status.unmute_conversation', defaultMessage: 'Unmute Conversation' },
   unmuteGroup: { id: 'group.unmute.long_label', defaultMessage: 'Unmute Group' },
   unmuteSuccess: { id: 'group.unmute.success', defaultMessage: 'Unmuted the group' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
@@ -108,11 +108,11 @@ const messages = defineMessages({
 });
 
 interface IStatusActionBar {
-  status: Status
-  withLabels?: boolean
-  expandable?: boolean
-  space?: 'sm' | 'md' | 'lg'
-  statusActionButtonTheme?: 'default' | 'inverse'
+  status: Status;
+  withLabels?: boolean;
+  expandable?: boolean;
+  space?: 'sm' | 'md' | 'lg';
+  statusActionButtonTheme?: 'default' | 'inverse';
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
@@ -698,7 +698,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
 
   const spacing: {
-    [key: string]: React.ComponentProps<typeof HStack>['space']
+    [key: string]: React.ComponentProps<typeof HStack>['space'];
   } = {
     'sm': 2,
     'md': 8,

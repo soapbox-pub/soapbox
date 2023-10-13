@@ -18,8 +18,8 @@ const messages = defineMessages({
 });
 
 interface IComposeModal {
-  onClose: (type?: string) => void
-  composeId?: string
+  onClose: (type?: string) => void;
+  composeId?: string;
 }
 
 const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-modal' }) => {
@@ -69,7 +69,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
     } else if (quote) {
       return <FormattedMessage id='navigation_bar.compose_quote' defaultMessage='Quote post' />;
     } else {
-      return <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />;
+      return <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose a post' />;
     }
   };
 
@@ -93,8 +93,8 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
 };
 
 interface IComposeFormGroupToggle {
-  composeId: string
-  groupId: string | null
+  composeId: string;
+  groupId: string | null;
 }
 
 const ComposeFormGroupToggle: React.FC<IComposeFormGroupToggle> = ({ composeId, groupId }) => {

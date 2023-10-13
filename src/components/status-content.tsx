@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
-import { isRtl } from '../rtl';
+import { getTextDirection } from '../utils/rtl';
 
 import Markup from './markup';
 import Poll from './polls/poll';
@@ -18,7 +18,7 @@ const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
 
 interface IReadMoreButton {
-  onClick: React.MouseEventHandler
+  onClick: React.MouseEventHandler;
 }
 
 /** Button to expand a truncated status (due to too much content) */
@@ -30,11 +30,11 @@ const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
 );
 
 interface IStatusContent {
-  status: Status
-  onClick?: () => void
-  collapsable?: boolean
-  translatable?: boolean
-  textSize?: Sizes
+  status: Status;
+  onClick?: () => void;
+  collapsable?: boolean;
+  translatable?: boolean;
+  textSize?: Sizes;
 }
 
 /** Renders the text content of a status */
@@ -95,6 +95,7 @@ const StatusContent: React.FC<IStatusContent> = ({
       if (mention) {
         link.addEventListener('click', onMentionClick.bind(link, mention), false);
         link.setAttribute('title', mention.acct);
+        link.setAttribute('dir', 'ltr');
       } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
       } else {
@@ -142,7 +143,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
   const content = { __html: parsedHtml };
-  const direction = isRtl(status.search_index) ? 'rtl' : 'ltr';
+  const direction = getTextDirection(status.search_index);
   const className = clsx(baseClassName, {
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,

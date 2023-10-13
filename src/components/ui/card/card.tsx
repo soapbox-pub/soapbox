@@ -22,14 +22,14 @@ export type CardSizes = keyof typeof sizes
 
 interface ICard {
   /** The type of card. */
-  variant?: 'default' | 'rounded' | 'slim'
+  variant?: 'default' | 'rounded' | 'slim';
   /** Card size preset. */
-  size?: CardSizes
+  size?: CardSizes;
   /** Extra classnames for the <div> element. */
-  className?: string
+  className?: string;
   /** Elements inside the card. */
-  children: React.ReactNode
-  tabIndex?: number
+  children: React.ReactNode;
+  tabIndex?: number;
 }
 
 /** An opaque backdrop to hold a collection of related elements. */
@@ -48,10 +48,10 @@ const Card = React.forwardRef<HTMLDivElement, ICard>(({ children, variant = 'def
 ));
 
 interface ICardHeader {
-  backHref?: string
-  onBackClick?: (event: React.MouseEvent) => void
-  className?: string
-  children?: React.ReactNode
+  backHref?: string;
+  onBackClick?: (event: React.MouseEvent) => void;
+  className?: string;
+  children?: React.ReactNode;
 }
 
 /**
@@ -87,7 +87,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
 };
 
 interface ICardTitle {
-  title: React.ReactNode
+  title: React.ReactNode;
 }
 
 /** A card's title. */
@@ -97,9 +97,9 @@ const CardTitle: React.FC<ICardTitle> = ({ title }): JSX.Element => (
 
 interface ICardBody {
   /** Classnames for the <div> element. */
-  className?: string
+  className?: string;
   /** Children to appear inside the card. */
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** A card's body. */

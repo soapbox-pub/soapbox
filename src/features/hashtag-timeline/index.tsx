@@ -11,8 +11,8 @@ import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 interface IHashtagTimeline {
   params?: {
-    id?: string
-  }
+    id?: string;
+  };
 }
 
 export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {

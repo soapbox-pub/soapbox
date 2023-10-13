@@ -22,16 +22,16 @@ const messages = defineMessages({
 });
 
 interface IProfileDropdown {
-  account: AccountEntity
-  children: React.ReactNode
+  account: AccountEntity;
+  children: React.ReactNode;
 }
 
 type IMenuItem = {
-  text: string | React.ReactElement | null
-  to?: string
-  toggle?: JSX.Element
-  icon?: string
-  action?: (event: React.MouseEvent) => void
+  text: string | React.ReactElement | null;
+  to?: string;
+  toggle?: JSX.Element;
+  icon?: string;
+  action?: (event: React.MouseEvent) => void;
 }
 
 const getAccount = makeGetAccount();
@@ -142,8 +142,8 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 };
 
 interface MenuItemProps {
-  className?: string
-  menuItem: IMenuItem
+  className?: string;
+  menuItem: IMenuItem;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ className, menuItem }) => {

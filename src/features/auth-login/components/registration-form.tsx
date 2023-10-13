@@ -32,7 +32,7 @@ const messages = defineMessages({
 });
 
 interface IRegistrationForm {
-  inviteToken?: string
+  inviteToken?: string;
 }
 
 /** Allows the user to sign up for the website. */
@@ -245,46 +245,52 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
             />
           </FormGroup>
 
-          <Input
-            type='email'
-            name='email'
-            placeholder={intl.formatMessage(messages.email)}
-            autoComplete='off'
-            autoCorrect='off'
-            autoCapitalize='off'
-            onChange={onInputChange}
-            value={params.get('email', '')}
-            required
-          />
-
-          <Input
-            type='password'
-            name='password'
-            placeholder={intl.formatMessage(messages.password)}
-            autoComplete='off'
-            autoCorrect='off'
-            autoCapitalize='off'
-            onChange={onPasswordChange}
-            value={params.get('password', '')}
-            required
-          />
-
-          <FormGroup
-            errors={passwordMismatch ? [intl.formatMessage(messages.passwordMismatch)] : undefined}
-          >
+          {!features.nostrSignup && (
             <Input
-              type='password'
-              name='password_confirmation'
-              placeholder={intl.formatMessage(messages.confirm)}
+              type='email'
+              name='email'
+              placeholder={intl.formatMessage(messages.email)}
               autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
-              onChange={onPasswordConfirmChange}
-              onBlur={onPasswordConfirmBlur}
-              value={passwordConfirmation}
+              onChange={onInputChange}
+              value={params.get('email', '')}
               required
             />
-          </FormGroup>
+          )}
+
+          {!features.nostrSignup && (
+            <>
+              <Input
+                type='password'
+                name='password'
+                placeholder={intl.formatMessage(messages.password)}
+                autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
+                onChange={onPasswordChange}
+                value={params.get('password', '')}
+                required
+              />
+
+              <FormGroup
+                errors={passwordMismatch ? [intl.formatMessage(messages.passwordMismatch)] : undefined}
+              >
+                <Input
+                  type='password'
+                  name='password_confirmation'
+                  placeholder={intl.formatMessage(messages.confirm)}
+                  autoComplete='off'
+                  autoCorrect='off'
+                  autoCapitalize='off'
+                  onChange={onPasswordConfirmChange}
+                  onBlur={onPasswordConfirmBlur}
+                  value={passwordConfirmation}
+                  required
+                />
+              </FormGroup>
+            </>
+          )}
 
           {birthdayRequired && (
             <BirthdayInput

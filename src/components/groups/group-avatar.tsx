@@ -8,9 +8,9 @@ import { Avatar } from '../ui';
 import type { Group } from 'soapbox/schemas';
 
 interface IGroupAvatar {
-  group: Group
-  size: number
-  withRing?: boolean
+  group: Group;
+  size: number;
+  withRing?: boolean;
 }
 
 const GroupAvatar = (props: IGroupAvatar) => {

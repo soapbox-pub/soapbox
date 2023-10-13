@@ -2,11 +2,11 @@ import React from 'react';
 
 interface IForm {
   /** Form submission event handler. */
-  onSubmit?: (event: React.FormEvent) => void
+  onSubmit?: (event: React.FormEvent) => void;
   /** Class name override for the <form> element. */
-  className?: string
+  className?: string;
   /** Elements to display within the Form. */
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Form element with custom styles. */

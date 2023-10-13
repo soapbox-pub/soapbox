@@ -7,7 +7,7 @@ import { Stack, Text } from 'soapbox/components/ui';
 import type { GroupTag } from 'soapbox/schemas';
 
 interface ITagListItem {
-  tag: GroupTag
+  tag: GroupTag;
 }
 
 const TagListItem = (props: ITagListItem) => {

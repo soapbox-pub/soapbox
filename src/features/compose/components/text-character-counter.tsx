@@ -3,8 +3,8 @@ import React from 'react';
 import { length } from 'stringz';
 
 interface ITextCharacterCounter {
-  max: number
-  text: string
+  max: number;
+  text: string;
 }
 
 const TextCharacterCounter: React.FC<ITextCharacterCounter> = ({ text, max }) => {

@@ -12,9 +12,9 @@ const messages = defineMessages({
 
 interface IAccountSearch {
   /** Callback when a searched account is chosen. */
-  onSelected: (accountId: string) => void
+  onSelected: (accountId: string) => void;
   /** Override the default placeholder of the input. */
-  placeholder?: string
+  placeholder?: string;
 }
 
 /** Input to search for accounts. */
@@ -72,7 +72,7 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
         <div
           role='button'
           tabIndex={0}
-          className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3'
+          className='absolute inset-y-0 flex cursor-pointer items-center px-3 ltr:right-0 rtl:left-0'
           onClick={handleClear}
         >
           <SvgIcon

@@ -1,8 +1,8 @@
 import { useTimelineStream } from './useTimelineStream';
 
 interface UseCommunityStreamOpts {
-  onlyMedia?: boolean
-  enabled?: boolean
+  onlyMedia?: boolean;
+  enabled?: boolean;
 }
 
 function useCommunityStream({ onlyMedia, enabled }: UseCommunityStreamOpts = {}) {

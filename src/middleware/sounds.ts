@@ -7,8 +7,8 @@ import type { Sounds } from 'soapbox/utils/sounds';
 
 interface Action extends AnyAction {
   meta: {
-    sound: Sounds
-  }
+    sound: Sounds;
+  };
 }
 
 /** Middleware to play sounds in response to certain Redux actions. */

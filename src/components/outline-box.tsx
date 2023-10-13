@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface IOutlineBox extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }
 
 /** Wraps children in a container with an outline. */

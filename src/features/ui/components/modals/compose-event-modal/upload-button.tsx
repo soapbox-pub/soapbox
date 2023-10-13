@@ -6,8 +6,8 @@ import { HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IUploadButton {
-  disabled?: boolean
-  onSelectFile: (files: FileList) => void
+  disabled?: boolean;
+  onSelectFile: (files: FileList) => void;
 }
 
 const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
@@ -34,7 +34,7 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
       />
 
       <Text size='sm' theme='primary' weight='semibold' transform='uppercase' tabIndex={0}>
-        <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload photo' />
+        <FormattedMessage id='compose_event.upload_banner' defaultMessage='Upload event banner' />
       </Text>
       <input
         ref={fileElement}

@@ -11,9 +11,9 @@ import { getTitle } from '../utils/coin-db';
 import CryptoIcon from './crypto-icon';
 
 export interface ICryptoAddress {
-  address: string
-  ticker: string
-  note?: string
+  address: string;
+  ticker: string;
+  note?: string;
 }
 
 const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {

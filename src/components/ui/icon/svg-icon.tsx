@@ -3,13 +3,13 @@ import InlineSVG, { Props as InlineSVGProps } from 'react-inlinesvg'; // eslint-
 
 interface ISvgIcon extends InlineSVGProps {
   /** Class name for the <svg> */
-  className?: string
+  className?: string;
   /** Tooltip text for the icon. */
-  alt?: string
+  alt?: string;
   /** URL to the svg file. */
-  src: string
+  src: string;
   /** Width and height of the icon in pixels. */
-  size?: number
+  size?: number;
 }
 
 /** Renders an inline SVG with an empty frame loading state */

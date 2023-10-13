@@ -43,15 +43,15 @@ type AdminAccountRecord = ReturnType<typeof normalizeAdminAccount>;
 type AdminReportRecord = ReturnType<typeof normalizeAdminReport>;
 
 export interface ReducerAdminAccount extends AdminAccountRecord {
-  account: string | null
+  account: string | null;
 }
 
 export interface ReducerAdminReport extends AdminReportRecord {
-  account: string | null
-  target_account: string | null
-  action_taken_by_account: string | null
-  assigned_account: string | null
-  statuses: ImmutableList<string | null>
+  account: string | null;
+  target_account: string | null;
+  action_taken_by_account: string | null;
+  assigned_account: string | null;
+  statuses: ImmutableList<string | null>;
 }
 
 // Lol https://javascript.plainenglish.io/typescript-essentials-conditionally-filter-types-488705bfbf56
@@ -59,8 +59,8 @@ type FilterConditionally<Source, Condition> = Pick<Source, {[K in keyof Source]:
 
 type SetKeys = keyof FilterConditionally<State, ImmutableOrderedSet<string>>;
 
-type APIReport = { id: string, state: string, statuses: any[] };
-type APIUser = { id: string, email: string, nickname: string, registration_reason: string };
+type APIReport = { id: string; state: string; statuses: any[] };
+type APIUser = { id: string; email: string; nickname: string; registration_reason: string };
 
 type Filter = 'local' | 'need_approval' | 'active';
 

@@ -12,7 +12,7 @@ const messages = defineMessages({
 });
 
 interface IDomain {
-  domain: string
+  domain: string;
 }
 
 const Domain: React.FC<IDomain> = ({ domain }) => {

@@ -17,7 +17,7 @@ const messages = defineMessages({
   autoDeleteMessageTooltip: { id: 'chat_window.auto_delete_tooltip', defaultMessage: 'Chat messages are set to auto-delete after {day, plural, one {# day} other {# days}} upon sending.' },
 });
 
-const LinkWrapper = ({ enabled, to, children }: { enabled: boolean, to: string, children: React.ReactNode }): JSX.Element => {
+const LinkWrapper = ({ enabled, to, children }: { enabled: boolean; to: string; children: React.ReactNode }): JSX.Element => {
   if (!enabled) {
     return <>{children}</>;
   }
@@ -73,7 +73,7 @@ const ChatWindow = () => {
               <button onClick={closeChat}>
                 <Icon
                   src={require('@tabler/icons/arrow-left.svg')}
-                  className='h-6 w-6 text-gray-600 dark:text-gray-400'
+                  className='h-6 w-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
                 />
               </button>
             )}

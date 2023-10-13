@@ -4,7 +4,7 @@ import { spring } from 'react-motion';
 import Motion from '../../ui/util/optional-motion';
 
 interface IWarning {
-  message: React.ReactNode
+  message: React.ReactNode;
 }
 
 /** Warning message displayed in ComposeForm. */

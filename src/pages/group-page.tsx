@@ -3,11 +3,9 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
 import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
-import GroupLookupHoc from 'soapbox/components/hoc/group-lookup-hoc';
 import { Column, Icon, Layout, Stack, Text, Tabs } from 'soapbox/components/ui';
 import GroupHeader from 'soapbox/features/group/components/group-header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   CtaBanner,
   GroupMediaPanel,
@@ -27,9 +25,9 @@ const messages = defineMessages({
 
 interface IGroupPage {
   params?: {
-    groupId?: string
-  }
-  children: React.ReactNode
+    groupId?: string;
+  };
+  children: React.ReactNode;
 }
 
 const DeletedBlankslate = () => (
@@ -167,28 +165,20 @@ const GroupPage: React.FC<IGroupPage> = ({ params, children }) => {
         </Column>
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
-        <BundleContainer fetchComponent={GroupMediaPanel}>
-          {Component => <Component group={group} />}
-        </BundleContainer>
-        <BundleContainer fetchComponent={SuggestedGroupsPanel}>
-          {Component => <Component />}
-        </BundleContainer>
-        <LinkFooter key='link-footer' />
+        <GroupMediaPanel group={group} />
+        <SuggestedGroupsPanel />
+        <LinkFooter />
       </Layout.Aside>
     </>
   );
 };
 
-export default GroupLookupHoc(GroupPage as any) as any;
+export default GroupPage;

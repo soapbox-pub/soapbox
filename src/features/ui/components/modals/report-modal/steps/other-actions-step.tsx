@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 interface IOtherActionsStep {
-  account: Account
+  account: Account;
 }
 
 const OtherActionsStep = ({ account }: IOtherActionsStep) => {

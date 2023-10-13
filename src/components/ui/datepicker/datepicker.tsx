@@ -9,7 +9,7 @@ const getDaysInMonth = (month: number, year: number) => new Date(year, month + 1
 const currentYear = new Date().getFullYear();
 
 interface IDatepicker {
-  onChange(date: Date): void
+  onChange(date: Date): void;
 }
 
 /**

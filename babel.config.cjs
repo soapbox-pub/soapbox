@@ -15,7 +15,7 @@ module.exports = (api) => {
       ['@babel/env', envOptions],
     ],
     plugins: [
-      ['react-intl', { messagesDir: './build/messages/' }],
+      'formatjs',
       'preval',
     ],
     'sourceType': 'unambiguous',

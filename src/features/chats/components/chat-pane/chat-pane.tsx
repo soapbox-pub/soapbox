@@ -80,7 +80,7 @@ const ChatPane = () => {
   // Active chat
   if (screen === ChatWidgetScreens.CHAT || screen === ChatWidgetScreens.CHAT_SETTINGS) {
     return (
-      <Pane isOpen={isOpen} index={0} main>
+      <Pane isOpen={isOpen}>
         <ChatWindow />
       </Pane>
     );
@@ -88,7 +88,7 @@ const ChatPane = () => {
 
   if (screen === ChatWidgetScreens.SEARCH) {
     return (
-      <Pane isOpen={isOpen} index={0} main>
+      <Pane isOpen={isOpen}>
         <ChatSearchHeader />
 
         {isOpen ? <ChatSearch /> : null}
@@ -97,7 +97,7 @@ const ChatPane = () => {
   }
 
   return (
-    <Pane isOpen={isOpen} index={0} main>
+    <Pane isOpen={isOpen}>
       <ChatPaneHeader
         title={<FormattedMessage id='column.chats' defaultMessage='Chats' />}
         unreadCount={unreadChatsCount}

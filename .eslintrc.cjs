@@ -258,17 +258,7 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
-    '@typescript-eslint/member-delimiter-style': [
-      'error',
-      {
-        multiline: {
-          delimiter: 'none',
-        },
-        singleline: {
-          delimiter: 'comma',
-        },
-      },
-    ],
+    '@typescript-eslint/member-delimiter-style': 'error',
 
     'promise/catch-or-return': 'error',
 

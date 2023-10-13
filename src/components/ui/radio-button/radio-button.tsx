@@ -4,11 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import HStack from '../hstack/hstack';
 
 interface IRadioButton {
-  value: string
-  checked?: boolean
-  name: string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  label: React.ReactNode
+  value: string;
+  checked?: boolean;
+  name: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  label: React.ReactNode;
 }
 
 /**

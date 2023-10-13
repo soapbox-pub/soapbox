@@ -27,9 +27,9 @@ const messages = defineMessages({
 });
 
 interface ISensitiveContentOverlay {
-  status: StatusEntity
-  onToggleVisibility?(): void
-  visible?: boolean
+  status: StatusEntity;
+  onToggleVisibility?(): void;
+  visible?: boolean;
 }
 
 const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {

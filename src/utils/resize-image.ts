@@ -2,8 +2,8 @@
 const DEFAULT_MAX_PIXELS = 1920 * 1080;
 
 interface BrowserCanvasQuirks {
-  'image-orientation-automatic'?: boolean
-  'canvas-read-unreliable'?: boolean
+  'image-orientation-automatic'?: boolean;
+  'canvas-read-unreliable'?: boolean;
 }
 
 const _browser_quirks: BrowserCanvasQuirks = {};
@@ -147,11 +147,11 @@ const processImage = (
     type = 'image/png',
     name = 'resized.png',
   } : {
-    width: number
-    height: number
-    orientation: number
-    type?: string
-    name?: string
+    width: number;
+    height: number;
+    orientation: number;
+    type?: string;
+    name?: string;
   },
 ) => new Promise<File>((resolve, reject) => {
   const canvas  = document.createElement('canvas');

@@ -10,11 +10,11 @@ export type ToastText = string | MessageDescriptor
 export type ToastType = 'success' | 'error' | 'info'
 
 interface IToastOptions {
-  action?(): void
-  actionLink?: string
-  actionLabel?: ToastText
-  duration?: number
-  summary?: string
+  action?(): void;
+  actionLink?: string;
+  actionLabel?: ToastText;
+  duration?: number;
+  summary?: string;
 }
 
 const DEFAULT_DURATION = 4000;
@@ -40,7 +40,7 @@ function error(message: ToastText, opts?: IToastOptions) {
 }
 
 const messages = defineMessages({
-  unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'An unexpected error occurred.' },
+  unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'Something went wrong.' },
 });
 
 function showAlertForError(networkError: AxiosError<any>) {

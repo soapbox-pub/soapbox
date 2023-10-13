@@ -20,13 +20,13 @@ const renderText = (text: ToastText) => {
 };
 
 interface IToast {
-  t: RHToast
-  message: ToastText
-  type: ToastType
-  action?(): void
-  actionLink?: string
-  actionLabel?: ToastText
-  summary?: string
+  t: RHToast;
+  message: ToastText;
+  type: ToastType;
+  action?(): void;
+  actionLink?: string;
+  actionLabel?: ToastText;
+  summary?: string;
 }
 
 /**

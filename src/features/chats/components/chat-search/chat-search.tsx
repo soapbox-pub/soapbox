@@ -21,7 +21,7 @@ const messages = defineMessages({
 });
 
 interface IChatSearch {
-  isMainPage?: boolean
+  isMainPage?: boolean;
 }
 
 const ChatSearch = (props: IChatSearch) => {

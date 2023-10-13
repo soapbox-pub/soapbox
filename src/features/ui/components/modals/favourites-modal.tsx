@@ -8,8 +8,8 @@ import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 interface IFavouritesModal {
-  onClose: (type: string) => void
-  statusId: string
+  onClose: (type: string) => void;
+  statusId: string;
 }
 
 const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {

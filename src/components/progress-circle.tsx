@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface IProgressCircle {
-  progress: number
-  radius?: number
-  stroke?: number
-  title?: string
+  progress: number;
+  radius?: number;
+  stroke?: number;
+  title?: string;
 }
 
 const ProgressCircle: React.FC<IProgressCircle> = ({ progress, radius = 12, stroke = 4, title }) => {

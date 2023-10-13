@@ -11,9 +11,9 @@ const badgeToTag = (badge: string) => badge.replace(/^badge:/, '');
 /** Difference between an old and new set of tags. */
 interface TagDiff {
   /** New tags that were added. */
-  added: string[]
+  added: string[];
   /** Old tags that were removed. */
-  removed: string[]
+  removed: string[];
 }
 
 /** Returns the differences between two sets of tags. */

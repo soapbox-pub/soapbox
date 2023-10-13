@@ -7,15 +7,15 @@ import Stack from '../stack/stack';
 
 interface IFormGroup {
   /** Input label message. */
-  labelText?: React.ReactNode
+  labelText?: React.ReactNode;
   /** Input label tooltip message. */
-  labelTitle?: string
+  labelTitle?: string;
   /** Input hint message. */
-  hintText?: React.ReactNode
+  hintText?: React.ReactNode;
   /** Input errors. */
-  errors?: string[]
+  errors?: string[];
   /** Elements to display within the FormGroup. */
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Input container with label. Renders the child. */

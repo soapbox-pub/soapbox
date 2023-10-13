@@ -5,7 +5,7 @@ import { HStack, Icon, Popover, Stack, Text } from 'soapbox/components/ui';
 import { Group } from 'soapbox/types/entities';
 
 interface IGroupPolicy {
-  group: Group
+  group: Group;
 }
 
 const GroupPrivacy = ({ group }: IGroupPolicy) => (

@@ -10,16 +10,16 @@ import { PaginatedResult, removePageItem } from '../utils/queries';
 import type { IAccount } from './accounts';
 
 type Suggestion = {
-  source: 'staff'
-  account: IAccount
+  source: 'staff';
+  account: IAccount;
 }
 
 type Result = {
-  account: string
+  account: string;
 }
 
 type PageParam = {
-  link?: string
+  link?: string;
 }
 
 const SuggestionKeys = {
@@ -87,7 +87,7 @@ function useOnboardingSuggestions() {
   const api = useApi();
   const dispatch = useAppDispatch();
 
-  const getV2Suggestions = async (pageParam: any): Promise<{ data: Suggestion[], link: string | undefined, hasMore: boolean }> => {
+  const getV2Suggestions = async (pageParam: any): Promise<{ data: Suggestion[]; link: string | undefined; hasMore: boolean }> => {
     const link = pageParam?.link || '/api/v2/suggestions';
     const response = await api.get<Suggestion[]>(link);
     const hasMore = !!response.headers.link;

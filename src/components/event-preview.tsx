@@ -19,10 +19,10 @@ const messages = defineMessages({
 });
 
 interface IEventPreview {
-  status: StatusEntity
-  className?: string
-  hideAction?: boolean
-  floatingAction?: boolean
+  status: StatusEntity;
+  className?: string;
+  hideAction?: boolean;
+  floatingAction?: boolean;
 }
 
 const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, floatingAction = true }) => {

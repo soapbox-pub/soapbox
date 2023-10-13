@@ -4,16 +4,16 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Icon, Input } from 'soapbox/components/ui';
 
 const messages = defineMessages({
-  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Search inbox' },
+  searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
 });
 
 interface IChatSearchInput {
   /** Search term. */
-  value: string
+  value: string;
   /** Callback when the search value changes. */
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
   /** Callback when the input is cleared. */
-  onClear: React.MouseEventHandler<HTMLButtonElement>
+  onClear: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 /** Search input for filtering chats. */

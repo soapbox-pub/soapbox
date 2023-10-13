@@ -1,25 +1,20 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
-import { undoUploadCompose, changeUploadCompose, submitCompose } from 'soapbox/actions/compose';
+import { undoUploadCompose, changeUploadCompose } from 'soapbox/actions/compose';
 import Upload from 'soapbox/components/upload';
 import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks';
 
 interface IUploadCompose {
-  id: string
-  composeId: string
+  id: string;
+  composeId: string;
+  onSubmit?(): void;
 }
 
-const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id }) => {
-  const history = useHistory();
+const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id, onSubmit }) => {
   const dispatch = useAppDispatch();
   const { description_limit: descriptionLimit } = useInstance();
 
   const media = useCompose(composeId).media_attachments.find(item => item.id === id)!;
-
-  const handleSubmit = () => {
-    dispatch(submitCompose(composeId, history));
-  };
 
   const handleDescriptionChange = (description: string) => {
     dispatch(changeUploadCompose(composeId, media.id, { description }));
@@ -34,7 +29,7 @@ const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id }) => {
       media={media}
       onDelete={handleDelete}
       onDescriptionChange={handleDescriptionChange}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       descriptionLimit={descriptionLimit}
       withPreview
     />

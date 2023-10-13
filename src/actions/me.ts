@@ -1,4 +1,5 @@
 import { selectAccount } from 'soapbox/selectors';
+import { setSentryAccount } from 'soapbox/sentry';
 import KVStore from 'soapbox/storage/kv-store';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 
@@ -8,6 +9,7 @@ import { loadCredentials } from './auth';
 import { importFetchedAccount } from './importer';
 
 import type { AxiosError, RawAxiosRequestHeaders } from 'axios';
+import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -88,10 +90,14 @@ const fetchMeRequest = () => ({
   type: ME_FETCH_REQUEST,
 });
 
-const fetchMeSuccess = (me: APIEntity) => ({
-  type: ME_FETCH_SUCCESS,
-  me,
-});
+const fetchMeSuccess = (account: Account) => {
+  setSentryAccount(account);
+
+  return {
+    type: ME_FETCH_SUCCESS,
+    me: account,
+  };
+};
 
 const fetchMeFail = (error: APIEntity) => ({
   type: ME_FETCH_FAIL,
@@ -104,8 +110,8 @@ const patchMeRequest = () => ({
 });
 
 interface MePatchSuccessAction {
-  type: typeof ME_PATCH_SUCCESS
-  me: APIEntity
+  type: typeof ME_PATCH_SUCCESS;
+  me: APIEntity;
 }
 
 const patchMeSuccess = (me: APIEntity) =>

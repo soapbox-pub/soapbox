@@ -1,16 +1,16 @@
 import { default as lodashGet } from 'lodash/get';
 
 interface LegacyMap {
-  get(key: any): unknown
-  getIn(keyPath: any[]): unknown
-  toJS(): any
+  get(key: any): unknown;
+  getIn(keyPath: any[]): unknown;
+  toJS(): any;
 }
 
 interface LegacyStore<T> extends LegacyMap {
-  get(key: any): T & LegacyMap | undefined
-  getIn(keyPath: any[]): unknown
-  find(predicate: (value: T & LegacyMap, key: string) => boolean): T & LegacyMap | undefined
-  filter(predicate: (value: T & LegacyMap, key: string) => boolean): (T & LegacyMap)[]
+  get(key: any): T & LegacyMap | undefined;
+  getIn(keyPath: any[]): unknown;
+  find(predicate: (value: T & LegacyMap, key: string) => boolean): T & LegacyMap | undefined;
+  filter(predicate: (value: T & LegacyMap, key: string) => boolean): (T & LegacyMap)[];
 }
 
 function immutableizeEntity<T extends Record<any, any>>(entity: T): T & LegacyMap {

@@ -12,7 +12,7 @@ import ChatPageSidebar from './components/chat-page-sidebar';
 import Welcome from './components/welcome';
 
 interface IChatPage {
-  chatId?: string
+  chatId?: string;
 }
 
 const ChatPage: React.FC<IChatPage> = ({ chatId }) => {

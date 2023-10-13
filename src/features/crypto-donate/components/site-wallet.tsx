@@ -6,7 +6,7 @@ import { useSoapboxConfig } from 'soapbox/hooks';
 import CryptoAddress from './crypto-address';
 
 interface ISiteWallet {
-  limit?: number
+  limit?: number;
 }
 
 const SiteWallet: React.FC<ISiteWallet> = ({ limit }): JSX.Element => {

@@ -11,7 +11,7 @@ export enum TabItems {
 }
 
 interface ITabBar {
-  activeTab: TabItems
+  activeTab: TabItems;
 }
 
 const TabBar = ({ activeTab }: ITabBar) => {

@@ -15,10 +15,10 @@ const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
 }, 600);
 
 interface IHoverRefWrapper {
-  accountId: string
-  inline?: boolean
-  className?: string
-  children: React.ReactNode
+  accountId: string;
+  inline?: boolean;
+  className?: string;
+  children: React.ReactNode;
 }
 
 /** Makes a profile hover card appear when the wrapped element is hovered. */

@@ -4,10 +4,10 @@ import Icon, { IIcon } from 'soapbox/components/icon';
 import { Counter } from 'soapbox/components/ui';
 
 interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
-  count: number
-  countMax?: number
-  icon?: string
-  src?: string
+  count: number;
+  countMax?: number;
+  icon?: string;
+  src?: string;
 }
 
 const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, countMax, ...rest }) => {

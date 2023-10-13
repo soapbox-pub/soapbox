@@ -25,7 +25,7 @@ const messages = defineMessages({
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
   mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
   mutes: { id: 'settings.mutes', defaultMessage: 'Mutes' },
-  other: { id: 'settings.other', defaultMessage: 'Other options' },
+  other: { id: 'settings.other', defaultMessage: 'Other Options' },
   preferences: { id: 'settings.preferences', defaultMessage: 'Preferences' },
   privacy: { id: 'settings.privacy', defaultMessage: 'Privacy' },
   profile: { id: 'settings.profile', defaultMessage: 'Profile' },

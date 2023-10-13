@@ -35,10 +35,10 @@ function redirectToAccount(accountId: string, routerHistory: any) {
 }
 
 interface ISearch {
-  autoFocus?: boolean
-  autoSubmit?: boolean
-  autosuggest?: boolean
-  openInRoute?: boolean
+  autoFocus?: boolean;
+  autoSubmit?: boolean;
+  autosuggest?: boolean;
+  openInRoute?: boolean;
 }
 
 const Search = (props: ISearch) => {

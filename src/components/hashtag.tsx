@@ -10,7 +10,7 @@ import { HStack, Stack, Text } from './ui';
 import type { Tag } from 'soapbox/types/entities';
 
 interface IHashtag {
-  hashtag: Tag
+  hashtag: Tag;
 }
 
 const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {

@@ -3,13 +3,13 @@ import React, { HTMLAttributes } from 'react';
 import { HStack, IconButton, Text } from 'soapbox/components/ui';
 
 interface IChatPaneHeader {
-  isOpen: boolean
-  isToggleable?: boolean
-  onToggle(): void
-  title: string | React.ReactNode
-  unreadCount?: number
-  secondaryAction?(): void
-  secondaryActionIcon?: string
+  isOpen: boolean;
+  isToggleable?: boolean;
+  onToggle(): void;
+  title: string | React.ReactNode;
+  unreadCount?: number;
+  secondaryAction?(): void;
+  secondaryActionIcon?: string;
 }
 
 const ChatPaneHeader = (props: IChatPaneHeader) => {

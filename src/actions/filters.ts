@@ -33,7 +33,7 @@ const messages = defineMessages({
   removed: { id: 'filters.removed', defaultMessage: 'Filter deleted.' },
 });
 
-type FilterKeywords = { keyword: string, whole_word: boolean }[];
+type FilterKeywords = { keyword: string; whole_word: boolean }[];
 
 const fetchFiltersV1 = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {

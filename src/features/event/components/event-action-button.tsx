@@ -15,8 +15,8 @@ const messages = defineMessages({
 });
 
 interface IEventAction {
-  status: StatusEntity
-  theme?: ButtonThemes
+  status: StatusEntity;
+  theme?: ButtonThemes;
 }
 
 const EventActionButton: React.FC<IEventAction> = ({ status, theme = 'secondary' }) => {

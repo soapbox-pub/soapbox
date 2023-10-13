@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface IBadge {
-  title: React.ReactNode
-  slug: string
+  title: React.ReactNode;
+  slug: string;
 }
 /** Badge to display on a user's profile. */
 const Badge: React.FC<IBadge> = ({ title, slug }) => {

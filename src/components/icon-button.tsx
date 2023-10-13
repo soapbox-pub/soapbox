@@ -4,13 +4,13 @@ import React from 'react';
 import Icon from 'soapbox/components/icon';
 
 interface IIconButton extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'disabled' | 'onClick' | 'onKeyDown' | 'onKeyPress' | 'onKeyUp' | 'onMouseDown' | 'onMouseEnter' | 'onMouseLeave' | 'tabIndex' | 'title'> {
-  active?: boolean
-  expanded?: boolean
-  iconClassName?: string
-  pressed?: boolean
-  size?: number
-  src: string
-  text?: React.ReactNode
+  active?: boolean;
+  expanded?: boolean;
+  iconClassName?: string;
+  pressed?: boolean;
+  size?: number;
+  src: string;
+  text?: React.ReactNode;
 }
 
 const IconButton: React.FC<IIconButton> = ({

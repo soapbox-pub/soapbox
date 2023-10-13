@@ -17,8 +17,8 @@ const messages = defineMessages({
 });
 
 interface IDetailsStep {
-  params: CreateGroupParams
-  onChange(params: CreateGroupParams): void
+  params: CreateGroupParams;
+  onChange(params: CreateGroupParams): void;
 }
 
 const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {

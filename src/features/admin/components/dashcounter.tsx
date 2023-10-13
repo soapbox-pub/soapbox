@@ -6,10 +6,10 @@ import { Text } from 'soapbox/components/ui';
 import { isNumber } from 'soapbox/utils/numbers';
 
 interface IDashCounter {
-  count: number | undefined
-  label: React.ReactNode
-  to?: string
-  percent?: boolean
+  count: number | undefined;
+  label: React.ReactNode;
+  to?: string;
+  percent?: boolean;
 }
 
 /** Displays a (potentially clickable) dashboard statistic. */
@@ -39,7 +39,7 @@ const DashCounter: React.FC<IDashCounter> = ({ count, label, to = '#', percent =
 };
 
 interface IDashCounters {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Wrapper container for dash counters. */

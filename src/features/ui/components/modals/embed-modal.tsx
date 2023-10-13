@@ -9,8 +9,8 @@ import { useAppDispatch } from 'soapbox/hooks';
 import useEmbed from 'soapbox/queries/embed';
 
 interface IEmbedModal {
-  url: string
-  onError: (error: any) => void
+  url: string;
+  onError: (error: any) => void;
 }
 
 const EmbedModal: React.FC<IEmbedModal> = ({ url, onError }) => {

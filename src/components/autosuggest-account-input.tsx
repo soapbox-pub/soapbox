@@ -12,16 +12,16 @@ import type { InputThemes } from 'soapbox/components/ui/input/input';
 const noOp = () => { };
 
 interface IAutosuggestAccountInput {
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  onSelected: (accountId: string) => void
-  autoFocus?: boolean
-  value: string
-  limit?: number
-  className?: string
-  autoSelect?: boolean
-  menu?: Menu
-  onKeyDown?: React.KeyboardEventHandler
-  theme?: InputThemes
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSelected: (accountId: string) => void;
+  autoFocus?: boolean;
+  value: string;
+  limit?: number;
+  className?: string;
+  autoSelect?: boolean;
+  menu?: Menu;
+  onKeyDown?: React.KeyboardEventHandler;
+  theme?: InputThemes;
 }
 
 const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({

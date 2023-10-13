@@ -18,8 +18,8 @@ const messages = defineMessages({
 });
 
 interface IEditFederationModal {
-  host: string
-  onClose: () => void
+  host: string;
+  onClose: () => void;
 }
 
 /** Modal for moderators to edit federation with a remote instance. */

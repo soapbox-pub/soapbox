@@ -5,15 +5,14 @@ import { FormattedMessage } from 'react-intl';
 import { fetchPinnedAccounts } from 'soapbox/actions/accounts';
 import { Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 interface IPinnedAccountsPanel {
-  account: Account
-  limit: number
+  account: Account;
+  limit: number;
 }
 
 const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit }) => {
@@ -26,9 +25,7 @@ const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit })
 
   if (pinned.isEmpty()) {
     return (
-      <BundleContainer fetchComponent={WhoToFollowPanel}>
-        {Component => <Component limit={limit} />}
-      </BundleContainer>
+      <WhoToFollowPanel limit={limit} />
     );
   }
 

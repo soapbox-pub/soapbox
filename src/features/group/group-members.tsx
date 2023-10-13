@@ -15,7 +15,7 @@ import type { Group } from 'soapbox/types/entities';
 
 
 interface IGroupMembers {
-  params: { groupId: string }
+  params: { groupId: string };
 }
 
 export const MAX_ADMIN_COUNT = 5;

@@ -3,7 +3,7 @@ import React from 'react';
 import HStack from '../hstack/hstack';
 
 interface IFormActions {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /** Container element to house form actions. */

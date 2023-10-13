@@ -10,8 +10,8 @@ import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { useUpdateCredentials } from 'soapbox/queries/accounts';
 
 type FormData = {
-  accepts_chat_messages?: boolean
-  chats_onboarded: boolean
+  accepts_chat_messages?: boolean;
+  chats_onboarded: boolean;
 }
 
 const messages = defineMessages({
@@ -51,7 +51,7 @@ const ChatPageSettings = () => {
       <HStack alignItems='center'>
         <IconButton
           src={require('@tabler/icons/arrow-left.svg')}
-          className='mr-2 h-7 w-7 sm:mr-0 sm:hidden'
+          className='mr-2 h-7 w-7 rtl:rotate-180 sm:mr-0 sm:hidden'
           onClick={() => history.push('/chats')}
         />
 

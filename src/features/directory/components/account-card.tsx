@@ -13,7 +13,7 @@ import { useAppSelector } from 'soapbox/hooks';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IAccountCard {
-  id: string
+  id: string;
 }
 
 const AccountCard: React.FC<IAccountCard> = ({ id }) => {

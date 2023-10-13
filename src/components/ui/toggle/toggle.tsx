@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useRef } from 'react';
 
 interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'name' | 'checked' | 'onChange' | 'required' | 'disabled'> {
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md';
 }
 
 /** A glorified checkbox. */
@@ -30,9 +30,9 @@ const Toggle: React.FC<IToggle> = ({ id, size = 'md', name, checked = false, onC
     >
       <div className={clsx('rounded-full bg-white transition-transform', {
         'h-4.5 w-4.5': size === 'sm',
-        'translate-x-3.5': size === 'sm' && checked,
+        'translate-x-3.5 rtl:-translate-x-3.5': size === 'sm' && checked,
         'h-6 w-6': size === 'md',
-        'translate-x-4': size === 'md' && checked,
+        'translate-x-4 rtl:-translate-x-4': size === 'md' && checked,
       })}
       />
 

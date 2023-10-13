@@ -1,13 +1,13 @@
 import throttle from 'lodash/throttle';
 import React, { useRef } from 'react';
 
-type Point = { x: number, y: number };
+type Point = { x: number; y: number };
 
 interface ISlider {
   /** Value between 0 and 1. */
-  value: number
+  value: number;
   /** Callback when the value changes. */
-  onChange(value: number): void
+  onChange(value: number): void;
 }
 
 /** Draggable slider component. */

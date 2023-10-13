@@ -12,8 +12,8 @@ const messages = defineMessages({
 });
 
 interface IIconPickerDropdown {
-  value: string
-  onPickIcon: (icon: string) => void
+  value: string;
+  onPickIcon: (icon: string) => void;
 }
 
 const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickIcon }) => {

@@ -17,8 +17,8 @@ import type { List as ImmutableList } from 'immutable';
 import type { Attachment, Status } from 'soapbox/types/entities';
 
 interface ILoadMoreMedia {
-  maxId: string | null
-  onLoadMore: (value: string | null) => void
+  maxId: string | null;
+  onLoadMore: (value: string | null) => void;
 }
 
 const LoadMoreMedia: React.FC<ILoadMoreMedia> = ({ maxId, onLoadMore }) => {

@@ -13,7 +13,7 @@ import LayoutButtons, { GroupLayout } from './components/discover/layout-buttons
 import type { Group } from 'soapbox/schemas';
 
 const messages = defineMessages({
-  label: { id: 'groups.popular.label', defaultMessage: 'Popular Groups' },
+  label: { id: 'groups.popular.label', defaultMessage: 'Suggested Groups' },
 });
 
 const GridList: Components['List'] = React.forwardRef((props, ref) => {

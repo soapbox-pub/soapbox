@@ -18,15 +18,15 @@ const messages = defineMessages({
 });
 
 interface IAccountWithReaction {
-  id: string
-  reaction: string
-  reactionUrl?: string
+  id: string;
+  reaction: string;
+  reactionUrl?: string;
 }
 
 interface IReactionsModal {
-  onClose: (string: string) => void
-  statusId: string
-  reaction?: string
+  onClose: (string: string) => void;
+  statusId: string;
+  reaction?: string;
 }
 
 const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction: initialReaction }) => {

@@ -11,7 +11,7 @@ import { generateThemeCss } from 'soapbox/utils/theme';
 
 interface ISitePreview {
   /** Raw Soapbox configuration. */
-  soapbox: any
+  soapbox: any;
 }
 
 /** Renders a preview of the website's style with the configuration applied. */

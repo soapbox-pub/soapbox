@@ -10,8 +10,8 @@ const messages = defineMessages({
 });
 
 interface IThemeSelector {
-  value: string
-  onChange: (value: string) => void
+  value: string;
+  onChange: (value: string) => void;
 }
 
 /** Pure theme selector. */

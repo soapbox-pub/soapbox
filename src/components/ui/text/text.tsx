@@ -56,33 +56,33 @@ type Directions = 'ltr' | 'rtl'
 
 interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'dangerouslySetInnerHTML' | 'tabIndex' | 'lang'> {
   /** Text content. */
-  children?: React.ReactNode
+  children?: React.ReactNode;
   /** How to align the text. */
-  align?: keyof typeof alignments
+  align?: keyof typeof alignments;
   /** Extra class names for the outer element. */
-  className?: string
+  className?: string;
   /** Text direction. */
-  direction?: Directions
+  direction?: Directions;
   /** Typeface of the text. */
-  family?: keyof typeof families
+  family?: keyof typeof families;
   /** The "for" attribute specifies which form element a label is bound to. */
-  htmlFor?: string
+  htmlFor?: string;
   /** Font size of the text. */
-  size?: Sizes
+  size?: Sizes;
   /** HTML element name of the outer element. */
-  tag?: Tags
+  tag?: Tags;
   /** Theme for the text. */
-  theme?: keyof typeof themes
+  theme?: keyof typeof themes;
   /** Letter-spacing of the text. */
-  tracking?: keyof typeof trackingSizes
+  tracking?: keyof typeof trackingSizes;
   /** Transform (eg uppercase) for the text. */
-  transform?: keyof typeof transformProperties
+  transform?: keyof typeof transformProperties;
   /** Whether to truncate the text if its container is too small. */
-  truncate?: boolean
+  truncate?: boolean;
   /** Font weight of the text. */
-  weight?: keyof typeof weights
+  weight?: keyof typeof weights;
   /** Tooltip title. */
-  title?: string
+  title?: string;
 }
 
 /** UI-friendly text container with dark mode support. */

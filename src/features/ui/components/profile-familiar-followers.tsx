@@ -12,12 +12,12 @@ import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas';
 
 const getAccount = makeGetAccount();
 
 interface IProfileFamiliarFollowers {
-  account: Account
+  account: Account;
 }
 
 const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account }) => {

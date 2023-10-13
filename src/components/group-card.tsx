@@ -11,7 +11,7 @@ import { HStack, Stack, Text } from './ui';
 import type { Group as GroupEntity } from 'soapbox/types/entities';
 
 interface IGroupCard {
-  group: GroupEntity
+  group: GroupEntity;
 }
 
 const GroupCard: React.FC<IGroupCard> = ({ group }) => {

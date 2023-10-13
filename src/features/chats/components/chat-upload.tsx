@@ -12,8 +12,8 @@ import ChatUploadPreview from './chat-upload-preview';
 import type { Attachment } from 'soapbox/types/entities';
 
 interface IChatUpload {
-  attachment: Attachment
-  onDelete?(): void
+  attachment: Attachment;
+  onDelete?(): void;
 }
 
 /** An attachment uploaded to the chat composer, before sending. */
@@ -44,7 +44,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
 };
 
 interface IRemoveButton {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 /** Floating button to remove an attachment. */

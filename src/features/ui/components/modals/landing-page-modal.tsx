@@ -14,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface ILandingPageModal {
-  onClose: (type: string) => void
+  onClose: (type: string) => void;
 }
 
 /** Login and links to display from the hamburger menu of the homepage. */

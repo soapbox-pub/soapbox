@@ -3,7 +3,7 @@ import { ONBOARDING_START, ONBOARDING_END } from 'soapbox/actions/onboarding';
 import type { OnboardingActions } from 'soapbox/actions/onboarding';
 
 type OnboardingState = {
-  needsOnboarding: boolean
+  needsOnboarding: boolean;
 }
 
 const initialState: OnboardingState = {

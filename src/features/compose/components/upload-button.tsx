@@ -13,14 +13,14 @@ export const onlyImages = (types: string[] | undefined): boolean => {
 };
 
 export interface IUploadButton {
-  disabled?: boolean
-  unavailable?: boolean
-  onSelectFile: (files: FileList, intl: IntlShape) => void
-  style?: React.CSSProperties
-  resetFileKey: number | null
-  className?: string
-  iconClassName?: string
-  icon?: string
+  disabled?: boolean;
+  unavailable?: boolean;
+  onSelectFile: (files: FileList, intl: IntlShape) => void;
+  style?: React.CSSProperties;
+  resetFileKey: number | null;
+  className?: string;
+  iconClassName?: string;
+  icon?: string;
 }
 
 const UploadButton: React.FC<IUploadButton> = ({

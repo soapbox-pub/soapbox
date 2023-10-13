@@ -6,7 +6,6 @@ import { useAccountLookup } from 'soapbox/api/hooks';
 import { Column, Layout, Tabs } from 'soapbox/components/ui';
 import Header from 'soapbox/features/account/components/header';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   WhoToFollowPanel,
   ProfileInfoPanel,
@@ -22,9 +21,9 @@ import { getAcct, isLocal } from 'soapbox/utils/accounts';
 
 interface IProfilePage {
   params?: {
-    username?: string
-  }
-  children: React.ReactNode
+    username?: string;
+  };
+  children: React.ReactNode;
 }
 
 /** Page to display a user's profile. */
@@ -50,7 +49,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       name: 'profile',
     },
     {
-      text: <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />,
+      text: <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts & replies' />,
       to: `/@${username}/with_replies`,
       name: 'replies',
     },
@@ -92,10 +91,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         <Column size='lg' label={account ? `@${getAcct(account, displayFqn)}` : ''} withHeader={false}>
           <div className='space-y-4'>
             <Header account={account} />
-
-            <BundleContainer fetchComponent={ProfileInfoPanel}>
-              {Component => <Component username={username} account={account} />}
-            </BundleContainer>
+            <ProfileInfoPanel username={username} account={account} />
 
             {account && showTabs && (
               <Tabs key={`profile-tabs-${account.id}`} items={tabItems} activeItem={activeItem} />
@@ -106,40 +102,26 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
         </Column>
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
 
         {features.notes && account && account?.id !== me && (
-          <BundleContainer fetchComponent={AccountNotePanel}>
-            {Component => <Component account={account} />}
-          </BundleContainer>
+          <AccountNotePanel account={account} />
         )}
-        <BundleContainer fetchComponent={ProfileMediaPanel}>
-          {Component => <Component account={account} />}
-        </BundleContainer>
+        <ProfileMediaPanel account={account} />
         {(account && account.fields.length > 0) && (
-          <BundleContainer fetchComponent={ProfileFieldsPanel}>
-            {Component => <Component account={account} />}
-          </BundleContainer>
+          <ProfileFieldsPanel account={account} />
         )}
         {(features.accountEndorsements && account && isLocal(account)) ? (
-          <BundleContainer fetchComponent={PinnedAccountsPanel}>
-            {Component => <Component account={account} limit={5} key='pinned-accounts-panel' />}
-          </BundleContainer>
+          <PinnedAccountsPanel account={account} limit={5} />
         ) : me && features.suggestions && (
-          <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={3} key='wtf-panel' />}
-          </BundleContainer>
+          <WhoToFollowPanel limit={3} />
         )}
         <LinkFooter key='link-footer' />
       </Layout.Aside>

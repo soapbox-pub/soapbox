@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor } from 'lexical';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
@@ -14,17 +14,14 @@ import {
   uploadCompose,
 } from 'soapbox/actions/compose';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import AutosuggestTextarea from 'soapbox/components/autosuggest-textarea';
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import Bundle from 'soapbox/features/ui/components/bundle';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container';
-import ScheduleFormContainer from '../containers/schedule-form-container';
 import UploadButtonContainer from '../containers/upload-button-container';
 import WarningContainer from '../containers/warning-container';
 import { $createEmojiNode } from '../editor/nodes/emoji-node';
@@ -37,6 +34,7 @@ import PrivacyDropdown from './privacy-dropdown';
 import ReplyGroupIndicator from './reply-group-indicator';
 import ReplyMentions from './reply-mentions';
 import ScheduleButton from './schedule-button';
+import ScheduleForm from './schedule-form';
 import SpoilerButton from './spoiler-button';
 import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text-character-counter';
@@ -58,13 +56,13 @@ const messages = defineMessages({
 });
 
 interface IComposeForm<ID extends string> {
-  id: ID extends 'default' ? never : ID
-  shouldCondense?: boolean
-  autoFocus?: boolean
-  clickableAreaRef?: React.RefObject<HTMLDivElement>
-  event?: string
-  group?: string
-  extra?: React.ReactNode
+  id: ID extends 'default' ? never : ID;
+  shouldCondense?: boolean;
+  autoFocus?: boolean;
+  clickableAreaRef?: React.RefObject<HTMLDivElement>;
+  event?: string;
+  group?: string;
+  extra?: React.ReactNode;
 }
 
 const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
@@ -83,8 +81,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     spoiler,
     spoiler_text: spoilerText,
     privacy,
-    focusDate,
-    caretPosition,
     is_submitting: isSubmitting,
     is_changing_upload:
     isChangingUpload,
@@ -105,7 +101,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
-  const autosuggestTextareaRef = useRef<AutosuggestTextarea>(null);
   const editorRef = useRef<LexicalEditor>(null);
 
   const { isDraggedOver } = useDraggedFiles(formRef);
@@ -157,7 +152,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       return;
     }
 
-    dispatch(submitCompose(id, history));
+    dispatch(submitCompose(id, { history }));
     editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };
 
@@ -171,11 +166,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const onSpoilerSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
     dispatch(selectComposeSuggestion(id, tokenStart, token, value, ['spoiler_text']));
-  };
-
-  const setCursor = (start: number, end: number = start) => {
-    if (!autosuggestTextareaRef.current?.textarea) return;
-    autosuggestTextareaRef.current.textarea.setSelectionRange(start, end);
   };
 
   const handleEmojiPick = (data: Emoji) => {
@@ -195,17 +185,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     spoilerTextRef.current?.input?.focus();
   };
 
-  const focusTextarea = () => {
-    autosuggestTextareaRef.current?.textarea?.focus();
-  };
-
   useEffect(() => {
-    const length = text.length;
     document.addEventListener('click', handleClick, true);
-
-    if (length > 0) {
-      setCursor(length); // Set cursor at end
-    }
 
     return () => {
       document.removeEventListener('click', handleClick, true);
@@ -214,20 +195,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   useEffect(() => {
     if (spoiler && firstRender.current) {
-      focusTextarea();
       firstRender.current = false;
     } else if (!spoiler && prevSpoiler) {
-      focusTextarea();
+      //
     } else if (spoiler && !prevSpoiler) {
       focusSpoilerInput();
     }
   }, [spoiler]);
-
-  useEffect(() => {
-    if (typeof caretPosition === 'number') {
-      setCursor(caretPosition);
-    }
-  }, [focusDate]);
 
   const renderButtons = useCallback(() => (
     <HStack alignItems='center' space={2}>
@@ -249,7 +223,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const composeModifiers = !condensed && (
     <Stack space={4} className='compose-form__modifiers'>
-      <UploadForm composeId={id} />
+      <UploadForm composeId={id} onSubmit={handleSubmit} />
       <PollForm composeId={id} />
 
       <SpoilerInput
@@ -260,7 +234,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
         ref={spoilerTextRef}
       />
 
-      <ScheduleFormContainer composeId={id} />
+      <ScheduleForm composeId={id} />
     </Stack>
   );
 
@@ -313,23 +287,21 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 
       <div>
-        <Bundle fetchComponent={ComposeEditor}>
-          {(Component: any) => (
-            <Component
-              ref={editorRef}
-              className='mt-2'
-              composeId={id}
-              condensed={condensed}
-              eventDiscussion={!!event}
-              autoFocus={shouldAutoFocus}
-              hasPoll={hasPoll}
-              handleSubmit={handleSubmit}
-              onChange={setText}
-              onFocus={handleComposeFocus}
-              onPaste={onPaste}
-            />
-          )}
-        </Bundle>
+        <Suspense>
+          <ComposeEditor
+            ref={editorRef}
+            className='mt-2'
+            composeId={id}
+            condensed={condensed}
+            eventDiscussion={!!event}
+            autoFocus={shouldAutoFocus}
+            hasPoll={hasPoll}
+            handleSubmit={handleSubmit}
+            onChange={setText}
+            onFocus={handleComposeFocus}
+            onPaste={onPaste}
+          />
+        </Suspense>
         {composeModifiers}
       </div>
 

@@ -13,7 +13,7 @@ import MediaItem from '../../account-gallery/components/media-item';
 import type { Attachment, Group } from 'soapbox/types/entities';
 
 interface IGroupMediaPanel {
-  group?: Group
+  group?: Group;
 }
 
 const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {

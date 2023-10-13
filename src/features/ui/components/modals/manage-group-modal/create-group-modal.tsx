@@ -26,7 +26,7 @@ enum Steps {
 }
 
 interface ICreateGroupModal {
-  onClose: (type?: string) => void
+  onClose: (type?: string) => void;
 }
 
 const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {

@@ -8,11 +8,11 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 
 interface ICSVImporter {
   messages: {
-    input_label: MessageDescriptor
-    input_hint: MessageDescriptor
-    submit: MessageDescriptor
-  }
-  action: (params: FormData) => (dispatch: AppDispatch, getState: () => RootState) => Promise<void>
+    input_label: MessageDescriptor;
+    input_hint: MessageDescriptor;
+    submit: MessageDescriptor;
+  };
+  action: (params: FormData) => (dispatch: AppDispatch, getState: () => RootState) => Promise<void>;
 }
 
 const CSVImporter: React.FC<ICSVImporter> = ({ messages, action }) => {

@@ -26,7 +26,7 @@ const OtpConfirmForm: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const [state, setState] = useState<{ password: string, isLoading: boolean, code: string, qrCodeURI: string, confirmKey: string }>({
+  const [state, setState] = useState<{ password: string; isLoading: boolean; code: string; qrCodeURI: string; confirmKey: string }>({
     password: '',
     isLoading: false,
     code: '',

@@ -13,8 +13,8 @@ const messages = defineMessages({
 
 interface IFollowers {
   params?: {
-    username?: string
-  }
+    username?: string;
+  };
 }
 
 /** Displays a list of accounts who follow the given account. */

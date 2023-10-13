@@ -1,7 +1,7 @@
 import localforage from 'localforage';
 
 interface IKVStore extends LocalForage {
-  getItemOrError: (key: string) => Promise<any>
+  getItemOrError: (key: string) => Promise<any>;
 }
 
 // localForage

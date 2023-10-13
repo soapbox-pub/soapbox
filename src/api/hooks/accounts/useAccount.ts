@@ -10,7 +10,7 @@ import { type Account, accountSchema } from 'soapbox/schemas';
 import { useRelationship } from './useRelationship';
 
 interface UseAccountOpts {
-  withRelationship?: boolean
+  withRelationship?: boolean;
 }
 
 function useAccount(accountId?: string, opts: UseAccountOpts = {}) {

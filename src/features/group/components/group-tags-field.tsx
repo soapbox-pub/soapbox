@@ -10,11 +10,11 @@ const messages = defineMessages({
 });
 
 interface IGroupTagsField {
-  tags: string[]
-  onChange(tags: string[]): void
-  onAddItem(): void
-  onRemoveItem(i: number): void
-  maxItems?: number
+  tags: string[];
+  onChange(tags: string[]): void;
+  onAddItem(): void;
+  onRemoveItem(i: number): void;
+  maxItems?: number;
 }
 
 const GroupTagsField: React.FC<IGroupTagsField> = ({ tags, onChange, onAddItem, onRemoveItem, maxItems = 3 }) => {

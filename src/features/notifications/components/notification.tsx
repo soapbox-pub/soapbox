@@ -148,7 +148,7 @@ const buildMessage = (
     others: totalCount && totalCount > 0 ? (
       <FormattedMessage
         id='notification.others'
-        defaultMessage=' + {count, plural, one {# other} other {# others}}'
+        defaultMessage='+ {count, plural, one {# other} other {# others}}'
         values={{ count: totalCount - 1 }}
       />
     ) : '',
@@ -164,13 +164,13 @@ const buildMessage = (
 const avatarSize = 48;
 
 interface INotificaton {
-  hidden?: boolean
-  notification: NotificationEntity
-  onMoveUp?: (notificationId: string) => void
-  onMoveDown?: (notificationId: string) => void
-  onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void
-  getScrollPosition?: () => ScrollPosition | undefined
-  updateScrollBottom?: (bottom: number) => void
+  hidden?: boolean;
+  notification: NotificationEntity;
+  onMoveUp?: (notificationId: string) => void;
+  onMoveDown?: (notificationId: string) => void;
+  onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void;
+  getScrollPosition?: () => ScrollPosition | undefined;
+  updateScrollBottom?: (bottom: number) => void;
 }
 
 const Notification: React.FC<INotificaton> = (props) => {

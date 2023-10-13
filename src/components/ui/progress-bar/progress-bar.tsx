@@ -6,9 +6,9 @@ import Motion from 'soapbox/features/ui/util/optional-motion';
 
 interface IProgressBar {
   /** Number between 0 and 1 to represent the percentage complete. */
-  progress: number
+  progress: number;
   /** Height of the progress bar. */
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md';
 }
 
 /** A horizontal meter filled to the given percentage. */

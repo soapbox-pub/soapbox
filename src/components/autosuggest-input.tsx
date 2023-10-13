@@ -7,7 +7,6 @@ import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
 import Icon from 'soapbox/components/icon';
 import { Input, Portal } from 'soapbox/components/ui';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
-import { isRtl } from 'soapbox/rtl';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
@@ -17,23 +16,23 @@ import type { Emoji } from 'soapbox/features/emoji';
 export type AutoSuggestion = string | Emoji;
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
-  value: string
-  suggestions: ImmutableList<any>
-  disabled?: boolean
-  placeholder?: string
-  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void
-  onSuggestionsClearRequested: () => void
-  onSuggestionsFetchRequested: (token: string) => void
-  autoFocus: boolean
-  autoSelect: boolean
-  className?: string
-  id?: string
-  searchTokens: string[]
-  maxLength?: number
-  menu?: Menu
-  renderSuggestion?: React.FC<{ id: string }>
-  hidePortal?: boolean
-  theme?: InputThemes
+  value: string;
+  suggestions: ImmutableList<any>;
+  disabled?: boolean;
+  placeholder?: string;
+  onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void;
+  onSuggestionsClearRequested: () => void;
+  onSuggestionsFetchRequested: (token: string) => void;
+  autoFocus: boolean;
+  autoSelect: boolean;
+  className?: string;
+  id?: string;
+  searchTokens: string[];
+  maxLength?: number;
+  menu?: Menu;
+  renderSuggestion?: React.FC<{ id: string }>;
+  hidePortal?: boolean;
+  theme?: InputThemes;
 }
 
 export default class AutosuggestInput extends ImmutablePureComponent<IAutosuggestInput> {
@@ -264,14 +263,8 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
   render() {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
-    const style: React.CSSProperties = { direction: 'ltr' };
 
     const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
-
-    // TODO: convert to functional component and use `useLocale()` hook instead of checking placeholder text.
-    if (isRtl(value) || (!value && placeholder && isRtl(placeholder))) {
-      style.direction = 'rtl';
-    }
 
     return [
       <div key='input' className='relative w-full'>
@@ -291,7 +284,6 @@ export default class AutosuggestInput extends ImmutablePureComponent<IAutosugges
           onKeyUp={onKeyUp}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
-          style={style}
           aria-autocomplete='list'
           id={id}
           maxLength={maxLength}

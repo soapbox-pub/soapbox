@@ -12,8 +12,8 @@ import { makeGetStatus } from 'soapbox/selectors';
 
 interface IEmbeddedStatus {
   params: {
-    statusId: string
-  }
+    statusId: string;
+  };
 }
 
 /** Status to be presented in an iframe for embeds on external websites. */

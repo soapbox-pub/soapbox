@@ -12,8 +12,8 @@ const messages = defineMessages({
 });
 
 interface IPollButton {
-  composeId: string
-  disabled?: boolean
+  composeId: string;
+  disabled?: boolean;
 }
 
 const PollButton: React.FC<IPollButton> = ({ composeId, disabled }) => {

@@ -15,9 +15,9 @@ const messages = defineMessages({
 });
 
 interface IDashWidget {
-  to?: string
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
-  children: React.ReactNode
+  to?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children: React.ReactNode;
 }
 
 const DashWidget: React.FC<IDashWidget> = ({ to, onClick, children }) => {

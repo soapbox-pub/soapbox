@@ -5,14 +5,14 @@ import { useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 interface IStatusContainer extends Omit<IStatus, 'status'> {
-  id: string
-  contextType?: string
+  id: string;
+  contextType?: string;
   /** @deprecated Unused. */
-  otherAccounts?: any
+  otherAccounts?: any;
   /** @deprecated Unused. */
-  getScrollPosition?: any
+  getScrollPosition?: any;
   /** @deprecated Unused. */
-  updateScrollBottom?: any
+  updateScrollBottom?: any;
 }
 
 /**

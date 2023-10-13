@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 interface ISafeEmbed {
   /** Styles for the outer frame element. */
-  className?: string
+  className?: string;
   /** Space-separate list of restrictions to ALLOW for the iframe. */
-  sandbox?: string
+  sandbox?: string;
   /** Unique title for the iframe. */
-  title: string
+  title: string;
   /** HTML body to embed. */
-  html?: string
+  html?: string;
 }
 
 /** Safely embeds arbitrary HTML content on the page (by putting it in an iframe). */

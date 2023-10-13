@@ -17,8 +17,8 @@ L.Icon.Default.mergeOptions({
 });
 
 interface IEventMapModal {
-  onClose: (type: string) => void
-  statusId: string
+  onClose: (type: string) => void;
+  statusId: string;
 }
 
 const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {

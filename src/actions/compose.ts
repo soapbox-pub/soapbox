@@ -91,7 +91,7 @@ const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET' as const;
 
 const messages = defineMessages({
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
-  success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
+  success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent!' },
   editSuccess: { id: 'compose.edit_success', defaultMessage: 'Your post was edited' },
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll: { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
@@ -101,15 +101,15 @@ const messages = defineMessages({
 });
 
 interface ComposeSetStatusAction {
-  type: typeof COMPOSE_SET_STATUS
-  id: string
-  status: Status
-  rawText: string
-  explicitAddressing: boolean
-  spoilerText?: string
-  contentType?: string | false
-  v: ReturnType<typeof parseVersion>
-  withRedraft?: boolean
+  type: typeof COMPOSE_SET_STATUS;
+  id: string;
+  status: Status;
+  rawText: string;
+  explicitAddressing: boolean;
+  spoilerText?: string;
+  contentType?: string | false;
+  v: ReturnType<typeof parseVersion>;
+  withRedraft?: boolean;
 }
 
 const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
@@ -139,12 +139,12 @@ const changeCompose = (composeId: string, text: string) => ({
 });
 
 interface ComposeReplyAction {
-  type: typeof COMPOSE_REPLY
-  id: string
-  status: Status
-  account: Account
-  explicitAddressing: boolean
-  preserveSpoilers: boolean
+  type: typeof COMPOSE_REPLY;
+  id: string;
+  status: Status;
+  account: Account;
+  explicitAddressing: boolean;
+  preserveSpoilers: boolean;
 }
 
 const replyCompose = (status: Status) =>
@@ -176,11 +176,11 @@ const cancelReplyCompose = () => ({
 });
 
 interface ComposeQuoteAction {
-  type: typeof COMPOSE_QUOTE
-  id: string
-  status: Status
-  account: Account | undefined
-  explicitAddressing: boolean
+  type: typeof COMPOSE_QUOTE;
+  id: string;
+  status: Status;
+  account: Account | undefined;
+  explicitAddressing: boolean;
 }
 
 const quoteCompose = (status: Status) =>
@@ -220,9 +220,9 @@ const resetCompose = (composeId = 'compose-modal') => ({
 });
 
 interface ComposeMentionAction {
-  type: typeof COMPOSE_MENTION
-  id: string
-  account: Account
+  type: typeof COMPOSE_MENTION;
+  id: string;
+  account: Account;
 }
 
 const mentionCompose = (account: Account) =>
@@ -238,9 +238,9 @@ const mentionCompose = (account: Account) =>
   };
 
 interface ComposeDirectAction {
-  type: typeof COMPOSE_DIRECT
-  id: string
-  account: Account
+  type: typeof COMPOSE_DIRECT;
+  id: string;
+  account: Account;
 }
 
 const directCompose = (account: Account) =>
@@ -299,8 +299,15 @@ const validateSchedule = (state: RootState, composeId: string) => {
   return schedule.getTime() > fiveMinutesFromNow.getTime();
 };
 
-const submitCompose = (composeId: string, routerHistory?: History, force = false) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+interface SubmitComposeOpts {
+  history?: History;
+  force?: boolean;
+}
+
+const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { history, force = false } = opts;
+
     if (!isLoggedIn(getState)) return;
     const state = getState();
 
@@ -324,7 +331,7 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       dispatch(openModal('MISSING_DESCRIPTION', {
         onContinue: () => {
           dispatch(closeModal('MISSING_DESCRIPTION'));
-          dispatch(submitCompose(composeId, routerHistory, true));
+          dispatch(submitCompose(composeId, { history, force: true }));
         },
       }));
       return;
@@ -360,9 +367,9 @@ const submitCompose = (composeId: string, routerHistory?: History, force = false
       params.group_timeline_visible = compose.group_timeline_visible; // Truth Social
     }
 
-    dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
-      if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && routerHistory) {
-        routerHistory.push('/messages');
+    return dispatch(createStatus(params, idempotencyKey, statusId)).then(function(data) {
+      if (!statusId && data.visibility === 'direct' && getState().conversations.mounted <= 0 && history) {
+        history.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, composeId, data, status, !!statusId);
     }).catch(function(error) {
@@ -524,7 +531,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
     params: {
       q: token.slice(1),
       resolve: false,
-      limit: 4,
+      limit: 10,
     },
   }).then(response => {
     dispatch(importFetchedAccounts(response.data));
@@ -538,7 +545,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
 
 const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
   const state = getState();
-  const results = emojiSearch(token.replace(':', ''), { maxResults: 5 }, state.custom_emojis);
+  const results = emojiSearch(token.replace(':', ''), { maxResults: 10 }, state.custom_emojis);
 
   dispatch(readyComposeSuggestionsEmojis(composeId, token, results));
 };
@@ -565,7 +572,7 @@ const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => Root
     }),
     params: {
       q: token.slice(1),
-      limit: 4,
+      limit: 10,
       type: 'hashtags',
     },
   }).then(response => {
@@ -593,11 +600,11 @@ const fetchComposeSuggestions = (composeId: string, token: string) =>
   };
 
 interface ComposeSuggestionsReadyAction {
-  type: typeof COMPOSE_SUGGESTIONS_READY
-  id: string
-  token: string
-  emojis?: Emoji[]
-  accounts?: APIEntity[]
+  type: typeof COMPOSE_SUGGESTIONS_READY;
+  id: string;
+  token: string;
+  emojis?: Emoji[];
+  accounts?: APIEntity[];
 }
 
 const readyComposeSuggestionsEmojis = (composeId: string, token: string, emojis: Emoji[]) => ({
@@ -615,12 +622,12 @@ const readyComposeSuggestionsAccounts = (composeId: string, token: string, accou
 });
 
 interface ComposeSuggestionSelectAction {
-  type: typeof COMPOSE_SUGGESTION_SELECT
-  id: string
-  position: number
-  token: string | null
-  completion: string
-  path: Array<string | number>
+  type: typeof COMPOSE_SUGGESTION_SELECT;
+  id: string;
+  position: number;
+  token: string | null;
+  completion: string;
+  path: Array<string | number>;
 }
 
 const selectComposeSuggestion = (composeId: string, position: number, token: string | null, suggestion: AutoSuggestion, path: Array<string | number>) =>
@@ -774,9 +781,9 @@ const openComposeWithText = (composeId: string, text = '') =>
   };
 
 interface ComposeAddToMentionsAction {
-  type: typeof COMPOSE_ADD_TO_MENTIONS
-  id: string
-  account: string
+  type: typeof COMPOSE_ADD_TO_MENTIONS;
+  id: string;
+  account: string;
 }
 
 const addToMentions = (composeId: string, accountId: string) =>
@@ -795,9 +802,9 @@ const addToMentions = (composeId: string, accountId: string) =>
   };
 
 interface ComposeRemoveFromMentionsAction {
-  type: typeof COMPOSE_REMOVE_FROM_MENTIONS
-  id: string
-  account: string
+  type: typeof COMPOSE_REMOVE_FROM_MENTIONS;
+  id: string;
+  account: string;
 }
 
 const removeFromMentions = (composeId: string, accountId: string) =>
@@ -816,11 +823,11 @@ const removeFromMentions = (composeId: string, accountId: string) =>
   };
 
 interface ComposeEventReplyAction {
-  type: typeof COMPOSE_EVENT_REPLY
-  id: string
-  status: Status
-  account: Account
-  explicitAddressing: boolean
+  type: typeof COMPOSE_EVENT_REPLY;
+  id: string;
+  status: Status;
+  account: Account;
+  explicitAddressing: boolean;
 }
 
 const eventDiscussionCompose = (composeId: string, status: Status) =>

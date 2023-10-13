@@ -8,13 +8,13 @@
 import { isPoint, Point } from './point';
 
 type ContainsPointReturn = {
-  result: boolean
+  result: boolean;
   reason: {
-    isOnTopSide: boolean
-    isOnBottomSide: boolean
-    isOnLeftSide: boolean
-    isOnRightSide: boolean
-  }
+    isOnTopSide: boolean;
+    isOnBottomSide: boolean;
+    isOnLeftSide: boolean;
+    isOnRightSide: boolean;
+  };
 };
 
 class Rect {

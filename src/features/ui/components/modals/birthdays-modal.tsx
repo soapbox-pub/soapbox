@@ -7,7 +7,7 @@ import Account from 'soapbox/features/birthdays/account';
 import { useAppSelector } from 'soapbox/hooks';
 
 interface IBirthdaysModal {
-  onClose: (string: string) => void
+  onClose: (string: string) => void;
 }
 
 const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {

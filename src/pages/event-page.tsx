@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Column, Layout, Tabs } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
-import BundleContainer from 'soapbox/features/ui/containers/bundle-container';
 import {
   EventHeader,
   CtaBanner,
@@ -19,9 +18,9 @@ const getStatus = makeGetStatus();
 
 interface IEventPage {
   params?: {
-    statusId?: string
-  }
-  children: React.ReactNode
+    statusId?: string;
+  };
+  children: React.ReactNode;
 }
 
 const EventPage: React.FC<IEventPage> = ({ params, children }) => {
@@ -31,7 +30,7 @@ const EventPage: React.FC<IEventPage> = ({ params, children }) => {
   const history = useHistory();
   const statusId = params?.statusId!;
 
-  const status = useAppSelector(state => getStatus(state, { id: statusId }));
+  const status = useAppSelector(state => getStatus(state, { id: statusId }) || undefined);
 
   const event = status?.event;
 
@@ -65,9 +64,7 @@ const EventPage: React.FC<IEventPage> = ({ params, children }) => {
       <Layout.Main>
         <Column label={event?.name} withHeader={false}>
           <div className='space-y-4'>
-            <BundleContainer fetchComponent={EventHeader}>
-              {Component => <Component status={status} />}
-            </BundleContainer>
+            <EventHeader status={status} />
 
             {status && showTabs && (
               <Tabs key={`event-tabs-${status.id}`} items={tabs} activeItem={activeItem} />
@@ -78,27 +75,19 @@ const EventPage: React.FC<IEventPage> = ({ params, children }) => {
         </Column>
 
         {!me && (
-          <BundleContainer fetchComponent={CtaBanner}>
-            {Component => <Component key='cta-banner' />}
-          </BundleContainer>
+          <CtaBanner />
         )}
       </Layout.Main>
 
       <Layout.Aside>
         {!me && (
-          <BundleContainer fetchComponent={SignUpPanel}>
-            {Component => <Component key='sign-up-panel' />}
-          </BundleContainer>
+          <SignUpPanel />
         )}
         {features.trends && (
-          <BundleContainer fetchComponent={TrendsPanel}>
-            {Component => <Component limit={5} key='trends-panel' />}
-          </BundleContainer>
+          <TrendsPanel limit={5} />
         )}
         {features.suggestions && (
-          <BundleContainer fetchComponent={WhoToFollowPanel}>
-            {Component => <Component limit={3} key='wtf-panel' />}
-          </BundleContainer>
+          <WhoToFollowPanel limit={3} />
         )}
         <LinkFooter key='link-footer' />
       </Layout.Aside>

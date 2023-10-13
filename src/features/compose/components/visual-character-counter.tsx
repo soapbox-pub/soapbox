@@ -10,9 +10,9 @@ const messages = defineMessages({
 
 interface IVisualCharacterCounter {
   /** max text allowed */
-  max: number
+  max: number;
   /** text to use to measure */
-  text: string
+  text: string;
 }
 
 /** Renders a character counter */

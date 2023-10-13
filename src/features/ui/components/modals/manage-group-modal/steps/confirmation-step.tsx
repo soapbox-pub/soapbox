@@ -8,7 +8,7 @@ import copy from 'soapbox/utils/copy';
 import type { Group } from 'soapbox/schemas';
 
 interface IConfirmationStep {
-  group: Group | null
+  group: Group | null;
 }
 
 const messages = defineMessages({
@@ -115,7 +115,7 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
 };
 
 interface IInfoListNumber {
-  number: number
+  number: number;
 }
 
 const InfoListNumber: React.FC<IInfoListNumber> = ({ number }) => {
@@ -127,8 +127,8 @@ const InfoListNumber: React.FC<IInfoListNumber> = ({ number }) => {
 };
 
 interface IInfoListItem {
-  number: number
-  children: React.ReactNode
+  number: number;
+  children: React.ReactNode;
 }
 
 const InfoListItem: React.FC<IInfoListItem> = ({ number, children }) => {

@@ -5,15 +5,15 @@ import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import Markup from 'soapbox/components/markup';
 import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { isRtl } from 'soapbox/rtl';
+import { getTextDirection } from 'soapbox/utils/rtl';
 
 import type { Status } from 'soapbox/types/entities';
 
 interface IReplyIndicator {
-  className?: string
-  status?: Status
-  onCancel?: () => void
-  hideActions: boolean
+  className?: string;
+  status?: Status;
+  onCancel?: () => void;
+  hideActions: boolean;
 }
 
 const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActions, onCancel }) => {
@@ -36,7 +36,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
   }
 
   return (
-    <Stack space={2} className={clsx('rounded-lg bg-gray-100 p-4 dark:bg-gray-800', className)}>
+    <Stack space={2} className={clsx('max-h-72 overflow-y-auto rounded-lg bg-gray-100 p-4 dark:bg-gray-800', className)}>
       <AccountContainer
         {...actions}
         id={status.getIn(['account', 'id']) as string}
@@ -50,7 +50,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         className='break-words'
         size='sm'
         dangerouslySetInnerHTML={{ __html: status.contentHtml }}
-        direction={isRtl(status.search_index) ? 'rtl' : 'ltr'}
+        direction={getTextDirection(status.search_index)}
       />
 
       {status.media_attachments.size > 0 && (

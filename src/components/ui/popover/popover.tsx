@@ -16,15 +16,15 @@ import React, { useRef, useState } from 'react';
 import Portal from '../portal/portal';
 
 interface IPopover {
-  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
   /** The content of the popover */
-  content: React.ReactNode
+  content: React.ReactNode;
   /** Should we remove padding on the Popover */
-  isFlush?: boolean
+  isFlush?: boolean;
   /** Should the popover trigger via click or hover */
-  interaction?: 'click' | 'hover'
+  interaction?: 'click' | 'hover';
   /** Add a class to the reference (trigger) element */
-  referenceElementClassName?: string
+  referenceElementClassName?: string;
 }
 
 /**

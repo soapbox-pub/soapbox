@@ -21,6 +21,7 @@ module.exports = {
       },
       fontFamily: {
         'sans': [
+          'Soapbox i18n',
           'Inter',
           'ui-sans-serif',
           'system-ui',

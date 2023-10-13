@@ -53,9 +53,9 @@ const messages = defineMessages({
   showReblogs: { id: 'account.show_reblogs', defaultMessage: 'Show reposts from @{name}' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
-  blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
-  domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
-  mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
+  blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocks' },
+  domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Domain blocks' },
+  mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Mutes' },
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
@@ -76,7 +76,7 @@ const messages = defineMessages({
 });
 
 interface IHeader {
-  account?: Account
+  account?: Account;
 }
 
 const Header: React.FC<IHeader> = ({ account }) => {

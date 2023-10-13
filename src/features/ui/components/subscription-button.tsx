@@ -22,7 +22,7 @@ const messages = defineMessages({
 });
 
 interface ISubscriptionButton {
-  account: Pick<AccountEntity, 'id' | 'username' | 'relationship'>
+  account: Pick<AccountEntity, 'id' | 'username' | 'relationship'>;
 }
 
 const SubscriptionButton = ({ account }: ISubscriptionButton) => {

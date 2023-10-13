@@ -16,7 +16,7 @@ const getNotifTotals = (state: RootState): number => {
 };
 
 interface IHelmet {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const Helmet: React.FC<IHelmet> = ({ children }) => {

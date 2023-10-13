@@ -686,6 +686,12 @@ const getInstanceFeatures = (instance: Instance) => {
     nostrSign: v.software === DITTO,
 
     /**
+     * Whether the backend uses Ditto's Nosteric way of registration.
+     * @see POST /api/v1/accounts
+     */
+    nostrSignup: v.software === DITTO,
+
+    /**
      * Add private notes to accounts.
      * @see POST /api/v1/accounts/:id/note
      * @see GET /api/v1/accounts/relationships
@@ -953,13 +959,13 @@ export const getFeatures = createSelector([
 /** Fediverse backend */
 interface Backend {
   /** Build name, if this software is a fork */
-  build: string | null
+  build: string | null;
   /** Name of the software */
-  software: string | null
+  software: string | null;
   /** API version number */
-  version: string
+  version: string;
   /** Mastodon API version this backend is compatible with */
-  compatVersion: string
+  compatVersion: string;
 }
 
 /** Get information about the software from its version string */

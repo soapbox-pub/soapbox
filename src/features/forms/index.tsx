@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { Select } from '../../components/ui';
 
 interface IInputContainer {
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  required?: boolean
-  type?: string
-  extraClass?: string
-  error?: boolean
-  children: React.ReactNode
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  required?: boolean;
+  type?: string;
+  extraClass?: string;
+  error?: boolean;
+  children: React.ReactNode;
 }
 
 export const InputContainer: React.FC<IInputContainer> = (props) => {
@@ -31,9 +31,9 @@ export const InputContainer: React.FC<IInputContainer> = (props) => {
 };
 
 interface ILabelInputContainer {
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  children: React.ReactNode
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hint, children }) => {
@@ -55,7 +55,7 @@ export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hin
 };
 
 interface ILabelInput {
-  label?: React.ReactNode
+  label?: React.ReactNode;
 }
 
 export const LabelInput: React.FC<ILabelInput> = ({ label, ...props }) => (
@@ -65,7 +65,7 @@ export const LabelInput: React.FC<ILabelInput> = ({ label, ...props }) => (
 );
 
 interface ILabelTextarea {
-  label?: React.ReactNode
+  label?: React.ReactNode;
 }
 
 export const LabelTextarea: React.FC<ILabelTextarea> = ({ label, ...props }) => (
@@ -75,21 +75,21 @@ export const LabelTextarea: React.FC<ILabelTextarea> = ({ label, ...props }) => 
 );
 
 interface ISimpleInput {
-  type: string
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  error?: boolean
-  onChange?: React.ChangeEventHandler
-  min?: number
-  max?: number
-  pattern?: string
-  name?: string
-  placeholder?: string
-  value?: string | number
-  autoComplete?: string
-  autoCorrect?: string
-  autoCapitalize?: string
-  required?: boolean
+  type: string;
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  error?: boolean;
+  onChange?: React.ChangeEventHandler;
+  min?: number;
+  max?: number;
+  pattern?: string;
+  name?: string;
+  placeholder?: string;
+  value?: string | number;
+  autoComplete?: string;
+  autoCorrect?: string;
+  autoCapitalize?: string;
+  required?: boolean;
 }
 
 export const SimpleInput: React.FC<ISimpleInput> = (props) => {
@@ -104,13 +104,13 @@ export const SimpleInput: React.FC<ISimpleInput> = (props) => {
 };
 
 interface ICheckbox {
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  name?: string
-  checked?: boolean
-  disabled?: boolean
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
-  required?: boolean
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  name?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  required?: boolean;
 }
 
 export const Checkbox: React.FC<ICheckbox> = (props) => (
@@ -118,12 +118,12 @@ export const Checkbox: React.FC<ICheckbox> = (props) => (
 );
 
 interface ISelectDropdown {
-  className?: string
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  items: Record<string, string>
-  defaultValue?: string
-  onChange?: React.ChangeEventHandler
+  className?: string;
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  items: Record<string, string>;
+  defaultValue?: string;
+  onChange?: React.ChangeEventHandler;
 }
 
 export const SelectDropdown: React.FC<ISelectDropdown> = (props) => {
@@ -142,18 +142,18 @@ export const SelectDropdown: React.FC<ISelectDropdown> = (props) => {
 };
 
 interface ITextInput {
-  name?: string
-  onChange?: React.ChangeEventHandler
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  placeholder?: string
-  value?: string
-  autoComplete?: string
-  autoCorrect?: string
-  autoCapitalize?: string
-  pattern?: string
-  error?: boolean
-  required?: boolean
+  name?: string;
+  onChange?: React.ChangeEventHandler;
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  placeholder?: string;
+  value?: string;
+  autoComplete?: string;
+  autoCorrect?: string;
+  autoCapitalize?: string;
+  pattern?: string;
+  error?: boolean;
+  required?: boolean;
 }
 
 export const TextInput: React.FC<ITextInput> = props => (
@@ -169,11 +169,11 @@ FileChooser.defaultProps = {
 };
 
 interface IFileChooserLogo {
-  label?: React.ReactNode
-  hint?: React.ReactNode
-  name?: string
-  accept?: string[]
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  name?: string;
+  accept?: string[];
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const FileChooserLogo: React.FC<IFileChooserLogo> = props => (

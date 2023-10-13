@@ -1,5 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -9,18 +9,16 @@ import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 
 import { buildCustomEmojis } from '../../emoji';
-import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
+import { EmojiPicker } from '../../ui/util/async-components';
 
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
-
-let EmojiPicker: any; // load asynchronously
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
   emoji_pick: { id: 'emoji_button.pick', defaultMessage: 'Pick an emoji…' },
   emoji_oh_no: { id: 'emoji_button.oh_no', defaultMessage: 'Oh no!' },
   emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
-  emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emoji\'s found.' },
+  emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emojis found.' },
   emoji_add_custom: { id: 'emoji_button.add_custom', defaultMessage: 'Add custom emoji' },
   custom: { id: 'emoji_button.custom', defaultMessage: 'Custom' },
   recent: { id: 'emoji_button.recent', defaultMessage: 'Frequently used' },
@@ -43,12 +41,12 @@ export const messages = defineMessages({
 });
 
 export interface IEmojiPickerDropdown {
-  onPickEmoji?: (emoji: Emoji) => void
-  condensed?: boolean
-  withCustom?: boolean
-  visible: boolean
-  setVisible: (value: boolean) => void
-  update: (() => any) | null
+  onPickEmoji?: (emoji: Emoji) => void;
+  condensed?: boolean;
+  withCustom?: boolean;
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+  update: (() => any) | null;
 }
 
 const perLine = 8;
@@ -136,8 +134,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   const customEmojis = useAppSelector((state) => getCustomEmojis(state));
   const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
 
-  const [loading, setLoading] = useState(false);
-
   const handlePick = (emoji: any) => {
     setVisible(false);
 
@@ -210,18 +206,6 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
     } else {
       document.body.style.overflow = '';
     }
-
-    if (!EmojiPicker) {
-      setLoading(true);
-
-      EmojiPickerAsync().then(EmojiMart => {
-        EmojiPicker = EmojiMart.Picker;
-
-        setLoading(false);
-      }).catch(() => {
-        setLoading(false);
-      });
-    }
   }, [visible]);
 
   useEffect(() => () => {
@@ -231,7 +215,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   return (
     visible ? (
       <RenderAfter update={update}>
-        {!loading && (
+        <Suspense>
           <EmojiPicker
             custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
             title={title}
@@ -247,7 +231,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
             skinTonePosition='search'
             previewPosition='none'
           />
-        )}
+        </Suspense>
       </RenderAfter>
     ) : null
   );

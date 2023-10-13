@@ -17,31 +17,31 @@ import type { IScrollableList } from 'soapbox/components/scrollable-list';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** Unique key to preserve the scroll position when navigating back. */
-  scrollKey: string
+  scrollKey: string;
   /** List of status IDs to display. */
-  statusIds: ImmutableOrderedSet<string>
+  statusIds: ImmutableOrderedSet<string>;
   /** Last _unfiltered_ status ID (maxId) for pagination. */
-  lastStatusId?: string
+  lastStatusId?: string;
   /** Pinned statuses to show at the top of the feed. */
-  featuredStatusIds?: ImmutableOrderedSet<string>
+  featuredStatusIds?: ImmutableOrderedSet<string>;
   /** Pagination callback when the end of the list is reached. */
-  onLoadMore?: (lastStatusId: string) => void
+  onLoadMore?: (lastStatusId: string) => void;
   /** Whether the data is currently being fetched. */
-  isLoading: boolean
+  isLoading: boolean;
   /** Whether the server did not return a complete page. */
-  isPartial?: boolean
+  isPartial?: boolean;
   /** Whether we expect an additional page of data. */
-  hasMore: boolean
+  hasMore: boolean;
   /** Message to display when the list is loaded but empty. */
-  emptyMessage: React.ReactNode
+  emptyMessage: React.ReactNode;
   /** ID of the timeline in Redux. */
-  timelineId?: string
+  timelineId?: string;
   /** Whether to display a gap or border between statuses in the list. */
-  divideType?: 'space' | 'border'
+  divideType?: 'space' | 'border';
   /** Whether to display ads. */
-  showAds?: boolean
+  showAds?: boolean;
   /** Whether to show group information. */
-  showGroup?: boolean
+  showGroup?: boolean;
 }
 
 /** Feed of statuses, built atop ScrollableList. */
@@ -213,7 +213,7 @@ const StatusList: React.FC<IStatusList> = ({
       <div className='regeneration-indicator'>
         <div>
           <div className='regeneration-indicator__label'>
-            <FormattedMessage id='regeneration_indicator.label' tagName='strong' defaultMessage='Loading&hellip;' />
+            <FormattedMessage id='regeneration_indicator.label' tagName='strong' defaultMessage='Loading…' />
             <FormattedMessage id='regeneration_indicator.sublabel' defaultMessage='Your home feed is being prepared!' />
           </div>
         </div>

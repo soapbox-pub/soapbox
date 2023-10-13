@@ -49,7 +49,7 @@ const messages = defineMessages({
   header: { id: 'edit_profile.header', defaultMessage: 'Edit Profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
-  success: { id: 'edit_profile.success', defaultMessage: 'Profile saved!' },
+  success: { id: 'edit_profile.success', defaultMessage: 'Your profile has been successfully saved!' },
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
@@ -63,18 +63,18 @@ const messages = defineMessages({
  * (By default, max 4 fields and 255 characters per property/value)
  */
 interface AccountCredentialsField {
-  name: string
-  value: string
+  name: string;
+  value: string;
 }
 
 /** Private information (settings) for the account. */
 interface AccountCredentialsSource {
   /** Default post privacy for authored statuses. */
-  privacy?: string
+  privacy?: string;
   /** Whether to mark authored statuses as sensitive by default. */
-  sensitive?: boolean
+  sensitive?: boolean;
   /** Default language to use for authored statuses. (ISO 6391) */
-  language?: string
+  language?: string;
 }
 
 /**
@@ -83,43 +83,43 @@ interface AccountCredentialsSource {
  */
 interface AccountCredentials {
   /** Whether the account should be shown in the profile directory. */
-  discoverable?: boolean
+  discoverable?: boolean;
   /** Whether the account has a bot flag. */
-  bot?: boolean
+  bot?: boolean;
   /** The display name to use for the profile. */
-  display_name?: string
+  display_name?: string;
   /** The account bio. */
-  note?: string
+  note?: string;
   /** Avatar image encoded using multipart/form-data */
-  avatar?: File | ''
+  avatar?: File | '';
   /** Header image encoded using multipart/form-data */
-  header?: File | ''
+  header?: File | '';
   /** Whether manual approval of follow requests is required. */
-  locked?: boolean
+  locked?: boolean;
   /** Private information (settings) about the account. */
-  source?: AccountCredentialsSource
+  source?: AccountCredentialsSource;
   /** Custom profile fields. */
-  fields_attributes?: AccountCredentialsField[]
+  fields_attributes?: AccountCredentialsField[];
 
   // Non-Mastodon fields
   /** Pleroma: whether to accept notifications from people you don't follow. */
-  stranger_notifications?: boolean
+  stranger_notifications?: boolean;
   /** Soapbox BE: whether the user opts-in to email communications. */
-  accepts_email_list?: boolean
+  accepts_email_list?: boolean;
   /** Pleroma: whether to publicly display followers. */
-  hide_followers?: boolean
+  hide_followers?: boolean;
   /** Pleroma: whether to publicly display follows. */
-  hide_follows?: boolean
+  hide_follows?: boolean;
   /** Pleroma: whether to publicly display follower count. */
-  hide_followers_count?: boolean
+  hide_followers_count?: boolean;
   /** Pleroma: whether to publicly display follows count. */
-  hide_follows_count?: boolean
+  hide_follows_count?: boolean;
   /** User's website URL. */
-  website?: string
+  website?: string;
   /** User's location. */
-  location?: string
+  location?: string;
   /** User's birthday. */
-  birthday?: string
+  birthday?: string;
 }
 
 /** Convert an account into an update_credentials request object. */

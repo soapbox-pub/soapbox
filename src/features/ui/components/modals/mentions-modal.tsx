@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
 
 interface IMentionsModal {
-  onClose: (type: string) => void
-  statusId: string
+  onClose: (type: string) => void;
+  statusId: string;
 }
 
 const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {

@@ -15,8 +15,8 @@ const obfuscatedCount = (count: number) => {
 };
 
 interface IAnimatedNumber {
-  value: number
-  obfuscate?: boolean
+  value: number;
+  obfuscate?: boolean;
 }
 
 const AnimatedNumber: React.FC<IAnimatedNumber> = ({ value, obfuscate }) => {

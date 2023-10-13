@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import Base from 'soapbox/components/modal-root';
 import {
@@ -38,14 +38,10 @@ import {
   VideoModal,
 } from 'soapbox/features/ui/util/async-components';
 
-import BundleContainer from '../containers/bundle-container';
-
-import { BundleProps } from './bundle';
-import BundleModalError from './bundle-modal-error';
 import ModalLoading from './modal-loading';
 
 /* eslint sort-keys: "error" */
-const MODAL_COMPONENTS = {
+const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'ACCOUNT_MODERATION': AccountModerationModal,
   'ACTIONS': ActionsModal,
   'BIRTHDAYS': BirthdaysModal,
@@ -85,9 +81,9 @@ const MODAL_COMPONENTS = {
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;
 
 interface IModalRoot {
-  type: ModalType
-  props?: Record<string, any> | null
-  onClose: (type?: ModalType) => void
+  type: ModalType;
+  props?: Record<string, any> | null;
+  onClose: (type?: ModalType) => void;
 }
 
 export default class ModalRoot extends React.PureComponent<IModalRoot> {
@@ -104,12 +100,8 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
     }
   }
 
-  renderLoading = (modalId: string) => () => {
+  renderLoading = (modalId: string) => {
     return !['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].includes(modalId) ? <ModalLoading /> : null;
-  };
-
-  renderError: React.ComponentType<{ onRetry: (props?: BundleProps) => void }> = (props) => {
-    return <BundleModalError {...props} onClose={this.onClickClose} />;
   };
 
   onClickClose = (_?: ModalType) => {
@@ -119,14 +111,14 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
 
   render() {
     const { type, props } = this.props;
-    const visible = !!type;
+    const Component = type ? MODAL_COMPONENTS[type] : null;
 
     return (
       <Base onClose={this.onClickClose} type={type}>
-        {visible && (
-          <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
-            {(SpecificComponent) => <SpecificComponent {...props} onClose={this.onClickClose} />}
-          </BundleContainer>
+        {(Component && !!type) && (
+          <Suspense fallback={this.renderLoading(type)}>
+            <Component {...props} onClose={this.onClickClose} />
+          </Suspense>
         )}
       </Base>
     );

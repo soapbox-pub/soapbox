@@ -65,8 +65,8 @@ const updateChatQuery = (chat: IChat) => {
 };
 
 interface TimelineStreamOpts {
-  statContext?: IStatContext
-  enabled?: boolean
+  statContext?: IStatContext;
+  enabled?: boolean;
 }
 
 const connectTimelineStream = (
@@ -192,17 +192,17 @@ function followStateToRelationship(followState: string) {
 }
 
 interface FollowUpdate {
-  state: 'follow_pending' | 'follow_accept' | 'follow_reject'
+  state: 'follow_pending' | 'follow_accept' | 'follow_reject';
   follower: {
-    id: string
-    follower_count: number
-    following_count: number
-  }
+    id: string;
+    follower_count: number;
+    following_count: number;
+  };
   following: {
-    id: string
-    follower_count: number
-    following_count: number
-  }
+    id: string;
+    follower_count: number;
+    following_count: number;
+  };
 }
 
 function updateFollowRelationships(update: FollowUpdate) {

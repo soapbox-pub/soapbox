@@ -8,8 +8,8 @@ import type { Attachment } from 'soapbox/types/entities';
 const defaultIcon = require('@tabler/icons/paperclip.svg');
 
 interface IChatUploadPreview {
-  className?: string
-  attachment: Attachment
+  className?: string;
+  attachment: Attachment;
 }
 
 /**

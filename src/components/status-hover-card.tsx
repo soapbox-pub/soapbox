@@ -15,7 +15,7 @@ import { showStatusHoverCard } from './hover-status-wrapper';
 import { Card, CardBody } from './ui';
 
 interface IStatusHoverCard {
-  visible: boolean
+  visible?: boolean;
 }
 
 /** Popup status preview that appears when hovering reply to */

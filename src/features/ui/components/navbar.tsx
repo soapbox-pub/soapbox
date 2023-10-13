@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
+import { nostrLogIn } from 'soapbox/actions/nostr';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
@@ -17,7 +18,7 @@ import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   login: { id: 'navbar.login.action', defaultMessage: 'Log in' },
-  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'E-mail or username' },
+  username: { id: 'navbar.login.username.placeholder', defaultMessage: 'Email or username' },
   email: { id: 'navbar.login.email.placeholder', defaultMessage: 'E-mail address' },
   password: { id: 'navbar.login.password.label', defaultMessage: 'Password' },
   forgotPassword: { id: 'navbar.login.forgot_password', defaultMessage: 'Forgot password?' },
@@ -37,6 +38,12 @@ const Navbar = () => {
   const [mfaToken, setMfaToken] = useState<boolean>(false);
 
   const onOpenSidebar = () => dispatch(openSidebar());
+
+  const handleNostrLogin = async () => {
+    setLoading(true);
+    await dispatch(nostrLogIn()).catch(console.error);
+    setLoading(false);
+  };
 
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault();
@@ -107,50 +114,66 @@ const Navbar = () => {
               </div>
             ) : (
               <>
-                <Form className='hidden items-center space-x-2 rtl:space-x-reverse lg:flex' onSubmit={handleSubmit}>
-                  <Input
-                    required
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                    type='text'
-                    placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
-                    className='max-w-[200px]'
-                  />
+                {features.nostrSignup ? (
+                  <div className='hidden items-center xl:flex'>
+                    <Button
+                      theme='primary'
+                      onClick={handleNostrLogin}
+                      disabled={isLoading}
+                    >
+                      {intl.formatMessage(messages.login)}
+                    </Button>
+                  </div>
+                ) : (
+                  <Form className='hidden items-center space-x-2 rtl:space-x-reverse xl:flex' onSubmit={handleSubmit}>
+                    <Input
+                      required
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      type='text'
+                      placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
+                      className='max-w-[200px]'
+                    />
 
-                  <Input
-                    required
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    type='password'
-                    placeholder={intl.formatMessage(messages.password)}
-                    className='max-w-[200px]'
-                  />
+                    <Input
+                      required
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      type='password'
+                      placeholder={intl.formatMessage(messages.password)}
+                      className='max-w-[200px]'
+                    />
 
-                  <Link to='/reset-password'>
-                    <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
-                      <IconButton
-                        src={require('@tabler/icons/help.svg')}
-                        className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
-                        iconClassName='h-5 w-5'
-                      />
-                    </Tooltip>
-                  </Link>
+                    <Link to='/reset-password'>
+                      <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
+                        <IconButton
+                          src={require('@tabler/icons/help.svg')}
+                          className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
+                          iconClassName='h-5 w-5'
+                        />
+                      </Tooltip>
+                    </Link>
 
+                    <Button
+                      theme='primary'
+                      type='submit'
+                      disabled={isLoading}
+                    >
+                      {intl.formatMessage(messages.login)}
+                    </Button>
+                  </Form>
+                )}
+
+                <div className='space-x-1.5 xl:hidden'>
                   <Button
-                    theme='primary'
-                    type='submit'
-                    disabled={isLoading}
+                    theme='tertiary'
+                    size='sm'
+                    {...(features.nostrSignup ? { onClick: handleNostrLogin } : { to: '/login' })}
                   >
-                    {intl.formatMessage(messages.login)}
-                  </Button>
-                </Form>
-
-                <div className='space-x-1.5 lg:hidden'>
-                  <Button theme='tertiary' to='/login' size='sm'>
-                    <FormattedMessage id='account.login' defaultMessage='Log In' />
+                    <FormattedMessage id='account.login' defaultMessage='Log in' />
                   </Button>
 
-                  {isOpen && (
+                  {(isOpen) && (
                     <Button theme='primary' to='/signup' size='sm'>
                       <FormattedMessage id='account.register' defaultMessage='Sign up' />
                     </Button>

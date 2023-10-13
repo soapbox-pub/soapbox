@@ -29,9 +29,9 @@ enum ReportableEntities {
 }
 
 type ReportedEntity = {
-  status?: Status
-  chatMessage?: ChatMessage
-  group?: Group
+  status?: Status;
+  chatMessage?: ChatMessage;
+  group?: Group;
 }
 
 const initReport = (entityType: ReportableEntities, account: Account, entities?: ReportedEntity) => (dispatch: AppDispatch) => {

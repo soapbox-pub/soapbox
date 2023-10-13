@@ -11,8 +11,8 @@ import Account from '../../../reply-mentions/account';
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IReplyMentionsModal {
-  composeId: string
-  onClose: (string: string) => void
+  composeId: string;
+  onClose: (string: string) => void;
 }
 
 const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose }) => {

@@ -7,11 +7,11 @@ import { AppDispatch, RootState } from 'soapbox/store';
 
 interface ICSVExporter {
   messages: {
-    input_label: MessageDescriptor
-    input_hint: MessageDescriptor
-    submit: MessageDescriptor
-  }
-  action: () => (dispatch: AppDispatch, getState: () => RootState) => Promise<void>
+    input_label: MessageDescriptor;
+    input_hint: MessageDescriptor;
+    submit: MessageDescriptor;
+  };
+  action: () => (dispatch: AppDispatch, getState: () => RootState) => Promise<void>;
 }
 
 const CSVExporter: React.FC<ICSVExporter> = ({ messages, action }) => {

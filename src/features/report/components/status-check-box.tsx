@@ -1,17 +1,16 @@
 import noop from 'lodash/noop';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { toggleStatusReport } from 'soapbox/actions/reports';
 import StatusContent from 'soapbox/components/status-content';
 import { Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import Bundle from '../../ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 
 interface IStatusCheckBox {
-  id: string
-  disabled?: boolean
+  id: string;
+  disabled?: boolean;
 }
 
 const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
@@ -35,22 +34,16 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
 
       if (video) {
         media = (
-          <Bundle fetchComponent={Video}>
-            {(Component: any) => (
-              <Component
-                preview={video.preview_url}
-                blurhash={video.blurhash}
-                src={video.url}
-                alt={video.description}
-                aspectRatio={video.meta.getIn(['original', 'aspect'])}
-                width={239}
-                height={110}
-                inline
-                sensitive={status.sensitive}
-                onOpenVideo={noop}
-              />
-            )}
-          </Bundle>
+          <Video
+            preview={video.preview_url}
+            blurhash={video.blurhash}
+            src={video.url}
+            alt={video.description}
+            aspectRatio={video.meta.getIn(['original', 'aspect']) as number | undefined}
+            width={239}
+            height={110}
+            inline
+          />
         );
       }
     } else if (status.media_attachments.get(0)?.type === 'audio') {
@@ -58,24 +51,20 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
 
       if (audio) {
         media = (
-          <Bundle fetchComponent={Audio}>
-            {(Component: any) => (
-              <Component
-                src={audio.url}
-                alt={audio.description}
-                inline
-                sensitive={status.sensitive}
-                onOpenAudio={noop}
-              />
-            )}
-          </Bundle>
+          <Audio
+            src={audio.url}
+            alt={audio.description}
+          />
         );
       }
     } else {
       media = (
-        <Bundle fetchComponent={MediaGallery}>
-          {(Component: any) => <Component media={status.media_attachments} sensitive={status.sensitive} height={110} onOpenMedia={noop} />}
-        </Bundle>
+        <MediaGallery
+          media={status.media_attachments}
+          sensitive={status.sensitive}
+          height={110}
+          onOpenMedia={noop}
+        />
       );
     }
   }
@@ -84,7 +73,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
     <div className='status-check-box'>
       <div className='status-check-box__status'>
         <StatusContent status={status} />
-        {media}
+        <Suspense>{media}</Suspense>
       </div>
 
       <div className='status-check-box-toggle'>

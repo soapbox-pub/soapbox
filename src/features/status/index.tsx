@@ -36,13 +36,13 @@ const messages = defineMessages({
 });
 
 type RouteParams = {
-  statusId: string
-  groupId?: string
-  groupSlug?: string
+  statusId: string;
+  groupId?: string;
+  groupSlug?: string;
 };
 
 interface IStatusDetails {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const StatusDetails: React.FC<IStatusDetails> = (props) => {

@@ -3,15 +3,15 @@ import { RULES_FETCH_REQUEST, RULES_FETCH_SUCCESS } from '../actions/rules';
 import type { RulesActions } from '../actions/rules';
 
 export type Rule = {
-  id: string
-  text: string
-  subtext: string
-  rule_type: 'content' | 'account'
+  id: string;
+  text: string;
+  subtext: string;
+  rule_type: 'content' | 'account';
 }
 
 type RulesState = {
-  items: Rule[]
-  isLoading: boolean
+  items: Rule[];
+  isLoading: boolean;
 }
 
 const initialState: RulesState = {

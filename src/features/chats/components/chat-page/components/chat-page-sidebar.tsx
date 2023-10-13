@@ -10,7 +10,7 @@ import ChatList from '../../chat-list';
 import ChatSearchInput from '../../chat-search-input';
 
 const messages = defineMessages({
-  title: { id: 'column.chats', defaultMessage: 'Messages' },
+  title: { id: 'column.chats', defaultMessage: 'Chats' },
 });
 
 const ChatPageSidebar = () => {

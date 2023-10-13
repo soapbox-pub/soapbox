@@ -4,13 +4,13 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Button, Stack, Text } from 'soapbox/components/ui';
 
 const messages = defineMessages({
-  title: { id: 'chat_search.empty_results_blankslate.title', defaultMessage: 'No messages yet' },
-  body: { id: 'chat_search.empty_results_blankslate.body', defaultMessage: 'Search for someone to chat with.' },
-  action: { id: 'chat_search.empty_results_blankslate.action', defaultMessage: 'Message someone' },
+  title: { id: 'chat_pane.blankslate.title', defaultMessage: 'No messages yet' },
+  body: { id: 'chat_pane.blankslate.body', defaultMessage: 'Search for someone to chat with.' },
+  action: { id: 'chat_pane.blankslate.action', defaultMessage: 'Message someone' },
 });
 
 interface IBlankslate {
-  onSearch(): void
+  onSearch(): void;
 }
 
 const Blankslate = ({ onSearch }: IBlankslate) => {

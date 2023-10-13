@@ -10,7 +10,7 @@ import { Avatar, HStack, Icon } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
-  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
+  publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
 });
 
 /** FloatingActionButton (aka FAB), a composer button that floats in the corner on mobile. */

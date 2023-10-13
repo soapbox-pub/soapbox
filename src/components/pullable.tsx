@@ -3,7 +3,7 @@ import React from 'react';
 import PullToRefresh from './pull-to-refresh';
 
 interface IPullable {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /**

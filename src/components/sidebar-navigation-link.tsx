@@ -6,17 +6,17 @@ import { Icon, Text } from './ui';
 
 interface ISidebarNavigationLink {
   /** Notification count, if any. */
-  count?: number
+  count?: number;
   /** Optional max to cap count (ie: N+) */
-  countMax?: number
+  countMax?: number;
   /** URL to an SVG icon. */
-  icon: string
+  icon: string;
   /** Link label. */
-  text: React.ReactNode
+  text: React.ReactNode;
   /** Route to an internal page. */
-  to?: string
+  to?: string;
   /** Callback when the link is clicked. */
-  onClick?: React.EventHandler<React.MouseEvent>
+  onClick?: React.EventHandler<React.MouseEvent>;
 }
 
 /** Desktop sidebar navigation link. */

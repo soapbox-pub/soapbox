@@ -21,7 +21,7 @@ const GridList: Components['List'] = React.forwardRef((props, ref) => {
 });
 
 interface ITag {
-  params: { id: string }
+  params: { id: string };
 }
 
 const Tag: React.FC<ITag> = (props) => {

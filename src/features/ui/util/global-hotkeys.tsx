@@ -39,8 +39,8 @@ const keyMap = {
 };
 
 interface IGlobalHotkeys {
-  children: React.ReactNode
-  node: React.MutableRefObject<HTMLDivElement | null>
+  children: React.ReactNode;
+  node: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {

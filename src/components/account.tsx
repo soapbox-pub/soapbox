@@ -17,8 +17,8 @@ import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
 import type { Account as AccountSchema } from 'soapbox/schemas';
 
 interface IInstanceFavicon {
-  account: AccountSchema
-  disabled?: boolean
+  account: AccountSchema;
+  disabled?: boolean;
 }
 
 const messages = defineMessages({
@@ -57,9 +57,9 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
 };
 
 interface IProfilePopper {
-  condition: boolean
-  wrapper: (children: React.ReactNode) => React.ReactNode
-  children: React.ReactNode
+  condition: boolean;
+  wrapper: (children: React.ReactNode) => React.ReactNode;
+  children: React.ReactNode;
 }
 
 const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children }) => {
@@ -71,31 +71,31 @@ const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children 
 };
 
 export interface IAccount {
-  account: AccountSchema
-  action?: React.ReactElement
-  actionAlignment?: 'center' | 'top'
-  actionIcon?: string
-  actionTitle?: string
+  account: AccountSchema;
+  action?: React.ReactElement;
+  actionAlignment?: 'center' | 'top';
+  actionIcon?: string;
+  actionTitle?: string;
   /** Override other actions for specificity like mute/unmute. */
-  actionType?: 'muting' | 'blocking' | 'follow_request'
-  avatarSize?: number
-  hidden?: boolean
-  hideActions?: boolean
-  id?: string
-  onActionClick?: (account: any) => void
-  showProfileHoverCard?: boolean
-  timestamp?: string
-  timestampUrl?: string
-  futureTimestamp?: boolean
-  withAccountNote?: boolean
-  withDate?: boolean
-  withLinkToProfile?: boolean
-  withRelationship?: boolean
-  showEdit?: boolean
-  approvalStatus?: StatusApprovalStatus
-  emoji?: string
-  emojiUrl?: string
-  note?: string
+  actionType?: 'muting' | 'blocking' | 'follow_request';
+  avatarSize?: number;
+  hidden?: boolean;
+  hideActions?: boolean;
+  id?: string;
+  onActionClick?: (account: any) => void;
+  showProfileHoverCard?: boolean;
+  timestamp?: string;
+  timestampUrl?: string;
+  futureTimestamp?: boolean;
+  withAccountNote?: boolean;
+  withDate?: boolean;
+  withLinkToProfile?: boolean;
+  withRelationship?: boolean;
+  showEdit?: boolean;
+  approvalStatus?: StatusApprovalStatus;
+  emoji?: string;
+  emojiUrl?: string;
+  note?: string;
 }
 
 const Account = ({

@@ -12,10 +12,10 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 
 interface IUserPanel {
-  accountId: string
-  action?: JSX.Element
-  badges?: JSX.Element[]
-  domain?: string
+  accountId: string;
+  action?: JSX.Element;
+  badges?: JSX.Element[];
+  domain?: string;
 }
 
 const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) => {
@@ -69,9 +69,11 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
             </HStack>
           </Link>
 
-          <Text size='sm' theme='muted' truncate>
-            @{getAcct(account, fqn)}
-          </Text>
+          <HStack>
+            <Text size='sm' theme='muted' direction='ltr' truncate>
+              @{getAcct(account, fqn)}
+            </Text>
+          </HStack>
         </Stack>
 
         <HStack alignItems='center' space={3}>
@@ -95,7 +97,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
                   {shortNumberFormat(account.following_count)}
                 </Text>
                 <Text weight='bold' size='sm'>
-                  <FormattedMessage id='account.follows' defaultMessage='Follows' />
+                  <FormattedMessage id='account.follows' defaultMessage='Following' />
                 </Text>
               </HStack>
             </Link>

@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface IIndicator {
-  state?: 'active' | 'pending' | 'error' | 'inactive'
-  size?: 'sm'
+  state?: 'active' | 'pending' | 'error' | 'inactive';
+  size?: 'sm';
 }
 
 /** Indicator dot component. */

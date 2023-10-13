@@ -201,7 +201,7 @@ const fetchReports = (params: Record<string, any> = {}) =>
     }
   };
 
-const patchMastodonReports = (reports: { id: string, state: string }[]) =>
+const patchMastodonReports = (reports: { id: string; state: string }[]) =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     Promise.all(reports.map(({ id, state }) => api(getState)
       .post(`/api/v1/admin/reports/${id}/${state === 'resolved' ? 'reopen' : 'resolve'}`)
@@ -212,7 +212,7 @@ const patchMastodonReports = (reports: { id: string, state: string }[]) =>
       }),
     ));
 
-const patchPleromaReports = (reports: { id: string, state: string }[]) =>
+const patchPleromaReports = (reports: { id: string; state: string }[]) =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState)
       .patch('/api/v1/pleroma/admin/reports', { reports })

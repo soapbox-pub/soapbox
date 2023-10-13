@@ -23,9 +23,9 @@ const messages = defineMessages({
 });
 
 interface IMembershipRequest {
-  account: AccountEntity
-  onAuthorize(account: AccountEntity): Promise<unknown>
-  onReject(account: AccountEntity): Promise<unknown>
+  account: AccountEntity;
+  onAuthorize(account: AccountEntity): Promise<unknown>;
+  onReject(account: AccountEntity): Promise<unknown>;
 }
 
 const MembershipRequest: React.FC<IMembershipRequest> = ({ account, onAuthorize, onReject }) => {
@@ -50,7 +50,7 @@ const MembershipRequest: React.FC<IMembershipRequest> = ({ account, onAuthorize,
 };
 
 interface IGroupMembershipRequests {
-  params: RouteParams
+  params: RouteParams;
 }
 
 const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params }) => {

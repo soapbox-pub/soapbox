@@ -9,7 +9,7 @@ const AVATAR_SIZE = 42;
 
 interface IAvatar extends Pick<IStillImage, 'src' | 'onError' | 'className'> {
   /** Width and height of the avatar in pixels. */
-  size?: number
+  size?: number;
 }
 
 /** Round profile avatar for accounts. */

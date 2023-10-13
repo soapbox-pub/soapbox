@@ -34,8 +34,8 @@ type ExportDataActions = {
   | typeof EXPORT_BLOCKS_FAIL
   | typeof EXPORT_MUTES_REQUEST
   | typeof EXPORT_MUTES_SUCCESS
-  | typeof EXPORT_MUTES_FAIL
-  error?: any
+  | typeof EXPORT_MUTES_FAIL;
+  error?: any;
 }
 
 function fileExport(content: string, fileName: string) {

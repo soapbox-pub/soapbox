@@ -25,27 +25,28 @@ import AutosuggestPlugin from './plugins/autosuggest-plugin';
 import FocusPlugin from './plugins/focus-plugin';
 import RefPlugin from './plugins/ref-plugin';
 import StatePlugin from './plugins/state-plugin';
+import SubmitPlugin from './plugins/submit-plugin';
 
 const LINK_MATCHERS = [
   createLinkMatcherWithRegExp(
-    /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
+    /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/i,
     (text) => text.startsWith('http') ? text : `https://${text}`,
   ),
 ];
 
 interface IComposeEditor {
-  className?: string
-  placeholderClassName?: string
-  composeId: string
-  condensed?: boolean
-  eventDiscussion?: boolean
-  hasPoll?: boolean
-  autoFocus?: boolean
-  handleSubmit?(): void
-  onPaste?(files: FileList): void
-  onChange?(text: string): void
-  onFocus?: React.FocusEventHandler<HTMLDivElement>
-  placeholder?: JSX.Element | string
+  className?: string;
+  placeholderClassName?: string;
+  composeId: string;
+  condensed?: boolean;
+  eventDiscussion?: boolean;
+  hasPoll?: boolean;
+  autoFocus?: boolean;
+  handleSubmit?(): void;
+  onPaste?(files: FileList): void;
+  onChange?(text: string): void;
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
+  placeholder?: JSX.Element | string;
 }
 
 const theme: InitialConfigType['theme'] = {
@@ -164,7 +165,8 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
         <HashtagPlugin />
         <AutosuggestPlugin composeId={composeId} suggestionsHidden={suggestionsHidden} setSuggestionsHidden={setSuggestionsHidden} />
         <AutoLinkPlugin matchers={LINK_MATCHERS} />
-        <StatePlugin composeId={composeId} handleSubmit={handleSubmit} />
+        <StatePlugin composeId={composeId} />
+        <SubmitPlugin composeId={composeId} handleSubmit={handleSubmit} />
         <FocusPlugin autoFocus={autoFocus} />
         <ClearEditorPlugin />
         <RefPlugin ref={ref} />

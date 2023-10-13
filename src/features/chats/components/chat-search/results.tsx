@@ -9,8 +9,8 @@ import useAccountSearch from 'soapbox/queries/search';
 import type { Account } from 'soapbox/types/entities';
 
 interface IResults {
-  accountSearchResult: ReturnType<typeof useAccountSearch>
-  onSelect(id: string): void
+  accountSearchResult: ReturnType<typeof useAccountSearch>;
+  onSelect(id: string): void;
 }
 
 const Results = ({ accountSearchResult, onSelect }: IResults) => {
@@ -41,7 +41,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
             <Text weight='bold' size='sm' truncate>{account.display_name}</Text>
             {account.verified && <VerificationBadge />}
           </div>
-          <Text size='sm' weight='medium' theme='muted' truncate>@{account.acct}</Text>
+          <Text size='sm' weight='medium' theme='muted' direction='ltr' truncate>@{account.acct}</Text>
         </Stack>
       </HStack>
     </button>
