@@ -1,7 +1,8 @@
 import { lazy } from 'react';
 
 export const AboutPage = lazy(() => import('soapbox/features/about'));
-export const EmojiPicker = lazy(() => import('soapbox/features/emoji/components/emoji-picker'));
+//  export const EmojiPicker = lazy(() => import('soapbox/features/emoji/components/emoji-picker'));
+export const EmojiPicker = lazy(() => import('emoji-picker-react'));
 export const Notifications = lazy(() => import('soapbox/features/notifications'));
 export const LandingTimeline = lazy(() => import('soapbox/features/landing-timeline'));
 export const HomeTimeline = lazy(() => import('soapbox/features/home-timeline'));

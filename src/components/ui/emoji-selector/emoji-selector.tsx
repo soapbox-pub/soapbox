@@ -74,7 +74,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   };
 
   const handlePickEmoji = (emoji: Emoji) => {
-    onReact(emoji.custom ? emoji.id : emoji.native, emoji.custom ? emoji.imageUrl : undefined);
+    onReact(emoji.custom ? emoji.id : emoji.native, emoji.custom ? emoji.imgUrl : undefined);
   };
 
   useEffect(() => {

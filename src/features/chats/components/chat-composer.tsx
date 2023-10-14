@@ -6,7 +6,6 @@ import { openModal } from 'soapbox/actions/modals';
 import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
 import { useChatContext } from 'soapbox/contexts/chat-context';
 import UploadButton from 'soapbox/features/compose/components/upload-button';
-import emojiSearch from 'soapbox/features/emoji/search';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
@@ -110,13 +109,6 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
     );
 
     if (token && tokenStart) {
-      const results = emojiSearch(token.replace(':', ''), { maxResults: 5 });
-      setSuggestions({
-        list: results,
-        token,
-        tokenStart: tokenStart - 1,
-      });
-    } else {
       setSuggestions(initialSuggestionState);
     }
 

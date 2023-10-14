@@ -1,14 +1,15 @@
+import { Theme, EmojiStyle, SkinTonePickerLocation } from 'emoji-picker-react';
 import { Map as ImmutableMap } from 'immutable';
 import React, { useEffect, useState, useLayoutEffect, Suspense } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import { createSelector } from 'reselect';
 
 import { chooseEmoji } from 'soapbox/actions/emojis';
-import { changeSetting } from 'soapbox/actions/settings';
-import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
+// import { changeSetting } from 'soapbox/actions/settings';
+import { useAppDispatch } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 
-import { buildCustomEmojis } from '../../emoji';
+// import { buildCustomEmojis } from '../../emoji';
 import { EmojiPicker } from '../../ui/util/async-components';
 
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
@@ -89,6 +90,7 @@ export const getFrequentlyUsedEmojis = createSelector([
   return emojis;
 });
 
+/*
 const getCustomEmojis = createSelector([
   (state: RootState) => state.custom_emojis,
 ], emojis => emojis.filter(e => e.get('visible_in_picker')).sort((a, b) => {
@@ -103,6 +105,7 @@ const getCustomEmojis = createSelector([
     return 0;
   }
 }));
+*/
 
 // Fixes render bug where popover has a delayed position update
 const RenderAfter = ({ children, update }: any) => {
@@ -126,13 +129,14 @@ const RenderAfter = ({ children, update }: any) => {
 const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   onPickEmoji, visible, setVisible, update, withCustom = true,
 }) => {
-  const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  /*
   const title = intl.formatMessage(messages.emoji);
-  const theme = useTheme();
 
   const customEmojis = useAppSelector((state) => getCustomEmojis(state));
   const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
+*/
 
   const handlePick = (emoji: any) => {
     setVisible(false);
@@ -152,7 +156,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
         id: emoji.id,
         colons: emoji.shortcodes,
         custom: true,
-        imageUrl: emoji.src,
+        imgUrl: emoji.src,
       } as CustomEmoji;
     }
 
@@ -163,6 +167,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
     }
   };
 
+  /* 
   const handleSkinTone = (skinTone: string) => {
     dispatch(changeSetting(['skinTone'], skinTone));
   };
@@ -198,6 +203,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
       },
     };
   };
+*/
 
   useEffect(() => {
     // fix scrolling focus issue
@@ -212,24 +218,26 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
     document.body.style.overflow = '';
   }, []);
 
+  // PROPS:
+  // recent={frequentlyUsedEmojis}
+  // defaultSkinTone={handleSkinTone}
+  // customEmojis={withCustom ? [{ names: buildCustomEmojis(customEmojis) }] : undefined}
+  // lazyLoadEmojis
+
   return (
     visible ? (
       <RenderAfter update={update}>
         <Suspense>
           <EmojiPicker
-            custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
-            title={title}
-            onEmojiSelect={handlePick}
-            recent={frequentlyUsedEmojis}
-            perLine={8}
-            skin={handleSkinTone}
-            emojiSize={22}
-            emojiButtonSize={34}
-            set='twitter'
-            theme={theme}
-            i18n={getI18n()}
-            skinTonePosition='search'
-            previewPosition='none'
+            theme={Theme.AUTO}
+            onEmojiClick={handlePick}
+            emojiStyle={EmojiStyle.GOOGLE}
+            skinTonePickerLocation={SkinTonePickerLocation.SEARCH}
+            previewConfig={{
+              showPreview: false,
+            }}
+            width={320}
+            height={280}
           />
         </Suspense>
       </RenderAfter>

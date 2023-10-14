@@ -46,7 +46,7 @@ const IconPickerMenu: React.FC<IIconPickerMenu> = ({ icons, onClose, onPick, sty
     if (!c) return;
 
     // Nice and dirty hack to display the icons
-    c.querySelectorAll('button.emoji-mart-emoji > img').forEach(elem => {
+    c.querySelectorAll('em-emoji-picker button.emoji-mart-emoji > img').forEach(elem => {
       const newIcon = document.createElement('span');
       newIcon.innerHTML = `<i class="fa fa-${(elem.parentNode as any).getAttribute('title')} fa-hack"></i>`;
       (elem.parentNode as any).replaceChild(newIcon, elem);

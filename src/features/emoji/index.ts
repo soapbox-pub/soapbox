@@ -1,9 +1,5 @@
 import split from 'graphemesplit';
 
-import unicodeMapping from './mapping';
-
-import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data';
-
 /*
  * TODO: Consolate emoji object types
  *
@@ -22,7 +18,8 @@ export interface CustomEmoji {
   id: string;
   colons: string;
   custom: true;
-  imageUrl: string;
+  imgUrl: string;
+  names: Array<string>;
 }
 
 export interface NativeEmoji {
@@ -36,7 +33,7 @@ export interface NativeEmoji {
 export type Emoji = CustomEmoji | NativeEmoji;
 
 export function isCustomEmoji(emoji: Emoji): emoji is CustomEmoji {
-  return (emoji as CustomEmoji).imageUrl !== undefined;
+  return (emoji as CustomEmoji).imgUrl !== undefined;
 }
 
 export function isNativeEmoji(emoji: Emoji): emoji is NativeEmoji {
@@ -64,12 +61,6 @@ const validEmojiChar = (c: string) => {
 
 const convertCustom = (shortname: string, filename: string) => {
   return `<img draggable="false" class="emojione" alt="${shortname}" title="${shortname}" src="${filename}" />`;
-};
-
-const convertUnicode = (c: string) => {
-  const { unified, shortcode } = unicodeMapping[c];
-
-  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg" />`;
 };
 
 const convertEmoji = (str: string, customEmojis: any) => {
@@ -103,22 +94,7 @@ export const emojifyText = (str: string, customEmojis = {}) => {
       c = c.slice(0, -1) + String.fromCodePoint(65039);
     }
 
-    // unqualified emojis aren't in emoji-mart's mappings so we just add FEOF
-    const unqualified = c + String.fromCodePoint(65039);
-
-    if (c in unicodeMapping) {
-      if (open) { // unicode emoji inside colon
-        clearStack();
-      }
-
-      buf += convertUnicode(c);
-    } else if (unqualified in unicodeMapping) {
-      if (open) { // unicode emoji inside colon
-        clearStack();
-      }
-
-      buf += convertUnicode(unqualified);
-    } else if (c === ':') {
+    if (c === ':') {
       stack += ':';
 
       // we see another : we convert it and clear the stack buffer
@@ -209,7 +185,7 @@ const emojify = (str: string, customEmojis = {}) => {
 export default emojify;
 
 export const buildCustomEmojis = (customEmojis: any) => {
-  const emojis: EmojiMart<EmojiMartCustom>[] = [];
+  const emojis: CustomEmoji[] = [];
 
   customEmojis.forEach((emoji: any) => {
     const shortcode = emoji.get('shortcode');
@@ -218,9 +194,10 @@ export const buildCustomEmojis = (customEmojis: any) => {
 
     emojis.push({
       id: name,
-      name,
-      keywords: [name],
-      skins: [{ src: url }],
+      names: [name],
+      imgUrl: url,
+      colons: '',
+      custom: true,
     });
   });
 

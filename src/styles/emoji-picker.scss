@@ -8,3 +8,32 @@ em-emoji-picker {
 .dark em-emoji-picker {
   --rgb-background: var(--color-primary-900);
 }
+
+.EmojiPickerReact {
+  --epr-bg-color: var(--rgb-background);
+  --epr-category-label-bg-color: var(--epr-bg-color);
+}
+
+.EmojiPickerReact.epr-dark-theme {
+  --epr-bg-color: rgb(var(--color-primary-900)) !important;  
+  --epr-category-label-bg-color: rgb(var(--color-primary-900)) !important;
+}
+
+.EmojiPickerReact,
+.EmojiPickerReact.epr-dark-theme {
+  --epr-highlight-color: var(--color-accent-500);
+  --epr-horizontal-padding: 4px;
+  --epr-picker-border-radius: 4px;
+  --epr-header-padding: var(--epr-horizontal-padding);
+  --epr-emoji-size: 24px;
+  --epr-emoji-gap: 0;
+  --epr-category-navigation-button-size: 24px;
+  --epr-category-label-height: 30px;
+  --epr-search-input-padding: 0 0 0 24px;
+  --epr-search-input-height: 24px;
+  box-shadow: 2px 4px 8px #000;
+}
+
+.epr-search-container {
+  height: var(--epr-search-input-height);
+}

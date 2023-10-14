@@ -5,7 +5,6 @@ import { defineMessages, IntlShape } from 'react-intl';
 
 import api from 'soapbox/api';
 import { isNativeEmoji } from 'soapbox/features/emoji';
-import emojiSearch from 'soapbox/features/emoji/search';
 import { normalizeTag } from 'soapbox/normalizers';
 import { selectAccount, selectOwnAccount } from 'soapbox/selectors';
 import { tagHistory } from 'soapbox/settings';
@@ -544,10 +543,11 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
 }, 200, { leading: true, trailing: true });
 
 const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
+  /*
   const state = getState();
-  const results = emojiSearch(token.replace(':', ''), { maxResults: 10 }, state.custom_emojis);
-
-  dispatch(readyComposeSuggestionsEmojis(composeId, token, results));
+  const results = token.replace(':', '');
+*/
+  dispatch(readyComposeSuggestionsEmojis(composeId, token));
 };
 
 const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
@@ -603,15 +603,13 @@ interface ComposeSuggestionsReadyAction {
   type: typeof COMPOSE_SUGGESTIONS_READY;
   id: string;
   token: string;
-  emojis?: Emoji[];
   accounts?: APIEntity[];
 }
 
-const readyComposeSuggestionsEmojis = (composeId: string, token: string, emojis: Emoji[]) => ({
+const readyComposeSuggestionsEmojis = (composeId: string, token: string) => ({
   type: COMPOSE_SUGGESTIONS_READY,
   id: composeId,
   token,
-  emojis,
 });
 
 const readyComposeSuggestionsAccounts = (composeId: string, token: string, accounts: APIEntity[]) => ({

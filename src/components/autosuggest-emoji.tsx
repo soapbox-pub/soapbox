@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { isCustomEmoji } from 'soapbox/features/emoji';
-import unicodeMapping from 'soapbox/features/emoji/mapping';
-import { joinPublicPath } from 'soapbox/utils/static';
 
 import type { Emoji } from 'soapbox/features/emoji';
 
@@ -14,16 +12,14 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
   let url, alt;
 
   if (isCustomEmoji(emoji)) {
-    url = emoji.imageUrl;
+    url = emoji.imgUrl;
     alt = emoji.colons;
   } else {
-    const mapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
-
+    const mapping = undefined;
     if (!mapping) {
       return null;
     }
 
-    url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
     alt = emoji.native;
   }
 
