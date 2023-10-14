@@ -44,10 +44,10 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   /** Unload feed items if scrolled to the top. */
   const maybeUnload = useCallback(() => {
-    if (autoload && scrolledTop) {
+    if (autoload && scrolledTop && count) {
       onClick();
     }
-  }, [autoload, scrolledTop, onClick]);
+  }, [autoload, scrolledTop, count, onClick]);
 
   /** Set state while scrolling. */
   const handleScroll = useCallback(throttle(() => {
