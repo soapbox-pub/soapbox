@@ -1,18 +1,20 @@
 import clsx from 'clsx';
+import parse, { Element, type HTMLReactParserOptions, domToReact, Text } from 'html-react-parser';
 import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
 import { getTextDirection } from '../utils/rtl';
 
+import Link from './link';
 import Markup from './markup';
+import Mention from './mention';
 import Poll from './polls/poll';
 
 import type { Sizes } from 'soapbox/components/ui/text/text';
-import type { Status, Mention } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
@@ -45,65 +47,10 @@ const StatusContent: React.FC<IStatusContent> = ({
   translatable,
   textSize = 'md',
 }) => {
-  const history = useHistory();
-
   const [collapsed, setCollapsed] = useState(false);
   const [onlyEmoji, setOnlyEmoji] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
-
-  const onMentionClick = (mention: Mention, e: MouseEvent) => {
-    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      e.stopPropagation();
-      history.push(`/@${mention.acct}`);
-    }
-  };
-
-  const onHashtagClick = (hashtag: string, e: MouseEvent) => {
-    hashtag = hashtag.replace(/^#/, '').toLowerCase();
-
-    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      e.stopPropagation();
-      history.push(`/tags/${hashtag}`);
-    }
-  };
-
-  /** For regular links, just stop propogation */
-  const onLinkClick = (e: MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  const updateStatusLinks = () => {
-    if (!node.current) return;
-
-    const links = node.current.querySelectorAll('a');
-
-    links.forEach(link => {
-      // Skip already processed
-      if (link.classList.contains('status-link')) return;
-
-      // Add attributes
-      link.classList.add('status-link');
-      link.setAttribute('rel', 'nofollow noopener');
-      link.setAttribute('target', '_blank');
-
-      const mention = status.mentions.find(mention => link.href === `${mention.url}`);
-
-      // Add event listeners on mentions and hashtags
-      if (mention) {
-        link.addEventListener('click', onMentionClick.bind(link, mention), false);
-        link.setAttribute('title', mention.acct);
-        link.setAttribute('dir', 'ltr');
-      } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
-        link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
-      } else {
-        link.setAttribute('title', link.href);
-        link.addEventListener('click', onLinkClick.bind(link), false);
-      }
-    });
-  };
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
@@ -127,7 +74,6 @@ const StatusContent: React.FC<IStatusContent> = ({
   useLayoutEffect(() => {
     maybeSetCollapsed();
     maybeSetOnlyEmoji();
-    updateStatusLinks();
   });
 
   const parsedHtml = useMemo((): string => {
@@ -142,7 +88,53 @@ const StatusContent: React.FC<IStatusContent> = ({
 
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
-  const content = { __html: parsedHtml };
+  const options: HTMLReactParserOptions = {
+    replace(domNode) {
+      if (domNode instanceof Element && ['script', 'iframe'].includes(domNode.name)) {
+        return null;
+      }
+
+      if (domNode instanceof Element && domNode.name === 'a') {
+        const classes = domNode.attribs.class?.split(' ');
+
+        if (classes?.includes('mention')) {
+          const mention = status.mentions.find(({ url }) => domNode.attribs.href === url);
+          if (mention) {
+            return <Mention mention={mention} />;
+          }
+        }
+
+        if (classes?.includes('hashtag')) {
+          const child = domNode.children[0];
+          const hashtag = child instanceof Text ? child.data.replace(/^#/, '') : '';
+
+          if (hashtag) {
+            return (
+              <Link to={`/tags/${hashtag}`}>
+                {domToReact(domNode.children, options)}
+              </Link>
+            );
+          }
+        }
+
+        return (
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+          <a
+            {...domNode.attribs}
+            onClick={(e) => e.stopPropagation()}
+            rel='nofollow noopener'
+            target='_blank'
+            title={domNode.attribs.href}
+          >
+            {domToReact(domNode.children, options)}
+          </a>
+        );
+      }
+    },
+  };
+
+  const content = parse(parsedHtml, options);
+
   const direction = getTextDirection(status.search_index);
   const className = clsx(baseClassName, {
     'cursor-pointer': onClick,
@@ -159,10 +151,11 @@ const StatusContent: React.FC<IStatusContent> = ({
         key='content'
         className={className}
         direction={direction}
-        dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
         size={textSize}
-      />,
+      >
+        {content}
+      </Markup>,
     ];
 
     if (collapsed) {
@@ -185,10 +178,11 @@ const StatusContent: React.FC<IStatusContent> = ({
           'leading-normal big-emoji': onlyEmoji,
         })}
         direction={direction}
-        dangerouslySetInnerHTML={content}
         lang={status.language || undefined}
         size={textSize}
-      />,
+      >
+        {content}
+      </Markup>,
     ];
 
     if (status.poll && typeof status.poll === 'string') {
