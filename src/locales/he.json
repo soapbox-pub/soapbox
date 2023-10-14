@@ -199,6 +199,8 @@
   "chat.actions.send": "שליחה",
   "chat.failed_to_send": "שליחת ההודעה נכשלה.",
   "chat.input.placeholder": "הקלד הודעה",
+  "chat_pane.blankslate.action": "הודעה למישהו",
+  "chat_pane.blankslate.body": "חפשו מישהו לשוחח איתו.",
   "chat_pane.blankslate.title": "עדיין אין הודעות",
   "chat_search.blankslate.body": "חפשו מישהו לשוחח איתו.",
   "chat_search.blankslate.title": "תתחיל לשוחח",
