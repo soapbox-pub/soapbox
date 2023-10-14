@@ -78,7 +78,7 @@ class MentionNode extends DecoratorNode<JSX.Element> {
     const username = acct.split('@')[0];
 
     return (
-      <Mention mention={{ acct, username }} />
+      <Mention mention={{ acct, username }} disabled />
     );
   }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { isPubkey } from 'soapbox/utils/nostr';
 
@@ -8,18 +9,28 @@ import type { Mention as MentionEntity } from 'soapbox/schemas';
 
 interface IMention {
   mention: Pick<MentionEntity, 'acct' | 'username'>;
+  disabled?: boolean;
 }
 
-const Mention: React.FC<IMention> = ({ mention: { acct, username } }) => {
+/** Mention for display in post content and the composer. */
+const Mention: React.FC<IMention> = ({ mention: { acct, username }, disabled }) => {
+  const handleClick: React.MouseEventHandler = (e) => {
+    if (disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   return (
     <Tooltip text={`@${acct}`}>
-      <button
+      <Link
+        to={`/@${acct}`}
         className='text-primary-600 hover:underline dark:text-accent-blue'
-        type='button'
+        onClick={handleClick}
         dir='ltr'
       >
         @{isPubkey(username) ? username.slice(0, 8) : username}
-      </button>
+      </Link>
     </Tooltip>
   );
 };
