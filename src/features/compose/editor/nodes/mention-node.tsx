@@ -4,12 +4,10 @@
  * LICENSE file in the /src/features/compose/editor directory.
  */
 
-import { addClassNamesToElement } from '@lexical/utils';
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 import React from 'react';
 
-import { Tooltip } from 'soapbox/components/ui';
-import { isPubkey } from 'soapbox/utils/nostr';
+import Mention from 'soapbox/components/mention';
 
 import type {
   EditorConfig,
@@ -43,9 +41,7 @@ class MentionNode extends DecoratorNode<JSX.Element> {
   }
 
   createDOM(config: EditorConfig): HTMLElement {
-    const span = document.createElement('span');
-    addClassNamesToElement(span, config.theme.mention);
-    return span;
+    return document.createElement('span');
   }
 
   updateDOM(): false {
@@ -82,15 +78,7 @@ class MentionNode extends DecoratorNode<JSX.Element> {
     const username = acct.split('@')[0];
 
     return (
-      <Tooltip text={`@${acct}`}>
-        <button
-          className='text-accent-blue'
-          type='button'
-          dir='ltr'
-        >
-          @{isPubkey(username) ? username.slice(0, 8) : username}
-        </button>
-      </Tooltip>
+      <Mention mention={{ acct, username }} />
     );
   }
 
