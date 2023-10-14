@@ -29,7 +29,7 @@ const Mention: React.FC<IMention> = ({ mention: { acct, username }, disabled }) 
         onClick={handleClick}
         dir='ltr'
       >
-        @{isPubkey(username) ? username.slice(0, 8) : username}
+        @{isPubkey(username) ? username.slice(0, 8) : acct}
       </Link>
     </Tooltip>
   );
