@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import parse, { Element, type HTMLReactParserOptions, domToReact, Text } from 'html-react-parser';
+import parse, { Element, type HTMLReactParserOptions, domToReact } from 'html-react-parser';
 import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -8,7 +8,7 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
 
 import { getTextDirection } from '../utils/rtl';
 
-import Link from './link';
+import HashtagLink from './hashtag-link';
 import Markup from './markup';
 import Mention from './mention';
 import Poll from './polls/poll';
@@ -105,15 +105,10 @@ const StatusContent: React.FC<IStatusContent> = ({
         }
 
         if (classes?.includes('hashtag')) {
-          const child = domNode.children[0];
-          const hashtag = child instanceof Text ? child.data.replace(/^#/, '') : '';
-
+          const child = domToReact(domNode.children);
+          const hashtag = typeof child === 'string' ? child.replace(/^#/, '') : undefined;
           if (hashtag) {
-            return (
-              <Link to={`/tags/${hashtag}`}>
-                {domToReact(domNode.children, options)}
-              </Link>
-            );
+            return <HashtagLink hashtag={hashtag} />;
           }
         }
 
