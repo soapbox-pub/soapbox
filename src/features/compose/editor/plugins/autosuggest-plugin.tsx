@@ -327,8 +327,8 @@ const AutosuggestPlugin = ({
           node.setTextContent(`${suggestion} `);
           node.select();
         } else {
-          const acct = selectAccount(getState(), suggestion)!.acct;
-          replaceMatch($createMentionNode(acct));
+          const account = selectAccount(getState(), suggestion)!;
+          replaceMatch($createMentionNode(account));
         }
 
         dispatch(clearComposeSuggestions(composeId));

@@ -16,28 +16,29 @@ import type {
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
+import type { Mention as MentionEntity } from 'soapbox/schemas';
 
 type SerializedMentionNode = Spread<{
-  acct: string;
+  mention: MentionEntity;
   type: 'mention';
   version: 1;
 }, SerializedLexicalNode>;
 
 class MentionNode extends DecoratorNode<JSX.Element> {
 
-  __acct: string;
+  __mention: MentionEntity;
 
   static getType(): string {
     return 'mention';
   }
 
   static clone(node: MentionNode): MentionNode {
-    return new MentionNode(node.__acct, node.__key);
+    return new MentionNode(node.__mention, node.__key);
   }
 
-  constructor(acct: string, key?: NodeKey) {
+  constructor(mention: MentionEntity, key?: NodeKey) {
     super(key);
-    this.__acct = acct;
+    this.__mention = mention;
   }
 
   createDOM(config: EditorConfig): HTMLElement {
@@ -49,20 +50,20 @@ class MentionNode extends DecoratorNode<JSX.Element> {
   }
 
   static importJSON(serializedNode: SerializedMentionNode): MentionNode {
-    const node = $createMentionNode(serializedNode.acct);
+    const node = $createMentionNode(serializedNode.mention);
     return node;
   }
 
   exportJSON(): SerializedMentionNode {
     return {
       type: 'mention',
-      acct: this.__acct,
+      mention: this.__mention,
       version: 1,
     };
   }
 
   getTextContent(): string {
-    return `@${this.__acct}`;
+    return `@${this.__mention.acct}`;
   }
 
   canInsertTextBefore(): boolean {
@@ -74,18 +75,15 @@ class MentionNode extends DecoratorNode<JSX.Element> {
   }
 
   decorate(): JSX.Element {
-    const acct = this.__acct;
-    const username = acct.split('@')[0];
-
     return (
-      <Mention mention={{ acct, username }} disabled />
+      <Mention mention={this.__mention} disabled />
     );
   }
 
 }
 
-function $createMentionNode(acct: string): MentionNode {
-  const node = new MentionNode(acct);
+function $createMentionNode(mention: MentionEntity): MentionNode {
+  const node = new MentionNode(mention);
   return $applyNodeReplacement(node);
 }
 
