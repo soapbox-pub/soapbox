@@ -378,8 +378,8 @@ const AutosuggestPlugin = ({
         key={key}
         data-index={i}
         className={clsx({
-          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
-          'bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
+          'snap-start snap-always px-4 py-2.5 text-sm text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-primary-800 group': true,
+          'snap-start snap-always bg-gray-100 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800': i === selectedSuggestion,
         })}
         onMouseDown={handleSelectSuggestion}
       >
@@ -538,7 +538,7 @@ const AutosuggestPlugin = ({
           ? ReactDOM.createPortal(
             <div
               className={clsx({
-                'mt-6 overflow-y-auto max-h-56 relative w-max z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
+                'scroll-smooth snap-y snap-always will-change-scroll mt-6 overflow-y-auto max-h-56 relative w-max z-1000 shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
                 hidden: suggestionsHidden || suggestions.isEmpty(),
                 block: !suggestionsHidden && !suggestions.isEmpty(),
               })}
