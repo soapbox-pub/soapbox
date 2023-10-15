@@ -19,7 +19,7 @@ const createAudio = (sources: Sound[]): HTMLAudioElement => {
 };
 
 /** Play HTML5 sound. */
-const play = (audio: HTMLAudioElement): void => {
+const play = (audio: HTMLAudioElement): Promise<void> => {
   if (!audio.paused) {
     audio.pause();
     if (typeof audio.fastSeek === 'function') {
@@ -29,7 +29,15 @@ const play = (audio: HTMLAudioElement): void => {
     }
   }
 
-  audio.play();
+  return audio.play().catch((error: Error) => {
+    if (error.name === 'NotAllowedError') {
+      // User has disabled autoplay.
+      // https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide
+      return;
+    } else {
+      throw error;
+    }
+  });
 };
 
 const soundCache: Record<Sounds, HTMLAudioElement> = {
