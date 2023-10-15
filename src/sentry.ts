@@ -26,6 +26,10 @@ async function startSentry(dsn: string): Promise<void> {
       // localForage error in FireFox private browsing mode (which doesn't support IndexedDB).
       // We only use IndexedDB as a cache, so we can safely ignore the error.
       'No available storage method found',
+      // Virtuoso throws these errors, but it is a false-positive.
+      // https://github.com/petyosi/react-virtuoso/issues/254
+      'ResizeObserver loop completed with undelivered notifications.',
+      'ResizeObserver loop limit exceeded',
     ],
     denyUrls: [
       // Browser extensions.
@@ -34,8 +38,6 @@ async function startSentry(dsn: string): Promise<void> {
       /^moz-extension:\/\//i,
     ],
 
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
     tracesSampleRate: 1.0,
   });
 
