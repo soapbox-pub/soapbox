@@ -461,7 +461,6 @@
   "confirmations.revoke_session.confirm": "Revoke",
   "confirmations.revoke_session.heading": "Revoke current session",
   "confirmations.revoke_session.message": "You are about to revoke your current session. You will be signed out.",
-  "confirmations.scheduled_status_delete.confirm": "",
   "confirmations.scheduled_status_delete.heading": "Cancel scheduled post",
   "confirmations.scheduled_status_delete.message": "Are you sure you want to cancel this scheduled post?",
   "confirmations.unfollow.confirm": "להפסיק מעקב",
