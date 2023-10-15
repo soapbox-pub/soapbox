@@ -38,7 +38,9 @@ const AnimatedNumber: React.FC<IAnimatedNumber> = ({ value, obfuscate }) => {
   const willLeave = () => ({ y: spring(1 * direction, { damping: 35, stiffness: 400 }) });
 
   if (reduceMotion) {
-    return obfuscate ? <>{obfuscatedCount(displayedValue)}</> : <FormattedNumber value={displayedValue} />;
+    return obfuscate
+      ? <>{obfuscatedCount(displayedValue)}</>
+      : <FormattedNumber value={displayedValue} numberingSystem='latn' />;
   }
 
   const styles = [{
@@ -52,7 +54,14 @@ const AnimatedNumber: React.FC<IAnimatedNumber> = ({ value, obfuscate }) => {
       {items => (
         <span className='relative inline-flex flex-col items-stretch overflow-hidden'>
           {items.map(({ key, data, style }) => (
-            <span key={key} style={{ position: (direction * style.y) > 0 ? 'absolute' : 'static', transform: `translateY(${style.y * 100}%)` }}>{obfuscate ? obfuscatedCount(data) : <FormattedNumber value={data} />}</span>
+            <span
+              key={key}
+              style={{ position: (direction * style.y) > 0 ? 'absolute' : 'static', transform: `translateY(${style.y * 100}%)` }}
+            >
+              {obfuscate
+                ? obfuscatedCount(data)
+                : <FormattedNumber value={data} numberingSystem='latn' />}
+            </span>
           ))}
         </span>
       )}

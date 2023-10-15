@@ -44,6 +44,7 @@ export const shortNumberFormat = (number: any, max?: number): React.ReactNode =>
         maximumFractionDigits={0}
         minimumFractionDigits={0}
         maximumSignificantDigits={3}
+        numberingSystem='latn'
         style='decimal'
       />
       {factor}
