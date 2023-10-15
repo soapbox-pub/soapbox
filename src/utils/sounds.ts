@@ -1,10 +1,15 @@
+import boopMp3 from 'soapbox/assets/sounds/boop.mp3';
+import boopOgg from 'soapbox/assets/sounds/boop.ogg';
+import chatMp3 from 'soapbox/assets/sounds/chat.mp3';
+import chatOgg from 'soapbox/assets/sounds/chat.ogg';
+
 /** Soapbox audio clip. */
-type Sound = {
+interface Sound {
   src: string;
   type: string;
 }
 
-export type Sounds = 'boop' | 'chat'
+type Sounds = 'boop' | 'chat';
 
 /** Produce HTML5 audio from sound data. */
 const createAudio = (sources: Sound[]): HTMLAudioElement => {
@@ -42,25 +47,13 @@ const play = (audio: HTMLAudioElement): Promise<void> => {
 
 const soundCache: Record<Sounds, HTMLAudioElement> = {
   boop: createAudio([
-    {
-      src: require('../assets/sounds/boop.ogg'),
-      type: 'audio/ogg',
-    },
-    {
-      src: require('../assets/sounds/boop.mp3'),
-      type: 'audio/mpeg',
-    },
+    { src: boopOgg, type: 'audio/ogg' },
+    { src: boopMp3, type: 'audio/mpeg' },
   ]),
   chat: createAudio([
-    {
-      src: require('../assets/sounds/chat.oga'),
-      type: 'audio/ogg',
-    },
-    {
-      src: require('../assets/sounds/chat.mp3'),
-      type: 'audio/mpeg',
-    },
+    { src: chatOgg, type: 'audio/ogg' },
+    { src: chatMp3, type: 'audio/mpeg' },
   ]),
 };
 
-export { soundCache, play };
+export { soundCache, play, type Sounds };
