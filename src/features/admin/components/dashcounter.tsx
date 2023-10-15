@@ -29,6 +29,7 @@ const DashCounter: React.FC<IDashCounter> = ({ count, label, to = '#', percent =
           value={count}
           style={percent ? 'unit' : undefined}
           unit={percent ? 'percent' : undefined}
+          numberingSystem='latn'
         />
       </Text>
       <Text align='center'>
