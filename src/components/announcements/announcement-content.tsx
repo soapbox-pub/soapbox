@@ -79,7 +79,7 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
 
   return (
     <div
-      style={{ direction: direction }}
+      dir={direction}
       className='text-sm ltr:ml-0 rtl:mr-0'
       ref={node}
       dangerouslySetInnerHTML={{ __html: announcement.contentHtml }}
