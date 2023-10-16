@@ -3,6 +3,7 @@ import { FormattedDate } from 'react-intl';
 
 import { Stack, Text } from 'soapbox/components/ui';
 import { useFeatures } from 'soapbox/hooks';
+import { getTextDirection } from 'soapbox/utils/rtl';
 
 import AnnouncementContent from './announcement-content';
 import ReactionsBar from './reactions-bar';
@@ -27,11 +28,12 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
   const skipYear = hasTimeRange && startsAt.getFullYear() === endsAt.getFullYear() && endsAt.getFullYear() === now.getFullYear();
   const skipEndDate = hasTimeRange && startsAt.getDate() === endsAt.getDate() && startsAt.getMonth() === endsAt.getMonth() && startsAt.getFullYear() === endsAt.getFullYear();
   const skipTime = announcement.all_day;
+  const direction = getTextDirection(announcement.content);
 
   return (
     <Stack className='w-full' space={2}>
       {hasTimeRange && (
-        <Text theme='muted'>
+        <Text theme='muted' direction={direction}>
           <FormattedDate
             value={startsAt}
             hour12
