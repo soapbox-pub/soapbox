@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { getTextDirection } from 'soapbox/utils/rtl';
+
 import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/types/entities';
 
 interface IAnnouncementContent {
@@ -11,6 +13,7 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
   const history = useHistory();
 
   const node = useRef<HTMLDivElement>(null);
+  const direction = getTextDirection(announcement.content);
 
   useEffect(() => {
     updateLinks();
@@ -76,7 +79,8 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
 
   return (
     <div
-      className='translate text-sm'
+      dir={direction}
+      className='text-sm ltr:ml-0 rtl:mr-0'
       ref={node}
       dangerouslySetInnerHTML={{ __html: announcement.contentHtml }}
     />
