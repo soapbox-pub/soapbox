@@ -70,7 +70,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
-    "@tanstack/react-query": "^4.0.10",
+    "@tanstack/react-query": "^5.0.0",
     "@types/escape-html": "^1.0.1",
     "@types/http-link-header": "^1.0.3",
     "@types/leaflet": "^1.8.0",
