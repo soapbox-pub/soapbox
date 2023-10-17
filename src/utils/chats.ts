@@ -50,7 +50,9 @@ const checkIfChatExists = (chatId: string) => {
  * Force a re-fetch of ChatSearch.
  */
 const invalidateChatSearchQuery = () => {
-  queryClient.invalidateQueries(ChatKeys.chatSearch());
+  queryClient.invalidateQueries({
+    queryKey: ChatKeys.chatSearch(),
+  });
 };
 
 const updateChatListItem = (newChat: ChatPayload) => {

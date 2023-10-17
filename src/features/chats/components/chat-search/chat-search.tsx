@@ -43,9 +43,8 @@ const ChatSearch = (props: IChatSearch) => {
   const hasSearchValue = debouncedValue && debouncedValue.length > 0;
   const hasSearchResults = (accounts || []).length > 0;
 
-  const handleClickOnSearchResult = useMutation((accountId: string) => {
-    return getOrCreateChatByAccountId(accountId);
-  }, {
+  const handleClickOnSearchResult = useMutation({
+    mutationFn: (accountId: string) => getOrCreateChatByAccountId(accountId),
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
       toast.error(data?.error);
@@ -57,7 +56,7 @@ const ChatSearch = (props: IChatSearch) => {
         changeScreen(ChatWidgetScreens.CHAT, response.data.id);
       }
 
-      queryClient.invalidateQueries(ChatKeys.chatSearch());
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatSearch() });
     },
   });
 

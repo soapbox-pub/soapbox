@@ -31,7 +31,9 @@ function useGroupValidation(name: string = '') {
     return data;
   };
 
-  const queryInfo = useQuery<Validation>(ValidationKeys.validation(name), getValidation, {
+  const queryInfo = useQuery<Validation>({
+    queryKey: ValidationKeys.validation(name),
+    queryFn: getValidation,
     enabled: features.groupsValidation && !!name,
   });
 

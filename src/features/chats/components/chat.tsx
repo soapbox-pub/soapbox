@@ -93,7 +93,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
   };
 
   const sendMessage = () => {
-    if (!isSubmitDisabled && !createChatMessage.isLoading) {
+    if (!isSubmitDisabled && !createChatMessage.isPending) {
       submitMessage();
 
       if (!chat.accepted) {

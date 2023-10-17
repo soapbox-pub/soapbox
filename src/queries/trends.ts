@@ -19,7 +19,9 @@ export default function useTrends() {
     return normalizedData;
   };
 
-  const result = useQuery<ReadonlyArray<Tag>>(['trends'], getTrends, {
+  const result = useQuery<ReadonlyArray<Tag>>({
+    queryKey: ['trends'],
+    queryFn: getTrends,
     placeholderData: [],
     staleTime: 600000, // 10 minutes
   });

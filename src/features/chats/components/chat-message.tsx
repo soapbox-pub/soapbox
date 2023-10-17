@@ -68,9 +68,12 @@ const ChatMessage = (props: IChatMessage) => {
   const [isReactionSelectorOpen, setIsReactionSelectorOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const handleDeleteMessage = useMutation((chatMessageId: string) => deleteChatMessage(chatMessageId), {
+  const handleDeleteMessage = useMutation({
+    mutationFn: (chatMessageId: string) => deleteChatMessage(chatMessageId),
     onSettled: () => {
-      queryClient.invalidateQueries(ChatKeys.chatMessages(chat.id));
+      queryClient.invalidateQueries({
+        queryKey: ChatKeys.chatMessages(chat.id),
+      });
     },
   });
 

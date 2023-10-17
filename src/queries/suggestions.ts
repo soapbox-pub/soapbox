@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, keepPreviousData } from '@tanstack/react-query';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccounts } from 'soapbox/actions/importer';
@@ -48,19 +48,19 @@ const useSuggestions = () => {
     };
   };
 
-  const result = useInfiniteQuery(
-    SuggestionKeys.suggestions,
-    ({ pageParam }: any) => getV2Suggestions(pageParam),
-    {
-      keepPreviousData: true,
-      getNextPageParam: (config) => {
-        if (config?.hasMore) {
-          return { nextLink: config?.link };
-        }
+  const result = useInfiniteQuery({
+    queryKey: SuggestionKeys.suggestions,
+    queryFn: ({ pageParam }: any) => getV2Suggestions(pageParam),
+    placeholderData: keepPreviousData,
+    initialPageParam: { nextLink: undefined },
+    getNextPageParam: (config) => {
+      if (config?.hasMore) {
+        return { nextLink: config?.link };
+      }
 
-        return undefined;
-      },
-    });
+      return undefined;
+    },
+  });
 
   const data: any = result.data?.pages.reduce<Suggestion[]>(
     (prev: any, curr: any) => [...prev, ...curr.result],
@@ -76,7 +76,8 @@ const useSuggestions = () => {
 const useDismissSuggestion = () => {
   const api = useApi();
 
-  return useMutation((accountId: string) => api.delete(`/api/v1/suggestions/${accountId}`), {
+  return useMutation({
+    mutationFn: (accountId: string) => api.delete(`/api/v1/suggestions/${accountId}`),
     onMutate(accountId: string) {
       removePageItem(SuggestionKeys.suggestions, accountId, (o: any, n: any) => o.account === n);
     },
@@ -105,8 +106,11 @@ function useOnboardingSuggestions() {
     };
   };
 
-  const result = useInfiniteQuery(['suggestions', 'v2'], ({ pageParam }) => getV2Suggestions(pageParam), {
-    keepPreviousData: true,
+  const result = useInfiniteQuery({
+    queryKey: ['suggestions', 'v2'],
+    queryFn: ({ pageParam }) => getV2Suggestions(pageParam),
+    placeholderData: keepPreviousData,
+    initialPageParam: { link: undefined as string | undefined },
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };

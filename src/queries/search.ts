@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
 import { getNextLink } from 'soapbox/api';
 import { useApi } from 'soapbox/hooks';
@@ -31,8 +31,11 @@ export default function useAccountSearch(q: string) {
     };
   };
 
-  const queryInfo = useInfiniteQuery(['search', 'accounts', q], ({ pageParam }) => getAccountSearch(q, pageParam), {
-    keepPreviousData: true,
+  const queryInfo = useInfiniteQuery({
+    queryKey: ['search', 'accounts', q],
+    queryFn: ({ pageParam }) => getAccountSearch(q, pageParam),
+    placeholderData: keepPreviousData,
+    initialPageParam: { link: undefined as string | undefined },
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };
