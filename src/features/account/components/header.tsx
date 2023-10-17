@@ -92,16 +92,17 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const { getOrCreateChatByAccountId } = useChats();
 
-  const createAndNavigateToChat = useMutation((accountId: string) => {
-    return getOrCreateChatByAccountId(accountId);
-  }, {
+  const createAndNavigateToChat = useMutation({
+    mutationFn: (accountId: string) => getOrCreateChatByAccountId(accountId),
     onError: (error: AxiosError) => {
       const data = error.response?.data as any;
       toast.error(data?.error);
     },
     onSuccess: (response) => {
       history.push(`/chats/${response.data.id}`);
-      queryClient.invalidateQueries(ChatKeys.chatSearch());
+      queryClient.invalidateQueries({
+        queryKey: ChatKeys.chatSearch(),
+      });
     },
   });
 
@@ -571,7 +572,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           theme='outlined'
           className='px-2'
           iconClassName='h-4 w-4'
-          disabled={createAndNavigateToChat.isLoading}
+          disabled={createAndNavigateToChat.isPending}
         />
       );
     } else if (account.pleroma?.accepts_chat_messages) {

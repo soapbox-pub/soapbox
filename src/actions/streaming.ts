@@ -43,7 +43,9 @@ const removeChatMessage = (payload: string) => {
   // If the user just deleted the "last_message", then let's invalidate
   // the Chat Search query so the Chat List will show the new "last_message".
   if (isLastMessage(chatMessageId)) {
-    queryClient.invalidateQueries(ChatKeys.chatSearch());
+    queryClient.invalidateQueries({
+      queryKey: ChatKeys.chatSearch(),
+    });
   }
 
   removePageItem(ChatKeys.chatMessages(chatId), chatMessageId, (o: any, n: any) => String(o.id) === String(n));

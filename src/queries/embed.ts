@@ -26,5 +26,8 @@ export default function useEmbed(url: string) {
     return data;
   };
 
-  return useQuery<Embed>(['embed', url], getEmbed);
+  return useQuery<Embed>({
+    queryKey: ['embed', url],
+    queryFn: getEmbed,
+  });
 }

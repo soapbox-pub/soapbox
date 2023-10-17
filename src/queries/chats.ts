@@ -1,4 +1,4 @@
-import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { InfiniteData, keepPreviousData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import sumBy from 'lodash/sumBy';
 
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
@@ -98,10 +98,13 @@ const useChatMessages = (chat: IChat) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(ChatKeys.chatMessages(chat.id), ({ pageParam }) => getChatMessages(chat.id, pageParam), {
+  const queryInfo = useInfiniteQuery({
+    queryKey: ChatKeys.chatMessages(chat.id),
+    queryFn: ({ pageParam }) => getChatMessages(chat.id, pageParam),
     enabled: !isBlocked,
-    cacheTime: 0,
+    gcTime: 0,
     staleTime: 0,
+    initialPageParam: { link: undefined as string | undefined },
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };
@@ -153,9 +156,12 @@ const useChats = (search?: string) => {
     };
   };
 
-  const queryInfo = useInfiniteQuery(ChatKeys.chatSearch(search), ({ pageParam }) => getChats(pageParam), {
-    keepPreviousData: true,
+  const queryInfo = useInfiniteQuery({
+    queryKey: ChatKeys.chatSearch(search),
+    queryFn: ({ pageParam }) => getChats(pageParam),
+    placeholderData: keepPreviousData,
     enabled: features.chats,
+    initialPageParam: { link: undefined as string | undefined },
     getNextPageParam: (config) => {
       if (config.hasMore) {
         return { link: config.link };
@@ -193,8 +199,10 @@ const useChat = (chatId?: string) => {
     }
   };
 
-  return useQuery<IChat | undefined>(ChatKeys.chat(chatId), getChat, {
-    cacheTime: 0,
+  return useQuery<IChat | undefined>({
+    queryKey: ChatKeys.chat(chatId),
+    queryFn: getChat,
+    gcTime: 0,
     enabled: !!chatId,
   });
 };
@@ -230,75 +238,78 @@ const useChatActions = (chatId: string) => {
       .catch(() => null);
   };
 
-  const createChatMessage = useMutation(
-    ({ chatId, content, mediaIds }: { chatId: string; content: string; mediaIds?: string[] }) => {
+  const createChatMessage = useMutation({
+    mutationFn: ({ chatId, content, mediaIds }: { chatId: string; content: string; mediaIds?: string[] }) => {
       return api.post<ChatMessage>(`/api/v1/pleroma/chats/${chatId}/messages`, {
         content,
         media_id: (mediaIds && mediaIds.length === 1) ? mediaIds[0] : undefined, // Pleroma backwards-compat
         media_ids: mediaIds,
       });
     },
-    {
-      retry: false,
-      onMutate: async (variables) => {
-        // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-        await queryClient.cancelQueries(['chats', 'messages', variables.chatId]);
+    retry: false,
+    onMutate: async (variables) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: ['chats', 'messages', variables.chatId],
+      });
 
-        // Snapshot the previous value
-        const prevContent = variables.content;
-        const prevChatMessages = queryClient.getQueryData(['chats', 'messages', variables.chatId]);
-        const pendingId = String(Number(new Date()));
+      // Snapshot the previous value
+      const prevContent = variables.content;
+      const prevChatMessages = queryClient.getQueryData(['chats', 'messages', variables.chatId]);
+      const pendingId = String(Number(new Date()));
 
-        // Optimistically update to the new value
-        queryClient.setQueryData(ChatKeys.chatMessages(variables.chatId), (prevResult: any) => {
-          const newResult = { ...prevResult };
-          newResult.pages = newResult.pages.map((page: any, idx: number) => {
-            if (idx === 0) {
-              return {
-                ...page,
-                result: [
-                  normalizeChatMessage({
-                    content: variables.content,
-                    id: pendingId,
-                    created_at: new Date(),
-                    account_id: account?.id,
-                    pending: true,
-                    unread: true,
-                  }),
-                  ...page.result,
-                ],
-              };
-            }
+      // Optimistically update to the new value
+      queryClient.setQueryData(ChatKeys.chatMessages(variables.chatId), (prevResult: any) => {
+        const newResult = { ...prevResult };
+        newResult.pages = newResult.pages.map((page: any, idx: number) => {
+          if (idx === 0) {
+            return {
+              ...page,
+              result: [
+                normalizeChatMessage({
+                  content: variables.content,
+                  id: pendingId,
+                  created_at: new Date(),
+                  account_id: account?.id,
+                  pending: true,
+                  unread: true,
+                }),
+                ...page.result,
+              ],
+            };
+          }
 
-            return page;
-          });
-
-          return newResult;
+          return page;
         });
 
-        return { prevChatMessages, prevContent, pendingId };
-      },
-      // If the mutation fails, use the context returned from onMutate to roll back
-      onError: (_error: any, variables, context: any) => {
-        queryClient.setQueryData(['chats', 'messages', variables.chatId], context.prevChatMessages);
-      },
-      onSuccess: (response: any, variables, context) => {
-        const nextChat = { ...chat, last_message: response.data };
-        updatePageItem(ChatKeys.chatSearch(), nextChat, (o, n) => o.id === n.id);
-        updatePageItem(
-          ChatKeys.chatMessages(variables.chatId),
-          normalizeChatMessage(response.data),
-          (o) => o.id === context.pendingId,
-        );
-        reOrderChatListItems();
-      },
-    },
-  );
+        return newResult;
+      });
 
-  const updateChat = useMutation((data: UpdateChatVariables) => api.patch<IChat>(`/api/v1/pleroma/chats/${chatId}`, data), {
+      return { prevChatMessages, prevContent, pendingId };
+    },
+    // If the mutation fails, use the context returned from onMutate to roll back
+    onError: (_error: any, variables, context: any) => {
+      queryClient.setQueryData(['chats', 'messages', variables.chatId], context.prevChatMessages);
+    },
+    onSuccess: (response: any, variables, context) => {
+      const nextChat = { ...chat, last_message: response.data };
+      updatePageItem(ChatKeys.chatSearch(), nextChat, (o, n) => o.id === n.id);
+      updatePageItem(
+        ChatKeys.chatMessages(variables.chatId),
+        normalizeChatMessage(response.data),
+        (o) => o.id === context.pendingId,
+      );
+      reOrderChatListItems();
+    },
+  });
+
+  const updateChat = useMutation({
+    mutationFn: (data: UpdateChatVariables) => api.patch<IChat>(`/api/v1/pleroma/chats/${chatId}`, data),
     onMutate: async (data) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries(ChatKeys.chat(chatId));
+      await queryClient.cancelQueries({
+        queryKey: ChatKeys.chat(chatId),
+      });
 
       // Snapshot the previous value
       const prevChat = { ...chat };
@@ -317,48 +328,49 @@ const useChatActions = (chatId: string) => {
       toast.error('Chat Settings failed to update.');
     },
     onSuccess() {
-      queryClient.invalidateQueries(ChatKeys.chat(chatId));
-      queryClient.invalidateQueries(ChatKeys.chatSearch());
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chat(chatId) });
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatSearch() });
       toast.success('Chat Settings updated successfully');
     },
   });
 
   const deleteChatMessage = (chatMessageId: string) => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}/messages/${chatMessageId}`);
 
-  const acceptChat = useMutation(() => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`), {
+  const acceptChat = useMutation({
+    mutationFn: () => api.post<IChat>(`/api/v1/pleroma/chats/${chatId}/accept`),
     onSuccess(response) {
       changeScreen(ChatWidgetScreens.CHAT, response.data.id);
-      queryClient.invalidateQueries(ChatKeys.chat(chatId));
-      queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
-      queryClient.invalidateQueries(ChatKeys.chatSearch());
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chat(chatId) });
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatMessages(chatId) });
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatSearch() });
     },
   });
 
-  const deleteChat = useMutation(() => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}`), {
+  const deleteChat = useMutation({
+    mutationFn: () => api.delete<IChat>(`/api/v1/pleroma/chats/${chatId}`),
     onSuccess() {
       changeScreen(ChatWidgetScreens.INBOX);
-      queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
-      queryClient.invalidateQueries(ChatKeys.chatSearch());
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatMessages(chatId) });
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatSearch() });
     },
   });
 
-  const createReaction = useMutation((data: CreateReactionVariables) => api.post(`/api/v1/pleroma/chats/${chatId}/messages/${data.messageId}/reactions`, {
-    emoji: data.emoji,
-  }), {
+  const createReaction = useMutation({
+    mutationFn: (data: CreateReactionVariables) => api.post(`/api/v1/pleroma/chats/${chatId}/messages/${data.messageId}/reactions`, {
+      emoji: data.emoji,
+    }),
     // TODO: add optimistic updates
     onSuccess(response) {
       updateChatMessage(response.data);
     },
   });
 
-  const deleteReaction = useMutation(
-    (data: CreateReactionVariables) => api.delete(`/api/v1/pleroma/chats/${chatId}/messages/${data.messageId}/reactions/${data.emoji}`),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(ChatKeys.chatMessages(chatId));
-      },
+  const deleteReaction = useMutation({
+    mutationFn: (data: CreateReactionVariables) => api.delete(`/api/v1/pleroma/chats/${chatId}/messages/${data.messageId}/reactions/${data.emoji}`),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ChatKeys.chatMessages(chatId) });
     },
-  );
+  });
 
   return {
     acceptChat,

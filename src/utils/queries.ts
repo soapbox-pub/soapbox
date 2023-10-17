@@ -41,7 +41,7 @@ const flattenPages = <T>(queryData: InfiniteData<PaginatedResult<T>> | undefined
 
 /** Traverse pages and update the item inside if found. */
 const updatePageItem = <T>(queryKey: QueryKey, newItem: T, isItem: (item: T, newItem: T) => boolean) => {
-  queryClient.setQueriesData<InfiniteData<PaginatedResult<T>>>(queryKey, (data) => {
+  queryClient.setQueriesData<InfiniteData<PaginatedResult<T>>>({ queryKey }, (data) => {
     if (data) {
       const pages = data.pages.map(page => {
         const result = page.result.map(item => isItem(item, newItem) ? newItem : item);
@@ -65,7 +65,7 @@ const appendPageItem = <T>(queryKey: QueryKey, newItem: T) => {
 
 /** Remove an item inside if found. */
 const removePageItem = <T>(queryKey: QueryKey, itemToRemove: T, isItem: (item: T, newItem: T) => boolean) => {
-  queryClient.setQueriesData<InfiniteData<PaginatedResult<T>>>(queryKey, (data) => {
+  queryClient.setQueriesData<InfiniteData<PaginatedResult<T>>>({ queryKey }, (data) => {
     if (data) {
       const pages = data.pages.map(page => {
         const result = page.result.filter(item => !isItem(item, itemToRemove));

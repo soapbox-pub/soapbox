@@ -92,7 +92,7 @@ const ChatMessageListIntro = () => {
             theme='primary'
             block
             onClick={() => acceptChat.mutate()}
-            disabled={acceptChat.isLoading}
+            disabled={acceptChat.isPending}
           >
             {intl.formatMessage(messages.accept)}
           </Button>
